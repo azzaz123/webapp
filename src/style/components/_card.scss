@@ -1,0 +1,35 @@
+.card {
+  border-radius: $border-radius;
+  border: 0;
+  margin-bottom: $spacing;
+  background-color: $grey-900;
+  .card-block {
+    padding: $spacing;
+  }
+  .card-title {
+    font-size: $font-size;
+    color: $white;
+    font-weight: bold;
+  }
+  &:hover, &:focus {
+    box-shadow: 0 2px 6px 0 rgba(54, 70, 79, 0.07);
+    text-decoration: none;
+  }
+  .card-img-left {
+    border-bottom-left-radius: calc(.25rem - 1px);
+    border-top-left-radius: calc(.25rem - 1px);
+    float: left;
+    margin-right: $spacing;
+    margin-bottom: -1.25em;
+  }
+  .card-header, .card-footer {
+    background: transparent;
+    border-color: $body-bg;
+    padding: $spacing;
+  }
+  .card-header {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: $font-size-S;
+  }
+}
