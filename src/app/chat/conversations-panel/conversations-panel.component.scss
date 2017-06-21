@@ -1,0 +1,51 @@
+@import "../../../style/_common.scss";
+
+$title-height: 75px;
+$filters-nav-height: 38px;
+
+tsl-conversation {
+  border-top: none;
+}
+
+h2 {
+  color: $white;
+  margin: $spacing;
+  font-weight: bold;
+  font-size: $font-size-LL;
+  letter-spacing: $letter-spacing;
+}
+
+.scroll-panel {
+  display: block;
+  height: calc(100vh - #{$filters-nav-height} - #{$title-height});
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.nav.filters-nav {
+  margin-left: $spacing;
+}
+
+#filter {
+  .filtered {
+    margin: $spacing;
+  }
+}
+
+tsl-process-all-button {
+  float: right;
+  margin-top: 10px;
+  margin-right: $spacing-S;
+}
+
+#loader {
+  padding-top: $spacing;
+  md-icon {
+    width: 339px;
+    height: 487px;
+  }
+}
+
+.separator {
+  margin-left: $spacing;
+}
