@@ -24,9 +24,9 @@
     "@angular/router": "4.2.3",
     "ngx-toastr": "^5.0.7",
     "core-js": "^2.4.1",
-    "rxjs": "^5.1.0",
+    "rxjs": "5.3.0",
     "angular2-infinite-scroll": "^0.2.8",
-    "shield": "git+ssh://git@github.com:Wallapop/shield.git",
+    "shield": "git+ssh://git@github.com/Wallapop/shield.git#1.1.1",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
