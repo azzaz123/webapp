@@ -1,17 +1,21 @@
+import './rxjs-extensions';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ShieldModule } from 'shield';
+import { ChatModule } from './chat/chat.module';
+
 @NgModule({
   declarations: [
     AppComponent
   ],
-  imports: [
-      BrowserModule,
-      ShieldModule
+  imports:      [
+    BrowserModule,
+    ShieldModule,
+    ChatModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers:    [],
+  bootstrap:    [AppComponent]
 })
 export class AppModule {
 }
