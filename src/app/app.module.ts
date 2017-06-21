@@ -11,7 +11,7 @@ import { ChatModule } from './chat/chat.module';
   ],
   imports:      [
     BrowserModule,
-    ShieldModule,
+    ShieldModule.forRoot(),
     ChatModule
   ],
   providers:    [
