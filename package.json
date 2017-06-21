@@ -5,8 +5,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
+    "builddev": "ng build --env=dev",
+    "buildbeta": "ng build --env=beta",
+    "buildprod": "ng build --env=prod",
+    "test": "ng test --watch=false  --no-progress",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
