@@ -1,14 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Conversation } from '../core/conversation/conversation';
-import { UserService } from '../core/user/user.service';
-import { EventService } from '../core/event/event.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ItemService } from '../core/item/item.service';
+import { Conversation, UserService, EventService, ItemService, I18nService,
+  BanReason, ConversationService, TrackingService } from 'shield';
 import { ToastrService } from 'ngx-toastr';
-import { I18nService } from '../core/i18n/i18n.service';
-import { BanReason } from '../core/item/ban-reason.interface';
-import { ConversationService } from '../core/conversation/conversation.service';
-import { TrackingService } from '../core/tracking/tracking.service';
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: 'tsl-chat',
@@ -47,6 +42,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.connectionError = false;
+    });
+    this.itemService.getBanReasons().map(() => {
+
     });
     this.itemService.getBanReasons().takeWhile(() => {
       return this.active;

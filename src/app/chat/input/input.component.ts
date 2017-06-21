@@ -1,7 +1,5 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { Conversation } from '../../core/conversation/conversation';
-import { MessageService } from '../../core/message/message.service';
-import { EventService } from '../../core/event/event.service';
+import { Conversation, MessageService, EventService } from 'shield';
 
 @Component({
   selector: 'tsl-input',

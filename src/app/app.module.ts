@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ShieldModule } from 'shield';
 import { ChatModule } from './chat/chat.module';
+import { providers } from './app.providers';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,9 @@ import { ChatModule } from './chat/chat.module';
     ShieldModule,
     ChatModule
   ],
-  providers:    [],
+  providers:    [
+    ...providers(),
+  ],
   bootstrap:    [AppComponent]
 })
 export class AppModule {

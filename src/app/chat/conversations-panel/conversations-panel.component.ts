@@ -1,15 +1,8 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Conversation } from '../../core/conversation/conversation';
-import { EventService } from '../../core/event/event.service';
-import { Message } from '../../core/message/message';
+import { Conversation, EventService, Message, UserService, ConversationService, Filter, Filters, TrackingService } from 'shield';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../core/user/user.service';
 import { Subscription } from 'rxjs/Subscription';
-import { ConversationService } from '../../core/conversation/conversation.service';
-import { Filter } from '../../core/conversation/filter.interface';
-import { Filters } from '../../core/conversation/conversation-filters';
-import { TrackingService } from '../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-conversations-panel',
