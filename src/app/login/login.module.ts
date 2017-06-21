@@ -1,19 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { loginRoutedComponents, LoginRoutingModule } from "./login.routing";
-import { LoginService } from "./login.service";
-import { AlreadyLoggedGuard } from "./alreadyLogged.guard";
-import { CookieService } from "angular2-cookie/core";
+import { CookieService } from 'angular2-cookie/core';
+import { LoggedGuard } from './logged.guard';
 
 @NgModule({
   imports: [
-    CommonModule,
-    LoginRoutingModule
+    CommonModule
   ],
-  declarations: [loginRoutedComponents],
+  declarations: [],
   providers: [
-    LoginService,
-    AlreadyLoggedGuard,
+    LoggedGuard,
     CookieService
   ]
 })
