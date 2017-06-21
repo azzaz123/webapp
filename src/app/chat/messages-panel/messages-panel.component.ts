@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Conversation } from '../../core/conversation/conversation';
-import { Message } from '../../core/message/message';
-import { I18nService } from '../../core/i18n/i18n.service';
+import { Conversation, Message, I18nService } from 'shield';
 
 @Component({
   selector: 'tsl-messages-panel',
