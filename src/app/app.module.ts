@@ -2,9 +2,8 @@ import './rxjs-extensions';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { ShieldModule } from 'shield';
+import { ShieldModule, WindowRef } from 'shield';
 import { ChatModule } from './chat/chat.module';
-import { providers } from './app.providers';
 
 @NgModule({
   declarations: [
@@ -16,7 +15,7 @@ import { providers } from './app.providers';
     ChatModule
   ],
   providers:    [
-    ...providers(),
+    WindowRef
   ],
   bootstrap:    [AppComponent]
 })
