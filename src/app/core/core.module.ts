@@ -2,6 +2,7 @@ import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { LoggedGuard } from './user/logged.guard';
 import { CookieModule } from 'ngx-cookie';
+import { UserService } from './user/user.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -17,7 +18,8 @@ export class CoreModule {
     return {
       ngModule: CoreModule,
       providers: [
-        LoggedGuard
+        LoggedGuard,
+        UserService
       ]
     };
   }
