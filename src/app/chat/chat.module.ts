@@ -11,13 +11,14 @@ import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { MdIconModule } from '@angular/material';
 import { MomentModule } from 'angular2-moment';
 import { ItemComponent } from './item/item.component';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   imports: [
     NgbModalModule,
     NgbTooltipModule,
     NgbDropdownModule,
-    CommonModule,
+    CoreModule,
     ChatRoutingModule,
     FormsModule,
     MdIconModule,
