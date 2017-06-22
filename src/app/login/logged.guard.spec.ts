@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { LoggedGuard } from './logged.guard';
 import { environment } from 'environments/environment';
-import { WindowRef } from '../core/window/window.service';
+import { WindowRef } from 'shield';
 
 class MockLoginService {
   public token: string;

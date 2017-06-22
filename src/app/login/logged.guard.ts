@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { CookieService } from 'angular2-cookie/core';
 import { environment } from '../../environments/environment';
-import { WindowRef } from '../core/window/window.service';
+import { WindowRef } from 'shield';
 
 @Injectable()
 export class LoggedGuard implements CanActivate {
