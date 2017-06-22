@@ -11,19 +11,19 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
-  @Output() public currentConversation: EventEmitter<Conversation> = new EventEmitter<Conversation>();
-  @Output() public loaded: EventEmitter<any> = new EventEmitter<any>();
+  @Output() public currentConversation = new EventEmitter<Conversation>();
+  @Output() public loaded = new EventEmitter<any>();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
   private conversation: Conversation;
   public conversations: Array<Conversation> = [];
-  public archive: boolean = false;
-  private _loading: boolean = false;
+  public archive = false;
+  private _loading = false;
   private conversationsSubscription: Subscription;
-  private currentConversationSet: boolean = false;
-  private page: number = 1;
+  private currentConversationSet = false;
+  private page = 1;
   public filter: string;
-  private active: boolean = true;
+  private active = true;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
@@ -117,14 +117,14 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     }).subscribe((params: any) => {
       this.currentConversationSet = true;
       const conversationId: string = params.c || this.userService.queryParams.c;
-      const archive: boolean = params.archive === 'true';
-      const page: number = this.conversationService.getConversationPage(conversationId, archive);
+      const archive = params.archive === 'true';
+      const page = this.conversationService.getConversationPage(conversationId, archive);
       if (page !== -1) {
         if (archive) {
           this.filterByArchived(true);
         }
         if (page > 1) {
-          for (let i: number = 2; i <= page; i++) {
+          for (let i = 2; i <= page; i++) {
             this.loadMore();
           }
         }

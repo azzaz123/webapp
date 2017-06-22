@@ -2,8 +2,8 @@ import { Model } from '../resource/model.interface';
 import { Location, UserStats, UserValidations } from './user-response.interface';
 import { Item } from '../item/item';
 
-export const USER_BASE_PATH: string = 'http://es.wallapop.com/user/';
-export const PLACEHOLDER_AVATAR: string = '/assets/images/user.png';
+export const USER_BASE_PATH = 'http://es.wallapop.com/user/';
+export const PLACEHOLDER_AVATAR = '/assets/images/user.png';
 
 export class User implements Model {
 

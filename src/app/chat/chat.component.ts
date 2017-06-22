@@ -23,7 +23,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public reportListingReasonMessage: string;
   public reportUserReasonMessage: string;
   private modal: NgbModalRef;
-  private active: boolean = true;
+  private active = true;
 
   constructor(private conversationService: ConversationService,
               private itemService: ItemService,

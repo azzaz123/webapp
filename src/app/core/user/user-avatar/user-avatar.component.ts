@@ -12,7 +12,7 @@ export class UserAvatarComponent implements OnChanges {
   public avatar: string;
   public fallback: string;
   @Input() user: User;
-  @Input() size: number = 40;
+  @Input() size = 40;
 
   constructor() {
   }

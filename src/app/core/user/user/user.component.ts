@@ -12,7 +12,7 @@ export class UserComponent implements OnChanges, OnDestroy {
   @Input() user: User;
   @Input() phone: string;
   @Input() callsPanel: boolean;
-  private active: boolean = true;
+  private active = true;
 
   constructor(private itemService: ItemService) {
   }

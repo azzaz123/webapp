@@ -35,9 +35,9 @@ describe('Component: Input', () => {
 
   describe('sendMessage', () => {
 
-    const EVENT: Event = new Event('event');
+    const EVENT = new Event('event');
     const conversation: Conversation = MOCK_CONVERSATION();
-    const TEXT: string = 'text';
+    const TEXT = 'text';
     let textarea: HTMLInputElement;
 
     beforeEach(() => {

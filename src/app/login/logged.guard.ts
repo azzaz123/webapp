@@ -12,8 +12,8 @@ export class LoggedGuard implements CanActivate {
   }
 
   public canActivate() {
-    const accessToken: string = this.cookieService.get('accessToken');
-    const deviceAccessToken: string = this.cookieService.get('deviceAccessToken');
+    const accessToken = this.cookieService.get('accessToken');
+    const deviceAccessToken = this.cookieService.get('deviceAccessToken');
     if (accessToken && deviceAccessToken) {
       // TODO: set token in HttpService
       // this.router.navigate(['/']); -> TODO: Redirect to chat / profile and add test.
