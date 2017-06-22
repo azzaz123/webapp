@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CookieService } from 'angular2-cookie/core';
-import { LoggedGuard } from './logged.guard';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { loginRoutedComponents, LoginRoutingModule } from './login.routes';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    LoginRoutingModule
   ],
-  declarations: [],
-  providers: [
-    LoggedGuard,
-    CookieService
-  ]
+  declarations: [loginRoutedComponents]
 })
 export class LoginModule {
 }
