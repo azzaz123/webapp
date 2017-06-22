@@ -7,6 +7,7 @@ import { ChatModule } from './chat/chat.module';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app.routing';
 import { LoginModule } from './login/login.module';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { LoginModule } from './login/login.module';
     BrowserModule,
     LoginModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
