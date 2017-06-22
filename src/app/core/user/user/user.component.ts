@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { User } from '../user';
-import { ItemService } from '../../item/item.service';
-import { ItemDataResponse } from '../../item/item-response.interface';
+import { ItemService, ItemDataResponse } from 'shield';
 
 @Component({
   selector: 'tsl-user',
