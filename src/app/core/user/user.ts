@@ -1,4 +1,4 @@
-import { Model } from '../resource/model.interface';
+import { Model } from 'shield';
 import { Location, UserStats, UserValidations } from './user-response.interface';
 import { Item } from '../item/item';
 
