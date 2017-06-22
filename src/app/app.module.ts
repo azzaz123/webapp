@@ -20,7 +20,7 @@ import { LoginModule } from './login/login.module';
     HttpModule,
     AppRoutingModule
   ],
-  providers: [WindowRef],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
