@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { PLACEHOLDER_AVATAR, User } from '../user';
+import { PLACEHOLDER_AVATAR, User } from 'shield';
 
 @Component({
   selector: 'tsl-user-avatar',

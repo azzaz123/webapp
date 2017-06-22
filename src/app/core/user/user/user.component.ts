@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
-import { User } from '../user';
+import { User } from 'shield';
 import { ItemService, ItemDataResponse } from 'shield';
 
 @Component({
@@ -23,6 +23,10 @@ export class UserComponent implements OnChanges, OnDestroy {
         return this.active;
       }).subscribe((res: ItemDataResponse) => {
         this.user.sellingItem = res.data;
+        // this.user.sellingItem = new Item(res.data.id, res.data.legacyId, res.data.owner, res.data.title,
+        //   res.data.description, res.data.categoryId, res.data.location, res.data.salePrice, res.data.currencyCode,
+        //   res.data.modifiedDate, res.data.url, res.data.flags, res.data.actionsAllowed, res.data.saleConditions,
+        //   res.data.mainImage, res.data.images, res.data.webLink );
         this.user.itemsCount = res.count;
       });
     }
