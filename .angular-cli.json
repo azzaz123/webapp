@@ -19,7 +19,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "tsl",
       "styles": [
-        "styles.css"
+        "style/styles.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
