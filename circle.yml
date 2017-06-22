@@ -1,0 +1,34 @@
+machine:
+  node:
+    version: 7.5.0
+
+general:
+  artifacts:
+    - "./coverage"
+
+dependencies:
+  cache_directories:
+    - ~/.cache/yarn
+  override:
+    - yarn
+deployment:
+  dev:
+    branch: /feature.*/
+    commands:
+      - npm run builddev
+      - aws s3 sync dist s3://web.dev.wallapop.com --delete
+  beta:
+    branch: develop
+    commands:
+      - npm run buildbeta
+      - aws s3 sync dist s3://web.beta.wallapop.com --delete
+  release:
+    branch: /release.*/
+    commands:
+      - npm run buildbeta
+      - aws s3 sync dist s3://web.beta.wallapop.com --delete
+  prod:
+    branch: master
+    commands:
+      - npm run buildprod
+      - aws s3 sync dist s3://web.wallapop.com --delete
