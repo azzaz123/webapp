@@ -14,6 +14,7 @@ import { ItemModule } from '../item/item.module';
     MdIconModule,
     ItemModule
   ],
-  declarations: [UserComponent, UserAvatarComponent, UserTypeComponent ]
+  declarations: [UserComponent, UserAvatarComponent, UserTypeComponent ],
+  exports: [UserComponent, UserAvatarComponent, UserTypeComponent]
 })
 export class UserModule { }

@@ -1,0 +1,7 @@
+<tsl-user-avatar class="message-avatar" [user]="message.user" *ngIf="showUserInfo" [ngClass]="{'calls-panel': callsPanel}"></tsl-user-avatar>
+<div class="message-body" [ngClass]="{'without-avatar': !showUserInfo, 'calls-panel': callsPanel}">
+  <h5 class="message-name" *ngIf="showUserInfo">{{message.user.microName}}
+    <small class="message-date">{{message.date | date:'shortTime'}}</small>
+  </h5>
+  <span>{{message.message}}</span>
+</div>
