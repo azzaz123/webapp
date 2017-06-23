@@ -4,9 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ItemComponent } from './item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ItemService } from '../../core/item/item.service';
-import { ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, MOCK_ITEM } from '../../../test/fixtures/item.fixtures';
-import { Item } from '../../core/item/item';
+import { ItemService, ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, MOCK_ITEM, Item } from 'shield';
 
 describe('Component: Item', () => {
 
