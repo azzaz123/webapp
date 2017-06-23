@@ -116,7 +116,7 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/material@^2.0.0-beta.6":
+"@angular/material@^2.0.0-beta.3", "@angular/material@^2.0.0-beta.6":
   version "2.0.0-beta.7"
   resolved "https://registry.yarnpkg.com/@angular/material/-/material-2.0.0-beta.7.tgz#2584aaf1ffbe24779916345f1ac82921ccbc2577"
   dependencies:
@@ -146,14 +146,6 @@
   dependencies:
     tsickle "^0.21.0"
 
-"@angular2-material/core@^2.0.0-alpha.8-2":
-  version "2.0.0-alpha.8-experimental3"
-  resolved "https://registry.yarnpkg.com/@angular2-material/core/-/core-2.0.0-alpha.8-experimental3.tgz#7bf7714dda49bcc678fd32ff26573617c101d892"
-
-"@angular2-material/icon@^2.0.0-alpha.8-2":
-  version "2.0.0-alpha.8-experimental3"
-  resolved "https://registry.yarnpkg.com/@angular2-material/icon/-/icon-2.0.0-alpha.8-experimental3.tgz#37731c5cc7ad4f2c2f009fe089f19ed1c0ef074a"
-
 "@ng-bootstrap/ng-bootstrap@^1.0.0-alpha.26":
   version "1.0.0-alpha.26"
   resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0-alpha.26.tgz#f3d9e16b5682ec20edb3f1397d3d45a576f3f6a4"
@@ -170,6 +162,10 @@
     loader-utils "^1.0.2"
     magic-string "^0.19.0"
     source-map "^0.5.6"
+
+"@types/hammerjs@^2.0.33":
+  version "2.0.34"
+  resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.34.tgz#9cbac4f41cb039436141785e1be50b3ab10a04a9"
 
 "@types/jasmine@2.5.45":
   version "2.5.45"

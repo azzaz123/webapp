@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, OnChanges } from '@angular/core';
-import { Output } from '@angular/core/src/metadata/directives';
+import { Component, Input, EventEmitter, OnChanges, Output } from '@angular/core';
 import { SelectOption } from './select.interface';
 import * as _ from 'lodash';
 
