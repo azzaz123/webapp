@@ -5,7 +5,6 @@
 </div>
 <div id="right-panel" *ngIf="currentConversation">
   <tsl-user [user]="currentConversation.user" [phone]="currentConversation.phone"></tsl-user>
-  <tsl-user-survey *ngIf="currentConversation.surveyResponses.length" [conversation]="currentConversation"></tsl-user-survey>
   <tsl-item [item]="currentConversation.item"></tsl-item>
 </div>
 <div id="center-panel" [hidden]="!currentConversation">

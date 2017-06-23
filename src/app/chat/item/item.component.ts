@@ -9,7 +9,7 @@ import { Item, ItemCounters, ItemService } from 'shield';
 export class ItemComponent implements OnChanges, OnDestroy {
 
   @Input() item: Item;
-  private active: boolean = true;
+  private active = true;
 
   constructor(private itemService: ItemService) {
   }

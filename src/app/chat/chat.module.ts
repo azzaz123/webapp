@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ConversationsPanelComponent } from './conversations-panel/conversations-panel.component';
 import { MessagesPanelComponent } from './messages-panel/messages-panel.component';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
@@ -11,13 +10,16 @@ import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { MdIconModule } from '@angular/material';
 import { MomentModule } from 'angular2-moment';
 import { ItemComponent } from './item/item.component';
+import { CoreModule } from '../core/core.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     NgbModalModule,
     NgbTooltipModule,
     NgbDropdownModule,
-    CommonModule,
+    CoreModule,
+    SharedModule,
     ChatRoutingModule,
     FormsModule,
     MdIconModule,

@@ -3,12 +3,27 @@ import { CommonModule } from '@angular/common';
 import { LoggedGuard } from './user/logged.guard';
 import { CookieModule } from 'ngx-cookie';
 import { UserService } from './user/user.service';
+import { ConversationModule } from './conversation/conversation.module';
+import { UserModule } from './user/user.module';
+import { ItemModule } from './item/item.module';
+import { TrackingModule } from './tracking/tracking.module';
+
 @NgModule({
   imports: [
     CommonModule,
-    CookieModule.forChild()
+    CookieModule.forChild(),
+    ConversationModule,
+    CommonModule,
+    UserModule,
+    ItemModule,
+    TrackingModule
   ],
   exports: [
+    ConversationModule,
+    CommonModule,
+    UserModule,
+    ItemModule,
+    TrackingModule
   ],
   declarations: []
 })

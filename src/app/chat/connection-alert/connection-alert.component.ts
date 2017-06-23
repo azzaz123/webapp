@@ -15,8 +15,8 @@ import { EventService } from 'shield';
 })
 export class ConnectionAlertComponent implements OnInit{
 
-  public connected: boolean = true;
-  public hide: boolean = true;
+  public connected = true;
+  public hide = true;
 
   constructor(private eventService: EventService) {
   }

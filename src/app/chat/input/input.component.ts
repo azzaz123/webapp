@@ -27,7 +27,7 @@ export class InputComponent implements OnChanges, OnInit {
 
   sendMessage(messageArea: HTMLInputElement, $event: Event) {
     $event.preventDefault();
-    let message: string = messageArea.value.trim();
+    let message = messageArea.value.trim();
     if (message !== '') {
       this.messageService.send(this.currentConversation, message);
     }

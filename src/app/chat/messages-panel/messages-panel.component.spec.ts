@@ -41,7 +41,7 @@ describe('Component: MessagesPanel', () => {
         MESSAGE_MAIN.from,
         new Date(MESSAGE_MAIN.date - 24 * 60 * 60 * 1000)
       );
-      let result: boolean = component.showDate(MOCK_MESSAGE, MESSAGE2);
+      let result = component.showDate(MOCK_MESSAGE, MESSAGE2);
       expect(result).toBeTruthy();
     });
 
@@ -53,12 +53,12 @@ describe('Component: MessagesPanel', () => {
         MESSAGE_MAIN.from,
         new Date(MESSAGE_MAIN.date - 12 * 60 * 60 * 1000)
       );
-      let result: boolean = component.showDate(MOCK_MESSAGE, MESSAGE2);
+      let result = component.showDate(MOCK_MESSAGE, MESSAGE2);
       expect(result).toBeFalsy();
     });
 
     it('should return false if there is no previous message', () => {
-      let result: boolean = component.showDate(undefined, MOCK_MESSAGE);
+      let result = component.showDate(undefined, MOCK_MESSAGE);
       expect(result).toBeTruthy();
     });
 

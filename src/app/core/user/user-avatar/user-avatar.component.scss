@@ -1,0 +1,21 @@
+@import "../../../../style/_common.scss";
+
+:host {
+  display: inline-block;
+}
+
+div {
+  display: block;
+}
+
+.avatar-60 {
+  @include square(60px);
+}
+
+.avatar-40 {
+  @include square(40px);
+}
+
+.avatar-50 {
+  @include square(50px);
+}

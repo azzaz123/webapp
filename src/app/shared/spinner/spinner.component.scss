@@ -1,0 +1,22 @@
+@import "../../../style/_common.scss";
+
+$spinner-size: 24px;
+
+#loader-wrapper {
+  height: calc(100vh - 90px);
+  display: flex;
+  justify-content: center;
+  #loader {
+    text-align: center;
+    align-self: center;
+    .spinner {
+      @include square($spinner-size);
+      margin-bottom: $spacing;
+    }
+    h2 {
+      font-size: $font-size;
+      color: $grey-500;
+      line-height: 24px;
+    }
+  }
+}

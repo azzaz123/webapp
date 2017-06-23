@@ -1,9 +1,9 @@
 <h2 i18n>Messages</h2>
-<tsl-process-all-button type="conversations"
-   [hidden]="!conversations.length || archive"
-   ngbTooltip="Mark everything as Processed" i18n-ngbTooltip placement="left">
-  <md-icon svgIcon="process-all"></md-icon>
-</tsl-process-all-button>
+<!--<tsl-process-all-button type="conversations"-->
+   <!--[hidden]="!conversations.length || archive"-->
+   <!--ngbTooltip="Mark everything as Processed" i18n-ngbTooltip placement="left">-->
+  <!--<md-icon svgIcon="process-all"></md-icon>-->
+<!--</tsl-process-all-button>-->
 <div class="nav filters-nav">
   <a (click)="filterByArchived(false)" [ngClass]="{active: !archive}"><span i18n>Pending</span></a>
   <a (click)="filterByArchived(true)" [ngClass]="{active: archive}"><span i18n>Processed</span></a>
