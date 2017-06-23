@@ -1,6 +1,5 @@
 import { Component, HostBinding, HostListener, Input, OnChanges } from '@angular/core';
-import { Conversation } from '../conversation';
-import { ConversationService } from 'shield';
+import { ConversationService, Conversation } from 'shield';
 
 @Component({
   selector: 'tsl-conversation',

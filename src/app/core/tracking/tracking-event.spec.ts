@@ -1,5 +1,4 @@
-import { TRACKING_EVENT } from '../../../test/fixtures/tracking.fixtures';
-import { TrackingEvent } from './tracking-event';
+import { TRACKING_EVENT, TrackingEvent } from 'shield';
 describe('TrackingEvent', () => {
   it('should create an instance', () => {
     expect(TRACKING_EVENT).toBeTruthy();

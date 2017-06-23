@@ -3,35 +3,18 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { ConversationsPanelComponent } from './conversations-panel.component';
-import { UserService } from '../../core/user/user.service';
-import { EventService } from '../../core/event/event.service';
-import { ItemService } from '../../core/item/item.service';
-import { TEST_HTTP_PROVIDERS } from '../../../test/utils';
-import { ConversationComponent } from '../../core/conversation/conversation/conversation.component';
-import { Message } from '../../core/message/message';
-import { MOCK_MESSAGE } from '../../../test/fixtures/message.fixtures';
-import { Conversation } from '../../core/conversation/conversation';
-import { Observable } from 'rxjs/Observable';
-import { XmppService } from '../../core/xmpp/xmpp.service';
-import { MessageService } from '../../core/message/message.service';
-import { PersistencyService } from '../../core/persistency/persistency.service';
 import {
-  createConversationsArray,
-  MOCK_CONVERSATION,
-  SECOND_MOCK_CONVERSATION
-} from '../../../test/fixtures/conversation.fixtures';
+  UserService, EventService, ItemService, TEST_HTTP_PROVIDERS, Message, MOCK_MESSAGE, XmppService, MessageService,
+  PersistencyService, USER_ID, User, NotificationService, MockedPersistencyService, I18nService, HttpService,
+  ConversationService, TrackingService, MockTrackingService, createConversationsArray, MOCK_CONVERSATION,
+  SECOND_MOCK_CONVERSATION, Conversation
+} from 'shield';
+import { ConversationComponent } from '../../core/conversation/conversation/conversation.component';
+import { Observable } from 'rxjs/Observable';
+
 import { HaversineService } from 'ng2-haversine';
-import { USER_ID } from '../../../test/fixtures/user.fixtures';
-import { User } from '../../core/user/user';
-import { NotificationService } from '../../core/notification/notification.service';
-import { MockedPersistencyService } from '../../../test/fixtures/persistency.fixtures';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
-import { I18nService } from '../../core/i18n/i18n.service';
 import { ActivatedRoute } from '@angular/router';
-import { HttpService } from '../../core/http/http.service';
-import { ConversationService } from '../../core/conversation/conversation.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { MockTrackingService } from '../../../test/fixtures/tracking.fixtures';
 
 describe('Component: ConversationsPanel', () => {
 
@@ -112,7 +95,7 @@ describe('Component: ConversationsPanel', () => {
     const CONVERSATIONS: Conversation[] = createConversationsArray(4);
     describe('if data is present', () => {
       beforeEach(() => {
-        spyOn(component, 'setCurrentConversationFromQueryParams');
+        spyOn<any>(component, 'setCurrentConversationFromQueryParams');
       });
       describe('with no params', () => {
         beforeEach(() => {
@@ -170,7 +153,7 @@ describe('Component: ConversationsPanel', () => {
     });
     describe('if data is not present', () => {
       beforeEach(() => {
-        spyOn(component, 'setCurrentConversationFromQueryParams');
+        spyOn<any>(component, 'setCurrentConversationFromQueryParams');
         component['getConversations']();
         service.stream$.next([]);
       });
@@ -227,7 +210,7 @@ describe('Component: ConversationsPanel', () => {
       expect(component['page']).toBe(2);
     });
     it('should call getConversations', () => {
-      spyOn(component, 'getConversations');
+      spyOn<any>(component, 'getConversations');
       component.loadMore();
       expect(component['getConversations']).toHaveBeenCalled();
     });
@@ -321,7 +304,7 @@ describe('Component: ConversationsPanel', () => {
       component.currentConversation.subscribe((c: Conversation) => {
         ret = c;
       });
-      let conversation: Conversation = MOCK_CONVERSATION();
+      const conversation: Conversation = MOCK_CONVERSATION();
       component.setCurrentConversation(conversation);
       expect(ret).toEqual(conversation);
     });
@@ -373,8 +356,8 @@ describe('Component: ConversationsPanel', () => {
 
   describe('ngOnInit', () => {
     beforeEach(() => {
-      spyOn(component, 'getConversations');
-      spyOn(component, 'handleArchiveConversations');
+      spyOn<any>(component, 'getConversations');
+      spyOn<any>(component, 'handleArchiveConversations');
     });
     it('should set filter', () => {
       route.queryParams = Observable.of({
@@ -389,7 +372,7 @@ describe('Component: ConversationsPanel', () => {
       expect(component['handleArchiveConversations']).toHaveBeenCalled();
     });
     it('should call sendRead on MESSAGE_ADDED event', () => {
-      spyOn(component, 'sendRead');
+      spyOn<any>(component, 'sendRead');
       component.ngOnInit();
       eventService.emit(EventService.MESSAGE_ADDED, MOCK_MESSAGE);
       expect(component['sendRead']).toHaveBeenCalledWith(MOCK_MESSAGE);
@@ -420,7 +403,7 @@ describe('Component: ConversationsPanel', () => {
     });
     it('should send conversation read confirm if the conversation open is the current', fakeAsync(() => {
       component['conversation'] = MOCK_CONVERSATION();
-      let message: Message = MOCK_MESSAGE;
+      const message: Message = MOCK_MESSAGE;
       message.fromBuyer = true;
       component['sendRead'](message);
       tick(1000);
@@ -437,7 +420,7 @@ describe('Component: ConversationsPanel', () => {
   describe('filterByArchived', () => {
     beforeEach(() => {
       spyOn(trackingService, 'track');
-      spyOn(component, 'getConversations');
+      spyOn<any>(component, 'getConversations');
       component['page'] = 10;
     });
     it('should set archive true', () => {

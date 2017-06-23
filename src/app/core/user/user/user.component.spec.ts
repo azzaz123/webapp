@@ -3,9 +3,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { UserComponent } from './user.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_USER, USER_ID } from '../../../../test/fixtures/user.fixtures';
-import { ItemService } from '../../item/item.service';
-import { MOCK_ITEM, LATEST_ITEM_COUNT } from '../../../../test/fixtures/item.fixtures';
+import { MOCK_USER, USER_ID, MOCK_ITEM, LATEST_ITEM_COUNT, ItemService } from 'shield';
 import { Observable } from 'rxjs/Observable';
 
 describe('Component: User', () => {

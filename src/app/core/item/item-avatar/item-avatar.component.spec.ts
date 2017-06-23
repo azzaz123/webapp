@@ -4,12 +4,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ItemAvatarComponent } from './item-avatar.component';
 import { SanitizedBackgroundDirective } from '../../../shared/sanitized-background/sanitized-background.directive';
 import { MdIconModule } from '@angular/material';
-import { MOCK_ITEM, ITEM_MAIN_IMAGE } from '../../../../test/fixtures/item.fixtures';
 import {
+  MOCK_ITEM, ITEM_MAIN_IMAGE, USER_ID,
   FAKE_ITEM_IMAGE_SMALL_BASE_PATH,  Item,
   FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH
-} from '../item';
-import { USER_ID } from '../../../../test/fixtures/user.fixtures';
+} from 'shield';
 
 describe('ItemAvatarComponent', () => {
   let component: ItemAvatarComponent;

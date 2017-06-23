@@ -3,22 +3,14 @@
 import { TestBed } from '@angular/core/testing';
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Conversation } from '../core/conversation/conversation';
-import { EventService } from '../core/event/event.service';
-import { XmppService } from '../core/xmpp/xmpp.service';
-import { MOCK_CONVERSATION } from '../../test/fixtures/conversation.fixtures';
-import { UserService } from '../core/user/user.service';
+import {
+  EventService, XmppService, MOCK_CONVERSATION, UserService, ItemService, HttpService, I18nService,
+  ConversationService, TrackingService, MockTrackingService, ITEM_ID, Conversation
+} from 'shield';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ItemService } from '../core/item/item.service';
-import { HttpService } from '../core/http/http.service';
 import { Observable } from 'rxjs/Observable';
 import { ToastrService } from 'ngx-toastr';
-import { I18nService } from '../core/i18n/i18n.service';
 import { FormsModule } from '@angular/forms';
-import { ConversationService } from '../core/conversation/conversation.service';
-import { TrackingService } from '../core/tracking/tracking.service';
-import { MockTrackingService } from '../../test/fixtures/tracking.fixtures';
-import { ITEM_ID } from '../../test/fixtures/item.fixtures';
 
 class MockConversationService {
 
@@ -44,6 +36,7 @@ class MockUserService {
   public syncStatus(): void {
   }
 }
+
 class MockItemService {
 
   public getBanReasons(): Observable<any> {
@@ -54,6 +47,7 @@ class MockItemService {
     return Observable.of({});
   }
 }
+
 class MockedToastr {
 
   success(message: string, title?: string, optionsOverride?: any): any {
@@ -216,7 +210,10 @@ describe('Component: Chat', () => {
       component.currentConversation = MOCK_CONVERSATION();
       component.selectedReportListingReason = 1;
       component.reportListingAction();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_REPPORTED, {product_id: ITEM_ID, reason_id: 1});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_REPPORTED, {
+        product_id: ITEM_ID,
+        reason_id: 1
+      });
     });
   });
 
@@ -248,7 +245,10 @@ describe('Component: Chat', () => {
       component.currentConversation = MOCK_CONVERSATION();
       component.selectedReportUserReason = 1;
       component.reportUserAction();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.USER_PROFILE_REPPORTED, {user_id: 'l1kmzn82zn3p', reason_id: 1});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.USER_PROFILE_REPPORTED, {
+        user_id: 'l1kmzn82zn3p',
+        reason_id: 1
+      });
     });
   });
 

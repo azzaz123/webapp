@@ -4,7 +4,7 @@ import { SanitizedBackgroundDirective } from './sanitized-background.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement, Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { IMAGE } from '../../../test/fixtures/user.fixtures';
+import { IMAGE } from 'shield';
 
 @Component({
   template: `<div [tslsanitizedBackground]="image"></div>`
