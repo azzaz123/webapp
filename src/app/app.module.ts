@@ -8,6 +8,7 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app.routing';
 import { LoginModule } from './login/login.module';
 import { CoreModule } from './core/core.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { CoreModule } from './core/core.module';
   ],
   imports: [
     ShieldModule.forRoot(),
+    BrowserAnimationsModule,
     ChatModule,
     BrowserModule,
     LoginModule,

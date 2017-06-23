@@ -12,7 +12,6 @@ export class ConversationComponent implements OnChanges {
   @Input() conversation: Conversation;
   @Input() dashboard: boolean;
   @HostBinding('class.archive') archive: boolean = false;
-  @HostBinding('class.archived') @HostBinding('@remove') archived: boolean = false;
 
 
   public momentConfig: any = {
@@ -31,10 +30,5 @@ export class ConversationComponent implements OnChanges {
     this.archive = this.conversation.archived;
   }
 
-  @HostListener('@remove.done') onAnimationDone($event: Event) {
-    if (this.archived) {
-      this.conversationService.stream();
-    }
-  }
 
 }

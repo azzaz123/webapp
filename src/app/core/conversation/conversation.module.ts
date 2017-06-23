@@ -8,9 +8,11 @@ import { MdIconModule } from '@angular/material';
 import { NgbTooltipModule, NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { MessageComponent } from './message/message.component';
 import { ConversationComponent } from './conversation/conversation.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
+    BrowserAnimationsModule,
     CommonModule,
     ItemModule,
     MomentModule,
