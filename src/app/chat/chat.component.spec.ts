@@ -4,21 +4,12 @@ import { TestBed } from '@angular/core/testing';
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Conversation } from '../core/conversation/conversation';
-import { EventService } from '../core/event/event.service';
-import { XmppService } from '../core/xmpp/xmpp.service';
-import { MOCK_CONVERSATION } from '../../test/fixtures/conversation.fixtures';
-import { UserService } from '../core/user/user.service';
+import { EventService, XmppService, MOCK_CONVERSATION, UserService, ItemService, HttpService, I18nService,
+  ConversationService, TrackingService, MockTrackingService, ITEM_ID } from 'shield';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ItemService } from '../core/item/item.service';
-import { HttpService } from '../core/http/http.service';
 import { Observable } from 'rxjs/Observable';
 import { ToastrService } from 'ngx-toastr';
-import { I18nService } from '../core/i18n/i18n.service';
 import { FormsModule } from '@angular/forms';
-import { ConversationService } from '../core/conversation/conversation.service';
-import { TrackingService } from '../core/tracking/tracking.service';
-import { MockTrackingService } from '../../test/fixtures/tracking.fixtures';
-import { ITEM_ID } from '../../test/fixtures/item.fixtures';
 
 class MockConversationService {
 
