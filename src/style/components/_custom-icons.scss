@@ -1,0 +1,185 @@
+@import "../../style/_common.scss";
+
+.menu-icon {
+  .open & #MVP {
+    fill: $corporate;
+  }
+  #MVP {
+    fill: $grey-300;
+  }
+}
+
+.sidebar-section {
+  md-icon {
+    g g, g {
+      fill: rgba($white, .5);
+      opacity: 1;
+    }
+  }
+  &.active md-icon {
+    g g, g {
+      fill: $white;
+      opacity: 1;
+    }
+  }
+  &:hover md-icon {
+    g g, g {
+      fill: $white;
+      opacity: 1;
+    }
+  }
+}
+
+.sidebar-menu {
+  &.open #gear {
+    fill: $corporate;
+  }
+}
+
+.report-ban-reason {
+  &.selected md-icon g g {
+    fill: $corporate;
+  }
+  md-icon g g {
+    fill: $grey-800;
+  }
+
+}
+
+.modal-close {
+  md-icon {
+    height: 15px;
+    line-height: 30px;
+  }
+  md-icon g g {
+    fill: $grey-700;
+  }
+  &:hover md-icon g g {
+    fill: $grey-900;
+  }
+}
+
+.btn-delete {
+  &.dark {
+    md-icon {
+      g g {
+        fill: $white;
+      }
+    }
+  }
+}
+
+#total-selected md-icon g g {
+  fill: $white;
+}
+
+.check-corporate {
+  md-icon {
+    g g {
+      fill: $grey-500;
+    }
+  }
+  &:hover {
+    md-icon {
+      g g {
+        fill: $white;
+      }
+    }
+  }
+}
+
+.stats-graph-totals {
+  .views-total {
+    md-icon * {
+      stroke: $grey-300;
+    }
+  }
+  .chats-total {
+    md-icon g g {
+      fill: $corporate;
+    }
+  }
+  .calls-total {
+    md-icon g g {
+      fill: $success;
+    }
+  }
+  .sold-total {
+    md-icon g g {
+      fill: $sold-bg;
+    }
+  }
+}
+
+.empty-state-container {
+  md-icon g g {
+    color: $grey-900;
+  }
+}
+.call.active .col-user-name {
+  md-icon svg {
+    transform-origin: 50%;
+    transform: rotate(0);
+  }
+  md-icon g g {
+    stroke: $corporate;
+  }
+}
+.call .col-user-name {
+  md-icon svg {
+    transform: rotate(-90deg);
+    transition: transform .25s ease, stroke .25s ease;
+  }
+}
+.car-box-selector {
+  svg {
+    @include in-the-middle;
+    width: 26px;
+    height: 26px;
+    g, path {
+      fill: $grey-500;
+    }
+  }
+  &.active {
+    svg g, svg path {
+      fill: $corporate;
+    }
+  }
+  &:hover:not(.active) {
+    svg g, svg path {
+      fill: $white;
+    }
+  }
+}
+
+.product-photo {
+  md-icon {
+    g g {
+      fill: $grey-100;
+    }
+  }
+}
+
+.denied-icon {
+  md-icon {
+    g g {
+      fill: $warn;
+    }
+  }
+}
+
+.boost.selected.static {
+  md-icon {
+    path {
+      fill: $corporate;
+    }
+  }
+}
+
+.note {
+  md-icon {
+    g g {
+      fill: $grey-700;
+    }
+  }
+}

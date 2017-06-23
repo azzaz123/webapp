@@ -1,0 +1,3 @@
+@mixin default-transition($property) {
+  transition: #{$property} .25s ease;
+}

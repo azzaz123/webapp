@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { LoggedGuard } from './logged.guard';
 import { environment } from 'environments/environment';
-import { WindowRef } from '../core/window/window.service';
+import { WindowRef } from 'shield';
 
 class MockLoginService {
   public token: string;
@@ -67,7 +67,7 @@ describe('LoggedGuard', (): void => {
     it('should call initApp and router.navigate', (): void => {
       // spyOn(router, 'navigate').and.callThrough();
 
-      const result: boolean = loggedGuard.canActivate();
+      const result = loggedGuard.canActivate();
 
       expect(result).toBeFalsy();
       // TODO: check if token has been set in HtppService.
@@ -80,7 +80,7 @@ describe('LoggedGuard', (): void => {
 
       (cookieService as any).array = {};
 
-      const result: boolean = loggedGuard.canActivate();
+      const result = loggedGuard.canActivate();
 
       expect(result).toBeTruthy();
       expect(router.navigate).not.toHaveBeenCalled();

@@ -1,0 +1,31 @@
+<h2 i18n>Messages</h2>
+<!--<tsl-process-all-button type="conversations"-->
+   <!--[hidden]="!conversations.length || archive"-->
+   <!--ngbTooltip="Mark everything as Processed" i18n-ngbTooltip placement="left">-->
+  <!--<md-icon svgIcon="process-all"></md-icon>-->
+<!--</tsl-process-all-button>-->
+<div class="nav filters-nav">
+  <a (click)="filterByArchived(false)" [ngClass]="{active: !archive}"><span i18n>Pending</span></a>
+  <a (click)="filterByArchived(true)" [ngClass]="{active: archive}"><span i18n>Processed</span></a>
+</div>
+<div class="separator"></div>
+<div id="filter">
+  <a class="filtered" [routerLink]="['/chat']" *ngIf="filter === 'meetings'" i18n>Meetings</a>
+  <a class="filtered" [routerLink]="['/chat']" *ngIf="filter === 'others'" i18n>Other messages</a>
+</div>
+<div class="scroll-panel"
+     infinite-scroll
+     [infiniteScrollDistance]="5"
+     [infiniteScrollThrottle]="100"
+     [scrollWindow]="false"
+     [infiniteScrollDisabled]="!conversations.length"
+     (scrolled)="loadMore()"
+     #scrollPanel>
+  <tsl-conversation *ngFor="let conversation of conversations" [conversation]="conversation"
+                    [ngClass]="{'active': conversation?.active}"
+                    [hidden]="conversation.messages.length === 0 || loading"
+                    (click)="setCurrentConversation(conversation)"></tsl-conversation>
+  <div id="loader" [hidden]="conversations.length > 0 && !loading">
+    <md-icon svgIcon="conversations-mock"></md-icon>
+  </div>
+</div>

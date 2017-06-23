@@ -1,0 +1,6 @@
+@mixin square-avatar($size) {
+  width: $size;
+  height: $size;
+  background-size: cover;
+  border-radius: 4px;
+}

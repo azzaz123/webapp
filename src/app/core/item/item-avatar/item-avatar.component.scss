@@ -1,0 +1,37 @@
+@import "../../../../style/_common.scss";
+
+div {
+  @include square-avatar($item-avatar-size);
+  float: left;
+  margin-right: $item-avatar-margin;
+  display: flex;
+  position: relative;
+  &.small {
+    @include square-avatar($item-avatar-size-small);
+  }
+  &.medium {
+    @include square-avatar($item-avatar-size-medium);
+  }
+}
+
+.overlay {
+  background-color: $grey-900;
+  position: absolute;
+  @include square-avatar($item-avatar-size);
+  opacity: .5;
+  z-index: 1;
+}
+
+$sold-width: 32px;
+.sold {
+  @include square($sold-width);
+  border-radius: 50%;
+  display: flex;
+  background-color: $sold-bg;
+  margin: auto;
+  z-index: 2;
+  md-icon {
+    margin: auto auto;
+    @include square(21px);
+  }
+}

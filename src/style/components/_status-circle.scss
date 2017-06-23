@@ -1,0 +1,15 @@
+.status-circle {
+  $status-circle-size: 10px;
+  display: inline-block;
+  width: $status-circle-size;
+  height: $status-circle-size;
+  border-radius: 50%;
+  background-color: $grey-100;
+  margin-right: $spacing-XXS;
+  &.online {
+    background-color: $success;
+  }
+  &.offline {
+    background-color: $warn;
+  }
+}

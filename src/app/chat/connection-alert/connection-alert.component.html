@@ -1,0 +1,5 @@
+<div id="alert" [@visibilityChanged]="!connected" [hidden]="hide">
+  <div class="status-circle" [ngClass]="{'online': connected, 'offline': !connected}"></div>
+  <span [hidden]="connected" i18n>Waiting for network...</span>
+  <span [hidden]="!connected" i18n>Connected</span>
+</div>

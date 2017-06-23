@@ -1,0 +1,3 @@
+<form>
+  <textarea i18n-placeholder placeholder="Write a message..." #messageArea (keydown.enter)="sendMessage(messageArea, $event)" maxlength="300" [disabled]="disable"></textarea>
+</form>
