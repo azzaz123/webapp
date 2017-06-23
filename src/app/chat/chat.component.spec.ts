@@ -4,8 +4,10 @@ import { TestBed } from '@angular/core/testing';
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Conversation } from '../core/conversation/conversation';
-import { EventService, XmppService, MOCK_CONVERSATION, UserService, ItemService, HttpService, I18nService,
-  ConversationService, TrackingService, MockTrackingService, ITEM_ID } from 'shield';
+import {
+  EventService, XmppService, MOCK_CONVERSATION, UserService, ItemService, HttpService, I18nService,
+  ConversationService, TrackingService, MockTrackingService, ITEM_ID
+} from 'shield';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { ToastrService } from 'ngx-toastr';
@@ -35,6 +37,7 @@ class MockUserService {
   public syncStatus(): void {
   }
 }
+
 class MockItemService {
 
   public getBanReasons(): Observable<any> {
@@ -45,6 +48,7 @@ class MockItemService {
     return Observable.of({});
   }
 }
+
 class MockedToastr {
 
   success(message: string, title?: string, optionsOverride?: any): any {
@@ -207,7 +211,10 @@ describe('Component: Chat', () => {
       component.currentConversation = MOCK_CONVERSATION();
       component.selectedReportListingReason = 1;
       component.reportListingAction();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_REPPORTED, {product_id: ITEM_ID, reason_id: 1});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_REPPORTED, {
+        product_id: ITEM_ID,
+        reason_id: 1
+      });
     });
   });
 
@@ -239,7 +246,10 @@ describe('Component: Chat', () => {
       component.currentConversation = MOCK_CONVERSATION();
       component.selectedReportUserReason = 1;
       component.reportUserAction();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.USER_PROFILE_REPPORTED, {user_id: 'l1kmzn82zn3p', reason_id: 1});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.USER_PROFILE_REPPORTED, {
+        user_id: 'l1kmzn82zn3p',
+        reason_id: 1
+      });
     });
   });
 

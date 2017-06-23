@@ -7,7 +7,8 @@ import {
   UserService, EventService, ItemService, TEST_HTTP_PROVIDERS, Message, MOCK_MESSAGE, XmppService, MessageService,
   PersistencyService, USER_ID, User, NotificationService, MockedPersistencyService, I18nService, HttpService,
   ConversationService, TrackingService, MockTrackingService, createConversationsArray, MOCK_CONVERSATION,
-  SECOND_MOCK_CONVERSATION } from 'shield';
+  SECOND_MOCK_CONVERSATION
+} from 'shield';
 import { ConversationComponent } from '../../core/conversation/conversation/conversation.component';
 import { Conversation } from '../../core/conversation/conversation';
 import { Observable } from 'rxjs/Observable';
