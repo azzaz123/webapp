@@ -4,10 +4,13 @@ import { MessagesPanelComponent } from './messages-panel.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MOCK_CONVERSATION } from '../../../test/fixtures/conversation.fixtures';
-import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../../test/fixtures/message.fixtures';
-import { Message } from '../../core/message/message';
-import { I18nService } from '../../core/i18n/i18n.service';
+import {
+  MOCK_CONVERSATION,
+  MESSAGE_MAIN,
+  MOCK_MESSAGE,
+  Message,
+  I18nService
+} from 'shield';
 
 describe('Component: MessagesPanel', () => {
   let component: MessagesPanelComponent;
