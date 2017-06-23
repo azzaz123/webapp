@@ -2,7 +2,7 @@
 
 import { ConversationComponent } from './conversation.component';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { MOCK_CONVERSATION, ConversationService } from '../../../../test/fixtures/conversation.fixtures';
+import { MOCK_CONVERSATION, ConversationService } from 'shield';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
