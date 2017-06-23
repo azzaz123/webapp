@@ -1,4 +1,4 @@
-import { CookieService } from 'angular2-cookie/core';
+import { CookieService } from 'ngx-cookie';
 import { Router } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { LoggedGuard } from './logged.guard';

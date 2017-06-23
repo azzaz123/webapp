@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app.routing';
 import { LoginModule } from './login/login.module';
 import { CoreModule } from './core/core.module';
 import { CookieModule } from 'ngx-cookie';
+import { PROVIDERS } from './providers';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { CookieModule } from 'ngx-cookie';
     HttpModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [PROVIDERS],
   bootstrap: [AppComponent]
 })
 export class AppModule {
