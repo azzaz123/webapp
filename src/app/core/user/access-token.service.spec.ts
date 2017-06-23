@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AccessTokenService } from './access-token.service';
 import { CookieService } from 'ngx-cookie';
 
-fdescribe('AccessTokenService', () => {
+describe('AccessTokenService', () => {
 
   let service: AccessTokenService;
   let cookieService: CookieService;
