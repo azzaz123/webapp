@@ -1,34 +1,7 @@
-import { CookieService } from 'ngx-cookie';
-import { Router } from '@angular/router';
 import { TestBed } from '@angular/core/testing';
 import { LoggedGuard } from './logged.guard';
 import { environment } from 'environments/environment';
-import { WindowRef } from 'shield';
-
-class MockLoginService {
-  public token: string;
-}
-
-class MockRouter {
-  navigate(routes: string[]) {
-  }
-}
-
-class MockCookieService {
-
-  public array: any = {
-    'accessToken': 'accessToken',
-    'deviceAccessToken': 'deviceAccessToken'
-  };
-
-  public get(value: string) {
-    return this.array[value];
-  }
-
-  public remove(value: string) {
-    delete this.array[value];
-  }
-}
+import { AccessTokenService, WindowRef } from 'shield';
 
 class MockWindow {
   public nativeWindow = {
@@ -39,24 +12,30 @@ class MockWindow {
 }
 
 describe('LoggedGuard', (): void => {
-  let cookieService: CookieService;
-  let router: Router;
+
   let loggedGuard: LoggedGuard;
   let window: WindowRef;
+  let accessTokenService: AccessTokenService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        {provide: CookieService, useClass: MockCookieService},
         {provide: WindowRef, useClass: MockWindow},
-        {provide: Router, useClass: MockRouter},
+        {
+          provide: AccessTokenService, useValue: {
+          accessToken: null,
+          storeAccessToken(value) {
+            this.accessToken = value;
+          }
+        }
+        },
         LoggedGuard
       ]
     });
-
-    cookieService = TestBed.get(CookieService);
-    router = TestBed.get(Router);
     loggedGuard = TestBed.get(LoggedGuard);
     window = TestBed.get(WindowRef);
+    accessTokenService = TestBed.get(AccessTokenService);
+    accessTokenService.storeAccessToken(null);
   });
 
   it('should create an instance', (): void => {
@@ -64,27 +43,16 @@ describe('LoggedGuard', (): void => {
   });
 
   describe('canActivate', (): void => {
-    it('should call initApp and router.navigate', (): void => {
-      // spyOn(router, 'navigate').and.callThrough();
-
+    it('should return false and redirect if no access token', (): void => {
       const result: boolean = loggedGuard.canActivate();
-
       expect(result).toBeFalsy();
-      // TODO: check if token has been set in HtppService.
-      // expect(router.navigate).toHaveBeenCalledWith(['/overview']); -> TODO: set the correct navigation route.
-    });
-
-
-    it('shouldn\'t call any param and return true', (): void => {
-      spyOn(router, 'navigate').and.callThrough();
-
-      (cookieService as any).array = {};
-
-      const result: boolean = loggedGuard.canActivate();
-
-      expect(result).toBeTruthy();
-      expect(router.navigate).not.toHaveBeenCalled();
       expect(window.nativeWindow.location.href).toBe(environment.loginUrl);
-    })
+    });
+    it('should return true and NOT redirect if access token', () => {
+      accessTokenService.storeAccessToken('abc');
+      const result: boolean = loggedGuard.canActivate();
+      expect(result).toBeTruthy();
+      expect(window.nativeWindow.location.href).not.toBe(environment.loginUrl);
+    });
   })
 });
