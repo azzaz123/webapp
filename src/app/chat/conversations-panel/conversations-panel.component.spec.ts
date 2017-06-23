@@ -3,35 +3,18 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { ConversationsPanelComponent } from './conversations-panel.component';
-import { UserService } from '../../core/user/user.service';
-import { EventService } from '../../core/event/event.service';
-import { ItemService } from '../../core/item/item.service';
-import { TEST_HTTP_PROVIDERS } from '../../../test/utils';
+import {
+  UserService, EventService, ItemService, TEST_HTTP_PROVIDERS, Message, MOCK_MESSAGE, XmppService, MessageService,
+  PersistencyService, USER_ID, User, NotificationService, MockedPersistencyService, I18nService, HttpService,
+  ConversationService, TrackingService, MockTrackingService, createConversationsArray, MOCK_CONVERSATION,
+  SECOND_MOCK_CONVERSATION } from 'shield';
 import { ConversationComponent } from '../../core/conversation/conversation/conversation.component';
-import { Message } from '../../core/message/message';
-import { MOCK_MESSAGE } from '../../../test/fixtures/message.fixtures';
 import { Conversation } from '../../core/conversation/conversation';
 import { Observable } from 'rxjs/Observable';
-import { XmppService } from '../../core/xmpp/xmpp.service';
-import { MessageService } from '../../core/message/message.service';
-import { PersistencyService } from '../../core/persistency/persistency.service';
-import {
-  createConversationsArray,
-  MOCK_CONVERSATION,
-  SECOND_MOCK_CONVERSATION
-} from '../../../test/fixtures/conversation.fixtures';
+
 import { HaversineService } from 'ng2-haversine';
-import { USER_ID } from '../../../test/fixtures/user.fixtures';
-import { User } from '../../core/user/user';
-import { NotificationService } from '../../core/notification/notification.service';
-import { MockedPersistencyService } from '../../../test/fixtures/persistency.fixtures';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
-import { I18nService } from '../../core/i18n/i18n.service';
 import { ActivatedRoute } from '@angular/router';
-import { HttpService } from '../../core/http/http.service';
-import { ConversationService } from '../../core/conversation/conversation.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { MockTrackingService } from '../../../test/fixtures/tracking.fixtures';
 
 describe('Component: ConversationsPanel', () => {
 
