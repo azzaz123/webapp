@@ -52,19 +52,5 @@ describe('Component: Conversation', () => {
     });
   });
 
-  describe('onAnimationDone', () => {
-    beforeEach(() => {
-      spyOn(conversationService, 'stream');
-    });
-    it('should call conversationService.stream', () => {
-      component.archived = true;
-      component.onAnimationDone(new Event(''));
-      expect(conversationService.stream).toHaveBeenCalled();
-    });
-    it('should do nothing if not archive', () => {
-      component.archived = false;
-      expect(conversationService.stream).not.toHaveBeenCalled();
-    });
-  });
 });
 

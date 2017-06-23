@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TrackDirective } from './track.directive';
-import { MockTrackingService, TRACKING_EVENT, TRACKING_PARAMS, TrackingService } from 'shield';
+import { MockTrackingService, TRACKING_EVENT, TrackingService } from 'shield';
 
 @Component({
   template: `<a [tslTrack]="event" [params]="params"></a>`
@@ -37,11 +37,11 @@ describe('Directive: Track', () => {
   });
 
   it('should track the click', () => {
-    fixture.componentInstance.event = TRACKING_EVENT;
-    fixture.componentInstance.params = TRACKING_PARAMS;
+    fixture.componentInstance.event = 'trackingEvent';
+    fixture.componentInstance.params = 'algorandom';
     fixture.detectChanges();
     element.triggerEventHandler('click', {});
-    expect(trackingService.track).toHaveBeenCalledWith(TrackingService[TRACKING_EVENT], TRACKING_PARAMS);
+    expect(trackingService.track).toHaveBeenCalledWith(TrackingService['trackingEvent'], 'algorandom');
   });
 
 });

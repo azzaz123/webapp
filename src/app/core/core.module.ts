@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
-import { Conversation } from './conversation/conversation';
 import { ConversationModule } from './conversation/conversation.module';
 import { TrackingModule } from './tracking/tracking.module';
 

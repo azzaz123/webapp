@@ -2,8 +2,7 @@
 
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { InputComponent } from './input.component';
-import { MessageService, MOCK_CONVERSATION, EventService } from 'shield';
-import { Conversation } from '../../core/conversation/conversation';
+import { MessageService, MOCK_CONVERSATION, EventService, Conversation } from 'shield';
 import { By } from '@angular/platform-browser';
 
 class MockMessageService {

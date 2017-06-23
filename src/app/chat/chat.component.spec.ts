@@ -3,10 +3,9 @@
 import { TestBed } from '@angular/core/testing';
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Conversation } from '../core/conversation/conversation';
 import {
   EventService, XmppService, MOCK_CONVERSATION, UserService, ItemService, HttpService, I18nService,
-  ConversationService, TrackingService, MockTrackingService, ITEM_ID
+  ConversationService, TrackingService, MockTrackingService, ITEM_ID, Conversation
 } from 'shield';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
