@@ -17,6 +17,7 @@ h5 {
 $avatar-size: 40px;
 .message-avatar,
 .message-body {
+  color: $grey-700;
   margin-top: $spacing;
   &.calls-panel {
     margin-top: 0;
@@ -28,11 +29,13 @@ $avatar-size: 40px;
   margin-right: $spacing;
 }
 
+.message-name {
+  color: $grey-900;
+}
 .message-body {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  color: $grey-100;
   &.without-avatar {
     margin-top: 0;
     margin-left: #{$spacing + $avatar-size};
@@ -44,7 +47,7 @@ $avatar-size: 40px;
 
 .message-date {
   margin-left: $spacing-XS;
-  color: $grey-200;
+  color: $grey-250;
   font-size: $font-size-XS;
 }
 
