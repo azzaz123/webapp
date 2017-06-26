@@ -1,16 +1,15 @@
-import { Component, HostBinding, HostListener, Input, OnChanges } from '@angular/core';
-import { ConversationService, Conversation } from 'shield';
+import { Component, Input } from '@angular/core';
+import { Conversation } from 'shield';
 
 @Component({
   selector: 'tsl-conversation',
   templateUrl: './conversation.component.html',
   styleUrls: ['./conversation.component.scss']
 })
-export class ConversationComponent implements OnChanges {
+export class ConversationComponent {
 
   @Input() conversation: Conversation;
   @Input() dashboard: boolean;
-  @HostBinding('class.archive') archive: boolean = false;
 
 
   public momentConfig: any = {
@@ -22,12 +21,7 @@ export class ConversationComponent implements OnChanges {
     sameElse: 'D MMM'
   };
 
-  constructor(private conversationService: ConversationService) {
+  constructor() {
   }
-
-  ngOnChanges(changes?: any) {
-    this.archive = this.conversation.archived;
-  }
-
 
 }

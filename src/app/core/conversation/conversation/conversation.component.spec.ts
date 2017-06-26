@@ -15,7 +15,6 @@ describe('Component: Conversation', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        NoopAnimationsModule,
         MomentModule
       ],
       providers: [
@@ -42,14 +41,6 @@ describe('Component: Conversation', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('ngOnChanges', () => {
-    it('should set archive', () => {
-      component.conversation.archived = true;
-      component.ngOnChanges();
-      expect(component.archive).toBeTruthy();
-    });
   });
 
 });
