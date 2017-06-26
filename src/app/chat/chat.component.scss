@@ -25,7 +25,7 @@
   width: $right-panel-width;
   padding: $spacing;
   background-color: $grey-50;
-  border-left: 1px solid $grey-1000;
+  border-left: 1px solid $grey-100;
   tsl-user {
     margin-bottom: $spacing;
   }
@@ -34,7 +34,7 @@
 #top-bar {
   position: relative;
   padding: $spacing;
-  border-bottom: 1px solid $grey-1000;
+  border-bottom: 1px solid $grey-50;
   z-index: 99;
   h5, span {
     color: $white;

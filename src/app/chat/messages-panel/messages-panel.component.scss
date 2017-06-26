@@ -7,7 +7,7 @@
 }
 
 .messages-panel-container {
-  max-height: calc(100vh - #{$chat-topbar-height + $chat-input});
+  max-height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
   position: absolute;
   bottom: 0;
   display: block;
