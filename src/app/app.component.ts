@@ -1,7 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  EventService, XmppService, UserService, ErrorsService, NotificationService, MessageService, TrackingService,
-  ConversationService, CallService, WindowRef, I18nService, Message, User
+  ConversationService,
+  ErrorsService,
+  EventService,
+  I18nService,
+  Message,
+  MessageService,
+  NotificationService,
+  TrackingService,
+  User,
+  UserService,
+  WindowRef,
+  XmppService
 } from 'shield';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
@@ -14,7 +24,6 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
 import { MdIconRegistry } from '@angular/material';
-import { NavigationEnd, Router } from '@angular/router';
 // Declare ga function as ambient
 declare var ga: Function;
 
@@ -34,13 +43,11 @@ export class AppComponent implements OnInit {
               private notificationService: NotificationService,
               private messageService: MessageService,
               private titleService: Title,
-              private router: Router,
               private sanitizer: DomSanitizer,
               private mdIconRegistry: MdIconRegistry,
               private trackingService: TrackingService,
               private i18n: I18nService,
               private conversationService: ConversationService,
-              private callService: CallService,
               private winRef: WindowRef) {
     this.config();
   }
@@ -62,7 +69,7 @@ export class AppComponent implements OnInit {
         (user: User) => {
           this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_IN, {user_id: user.id});
           this.xmppService.connect(user.id, accessToken);
-          this.initConversations();
+          this.conversationService.init().subscribe();
         },
         (error: any) => {
           this.userService.logout();
@@ -85,21 +92,4 @@ export class AppComponent implements OnInit {
     this.event.subscribe(EventService.NEW_MESSAGE, (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate));
   }
 
-  private initConversations() {
-    this.conversationService.init().subscribe(() => {
-      this.callService.init().subscribe(() => {
-        this.conversationService.init(true).subscribe(() => {
-          this.callService.init(true).subscribe(() => {
-            this.pollCalls();
-          });
-        });
-      });
-    });
-  }
-
-  private pollCalls() {
-    setInterval(() => {
-      this.callService.init().subscribe();
-    }, 1000 * 60);
-  }
 }
