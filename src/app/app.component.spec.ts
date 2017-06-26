@@ -179,14 +179,7 @@ describe('App: ProTool', () => {
       it('should call conversationService.init', () => {
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        expect(conversationService.init).toHaveBeenCalledTimes(2);
-      });
-
-      it('should call pollCalls', () => {
-        spyOn(component, 'pollCalls');
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        expect(component.pollCalls).toHaveBeenCalled();
+        expect(conversationService.init).toHaveBeenCalledTimes(1);
       });
 
       it('should track the MyProfileLoggedIn event', () => {
