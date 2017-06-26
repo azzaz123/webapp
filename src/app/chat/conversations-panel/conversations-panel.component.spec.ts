@@ -9,7 +9,7 @@ import {
   ConversationService, TrackingService, MockTrackingService, createConversationsArray, MOCK_CONVERSATION,
   SECOND_MOCK_CONVERSATION, Conversation
 } from 'shield';
-import { ConversationComponent } from '../../core/conversation/conversation/conversation.component';
+import { ConversationComponent } from '../conversation/conversation.component';
 import { Observable } from 'rxjs/Observable';
 
 import { HaversineService } from 'ng2-haversine';
