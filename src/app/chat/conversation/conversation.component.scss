@@ -9,7 +9,7 @@ $menu-width-and-spacing: 10px;
   box-sizing: border-box;
   transition: $transition-time ease background-color,
   $transition-time ease border;
-  border-top: 1px solid $grey-950;
+  border-top: 1px solid $grey-50;
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -17,10 +17,7 @@ $menu-width-and-spacing: 10px;
     border-top: 0;
   }
   &.active {
-    background-color: rgba($grey-900, .8);
-    .active-marker {
-      @include show();
-    }
+    background-color: rgba($grey-100, .8);
   }
   tsl-unarchive-button {
     @include hide();
@@ -29,21 +26,11 @@ $menu-width-and-spacing: 10px;
     right: 0;
   }
   &:hover {
-    background-color: rgba($grey-900, .5);
+    background-color: rgba($grey-100, .5);
     .badge-pill {
       display: none;
     }
   }
-}
-.active-marker {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background-color: $grey-700;
-  transition: opacity .25s ease, visibility .25s ease;
-  @include hide();
 }
 .conversation-info {
   display: flex;
@@ -53,7 +40,7 @@ $menu-width-and-spacing: 10px;
   height: $item-avatar-size;
   margin-left: $item-avatar-space;
   max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
-  color: $white;
+  color: $grey-900;
   p {
     font-size: $font-size-S;
     margin-bottom: 0;
@@ -116,7 +103,7 @@ $menu-width-and-spacing: 10px;
       font-size: 12px;
     }
     .user-name {
-      color: $white;
+      color: $grey-900;
     }
     &.has-phone {
       $phone-icon-size: 10px;
@@ -128,7 +115,7 @@ $menu-width-and-spacing: 10px;
   .message-row {
     line-height: $font-size-S;
     p.message {
-      color: $grey-200;
+      color: $grey-600;
     }
     md-icon {
       height: 15px;
