@@ -8,14 +8,14 @@
 #left-panel {
   position: relative;
   float: left;
-  background-color: $grey-1000;
+  background-color: $white;
   width: $left-panel-width;
 }
 
 #center-panel {
   margin-left: $left-panel-width;
   margin-right: $right-panel-width;
-  background-color: $grey-900;
+  background-color: $white;
 }
 
 #right-panel {
@@ -24,7 +24,7 @@
   float: right;
   width: $right-panel-width;
   padding: $spacing;
-  background-color: $grey-900;
+  background-color: $white;
   border-left: 1px solid $grey-1000;
   tsl-user {
     margin-bottom: $spacing;
@@ -52,7 +52,7 @@
   height: 100vh;
   margin-left: $left-panel-width;
   position: relative;
-  background: $grey-900;
+  background: $white;
   .content {
     @include in-the-middle;
     text-align: center;
