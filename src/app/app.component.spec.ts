@@ -1,12 +1,24 @@
 /* tslint:disable:no-unused-variable */
 
-import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
-  MOCK_USER, USER_DATA, USER_ID, EventService, XmppService, UserService, ErrorsService, TEST_HTTP_PROVIDERS,
-  NotificationService, MessageService, TrackingService, MockTrackingService, I18nService,
-  ConversationService, CallService, WindowRef
+  ConversationService,
+  ErrorsService,
+  EventService,
+  I18nService,
+  MessageService,
+  MOCK_USER,
+  MockTrackingService,
+  NotificationService,
+  TEST_HTTP_PROVIDERS,
+  TrackingService,
+  USER_DATA,
+  USER_ID,
+  UserService,
+  WindowRef,
+  XmppService
 } from 'shield';
 import { ToastrModule } from 'ngx-toastr';
 import { MockBackend, MockConnection } from '@angular/http/testing';
@@ -17,9 +29,8 @@ import { Title } from '@angular/platform-browser';
 import { MdIconRegistry } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { environment } from '../environments/environment';
-import createSpy = jasmine.createSpy;
 import 'rxjs/add/observable/throw';
+import createSpy = jasmine.createSpy;
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -33,7 +44,6 @@ let titleService: Title;
 let trackingService: TrackingService;
 let window: any;
 let conversationService: ConversationService;
-let callService: CallService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
@@ -114,13 +124,6 @@ describe('App: ProTool', () => {
           }
         }
         },
-        {
-          provide: CallService, useValue: {
-          init() {
-            return Observable.of();
-          }
-        }
-        },
         ...
           TEST_HTTP_PROVIDERS
       ],
@@ -139,7 +142,6 @@ describe('App: ProTool', () => {
     trackingService = TestBed.get(TrackingService);
     window = TestBed.get(WindowRef).nativeWindow;
     conversationService = TestBed.get(ConversationService);
-    callService = TestBed.get(CallService);
     spyOn(notificationService, 'init');
   });
 
@@ -159,7 +161,6 @@ describe('App: ProTool', () => {
           connection.mockRespond(new Response(res));
         });
         spyOn(conversationService, 'init').and.returnValue(Observable.of({}));
-        spyOn(callService, 'init').and.returnValue(Observable.of({}));
       }));
 
       it('should call the eventService.subscribe passing the login event', () => {
@@ -179,12 +180,6 @@ describe('App: ProTool', () => {
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
         expect(conversationService.init).toHaveBeenCalledTimes(2);
-      });
-
-      it('should call callService.init', () => {
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        expect(callService.init).toHaveBeenCalledTimes(2);
       });
 
       it('should call pollCalls', () => {
@@ -260,18 +255,5 @@ describe('App: ProTool', () => {
     });
 
   });
-
-  describe('pollCalls', () => {
-    it('should call init every minute', fakeAsync(() => {
-      spyOn(callService, 'init').and.returnValue(Observable.of({}));
-      component['pollCalls']();
-      tick(1000 * 60);
-      expect(callService.init).toHaveBeenCalledTimes(1);
-      tick(1000 * 60);
-      expect(callService.init).toHaveBeenCalledTimes(2);
-      discardPeriodicTasks();
-    }));
-  });
-
 
 });
