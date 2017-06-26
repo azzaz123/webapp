@@ -3,7 +3,7 @@
 :host {
   display: block;
   position: relative;
-  height: calc(100vh - #{$chat-topbar-height + $chat-input});
+  height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
 }
 
 .messages-panel-container {

@@ -20,11 +20,11 @@
 
 #right-panel {
   overflow-y: auto;
-  height: 100vh;
+  height: calc(100vh - #{$topbar-height});
   float: right;
   width: $right-panel-width;
   padding: $spacing;
-  background-color: $white;
+  background-color: $grey-50;
   border-left: 1px solid $grey-1000;
   tsl-user {
     margin-bottom: $spacing;
