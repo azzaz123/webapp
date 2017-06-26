@@ -36,10 +36,11 @@
   padding: $spacing;
   border-bottom: 1px solid $grey-50;
   z-index: 99;
-  h5, span {
-    color: $white;
+  span {
+    color: $grey-700;
   }
   h5 {
+    color: $grey-900;
     font-size: $font-size;
     font-weight: bold;
   }
