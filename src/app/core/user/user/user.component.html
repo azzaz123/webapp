@@ -32,16 +32,3 @@
     </li>
   </ul>
 </section>
-<a class="card" href="{{user?.sellingItem.webLink}}" tslTrack="CONVERSATION_SELLING_CAR_VIEWED" [params]="{item_id: user.sellingItem.id}"
-   target="_blank" *ngIf="user.sellingItem && !callsPanel">
-  <div class="card-block">
-    <tsl-item-avatar [item]="user?.sellingItem" fallbackLight="true"></tsl-item-avatar>
-    <div class="item-details-wrap">
-      <div class="item-details">
-        <span class="selling-label" i18n>Selling</span>
-        <span *ngIf="user.itemsCount > 0" class="items-count" i18n>+{{user.itemsCount // i18n(ph="ITEMS_COUNT")}} More</span>
-        <h2>{{user.sellingItem.title}}</h2>
-      </div>
-    </div>
-  </div>
-</a>

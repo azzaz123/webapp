@@ -1,4 +1,4 @@
-@import "../../../../style/_common.scss";
+@import "../../../style/common";
 
 $transition-time: .15s;
 $check-width-and-spacing: 50px;
@@ -30,20 +30,8 @@ $menu-width-and-spacing: 10px;
   }
   &:hover {
     background-color: rgba($grey-900, .5);
-    tsl-archive-button, tsl-unarchive-button {
-      @include show();
-    }
     .badge-pill {
       display: none;
-    }
-    .message-row, .user-name-row-left {
-      max-width: calc(100% - #{$check-width-and-spacing});
-    }
-    &.archive {
-      overflow: visible;
-      .message-row, .user-name-row-left {
-        max-width: calc(100% - #{$menu-width-and-spacing});
-      }
     }
   }
 }

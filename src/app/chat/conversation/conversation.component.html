@@ -16,9 +16,6 @@
   <div class="user-name-row" [ngClass]="{'has-phone': true}">
     <div class="user-name-row-left">
       <p class="user-name">
-        <span *ngIf="conversation.phone">
-          <md-icon svgIcon="call-shared"></md-icon>
-        </span>
         <span>
           {{conversation.user.microName}}
         </span>
