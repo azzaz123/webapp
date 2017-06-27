@@ -1,16 +1,15 @@
-<div class="scroll-panel"
-     infinite-scroll
-     [infiniteScrollDistance]="5"
-     [infiniteScrollThrottle]="100"
-     [scrollWindow]="false"
-     [infiniteScrollDisabled]="!conversations.length"
-     (scrolled)="loadMore()"
-     #scrollPanel>
+<div class="scroll-panel" #scrollPanel>
   <tsl-conversation *ngFor="let conversation of conversations" [conversation]="conversation"
                     [ngClass]="{'active': conversation?.active}"
                     [hidden]="conversation.messages.length === 0 || loading"
                     (click)="setCurrentConversation(conversation)"></tsl-conversation>
   <div id="loader" [hidden]="conversations.length > 0 && !loading">
     <md-icon svgIcon="conversations-mock"></md-icon>
+  </div>
+  <div class="load-more-container" *ngIf="conversations.length > 0 && !conversationService.ended || loading">
+    <a class="load-more" (click)="loadMore()">
+      <md-icon svgIcon="spinner" [hidden]="!loading || page === 1" class="spinner"></md-icon>
+      <span [hidden]="loading" i18n>Load more</span>
+    </a>
   </div>
 </div>
