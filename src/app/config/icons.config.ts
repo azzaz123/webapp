@@ -15,6 +15,7 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIconInNamespace('star', 'empty', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/star_empty.svg'));
   mdIconRegistry.addSvgIconInNamespace('star', 'full', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/star.svg'));
   mdIconRegistry.addSvgIcon('user', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/user.svg'));
+  mdIconRegistry.addSvgIcon('menu', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/menu.svg'));
   mdIconRegistry.addSvgIcon('report-listing-0', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/other.svg'));
   mdIconRegistry.addSvgIcon('report-listing-1', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/miscategorized.svg'));
   mdIconRegistry.addSvgIcon('report-listing-2', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/animals.svg'));
