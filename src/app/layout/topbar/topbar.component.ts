@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'shield/lib/shield/user/user.service';
+import { UserService, User } from 'shield';
 
 @Component({
   selector: 'tsl-topbar',
@@ -8,10 +8,12 @@ import { UserService } from 'shield/lib/shield/user/user.service';
 })
 export class TopbarComponent implements OnInit {
 
-  constructor(private userService: UserService) {
+  public user: User;
+
+  constructor(public userService: UserService) {
     this.userService.me().subscribe((user) => {
-      console.log(user);
-    })
+      this.user = user;
+    });
   }
 
   ngOnInit() {

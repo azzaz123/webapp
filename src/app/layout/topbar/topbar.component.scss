@@ -7,15 +7,14 @@
   position: relative;
 }
 .topbar-menu {
+  cursor: pointer;
   position: absolute;
   right: $spacing-S;
   top: 50%;
   transform: translateY(-50%);
   z-index: $zindex-dropdown;
 }
-.topbar-dropdown-circle {
+.topbar-avatar {
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  background-color: red;
+  @include square($spacing-L);
 }
