@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="236px" height="464px" viewBox="0 0 236 464" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Empty_state_messages</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="+-Messages-Dark" transform="translate(-225.000000, -224.000000)" fill="#253238">
+            <g id="Empty_state_messages" transform="translate(225.000000, 224.000000)">
+                <rect id="Mask" fill-opacity="0.7" x="0" y="0" width="60" height="60" rx="4"></rect>
+                <rect id="Mask" fill-opacity="0.7" x="0" y="102" width="60" height="60" rx="4"></rect>
+                <g id="Mask-Copy-3-+-Mask-Copy-2-+-Mask-Copy-5-Mask" transform="translate(0.000000, 203.000000)">
+                    <rect id="Mask-Copy-3" opacity="0.4" x="0" y="100" width="60" height="60" rx="4"></rect>
+                    <rect id="Mask-Copy-2" opacity="0.5" x="0" y="0" width="60" height="60" rx="4"></rect>
+                    <rect id="Mask-Copy-5" opacity="0.25" x="0" y="201" width="60" height="60" rx="4"></rect>
+                </g>
+                <g id="Group-10" transform="translate(80.000000, 1.000000)" fill-opacity="0.7">
+                    <rect id="Rectangle-33" x="0" y="0" width="156" height="10" rx="4"></rect>
+                    <rect id="Rectangle-33-Copy-3" x="0" y="24" width="106" height="10" rx="4"></rect>
+                    <rect id="Rectangle-33-Copy-2" x="0" y="48" width="156" height="10" rx="4"></rect>
+                </g>
+                <g id="Group-5" transform="translate(80.000000, 103.000000)" fill-opacity="0.6">
+                    <g id="Group-8">
+                        <rect id="Rectangle-33-Copy" x="0" y="0" width="156" height="10" rx="4"></rect>
+                        <rect id="Rectangle-33-Copy-5" x="0" y="24" width="106" height="10" rx="4"></rect>
+                        <rect id="Rectangle-33-Copy-4" x="0" y="48" width="156" height="10" rx="4"></rect>
+                    </g>
+                </g>
+                <g id="Group-4" transform="translate(80.000000, 204.000000)" opacity="0.5">
+                    <rect id="Rectangle-33-Copy-8" x="0" y="0" width="156" height="10" rx="4"></rect>
+                    <rect id="Rectangle-33-Copy-7" x="0" y="24" width="106" height="10" rx="4"></rect>
+                    <rect id="Rectangle-33-Copy-6" x="0" y="48" width="156" height="10" rx="4"></rect>
+                </g>
+                <g id="Group-2" transform="translate(80.000000, 304.000000)" opacity="0.4">
+                    <rect id="Rectangle-33-Copy-11" x="0" y="0" width="156" height="10" rx="4"></rect>
+                    <rect id="Rectangle-33-Copy-10" x="0" y="24" width="106" height="10" rx="4"></rect>
+                    <rect id="Rectangle-33-Copy-9" x="0" y="48" width="156" height="10" rx="4"></rect>
+                </g>
+                <g id="Group-9" transform="translate(80.000000, 405.000000)" opacity="0.25">
+                    <rect id="Rectangle-33-Copy-14" x="0" y="0" width="156" height="10" rx="4"></rect>
+                    <rect id="Rectangle-33-Copy-13" x="0" y="24" width="106" height="10" rx="4"></rect>
+                    <rect id="Rectangle-33-Copy-12" x="0" y="48" width="156" height="10" rx="4"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
