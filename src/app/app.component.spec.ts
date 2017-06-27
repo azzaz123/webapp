@@ -18,7 +18,8 @@ import {
   USER_ID,
   UserService,
   WindowRef,
-  XmppService
+  XmppService,
+  DebugService
 } from 'shield';
 import { ToastrModule } from 'ngx-toastr';
 import { MockBackend, MockConnection } from '@angular/http/testing';
@@ -60,6 +61,7 @@ describe('App: ProTool', () => {
       ],
       providers: [
         EventService,
+        {provide: DebugService, useValue: {}},
         {
           provide: XmppService, useValue: {
           connect() {
