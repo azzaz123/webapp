@@ -4,6 +4,14 @@
   display: block;
   height: 60px;
   background-color: $corporate;
+  position: relative;
+}
+.topbar-menu {
+  position: absolute;
+  right: $spacing-S;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: $zindex-dropdown;
 }
 .topbar-dropdown-circle {
   border-radius: 50%;

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginResponse } from 'shield';
 import { Router } from '@angular/router';
-import { UserService } from '../core/user/user.service';
+import { UserService } from 'shield/lib/shield/user/user.service';
 
 const TEST_INSTALLATION_TYPE: string = 'WEB';
 
