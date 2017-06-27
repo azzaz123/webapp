@@ -6,7 +6,7 @@
   <div id="loader" [hidden]="conversations.length > 0 && !loading">
     <md-icon svgIcon="conversations-mock"></md-icon>
   </div>
-  <div class="load-more-container" *ngIf="conversations.length > 0 && !conversationService.ended || loading">
+  <div class="load-more-container" *ngIf="conversations.length > 0 && !conversationService.ended">
     <a class="load-more" (click)="loadMore()">
       <md-icon svgIcon="spinner" [hidden]="!loading || page === 1" class="spinner"></md-icon>
       <span [hidden]="loading" i18n>Load more</span>
