@@ -11,7 +11,8 @@ import {
   User,
   UserService,
   WindowRef,
-  XmppService
+  XmppService,
+  DebugService
 } from 'shield';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
@@ -48,7 +49,8 @@ export class AppComponent implements OnInit {
               private trackingService: TrackingService,
               private i18n: I18nService,
               private conversationService: ConversationService,
-              private winRef: WindowRef) {
+              private winRef: WindowRef,
+              private debugService: DebugService) {
     this.config();
   }
 

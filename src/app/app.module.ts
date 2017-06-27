@@ -17,7 +17,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppComponent
   ],
   imports: [
-    ShieldModule.forRoot(),
+    ShieldModule.forRoot({
+      cacheAllConversations: false
+    }),
     BrowserAnimationsModule,
     ChatModule,
     CookieModule.forRoot(),

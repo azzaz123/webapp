@@ -6,7 +6,6 @@ import { InputComponent } from './input/input.component';
 import { ConnectionAlertComponent } from './connection-alert/connection-alert.component';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { MdIconModule } from '@angular/material';
 import { MomentModule } from 'angular2-moment';
 import { ItemComponent } from './item/item.component';
@@ -21,23 +20,17 @@ import { ConversationComponent } from './conversation/conversation.component';
 @NgModule({
   imports: [
     CommonModule,
-    ItemModule,
+    FormsModule,
     MomentModule,
+    ItemModule,
     MdIconModule,
     UserModule,
     NgbTooltipModule,
     NgbDropdownModule,
     NgbModalModule,
-    NgbModalModule,
-    NgbTooltipModule,
-    NgbDropdownModule,
     CoreModule,
     SharedModule,
-    ChatRoutingModule,
-    FormsModule,
-    MdIconModule,
-    MomentModule,
-    InfiniteScrollModule
+    ChatRoutingModule
   ],
   declarations: [
     chatRoutedComponents,
