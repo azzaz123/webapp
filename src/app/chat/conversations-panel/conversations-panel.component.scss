@@ -46,3 +46,32 @@ tsl-process-all-button {
 .separator {
   margin-left: $spacing;
 }
+
+.load-more-container {
+  $load-more-container-height: 48px;
+  $spinner-size: 14px;
+  line-height: $load-more-container-height;
+  height: $load-more-container-height;
+  text-align: center;
+  background-color: $grey-800;
+  .load-more {
+    color: $corporate;
+    position: relative;
+    text-transform: uppercase;
+    font-size: $font-size-XS;
+    font-weight: bold;
+    .spinner {
+      height: $spinner-size;
+      width: $spinner-size;
+      svg {
+        position: absolute;
+        top: 0;
+        left: -#{$spacing + 5px};
+      }
+    }
+    &:hover {
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+}

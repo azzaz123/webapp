@@ -18,7 +18,9 @@ import { LayoutModule } from './layout/layout.module';
     AppComponent
   ],
   imports: [
-    ShieldModule.forRoot(),
+    ShieldModule.forRoot({
+      cacheAllConversations: false
+    }),
     BrowserAnimationsModule,
     ChatModule,
     CookieModule.forRoot(),

@@ -7,7 +7,7 @@ import {
   UserService, EventService, ItemService, TEST_HTTP_PROVIDERS, Message, MOCK_MESSAGE, XmppService, MessageService,
   PersistencyService, USER_ID, User, NotificationService, MockedPersistencyService, I18nService, HttpService,
   ConversationService, TrackingService, MockTrackingService, createConversationsArray, MOCK_CONVERSATION,
-  SECOND_MOCK_CONVERSATION, Conversation
+  SECOND_MOCK_CONVERSATION, Conversation, ShieldModule
 } from 'shield';
 import { ConversationComponent } from '../conversation/conversation.component';
 import { Observable } from 'rxjs/Observable';
@@ -27,12 +27,16 @@ describe('Component: ConversationsPanel', () => {
   let route: ActivatedRoute;
   let http: HttpService;
   let trackingService: TrackingService;
-  let elRef: ElementRef
+  let elRef: ElementRef;
+  let conversationService: ConversationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        MomentModule
+        MomentModule,
+        ShieldModule.forRoot({
+          cacheAllConversations: false
+        })
       ],
       declarations: [ConversationsPanelComponent, ConversationComponent],
       providers: [
@@ -85,6 +89,7 @@ describe('Component: ConversationsPanel', () => {
     route = TestBed.get(ActivatedRoute);
     trackingService = TestBed.get(TrackingService);
     elRef = TestBed.get(ElementRef);
+    conversationService = TestBed.get(ConversationService);
     spyOn(service, 'loadNotStoredMessages').and.callFake((param) => {
       return Observable.of(param);
     });
@@ -204,14 +209,17 @@ describe('Component: ConversationsPanel', () => {
   describe('loadMore', () => {
     beforeEach(() => {
       component['page'] = 1;
+      spyOn<any>(component, 'getConversations');
+      spyOn(conversationService, 'loadMore').and.returnValue(Observable.of({}));
       component.loadMore();
-    })
+    });
     it('should increment page', () => {
       expect(component['page']).toBe(2);
     });
+    it('should call loadMore', () => {
+      expect(conversationService.loadMore).toHaveBeenCalled();
+    });
     it('should call getConversations', () => {
-      spyOn<any>(component, 'getConversations');
-      component.loadMore();
       expect(component['getConversations']).toHaveBeenCalled();
     });
   });
