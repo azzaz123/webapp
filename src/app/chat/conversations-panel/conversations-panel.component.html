@@ -1,9 +1,9 @@
 <div class="scroll-panel" #scrollPanel>
   <tsl-conversation *ngFor="let conversation of conversations" [conversation]="conversation"
                     [ngClass]="{'active': conversation?.active}"
-                    [hidden]="conversation.messages.length === 0 || loading"
+                    [hidden]="conversation.messages.length === 0"
                     (click)="setCurrentConversation(conversation)"></tsl-conversation>
-  <div id="loader" [hidden]="conversations.length > 0 && !loading">
+  <div id="loader" [hidden]="conversations.length > 0">
     <md-icon svgIcon="conversations-mock"></md-icon>
   </div>
   <div class="load-more-container" *ngIf="conversations.length > 0 && !conversationService.ended">
