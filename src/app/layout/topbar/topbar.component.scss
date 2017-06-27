@@ -11,6 +11,15 @@
 .topbar-logo {
   width: 95px;
 }
+.topbar-logo-icon {
+  position: absolute;
+  left: $spacing-S;
+  top: 50%;
+  transform: translateY(-50%);
+  img {
+    width: 34px;
+  }
+}
 .topbar-menu {
   cursor: pointer;
   position: absolute;
