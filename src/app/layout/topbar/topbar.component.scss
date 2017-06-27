@@ -5,6 +5,11 @@
   height: 60px;
   background-color: $corporate;
   position: relative;
+  text-align: center;
+  line-height: 60px;
+}
+.topbar-logo {
+  width: 95px;
 }
 .topbar-menu {
   cursor: pointer;
