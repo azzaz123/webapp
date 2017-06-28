@@ -1,11 +1,10 @@
 /* tslint:disable:no-unused-variable */
 
 import { ConversationComponent } from './conversation.component';
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { MOCK_CONVERSATION, ConversationService } from 'shield';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ConversationService, MOCK_CONVERSATION } from 'shield';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('Component: Conversation', () => {
   let component: ConversationComponent;
