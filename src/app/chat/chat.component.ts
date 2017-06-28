@@ -135,6 +135,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       return this.active;
     }).subscribe(() => {
       this.modal.close();
+      this.conversationService.stream();
       this.eventService.emit(EventService.CONVERSATION_ARCHIVED, this.currentConversation);
       this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
     });
