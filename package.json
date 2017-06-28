@@ -8,6 +8,7 @@
     "builddev": "ng build --env=dev",
     "buildbeta": "ng build --env=beta",
     "buildprod": "ng build --env=prod",
+    "i18n": "ng-xi18n -p src/tsconfig.app.json --i18nFormat=xmb",
     "test": "ng test --watch=false  --no-progress",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -33,7 +34,7 @@
     "ngx-cookie": "^1.0.0",
     "ngx-toastr": "^5.0.7",
     "rxjs": "5.3.0",
-    "shield": "git+ssh://git@github.com/Wallapop/shield.git#1.4.0",
+    "shield": "git+ssh://git@github.com/Wallapop/shield.git#1.4.1",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
