@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService, User } from 'shield';
+import { User } from 'shield';
+import { UserService } from '../../core/user/user.service';
 
 @Component({
   selector: 'tsl-topbar',
