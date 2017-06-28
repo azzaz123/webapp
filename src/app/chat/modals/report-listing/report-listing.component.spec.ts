@@ -4,12 +4,19 @@ import { ReportListingComponent } from './report-listing.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
-import { ItemService } from 'shield';
+import { ItemService, BanReason } from 'shield';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('ReportListingComponent', () => {
   let component: ReportListingComponent;
   let fixture: ComponentFixture<ReportListingComponent>;
+  let itemService: ItemService;
+  let activeModal: NgbActiveModal;
+
+  const BAN_REASONS: BanReason[] = [{
+    id: 1,
+    label: 'ban reason'
+  }];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -19,7 +26,7 @@ describe('ReportListingComponent', () => {
         {
           provide: ItemService, useValue: {
           getBanReasons() {
-            return Observable.of([]);
+            return Observable.of(BAN_REASONS);
           }
         }
         }
@@ -34,16 +41,40 @@ describe('ReportListingComponent', () => {
     fixture = TestBed.createComponent(ReportListingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    itemService = TestBed.get(ItemService);
+    activeModal = TestBed.get(NgbActiveModal);
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('ngOnInit', () => {
+    it('should get and set ban reasons', () => {
+      spyOn(itemService, 'getBanReasons').and.callThrough();
+      component.ngOnInit();
+      expect(itemService.getBanReasons).toHaveBeenCalled();
+      expect(component.listingBanReasons).toEqual(BAN_REASONS);
+    });
+  });
+
   describe('selectReportListingReason', () => {
     it('should set the selectedReportListingReason with the given value', () => {
       component.selectReportListingReason(1);
       expect(component.selectedReportListingReason).toBe(1);
+    });
+  });
+
+  describe('close', () => {
+    it('should call close', () => {
+      spyOn(activeModal, 'close');
+      component.reportListingReasonMessage = 'message';
+      component.selectedReportListingReason = 1;
+      component.close();
+      expect(activeModal.close).toHaveBeenCalledWith({
+        message: 'message',
+        reason: 1
+      })
     });
   });
 });

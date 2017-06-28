@@ -6,10 +6,18 @@ import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../core/user/user.service';
+import { BanReason } from 'shield';
 
 describe('ReportUserComponent', () => {
   let component: ReportUserComponent;
   let fixture: ComponentFixture<ReportUserComponent>;
+  let userService: UserService;
+  let activeModal: NgbActiveModal;
+
+  const BAN_REASONS: BanReason[] = [{
+    id: 1,
+    label: 'ban reason'
+  }];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -19,7 +27,7 @@ describe('ReportUserComponent', () => {
         {
           provide: UserService, useValue: {
           getBanReasons() {
-            return Observable.of([]);
+            return Observable.of(BAN_REASONS);
           }
         }
         }
@@ -34,16 +42,40 @@ describe('ReportUserComponent', () => {
     fixture = TestBed.createComponent(ReportUserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    userService = TestBed.get(UserService);
+    activeModal = TestBed.get(NgbActiveModal);
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('ngOnInit', () => {
+    it('should get and set ban reasons', () => {
+      spyOn(userService, 'getBanReasons').and.callThrough();
+      component.ngOnInit();
+      expect(userService.getBanReasons).toHaveBeenCalled();
+      expect(component.userBanReasons).toEqual(BAN_REASONS);
+    });
+  });
+
   describe('selectReportUserReason', () => {
     it('should set the selectedReportUserReason with the given value', () => {
       component.selectReportUserReason(1);
       expect(component.selectedReportUserReason).toBe(1);
+    });
+  });
+
+  describe('close', () => {
+    it('should call close', () => {
+      spyOn(activeModal, 'close');
+      component.reportUserReasonMessage = 'message';
+      component.selectedReportUserReason = 1;
+      component.close();
+      expect(activeModal.close).toHaveBeenCalledWith({
+        message: 'message',
+        reason: 1
+      })
     });
   });
 });
