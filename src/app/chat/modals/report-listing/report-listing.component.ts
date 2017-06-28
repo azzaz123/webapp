@@ -18,7 +18,7 @@ export class ReportListingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.itemService.getBanReasons().subscribe((data) => {
+    this.itemService.getBanReasons().subscribe((data: BanReason[]) => {
       this.listingBanReasons = data;
     });
   }

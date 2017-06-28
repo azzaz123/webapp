@@ -1,0 +1,28 @@
+<div class="modal-body center-heading">
+  <div class="modal-close" (click)="activeModal.dismiss()">
+    <md-icon svgIcon="cross"></md-icon>
+  </div>
+  <div *ngFor="let reason of userBanReasons"
+       [ngClass]="{selected: selectedReportUserReason === reason.id}"
+       class="report-ban-reason"
+       (click)="selectReportUserReason(reason.id)">
+    <div class="ban-reason-icon-container">
+      <md-icon svgIcon="report-user-{{reason.id}}"></md-icon>
+    </div>
+    <div class="label-placeholder-top"></div>
+    <span>{{reason.label}}</span>
+    <div class="label-placeholder-bottom"></div>
+  </div>
+  <div class="ban-reasons-placeholder"></div>
+  <textarea [(ngModel)]="reportUserReasonMessage"
+            class="report-listing-textarea"
+            i18n-placeholder placeholder="I'm reporting this user because..."></textarea>
+</div>
+<div class="modal-footer centered">
+  <button type="button"
+          class="btn btn-corporate"
+          [disabled]="!reportUserReasonMessage || reportUserReasonMessage.trim() === ''"
+          (click)="close();"
+          i18n>Report
+  </button>
+</div>

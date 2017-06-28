@@ -18,8 +18,7 @@
       <div class="dropdown-menu dropdown-menu-right">
         <button class="dropdown-item" (click)="archiveConversation()" i18n *ngIf="!currentConversation?.archived">Archive conversation</button>
         <button class="dropdown-item" (click)="reportListingAction()" *ngIf="currentConversation?.item.owner !== userService.user?.id" i18n>Report this Listing</button>
-        <button class="dropdown-item" (click)="open(reportUser)" i18n>Report this User</button>
-        <!--<button class="dropdown-item warn" (click)="open(blockUser)" i18n>Block User</button>-->
+        <button class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
       </div>
     </div>
   </div>
@@ -39,46 +38,3 @@
     <tsl-spinner [hidden]="conversationsLoaded"></tsl-spinner>
   </div>
 </div>
-
-<ng-template ngbModalContainer #blockUser let-c="close">
-  <div class="modal-body">
-    <h2 i18n>Block {{currentConversation.user.microName // i18n(ph="USER_NAME")}}</h2>
-    <p i18n>This will block interaction with the user, and you won't be able to communicate with each other. Do you wish
-      to continue?</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn" i18n (click)="c()">Cancel</button>
-    <button type="button" class="btn btn-warn" i18n>Block</button>
-  </div>
-</ng-template>
-
-<ng-template ngbModalContainer #reportUser let-c="close">
-  <div class="modal-body center-heading">
-    <div class="modal-close" (click)="c()">
-      <md-icon svgIcon="cross"></md-icon>
-    </div>
-    <div *ngFor="let reason of userBanReasons"
-         [ngClass]="{selected: selectedReportUserReason === reason.id}"
-         class="report-ban-reason"
-         (click)="selectReportUserReason(reason.id)">
-      <div class="ban-reason-icon-container">
-        <md-icon svgIcon="report-user-{{reason.id}}"></md-icon>
-      </div>
-      <div class="label-placeholder-top"></div>
-      <span>{{reason.label}}</span>
-      <div class="label-placeholder-bottom"></div>
-    </div>
-    <div class="ban-reasons-placeholder"></div>
-    <textarea [(ngModel)]="reportUserReasonMessage"
-              class="report-listing-textarea"
-              i18n-placeholder placeholder="I'm reporting this user because..."></textarea>
-  </div>
-  <div class="modal-footer centered">
-    <button type="button"
-            class="btn btn-corporate"
-            [disabled]="!reportUserReasonMessage || reportUserReasonMessage.trim() === ''"
-            (click)="reportUserAction();"
-            i18n>Report
-    </button>
-  </div>
-</ng-template>

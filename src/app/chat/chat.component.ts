@@ -1,30 +1,30 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
-  Conversation, UserService, EventService, ItemService, I18nService,
-  BanReason, ConversationService, TrackingService
+  Conversation,
+  ConversationService,
+  EventService,
+  I18nService,
+  ItemService,
+  TrackingService,
+  UserService
 } from 'shield';
 import { ToastrService } from 'ngx-toastr';
-import 'rxjs/add/operator/takeWhile';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 import { ReportListingComponent } from './modals/report-listing/report-listing.component';
+import { ReportUserComponent } from './modals/report-user/report-user.component';
 
 @Component({
   selector: 'tsl-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit {
 
   public currentConversation: Conversation;
   public conversationsLoaded: boolean;
   public conversationsTotal: number;
   public connectionError: boolean;
-  public userBanReasons: BanReason[];
-  public selectedReportUserReason: number = null;
-  public reportUserReasonMessage: string;
-  private modal: NgbModalRef;
-  private active = true;
 
   constructor(private conversationService: ConversationService,
               private itemService: ItemService,
@@ -44,15 +44,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.connectionError = false;
     });
-    this.userService.getBanReasons().takeWhile(() => {
-      return this.active;
-    }).subscribe((data) => {
-      this.userBanReasons = data;
-    });
-  }
-
-  ngOnDestroy() {
-    this.active = false;
   }
 
   public onCurrentConversationChange(conversation: Conversation) {
@@ -72,23 +63,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.conversationsTotal = event.total;
   }
 
-  public resetModals() {
-    this.selectedReportUserReason = null;
-    this.reportUserReasonMessage = null;
-  }
-
-  public open(targetModal: string) {
-    this.resetModals();
-    this.modal = this.modalService.open(targetModal);
-  }
-
-  public selectReportUserReason(id: number): void {
-    this.selectedReportUserReason = id;
-  }
-
   public reportListingAction(): void {
     this.modalService.open(ReportListingComponent).result.then((result: any) => {
-      this.itemService.reportListing(this.currentConversation.item.legacyId,
+      this.itemService.reportListing(
+        this.currentConversation.item.legacyId,
         result.message,
         result.reason,
         this.currentConversation.legacyId
@@ -97,23 +75,23 @@ export class ChatComponent implements OnInit, OnDestroy {
           {product_id: this.currentConversation.item.id, reason_id: result.reason});
         this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
       });
-    });
+    }, () => {});
   }
 
   public reportUserAction(): void {
-    this.userService.reportUser(this.currentConversation.user.id,
-      this.currentConversation.item.legacyId,
-      this.reportUserReasonMessage,
-      this.selectedReportUserReason,
-      this.currentConversation.legacyId)
-    .takeWhile(() => {
-      return this.active;
-    }).subscribe(() => {
-      this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
-        {user_id: this.currentConversation.user.id, reason_id: this.selectedReportUserReason});
-      this.modal.close();
-      this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
-    });
+    this.modalService.open(ReportUserComponent).result.then((result: any) => {
+      this.userService.reportUser(
+        this.currentConversation.user.id,
+        this.currentConversation.item.legacyId,
+        result.message,
+        result.reason,
+        this.currentConversation.legacyId
+      ).subscribe(() => {
+        this.trackingService.track(TrackingService.USER_PROFILE_REPPORTED,
+          {user_id: this.currentConversation.user.id, reason_id: result.reason});
+        this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
+      });
+    }, () => {});
   }
 
   public archiveConversation(): void {
@@ -123,8 +101,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.eventService.emit(EventService.CONVERSATION_ARCHIVED, this.currentConversation);
         this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
       });
-    }, () => {
-    });
+    }, () => {});
   }
 
 }
