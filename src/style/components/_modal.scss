@@ -80,31 +80,3 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     }
   }
 }
-
-.modal {
-  &.multiple-connection {
-    background: $grey-700;
-  }
-}
-
-.visibility-modal {
-  .modal-dialog, .modal-content {
-    max-width: 700px;
-    background: $grey-900;
-  }
-  .modal-dialog {
-    border-radius: $border-radius;
-  }
-}
-
-.visibility-info-modal {
-  .modal-dialog, .modal-content {
-    max-width: 980px;
-    background: $grey-900;
-    border-radius: $border-radius;
-  }
-  .modal-dialog {
-    margin-top: 100px;
-  }
-}
-
