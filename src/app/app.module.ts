@@ -12,6 +12,7 @@ import { CookieModule } from 'ngx-cookie';
 import { PROVIDERS } from './providers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { LayoutModule } from './layout/layout.module';
   ],
   imports: [
     ShieldModule.forRoot({
-      cacheAllConversations: false
+      cacheAllConversations: false,
+      environment: environment
     }),
     BrowserAnimationsModule,
     ChatModule,

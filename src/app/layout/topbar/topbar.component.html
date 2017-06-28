@@ -3,6 +3,7 @@
 </a>
 <img class="topbar-logo" src="/assets/images/logo.png" alt="">
 <div ngbDropdown class="topbar-menu">
+  <span>{{user?.microName}}</span>
   <img class="topbar-avatar"
        ngbDropdownToggle
        [src]="user?.image.urls_by_size.small"

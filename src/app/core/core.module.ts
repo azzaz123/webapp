@@ -2,10 +2,10 @@ import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { LoggedGuard } from './user/logged.guard';
 import { CookieModule } from 'ngx-cookie';
+import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
 import { TrackingModule } from './tracking/tracking.module';
-import { UserService } from 'shield/lib/shield/user/user.service';
 
 @NgModule({
   imports: [
