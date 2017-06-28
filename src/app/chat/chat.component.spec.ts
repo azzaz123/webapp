@@ -1,13 +1,13 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   EventService, XmppService, MOCK_CONVERSATION, UserService, ItemService, HttpService, I18nService,
   ConversationService, TrackingService, MockTrackingService, ITEM_ID, Conversation
 } from 'shield';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
@@ -18,16 +18,14 @@ class MockConversationService {
   }
 
   archive(id: string) {
+  }
 
+  stream() {
   }
 
 }
 
 class MockUserService {
-
-  public getBanReasons(): Observable<any> {
-    return Observable.of(null);
-  }
 
   public reportUser(): Observable<any> {
     return Observable.of({});
@@ -38,10 +36,6 @@ class MockUserService {
 }
 
 class MockItemService {
-
-  public getBanReasons(): Observable<any> {
-    return Observable.of(null);
-  }
 
   public reportListing(): Observable<any> {
     return Observable.of({});
@@ -64,6 +58,7 @@ describe('Component: Chat', () => {
   let itemService: MockItemService;
   let trackingService: TrackingService;
   let toastr: ToastrService;
+  let modalService: NgbModal;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -90,6 +85,7 @@ describe('Component: Chat', () => {
     trackingService = TestBed.get(TrackingService);
     itemService = TestBed.get(ItemService);
     toastr = TestBed.get(ToastrService);
+    modalService = TestBed.get(NgbModal);
   });
 
   it('should create an instance', () => {
@@ -159,125 +155,96 @@ describe('Component: Chat', () => {
     expect(component.connectionError).toBeTruthy();
     expect(component.conversationsLoaded).toBeTruthy();
   });
-  describe('open', () => {
-    it('should call the open method of the modal service', () => {
-      spyOn((component as any).modalService, 'open');
-      component.open('TEST');
-      expect((component as any).modalService.open).toHaveBeenCalledWith('TEST');
-    });
-    it('should call the resetModals', () => {
-      spyOn(component, 'resetModals');
-      component.open('TEST');
-      expect(component.resetModals).toHaveBeenCalled();
-    });
-  });
-  describe('selectReportListingReason', () => {
-    it('should set the selectedReportListingReason with the given value', () => {
-      component.selectReportListingReason(1);
-      expect(component.selectedReportListingReason).toBe(1);
-    });
-  });
-  describe('selectReportUserReason', () => {
-    it('should set the selectedReportUserReason with the given value', () => {
-      component.selectReportUserReason(1);
-      expect(component.selectedReportUserReason).toBe(1);
-    });
-  });
+
+
   describe('reportListingAction', () => {
-    it('should call the itemService.reportListing and then close the modal and show a toast', () => {
-      component.open('modal');
-      component.reportListingReasonMessage = 'Report Listing Reason';
-      spyOn(itemService, 'reportListing').and.callThrough();
-      spyOn((component as any).modal, 'close');
-      spyOn(toastr, 'success').and.callThrough();
-      component.currentConversation = MOCK_CONVERSATION();
-      component.selectedReportListingReason = 1;
-      component.reportListingAction();
-      expect(itemService.reportListing).toHaveBeenCalledWith(component.currentConversation.item.legacyId,
-        component.reportListingReasonMessage,
-        component.selectedReportListingReason,
-        component.currentConversation.legacyId);
-      expect((component as any).modal.close).toHaveBeenCalled();
-      expect(toastr.success).toHaveBeenCalledWith('The listing has been reported correctly');
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve({
+          message: 'Report Listing Reason',
+          reason: 1
+        })
+      });
     });
-    it('should track the ProductRepported event', () => {
-      spyOn(trackingService, 'track');
-      component.open('modal');
-      component.reportListingReasonMessage = 'Report Listing Reason';
+    it('should call the itemService.reportListing and then close the modal and show a toast', fakeAsync(() => {
       spyOn(itemService, 'reportListing').and.callThrough();
-      spyOn((component as any).modal, 'close');
       spyOn(toastr, 'success').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
-      component.selectedReportListingReason = 1;
       component.reportListingAction();
+      tick();
+      expect(itemService.reportListing).toHaveBeenCalledWith(component.currentConversation.item.legacyId,
+        'Report Listing Reason',
+        1,
+        component.currentConversation.legacyId);
+      expect(toastr.success).toHaveBeenCalledWith('The listing has been reported correctly');
+    }));
+    it('should track the ProductRepported event', fakeAsync(() => {
+      spyOn(trackingService, 'track');
+      spyOn(itemService, 'reportListing').and.callThrough();
+      spyOn(toastr, 'success').and.callThrough();
+      component.currentConversation = MOCK_CONVERSATION();
+      component.reportListingAction();
+      tick();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_REPPORTED, {
         product_id: ITEM_ID,
         reason_id: 1
       });
-    });
+    }));
   });
 
   describe('reportUserAction', () => {
-    it('should call the itemService.reportListing and then close the modal and show a toast', () => {
-      component.open('modal');
-      component.reportListingReasonMessage = 'Report User Reason';
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve({
+          message: 'Report User Reason',
+          reason: 1
+        })
+      });
+    });
+    it('should call the itemService.reportListing and then close the modal and show a toast', fakeAsync(() => {
       spyOn(userService, 'reportUser').and.callThrough();
-      spyOn((component as any).modal, 'close');
       spyOn(toastr, 'success').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
-      component.selectedReportUserReason = 1;
       component.reportUserAction();
+      tick();
       expect(userService.reportUser).toHaveBeenCalledWith(component.currentConversation.user.id,
         component.currentConversation.item.legacyId,
-        component.reportUserReasonMessage,
-        component.selectedReportUserReason,
+        'Report User Reason',
+        1,
         component.currentConversation.legacyId);
-      expect((component as any).modal.close).toHaveBeenCalled();
       expect(toastr.success).toHaveBeenCalledWith('The user has been reported correctly');
-    });
-    it('should track the UserProfileRepported event', () => {
+    }));
+    it('should track the UserProfileRepported event', fakeAsync(() => {
       spyOn(trackingService, 'track');
-      component.open('modal');
-      component.reportListingReasonMessage = 'Report User Reason';
       spyOn(userService, 'reportUser').and.callThrough();
-      spyOn((component as any).modal, 'close');
       spyOn(toastr, 'success').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
-      component.selectedReportUserReason = 1;
       component.reportUserAction();
+      tick();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.USER_PROFILE_REPPORTED, {
         user_id: 'l1kmzn82zn3p',
         reason_id: 1
       });
-    });
-  });
-
-  describe('resetModals', () => {
-    it('should reset the messages from all the modals of the page', () => {
-      component.selectedReportListingReason = 1;
-      component.selectedReportUserReason = 1;
-      component.reportListingReasonMessage = 'Report Listing Reason';
-      component.reportUserReasonMessage = 'Report User Reason';
-      component.resetModals();
-      expect(component.reportUserReasonMessage).toBeNull();
-      expect(component.reportListingReasonMessage).toBeNull();
-      expect(component.selectedReportListingReason).toBeNull();
-      expect(component.selectedReportUserReason).toBeNull();
-    });
+    }));
   });
 
   describe('archiveConversation', () => {
-    it('should close the modal, emit an event, clear the current conversation and show the toast', () => {
-      component.open('modal');
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve()
+      });
+      spyOn(conversationService, 'stream');
+    });
+    it('should close the modal, emit an event, clear the current conversation and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
       spyOn(conversationService, 'archive').and.returnValue(Observable.of({}));
-      spyOn((component as any).modal, 'close');
       spyOn(toastr, 'success').and.callThrough();
       component.archiveConversation();
-      expect((component as any).modal.close).toHaveBeenCalled();
+      tick();
       expect(conversationService.archive).toHaveBeenCalledWith(component.currentConversation.id);
+      expect(conversationService.stream).toHaveBeenCalled();
       expect(toastr.success).toHaveBeenCalledWith('The conversation has been archived correctly');
-    });
+    }));
   });
 
 });
