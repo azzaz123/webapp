@@ -8,6 +8,12 @@
   text-align: center;
   line-height: 60px;
 }
+.topbar-user-name {
+  font-weight: bold;
+  font-size: $font-size;
+  color: $white;
+  margin-right: $spacing-XXS;
+}
 .topbar-logo {
   width: 95px;
 }
@@ -21,12 +27,31 @@
   }
 }
 .topbar-menu {
-  cursor: pointer;
   position: absolute;
   right: $spacing-S;
   top: 50%;
   transform: translateY(-50%);
   z-index: $zindex-dropdown;
+  .topbar-sections {
+    display: inline-block;
+    a {
+      display: inline-block;
+      margin-right: $spacing;
+      line-height: $spacing-L;
+      text-decoration: none;
+      border-radius: 100px;
+      color: $white;
+      &.active {
+        padding: 0 $spacing-S;
+        color: $corporate;
+        background-color: $white;
+      }
+    }
+  }
+}
+.topbar-menu-dropdown {
+  display: inline-block;
+  cursor: pointer;
 }
 .topbar-avatar {
   border-radius: 50%;
