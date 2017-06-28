@@ -5,8 +5,8 @@
 
 <div class="topbar-menu">
   <div class="topbar-sections">
-    <a href="https://es.wallapop.com">Home</a>
-    <a href="/" class="active">Messages</a>
+    <a href="https://es.wallapop.com" i18n>Home</a>
+    <a [routerLink]="['/chat']" class="active" i18n>Messages</a>
   </div>
   <span class="topbar-user-name">{{user?.microName}}</span>
   <div class="topbar-menu-dropdown"  ngbDropdown >
