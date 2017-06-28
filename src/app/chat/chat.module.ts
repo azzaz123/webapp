@@ -16,6 +16,7 @@ import { ItemModule } from '../core/item/item.module';
 import { UserModule } from '../core/user/user.module';
 import { MessageComponent } from './message/message.component';
 import { ConversationComponent } from './conversation/conversation.component';
+import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,11 @@ import { ConversationComponent } from './conversation/conversation.component';
     MessagesPanelComponent,
     InputComponent,
     ConnectionAlertComponent,
-    ItemComponent
+    ItemComponent,
+    ArchiveConversationComponent
+  ],
+  entryComponents: [
+    ArchiveConversationComponent
   ]
 })
 export class ChatModule {

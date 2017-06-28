@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Conversation, UserService, EventService, ItemService, I18nService,
-  BanReason, ConversationService, TrackingService } from 'shield';
+import {
+  Conversation, UserService, EventService, ItemService, I18nService,
+  BanReason, ConversationService, TrackingService
+} from 'shield';
 import { ToastrService } from 'ngx-toastr';
 import 'rxjs/add/operator/takeWhile';
+import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 
 @Component({
   selector: 'tsl-chat',
@@ -131,14 +134,13 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   public archiveConversation(): void {
-    this.conversationService.archive(this.currentConversation.id).takeWhile(() => {
-      return this.active;
-    }).subscribe(() => {
-      this.modal.close();
-      this.conversationService.stream();
-      this.eventService.emit(EventService.CONVERSATION_ARCHIVED, this.currentConversation);
-      this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
-    });
+    this.modalService.open(ArchiveConversationComponent).result.then(() => {
+      this.conversationService.archive(this.currentConversation.id).subscribe(() => {
+        this.conversationService.stream();
+        this.eventService.emit(EventService.CONVERSATION_ARCHIVED, this.currentConversation);
+        this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
+      });
+    }, () => {});
   }
 
 }
