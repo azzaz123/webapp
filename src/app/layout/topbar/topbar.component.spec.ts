@@ -35,7 +35,7 @@ describe('TopbarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('should set the private user variable with the content of the user', () => {
+  it('should set the private user variable with the content of the user', () => {
     component.user = null;
     component.ngOnInit();
     expect(component.user).toBe(MOCK_USER);
