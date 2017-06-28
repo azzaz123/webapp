@@ -7,6 +7,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import 'rxjs/add/operator/takeWhile';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
+import { ReportListingComponent } from './modals/report-listing/report-listing.component';
 
 @Component({
   selector: 'tsl-chat',
@@ -19,11 +20,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   public conversationsLoaded: boolean;
   public conversationsTotal: number;
   public connectionError: boolean;
-  public listingBanReasons: BanReason[];
   public userBanReasons: BanReason[];
-  public selectedReportListingReason: number = null;
   public selectedReportUserReason: number = null;
-  public reportListingReasonMessage: string;
   public reportUserReasonMessage: string;
   private modal: NgbModalRef;
   private active = true;
@@ -45,14 +43,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.connectionError = false;
-    });
-    this.itemService.getBanReasons().map(() => {
-
-    });
-    this.itemService.getBanReasons().takeWhile(() => {
-      return this.active;
-    }).subscribe((data) => {
-      this.listingBanReasons = data;
     });
     this.userService.getBanReasons().takeWhile(() => {
       return this.active;
@@ -84,8 +74,6 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public resetModals() {
     this.selectedReportUserReason = null;
-    this.selectedReportListingReason = null;
-    this.reportListingReasonMessage = null;
     this.reportUserReasonMessage = null;
   }
 
@@ -94,26 +82,21 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.modal = this.modalService.open(targetModal);
   }
 
-  public selectReportListingReason(id: number): void {
-    this.selectedReportListingReason = id;
-  }
-
   public selectReportUserReason(id: number): void {
     this.selectedReportUserReason = id;
   }
 
   public reportListingAction(): void {
-    this.itemService.reportListing(this.currentConversation.item.legacyId,
-      this.reportListingReasonMessage,
-      this.selectedReportListingReason,
-      this.currentConversation.legacyId)
-    .takeWhile(() => {
-      return this.active;
-    }).subscribe(() => {
-      this.trackingService.track(TrackingService.PRODUCT_REPPORTED,
-        {product_id: this.currentConversation.item.id, reason_id: this.selectedReportListingReason});
-      this.modal.close();
-      this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
+    this.modalService.open(ReportListingComponent).result.then((result: any) => {
+      this.itemService.reportListing(this.currentConversation.item.legacyId,
+        result.message,
+        result.reason,
+        this.currentConversation.legacyId
+      ).subscribe(() => {
+        this.trackingService.track(TrackingService.PRODUCT_REPPORTED,
+          {product_id: this.currentConversation.item.id, reason_id: result.reason});
+        this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
+      });
     });
   }
 
@@ -140,7 +123,8 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.eventService.emit(EventService.CONVERSATION_ARCHIVED, this.currentConversation);
         this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
       });
-    }, () => {});
+    }, () => {
+    });
   }
 
 }
