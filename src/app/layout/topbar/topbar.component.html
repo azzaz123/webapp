@@ -2,13 +2,20 @@
   <img src="/assets/images/logo-icon@2x.png" alt="">
 </a>
 <img class="topbar-logo" src="/assets/images/logo.png" alt="">
-<div ngbDropdown class="topbar-menu">
-  <span>{{user?.microName}}</span>
-  <img class="topbar-avatar"
-       ngbDropdownToggle
-       [src]="user?.image.urls_by_size.small"
-       [alt]="user?.microName">
-  <div class="dropdown-menu dropdown-menu-right">
-    <a target="_blank" href="/" class="dropdown-item" i18n>Messages</a>
+
+<div class="topbar-menu">
+  <div class="topbar-sections">
+    <a href="https://es.wallapop.com">Home</a>
+    <a href="/" class="active">Messages</a>
+  </div>
+  <span class="topbar-user-name">{{user?.microName}}</span>
+  <div class="topbar-menu-dropdown"  ngbDropdown >
+    <img class="topbar-avatar"
+         ngbDropdownToggle
+         [src]="user?.image.urls_by_size.small"
+         [alt]="user?.microName">
+    <div class="dropdown-menu dropdown-menu-right">
+      <a target="_blank" href="/" class="dropdown-item" i18n>Messages</a>
+    </div>
   </div>
 </div>
