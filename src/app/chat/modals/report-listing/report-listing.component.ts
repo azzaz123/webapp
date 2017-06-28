@@ -4,8 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-report-listing',
-  templateUrl: './report-listing.component.html',
-  styleUrls: ['./report-listing.component.scss']
+  templateUrl: './report-listing.component.html'
 })
 export class ReportListingComponent implements OnInit {
 

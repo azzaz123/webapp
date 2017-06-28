@@ -5,8 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-report-user',
-  templateUrl: './report-user.component.html',
-  styleUrls: ['./report-user.component.scss']
+  templateUrl: './report-user.component.html'
 })
 export class ReportUserComponent implements OnInit {
 
