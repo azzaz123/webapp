@@ -11,6 +11,7 @@ import { CoreModule } from './core/core.module';
 import { CookieModule } from 'ngx-cookie';
 import { PROVIDERS } from './providers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   imports: [
     ShieldModule.forRoot({
-      cacheAllConversations: false
+      cacheAllConversations: false,
+      environment: environment
     }),
     BrowserAnimationsModule,
     ChatModule,
