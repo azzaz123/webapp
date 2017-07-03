@@ -15,200 +15,37 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <translationbundle lang="es">
-  <translation id="1024885073443175859">Citas</translation>
-  <translation id="313850810538580916">Sin conexión</translation>
-  <translation id="8870711330013548872">Conectado</translation>
+  <translation id="33149636091572968">Cargar más</translation>
   <translation id="8886737317292020570">Archivar conversación</translation>
   <translation id="5298644184637702922">Se procederá a archivar la conversación.</translation>
-  <translation id="5918739414324010673">Reportar usuario</translation>
+  <translation id="2159130950882492111">Cancelar</translation>
+  <translation id="1055686627716339120">Archivar</translation>
+  <translation id="5926864560020170283">Quiero denunciar este producto porque...</translation>
+  <translation id="2536916799548969987">Reportar</translation>
   <translation id="568597304214607466">Estoy reportando a este usuario porque...</translation>
+  <translation id="313850810538580916">Sin conexión</translation>
+  <translation id="8870711330013548872">Conectado</translation>
+  <translation id="2711435905501432474">Denunciar producto</translation>
+  <translation id="5918739414324010673">Reportar usuario</translation>
   <translation id="3437274703198746531">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
   <translation id="3325766019344626759">No hay mensajes</translation>
   <translation id="6334569300046707546">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
-  <translation id="3062666839097397576">Cargando mensajes...</translation>
-  <translation id="7579940623714391431">Eliminar conversación</translation>
-  <translation id="2159130950882492111">Cancelar</translation>
-  <translation id="1055686627716339120">Archivar</translation>
-  <translation id="6561205061627523781">Bloquear a <ph name="USER_NAME"><ex>USER_NAME</ex></ph></translation>
-  <translation id="3100977840810088575">Bloquearás la interacción con el usuario y no podrás comunicarte más con él. ¿Quieres continuar?</translation>
-  <translation id="420763834450076269">Bloquear</translation>
+  <translation id="4896863464728200563">Escribe un mensaje...</translation>
+  <translation id="3093507871243266697">Esperando red...</translation>
+  <translation id="3208980041287937682">Conectado</translation>
   <translation id="4095254644079775415" desc="The distance between the user and the item">A <ph name="DISTANCE"><ex>DISTANCE</ex></ph>km de ti</translation>
   <translation id="9119757647796405986">Sin localización</translation>
   <translation id="1798778629973365531">Sin denuncias</translation>
   <translation id="5717387697033354741">Una denuncia</translation>
   <translation id="4681042121098831040"><ph name="TOTAL_NUMBER"><ex>TOTAL_NUMBER</ex></ph> denuncias</translation>
-  <translation id="2020278898288143668">En venta</translation>
-  <translation id="4636699111573030980">+<ph name="ITEMS_COUNT"><ex>ITEMS_COUNT</ex></ph> más</translation>
-  <translation id="7251596190905542711">Buscar artículos</translation>
-  <translation id="6901142032077238858">Ver perfil</translation>
+  <translation id="3894950702316166331">Cargando...</translation>
   <translation id="1859131936150262113">Ausente</translation>
   <translation id="6774569963114915498">Espectador</translation>
-  <translation id="2711435905501432474">Denunciar producto</translation>
-  <translation id="5926864560020170283">Quiero denunciar este producto porque...</translation>
   <translation id="8204176479746810612">Activo</translation>
   <translation id="2674821313466677845">Estrella</translation>
   <translation id="7905190705958643281">Aprendiz</translation>
-  <translation id="7107173882048622835">Subir nuevo coche</translation>
-  <translation id="7691138136265271231">Información Básica</translation>
-  <translation id="2559885490456050359">Marca</translation>
-  <translation id="1464072562214937907">Año de matriculación</translation>
-  <translation id="1141886420788473147">Modelo</translation>
-  <translation id="8894377483833272091">Precio</translation>
-  <translation id="8477575846224671725">Título</translation>
-  <translation id="2398655724453891613">Más información</translation>
-  <translation id="2724055831234181057">Versión</translation>
-  <translation id="764453674498400202">Número de plazas</translation>
-  <translation id="8660789270969799469">Combustible</translation>
-  <translation id="6639719078865772828">Gasolina</translation>
-  <translation id="4315897679023301428">Diesel</translation>
-  <translation id="3250359485015452319">Eléctrico</translation>
-  <translation id="7040288612202036661">Otros</translation>
-  <translation id="2911671916474065765">Cambio de marchas</translation>
-  <translation id="2233560223291461480">Manual</translation>
-  <translation id="810888510148304696">Automático</translation>
-  <translation id="3906132697662863149">Tipo de coche</translation>
-  <translation id="2768397986336200266">Km</translation>
-  <translation id="3787220392101573655">Cuéntanos más</translation>
-  <translation id="2544569632476723854">Extras</translation>
-  <translation id="4481247545141831368">Precio no negociable</translation>
-  <translation id="8544700711032993437">Hago envíos</translation>
-  <translation id="1292901362619782619">Acepto intercambios</translation>
-  <translation id="8232451506721560502">Subir coche</translation>
-  <translation id="7142375867208106226">Productos de visibilidad</translation>
-  <translation id="1854942164025288405">Vuelve a poner tu coche en las mejores posiciones del muro y aparece el primero en las búsquedas. Con esta opción el anuncio se verá como si estuviese recién subido.</translation>
-  <translation id="475908285360167221">Esta opción hará que tu coche sea más visible en el muro con una ficha de producto exclusiva. Además incorporará el botón de chat directamente en el muro, para que conseguir un lead sea mucho más sencillo.</translation>
-  <translation id="6538966972202302380">Autorenovación</translation>
-  <translation id="7638822814542623399">Si no quieres estar pendiente de cuándo caducan tus destacados, compra uno de nuestros packs y olvídate de renovarlo.</translation>
-  <translation id="6962699013778688473">Continuar</translation>
-  <translation id="6396796938373967016">Promociona tus productos</translation>
-  <translation id="8021797704961151131">Hazte con alguna de nuestras opciones de visibilidad y consigue más leads por muy poco.</translation>
-  <translation id="7160990280581112203">Ahorra un  <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>%</translation>
-  <translation id="8021031842722965381">Priorizados</translation>
-  <translation id="8097362440562294328">Ahorra un  <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>%</translation>
-  <translation id="8513558430350219747" desc="pack page" meaning="type">Destacado</translation>
-  <translation id="2956056528330437143">Destacados</translation>
-  <translation id="5976826609769548977">Paquetes seleccionados</translation>
-  <translation id="6612336543198829447"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Priorizados</translation>
-  <translation id="6534539207821425795"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Destacados</translation>
-  <translation id="3448462145758383019">Total</translation>
-  <translation id="8700121026680200191">Borrar</translation>
-  <translation id="5077922157304992269">Revisar y confirmar</translation>
-  <translation id="8291697688138273203">Cuéntame más sobre las opciones de visibilidad</translation>
-  <translation id="2954756221793137916">Detalles del pedido</translation>
-  <translation id="6784365883106685930">Resumen del pedido</translation>
-  <translation id="3521411922357728471">Precio total</translation>
-  <translation id="7274286978511770772">Continuar el pago</translation>
-  <translation id="1137120387899046074">Detalles del pago</translation>
-  <translation id="5722353260643724736">Método de pago</translation>
-  <translation id="5935484553436714139">Tarjeta de crédito</translation>
-  <translation id="1983919687485720205">Pagar con otra tarjeta</translation>
   <translation id="4338022632676445411">Vendido</translation>
-  <translation id="2874924373232293084">Reservar</translation>
-  <translation id="8016649850785953911">No reservar</translation>
-  <translation id="5657739434954342535">Borrar producto</translation>
-  <translation id="4483646165610274603">Se borrará permanentemente el producto.</translation>
-  <translation id="7022070615528435141">Borrar</translation>
-  <translation id="5112037422043971210">Arrastra aquí las imágenes del coche</translation>
-  <translation id="1272721090146090815">
-    Has alcanzado el mímite de 8 fotos por producto.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
-    Elimina alguna para añadir nuevas.
-  </translation>
-  <translation id="2438717892866864035">Fotos del producto</translation>
-  <translation id="4184195820958238018">Cambiar el orden de las fotos</translation>
-  <translation id="1992787912969415208">Foto principal</translation>
-  <translation id="8276299079761957679">Promociona tus coches</translation>
-  <translation id="7548868438721173013">Puedes conseguir hasta 5 veces más de alcance en tus anuncios con nuestras opciones de visibilidad.</translation>
-  <translation id="5478075170110647137">¡Pruébalo ahora!</translation>
-  <translation id="6538064602291968334">Productos destacados (<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)</translation>
-  <translation id="7011425206383801543">más</translation>
-  <translation id="4700468049350998540">Productos priorizados (<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)</translation>
-  <translation id="4896863464728200563">Escribe un mensaje...</translation>
-  <translation id="3093507871243266697">Esperando red...</translation>
-  <translation id="3208980041287937682">Conectado</translation>
-  <translation id="1064116145041965896">Cita</translation>
-  <translation id="7252908727899212022">Marcar como Pendiente</translation>
-  <translation id="8753092784115704500">Procesar todo</translation>
-  <translation id="4965764680155209445">Se marcarán todos los elementos en la página como Procesados.</translation>
-  <translation id="8108541630841000132">Información de facturación</translation>
-  <translation id="6482815137654580311">Editar</translation>
-  <translation id="3768927257183755959">Guardar</translation>
-  <translation id="8953033926734869941">Nombre</translation>
-  <translation id="2045112409653231798">Apellido</translation>
-  <translation id="6765071518635771784">Nombre de la empresa</translation>
-  <translation id="4768749765465246664">Email</translation>
-  <translation id="3262236020277300799">Teléfono</translation>
-  <translation id="6304432362546770951">Dirección</translation>
-  <translation id="516176798986294299">País</translation>
-  <translation id="2314075913167237221">Ciudad</translation>
-  <translation id="1678546446002001084">CIF</translation>
-  <translation id="7647550512660678493">Código postal</translation>
-  <translation id="3468634060956683308">¡Te has quedado sin crédito! Si quieres renovar los destacados de tus coches,</translation>
-  <translation id="207568962253297880">compra un pack de visibilidad ahora</translation>
-  <translation id="1698347509364462795" desc="Title of login page">Entrar a wallapop</translation>
-  <translation id="7399403064275679264">Introduzca sus datos abajo</translation>
-  <translation id="1431416938026210429" desc="Password input placeholder">Contraseña</translation>
-  <translation id="2454050363478003966" desc="Button call to action for login">Iniciar sesión</translation>
-  <translation id="2288513108450439427">Soporte</translation>
-  <translation id="3797778920049399855">Cerrar sesión</translation>
-  <translation id="4186558932365555160">Productos seleccionados</translation>
-  <translation id="6959076008609274211">Priorizado</translation>
-  <translation id="5599513168032987944">Destacado</translation>
-  <translation id="5780452227890097182">Autorenovar</translation>
-  <translation id="698726728865691771">Priorizados necesarios</translation>
-  <translation id="2370945126424580852">Destacados necesarios</translation>
-  <translation id="8785986139415456183">Priorizados disponibles</translation>
-  <translation id="697271662981461238">Destacados disponibles</translation>
-  <translation id="1686835230135293920">Aplicar visibilidad</translation>
-  <translation id="5618284898564089879">Comprar packs de visibilidad</translation>
-  <translation id="4123685657134618765">Aplicar cambios</translation>
-  <translation id="3762527362373672599">¡Enhorabuena!</translation>
-  <translation id="7230759731870492712">Tu compra se ha realizado con éxito. Vuelve al panel y empieza a destacar tus coches</translation>
-  <translation id="3790351978262872462">¡Disculpa!</translation>
-  <translation id="5182283522329739261">Tu compra no se ha realizado correctamente. Por favor, intenta otra vez.</translation>
-  <translation id="6932865105766151309">Subir</translation>
-  <translation id="3455053346832424125">Comprar visibilidad</translation>
-  <translation id="5262427597279775777">1 producto seleccionado</translation>
-  <translation id="3618067650338827326"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
-  <translation id="7333169796780979947" desc="button" meaning="call to action">Destácalo</translation>
-  <translation id="5986661969636412922">Denunciar</translation>
-  <translation id="2821179408673282599">Inicio</translation>
   <translation id="6452372740127749380">Mensajes</translation>
-  <translation id="8848709900682152607">Marcar todo como Procesado</translation>
-  <translation id="4749295647449765550">Procesado</translation>
-  <translation id="4588618843305891254">Catálogo</translation>
-  <translation id="939504866402110526">No tienes productos a la venta</translation>
-  <translation id="4124578665592608975">No tienes productos vendidos</translation>
-  <translation id="321759774936322640">Borrar productos</translation>
-  <translation id="447264229278731832">Se borrarán permanentemente los productos.</translation>
-  <translation id="8607128558364427780">Reservar productos</translation>
-  <translation id="7498605020756139080">Se reservarán los productos.</translation>
-  <translation id="1453326809146594768">Marcar como vendidos</translation>
-  <translation id="6570363013146073520">Resumen</translation>
-  <translation id="2949150997160654358">Últimos 30 días</translation>
-  <translation id="4873149362496451858">Últimos 7 días</translation>
-  <translation id="4659351054806042125">Se marcarán los productos como vendidos.</translation>
-  <translation id="3827899188437516158">Teléfonos compartidos</translation>
-  <translation id="4416413576346763682">Pendiente</translation>
-  <translation id="5762151072276461448">Teléfonos</translation>
-  <translation id="1562584780596394495">Archivados</translation>
-  <translation id="2734780694152757859">Ver más</translation>
-  <translation id="8778531687214591857">Has procesado todos los contactos pendientes. ¡Buen trabajo!</translation>
-  <translation id="907136822175606758">Preguntas</translation>
-  <translation id="7885078324800871147">Ha contestado a las preguntas</translation>
-  <translation id="2123659921722214537">Visualizaciones</translation>
-  <translation id="6181907632373133266">Chats</translation>
-  <translation id="5221433357832879457">Tarea procesada</translation>
-  <translation id="5775346636203685655">Deshacer</translation>
-  <translation id="1620809997948206439">Llamadas</translation>
-  <translation id="4659038472514097164">Otros mensajes</translation>
-  <translation id="5248717555542428023">Usuario</translation>
-  <translation id="588284100849805066">Producto</translation>
-  <translation id="3973931101896534797">Fecha</translation>
-  <translation id="7410432243549869948">Duración</translation>
-  <translation id="467152698327190533">Procesar</translation>
-  <translation id="1101605949675282361">Todavía no tienes teléfonos</translation>
-  <translation id="5019699005801144911">Este usuario no ha respondido el cuestionario</translation>
-  <translation id="2020807334375818266">No tienes una conversación con este usuario</translation>
-  <translation id="6314007099242784066">Puntuación de usuario</translation>
-  <translation id="3806530088285207761">Ver todos los mensajes</translation>
+  <translation id="1064116145041965896">Cita</translation>
+  <translation id="2821179408673282599">Inicio</translation>
 </translationbundle>

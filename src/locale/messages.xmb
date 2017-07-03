@@ -21,200 +21,40 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <messagebundle>
-  <msg id="6452372740127749380">Messages</msg>
-  <msg id="8848709900682152607">Mark everything as Processed</msg>
-  <msg id="4416413576346763682">Pending</msg>
-  <msg id="4749295647449765550">Processed</msg>
-  <msg id="1024885073443175859">Meetings</msg>
-  <msg id="4659038472514097164">Other messages</msg>
-  <msg id="313850810538580916">Offline</msg>
-  <msg id="8870711330013548872">Online</msg>
-  <msg id="8886737317292020570">Archive conversation</msg>
-  <msg id="2711435905501432474">Report this Listing</msg>
-  <msg id="5918739414324010673">Report this User</msg>
-  <msg id="3437274703198746531">Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+  <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:12</source>Load more</msg>
+  <msg id="8886737317292020570"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:19</source>Archive conversation</msg>
+  <msg id="5298644184637702922"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will archive the conversation.</msg>
+  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source>Cancel</msg>
+  <msg id="1055686627716339120"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source>Archive</msg>
+  <msg id="5926864560020170283"><source>app/chat/modals/report-listing/report-listing.component.ts:20</source>I&apos;m reporting this listing because...</msg>
+  <msg id="2536916799548969987"><source>app/chat/modals/report-listing/report-listing.component.ts:27,28</source><source>app/chat/modals/report-user/report-user.component.ts:26,27</source>Report
+  </msg>
+  <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.ts:19</source>I&apos;m reporting this user because...</msg>
+  <msg id="313850810538580916"><source>app/chat/chat.component.ts:14</source>Offline</msg>
+  <msg id="8870711330013548872"><source>app/chat/chat.component.ts:15</source>Online</msg>
+  <msg id="2711435905501432474"><source>app/chat/chat.component.ts:20</source>Report this Listing</msg>
+  <msg id="5918739414324010673"><source>app/chat/chat.component.ts:21</source>Report this User</msg>
+  <msg id="3437274703198746531"><source>app/chat/chat.component.ts:32,33</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
         from the list on the left</msg>
-  <msg id="3325766019344626759">There are no messages</msg>
-  <msg id="6334569300046707546">Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+  <msg id="3325766019344626759"><source>app/chat/chat.component.ts:34</source>There are no messages</msg>
+  <msg id="6334569300046707546"><source>app/chat/chat.component.ts:35,36</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
         Try again later.</msg>
-  <msg id="5298644184637702922">This will archive the conversation.</msg>
-  <msg id="2159130950882492111">Cancel</msg>
-  <msg id="1055686627716339120">Archive</msg>
-  <msg id="6561205061627523781">Block <ph name="USER_NAME"><ex>USER_NAME</ex></ph></msg>
-  <msg id="3100977840810088575">This will block interaction with the user, and you won&apos;t be able to communicate with each other. Do you wish
-      to continue?</msg>
-  <msg id="420763834450076269">Block</msg>
-  <msg id="5926864560020170283">I&apos;m reporting this listing because...</msg>
-  <msg id="5986661969636412922">Report
-    </msg>
-  <msg id="568597304214607466">I&apos;m reporting this user because...</msg>
-  <msg id="4896863464728200563">Write a message...</msg>
-  <msg id="7251596190905542711">Search Items</msg>
-  <msg id="3093507871243266697">Waiting for network...</msg>
-  <msg id="3208980041287937682">Connected</msg>
-  <msg id="4095254644079775415" desc="The distance between the user and the item"><ph name="DISTANCE"><ex>DISTANCE</ex></ph>km from you</msg>
-  <msg id="9119757647796405986">No location</msg>
-  <msg id="1798778629973365531">No spam/scam reports</msg>
-  <msg id="5717387697033354741">One spam/scam report</msg>
-  <msg id="4681042121098831040"><ph name="TOTAL_NUMBER"><ex>TOTAL_NUMBER</ex></ph> spam/scam reports</msg>
-  <msg id="2020278898288143668">Selling</msg>
-  <msg id="4636699111573030980">+<ph name="ITEMS_COUNT"><ex>ITEMS_COUNT</ex></ph> More</msg>
-  <msg id="1859131936150262113">Inactive</msg>
-  <msg id="6774569963114915498">Lapsing</msg>
-  <msg id="8204176479746810612">Active</msg>
-  <msg id="2674821313466677845">Loyal</msg>
-  <msg id="7905190705958643281">Novice</msg>
-  <msg id="4338022632676445411">Sold</msg>
-  <msg id="1064116145041965896">Meeting</msg>
-  <msg id="7252908727899212022">Mark as Pending</msg>
-  <msg id="8753092784115704500">Process all</msg>
-  <msg id="4965764680155209445">This will process all the elements in this page.</msg>
-  <msg id="8108541630841000132">Billing Info</msg>
-  <msg id="6482815137654580311">Edit info</msg>
-  <msg id="3768927257183755959">Save</msg>
-  <msg id="8953033926734869941">Name</msg>
-  <msg id="2045112409653231798">Surname</msg>
-  <msg id="6765071518635771784">Company Name</msg>
-  <msg id="4768749765465246664">Email</msg>
-  <msg id="3262236020277300799">Phone</msg>
-  <msg id="6304432362546770951">Address</msg>
-  <msg id="516176798986294299">Country</msg>
-  <msg id="2314075913167237221">City</msg>
-  <msg id="1678546446002001084">CIF</msg>
-  <msg id="7647550512660678493">Postal Code</msg>
-  <msg id="3468634060956683308">You have run out of credit. If you want to renew your featured products</msg>
-  <msg id="207568962253297880">buy a visibility pack now</msg>
-  <msg id="1698347509364462795" desc="Title of login page">Login in wallapop</msg>
-  <msg id="7399403064275679264">Insert your data below</msg>
-  <msg id="1431416938026210429" desc="Password input placeholder">Password</msg>
-  <msg id="2454050363478003966" desc="Button call to action for login">Login</msg>
-  <msg id="2821179408673282599">Home</msg>
-  <msg id="5762151072276461448">Phones</msg>
-  <msg id="4588618843305891254">Catalog</msg>
-  <msg id="2288513108450439427">Support</msg>
-  <msg id="3797778920049399855">Logout</msg>
-  <msg id="4186558932365555160">Selected Products</msg>
-  <msg id="6959076008609274211">Boost</msg>
-  <msg id="5599513168032987944">Highlight</msg>
-  <msg id="5780452227890097182">Auto-Renew</msg>
-  <msg id="698726728865691771">Boosts Needed</msg>
-  <msg id="2370945126424580852">Highlights Needed</msg>
-  <msg id="8785986139415456183">Boosts Available</msg>
-  <msg id="697271662981461238">Highlights Available</msg>
-  <msg id="1686835230135293920">Apply visibility</msg>
-  <msg id="5618284898564089879">Buy visibility packs</msg>
-  <msg id="4123685657134618765">Apply changes</msg>
-  <msg id="3762527362373672599">Congratulations!</msg>
-  <msg id="7230759731870492712">Your purchase has been made successfully. Go back to the menu and start to feature your cars</msg>
-  <msg id="3790351978262872462">Sorry!</msg>
-  <msg id="5182283522329739261">Something went wrong with the payment. Please try again.</msg>
-  <msg id="6932865105766151309">Upload</msg>
-  <msg id="3455053346832424125">Buy visibility</msg>
-  <msg id="5262427597279775777">1 item selected</msg>
-  <msg id="3618067650338827326"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
-  <msg id="7333169796780979947" desc="button" meaning="call to action">Feature</msg>
-  <msg id="2874924373232293084">Reserve</msg>
-  <msg id="939504866402110526">You have no items uploaded yet</msg>
-  <msg id="4124578665592608975">You have&apos;nt sold any items yet</msg>
-  <msg id="321759774936322640">Delete items</msg>
-  <msg id="447264229278731832">The selected items will be permanently deleted.</msg>
-  <msg id="7022070615528435141">Delete</msg>
-  <msg id="8607128558364427780">Reserve items</msg>
-  <msg id="7498605020756139080">The selected items will be reserved.</msg>
-  <msg id="1453326809146594768">Sold items</msg>
-  <msg id="4659351054806042125">The selected items will be set al sold.</msg>
-  <msg id="7107173882048622835">Upload new car</msg>
-  <msg id="7691138136265271231">Basic Info</msg>
-  <msg id="2559885490456050359">Brand</msg>
-  <msg id="1141886420788473147">Model</msg>
-  <msg id="1464072562214937907">Year</msg>
-  <msg id="8894377483833272091">Price</msg>
-  <msg id="8477575846224671725">Headline of your ad</msg>
-  <msg id="2398655724453891613">Additional info</msg>
-  <msg id="2724055831234181057">Version</msg>
-  <msg id="764453674498400202">Number of seats</msg>
-  <msg id="8660789270969799469">Engine</msg>
-  <msg id="6639719078865772828">Gasoline</msg>
-  <msg id="4315897679023301428">Gasoil</msg>
-  <msg id="3250359485015452319">Electric</msg>
-  <msg id="7040288612202036661">Others</msg>
-  <msg id="2911671916474065765">Gear box</msg>
-  <msg id="2233560223291461480">Manual</msg>
-  <msg id="810888510148304696">Automatic</msg>
-  <msg id="3906132697662863149">Car Type</msg>
-  <msg id="2768397986336200266">Km</msg>
-  <msg id="3787220392101573655">Tell us more</msg>
-  <msg id="2544569632476723854">Terms</msg>
-  <msg id="4481247545141831368">Fixed Price</msg>
-  <msg id="8544700711032993437">Shipping allowed</msg>
-  <msg id="1292901362619782619">Accept trades</msg>
-  <msg id="8232451506721560502">List new car</msg>
-  <msg id="7142375867208106226">Visibility Products</msg>
-  <msg id="1854942164025288405">Put your car back in the best position on the wall and appear at the top of the search. With this option your ad will appear as if it has just been uploaded.</msg>
-  <msg id="475908285360167221">This option will make your car more visible and will stand out as an exclusive item. You can also add the chat button directly to your ad on the wall so getting leads will even easier.</msg>
-  <msg id="6538966972202302380">Autorenewal</msg>
-  <msg id="7638822814542623399">If you don&apos;t want to think about when your featured items run out you can buy one of our packs and forget about renewing your items.</msg>
-  <msg id="6962699013778688473">Continue</msg>
-  <msg id="6396796938373967016">Promote your items</msg>
-  <msg id="8021797704961151131">Sign up for one of our visibility options and get more leads for very little.</msg>
-  <msg id="7160990280581112203">Save <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>%</msg>
-  <msg id="8021031842722965381">Boosts</msg>
-  <msg id="8097362440562294328">Save <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>%</msg>
-  <msg id="8513558430350219747" desc="pack page" meaning="type">Highlight</msg>
-  <msg id="2956056528330437143">Highlights</msg>
-  <msg id="5935484553436714139">Credit card</msg>
-  <msg id="1983919687485720205">Pay with other card</msg>
-  <msg id="5976826609769548977">Selected packs</msg>
-  <msg id="6612336543198829447"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Boosts</msg>
-  <msg id="6534539207821425795"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Highlights</msg>
-  <msg id="3448462145758383019">Total</msg>
-  <msg id="8700121026680200191">Clear</msg>
-  <msg id="5077922157304992269">Check and confirm</msg>
-  <msg id="8291697688138273203">Tell me more about visibility options</msg>
-  <msg id="2954756221793137916">Order Details</msg>
-  <msg id="6784365883106685930">Order summary</msg>
-  <msg id="3521411922357728471">Total price</msg>
-  <msg id="7274286978511770772">Continue to Checkout</msg>
-  <msg id="1137120387899046074">Payment Details</msg>
-  <msg id="5722353260643724736">Payment method</msg>
-  <msg id="8016649850785953911">Unreserve</msg>
-  <msg id="5657739434954342535">Delete item</msg>
-  <msg id="4483646165610274603">This will permanently delete the item.</msg>
-  <msg id="5112037422043971210">Drop here your files to upload as a product photo</msg>
-  <msg id="1272721090146090815">
-        You have reached the limit of 8 photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
-        Remove one first if you want to add more.
-      </msg>
-  <msg id="2438717892866864035">Product Photos</msg>
-  <msg id="4184195820958238018">Change the order of the photos</msg>
-  <msg id="1992787912969415208">Primary Photo</msg>
-  <msg id="8276299079761957679">Feature your cars</msg>
-  <msg id="7548868438721173013">You can get up to 5 times more reach with your adverts with our visibility options.</msg>
-  <msg id="5478075170110647137">Try it now!</msg>
-  <msg id="4700468049350998540">Boosted Items (<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)</msg>
-  <msg id="7011425206383801543">more</msg>
-  <msg id="6538064602291968334">Highlighted Items (<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)</msg>
-  <msg id="6570363013146073520">Dashboard</msg>
-  <msg id="2949150997160654358">Last 30 days</msg>
-  <msg id="4873149362496451858">Last 7 days</msg>
-  <msg id="2734780694152757859">View all</msg>
-  <msg id="8778531687214591857">You have processed all the pending leads. Good job!</msg>
-  <msg id="907136822175606758">Questions</msg>
-  <msg id="7885078324800871147">Answered the questions</msg>
-  <msg id="2123659921722214537">Views</msg>
-  <msg id="6181907632373133266">Chats</msg>
-  <msg id="5221433357832879457">Task processed</msg>
-  <msg id="5775346636203685655">Undo</msg>
-  <msg id="3827899188437516158">Shared phones</msg>
-  <msg id="1620809997948206439">Phone calls</msg>
-  <msg id="5248717555542428023">Username</msg>
-  <msg id="588284100849805066">Product name</msg>
-  <msg id="3973931101896534797">Date</msg>
-  <msg id="7410432243549869948">Duration</msg>
-  <msg id="467152698327190533">Process</msg>
-  <msg id="1101605949675282361">You have no phone calls yet</msg>
-  <msg id="6314007099242784066">User rating</msg>
-  <msg id="5019699005801144911">This user has not answered the questionnaire</msg>
-  <msg id="2020807334375818266">You have no conversations with this user</msg>
-  <msg id="3806530088285207761">View all messages</msg>
+  <msg id="4896863464728200563"><source>app/chat/input/input.component.ts:2</source>Write a message...</msg>
+  <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.ts:3</source>Waiting for network...</msg>
+  <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.ts:4</source>Connected</msg>
+  <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/core/user/user/user.component.ts:13</source><ph name="DISTANCE"><ex>DISTANCE</ex></ph>km from you</msg>
+  <msg id="9119757647796405986"><source>app/core/user/user/user.component.ts:14</source>No location</msg>
+  <msg id="1798778629973365531"><source>app/core/user/user/user.component.ts:19</source>No spam/scam reports</msg>
+  <msg id="5717387697033354741"><source>app/core/user/user/user.component.ts:20</source>One spam/scam report</msg>
+  <msg id="4681042121098831040"><source>app/core/user/user/user.component.ts:22</source><ph name="TOTAL_NUMBER"><ex>TOTAL_NUMBER</ex></ph> spam/scam reports</msg>
+  <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
+  <msg id="1859131936150262113"><source>app/core/user/user-type/user-type.component.ts:2</source>Inactive</msg>
+  <msg id="6774569963114915498"><source>app/core/user/user-type/user-type.component.ts:3</source>Lapsing</msg>
+  <msg id="8204176479746810612"><source>app/core/user/user-type/user-type.component.ts:4</source>Active</msg>
+  <msg id="2674821313466677845"><source>app/core/user/user-type/user-type.component.ts:5</source>Loyal</msg>
+  <msg id="7905190705958643281"><source>app/core/user/user-type/user-type.component.ts:6</source>Novice</msg>
+  <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
+  <msg id="6452372740127749380"><source>app/chat/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:9</source>Messages</msg>
+  <msg id="1064116145041965896"><source>app/chat/conversation/conversation.component.ts:34</source>Meeting</msg>
+  <msg id="2821179408673282599"><source>app/layout/topbar/topbar.component.ts:8</source>Home</msg>
 </messagebundle>
