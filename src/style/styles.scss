@@ -14,9 +14,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.nav-link {
-  padding: 0;
-}
+
 :focus {
   outline: none;
 }
@@ -56,26 +54,6 @@ button:focus {
   outline: none;
 }
 
-/* Dark theme */
-.list-group-item {
-  background-color: transparent;
-  border: 0;
-}
-
-.nav.filters-nav {
-  a {
-    color: $grey-300;
-    &.active {
-      color: $white;
-    }
-  }
-}
-h2 {
-  font-size: 22px;
-  color: $white;
-  letter-spacing: 0.5;
-  font-weight:bold;
-}
 #right-panel {
   .card {
     background-color: $white;

@@ -31,7 +31,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
   public page = 1;
-  public filter: string;
   private active = true;
 
   constructor(public conversationService: ConversationService,
@@ -56,27 +55,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.route.queryParams.takeWhile(() => {
-      return this.active;
-    }).subscribe((params: any) => {
-      this.filter = params.filterBy;
-      this.getConversations();
-    });
-    this.handleArchiveConversations();
+    this.getConversations();
+    this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, () => this.setCurrentConversation(null));
     this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
-    this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, () => {
-      if (this.archive) {
-        this.archive = false;
-        this.page = 1;
-        this.getConversations();
-      }
-    });
-  }
-
-  private handleArchiveConversations() {
-    this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, (conversation: Conversation) => {
-      this.setCurrentConversation(null);
-    });
   }
 
   ngOnDestroy() {
@@ -96,13 +77,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (this.conversationsSubscription) {
       this.conversationsSubscription.unsubscribe();
     }
-    let filters: Filter[];
-    if (this.filter === 'others') {
-      filters = Filters.OTHERS;
-    } else if (this.filter === 'meetings') {
-      filters = Filters.MEETINGS;
-    }
-    this.conversationsSubscription = this.conversationService.getPage(this.page, this.archive, filters).takeWhile(() => {
+    this.conversationsSubscription = this.conversationService.getPage(this.page, this.archive).takeWhile(() => {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
       if (this.archive) {
@@ -129,12 +104,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     }).subscribe((params: any) => {
       this.currentConversationSet = true;
       const conversationId: string = params.c || this.userService.queryParams.c;
-      const archive = params.archive === 'true';
-      const page = this.conversationService.getConversationPage(conversationId, archive);
+      const page = this.conversationService.getConversationPage(conversationId);
       if (page !== -1) {
-        if (archive) {
-          this.filterByArchived(true);
-        }
         if (page > 1) {
           for (let i = 2; i <= page; i++) {
             this.loadMore();
@@ -172,14 +143,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   public setCurrentConversation(conversation: Conversation) {
     this.currentConversation.emit(conversation);
     this.conversation = conversation;
-  }
-
-  public filterByArchived(archive: boolean) {
-    this.archive = archive;
-    this.page = 1;
-    this.loading = true;
-    this.setCurrentConversation(null);
-    this.getConversations();
   }
 
 }

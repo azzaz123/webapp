@@ -1,16 +1,5 @@
 @import "../../../style/_common.scss";
 
-$title-height: 75px;
-$filters-nav-height: 38px;
-
-h2 {
-  color: $white;
-  margin: $spacing;
-  font-weight: bold;
-  font-size: $font-size-LL;
-  letter-spacing: $letter-spacing;
-}
-
 .scroll-panel {
   display: block;
   height: calc(100vh - #{$topbar-height});
@@ -19,32 +8,12 @@ h2 {
   border-right: 1px solid $grey-100;
 }
 
-.nav.filters-nav {
-  margin-left: $spacing;
-}
-
-#filter {
-  .filtered {
-    margin: $spacing;
-  }
-}
-
-tsl-process-all-button {
-  float: right;
-  margin-top: 10px;
-  margin-right: $spacing-S;
-}
-
 #loader {
   padding-top: $spacing;
   md-icon {
     width: 339px;
     height: 487px;
   }
-}
-
-.separator {
-  margin-left: $spacing;
 }
 
 .load-more-container {
