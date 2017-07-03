@@ -1,12 +1,12 @@
-@import "../../../style/common";
+@import "../../../style/_common.scss";
 
 :host {
   display: block;
-  height: 60px;
+  height: $topbar-height;
   background-color: $corporate;
   position: relative;
   text-align: center;
-  line-height: 60px;
+  line-height: $topbar-height;
 }
 .topbar-user-name {
   font-weight: bold;
