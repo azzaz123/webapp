@@ -11,13 +11,12 @@ export class TopbarComponent implements OnInit {
 
   public user: User;
 
-  constructor(public userService: UserService) {
+  constructor(public userService: UserService) { }
+
+  ngOnInit() {
     this.userService.me().subscribe((user) => {
       this.user = user;
     });
-  }
-
-  ngOnInit() {
   }
 
 }
