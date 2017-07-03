@@ -16,6 +16,9 @@ import { ItemModule } from '../core/item/item.module';
 import { UserModule } from '../core/user/user.module';
 import { MessageComponent } from './message/message.component';
 import { ConversationComponent } from './conversation/conversation.component';
+import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
+import { ReportListingComponent } from './modals/report-listing/report-listing.component';
+import { ReportUserComponent } from './modals/report-user/report-user.component';
 
 @NgModule({
   imports: [
@@ -40,7 +43,15 @@ import { ConversationComponent } from './conversation/conversation.component';
     MessagesPanelComponent,
     InputComponent,
     ConnectionAlertComponent,
-    ItemComponent
+    ItemComponent,
+    ArchiveConversationComponent,
+    ReportListingComponent,
+    ReportUserComponent
+  ],
+  entryComponents: [
+    ArchiveConversationComponent,
+    ReportListingComponent,
+    ReportUserComponent
   ]
 })
 export class ChatModule {
