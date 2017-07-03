@@ -3,11 +3,11 @@
 :host {
   display: block;
   position: relative;
-  height: calc(100vh - #{$chat-topbar-height + $chat-input});
+  height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
 }
 
 .messages-panel-container {
-  max-height: calc(100vh - #{$chat-topbar-height + $chat-input});
+  max-height: calc(100vh - #{$chat-topbar-height + $chat-input + $topbar-height});
   position: absolute;
   bottom: 0;
   display: block;
@@ -22,7 +22,7 @@ h6 {
   text-align: center;
   margin: $spacing 0;
   text-transform: uppercase;
-  color: $grey-200;
+  color: $grey-300;
   font-weight: bold;
   font-size: $font-size-XS;
 }

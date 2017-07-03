@@ -8,24 +8,24 @@
 #left-panel {
   position: relative;
   float: left;
-  background-color: $grey-1000;
+  background-color: $white;
   width: $left-panel-width;
 }
 
 #center-panel {
   margin-left: $left-panel-width;
   margin-right: $right-panel-width;
-  background-color: $grey-900;
+  background-color: $white;
 }
 
 #right-panel {
   overflow-y: auto;
-  height: 100vh;
+  height: calc(100vh - #{$topbar-height});
   float: right;
   width: $right-panel-width;
   padding: $spacing;
-  background-color: $grey-900;
-  border-left: 1px solid $grey-1000;
+  background-color: $grey-50;
+  border-left: 1px solid $grey-100;
   tsl-user {
     margin-bottom: $spacing;
   }
@@ -34,12 +34,13 @@
 #top-bar {
   position: relative;
   padding: $spacing;
-  border-bottom: 1px solid $grey-1000;
+  border-bottom: 1px solid $grey-50;
   z-index: 99;
-  h5, span {
-    color: $white;
+  span {
+    color: $grey-700;
   }
   h5 {
+    color: $grey-900;
     font-size: $font-size;
     font-weight: bold;
   }
@@ -52,7 +53,7 @@
   height: 100vh;
   margin-left: $left-panel-width;
   position: relative;
-  background: $grey-900;
+  background: $white;
   .content {
     @include in-the-middle;
     text-align: center;

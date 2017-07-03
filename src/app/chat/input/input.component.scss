@@ -2,11 +2,9 @@
 
 form {
   $input-height: 50px;
-  height: $input-height + $spacing;
+  height: $input-height;
   position: relative;
-  margin: $spacing;
   textarea {
-    border-radius: $border-radius;
     max-height: $input-height;
     width: 100%;
     height: $input-height;

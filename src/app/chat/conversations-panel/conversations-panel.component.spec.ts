@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { HaversineService } from 'ng2-haversine';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 describe('Component: ConversationsPanel', () => {
 
@@ -35,7 +36,8 @@ describe('Component: ConversationsPanel', () => {
       imports: [
         MomentModule,
         ShieldModule.forRoot({
-          cacheAllConversations: false
+          cacheAllConversations: false,
+          environment: environment
         })
       ],
       declarations: [ConversationsPanelComponent, ConversationComponent],
