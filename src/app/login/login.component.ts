@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginResponse } from 'shield';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ const TEST_INSTALLATION_TYPE: string = 'WEB';
   styleUrls: ['./login.component.scss']
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   public loginForm: FormGroup;
   public loading: boolean;
@@ -25,6 +25,12 @@ export class LoginComponent {
       installationType: [TEST_INSTALLATION_TYPE],
       password: ['', [Validators.required]]
     });
+  }
+
+  ngOnInit() {
+    if (this.userService.isLogged) {
+      this.router.navigate(['/chat']);
+    }
   }
 
   public onSubmit() {
