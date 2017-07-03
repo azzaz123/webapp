@@ -13,12 +13,12 @@ dependencies:
     - yarn
 deployment:
   dev:
-    branch: /feature.*/
+    branch: develop
     commands:
       - npm run builddev
       - aws s3 sync dist s3://web.dev.wallapop.com --delete
   beta:
-    branch: develop
+    branch: beta
     commands:
       - npm run buildbeta
       - aws s3 sync dist s3://web.beta.wallapop.com --delete
