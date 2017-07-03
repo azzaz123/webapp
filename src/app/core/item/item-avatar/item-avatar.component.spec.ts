@@ -2,7 +2,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemAvatarComponent } from './item-avatar.component';
-import { SanitizedBackgroundDirective } from '../../../shared/sanitized-background/sanitized-background.directive';
+import { SanitizedBackgroundDirective } from 'shield';
 import { MdIconModule } from '@angular/material';
 import {
   MOCK_ITEM, ITEM_MAIN_IMAGE, USER_ID,
