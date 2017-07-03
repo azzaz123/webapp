@@ -5,10 +5,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "builddev": "ng build --env=dev",
-    "buildbeta": "ng build --env=beta",
-    "buildprod": "ng build --env=prod",
+    "builddev": "ng build --env=dev --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
+    "buildbeta": "ng build --env=beta --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
+    "buildprod": "ng build --prod --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
     "i18n": "ng-xi18n -p src/tsconfig.app.json --i18nFormat=xmb",
+    "serve": "ng serve --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
     "test": "ng test --watch=false  --no-progress",
     "lint": "ng lint",
     "e2e": "ng e2e"
