@@ -5,7 +5,7 @@ import { CookieModule } from 'ngx-cookie';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
-import { TrackingModule } from './tracking/tracking.module';
+import { TrackingModule } from 'shield';
 
 @NgModule({
   imports: [
