@@ -113,13 +113,8 @@ describe('Component: ConversationsPanel', () => {
         it('should set conversations', () => {
           expect(component.conversations).toEqual(CONVERSATIONS);
         });
-        it('should track the ConversationListActive if the archive is set to false', () => {
+        it('should track the ConversationListActive', () => {
           expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
-        });
-        it('should track the ConversationListActive if the archive is set to true', () => {
-          component.archive = true;
-          component['getConversations']();
-          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_LIST_PROCESSED_LOADED);
         });
         it('should call setCurrentConversationFromQueryParams', () => {
           expect(component['setCurrentConversationFromQueryParams']).toHaveBeenCalled();

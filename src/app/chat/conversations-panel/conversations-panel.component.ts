@@ -1,14 +1,5 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import {
-  Conversation,
-  EventService,
-  Message,
-  UserService,
-  ConversationService,
-  Filter,
-  Filters,
-  TrackingService
-} from 'shield';
+import { Conversation, ConversationService, EventService, Message, TrackingService, UserService } from 'shield';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -26,7 +17,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private conversation: Conversation;
   public conversations: Array<Conversation> = [];
-  public archive = false;
   private _loading = false;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
@@ -77,14 +67,10 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (this.conversationsSubscription) {
       this.conversationsSubscription.unsubscribe();
     }
-    this.conversationsSubscription = this.conversationService.getPage(this.page, this.archive).takeWhile(() => {
+    this.conversationsSubscription = this.conversationService.getPage(this.page).takeWhile(() => {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
-      if (this.archive) {
-        this.trackingService.track(TrackingService.CONVERSATION_LIST_PROCESSED_LOADED);
-      } else {
-        this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
-      }
+      this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
       if (conversations && conversations.length > 0) {
         this.conversations = conversations;
         this.loading = false;
