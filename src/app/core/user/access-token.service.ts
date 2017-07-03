@@ -16,7 +16,7 @@ export class AccessTokenService implements IAccessTokenService {
   }
 
   public deleteAccessToken() {
-    this.cookieService.remove('accessToken')
+    this.cookieService.remove('accessToken');
     this._accessToken = null;
   }
 

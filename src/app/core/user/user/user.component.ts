@@ -10,7 +10,6 @@ export class UserComponent {
 
   @Input() user: User;
   @Input() phone: string;
-  @Input() callsPanel: boolean;
 
   constructor() {
   }
