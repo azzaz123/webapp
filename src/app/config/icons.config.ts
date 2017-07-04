@@ -25,6 +25,10 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('report-listing-6', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/picture.svg'));
   mdIconRegistry.addSvgIcon('report-listing-7', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/food.svg'));
   mdIconRegistry.addSvgIcon('report-listing-8', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/drugs.svg'));
+  mdIconRegistry.addSvgIcon('report-listing-9', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/duplicated.svg'));
+  mdIconRegistry.addSvgIcon('report-listing-10', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/forbidden.svg'));
+  mdIconRegistry.addSvgIcon('report-listing-11', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/resale.svg'));
+  mdIconRegistry.addSvgIcon('report-listing-12', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/ad.svg'));
   mdIconRegistry.addSvgIcon('report-user-4', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/suspicious.svg'));
   mdIconRegistry.addSvgIcon('report-user-3', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/scam.svg'));
   mdIconRegistry.addSvgIcon('report-user-6', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/no-show.svg'));

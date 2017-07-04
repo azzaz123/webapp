@@ -10,8 +10,11 @@
 }
 
 .report-ban-reason {
-  &.selected md-icon g g {
-    fill: $corporate;
+  &.selected md-icon {
+    g g, path {
+      fill: $corporate;
+    }
+
   }
   md-icon g g {
     fill: $grey-800;
