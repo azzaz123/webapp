@@ -21,9 +21,6 @@ $menu-width-and-spacing: 10px;
   }
   &:hover {
     background-color: rgba($grey-100, .5);
-    .badge-pill {
-      display: none;
-    }
   }
 }
 .conversation-info {
