@@ -1,28 +1,26 @@
 <div class="modal-body center-heading">
+  <h1 i18n>Report</h1>
   <div class="modal-close" (click)="activeModal.dismiss()">
     <md-icon svgIcon="cross"></md-icon>
   </div>
-  <div *ngFor="let reason of listingBanReasons"
-       [ngClass]="{selected: selectedReportListingReason === reason.id}"
-       class="report-ban-reason"
-       (click)="selectReportListingReason(reason.id)">
-    <div class="ban-reason-icon-container">
-      <md-icon svgIcon="report-listing-{{reason.id}}"></md-icon>
+  <div class="scroll">
+    <div [ngClass]="{selected: selectedReportListingReason === reason.id}"
+         class="report-ban-reason row align-items-center"
+         (click)="selectReportListingReason(reason.id)" *ngFor="let reason of listingBanReasons">
+      <div class="col-3">
+        <div class="ban-reason-icon-container">
+          <md-icon svgIcon="report-listing-{{reason.id}}"></md-icon>
+        </div>
+      </div>
+      <div class="col-auto label">
+        {{reason.label}}
+      </div>
     </div>
-    <div class="label-placeholder-top"></div>
-    <span>{{reason.label}}</span>
-    <div class="label-placeholder-bottom"></div>
   </div>
-  <div class="ban-reasons-placeholder"></div>
-  <textarea [(ngModel)]="reportListingReasonMessage"
-            class="report-listing-textarea"
-            *ngIf="selectedReportListingReason === 0"
-            i18n-placeholder placeholder="I'm reporting this listing because..."></textarea>
-</div>
-<div class="modal-footer centered">
+<div class="centered">
   <button type="button"
-          class="btn btn-corporate"
-          [disabled]="(!reportListingReasonMessage || reportListingReasonMessage.trim() === '') && selectedReportListingReason === 0"
+          class="btn btn-primary"
+          [disabled]="!selectedReportListingReason"
           (click)="close();"
           i18n>Report
   </button>
