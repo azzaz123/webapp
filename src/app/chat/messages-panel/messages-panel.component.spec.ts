@@ -67,4 +67,18 @@ describe('Component: MessagesPanel', () => {
 
   });
 
-});
+  describe('ngAfterViewChecked', () => {
+    it('should set scrollTop = scrollHeight', () => {
+      component.messagesPanel = {
+        nativeElement: {
+          scrollTop: 0,
+          scrollHeight: 100
+        }
+      };
+      component.ngAfterViewChecked();
+      expect(component.messagesPanel.nativeElement.scrollHeight).toBe(100);
+    });
+  });
+
+})
+;

@@ -80,3 +80,12 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     }
   }
 }
+
+.modal.report {
+  .modal-dialog, .modal-content {
+    max-width: 480px;
+  }
+  .modal-dialog {
+    margin-top: 50px;
+  }
+}
