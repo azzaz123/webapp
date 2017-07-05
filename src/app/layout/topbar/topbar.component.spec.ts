@@ -8,21 +8,25 @@ import { Observable } from 'rxjs/Observable';
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
+  let userService: UserService;
   let fixture: ComponentFixture<TopbarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule ],
-      providers: [ {
+      imports: [RouterTestingModule],
+      providers: [{
         provide: UserService, useValue: {
           me(): Observable<User> {
             return Observable.of(MOCK_USER);
+          },
+          logout() {
           }
         }
-      } ],
-      declarations: [ TopbarComponent ]
+      }],
+      declarations: [TopbarComponent]
     })
-      .compileComponents();
+    .compileComponents();
+    userService = TestBed.get(UserService);
   }));
 
   beforeEach(() => {
@@ -40,6 +44,15 @@ describe('TopbarComponent', () => {
       component.user = null;
       component.ngOnInit();
       expect(component.user).toBe(MOCK_USER);
+    });
+  });
+  describe('logout', () => {
+    beforeEach(() => {
+      spyOn(userService, 'logout');
+      component.logout();
+    });
+    it('should logout', () => {
+      expect(userService.logout).toHaveBeenCalled();
     });
   });
 
