@@ -42,11 +42,11 @@
   <msg id="4896863464728200563"><source>app/chat/input/input.component.ts:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.ts:3</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.ts:4</source>Connected</msg>
-  <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/core/user/user/user.component.ts:13</source><ph name="DISTANCE"><ex>DISTANCE</ex></ph>km from you</msg>
-  <msg id="9119757647796405986"><source>app/core/user/user/user.component.ts:14</source>No location</msg>
-  <msg id="1798778629973365531"><source>app/core/user/user/user.component.ts:19</source>No spam/scam reports</msg>
-  <msg id="5717387697033354741"><source>app/core/user/user/user.component.ts:20</source>One spam/scam report</msg>
-  <msg id="4681042121098831040"><source>app/core/user/user/user.component.ts:22</source><ph name="TOTAL_NUMBER"><ex>TOTAL_NUMBER</ex></ph> spam/scam reports</msg>
+  <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/core/user/user/user.component.ts:12</source><ph name="DISTANCE"><ex>DISTANCE</ex></ph>km from you</msg>
+  <msg id="9119757647796405986"><source>app/core/user/user/user.component.ts:13</source>No location</msg>
+  <msg id="1798778629973365531"><source>app/core/user/user/user.component.ts:18</source>No spam/scam reports</msg>
+  <msg id="5717387697033354741"><source>app/core/user/user/user.component.ts:19</source>One spam/scam report</msg>
+  <msg id="4681042121098831040"><source>app/core/user/user/user.component.ts:21</source><ph name="TOTAL_NUMBER"><ex>TOTAL_NUMBER</ex></ph> spam/scam reports</msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="1859131936150262113"><source>app/core/user/user-type/user-type.component.ts:2</source>Inactive</msg>
   <msg id="6774569963114915498"><source>app/core/user/user-type/user-type.component.ts:3</source>Lapsing</msg>
@@ -54,7 +54,8 @@
   <msg id="2674821313466677845"><source>app/core/user/user-type/user-type.component.ts:5</source>Loyal</msg>
   <msg id="7905190705958643281"><source>app/core/user/user-type/user-type.component.ts:6</source>Novice</msg>
   <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
-  <msg id="6452372740127749380"><source>app/chat/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:9</source>Messages</msg>
-  <msg id="1064116145041965896"><source>app/chat/conversation/conversation.component.ts:34</source>Meeting</msg>
+  <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:9</source>Messages</msg>
+  <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
   <msg id="2821179408673282599"><source>app/layout/topbar/topbar.component.ts:8</source>Home</msg>
+  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:18</source>Logout</msg>
 </messagebundle>
