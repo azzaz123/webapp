@@ -58,18 +58,11 @@ export class AppComponent implements OnInit {
     this.subscribeEvents();
     this.userService.checkUserStatus();
     this.notificationService.init();
-    this.getConversation(500008511);
   }
 
   private config() {
     configMoment(this.i18n.locale);
     configIcons(this.mdIconRegistry, this.sanitizer);
-  }
-
-  private getConversation(itemId: number) {
-    this.conversationService.getConversation(itemId).subscribe((r) => {
-      console.log(r.json().conversationId);
-    });
   }
 
   private subscribeEvents() {

@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'tsl-conversations-panel',
   templateUrl: './conversations-panel.component.html',
-  styleUrls: ['./conversations-panel.component.scss']
+  styleUrls: [ './conversations-panel.component.scss' ]
 })
 export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
@@ -48,6 +48,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.getConversations();
     this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, () => this.setCurrentConversation(null));
     this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
+    this.eventService.subscribe(EventService.FIND_CONVERSATION, (conversationId) => this.findConversation(conversationId));
   }
 
   ngOnDestroy() {
@@ -77,6 +78,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         if (!this.currentConversationSet) {
           this.setCurrentConversationFromQueryParams();
         }
+        this.conversationService.getConversation(23).subscribe((r) => {
+          this.eventService.emit(EventService.FIND_CONVERSATION, r.json());
+        });
       } else {
         this.conversations = [];
         this.loading = false;
@@ -106,6 +110,28 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  public findConversation(conversation: any) {
+    const foundConversation = _.find(this.conversations, {id: conversation.uuid});
+    console.log(conversation);
+    if (foundConversation) {
+      this.setCurrentConversation(foundConversation);
+    } else {
+      console.log('not');
+      const newConversation = new Conversation(
+        conversation.uuid,
+        conversation.conversationId,
+        conversation.modified_date,
+        conversation.expected_visit,
+        conversation.buyerUser,
+        conversation.item,
+        [],
+        null,
+        null
+      );
+      this.conversations.push(newConversation);
+    }
   }
 
   private scrollToActive() {
