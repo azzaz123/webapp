@@ -1,7 +1,7 @@
 <div class="scroll-panel" #scrollPanel>
   <tsl-conversation *ngFor="let conversation of conversations" [conversation]="conversation"
                     [ngClass]="{'active': conversation?.active}"
-                    [hidden]="conversation.messages.length === 0 && conversation.id !== 'w67dl08qn96x'"
+                    [hidden]="conversation.messages.length === 0 && conversation.id !== newConversationId"
                     (click)="setCurrentConversation(conversation)"></tsl-conversation>
   <div id="loader" [hidden]="conversations.length > 0">
     <md-icon svgIcon="conversations-mock"></md-icon>

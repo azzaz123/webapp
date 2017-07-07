@@ -18,6 +18,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private conversation: Conversation;
   public conversations: Array<Conversation> = [];
   private _loading = false;
+  public newConversationId: string;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
   public page = 1;
@@ -131,6 +132,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         null,
         null
       );
+      this.newConversationId = conversation.uuid;
       this.conversations.push(newConversation);
       this.setCurrentConversation(newConversation);
     }
