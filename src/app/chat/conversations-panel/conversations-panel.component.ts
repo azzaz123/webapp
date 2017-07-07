@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'tsl-conversations-panel',
   templateUrl: './conversations-panel.component.html',
-  styleUrls: [ './conversations-panel.component.scss' ]
+  styleUrls: ['./conversations-panel.component.scss']
 })
 export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
@@ -78,8 +78,10 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         if (!this.currentConversationSet) {
           this.setCurrentConversationFromQueryParams();
         }
-        this.conversationService.getConversation(23).subscribe((r) => {
-          this.eventService.emit(EventService.FIND_CONVERSATION, r.json());
+        this.route.queryParams.subscribe((params) => {
+          this.conversationService.getConversation(params.itemId).subscribe((r) => {
+            this.eventService.emit(EventService.FIND_CONVERSATION, r.json());
+          });
         });
       } else {
         this.conversations = [];
@@ -115,10 +117,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   public findConversation(conversation: any) {
     const foundConversation = _.find(this.conversations, {id: conversation.uuid});
     console.log(conversation);
-    if (foundConversation) {
+    if (!foundConversation) {
       this.setCurrentConversation(foundConversation);
     } else {
-      console.log('not');
       const newConversation = new Conversation(
         conversation.uuid,
         conversation.conversationId,
@@ -131,6 +132,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         null
       );
       this.conversations.push(newConversation);
+      this.setCurrentConversation(newConversation);
     }
   }
 
