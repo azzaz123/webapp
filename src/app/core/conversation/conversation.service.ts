@@ -13,6 +13,7 @@ import {
   NotificationService
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
+import { RequestOptions } from '@angular/http';
 
 @Injectable()
 export class ConversationService extends ConversationServiceMaster {
@@ -34,7 +35,14 @@ export class ConversationService extends ConversationServiceMaster {
   }
 
   public getConversation(itemId): Observable<any> {
-    return this.http.get(`shm-portlet/api/v1/item.json/${itemId}/conversation`);
+    console.log(itemId);
+    return this.http.get(`api/v3/items/${itemId}/conversation`);
+  }
+
+  public createConversation(itemId): Observable<any> {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers });
+    return this.http.post(`api/v3/conversations`, JSON.stringify({item_id: itemId}), options);
   }
 
 }

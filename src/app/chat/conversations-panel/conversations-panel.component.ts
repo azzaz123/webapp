@@ -25,6 +25,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private currentConversationSet = false;
   public page = 1;
   private active = true;
+  private newConversationItemId: string;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
@@ -82,8 +83,11 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
           this.setCurrentConversationFromQueryParams();
         }
         this.route.queryParams.subscribe((params) => {
-          this.conversationService.getConversation(params.itemId).subscribe((r) => {
+          this.newConversationItemId = params.itemId;
+          this.conversationService.getConversation(this.newConversationItemId).subscribe((r) => {
             this.eventService.emit(EventService.FIND_CONVERSATION, r.json());
+          }, (e) => {
+            this.eventService.emit(EventService.FIND_CONVERSATION, null);
           });
         });
       } else {
@@ -118,26 +122,32 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   }
 
   public findConversation(conversation: any) {
-    const foundConversation = _.find(this.conversations, {id: conversation.uuid});
-    console.log(conversation);
-    if (!foundConversation) {
-      this.setCurrentConversation(foundConversation);
+    if (conversation === null) {
+      this.conversationService.createConversation(this.newConversationItemId).subscribe((d) => {
+        console.log(d);
+      });
     } else {
-      const newConversation = new Conversation(
-        conversation.uuid,
-        conversation.conversationId,
-        conversation.modified_date,
-        conversation.expected_visit,
-        conversation.buyerUser,
-        conversation.item,
-        [],
-        null,
-        null
-      );
-      this.newConversationId = conversation.uuid;
-      this.conversations.push(newConversation);
-      this.setCurrentConversation(newConversation);
+      const foundConversation = _.find(this.conversations, {id: conversation.uuid});
+      if (foundConversation) {
+        this.setCurrentConversation(foundConversation);
+      } else {
+        const newConversation = new Conversation(
+          conversation.uuid,
+          conversation.conversationId,
+          conversation.modified_date,
+          conversation.expected_visit,
+          conversation.buyerUser,
+          conversation.item,
+          [],
+          null,
+          null
+        );
+        this.newConversationId = conversation.uuid;
+        this.conversations.push(newConversation);
+        this.setCurrentConversation(newConversation);
+      }
     }
+
   }
 
   private scrollToActive() {
