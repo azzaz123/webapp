@@ -17,10 +17,6 @@ export const PROVIDERS: Provider[] = [
     useExisting: CustomConversationService
   },
   {
-    provide: UserService,
-    useExisting: CustomUserService
-  },
-  {
     provide: EventService,
     useExisting: CustomEventService
   }
