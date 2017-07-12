@@ -9,7 +9,7 @@ export const environment: any = {
   baseUrl: 'http://dock7.corp.wallapop.com:8080/',
   xmppDomain: 'dock7.wallapop.com',
   wsUrl: 'ws://dock7.corp.wallapop.com:5281/ws-xmpp',
-  loginUrl: 'http://es.dev.wallapop.com:8080/login',
+  siteUrl: 'http://es.dev.wallapop.com:8080/',
   bypass: 'p3-9p0dJk2cHp3-4RsW0'
 };
 

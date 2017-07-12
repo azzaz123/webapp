@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
-import { Item, ItemCounters, ItemService } from 'shield';
+import { Item, ItemCounters, ItemService, ITEM_BASE_PATH } from 'shield';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'tsl-item',
@@ -9,6 +10,7 @@ import { Item, ItemCounters, ItemService } from 'shield';
 export class ItemComponent implements OnChanges, OnDestroy {
 
   @Input() item: Item;
+  public itemUrl: string;
   private active = true;
 
   constructor(private itemService: ItemService) {
@@ -23,6 +25,7 @@ export class ItemComponent implements OnChanges, OnDestroy {
         this.item.favorites = counters.favorites;
       });
     }
+    this.itemUrl = this.item.webLink.replace(ITEM_BASE_PATH, environment.siteUrl + 'item/');
   }
 
   ngOnDestroy() {

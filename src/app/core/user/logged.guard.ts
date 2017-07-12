@@ -12,7 +12,7 @@ export class LoggedGuard implements CanActivate {
 
   public canActivate() {
     if (!this.accessTokenService.accessToken) {
-      this.window.nativeWindow.location.href = environment.loginUrl;
+      this.window.nativeWindow.location.href = environment.siteUrl + 'login';
       return false;
     }
     return true;
