@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnblockUserComponent } from './unblock-user.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('UnblockUserComponent', () => {
   let component: UnblockUserComponent;
@@ -8,6 +9,7 @@ describe('UnblockUserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      providers: [NgbActiveModal],
       declarations: [ UnblockUserComponent ]
     })
     .compileComponents();
