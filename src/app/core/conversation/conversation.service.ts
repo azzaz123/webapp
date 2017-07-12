@@ -1,4 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
+import { Headers } from '@angular/http';
 import {
   ConversationService as ConversationServiceMaster,
   UserService,
@@ -35,13 +36,13 @@ export class ConversationService extends ConversationServiceMaster {
   }
 
   public getConversation(itemId): Observable<any> {
-    console.log(itemId);
     return this.http.get(`api/v3/items/${itemId}/conversation`);
   }
 
   public createConversation(itemId): Observable<any> {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
+    const options = new RequestOptions();
+    options.headers = new Headers();
+    options.headers.append('Content-Type', 'application/json');
     return this.http.post(`api/v3/conversations`, JSON.stringify({item_id: itemId}), options);
   }
 
