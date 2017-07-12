@@ -7,12 +7,15 @@ import {
   I18nService,
   ItemService,
   TrackingService,
-  UserService
+  UserService,
+  XmppService
 } from 'shield';
 import { ToastrService } from 'ngx-toastr';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 import { ReportListingComponent } from './modals/report-listing/report-listing.component';
 import { ReportUserComponent } from './modals/report-user/report-user.component';
+import { BlockUserComponent } from './modals/block-user/block-user.component';
+import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
 
 @Component({
   selector: 'tsl-chat',
@@ -33,7 +36,8 @@ export class ChatComponent implements OnInit {
               private trackingService: TrackingService,
               private i18n: I18nService,
               public userService: UserService,
-              private eventService: EventService) {
+              private eventService: EventService,
+              public xmppService: XmppService) {
   }
 
   ngOnInit() {
@@ -75,7 +79,8 @@ export class ChatComponent implements OnInit {
           {product_id: this.currentConversation.item.id, reason_id: result.reason});
         this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
       });
-    }, () => {});
+    }, () => {
+    });
   }
 
   public reportUserAction(): void {
@@ -91,7 +96,8 @@ export class ChatComponent implements OnInit {
           {user_id: this.currentConversation.user.id, reason_id: result.reason});
         this.toastr.success(this.i18n.getTranslations('reportUserSuccess'));
       });
-    }, () => {});
+    }, () => {
+    });
   }
 
   public archiveConversation(): void {
@@ -101,7 +107,26 @@ export class ChatComponent implements OnInit {
         this.eventService.emit(EventService.CONVERSATION_ARCHIVED, this.currentConversation);
         this.toastr.success(this.i18n.getTranslations('archiveConversationSuccess'));
       });
-    }, () => {});
+    }, () => {
+    });
+  }
+
+  public blockUserAction() {
+    this.modalService.open(BlockUserComponent).result.then(() => {
+      this.xmppService.blockUser(this.currentConversation.user.id).subscribe(() => {
+        this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
+      });
+    }, () => {
+    });
+  }
+
+  public unblockUserAction() {
+    this.modalService.open(UnblockUserComponent).result.then(() => {
+      this.xmppService.unblockUser(this.currentConversation.user.id).subscribe(() => {
+        this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
+      });
+    }, () => {
+    });
   }
 
 }
