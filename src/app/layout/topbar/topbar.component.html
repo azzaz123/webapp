@@ -11,6 +11,7 @@
   <span class="topbar-user-name">{{user?.microName}}</span>
   <div class="topbar-menu-dropdown"  ngbDropdown >
     <img class="topbar-avatar"
+         *ngIf="user"
          ngbDropdownToggle
          [src]="user?.image.urls_by_size.small"
          [alt]="user?.microName">
