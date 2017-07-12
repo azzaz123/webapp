@@ -46,13 +46,13 @@ describe('LoggedGuard', (): void => {
     it('should return false and redirect if no access token', (): void => {
       const result: boolean = loggedGuard.canActivate();
       expect(result).toBeFalsy();
-      expect(window.nativeWindow.location.href).toBe(environment.loginUrl);
+      expect(window.nativeWindow.location.href).toBe(environment.siteUrl + 'login');
     });
     it('should return true and NOT redirect if access token', () => {
       accessTokenService.storeAccessToken('abc');
       const result: boolean = loggedGuard.canActivate();
       expect(result).toBeTruthy();
-      expect(window.nativeWindow.location.href).not.toBe(environment.loginUrl);
+      expect(window.nativeWindow.location.href).not.toBe(environment.siteUrl + 'login');
     });
   })
 });
