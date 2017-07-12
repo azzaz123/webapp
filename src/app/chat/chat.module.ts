@@ -19,6 +19,8 @@ import { ConversationComponent } from './conversations-panel/conversation/conver
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 import { ReportListingComponent } from './modals/report-listing/report-listing.component';
 import { ReportUserComponent } from './modals/report-user/report-user.component';
+import { BlockUserComponent } from './modals/block-user/block-user.component';
+import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
 
 @NgModule({
   imports: [
@@ -46,12 +48,16 @@ import { ReportUserComponent } from './modals/report-user/report-user.component'
     ItemComponent,
     ArchiveConversationComponent,
     ReportListingComponent,
-    ReportUserComponent
+    ReportUserComponent,
+    BlockUserComponent,
+    UnblockUserComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,
     ReportListingComponent,
-    ReportUserComponent
+    ReportUserComponent,
+    BlockUserComponent,
+    UnblockUserComponent
   ]
 })
 export class ChatModule {
