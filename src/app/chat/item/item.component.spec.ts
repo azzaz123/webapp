@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ItemComponent } from './item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ItemService, ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, MOCK_ITEM, Item } from 'shield';
+import { ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, ITEM_WEB_SLUG, ItemService, MOCK_ITEM } from 'shield';
 
 describe('Component: Item', () => {
 
@@ -34,14 +34,14 @@ describe('Component: Item', () => {
   describe('getCounters', () => {
 
     it('should add item counters', () => {
-      component.item = <Item>{...MOCK_ITEM};
+      component.item = MOCK_ITEM;
       component.ngOnChanges();
       expect(component.item.views).toBe(ITEM_VIEWS);
       expect(component.item.favorites).toBe(ITEM_FAVORITES);
     });
 
     it('should not add item counters', () => {
-      component.item = <Item>{...MOCK_ITEM};
+      component.item = MOCK_ITEM;
       component.item.views = 1000;
       component.item.favorites = 1000;
       component.ngOnChanges();
@@ -49,6 +49,12 @@ describe('Component: Item', () => {
       expect(component.item.favorites).toBe(1000);
     });
 
+  });
+
+  it('should set itemUrl', () => {
+    component.item = MOCK_ITEM;
+    component.ngOnChanges();
+    expect(component.itemUrl).toBe('http://es.dev.wallapop.com:8080/item/' + ITEM_WEB_SLUG);
   });
 
 });
