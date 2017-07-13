@@ -70,4 +70,15 @@
       }
     }
   }
+  &.linked {
+    &::after {
+      content: '';
+      border: 1px solid $grey-100;
+      left: 50%;
+      position: absolute;
+      bottom: -20px;
+      height: 20px;
+    }
+  }
+
 }
