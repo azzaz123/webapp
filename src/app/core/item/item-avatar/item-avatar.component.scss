@@ -23,15 +23,23 @@ div {
 }
 
 $sold-width: 32px;
-.sold {
+.sold, .reserved {
   @include square($sold-width);
   border-radius: 50%;
   display: flex;
-  background-color: $sold-bg;
+  background-color: $white;
   margin: auto;
   z-index: 2;
   md-icon {
     margin: auto auto;
     @include square(21px);
+  }
+}
+
+.reserved {
+  md-icon {
+    height: 17px;
+    width: 12px;
+    vertical-align: sub;
   }
 }
