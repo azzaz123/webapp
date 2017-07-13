@@ -16,17 +16,24 @@
 ]>
 <translationbundle lang="es">
   <translation id="33149636091572968">Cargar más</translation>
-  <translation id="8886737317292020570">Archivar conversación</translation>
-  <translation id="5298644184637702922">Se procederá a archivar la conversación.</translation>
+  <translation id="7579940623714391431">Borrar conversación</translation>
+  <translation id="5762515103229902547">Se procederá a borrar la conversación.</translation>
   <translation id="2159130950882492111">Cancelar</translation>
-  <translation id="1055686627716339120">Archivar</translation>
-  <translation id="5926864560020170283">Quiero denunciar este producto porque...</translation>
-  <translation id="2536916799548969987">Reportar</translation>
+  <translation id="7022070615528435141">Borrar</translation>
+  <translation id="7008439939460403347">Reportar</translation>
   <translation id="568597304214607466">Estoy reportando a este usuario porque...</translation>
+  <translation id="20327443157350316">Bloquear usuario</translation>
+  <translation id="5871136368461493241">No podrás enviar o recibir mensajes de este usuario. ¿Deseas continuar?</translation>
+  <translation id="420763834450076269">Bloquear</translation>
+  <translation id="5118689036165223498">Desbloquear usuario</translation>
+  <translation id="2565755719057925105">Podrás volver a enviar y recibir mensajes de este usuario. ¿Deseas continuar?</translation>
+  <translation id="4859202148272511129">Desbloquear</translation>
   <translation id="313850810538580916">Sin conexión</translation>
   <translation id="8870711330013548872">Conectado</translation>
   <translation id="2711435905501432474">Denunciar producto</translation>
   <translation id="5918739414324010673">Reportar usuario</translation>
+  <translation id="3909560892838036974">Bloquear usuario</translation>
+  <translation id="7240635163184231751">Desbloquear usuario</translation>
   <translation id="3437274703198746531">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
   <translation id="3325766019344626759">No hay mensajes</translation>
   <translation id="6334569300046707546">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
