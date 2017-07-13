@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Conversation, Message, TrackingService, } from 'shield';
+import { Conversation, Message, TrackingService, NewConversationResponse } from 'shield';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -130,7 +130,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     }
   }
 
-  public findConversation(conversation: any) {
+  public findConversation(conversation: NewConversationResponse) {
     if (conversation === null) {
       this.createConversationAndSetItCurrent();
     } else {
