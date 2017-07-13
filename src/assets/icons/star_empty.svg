@@ -15,7 +15,7 @@
     <g id="Styleguide" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="ICONS" transform="translate(-82.000000, -417.000000)">
             <g id="profile_star_empty">
-                <use fill="#455A64" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <use fill="#CFD8DC" fill-rule="evenodd" xlink:href="#path-1"></use>
                 <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
             </g>
         </g>
