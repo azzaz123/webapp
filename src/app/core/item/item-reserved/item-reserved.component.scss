@@ -2,10 +2,10 @@
 
 $sold-height: 38px;
 
-.sold {
+.reserved {
   background-color: $white;
   border-radius: 100px;
-  color: $sold-bg;
+  color: $reserve-bg;
   font-size: $font-size-S;
   height: $sold-height;
   line-height: $sold-height;
@@ -13,7 +13,7 @@ $sold-height: 38px;
   padding: 0 $spacing;
   md-icon {
     vertical-align: middle;
-    width: 21px;
+    width: 15px;
     margin-right: 7px;
   }
 }

@@ -60,6 +60,7 @@
   <msg id="2674821313466677845"><source>app/core/user/user-type/user-type.component.ts:5</source>Loyal</msg>
   <msg id="7905190705958643281"><source>app/core/user/user-type/user-type.component.ts:6</source>Novice</msg>
   <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
+  <msg id="6543433128416987560"><source>app/core/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:9</source>Messages</msg>
   <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
   <msg id="2821179408673282599"><source>app/layout/topbar/topbar.component.ts:8</source>Home</msg>
