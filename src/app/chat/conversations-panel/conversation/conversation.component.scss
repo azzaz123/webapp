@@ -17,10 +17,10 @@ $menu-width-and-spacing: 10px;
     border-top: 0;
   }
   &.active {
-    background-color: rgba($grey-100, .8);
+    background-color: rgba($grey-100, .4);
   }
   &:hover {
-    background-color: rgba($grey-100, .5);
+    background-color: rgba($grey-100, .2);
   }
 }
 .conversation-info {
