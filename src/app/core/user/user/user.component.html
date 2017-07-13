@@ -12,18 +12,9 @@
       <span [hidden]="!user.itemDistance" i18n="The distance between the user and the item">{{user.itemDistance | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you</span>
       <span [hidden]="user.itemDistance" i18n>No location</span>
     </li>
-    <li class="list-group-item" *ngIf="user.receivedReports > -1">
-      <md-icon svgIcon="reports"></md-icon>
-      <span [ngSwitch]="user.receivedReports">
-        <ng-container *ngSwitchCase="0" i18n>No spam/scam reports</ng-container>
-        <ng-container *ngSwitchCase="1" i18n>One spam/scam report</ng-container>
-        <ng-container *ngSwitchDefault
-                      i18n>{{user.receivedReports // i18n(ph="TOTAL_NUMBER")}} spam/scam reports</ng-container>
-      </span>
-    </li>
-    <li class="list-group-item" *ngIf="user.type">
-      <md-icon svgIcon="user"></md-icon>
-      <tsl-user-type [user]="user"></tsl-user-type>
+    <li class="list-group-item" *ngIf="user.responseRate">
+      <md-icon svgIcon="time"></md-icon>
+      {{user.responseRate}}
     </li>
   </ul>
 </section>
