@@ -12,9 +12,9 @@
       <span [hidden]="!user.itemDistance" i18n="The distance between the user and the item">{{user.itemDistance | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you</span>
       <span [hidden]="user.itemDistance" i18n>No location</span>
     </li>
-    <li class="list-group-item" *ngIf="user.responseRate">
+    <li class="list-group-item response-rate" *ngIf="user.responseRate">
       <md-icon svgIcon="time"></md-icon>
-      {{user.responseRate}}
+      <span>{{user.responseRate}}</span>
     </li>
   </ul>
 </section>

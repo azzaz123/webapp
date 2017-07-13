@@ -37,6 +37,11 @@
         margin-right: $spacing-S;
         margin-top: 1px;
       }
+      &.response-rate {
+        span {
+          width: 165px;
+        }
+      }
     }
   }
   .item-details-wrap {
