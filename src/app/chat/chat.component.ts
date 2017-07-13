@@ -54,7 +54,6 @@ export class ChatComponent implements OnInit {
     if (this.currentConversation) {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);
-      this.userService.syncStatus(this.currentConversation.user);
     }
   }
 

@@ -1,10 +1,13 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Conversation, Message, TrackingService, UserService } from 'shield';
+import { Conversation, Message, TrackingService, } from 'shield';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { EventService } from '../../core/event/event.service';
 import { ConversationService } from '../../core/conversation/conversation.service';
+import { UserService } from '../../core/user/user.service';
+import { Observable } from 'rxjs/Observable';
+import { ItemService } from 'shield/lib/shield/item/item.service';
 
 @Component({
   selector: 'tsl-conversations-panel',
@@ -31,7 +34,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
               private eventService: EventService,
               private route: ActivatedRoute,
               private trackingService: TrackingService,
-              private userService: UserService,
+              private itemService: ItemService,
+              public userService: UserService,
               private elRef: ElementRef) {
   }
 
@@ -81,15 +85,17 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.loading = false;
         if (!this.currentConversationSet) {
           this.setCurrentConversationFromQueryParams();
-        }
-        this.route.queryParams.subscribe((params) => {
-          this.newConversationItemId = params.itemId;
-          this.conversationService.getConversation(this.newConversationItemId).subscribe((r) => {
-            this.eventService.emit(EventService.FIND_CONVERSATION, r.json());
-          }, (e) => {
-            this.eventService.emit(EventService.FIND_CONVERSATION, null);
+          this.route.queryParams.subscribe((params) => {
+            this.newConversationItemId = params.itemId;
+            if (params.itemId) {
+              this.conversationService.getConversation(this.newConversationItemId).subscribe((r) => {
+                this.eventService.emit(EventService.FIND_CONVERSATION, r.json());
+              }, (e) => {
+                this.eventService.emit(EventService.FIND_CONVERSATION, null);
+              });
+            }
           });
-        });
+        }
       } else {
         this.conversations = [];
         this.loading = false;
@@ -103,49 +109,51 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     }).subscribe((params: any) => {
       this.currentConversationSet = true;
       const conversationId: string = params.c || this.userService.queryParams.c;
-      const page = this.conversationService.getConversationPage(conversationId);
-      if (page !== -1) {
-        if (page > 1) {
-          for (let i = 2; i <= page; i++) {
-            this.loadMore();
-          }
-        }
-        const currentConversation: Conversation = _.find(this.conversations, {id: conversationId});
-        if (currentConversation) {
-          this.setCurrentConversation(currentConversation);
-          setTimeout(() => {
-            this.scrollToActive();
-          });
-        }
-      }
+      this.setCurrentConversationWithConversationId(conversationId);
     });
+  }
+
+  private setCurrentConversationWithConversationId(conversationId: string) {
+    const page = this.conversationService.getConversationPage(conversationId);
+    if (page !== -1) {
+      if (page > 1) {
+        // TODO GET CONVERSATION
+        // for (let i = 2; i <= page; i++) {
+        //   this.loadMore();
+        // }
+      }
+      const currentConversation: Conversation = _.find(this.conversations, {id: conversationId});
+      if (currentConversation) {
+        this.setCurrentConversation(currentConversation);
+        setTimeout(() => {
+          this.scrollToActive();
+        });
+      }
+    }
   }
 
   public findConversation(conversation: any) {
     if (conversation === null) {
-      this.conversationService.createConversation(this.newConversationItemId).subscribe((d) => {
-        console.log(d);
+      this.conversationService.createConversation(this.newConversationItemId).subscribe((conv) => {
+        const resp = conv.json();
+        Observable.forkJoin(
+          this.userService.get(resp.seller_user_id),
+          this.itemService.get(this.newConversationItemId)
+        ).subscribe((r: any) => {
+          const newConversation = new Conversation(
+            resp.conversation_id,
+            null,
+            resp.modified_date,
+            false,
+            r[0],
+            r[1]);
+          this.conversations.unshift(newConversation);
+          this.setCurrentConversation(newConversation);
+          this.newConversationId = newConversation.id;
+        });
       });
     } else {
-      const foundConversation = _.find(this.conversations, {id: conversation.uuid});
-      if (foundConversation) {
-        this.setCurrentConversation(foundConversation);
-      } else {
-        const newConversation = new Conversation(
-          conversation.uuid,
-          conversation.conversationId,
-          conversation.modified_date,
-          conversation.expected_visit,
-          conversation.buyerUser,
-          conversation.item,
-          [],
-          null,
-          null
-        );
-        this.newConversationId = conversation.uuid;
-        this.conversations.push(newConversation);
-        this.setCurrentConversation(newConversation);
-      }
+      this.setCurrentConversationWithConversationId(conversation.conversation_id);
     }
 
   }
