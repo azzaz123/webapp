@@ -23,7 +23,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private conversation: Conversation;
   public conversations: Array<Conversation> = [];
   private _loading = false;
-  public newConversationId: string;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
   public page = 1;
@@ -147,9 +146,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
             false,
             r[0],
             r[1]);
-          this.conversations.unshift(newConversation);
+          this.conversationService.addLead(newConversation);
           this.setCurrentConversation(newConversation);
-          this.newConversationId = newConversation.id;
         });
       });
     } else {
