@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { Conversation, MessageService, EventService } from 'shield';
+import { Conversation, MessageService, EventService, XmppService } from 'shield';
 
 @Component({
   selector: 'tsl-input',
@@ -13,7 +13,8 @@ export class InputComponent implements OnChanges, OnInit {
   public disable: boolean;
 
   constructor(private messageService: MessageService,
-              private eventService: EventService) {
+              private eventService: EventService,
+              private xmppService: XmppService) {
   }
 
   ngOnInit() {
@@ -22,6 +23,16 @@ export class InputComponent implements OnChanges, OnInit {
     });
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.disable = false;
+    });
+    this.eventService.subscribe(EventService.USER_BLOCKED, (userId: string) => {
+      if (this.currentConversation.user.id === userId) {
+        this.disable = true;
+      }
+    });
+    this.eventService.subscribe(EventService.USER_UNBLOCKED, (userId: string) => {
+      if (this.currentConversation.user.id === userId) {
+        this.disable = false;
+      }
     });
   }
 
@@ -40,6 +51,7 @@ export class InputComponent implements OnChanges, OnInit {
         this.messageArea.nativeElement.focus();
       }, 500);
     }
+    this.disable = this.xmppService.isBlocked(this.currentConversation.user.id);
   }
 
 }
