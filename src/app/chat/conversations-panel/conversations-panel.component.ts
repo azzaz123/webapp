@@ -142,7 +142,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.conversationService.createConversation(this.newConversationItemId).subscribe((conv) => {
       const resp: NewConversationResponse = conv.json();
       this.getConversationUserAndItemInfo(resp.seller_user_id, this.newConversationItemId).subscribe((r: any) => {
-        console.log(resp);
         const newConversation = new Conversation(
           resp.conversation_id,
           null,
