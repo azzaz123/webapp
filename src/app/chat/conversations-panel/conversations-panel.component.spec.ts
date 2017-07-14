@@ -7,7 +7,7 @@ import {
   ItemService, TEST_HTTP_PROVIDERS, Message, MOCK_MESSAGE, XmppService, MessageService,
   PersistencyService, USER_ID, User, NotificationService, MockedPersistencyService, I18nService, HttpService,
   TrackingService, MockTrackingService, createConversationsArray, MOCK_CONVERSATION,
-  SECOND_MOCK_CONVERSATION, Conversation, ShieldModule, NEW_CONVERSATION_RESPONSE
+  SECOND_MOCK_CONVERSATION, Conversation, ShieldModule, NEW_CONVERSATION_RESPONSE, MOCK_ITEM, MOCK_USER
 } from 'shield';
 import { ConversationComponent } from './conversation/conversation.component';
 import { Observable } from 'rxjs/Observable';
@@ -22,7 +22,7 @@ import { UserService } from '../../core/user/user.service';
 import { ConversationResponse } from 'shield/lib/shield/conversation/conversation-response.interface';
 import { CONVERSATIONS_DATA } from 'shield/lib/test/fixtures/conversation.fixtures';
 
-fdescribe('Component: ConversationsPanel', () => {
+describe('Component: ConversationsPanel', () => {
 
   let component: ConversationsPanelComponent;
   let service: ConversationService;
@@ -236,17 +236,6 @@ fdescribe('Component: ConversationsPanel', () => {
       expect(component['conversation']).toBeUndefined();
     });
 
-    xit('should call load more for every page needed', () => {
-      spyOn(service, 'getConversationPage').and.returnValue(3);
-      spyOn(component, 'loadMore');
-      route.queryParams = Observable.of({
-        c: '1'
-      });
-      component['setCurrentConversationFromQueryParams']();
-      expect(component.loadMore).toHaveBeenCalledTimes(2);
-    });
-
-
   });
 
   describe('setCurrentConversation', () => {
@@ -343,16 +332,48 @@ fdescribe('Component: ConversationsPanel', () => {
     });
   });
   describe('findConversation', () => {
-    beforeEach(() => {
-      spyOn((component as any), 'createConversationAndSetItCurrent');
-    });
     it('should call createConversationAndSetItCurrent if conversation is null', () => {
+      spyOn((component as any), 'createConversationAndSetItCurrent');
       component.findConversation(null);
       expect((component as any).createConversationAndSetItCurrent).toHaveBeenCalled();
     });
     it('should call setCurrentConversationWithConversationId with the conversation Id if it exists', () => {
+      spyOn((component as any), 'setCurrentConversationWithConversationId');
       component.findConversation(NEW_CONVERSATION_RESPONSE);
+      expect((component as any).setCurrentConversationWithConversationId).toHaveBeenCalledWith(NEW_CONVERSATION_RESPONSE.conversation_id);
     });
   });
 
+  describe('createConversationAndSetItCurrent', () => {
+    beforeEach(() => {
+      (component as any).newConversationItemId = 'newConversationItemId';
+      spyOn(conversationService, 'addLead');
+      spyOn(conversationService, 'createConversation').and.returnValue(Observable.of({
+        json: () => {
+          return NEW_CONVERSATION_RESPONSE
+        }
+      }));
+    });
+    it('should call createConversation of the service', () => {
+      (component as any).createConversationAndSetItCurrent();
+      expect(conversationService.createConversation).toHaveBeenCalledWith('newConversationItemId');
+    });
+    it('should get the user & item info, create a new conversation and add it to the existing list', () => {
+      spyOn((component as any), 'getConversationUserAndItemInfo').and.returnValue(Observable.of([MOCK_USER, MOCK_ITEM]));
+      spyOn(conversationService, 'loadMessagesIntoConversations');
+      (component as any).createConversationAndSetItCurrent();
+      expect((component as any).getConversationUserAndItemInfo).toHaveBeenCalled();
+      expect((conversationService.addLead as any).calls.argsFor(0)[0]).toEqual(
+        new Conversation(
+          'conversation_id',
+          null,
+          123123,
+          false,
+          MOCK_USER,
+          MOCK_ITEM)
+      );
+      expect(conversationService.loadMessagesIntoConversations).toHaveBeenCalledWith(component.conversations);
+    });
+  });
 });
+
