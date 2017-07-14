@@ -5,6 +5,7 @@ import { MdIconModule } from '@angular/material';
 import { SharedModule } from '../../shared/shared.module';
 import { TrackingModule, UtilsModule } from 'shield';
 import { ItemSoldComponent } from './item-sold/item-sold.component';
+import { ItemReservedComponent } from './item-reserved/item-reserved.component';
 
 @NgModule({
   imports: [
@@ -16,8 +17,9 @@ import { ItemSoldComponent } from './item-sold/item-sold.component';
   ],
   exports: [
     ItemAvatarComponent,
-    ItemSoldComponent
+    ItemSoldComponent,
+    ItemReservedComponent
   ],
-  declarations: [ItemAvatarComponent, ItemSoldComponent]
+  declarations: [ItemAvatarComponent, ItemSoldComponent, ItemReservedComponent]
 })
 export class ItemModule { }

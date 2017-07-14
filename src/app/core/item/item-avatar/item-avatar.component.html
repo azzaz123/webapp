@@ -2,8 +2,11 @@
   tslsanitizedBackground="{{avatar}}"
   [fallback]="fallback"
   [ngClass]="size">
-  <span class="overlay" *ngIf="item?.sold"></span>
+  <span class="overlay" *ngIf="item?.sold || item?.reserved"></span>
   <span class="sold" *ngIf="item?.sold">
     <md-icon svgIcon="sold"></md-icon>
+  </span>
+  <span class="reserved" *ngIf="item?.reserved">
+    <md-icon svgIcon="reserved"></md-icon>
   </span>
 </div>
