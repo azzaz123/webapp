@@ -7,7 +7,7 @@ import {
   ItemService, TEST_HTTP_PROVIDERS, Message, MOCK_MESSAGE, XmppService, MessageService,
   PersistencyService, USER_ID, User, NotificationService, MockedPersistencyService, I18nService, HttpService,
   TrackingService, MockTrackingService, createConversationsArray, MOCK_CONVERSATION,
-  SECOND_MOCK_CONVERSATION, Conversation, ShieldModule
+  SECOND_MOCK_CONVERSATION, Conversation, ShieldModule, NEW_CONVERSATION_RESPONSE
 } from 'shield';
 import { ConversationComponent } from './conversation/conversation.component';
 import { Observable } from 'rxjs/Observable';
@@ -351,7 +351,7 @@ fdescribe('Component: ConversationsPanel', () => {
       expect((component as any).createConversationAndSetItCurrent).toHaveBeenCalled();
     });
     it('should call setCurrentConversationWithConversationId with the conversation Id if it exists', () => {
-      component.findConversation(CONVERSATIONS_DATA[0]);
+      component.findConversation(NEW_CONVERSATION_RESPONSE);
     });
   });
 
