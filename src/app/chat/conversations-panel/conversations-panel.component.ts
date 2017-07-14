@@ -12,7 +12,7 @@ import { ItemService } from 'shield/lib/shield/item/item.service';
 @Component({
   selector: 'tsl-conversations-panel',
   templateUrl: './conversations-panel.component.html',
-  styleUrls: ['./conversations-panel.component.scss']
+  styleUrls: [ './conversations-panel.component.scss' ]
 })
 export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
@@ -140,18 +140,16 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private createConversationAndSetItCurrent() {
     this.conversationService.createConversation(this.newConversationItemId).subscribe((conv) => {
-      const resp = conv.json();
-      Observable.forkJoin(
-        this.userService.get(resp.seller_user_id),
-        this.itemService.get(this.newConversationItemId)
-      ).subscribe((r: any) => {
+      const resp: NewConversationResponse = conv.json();
+      this.getConversationUserAndItemInfo(resp.seller_user_id, this.newConversationItemId).subscribe((r: any) => {
+        console.log(resp);
         const newConversation = new Conversation(
           resp.conversation_id,
           null,
           resp.modified_date,
           false,
-          r[0],
-          r[1]);
+          r[ 0 ],
+          r[ 1 ]);
         this.conversationService.addLead(newConversation);
         this.conversationService.loadMessagesIntoConversations(this.conversations);
         this.setCurrentConversation(newConversation);
@@ -159,12 +157,18 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     });
   }
 
+  private getConversationUserAndItemInfo(userId: string, itemId: string) {
+    return Observable.forkJoin(
+      this.userService.get(userId),
+      this.itemService.get(itemId)
+    );
+  }
+
   private scrollToActive() {
     const active: HTMLElement = this.elRef.nativeElement.querySelector('tsl-conversation.active');
     if (active) {
       this.scrollPanel.nativeElement.scrollTop = active.offsetTop - active.offsetHeight;
     }
-
   }
 
   private sendRead(message: Message) {
