@@ -4,7 +4,6 @@ import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testi
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
-  ConversationService,
   ErrorsService,
   EventService,
   I18nService,
@@ -32,6 +31,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/throw';
 import createSpy = jasmine.createSpy;
+import { ConversationService } from './core/conversation/conversation.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
