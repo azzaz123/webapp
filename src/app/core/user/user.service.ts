@@ -7,6 +7,8 @@ import { Response } from '@angular/http';
 @Injectable()
 export class UserService extends UserServiceMaster {
 
+  protected API_URL_V2: string = 'api/v3/users';
+
   constructor(http: HttpService,
               event: EventService,
               i18n: I18nService,
