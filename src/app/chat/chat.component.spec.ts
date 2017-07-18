@@ -268,7 +268,7 @@ describe('Component: Chat', () => {
       spyOn(toastr, 'success').and.callThrough();
       component.blockUserAction();
       tick();
-      expect(xmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(xmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been blocked');
     }));
   });
@@ -285,7 +285,7 @@ describe('Component: Chat', () => {
       spyOn(toastr, 'success').and.callThrough();
       component.unblockUserAction();
       tick();
-      expect(xmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(xmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
     }));
   });

@@ -113,7 +113,7 @@ export class ChatComponent implements OnInit {
 
   public blockUserAction() {
     this.modalService.open(BlockUserComponent).result.then(() => {
-      this.xmppService.blockUser(this.currentConversation.user.id).subscribe(() => {
+      this.xmppService.blockUser(this.currentConversation.user).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
       });
     }, () => {
@@ -122,7 +122,7 @@ export class ChatComponent implements OnInit {
 
   public unblockUserAction() {
     this.modalService.open(UnblockUserComponent).result.then(() => {
-      this.xmppService.unblockUser(this.currentConversation.user.id).subscribe(() => {
+      this.xmppService.unblockUser(this.currentConversation.user).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
       });
     }, () => {
