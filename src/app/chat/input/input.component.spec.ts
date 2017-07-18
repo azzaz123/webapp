@@ -2,7 +2,7 @@
 
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { InputComponent } from './input.component';
-import { MessageService, MOCK_CONVERSATION, USER_ID, EventService, Conversation, XmppService } from 'shield';
+import { MessageService, MOCK_CONVERSATION, USER_ID, EventService, Conversation, XmppService, MOCK_USER } from 'shield';
 import { By } from '@angular/platform-browser';
 
 class MockMessageService {
@@ -135,14 +135,16 @@ describe('Component: Input', () => {
     });
 
     it('should disable input if user is blocked', () => {
-      spyOn(xmppService, 'isBlocked').and.returnValue(true);
+      component.currentConversation = MOCK_CONVERSATION();
+      component.currentConversation.user.blocked = true;
       component.ngOnChanges();
       expect(component.disable).toBeTruthy();
     });
 
-    it('should enaable input if user is blocked', () => {
+    it('should enable input if user is blocked', () => {
       component.disable = true;
-      spyOn(xmppService, 'isBlocked').and.returnValue(false);
+      component.currentConversation = MOCK_CONVERSATION();
+      component.currentConversation.user.blocked = false;
       component.ngOnChanges();
       expect(component.disable).toBeFalsy();
     });

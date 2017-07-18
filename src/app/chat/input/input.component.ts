@@ -51,7 +51,7 @@ export class InputComponent implements OnChanges, OnInit {
         this.messageArea.nativeElement.focus();
       }, 500);
     }
-    this.disable = this.xmppService.isBlocked(this.currentConversation.user.id);
+    this.disable = this.currentConversation.user.blocked;
   }
 
 }
