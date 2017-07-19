@@ -4,10 +4,29 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { ConversationsPanelComponent } from './conversations-panel.component';
 import {
-  ItemService, TEST_HTTP_PROVIDERS, Message, MOCK_MESSAGE, XmppService, MessageService,
-  PersistencyService, USER_ID, User, NotificationService, MockedPersistencyService, I18nService, HttpService,
-  TrackingService, MockTrackingService, createConversationsArray, MOCK_CONVERSATION,
-  SECOND_MOCK_CONVERSATION, Conversation, ShieldModule, NEW_CONVERSATION_RESPONSE, MOCK_ITEM, MOCK_USER
+  Conversation,
+  createConversationsArray,
+  HttpService,
+  I18nService,
+  ItemService,
+  Message,
+  MessageService,
+  MOCK_CONVERSATION,
+  MOCK_ITEM,
+  MOCK_MESSAGE,
+  MOCK_USER,
+  MockedPersistencyService,
+  MockTrackingService,
+  NEW_CONVERSATION_RESPONSE,
+  NotificationService,
+  PersistencyService,
+  SECOND_MOCK_CONVERSATION,
+  ShieldModule,
+  TEST_HTTP_PROVIDERS,
+  TrackingService,
+  User,
+  USER_ID,
+  XmppService
 } from 'shield';
 import { ConversationComponent } from './conversation/conversation.component';
 import { Observable } from 'rxjs/Observable';
@@ -19,8 +38,6 @@ import { environment } from '../../../environments/environment';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { EventService } from 'app/core/event/event.service';
 import { UserService } from '../../core/user/user.service';
-import { ConversationResponse } from 'shield/lib/shield/conversation/conversation-response.interface';
-import { CONVERSATIONS_DATA } from 'shield/lib/test/fixtures/conversation.fixtures';
 
 describe('Component: ConversationsPanel', () => {
 
