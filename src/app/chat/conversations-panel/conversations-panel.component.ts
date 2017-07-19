@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Conversation, Message, TrackingService, NewConversationResponse } from 'shield';
+import { Conversation, Message, NewConversationResponse, TrackingService, ItemService } from 'shield';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -7,7 +7,6 @@ import { EventService } from '../../core/event/event.service';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { UserService } from '../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
-import { ItemService } from 'shield/lib/shield/item/item.service';
 
 @Component({
   selector: 'tsl-conversations-panel',
