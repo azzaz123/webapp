@@ -83,8 +83,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.route.queryParams.subscribe((params) => {
           this.newConversationItemId = params.itemId;
           if (params.itemId) {
-            this.conversationService.getConversation(this.newConversationItemId).subscribe((r) => {
-              this.eventService.emit(EventService.FIND_CONVERSATION, r.json());
+            this.conversationService.getConversation(this.newConversationItemId).subscribe((r: NewConversationResponse) => {
+              this.eventService.emit(EventService.FIND_CONVERSATION, r);
             }, (e) => {
               this.eventService.emit(EventService.FIND_CONVERSATION, null);
             });
@@ -139,8 +139,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   }
 
   private createConversationAndSetItCurrent() {
-    this.conversationService.createConversation(this.newConversationItemId).subscribe((conv) => {
-      const resp: NewConversationResponse = conv.json();
+    this.conversationService.createConversation(this.newConversationItemId).subscribe((conv: NewConversationResponse) => {
+      const resp: NewConversationResponse = conv;
       this.getConversationUserAndItemInfo(resp.seller_user_id, this.newConversationItemId).subscribe((r: any) => {
         const newConversation = new Conversation(
           resp.conversation_id,
