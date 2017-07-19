@@ -138,8 +138,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   }
 
   private createConversationAndSetItCurrent() {
-    this.conversationService.createConversation(this.newConversationItemId).subscribe((conv: Conversation) => {
-      const newConversation = conv;
+    this.conversationService.createConversation(this.newConversationItemId).subscribe((newConversation: Conversation) => {
       this.conversationService.addLead(newConversation);
       this.conversationService.loadMessagesIntoConversations(this.conversations);
       this.setCurrentConversation(newConversation);
