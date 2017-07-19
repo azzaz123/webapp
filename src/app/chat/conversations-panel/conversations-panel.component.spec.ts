@@ -363,16 +363,13 @@ describe('Component: ConversationsPanel', () => {
     beforeEach(() => {
       (component as any).newConversationItemId = 'newConversationItemId';
       spyOn(conversationService, 'addLead');
-      spyOn(conversationService, 'createConversation').and.returnValue(Observable.of({
-        json: () => {
-          return NEW_CONVERSATION_RESPONSE
-        }
-      }));
+      spyOn(conversationService, 'createConversation').and.returnValue(Observable.of(NEW_CONVERSATION_RESPONSE));
     });
     it('should call createConversation of the service', () => {
       (component as any).createConversationAndSetItCurrent();
       expect(conversationService.createConversation).toHaveBeenCalledWith('newConversationItemId');
     });
+
     it('should get the user & item info, create a new conversation and add it to the existing list', () => {
       spyOn((component as any), 'getConversationUserAndItemInfo').and.returnValue(Observable.of([MOCK_USER, MOCK_ITEM]));
       spyOn(conversationService, 'loadMessagesIntoConversations');
