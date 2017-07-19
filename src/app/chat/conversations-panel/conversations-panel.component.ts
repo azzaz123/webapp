@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'tsl-conversations-panel',
   templateUrl: './conversations-panel.component.html',
-  styleUrls: [ './conversations-panel.component.scss' ]
+  styleUrls: ['./conversations-panel.component.scss']
 })
 export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
@@ -54,7 +54,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.getConversations();
     this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, () => this.setCurrentConversation(null));
     this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
-    this.eventService.subscribe(EventService.FIND_CONVERSATION, (conversationId) => this.findConversation(conversationId));
+    this.eventService.subscribe(EventService.FIND_CONVERSATION, (conversation: NewConversationResponse) => this.findConversation(conversation));
   }
 
   ngOnDestroy() {
@@ -146,8 +146,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
           null,
           resp.modified_date,
           false,
-          r[ 0 ],
-          r[ 1 ]);
+          r[0],
+          r[1]);
         this.conversationService.addLead(newConversation);
         this.conversationService.loadMessagesIntoConversations(this.conversations);
         this.setCurrentConversation(newConversation);
