@@ -329,17 +329,21 @@ describe('Component: ConversationsPanel', () => {
   describe('setCurrentConversationWithConversationId', () => {
     it('should call getConversationPage of conversationService', () => {
       spyOn(conversationService, 'getConversationPage');
-      (component as any).setCurrentConversationWithConversationId('id');
-      expect(conversationService.getConversationPage).toHaveBeenCalledWith('id');
+      (component as any).setCurrentConversationWithConversationId(MOCK_CONVERSATION().id);
+      expect(conversationService.getConversationPage).toHaveBeenCalledWith(MOCK_CONVERSATION().id);
     });
     it('if the page is found and it is higher than 1, it should create the conversation', () => {
       spyOn(conversationService, 'getConversationPage').and.returnValue(2);
       spyOn((component as any), 'createConversationAndSetItCurrent');
-      (component as any).setCurrentConversationWithConversationId('id');
+      (component as any).setCurrentConversationWithConversationId(MOCK_CONVERSATION().id);
       expect((component as any).createConversationAndSetItCurrent).toHaveBeenCalled();
     });
-    fit('if the page is found and it is the first, it should select the conversation', () => {
-
+    it('if the page is found and it is the first, it should select the conversation', () => {
+      spyOn(conversationService, 'getConversationPage').and.returnValue(1);
+      component.conversations = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
+      spyOn(component, 'setCurrentConversation');
+      (component as any).setCurrentConversationWithConversationId(SECOND_MOCK_CONVERSATION.id);
+      expect(component.setCurrentConversation).toHaveBeenCalledWith(SECOND_MOCK_CONVERSATION);
     });
   });
   describe('findConversation', () => {
