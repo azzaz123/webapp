@@ -65,12 +65,6 @@ export class AppComponent implements OnInit {
     configIcons(this.mdIconRegistry, this.sanitizer);
   }
 
-  private getConversation(itemId: number) {
-    this.conversationService.getConversation(itemId).subscribe((r) => {
-      console.log(r.json().conversationId);
-    });
-  }
-
   private subscribeEvents() {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
       this.userService.me().subscribe(
