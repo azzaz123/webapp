@@ -327,7 +327,18 @@ describe('Component: ConversationsPanel', () => {
     }));
   });
   describe('setCurrentConversationWithConversationId', () => {
-    it('', () => {
+    it('should call getConversationPage of conversationService', () => {
+      spyOn(conversationService, 'getConversationPage');
+      (component as any).setCurrentConversationWithConversationId('id');
+      expect(conversationService.getConversationPage).toHaveBeenCalledWith('id');
+    });
+    it('if the page is found and it is higher than 1, it should create the conversation', () => {
+      spyOn(conversationService, 'getConversationPage').and.returnValue(2);
+      spyOn((component as any), 'createConversationAndSetItCurrent');
+      (component as any).setCurrentConversationWithConversationId('id');
+      expect((component as any).createConversationAndSetItCurrent).toHaveBeenCalled();
+    });
+    fit('if the page is found and it is the first, it should select the conversation', () => {
 
     });
   });
