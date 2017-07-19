@@ -12,11 +12,11 @@ import {
   PersistencyService,
   MessageService,
   TrackingService,
-  NotificationService
+  NotificationService,
+  NewConversationResponse
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { RequestOptions } from '@angular/http';
-import { NewConversationResponse } from 'shield/lib/shield/conversation/conversation-response.interface';
 
 @Injectable()
 export class ConversationService extends ConversationServiceMaster {
