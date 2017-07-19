@@ -146,13 +146,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getConversationUserAndItemInfo(userId: string, itemId: string) {
-    return Observable.forkJoin(
-      this.userService.get(userId),
-      this.itemService.get(itemId)
-    );
-  }
-
   private scrollToActive() {
     const active: HTMLElement = this.elRef.nativeElement.querySelector('tsl-conversation.active');
     if (active) {
