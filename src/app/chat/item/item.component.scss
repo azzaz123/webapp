@@ -35,10 +35,12 @@
       color: $grey-300;
       line-height: 24px;
       md-icon {
-        height: 11px;
-        width: 14px;
+        height: 14px;
+        width: 17px;
         margin: 0 $spacing-XS;
+        margin-right: 2px;
         display: inline-flex;
+        vertical-align: sub;
       }
     }
   }
