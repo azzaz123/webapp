@@ -17,6 +17,7 @@ import {
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { RequestOptions } from '@angular/http';
+import { Conversation } from 'shield/lib/shield/conversation/conversation';
 
 @Injectable()
 export class ConversationService extends ConversationServiceMaster {
@@ -43,12 +44,24 @@ export class ConversationService extends ConversationServiceMaster {
     });
   }
 
-  public createConversation(itemId): Observable<NewConversationResponse> {
+  public createConversation(itemId): Observable<Conversation> {
     const options = new RequestOptions();
     options.headers = new Headers();
     options.headers.append('Content-Type', 'application/json');
-    return this.http.post(`api/v3/conversations`, JSON.stringify({item_id: itemId}), options).map((r: Response) => {
-      return r.json();
+    return this.http.post(`api/v3/conversations`, JSON.stringify({item_id: itemId}), options).flatMap((r: Response) => {
+      const response: NewConversationResponse = r.json();
+      return Observable.forkJoin(
+        this.userService.get(response.seller_user_id),
+        this.itemService.get(itemId)
+      ).map((data: any) => {
+        return new Conversation(
+          response.conversation_id,
+          null,
+          response.modified_date,
+          false,
+          data[0],
+          data[1]);
+      });
     });
   }
 

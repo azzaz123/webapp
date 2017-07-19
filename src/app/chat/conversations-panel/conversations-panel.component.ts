@@ -138,20 +138,11 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   }
 
   private createConversationAndSetItCurrent() {
-    this.conversationService.createConversation(this.newConversationItemId).subscribe((conv: NewConversationResponse) => {
-      const resp: NewConversationResponse = conv;
-      this.getConversationUserAndItemInfo(resp.seller_user_id, this.newConversationItemId).subscribe((r: any) => {
-        const newConversation = new Conversation(
-          resp.conversation_id,
-          null,
-          resp.modified_date,
-          false,
-          r[0],
-          r[1]);
-        this.conversationService.addLead(newConversation);
-        this.conversationService.loadMessagesIntoConversations(this.conversations);
-        this.setCurrentConversation(newConversation);
-      });
+    this.conversationService.createConversation(this.newConversationItemId).subscribe((conv: Conversation) => {
+      const newConversation = conv;
+      this.conversationService.addLead(newConversation);
+      this.conversationService.loadMessagesIntoConversations(this.conversations);
+      this.setCurrentConversation(newConversation);
     });
   }
 
