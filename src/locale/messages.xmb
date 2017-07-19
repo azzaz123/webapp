@@ -22,22 +22,28 @@
 ]>
 <messagebundle>
   <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:12</source>Load more</msg>
-  <msg id="8886737317292020570"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:19</source>Archive conversation</msg>
-  <msg id="5298644184637702922"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will archive the conversation.</msg>
-  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source>Cancel</msg>
-  <msg id="1055686627716339120"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source>Archive</msg>
-  <msg id="5926864560020170283"><source>app/chat/modals/report-listing/report-listing.component.ts:20</source>I&apos;m reporting this listing because...</msg>
-  <msg id="2536916799548969987"><source>app/chat/modals/report-listing/report-listing.component.ts:27,28</source><source>app/chat/modals/report-user/report-user.component.ts:26,27</source>Report
-  </msg>
-  <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.ts:19</source>I&apos;m reporting this user because...</msg>
+  <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:19</source>Delete conversation</msg>
+  <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will delete the conversation.</msg>
+  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source>Cancel</msg>
+  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source>Delete</msg>
+  <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.ts:2</source><source>app/chat/modals/report-listing/report-listing.component.ts:25</source><source>app/chat/modals/report-user/report-user.component.ts:2</source><source>app/chat/modals/report-user/report-user.component.ts:28</source>Report</msg>
+  <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.ts:22</source>I&apos;m reporting this user because...</msg>
+  <msg id="20327443157350316"><source>app/chat/modals/block-user/block-user.component.ts:2</source>Block user</msg>
+  <msg id="5871136368461493241"><source>app/chat/modals/block-user/block-user.component.ts:3</source>You won&apos;t be able to send or receive messages from this user. Do you wish to continue?</msg>
+  <msg id="420763834450076269"><source>app/chat/modals/block-user/block-user.component.ts:7</source>Block</msg>
+  <msg id="5118689036165223498"><source>app/chat/modals/unblock-user/unblock-user.component.ts:2</source>Unblock user</msg>
+  <msg id="2565755719057925105"><source>app/chat/modals/unblock-user/unblock-user.component.ts:3</source>You&apos;ll be able to send or receive messages from this user again. Do you wish to continue?</msg>
+  <msg id="4859202148272511129"><source>app/chat/modals/unblock-user/unblock-user.component.ts:7</source>Unblock</msg>
   <msg id="313850810538580916"><source>app/chat/chat.component.ts:14</source>Offline</msg>
   <msg id="8870711330013548872"><source>app/chat/chat.component.ts:15</source>Online</msg>
   <msg id="2711435905501432474"><source>app/chat/chat.component.ts:20</source>Report this Listing</msg>
   <msg id="5918739414324010673"><source>app/chat/chat.component.ts:21</source>Report this User</msg>
-  <msg id="3437274703198746531"><source>app/chat/chat.component.ts:32,33</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+  <msg id="3909560892838036974"><source>app/chat/chat.component.ts:22</source>Block this User</msg>
+  <msg id="7240635163184231751"><source>app/chat/chat.component.ts:23</source>Unblock this User</msg>
+  <msg id="3437274703198746531"><source>app/chat/chat.component.ts:34,35</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
         from the list on the left</msg>
-  <msg id="3325766019344626759"><source>app/chat/chat.component.ts:34</source>There are no messages</msg>
-  <msg id="6334569300046707546"><source>app/chat/chat.component.ts:35,36</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+  <msg id="3325766019344626759"><source>app/chat/chat.component.ts:36</source>There are no messages</msg>
+  <msg id="6334569300046707546"><source>app/chat/chat.component.ts:37,38</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
         Try again later.</msg>
   <msg id="4896863464728200563"><source>app/chat/input/input.component.ts:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.ts:3</source>Waiting for network...</msg>
@@ -54,8 +60,9 @@
   <msg id="2674821313466677845"><source>app/core/user/user-type/user-type.component.ts:5</source>Loyal</msg>
   <msg id="7905190705958643281"><source>app/core/user/user-type/user-type.component.ts:6</source>Novice</msg>
   <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
+  <msg id="6543433128416987560"><source>app/core/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:9</source>Messages</msg>
   <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
   <msg id="2821179408673282599"><source>app/layout/topbar/topbar.component.ts:8</source>Home</msg>
-  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:18</source>Logout</msg>
+  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:19</source>Logout</msg>
 </messagebundle>

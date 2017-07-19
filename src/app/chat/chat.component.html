@@ -7,7 +7,7 @@
   <tsl-user [user]="currentConversation.user" [phone]="currentConversation.phone"></tsl-user>
   <tsl-item [item]="currentConversation.item"></tsl-item>
 </div>
-<div id="center-panel" [hidden]="!currentConversation">
+<div id="center-panel" *ngIf="currentConversation">
   <div id="top-bar">
     <h5>{{currentConversation?.user.microName}}</h5>
     <div class="status-circle" [ngClass]="{'online': currentConversation?.user.online}"></div>
@@ -16,9 +16,11 @@
     <div ngbDropdown class="conversation-header-menu">
       <md-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></md-icon>
       <div class="dropdown-menu dropdown-menu-right">
-        <button class="dropdown-item" (click)="archiveConversation()" i18n *ngIf="!currentConversation?.archived">Archive conversation</button>
+        <button class="dropdown-item" (click)="archiveConversation()" i18n *ngIf="!currentConversation?.archived">Delete conversation</button>
         <button class="dropdown-item" (click)="reportListingAction()" *ngIf="currentConversation?.item.owner !== userService.user?.id" i18n>Report this Listing</button>
         <button class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
+        <button [hidden]="xmppService.isBlocked(currentConversation?.user.id)" class="dropdown-item warn" (click)="blockUserAction()" i18n>Block this User</button>
+        <button [hidden]="!xmppService.isBlocked(currentConversation?.user.id)" class="dropdown-item warn" (click)="unblockUserAction()" i18n>Unblock this User</button>
       </div>
     </div>
   </div>

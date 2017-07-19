@@ -4,5 +4,5 @@ export const environment: any = {
   baseUrl: 'http://prod2.wallapop.com/',
   xmppDomain: 'wallapop.com',
   wsUrl: 'wss://mongooseimprotool-prod.wallapop.com:443/ws-xmpp',
-  loginUrl: 'https://es.wallapop.com/login'
+  siteUrl: 'https://es.wallapop.com/'
 };

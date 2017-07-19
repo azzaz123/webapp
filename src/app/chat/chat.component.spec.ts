@@ -56,6 +56,7 @@ describe('Component: Chat', () => {
   let trackingService: TrackingService;
   let toastr: ToastrService;
   let modalService: NgbModal;
+  let xmppService: XmppService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -71,7 +72,14 @@ describe('Component: Chat', () => {
         {provide: ToastrService, useClass: MockedToastr},
         I18nService,
         EventService,
-        XmppService
+        {
+          provide: XmppService, useValue: {
+          blockUser() {
+          },
+          unblockUser() {
+          }
+        }
+        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -83,6 +91,7 @@ describe('Component: Chat', () => {
     itemService = TestBed.get(ItemService);
     toastr = TestBed.get(ToastrService);
     modalService = TestBed.get(NgbModal);
+    xmppService = TestBed.get(XmppService);
   });
 
   it('should create an instance', () => {
@@ -233,6 +242,40 @@ describe('Component: Chat', () => {
       expect(conversationService.archive).toHaveBeenCalledWith(component.currentConversation.id);
       expect(conversationService.stream).toHaveBeenCalled();
       expect(toastr.success).toHaveBeenCalledWith('The conversation has been archived correctly');
+    }));
+  });
+
+  describe('blockUserAction', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve()
+      });
+    });
+    it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
+      component.currentConversation = MOCK_CONVERSATION();
+      spyOn(xmppService, 'blockUser').and.returnValue(Observable.of({}));
+      spyOn(toastr, 'success').and.callThrough();
+      component.blockUserAction();
+      tick();
+      expect(xmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(toastr.success).toHaveBeenCalledWith('The user has been blocked');
+    }));
+  });
+
+  describe('unblockUserAction', () => {
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve()
+      });
+    });
+    it('should close the modal, call unblockUser and show the toast', fakeAsync(() => {
+      component.currentConversation = MOCK_CONVERSATION();
+      spyOn(xmppService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(toastr, 'success').and.callThrough();
+      component.unblockUserAction();
+      tick();
+      expect(xmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
     }));
   });
 
