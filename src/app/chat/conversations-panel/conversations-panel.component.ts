@@ -82,7 +82,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.route.queryParams.subscribe((params) => {
           this.newConversationItemId = params.itemId;
           if (params.itemId) {
-            this.conversationService.getConversation(this.newConversationItemId).subscribe((convResponse: NewConversationResponse) => {
+            this.conversationService.getByItemId(this.newConversationItemId).subscribe((convResponse: NewConversationResponse) => {
               this.eventService.emit(EventService.FIND_CONVERSATION, convResponse);
             }, (e) => {
               this.eventService.emit(EventService.FIND_CONVERSATION, null);

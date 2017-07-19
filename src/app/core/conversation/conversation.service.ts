@@ -37,7 +37,7 @@ export class ConversationService extends ConversationServiceMaster {
 
   }
 
-  public getConversation(itemId): Observable<NewConversationResponse> {
+  public getByItemId(itemId): Observable<NewConversationResponse> {
     return this.http.get(`api/v3/items/${itemId}/conversation`).map((r: Response) => {
       return r.json();
     });
