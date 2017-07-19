@@ -380,26 +380,24 @@ describe('Component: ConversationsPanel', () => {
     beforeEach(() => {
       (component as any).newConversationItemId = 'newConversationItemId';
       spyOn(conversationService, 'addLead');
-      spyOn(conversationService, 'createConversation').and.returnValue(Observable.of(NEW_CONVERSATION_RESPONSE));
+      spyOn(conversationService, 'createConversation').and.returnValue(Observable.of(SECOND_MOCK_CONVERSATION));
     });
     it('should call createConversation of the service', () => {
       (component as any).createConversationAndSetItCurrent();
       expect(conversationService.createConversation).toHaveBeenCalledWith('newConversationItemId');
     });
 
-    it('should get the user & item info, create a new conversation and add it to the existing list', () => {
-      spyOn((component as any), 'getConversationUserAndItemInfo').and.returnValue(Observable.of([MOCK_USER, MOCK_ITEM]));
+    it('call the createConversation and add it to the existing list', () => {
       spyOn(conversationService, 'loadMessagesIntoConversations');
       (component as any).createConversationAndSetItCurrent();
-      expect((component as any).getConversationUserAndItemInfo).toHaveBeenCalled();
       expect((conversationService.addLead as any).calls.argsFor(0)[0]).toEqual(
         new Conversation(
-          'conversation_id',
-          null,
-          123123,
+          SECOND_MOCK_CONVERSATION.id,
+          SECOND_MOCK_CONVERSATION.legacyId,
+          SECOND_MOCK_CONVERSATION.modifiedDate,
           false,
           MOCK_USER,
-          MOCK_ITEM)
+          undefined)
       );
       expect(conversationService.loadMessagesIntoConversations).toHaveBeenCalledWith(component.conversations);
     });
