@@ -20,15 +20,3 @@ export interface ItemContent {
   title: string;
   url: string;
 }
-
-
-/*
-
- owner: string;
- location: Location;
- actions_allowed: ItemActions;
- main_image: Image;
- web_slug: string;
- published_date: number;
-
- */
