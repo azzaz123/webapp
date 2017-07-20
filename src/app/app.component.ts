@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  ConversationService,
   ErrorsService,
   EventService,
   I18nService,
@@ -25,6 +24,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
 import { MdIconRegistry } from '@angular/material';
+import { ConversationService } from './core/conversation/conversation.service';
 // Declare ga function as ambient
 declare var ga: Function;
 

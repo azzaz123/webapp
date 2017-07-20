@@ -30,9 +30,6 @@ class MockUserService {
   public reportUser(): Observable<any> {
     return Observable.of({});
   }
-
-  public syncStatus(): void {
-  }
 }
 
 class MockItemService {
@@ -105,7 +102,6 @@ describe('Component: Chat', () => {
 
     beforeEach(() => {
       spyOn(conversationService, 'sendRead');
-      spyOn(userService, 'syncStatus');
     });
 
     it('should set the current conversation', () => {
@@ -130,16 +126,9 @@ describe('Component: Chat', () => {
       expect(conversation.active).toBeTruthy();
     });
 
-    it('should call syncStatus', () => {
-      conversation = MOCK_CONVERSATION();
-      component.onCurrentConversationChange(conversation);
-      expect(userService.syncStatus).toHaveBeenCalledWith(conversation.user);
-    });
-
     it('should NOT send the conversation status if conversation is NULL', () => {
       component.onCurrentConversationChange(null);
       expect(conversationService.sendRead).not.toHaveBeenCalled();
-      expect(userService.syncStatus).not.toHaveBeenCalled();
     });
   });
 
@@ -268,7 +257,7 @@ describe('Component: Chat', () => {
       spyOn(toastr, 'success').and.callThrough();
       component.blockUserAction();
       tick();
-      expect(xmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(xmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been blocked');
     }));
   });
@@ -285,7 +274,7 @@ describe('Component: Chat', () => {
       spyOn(toastr, 'success').and.callThrough();
       component.unblockUserAction();
       tick();
-      expect(xmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user.id);
+      expect(xmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
     }));
   });

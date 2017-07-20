@@ -1,8 +1,12 @@
 import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Conversation, ConversationService, EventService, Message, TrackingService, UserService } from 'shield';
+import { Conversation, Message, NewConversationResponse, TrackingService, ItemService } from 'shield';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { EventService } from '../../core/event/event.service';
+import { ConversationService } from '../../core/conversation/conversation.service';
+import { UserService } from '../../core/user/user.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'tsl-conversations-panel',
@@ -22,12 +26,14 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private currentConversationSet = false;
   public page = 1;
   private active = true;
+  private newConversationItemId: string;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
               private route: ActivatedRoute,
               private trackingService: TrackingService,
-              private userService: UserService,
+              private itemService: ItemService,
+              public userService: UserService,
               private elRef: ElementRef) {
   }
 
@@ -48,6 +54,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.getConversations();
     this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, () => this.setCurrentConversation(null));
     this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
+    this.eventService.subscribe(EventService.FIND_CONVERSATION, (conversation: NewConversationResponse) => this.findConversation(conversation));
   }
 
   ngOnDestroy() {
@@ -71,6 +78,18 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
       this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
+      if (!this.currentConversationSet) {
+        this.route.queryParams.subscribe((params) => {
+          this.newConversationItemId = params.itemId;
+          if (params.itemId) {
+            this.conversationService.getByItemId(this.newConversationItemId).subscribe((convResponse: NewConversationResponse) => {
+              this.eventService.emit(EventService.FIND_CONVERSATION, convResponse);
+            }, (e) => {
+              this.eventService.emit(EventService.FIND_CONVERSATION, null);
+            });
+          }
+        });
+      }
       if (conversations && conversations.length > 0) {
         this.conversations = conversations;
         this.loading = false;
@@ -90,21 +109,39 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     }).subscribe((params: any) => {
       this.currentConversationSet = true;
       const conversationId: string = params.c || this.userService.queryParams.c;
-      const page = this.conversationService.getConversationPage(conversationId);
-      if (page !== -1) {
-        if (page > 1) {
-          for (let i = 2; i <= page; i++) {
-            this.loadMore();
-          }
-        }
-        const currentConversation: Conversation = _.find(this.conversations, {id: conversationId});
-        if (currentConversation) {
-          this.setCurrentConversation(currentConversation);
-          setTimeout(() => {
-            this.scrollToActive();
-          });
-        }
+      this.setCurrentConversationWithConversationId(conversationId);
+    });
+  }
+
+  private setCurrentConversationWithConversationId(conversationId: string) {
+    const page = this.conversationService.getConversationPage(conversationId);
+    if (page !== -1) {
+      if (page > 1) {
+        this.createConversationAndSetItCurrent();
       }
+      const currentConversation: Conversation = _.find(this.conversations, {id: conversationId});
+      if (currentConversation) {
+        this.setCurrentConversation(currentConversation);
+        setTimeout(() => {
+          this.scrollToActive();
+        });
+      }
+    }
+  }
+
+  public findConversation(conversation: NewConversationResponse) {
+    if (conversation === null) {
+      this.createConversationAndSetItCurrent();
+    } else {
+      this.setCurrentConversationWithConversationId(conversation.conversation_id);
+    }
+  }
+
+  private createConversationAndSetItCurrent() {
+    this.conversationService.createConversation(this.newConversationItemId).subscribe((newConversation: Conversation) => {
+      this.conversationService.addLead(newConversation);
+      this.conversationService.loadMessagesIntoConversations(this.conversations);
+      this.setCurrentConversation(newConversation);
     });
   }
 
@@ -113,7 +150,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (active) {
       this.scrollPanel.nativeElement.scrollTop = active.offsetTop - active.offsetHeight;
     }
-
   }
 
   private sendRead(message: Message) {
