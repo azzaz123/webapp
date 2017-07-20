@@ -58,7 +58,6 @@ export class ChatComponent implements OnInit {
     if (this.currentConversation) {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);
-      this.userService.syncStatus(this.currentConversation.user);
     }
   }
 
@@ -113,7 +112,7 @@ export class ChatComponent implements OnInit {
 
   public blockUserAction() {
     this.modalService.open(BlockUserComponent).result.then(() => {
-      this.xmppService.blockUser(this.currentConversation.user.id).subscribe(() => {
+      this.xmppService.blockUser(this.currentConversation.user).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
       });
     }, () => {
@@ -122,7 +121,7 @@ export class ChatComponent implements OnInit {
 
   public unblockUserAction() {
     this.modalService.open(UnblockUserComponent).result.then(() => {
-      this.xmppService.unblockUser(this.currentConversation.user.id).subscribe(() => {
+      this.xmppService.unblockUser(this.currentConversation.user).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
       });
     }, () => {
