@@ -7,6 +7,7 @@ import {
   ItemService,
   EventService,
   HttpService,
+  Conversation,
   ShieldConfig,
   XmppService,
   PersistencyService,
@@ -17,7 +18,6 @@ import {
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { RequestOptions } from '@angular/http';
-import { Conversation } from 'shield/lib/shield/conversation/conversation';
 
 @Injectable()
 export class ConversationService extends ConversationServiceMaster {
