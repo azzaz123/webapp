@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ItemService as ItemServiceMaster, HttpService, I18nService, TrackingService, EventService, UserService, Item } from 'shield';
 import { ItemContent, ItemResponse } from './item-response.interface';
+import { Observable } from 'rxjs/Observable';
+import { ITEM_BAN_REASONS } from './ban-reasons';
 
 @Injectable()
 export class ItemService extends ItemServiceMaster {
@@ -38,6 +40,16 @@ export class ItemService extends ItemServiceMaster {
       null,
       content.modified_date
     );
+  }
+
+  public reportListing(itemId: number | string,
+                       comments: string,
+                       reason: number,
+                       conversationId: number): Observable<any> {
+    return this.http.post(this.API_URL_V3 + '/' + itemId + '/report', {
+      comments: comments,
+      reason: ITEM_BAN_REASONS[reason]
+    });
   }
 
 }
