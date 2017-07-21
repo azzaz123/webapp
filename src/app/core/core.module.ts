@@ -6,6 +6,7 @@ import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
 import { TrackingModule } from 'shield';
+import { ItemService } from './item/item.service';
 import { ConversationService } from './conversation/conversation.service';
 import { EventService } from './event/event.service';
 
@@ -33,6 +34,8 @@ export class CoreModule {
       ngModule: CoreModule,
       providers: [
         LoggedGuard,
+        UserService,
+        ItemService,
         UserService,
         ConversationService,
         EventService

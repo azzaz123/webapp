@@ -59,7 +59,8 @@ describe('Component: ConversationsPanel', () => {
         MomentModule,
         ShieldModule.forRoot({
           cacheAllConversations: false,
-          environment: environment
+          environment: environment,
+          addSignature: true
         })
       ],
       declarations: [ConversationsPanelComponent, ConversationComponent],

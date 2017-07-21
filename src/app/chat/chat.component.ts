@@ -69,7 +69,7 @@ export class ChatComponent implements OnInit {
   public reportListingAction(): void {
     this.modalService.open(ReportListingComponent, {windowClass: 'report'}).result.then((result: any) => {
       this.itemService.reportListing(
-        this.currentConversation.item.legacyId,
+        this.currentConversation.item.id,
         result.message,
         result.reason,
         this.currentConversation.legacyId

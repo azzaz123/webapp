@@ -170,7 +170,7 @@ describe('Component: Chat', () => {
       component.currentConversation = MOCK_CONVERSATION();
       component.reportListingAction();
       tick();
-      expect(itemService.reportListing).toHaveBeenCalledWith(component.currentConversation.item.legacyId,
+      expect(itemService.reportListing).toHaveBeenCalledWith(ITEM_ID,
         'Report Listing Reason',
         1,
         component.currentConversation.legacyId);
