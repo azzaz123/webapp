@@ -1,13 +1,12 @@
   <tsl-item-avatar [item]="conversation?.item"></tsl-item-avatar>
   <div class="conversation-info" *ngIf="conversation">
-
     <div class="item-title-row">
       <div class="conversation-item-title">
         <span>{{conversation.item.title}}</span>
       </div>
       <div class="conversation-item-meta">
         <span
-          class="message-date">{{conversation?.messages[(conversation.messages.length-1)]?.date | amCalendar:momentConfig }}
+          class="message-date">{{conversation?.modifiedDate| amCalendar:momentConfig }}
         </span>
       </div>
     </div>

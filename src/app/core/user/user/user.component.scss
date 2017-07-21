@@ -27,6 +27,7 @@
       color: $grey-700;
       padding: 0 $spacing $spacing-S $spacing;
       display: flex;
+      align-items: flex-start;
       background: transparent;
       &:last-child {
         padding-bottom: 0;
@@ -36,6 +37,11 @@
         width: 16px;
         margin-right: $spacing-S;
         margin-top: 1px;
+      }
+      &.response-rate {
+        span {
+          width: 165px;
+        }
       }
     }
   }
@@ -70,4 +76,15 @@
       }
     }
   }
+  &.linked {
+    &::after {
+      content: '';
+      border: 1px solid $grey-100;
+      left: 50%;
+      position: absolute;
+      bottom: -20px;
+      height: 20px;
+    }
+  }
+
 }
