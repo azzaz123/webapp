@@ -350,8 +350,8 @@ describe('Component: ConversationsPanel', () => {
       (component as any).setCurrentConversationWithConversationId(MOCK_CONVERSATION().id);
       expect(conversationService.getConversationPage).toHaveBeenCalledWith(MOCK_CONVERSATION().id);
     });
-    it('if the page is found and it is higher than 1, it should create the conversation', () => {
-      spyOn(conversationService, 'getConversationPage').and.returnValue(2);
+    it('if the page is not found', () => {
+      spyOn(conversationService, 'getConversationPage').and.returnValue(-1);
       spyOn((component as any), 'createConversationAndSetItCurrent');
       (component as any).setCurrentConversationWithConversationId(MOCK_CONVERSATION().id);
       expect((component as any).createConversationAndSetItCurrent).toHaveBeenCalled();
@@ -388,19 +388,14 @@ describe('Component: ConversationsPanel', () => {
       expect(conversationService.createConversation).toHaveBeenCalledWith('newConversationItemId');
     });
 
-    it('call the createConversation and add it to the existing list', () => {
-      spyOn(conversationService, 'loadMessagesIntoConversations');
+    it('call the getSingleConversationMessages and call addLead & setCurrentconversation with the response', () => {
+      const convWithMessages = MOCK_CONVERSATION();
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(convWithMessages));
+      spyOn(component, 'setCurrentConversation');
       (component as any).createConversationAndSetItCurrent();
-      expect((conversationService.addLead as any).calls.argsFor(0)[0]).toEqual(
-        new Conversation(
-          SECOND_MOCK_CONVERSATION.id,
-          SECOND_MOCK_CONVERSATION.legacyId,
-          SECOND_MOCK_CONVERSATION.modifiedDate,
-          false,
-          MOCK_USER,
-          undefined)
-      );
-      expect(conversationService.loadMessagesIntoConversations).toHaveBeenCalledWith(component.conversations);
+      expect(conversationService.getSingleConversationMessages).toHaveBeenCalledWith(SECOND_MOCK_CONVERSATION);
+      expect(conversationService.addLead).toHaveBeenCalledWith(convWithMessages);
+      expect(component.setCurrentConversation).toHaveBeenCalledWith(convWithMessages);
     });
   });
 });
