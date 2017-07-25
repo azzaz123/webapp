@@ -66,7 +66,7 @@ export class ConversationService extends ConversationServiceMaster {
     });
   }
 
-  getConversationMessagesById(conversation: Conversation) {
+  getSingleConversationMessages(conversation: Conversation) {
     return this.messageService.getMessages(conversation).map((data: MessagesData) => {
       conversation.messages = data.data;
       return conversation;
