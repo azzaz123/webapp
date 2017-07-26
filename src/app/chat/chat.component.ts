@@ -77,6 +77,12 @@ export class ChatComponent implements OnInit {
         this.trackingService.track(TrackingService.PRODUCT_REPPORTED,
           {product_id: this.currentConversation.item.id, reason_id: result.reason});
         this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
+      }, (error: any) => {
+        if (error.status === 403) {
+          this.toastr.success(this.i18n.getTranslations('reportListingSuccess'));
+        } else {
+          this.toastr.error(this.i18n.getTranslations('serverError') + ' ' + error.json().message);
+        }
       });
     }, () => {
     });
