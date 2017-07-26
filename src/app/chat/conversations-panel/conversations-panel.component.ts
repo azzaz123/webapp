@@ -109,16 +109,17 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     }).subscribe((params: any) => {
       this.currentConversationSet = true;
       const conversationId: string = params.c || this.userService.queryParams.c;
-      this.setCurrentConversationWithConversationId(conversationId);
+      if (conversationId) {
+        this.setCurrentConversationWithConversationId(conversationId);
+      }
     });
   }
 
   private setCurrentConversationWithConversationId(conversationId: string) {
     const page = this.conversationService.getConversationPage(conversationId);
-    if (page !== -1) {
-      if (page > 1) {
-        this.createConversationAndSetItCurrent();
-      }
+    if (page === -1) {
+      this.createConversationAndSetItCurrent();
+    } else {
       const currentConversation: Conversation = _.find(this.conversations, {id: conversationId});
       if (currentConversation) {
         this.setCurrentConversation(currentConversation);
@@ -139,9 +140,10 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private createConversationAndSetItCurrent() {
     this.conversationService.createConversation(this.newConversationItemId).subscribe((newConversation: Conversation) => {
-      this.conversationService.addLead(newConversation);
-      this.conversationService.loadMessagesIntoConversations(this.conversations);
-      this.setCurrentConversation(newConversation);
+      this.conversationService.getSingleConversationMessages(newConversation).subscribe((newConversationWithMessages: Conversation) => {
+        this.conversationService.addLead(newConversationWithMessages);
+        this.setCurrentConversation(newConversationWithMessages);
+      });
     });
   }
 

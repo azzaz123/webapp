@@ -14,7 +14,8 @@ import {
   MessageService,
   TrackingService,
   NotificationService,
-  NewConversationResponse
+  NewConversationResponse,
+  MessagesData,
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { RequestOptions } from '@angular/http';
@@ -64,5 +65,13 @@ export class ConversationService extends ConversationServiceMaster {
       });
     });
   }
+
+  getSingleConversationMessages(conversation: Conversation) {
+    return this.messageService.getMessages(conversation).map((data: MessagesData) => {
+      conversation.messages = data.data;
+      return conversation;
+    });
+  }
+
 
 }
