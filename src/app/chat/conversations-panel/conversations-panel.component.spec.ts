@@ -350,13 +350,13 @@ describe('Component: ConversationsPanel', () => {
       (component as any).setCurrentConversationWithConversationId(MOCK_CONVERSATION().id);
       expect(conversationService.getConversationPage).toHaveBeenCalledWith(MOCK_CONVERSATION().id);
     });
-    it('if the page is not found', () => {
+    it('should call createConversationAndSetItCurrent if the page is not found', () => {
       spyOn(conversationService, 'getConversationPage').and.returnValue(-1);
       spyOn((component as any), 'createConversationAndSetItCurrent');
       (component as any).setCurrentConversationWithConversationId(MOCK_CONVERSATION().id);
       expect((component as any).createConversationAndSetItCurrent).toHaveBeenCalled();
     });
-    it('if the page is found and it is the first, it should select the conversation', () => {
+    it('should select the conversation if the page is found and it is the first', () => {
       spyOn(conversationService, 'getConversationPage').and.returnValue(1);
       component.conversations = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
       spyOn(component, 'setCurrentConversation');
@@ -388,7 +388,7 @@ describe('Component: ConversationsPanel', () => {
       expect(conversationService.createConversation).toHaveBeenCalledWith('newConversationItemId');
     });
 
-    it('call the getSingleConversationMessages and call addLead & setCurrentconversation with the response', () => {
+    it('should call the getSingleConversationMessages and call addLead & setCurrentconversation with the response', () => {
       const convWithMessages = MOCK_CONVERSATION();
       spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(convWithMessages));
       spyOn(component, 'setCurrentConversation');
