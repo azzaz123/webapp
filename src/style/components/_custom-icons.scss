@@ -34,3 +34,13 @@
     fill: $grey-900;
   }
 }
+
+#send {
+  &.selected {
+    md-icon {
+      path {
+        fill: $corporate;
+      }
+    }
+  }
+}
