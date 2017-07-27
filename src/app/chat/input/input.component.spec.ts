@@ -4,6 +4,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { InputComponent } from './input.component';
 import { MessageService, MOCK_CONVERSATION, USER_ID, EventService, Conversation, XmppService, MOCK_USER } from 'shield';
 import { By } from '@angular/platform-browser';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 class MockMessageService {
   send(c: Conversation, t: string): void {
@@ -28,7 +29,8 @@ describe('Component: Input', () => {
           }
         }},
         EventService
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(InputComponent);
     component = TestBed.createComponent(InputComponent).componentInstance;
