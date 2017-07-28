@@ -12,52 +12,37 @@
     </form>
     <a href="#main-search-modal" id="dropdown-main-search-btn" class="js-btn-two-states">
       <md-icon svgIcon="categories" class="topbar-icon"></md-icon>
-      <div class="categories">Categorias</div>
+      <div class="categories" i18n>Categories</div>
     </a>
     <div class="header-location">
       <md-icon svgIcon="geo" class="topbar-icon"></md-icon>
-      <input id="pac-input-header" class="controls" type="text" placeholder="Dónde buscar">
+      <input id="pac-input-header" class="controls" type="text" placeholder="¿Dónde quieres buscar?">
       <ul class="places-list-header"></ul>
     </div>
   </div>
 </div>
 <div class="main-header-login">
-  <a class="main-header-home menu-link" href="/">
+  <a class="main-header-home menu-link" href="http://es.beta.wallapop.com">
     <md-icon svgIcon="home" class="topbar-icon"></md-icon>
-    <span>Inicio</span>
+    <span i18n>Home</span>
     <div class="horizontal-line"></div>
   </a>
-  <a class="main-header-chat menu-link" href="http://web.beta.wallapop.com/chat">
+  <a class="main-header-chat menu-link" [routerLink]="['/chat']">
     <div class="news-badge"></div>
     <md-icon svgIcon="messages" class="topbar-icon"></md-icon>
-    <span>Mensajes</span>
+    <span i18n>Messages</span>
     <div class="horizontal-line"></div>
   </a>
-  <a class="main-header-login-sign-in" id="js-show-login-modal"
-     href="#modal-login">
-    <span>Iniciar sesión</span>
-  </a>
-  <a href="#js-profile-modal" class="main-header-login-profile" id="js-show-profile-action-dropdown">
-    <div class="main-header-login-profile-avatar"></div>
-    <span id="js-login-profle-name"></span>
-    <i class="ico-arrow-waterfall"></i>
-    <div class="horizontal-line"></div>
-  </a>
-</div><!--
-<div class="topbar-menu">
-  <div class="topbar-sections">
-    <a href="https://es.wallapop.com" i18n>Home</a>
-    <a [routerLink]="['/chat']" class="active" i18n>Messages</a>
-  </div>
-  <span class="topbar-user-name">{{user?.microName}}</span>
-  <div class="topbar-menu-dropdown"  ngbDropdown >
+  <div class="topbar-menu-dropdown" ngbDropdown>
     <img class="topbar-avatar"
          *ngIf="user"
-         ngbDropdownToggle
          [src]="user?.image?.urls_by_size.small"
+         src-fallback="/assets/icons/arrow-waterfall.svg"
          [alt]="user?.microName">
+    <span class="topbar-user-name" ngbDropdownToggle>{{user?.microName}}</span>
+    <md-icon svgIcon="arrow-waterfall" class="topbar-icon"></md-icon>
     <div class="dropdown-menu dropdown-menu-right">
       <a class="dropdown-item" (click)="logout()" i18n>Logout</a>
     </div>
   </div>
-</div>-->
+</div>

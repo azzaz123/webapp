@@ -7,6 +7,7 @@ import { UserService } from '../../core/user/user.service';
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss']
 })
+
 export class TopbarComponent implements OnInit {
 
   public user: User;

@@ -4,7 +4,6 @@
   height: $topbar-height;
   background-color: $white;
   position: relative;
-  //line-height: $topbar-height;
   border-bottom: 1px solid;
   border-color: transparentize($color-grey-separator, 0.5);
   padding: 0 8px 0 11px;
@@ -17,10 +16,14 @@
   -ms-flex-align: center;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
+  & a {
+    color: $grey-900;
+    font-size: $font-size-S;
+    text-decoration: none;
+  }
 }
 .topbar-user-name {
-  font-weight: bold;
-  font-size: $font-size;
+  font-size: $font-size-S;
   color: $grey-900;
   margin-right: $spacing-XXS;
 }
@@ -110,7 +113,8 @@
   input {
     height: 40px;
     width: 115px;
-    color: $grey-300;
+    color: $grey-900;
+    font-size: $font-size-S;
     opacity: 1;
     border: none;
     &::-webkit-input-placeholder {
@@ -151,11 +155,19 @@
     &:active {
       color: darken($corporate-dark, 10%);
     }
+    &.focused {
+      color: $corporate;
+    }
   }
 }
 .header-location {
   & {
     display: flex;
+  }
+  & i {
+    &.focused {
+      color: $corporate;
+    }
   }
   #pac-input-header {
     &.active {
@@ -262,7 +274,7 @@
       }
     }
     & span {
-      font-size: 14px;
+      font-size: $font-size-S;
     }
     .news-badge {
       display: none;
@@ -279,7 +291,7 @@
     }
     .horizontal-line {
       display: none;
-      border-bottom: 2px solid $grey-900;
+      border-bottom: 3px solid $grey-900;
       width: 80%;
       margin-left: 8px;
       position: absolute;
@@ -324,7 +336,7 @@
       -ms-flex-align: center;
       cursor: pointer;
       color: $color-grey-item;
-      font-size: 14px;
+      font-size: $font-size-S;
       height: 65px;
       position: relative;
     }
@@ -362,11 +374,71 @@
     }
     .horizontal-line {
       display: none;
-      border-bottom: 2px solid $grey-900;
+      border-bottom: 3px solid $grey-900;
       width: 91%;
       margin-left: 0;
       position: absolute;
       bottom: 0;
     }
+  }
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .main-header {
+    /*display: -ms-flexbox\9;
+    -ms-flex-pack: start\9;*/
+    position: relative\9;
+    display: block\9;
+  }
+  .main-header-login {
+    height: 66px\9;
+    float: right\9;
+    margin-right: 20px\9;
+    //display: inline-block\9;
+  }
+  .main-header-home, .main-header-chat {
+    height: 100%\9;
+    padding-top: 23px\9;
+    padding-bottom: 23px\9;
+  }
+  .main-header-login .profile-separator {
+    float: left\9;
+  }
+  .search-glass, .ico-categories, .ico-geo {
+    margin-top: 6px\9;
+    vertical-align: middle\9;
+  }
+  #pac-input-header {
+    height: 38px\9;
+    margin-top: 1px\9;
+    padding-left: 0\9;
+    width: 111px\9;
+  }
+  #main-search-input {
+    padding-left: 0\9;
+  }
+  .horizontal-line {
+    bottom: -3px!important\9;
+  }
+  .dropdown-main-search {
+    margin-top: 10px\9;
+    width: 60%\9;
+  }
+  .dropdown-main-search, .header-location, .input-search, #dropdown-main-search-btn {
+    display: -ms-flexbox\9;
+    -ms-flex-pack: start\9;
+  }
+  .main-header-holder {
+    display: none\9;
+  }
+  .main-header-chat {
+    position: relative\9;
+  }
+  .main-header-login .menu-link:hover .horizontal-line {
+    position: absolute;
+    right: 13px\9;
+    bottom: 0\9;
+  }
+  .main-header-login-profile:hover .horizontal-line {
+    right: 15px\9;
   }
 }
