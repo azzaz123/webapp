@@ -75,21 +75,6 @@
     align-items: center;
     flex: 1;
   }
-  #dropdown-main-search-btn {
-    display: flex;
-    display: -ms-flexbox;
-    align-items: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    padding: 0 8px 0 0;
-    border-left: 1px solid $grey-100;
-    border-right: 1px solid $grey-100;
-    float: initial;
-    height: 100%;
-  }
 }
 .input-search {
   & {
@@ -160,79 +145,6 @@
     }
   }
 }
-.header-location {
-  & {
-    display: flex;
-  }
-  & i {
-    &.focused {
-      color: $corporate;
-    }
-  }
-  #pac-input-header {
-    &.active {
-      width: 230px;
-      -webkit-transition-property: width;
-      transition-property: width;
-      transition-duration: 0.3s;
-      transition-timing-function: linear;
-    }
-  }
-  ul.places-list-header {
-    background-color: $white;
-    width: 625px;
-    position: absolute;
-    left: 286px;
-    top: 48px;
-    z-index: 100;
-    border-radius: 10px;
-    box-shadow: 0 6px 10px 0 rgba(37, 50, 56, 0.1);
-    border: solid 1px $grey-100;
-    display: none;
-    img{
-      float: right;
-      padding: 5px;
-    }
-    li {
-      & {
-        border-bottom: 1px solid $grey-50;
-        cursor: pointer;
-        font-family: Wallie-Fit, sans-serif;
-        font-size: 16px;
-        color: $grey-900;
-        display: flex;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        align-items: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        position: relative;
-        -webkit-box-pack: start;
-        -ms-flex-pack: start;
-        justify-content: start;
-        height: 50px;
-      }
-      &:hover {
-        background-color: $grey-50;
-      }
-      &:last-child {
-        border-bottom: none;
-      }
-      .pac-address {
-      }
-      .pac-icon {
-        width: 15px;
-        height: 17px;
-        background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons.png);
-        background-repeat: no-repeat;
-        margin: 0 12px;
-      }
-      .pac-icon-marker {
-        background-position: -1px -161px;
-      }
-    }
-  }
-}
 .main-header-login {
   & {
     font-family: "WallieFit", sans-serif;
@@ -271,6 +183,9 @@
       & .horizontal-line {
         display: block;
         border-color: $corporate;
+      }
+      & .topbar-icon {
+        color: $corporate;
       }
     }
     & span {

@@ -1,0 +1,34 @@
+@import "../../style/_common.scss";
+
+#dropdown-main-search-btn {
+    display: flex;
+    display: -ms-flexbox;
+    align-items: center;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    padding: 0 8px 0 0;
+    border-left: 1px solid $grey-100;
+    border-right: 1px solid $grey-100;
+    float: initial;
+    height: 100%;
+    width: 142px;
+}
+
+.topbar-icon {
+    height: 42px;
+    width: 42px;
+    color: $grey-200;
+    vertical-align: middle;
+}
+
+.categories {
+    color: $grey-900;
+    font-size: 14px;
+    line-height: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

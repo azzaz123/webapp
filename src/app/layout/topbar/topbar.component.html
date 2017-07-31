@@ -10,15 +10,8 @@
       <input id="main-search-hidden-lat" name="lat" type="hidden" value="latitude"/>
       <input id="main-search-hidden-lng" name="lng" type="hidden" value="longitude"/>
     </form>
-    <a href="#main-search-modal" id="dropdown-main-search-btn" class="js-btn-two-states">
-      <md-icon svgIcon="categories" class="topbar-icon"></md-icon>
-      <div class="categories" i18n>Categories</div>
-    </a>
-    <div class="header-location">
-      <md-icon svgIcon="geo" class="topbar-icon"></md-icon>
-      <input id="pac-input-header" class="controls" type="text" placeholder="¿Dónde quieres buscar?">
-      <ul class="places-list-header"></ul>
-    </div>
+    <tsl-categories-list></tsl-categories-list>
+    <tsl-geolocation></tsl-geolocation>
   </div>
 </div>
 <div class="main-header-login">
@@ -27,7 +20,7 @@
     <span i18n>Home</span>
     <div class="horizontal-line"></div>
   </a>
-  <a class="main-header-chat menu-link" [routerLink]="['/chat']">
+  <a class="main-header-chat menu-link" [routerLink]="['/chat']" [routerLinkActive]="['active']">
     <div class="news-badge"></div>
     <md-icon svgIcon="messages" class="topbar-icon"></md-icon>
     <span i18n>Messages</span>

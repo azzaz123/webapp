@@ -1,0 +1,6 @@
+<div class="header-location">
+    <md-icon svgIcon="geo" class="topbar-icon"></md-icon>
+    <input id="pac-input-header" class="controls" type="text" placeholder="¿Dónde quieres buscar?" [(ngModel)]="model"
+           [ngbTypeahead]="search" (selectItem)="selectedItem($event)" [resultFormatter]="formatMatches"
+           [inputFormatter]="formatMatches" />
+</div>

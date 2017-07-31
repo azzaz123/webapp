@@ -1,0 +1,13 @@
+<div id="dropdown-main-search-btn" class="topbar-menu-dropdown" ngbDropdown>
+  <md-icon svgIcon="categories" class="topbar-icon"></md-icon>
+  <div class="categories" ngbDropdownToggle i18n>Categories</div>
+  <ul class="dropdown-menu dropdown-menu-right">
+      <li class="dropdown-item" *ngFor="let category of categories">
+        <a>
+          <md-icon svgIcon="category-{{ category.name }}" class="main-search-category-ico"></md-icon>
+          <span>{{ category.name }}</span>
+        </a>
+        <div class="list-separator"></div>
+      </li>
+  </ul>
+</div>

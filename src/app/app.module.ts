@@ -17,7 +17,7 @@ import { Ng2ImgFallbackModule } from 'ng2-img-fallback';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     ShieldModule.forRoot({
@@ -34,7 +34,7 @@ import { Ng2ImgFallbackModule } from 'ng2-img-fallback';
     HttpModule,
     AppRoutingModule,
     LayoutModule,
-    Ng2ImgFallbackModule
+    Ng2ImgFallbackModule,
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

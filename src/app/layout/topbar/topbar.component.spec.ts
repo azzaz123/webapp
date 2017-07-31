@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../core/user/user.service';
@@ -23,7 +23,8 @@ describe('TopbarComponent', () => {
           }
         }
       }],
-      declarations: [TopbarComponent]
+      declarations: [TopbarComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
     userService = TestBed.get(UserService);
