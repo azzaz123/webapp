@@ -10,6 +10,7 @@ import { EventService } from "../core/event/event.service";
 })
 export class GeolocationComponent implements OnInit {
 
+  private MIN_LENGTH = 3;
   @ViewChild('latitude') public latitude: ElementRef;
   @ViewChild('longitude') public longitude: ElementRef;
 
@@ -23,7 +24,7 @@ export class GeolocationComponent implements OnInit {
     text$
       .debounceTime(500)
       .distinctUntilChanged()
-      .switchMap(term => term.length < 3 ? [] :
+      .switchMap(term => term.length < this.MIN_LENGTH ? [] :
         this.geolocationService.search(term)
           .catch(() => {
             return Observable.of([]);
