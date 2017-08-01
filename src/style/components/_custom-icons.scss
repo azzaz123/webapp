@@ -34,3 +34,17 @@
     fill: $grey-900;
   }
 }
+
+.main-header-chat {
+  &.active {
+    md-icon svg g g {
+      fill: $corporate;
+    }
+  }
+}
+
+.main-search-category-ico {
+  svg g g {
+    fill: $grey-900;
+  }
+}

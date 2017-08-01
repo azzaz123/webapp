@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import { HttpService } from "shield";
+import { environment } from "../../../environments/environment";
 
 @Injectable()
 export class CategoryService {
+  protected API_URL_V3: string = 'api/v3/';
 
   constructor(private http: HttpService) { }
 
   public getCategories(): Observable<any> {
-    /*return this.http.get(this.API_URL_V1 + '/categories')
-      .map(res => res.json());*/
-    return Observable.of([{id: 100, name: 'Coches'}, {id: 2, name: 'Juegos'}]);
+    return this.http.getNoBase(environment.siteUrl + 'rest/categories')
+      .map(res => res.json());
   }
 
 }

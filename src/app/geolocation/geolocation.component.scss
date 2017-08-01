@@ -1,105 +1,100 @@
 @import "../../style/_common.scss";
 
-.topbar-icon {
-    height: 42px;
-    width: 42px;
-    color: $grey-200;
-    vertical-align: middle;
+.header-location {
+  & {
+    display: flex;
+    display: -ms-flexbox;
+    position: relative;
+    font-size: $font-size-S;
+  }
+  input {
+    & {
+      border: none;
+      width: 114px;
+      height: 40px;
+      color: $grey-900;
+      -webkit-transition-property: width;
+      transition-property: width;
+      transition-duration: 0.4s;
+      transition-timing-function: linear;
+    }
+    &.active {
+      width: 230px;
+    }
+    &::-webkit-input-placeholder {
+      color: $corporate;
+      opacity: 0.9;
+    }
+    &::-moz-placeholder {
+      color: $grey-300;
+      opacity: 0.9;
+    }
+    &::-ms-placeholder {
+      color: $grey-300;
+      opacity: 0.9;
+    }
+    &::placeholder {
+      color: $grey-300;
+      opacity: 0.9;
+    }
+  }
+  .location {
+    & {
+      display: flex;
+      display: -ms-flexbox;
+      align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      position: relative;
+    }
+  }
 }
 
-.header-location {
-    & {
-        display: flex;
-        font-size: $font-size-S;
-    }
-    & i {
-        &.focused {
-            color: $corporate;
-        }
-    }
-    #pac-input-header {
-        &.active {
-            width: 230px;
-            -webkit-transition-property: width;
-            transition-property: width;
-            transition-duration: 0.3s;
-            transition-timing-function: linear;
-        }
-    }
-    input {
-        border: none;
-        width: 70%;
-        height: 40px;
-        color: $grey-900;
-        &::-webkit-input-placeholder {
-            color: $corporate;
-            opacity: 0.9;
-        }
-        &::-moz-placeholder {
-            color: $grey-300;
-            opacity: 0.9;
-        }
-        &::-ms-placeholder {
-            color: $grey-300;
-            opacity: 0.9;
-        }
-        &::placeholder {
-            color: $grey-300;
-            opacity: 0.9;
-        }
-    }
-    ul.places-list-header {
-        background-color: $white;
-        width: 625px;
-        position: absolute;
-        left: 286px;
-        top: 48px;
-        z-index: 100;
-        border-radius: 10px;
-        box-shadow: 0 6px 10px 0 rgba(37, 50, 56, 0.1);
-        border: solid 1px $grey-100;
-        display: none;
-        img{
-            float: right;
-            padding: 5px;
-        }
-        li {
-            & {
-                border-bottom: 1px solid $grey-50;
-                cursor: pointer;
-                font-family: Wallie-Fit, sans-serif;
-                font-size: $font-size;
-                color: $grey-900;
-                display: flex;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                align-items: center;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                position: relative;
-                -webkit-box-pack: start;
-                -ms-flex-pack: start;
-                justify-content: start;
-                height: 50px;
-            }
-            &:hover {
-                background-color: $grey-50;
-            }
-            &:last-child {
-                border-bottom: none;
-            }
-            .pac-address {
-            }
-            .pac-icon {
-                width: 15px;
-                height: 17px;
-                background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons.png);
-                background-repeat: no-repeat;
-                margin: 0 12px;
-            }
-            .pac-icon-marker {
-                background-position: -1px -161px;
-            }
-        }
-    }
+.topbar-icon {
+  & {
+    height: 40px;
+    width: 40px;
+    color: $grey-100;
+    vertical-align: middle;
+  }
+}
+
+.pac-icon {
+  & {
+    width: 15px;
+    height: 17px;
+    margin-right: 12px;
+    display: inline-block;
+    vertical-align: top;
+    background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons.png);
+    background-size: 34px;
+    background-position: -1px -161px;
+  }
+}
+
+:host /deep/ .dropdown-menu {
+  & {
+    padding: 0;
+    overflow: hidden;
+    margin: 0.4rem 0 0;
+    left: 0 !important;
+  }
+}
+
+:host /deep/ .dropdown-item {
+  & {
+    background-color: transparent;
+    cursor: pointer;
+    color: $grey-900;
+    border-bottom: 1px solid $grey-50;
+    padding: 0.5rem 1rem;
+    -webkit-transition: all .15s linear;
+    -moz-transition: all .15s linear;
+    -o-transition: all .15s linear;
+    transition: all .15s linear;
+  }
+}
+
+:host /deep/ .dropdown-item.active {
+  background-color: $grey-50;
 }

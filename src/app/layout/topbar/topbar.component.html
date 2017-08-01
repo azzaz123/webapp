@@ -3,19 +3,21 @@
 </div>
 <div class="dropdown-main-search">
   <div class="input-search">
-    <md-icon svgIcon="glass" class="topbar-icon"></md-icon>
+    <md-icon svgIcon="glass" class="search-glass topbar-icon" (click)="submitForm()"></md-icon>
     <form id="js-main-search-form" method="get">
-      <input id="main-search-input" placeholder="¿Qué estás buscando?" type="text" maxlength="150"
-             name="kws" value=""/>
-      <input id="main-search-hidden-lat" name="lat" type="hidden" value="latitude"/>
-      <input id="main-search-hidden-lng" name="lng" type="hidden" value="longitude"/>
+      <input id="main-search-input" #mainSearchInput placeholder="¿Qué estás buscando?" type="text" maxlength="150"
+             name="kws" #kwsEl value="" (focus)="focus=true" (blur)="focus=false" [class.active]="focus"
+             (keyup.enter)="submitForm()" />
+      <input id="main-search-hidden-lat" #latEl name="lat" type="hidden" value="{{ coordinates?.lat }}"/>
+      <input id="main-search-hidden-lng" #lngEl name="lng" type="hidden" value="{{ coordinates?.lng }}"/>
+      <input id="main-search-hidden-category" #categoryEl name="category" type="hidden" value="{{ category?.categoryId }}"/>
     </form>
     <tsl-categories-list></tsl-categories-list>
     <tsl-geolocation></tsl-geolocation>
   </div>
 </div>
 <div class="main-header-login">
-  <a class="main-header-home menu-link" href="http://es.beta.wallapop.com">
+  <a class="main-header-home menu-link" [routerLink]="['/home']">
     <md-icon svgIcon="home" class="topbar-icon"></md-icon>
     <span i18n>Home</span>
     <div class="horizontal-line"></div>

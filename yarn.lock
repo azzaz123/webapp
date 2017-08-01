@@ -3707,6 +3707,10 @@ ng2-haversine@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ng2-haversine/-/ng2-haversine-0.1.1.tgz#17b1a41102bd33012717a40cc00020c2ee4e5292"
 
+ng2-img-fallback@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/ng2-img-fallback/-/ng2-img-fallback-0.2.3.tgz#d5e9a985a19579913a73e0de37477b68e646a0e5"
+
 ngx-cookie:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ngx-cookie/-/ngx-cookie-1.0.0.tgz#004fc653febd849b4dd3ee2c63c4cf171f464da9"
@@ -5205,9 +5209,9 @@ shallow-clone@^0.1.2:
     lazy-cache "^0.2.3"
     mixin-object "^2.0.1"
 
-"shield@git+ssh://git@github.com/Wallapop/shield.git#1.10.1":
-  version "1.10.1"
-  resolved "git+ssh://git@github.com/Wallapop/shield.git#afb3c4e5e3f5e43f91f4936c089887ff6054432a"
+"shield@git+ssh://git@github.com/Wallapop/shield.git#1.10.4":
+  version "1.10.4"
+  resolved "git+ssh://git@github.com/Wallapop/shield.git#57e25ae8ea2598a53f5572da5487041c4cead705"
   dependencies:
     "@angular/animations" "^4.2.2"
     "@angular/common" "^4.0.0"

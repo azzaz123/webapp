@@ -1,6 +1,12 @@
-<div class="header-location">
+<ng-template #locations let-r="result">
+    <div class="location">
+        <div class="pac-icon"></div>
+        <span>{{ r.description }}</span>
+    </div>
+</ng-template>
+<div class="header-location" #headerLocation>
     <md-icon svgIcon="geo" class="topbar-icon"></md-icon>
-    <input id="pac-input-header" class="controls" type="text" placeholder="¿Dónde quieres buscar?" [(ngModel)]="model"
-           [ngbTypeahead]="search" (selectItem)="selectedItem($event)" [resultFormatter]="formatMatches"
-           [inputFormatter]="formatMatches" />
+    <input id="pac-input-header" #pacInputHeader class="controls" type="text" placeholder="¿Dónde quieres buscar?"
+           [(ngModel)]="model" [ngbTypeahead]="search" [inputFormatter]="formatter" [resultTemplate]="locations"
+           (selectItem)="selectItem($event)" (focus)="focus=true" (blur)="focus=false" [class.active]="focus" />
 </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from "../core/category/category.service";
+import { environment } from "../../environments/environment";
+import { EventService } from "../core/event/event.service";
 
 @Component({
   selector: 'tsl-categories-list',
@@ -9,8 +11,10 @@ import { CategoryService } from "../core/category/category.service";
 export class CategoriesListComponent implements OnInit {
 
   public categories: any;
+  public selectedCategory: any;
 
-  constructor(private categoryService: CategoryService) { }
+  constructor(private categoryService: CategoryService,
+              private eventService: EventService) { }
 
   ngOnInit() {
     this.getCategories();
@@ -18,9 +22,13 @@ export class CategoriesListComponent implements OnInit {
 
   public getCategories(){
     this.categoryService.getCategories().subscribe((data: any) => {
-      console.log(data);
       this.categories = data;
     });
+  }
+
+  public selectCategory(category: any) {
+    this.selectedCategory = category;
+    this.eventService.emit(EventService.UPDATE_CATEGORY, category);
   }
 
 }
