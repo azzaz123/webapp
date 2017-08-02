@@ -1,0 +1,42 @@
+<div id="left-panel">
+  <tsl-connection-alert></tsl-connection-alert>
+  <tsl-conversations-panel (currentConversation)="onCurrentConversationChange($event)"
+                           (loaded)="onLoaded($event)"></tsl-conversations-panel>
+</div>
+<div id="right-panel" *ngIf="currentConversation">
+  <tsl-user [user]="currentConversation.user" [phone]="currentConversation.phone"></tsl-user>
+  <tsl-item [item]="currentConversation.item"></tsl-item>
+</div>
+<div id="center-panel" *ngIf="currentConversation">
+  <div id="top-bar">
+    <h5>{{currentConversation?.user.microName}}</h5>
+    <div class="status-circle" [ngClass]="{'online': currentConversation?.user.online}"></div>
+    <span i18n [hidden]="currentConversation?.user.online">Offline</span>
+    <span i18n [hidden]="!currentConversation?.user.online">Online</span>
+    <div ngbDropdown class="conversation-header-menu">
+      <md-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></md-icon>
+      <div class="dropdown-menu dropdown-menu-right">
+        <button class="dropdown-item" (click)="archiveConversation()" i18n *ngIf="!currentConversation?.archived">Delete conversation</button>
+        <button class="dropdown-item" (click)="reportListingAction()" *ngIf="currentConversation?.item.owner !== userService.user?.id" i18n>Report this Listing</button>
+        <button class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
+        <button [hidden]="xmppService.isBlocked(currentConversation?.user.id)" class="dropdown-item warn" (click)="blockUserAction()" i18n>Block this User</button>
+        <button [hidden]="!xmppService.isBlocked(currentConversation?.user.id)" class="dropdown-item warn" (click)="unblockUserAction()" i18n>Unblock this User</button>
+      </div>
+    </div>
+  </div>
+  <tsl-messages-panel [currentConversation]="currentConversation"></tsl-messages-panel>
+  <tsl-input [currentConversation]="currentConversation"></tsl-input>
+</div>
+<div id="empty-state" *ngIf="!currentConversation">
+  <div class="content">
+    <div [hidden]="!conversationsLoaded">
+      <md-icon svgIcon="empty-state" class="image"></md-icon>
+      <h2 [hidden]="conversationsTotal == 0" i18n>Choose a conversation<br/>
+        from the list on the left</h2>
+      <h2 [hidden]="conversationsTotal > 0 || connectionError" i18n>There are no messages</h2>
+      <h2 [hidden]="!connectionError" i18n>Service not available at the moment.<br/>
+        Try again later.</h2>
+    </div>
+    <tsl-spinner [hidden]="conversationsLoaded"></tsl-spinner>
+  </div>
+</div>

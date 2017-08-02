@@ -1,0 +1,45 @@
+@import "../../../style/_common.scss";
+
+.scroll-panel {
+  display: block;
+  height: calc(100vh - #{$topbar-height});
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-right: 1px solid $grey-100;
+}
+
+#loader {
+  padding-top: $spacing;
+  md-icon {
+    width: 339px;
+    height: 487px;
+  }
+}
+
+.load-more-container {
+  $load-more-container-height: 48px;
+  $spinner-size: 14px;
+  line-height: $load-more-container-height;
+  height: $load-more-container-height;
+  text-align: center;
+  .load-more {
+    color: $corporate;
+    position: relative;
+    text-transform: uppercase;
+    font-size: $font-size-XS;
+    font-weight: bold;
+    .spinner {
+      height: $spinner-size;
+      width: $spinner-size;
+      svg {
+        position: absolute;
+        top: 0;
+        left: -#{$spacing + 5px};
+      }
+    }
+    &:hover {
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+}

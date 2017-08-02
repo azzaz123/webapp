@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE translationbundle [
+<!ELEMENT translationbundle (translation)*>
+<!ATTLIST translationbundle lang CDATA #REQUIRED>
+
+<!ELEMENT translation (#PCDATA|ph)*>
+<!ATTLIST translation id CDATA #REQUIRED>
+<!ATTLIST translation desc CDATA #IMPLIED>
+<!ATTLIST translation meaning CDATA #IMPLIED>
+<!ATTLIST translation xml:space (default|preserve) "default">
+
+<!ELEMENT ph (#PCDATA|ex)*>
+<!ATTLIST ph name CDATA #REQUIRED>
+
+<!ELEMENT ex (#PCDATA)>
+]>
+<translationbundle lang="es">
+  <translation id="33149636091572968">Cargar más</translation>
+  <translation id="7579940623714391431">Borrar conversación</translation>
+  <translation id="5762515103229902547">Se procederá a borrar la conversación.</translation>
+  <translation id="2159130950882492111">Cancelar</translation>
+  <translation id="7022070615528435141">Borrar</translation>
+  <translation id="7008439939460403347">Reportar</translation>
+  <translation id="568597304214607466">Estoy reportando a este usuario porque...</translation>
+  <translation id="20327443157350316">Bloquear usuario</translation>
+  <translation id="5871136368461493241">No podrás enviar o recibir mensajes de este usuario. ¿Deseas continuar?</translation>
+  <translation id="420763834450076269">Bloquear</translation>
+  <translation id="5118689036165223498">Desbloquear usuario</translation>
+  <translation id="2565755719057925105">Podrás volver a enviar y recibir mensajes de este usuario. ¿Deseas continuar?</translation>
+  <translation id="4859202148272511129">Desbloquear</translation>
+  <translation id="313850810538580916">Sin conexión</translation>
+  <translation id="8870711330013548872">Conectado</translation>
+  <translation id="2711435905501432474">Denunciar producto</translation>
+  <translation id="5918739414324010673">Reportar usuario</translation>
+  <translation id="3909560892838036974">Bloquear usuario</translation>
+  <translation id="7240635163184231751">Desbloquear usuario</translation>
+  <translation id="3437274703198746531">Elige una conversación<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>de la lista de la izquierda</translation>
+  <translation id="3325766019344626759">No hay mensajes</translation>
+  <translation id="6334569300046707546">Servicio no disponible temporalmente.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Inténtelo de nuevo más tarde.</translation>
+  <translation id="4896863464728200563">Escribe un mensaje...</translation>
+  <translation id="3093507871243266697">Esperando red...</translation>
+  <translation id="3208980041287937682">Conectado</translation>
+  <translation id="4095254644079775415" desc="The distance between the user and the item">A <ph name="DISTANCE"><ex>DISTANCE</ex></ph>km de ti</translation>
+  <translation id="9119757647796405986">Sin localización</translation>
+  <translation id="1798778629973365531">Sin denuncias</translation>
+  <translation id="5717387697033354741">Una denuncia</translation>
+  <translation id="4681042121098831040"><ph name="TOTAL_NUMBER"><ex>TOTAL_NUMBER</ex></ph> denuncias</translation>
+  <translation id="3894950702316166331">Cargando...</translation>
+  <translation id="1859131936150262113">Ausente</translation>
+  <translation id="6774569963114915498">Espectador</translation>
+  <translation id="8204176479746810612">Activo</translation>
+  <translation id="2674821313466677845">Estrella</translation>
+  <translation id="7905190705958643281">Aprendiz</translation>
+  <translation id="4338022632676445411">Vendido</translation>
+  <translation id="6543433128416987560">Reservado</translation>
+  <translation id="6452372740127749380">Mensajes</translation>
+  <translation id="1064116145041965896">Cita</translation>
+  <translation id="2821179408673282599">Inicio</translation>
+  <translation id="3797778920049399855">Cerrar sesión</translation>
+</translationbundle>

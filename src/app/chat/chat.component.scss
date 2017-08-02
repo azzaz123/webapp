@@ -1,0 +1,92 @@
+@import "../../style/_common.scss";
+
+:host {
+  display: block;
+  overflow: hidden;
+}
+
+#left-panel {
+  position: relative;
+  float: left;
+  background-color: $white;
+  width: $left-panel-width;
+}
+
+#center-panel {
+  margin-left: $left-panel-width;
+  margin-right: $right-panel-width;
+  background-color: $white;
+}
+
+#right-panel {
+  overflow-y: auto;
+  height: calc(100vh - #{$topbar-height});
+  float: right;
+  width: $right-panel-width;
+  padding: $spacing;
+  background-color: $grey-50;
+  border-left: 1px solid $grey-100;
+  tsl-user {
+    margin-bottom: $spacing;
+  }
+}
+
+#top-bar {
+  position: relative;
+  padding: $spacing;
+  border-bottom: 1px solid $grey-50;
+  z-index: 99;
+  span {
+    color: $grey-700;
+  }
+  h5 {
+    color: $grey-900;
+    font-size: $font-size;
+    font-weight: bold;
+  }
+  span {
+    font-size: $font-size-S;
+  }
+}
+
+#empty-state {
+  height: 100vh;
+  margin-left: $left-panel-width;
+  position: relative;
+  background: $white;
+  .content {
+    @include in-the-middle;
+    text-align: center;
+    .image {
+      width: 211px;
+      height: 220px;
+    }
+    h2 {
+      font-size: $font-size;
+      color: $grey-500;
+      line-height: 24px;
+    }
+  }
+}
+
+.conversation-header-menu {
+  position: absolute;
+  right: $spacing;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 24px;
+  md-icon {
+    cursor: pointer;
+    padding: 0 3px;
+  }
+  .dropdown-item {
+    padding: ($spacing /2) $spacing;
+    cursor: pointer;
+    &.warn {
+      color: $warn;
+      &:hover {
+        color: $white;
+      }
+    }
+  }
+}

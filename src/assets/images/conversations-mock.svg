@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="337" height="483" viewBox="0 0 337 483">
+    <defs>
+        <rect id="a" width="60" height="60" rx="4"/>
+        <rect id="b" width="60" height="60" rx="4"/>
+        <rect id="c" width="60" height="60" y="303" rx="4"/>
+        <rect id="d" width="60" height="60" rx="4"/>
+        <rect id="e" width="60" height="60" y="202" rx="4"/>
+        <linearGradient id="f" x1="50%" x2="50%" y1="100%" y2="0%">
+            <stop offset="0%" stop-color="#FFF"/>
+            <stop offset="100%" stop-color="#FFF" stop-opacity=".754"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g transform="translate(22 2)">
+            <use fill="#ECEFF1" xlink:href="#a"/>
+            <use fill="#ECEFF1" transform="translate(0 101)" xlink:href="#b"/>
+            <use fill="#ECEFF1" xlink:href="#c"/>
+        </g>
+        <g fill="#ECEFF1" transform="translate(22 204)">
+            <use xlink:href="#d"/>
+            <use xlink:href="#e"/>
+        </g>
+        <rect width="156" height="10" x="102" fill="#ECEFF1" rx="4"/>
+        <rect width="106" height="10" x="102" y="24" fill="#ECEFF1" rx="4"/>
+        <rect width="156" height="10" x="102" y="48" fill="#ECEFF1" rx="4"/>
+        <rect width="156" height="10" x="102" y="103" fill="#ECEFF1" rx="4"/>
+        <rect width="106" height="10" x="102" y="127" fill="#ECEFF1" rx="4"/>
+        <rect width="156" height="10" x="102" y="151" fill="#ECEFF1" rx="4"/>
+        <rect width="156" height="10" x="102" y="203" fill="#ECEFF1" rx="4"/>
+        <rect width="106" height="10" x="102" y="227" fill="#ECEFF1" rx="4"/>
+        <rect width="156" height="10" x="102" y="251" fill="#ECEFF1" rx="4"/>
+        <rect width="156" height="10" x="102" y="303" fill="#ECEFF1" rx="4"/>
+        <rect width="106" height="10" x="102" y="327" fill="#ECEFF1" rx="4"/>
+        <rect width="156" height="10" x="102" y="351" fill="#ECEFF1" rx="4"/>
+        <rect width="156" height="10" x="102" y="404" fill="#ECEFF1" rx="4"/>
+        <rect width="106" height="10" x="102" y="428" fill="#ECEFF1" rx="4"/>
+        <rect width="156" height="10" x="102" y="452" fill="#ECEFF1" rx="4"/>
+        <path fill="url(#f)" d="M0 192h337v291H0z"/>
+    </g>
+</svg>

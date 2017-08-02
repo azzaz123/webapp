@@ -1,0 +1,16 @@
+<div id="login-box">
+  <h1>Login in wallapop</h1>
+  <h2>Insert your data below</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Email" formControlName="emailAddress" required />
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" placeholder="Password" formControlName="password" required />
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg" [disabled]="loading">
+      <span [hidden]="!loading" class="loading">Loading...</span>
+      <span [hidden]="loading">Login</span>
+    </button>
+  </form>
+</div>

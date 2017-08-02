@@ -1,0 +1,18 @@
+@import "../../../style/_common.scss";
+
+#alert {
+  $alert-height: 40px;
+  background: $grey-700;
+  color: $white;
+  text-align: center;
+  height: $alert-height;
+  line-height: $alert-height;
+  font-size: $font-size-S;
+  font-weight: bold;
+  .status-circle {
+    $status-circle-size: 12px;
+    width: $status-circle-size;
+    height: $status-circle-size;
+    vertical-align: middle;
+  }
+}

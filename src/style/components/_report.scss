@@ -1,0 +1,72 @@
+.modal.report {
+  .scroll {
+    height: 400px;
+    overflow-y: auto;
+    padding: $spacing-S;
+  }
+  .modal-content {
+    .modal-body {
+      padding: $spacing 50px;
+    }
+  }
+
+  h1 {
+    font-size: $font-size-L;
+    color: $grey-800;
+    margin-bottom: $spacing-L;
+  }
+
+  .report-ban-reason {
+    position: relative;
+    cursor: pointer;
+    margin-bottom: $spacing;
+    .ban-reason-icon-container {
+      @include square(60px);
+      position: relative;
+      border: 1px solid $grey-50;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    md-icon {
+      @include square(28px);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+    .label {
+      font-size: $font-size;
+      color: $grey-700;
+    }
+    &:hover .ban-reason-icon-container {
+      border-color: $grey-100;
+    }
+    &.selected {
+      .ban-reason-icon-container {
+        border: 2px solid $corporate;
+      }
+      .label {
+        color: $corporate;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .report-listing-textarea {
+    width: 100%;
+    padding: $spacing-S $spacing-M;
+    border: 1px solid $grey-50;
+    border-radius: 10px;
+    min-height: 120px;
+    margin-top: $spacing;
+    &::-webkit-input-placeholder {
+      color: $grey-200;
+    }
+  }
+
+  .btn {
+    margin-top: $spacing;
+    padding-left: $spacing-L;
+    padding-right: $spacing-L;
+  }
+}

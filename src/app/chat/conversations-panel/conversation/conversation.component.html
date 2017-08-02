@@ -1,0 +1,38 @@
+  <tsl-item-avatar [item]="conversation?.item"></tsl-item-avatar>
+  <div class="conversation-info" *ngIf="conversation">
+    <div class="item-title-row">
+      <div class="conversation-item-title">
+        <span>{{conversation.item.title}}</span>
+      </div>
+      <div class="conversation-item-meta">
+        <span
+          class="message-date">{{conversation?.modifiedDate| amCalendar:momentConfig }}
+        </span>
+      </div>
+    </div>
+
+  <div class="user-name-row">
+    <div class="user-name-row-left">
+      <p class="user-name">
+        <span>
+          {{conversation.user.microName}}
+        </span>
+      </p>
+    </div>
+    <div class="user-name-row-right">
+      <span [hidden]="conversation.unreadMessages == 0 || conversation.active" class="badge badge-primary badge-pill">
+        {{conversation.unreadMessages}}
+      </span>
+      <md-icon svgIcon="blocked" *ngIf="conversation.user.blocked"></md-icon>
+    </div>
+
+  </div>
+
+  <div class="message-row">
+    <p class="message">
+      <md-icon svgIcon="messages-icon" *ngIf="dashboard && !conversation.expectedVisit" placement="top" ngbTooltip="Messages" i18n-ngbTooltip></md-icon>
+      <md-icon svgIcon="calendar" *ngIf="dashboard && conversation.expectedVisit" placement="top" ngbTooltip="Meeting" i18n-ngbTooltip></md-icon>
+      {{conversation?.messages[(conversation.messages.length-1)]?.message}}
+    </p>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+@import "../../../../style/_common.scss";
+
+:host {
+  display: block;
+}
+
+.card {
+  .card-block {
+    text-align: center;
+    tsl-user-avatar {
+      margin-bottom: $spacing-XS;
+    }
+    .card-title {
+      margin-bottom: $spacing-XS;
+      line-height: 16px;
+      margin-top: -6px;
+    }
+    tsl-stars {
+      margin-bottom: -7px;
+    }
+  }
+  .list-group-flush {
+    padding: $spacing 0;
+    .list-group-item {
+      border: 0;
+      font-size: $font-size-S;
+      color: $grey-700;
+      padding: 0 $spacing $spacing-S $spacing;
+      display: flex;
+      align-items: flex-start;
+      background: transparent;
+      &:last-child {
+        padding-bottom: 0;
+      }
+      md-icon {
+        height: 16px;
+        width: 16px;
+        margin-right: $spacing-S;
+        margin-top: 1px;
+      }
+      &.response-rate {
+        span {
+          width: 165px;
+        }
+      }
+    }
+  }
+  .item-details-wrap {
+    display: flex;
+    flex-direction: row;
+    height: $item-avatar-size;
+    text-align: left;
+    overflow: hidden;
+    .item-details {
+      color: $grey-700;
+      line-height: 20px;
+      margin-bottom: 0;
+      align-self: center;
+      .selling-label {
+        color: $grey-300;
+        font-weight: bold;
+        font-size: $font-size-XS;
+        text-transform: uppercase;
+        margin-right: $spacing-XXS;
+      }
+      h2 {
+        font-size: $font-size-S;
+        line-height: 1.57;
+        max-height: 40px;
+        overflow: hidden;
+      }
+      .items-count {
+        font-size: $font-size-XS;
+        color: $corporate;
+        font-weight: bold;
+      }
+    }
+  }
+  &.linked {
+    &::after {
+      content: '';
+      border: 1px solid $grey-100;
+      left: 50%;
+      position: absolute;
+      bottom: -20px;
+      height: 20px;
+    }
+  }
+
+}

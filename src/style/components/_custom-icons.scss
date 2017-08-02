@@ -1,0 +1,46 @@
+@import "../../style/_common.scss";
+
+.menu-icon {
+  .open & #MVP {
+    fill: $corporate;
+  }
+  #MVP {
+    fill: $grey-300;
+  }
+}
+
+.report-ban-reason {
+  &.selected md-icon {
+    g g, path {
+      fill: $corporate;
+    }
+
+  }
+  md-icon g g {
+    fill: $grey-800;
+  }
+
+}
+
+.modal-close {
+  md-icon {
+    height: 15px;
+    line-height: 30px;
+  }
+  md-icon g g {
+    fill: $grey-700;
+  }
+  &:hover md-icon g g {
+    fill: $grey-900;
+  }
+}
+
+#send {
+  &.selected {
+    md-icon {
+      path {
+        fill: $corporate;
+      }
+    }
+  }
+}

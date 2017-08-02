@@ -1,0 +1,40 @@
+@import "../../../style/_common.scss";
+
+form {
+  $input-height: $chat-input - $spacing;
+  height: $input-height;
+  position: relative;
+  textarea {
+    border-radius: $border-radius;
+    max-height: $input-height;
+    width: calc(100% - #{$spacing * 2});
+    margin: 0 $spacing;
+    margin-bottom: $spacing;
+    height: $input-height;
+    line-height: $input-height;
+    padding: 0 0 0 $spacing-M;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    border: 2px solid $grey-50;
+    &:focus {
+      border-color: $grey-100;
+    }
+    &::-webkit-input-placeholder {
+      color: $grey-300;
+    }
+    &[disabled] {
+      opacity: .5;
+      &::-webkit-input-placeholder {
+        color: $warn;
+      }
+    }
+  }
+  #send {
+    cursor: pointer;
+    position: absolute;
+    right: $spacing + 15px;
+    top: 13px;
+  }
+
+}

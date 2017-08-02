@@ -1,0 +1,47 @@
+@import "../../../style/_common.scss";
+
+.card {
+  .image-overlay {
+    position: relative;
+    .card-img-top {
+      width: 100%;
+    }
+    .image-bottom {
+      position: absolute;
+      bottom: $spacing;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      tsl-item-sold, tsl-item-reserved {
+        align-self: center;
+      }
+    }
+  }
+  .card-block {
+    padding: $spacing;
+    .card-title {
+      font-size: $font-size;
+      margin-bottom: $spacing-S;
+      line-height: 1.4;
+      max-height: 44px;
+      overflow: hidden;
+    }
+    .price {
+      font-size: $font-size;
+      color: $grey-900;
+    }
+    .stats {
+      font-size: $font-size-XS;
+      color: $grey-300;
+      line-height: 24px;
+      md-icon {
+        height: 14px;
+        width: 17px;
+        margin: 0 $spacing-XS;
+        margin-right: 2px;
+        display: inline-flex;
+        vertical-align: sub;
+      }
+    }
+  }
+}

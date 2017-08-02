@@ -1,0 +1,62 @@
+@import "../../../style/_common.scss";
+
+:host {
+  display: block;
+  margin-bottom: $spacing-XS;
+  line-height: $spacing;
+  overflow: hidden;
+
+}
+
+h5 {
+  font-weight: bold;
+  font-size: $font-size-S;
+  color: $white;
+}
+
+$avatar-size: 40px;
+.message-avatar,
+.message-body {
+  color: $grey-700;
+  margin-top: $spacing;
+  &.calls-panel {
+    margin-top: 0;
+  }
+}
+
+.message-avatar {
+  float: left;
+  margin-right: $spacing;
+}
+
+.message-name {
+  color: $grey-900;
+}
+.message-body {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  &.without-avatar {
+    margin-top: 0;
+    margin-left: #{$spacing + $avatar-size};
+  }
+  span {
+    white-space: pre-wrap;
+  }
+}
+
+.message-date {
+  margin-left: $spacing-XS;
+  color: $grey-250;
+  font-size: $font-size-XS;
+}
+
+.media-left {
+  min-width: 60px;
+}
+
+.calls-panel {
+  span {
+    color:  #90a4ae;
+  }
+}
