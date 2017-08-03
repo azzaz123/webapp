@@ -5,9 +5,9 @@
   <div class="input-search">
     <md-icon svgIcon="glass" class="search-glass topbar-icon" (click)="submitForm()"></md-icon>
     <form id="js-main-search-form" method="get">
-      <input id="main-search-input" #mainSearchInput placeholder="¿Qué estás buscando?" type="text" maxlength="150"
-             name="kws" #kwsEl value="" (focus)="focus=true" (blur)="focus=false" [class.active]="focus"
-             (keyup.enter)="submitForm()" />
+      <input id="main-search-input" #mainSearchInput placeholder="Search" i18n-placeholder="Search"
+             type="text" maxlength="150" name="kws" #kwsEl value="" (focus)="focus=true" (blur)="focus=false"
+             [class.active]="focus" (keyup.enter)="submitForm()" />
       <input id="main-search-hidden-lat" #latEl name="lat" type="hidden" value="{{ coordinates?.lat }}"/>
       <input id="main-search-hidden-lng" #lngEl name="lng" type="hidden" value="{{ coordinates?.lng }}"/>
       <input id="main-search-hidden-category" #categoryEl name="category" type="hidden" value="{{ category?.categoryId }}"/>

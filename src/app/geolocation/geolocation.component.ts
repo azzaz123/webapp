@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Observable } from "rxjs/Observable";
 import { GeolocationService } from "../core/geolocation/geolocation.service";
 import { EventService } from "../core/event/event.service";
+import { GeolocationResponse } from "../core/geolocation/geolocation-response.interface";
 
 @Component({
   selector: 'tsl-geolocation',
@@ -32,11 +33,9 @@ export class GeolocationComponent implements OnInit {
 
   public formatter = (x: any) => x.description;
 
-  public selectItem(address: any) {
-    this.geolocationService.geocode(address.item.placeId).subscribe((data: any) => {
-      let coordinate = data.result.geometry.location;
-      this.eventService.emit(EventService.UPDATE_COORDINATE, coordinate);
+  public selectItem(address: GeolocationResponse) {
+    this.geolocationService.geocode(address.placeId).subscribe((data: any) => {
+      this.eventService.emit(EventService.UPDATE_COORDINATE, data.result.geometry.location);
     });
   }
-
 }
