@@ -23,6 +23,8 @@ import { RequestOptions } from '@angular/http';
 @Injectable()
 export class ConversationService extends ConversationServiceMaster {
 
+  protected ARCHIVE_URL = 'api/v3/conversations';
+
   constructor(http: HttpService,
               userService: UserService,
               itemService: ItemService,
