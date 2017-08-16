@@ -7,7 +7,8 @@ import {
   TEST_HTTP_PROVIDERS,
   TrackingService,
   UserService,
-  Item
+  Item,
+  ITEM_BASE_PATH
 } from 'shield';
 
 import { ItemService } from './item.service';
@@ -54,6 +55,7 @@ describe('ItemService', () => {
       expect(item.saleConditions).toEqual(ITEM_DATA_V3.content.sale_conditions);
       expect(item.mainImage).toEqual(ITEM_DATA_V3.content.images[0]);
       expect(item.images).toEqual(ITEM_DATA_V3.content.images);
+      expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEM_DATA_V3.content.web_slug);
     });
   });
 
