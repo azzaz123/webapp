@@ -14,7 +14,12 @@
     </li>
     <li class="list-group-item response-rate" *ngIf="user.responseRate">
       <md-icon svgIcon="time"></md-icon>
-      <span>{{user.responseRate}}</span>
+      <span [ngSwitch]="user.responseRate">
+        <ng-container *ngSwitchCase="'less_than_one_hour'" i18n>Typically responds within an hour</ng-container>
+        <ng-container *ngSwitchCase="'less_than_three_hours'" i18n>Typically responds within 3 hours</ng-container>
+        <ng-container *ngSwitchCase="'less_than_a_day'" i18n>Typically responds within a day</ng-container>
+        <ng-container *ngSwitchCase="'more_than_a_day'" i18n>Responds in more than 24 hours</ng-container>
+      </span>
     </li>
   </ul>
 </section>
