@@ -2,7 +2,7 @@
   <div class="card-block">
     <tsl-user-avatar [user]="user" size="60"></tsl-user-avatar>
     <h1 class="card-title">{{user.microName}}</h1>
-    <tsl-stars *ngIf="user.scoringStars > -1" [stars]="user.scoringStars"></tsl-stars>
+    <tsl-stars *ngIf="user.scoringStars > -1" [stars]="user.scoringStars" [normalized]="false"></tsl-stars>
   </div>
 </a>
 <section class="card user-detail">
