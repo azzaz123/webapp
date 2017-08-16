@@ -20,6 +20,8 @@ import { AccessTokenService } from './access-token.service';
 import { HaversineService } from 'ng2-haversine';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { USER_INFO_RESPONSE } from '../../../tests/user.fixtures';
+import { UserInfoResponse } from './user-info.interface';
 
 describe('UserService', () => {
 
@@ -107,6 +109,19 @@ describe('UserService', () => {
       expect(distance).toBeNull();
     });
 
+  });
+
+  describe('getInfo', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_INFO_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: UserInfoResponse;
+      service.getInfo(USER_ID).subscribe((response: UserInfoResponse) => {
+        resp = response;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/extra-info');
+      expect(resp).toEqual(USER_INFO_RESPONSE);
+    });
   });
 
 });
