@@ -5,7 +5,7 @@
          onError="this.src='/assets/images/fake-item.png'"/>
     <div class="image-bottom">
       <tsl-item-sold [item]="item"></tsl-item-sold>
-      <tsl-item-reserved [item]="item"></tsl-item-reserved>
+      <tsl-item-reserved [item]="item" *ngIf="!item.sold"></tsl-item-reserved>
     </div>
   </div>
   <div class="card-block">
