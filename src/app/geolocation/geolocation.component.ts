@@ -3,6 +3,7 @@ import { Observable } from "rxjs/Observable";
 import { GeolocationService } from "../core/geolocation/geolocation.service";
 import { EventService } from "../core/event/event.service";
 import { GeolocationResponse } from "../core/geolocation/geolocation-response.interface";
+import { AddressResponse } from "../core/geolocation/address-response.interface";
 
 @Component({
   selector: 'tsl-geolocation',
@@ -34,7 +35,7 @@ export class GeolocationComponent implements OnInit {
   public formatter = (x: any) => x.description;
 
   public selectItem(address: GeolocationResponse) {
-    this.geolocationService.geocode(address.placeId).subscribe((data: any) => {
+    this.geolocationService.geocode(address.item.placeId).subscribe((data: AddressResponse) => {
       this.eventService.emit(EventService.UPDATE_COORDINATE, data.result.geometry.location);
     });
   }

@@ -18,7 +18,7 @@ describe('CategoriesListComponent', () => {
       providers: [
         {provide: CategoryService, useValue: {
         getCategories: () => {
-          return Observable.of([{}]);
+          return Observable.of(CATEGORY_DATA_WEB);
         }
         }},
         EventService,
@@ -57,12 +57,10 @@ describe('CategoriesListComponent', () => {
   });
 
   describe('get categories', () => {
-    beforeEach(() => {
+    it('should get the categories list', () => {
       component.categories = CATEGORY_DATA_WEB;
       component.getCategories();
-    });
-    it('should get the categories list', () => {
-      expect(component.categories).toEqual(CATEGORY_DATA_WEB);
+      expect(component.categories[0].categoryId).toEqual(100);
     });
   });
 });

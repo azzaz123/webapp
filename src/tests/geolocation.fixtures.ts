@@ -2,6 +2,8 @@ import { GeolocationResponse } from '../app/core/geolocation/geolocation-respons
 
 export const GEOLOCATION_DATA_WEB: GeolocationResponse =
 {
-  'placeId': 'ChIJ5TCOcRaYpBIRCmZHTz37sEQ',
-  'description': 'Barcelona, España'
+  'item': {
+    'placeId': 'ChIJ5TCOcRaYpBIRCmZHTz37sEQ',
+    'description': 'Barcelona, España'
+  }
 };

@@ -19,7 +19,7 @@ export class GeolocationService {
       .map(res => res.json());
   }
 
-  public geocode(placeId: any): Observable<any> {
+  public geocode(placeId: string): Observable<any> {
     let params: any =  {
       placeId: placeId,
       apiKey: this.apiKey
