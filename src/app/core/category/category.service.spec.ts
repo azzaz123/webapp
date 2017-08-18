@@ -3,6 +3,7 @@ import { TEST_HTTP_PROVIDERS, HttpService } from 'shield';
 import { CategoryService } from './category.service';
 import { Observable } from "rxjs/Observable";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures";
+import { CategoryResponse } from "./category-response.interface";
 let service: CategoryService;
 let http: HttpService;
 
@@ -23,11 +24,11 @@ describe('CategoryService', () => {
       })
     });
     it('should return the json from the categories', () => {
-      spyOn(http, 'get').and.returnValue(Observable.of(CATEGORY_DATA_WEB));
-      service.getCategories().subscribe((data) => {
-        expect(data.length).toBe(1);
-        expect(data[0].id).toBe(100);
-      })
+      let response: CategoryResponse[];
+      service.getCategories().subscribe((data: CategoryResponse[]) => {
+        response = data;
+      });
+      expect(response).toEqual(CATEGORY_DATA_WEB);
     })
   });
 

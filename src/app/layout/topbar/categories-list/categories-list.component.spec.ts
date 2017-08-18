@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CategoriesListComponent } from './categories-list.component';
-import { CategoryService } from "../core/category/category.service";
+import { CategoryService } from "../../../core/category/category.service";
 import { Observable } from "rxjs/Observable";
 import { TEST_HTTP_PROVIDERS } from "shield";
-import { EventService } from "../core/event/event.service";
-import { CATEGORY_DATA_WEB } from "../../tests/category.fixtures";
+import { CATEGORY_DATA_WEB } from "../../../../tests/category.fixtures";
+import { EventService } from "../../../core/event/event.service";
 
 describe('CategoriesListComponent', () => {
   let component: CategoriesListComponent;
@@ -44,13 +44,9 @@ describe('CategoriesListComponent', () => {
     });
   });
 
-  it('should listen to UPDATE_CATEGORY', () => {
-    component.ngOnInit();
-    eventService.emit(EventService.UPDATE_CATEGORY);
-  });
-
   describe('select category', () => {
     it('should select the clicked category', () => {
+      spyOn(eventService, 'subscribe').and.callThrough();
       component.selectCategory(CATEGORY_DATA_WEB[0]);
       expect(component.selectedCategory.categoryId).toEqual(CATEGORY_DATA_WEB[0].categoryId);
     });

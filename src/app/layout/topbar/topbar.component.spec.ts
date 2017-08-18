@@ -79,15 +79,15 @@ describe('TopbarComponent', () => {
     it('should update the user coordinates', () => {
       component.coordinates = {"lat": 0.0, "lng": 0.0};
       component.updateCoordinate(newCoordinates);
-      expect(JSON.stringify(component.coordinates)).toEqual(JSON.stringify(newCoordinates));
+      expect(component.coordinates).toEqual(newCoordinates);
     });
   });
 
   describe('update category', () => {
     it('should update the category and call the form submit', () => {
-      component.category = CATEGORY_DATA_WEB;
-      //component.updateCategory(CATEGORY_DATA_WEB);
-      expect(JSON.stringify(component.category)).toEqual(JSON.stringify(CATEGORY_DATA_WEB));
+      component.category = CATEGORY_DATA_WEB[0];
+      component.updateCategory(CATEGORY_DATA_WEB[0]);
+      expect(component.category).toEqual(CATEGORY_DATA_WEB[0]);
       //expect(component.submitForm).toHaveBeenCalled();
     });
   });

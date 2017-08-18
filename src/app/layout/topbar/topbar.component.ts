@@ -5,6 +5,8 @@ import { CategoryService } from "../../core/category/category.service";
 import { GeolocationService } from "../../core/geolocation/geolocation.service";
 import { EventService } from "../../core/event/event.service";
 import { environment } from "../../../environments/environment";
+import { Coordinate } from "../../core/geolocation/address-response.interface";
+import { CategoryResponse } from "../../core/category/category-response.interface";
 
 @Component({
   selector: 'tsl-topbar',
@@ -16,8 +18,8 @@ import { environment } from "../../../environments/environment";
 export class TopbarComponent implements OnInit {
 
   public user: User;
-  public coordinates: any;
-  public category: any;
+  public coordinates: Coordinate;
+  public category: CategoryResponse;
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('latEl') latEl: ElementRef;
   @ViewChild('lngEl') lngEl: ElementRef;
@@ -27,8 +29,8 @@ export class TopbarComponent implements OnInit {
               private eventService: EventService) { }
 
   ngOnInit() {
-    this.eventService.subscribe(EventService.UPDATE_COORDINATE, (coordinate: any) => this.updateCoordinate(coordinate));
-    this.eventService.subscribe(EventService.UPDATE_CATEGORY, (category: any) => this.updateCategory(category));
+    this.eventService.subscribe(EventService.UPDATE_COORDINATE, (coordinate: Coordinate) => this.updateCoordinate(coordinate));
+    this.eventService.subscribe(EventService.UPDATE_CATEGORY, (category: CategoryResponse) => this.updateCategory(category));
     this.userService.me().subscribe((user) => {
       this.user = user;
     });
@@ -38,11 +40,11 @@ export class TopbarComponent implements OnInit {
     this.userService.logout();
   }
 
-  public updateCoordinate(coordinate: any) {
+  public updateCoordinate(coordinate: Coordinate) {
     this.coordinates = coordinate;
   }
 
-  public updateCategory(category: any) {
+  public updateCategory(category: CategoryResponse) {
     this.category = category;
     this.submitForm();
   }

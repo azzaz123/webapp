@@ -1,12 +1,11 @@
-///<reference path="../../tests/address.fixtures.ts"/>
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeolocationComponent } from './geolocation.component';
 import { Observable } from "rxjs/Observable";
-import { GeolocationService } from "../core/geolocation/geolocation.service";
-import { EventService } from "../core/event/event.service";
-import { GEOLOCATION_DATA_WEB } from "../../tests/geolocation.fixtures";
-import { ADDRESS_DATA_WEB } from "../../tests/address.fixtures";
+import { GEOLOCATION_DATA_WEB } from "../../../../tests/geolocation.fixtures";
+import { ADDRESS_DATA_WEB } from "../../../../tests/address.fixtures";
+import { EventService } from "../../../core/event/event.service";
+import { GeolocationService } from "../../../core/geolocation/geolocation.service";
 
 describe('GeolocationComponent', () => {
   let component: GeolocationComponent;
@@ -37,14 +36,6 @@ describe('GeolocationComponent', () => {
     fixture.detectChanges();
     eventService = TestBed.get(EventService);
     geolocationService = TestBed.get(GeolocationService);
-  });
-
-  describe('select item', () => {
-    it('should emit the event UPDATE_COORDINATE', () => {
-      component.selectItem(GEOLOCATION_DATA_WEB);
-      eventService.emit(EventService.UPDATE_COORDINATE, {'lat' : 41.38506389999999, 'lng' : 2.1734035});
-    });
-
   });
 
   describe('search', (): void => {

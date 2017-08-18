@@ -143,13 +143,8 @@
   & {
     font-family: "WallieFit", sans-serif;
     display: flex;
-    display: -moz-flex;
-    display: -ms-flexbox;
     align-items: center;
     justify-content: center;
-    -ms-flex-pack: center;
-    -ms-flex-line-pack: center;
-    -ms-flex-align: center;
   }
   a {
     text-decoration: none;
@@ -213,11 +208,7 @@
   }
   .main-header-login-sign-in {
     display: flex;
-    display: -ms-flexbox;
     align-items: center;
-    -ms-flex-pack: center;
-    -ms-flex-line-pack: center;
-    -ms-flex-align: center;
     font-size: 16px;
     & span {
       background-color: $corporate;
@@ -240,9 +231,6 @@
       display: none;
       align-items: center;
       justify-content: center;
-      -ms-flex-pack: center;
-      -ms-flex-line-pack: center;
-      -ms-flex-align: center;
       cursor: pointer;
       color: $color-grey-item;
       font-size: $font-size-S;
@@ -263,10 +251,6 @@
     i {
       &.ic-arrow-waterfall {
         &.active {
-          -webkit-transform: rotate(180deg);
-          -moz-transform: rotate(180deg);
-          -o-transform: rotate(180deg);
-          -ms-transform: rotate(180deg);
           transform: rotate(180deg);
         }
       }
@@ -278,7 +262,6 @@
       margin-left: 8px;
       border-radius: 50px;
       background-repeat: no-repeat;
-      -webkit-background-size: cover;
       background-size: cover;
     }
     .horizontal-line {

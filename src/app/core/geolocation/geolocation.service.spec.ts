@@ -3,6 +3,8 @@ import { TEST_HTTP_PROVIDERS, HttpService } from 'shield';
 import { GeolocationService } from './geolocation.service';
 import { GEOLOCATION_DATA_WEB } from "../../../tests/geolocation.fixtures";
 import { Observable } from "rxjs/Observable";
+import { GeolocationResponse } from "./geolocation-response.interface";
+import { AddressResponse } from "./address-response.interface";
 
 let service: GeolocationService;
 let http: HttpService;
@@ -26,9 +28,9 @@ describe('GeolocationService', () => {
     });
     it('should return the place info', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(GEOLOCATION_DATA_WEB));
-      service.search('Barcelona').subscribe((data) => {
+      service.search('Barcelona').subscribe((data: GeolocationResponse[]) => {
         expect(data.length).toBe(1);
-        expect(data.placeId).toBe('ChIJ5TCOcRaYpBIRCmZHTz37sEQ');
+        expect(data[0].item.placeId).toBe('ChIJ5TCOcRaYpBIRCmZHTz37sEQ');
       })
     })
   });
@@ -42,8 +44,7 @@ describe('GeolocationService', () => {
     });
     it('should return location coordinates', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(GEOLOCATION_DATA_WEB));
-      service.geocode('ChIJ5TCOcRaYpBIRCmZHTz37sEQ').subscribe((data) => {
-        expect(data.length).toBe(1);
+      service.geocode('ChIJ5TCOcRaYpBIRCmZHTz37sEQ').subscribe((data: AddressResponse) => {
         expect(data.result.geometry.location).toBe({'lat': 41.38506389999999, 'lng': 2.1734035 });
       })
     })
