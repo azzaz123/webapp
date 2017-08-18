@@ -78,11 +78,15 @@ export class AppComponent implements OnInit {
           this.errorsService.show(error, true);
         });
     });
-    this.event.subscribe(EventService.USER_LOGOUT, () => {
+    this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
       this.xmppService.disconnect();
       this.loggingOut = true;
-      this.winRef.nativeWindow.location.reload();
+      if (redirectUrl) {
+        this.winRef.nativeWindow.location.href = redirectUrl;
+      } else {
+        this.winRef.nativeWindow.location.reload();
+      }
     });
     this.messageService.totalUnreadMessages$.subscribe((unreadMessages: number) => {
       let title: string = 'Wallapop Admin';

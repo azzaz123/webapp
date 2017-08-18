@@ -1,4 +1,4 @@
-import { Provider } from '@angular/core';
+import { InjectionToken, Provider } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
 import { AccessTokenService, ConversationService, UserService, ItemService, EventService } from 'shield';
 import { AccessTokenService as CustomAccessTokenService } from './core/user/access-token.service';
@@ -9,16 +9,21 @@ import { EventService as CustomEventService } from './core/event/event.service';
 
 export const PROVIDERS: Provider[] = [
   {
-    provide:    AccessTokenService,
+    provide: AccessTokenService,
     useFactory: httpFactory,
-    deps:       [CookieService]
+    deps: [CookieService]
   },
   {
-    provide:    UserService,
+    provide: 'SUBDOMAIN',
+    useFactory: subdomainFactory,
+    deps: [CookieService]
+  },
+  {
+    provide: UserService,
     useExisting: CustomUserService
   },
   {
-    provide:    ItemService,
+    provide: ItemService,
     useExisting: CustomItemService
   },
   {
@@ -34,4 +39,9 @@ export const PROVIDERS: Provider[] = [
 
 export function httpFactory(cookieService: CookieService) {
   return new CustomAccessTokenService(cookieService);
+}
+
+export function subdomainFactory(cookieService: CookieService) {
+  const subdomain: string = cookieService.get('subdomain');
+  return subdomain ? subdomain : 'www';
 }

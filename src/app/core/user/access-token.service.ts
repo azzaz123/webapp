@@ -19,8 +19,10 @@ export class AccessTokenService implements IAccessTokenService {
   public deleteAccessToken() {
     if (environment.production) {
       this.cookieService.remove('accessToken', {domain: '.wallapop.com'});
+      this.cookieService.remove('subdomain', {domain: '.wallapop.com'});
     } else {
       this.cookieService.remove('accessToken');
+      this.cookieService.remove('subdomain');
     }
     this._accessToken = null;
   }

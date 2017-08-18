@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import {
   AccessTokenService,
   EventService,
@@ -12,6 +12,7 @@ import {
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class UserService extends UserServiceMaster {
@@ -22,7 +23,8 @@ export class UserService extends UserServiceMaster {
               event: EventService,
               i18n: I18nService,
               haversineService: HaversineService,
-              accessTokenService: AccessTokenService) {
+              accessTokenService: AccessTokenService,
+              @Inject('SUBDOMAIN') private subdomain: string) {
     super(http, event, i18n, haversineService, accessTokenService);
   }
 
@@ -33,6 +35,15 @@ export class UserService extends UserServiceMaster {
     )
     .map((r: Response) => r.json())
     .map((r: LoginResponse) => this.storeData(r));
+  }
+
+  public logout() {
+    const URL = environment.siteUrl.replace('es', this.subdomain);
+    this.http.postNoBase(URL + 'rest/logout').subscribe((response) => {
+      const redirectUrl: any = response['_body'];
+      this.accessTokenService.deleteAccessToken();
+      this.event.emit(EventService.USER_LOGOUT, redirectUrl);
+    });
   }
 
   public calculateDistanceFromItem(user: User, item: Item): number {

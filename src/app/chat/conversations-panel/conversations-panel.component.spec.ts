@@ -73,7 +73,9 @@ describe('Component: ConversationsPanel', () => {
         HaversineService,
         MessageService,
         EventService,
-        UserService,
+        {provide: UserService, useValue: {
+          queryParams: {}
+        }},
         ItemService,
         XmppService,
         I18nService,

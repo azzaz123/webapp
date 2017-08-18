@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
 import {
+  AccessTokenService,
   EventService,
   HttpService,
   I18nService,
@@ -16,7 +17,6 @@ import {
   USER_ID,
   USER_LOCATION
 } from 'shield';
-import { AccessTokenService } from './access-token.service';
 import { HaversineService } from 'ng2-haversine';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -26,6 +26,8 @@ describe('UserService', () => {
   let service: UserService;
   let http: HttpService;
   let haversineService: HaversineService;
+  let accessTokenService: AccessTokenService;
+  let event: EventService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,12 +37,17 @@ describe('UserService', () => {
         I18nService,
         HaversineService,
         AccessTokenService,
-        ...TEST_HTTP_PROVIDERS
+        ...TEST_HTTP_PROVIDERS,
+        {
+          provide: 'SUBDOMAIN', useValue: 'www'
+        }
       ]
     });
     service = TestBed.get(UserService);
     http = TestBed.get(HttpService);
     haversineService = TestBed.get(HaversineService);
+    accessTokenService = TestBed.get(AccessTokenService);
+    event = TestBed.get(EventService);
   });
 
   it('should be created', () => {
@@ -68,6 +75,28 @@ describe('UserService', () => {
     });
     it('should call StoreData', () => {
       expect(service['storeData']).toHaveBeenCalledWith(MOCK_USER_RESPONSE_BODY);
+    });
+  });
+
+  describe('logout', () => {
+    const res: ResponseOptions = new ResponseOptions({body: 'redirect_url'});
+    let redirectUrl: string;
+    beforeEach(() => {
+      spyOn(http, 'postNoBase').and.returnValue(Observable.of(new Response(res)));
+      spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
+      event.subscribe(EventService.USER_LOGOUT, (param) => {
+        redirectUrl = param;
+      });
+      service.logout();
+    });
+    it('should call endpoint', () => {
+      expect(http.postNoBase).toHaveBeenCalledWith('http://www.dev.wallapop.com:8080/rest/logout');
+    });
+    it('should call deleteAccessToken', () => {
+      expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
+    });
+    it('should call event passing redirect url', () => {
+      expect(redirectUrl).toBe('redirect_url');
     });
   });
 
