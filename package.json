@@ -7,6 +7,7 @@
     "start": "ng serve",
     "builddev": "ng build --env=dev --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
     "buildbeta": "ng build --env=beta --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
+    "buildbeta-en": "ng build --env=beta --aot",
     "buildprod": "ng build --prod --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
     "i18n": "ng-xi18n -p src/tsconfig.app.json --i18nFormat=xmb",
     "serve": "ng serve --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",

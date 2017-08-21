@@ -22,6 +22,8 @@ deployment:
     commands:
       - npm run buildbeta
       - aws s3 sync dist s3://web.beta.wallapop.com --delete
+      - npm run buildbeta-en
+      - aws s3 sync dist s3://en.web.beta.wallapop.com --delete
   release:
     branch: /release.*/
     commands:
