@@ -5,7 +5,7 @@ form {
   height: $input-height;
   position: relative;
   textarea {
-    border-radius: $border-radius;
+    border-radius: 100px;
     max-height: $input-height;
     width: calc(100% - #{$spacing * 2});
     margin: 0 $spacing;
@@ -21,7 +21,7 @@ form {
       border-color: $grey-100;
     }
     &::-webkit-input-placeholder {
-      color: $grey-300;
+      color: $grey-200;
     }
     &[disabled] {
       opacity: .5;
@@ -33,8 +33,22 @@ form {
   #send {
     cursor: pointer;
     position: absolute;
-    right: $spacing + 15px;
-    top: 13px;
+    right: 25px;
+    top: 5px;
+    border-radius: 50%;
+    background: $grey-100;
+    @include square(40px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .15s ease all;
+    md-icon {
+      width: 22px;
+      height: 23px;
+    }
+    &.selected {
+      background: $corporate;
+    }
   }
 
 }
