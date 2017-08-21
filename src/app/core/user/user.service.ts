@@ -13,6 +13,7 @@ import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
 import { environment } from '../../../environments/environment';
+import { UserInfoResponse } from './user-info.interface';
 
 @Injectable()
 export class UserService extends UserServiceMaster {
@@ -59,6 +60,11 @@ export class UserService extends UserServiceMaster {
       longitude: user.location.approximated_longitude,
     };
     return this.haversineService.getDistanceInKilometers(currentUserCoord, userCoord);
+  }
+
+  public getInfo(id: string): Observable<UserInfoResponse> {
+    return this.http.get(this.API_URL_V3 + '/' + id + '/extra-info')
+    .map((r: Response) => r.json())
   }
 
 }
