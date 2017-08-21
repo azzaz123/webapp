@@ -54,6 +54,6 @@
   cursor: pointer;
 }
 .topbar-avatar {
-  border-radius: 50%;
-  @include square($spacing-L);
+  margin-top: 10px;
+  margin-bottom: -14px;
 }

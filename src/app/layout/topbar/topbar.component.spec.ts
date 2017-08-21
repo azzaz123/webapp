@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_USER, User } from 'shield';
 import { Observable } from 'rxjs/Observable';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
@@ -23,7 +24,8 @@ describe('TopbarComponent', () => {
           }
         }
       }],
-      declarations: [TopbarComponent]
+      declarations: [TopbarComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
     userService = TestBed.get(UserService);
