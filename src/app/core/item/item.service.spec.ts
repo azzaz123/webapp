@@ -62,7 +62,7 @@ describe('ItemService', () => {
   describe('reportListing', () => {
     it('should call endpoint', () => {
       spyOn(http, 'post').and.returnValue(Observable.of({}));
-      service.reportListing(ITEM_ID, 'comments', 1, 2);
+      service.reportListing(ITEM_ID, 'comments', 2, 2);
       expect(http.post).toHaveBeenCalledWith(
         'api/v3/items/' + ITEM_ID + '/report',
         {
