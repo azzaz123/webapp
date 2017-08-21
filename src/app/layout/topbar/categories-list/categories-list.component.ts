@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryService } from "../../../core/category/category.service";
-import { CategoryResponse } from "../../../core/category/category-response.interface";
-import { EventService } from "../../../core/event/event.service";
+import { CategoryService } from '../../../core/category/category.service';
+import { CategoryResponse } from '../../../core/category/category-response.interface';
+import { EventService } from '../../../core/event/event.service';
 
 @Component({
   selector: 'tsl-categories-list',

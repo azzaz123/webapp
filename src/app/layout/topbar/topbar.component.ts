@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { User } from 'shield';
+import { User, WindowRef } from 'shield';
 import { UserService } from '../../core/user/user.service';
-import { CategoryService } from "../../core/category/category.service";
-import { GeolocationService } from "../../core/geolocation/geolocation.service";
-import { EventService } from "../../core/event/event.service";
-import { environment } from "../../../environments/environment";
-import { Coordinate } from "../../core/geolocation/address-response.interface";
-import { CategoryResponse } from "../../core/category/category-response.interface";
+import { CategoryService } from '../../core/category/category.service';
+import { GeolocationService } from '../../core/geolocation/geolocation.service';
+import { EventService } from '../../core/event/event.service';
+import { environment } from '../../../environments/environment';
+import { Coordinate } from '../../core/geolocation/address-response.interface';
+import { CategoryResponse } from '../../core/category/category-response.interface';
 
 @Component({
   selector: 'tsl-topbar',
@@ -26,7 +26,8 @@ export class TopbarComponent implements OnInit {
   @ViewChild('kwsEl') kwsEl: ElementRef;
 
   constructor(public userService: UserService,
-              private eventService: EventService) { }
+              private eventService: EventService,
+              private windowRef: WindowRef) { }
 
   ngOnInit() {
     this.eventService.subscribe(EventService.UPDATE_COORDINATE, (coordinate: Coordinate) => this.updateCoordinate(coordinate));
@@ -52,7 +53,7 @@ export class TopbarComponent implements OnInit {
   public submitForm() {
     let categoryId = (this.category) ? this.category.categoryId : this.categoryEl.nativeElement.value;
     let verticalId = (categoryId == 100) ? categoryId : '';
-    window.location.href = environment.siteUrl + 'search?catIds=' + categoryId + '&lat=' +  this.latEl.nativeElement.value
+    this.windowRef.nativeWindow.location.href = environment.siteUrl + 'search?catIds=' + categoryId + '&lat=' +  this.latEl.nativeElement.value
       + '&lng=' + this.lngEl.nativeElement.value + '&kws=' + this.kwsEl.nativeElement.value
       + '&verticalId=' + verticalId;
   }

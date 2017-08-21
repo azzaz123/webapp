@@ -1,9 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { Observable } from "rxjs/Observable";
-import { AddressResponse } from "../../../core/geolocation/address-response.interface";
-import { GeolocationService } from "../../../core/geolocation/geolocation.service";
-import { EventService } from "../../../core/event/event.service";
-import { GeolocationResponse } from "../../../core/geolocation/geolocation-response.interface";
+import { Observable } from 'rxjs/Observable';
+import { AddressResponse } from '../../../core/geolocation/address-response.interface';
+import { GeolocationService } from '../../../core/geolocation/geolocation.service';
+import { EventService } from '../../../core/event/event.service';
+import { GeolocationResponse } from '../../../core/geolocation/geolocation-response.interface';
 
 @Component({
   selector: 'tsl-geolocation',

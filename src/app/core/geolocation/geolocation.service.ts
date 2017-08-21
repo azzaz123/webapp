@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from "shield";
-import { Observable } from "rxjs/Observable";
-import { environment } from "../../../environments/environment";
-import { GeolocationResponse } from "./geolocation-response.interface";
-import { AddressResponse } from "./address-response.interface";
+import { HttpService } from 'shield';
+import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../environments/environment';
+import { GeolocationResponse } from './geolocation-response.interface';
+import { AddressResponse } from './address-response.interface';
 
 @Injectable()
 export class GeolocationService {
