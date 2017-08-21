@@ -39,7 +39,7 @@ export class UserService extends UserServiceMaster {
 
   public logout() {
     const URL = environment.siteUrl.replace('es', this.subdomain);
-    this.http.postNoBase(URL + 'rest/logout').subscribe((response) => {
+    this.http.postNoBase(URL + 'rest/logout', undefined, undefined, true).subscribe((response) => {
       const redirectUrl: any = response['_body'];
       this.accessTokenService.deleteAccessToken();
       this.event.emit(EventService.USER_LOGOUT, redirectUrl);
