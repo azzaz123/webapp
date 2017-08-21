@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeolocationComponent } from './geolocation.component';
-import { Observable } from "rxjs/Observable";
-import { GEOLOCATION_DATA_WEB } from "../../../../tests/geolocation.fixtures";
-import { ADDRESS_DATA_WEB } from "../../../../tests/address.fixtures";
-import { EventService } from "../../../core/event/event.service";
-import { GeolocationService } from "../../../core/geolocation/geolocation.service";
+import { Observable } from 'rxjs/Observable';
+import { GEOLOCATION_DATA_WEB } from '../../../../tests/geolocation.fixtures';
+import { ADDRESS_DATA_WEB } from '../../../../tests/address.fixtures';
+import { EventService } from '../../../core/event/event.service';
+import { GeolocationService } from '../../../core/geolocation/geolocation.service';
 
 describe('GeolocationComponent', () => {
   let component: GeolocationComponent;
@@ -42,15 +42,15 @@ describe('GeolocationComponent', () => {
     beforeEach(() => {
       spyOn(geolocationService, 'search').and.callThrough();
     });
-    /*it('should search for locations from input text', () => {
+    it('should search for locations from input text', () => {
       let input = 'Barcelona';
-      component.search(Observable.of(input));
+      component.search(Observable.of(input)).subscribe();
       expect(geolocationService.search).toHaveBeenCalled();
-    });*/
+    });
 
     it('should NOT search for locations from input < 3', () => {
       let input = 'Ba';
-      component.search(Observable.of(input));
+      component.search(Observable.of(input)).subscribe();
       expect(geolocationService.search).not.toHaveBeenCalled();
     });
   });
