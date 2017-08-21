@@ -90,7 +90,7 @@ describe('UserService', () => {
       service.logout();
     });
     it('should call endpoint', () => {
-      expect(http.postNoBase).toHaveBeenCalledWith('http://www.dev.wallapop.com:8080/rest/logout');
+      expect(http.postNoBase).toHaveBeenCalledWith('http://www.dev.wallapop.com:8080/rest/logout', undefined, undefined, true);
     });
     it('should call deleteAccessToken', () => {
       expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
