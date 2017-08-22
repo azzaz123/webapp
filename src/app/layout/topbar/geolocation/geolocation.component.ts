@@ -13,6 +13,8 @@ import { GeolocationResponse } from '../../../core/geolocation/geolocation-respo
 export class GeolocationComponent implements OnInit {
 
   private MIN_LENGTH = 3;
+  public focus: boolean;
+  public model: any;
   @ViewChild('latitude') public latitude: ElementRef;
   @ViewChild('longitude') public longitude: ElementRef;
 

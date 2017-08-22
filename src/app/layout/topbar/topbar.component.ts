@@ -20,6 +20,7 @@ export class TopbarComponent implements OnInit {
   public user: User;
   public coordinates: Coordinate;
   public category: CategoryResponse;
+  public focus: boolean;
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('latEl') latEl: ElementRef;
   @ViewChild('lngEl') lngEl: ElementRef;
