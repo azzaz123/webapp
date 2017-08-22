@@ -1,0 +1,106 @@
+@import "../../../../style/_common.scss";
+
+#dropdown-main-search-btn {
+  & {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 8px 0 0;
+    border-left: 1px solid $grey-100;
+    border-right: 1px solid $grey-100;
+    float: initial;
+    height: 100%;
+    width: 142px;
+    cursor: pointer;
+  }
+  &.dropdown-toggle::after {
+    display: none;
+  }
+  .dropdown-menu {
+    & {
+      padding: 0;
+      width: 320px;
+      border: solid 1px $color-grey-separator;
+    }
+    li {
+      & {
+        background-color: transparent;
+        padding: 0;
+        position: relative;
+      }
+      .list-separator {
+        & {
+          border-bottom: 1px solid $grey-50;
+          margin-left: 16px;
+          position: absolute;
+          bottom: 0;
+          width: 95%;
+        }
+      }
+      a {
+        & {
+          display: flex;
+          align-items: center;
+          padding: 0 1rem;
+          color: $grey-900;
+          height: 55px;
+          width: 100%;
+          overflow: hidden;
+          -webkit-transition: all .15s linear;
+          -moz-transition: all .15s linear;
+          -o-transition: all .15s linear;
+          transition: all .15s linear;
+        }
+        i {
+          vertical-align: middle;
+        }
+        span {
+          vertical-align: middle;
+        }
+        .main-search-category-ico {
+          & {
+            margin-right: $spacing-S;
+            vertical-align: middle;
+          }
+        }
+        .main-search-category-ico, span {
+          vertical-align: middle;
+        }
+        &:hover {
+          background-color: $grey-50;
+        }
+      }
+    }
+    &.active {
+      position: fixed;
+    }
+  }
+}
+
+.topbar-icon {
+  & {
+    height: 42px;
+    width: 42px;
+    color: $grey-200;
+    vertical-align: middle;
+  }
+}
+
+.main-search-category-ico {
+  & {
+    height: 38px;
+    width: 38px;
+    stroke: $grey-200;
+  }
+}
+
+.categories {
+  & {
+    color: $grey-900;
+    font-size: 14px;
+    line-height: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}

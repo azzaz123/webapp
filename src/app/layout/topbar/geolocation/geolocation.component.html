@@ -1,0 +1,13 @@
+<ng-template #locations let-r="result">
+    <div class="location">
+        <div class="pac-icon"></div>
+        <span>{{ r.description }}</span>
+    </div>
+</ng-template>
+<div class="header-location" #headerLocation>
+    <md-icon svgIcon="geo" class="topbar-icon"></md-icon>
+    <input id="pac-input-header" #pacInputHeader class="controls" type="text" placeholder="Where do you want to search?"
+           i18n-placeholder="Where do you want to search?" [(ngModel)]="model" [ngbTypeahead]="search"
+           [inputFormatter]="formatter" [resultTemplate]="locations" (selectItem)="selectItem($event)" (focus)="focus=true"
+           (blur)="focus=false" [class.active]="focus" />
+</div>

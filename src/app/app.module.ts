@@ -13,10 +13,11 @@ import { PROVIDERS } from './providers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
 import { environment } from '../environments/environment';
+import { Ng2ImgFallbackModule } from 'ng2-img-fallback';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     ShieldModule.forRoot({
@@ -32,7 +33,8 @@ import { environment } from '../environments/environment';
     LoginModule,
     HttpModule,
     AppRoutingModule,
-    LayoutModule
+    LayoutModule,
+    Ng2ImgFallbackModule,
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

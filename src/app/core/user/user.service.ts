@@ -32,7 +32,7 @@ export class UserService extends UserServiceMaster {
   public login(data: any): Observable<LoginResponse> {
     return this.http.postUrlEncoded(
       'shnm-portlet/api/v1/access.json/login3',
-      data,
+      data
     )
     .map((r: Response) => r.json())
     .map((r: LoginResponse) => this.storeData(r));
