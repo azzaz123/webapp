@@ -13,7 +13,6 @@ import { PROVIDERS } from './providers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
 import { environment } from '../environments/environment';
-import { Ng2ImgFallbackModule } from 'ng2-img-fallback';
 
 @NgModule({
   declarations: [
@@ -34,7 +33,6 @@ import { Ng2ImgFallbackModule } from 'ng2-img-fallback';
     HttpModule,
     AppRoutingModule,
     LayoutModule,
-    Ng2ImgFallbackModule,
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
