@@ -8,6 +8,7 @@ import { GeolocationComponent } from './topbar/geolocation/geolocation.component
 import { FormsModule } from "@angular/forms";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CategoriesListComponent } from './topbar/categories-list/categories-list.component';
+import { UserModule } from '../core/user/user.module';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { CategoriesListComponent } from './topbar/categories-list/categories-lis
     MdIconModule,
     FormsModule,
     NgbModule,
+    UserModule
   ],
   exports: [
     TopbarComponent

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IAccessTokenService } from 'shield';
 import { CookieService } from 'ngx-cookie';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AccessTokenService implements IAccessTokenService {
@@ -16,7 +17,13 @@ export class AccessTokenService implements IAccessTokenService {
   }
 
   public deleteAccessToken() {
-    this.cookieService.remove('accessToken');
+    if (environment.name !== 'local') {
+      this.cookieService.remove('accessToken', {domain: '.wallapop.com'});
+      this.cookieService.remove('subdomain', {domain: '.wallapop.com'});
+    } else {
+      this.cookieService.remove('accessToken');
+      this.cookieService.remove('subdomain');
+    }
     this._accessToken = null;
   }
 

@@ -37,7 +37,7 @@ export class ItemService extends ItemServiceMaster {
       content.sale_conditions,
       content.images[0],
       content.images,
-      null,
+      content.web_slug,
       content.modified_date
     );
   }

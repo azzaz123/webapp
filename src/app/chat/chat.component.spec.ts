@@ -164,30 +164,44 @@ describe('Component: Chat', () => {
         })
       });
     });
-    it('should call the itemService.reportListing and then close the modal and show a toast', fakeAsync(() => {
-      spyOn(itemService, 'reportListing').and.callThrough();
-      spyOn(toastr, 'success').and.callThrough();
-      component.currentConversation = MOCK_CONVERSATION();
-      component.reportListingAction();
-      tick();
-      expect(itemService.reportListing).toHaveBeenCalledWith(ITEM_ID,
-        'Report Listing Reason',
-        1,
-        component.currentConversation.legacyId);
-      expect(toastr.success).toHaveBeenCalledWith('The listing has been reported correctly');
-    }));
-    it('should track the ProductRepported event', fakeAsync(() => {
-      spyOn(trackingService, 'track');
-      spyOn(itemService, 'reportListing').and.callThrough();
-      spyOn(toastr, 'success').and.callThrough();
-      component.currentConversation = MOCK_CONVERSATION();
-      component.reportListingAction();
-      tick();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_REPPORTED, {
-        product_id: ITEM_ID,
-        reason_id: 1
-      });
-    }));
+    describe('success', () => {
+      it('should call the itemService.reportListing and then close the modal and show a toast', fakeAsync(() => {
+        spyOn(itemService, 'reportListing').and.callThrough();
+        spyOn(toastr, 'success').and.callThrough();
+        component.currentConversation = MOCK_CONVERSATION();
+        component.reportListingAction();
+        tick();
+        expect(itemService.reportListing).toHaveBeenCalledWith(ITEM_ID,
+          'Report Listing Reason',
+          1,
+          component.currentConversation.legacyId);
+        expect(toastr.success).toHaveBeenCalledWith('The listing has been reported correctly');
+      }));
+      it('should track the ProductRepported event', fakeAsync(() => {
+        spyOn(trackingService, 'track');
+        spyOn(itemService, 'reportListing').and.callThrough();
+        spyOn(toastr, 'success').and.callThrough();
+        component.currentConversation = MOCK_CONVERSATION();
+        component.reportListingAction();
+        tick();
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_REPPORTED, {
+          product_id: ITEM_ID,
+          reason_id: 1
+        });
+      }));
+    });
+    describe('error', () => {
+      it('should open toastr if error 403', fakeAsync(() => {
+        spyOn(itemService, 'reportListing').and.returnValue(Observable.throw({
+          status: 403
+        }));
+        spyOn(toastr, 'success').and.callThrough();
+        component.currentConversation = MOCK_CONVERSATION();
+        component.reportListingAction();
+        tick();
+        expect(toastr.success).toHaveBeenCalled();
+      }));
+    });
   });
 
   describe('reportUserAction', () => {

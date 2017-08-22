@@ -1,4 +1,5 @@
 export const ITEM_BAN_REASONS: any = [
+  '',
   'wrong_category',
   'people_or_animals',
   'joke',

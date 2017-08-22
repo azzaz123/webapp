@@ -51,6 +51,7 @@ describe('AccessTokenService', () => {
       spyOn(cookieService, 'remove');
       service.deleteAccessToken();
       expect(cookieService.remove).toHaveBeenCalledWith('accessToken');
+      expect(cookieService.remove).toHaveBeenCalledWith('subdomain');
       expect(service['_accessToken']).toBeNull();
     });
   });

@@ -1,28 +1,53 @@
 @import "../../../style/_common.scss";
 
 form {
-  $input-height: 50px;
+  $input-height: $chat-input - $spacing;
   height: $input-height;
   position: relative;
   textarea {
+    border-radius: 100px;
     max-height: $input-height;
-    width: 100%;
+    width: calc(100% - #{$spacing * 2});
+    margin: 0 $spacing;
+    margin-bottom: $spacing;
     height: $input-height;
     line-height: $input-height;
     padding: 0 0 0 $spacing-M;
     outline: none;
     resize: none;
     overflow: hidden;
-    border: 0;
-    border-top: 1px solid $grey-50;
+    border: 2px solid $grey-50;
+    &:focus {
+      border-color: $grey-100;
+    }
     &::-webkit-input-placeholder {
-      color: $grey-300;
+      color: $grey-200;
     }
     &[disabled] {
       opacity: .5;
       &::-webkit-input-placeholder {
         color: $warn;
       }
+    }
+  }
+  #send {
+    cursor: pointer;
+    position: absolute;
+    right: 25px;
+    top: 5px;
+    border-radius: 50%;
+    background: $grey-100;
+    @include square(40px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .15s ease all;
+    md-icon {
+      width: 22px;
+      height: 23px;
+    }
+    &.selected {
+      background: $corporate;
     }
   }
 

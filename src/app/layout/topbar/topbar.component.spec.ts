@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { EventService } from '../../core/event/event.service';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
 import { environment } from '../../../environments/environment';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
@@ -37,7 +38,7 @@ describe('TopbarComponent', () => {
         }},
         EventService],
       declarations: [TopbarComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
     userService = TestBed.get(UserService);
