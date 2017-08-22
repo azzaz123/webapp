@@ -29,11 +29,9 @@
     <div class="horizontal-line"></div>
   </a>
   <div class="topbar-menu-dropdown" ngbDropdown>
-    <img class="topbar-avatar"
-         *ngIf="user"
-         [src]="user?.image?.urls_by_size.small"
-         src-fallback="/assets/icons/arrow-waterfall.svg"
-         [alt]="user?.microName">
+    <tsl-user-avatar *ngIf="user" class="topbar-avatar" [src]="user?.image?.urls_by_size.small" [user]="user"
+                     [alt]="user?.microName">
+    </tsl-user-avatar>
     <span class="topbar-user-name" ngbDropdownToggle>{{user?.microName}}</span>
     <md-icon svgIcon="arrow-waterfall" class="topbar-icon"></md-icon>
     <div class="dropdown-menu dropdown-menu-right">
