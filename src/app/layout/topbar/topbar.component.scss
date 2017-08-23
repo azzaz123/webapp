@@ -26,6 +26,7 @@
   font-size: $font-size-S;
   color: $grey-900;
   margin-right: $spacing-XXS;
+  margin-left: $spacing-S;
 }
 .topbar-icon {
   height: 36px;
@@ -37,6 +38,9 @@
       color: $corporate;
     }
   }
+}
+.topbar-avatar {
+  margin-bottom: -17px;
 }
 .topbar-logo-icon {
   width: 54px;
@@ -65,12 +69,9 @@
   }
 }
 .topbar-menu-dropdown {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   cursor: pointer;
-}
-.topbar-avatar {
-  margin-top: 10px;
-  margin-bottom: -14px;
 }
 .dropdown-main-search {
   & {
@@ -147,7 +148,6 @@
 }
 .main-header-login {
   & {
-    font-family: "Wallie-Fit", sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -165,7 +165,8 @@
       height: 65px;
       padding-right: 20px;
       position: relative;
-      padding-top: 12px;
+      display: flex;
+      align-items: center;
     }
     &:hover {
       & .horizontal-line {
@@ -185,6 +186,7 @@
     }
     & span {
       font-size: $font-size-S;
+      line-height: $font-size-S;
     }
     .news-badge {
       display: none;
