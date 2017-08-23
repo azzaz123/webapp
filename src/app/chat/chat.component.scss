@@ -84,9 +84,6 @@
     cursor: pointer;
     &.warn {
       color: $warn;
-      &:hover {
-        color: $white;
-      }
     }
   }
 }

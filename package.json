@@ -9,6 +9,7 @@
     "buildbeta": "ng build --env=beta --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
     "buildbeta-en": "ng build --env=beta --aot",
     "buildprod": "ng build --prod --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
+    "buildprod-en": "ng build --prod --aot",
     "i18n": "ng-xi18n -p src/tsconfig.app.json --i18nFormat=xmb",
     "serve": "ng serve --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
     "test": "ng test --watch=false  --no-progress",
@@ -36,7 +37,7 @@
     "ngx-cookie": "^1.0.0",
     "ngx-toastr": "^5.0.7",
     "rxjs": "5.3.0",
-    "shield": "git+ssh://git@github.com/Wallapop/shield.git#1.11.2",
+    "shield": "git+ssh://git@github.com/Wallapop/shield.git#1.12.0",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
