@@ -21,6 +21,7 @@
       padding: 0;
       width: 320px;
       border: solid 1px $color-grey-separator;
+      z-index: 100;
     }
     li {
       & {
