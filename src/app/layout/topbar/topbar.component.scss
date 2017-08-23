@@ -40,7 +40,7 @@
   }
 }
 .topbar-avatar {
-  margin-bottom: -17px;
+  margin-bottom: -14px;
 }
 .topbar-logo-icon {
   width: 54px;
@@ -86,7 +86,7 @@
     display: flex;
     line-height: $spacing-L;
     height: 42px;
-    z-index: 9;
+    z-index: 100;
     overflow: visible;
     border-radius: 30px;
     float: left;
@@ -208,6 +208,7 @@
       margin-left: 8px;
       position: absolute;
       bottom: 0;
+      left: 0;
     }
     .topbar-icon {
       width: 40px;
@@ -334,6 +335,11 @@
   .main-header-chat {
     position: relative\9;
   }
+  .main-header-chat .menu-link.active .horizontal-line {
+    position: absolute;
+    left: 0\9;
+    bottom: 0\9;
+  }
   .main-header-login .menu-link:hover .horizontal-line {
     position: absolute;
     right: 13px\9;
@@ -341,5 +347,7 @@
   }
   .main-header-login-profile:hover .horizontal-line {
     right: 15px\9;
+    position: absolute;
+    bottom: 0\9;
   }
 }

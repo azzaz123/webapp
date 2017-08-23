@@ -21,7 +21,6 @@
       padding: 0;
       width: 320px;
       border: solid 1px $color-grey-separator;
-      z-index: 100;
     }
     li {
       & {
@@ -80,8 +79,8 @@
 
 .topbar-icon {
   & {
-    height: 42px;
-    width: 42px;
+    height: 36px;
+    width: 36px;
     color: $grey-200;
     vertical-align: middle;
   }
@@ -103,5 +102,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  :host {
+    display: -ms-flexbox\9;
+    -ms-flex-pack: start\9;
   }
 }
