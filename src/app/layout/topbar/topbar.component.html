@@ -1,5 +1,7 @@
 <div class="topbar-logo-icon">
-  <md-icon svgIcon="logo" class="topbar-logo-icon"></md-icon>
+  <a [href]="homeUrl">
+    <md-icon svgIcon="logo" class="topbar-logo-icon"></md-icon>
+  </a>
 </div>
 <div class="dropdown-main-search">
   <div class="input-search">
@@ -17,7 +19,7 @@
   </div>
 </div>
 <div class="main-header-login">
-  <a class="main-header-home menu-link" [routerLink]="['/home']">
+  <a class="main-header-home menu-link" [href]="homeUrl">
     <md-icon svgIcon="home" class="topbar-icon"></md-icon>
     <span i18n>Home</span>
     <div class="horizontal-line"></div>

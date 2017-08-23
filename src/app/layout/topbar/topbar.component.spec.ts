@@ -29,13 +29,18 @@ describe('TopbarComponent', () => {
           }
         },
       },
-        { provide: WindowRef, useValue: {
+        {
+          provide: WindowRef, useValue: {
           nativeWindow: {
             location: {
               href: environment.siteUrl
             }
           }
-        }},
+        }
+        },
+        {
+          provide: 'SUBDOMAIN', useValue: 'www'
+        },
         EventService],
       declarations: [TopbarComponent],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -85,9 +90,9 @@ describe('TopbarComponent', () => {
   });
 
   describe('update coordinate', () => {
-    let newCoordinates = {"lat": 41.2, "lng": 2.1};
+    let newCoordinates = {'lat': 41.2, 'lng': 2.1};
     it('should update the user coordinates', () => {
-      component.coordinates = {"lat": 0.0, "lng": 0.0};
+      component.coordinates = {'lat': 0.0, 'lng': 0.0};
       component.updateCoordinate(newCoordinates);
       expect(component.coordinates).toEqual(newCoordinates);
     });
@@ -125,7 +130,7 @@ describe('TopbarComponent', () => {
       component.category = CATEGORY_DATA_WEB[1];
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-        .toEqual(environment.siteUrl + 'search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
+      .toEqual('http://www.dev.wallapop.com:8080/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
     });
 
     it('should redirect to the web when category is not set', () => {
@@ -136,14 +141,14 @@ describe('TopbarComponent', () => {
       };
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-        .toEqual(environment.siteUrl + 'search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
+      .toEqual('http://www.dev.wallapop.com:8080/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
     });
 
     it('should submit the search form for cars', () => {
       component.category = CATEGORY_DATA_WEB[0];
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-        .toEqual(environment.siteUrl + 'search?catIds=100' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=100');
+      .toEqual('http://www.dev.wallapop.com:8080/search?catIds=100' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=100');
     });
   });
 

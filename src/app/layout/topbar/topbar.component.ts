@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { User, WindowRef } from 'shield';
 import { UserService } from '../../core/user/user.service';
 import { CategoryService } from '../../core/category/category.service';
@@ -21,6 +21,7 @@ export class TopbarComponent implements OnInit {
   public coordinates: Coordinate;
   public category: CategoryResponse;
   public focus: boolean;
+  public homeUrl: string;
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('latEl') latEl: ElementRef;
   @ViewChild('lngEl') lngEl: ElementRef;
@@ -28,7 +29,10 @@ export class TopbarComponent implements OnInit {
 
   constructor(public userService: UserService,
               private eventService: EventService,
-              private windowRef: WindowRef) { }
+              private windowRef: WindowRef,
+              @Inject('SUBDOMAIN') private subdomain: string) {
+    this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
+  }
 
   ngOnInit() {
     this.eventService.subscribe(EventService.UPDATE_COORDINATE, (coordinate: Coordinate) => this.updateCoordinate(coordinate));
@@ -52,9 +56,9 @@ export class TopbarComponent implements OnInit {
   }
 
   public submitForm() {
-    let categoryId = (this.category) ? this.category.categoryId : this.categoryEl.nativeElement.value;
-    let verticalId = (categoryId == 100) ? categoryId : '';
-    this.windowRef.nativeWindow.location.href = environment.siteUrl + 'search?catIds=' + categoryId + '&lat=' +  this.latEl.nativeElement.value
+    const categoryId = (this.category) ? this.category.categoryId : this.categoryEl.nativeElement.value;
+    const verticalId = (categoryId === 100) ? categoryId : '';
+    this.windowRef.nativeWindow.location.href = this.homeUrl + 'search?catIds=' + categoryId + '&lat=' +  this.latEl.nativeElement.value
       + '&lng=' + this.lngEl.nativeElement.value + '&kws=' + this.kwsEl.nativeElement.value
       + '&verticalId=' + verticalId;
   }
