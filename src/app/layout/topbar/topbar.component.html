@@ -30,12 +30,12 @@
   </a>
   <div class="topbar-menu-dropdown" ngbDropdown>
     <div ngbDropdownToggle>
-      <tsl-user-avatar class="topbar-avatar avatar-32" [user]="user" *ngIf="user"></tsl-user-avatar>
+      <tsl-user-avatar class="topbar-avatar" [size]="32" [user]="user" *ngIf="user"></tsl-user-avatar>
       <span class="topbar-user-name">{{user?.microName}}</span>
       <md-icon svgIcon="arrow-waterfall" class="topbar-icon"></md-icon>
-      <div class="dropdown-menu dropdown-menu-right">
-        <a class="dropdown-item" (click)="logout()" i18n>Logout</a>
-      </div>
+    </div>
+    <div class="dropdown-menu dropdown-menu-right">
+      <a class="dropdown-item" (click)="logout()" i18n>Logout</a>
     </div>
   </div>
 </div>
