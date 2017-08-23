@@ -18,8 +18,8 @@
 </div>
 <div class="main-header-login">
   <a class="main-header-home menu-link" [routerLink]="['/home']">
-    <md-icon svgIcon="home" class="topbar-icon"></md-icon>
-    <span i18n>Home</span>
+    <md-icon svgIcon="wall" class="topbar-icon"></md-icon>
+    <span i18n>Wall</span>
     <div class="horizontal-line"></div>
   </a>
   <a class="main-header-chat menu-link" [routerLink]="['/chat']" [routerLinkActive]="['active']">
@@ -29,11 +29,13 @@
     <div class="horizontal-line"></div>
   </a>
   <div class="topbar-menu-dropdown" ngbDropdown>
-    <tsl-user-avatar ngbDropdownToggle class="topbar-avatar" [user]="user" *ngIf="user"></tsl-user-avatar>
-    <span class="topbar-user-name" ngbDropdownToggle>{{user?.microName}}</span>
-    <md-icon svgIcon="arrow-waterfall" class="topbar-icon"></md-icon>
-    <div class="dropdown-menu dropdown-menu-right">
-      <a class="dropdown-item" (click)="logout()" i18n>Logout</a>
+    <div ngbDropdownToggle>
+      <tsl-user-avatar class="topbar-avatar avatar-32" [user]="user" *ngIf="user"></tsl-user-avatar>
+      <span class="topbar-user-name">{{user?.microName}}</span>
+      <md-icon svgIcon="arrow-waterfall" class="topbar-icon"></md-icon>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" (click)="logout()" i18n>Logout</a>
+      </div>
     </div>
   </div>
 </div>
