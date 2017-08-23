@@ -104,10 +104,3 @@
     overflow: hidden;
   }
 }
-
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  :host {
-    display: -ms-flexbox\9;
-    -ms-flex-pack: start\9;
-  }
-}
