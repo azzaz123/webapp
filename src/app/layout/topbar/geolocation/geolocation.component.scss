@@ -17,6 +17,9 @@
       transition-property: width;
       transition-duration: 0.4s;
       transition-timing-function: linear;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     &.active {
       width: 230px;
@@ -52,10 +55,9 @@
 
 .topbar-icon {
   & {
-    height: 40px;
-    width: 40px;
+    height: 36px;
+    width: 36px;
     color: $grey-100;
-    vertical-align: middle;
   }
 }
 

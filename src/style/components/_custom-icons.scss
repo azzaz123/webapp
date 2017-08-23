@@ -48,3 +48,11 @@
     fill: $grey-900;
   }
 }
+
+.geo {
+  &.active {
+    svg g path {
+      fill: $corporate;
+    }
+  }
+}

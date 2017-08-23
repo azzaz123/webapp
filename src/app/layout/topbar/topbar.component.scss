@@ -28,14 +28,19 @@
   margin-right: $spacing-XXS;
 }
 .topbar-icon {
-  height: 42px;
-  width: 42px;
+  height: 36px;
+  width: 36px;
   color: $grey-200;
   vertical-align: middle;
+  &.search-glass {
+    &.active {
+      color: $corporate;
+    }
+  }
 }
 .topbar-logo-icon {
-  width: 60px;
-  height: 60px;
+  width: 54px;
+  height: 54px;
 }
 .topbar-menu {
   position: absolute;
@@ -84,6 +89,7 @@
     overflow: visible;
     border-radius: 30px;
     float: left;
+    align-items: center;
     position: relative;
     padding-left: 0 !important;
     padding-right: 18px;
@@ -141,7 +147,7 @@
 }
 .main-header-login {
   & {
-    font-family: "WallieFit", sans-serif;
+    font-family: "Wallie-Fit", sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -200,6 +206,10 @@
       margin-left: 8px;
       position: absolute;
       bottom: 0;
+    }
+    .topbar-icon {
+      width: 40px;
+      height: 40px;
     }
   }
   &.no-search {
