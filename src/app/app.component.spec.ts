@@ -4,6 +4,7 @@ import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testi
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
+  DebugService,
   ErrorsService,
   EventService,
   I18nService,
@@ -17,8 +18,7 @@ import {
   USER_ID,
   UserService,
   WindowRef,
-  XmppService,
-  DebugService
+  XmppService
 } from 'shield';
 import { ToastrModule } from 'ngx-toastr';
 import { MockBackend, MockConnection } from '@angular/http/testing';
@@ -30,8 +30,9 @@ import { MdIconRegistry } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/throw';
-import createSpy = jasmine.createSpy;
 import { ConversationService } from './core/conversation/conversation.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import createSpy = jasmine.createSpy;
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -49,7 +50,7 @@ let conversationService: ConversationService;
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
 
-describe('App: ProTool', () => {
+describe('App', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -124,6 +125,19 @@ describe('App: ProTool', () => {
           },
           handleNewMessages() {
           }
+        }
+        },
+        {
+          provide: Router, useValue: {
+          events: Observable.of(new NavigationEnd(1, 'test', 'test'))
+        }
+        },
+        {
+          provide: ActivatedRoute, useValue: {
+          outlet: 'primary',
+          data: Observable.of({
+            title: 'Chat'
+          })
         }
         },
         ...
@@ -237,18 +251,48 @@ describe('App: ProTool', () => {
       spyOn(titleService, 'setTitle');
     });
 
-    it('should update the title with unread messages when > 0', () => {
-      component.ngOnInit();
-      messageService.totalUnreadMessages$.next(100);
-      expect(titleService.setTitle).toHaveBeenCalledWith('(100) Wallapop Admin');
+    describe('with no messages', () => {
+      beforeEach(() => {
+        spyOn(titleService, 'getTitle').and.returnValue('Chat');
+      });
+      it('should update the title with unread messages when > 0', () => {
+        component.ngOnInit();
+        messageService.totalUnreadMessages$.next(100);
+        expect(titleService.setTitle).toHaveBeenCalledWith('(100) Chat');
+      });
+
+      it('should update the title just with the title when unread messages are 0', () => {
+        component.ngOnInit();
+        messageService.totalUnreadMessages$.next(0);
+        expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
+      });
     });
 
-    it('should update the title just with the title when unread messages are 0', () => {
-      component.ngOnInit();
-      messageService.totalUnreadMessages$.next(0);
-      expect(titleService.setTitle).toHaveBeenCalledWith('Wallapop Admin');
+    describe('with messages', () => {
+      beforeEach(() => {
+        spyOn(titleService, 'getTitle').and.returnValue('(10) Chat');
+      });
+      it('should update the title with unread messages when > 0', () => {
+        component.ngOnInit();
+        messageService.totalUnreadMessages$.next(100);
+        expect(titleService.setTitle).toHaveBeenCalledWith('(100) Chat');
+      });
+
+      it('should update the title just with the title when unread messages are 0', () => {
+        component.ngOnInit();
+        messageService.totalUnreadMessages$.next(0);
+        expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
+      });
     });
 
+  });
+
+  describe('setTitle', () => {
+    it('should set title', () => {
+      spyOn(titleService, 'setTitle');
+      component['setTitle']();
+      expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
+    });
   });
 
 });
