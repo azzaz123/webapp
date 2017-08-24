@@ -1,0 +1,103 @@
+@import "../../../../style/_common.scss";
+
+.header-location {
+  & {
+    display: flex;
+    display: -ms-flexbox;
+    position: relative;
+    align-items: center;
+    font-size: $font-size-S;
+  }
+  input {
+    & {
+      border: none;
+      width: 114px;
+      height: 40px;
+      color: $grey-900;
+      -webkit-transition-property: width;
+      transition-property: width;
+      transition-duration: 0.4s;
+      transition-timing-function: linear;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &.active {
+      width: 230px;
+    }
+    &::-webkit-input-placeholder {
+      color: $corporate;
+      opacity: 0.9;
+    }
+    &::-moz-placeholder {
+      color: $grey-300;
+      opacity: 0.9;
+    }
+    &::-ms-placeholder {
+      color: $grey-300;
+      opacity: 0.9;
+    }
+    &::placeholder {
+      color: $grey-300;
+      opacity: 0.9;
+    }
+  }
+  .location {
+    & {
+      display: flex;
+      display: -ms-flexbox;
+      align-items: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      position: relative;
+    }
+  }
+}
+
+.topbar-icon {
+  & {
+    height: 36px;
+    width: 36px;
+    color: $grey-100;
+  }
+}
+
+.pac-icon {
+  & {
+    width: 15px;
+    height: 17px;
+    margin-right: 12px;
+    display: inline-block;
+    vertical-align: top;
+    background-image: url(https://maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons.png);
+    background-size: 34px;
+    background-position: -1px -161px;
+  }
+}
+
+:host /deep/ .dropdown-menu {
+  & {
+    padding: 0;
+    overflow: hidden;
+    margin: 0.4rem 0 0;
+    left: 0 !important;
+  }
+}
+
+:host /deep/ .dropdown-item {
+  & {
+    background-color: transparent;
+    cursor: pointer;
+    color: $grey-900;
+    border-bottom: 1px solid $grey-50;
+    padding: 0.5rem 1rem;
+    -webkit-transition: all .15s linear;
+    -moz-transition: all .15s linear;
+    -o-transition: all .15s linear;
+    transition: all .15s linear;
+  }
+}
+
+:host /deep/ .dropdown-item.active {
+  background-color: $grey-50;
+}

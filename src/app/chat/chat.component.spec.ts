@@ -30,6 +30,9 @@ class MockUserService {
   public reportUser(): Observable<any> {
     return Observable.of({});
   }
+
+  public updateBlockStatus() {
+  }
 }
 
 class MockItemService {
@@ -147,13 +150,26 @@ describe('Component: Chat', () => {
     expect(component.conversationsTotal).toBe(0);
   });
 
-  it('should set connection error', () => {
-    component.ngOnInit();
-    eventService.emit(EventService.CONNECTION_ERROR);
-    expect(component.connectionError).toBeTruthy();
-    expect(component.conversationsLoaded).toBeTruthy();
+  describe('ngOnInit', () => {
+    it('should set connection error', () => {
+      component.ngOnInit();
+      eventService.emit(EventService.CONNECTION_ERROR);
+      expect(component.connectionError).toBeTruthy();
+      expect(component.conversationsLoaded).toBeTruthy();
+    });
+    it('should call updateBlockStatus on USER_BLOCKED', () => {
+      spyOn(userService, 'updateBlockStatus');
+      component.ngOnInit();
+      eventService.emit(EventService.USER_BLOCKED, '1');
+      expect(userService.updateBlockStatus).toHaveBeenCalledWith('1', true);
+    });
+    it('should call updateBlockStatus on USER_UNBLOCKED', () => {
+      spyOn(userService, 'updateBlockStatus');
+      component.ngOnInit();
+      eventService.emit(EventService.USER_UNBLOCKED, '2');
+      expect(userService.updateBlockStatus).toHaveBeenCalledWith('2', false);
+    });
   });
-
 
   describe('reportListingAction', () => {
     beforeEach(() => {

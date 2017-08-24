@@ -48,6 +48,12 @@ export class ChatComponent implements OnInit {
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.connectionError = false;
     });
+    this.eventService.subscribe(EventService.USER_BLOCKED, (userId: string) => {
+      this.userService.updateBlockStatus(userId, true);
+    });
+    this.eventService.subscribe(EventService.USER_UNBLOCKED, (userId: string) => {
+      this.userService.updateBlockStatus(userId, false);
+    });
   }
 
   public onCurrentConversationChange(conversation: Conversation) {

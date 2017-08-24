@@ -5,5 +5,6 @@ import { EventService as EventServiceMaster } from 'shield';
 export class EventService extends EventServiceMaster {
 
   public static FIND_CONVERSATION = 'findConversation';
-
+  public static UPDATE_COORDINATE = 'updateCoordinate';
+  public static UPDATE_CATEGORY = 'updateCategoy';
 }

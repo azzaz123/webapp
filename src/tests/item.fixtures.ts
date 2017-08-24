@@ -27,6 +27,7 @@ export const ITEM_DATA_V3: ItemResponse = {
         'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320'
       }
     }],
-    'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false}
+    'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
+    'web_slug': 'raton-134690716'
   }
 };

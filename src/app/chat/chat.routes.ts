@@ -5,7 +5,14 @@ import { ChatComponent } from './chat.component';
 import { LoggedGuard } from '../core/user/logged.guard';
 
 const routes: Routes = [
-  {path: 'chat', component: ChatComponent, canActivate: [LoggedGuard]},
+  {
+    path: 'chat',
+    component: ChatComponent,
+    canActivate: [LoggedGuard],
+    data: {
+      title: 'Chat'
+    }
+  }
 ];
 
 @NgModule({

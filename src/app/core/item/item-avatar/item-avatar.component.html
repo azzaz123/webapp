@@ -6,7 +6,7 @@
   <span class="sold" *ngIf="item?.sold">
     <md-icon svgIcon="sold"></md-icon>
   </span>
-  <span class="reserved" *ngIf="item?.reserved">
+  <span class="reserved" *ngIf="item?.reserved && !item?.sold">
     <md-icon svgIcon="reserved"></md-icon>
   </span>
 </div>

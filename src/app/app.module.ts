@@ -16,7 +16,7 @@ import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     ShieldModule.forRoot({
@@ -32,7 +32,7 @@ import { environment } from '../environments/environment';
     LoginModule,
     HttpModule,
     AppRoutingModule,
-    LayoutModule
+    LayoutModule,
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

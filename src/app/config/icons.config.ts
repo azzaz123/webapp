@@ -14,6 +14,7 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('reports', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/reports.svg'));
   mdIconRegistry.addSvgIconInNamespace('star', 'empty', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/star_empty.svg'));
   mdIconRegistry.addSvgIconInNamespace('star', 'full', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/star.svg'));
+  mdIconRegistry.addSvgIconInNamespace('star', 'half', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/half_star.svg'));
   mdIconRegistry.addSvgIcon('user', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/user.svg'));
   mdIconRegistry.addSvgIcon('menu', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/menu.svg'));
   mdIconRegistry.addSvgIcon('report-listing-0', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/other.svg'));
@@ -52,5 +53,27 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('error', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/error.svg'));
   mdIconRegistry.addSvgIcon('blocked', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/blocked.svg'));
   mdIconRegistry.addSvgIcon('time', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/time.svg'));
+  mdIconRegistry.addSvgIcon('logo', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/logo.svg'));
+  mdIconRegistry.addSvgIcon('glass', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/glass.svg'));
+  mdIconRegistry.addSvgIcon('categories', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories.svg'));
+  mdIconRegistry.addSvgIcon('geo', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/geo.svg'));
+  mdIconRegistry.addSvgIcon('home', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/home.svg'));
+  mdIconRegistry.addSvgIcon('messages', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/messages.svg'));
+  mdIconRegistry.addSvgIcon('arrow-waterfall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-waterfall.svg'));
+  mdIconRegistry.addSvgIcon('category_Appliances', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Appliances.svg'));
+  mdIconRegistry.addSvgIcon('category_Babies', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Babies.svg'));
+  mdIconRegistry.addSvgIcon('category_Cars', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Cars.svg'));
+  mdIconRegistry.addSvgIcon('category_Electronics', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Electronics.svg'));
+  mdIconRegistry.addSvgIcon('category_GamesBooks', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_GamesBooks.svg'));
+  mdIconRegistry.addSvgIcon('category_God', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_God.svg'));
+  mdIconRegistry.addSvgIcon('category_HomeGarden', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_HomeGarden.svg'));
+  mdIconRegistry.addSvgIcon('category_Housing', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Housing.svg'));
+  mdIconRegistry.addSvgIcon('category_Moda', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Moda.svg'));
+  mdIconRegistry.addSvgIcon('category_Motor', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Motor.svg'));
+  mdIconRegistry.addSvgIcon('category_Others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Others.svg'));
+  mdIconRegistry.addSvgIcon('category_Services', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Services.svg'));
+  mdIconRegistry.addSvgIcon('category_Sports', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Sports.svg'));
+  mdIconRegistry.addSvgIcon('category_Videogames', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Videogames.svg'));
   mdIconRegistry.addSvgIcon('send', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/send.svg'));
+  mdIconRegistry.addSvgIcon('wall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wall.svg'));
 }

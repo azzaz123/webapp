@@ -25,6 +25,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
 import { MdIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 // Declare ga function as ambient
 declare var ga: Function;
 
@@ -50,6 +51,8 @@ export class AppComponent implements OnInit {
               private i18n: I18nService,
               private conversationService: ConversationService,
               private winRef: WindowRef,
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
               private debugService: DebugService) {
     this.config();
   }
@@ -58,6 +61,7 @@ export class AppComponent implements OnInit {
     this.subscribeEvents();
     this.userService.checkUserStatus();
     this.notificationService.init();
+    this.setTitle();
   }
 
   private config() {
@@ -78,20 +82,43 @@ export class AppComponent implements OnInit {
           this.errorsService.show(error, true);
         });
     });
-    this.event.subscribe(EventService.USER_LOGOUT, () => {
+    this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
       this.xmppService.disconnect();
       this.loggingOut = true;
-      this.winRef.nativeWindow.location.reload();
+      if (redirectUrl) {
+        this.winRef.nativeWindow.location.href = redirectUrl;
+      } else {
+        this.winRef.nativeWindow.location.reload();
+      }
     });
     this.messageService.totalUnreadMessages$.subscribe((unreadMessages: number) => {
-      let title: string = 'Wallapop Admin';
+      let title: string = this.titleService.getTitle().split(') ')[1];
+      title = title ? title : this.titleService.getTitle();
       if (unreadMessages > 0) {
         title = '(' + unreadMessages + ') ' + title;
       }
       this.titleService.setTitle(title);
     });
     this.event.subscribe(EventService.NEW_MESSAGE, (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate));
+  }
+
+  private setTitle() {
+    this.router.events
+    .filter(event => event instanceof NavigationEnd)
+    .map(() => this.activatedRoute)
+    .map(route => {
+      while (route.firstChild) {
+        route = route.firstChild;
+      }
+      return route;
+    })
+    .filter(route => route.outlet === 'primary')
+    .mergeMap(route => route.data)
+    .subscribe((event) => {
+      const title = !(event['title']) ? 'Wallapop' : event['title'];
+      this.titleService.setTitle(title);
+    });
   }
 
 }

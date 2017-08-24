@@ -35,12 +35,24 @@
   }
 }
 
-#send {
-  &.selected {
-    md-icon {
-      path {
-        fill: $corporate;
-      }
+.main-header-chat {
+  &.active {
+    md-icon svg g g {
+      fill: $corporate;
+    }
+  }
+}
+
+.main-search-category-ico {
+  svg g g {
+    fill: $grey-900;
+  }
+}
+
+.geo {
+  &.active {
+    svg g path {
+      fill: $corporate;
     }
   }
 }
