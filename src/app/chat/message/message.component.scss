@@ -60,3 +60,18 @@ $avatar-size: 40px;
     color:  #90a4ae;
   }
 }
+
+.third-voice {
+  text-align: center;
+  margin: $spacing-S 112px;
+  border: 1px solid $grey-50;
+  border-radius: $border-radius;
+  padding: $spacing-M;
+  font-size: $font-size-S;
+  .btn {
+    font-size: $font-size-S;
+    padding: 6px $spacing;
+    margin-top: $spacing-S;
+    cursor: pointer;
+  }
+}

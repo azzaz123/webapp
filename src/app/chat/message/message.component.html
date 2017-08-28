@@ -1,7 +1,13 @@
 <tsl-user-avatar class="message-avatar" [user]="message.user" *ngIf="showUserInfo" [ngClass]="{'calls-panel': callsPanel}"></tsl-user-avatar>
-<div class="message-body" [ngClass]="{'without-avatar': !showUserInfo, 'calls-panel': callsPanel}">
+<div class="message-body" *ngIf="!message.payload" [ngClass]="{'without-avatar': !showUserInfo, 'calls-panel': callsPanel}">
   <h5 class="message-name" *ngIf="showUserInfo">{{message.user.microName}}
     <small class="message-date">{{message.date | date:'shortTime'}}</small>
   </h5>
-  <span>{{message.message}}</span>
+  <span *ngIf="!message.payload">{{message.message}}</span>
+</div>
+<div *ngIf="message.payload" class="third-voice">
+  {{message.payload.text}}
+  <div *ngIf="message.payload.type === 'review'">
+    <button class="btn btn-outline-primary" i18n>Review now</button>
+  </div>
 </div>
