@@ -21,6 +21,7 @@ import { ReportListingComponent } from './modals/report-listing/report-listing.c
 import { ReportUserComponent } from './modals/report-user/report-user.component';
 import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
+import { ReviewButtonComponent } from './message/review-button/review-button.component';
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import { UnblockUserComponent } from './modals/unblock-user/unblock-user.compone
     ReportListingComponent,
     ReportUserComponent,
     BlockUserComponent,
-    UnblockUserComponent
+    UnblockUserComponent,
+    ReviewButtonComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,
