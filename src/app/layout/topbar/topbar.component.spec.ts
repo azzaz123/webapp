@@ -130,7 +130,7 @@ describe('TopbarComponent', () => {
       component.category = CATEGORY_DATA_WEB[1];
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('http://www.dev.wallapop.com:8080/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
+      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
     });
 
     it('should redirect to the web when category is not set', () => {
@@ -141,14 +141,14 @@ describe('TopbarComponent', () => {
       };
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('http://www.dev.wallapop.com:8080/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
+      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
     });
 
     it('should submit the search form for cars', () => {
       component.category = CATEGORY_DATA_WEB[0];
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('http://www.dev.wallapop.com:8080/search?catIds=100' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=100');
+      .toEqual('https://www.wallapop.com/search?catIds=100' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=100');
     });
   });
 
