@@ -54,7 +54,7 @@ describe('Component: Item', () => {
   it('should set itemUrl', () => {
     component.item = MOCK_ITEM;
     component.ngOnChanges();
-    expect(component.itemUrl).toBe('http://es.dev.wallapop.com:8080/item/' + ITEM_WEB_SLUG);
+    expect(component.itemUrl).toBe('https://es.wallapop.com/item/' + ITEM_WEB_SLUG);
   });
 
 });

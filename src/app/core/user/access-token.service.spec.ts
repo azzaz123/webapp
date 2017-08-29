@@ -21,7 +21,7 @@ describe('AccessTokenService', () => {
           remove() {
             this.value = null;
           },
-          get() {
+          get () {
             return this.value;
           }
         }
@@ -50,8 +50,8 @@ describe('AccessTokenService', () => {
       service['_accessToken'] = 'abc';
       spyOn(cookieService, 'remove');
       service.deleteAccessToken();
-      expect(cookieService.remove).toHaveBeenCalledWith('accessToken');
-      expect(cookieService.remove).toHaveBeenCalledWith('subdomain');
+      expect(cookieService.remove['calls'].argsFor(0)[0]).toBe('accessToken');
+      expect(cookieService.remove['calls'].argsFor(0)[1]).toEqual({domain: '.wallapop.com'});
       expect(service['_accessToken']).toBeNull();
     });
   });
