@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { PLACEHOLDER_AVATAR, User } from 'shield';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'tsl-user-avatar',
@@ -19,6 +20,9 @@ export class UserAvatarComponent implements OnChanges {
 
   ngOnChanges(changes?: any) {
     this.avatar = this.user.image ? this.user.image.urls_by_size.medium : PLACEHOLDER_AVATAR;
+    if (environment.production || environment.name === 'beta') {
+      this.avatar = this.avatar.replace(/^http:\/\//i, 'https://');
+    }
     this.fallback = PLACEHOLDER_AVATAR;
   }
 

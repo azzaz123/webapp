@@ -25,7 +25,7 @@ describe('Component: UserAvatar', () => {
     it('should use the medium image as avatar', () => {
       component.user = new User(USER_ID, MICRO_NAME, IMAGE);
       component.ngOnChanges();
-      expect(component['avatar']).toBe(IMAGE.urls_by_size.medium);
+      expect(component['avatar']).toBe('https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320');
     });
   });
   describe('without user image', () => {
