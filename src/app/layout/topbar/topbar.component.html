@@ -9,11 +9,18 @@
     <form id="js-main-search-form" method="get">
       <input id="main-search-input" #mainSearchInput placeholder="Search" i18n-placeholder="Search"
              type="text" maxlength="150" name="kws" #kwsEl value="" (focus)="focus=true" (blur)="focus=false"
-             (keyup.enter)="submitForm()" [class.active]="focus" />
+             (keyup.enter)="submitForm()" [class.active]="focus" [(ngModel)]="model" [ngbTypeahead]="search"
+             [inputFormatter]="formatter" [resultTemplate]="suggester" (selectItem)="selectSuggestion($event)"/>
       <input id="main-search-hidden-lat" #latEl name="lat" type="hidden" value="{{ coordinates?.lat }}"/>
       <input id="main-search-hidden-lng" #lngEl name="lng" type="hidden" value="{{ coordinates?.lng }}"/>
       <input id="main-search-hidden-category" #categoryEl name="category" type="hidden" value="{{ category?.categoryId }}"/>
     </form>
+    <ng-template #suggester let-r="result">
+      <div class="location">
+        <span>{{ r.suggestion }}</span>
+        <span>{{ r.category_name }}</span>
+      </div>
+    </ng-template>
     <tsl-categories-list></tsl-categories-list>
     <tsl-geolocation></tsl-geolocation>
   </div>
