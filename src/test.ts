@@ -16,6 +16,8 @@ import {
 declare const __karma__: any;
 declare const require: any;
 
+window['ga'] = function() {};
+
 // Prevent Karma from running prematurely.
 __karma__.loaded = function () {};
 

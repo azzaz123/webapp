@@ -22,7 +22,8 @@ import { environment } from '../environments/environment';
     ShieldModule.forRoot({
       cacheAllConversations: false,
       environment: environment,
-      addSignature: true
+      addSignature: true,
+      appId: 'web'
     }),
     BrowserAnimationsModule,
     ChatModule,
