@@ -22,6 +22,8 @@ import { ReportUserComponent } from './modals/report-user/report-user.component'
 import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
+import { ReviewModalComponent } from './message/review-modal/review-modal.component';
+import { UtilsModule } from 'shield';
 
 @NgModule({
   imports: [
@@ -36,7 +38,8 @@ import { ReviewButtonComponent } from './message/review-button/review-button.com
     NgbModalModule,
     CoreModule,
     SharedModule,
-    ChatRoutingModule
+    ChatRoutingModule,
+    UtilsModule
   ],
   declarations: [
     chatRoutedComponents,
@@ -52,14 +55,16 @@ import { ReviewButtonComponent } from './message/review-button/review-button.com
     ReportUserComponent,
     BlockUserComponent,
     UnblockUserComponent,
-    ReviewButtonComponent
+    ReviewButtonComponent,
+    ReviewModalComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,
     ReportListingComponent,
     ReportUserComponent,
     BlockUserComponent,
-    UnblockUserComponent
+    UnblockUserComponent,
+    ReviewModalComponent
   ]
 })
 export class ChatModule {
