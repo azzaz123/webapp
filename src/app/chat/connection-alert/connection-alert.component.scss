@@ -1,18 +1,15 @@
 @import "../../../style/_common.scss";
 
 #alert {
-  $alert-height: 40px;
-  background: $grey-700;
+  $alert-height: 50px;
+  background: $warn;
   color: $white;
   text-align: center;
   height: $alert-height;
   line-height: $alert-height;
-  font-size: $font-size-S;
-  font-weight: bold;
-  .status-circle {
-    $status-circle-size: 12px;
-    width: $status-circle-size;
-    height: $status-circle-size;
-    vertical-align: middle;
+  font-size: $font-size;
+  padding-left: $spacing-S;
+  &.connected {
+    background: $success;
   }
 }
