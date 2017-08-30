@@ -26,8 +26,6 @@ import 'rxjs/add/observable/fromPromise';
 import { MdIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-// Declare ga function as ambient
-declare var ga: Function;
 
 @Component({
   selector: 'tsl-root',
@@ -62,6 +60,15 @@ export class AppComponent implements OnInit {
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
+    this.router.events.distinctUntilChanged((previous: any, current: any) => {
+      if (current instanceof NavigationEnd) {
+        return previous.url === current.url;
+      }
+      return true;
+    }).subscribe((x: any) => {
+      ga('set', 'page', x.url);
+      ga('send', 'pageview');
+    });
   }
 
   private config() {
