@@ -11,7 +11,7 @@ import { ReviewModalComponent } from '../review-modal/review-modal.component';
 export class ReviewButtonComponent implements OnInit {
 
   @Input() message: Message;
-  public showButton;
+  public showButton: boolean;
   private item: Item;
   private storageKey: string;
 
@@ -29,10 +29,13 @@ export class ReviewButtonComponent implements OnInit {
       this.reviewService.check(this.item.id).subscribe((reviewLeft: boolean) => {
         if (reviewLeft) {
           localStorage.setItem(this.storageKey, 'true');
+          this.showButton = false;
         } else {
           this.showButton = true;
         }
       })
+    } else {
+      this.showButton = false;
     }
   }
 

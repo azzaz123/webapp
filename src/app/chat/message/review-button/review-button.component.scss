@@ -10,3 +10,16 @@
   margin-top: $spacing-S;
   cursor: pointer;
 }
+
+.thanks {
+  margin-top: $spacing-M;
+  md-icon {
+    width: 16px;
+    height: 12px;
+    margin-right: $spacing-XXS;
+  }
+  span {
+    font-weight: bold;
+    font-size: $font-size-S;
+  }
+}
