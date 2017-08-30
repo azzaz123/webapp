@@ -60,7 +60,8 @@ describe('Component: ConversationsPanel', () => {
         ShieldModule.forRoot({
           cacheAllConversations: false,
           environment: environment,
-          addSignature: true
+          addSignature: true,
+          appId: 'web'
         })
       ],
       declarations: [ConversationsPanelComponent, ConversationComponent],
