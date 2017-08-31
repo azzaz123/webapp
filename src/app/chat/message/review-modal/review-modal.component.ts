@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Message, Item, User } from 'shield';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../core/user/user.service';
+import { ReviewModalResult } from './review-modal-result.interface';
 
 @Component({
   selector: 'tsl-review-modal',
@@ -26,11 +27,12 @@ export class ReviewModalComponent implements OnInit {
   }
 
   public close() {
-    this.activeModal.close({
+    const result: ReviewModalResult = {
       score: this.score,
       comments: this.comments,
       userId: this.user.id
-    });
+    };
+    this.activeModal.close(result);
   }
 
   public onRated(score: number) {

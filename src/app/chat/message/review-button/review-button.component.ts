@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Message, Item, ConversationService, UserService, ReviewService, ReviewData } from 'shield';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewModalComponent } from '../review-modal/review-modal.component';
+import { ReviewModalResult } from '../review-modal/review-modal-result.interface';
 
 @Component({
   selector: 'tsl-review-button',
@@ -42,17 +43,15 @@ export class ReviewButtonComponent implements OnInit {
   public openDialog() {
     const modalRef: NgbModalRef = this.modalService.open(ReviewModalComponent, {windowClass: 'review'});
     modalRef.componentInstance.item = this.item;
-    modalRef.result.then((result: any) => {
+    modalRef.result.then((result: ReviewModalResult) => {
       const data: ReviewData = {
-        price: this.item.salePrice,
-        conversationHashId: this.message.conversationId,
-        toUserId: result.userId,
-        itemId: this.item.id,
+        conversation_id: this.message.conversationId,
+        to_user_id: result.userId,
+        item_id: this.item.id,
         comments: result.comments,
-        score: result.score,
-        isPaymentPlatformReview: false
+        score: result.score
       };
-      this.reviewService.create(data).subscribe(() => this.reviewSent());
+      this.reviewService.createAsBuyer(data).subscribe(() => this.reviewSent());
     }, () => {
     });
   }
