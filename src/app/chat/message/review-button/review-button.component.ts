@@ -56,7 +56,7 @@ export class ReviewButtonComponent implements OnInit {
     });
   }
 
-  public reviewSent() {
+  private reviewSent() {
     this.showButton = false;
     localStorage.setItem(this.storageKey, 'true');
   }
