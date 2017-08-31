@@ -49,7 +49,7 @@ export class ReviewButtonComponent implements OnInit {
         to_user_id: result.userId,
         item_id: this.item.id,
         comments: result.comments,
-        score: result.score
+        score: result.score * 20
       };
       this.reviewService.createAsBuyer(data).subscribe(() => this.reviewSent());
     }, () => {
