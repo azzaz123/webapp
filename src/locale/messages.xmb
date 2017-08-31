@@ -60,9 +60,9 @@
   <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:31</source>Messages</msg>
   <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
   <msg id="8806073135680763560"><source>app/chat/message/review-modal/review-modal.component.ts:3</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
-  <msg id="7135236830918562348"><source>app/chat/message/review-modal/review-modal.component.ts:4</source>The more stars, the better your experience.</msg>
+  <msg id="4650730844441578299"><source>app/chat/message/review-modal/review-modal.component.ts:4</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
   <msg id="8149407802234183277"><source>app/chat/message/review-modal/review-modal.component.ts:9</source>Leave a review...</msg>
-  <msg id="7908303878618802329"><source>app/chat/message/review-modal/review-modal.component.ts:15</source>Publish Review</msg>
+  <msg id="7430416142942514215"><source>app/chat/message/review-modal/review-modal.component.ts:15</source>Publish</msg>
   <msg id="7992914064106893139"><source>app/chat/message/review-button/review-button.component.ts:1</source>Review now</msg>
   <msg id="2506703378559967461"><source>app/chat/message/review-button/review-button.component.ts:4</source>Thanks for rating</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/topbar.component.ts:10</source>Search</msg>
