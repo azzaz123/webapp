@@ -9,6 +9,7 @@ import { FormsModule } from "@angular/forms";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CategoriesListComponent } from './topbar/categories-list/categories-list.component';
 import { UserModule } from '../core/user/user.module';
+import { SuggesterComponent } from './topbar/suggester/suggester.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,7 @@ import { UserModule } from '../core/user/user.module';
   exports: [
     TopbarComponent
   ],
-  declarations: [TopbarComponent, GeolocationComponent, CategoriesListComponent]
+  declarations: [TopbarComponent, GeolocationComponent, CategoriesListComponent, SuggesterComponent]
 })
 export class LayoutModule {
 }

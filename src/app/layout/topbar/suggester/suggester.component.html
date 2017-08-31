@@ -1,0 +1,10 @@
+<input id="main-search-input" #mainSearchInput placeholder="Search" i18n-placeholder="Search"
+       type="text" maxlength="150" name="kws" #kwsEl value="" (focus)="focus=true" (blur)="focus=false"
+       (keyup.enter)="submitForm()" [class.active]="focus" [(ngModel)]="model" [ngbTypeahead]="suggest"
+       [inputFormatter]="formatter" [resultTemplate]="suggester" (selectItem)="selectSuggestion($event.item)"/>
+<ng-template #suggester let-r="result">
+    <div class="suggestion">
+        <span class="title">{{ r.suggestion }}</span>
+        <span class="category">{{ r.category_name }}</span>
+    </div>
+</ng-template>

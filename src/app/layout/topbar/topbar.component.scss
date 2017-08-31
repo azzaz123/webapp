@@ -106,19 +106,23 @@
   form {
   }
   input {
-    height: 40px;
-    width: 115px;
-    color: $grey-900;
-    font-size: $font-size-S;
-    opacity: 1;
-    border: none;
-    -webkit-transition-property: width;
-    transition-property: width;
-    transition-duration: 0.3s;
-    transition-timing-function: linear;
+    & {
+      height: 40px;
+      width: 115px;
+      color: $grey-900;
+      font-size: $font-size-S;
+      opacity: 1;
+      border: none;
+      -webkit-transition-property: width;
+      transition-property: width;
+      transition-duration: 0.3s;
+      transition-timing-function: linear;
+    }
+
     &.active {
       width: 230px;
     }
+
     &::-webkit-input-placeholder {
       color: $corporate;
       opacity: 0.9;
@@ -146,6 +150,7 @@
     }
   }
 }
+
 .main-header-login {
   & {
     display: flex;

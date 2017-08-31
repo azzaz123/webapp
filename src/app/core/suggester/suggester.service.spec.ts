@@ -3,6 +3,11 @@ import { SuggesterService } from './suggester.service';
 import { SuggesterResponse } from './suggester-response.interface';
 import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures';
 import { TEST_HTTP_PROVIDERS, HttpService } from 'shield';
+import { ResponseOptions, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+
+let service: SuggesterService;
+let http: HttpService;
 
 describe('SuggesterService', () => {
   beforeEach(() => {
@@ -18,7 +23,7 @@ describe('SuggesterService', () => {
       let response: SuggesterResponse[];
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(SUGGESTER_DATA_WEB)});
       spyOn(http, 'getNoBase').and.returnValue(Observable.of(new Response(res)));
-      service.getSuggestions().subscribe((data: SuggesterResponse[]) => {
+      service.getSuggestions('Seat').subscribe((data: SuggesterResponse[]) => {
         response = data;
       });
       expect(response).toEqual(SUGGESTER_DATA_WEB);

@@ -1,0 +1,42 @@
+@import "../../../../style/_common.scss";
+
+input {
+  border: none;
+}
+
+:host /deep/ .dropdown-menu {
+  & {
+    padding: 0;
+    overflow: hidden;
+    margin: 0.4rem 0 0;
+    left: 0 !important;
+    width: 100%;
+  }
+}
+:host /deep/ .dropdown-item {
+  & {
+    background-color: transparent;
+    cursor: pointer;
+    color: $grey-900;
+    border-bottom: 1px solid $grey-50;
+    padding: 8px 20px;
+    -webkit-transition: all .15s linear;
+    -moz-transition: all .15s linear;
+    -o-transition: all .15s linear;
+    transition: all .15s linear;
+    & .suggestion {
+      display: grid;
+      line-height: $font-size-L;
+      & .title {
+        font-size: $font-size;
+      }
+      & .category {
+        color: $corporate;
+        font-size: $font-size-S;
+      }
+    }
+  }
+}
+:host /deep/ .dropdown-item.active {
+  background-color: $grey-50;
+}

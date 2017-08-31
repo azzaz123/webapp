@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,6 +9,8 @@ import { EventService } from '../../core/event/event.service';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
 import { environment } from '../../../environments/environment';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TEST_HTTP_PROVIDERS } from 'shield';
+import {SUGGESTER_DATA_WEB} from "../../../tests/suggester.fixtures";
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
@@ -20,28 +22,29 @@ describe('TopbarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      providers: [{
-        provide: UserService, useValue: {
-          me(): Observable<User> {
-            return Observable.of(MOCK_USER);
+      providers: [
+        {
+          provide: UserService, useValue: {
+            me(): Observable<User> {
+              return Observable.of(MOCK_USER);
+            },
+            logout() {
+            }
           },
-          logout() {
-          }
         },
-      },
         {
           provide: WindowRef, useValue: {
-          nativeWindow: {
-            location: {
-              href: environment.siteUrl
+            nativeWindow: {
+              location: {
+                href: environment.siteUrl
+              }
             }
           }
-        }
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         },
-        EventService],
+        EventService, ...TEST_HTTP_PROVIDERS],
       declarations: [TopbarComponent],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -98,15 +101,6 @@ describe('TopbarComponent', () => {
     });
   });
 
-  describe('update category', () => {
-    it('should update the category and call the form submit', () => {
-      spyOn(component, 'submitForm').and.callThrough();
-      component.updateCategory(CATEGORY_DATA_WEB[0]);
-      expect(component.category).toEqual(CATEGORY_DATA_WEB[0]);
-      expect(component.submitForm).toHaveBeenCalled();
-    });
-  });
-
   describe('search form', () => {
     beforeEach(() => {
       component.latEl = {
@@ -126,8 +120,27 @@ describe('TopbarComponent', () => {
       };
     });
 
+    describe('update category', () => {
+      it('should update the category and call the form submit', () => {
+        spyOn(component, 'submitForm').and.callThrough();
+        component.updateCategory(CATEGORY_DATA_WEB[0]);
+        expect(component.category).toEqual(CATEGORY_DATA_WEB[0].categoryId);
+        expect(component.submitForm).toHaveBeenCalled();
+      });
+    });
+
+    describe('update search', () => {
+      it('should update the category and keyword and call the form submit', () => {
+        spyOn(component, 'submitForm').and.callThrough();
+        component.updateSearch(SUGGESTER_DATA_WEB[0]);
+        expect(component.category).toEqual(SUGGESTER_DATA_WEB[0].category_id);
+        expect(component.kws).toEqual(SUGGESTER_DATA_WEB[0].suggestion);
+        expect(component.submitForm).toHaveBeenCalled();
+      });
+    });
+
     it('should redirect to the web when category is set', () => {
-      component.category = CATEGORY_DATA_WEB[1];
+      component.category = CATEGORY_DATA_WEB[1].categoryId;
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
       .toEqual('http://www.dev.wallapop.com:8080/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
@@ -145,7 +158,7 @@ describe('TopbarComponent', () => {
     });
 
     it('should submit the search form for cars', () => {
-      component.category = CATEGORY_DATA_WEB[0];
+      component.category = CATEGORY_DATA_WEB[0].categoryId;
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
       .toEqual('http://www.dev.wallapop.com:8080/search?catIds=100' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=100');

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AddressResponse } from '../../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../../core/geolocation/geolocation.service';
@@ -15,8 +15,6 @@ export class GeolocationComponent implements OnInit {
   private MIN_LENGTH = 3;
   public focus: boolean;
   public model: any;
-  @ViewChild('latitude') public latitude: ElementRef;
-  @ViewChild('longitude') public longitude: ElementRef;
 
   constructor(private geolocationService: GeolocationService,
               private eventService: EventService) { }
