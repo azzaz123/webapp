@@ -10,7 +10,7 @@ import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
 import { environment } from '../../../environments/environment';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TEST_HTTP_PROVIDERS } from 'shield';
-import {SUGGESTER_DATA_WEB} from "../../../tests/suggester.fixtures";
+import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures';
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
@@ -70,16 +70,6 @@ describe('TopbarComponent', () => {
       component.ngOnInit();
       expect(component.user).toBe(MOCK_USER);
     });
-    it('should call the eventService.subscribe passing the update category event', () => {
-      spyOn(eventService, 'subscribe').and.callThrough();
-      component.ngOnInit();
-      expect(eventService.subscribe['calls'].argsFor(1)[0]).toBe(EventService.UPDATE_CATEGORY);
-    });
-    it('should call the eventService.subscribe passing the update coordinate event', () => {
-      spyOn(eventService, 'subscribe').and.callThrough();
-      component.ngOnInit();
-      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.UPDATE_COORDINATE);
-    });
   });
 
   describe('logout', () => {
@@ -96,7 +86,7 @@ describe('TopbarComponent', () => {
     let newCoordinates = {'lat': 41.2, 'lng': 2.1};
     it('should update the user coordinates', () => {
       component.coordinates = {'lat': 0.0, 'lng': 0.0};
-      component.updateCoordinate(newCoordinates);
+      component.onCoordinateUpdate(newCoordinates);
       expect(component.coordinates).toEqual(newCoordinates);
     });
   });
@@ -123,7 +113,7 @@ describe('TopbarComponent', () => {
     describe('update category', () => {
       it('should update the category and call the form submit', () => {
         spyOn(component, 'submitForm').and.callThrough();
-        component.updateCategory(CATEGORY_DATA_WEB[0]);
+        component.onCategoryUpdate(CATEGORY_DATA_WEB[0]);
         expect(component.category).toEqual(CATEGORY_DATA_WEB[0].categoryId);
         expect(component.submitForm).toHaveBeenCalled();
       });
@@ -132,8 +122,17 @@ describe('TopbarComponent', () => {
     describe('update search', () => {
       it('should update the category and keyword and call the form submit', () => {
         spyOn(component, 'submitForm').and.callThrough();
-        component.updateSearch(SUGGESTER_DATA_WEB[0]);
+        component.onSearchUpdate(SUGGESTER_DATA_WEB[0]);
         expect(component.category).toEqual(SUGGESTER_DATA_WEB[0].category_id);
+        expect(component.kws).toEqual(SUGGESTER_DATA_WEB[0].suggestion);
+        expect(component.submitForm).toHaveBeenCalled();
+      });
+    });
+
+    describe('search submit', () => {
+      it('should update the keyword and call the form submit', () => {
+        spyOn(component, 'submitForm').and.callThrough();
+        component.onSearchSubmit(SUGGESTER_DATA_WEB[0].suggestion);
         expect(component.kws).toEqual(SUGGESTER_DATA_WEB[0].suggestion);
         expect(component.submitForm).toHaveBeenCalled();
       });

@@ -10,6 +10,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CategoriesListComponent } from './topbar/categories-list/categories-list.component';
 import { UserModule } from '../core/user/user.module';
 import { SuggesterComponent } from './topbar/suggester/suggester.component';
+import { CategoryService } from '../core/category/category.service';
+import { GeolocationService } from '../core/geolocation/geolocation.service';
+import { SuggesterService } from '../core/suggester/suggester.service';
 
 @NgModule({
   imports: [
@@ -24,7 +27,8 @@ import { SuggesterComponent } from './topbar/suggester/suggester.component';
   exports: [
     TopbarComponent
   ],
-  declarations: [TopbarComponent, GeolocationComponent, CategoriesListComponent, SuggesterComponent]
+  declarations: [TopbarComponent, GeolocationComponent, CategoriesListComponent, SuggesterComponent],
+  providers: [GeolocationService, CategoryService, SuggesterService]
 })
 export class LayoutModule {
 }

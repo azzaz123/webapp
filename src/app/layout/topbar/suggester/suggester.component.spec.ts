@@ -51,5 +51,10 @@ describe('SuggesterComponent', () => {
       expect(suggesterService.getSuggestions).not.toHaveBeenCalled();
     });
   });
+
+  describe('select suggestion', (): void => {
+    it('should emit an event with the suggestion parameter', () => {
+    });
+  });
   
 });

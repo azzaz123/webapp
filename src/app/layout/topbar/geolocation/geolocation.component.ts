@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AddressResponse } from '../../../core/geolocation/address-response.interface';
+import { AddressResponse, Coordinate } from '../../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../../core/geolocation/geolocation.service';
-import { EventService } from '../../../core/event/event.service';
 import { GeolocationResponse } from '../../../core/geolocation/geolocation-response.interface';
 
 @Component({
@@ -15,9 +14,9 @@ export class GeolocationComponent implements OnInit {
   private MIN_LENGTH = 3;
   public focus: boolean;
   public model: any;
+  @Output() public newCoordinate = new EventEmitter<Coordinate>();
 
-  constructor(private geolocationService: GeolocationService,
-              private eventService: EventService) { }
+  constructor(private geolocationService: GeolocationService) { }
 
   ngOnInit() {
   }
@@ -36,7 +35,7 @@ export class GeolocationComponent implements OnInit {
 
   public selectItem(address: GeolocationResponse) {
     this.geolocationService.geocode(address.item.placeId).subscribe((data: AddressResponse) => {
-      this.eventService.emit(EventService.UPDATE_COORDINATE, data.result.geometry.location);
+      this.newCoordinate.emit(data.result.geometry.location);
     });
   }
 }
