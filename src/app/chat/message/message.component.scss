@@ -60,3 +60,12 @@ $avatar-size: 40px;
     color:  #90a4ae;
   }
 }
+
+.third-voice {
+  text-align: center;
+  margin: $spacing-S 112px;
+  border: 1px solid $grey-50;
+  border-radius: $border-radius;
+  padding: $spacing-M;
+  font-size: $font-size-S;
+}
