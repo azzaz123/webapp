@@ -50,8 +50,10 @@ describe('CategoriesListComponent', () => {
   describe('select category', () => {
     it('should select the clicked category', () => {
       spyOn(eventService, 'subscribe').and.callThrough();
+      spyOn(component.newCategory, 'emit');
       component.selectCategory(CATEGORY_DATA_WEB[0]);
       expect(component.selectedCategory.categoryId).toEqual(CATEGORY_DATA_WEB[0].categoryId);
+      expect(component.newCategory.emit).toHaveBeenCalledWith(CATEGORY_DATA_WEB[0]);
     });
   });
 
