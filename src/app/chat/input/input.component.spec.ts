@@ -110,6 +110,14 @@ describe('Component: Input', () => {
       expect(textarea.value).toBe('');
     });
 
+    it('should NOT call the send method if disabled', () => {
+      textarea.value = TEXT;
+      component.disable = true;
+      component.sendMessage(textarea, EVENT);
+      expect(EVENT.preventDefault).toHaveBeenCalled();
+      expect(messageService.send).not.toHaveBeenCalled();
+    });
+
   });
 
   describe('ngOnChanges', () => {
