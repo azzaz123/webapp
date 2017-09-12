@@ -22,6 +22,7 @@ export class TopbarComponent implements OnInit {
   public category: CategoryResponse;
   public focus: boolean;
   public homeUrl: string;
+  public userUrl: string;
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('latEl') latEl: ElementRef;
   @ViewChild('lngEl') lngEl: ElementRef;
@@ -39,6 +40,7 @@ export class TopbarComponent implements OnInit {
     this.eventService.subscribe(EventService.UPDATE_CATEGORY, (category: CategoryResponse) => this.updateCategory(category));
     this.userService.me().subscribe((user) => {
       this.user = user;
+      this.userUrl = user.webLink.replace('http://es', 'http://' + this.subdomain);
     });
   }
 

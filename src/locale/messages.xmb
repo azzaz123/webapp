@@ -34,16 +34,14 @@
   <msg id="5118689036165223498"><source>app/chat/modals/unblock-user/unblock-user.component.ts:2</source>Unblock user</msg>
   <msg id="2565755719057925105"><source>app/chat/modals/unblock-user/unblock-user.component.ts:3</source>You&apos;ll be able to send or receive messages from this user again. Do you wish to continue?</msg>
   <msg id="4859202148272511129"><source>app/chat/modals/unblock-user/unblock-user.component.ts:7</source>Unblock</msg>
-  <msg id="313850810538580916"><source>app/chat/chat.component.ts:14</source>Offline</msg>
-  <msg id="8870711330013548872"><source>app/chat/chat.component.ts:15</source>Online</msg>
-  <msg id="2711435905501432474"><source>app/chat/chat.component.ts:20</source>Report this Listing</msg>
-  <msg id="5918739414324010673"><source>app/chat/chat.component.ts:21</source>Report this User</msg>
-  <msg id="3909560892838036974"><source>app/chat/chat.component.ts:22</source>Block this User</msg>
-  <msg id="7240635163184231751"><source>app/chat/chat.component.ts:23</source>Unblock this User</msg>
-  <msg id="3437274703198746531"><source>app/chat/chat.component.ts:34,35</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+  <msg id="2711435905501432474"><source>app/chat/chat.component.ts:22</source>Report this Listing</msg>
+  <msg id="5918739414324010673"><source>app/chat/chat.component.ts:23</source>Report this User</msg>
+  <msg id="3909560892838036974"><source>app/chat/chat.component.ts:24</source>Block this User</msg>
+  <msg id="7240635163184231751"><source>app/chat/chat.component.ts:25</source>Unblock this User</msg>
+  <msg id="3437274703198746531"><source>app/chat/chat.component.ts:36,37</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
         from the list on the left</msg>
-  <msg id="3325766019344626759"><source>app/chat/chat.component.ts:36</source>There are no messages</msg>
-  <msg id="6334569300046707546"><source>app/chat/chat.component.ts:37,38</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+  <msg id="3325766019344626759"><source>app/chat/chat.component.ts:38</source>There are no messages</msg>
+  <msg id="6334569300046707546"><source>app/chat/chat.component.ts:39,40</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
         Try again later.</msg>
   <msg id="4896863464728200563"><source>app/chat/input/input.component.ts:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.ts:2</source>Waiting for network...</msg>
@@ -67,7 +65,8 @@
   <msg id="2506703378559967461"><source>app/chat/message/review-button/review-button.component.ts:4</source>Thanks for rating</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/topbar.component.ts:10</source>Search</msg>
   <msg id="3734434835434478522"><source>app/layout/topbar/topbar.component.ts:24</source>Wall</msg>
-  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:41</source>Logout</msg>
+  <msg id="2127032578120864096"><source>app/layout/topbar/topbar.component.ts:41</source>My Profile</msg>
+  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:42</source>Logout</msg>
   <msg id="1973447499707485378" desc="Where do you want to search?"><source>app/layout/topbar/geolocation/geolocation.component.ts:9</source>Where do you want to search?</msg>
   <msg id="1902100407096396858"><source>app/layout/topbar/categories-list/categories-list.component.ts:5</source>Categories</msg>
 </messagebundle>
