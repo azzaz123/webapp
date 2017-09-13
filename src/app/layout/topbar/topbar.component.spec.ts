@@ -3,12 +3,29 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../core/user/user.service';
-import { MOCK_USER, User, WindowRef } from 'shield';
+import { USER_DATA, User, WindowRef } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../../core/event/event.service';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
 import { environment } from '../../../environments/environment';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+const MOCK_USER = new User(
+  USER_DATA.id,
+  USER_DATA.micro_name,
+  USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  USER_DATA.received_reports,
+  USER_DATA.web_slug
+);
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
