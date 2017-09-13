@@ -6,11 +6,10 @@
     align-items: center;
     justify-content: flex-start;
     padding: 0 8px 0 0;
-    border-left: 1px solid $grey-100;
     border-right: 1px solid $grey-100;
     float: initial;
     height: 100%;
-    width: 142px;
+    width: 54px;
     cursor: pointer;
   }
   &.dropdown-toggle::after {
@@ -84,6 +83,13 @@
     color: $grey-200;
     vertical-align: middle;
   }
+}
+
+.arrow-icon {
+  height: 47px;
+  width: 47px;
+  position: absolute;
+  right: -10px;
 }
 
 .main-search-category-ico {

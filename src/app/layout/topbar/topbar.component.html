@@ -5,17 +5,21 @@
 </div>
 <div class="dropdown-main-search">
   <div class="input-search">
-    <md-icon svgIcon="glass" class="search-glass topbar-icon" [class.active]="focus" (click)="submitForm()"></md-icon>
-    <form id="js-main-search-form" method="get">
-      <input id="main-search-input" #mainSearchInput placeholder="Search" i18n-placeholder="Search"
-             type="text" maxlength="150" name="kws" #kwsEl value="" (focus)="focus=true" (blur)="focus=false"
-             (keyup.enter)="submitForm()" [class.active]="focus" />
-      <input id="main-search-hidden-lat" #latEl name="lat" type="hidden" value="{{ coordinates?.lat }}"/>
-      <input id="main-search-hidden-lng" #lngEl name="lng" type="hidden" value="{{ coordinates?.lng }}"/>
-      <input id="main-search-hidden-category" #categoryEl name="category" type="hidden" value="{{ category?.categoryId }}"/>
-    </form>
-    <tsl-categories-list></tsl-categories-list>
-    <tsl-geolocation></tsl-geolocation>
+    <div class="search-wrapper">
+      <tsl-categories-list></tsl-categories-list>
+      <form id="js-main-search-form" method="get">
+        <input id="main-search-input" #mainSearchInput placeholder="Search" i18n-placeholder="Search"
+               type="text" maxlength="150" name="kws" #kwsEl value="" (focus)="focus=true" (blur)="focus=false"
+               (keyup.enter)="submitForm()" [class.active]="focus" />
+        <input id="main-search-hidden-lat" #latEl name="lat" type="hidden" value="{{ coordinates?.lat }}"/>
+        <input id="main-search-hidden-lng" #lngEl name="lng" type="hidden" value="{{ coordinates?.lng }}"/>
+        <input id="main-search-hidden-category" #categoryEl name="category" type="hidden" value="{{ category?.categoryId }}"/>
+      </form>
+      <tsl-geolocation></tsl-geolocation>
+    </div>
+    <button class="search-btn" (click)="submitForm()">
+      <md-icon svgIcon="glass" class="search-glass topbar-icon"></md-icon>
+    </button>
   </div>
 </div>
 <div class="main-header-login">

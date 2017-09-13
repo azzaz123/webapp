@@ -11,8 +11,7 @@
   input {
     & {
       border: none;
-      width: 114px;
-      height: 40px;
+      width: 190px - 36px;
       color: $grey-900;
       -webkit-transition-property: width;
       transition-property: width;
@@ -23,7 +22,7 @@
       text-overflow: ellipsis;
     }
     &.active {
-      width: 230px;
+      width: 250px - 36px;
     }
     &::-webkit-input-placeholder {
       color: $corporate;
