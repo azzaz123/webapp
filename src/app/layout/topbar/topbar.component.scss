@@ -16,6 +16,8 @@
   -ms-flex-align: center;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
+  box-shadow: 0 2px 4px 0 rgba(37,50,56,0.03);
+  z-index: 100;
   & a {
     color: $grey-900;
     font-size: $font-size-S;
@@ -43,8 +45,9 @@
   margin-bottom: -14px;
 }
 .topbar-logo-icon {
-  width: 54px;
-  height: 54px;
+  width: 49px;
+  height: 49px;
+  margin-bottom: -7px;
 }
 .topbar-menu {
   position: absolute;
