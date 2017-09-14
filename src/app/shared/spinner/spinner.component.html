@@ -1,6 +1,7 @@
 <div id="loader-wrapper">
   <div id="loader">
     <md-icon svgIcon="spinner" class="spinner corporate"></md-icon>
-    <h2 i18n>Loading...</h2>
+    <h2 [hidden]="firstLoad" i18n>Loading...</h2>
+    <h2 [hidden]="!firstLoad" i18n>It's the first time we are loading your messages...<br />This will take longer than usual so sit tight and drink a beer</h2>
   </div>
 </div>

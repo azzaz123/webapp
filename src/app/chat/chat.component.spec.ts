@@ -5,7 +5,7 @@ import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
   EventService, XmppService, MOCK_CONVERSATION, UserService, ItemService, HttpService, I18nService,
-  ConversationService, TrackingService, MockTrackingService, ITEM_ID, Conversation
+  ConversationService, TrackingService, MockTrackingService, ITEM_ID, Conversation, PersistencyService
 } from 'shield';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
@@ -60,6 +60,7 @@ describe('Component: Chat', () => {
   let toastr: ToastrService;
   let modalService: NgbModal;
   let xmppService: XmppService;
+  let persistencyService: PersistencyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -73,6 +74,13 @@ describe('Component: Chat', () => {
         {provide: UserService, useClass: MockUserService},
         {provide: HttpService, useValue: {}},
         {provide: ToastrService, useClass: MockedToastr},
+        {
+          provide: PersistencyService, useValue: {
+          getMetaInformation() {
+            return Observable.of({});
+          }
+        }
+        },
         I18nService,
         EventService,
         {
@@ -95,6 +103,7 @@ describe('Component: Chat', () => {
     toastr = TestBed.get(ToastrService);
     modalService = TestBed.get(NgbModal);
     xmppService = TestBed.get(XmppService);
+    persistencyService = TestBed.get(PersistencyService);
   });
 
   it('should create an instance', () => {
@@ -168,6 +177,15 @@ describe('Component: Chat', () => {
       component.ngOnInit();
       eventService.emit(EventService.USER_UNBLOCKED, '2');
       expect(userService.updateBlockStatus).toHaveBeenCalledWith('2', false);
+    });
+    it('should not set firstLoad if getMetaInformation return meta', () => {
+      component.ngOnInit();
+      expect(component.firstLoad).toBeFalsy();
+    });
+    it('should set firstLoad true if getMetaInformation does NOT return meta', () => {
+      spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw('err'));
+      component.ngOnInit();
+      expect(component.firstLoad).toBeTruthy();
     });
   });
 
