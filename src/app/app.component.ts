@@ -35,6 +35,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 export class AppComponent implements OnInit {
 
   public loggingOut: boolean;
+  public hideSidebar: boolean;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -125,6 +126,7 @@ export class AppComponent implements OnInit {
     .subscribe((event) => {
       const title = !(event['title']) ? 'Wallapop' : event['title'];
       this.titleService.setTitle(title);
+      this.hideSidebar = event['hideSidebar'];
     });
   }
 
