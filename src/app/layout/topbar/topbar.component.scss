@@ -99,7 +99,7 @@
     padding-right: 18px;
     -webkit-transition-property: width;
     transition-property: width;
-    transition-duration: 0.3s;
+    transition-duration: 0.2s;
     transition-timing-function: linear;
   }
   a, form {
@@ -129,7 +129,7 @@
     border: none;
     -webkit-transition-property: width;
     transition-property: width;
-    transition-duration: 0.3s;
+    transition-duration: 0.2s;
     transition-timing-function: linear;
     &.active {
       width: 250px;
