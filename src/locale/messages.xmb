@@ -53,6 +53,7 @@
   <msg id="5927748278732131263"><source>app/core/user/user/user.component.ts:20</source>Typically responds within a day</msg>
   <msg id="6807057680918467236"><source>app/core/user/user/user.component.ts:21</source>Responds in more than 24 hours</msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
+  <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
   <msg id="6543433128416987560"><source>app/core/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:31</source>Messages</msg>
