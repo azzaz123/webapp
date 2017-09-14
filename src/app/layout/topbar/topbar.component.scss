@@ -16,6 +16,8 @@
   -ms-flex-align: center;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
+  box-shadow: 0 2px 4px 0 rgba(37,50,56,0.03);
+  z-index: 100;
   & a {
     color: $grey-900;
     font-size: $font-size-S;
@@ -43,8 +45,9 @@
   margin-bottom: -14px;
 }
 .topbar-logo-icon {
-  width: 54px;
-  height: 54px;
+  width: 49px;
+  height: 49px;
+  margin-bottom: -7px;
 }
 .topbar-menu {
   position: absolute;
@@ -94,30 +97,42 @@
     position: relative;
     padding-left: 0 !important;
     padding-right: 18px;
-    border: 1px solid $grey-100;
     -webkit-transition-property: width;
     transition-property: width;
-    transition-duration: 0.3s;
+    transition-duration: 0.2s;
     transition-timing-function: linear;
   }
   a, form {
     float: left;
   }
   form {
+    border-right: 1px solid $grey-100;
+  }
+  .search-wrapper {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    border: 1px solid $grey-100;
+    border-right: 0;
+    box-shadow: 0 2px 4px 0 rgba(37, 50, 56, 0.05);
+    display: flex;
+    justify-content: start;
   }
   input {
-    height: 40px;
-    width: 115px;
+    padding-left: 12px;
+    width: 190px;
+    height: 100%;
     color: $grey-900;
     font-size: $font-size-S;
     opacity: 1;
     border: none;
     -webkit-transition-property: width;
     transition-property: width;
-    transition-duration: 0.3s;
+    transition-duration: 0.2s;
     transition-timing-function: linear;
     &.active {
-      width: 230px;
+      width: 250px;
     }
     &::-webkit-input-placeholder {
       color: $corporate;
@@ -139,10 +154,25 @@
       opacity: 0.9;
     }
   }
-  .search-glass {
-    &:hover, &:active, &.focused {
-      cursor: pointer;
-      color: $corporate;
+  .search-btn {
+    width: 41px;
+    background: $grey-50;
+    padding: 0;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+    -webkit-border-top-right-radius: 9px;
+    -webkit-border-bottom-right-radius: 9px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px 0 rgba(37, 50, 56, 0.05);
+    border: 1px solid $grey-100;
+    border-left: 0;
+    &:hover {
+      background: $corporate;
+      color: $white;
+      border-color: $corporate;
+    }
+    &:focus {
+      outline: none;
     }
   }
 }
