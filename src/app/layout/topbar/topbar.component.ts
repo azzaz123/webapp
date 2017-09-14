@@ -40,7 +40,9 @@ export class TopbarComponent implements OnInit {
     this.eventService.subscribe(EventService.UPDATE_CATEGORY, (category: CategoryResponse) => this.updateCategory(category));
     this.userService.me().subscribe((user) => {
       this.user = user;
-      this.userUrl = user.webLink.replace('http://es', 'http://' + this.subdomain);
+      if (user) {
+        this.userUrl = user.webLink.replace('http://es', 'http://' + this.subdomain);
+      }
     });
   }
 

@@ -56,3 +56,14 @@
     }
   }
 }
+
+.search-btn {
+  md-icon svg path{
+    fill: $grey-600
+  }
+  &:hover {
+    md-icon svg path{
+      fill: $white;
+    }
+  }
+}
