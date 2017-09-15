@@ -55,6 +55,31 @@ export class ItemService extends ItemServiceMaster {
     );
   }
 
+  protected mapRecordItems(response: any): Item {
+    const data: ItemResponse = <ItemResponse>response;
+    const content: any = data.content;
+    return new Item(
+      content.id,
+      null,
+      content.user.id, // content.seller_id
+      content.title,
+      content.description,
+      null, // content.category_id,
+      null,
+      content.price, // content.sale_price
+      content.currency, // content.currency_code
+      null, // content.modified_date,
+      null, // content.url,
+      content.visibility_flags, // content.flags
+      null,
+      null, // content.sale_conditions,
+      content.image, // content.images[0]
+      null, // content.images,
+      null, // content.web_slug,
+      null // content.modified_date
+    );
+  }
+
   public reportListing(itemId: number | string,
                        comments: string,
                        reason: number,
@@ -72,13 +97,13 @@ export class ItemService extends ItemServiceMaster {
     if (this.itemsStore[status].length && cache) {
       return Observable.of(this.itemsStore[status]);
     }
-    return this.http.get('v3/users/me/items/' + status, {
+    return this.http.get('api/v3/users/me/items/' + status, {
       init: init
     })
       .map((r: Response) => r.json())
       .map((res: ItemResponse[]) => {
         if (res.length > 0) {
-          const items: Item[] = res.map((item: ItemResponse) => this.mapRecordData(item));
+          const items: Item[] = res.map((item: ItemResponse) => this.mapRecordItems(item));
           this.itemsStore[status] = items;
           return items;
         }
