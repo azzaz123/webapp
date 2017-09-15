@@ -5,8 +5,7 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'tsl-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
-  providers: [NgbDropdownConfig]
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
 
