@@ -1,4 +1,4 @@
-import { ItemFlags, Image, ItemSaleConditions } from 'shield';
+import { ItemFlags, Image, ItemSaleConditions, Item } from 'shield';
 
 export interface ItemResponse {
   content: ItemContent;
@@ -20,4 +20,9 @@ export interface ItemContent {
   title: string;
   url: string;
   web_slug: string;
+}
+
+export interface ItemsStore {
+  published: Item[];
+  solds: Item[];
 }

@@ -1,6 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ItemService as ItemServiceMaster, HttpService, I18nService, TrackingService, EventService, UserService, Item } from 'shield';
-import { ItemContent, ItemResponse } from './item-response.interface';
+import { Response } from '@angular/http';
+import {
+  EventService,
+  HttpService,
+  I18nService,
+  Item,
+  ItemService as ItemServiceMaster,
+  TrackingService,
+  UserService
+} from 'shield';
+import { ItemContent, ItemResponse, ItemsStore } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 
@@ -8,6 +17,10 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 export class ItemService extends ItemServiceMaster {
 
   protected API_URL_V2: string = 'api/v3/items';
+  protected itemsStore: ItemsStore = {
+    published: [],
+    solds: []
+  };
 
   constructor(http: HttpService,
               i18n: I18nService,
@@ -50,6 +63,28 @@ export class ItemService extends ItemServiceMaster {
       comments: comments,
       reason: ITEM_BAN_REASONS[reason]
     });
+  }
+
+  public mine(pageNumber: number, status?: string, cache: boolean = true): Observable<Item[]> {
+    const pageSize: number = 40;
+    const init: number = (pageNumber - 1) * pageSize;
+    const end: number = init + pageSize;
+    if (this.itemsStore[status].length && cache) {
+      return Observable.of(this.itemsStore[status]);
+    }
+    return this.http.get('v3/users/me/items/' + status, {
+      init: init
+    })
+      .map((r: Response) => r.json())
+      .map((res: ItemResponse[]) => {
+        if (res.length > 0) {
+          const items: Item[] = res.map((item: ItemResponse) => this.mapRecordData(item));
+          this.itemsStore[status] = items;
+          return items;
+        }
+        return [];
+      });
+
   }
 
 }
