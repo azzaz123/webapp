@@ -25,17 +25,20 @@ describe('CatalogItemComponent', () => {
           provide: ItemService, useValue: {
           deleteItem() {
             return Observable.of({});
+          },
+          reserveItem() {
+            return Observable.of({});
           }
         }
         },
         {
           provide: NgbModal, useValue: {
-            open() {
-              return {
-                result: Promise.resolve()
-              };
-            }
+          open() {
+            return {
+              result: Promise.resolve()
+            };
           }
+        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -89,6 +92,42 @@ describe('CatalogItemComponent', () => {
     });
     it('should track the DeleteItem event', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_DELETED, {product_id: item.id});
+    });
+
+  });
+
+  describe('reserve', () => {
+
+    let item: Item;
+
+    beforeEach(() => {
+      spyOn(itemService, 'reserveItem').and.callThrough();
+      spyOn(trackingService, 'track');
+    });
+
+    it('should call reserve with true', () => {
+      item = MOCK_ITEM;
+      component.reserve(item);
+      expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, true);
+      expect(item.reserved).toBeTruthy();
+    });
+    it('should call reserve with false', () => {
+      item = MOCK_ITEM;
+      item.reserved = true;
+      component.reserve(item);
+      expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, false);
+      expect(item.reserved).toBeFalsy();
+    });
+    it('should track the ProductReserved event', () => {
+      item = MOCK_ITEM;
+      component.reserve(item);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_RESERVED, {product_id: item.id});
+    });
+    it('should track the ProductUnReserved event', () => {
+      item = MOCK_ITEM;
+      item.reserved = true;
+      component.reserve(item);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
     });
 
   });
