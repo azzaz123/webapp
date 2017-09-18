@@ -36,4 +36,11 @@ export class CatalogItemComponent implements OnInit {
     });
   }
 
+  public reserve(item: Item) {
+    this.itemService.reserveItem(item.id, !item.reserved).subscribe(() => {
+      this.trackingService.track(TrackingService.PRODUCT_RESERVED, {product_id: item.id});
+      item.reserved = !item.reserved;
+    });
+  }
+
 }

@@ -100,7 +100,7 @@ describe('ItemService', () => {
       expect(item.description).toBe(ITEMS_DATA_V3[0].content.description);
       expect(item.salePrice).toBe(ITEMS_DATA_V3[0].content.price);
       expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency);
-      expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.visibility_flags);
+      expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.flags);
       expect(item.mainImage).toEqual({
         id: '',
         original_width: ITEMS_DATA_V3[0].content.image.original_width,

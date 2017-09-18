@@ -4,6 +4,9 @@
   <span class="title">{{item.title}}</span>
   <span class="visibility"></span>
   <span class="actions">
+    <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.pending">
+      <md-icon svgIcon="reserved"></md-icon>
+    </button>
     <button class="btn-delete" (click)="deleteItem(item)">
       <md-icon svgIcon="delete"></md-icon>
     </button>

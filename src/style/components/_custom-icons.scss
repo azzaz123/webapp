@@ -90,9 +90,12 @@
 }
 
 .actions {
-  .btn-delete {
-    &:hover {
-      md-icon svg g g {
+  button {
+    md-icon svg g g, svg path {
+      fill: $grey-500;
+    }
+    &:hover, &.active {
+      md-icon svg g g, svg path {
         fill: $white;
       }
     }
