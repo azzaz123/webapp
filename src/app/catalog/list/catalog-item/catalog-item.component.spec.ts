@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MOCK_ITEM } from 'shield';
 
 import { CatalogItemComponent } from './catalog-item.component';
 
@@ -16,6 +17,7 @@ describe('CatalogItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CatalogItemComponent);
     component = fixture.componentInstance;
+    component.item = MOCK_ITEM;
     fixture.detectChanges();
   });
 
