@@ -48,6 +48,7 @@ body {
   height: 100vh;
   overflow: auto;
   background: rgba(236, 239, 241, 0.6);
+  padding: $spacing-L;
 }
 
 button:focus {
