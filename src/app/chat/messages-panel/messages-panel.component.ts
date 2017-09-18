@@ -1,6 +1,5 @@
 import { AfterViewChecked, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Conversation, Message, I18nService } from 'shield';
-import { current } from 'codelyzer/util/syntaxKind';
 
 @Component({
   selector: 'tsl-messages-panel',
