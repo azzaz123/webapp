@@ -3,5 +3,9 @@
   <span class="price">{{item.salePrice | currency:item.currencyCode:true}}</span>
   <span class="title">{{item.title}}</span>
   <span class="visibility"></span>
-  <span class="actions"></span>
+  <span class="actions">
+    <button class="btn-delete" (click)="deleteItem(item)">
+      <md-icon svgIcon="delete"></md-icon>
+    </button>
+  </span>
 </div>

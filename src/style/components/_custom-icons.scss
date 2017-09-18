@@ -88,3 +88,13 @@
     }
   }
 }
+
+.actions {
+  .btn-delete {
+    &:hover {
+      md-icon svg g g {
+        fill: $white;
+      }
+    }
+  }
+}

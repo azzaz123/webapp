@@ -5,6 +5,7 @@ import { CoreModule } from '../core/core.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { MdIconModule } from '@angular/material';
+import { DeleteItemComponent } from './list/modals/delete-item/delete-item.component';
 
 @NgModule({
   imports: [
@@ -16,8 +17,12 @@ import { MdIconModule } from '@angular/material';
   ],
   declarations: [
     catalogRoutedComponents,
-    CatalogItemComponent
+    CatalogItemComponent,
+    DeleteItemComponent
   ],
+  entryComponents: [
+    DeleteItemComponent
+  ]
 })
 export class CatalogModule {
 }
