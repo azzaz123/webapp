@@ -7,6 +7,11 @@
 .card {
   .card-block {
     text-align: center;
+    a {
+      &:hover {
+        text-decoration: none;
+      }
+    }
     tsl-user-avatar {
       margin-bottom: $spacing-XS;
     }

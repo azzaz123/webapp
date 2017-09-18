@@ -8,3 +8,4 @@ declare let XMPP: any;
 declare let Visibility: any;
 declare let analytics: any;
 declare let appboy: any;
+declare let ga: Function;

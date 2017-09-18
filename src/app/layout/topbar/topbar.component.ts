@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { User, WindowRef } from 'shield';
 import { UserService } from '../../core/user/user.service';
-import { EventService } from '../../core/event/event.service';
 import { environment } from '../../../environments/environment';
-import {Coordinate, AddressResponse} from '../../core/geolocation/address-response.interface';
+import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { CategoryResponse } from '../../core/category/category-response.interface';
 import { SuggesterResponse } from '../../core/suggester/suggester-response.interface';
 
@@ -22,14 +21,13 @@ export class TopbarComponent implements OnInit {
   public focus: boolean;
   public homeUrl: string;
   public model: any;
+  public userUrl: string;
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('latEl') latEl: ElementRef;
   @ViewChild('lngEl') lngEl: ElementRef;
   @ViewChild('kwsEl') kwsEl: ElementRef;
-  //@Input() newSearch: SuggesterResponse;
 
   constructor(public userService: UserService,
-              private eventService: EventService,
               private windowRef: WindowRef,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
@@ -38,6 +36,9 @@ export class TopbarComponent implements OnInit {
   ngOnInit() {
     this.userService.me().subscribe((user) => {
       this.user = user;
+      if (user) {
+        this.userUrl = user.webLink.replace('http://es', 'http://' + this.subdomain);
+      }
     });
   }
 

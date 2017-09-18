@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../core/user/user.service';
-import { MOCK_USER, User, WindowRef } from 'shield';
+import { USER_DATA, User, WindowRef } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../../core/event/event.service';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
@@ -11,6 +11,23 @@ import { environment } from '../../../environments/environment';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TEST_HTTP_PROVIDERS } from 'shield';
 import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures';
+
+const MOCK_USER = new User(
+  USER_DATA.id,
+  USER_DATA.micro_name,
+  USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  USER_DATA.received_reports,
+  USER_DATA.web_slug
+);
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
@@ -142,7 +159,7 @@ describe('TopbarComponent', () => {
       component.category = CATEGORY_DATA_WEB[1].categoryId;
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('http://www.dev.wallapop.com:8080/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
+      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
     });
 
     it('should redirect to the web when category is not set', () => {
@@ -153,14 +170,14 @@ describe('TopbarComponent', () => {
       };
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('http://www.dev.wallapop.com:8080/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
+      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=');
     });
 
     it('should submit the search form for cars', () => {
       component.category = CATEGORY_DATA_WEB[0].categoryId;
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('http://www.dev.wallapop.com:8080/search?catIds=100' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=100');
+      .toEqual('https://www.wallapop.com/search?catIds=100' + '&lat=42' + '&lng=2' + '&kws=iphone' + '&verticalId=100');
     });
   });
 

@@ -1,0 +1,5 @@
+<button class="btn btn-outline-primary" (click)="openDialog()" *ngIf="showButton" i18n>Review now</button>
+<div *ngIf="showButton === false" class="thanks">
+  <md-icon svgIcon="check"></md-icon>
+  <span i18n>Thanks for rating</span>
+</div>

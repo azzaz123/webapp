@@ -52,9 +52,16 @@
   <translation id="6452372740127749380">Mensajes</translation>
   <translation id="1064116145041965896">Cita</translation>
   <translation id="2821179408673282599">Inicio</translation>
+  <translation id="8806073135680763560">Valora tu experiencia con <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
+  <translation id="4650730844441578299">Haz clic en las estrellas para dejar tu valoración. A más estrellas, mejor experiencia.</translation>
+  <translation id="8149407802234183277">Comenta la valoración</translation>
+  <translation id="7430416142942514215">Publicar</translation>
+  <translation id="7992914064106893139">Valorar ahora</translation>
+  <translation id="2506703378559967461">Gracias por tu valoración</translation>
   <translation id="4580988005648117665">Buscar</translation>
+  <translation id="2127032578120864096">Mi Perfil</translation>
   <translation id="3797778920049399855">Cerrar sesión</translation>
-  <translation id="1973447499707485378">¿Dónde quieres buscar?</translation>
+  <translation id="5371960677736303052">¿Dónde?</translation>
   <translation id="1902100407096396858">Categorías</translation>
   <translation id="3734434835434478522">Muro</translation>
 </translationbundle>

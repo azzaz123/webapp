@@ -10,9 +10,11 @@
 <div id="center-panel" *ngIf="currentConversation">
   <div id="top-bar">
     <h5>{{currentConversation?.user.microName}}</h5>
+    <!-- Commented until released
     <div class="status-circle" [ngClass]="{'online': currentConversation?.user.online}"></div>
     <span i18n [hidden]="currentConversation?.user.online">Offline</span>
     <span i18n [hidden]="!currentConversation?.user.online">Online</span>
+    -->
     <div ngbDropdown class="conversation-header-menu">
       <md-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></md-icon>
       <div class="dropdown-menu dropdown-menu-right">

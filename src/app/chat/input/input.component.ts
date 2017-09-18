@@ -38,11 +38,13 @@ export class InputComponent implements OnChanges, OnInit {
 
   sendMessage(messageArea: HTMLInputElement, $event: Event) {
     $event.preventDefault();
-    let message = messageArea.value.trim();
-    if (message !== '') {
-      this.messageService.send(this.currentConversation, message);
+    if (!this.disable) {
+      const message = messageArea.value.trim();
+      if (message !== '') {
+        this.messageService.send(this.currentConversation, message);
+      }
+      messageArea.value = '';
     }
-    messageArea.value = '';
   }
 
   ngOnChanges(changes?: any) {
