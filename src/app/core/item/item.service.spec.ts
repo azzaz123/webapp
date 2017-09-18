@@ -117,4 +117,12 @@ describe('ItemService', () => {
     });
   });
 
+  describe('deleteItem', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'delete').and.returnValue(Observable.of({}));
+      service.deleteItem(ITEM_ID);
+      expect(http.delete).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID);
+    });
+  });
+
 });

@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MOCK_ITEM, MockTrackingService, TrackingService } from 'shield';
+import { createItemsArray, Item, MOCK_ITEM, MockTrackingService, TrackingService } from 'shield';
 
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import * as _ from 'lodash';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -79,6 +80,25 @@ describe('ListComponent', () => {
       component.loadMore();
       expect(itemService.mine).toHaveBeenCalledWith(2, 'published');
       expect(component.items.length).toBe(4);
+    });
+  });
+
+  describe('item changed', () => {
+    const TOTAL: number = 5;
+    let item: Item;
+    beforeEach(() => {
+      component.items = createItemsArray(TOTAL);
+      item = component.items[3];
+    });
+    it('should remove item when deleted', () => {
+      component.itemChanged({
+        item: item,
+        action: 'deleted'
+      });
+    });
+    afterEach(() => {
+      expect(component.items.length).toBe(TOTAL - 1);
+      expect(_.find(component.items, {'id': item.id})).toBeFalsy();
     });
   });
 
