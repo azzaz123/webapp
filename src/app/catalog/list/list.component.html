@@ -6,7 +6,7 @@
      [infiniteScrollDisabled]="end || loading"
      (scrolled)="loadMore()">
   <div class="container">
-    <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
+    <nav class="nav filters-nav">
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
       <a (click)="filterByStatus('solds')" [ngClass]="{active: selectedStatus === 'solds'}" class="nav-link" i18n>Sold</a>
     </nav>

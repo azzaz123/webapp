@@ -9,7 +9,7 @@ import {
   TrackingService,
   UserService
 } from 'shield';
-import { ItemContent, ItemResponse, ItemsStore } from './item-response.interface';
+import { ItemContent, ItemResponse } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 
@@ -17,10 +17,6 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 export class ItemService extends ItemServiceMaster {
 
   protected API_URL_V2: string = 'api/v3/items';
-  protected itemsStore: ItemsStore = {
-    published: [],
-    solds: []
-  };
 
   constructor(http: HttpService,
               i18n: I18nService,

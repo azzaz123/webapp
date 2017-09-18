@@ -21,8 +21,3 @@ export interface ItemContent {
   url: string;
   web_slug: string;
 }
-
-export interface ItemsStore {
-  published: Item[];
-  solds: Item[];
-}
