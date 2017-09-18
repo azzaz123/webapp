@@ -10,14 +10,14 @@
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
       <a (click)="filterByStatus('solds')" [ngClass]="{active: selectedStatus === 'solds'}" class="nav-link" i18n>Sold</a>
     </nav>
-    <div class="row">
-      <tsl-spinner [hidden]="!loading"></tsl-spinner>
+    <div class="row items">
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
         <h2 i18n [hidden]="selectedStatus === 'solds'">You have no items uploaded yet</h2>
         <h2 i18n [hidden]="selectedStatus === 'published'">You haven't sold any items yet</h2>
         <md-icon svgIcon="catalog-empty-state" class="image"></md-icon>
       </div>
       <tsl-catalog-item *ngFor="let item of items" [item]="item" class="col-md-12"></tsl-catalog-item>
+      <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </div>
 </div>

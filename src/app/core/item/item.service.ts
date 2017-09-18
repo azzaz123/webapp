@@ -73,7 +73,19 @@ export class ItemService extends ItemServiceMaster {
       content.visibility_flags, // content.flags
       null,
       null, // content.sale_conditions,
-      content.image, // content.images[0]
+      content.image ? {
+        id: '',
+        original_width: content.image.original_width,
+        original_height: content.image.original_height,
+        average_hex_color: '',
+        urls_by_size: {
+          original: content.image.original,
+          small: content.image.small,
+          large: content.image.large,
+          medium: content.image.medium,
+          xlarge: content.image.xlarge,
+        }
+      } : null,  // content.images[0]
       null, // content.images,
       null, // content.web_slug,
       null // content.modified_date

@@ -1,0 +1,31 @@
+@import "../../../../style/_common.scss";
+
+.item {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $grey-50;
+  margin-bottom: $spacing-XS;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  img {
+    @include square(80px);
+    object-fit: cover;
+    border-radius: $border-radius;
+    margin: 4px;
+    margin-right: $spacing-M;
+  }
+  .price {
+    width: 130px;
+    font-weight: bold;
+    font-size: 18px;
+    @include text-truncate();
+  }
+  .title {
+    width: 35%;
+    @include text-truncate();
+  }
+  .visibility {
+    flex-grow: 2;
+  }
+}
