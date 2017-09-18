@@ -90,22 +90,17 @@ export class ItemService extends ItemServiceMaster {
     });
   }
 
-  public mine(pageNumber: number, status?: string, cache: boolean = true): Observable<Item[]> {
+  public mine(pageNumber: number, status?: string): Observable<Item[]> {
     const pageSize: number = 40;
     const init: number = (pageNumber - 1) * pageSize;
     const end: number = init + pageSize;
-    if (this.itemsStore[status].length && cache) {
-      return Observable.of(this.itemsStore[status]);
-    }
     return this.http.get('api/v3/users/me/items/' + status, {
       init: init
     })
       .map((r: Response) => r.json())
       .map((res: ItemResponse[]) => {
         if (res.length > 0) {
-          const items: Item[] = res.map((item: ItemResponse) => this.mapRecordItems(item));
-          this.itemsStore[status] = items;
-          return items;
+          return res.map((item: ItemResponse) => this.mapRecordItems(item));
         }
         return [];
       });

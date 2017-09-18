@@ -14,6 +14,7 @@ export class ListComponent implements OnInit {
   public selectedStatus: string = 'published';
   public loading: boolean = true;
   private page: number = 1;
+  public end: boolean;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService) {
@@ -48,6 +49,7 @@ export class ListComponent implements OnInit {
       this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {page_number: this.page});
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
+      this.end = !items.length;
     });
   }
 }
