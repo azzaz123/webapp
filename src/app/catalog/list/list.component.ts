@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { I18nService, Item, TrackingService, UserService } from 'shield';
+import { Component, OnInit } from '@angular/core';
+import { Item, TrackingService } from 'shield';
 import { ItemService } from '../../core/item/item.service';
-import { ActivatedRoute } from '@angular/router';
+import { ItemChangeEvent } from './catalog-item/item-change.interface';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-list',
@@ -51,5 +52,10 @@ export class ListComponent implements OnInit {
       this.loading = false;
       this.end = !items.length;
     });
+  }
+
+  public itemChanged($event: ItemChangeEvent) {
+    const index: number = _.findIndex(this.items, {'_id': $event.item.id});
+    this.items.splice(index, 1);
   }
 }

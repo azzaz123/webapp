@@ -115,4 +115,8 @@ export class ItemService extends ItemServiceMaster {
 
   }
 
+  public deleteItem(id: string): Observable<any> {
+    return this.http.delete(this.API_URL_V3 + '/' + id);
+  }
+
 }
