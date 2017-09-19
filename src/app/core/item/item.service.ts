@@ -66,7 +66,7 @@ export class ItemService extends ItemServiceMaster {
       content.currency, // content.currency_code
       null, // content.modified_date,
       null, // content.url,
-      content.visibility_flags, // content.flags
+      content.flags,
       null,
       null, // content.sale_conditions,
       content.image ? {
@@ -117,6 +117,12 @@ export class ItemService extends ItemServiceMaster {
 
   public deleteItem(id: string): Observable<any> {
     return this.http.delete(this.API_URL_V3 + '/' + id);
+  }
+
+  public reserveItem(id: string, reserve: boolean): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + id + '/reserve', {
+      reserved: reserve
+    });
   }
 
 }

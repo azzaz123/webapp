@@ -8,10 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  img {
-    @include square(80px);
-    object-fit: cover;
-    border-radius: $border-radius;
+  tsl-item-avatar {
     margin: 4px;
     margin-right: $spacing-M;
   }
@@ -34,11 +31,22 @@
       @include square(40px);
       border-radius: 8px;
       border: solid 1px rgba(207, 216, 220, 0.5);
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       background: $white;
       cursor: pointer;
+      margin-left: 5px;
+      &.btn-reserve {
+        md-icon {
+          height: 15px;
+          width: 13px;
+        }
+        &:hover, &.active {
+          background: $reserve-bg;
+          border-color: transparent;
+        }
+      }
       &.btn-delete {
         md-icon {
           height: 19px;
