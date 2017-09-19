@@ -8,10 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  img {
-    @include square(80px);
-    object-fit: cover;
-    border-radius: $border-radius;
+  tsl-item-avatar {
     margin: 4px;
     margin-right: $spacing-M;
   }
