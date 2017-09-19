@@ -1,0 +1,7 @@
+<div class="item">
+  <img [src]="item.mainImage?.urls_by_size?.small" onError="this.src='/assets/images/fake-item-s.png'" />
+  <span class="price">{{item.salePrice | currency:item.currencyCode:true}}</span>
+  <span class="title">{{item.title}}</span>
+  <span class="visibility"></span>
+  <span class="actions"></span>
+</div>

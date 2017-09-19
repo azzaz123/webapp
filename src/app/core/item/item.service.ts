@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
-import { ItemService as ItemServiceMaster, HttpService, I18nService, TrackingService, EventService, UserService, Item } from 'shield';
+import { Response } from '@angular/http';
+import {
+  EventService,
+  HttpService,
+  I18nService,
+  Item,
+  ItemService as ItemServiceMaster,
+  TrackingService,
+  UserService
+} from 'shield';
 import { ItemContent, ItemResponse } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
@@ -42,6 +51,43 @@ export class ItemService extends ItemServiceMaster {
     );
   }
 
+  protected mapRecordItems(response: any): Item {
+    const data: ItemResponse = <ItemResponse>response;
+    const content: any = data.content;
+    return new Item(
+      content.id,
+      null,
+      content.user.id, // content.seller_id
+      content.title,
+      content.description,
+      null, // content.category_id,
+      null,
+      content.price, // content.sale_price
+      content.currency, // content.currency_code
+      null, // content.modified_date,
+      null, // content.url,
+      content.visibility_flags, // content.flags
+      null,
+      null, // content.sale_conditions,
+      content.image ? {
+        id: '',
+        original_width: content.image.original_width,
+        original_height: content.image.original_height,
+        average_hex_color: '',
+        urls_by_size: {
+          original: content.image.original,
+          small: content.image.small,
+          large: content.image.large,
+          medium: content.image.medium,
+          xlarge: content.image.xlarge,
+        }
+      } : null,  // content.images[0]
+      null, // content.images,
+      null, // content.web_slug,
+      null // content.modified_date
+    );
+  }
+
   public reportListing(itemId: number | string,
                        comments: string,
                        reason: number,
@@ -50,6 +96,23 @@ export class ItemService extends ItemServiceMaster {
       comments: comments,
       reason: ITEM_BAN_REASONS[reason]
     });
+  }
+
+  public mine(pageNumber: number, status?: string): Observable<Item[]> {
+    const pageSize: number = 40;
+    const init: number = (pageNumber - 1) * pageSize;
+    const end: number = init + pageSize;
+    return this.http.get('api/v3/users/me/items/' + status, {
+      init: init
+    })
+      .map((r: Response) => r.json())
+      .map((res: ItemResponse[]) => {
+        if (res.length > 0) {
+          return res.map((item: ItemResponse) => this.mapRecordItems(item));
+        }
+        return [];
+      });
+
   }
 
 }

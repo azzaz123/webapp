@@ -13,7 +13,8 @@ import {
 
 import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
-import { ITEM_DATA_V3 } from '../../../tests/item.fixtures';
+import { ITEM_DATA_V3, ITEMS_DATA_V3 } from '../../../tests/item.fixtures';
+import { ResponseOptions, Response } from '@angular/http';
 
 describe('ItemService', () => {
 
@@ -72,4 +73,48 @@ describe('ItemService', () => {
       )
     });
   });
+
+  describe('mine', () => {
+    let resp: Item[];
+    beforeEach(() => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEMS_DATA_V3)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+    });
+    it('should call endpoint', () => {
+      service.mine(1, 'published').subscribe((data: Item[]) => {
+        resp = data;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/published', {
+        init: 0
+      })
+    });
+    it('should return an array of items', () => {
+      service.mine(1, 'published').subscribe((data: Item[]) => {
+        resp = data;
+      });
+      expect(resp.length).toBe(2);
+      const item = resp[0];
+      expect(item instanceof Item).toBeTruthy();
+      expect(item.id).toBe(ITEMS_DATA_V3[0].id);
+      expect(item.title).toBe(ITEMS_DATA_V3[0].content.title);
+      expect(item.description).toBe(ITEMS_DATA_V3[0].content.description);
+      expect(item.salePrice).toBe(ITEMS_DATA_V3[0].content.price);
+      expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency);
+      expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.visibility_flags);
+      expect(item.mainImage).toEqual({
+        id: '',
+        original_width: ITEMS_DATA_V3[0].content.image.original_width,
+        original_height: ITEMS_DATA_V3[0].content.image.original_height,
+        average_hex_color: '',
+        urls_by_size: {
+          original: ITEMS_DATA_V3[0].content.image.original,
+          small: ITEMS_DATA_V3[0].content.image.small,
+          large: ITEMS_DATA_V3[0].content.image.large,
+          medium: ITEMS_DATA_V3[0].content.image.medium,
+          xlarge: ITEMS_DATA_V3[0].content.image.xlarge,
+        }
+      });
+    });
+  });
+
 });
