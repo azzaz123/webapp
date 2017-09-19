@@ -39,6 +39,6 @@
       <h2 [hidden]="!connectionError" i18n>Service not available at the moment.<br/>
         Try again later.</h2>
     </div>
-    <tsl-spinner [hidden]="conversationsLoaded"></tsl-spinner>
+    <tsl-spinner [hidden]="conversationsLoaded" [firstLoad]="firstLoad"></tsl-spinner>
   </div>
 </div>
