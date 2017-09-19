@@ -26,6 +26,7 @@ import 'rxjs/add/observable/fromPromise';
 import { MdIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'tsl-root',
@@ -69,6 +70,8 @@ export class AppComponent implements OnInit {
       ga('set', 'page', x.url);
       ga('send', 'pageview');
     });
+    appboy.initialize(environment.appboy);
+    appboy.display.automaticallyShowNewInAppMessages();
   }
 
   private config() {
@@ -83,6 +86,8 @@ export class AppComponent implements OnInit {
           this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_IN, {user_id: user.id});
           this.xmppService.connect(user.id, accessToken);
           this.conversationService.init().subscribe();
+          appboy.changeUser(user.id);
+          appboy.openSession();
         },
         (error: any) => {
           this.userService.logout();
