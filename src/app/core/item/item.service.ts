@@ -72,7 +72,12 @@ export class ItemService extends ItemServiceMaster {
         const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
         let data: Item[] = [];
         if (res.length > 0) {
-          data = res.map((item: ItemResponse) => this.mapRecordData(item));
+          data = res.map((i: ItemResponse) => {
+            const item: Item = this.mapRecordData(i);
+            item.views = i.content.views;
+            item.favorites = i.content.favorites;
+            return item;
+          });
         }
         return {
           data: data,

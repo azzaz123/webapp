@@ -24,6 +24,14 @@
   }
   .visibility {
     flex-grow: 2;
+    font-size: $font-size-XS;
+    color: $grey-500;
+    md-icon {
+      height: 17px;
+      width: 19px;
+      vertical-align: top;
+      margin-left: 10px;
+    }
   }
   .actions {
     margin-right: 24px;

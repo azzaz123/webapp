@@ -21,6 +21,8 @@ export interface ItemContent {
   title: string;
   url: string;
   web_slug: string;
+  favorites?: number;
+  views?: number;
 }
 
 export interface ItemsData {
