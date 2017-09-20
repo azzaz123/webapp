@@ -44,10 +44,11 @@ body {
 }
 
 .page-content {
-  padding: $spacing-L 50px;
+  margin-left: $sidebar-width;
   height: 100vh;
-  background-color: $grey-1000;
   overflow: auto;
+  background: rgba(236, 239, 241, 0.6);
+  padding: $spacing-L;
 }
 
 button:focus {

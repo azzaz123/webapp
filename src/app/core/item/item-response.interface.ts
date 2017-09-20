@@ -1,4 +1,4 @@
-import { ItemFlags, Image, ItemSaleConditions } from 'shield';
+import { ItemFlags, Image, ItemSaleConditions, Item } from 'shield';
 
 export interface ItemResponse {
   content: ItemContent;

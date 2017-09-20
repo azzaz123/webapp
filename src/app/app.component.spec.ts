@@ -136,7 +136,8 @@ describe('App', () => {
           provide: ActivatedRoute, useValue: {
           outlet: 'primary',
           data: Observable.of({
-            title: 'Chat'
+            title: 'Chat',
+            hideSidebar: true
           })
         }
         },
@@ -293,6 +294,10 @@ describe('App', () => {
       component['setTitle']();
       expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
     });
+    it('should set hideSidebar true', () => {
+      component['setTitle']();
+      expect(component.hideSidebar).toBeTruthy();
+    })
   });
 
 });

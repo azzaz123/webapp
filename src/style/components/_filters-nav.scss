@@ -1,0 +1,29 @@
+@import "../../style/_common.scss";
+
+$filters-nav-height: 36px;
+
+.nav {
+  &.filters-nav {
+    display: inline-block;
+    height: $filters-nav-height + 2;
+    line-height: $filters-nav-height;
+    a {
+      display: inline-block;
+      font-size: $font-size-XS;
+      margin-right: $spacing;
+      cursor: pointer;
+      height: 100%;
+      color: $grey-300;
+      text-transform: uppercase;
+      font-weight: bold;
+      padding: 0;
+      &:hover {
+        color: $grey-400;
+      }
+      &.active {
+        color: $corporate;
+        border-bottom: 2px solid $corporate;
+      }
+    }
+  }
+}
