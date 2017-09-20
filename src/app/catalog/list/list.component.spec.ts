@@ -13,6 +13,7 @@ describe('ListComponent', () => {
   let itemService: ItemService;
   let trackingService: TrackingService;
   let trackingServiceSpy: jasmine.Spy;
+  let itemerviceSpy: jasmine.Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,7 +23,7 @@ describe('ListComponent', () => {
         {
           provide: ItemService, useValue: {
           mine() {
-            return Observable.of([MOCK_ITEM, MOCK_ITEM]);
+            return Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: 20});
           }
         }
         }],
@@ -37,7 +38,7 @@ describe('ListComponent', () => {
     itemService = TestBed.get(ItemService);
     trackingService = TestBed.get(TrackingService);
     trackingServiceSpy = spyOn(trackingService, 'track');
-    spyOn(itemService, 'mine').and.callThrough();
+    itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     fixture.detectChanges();
   });
 
@@ -47,38 +48,47 @@ describe('ListComponent', () => {
 
   describe('getItems', () => {
     it('should call mines with default values and set items', () => {
-      expect(itemService.mine).toHaveBeenCalledWith(1, 'published');
+      expect(itemService.mine).toHaveBeenCalledWith(0, 'published');
       expect(component.items.length).toBe(2);
     });
     it('should track the ProductListLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, {page_number: component['page']});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, {init: 0});
     });
     it('should track the ProductListSoldViewed if the selectedStatus is sold', () => {
-      component['selectedStatus'] = 'solds';
+      component['selectedStatus'] = 'sold';
       trackingServiceSpy.calls.reset();
       component.ngOnInit();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: 2});
     });
-    it('should track the ProductListActiveViewed if the selectedStatus is sold', () => {
-      component['selectedStatus'] = 'active';
+    it('should track the ProductListActiveViewed if the selectedStatus is published', () => {
+      component['selectedStatus'] = 'published';
       trackingServiceSpy.calls.reset();
       component.ngOnInit();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {total_products: 2});
+    });
+    it('should set init', () => {
+      expect(component['init']).toBe(20);
+    });
+    it('should set end true if no init', () => {
+      itemerviceSpy.and.returnValue(Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: null}));
+      component.ngOnInit();
+      expect(component['end']).toBeTruthy();
     });
   });
 
   describe('filterByStatus', () => {
     it('should call mines with filtering and reset page', () => {
-      component['page'] = 2;
+      component['init'] = 20;
       component.filterByStatus('sold');
-      expect(itemService.mine).toHaveBeenCalledWith(1, 'sold');
+      expect(itemService.mine).toHaveBeenCalledWith(0, 'sold');
     });
   });
 
   describe('loadMore', () => {
     it('should call mines with new page and append items', () => {
+      component['init'] = 20;
       component.loadMore();
-      expect(itemService.mine).toHaveBeenCalledWith(2, 'published');
+      expect(itemService.mine).toHaveBeenCalledWith(20, 'published');
       expect(component.items.length).toBe(4);
     });
   });

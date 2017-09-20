@@ -43,13 +43,13 @@ export class ListComponent implements OnInit {
     }
     this.itemService.mine(this.init, this.selectedStatus).subscribe((itemsData: ItemsData) => {
       const items = itemsData.data;
-      this.init = itemsData.init;
       if (this.selectedStatus === 'sold') {
         this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: items.length});
       } else if (this.selectedStatus === 'published') {
         this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {total_products: items.length});
       }
       this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {init: this.init});
+      this.init = itemsData.init;
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
       this.end = !this.init;

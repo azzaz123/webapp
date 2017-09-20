@@ -14,7 +14,8 @@ import {
 import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_DATA_V3, ITEMS_DATA_V3 } from '../../../tests/item.fixtures';
-import { ResponseOptions, Response } from '@angular/http';
+import { ResponseOptions, Response, Headers } from '@angular/http';
+import { ItemsData } from './item-response.interface';
 
 describe('ItemService', () => {
 
@@ -75,45 +76,38 @@ describe('ItemService', () => {
   });
 
   describe('mine', () => {
-    let resp: Item[];
+    let resp: ItemsData;
     beforeEach(() => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEMS_DATA_V3)});
+      const res: ResponseOptions = new ResponseOptions({
+        body: JSON.stringify(ITEMS_DATA_V3),
+        headers: new Headers({'x-nextpage': 'init=20'})
+      });
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
     });
     it('should call endpoint', () => {
-      service.mine(1, 'published').subscribe((data: Item[]) => {
+      service.mine(10, 'published').subscribe((data: ItemsData) => {
         resp = data;
       });
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/published', {
-        init: 0
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/published', {
+        init: 10
       })
     });
-    it('should return an array of items', () => {
-      service.mine(1, 'published').subscribe((data: Item[]) => {
+    it('should return an array of items and the init', () => {
+      service.mine(0, 'published').subscribe((data: ItemsData) => {
         resp = data;
       });
-      expect(resp.length).toBe(2);
-      const item = resp[0];
-      expect(item instanceof Item).toBeTruthy();
+      expect(resp.data.length).toBe(2);
+      const item = resp.data[0];
       expect(item.id).toBe(ITEMS_DATA_V3[0].id);
       expect(item.title).toBe(ITEMS_DATA_V3[0].content.title);
       expect(item.description).toBe(ITEMS_DATA_V3[0].content.description);
-      expect(item.salePrice).toBe(ITEMS_DATA_V3[0].content.price);
-      expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency);
+      expect(item.salePrice).toBe(ITEMS_DATA_V3[0].content.sale_price);
+      expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency_code);
+      expect(item.modifiedDate).toBe(ITEMS_DATA_V3[0].content.modified_date);
       expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.flags);
-      expect(item.mainImage).toEqual({
-        id: '',
-        original_width: ITEMS_DATA_V3[0].content.image.original_width,
-        original_height: ITEMS_DATA_V3[0].content.image.original_height,
-        average_hex_color: '',
-        urls_by_size: {
-          original: ITEMS_DATA_V3[0].content.image.original,
-          small: ITEMS_DATA_V3[0].content.image.small,
-          large: ITEMS_DATA_V3[0].content.image.large,
-          medium: ITEMS_DATA_V3[0].content.image.medium,
-          xlarge: ITEMS_DATA_V3[0].content.image.xlarge,
-        }
-      });
+      expect(item.mainImage).toEqual(ITEMS_DATA_V3[0].content.image);
+      expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
+      expect(resp.init).toBe(20);
     });
   });
 
