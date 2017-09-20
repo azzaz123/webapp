@@ -12,12 +12,15 @@ div {
   &.medium {
     @include square-avatar($item-avatar-size-medium);
   }
+  &.big {
+    @include square-avatar($item-avatar-size-big);
+  }
 }
 
 .overlay {
   background-color: $grey-900;
   position: absolute;
-  @include square-avatar($item-avatar-size);
+  @include square-avatar(100%);
   opacity: .5;
   z-index: 1;
 }

@@ -46,13 +46,14 @@
   <msg id="4896863464728200563"><source>app/chat/input/input.component.ts:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.ts:2</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.ts:3</source>Connected</msg>
-  <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/core/user/user/user.component.ts:12</source><ph name="DISTANCE"><ex>DISTANCE</ex></ph>km from you</msg>
-  <msg id="9119757647796405986"><source>app/core/user/user/user.component.ts:13</source>No location</msg>
-  <msg id="1166265010439249641"><source>app/core/user/user/user.component.ts:18</source>Typically responds within an hour</msg>
-  <msg id="1404539941798522798"><source>app/core/user/user/user.component.ts:19</source>Typically responds within 3 hours</msg>
-  <msg id="5927748278732131263"><source>app/core/user/user/user.component.ts:20</source>Typically responds within a day</msg>
-  <msg id="6807057680918467236"><source>app/core/user/user/user.component.ts:21</source>Responds in more than 24 hours</msg>
+  <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/core/user/user/user.component.ts:14</source><ph name="DISTANCE"><ex>DISTANCE</ex></ph>km from you</msg>
+  <msg id="9119757647796405986"><source>app/core/user/user/user.component.ts:15</source>No location</msg>
+  <msg id="1166265010439249641"><source>app/core/user/user/user.component.ts:20</source>Typically responds within an hour</msg>
+  <msg id="1404539941798522798"><source>app/core/user/user/user.component.ts:21</source>Typically responds within 3 hours</msg>
+  <msg id="5927748278732131263"><source>app/core/user/user/user.component.ts:22</source>Typically responds within a day</msg>
+  <msg id="6807057680918467236"><source>app/core/user/user/user.component.ts:23</source>Responds in more than 24 hours</msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
+  <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
   <msg id="6543433128416987560"><source>app/core/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:35</source>Messages</msg>
@@ -68,4 +69,5 @@
   <msg id="2127032578120864096"><source>app/layout/topbar/topbar.component.ts:45</source>My Profile</msg>
   <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:46</source>Logout</msg>
   <msg id="5371960677736303052"><source>app/layout/topbar/geolocation/geolocation.component.ts:9</source>Where?</msg>
+  <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:5</source>Catalog</msg>
 </messagebundle>

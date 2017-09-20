@@ -8,7 +8,8 @@ import {
   ItemService,
   TrackingService,
   UserService,
-  XmppService
+  XmppService,
+  PersistencyService
 } from 'shield';
 import { ToastrService } from 'ngx-toastr';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
@@ -28,6 +29,7 @@ export class ChatComponent implements OnInit {
   public conversationsLoaded: boolean;
   public conversationsTotal: number;
   public connectionError: boolean;
+  public firstLoad: boolean;
 
   constructor(private conversationService: ConversationService,
               private itemService: ItemService,
@@ -37,7 +39,8 @@ export class ChatComponent implements OnInit {
               private i18n: I18nService,
               public userService: UserService,
               private eventService: EventService,
-              public xmppService: XmppService) {
+              public xmppService: XmppService,
+              private persistencyService: PersistencyService) {
   }
 
   ngOnInit() {
@@ -53,6 +56,10 @@ export class ChatComponent implements OnInit {
     });
     this.eventService.subscribe(EventService.USER_UNBLOCKED, (userId: string) => {
       this.userService.updateBlockStatus(userId, false);
+    });
+    this.persistencyService.getMetaInformation().subscribe(() => {
+    }, () => {
+      this.firstLoad = true;
     });
   }
 

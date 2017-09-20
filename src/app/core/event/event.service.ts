@@ -6,5 +6,6 @@ export class EventService extends EventServiceMaster {
 
   public static FIND_CONVERSATION = 'findConversation';
   public static UPDATE_COORDINATE = 'updateCoordinate';
-  public static UPDATE_CATEGORY = 'updateCategoy';
+  public static UPDATE_CATEGORY = 'updateCategory';
+  public static UPDATE_SEARCH = 'updateSearch';
 }

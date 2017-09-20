@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CategoryService } from '../../../core/category/category.service';
 import { CategoryResponse } from '../../../core/category/category-response.interface';
-import { EventService } from '../../../core/event/event.service';
 
 @Component({
   selector: 'tsl-categories-list',
@@ -12,9 +11,9 @@ export class CategoriesListComponent implements OnInit {
 
   public categories: Array<CategoryResponse> = [];
   public selectedCategory: CategoryResponse;
+  @Output() public newCategory = new EventEmitter<CategoryResponse>();
 
-  constructor(private categoryService: CategoryService,
-              private eventService: EventService) { }
+  constructor(private categoryService: CategoryService) { }
 
   ngOnInit() {
     this.getCategories();
@@ -28,7 +27,7 @@ export class CategoriesListComponent implements OnInit {
 
   public selectCategory(category: CategoryResponse) {
     this.selectedCategory = category;
-    this.eventService.emit(EventService.UPDATE_CATEGORY, category);
+    this.newCategory.emit(category);
   }
 
 }

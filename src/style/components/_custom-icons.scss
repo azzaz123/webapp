@@ -9,6 +9,27 @@
   }
 }
 
+.sidebar-section {
+  md-icon {
+    g g, g {
+      fill: rgba($white, .5);
+      opacity: 1;
+    }
+  }
+  &.active md-icon {
+    g g, g {
+      fill: $white;
+      opacity: 1;
+    }
+  }
+  &:hover md-icon {
+    g g, g {
+      fill: $white;
+      opacity: 1;
+    }
+  }
+}
+
 .report-ban-reason {
   &.selected md-icon {
     g g, path {
@@ -64,6 +85,19 @@
   &:hover {
     md-icon svg path{
       fill: $white;
+    }
+  }
+}
+
+.actions {
+  button {
+    md-icon svg g g, svg path {
+      fill: $grey-500;
+    }
+    &:hover, &.active {
+      md-icon svg g g, svg path {
+        fill: $white;
+      }
     }
   }
 }
