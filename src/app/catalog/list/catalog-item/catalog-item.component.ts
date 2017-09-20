@@ -48,7 +48,15 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public reactivateItem(item: Item) {
-
+    //this.modalService.open(DeleteItemComponent).result.then(() => {
+      this.itemService.reactivateItem(item.id).subscribe(() => {
+        this.itemChange.emit({
+          item: item,
+          action: 'reactivated'
+        });
+      });
+    //}, () => {
+    //});
   }
 
 }
