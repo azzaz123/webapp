@@ -9,7 +9,7 @@ import {
   TrackingService,
   UserService
 } from 'shield';
-import { ItemContent, ItemResponse } from './item-response.interface';
+import { ItemContent, ItemResponse, ItemsData } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 
@@ -17,6 +17,7 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 export class ItemService extends ItemServiceMaster {
 
   protected API_URL_V2: string = 'api/v3/items';
+  private API_URL_WEB: string = 'api/v3/web/items';
 
   constructor(http: HttpService,
               i18n: I18nService,
@@ -44,47 +45,10 @@ export class ItemService extends ItemServiceMaster {
       content.flags,
       null,
       content.sale_conditions,
-      content.images[0],
+      content.images ? content.images[0] : content.image,
       content.images,
       content.web_slug,
       content.modified_date
-    );
-  }
-
-  protected mapRecordItems(response: any): Item {
-    const data: ItemResponse = <ItemResponse>response;
-    const content: any = data.content;
-    return new Item(
-      content.id,
-      null,
-      content.user.id, // content.seller_id
-      content.title,
-      content.description,
-      null, // content.category_id,
-      null,
-      content.price, // content.sale_price
-      content.currency, // content.currency_code
-      null, // content.modified_date,
-      null, // content.url,
-      content.flags,
-      null,
-      null, // content.sale_conditions,
-      content.image ? {
-        id: '',
-        original_width: content.image.original_width,
-        original_height: content.image.original_height,
-        average_hex_color: '',
-        urls_by_size: {
-          original: content.image.original,
-          small: content.image.small,
-          large: content.image.large,
-          medium: content.image.medium,
-          xlarge: content.image.xlarge,
-        }
-      } : null,  // content.images[0]
-      null, // content.images,
-      null, // content.web_slug,
-      null // content.modified_date
     );
   }
 
@@ -98,21 +62,24 @@ export class ItemService extends ItemServiceMaster {
     });
   }
 
-  public mine(pageNumber: number, status?: string): Observable<Item[]> {
-    const pageSize: number = 40;
-    const init: number = (pageNumber - 1) * pageSize;
-    const end: number = init + pageSize;
-    return this.http.get('api/v3/users/me/items/' + status, {
+  public mine(init: number, status?: string): Observable<ItemsData> {
+    return this.http.get(this.API_URL_WEB + '/mine/' + status, {
       init: init
     })
-      .map((r: Response) => r.json())
-      .map((res: ItemResponse[]) => {
+    .map((r: Response) => {
+        const res: ItemResponse[] = r.json();
+        const nextPage: string = r.headers.get('x-nextpage');
+        const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
+        let data: Item[] = [];
         if (res.length > 0) {
-          return res.map((item: ItemResponse) => this.mapRecordItems(item));
+          data = res.map((item: ItemResponse) => this.mapRecordData(item));
         }
-        return [];
-      });
-
+        return {
+          data: data,
+          init: nextInit
+        }
+      }
+    );
   }
 
   public deleteItem(id: string): Observable<any> {
