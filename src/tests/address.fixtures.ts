@@ -1,4 +1,4 @@
-import { AddressResponse } from "../app/core/geolocation/address-response.interface";
+import { AddressResponse } from '../app/core/geolocation/address-response.interface';
 
 export const ADDRESS_DATA_WEB: AddressResponse =
 {

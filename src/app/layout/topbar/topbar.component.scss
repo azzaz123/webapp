@@ -12,10 +12,6 @@
   display: -ms-flexbox;
   align-items: center;
   justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   box-shadow: 0 2px 4px 0 rgba(37,50,56,0.03);
   z-index: 100;
   & a {
@@ -97,7 +93,6 @@
     position: relative;
     padding-left: 0 !important;
     padding-right: 18px;
-    -webkit-transition-property: width;
     transition-property: width;
     transition-duration: 0.2s;
     transition-timing-function: linear;
@@ -107,6 +102,8 @@
   }
   form {
     border-right: 1px solid $grey-100;
+    align-items: center;
+    display: flex;
   }
   .search-wrapper {
     border-top-left-radius: 10px;
@@ -120,20 +117,22 @@
     justify-content: start;
   }
   input {
-    padding-left: 12px;
-    width: 190px;
-    height: 100%;
-    color: $grey-900;
-    font-size: $font-size-S;
-    opacity: 1;
-    border: none;
-    -webkit-transition-property: width;
-    transition-property: width;
-    transition-duration: 0.2s;
-    transition-timing-function: linear;
+    & {
+      padding-left: 12px;
+      width: 190px;
+      height: 100%;
+      color: $grey-900;
+      font-size: $font-size-S;
+      opacity: 1;
+      border: none;
+      transition-property: width;
+      transition-duration: 0.2s;
+      transition-timing-function: linear;
+    }
     &.active {
       width: 250px;
     }
+
     &::-webkit-input-placeholder {
       color: $corporate;
       opacity: 0.9;
@@ -176,6 +175,7 @@
     }
   }
 }
+
 .main-header-login {
   & {
     display: flex;

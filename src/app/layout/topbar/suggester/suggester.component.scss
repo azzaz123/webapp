@@ -1,0 +1,75 @@
+@import "../../../../style/_common.scss";
+
+:host /deep/ {
+  margin-left: 10px;
+}
+
+:host /deep/ input {
+  & {
+    border: none;
+    width: 190px - 36px;
+    color: $grey-900;
+    -webkit-transition-property: width;
+    transition-property: width;
+    transition-duration: 0.2s;
+    transition-timing-function: linear;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: $font-size-S;
+  }
+  &.active {
+    width: 250px - 36px;
+  }
+  &::-webkit-input-placeholder {
+    color: $corporate;
+    opacity: 0.9;
+  }
+  &::-moz-placeholder {
+    color: $grey-300;
+    opacity: 0.9;
+  }
+  &::-ms-placeholder {
+    color: $grey-300;
+    opacity: 0.9;
+  }
+  &::placeholder {
+    color: $grey-300;
+    opacity: 0.9;
+  }
+}
+
+
+:host /deep/ .dropdown-menu {
+  & {
+    padding: 0;
+    overflow: hidden;
+    margin: 0.4rem 0 0;
+    left: 0 !important;
+    width: 100%;
+  }
+}
+:host /deep/ .dropdown-item {
+  & {
+    background-color: transparent;
+    cursor: pointer;
+    color: $grey-900;
+    border-bottom: 1px solid $grey-50;
+    padding: 8px 20px;
+    transition: all .15s linear;
+    & .suggestion {
+      display: grid;
+      line-height: $font-size-L;
+      & .title {
+        font-size: $font-size;
+      }
+      & .category {
+        color: $corporate;
+        font-size: $font-size-S;
+      }
+    }
+  }
+}
+:host /deep/ .dropdown-item.active {
+  background-color: $grey-50;
+}
