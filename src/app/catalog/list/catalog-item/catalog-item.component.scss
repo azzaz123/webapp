@@ -8,9 +8,31 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  &.expired {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: $white;
+      opacity: .5;
+      z-index: 1;
+    }
+  }
   tsl-item-avatar {
     margin: 4px;
     margin-right: $spacing-M;
+  }
+  button {
+    border: solid 1px rgba(207, 216, 220, 0.5);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: $white;
+    cursor: pointer;
   }
   .price {
     width: 130px;
@@ -38,12 +60,6 @@
     button {
       @include square(40px);
       border-radius: 8px;
-      border: solid 1px rgba(207, 216, 220, 0.5);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: $white;
-      cursor: pointer;
       margin-left: 5px;
       &.btn-reserve {
         md-icon {
@@ -65,6 +81,23 @@
           border-color: transparent;
         }
       }
+    }
+  }
+  .btn-reactivate {
+    z-index: 2;
+    position: relative;
+    color: $grey-900;
+    font-size: $font-size-S;
+    border-radius: $border-radius;
+    padding-right: 64px;
+    margin-right: 24px;
+    height: 40px;
+    md-icon {
+      margin-right: 34px;
+    }
+    &:hover {
+      background-color: $reactivate-bg;
+      color: $white;
     }
   }
 }

@@ -47,4 +47,8 @@ export class CatalogItemComponent implements OnInit {
     });
   }
 
+  public reactivateItem(item: Item) {
+
+  }
+
 }
