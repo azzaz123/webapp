@@ -48,7 +48,7 @@ export class TopbarComponent implements OnInit {
 
   public submitForm() {
     const categoryId = (this.category) ? this.category : this.categoryEl.nativeElement.value;
-    const kws = (this.kws) ? this.kws : this.kwsEl.nativeElement.value;
+    const kws = (this.kws) ? this.kws : '';
     const verticalId = (categoryId === 100) ? categoryId : '';
     this.windowRef.nativeWindow.location.href = this.homeUrl + 'search?catIds=' + categoryId + '&lat='
       +  this.latEl.nativeElement.value + '&lng=' + this.lngEl.nativeElement.value + '&kws=' + kws
@@ -73,6 +73,10 @@ export class TopbarComponent implements OnInit {
   public onCategoryUpdate(newCategory: CategoryResponse) {
     this.category = newCategory.categoryId;
     this.submitForm();
+  }
+
+  public onKeywordUpdate(newKeyword: string) {
+    this.kws = newKeyword;
   }
 
 }
