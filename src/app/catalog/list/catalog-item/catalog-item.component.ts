@@ -18,7 +18,8 @@ export class CatalogItemComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
               private itemService: ItemService,
-              private trackingService: TrackingService) { }
+              private trackingService: TrackingService) {
+  }
 
   ngOnInit() {
   }
@@ -48,15 +49,12 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public reactivateItem(item: Item) {
-    //this.modalService.open(DeleteItemComponent).result.then(() => {
-      this.itemService.reactivateItem(item.id).subscribe(() => {
-        this.itemChange.emit({
-          item: item,
-          action: 'reactivated'
-        });
+    this.itemService.reactivateItem(item.id).subscribe(() => {
+      this.itemChange.emit({
+        item: item,
+        action: 'reactivated'
       });
-    //}, () => {
-    //});
+    });
   }
 
 }

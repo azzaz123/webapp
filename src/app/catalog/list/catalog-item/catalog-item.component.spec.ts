@@ -28,6 +28,9 @@ describe('CatalogItemComponent', () => {
           },
           reserveItem() {
             return Observable.of({});
+          },
+          reactivateItem() {
+            return Observable.of({});
           }
         }
         },
@@ -128,6 +131,35 @@ describe('CatalogItemComponent', () => {
       item.reserved = true;
       component.reserve(item);
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
+    });
+
+  });
+
+  describe('reactivateItem', () => {
+
+    let item: Item;
+    let event: ItemChangeEvent;
+
+    beforeEach(fakeAsync(() => {
+      item = MOCK_ITEM;
+      spyOn(itemService, 'reactivateItem').and.callThrough();
+      component.itemChange.subscribe(($event: ItemChangeEvent) => {
+        event = $event;
+      });
+      component.reactivateItem(item);
+    }));
+
+    afterEach(() => {
+      event = undefined;
+    });
+
+    it('should call delete', () => {
+      expect(itemService.reactivateItem).toHaveBeenCalledWith(ITEM_ID);
+    });
+
+    it('should emit the updated item', () => {
+      expect(event.item).toEqual(item);
+      expect(event.action).toBe('reactivated');
     });
 
   });
