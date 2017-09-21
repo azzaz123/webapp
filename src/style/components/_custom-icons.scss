@@ -119,3 +119,9 @@
     }
   }
 }
+
+.select.selected {
+  md-icon svg g g {
+    fill: $white;
+  }
+}

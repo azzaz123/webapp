@@ -4,7 +4,7 @@ import { DeleteItemComponent } from '../modals/delete-item/delete-item.component
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
-
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -55,6 +55,17 @@ export class CatalogItemComponent implements OnInit {
         action: 'reactivated'
       });
     });
+  }
+
+  public select(item: Item) {
+    item.selected = !item.selected;
+    if (item.selected) {
+      this.itemService.selectedItems.push(item.id);
+      this.trackingService.track(TrackingService.PRODUCT_SELECTED, {product_id: item.id});
+    } else {
+      this.itemService.selectedItems = _.without(this.itemService.selectedItems, item.id);
+      this.trackingService.track(TrackingService.PRODUCT_UN_SELECTED, {product_id: item.id});
+    }
   }
 
 }
