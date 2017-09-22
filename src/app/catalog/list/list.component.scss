@@ -58,6 +58,13 @@ $height: 40px;
   button {
     cursor: pointer;
     margin-left: 10px;
+    &.btn-reserve {
+      &:hover {
+        background: $reserve-bg;
+        border-color: transparent;
+        color: $white;
+      }
+    }
     &.btn-delete {
       @include square(40px);
       padding: 0;
