@@ -24,8 +24,8 @@
   <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:12</source>Load more</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source>Delete conversation</msg>
   <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will delete the conversation.</msg>
-  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/catalog/list/modals/delete-item/delete-item.component.ts:6</source>Cancel</msg>
-  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/catalog/list/modals/delete-item/delete-item.component.ts:7</source>Delete</msg>
+  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/catalog/list/modals/delete-item/delete-item.component.ts:12</source>Cancel</msg>
+  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/catalog/list/modals/delete-item/delete-item.component.ts:13</source>Delete</msg>
   <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.ts:2</source><source>app/chat/modals/report-listing/report-listing.component.ts:25</source><source>app/chat/modals/report-user/report-user.component.ts:2</source><source>app/chat/modals/report-user/report-user.component.ts:28</source>Report</msg>
   <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.ts:22</source>I&apos;m reporting this user because...</msg>
   <msg id="20327443157350316"><source>app/chat/modals/block-user/block-user.component.ts:2</source>Block user</msg>
@@ -70,12 +70,16 @@
   <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:46</source>Logout</msg>
   <msg id="5371960677736303052"><source>app/layout/topbar/geolocation/geolocation.component.ts:9</source>Where?</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:5</source>Catalog</msg>
+  <msg id="5657739434954342535"><source>app/catalog/list/modals/delete-item/delete-item.component.ts:3</source>Delete item</msg>
+  <msg id="5455708050129988024"><source>app/catalog/list/modals/delete-item/delete-item.component.ts:4</source>This will delete the item.</msg>
+  <msg id="321759774936322640"><source>app/catalog/list/modals/delete-item/delete-item.component.ts:7</source>Delete items</msg>
+  <msg id="447264229278731832"><source>app/catalog/list/modals/delete-item/delete-item.component.ts:8</source>The selected items will be permanently deleted.</msg>
   <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:10</source>Published</msg>
   <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:11</source>Sold</msg>
   <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:12</source>Expired</msg>
-  <msg id="939504866402110526"><source>app/catalog/list/list.component.ts:16</source>You have no items uploaded yet</msg>
-  <msg id="935769667569121167"><source>app/catalog/list/list.component.ts:17</source>You haven&apos;t sold any items yet</msg>
-  <msg id="5657739434954342535"><source>app/catalog/list/modals/delete-item/delete-item.component.ts:2</source>Delete item</msg>
-  <msg id="5455708050129988024"><source>app/catalog/list/modals/delete-item/delete-item.component.ts:3</source>This will delete the item.</msg>
-  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:19</source>Reactivate</msg>
+  <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:16</source>1 item selected</msg>
+  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:17</source><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
+  <msg id="939504866402110526"><source>app/catalog/list/list.component.ts:27</source>You have no items uploaded yet</msg>
+  <msg id="935769667569121167"><source>app/catalog/list/list.component.ts:28</source>You haven&apos;t sold any items yet</msg>
+  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:22</source>Reactivate</msg>
 </messagebundle>
