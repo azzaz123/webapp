@@ -5,7 +5,7 @@ import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
 import { ItemsData } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { DeleteItemComponent } from './modals/delete-item/delete-item.component';
+import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -75,7 +75,7 @@ export class ListComponent implements OnInit {
   }
 
   public delete() {
-    const modalRef: NgbModalRef = this.modalService.open(DeleteItemComponent);
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.type = 1;
     modalRef.result.then(() => {
       this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {

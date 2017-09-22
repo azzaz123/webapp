@@ -5,7 +5,7 @@ import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DeleteItemComponent } from 'app/catalog/list/modals/delete-item/delete-item.component';
+import { ConfirmationModalComponent } from 'app/catalog/list/modals/confirmation-modal/confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 
@@ -85,7 +85,7 @@ describe('CatalogItemComponent', () => {
 
     it('should open modal and call delete', fakeAsync(() => {
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(DeleteItemComponent);
+      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
       expect(itemService.deleteItem).toHaveBeenCalledWith(ITEM_ID);
     }));
 

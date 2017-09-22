@@ -15,7 +15,7 @@ import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
-import { DeleteItemComponent } from './modals/delete-item/delete-item.component';
+import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
@@ -175,7 +175,7 @@ describe('ListComponent', () => {
         tick();
       }));
       it('should call modal and bulkDelete', () => {
-        expect(modalService.open).toHaveBeenCalledWith(DeleteItemComponent);
+        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
         expect(itemService.bulkDelete).toHaveBeenCalledWith('active');
       });
       it('should remove deleted items', () => {
