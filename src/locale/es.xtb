@@ -66,5 +66,13 @@
   <translation id="1902100407096396858">Categorías</translation>
   <translation id="3734434835434478522">Muro</translation>
   <translation id="4588618843305891254">Catálogo</translation>
+  <translation id="4058575476871566236">Publicados</translation>
+  <translation id="5529951643694823242" desc="plural" meaning="tab">Vendidos</translation>
+  <translation id="464749780222721589">Caducados</translation>
+  <translation id="939504866402110526">No tienes productos a la venta</translation>
+  <translation id="935769667569121167">No has vendido nada aún</translation>
+  <translation id="5657739434954342535">Borrar producto</translation>
+  <translation id="5455708050129988024">Se borrará permanentemente el producto.</translation>
+
 
 </translationbundle>

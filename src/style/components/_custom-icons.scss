@@ -101,3 +101,13 @@
     }
   }
 }
+
+.visibility {
+  md-icon svg path {
+    stroke: $grey-500;
+    &#Fill-3 {
+      stroke: none;
+      fill: $grey-500;
+    }
+  }
+}

@@ -2,12 +2,15 @@
   <tsl-item-avatar [item]="item" size="big"></tsl-item-avatar>
   <span class="price">{{item.salePrice | currency:item.currencyCode:true}}</span>
   <span class="title">{{item.title}}</span>
-  <span class="visibility"></span>
+  <span class="visibility">
+    <md-icon svgIcon="views"></md-icon> {{item.views}}
+    <md-icon svgIcon="heart"></md-icon> {{item.favorites}}
+  </span>
   <span class="actions">
-    <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.pending">
+    <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.pending && !item.flags.expired">
       <md-icon svgIcon="reserved"></md-icon>
     </button>
-    <button class="btn-delete" (click)="deleteItem(item)">
+    <button class="btn-delete" (click)="deleteItem(item)" *ngIf="!item.flags.expired">
       <md-icon svgIcon="delete"></md-icon>
     </button>
   </span>
