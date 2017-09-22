@@ -6,11 +6,22 @@
      [infiniteScrollDisabled]="end || loading"
      (scrolled)="loadMore()">
   <div class="container">
-    <nav class="nav filters-nav">
+    <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
       <a (click)="filterByStatus('expired')" [ngClass]="{active: selectedStatus === 'expired'}" class="nav-link" i18n>Expired</a>
     </nav>
+    <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0" [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
+      <ng-container [ngPlural]="itemService.selectedItems.length">
+        <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
+        <ng-template ngPluralCase="other"><ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container></ng-template>
+      </ng-container>
+    </a>
+    <div [hidden]="itemService.selectedItems.length === 0" class="bulk-actions float-right" [ngClass]="{'show': itemService.selectedItems.length}">
+      <button class="btn-delete dark" (click)="delete()">
+        <md-icon svgIcon="delete"></md-icon>
+      </button>
+    </div>
     <div class="row items">
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
         <h2 i18n [hidden]="selectedStatus === 'solds'">You have no items uploaded yet</h2>

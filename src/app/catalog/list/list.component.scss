@@ -2,6 +2,7 @@
 
 
 .items {
+  margin-top: $spacing;
   margin-bottom: $spacing-XL;
 }
 
@@ -10,5 +11,71 @@ tsl-spinner {
 }
 
 .nav {
-  margin-bottom: $spacing;
+  margin-bottom: 10px;
+  margin-top: -6px;
+}
+
+$icon-size: 12px;
+
+#total-selected {
+  padding: 0 $spacing;
+  cursor: pointer;
+  &:after {
+    display: inline-block;
+    content: ' ';
+    background-image: url('/assets/icons/cross.svg');
+    background-size: $icon-size $icon-size;
+    height: $icon-size;
+    width: $icon-size;
+    margin-left: 10px;
+    vertical-align: middle;
+    margin-top: -2px;
+  }
+  &.show {
+    animation: fadeInFromNone 0.5s ease-in-out;
+  }
+  &:hover {
+    background: rgba($white, .7);
+  }
+}
+
+$height: 40px;
+
+#total-selected, .bulk-actions button {
+  border: solid 1px $grey-100;
+  padding: 0 $spacing;
+  border-radius: $border-radius;
+  background: $white;
+  color: $grey-900;
+  font-size: $font-size-S;
+  height: $height;
+  line-height: $height;
+  display: inline-block;
+  margin-bottom: 2px;
+}
+
+.bulk-actions {
+  button {
+    cursor: pointer;
+    margin-left: 10px;
+    &.btn-delete {
+      @include square(40px);
+      padding: 0;
+      md-icon {
+        height: 16px;
+        width: 14px;
+        vertical-align: sub;
+      }
+      &:hover {
+        background: $delete-bg;
+        border-color: transparent;
+        color: $white;
+      }
+    }
+  }
+  &.show {
+    button {
+      animation: fadeInFromNone 0.5s ease-in-out;
+    }
+  }
 }

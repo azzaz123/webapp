@@ -60,4 +60,15 @@ export class ListComponent implements OnInit {
     const index: number = _.findIndex(this.items, {'_id': $event.item.id});
     this.items.splice(index, 1);
   }
+
+  public deselect() {
+    this.itemService.deselectItems();
+    this.items.map((item: Item) => {
+      item.selected = false;
+    });
+  }
+
+  public delete() {
+
+  }
 }

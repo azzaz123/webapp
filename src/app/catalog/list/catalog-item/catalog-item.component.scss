@@ -25,6 +25,9 @@
       display: flex;
     }
   }
+  &:hover {
+    border-color: $corporate;
+  }
 }
 
 .item {
