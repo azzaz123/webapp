@@ -6,6 +6,7 @@ import { CatalogItemComponent } from './list/catalog-item/catalog-item.component
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { MdIconModule } from '@angular/material';
 import { ConfirmationModalComponent } from './list/modals/confirmation-modal/confirmation-modal.component';
+import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 
 @NgModule({
   imports: [
@@ -18,10 +19,12 @@ import { ConfirmationModalComponent } from './list/modals/confirmation-modal/con
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    SoldModalComponent
   ],
   entryComponents: [
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    SoldModalComponent
   ]
 })
 export class CatalogModule {

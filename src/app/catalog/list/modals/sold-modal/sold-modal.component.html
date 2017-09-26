@@ -1,0 +1,11 @@
+<div class="modal-body">
+  <div class="modal-close" (click)="activeModal.dismiss()">
+    <md-icon svgIcon="cross"></md-icon>
+  </div>
+  <h1 i18n>Congratulations!</h1>
+  <p i18n>You sold <strong>{{item.title}}</strong></p>
+  <p i18n>Who bought this from you?</p>
+</div>
+<div class="modal-footer">
+  <a href="" (click)="activeModal.close('outside'); $event.preventDefault()">I didn't sell this on wallapop</a>
+</div>

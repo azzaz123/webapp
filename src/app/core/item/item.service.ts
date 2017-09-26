@@ -109,4 +109,8 @@ export class ItemService extends ItemServiceMaster {
     .map((r: Response) => r.json());
   }
 
+  public soldOutside(id: string): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + id + '/sold');
+  }
+
 }

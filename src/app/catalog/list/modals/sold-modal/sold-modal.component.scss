@@ -1,0 +1,32 @@
+@import "../../../../../style/_common.scss";
+
+.modal-body {
+  padding: $spacing-L;
+}
+
+h1 {
+  color: $corporate;
+  font-size: $font-size-L;
+  font-weight: bold;
+  text-align: center;
+}
+
+p {
+  font-size: $font-size;
+  text-align: center;
+  color: $grey-700;
+}
+
+.modal-footer {
+  height: 75px;
+  box-shadow: 0 -2px 4px 0 rgba(37, 50, 56, 0.07);
+  justify-content: center;
+  padding: 0;
+  a {
+    color: $warn;
+    &:hover {
+      color: darken($warn, 20%);
+      text-decoration: none;
+    }
+  }
+}
