@@ -7,7 +7,8 @@ import {
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
   MockTrackingService,
-  TrackingService
+  TrackingService,
+  ITEM_FLAGS
 } from 'shield';
 
 import { ListComponent } from './list.component';
@@ -44,6 +45,8 @@ describe('ListComponent', () => {
           deselectItems() {
           },
           bulkDelete() {
+          },
+          bulkReserve() {
           }
         }
         },
@@ -196,6 +199,59 @@ describe('ListComponent', () => {
       }));
       it('should open error toastr', () => {
         expect(toastr.error).toHaveBeenCalledWith('Some listings have not been deleted due to an error');
+      });
+    });
+  });
+
+  describe('reserve', () => {
+    const TOTAL = 5;
+    describe('success', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(itemService, 'bulkReserve').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
+        component.items = [];
+        for (let i = 1; i <= TOTAL; i++) {
+          component.items.push(new Item(i.toString(), i, i.toString(), null, null, null, null, null, null, null, null, {
+            'pending': false,
+            'sold': false,
+            'favorite': false,
+            'reserved': false,
+            'removed': false,
+            'banned': false,
+            'expired': false,
+            'review_done': false,
+            'bumped': false,
+            'highlighted': false
+          }));
+        }
+        component.reserve();
+        tick();
+      }));
+      it('should call modal and bulkReserve', () => {
+        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+        expect(itemService.bulkReserve).toHaveBeenCalled();
+      });
+      it('should call the ProductListBulkReserved tracking event', () => {
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: '1, 3, 5'});
+      });
+      it('should set items as reserved', () => {
+        expect(component.items[0].reserved).toBeTruthy();
+        expect(component.items[1].reserved).toBeFalsy();
+        expect(component.items[2].reserved).toBeTruthy();
+        expect(component.items[3].reserved).toBeFalsy();
+        expect(component.items[4].reserved).toBeTruthy();
+      });
+      it('should not call toastr', () => {
+        expect(toastr.error).not.toHaveBeenCalled();
+      });
+    });
+    describe('failed', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(itemService, 'bulkReserve').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE_FAILED));
+        component.reserve();
+        tick();
+      }));
+      it('should open error toastr', () => {
+        expect(toastr.error).toHaveBeenCalledWith('Some listings have not been reserved due to an error');
       });
     });
   });

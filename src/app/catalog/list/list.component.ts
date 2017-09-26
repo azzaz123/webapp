@@ -100,7 +100,9 @@ export class ListComponent implements OnInit {
         this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: response.updatedIds.join(', ')});
         response.updatedIds.forEach((id: string) => {
           const index: number = _.findIndex(this.items, {'id': id});
-          this.items[index].reserved = true;
+          if (this.items[index]) {
+            this.items[index].reserved = true;
+          }
         });
         if (response.failedIds.length) {
           this.toastr.error(this.i18n.getTranslations('bulkReserveError'));
