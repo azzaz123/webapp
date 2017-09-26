@@ -91,10 +91,21 @@
       @include square(40px);
       border-radius: 8px;
       margin-left: 5px;
+      &.btn-sold {
+        md-icon {
+          height: 17px;
+          width: 17px;
+        }
+        &:hover {
+          background: $sold-bg;
+          border-color: transparent;
+        }
+      }
       &.btn-reserve {
         md-icon {
           height: 15px;
           width: 13px;
+          margin-top: -1px;
         }
         &:hover, &.active {
           background: $reserve-bg;

@@ -68,4 +68,8 @@ export class CatalogItemComponent implements OnInit {
     }
   }
 
+  public setSold(item: Item) {
+    
+  }
+
 }
