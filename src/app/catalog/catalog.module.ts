@@ -7,14 +7,18 @@ import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { MdIconModule } from '@angular/material';
 import { ConfirmationModalComponent } from './list/modals/confirmation-modal/confirmation-modal.component';
 import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
+import { FormsModule } from '@angular/forms';
+import { UtilsModule } from 'shield';
 
 @NgModule({
   imports: [
     SharedModule,
+    FormsModule,
     CoreModule,
     CatalogRoutingModule,
     MdIconModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    UtilsModule
   ],
   declarations: [
     catalogRoutedComponents,

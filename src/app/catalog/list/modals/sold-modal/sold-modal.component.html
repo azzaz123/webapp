@@ -1,23 +1,48 @@
-<div class="modal-body">
-  <div class="modal-close" (click)="activeModal.dismiss()">
-    <md-icon svgIcon="cross"></md-icon>
+<div id="first-step" [hidden]="selectedUser">
+  <div class="modal-body">
+    <div class="modal-close" (click)="activeModal.dismiss()">
+      <md-icon svgIcon="cross"></md-icon>
+    </div>
+    <h1 i18n>Congratulations!</h1>
+    <p class="text" i18n>You sold <strong>{{item.title}}</strong></p>
+    <p class="text" i18n>Who bought this from you?</p>
+    <ul>
+      <li class="conv-user" *ngFor="let convUser of conversationUsers">
+        <a href="" (click)="chooseUser(convUser); $event.preventDefault()">
+          <tsl-user-avatar [user]="convUser" size="50"></tsl-user-avatar>
+          <div>
+            <p class="name">{{convUser.micro_name}}</p>
+            <p class="message">{{convUser.last_message}}</p>
+          </div>
+          <md-icon svgIcon="arrow-waterfall" class="arrow-icon"></md-icon>
+        </a>
+      </li>
+    </ul>
   </div>
-  <h1 i18n>Congratulations!</h1>
-  <p class="text" i18n>You sold <strong>{{item.title}}</strong></p>
-  <p class="text" i18n>Who bought this from you?</p>
-  <ul>
-    <li class="conv-user" *ngFor="let convUser of conversationUsers">
-      <a href="">
-        <tsl-user-avatar [user]="convUser" size="50"></tsl-user-avatar>
-        <div>
-          <p class="name">{{convUser.micro_name}}</p>
-          <p class="message">{{convUser.last_message}}</p>
-        </div>
-        <md-icon svgIcon="arrow-waterfall" class="arrow-icon"></md-icon>
-      </a>
-    </li>
-  </ul>
+  <div class="modal-footer">
+    <a href="" (click)="activeModal.close('outside'); $event.preventDefault()" i18n>I didn't sell this on wallapop</a>
+  </div>
 </div>
-<div class="modal-footer">
-  <a href="" (click)="activeModal.close('outside'); $event.preventDefault()">I didn't sell this on wallapop</a>
+<div id="second-step" [hidden]="!selectedUser">
+  <div class="modal-body center-heading">
+    <div class="modal-back" (click)="selectedUser = null">
+      <md-icon svgIcon="back-arrow"></md-icon>
+    </div>
+    <div class="modal-close" (click)="activeModal.dismiss()">
+      <md-icon svgIcon="cross"></md-icon>
+    </div>
+    <h2 i18n>Rate your experience with <strong>{{selectedUser?.micro_name}}</strong></h2>
+    <p i18n>Click on the stars to leave your review. The more stars, the better your experience.</p>
+    <tsl-stars-rate (onChange)="onRated($event)"></tsl-stars-rate>
+    <p class="text" i18n>I sold this for:</p>
+    <input type="number" class="form-control" id="price" name="price" [(ngModel)]="price" /> <span class="currency">{{item.currencyCode}}</span>
+    <textarea i18n-placeholder placeholder="Leave a review..." class="form-control" [(ngModel)]="comments"></textarea>
+    <div class="centered">
+      <button type="button"
+              class="btn btn-primary"
+              [disabled]="!score"
+              (click)="close()"
+              i18n>Publish</button>
+    </div>
+  </div>
 </div>
