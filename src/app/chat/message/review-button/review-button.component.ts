@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Message, Item, ConversationService, UserService, ReviewService, ReviewData } from 'shield';
+import { Message, Item, ConversationService, UserService, ReviewService, ReviewDataBuyer } from 'shield';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewModalComponent } from '../review-modal/review-modal.component';
 import { ReviewModalResult } from '../review-modal/review-modal-result.interface';
@@ -44,7 +44,7 @@ export class ReviewButtonComponent implements OnInit {
     const modalRef: NgbModalRef = this.modalService.open(ReviewModalComponent, {windowClass: 'review'});
     modalRef.componentInstance.item = this.item;
     modalRef.result.then((result: ReviewModalResult) => {
-      const data: ReviewData = {
+      const data: ReviewDataBuyer = {
         conversation_id: this.message.conversationId,
         to_user_id: result.userId,
         item_id: this.item.id,

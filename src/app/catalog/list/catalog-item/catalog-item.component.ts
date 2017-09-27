@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Item, TrackingService } from 'shield';
+import { Item, TrackingService, ReviewService, ReviewDataSeller } from 'shield';
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
 import * as _ from 'lodash';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
+import { ReviewModalResult } from '../../../chat/message/review-modal/review-modal-result.interface';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -19,7 +20,8 @@ export class CatalogItemComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
               private itemService: ItemService,
-              private trackingService: TrackingService) {
+              private trackingService: TrackingService,
+              private reviewService: ReviewService) {
   }
 
   ngOnInit() {
@@ -72,11 +74,19 @@ export class CatalogItemComponent implements OnInit {
   public setSold(item: Item) {
     const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {windowClass: 'sold'});
     modalRef.componentInstance.item = item;
-    modalRef.result.then((soldUser: string) => {
-      if (soldUser === 'outside') {
+    modalRef.result.then((result: ReviewModalResult | string) => {
+      if (result === 'outside') {
         this.itemService.soldOutside(item.id).subscribe(() => this.onSold(item));
       } else {
-
+        const userSold = <ReviewModalResult>result;
+        const data: ReviewDataSeller = {
+          to_user_id: userSold.userId,
+          item_id: item.id,
+          comments: userSold.comments,
+          score: userSold.score * 20,
+          price: userSold.price
+        };
+        this.reviewService.createAsSeller(data).subscribe(() => this.onSold(item));
       }
     }, () => {
     });

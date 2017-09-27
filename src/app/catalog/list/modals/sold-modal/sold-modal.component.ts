@@ -38,7 +38,8 @@ export class SoldModalComponent implements OnInit {
     const result: ReviewModalResult = {
       score: this.score,
       comments: this.comments,
-      userId: this.selectedUser.id
+      userId: this.selectedUser.id,
+      price: this.price
     };
     this.activeModal.close(result);
   }
