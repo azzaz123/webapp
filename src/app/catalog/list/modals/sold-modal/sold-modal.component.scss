@@ -11,10 +11,67 @@ h1 {
   text-align: center;
 }
 
-p {
+.text {
   font-size: $font-size;
   text-align: center;
   color: $grey-700;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: $spacing-L;
+  height: 308px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.conv-user {
+  a {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: calc(100% - 20px);
+    tsl-user-avatar {
+      margin-right: $spacing;
+    }
+    div {
+      flex: 1;
+      border-bottom: 1px solid rgba(207, 216, 220, 0.5);
+      padding: 14px 0;
+      max-width: calc(100% - 50px - #{$spacing});
+      p {
+        margin: 0;
+        font-size: $font-size;
+        &.name {
+          font-weight: bold;
+          color: $grey-900;
+        }
+        &.message {
+          color: $grey-300;
+          @include text-truncate();
+        }
+      }
+    }
+    .arrow-icon {
+      position: absolute;
+      right: -18px;
+      transform: rotate(-90deg);
+      width: 42px;
+      height: 42px;
+      transition: right ease .2s;
+    }
+    &:hover {
+      text-decoration: none;
+      div p.name {
+        color: $corporate;
+      }
+      .arrow-icon {
+        right: -10px;
+      }
+    }
+  }
 }
 
 .modal-footer {
