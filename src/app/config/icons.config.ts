@@ -81,4 +81,5 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/delete.svg'));
   mdIconRegistry.addSvgIcon('clock', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/clock.svg'));
   mdIconRegistry.addSvgIcon('back-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/back-arrow.svg'));
+  mdIconRegistry.addSvgIcon('congrats', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/congrats.svg'));
 }
