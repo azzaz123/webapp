@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from 'app/catalog/list/modals/confirmation-modal/confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
+import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -38,7 +39,10 @@ describe('CatalogItemComponent', () => {
           provide: NgbModal, useValue: {
           open() {
             return {
-              result: Promise.resolve()
+              result: Promise.resolve(),
+              componentInstance: {
+                item: null
+              }
             };
           }
         }
@@ -160,6 +164,44 @@ describe('CatalogItemComponent', () => {
     it('should emit the updated item', () => {
       expect(event.item).toEqual(item);
       expect(event.action).toBe('reactivated');
+    });
+
+  });
+
+  describe('setSold', () => {
+
+    let item: Item;
+    let event: ItemChangeEvent;
+
+    beforeEach(fakeAsync(() => {
+      item = MOCK_ITEM;
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(trackingService, 'track');
+      component.itemChange.subscribe(($event: ItemChangeEvent) => {
+        event = $event;
+      });
+      component.setSold(item);
+    }));
+
+    afterEach(() => {
+      event = undefined;
+    });
+
+    it('should open modal', fakeAsync(() => {
+      tick();
+      expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, {windowClass: 'sold'});
+    }));
+
+    it('should set sold true', () => {
+      expect(item.sold).toBeTruthy();
+    });
+
+    it('should emit the updated item', () => {
+      expect(event.item).toEqual(item);
+      expect(event.action).toBe('sold');
+    });
+    it('should track the DeleteItem event', () => {
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {product_id: item.id});
     });
 
   });
