@@ -15,6 +15,7 @@ import {
   TrackingService,
   NotificationService,
   NewConversationResponse,
+  OldConversationResponse,
   MessagesData,
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
@@ -76,5 +77,21 @@ export class ConversationService extends ConversationServiceMaster {
     });
   }
 
+  public get(id: string): Observable<Conversation> {
+    return this.http.get(`${this.API_URL}/${id}`)
+    .flatMap((res: Response) => {
+      let conversation: OldConversationResponse = res.json();
+      return Observable.forkJoin(
+        this.itemService.get(conversation.item_id),
+        this.userService.get(conversation.other_user_id)
+      ).map((data: any[]) => {
+        conversation.user = data[1];
+        conversation.user.blocked = this.xmpp.isBlocked(conversation.user.id);
+        conversation = <OldConversationResponse>this.setItem(conversation, data[0]);
+        return conversation;
+      });
+    })
+    .map((data: OldConversationResponse) => this.mapRecordData(data));
+  }
 
 }
