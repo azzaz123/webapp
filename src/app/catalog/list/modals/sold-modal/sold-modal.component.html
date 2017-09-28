@@ -5,8 +5,8 @@
     </div>
     <h1 i18n>Congratulations!</h1>
     <p class="text" i18n>You sold <strong>{{item.title}}</strong></p>
-    <p class="text" i18n>Who bought this from you?</p>
-    <ul>
+    <p class="text" [hidden]="!conversationUsers.length" i18n>Who bought this from you?</p>
+    <ul [hidden]="!conversationUsers.length">
       <li class="conv-user" *ngFor="let convUser of conversationUsers">
         <a href="" (click)="chooseUser(convUser); $event.preventDefault()">
           <tsl-user-avatar [user]="convUser" size="50"></tsl-user-avatar>
@@ -20,10 +20,10 @@
     </ul>
   </div>
   <div class="modal-footer">
-    <a href="" (click)="activeModal.close('outside'); $event.preventDefault()" i18n>I didn't sell this on wallapop</a>
+    <a href="" (click)="setSoldOutside(); $event.preventDefault()" i18n>I didn't sell this on wallapop</a>
   </div>
 </div>
-<div id="second-step" [hidden]="!selectedUser">
+<div id="second-step" [hidden]="!selectedUser || thanks">
   <div class="modal-body center-heading">
     <div class="modal-back" (click)="selectedUser = null">
       <md-icon svgIcon="back-arrow"></md-icon>
@@ -41,8 +41,18 @@
       <button type="button"
               class="btn btn-primary"
               [disabled]="!score"
-              (click)="close()"
+              (click)="setSold()"
               i18n>Publish</button>
     </div>
+  </div>
+</div>
+<div id="thanks" [hidden]="!thanks">
+  <div class="modal-body center-heading">
+    <h1 i18n>Thanks</h1>
+    <p class="text">
+      Your feedback is important for the<br />
+      wallapop community.
+    </p>
+    <button class="btn btn-primary" (click)="activeModal.close()" i18n>Continue</button>
   </div>
 </div>

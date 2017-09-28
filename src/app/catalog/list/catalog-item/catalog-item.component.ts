@@ -20,8 +20,7 @@ export class CatalogItemComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
               private itemService: ItemService,
-              private trackingService: TrackingService,
-              private reviewService: ReviewService) {
+              private trackingService: TrackingService) {
   }
 
   ngOnInit() {
@@ -74,30 +73,14 @@ export class CatalogItemComponent implements OnInit {
   public setSold(item: Item) {
     const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {windowClass: 'sold'});
     modalRef.componentInstance.item = item;
-    modalRef.result.then((result: ReviewModalResult | string) => {
-      if (result === 'outside') {
-        this.itemService.soldOutside(item.id).subscribe(() => this.onSold(item));
-      } else {
-        const userSold = <ReviewModalResult>result;
-        const data: ReviewDataSeller = {
-          to_user_id: userSold.userId,
-          item_id: item.id,
-          comments: userSold.comments,
-          score: userSold.score * 20,
-          price: userSold.price
-        };
-        this.reviewService.createAsSeller(data).subscribe(() => this.onSold(item));
-      }
+    modalRef.result.then(() => {
+      item.sold = true;
+      this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+      this.itemChange.emit({
+        item: item,
+        action: 'sold'
+      });
     }, () => {
-    });
-  }
-
-  private onSold(item: Item) {
-    item.sold = true;
-    this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
-    this.itemChange.emit({
-      item: item,
-      action: 'sold'
     });
   }
 

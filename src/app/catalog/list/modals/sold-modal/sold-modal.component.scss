@@ -1,6 +1,6 @@
 @import "../../../../../style/_common.scss";
 
-#first-step, #second-step {
+#first-step, #second-step, #thanks {
   p.text {
     font-size: $font-size;
     text-align: center;
@@ -8,18 +8,18 @@
   }
 }
 
+h1 {
+  color: $corporate;
+  font-size: $font-size-L;
+  font-weight: bold;
+  text-align: center;
+}
+
+.modal-body {
+  padding: $spacing-L;
+}
+
 #first-step {
-
-  .modal-body {
-    padding: $spacing-L;
-  }
-
-  h1 {
-    color: $corporate;
-    font-size: $font-size-L;
-    font-weight: bold;
-    text-align: center;
-  }
 
   ul {
     list-style: none;
@@ -151,4 +151,11 @@
     margin-bottom: $spacing;
   }
 
+}
+
+#thanks {
+  .btn {
+    padding: 10px 41px;
+    margin-top: 40px
+  }
 }
