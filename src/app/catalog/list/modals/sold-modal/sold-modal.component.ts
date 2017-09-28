@@ -13,7 +13,7 @@ import { Item, ReviewDataSeller, ReviewService } from 'shield';
 export class SoldModalComponent implements OnInit {
 
   public item: Item;
-  public conversationUsers: ConversationUser[];
+  public conversationUsers: ConversationUser[] = [];
   public selectedUser: ConversationUser;
   public score: number;
   public comments: string;

@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Item, TrackingService, ReviewService, ReviewDataSeller } from 'shield';
+import { Item, TrackingService } from 'shield';
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
 import * as _ from 'lodash';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
-import { ReviewModalResult } from '../../../chat/message/review-modal/review-modal-result.interface';
 
 @Component({
   selector: 'tsl-catalog-item',
