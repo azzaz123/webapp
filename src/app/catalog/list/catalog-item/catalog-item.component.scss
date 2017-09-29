@@ -1,32 +1,44 @@
 @import "../../../../style/_common.scss";
 
-.select {
-  @include square(24px);
-  border: 2px solid $grey-100;
-  border-radius: 6px;
-  padding: 0;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+$checkbox-width: 24px;
+$transition: all .5s ease;
+
+.checkbox {
+  transition: $transition;
+  width: 0;
+  opacity: 0;
   float: left;
-  margin-right: $spacing;
-  margin-top: $spacing-L;
-  cursor: pointer;
-  md-icon {
-    display: none;
-    height: 9px;
-    width: 12px;
+  .resized & {
+    width: $checkbox-width;
+    opacity: 1;
   }
-  &.selected {
-    background: $corporate;
-    border-color: transparent;
+  .select {
+    @include square($checkbox-width);
+    border: 2px solid $grey-100;
+    border-radius: 6px;
+    padding: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: $spacing;
+    margin-top: $spacing-L;
+    cursor: pointer;
     md-icon {
-      display: flex;
+      display: none;
+      height: 9px;
+      width: 12px;
     }
-  }
-  &:hover {
-    border-color: $corporate;
+    &.selected {
+      background: $corporate;
+      border-color: transparent;
+      md-icon {
+        display: flex;
+      }
+    }
+    &:hover {
+      border-color: $corporate;
+    }
   }
 }
 
@@ -39,6 +51,7 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
+  transition: $transition;
   &.expired {
     &::after {
       content: '';
@@ -51,6 +64,13 @@
       opacity: .5;
       z-index: 1;
     }
+  }
+  .resized & {
+    margin-left: $checkbox-width + $spacing;
+  }
+  &.selected {
+    background-color: rgba($corporate, 0.2);
+    border: solid 1px $corporate;
   }
   tsl-item-avatar {
     margin: 4px;
@@ -87,6 +107,9 @@
   }
   .actions {
     margin-right: 24px;
+    .resized & {
+      display: none;
+    }
     button {
       @include square(40px);
       border-radius: 8px;
