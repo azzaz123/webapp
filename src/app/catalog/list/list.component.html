@@ -8,7 +8,8 @@
   <div class="container">
     <nav class="nav filters-nav">
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
-      <a (click)="filterByStatus('solds')" [ngClass]="{active: selectedStatus === 'solds'}" class="nav-link" i18n>Sold</a>
+      <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
+      <a (click)="filterByStatus('expired')" [ngClass]="{active: selectedStatus === 'expired'}" class="nav-link" i18n>Expired</a>
     </nav>
     <div class="row items">
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">

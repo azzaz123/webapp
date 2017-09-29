@@ -3,6 +3,7 @@ import { Item, TrackingService } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
+import { ItemsData } from '../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-list',
@@ -14,7 +15,7 @@ export class ListComponent implements OnInit {
   public items: Item[] = [];
   public selectedStatus: string = 'published';
   public loading: boolean = true;
-  private page: number = 1;
+  private init: number = 0;
   public end: boolean;
 
   constructor(public itemService: ItemService,
@@ -27,12 +28,11 @@ export class ListComponent implements OnInit {
 
   public filterByStatus(status: string) {
     this.selectedStatus = status;
-    this.page = 1;
+    this.init = 0;
     this.getItems();
   }
 
   public loadMore() {
-    this.page++;
     this.getItems(true);
   }
 
@@ -41,16 +41,18 @@ export class ListComponent implements OnInit {
     if (!append) {
       this.items = [];
     }
-    this.itemService.mine(this.page, this.selectedStatus).subscribe((items: Item[]) => {
-      if (this.selectedStatus === 'solds') {
+    this.itemService.mine(this.init, this.selectedStatus).subscribe((itemsData: ItemsData) => {
+      const items = itemsData.data;
+      if (this.selectedStatus === 'sold') {
         this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: items.length});
-      } else {
+      } else if (this.selectedStatus === 'published') {
         this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {total_products: items.length});
       }
-      this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {page_number: this.page});
+      this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {init: this.init});
+      this.init = itemsData.init;
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
-      this.end = !items.length;
+      this.end = !this.init;
     });
   }
 

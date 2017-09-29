@@ -5,6 +5,6 @@ export const environment: any = {
   xmppDomain: 'beta.wallapop.com',
   wsUrl: 'wss://mongooseimprotool-beta.wallapop.com:443/ws-xmpp',
   siteUrl: 'https://es.beta.wallapop.com/',
-  appboy: '47b54d36-7a86-4c05-9bfc-2d7b8aadd1ce'
+  appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f'
 };
 

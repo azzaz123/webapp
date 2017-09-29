@@ -71,8 +71,10 @@
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:5</source>Catalog</msg>
   <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:10</source>Published</msg>
-  <msg id="939504866402110526"><source>app/catalog/list/list.component.ts:15</source>You have no items uploaded yet</msg>
-  <msg id="935769667569121167"><source>app/catalog/list/list.component.ts:16</source>You haven&apos;t sold any items yet</msg>
+  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:11</source>Sold</msg>
+  <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:12</source>Expired</msg>
+  <msg id="939504866402110526"><source>app/catalog/list/list.component.ts:16</source>You have no items uploaded yet</msg>
+  <msg id="935769667569121167"><source>app/catalog/list/list.component.ts:17</source>You haven&apos;t sold any items yet</msg>
   <msg id="5657739434954342535"><source>app/catalog/list/modals/delete-item/delete-item.component.ts:2</source>Delete item</msg>
   <msg id="5455708050129988024"><source>app/catalog/list/modals/delete-item/delete-item.component.ts:3</source>This will delete the item.</msg>
 </messagebundle>
