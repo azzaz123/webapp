@@ -15,6 +15,7 @@ export class SuggesterComponent implements OnInit {
   public model: any;
   @Output() public newSearch = new EventEmitter<SuggesterResponse>();
   @Output() public newSearchSubmit = new EventEmitter<SuggesterResponse>();
+  @Output() public newKeyword = new EventEmitter<string>();
   @ViewChild('kwsEl') kwsEl: ElementRef;
 
   constructor(private suggesterService: SuggesterService) { }
@@ -38,8 +39,11 @@ export class SuggesterComponent implements OnInit {
     this.newSearch.emit(result);
   }
 
+  public updateKeyword() {
+    this.newKeyword.emit(this.kwsEl.nativeElement.value);
+  }
+
   public searchSubmit() {
     this.newSearchSubmit.emit(this.kwsEl.nativeElement.value);
   }
-
 }
