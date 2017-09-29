@@ -1,0 +1,6 @@
+@import "../../../../style/_common.scss";
+
+:host {
+  background-color: $white;
+  box-shadow: 0 -2px 6px 0 rgba(37, 50, 56, 0.05);
+}
