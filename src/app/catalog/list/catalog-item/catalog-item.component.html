@@ -1,4 +1,4 @@
-<div class="item">
+<div class="item" [ngClass]="{expired: item.flags.expired}">
   <tsl-item-avatar [item]="item" size="big"></tsl-item-avatar>
   <span class="price">{{item.salePrice | currency:item.currencyCode:true}}</span>
   <span class="title">{{item.title}}</span>
@@ -6,12 +6,16 @@
     <md-icon svgIcon="views"></md-icon> {{item.views}}
     <md-icon svgIcon="heart"></md-icon> {{item.favorites}}
   </span>
-  <span class="actions">
-    <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.pending && !item.flags.expired">
+  <span class="actions" *ngIf="!item.flags.expired">
+    <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.pending">
       <md-icon svgIcon="reserved"></md-icon>
     </button>
-    <button class="btn-delete" (click)="deleteItem(item)" *ngIf="!item.flags.expired">
+    <button class="btn-delete" (click)="deleteItem(item)">
       <md-icon svgIcon="delete"></md-icon>
     </button>
   </span>
+  <button class="btn-reactivate" (click)="reactivateItem(item)" *ngIf="item.flags.expired">
+    <md-icon svgIcon="clock"></md-icon>
+    <span i18n>Reactivate</span>
+  </button>
 </div>

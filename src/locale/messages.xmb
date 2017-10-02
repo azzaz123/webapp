@@ -77,4 +77,5 @@
   <msg id="935769667569121167"><source>app/catalog/list/list.component.ts:17</source>You haven&apos;t sold any items yet</msg>
   <msg id="5657739434954342535"><source>app/catalog/list/modals/delete-item/delete-item.component.ts:2</source>Delete item</msg>
   <msg id="5455708050129988024"><source>app/catalog/list/modals/delete-item/delete-item.component.ts:3</source>This will delete the item.</msg>
+  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:19</source>Reactivate</msg>
 </messagebundle>

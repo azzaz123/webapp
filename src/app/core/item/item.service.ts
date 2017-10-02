@@ -97,4 +97,8 @@ export class ItemService extends ItemServiceMaster {
     });
   }
 
+  public reactivateItem(id: string): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + id + '/reactivate');
+  }
+
 }

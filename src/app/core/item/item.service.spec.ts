@@ -119,4 +119,12 @@ describe('ItemService', () => {
     });
   });
 
+  describe('reactivateItem', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      service.reactivateItem(ITEM_ID);
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/reactivate');
+    });
+  });
+
 });

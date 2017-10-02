@@ -18,7 +18,8 @@ export class CatalogItemComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
               private itemService: ItemService,
-              private trackingService: TrackingService) { }
+              private trackingService: TrackingService) {
+  }
 
   ngOnInit() {
   }
@@ -44,6 +45,15 @@ export class CatalogItemComponent implements OnInit {
       } else {
         this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
       }
+    });
+  }
+
+  public reactivateItem(item: Item) {
+    this.itemService.reactivateItem(item.id).subscribe(() => {
+      this.itemChange.emit({
+        item: item,
+        action: 'reactivated'
+      });
     });
   }
 
