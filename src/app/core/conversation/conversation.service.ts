@@ -15,11 +15,13 @@ import {
   TrackingService,
   NotificationService,
   NewConversationResponse,
-  OldConversationResponse,
   MessagesData,
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { RequestOptions } from '@angular/http';
+import { Lead } from 'shield/lib/shield/conversation/lead';
+import { Item } from 'shield/lib/shield/item/item';
+import { ConversationResponse } from 'shield/lib/shield/conversation/conversation-response.interface';
 
 @Injectable()
 export class ConversationService extends ConversationServiceMaster {
@@ -49,14 +51,20 @@ export class ConversationService extends ConversationServiceMaster {
     });
   }
 
+  protected getItem(conversation: ConversationResponse): Observable<Lead> {
+    return this.itemService.get(conversation.item_id)
+    .map((item: Item) => this.setItem(conversation, item))
+    .map((data: ConversationResponse) => this.mapRecordData(data));
+  }
+
   public createConversation(itemId): Observable<Conversation> {
     const options = new RequestOptions();
     options.headers = new Headers();
     options.headers.append('Content-Type', 'application/json');
     return this.http.post(`api/v3/conversations`, JSON.stringify({item_id: itemId}), options).flatMap((r: Response) => {
-      const response: NewConversationResponse = r.json();
+      const response: ConversationResponse = r.json();
       return Observable.forkJoin(
-        this.userService.get(response.seller_user_id),
+        this.userService.get(response.other_user_id),
         this.itemService.get(itemId)
       ).map((data: any) => {
         return new Conversation(
@@ -75,23 +83,6 @@ export class ConversationService extends ConversationServiceMaster {
       conversation.messages = data.data;
       return conversation;
     });
-  }
-
-  public get(id: string): Observable<Conversation> {
-    return this.http.get(`${this.API_URL}/${id}`)
-    .flatMap((res: Response) => {
-      let conversation: OldConversationResponse = res.json();
-      return Observable.forkJoin(
-        this.itemService.get(conversation.item_id),
-        this.userService.get(conversation.other_user_id)
-      ).map((data: any[]) => {
-        conversation.user = data[1];
-        conversation.user.blocked = this.xmpp.isBlocked(conversation.user.id);
-        conversation = <OldConversationResponse>this.setItem(conversation, data[0]);
-        return conversation;
-      });
-    })
-    .map((data: OldConversationResponse) => this.mapRecordData(data));
   }
 
 }
