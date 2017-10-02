@@ -28,4 +28,8 @@
     </div>
   </div>
 </div>
-<tsl-selected-items [hidden]="!itemService.selectedItems.length"></tsl-selected-items>
+<tsl-selected-items *ngIf="itemService.selectedItems.length"
+                    [items]="items"
+                    [selectedItemsLength]="itemService.selectedItems.length">
+
+</tsl-selected-items>
