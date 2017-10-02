@@ -1,17 +1,31 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { createItemsArray, Item, MOCK_ITEM, MockTrackingService, TrackingService } from 'shield';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import {
+  createItemsArray,
+  I18nService,
+  Item,
+  ITEMS_BULK_RESPONSE,
+  ITEMS_BULK_RESPONSE_FAILED,
+  MOCK_ITEM,
+  MockTrackingService,
+  TrackingService
+} from 'shield';
 
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
+import { DeleteItemComponent } from './modals/delete-item/delete-item.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 describe('ListComponent', () => {
   let component: ListComponent;
   let fixture: ComponentFixture<ListComponent>;
   let itemService: ItemService;
   let trackingService: TrackingService;
+  let modalService: NgbModal;
+  let toastr: ToastrService;
   let trackingServiceSpy: jasmine.Spy;
   let itemerviceSpy: jasmine.Spy;
 
@@ -19,11 +33,35 @@ describe('ListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ListComponent],
       providers: [
+        I18nService,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
+          selectedItems: [],
           mine() {
             return Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: 20});
+          },
+          deselectItems() {
+          },
+          bulkDelete() {
+          }
+        }
+        },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              result: Promise.resolve(),
+              componentInstance: {
+                type: null
+              }
+            };
+          }
+        }
+        },
+        {
+          provide: ToastrService, useValue: {
+          error() {
           }
         }
         }],
@@ -37,8 +75,12 @@ describe('ListComponent', () => {
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
     trackingService = TestBed.get(TrackingService);
+    modalService = TestBed.get(NgbModal);
+    toastr = TestBed.get(ToastrService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
+    spyOn(modalService, 'open').and.callThrough();
+    spyOn(toastr, 'error');
     fixture.detectChanges();
   });
 
@@ -111,5 +153,52 @@ describe('ListComponent', () => {
       expect(_.find(component.items, {'id': item.id})).toBeFalsy();
     });
   });
+
+  describe('deselect', () => {
+    it('should call deselectItems', () => {
+      spyOn(itemService, 'deselectItems');
+      component.deselect();
+      expect(itemService.deselectItems).toHaveBeenCalled();
+    });
+  });
+
+  describe('delete', () => {
+    const TOTAL: number = 5;
+    beforeEach(() => {
+      component.selectedStatus = 'active';
+      component.items = createItemsArray(TOTAL);
+    });
+    describe('success', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(itemService, 'bulkDelete').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
+        component.delete();
+        tick();
+      }));
+      it('should call modal and bulkDelete', () => {
+        expect(modalService.open).toHaveBeenCalledWith(DeleteItemComponent);
+        expect(itemService.bulkDelete).toHaveBeenCalledWith('active');
+      });
+      it('should remove deleted items', () => {
+        expect(component.items.length).toBe(TOTAL - 3);
+        expect(_.find(component.items, {'id': '1'})).toBeFalsy();
+        expect(_.find(component.items, {'id': '3'})).toBeFalsy();
+        expect(_.find(component.items, {'id': '5'})).toBeFalsy();
+      });
+      it('should track the ProductListbulkDeleted event', () => {
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: '1, 3, 5'});
+      });
+    });
+    describe('failed', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(itemService, 'bulkDelete').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE_FAILED));
+        component.delete();
+        tick();
+      }));
+      it('should open error toastr', () => {
+        expect(toastr.error).toHaveBeenCalledWith('Some listings have not been deleted due to an error');
+      });
+    });
+  });
+
 
 });

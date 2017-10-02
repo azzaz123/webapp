@@ -89,7 +89,7 @@
   }
 }
 
-.actions {
+.actions, .bulk-actions {
   button {
     md-icon svg g g, svg path {
       fill: $grey-500;
@@ -117,5 +117,11 @@
       stroke: none;
       fill: $grey-500;
     }
+  }
+}
+
+.select.selected {
+  md-icon svg g g {
+    fill: $white;
   }
 }

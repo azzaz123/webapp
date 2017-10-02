@@ -7,6 +7,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class DeleteItemComponent {
 
+  public type: number;
+
   constructor(public activeModal: NgbActiveModal) { }
 
 }

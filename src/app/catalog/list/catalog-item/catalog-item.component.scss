@@ -1,5 +1,35 @@
 @import "../../../../style/_common.scss";
 
+.select {
+  @include square(24px);
+  border: 2px solid $grey-100;
+  border-radius: 6px;
+  padding: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: left;
+  margin-right: $spacing;
+  margin-top: $spacing-L;
+  cursor: pointer;
+  md-icon {
+    display: none;
+    height: 9px;
+    width: 12px;
+  }
+  &.selected {
+    background: $corporate;
+    border-color: transparent;
+    md-icon {
+      display: flex;
+    }
+  }
+  &:hover {
+    border-color: $corporate;
+  }
+}
+
 .item {
   background: $white;
   border-radius: $border-radius;

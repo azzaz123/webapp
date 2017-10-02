@@ -69,9 +69,13 @@
   <translation id="4058575476871566236">Publicados</translation>
   <translation id="5529951643694823242" desc="plural" meaning="tab">Vendidos</translation>
   <translation id="464749780222721589">Caducados</translation>
+  <translation id="5262427597279775777">1 producto seleccionado</translation>
+  <translation id="3618067650338827326"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
   <translation id="939504866402110526">No tienes productos a la venta</translation>
   <translation id="935769667569121167">No has vendido nada aún</translation>
   <translation id="5657739434954342535">Borrar producto</translation>
   <translation id="5455708050129988024">Se borrará permanentemente el producto.</translation>
+  <translation id="321759774936322640">Borrar productos</translation>
+  <translation id="447264229278731832">Se borrarán permanentemente los productos.</translation>
   <translation id="596181013964941327">Reactivar</translation>
 </translationbundle>
