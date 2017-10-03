@@ -1,6 +1,12 @@
 <div class="modal-body">
-  <h2 i18n>Delete item</h2>
-  <p i18n>This will delete the item.</p>
+  <div *ngIf="!type">
+    <h2 i18n>Delete item</h2>
+    <p i18n>This will delete the item.</p>
+  </div>
+  <div *ngIf="type === 1">
+    <h2 i18n>Delete items</h2>
+    <p i18n>The selected items will be permanently deleted.</p>
+  </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn" i18n (click)="activeModal.dismiss()">Cancel</button>

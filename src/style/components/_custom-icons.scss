@@ -89,7 +89,7 @@
   }
 }
 
-.actions {
+.actions, .bulk-actions {
   button {
     md-icon svg g g, svg path {
       fill: $grey-500;
@@ -102,6 +102,14 @@
   }
 }
 
+.btn-reactivate {
+  &:hover {
+    md-icon svg g g, svg path {
+      fill: $white;
+    }
+  }
+}
+
 .visibility {
   md-icon svg path {
     stroke: $grey-500;
@@ -109,5 +117,11 @@
       stroke: none;
       fill: $grey-500;
     }
+  }
+}
+
+.select.selected {
+  md-icon svg g g {
+    fill: $white;
   }
 }

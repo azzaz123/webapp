@@ -73,4 +73,17 @@ describe('SuggesterComponent', () => {
     });
   });
 
+  describe('update keyword', (): void => {
+    it('should emit an event with the keyword parameter', () => {
+      component.kwsEl = {
+        nativeElement: {
+          value: 'iphone'
+        }
+      };
+      spyOn(component.newKeyword, 'emit');
+      component.updateKeyword();
+      expect(component.newKeyword.emit).toHaveBeenCalledWith('iphone');
+    });
+  });
+
 });

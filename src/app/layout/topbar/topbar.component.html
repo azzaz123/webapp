@@ -8,7 +8,8 @@
     <div class="search-wrapper">
       <tsl-categories-list (newCategory)="onCategoryUpdate($event)"></tsl-categories-list>
       <form id="js-main-search-form" method="get">
-        <tsl-suggester (newSearchSubmit)="onSearchSubmit($event)" (newSearch)="onSearchUpdate($event)"></tsl-suggester>
+        <tsl-suggester (newSearchSubmit)="onSearchSubmit($event)" (newKeyword)="onKeywordUpdate($event)"
+                       (newSearch)="onSearchUpdate($event)"></tsl-suggester>
         <input id="main-search-hidden-lat" #latEl name="lat" type="hidden" value="{{ coordinates?.lat }}"/>
         <input id="main-search-hidden-lng" #lngEl name="lng" type="hidden" value="{{ coordinates?.lng }}"/>
         <input id="main-search-hidden-category" #categoryEl name="category" type="hidden" value="{{ category }}"/>
