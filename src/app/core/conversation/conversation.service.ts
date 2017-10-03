@@ -3,6 +3,7 @@ import { Headers, RequestOptions, Response } from '@angular/http';
 
 import {
   Conversation,
+  ConversationResponse,
   ConversationService as ConversationServiceMaster,
   EventService,
   HttpService,
@@ -18,7 +19,6 @@ import {
   XmppService
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
-import { ConversationResponse } from 'shield/lib/shield/conversation/conversation-response.interface';
 
 @Injectable()
 export class ConversationService extends ConversationServiceMaster {
