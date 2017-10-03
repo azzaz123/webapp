@@ -1,26 +1,23 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Headers, Response } from '@angular/http';
+import { Headers, RequestOptions, Response } from '@angular/http';
 
 import {
+  Conversation,
   ConversationService as ConversationServiceMaster,
-  UserService,
-  ItemService,
   EventService,
   HttpService,
-  Conversation,
-  ShieldConfig,
-  XmppService,
-  PersistencyService,
-  MessageService,
-  TrackingService,
-  NotificationService,
-  NewConversationResponse,
+  ItemService,
   MessagesData,
+  MessageService,
+  NewConversationResponse,
+  NotificationService,
+  PersistencyService,
+  ShieldConfig,
+  TrackingService,
+  UserService,
+  XmppService
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
-import { RequestOptions } from '@angular/http';
-import { Lead } from 'shield/lib/shield/conversation/lead';
-import { Item } from 'shield/lib/shield/item/item';
 import { ConversationResponse } from 'shield/lib/shield/conversation/conversation-response.interface';
 
 @Injectable()
