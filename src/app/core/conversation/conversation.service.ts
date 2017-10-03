@@ -51,12 +51,6 @@ export class ConversationService extends ConversationServiceMaster {
     });
   }
 
-  protected getItem(conversation: ConversationResponse): Observable<Lead> {
-    return this.itemService.get(conversation.item_id)
-    .map((item: Item) => this.setItem(conversation, item))
-    .map((data: ConversationResponse) => this.mapRecordData(data));
-  }
-
   public createConversation(itemId): Observable<Conversation> {
     const options = new RequestOptions();
     options.headers = new Headers();
