@@ -2,7 +2,9 @@ $topbar-height: 66px;
 $left-panel-width: 340px;
 $right-panel-width: 280px;
 
-$chat-topbar-height: 90px;
+$sidebar-width: 90px;
+
+$chat-topbar-height: 58px;
 $chat-input: 70px;
 
 $scrollbars-width: 6px;
@@ -10,5 +12,6 @@ $scrollbars-width: 6px;
 $item-avatar-size-small: 40px;
 $item-avatar-size-medium: 50px;
 $item-avatar-size: 60px;
+$item-avatar-size-big: 80px;
 $item-avatar-margin: $spacing-S;
 $item-avatar-space: $item-avatar-size + $item-avatar-margin;

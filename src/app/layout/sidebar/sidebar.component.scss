@@ -1,0 +1,68 @@
+@import "../../../style/_common.scss";
+
+:host {
+  position: fixed;
+  width: $sidebar-width;
+  left: 0;
+  top: $topbar-height;
+  bottom: 0;
+  background-color: $grey-900;
+  height: calc(100vh - #{$topbar-height});
+  z-index: 99;
+}
+
+$sidebar-section-circle-size: 50px;
+
+.sidebar-section-circle {
+  position: relative;
+  margin: 0 auto $spacing-S auto;
+  width: $sidebar-section-circle-size;
+  height: $sidebar-section-circle-size;
+  background-color: rgba($grey-800, .5);
+  transition: .15s background-color ease;
+  .active & {
+    background-color: $corporate !important;
+  }
+  border-radius: 50%;
+  md-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    g g {
+      transition: .15s fill ease;
+    }
+  }
+}
+
+h2 {
+  font-size: $font-size-XXS;
+  font-weight: bold;
+  color: rgba($white, .5);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 0;
+  .active & {
+    color: $white;
+  }
+}
+
+.sidebar-section {
+  position: relative;
+  display: block;
+  padding: $spacing 0;
+  text-align: center;
+  transition: all .5s ease;
+  &:focus, &:hover {
+    text-decoration: none;
+  }
+  &:hover {
+    .sidebar-section-circle {
+      background-color: $grey-800;
+    }
+    h2 {
+      color: $white;
+      transition: .15s color ease;
+    }
+  }
+}

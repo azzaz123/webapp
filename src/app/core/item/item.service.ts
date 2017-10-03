@@ -1,6 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ItemService as ItemServiceMaster, HttpService, I18nService, TrackingService, EventService, UserService, Item } from 'shield';
-import { ItemContent, ItemResponse } from './item-response.interface';
+import { Response } from '@angular/http';
+import {
+  EventService,
+  HttpService,
+  I18nService,
+  Item,
+  ItemService as ItemServiceMaster,
+  TrackingService,
+  UserService
+} from 'shield';
+import { ItemContent, ItemResponse, ItemsData } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 
@@ -8,6 +17,7 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 export class ItemService extends ItemServiceMaster {
 
   protected API_URL_V2: string = 'api/v3/items';
+  private API_URL_WEB: string = 'api/v3/web/items';
 
   constructor(http: HttpService,
               i18n: I18nService,
@@ -35,7 +45,7 @@ export class ItemService extends ItemServiceMaster {
       content.flags,
       null,
       content.sale_conditions,
-      content.images[0],
+      content.images ? content.images[0] : content.image,
       content.images,
       content.web_slug,
       content.modified_date
@@ -50,6 +60,45 @@ export class ItemService extends ItemServiceMaster {
       comments: comments,
       reason: ITEM_BAN_REASONS[reason]
     });
+  }
+
+  public mine(init: number, status?: string): Observable<ItemsData> {
+    return this.http.get(this.API_URL_WEB + '/mine/' + status, {
+      init: init
+    })
+    .map((r: Response) => {
+        const res: ItemResponse[] = r.json();
+        const nextPage: string = r.headers.get('x-nextpage');
+        const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
+        let data: Item[] = [];
+        if (res.length > 0) {
+          data = res.map((i: ItemResponse) => {
+            const item: Item = this.mapRecordData(i);
+            item.views = i.content.views;
+            item.favorites = i.content.favorites;
+            return item;
+          });
+        }
+        return {
+          data: data,
+          init: nextInit
+        }
+      }
+    );
+  }
+
+  public deleteItem(id: string): Observable<any> {
+    return this.http.delete(this.API_URL_V3 + '/' + id);
+  }
+
+  public reserveItem(id: string, reserve: boolean): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + id + '/reserve', {
+      reserved: reserve
+    });
+  }
+
+  public reactivateItem(id: string): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + id + '/reactivate');
   }
 
 }

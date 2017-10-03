@@ -9,6 +9,27 @@
   }
 }
 
+.sidebar-section {
+  md-icon {
+    g g, g {
+      fill: rgba($white, .5);
+      opacity: 1;
+    }
+  }
+  &.active md-icon {
+    g g, g {
+      fill: $white;
+      opacity: 1;
+    }
+  }
+  &:hover md-icon {
+    g g, g {
+      fill: $white;
+      opacity: 1;
+    }
+  }
+}
+
 .report-ban-reason {
   &.selected md-icon {
     g g, path {
@@ -54,5 +75,53 @@
     svg g path {
       fill: $corporate;
     }
+  }
+}
+
+.search-btn {
+  md-icon svg path{
+    fill: $grey-600
+  }
+  &:hover {
+    md-icon svg path{
+      fill: $white;
+    }
+  }
+}
+
+.actions, .bulk-actions {
+  button {
+    md-icon svg g g, svg path {
+      fill: $grey-500;
+    }
+    &:hover, &.active {
+      md-icon svg g g, svg path {
+        fill: $white;
+      }
+    }
+  }
+}
+
+.btn-reactivate {
+  &:hover {
+    md-icon svg g g, svg path {
+      fill: $white;
+    }
+  }
+}
+
+.visibility {
+  md-icon svg path {
+    stroke: $grey-500;
+    &#Fill-3 {
+      stroke: none;
+      fill: $grey-500;
+    }
+  }
+}
+
+.select.selected {
+  md-icon svg g g {
+    fill: $white;
   }
 }

@@ -17,7 +17,7 @@ export class MessagesPanelComponent implements AfterViewChecked {
   }
 
   public showDate(previousMessage: Message, currentMessage: Message): boolean {
-    return previousMessage ? new Date(previousMessage.date).getDay() !== new Date(currentMessage.date).getDay() : true;
+    return previousMessage ? new Date(previousMessage.date).toDateString() !== new Date(currentMessage.date).toDateString() : true;
   }
 
   ngAfterViewChecked() {

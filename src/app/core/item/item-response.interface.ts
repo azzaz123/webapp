@@ -1,4 +1,4 @@
-import { ItemFlags, Image, ItemSaleConditions } from 'shield';
+import { ItemFlags, Image, ItemSaleConditions, Item } from 'shield';
 
 export interface ItemResponse {
   content: ItemContent;
@@ -12,7 +12,8 @@ export interface ItemContent {
   description: string;
   flags: ItemFlags;
   id: string;
-  images: Image[];
+  images?: Image[];
+  image?: Image;
   modified_date: number;
   sale_conditions: ItemSaleConditions;
   sale_price: number;
@@ -20,4 +21,11 @@ export interface ItemContent {
   title: string;
   url: string;
   web_slug: string;
+  favorites?: number;
+  views?: number;
+}
+
+export interface ItemsData {
+  data: Item[];
+  init: number;
 }

@@ -13,6 +13,7 @@ import { PROVIDERS } from './providers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
 import { environment } from '../environments/environment';
+import { CatalogModule } from './catalog/catalog.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import { environment } from '../environments/environment';
       cacheAllConversations: false,
       environment: environment,
       addSignature: true,
-      appId: 'web'
+      appId: 'web',
+      conversationIdName: 'conversation_id',
+      conversationUserId: 'other_user_id'
     }),
     BrowserAnimationsModule,
     ChatModule,
@@ -34,6 +37,7 @@ import { environment } from '../environments/environment';
     HttpModule,
     AppRoutingModule,
     LayoutModule,
+    CatalogModule
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

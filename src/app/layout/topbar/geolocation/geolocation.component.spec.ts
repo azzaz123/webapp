@@ -55,4 +55,12 @@ describe('GeolocationComponent', () => {
     });
   });
 
+  describe('select item', (): void => {
+    it('should emit an event with the selected item', () => {
+      spyOn(component.newCoordinate, 'emit');
+      component.selectItem(GEOLOCATION_DATA_WEB);
+      expect(component.newCoordinate.emit).toHaveBeenCalledWith(ADDRESS_DATA_WEB.result.geometry.location);
+    });
+  });
+
 });

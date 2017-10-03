@@ -1,9 +1,6 @@
 <div id="dropdown-main-search-btn" class="topbar-menu-dropdown" ngbDropdown ngbDropdownToggle>
   <md-icon svgIcon="categories" class="topbar-icon"></md-icon>
-  <div class="categories">
-    <span *ngIf="selectedCategory">{{ selectedCategory.title }}</span>
-    <span *ngIf="!selectedCategory" i18n>Categories</span>
-  </div>
+  <md-icon svgIcon="arrow-waterfall" class="arrow-icon"></md-icon>
   <ul class="dropdown-menu dropdown-menu-left">
       <li class="dropdown-item" *ngFor="let category of categories">
         <a (click)="selectCategory(category)">

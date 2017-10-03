@@ -11,19 +11,18 @@
   input {
     & {
       border: none;
-      width: 114px;
-      height: 40px;
+      width: 190px - 36px;
       color: $grey-900;
       -webkit-transition-property: width;
       transition-property: width;
-      transition-duration: 0.4s;
+      transition-duration: 0.2s;
       transition-timing-function: linear;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     &.active {
-      width: 230px;
+      width: 250px - 36px;
     }
     &::-webkit-input-placeholder {
       color: $corporate;

@@ -1,0 +1,38 @@
+@import "../../../../style/_common.scss";
+
+.modal-body {
+  padding-top: $spacing-XL;
+  padding-left: $spacing-L;
+  padding-right: $spacing-L;
+}
+
+h1 {
+  font-size: $font-size-LL;
+  color: $corporate;
+  font-weight: bold;
+  margin-bottom: $spacing-L;
+}
+
+h2 {
+  font-size: $font-size-L;
+  color: $grey-900;
+  font-weight: normal;
+  strong {
+    font-weight: bold;
+  }
+}
+
+p {
+  font-size: $font-size-S;
+  color: $grey-500;
+  margin-top: $spacing-XS;
+}
+
+tsl-stars-rate {
+  margin: $spacing 0;
+}
+
+textarea {
+  height: 230px;
+  margin-bottom: $spacing;
+}

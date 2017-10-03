@@ -76,4 +76,8 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('category_Videogames', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Videogames.svg'));
   mdIconRegistry.addSvgIcon('send', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/send.svg'));
   mdIconRegistry.addSvgIcon('wall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wall.svg'));
+  mdIconRegistry.addSvgIcon('check', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/check.svg'));
+  mdIconRegistry.addSvgIcon('navigation_catalog', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_catalog.svg'));
+  mdIconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/delete.svg'));
+  mdIconRegistry.addSvgIcon('clock', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/clock.svg'));
 }

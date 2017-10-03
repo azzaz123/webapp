@@ -13,7 +13,9 @@ import {
 
 import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
-import { ITEM_DATA_V3 } from '../../../tests/item.fixtures';
+import { ITEM_DATA_V3, ITEMS_DATA_V3 } from '../../../tests/item.fixtures';
+import { ResponseOptions, Response, Headers } from '@angular/http';
+import { ItemsData } from './item-response.interface';
 
 describe('ItemService', () => {
 
@@ -72,4 +74,57 @@ describe('ItemService', () => {
       )
     });
   });
+
+  describe('mine', () => {
+    let resp: ItemsData;
+    beforeEach(() => {
+      const res: ResponseOptions = new ResponseOptions({
+        body: JSON.stringify(ITEMS_DATA_V3),
+        headers: new Headers({'x-nextpage': 'init=20'})
+      });
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+    });
+    it('should call endpoint', () => {
+      service.mine(10, 'published').subscribe((data: ItemsData) => {
+        resp = data;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/published', {
+        init: 10
+      })
+    });
+    it('should return an array of items and the init', () => {
+      service.mine(0, 'published').subscribe((data: ItemsData) => {
+        resp = data;
+      });
+      expect(resp.data.length).toBe(2);
+      const item = resp.data[0];
+      expect(item.id).toBe(ITEMS_DATA_V3[0].id);
+      expect(item.title).toBe(ITEMS_DATA_V3[0].content.title);
+      expect(item.description).toBe(ITEMS_DATA_V3[0].content.description);
+      expect(item.salePrice).toBe(ITEMS_DATA_V3[0].content.sale_price);
+      expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency_code);
+      expect(item.modifiedDate).toBe(ITEMS_DATA_V3[0].content.modified_date);
+      expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.flags);
+      expect(item.mainImage).toEqual(ITEMS_DATA_V3[0].content.image);
+      expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
+      expect(resp.init).toBe(20);
+    });
+  });
+
+  describe('deleteItem', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'delete').and.returnValue(Observable.of({}));
+      service.deleteItem(ITEM_ID);
+      expect(http.delete).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID);
+    });
+  });
+
+  describe('reactivateItem', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      service.reactivateItem(ITEM_ID);
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/reactivate');
+    });
+  });
+
 });
