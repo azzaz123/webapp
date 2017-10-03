@@ -5,7 +5,7 @@ import {
   MOCK_ITEM,
   MOCK_MESSAGE,
   MOCK_USER,
-  REVIEW_DATA,
+  REVIEW_DATA_BUYER,
   ReviewService,
   USER_ID,
   UserService
@@ -137,7 +137,7 @@ describe('ReviewButtonComponent', () => {
       expect(modalRef.componentInstance.item).toEqual(MOCK_ITEM);
     });
     it('should call createAsBuyer', () => {
-      expect(reviewService.createAsBuyer).toHaveBeenCalledWith(REVIEW_DATA);
+      expect(reviewService.createAsBuyer).toHaveBeenCalledWith(REVIEW_DATA_BUYER);
     });
     it('should set showButton false', () => {
       expect(component.showButton).toBeFalsy();

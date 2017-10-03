@@ -1,24 +1,24 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Headers, Response } from '@angular/http';
+import { Headers, RequestOptions, Response } from '@angular/http';
 
 import {
+  Conversation,
+  ConversationResponse,
   ConversationService as ConversationServiceMaster,
-  UserService,
-  ItemService,
   EventService,
   HttpService,
-  Conversation,
-  ShieldConfig,
-  XmppService,
-  PersistencyService,
-  MessageService,
-  TrackingService,
-  NotificationService,
-  NewConversationResponse,
+  ItemService,
   MessagesData,
+  MessageService,
+  NewConversationResponse,
+  NotificationService,
+  PersistencyService,
+  ShieldConfig,
+  TrackingService,
+  UserService,
+  XmppService
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
-import { RequestOptions } from '@angular/http';
 
 @Injectable()
 export class ConversationService extends ConversationServiceMaster {
@@ -53,9 +53,9 @@ export class ConversationService extends ConversationServiceMaster {
     options.headers = new Headers();
     options.headers.append('Content-Type', 'application/json');
     return this.http.post(`api/v3/conversations`, JSON.stringify({item_id: itemId}), options).flatMap((r: Response) => {
-      const response: NewConversationResponse = r.json();
+      const response: ConversationResponse = r.json();
       return Observable.forkJoin(
-        this.userService.get(response.seller_user_id),
+        this.userService.get(response.other_user_id),
         this.itemService.get(itemId)
       ).map((data: any) => {
         return new Conversation(
@@ -75,6 +75,5 @@ export class ConversationService extends ConversationServiceMaster {
       return conversation;
     });
   }
-
 
 }

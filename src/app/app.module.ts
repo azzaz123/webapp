@@ -24,7 +24,9 @@ import { CatalogModule } from './catalog/catalog.module';
       cacheAllConversations: false,
       environment: environment,
       addSignature: true,
-      appId: 'web'
+      appId: 'web',
+      conversationIdName: 'conversation_id',
+      conversationUserId: 'other_user_id'
     }),
     BrowserAnimationsModule,
     ChatModule,
