@@ -9,6 +9,10 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CategoriesListComponent } from './topbar/categories-list/categories-list.component';
 import { UserModule } from '../core/user/user.module';
+import { SuggesterComponent } from './topbar/suggester/suggester.component';
+import { CategoryService } from '../core/category/category.service';
+import { GeolocationService } from '../core/geolocation/geolocation.service';
+import { SuggesterService } from '../core/suggester/suggester.service';
 import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
@@ -25,12 +29,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     TopbarComponent,
     SidebarComponent
   ],
-  declarations: [
-    TopbarComponent,
-    GeolocationComponent,
-    CategoriesListComponent,
-    SidebarComponent
-  ]
+  declarations: [TopbarComponent, GeolocationComponent, CategoriesListComponent, SuggesterComponent, SidebarComponent],
+  providers: [GeolocationService, CategoryService, SuggesterService]
 })
 export class LayoutModule {
 }

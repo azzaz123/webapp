@@ -1,5 +1,7 @@
 @import "../../../style/_common.scss";
 
+$icon-size: 12px;
+$height: 40px;
 
 .items {
   margin-top: $spacing;
@@ -14,8 +16,6 @@ tsl-spinner {
   margin-bottom: 10px;
   margin-top: -6px;
 }
-
-$icon-size: 12px;
 
 #total-selected {
   padding: 0 $spacing;
@@ -38,8 +38,6 @@ $icon-size: 12px;
     background: rgba($white, .7);
   }
 }
-
-$height: 40px;
 
 #total-selected, .bulk-actions button {
   border: solid 1px $grey-100;

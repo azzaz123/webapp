@@ -11,6 +11,6 @@ export const environment: any = {
   wsUrl: 'ws://dock2.corp.wallapop.com:5281/ws-xmpp',
   siteUrl: 'http://es.dev.wallapop.com:8080/',
   bypass: 'p3-9p0dJk2cHp3-4RsW0',
-  appboy: '47b54d36-7a86-4c05-9bfc-2d7b8aadd1ce'
+  appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f'
 };
 

@@ -61,7 +61,9 @@ describe('Component: ConversationsPanel', () => {
           cacheAllConversations: false,
           environment: environment,
           addSignature: true,
-          appId: 'web'
+          appId: 'web',
+          conversationIdName: 'conversation_id',
+          conversationUserId: 'other_user_id'
         })
       ],
       declarations: [ConversationsPanelComponent, ConversationComponent],
