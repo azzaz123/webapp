@@ -54,9 +54,9 @@
   <msg id="6807057680918467236"><source>app/core/user/user/user.component.ts:23</source>Responds in more than 24 hours</msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
-  <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
+  <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source><source>app/catalog/list/list.component.ts:11</source>Sold</msg>
   <msg id="6543433128416987560"><source>app/core/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
-  <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:35</source>Messages</msg>
+  <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:32</source>Messages</msg>
   <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
   <msg id="8806073135680763560"><source>app/chat/message/review-modal/review-modal.component.ts:3</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="4650730844441578299"><source>app/chat/message/review-modal/review-modal.component.ts:4</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
@@ -64,11 +64,11 @@
   <msg id="7430416142942514215"><source>app/chat/message/review-modal/review-modal.component.ts:15</source>Publish</msg>
   <msg id="7992914064106893139"><source>app/chat/message/review-button/review-button.component.ts:1</source>Review now</msg>
   <msg id="2506703378559967461"><source>app/chat/message/review-button/review-button.component.ts:4</source>Thanks for rating</msg>
-  <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/topbar.component.ts:11</source>Search</msg>
-  <msg id="3734434835434478522"><source>app/layout/topbar/topbar.component.ts:28</source>Wall</msg>
-  <msg id="2127032578120864096"><source>app/layout/topbar/topbar.component.ts:45</source>My Profile</msg>
-  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:46</source>Logout</msg>
+  <msg id="3734434835434478522"><source>app/layout/topbar/topbar.component.ts:26</source>Wall</msg>
+  <msg id="2127032578120864096"><source>app/layout/topbar/topbar.component.ts:42</source>My Profile</msg>
+  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:43</source>Logout</msg>
   <msg id="5371960677736303052"><source>app/layout/topbar/geolocation/geolocation.component.ts:9</source>Where?</msg>
+  <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:5</source>Catalog</msg>
   <msg id="5657739434954342535"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:3</source>Delete item</msg>
   <msg id="5455708050129988024"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:4</source>This will delete the item.</msg>
