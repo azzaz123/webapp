@@ -8,7 +8,9 @@ import {
   TrackingService,
   UserService,
   Item,
-  ITEM_BASE_PATH
+  ITEM_BASE_PATH,
+  ITEMS_BULK_UPDATED_IDS,
+  ITEMS_BULK_RESPONSE
 } from 'shield';
 
 import { ItemService } from './item.service';
@@ -124,6 +126,18 @@ describe('ItemService', () => {
       spyOn(http, 'put').and.returnValue(Observable.of({}));
       service.reactivateItem(ITEM_ID);
       expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/reactivate');
+    });
+  });
+
+  describe('bulkReserve', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEMS_BULK_RESPONSE)});
+      spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
+      service.selectedItems = ITEMS_BULK_UPDATED_IDS;
+      service.bulkReserve();
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/reserve', {
+        ids: ITEMS_BULK_UPDATED_IDS
+      });
     });
   });
 

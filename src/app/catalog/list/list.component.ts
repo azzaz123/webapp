@@ -5,7 +5,7 @@ import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
 import { ItemsData } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { DeleteItemComponent } from './modals/delete-item/delete-item.component';
+import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -75,7 +75,7 @@ export class ListComponent implements OnInit {
   }
 
   public delete() {
-    const modalRef: NgbModalRef = this.modalService.open(DeleteItemComponent);
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.type = 1;
     modalRef.result.then(() => {
       this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {
@@ -86,6 +86,26 @@ export class ListComponent implements OnInit {
         });
         if (response.failedIds.length) {
           this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
+        }
+      });
+    }, () => {});
+  }
+
+  public reserve() {
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.type = 2;
+    modalRef.result.then(() => {
+      this.itemService.bulkReserve().subscribe((response: ItemBulkResponse) => {
+        this.deselect();
+        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: response.updatedIds.join(', ')});
+        response.updatedIds.forEach((id: string) => {
+          const index: number = _.findIndex(this.items, {'id': id});
+          if (this.items[index]) {
+            this.items[index].reserved = true;
+          }
+        });
+        if (response.failedIds.length) {
+          this.toastr.error(this.i18n.getTranslations('bulkReserveError'));
         }
       });
     }, () => {});

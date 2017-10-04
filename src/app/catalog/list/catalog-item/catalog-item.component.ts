@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Item, TrackingService } from 'shield';
-import { DeleteItemComponent } from '../modals/delete-item/delete-item.component';
+import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
@@ -25,7 +25,7 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public deleteItem(item: Item): void {
-    this.modalService.open(DeleteItemComponent).result.then(() => {
+    this.modalService.open(ConfirmationModalComponent).result.then(() => {
       this.itemService.deleteItem(item.id).subscribe(() => {
         this.trackingService.track(TrackingService.PRODUCT_DELETED, {product_id: item.id});
         this.itemChange.emit({

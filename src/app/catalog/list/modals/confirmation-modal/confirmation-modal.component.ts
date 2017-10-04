@@ -3,9 +3,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-delete-item',
-  templateUrl: './delete-item.component.html'
+  templateUrl: './confirmation-modal.component.html'
 })
-export class DeleteItemComponent {
+export class ConfirmationModalComponent {
 
   public type: number;
 

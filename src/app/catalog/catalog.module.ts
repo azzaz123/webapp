@@ -5,7 +5,7 @@ import { CoreModule } from '../core/core.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { MdIconModule } from '@angular/material';
-import { DeleteItemComponent } from './list/modals/delete-item/delete-item.component';
+import { ConfirmationModalComponent } from './list/modals/confirmation-modal/confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -18,10 +18,10 @@ import { DeleteItemComponent } from './list/modals/delete-item/delete-item.compo
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,
-    DeleteItemComponent
+    ConfirmationModalComponent
   ],
   entryComponents: [
-    DeleteItemComponent
+    ConfirmationModalComponent
   ]
 })
 export class CatalogModule {

@@ -7,7 +7,8 @@ import {
   Item,
   ItemService as ItemServiceMaster,
   TrackingService,
-  UserService
+  UserService,
+  ItemBulkResponse
 } from 'shield';
 import { ItemContent, ItemResponse, ItemsData } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
@@ -99,6 +100,13 @@ export class ItemService extends ItemServiceMaster {
 
   public reactivateItem(id: string): Observable<any> {
     return this.http.put(this.API_URL_V3 + '/' + id + '/reactivate');
+  }
+
+  public bulkReserve(): Observable<ItemBulkResponse> {
+    return this.http.put(this.API_URL_V3 + '/reserve', {
+      ids: this.selectedItems
+    })
+    .map((r: Response) => r.json());
   }
 
 }

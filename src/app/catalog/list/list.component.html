@@ -18,7 +18,8 @@
       </ng-container>
     </a>
     <div [hidden]="itemService.selectedItems.length === 0" class="bulk-actions float-right" [ngClass]="{'show': itemService.selectedItems.length}">
-      <button class="btn-delete dark" (click)="delete()">
+      <button class="btn-reserve" (click)="reserve()" [hidden]="selectedStatus !== 'published'" i18n>Reserve</button>
+      <button class="btn-delete" (click)="delete()">
         <md-icon svgIcon="delete"></md-icon>
       </button>
     </div>
