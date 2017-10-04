@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { Item } from 'shield';
@@ -36,6 +36,7 @@ export class SelectedItemsComponent implements OnChanges {
   @HostBinding('@enterFromBottom') public animation: void;
   @Input() items: Item[];
   @Input() selectedItemsLength: number;
+  @Output() onAction: EventEmitter<any> = new EventEmitter();
   public selectedItems: Item[];
 
   constructor(public itemService: ItemService) {

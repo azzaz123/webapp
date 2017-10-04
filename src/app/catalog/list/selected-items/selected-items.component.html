@@ -11,6 +11,12 @@
       </div>
     </div>
   </div>
-  <button *ngIf="itemService.selectedAction === 'reserve'" class="btn btn-reserve" i18n>Reserve</button>
-  <button *ngIf="itemService.selectedAction === 'delete'" class="btn btn-delete" i18n>Delete</button>
+  <button *ngIf="itemService.selectedAction === 'reserve'"
+          class="btn btn-reserve"
+          (click)="onAction.emit()"
+          i18n>Reserve</button>
+  <button *ngIf="itemService.selectedAction === 'delete'"
+          class="btn btn-delete"
+          (click)="onAction.emit()"
+          i18n>Delete</button>
 </div>

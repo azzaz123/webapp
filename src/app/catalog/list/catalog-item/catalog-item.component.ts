@@ -30,8 +30,15 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public reserve(item: Item) {
-    this.itemService.selectedAction = 'reserve';
-    this.select(item);
+    if (!item.reserved) {
+      this.itemService.selectedAction = 'reserve';
+      this.select(item);
+    } else {
+      this.itemService.reserveItem(item.id, false).subscribe(() => {
+        item.reserved = false;
+        this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
+      });
+    }
   }
 
   public reactivateItem(item: Item) {

@@ -23,6 +23,9 @@ div {
   @include square-avatar(100%);
   opacity: .5;
   z-index: 1;
+  .small & {
+    display: none;
+  }
 }
 
 $sold-width: 32px;
@@ -36,6 +39,9 @@ $sold-width: 32px;
   md-icon {
     margin: auto auto;
     @include square(21px);
+  }
+  .small & {
+    display: none;
   }
 }
 

@@ -74,6 +74,14 @@ export class ListComponent implements OnInit {
     });
   }
 
+  public onAction() {
+    if (this.itemService.selectedAction === 'delete') {
+      this.delete();
+    } else if (this.itemService.selectedAction === 'reserve') {
+      this.reserve();
+    }
+  }
+
   public delete() {
     const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.type = 1;

@@ -30,6 +30,6 @@
 </div>
 <tsl-selected-items *ngIf="itemService.selectedItems.length"
                     [items]="items"
-                    [selectedItemsLength]="itemService.selectedItems.length">
-
-</tsl-selected-items>
+                    [selectedItemsLength]="itemService.selectedItems.length"
+                    (onAction)="onAction()"
+></tsl-selected-items>
