@@ -10,7 +10,7 @@ import {
   UserService,
   ItemBulkResponse
 } from 'shield';
-import { ItemContent, ItemResponse, ItemsData } from './item-response.interface';
+import { ConversationUser, ItemContent, ItemResponse, ItemsData } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 
@@ -106,6 +106,15 @@ export class ItemService extends ItemServiceMaster {
     return this.http.put(this.API_URL_V3 + '/reserve', {
       ids: this.selectedItems
     })
+    .map((r: Response) => r.json());
+  }
+
+  public soldOutside(id: string): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + id + '/sold');
+  }
+
+  public getConversationUsers(id: string): Observable<ConversationUser[]> {
+    return this.http.get(this.API_URL_V3 + '/' + id + '/conversation-users')
     .map((r: Response) => r.json());
   }
 

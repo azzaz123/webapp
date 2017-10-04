@@ -10,6 +10,9 @@
     <md-icon svgIcon="heart"></md-icon> {{item.favorites}}
   </span>
   <span class="actions" *ngIf="!item.flags.expired">
+    <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
+      <md-icon svgIcon="sold"></md-icon>
+    </button>
     <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.pending">
       <md-icon svgIcon="reserved"></md-icon>
     </button>

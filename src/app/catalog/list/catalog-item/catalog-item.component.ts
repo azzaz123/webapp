@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Item, TrackingService } from 'shield';
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
 import * as _ from 'lodash';
+import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -66,6 +67,20 @@ export class CatalogItemComponent implements OnInit {
       this.itemService.selectedItems = _.without(this.itemService.selectedItems, item.id);
       this.trackingService.track(TrackingService.PRODUCT_UN_SELECTED, {product_id: item.id});
     }
+  }
+
+  public setSold(item: Item) {
+    const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {windowClass: 'sold'});
+    modalRef.componentInstance.item = item;
+    modalRef.result.then(() => {
+      item.sold = true;
+      this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+      this.itemChange.emit({
+        item: item,
+        action: 'sold'
+      });
+    }, () => {
+    });
   }
 
 }

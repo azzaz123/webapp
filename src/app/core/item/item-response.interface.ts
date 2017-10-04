@@ -29,3 +29,10 @@ export interface ItemsData {
   data: Item[];
   init: number;
 }
+
+export interface ConversationUser {
+  id: string;
+  micro_name: string;
+  last_message: string;
+  image?: Image;
+}

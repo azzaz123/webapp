@@ -15,9 +15,9 @@ import {
 
 import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
-import { ITEM_DATA_V3, ITEMS_DATA_V3 } from '../../../tests/item.fixtures';
+import { CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3 } from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers } from '@angular/http';
-import { ItemsData } from './item-response.interface';
+import { ConversationUser, ItemsData } from './item-response.interface';
 
 describe('ItemService', () => {
 
@@ -138,6 +138,27 @@ describe('ItemService', () => {
       expect(http.put).toHaveBeenCalledWith('api/v3/items/reserve', {
         ids: ITEMS_BULK_UPDATED_IDS
       });
+    });
+  });
+
+  describe('soldOutside', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      service.soldOutside(ITEM_ID);
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/sold');
+    });
+  });
+
+  describe('getConversationUsers', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CONVERSATION_USERS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: ConversationUser[];
+      service.getConversationUsers(ITEM_ID).subscribe((r: ConversationUser[]) => {
+        resp = r;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/conversation-users');
+      expect(resp).toEqual(CONVERSATION_USERS)
     });
   });
 
