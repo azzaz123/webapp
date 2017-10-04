@@ -5,6 +5,7 @@
     </div>
     <h1 i18n>Congratulations!</h1>
     <p class="text" i18n>You sold <strong>{{item.title}}</strong></p>
+    <md-icon class="congrats" svgIcon="commons-congrats"></md-icon>
     <p class="text" [hidden]="!conversationUsers.length" i18n>Who bought this from you?</p>
     <ul [hidden]="!conversationUsers.length">
       <li class="conv-user" *ngFor="let convUser of conversationUsers">
