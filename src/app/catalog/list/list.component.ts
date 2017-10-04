@@ -72,6 +72,7 @@ export class ListComponent implements OnInit {
     this.items.map((item: Item) => {
       item.selected = false;
     });
+    this.itemService.selectedAction = null;
   }
 
   public onAction() {
