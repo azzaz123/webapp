@@ -59,9 +59,9 @@
   <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:35</source>Messages</msg>
   <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
   <msg id="8806073135680763560"><source>app/chat/message/review-modal/review-modal.component.ts:3</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
-  <msg id="4650730844441578299"><source>app/chat/message/review-modal/review-modal.component.ts:4</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
-  <msg id="8149407802234183277"><source>app/chat/message/review-modal/review-modal.component.ts:9</source>Leave a review...</msg>
-  <msg id="7430416142942514215"><source>app/chat/message/review-modal/review-modal.component.ts:15</source>Publish</msg>
+  <msg id="4650730844441578299"><source>app/chat/message/review-modal/review-modal.component.ts:4</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:36</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
+  <msg id="8149407802234183277"><source>app/chat/message/review-modal/review-modal.component.ts:9</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:40</source>Leave a review...</msg>
+  <msg id="7430416142942514215"><source>app/chat/message/review-modal/review-modal.component.ts:15</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:46</source>Publish</msg>
   <msg id="7992914064106893139"><source>app/chat/message/review-button/review-button.component.ts:1</source>Review now</msg>
   <msg id="2506703378559967461"><source>app/chat/message/review-button/review-button.component.ts:4</source>Thanks for rating</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/topbar.component.ts:11</source>Search</msg>
@@ -84,5 +84,13 @@
   <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:17</source><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
   <msg id="939504866402110526"><source>app/catalog/list/list.component.ts:28</source>You have no items uploaded yet</msg>
   <msg id="935769667569121167"><source>app/catalog/list/list.component.ts:29</source>You haven&apos;t sold any items yet</msg>
-  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:22</source>Reactivate</msg>
+  <msg id="3762527362373672599"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:6</source>Congratulations!</msg>
+  <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
+  <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
+  <msg id="1337808500533761318"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
+  <msg id="3397082400587006706"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:35</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
+  <msg id="3113301792677314615"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:38</source>I sold this for:</msg>
+  <msg id="2286494898080570401"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:53</source>Thanks</msg>
+  <msg id="6962699013778688473"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:58</source>Continue</msg>
+  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:25</source>Reactivate</msg>
 </messagebundle>
