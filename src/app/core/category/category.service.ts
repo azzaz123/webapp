@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 import { HttpService } from 'shield';
 import { environment } from '../../../environments/environment';
 import { CategoryResponse } from './category-response.interface';

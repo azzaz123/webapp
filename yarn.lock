@@ -5209,9 +5209,9 @@ shallow-clone@^0.1.2:
     lazy-cache "^0.2.3"
     mixin-object "^2.0.1"
 
-"shield@git+ssh://git@github.com/Wallapop/shield.git#1.15.0":
-  version "1.14.0"
-  resolved "git+ssh://git@github.com/Wallapop/shield.git#d9734735460f6259abd672d6988d45e46eb457cb"
+"shield@git+ssh://git@github.com/Wallapop/shield.git#1.16.0":
+  version "1.16.0"
+  resolved "git+ssh://git@github.com/Wallapop/shield.git#b0198530431001e75128ac5ccfba53a44607f749"
   dependencies:
     "@angular/animations" "^4.2.2"
     "@angular/common" "^4.0.0"

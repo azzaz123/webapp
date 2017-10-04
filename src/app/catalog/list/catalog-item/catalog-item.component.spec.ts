@@ -157,7 +157,7 @@ describe('CatalogItemComponent', () => {
       event = undefined;
     });
 
-    it('should call delete', () => {
+    it('should call reactivateItem', () => {
       expect(itemService.reactivateItem).toHaveBeenCalledWith(ITEM_ID);
     });
 
