@@ -38,7 +38,7 @@ export class SelectedItemsComponent implements OnChanges {
   @Input() selectedItemsLength: number;
   public selectedItems: Item[];
 
-  constructor(private itemService: ItemService) {
+  constructor(public itemService: ItemService) {
   }
 
   ngOnChanges() {

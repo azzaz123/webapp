@@ -19,6 +19,7 @@ export class ItemService extends ItemServiceMaster {
 
   protected API_URL_V2: string = 'api/v3/items';
   private API_URL_WEB: string = 'api/v3/web/items';
+  public selectedAction: string;
 
   constructor(http: HttpService,
               i18n: I18nService,

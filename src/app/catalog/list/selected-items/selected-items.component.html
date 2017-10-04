@@ -1,12 +1,16 @@
 <div class="container">
-  <div *ngFor="let item of selectedItems | slice:0:4; let last = last" class="item">
-    <tsl-item-avatar
-      [item]="item"
-      size="small">
-    </tsl-item-avatar>
-    <span *ngIf="selectedItems.length === 1">{{item.title}}</span>
-    <div *ngIf="selectedItems.length - 3 > 1 && last" class="last">
-      <span>+{{selectedItems.length - 3}}</span>
+  <div>
+    <div *ngFor="let item of selectedItems | slice:0:4; let last = last" class="item">
+      <tsl-item-avatar
+        [item]="item"
+        size="small">
+      </tsl-item-avatar>
+      <span *ngIf="selectedItems.length === 1">{{item.title}}</span>
+      <div *ngIf="selectedItems.length - 3 > 1 && last" class="last">
+        <span>+{{selectedItems.length - 3}}</span>
+      </div>
     </div>
   </div>
+  <button *ngIf="itemService.selectedAction === 'reserve'" class="btn btn-reserve" i18n>Reserve</button>
+  <button *ngIf="itemService.selectedAction === 'delete'" class="btn btn-delete" i18n>Delete</button>
 </div>

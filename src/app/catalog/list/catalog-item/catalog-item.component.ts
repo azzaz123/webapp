@@ -25,10 +25,12 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public deleteItem(item: Item): void {
+    this.itemService.selectedAction = 'delete';
     this.select(item);
   }
 
   public reserve(item: Item) {
+    this.itemService.selectedAction = 'reserve';
     this.select(item);
   }
 
