@@ -24,6 +24,7 @@ describe('CatalogItemComponent', () => {
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
+          selectedItems: [],
           deleteItem() {
             return Observable.of({});
           },
@@ -70,35 +71,18 @@ describe('CatalogItemComponent', () => {
   describe('deleteItem', () => {
 
     let item: Item;
-    let event: ItemChangeEvent;
 
     beforeEach(fakeAsync(() => {
       item = MOCK_ITEM;
-      spyOn(itemService, 'deleteItem').and.callThrough();
-      spyOn(modalService, 'open').and.callThrough();
-      spyOn(trackingService, 'track');
-      component.itemChange.subscribe(($event: ItemChangeEvent) => {
-        event = $event;
-      });
+      spyOn(component, 'select');
       component.deleteItem(item);
     }));
 
-    afterEach(() => {
-      event = undefined;
+    it('should set selectedAction', () => {
+      expect(itemService.selectedAction).toBe('delete');
     });
-
-    it('should open modal and call delete', fakeAsync(() => {
-      tick();
-      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
-      expect(itemService.deleteItem).toHaveBeenCalledWith(ITEM_ID);
-    }));
-
-    it('should emit the updated item', () => {
-      expect(event.item).toEqual(item);
-      expect(event.action).toBe('deleted');
-    });
-    it('should track the DeleteItem event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_DELETED, {product_id: item.id});
+    it('should call select', () => {
+      expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
     });
 
   });
@@ -107,36 +91,38 @@ describe('CatalogItemComponent', () => {
 
     let item: Item;
 
-    beforeEach(() => {
-      spyOn(itemService, 'reserveItem').and.callThrough();
-      spyOn(trackingService, 'track');
+    describe('not reserved', () => {
+      beforeEach(fakeAsync(() => {
+        item = MOCK_ITEM;
+        spyOn(component, 'select');
+        component.reserve(item);
+      }));
+
+      it('should set selectedAction', () => {
+        expect(itemService.selectedAction).toBe('reserve');
+      });
+      it('should call select', () => {
+        expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
+      });
     });
 
-    it('should call reserve with true', () => {
-      item = MOCK_ITEM;
-      component.reserve(item);
-      expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, true);
-      expect(item.reserved).toBeTruthy();
+    describe('already reserved', () => {
+      beforeEach(() => {
+        spyOn(itemService, 'reserveItem').and.callThrough();
+        spyOn(trackingService, 'track');
+        item = MOCK_ITEM;
+        item.reserved = true;
+        component.reserve(item);
+      });
+      it('should call reserve with false', () => {
+        expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, false);
+        expect(item.reserved).toBeFalsy();
+      });
+      it('should track the ProductUnReserved event', () => {
+        component.reserve(item);
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
+      });
     });
-    it('should call reserve with false', () => {
-      item = MOCK_ITEM;
-      item.reserved = true;
-      component.reserve(item);
-      expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, false);
-      expect(item.reserved).toBeFalsy();
-    });
-    it('should track the ProductReserved event', () => {
-      item = MOCK_ITEM;
-      component.reserve(item);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_RESERVED, {product_id: item.id});
-    });
-    it('should track the ProductUnReserved event', () => {
-      item = MOCK_ITEM;
-      item.reserved = true;
-      component.reserve(item);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
-    });
-
   });
 
   describe('reactivateItem', () => {

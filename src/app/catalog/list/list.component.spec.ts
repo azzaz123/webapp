@@ -165,6 +165,21 @@ describe('ListComponent', () => {
     });
   });
 
+  describe('onAction', () => {
+    it('should call delete', () => {
+      itemService.selectedAction = 'delete';
+      spyOn(component, 'delete');
+      component.onAction();
+      expect(component.delete).toHaveBeenCalled();
+    });
+    it('should call reserve', () => {
+      itemService.selectedAction = 'reserve';
+      spyOn(component, 'reserve');
+      component.onAction();
+      expect(component.reserve).toHaveBeenCalled();
+    });
+  });
+
   describe('delete', () => {
     const TOTAL: number = 5;
     beforeEach(() => {
