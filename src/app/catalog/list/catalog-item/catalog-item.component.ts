@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Item, TrackingService } from 'shield';
-import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
@@ -18,7 +17,7 @@ export class CatalogItemComponent implements OnInit {
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
 
   constructor(private modalService: NgbModal,
-              private itemService: ItemService,
+              public itemService: ItemService,
               private trackingService: TrackingService) {
   }
 
@@ -26,27 +25,20 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public deleteItem(item: Item): void {
-    this.modalService.open(ConfirmationModalComponent).result.then(() => {
-      this.itemService.deleteItem(item.id).subscribe(() => {
-        this.trackingService.track(TrackingService.PRODUCT_DELETED, {product_id: item.id});
-        this.itemChange.emit({
-          item: item,
-          action: 'deleted'
-        });
-      });
-    }, () => {
-    });
+    this.itemService.selectedAction = 'delete';
+    this.select(item);
   }
 
   public reserve(item: Item) {
-    this.itemService.reserveItem(item.id, !item.reserved).subscribe(() => {
-      item.reserved = !item.reserved;
-      if (item.reserved) {
-        this.trackingService.track(TrackingService.PRODUCT_RESERVED, {product_id: item.id});
-      } else {
+    if (!item.reserved) {
+      this.itemService.selectedAction = 'reserve';
+      this.select(item);
+    } else {
+      this.itemService.reserveItem(item.id, false).subscribe(() => {
+        item.reserved = false;
         this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
-      }
-    });
+      });
+    }
   }
 
   public reactivateItem(item: Item) {

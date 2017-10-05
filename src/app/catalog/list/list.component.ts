@@ -72,6 +72,15 @@ export class ListComponent implements OnInit {
     this.items.map((item: Item) => {
       item.selected = false;
     });
+    this.itemService.selectedAction = null;
+  }
+
+  public onAction() {
+    if (this.itemService.selectedAction === 'delete') {
+      this.delete();
+    } else if (this.itemService.selectedAction === 'reserve') {
+      this.reserve();
+    }
   }
 
   public delete() {

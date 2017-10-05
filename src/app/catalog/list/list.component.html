@@ -17,12 +17,6 @@
         <ng-template ngPluralCase="other"><ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container></ng-template>
       </ng-container>
     </a>
-    <div [hidden]="itemService.selectedItems.length === 0" class="bulk-actions float-right" [ngClass]="{'show': itemService.selectedItems.length}">
-      <button class="btn-reserve" (click)="reserve()" [hidden]="selectedStatus !== 'published'" i18n>Reserve</button>
-      <button class="btn-delete" (click)="delete()">
-        <md-icon svgIcon="delete"></md-icon>
-      </button>
-    </div>
     <div class="row items">
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
         <h2 i18n [hidden]="selectedStatus === 'solds'">You have no items uploaded yet</h2>
@@ -34,3 +28,8 @@
     </div>
   </div>
 </div>
+<tsl-selected-items *ngIf="itemService.selectedItems.length"
+                    [items]="items"
+                    [selectedItemsLength]="itemService.selectedItems.length"
+                    (onAction)="onAction()"
+></tsl-selected-items>

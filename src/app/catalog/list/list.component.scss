@@ -84,3 +84,11 @@ tsl-spinner {
     }
   }
 }
+
+tsl-selected-items {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: $sidebar-width;
+  z-index: 10;
+}

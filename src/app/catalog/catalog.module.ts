@@ -9,6 +9,7 @@ import { ConfirmationModalComponent } from './list/modals/confirmation-modal/con
 import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 import { FormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
+import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { UtilsModule } from 'shield';
     catalogRoutedComponents,
     CatalogItemComponent,
     ConfirmationModalComponent,
-    SoldModalComponent
+    SoldModalComponent,
+    SelectedItemsComponent
   ],
   entryComponents: [
     ConfirmationModalComponent,
