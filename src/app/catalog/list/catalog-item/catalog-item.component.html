@@ -5,7 +5,7 @@
     </button>
   </div>
   <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected}">
-    <tsl-item-avatar [item]="item" size="big"></tsl-item-avatar>
+    <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
     <span class="price">{{item.salePrice | currency:item.currencyCode:true}}</span>
     <span class="title">{{item.title}}</span>
     <span class="visibility">

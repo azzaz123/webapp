@@ -92,3 +92,11 @@ tsl-selected-items {
   left: $sidebar-width;
   z-index: 10;
 }
+
+#catalog-empty-state {
+  padding: 0 10px;
+  md-icon {
+    width: 1120px;
+    height: 560px;
+  }
+}
