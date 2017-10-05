@@ -19,4 +19,8 @@
           class="btn btn-delete"
           (click)="onAction.emit()"
           i18n>Delete</button>
+  <button *ngIf="itemService.selectedAction === 'feature'"
+          class="btn btn-feature"
+          (click)="onAction.emit()"
+          i18n>Continue to Checkout</button>
 </div>

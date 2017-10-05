@@ -45,6 +45,9 @@
   &.btn-delete {
     background-color: $delete-bg;
   }
+  &.btn-feature {
+    background-color: $corporate;
+  }
   &:hover {
     opacity: .8;
   }

@@ -41,6 +41,11 @@ export class CatalogItemComponent implements OnInit {
     }
   }
 
+  public featureItem(item: Item): void {
+    this.itemService.selectedAction = 'feature';
+    this.select(item);
+  }
+
   public reactivateItem(item: Item) {
     this.itemService.reactivateItem(item.id).subscribe(() => {
       this.itemChange.emit({
