@@ -52,7 +52,7 @@ $transition: all .5s ease;
   justify-content: space-between;
   position: relative;
   transition: $transition;
-  &.expired {
+  &.expired, &.pending {
     &::after {
       content: '';
       position: absolute;
@@ -61,8 +61,9 @@ $transition: all .5s ease;
       bottom: 0;
       left: 0;
       background-color: $white;
-      opacity: .5;
+      opacity: .6;
       z-index: 1;
+      border-radius: $border-radius;
     }
   }
   .resized & {
@@ -147,21 +148,29 @@ $transition: all .5s ease;
       }
     }
   }
-  .btn-reactivate {
+  .btn-reactivate, .btn-pending {
     z-index: 2;
     position: relative;
-    color: $grey-900;
     font-size: $font-size-S;
-    border-radius: $border-radius;
     padding-right: 64px;
     margin-right: 24px;
+    border-radius: $border-radius;
+    color: $grey-900;
     height: 40px;
     md-icon {
       margin-right: 34px;
     }
+  }
+  .btn-reactivate {
     &:hover {
       background-color: $reactivate-bg;
       color: $white;
+    }
+  }
+  .btn-pending {
+    cursor: default;
+    md-icon {
+      margin-left: 4px;
     }
   }
 }
