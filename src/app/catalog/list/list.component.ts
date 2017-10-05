@@ -33,9 +33,11 @@ export class ListComponent implements OnInit {
   }
 
   public filterByStatus(status: string) {
-    this.selectedStatus = status;
-    this.init = 0;
-    this.getItems();
+    if (status !== this.selectedStatus) {
+      this.selectedStatus = status;
+      this.init = 0;
+      this.getItems();
+    }
   }
 
   public loadMore() {
