@@ -87,6 +87,25 @@ describe('CatalogItemComponent', () => {
 
   });
 
+  describe('featureItem', () => {
+
+    let item: Item;
+
+    beforeEach(fakeAsync(() => {
+      item = MOCK_ITEM;
+      spyOn(component, 'select');
+      component.featureItem(item);
+    }));
+
+    it('should set selectedAction', () => {
+      expect(itemService.selectedAction).toBe('feature');
+    });
+    it('should call select', () => {
+      expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
+    });
+
+  });
+
   describe('reserve', () => {
 
     let item: Item;
