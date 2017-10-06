@@ -121,12 +121,16 @@ $transition: all .5s ease;
         width: auto;
         color: $white;
         padding: 0 $spacing;
+        padding-left: 12px;
         font-size: $font-size-S;
         border: 1px solid transparent;
         &:hover {
-          background: $white;
-          border-color: $grey-700;
-          color: $grey-700;
+          background: $corporate;
+        }
+        md-icon {
+          width: 19px;
+          height: 21px;
+          margin-right: 9px;
         }
       }
       &.btn-sold {

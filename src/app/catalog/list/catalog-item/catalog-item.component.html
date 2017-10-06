@@ -14,6 +14,7 @@
     </span>
     <span class="actions" *ngIf="!item.flags.expired">
       <button class="btn-feature" (click)="featureItem(item)">
+         <md-icon svgIcon="feature"></md-icon>
         <span i18n>Feature Product</span>
       </button>
       <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
