@@ -19,6 +19,14 @@ $duration: 1.4s;
       }
     }
   }
+  &.grey {
+    @include square(14px);
+    svg {
+      .path {
+        stroke: $grey-100;
+      }
+    }
+  }
 }
 
 @keyframes rotator {
