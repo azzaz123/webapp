@@ -3,6 +3,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { Item } from 'shield';
 import * as _ from 'lodash';
+import { Product, SelectedItemsAction } from '../../../core/item/item-response.interface';
+import { SelectedProduct } from './selected-product.interface';
 
 @Component({
   selector: 'tsl-selected-items',
@@ -18,33 +20,49 @@ import * as _ from 'lodash';
         style({transform: 'translateY(0%)'}),
         animate('300ms', style({transform: 'translateY(100%)'}))
       ])
-    ]),
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('300ms', style({opacity: 1}))
-      ]),
-      transition(':leave', [
-        style({opacity: 1}),
-        animate('300ms', style({opacity: 0}))
-      ])
     ])
   ]
 })
-export class SelectedItemsComponent implements OnChanges {
+export class SelectedItemsComponent implements OnInit {
 
   @HostBinding('@enterFromBottom') public animation: void;
   @Input() items: Item[];
-  @Input() selectedItemsLength: number;
   @Output() onAction: EventEmitter<any> = new EventEmitter();
   public selectedItems: Item[];
+  public selectedProducts: SelectedProduct[] = [];
+  public total = 0;
 
   constructor(public itemService: ItemService) {
   }
 
-  ngOnChanges() {
-    this.selectedItems = this.itemService.selectedItems.map((id: string) => {
-      return <Item>_.find(this.items, {id: id});
+  ngOnInit() {
+    this.itemService.selectedItems$.subscribe((action: SelectedItemsAction) => {
+      this.selectedItems = this.itemService.selectedItems.map((id: string) => {
+        return <Item>_.find(this.items, {id: id});
+      });
+      if (this.itemService.selectedAction === 'feature') {
+        if (action.action === 'selected') {
+          this.itemService.getAvailableProducts(action.id).subscribe((product: Product) => {
+            this.selectedProducts.push({
+              itemId: action.id,
+              product: product
+            });
+            this.calculateTotal();
+          });
+        } else if (action.action === 'deselected') {
+          const index: number = _.findIndex(this.selectedProducts, {itemId: action.id});
+          if (index !== -1) {
+            this.selectedProducts.splice(index, 1);
+            this.calculateTotal();
+          }
+        }
+      }
+    });
+  }
+
+  private calculateTotal() {
+    this.total = _.sumBy(this.selectedProducts, (product: SelectedProduct) => {
+      return +product.product.durations[0].market_code;
     });
   }
 

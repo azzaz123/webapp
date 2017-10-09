@@ -157,6 +157,11 @@ export class ItemService extends ItemServiceMaster {
     .map((r: Response) => r.json());
   }
 
+  public getAvailableProducts(id: string): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/' + id + '/available-products')
+    .map((r: Response) => r.json());
+  }
+
   private getPurchases(): Observable<Purchase[]> {
     if (this.purchases) {
       return Observable.of(this.purchases);
