@@ -136,7 +136,7 @@ export class ItemService extends ItemServiceMaster {
     .map((r: Response) => r.json());
   }
 
-  public getPurchases(): Observable<Purchase[]> {
+  private getPurchases(): Observable<Purchase[]> {
     if (this.purchases) {
       return Observable.of(this.purchases);
     }

@@ -1,4 +1,4 @@
-import { ConversationUser, ItemResponse } from '../app/core/item/item-response.interface';
+import { ConversationUser, ItemResponse, Purchase } from '../app/core/item/item-response.interface';
 
 export const ITEM_DATA_V3: ItemResponse = {
   'id': '0j2ylvwrpmzy',
@@ -33,10 +33,10 @@ export const ITEM_DATA_V3: ItemResponse = {
 };
 
 export const ITEMS_DATA_V3 = [{
-  'id': 'xzo81pl11l69',
+  'id': '1',
   'type': 'cars',
   'content': {
-    'id': 'xzo81pl11l69',
+    'id': '1',
     'title': 'Toyota Yaris 1.3 99CV',
     'description': 'Marca: Toyota',
     'image': {
@@ -68,10 +68,80 @@ export const ITEMS_DATA_V3 = [{
     'favorites': 0
   }
 }, {
-  'id': 'qzm4w59wwgzv',
+  'id': '2',
   'type': 'cars',
   'content': {
-    'id': 'qzm4w59wwgzv',
+    'id': '2',
+    'title': 'Volvo V70 XC AWD Cross Country',
+    'description': 'Marca: Volvo',
+    'image': {
+      'original': 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+      'small': 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W320',
+      'large': 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+      'medium': 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+      'xlarge': 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+      'original_width': 688,
+      'original_height': 392
+    },
+    'seller_id': 'l1kmzn82zn3p',
+    'flags': {
+      'pending': false,
+      'sold': false,
+      'reserved': false,
+      'banned': false,
+      'expired': false,
+      'bumped': false,
+      'highlighted': false,
+      'urgent': false
+    },
+    'sale_price': 7500.0,
+    'currency_code': 'EUR',
+    'modified_date': 1505891020000,
+    'publish_date': 1505891020000,
+    'web_slug': 'volvo-v70-xc-awd-cross-country-500008656',
+    'views': 0,
+    'favorites': 0
+  }
+}, {
+  'id': '3',
+  'type': 'cars',
+  'content': {
+    'id': '3',
+    'title': 'Volvo V70 XC AWD Cross Country',
+    'description': 'Marca: Volvo',
+    'image': {
+      'original': 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+      'small': 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W320',
+      'large': 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+      'medium': 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+      'xlarge': 'http://localhost:8080/shnm-portlet/images?pictureId=500009664&pictureSize=W640',
+      'original_width': 688,
+      'original_height': 392
+    },
+    'seller_id': 'l1kmzn82zn3p',
+    'flags': {
+      'pending': false,
+      'sold': false,
+      'reserved': false,
+      'banned': false,
+      'expired': false,
+      'bumped': false,
+      'highlighted': false,
+      'urgent': false
+    },
+    'sale_price': 7500.0,
+    'currency_code': 'EUR',
+    'modified_date': 1505891020000,
+    'publish_date': 1505891020000,
+    'web_slug': 'volvo-v70-xc-awd-cross-country-500008656',
+    'views': 0,
+    'favorites': 0
+  }
+}, {
+  'id': '4',
+  'type': 'cars',
+  'content': {
+    'id': '4',
     'title': 'Volvo V70 XC AWD Cross Country',
     'description': 'Marca: Volvo',
     'image': {
@@ -114,3 +184,12 @@ export const CONVERSATION_USERS: ConversationUser[] = [{
   last_message: 'Heyyyy'
 }];
 
+export const PURCHASES: Purchase[] = [{
+  'item_id': '1',
+  'expiration_date': 1510221655715,
+  'visibility_flags': {'bumped': false, 'highlighted': true, 'urgent': false}
+}, {
+  'item_id': '3',
+  'expiration_date': 1509874085135,
+  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
+}];
