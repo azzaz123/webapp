@@ -4,7 +4,7 @@
       <md-icon svgIcon="check"></md-icon>
     </button>
   </div>
-  <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected}">
+  <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected, pending: item.flags.pending}">
     <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
     <span class="price">{{item.salePrice | currency:item.currencyCode:true}}</span>
     <span class="title">{{item.title}}</span>
@@ -12,11 +12,15 @@
       <md-icon svgIcon="views"></md-icon> {{item.views}}
       <md-icon svgIcon="heart"></md-icon> {{item.favorites}}
     </span>
-    <span class="actions" *ngIf="!item.flags.expired">
+    <span class="actions" *ngIf="!item.flags.expired && !item.flags.pending">
+      <button class="btn-feature" (click)="featureItem(item)">
+         <md-icon svgIcon="feature"></md-icon>
+        <span i18n>Feature Product</span>
+      </button>
       <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
         <md-icon svgIcon="sold"></md-icon>
       </button>
-      <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.pending">
+      <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
         <md-icon svgIcon="reserved"></md-icon>
       </button>
       <button class="btn-delete" (click)="deleteItem(item)">
@@ -26,6 +30,10 @@
     <button class="btn-reactivate" (click)="reactivateItem(item)" *ngIf="item.flags.expired">
       <md-icon svgIcon="clock"></md-icon>
       <span i18n>Reactivate</span>
+    </button>
+    <button class="btn-pending" *ngIf="item.flags.pending">
+      <md-icon svgIcon="spinner" class="spinner grey"></md-icon>
+      <span i18n>Pending</span>
     </button>
   </div>
 </div>

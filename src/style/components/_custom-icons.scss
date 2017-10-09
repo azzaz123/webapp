@@ -90,7 +90,7 @@
 }
 
 .actions, .bulk-actions {
-  button {
+  button:not(.btn-feature) {
     md-icon svg g g, svg path {
       fill: $grey-500;
     }
