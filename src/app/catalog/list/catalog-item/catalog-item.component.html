@@ -13,6 +13,10 @@
       <md-icon svgIcon="heart"></md-icon> {{item.favorites}}
     </span>
     <span class="actions" *ngIf="!item.flags.expired && !item.flags.pending">
+      <button class="btn-feature" (click)="featureItem(item)">
+         <md-icon svgIcon="feature"></md-icon>
+        <span i18n>Feature Product</span>
+      </button>
       <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
         <md-icon svgIcon="sold"></md-icon>
       </button>
