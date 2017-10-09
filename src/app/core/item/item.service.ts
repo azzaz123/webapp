@@ -10,9 +10,10 @@ import {
   UserService,
   ItemBulkResponse
 } from 'shield';
-import { ConversationUser, ItemContent, ItemResponse, ItemsData } from './item-response.interface';
+import { ConversationUser, ItemContent, ItemResponse, ItemsData, Purchase } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
+import * as _ from 'lodash';
 
 @Injectable()
 export class ItemService extends ItemServiceMaster {
@@ -20,6 +21,7 @@ export class ItemService extends ItemServiceMaster {
   protected API_URL_V2: string = 'api/v3/items';
   private API_URL_WEB: string = 'api/v3/web/items';
   public selectedAction: string;
+  private purchases: Purchase[];
 
   constructor(http: HttpService,
               i18n: I18nService,
@@ -86,7 +88,22 @@ export class ItemService extends ItemServiceMaster {
           init: nextInit
         }
       }
-    );
+    )
+    .flatMap((itemsData: ItemsData) => {
+      return this.getPurchases()
+      .map((purchases: Purchase[]) => {
+        purchases.forEach((purchase: Purchase) => {
+          const index: number = _.findIndex(itemsData.data, {id: purchase.item_id});
+          if (index !== -1) {
+            itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
+            itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
+            itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
+            itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
+          }
+        });
+        return itemsData;
+      })
+    });
   }
 
   public deleteItem(id: string): Observable<any> {
@@ -117,6 +134,17 @@ export class ItemService extends ItemServiceMaster {
   public getConversationUsers(id: string): Observable<ConversationUser[]> {
     return this.http.get(this.API_URL_V3 + '/' + id + '/conversation-users')
     .map((r: Response) => r.json());
+  }
+
+  public getPurchases(): Observable<Purchase[]> {
+    if (this.purchases) {
+      return Observable.of(this.purchases);
+    }
+    return this.http.get(this.API_URL_WEB + '/mine/purchases')
+    .map((r: Response) => r.json())
+    .do((purchases: Purchase[]) => {
+      this.purchases = purchases;
+    });
   }
 
 }
