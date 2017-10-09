@@ -58,10 +58,10 @@ export class CatalogItemComponent implements OnInit {
   public select(item: Item) {
     item.selected = !item.selected;
     if (item.selected) {
-      this.itemService.selectedItems.push(item.id);
+      this.itemService.selectItem(item.id);
       this.trackingService.track(TrackingService.PRODUCT_SELECTED, {product_id: item.id});
     } else {
-      this.itemService.selectedItems = _.without(this.itemService.selectedItems, item.id);
+      this.itemService.deselectItem(item.id);
       this.trackingService.track(TrackingService.PRODUCT_UN_SELECTED, {product_id: item.id});
     }
   }
