@@ -122,10 +122,18 @@ describe('ListComponent', () => {
   });
 
   describe('filterByStatus', () => {
+    beforeEach(() => {
+      itemerviceSpy.calls.reset();
+    });
     it('should call mines with filtering and reset page', () => {
       component['init'] = 20;
       component.filterByStatus('sold');
       expect(itemService.mine).toHaveBeenCalledWith(0, 'sold');
+    });
+    it('should not call mines if filter is the same', () => {
+      component.selectedStatus = 'sold';
+      component.filterByStatus('sold');
+      expect(itemService.mine).not.toHaveBeenCalled();
     });
   });
 
