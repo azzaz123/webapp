@@ -13,10 +13,15 @@
       <md-icon svgIcon="heart"></md-icon> {{item.favorites}}
     </span>
     <span class="actions" *ngIf="!item.flags.expired && !item.flags.pending">
-      <button class="btn-feature" (click)="featureItem(item)">
+      <span [hidden]="item.sold">
+      <button class="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate">
          <md-icon svgIcon="feature"></md-icon>
         <span i18n>Feature Product</span>
       </button>
+      <button class="btn-featured" *ngIf="item.bumpExpiringDate">
+        {{item.bumpExpiringDate | amCountdown}}
+      </button>
+      </span>
       <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
         <md-icon svgIcon="sold"></md-icon>
       </button>

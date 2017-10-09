@@ -10,6 +10,7 @@ import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.componen
 import { FormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
+import { MomentModule } from 'angular2-moment';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { SelectedItemsComponent } from './list/selected-items/selected-items.com
     CatalogRoutingModule,
     MdIconModule,
     InfiniteScrollModule,
-    UtilsModule
+    UtilsModule,
+    MomentModule
   ],
   declarations: [
     catalogRoutedComponents,
