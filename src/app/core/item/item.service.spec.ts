@@ -77,7 +77,7 @@ describe('ItemService', () => {
     });
   });
 
-  fdescribe('mine', () => {
+  describe('mine', () => {
     let resp: ItemsData;
     describe('no purchases', () => {
       beforeEach(() => {
