@@ -1,15 +1,15 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   createItemsArray,
+  ErrorsService,
   I18nService,
   Item,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
   MockTrackingService,
-  TrackingService,
-  ITEM_FLAGS,
-  PaymentService
+  PaymentService,
+  TrackingService
 } from 'shield';
 
 import { ListComponent } from './list.component';
@@ -80,6 +80,11 @@ describe('ListComponent', () => {
           getFinancialCard() {
           }
         }
+        }, {
+          provide: ErrorsService, useValue: {
+            show() {
+            }
+          }
         }],
       schemas: [NO_ERRORS_SCHEMA]
     })

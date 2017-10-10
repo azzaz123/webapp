@@ -1,5 +1,13 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { FinancialCard, I18nService, Item, ItemBulkResponse, PaymentService, TrackingService, SabadellInfoResponse } from 'shield';
+import {
+  FinancialCard,
+  I18nService,
+  Item,
+  ItemBulkResponse,
+  PaymentService,
+  TrackingService,
+  ErrorsService
+} from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
@@ -8,6 +16,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { UUID } from 'angular2-uuid';
+import { Response } from '@angular/http';
 
 @Component({
   selector: 'tsl-list',
@@ -28,7 +37,8 @@ export class ListComponent implements OnInit {
               private modalService: NgbModal,
               private toastr: ToastrService,
               private i18n: I18nService,
-              private paymentService: PaymentService) {
+              private paymentService: PaymentService,
+              private errorService: ErrorsService) {
   }
 
   ngOnInit() {
@@ -134,10 +144,12 @@ export class ListComponent implements OnInit {
     this.itemService.purchaseProducts(order, orderId).subscribe((failedProducts: string[]) => {
       this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
         console.log('We have card!', financialCard);
-        this.sabadellSubmit.emit(orderId); // remove this and open credit card dialog passing financialCard
+        this.sabadellSubmit.emit(orderId); // TODO: remove this and open credit card dialog passing financialCard
       }, () => {
         this.sabadellSubmit.emit(orderId);
       });
+    }, (error: Response) => {
+      this.errorService.show(error);
     });
   }
 }
