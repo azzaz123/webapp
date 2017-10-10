@@ -11,7 +11,7 @@ import {
   UserService
 } from 'shield';
 import {
-  ConversationUser, ItemContent, ItemResponse, ItemsData, Product, Purchase,
+  ConversationUser, ItemContent, ItemResponse, ItemsData, Order, Product, Purchase,
   SelectedItemsAction
 } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
@@ -171,6 +171,11 @@ export class ItemService extends ItemServiceMaster {
     .do((purchases: Purchase[]) => {
       this.purchases = purchases;
     });
+  }
+
+  public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
+    return this.http.post(this.API_URL_WEB + '/purchase/products/' + orderId, orderParams)
+    .map((r: Response) => r.json());
   }
 
 }

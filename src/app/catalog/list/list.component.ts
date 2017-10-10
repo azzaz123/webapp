@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FinancialCard, I18nService, Item, ItemBulkResponse, PaymentService, TrackingService } from 'shield';
+import { Component, EventEmitter, OnInit } from '@angular/core';
+import { FinancialCard, I18nService, Item, ItemBulkResponse, PaymentService, TrackingService, SabadellInfoResponse } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
@@ -7,6 +7,7 @@ import { ItemsData, Order } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'tsl-list',
@@ -20,12 +21,14 @@ export class ListComponent implements OnInit {
   public loading: boolean = true;
   private init: number = 0;
   public end: boolean;
+  public sabadellSubmit: EventEmitter<string> = new EventEmitter();
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
               private modalService: NgbModal,
               private toastr: ToastrService,
-              private i18n: I18nService) {
+              private i18n: I18nService,
+              private paymentService: PaymentService) {
   }
 
   ngOnInit() {
@@ -127,6 +130,14 @@ export class ListComponent implements OnInit {
   }
 
   private feature(order: Order[]) {
-    
+    const orderId: string = UUID.UUID();
+    this.itemService.purchaseProducts(order, orderId).subscribe((failedProducts: string[]) => {
+      this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
+        console.log('We have card!', financialCard);
+        this.sabadellSubmit.emit(orderId); // remove this and open credit card dialog passing financialCard
+      }, () => {
+        this.sabadellSubmit.emit(orderId);
+      });
+    });
   }
 }
