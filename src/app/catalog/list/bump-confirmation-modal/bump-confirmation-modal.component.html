@@ -1,4 +1,6 @@
-<img src="../../../../assets/images/bump-ok.png" alt="">
+<img [hidden]="bumpResponse.code != 200" src="../../../../assets/images/bump-ok.png" alt="">
+<img class="fail" [hidden]="bumpResponse.code == 200" src="../../../../assets/images/bump-ko.png" alt="">
+
 <h1 i18n [hidden]="bumpResponse.code != 200">Congratulations</h1>
 <h1 i18n [hidden]="bumpResponse.code == 200"class="fail">We've failed you bro</h1>
 

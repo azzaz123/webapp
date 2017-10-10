@@ -7,6 +7,9 @@
 img {
   width: 126px;
   margin-bottom: $spacing;
+  &.fail {
+    width: 63px;
+  }
 }
 p {
   max-width: 270px;
