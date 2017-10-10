@@ -31,6 +31,7 @@ import { BumpConfirmationModalComponent } from './list/bump-confirmation-modal/b
     BumpConfirmationModalComponent
   ],
   entryComponents: [
+    BumpConfirmationModalComponent,
     ConfirmationModalComponent,
     SoldModalComponent
   ]
