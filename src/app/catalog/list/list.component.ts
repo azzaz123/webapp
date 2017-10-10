@@ -30,7 +30,6 @@ export class ListComponent implements OnInit {
     const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {windowClass: 'review'});
     modalRef.componentInstance.bumpResponse = {code: 200};
     modalRef.result.then((result: any) => {
-      console.log('modal open');
     }, () => {
     });
   }

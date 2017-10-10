@@ -17,6 +17,9 @@ h1 {
   color: $corporate;
   font-size: $spacing;
   margin-bottom: $spacing-S;
+  &.fail {
+    color: $warn;
+  }
 }
 button {
   @include square(40px);
