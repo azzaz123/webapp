@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Item, TrackingService, ItemBulkResponse, I18nService } from 'shield';
+import { FinancialCard, I18nService, Item, ItemBulkResponse, PaymentService, TrackingService } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import { ItemsData } from '../../core/item/item-response.interface';
+import { ItemsData, Order } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
@@ -77,11 +77,13 @@ export class ListComponent implements OnInit {
     this.itemService.selectedAction = null;
   }
 
-  public onAction() {
+  public onAction($event) {
     if (this.itemService.selectedAction === 'delete') {
       this.delete();
     } else if (this.itemService.selectedAction === 'reserve') {
       this.reserve();
+    } else if (this.itemService.selectedAction === 'feature') {
+      this.feature($event);
     }
   }
 
@@ -99,7 +101,8 @@ export class ListComponent implements OnInit {
           this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
         }
       });
-    }, () => {});
+    }, () => {
+    });
   }
 
   public reserve() {
@@ -119,6 +122,11 @@ export class ListComponent implements OnInit {
           this.toastr.error(this.i18n.getTranslations('bulkReserveError'));
         }
       });
-    }, () => {});
+    }, () => {
+    });
+  }
+
+  private feature(order: Order[]) {
+    
   }
 }

@@ -65,3 +65,8 @@ export interface SelectedItemsAction {
   id: string;
   action: 'selected' | 'deselected';
 }
+
+export interface Order {
+  item_id: string;
+  product_id: string;
+}
