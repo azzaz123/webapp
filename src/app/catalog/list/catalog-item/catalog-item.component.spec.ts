@@ -27,6 +27,10 @@ describe('CatalogItemComponent', () => {
         {
           provide: ItemService, useValue: {
           selectedItems: [],
+          selectItem() {
+          },
+          deselectItem() {
+          },
           deleteItem() {
             return Observable.of({});
           },
@@ -174,6 +178,26 @@ describe('CatalogItemComponent', () => {
     });
 
   });
+
+  describe('select', () => {
+    it('should set selected true and call selectItem', () => {
+      const item: Item = MOCK_ITEM;
+      item.selected = false;
+      spyOn(itemService, 'selectItem');
+      component.select(item);
+      expect(item.selected).toBeTruthy();
+      expect(itemService.selectItem).toHaveBeenCalledWith(ITEM_ID);
+    });
+    it('should set selected false and call deselectItem', () => {
+      const item: Item = MOCK_ITEM;
+      item.selected = true;
+      spyOn(itemService, 'deselectItem');
+      component.select(item);
+      expect(item.selected).toBeFalsy();
+      expect(itemService.deselectItem).toHaveBeenCalledWith(ITEM_ID);
+    });
+  });
+
 
   describe('setSold', () => {
 
