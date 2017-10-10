@@ -80,7 +80,7 @@ export class ListComponent implements OnInit {
     this.itemService.selectedAction = null;
   }
 
-  public onAction($event) {
+  public onAction($event?: any) {
     if (this.itemService.selectedAction === 'delete') {
       this.delete();
     } else if (this.itemService.selectedAction === 'reserve') {
@@ -129,7 +129,7 @@ export class ListComponent implements OnInit {
     });
   }
 
-  private feature(order: Order[]) {
+  public feature(order: Order[]) {
     const orderId: string = UUID.UUID();
     this.itemService.purchaseProducts(order, orderId).subscribe((failedProducts: string[]) => {
       this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {

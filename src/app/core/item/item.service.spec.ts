@@ -16,7 +16,7 @@ import {
 import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
 import {
-  CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, PRODUCT_RESPONSE,
+  CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, ORDER, PRODUCT_RESPONSE,
   PURCHASES
 } from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers } from '@angular/http';
@@ -264,12 +264,25 @@ describe('ItemService', () => {
     it('should call endpoint', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCT_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let resp: Product
+      let resp: Product;
       service.getAvailableProducts(ITEM_ID).subscribe((r: Product) => {
         resp = r;
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-products');
       expect(resp).toEqual(PRODUCT_RESPONSE)
+    });
+  });
+
+  describe('purchaseProducts', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(['1234'])});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      let resp: string[];
+      service.purchaseProducts([ORDER], 'UUID').subscribe((r: string[]) => {
+        resp = r;
+      });
+      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER]);
+      expect(resp).toEqual(['1234'])
     });
   });
 

@@ -1,4 +1,4 @@
-import { ConversationUser, ItemResponse, Product, Purchase } from '../app/core/item/item-response.interface';
+import { ConversationUser, ItemResponse, Order, Product, Purchase } from '../app/core/item/item-response.interface';
 
 export const ITEM_DATA_V3: ItemResponse = {
   'id': '0j2ylvwrpmzy',
@@ -206,4 +206,9 @@ export const PRODUCT2_RESPONSE: Product = {
   'name': 'WEB-MARKET',
   'default_duration_index': 0,
   'durations': [{'id': 'l1kmzngg6n3p', 'duration': 168, 'market_code': '7.29', 'original_market_code': '5.99'}]
+};
+
+export const ORDER: Order = {
+  item_id: '1',
+  product_id: '2'
 };

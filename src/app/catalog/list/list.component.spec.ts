@@ -8,7 +8,8 @@ import {
   MOCK_ITEM,
   MockTrackingService,
   TrackingService,
-  ITEM_FLAGS
+  ITEM_FLAGS,
+  PaymentService
 } from 'shield';
 
 import { ListComponent } from './list.component';
@@ -19,6 +20,9 @@ import * as _ from 'lodash';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Order } from '../../core/item/item-response.interface';
+import { ORDER } from '../../../tests/item.fixtures';
+import { UUID } from 'angular2-uuid';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -29,6 +33,7 @@ describe('ListComponent', () => {
   let toastr: ToastrService;
   let trackingServiceSpy: jasmine.Spy;
   let itemerviceSpy: jasmine.Spy;
+  let paymentService: PaymentService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,6 +52,8 @@ describe('ListComponent', () => {
           bulkDelete() {
           },
           bulkReserve() {
+          },
+          purchaseProducts() {
           }
         }
         },
@@ -67,6 +74,12 @@ describe('ListComponent', () => {
           error() {
           }
         }
+        },
+        {
+          provide: PaymentService, useValue: {
+          getFinancialCard() {
+          }
+        }
         }],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -80,6 +93,7 @@ describe('ListComponent', () => {
     trackingService = TestBed.get(TrackingService);
     modalService = TestBed.get(NgbModal);
     toastr = TestBed.get(ToastrService);
+    paymentService = TestBed.get(PaymentService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     spyOn(modalService, 'open').and.callThrough();
@@ -186,6 +200,13 @@ describe('ListComponent', () => {
       component.onAction();
       expect(component.reserve).toHaveBeenCalled();
     });
+    it('should call feature', () => {
+      itemService.selectedAction = 'feature';
+      spyOn(component, 'feature');
+      const order: Order[] = [ORDER];
+      component.onAction(order);
+      expect(component.feature).toHaveBeenCalledWith(order);
+    });
   });
 
   describe('delete', () => {
@@ -276,6 +297,29 @@ describe('ListComponent', () => {
       it('should open error toastr', () => {
         expect(toastr.error).toHaveBeenCalledWith('Some listings have not been reserved due to an error');
       });
+    });
+  });
+
+  describe('feature', () => {
+    let eventId: string;
+    beforeEach(() => {
+      spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.of([]));
+      spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.throw(''));
+      spyOn(UUID, 'UUID').and.returnValue('UUID');
+      eventId = null;
+      component.sabadellSubmit.subscribe((id: string) => {
+        eventId = id;
+      });
+      component.feature([ORDER]);
+    });
+    it('should call purchaseProducts', () => {
+      expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+    });
+    it('should call getFinancialCard', () => {
+      expect(paymentService.getFinancialCard).toHaveBeenCalled();
+    });
+    it('should submit sabadell with orderId', () => {
+      expect(eventId).toBe('UUID');
     });
   });
 
