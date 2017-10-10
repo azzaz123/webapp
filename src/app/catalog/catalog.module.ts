@@ -10,6 +10,7 @@ import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.componen
 import { FormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
+import { BumpConfirmationModalComponent } from './list/bump-confirmation-modal/bump-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { SelectedItemsComponent } from './list/selected-items/selected-items.com
     CatalogItemComponent,
     ConfirmationModalComponent,
     SoldModalComponent,
-    SelectedItemsComponent
+    SelectedItemsComponent,
+    BumpConfirmationModalComponent
   ],
   entryComponents: [
     ConfirmationModalComponent,
