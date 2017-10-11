@@ -8,6 +8,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { BumpConfirmationModalComponent } from './bump-confirmation-modal/bump-confirmation-modal.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tsl-list',
@@ -21,21 +22,27 @@ export class ListComponent implements OnInit {
   public loading: boolean = true;
   private init: number = 0;
   public end: boolean;
+  private bumpCode: number = null;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
               private modalService: NgbModal,
+              private route: ActivatedRoute,
               private toastr: ToastrService,
               private i18n: I18nService) {
-    const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {windowClass: 'review'});
-    modalRef.componentInstance.bumpResponse = {code: 200};
-    modalRef.result.then((result: any) => {
-    }, () => {
-    });
   }
 
   ngOnInit() {
     this.getItems();
+    this.route.queryParams.subscribe((params: any) => {
+      if (params && params.code) {
+        const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {windowClass: 'review'});
+        modalRef.componentInstance.bumpResponse = {code: params.code};
+        modalRef.result.then((result: any) => {
+        }, () => {
+        });
+      }
+    });
   }
 
   public filterByStatus(status: string) {
