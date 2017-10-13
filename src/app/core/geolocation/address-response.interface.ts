@@ -34,8 +34,8 @@ export interface Geometry {
 }
 
 export interface Coordinate {
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface Positioning {

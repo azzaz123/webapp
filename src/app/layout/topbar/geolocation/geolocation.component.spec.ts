@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeolocationComponent } from './geolocation.component';
 import { Observable } from 'rxjs/Observable';
 import { GEOLOCATION_DATA_WEB } from '../../../../tests/geolocation.fixtures';
-import { ADDRESS_DATA_WEB } from '../../../../tests/address.fixtures';
+import { COORDINATE_DATA_WEB } from '../../../../tests/address.fixtures';
 import { EventService } from '../../../core/event/event.service';
 import { GeolocationService } from '../../../core/geolocation/geolocation.service';
 
@@ -23,7 +23,7 @@ describe('GeolocationComponent', () => {
           return Observable.of(GEOLOCATION_DATA_WEB);
         },
         geocode: () => {
-          return Observable.of(ADDRESS_DATA_WEB);
+          return Observable.of(COORDINATE_DATA_WEB);
         }
       }}, EventService]
     })
@@ -59,7 +59,7 @@ describe('GeolocationComponent', () => {
     it('should emit an event with the selected item', () => {
       spyOn(component.newCoordinate, 'emit');
       component.selectItem(GEOLOCATION_DATA_WEB);
-      expect(component.newCoordinate.emit).toHaveBeenCalledWith(ADDRESS_DATA_WEB.result.geometry.location);
+      expect(component.newCoordinate.emit).toHaveBeenCalledWith(COORDINATE_DATA_WEB);
     });
   });
 

@@ -100,9 +100,9 @@ describe('TopbarComponent', () => {
   });
 
   describe('update coordinate', () => {
-    let newCoordinates = {'lat': 41.2, 'lng': 2.1};
+    let newCoordinates = {'latitude': 41.2, 'longitude': 2.1};
     it('should update the user coordinates', () => {
-      component.coordinates = {'lat': 0.0, 'lng': 0.0};
+      component.coordinates = {'latitude': 0.0, 'longitude': 0.0};
       component.onCoordinateUpdate(newCoordinates);
       expect(component.coordinates).toEqual(newCoordinates);
     });
