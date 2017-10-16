@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CoreModule } from '../core/core.module';
 
 import { FavoritesRoutingModule, favoritesRoutedComponents } from './favorites.routes';
 import { FavoritesComponent } from './favorites.component';
@@ -7,7 +8,8 @@ import { FavoritesComponent } from './favorites.component';
 @NgModule({
   imports: [
     CommonModule,
-    FavoritesRoutingModule
+    FavoritesRoutingModule,
+    CoreModule
   ],
   declarations: [
     FavoritesComponent,
