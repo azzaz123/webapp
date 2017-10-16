@@ -1,10 +1,10 @@
 <img [hidden]="bumpResponse.code != 200" src="../../../../assets/images/bump-ok.png" alt="">
 <img class="fail" [hidden]="bumpResponse.code == 200" src="../../../../assets/images/bump-ko.png" alt="">
 
-<h1 i18n [hidden]="bumpResponse.code != 200">Congratulations</h1>
-<h1 i18n [hidden]="bumpResponse.code == 200"class="fail">We've failed you bro</h1>
+<h1 i18n [hidden]="bumpResponse.code != 200" i18n>Congratulations</h1>
+<h1 i18n [hidden]="bumpResponse.code == 200" class="fail" i18n>We've failed you bro</h1>
 
-<p i18n [hidden]="bumpResponse.code != 200">Your item(s) have been featured and you can see them in the top position.</p>
-<p i18n [hidden]="bumpResponse.code == 200">Your item(s) have not been featured because something went wrong with you credit card.</p>
+<p i18n [hidden]="bumpResponse.code != 200" i18n>Your item(s) have been featured and you can see them in the top position.</p>
+<p i18n [hidden]="bumpResponse.code == 200" i18n>Your item(s) have not been featured because something went wrong with you credit card.</p>
 
 <button class="btn-continue" i18n>Continue</button>
