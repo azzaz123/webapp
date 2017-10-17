@@ -42,6 +42,7 @@
     <div class="dropdown-menu dropdown-menu-right">
       <a class="dropdown-item" href="{{userUrl}}" i18n>My Profile</a>
       <a class="dropdown-item" (click)="logout()" i18n>Logout</a>
+      <a class="dropdown-item" [routerLink]="['/catalog/list']"  i18n>Catalog</a>
     </div>
   </div>
 </div>
