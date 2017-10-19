@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreditCardModalComponent } from './credit-card-modal.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { FINANCIAL_CARD } from 'shield';
 
 describe('CreditCardModalComponent', () => {
   let component: CreditCardModalComponent;
@@ -8,7 +12,10 @@ describe('CreditCardModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreditCardModalComponent ]
+      imports: [FormsModule],
+      providers: [NgbActiveModal],
+      declarations: [CreditCardModalComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -16,6 +23,7 @@ describe('CreditCardModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreditCardModalComponent);
     component = fixture.componentInstance;
+    component.financialCard = FINANCIAL_CARD;
     fixture.detectChanges();
   });
 
