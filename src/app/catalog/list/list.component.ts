@@ -33,14 +33,13 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.getItems();
-    this.route.queryParams.subscribe((params: any) => {
-      if (params && params.code) {
-        const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {windowClass: 'review'});
-        modalRef.componentInstance.code = params.code;
-        modalRef.result.then((result: any) => {
-        }, () => {
-        });
-      }
+    setTimeout(() => {
+      this.route.queryParams.subscribe((params: any) => {
+        if (params && params.code) {
+          const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {windowClass: 'review'});
+          modalRef.componentInstance.code = params.code;
+        }
+      });
     });
   }
 
@@ -111,7 +110,8 @@ export class ListComponent implements OnInit {
           this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
         }
       });
-    }, () => {});
+    }, () => {
+    });
   }
 
   public reserve() {
@@ -131,6 +131,7 @@ export class ListComponent implements OnInit {
           this.toastr.error(this.i18n.getTranslations('bulkReserveError'));
         }
       });
-    }, () => {});
+    }, () => {
+    });
   }
 }

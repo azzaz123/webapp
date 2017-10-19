@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BumpConfirmationModalComponent } from './bump-confirmation-modal.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('BumpConfirmationModalComponent', () => {
   let component: BumpConfirmationModalComponent;
@@ -8,6 +9,7 @@ describe('BumpConfirmationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      providers: [NgbActiveModal],
       declarations: [ BumpConfirmationModalComponent ]
     })
     .compileComponents();
