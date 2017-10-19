@@ -7,7 +7,7 @@ import { ItemsData } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
-import { BumpConfirmationModalComponent } from './bump-confirmation-modal/bump-confirmation-modal.component';
+import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
