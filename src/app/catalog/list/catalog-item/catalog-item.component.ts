@@ -24,6 +24,12 @@ export class CatalogItemComponent implements OnInit {
   ngOnInit() {
   }
 
+  get showCheckbox() {
+    return (this.itemService.selectedAction !== 'feature' && this.itemService.selectedAction !== 'reserve') ||
+      (this.itemService.selectedAction === 'feature' && !this.item.featured) ||
+      (this.itemService.selectedAction === 'reserve' && !this.item.reserved);
+  }
+
   public deleteItem(item: Item): void {
     this.itemService.selectedAction = 'delete';
     this.select(item);
