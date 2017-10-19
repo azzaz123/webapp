@@ -205,7 +205,7 @@ export const PRODUCT2_RESPONSE: Product = {
   'id': 'd9ke65mjox1m',
   'name': 'WEB-MARKET',
   'default_duration_index': 0,
-  'durations': [{'id': 'l1kmzngg6n3p', 'duration': 168, 'market_code': '7.29', 'original_market_code': '5.99'}]
+  'durations': [{'id': 'g24g2jhg4jh24', 'duration': 168, 'market_code': '7.29', 'original_market_code': '5.99'}]
 };
 
 export const ORDER: Order = {

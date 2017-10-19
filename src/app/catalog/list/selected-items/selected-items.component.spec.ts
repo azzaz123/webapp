@@ -7,6 +7,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
 import { PRODUCT2_RESPONSE, PRODUCT_RESPONSE } from '../../../../tests/item.fixtures';
+import { Order } from '../../../core/item/item-response.interface';
 
 describe('SelectedItemsComponent', () => {
   let component: SelectedItemsComponent;
@@ -124,6 +125,30 @@ describe('SelectedItemsComponent', () => {
         });
         expect(component.total).toBe(0);
       });
+    });
+  });
+
+  describe('featureItems', () => {
+    it('should emit order', () => {
+      let orderEvent: Order[];
+      component.selectedProducts = [{
+        itemId: '1',
+        product: PRODUCT_RESPONSE
+      }, {
+        itemId: '2',
+        product: PRODUCT2_RESPONSE
+      }];
+      component.onAction.subscribe((order: Order[]) => {
+        orderEvent = order;
+      });
+      component.featureItems();
+      expect(orderEvent).toEqual([{
+        item_id: '1',
+        product_id: 'l1kmzngg6n3p'
+      }, {
+        item_id: '2',
+        product_id: 'g24g2jhg4jh24'
+      }])
     });
   });
 });
