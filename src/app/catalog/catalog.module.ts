@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { MomentModule } from 'angular2-moment';
+import { CreditCardModalComponent } from './list/modals/credit-card-modal/credit-card-modal.component';
 
 @NgModule({
   imports: [
@@ -28,11 +29,13 @@ import { MomentModule } from 'angular2-moment';
     CatalogItemComponent,
     ConfirmationModalComponent,
     SoldModalComponent,
-    SelectedItemsComponent
+    SelectedItemsComponent,
+    CreditCardModalComponent
   ],
   entryComponents: [
     ConfirmationModalComponent,
-    SoldModalComponent
+    SoldModalComponent,
+    CreditCardModalComponent
   ]
 })
 export class CatalogModule {

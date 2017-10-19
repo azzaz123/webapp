@@ -17,6 +17,9 @@ import { ConfirmationModalComponent } from './modals/confirmation-modal/confirma
 import { ToastrService } from 'ngx-toastr';
 import { UUID } from 'angular2-uuid';
 import { Response } from '@angular/http';
+import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
+import { Router } from '@angular/router';
+import { OrderEvent } from './selected-items/selected-product.interface';
 
 @Component({
   selector: 'tsl-list',
@@ -38,7 +41,8 @@ export class ListComponent implements OnInit {
               private toastr: ToastrService,
               private i18n: I18nService,
               private paymentService: PaymentService,
-              private errorService: ErrorsService) {
+              private errorService: ErrorsService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -139,17 +143,36 @@ export class ListComponent implements OnInit {
     });
   }
 
-  public feature(order: Order[]) {
+  public feature(orderEvent: OrderEvent) {
     const orderId: string = UUID.UUID();
-    this.itemService.purchaseProducts(order, orderId).subscribe((failedProducts: string[]) => {
+    this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe((failedProducts: string[]) => {
       this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
-        console.log('We have card!', financialCard);
-        this.sabadellSubmit.emit(orderId); // TODO: remove this and open credit card dialog passing financialCard
+        this.chooseCreditCard(orderId, orderEvent.total, financialCard);
       }, () => {
         this.sabadellSubmit.emit(orderId);
       });
     }, (error: Response) => {
       this.errorService.show(error);
     });
+  }
+
+  private chooseCreditCard(orderId: string, total: number, financialCard: FinancialCard) {
+    const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, {windowClass: 'credit-card'});
+    modalRef.componentInstance.financialCard = financialCard;
+    modalRef.componentInstance.total = total;
+    modalRef.result.then((result: string) => {
+      if (result === 'new') {
+        this.sabadellSubmit.emit(orderId);
+      } else {
+        this.paymentService.pay(orderId).subscribe(() => {
+          setTimeout(() => {
+            this.router.navigate(['catalog/list', {code: 200}]);
+          }, 1000);
+        }, () => {
+          this.router.navigate(['catalog/list', {code: 400}]);
+        });
+      }
+    }, () => {
+    })
   }
 }

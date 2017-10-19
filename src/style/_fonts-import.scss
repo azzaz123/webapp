@@ -8,3 +8,13 @@
   src: url("../assets/fonts/Wallie-Chunky.woff2") format("woff2"), url("../assets/fonts/Wallie-Chunky.woff") format("woff"), url("../assets/fonts/Wallie-Chunky.ttf") format("truetype"), url("../assets/fonts/Wallie-Chunky.svg") format("svg");
   font-weight: bold;
 }
+
+
+@font-face {
+  font-family: 'OCRAStd';
+  src: url('../assets/fonts/OCRAStd.eot?#iefix') format('embedded-opentype'),  url('../assets/fonts/OCRAStd.otf')  format('opentype'),
+  url('../assets/fonts/OCRAStd.woff') format('woff'), url('../assets/fonts/OCRAStd.ttf')  format('truetype'), url('../assets/fonts/OCRAStd.svg#OCRAStd') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
