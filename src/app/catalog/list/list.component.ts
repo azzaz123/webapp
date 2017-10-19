@@ -22,7 +22,6 @@ export class ListComponent implements OnInit {
   public loading: boolean = true;
   private init: number = 0;
   public end: boolean;
-  private bumpCode: number = null;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -37,7 +36,7 @@ export class ListComponent implements OnInit {
     this.route.queryParams.subscribe((params: any) => {
       if (params && params.code) {
         const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {windowClass: 'review'});
-        modalRef.componentInstance.bumpResponse = {code: params.code};
+        modalRef.componentInstance.code = params.code;
         modalRef.result.then((result: any) => {
         }, () => {
         });

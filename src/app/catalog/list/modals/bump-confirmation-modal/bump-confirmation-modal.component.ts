@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-bump-confirmation-modal',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BumpConfirmationModalComponent implements OnInit {
 
-  constructor() { }
+  public code: number;
+
+  constructor(public activeModal: NgbActiveModal) { }
 
   ngOnInit() {
   }
