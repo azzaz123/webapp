@@ -1,6 +1,9 @@
 <div [ngClass]="{resized: itemService.selectedItems.length}">
   <div class="checkbox">
-    <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}">
+    <button class="select"
+            (click)="select(item)"
+            [ngClass]="{selected: item.selected}"
+            *ngIf="(itemService.selectedAction !== 'feature' && itemService.selectedAction !== 'reserve') || (itemService.selectedAction === 'feature' && !item.featured) || (itemService.selectedAction === 'reserve' && !item.reserved)">
       <md-icon svgIcon="check"></md-icon>
     </button>
   </div>
