@@ -2,6 +2,7 @@
 
 $checkbox-width: 24px;
 $transition: all .5s ease;
+$feature-button-width: 170px;
 
 .checkbox {
   transition: $transition;
@@ -119,7 +120,7 @@ $transition: all .5s ease;
       transition: all .2s ease;
       &.btn-feature {
         background: $grey-700;
-        width: auto;
+        width: $feature-button-width;
         color: $white;
         padding: 0 $spacing;
         padding-left: 12px;
@@ -133,6 +134,14 @@ $transition: all .5s ease;
           height: 21px;
           margin-right: 9px;
         }
+      }
+      &.btn-featured {
+        width: $feature-button-width;
+        border: 1px solid $corporate;
+        color: $corporate;
+        cursor: default;
+        font-size: $font-size-S;
+        font-weight: bold;
       }
       &.btn-sold {
         md-icon {

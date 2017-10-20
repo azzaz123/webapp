@@ -36,3 +36,13 @@ export interface ConversationUser {
   last_message: string;
   image?: Image;
 }
+
+export interface Purchase {
+  expiration_date: number;
+  item_id: string;
+  visibility_flags: {
+    bumped: boolean;
+    highlighted: boolean;
+    urgent: boolean;
+  };
+}

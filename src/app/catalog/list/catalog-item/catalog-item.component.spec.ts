@@ -9,6 +9,7 @@ import { ConfirmationModalComponent } from 'app/catalog/list/modals/confirmation
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
+import { MomentModule } from 'angular2-moment';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -20,6 +21,7 @@ describe('CatalogItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CatalogItemComponent],
+      imports: [MomentModule],
       providers: [
         {provide: TrackingService, useClass: MockTrackingService},
         {

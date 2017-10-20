@@ -15,7 +15,7 @@ import {
 
 import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
-import { CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3 } from '../../../tests/item.fixtures';
+import { CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, PURCHASES } from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers } from '@angular/http';
 import { ConversationUser, ItemsData } from './item-response.interface';
 
@@ -79,37 +79,92 @@ describe('ItemService', () => {
 
   describe('mine', () => {
     let resp: ItemsData;
-    beforeEach(() => {
-      const res: ResponseOptions = new ResponseOptions({
-        body: JSON.stringify(ITEMS_DATA_V3),
-        headers: new Headers({'x-nextpage': 'init=20'})
+    describe('no purchases', () => {
+      beforeEach(() => {
+        const res: ResponseOptions = new ResponseOptions({
+          body: JSON.stringify(ITEMS_DATA_V3),
+          headers: new Headers({'x-nextpage': 'init=20'})
+        });
+        const res2: ResponseOptions = new ResponseOptions({
+          body: JSON.stringify([])
+        });
+        spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
       });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      it('should call endpoint', () => {
+        service.mine(10, 'published').subscribe((data: ItemsData) => {
+          resp = data;
+        });
+        expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/published', {
+          init: 10
+        })
+      });
+      it('should return an array of items and the init', () => {
+        service.mine(0, 'published').subscribe((data: ItemsData) => {
+          resp = data;
+        });
+        expect(resp.data.length).toBe(4);
+        const item = resp.data[0];
+        expect(item.id).toBe(ITEMS_DATA_V3[0].id);
+        expect(item.title).toBe(ITEMS_DATA_V3[0].content.title);
+        expect(item.description).toBe(ITEMS_DATA_V3[0].content.description);
+        expect(item.salePrice).toBe(ITEMS_DATA_V3[0].content.sale_price);
+        expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency_code);
+        expect(item.modifiedDate).toBe(ITEMS_DATA_V3[0].content.modified_date);
+        expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.flags);
+        expect(item.mainImage).toEqual(ITEMS_DATA_V3[0].content.image);
+        expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
+        expect(item.bumpExpiringDate).toBeUndefined();
+        expect(resp.init).toBe(20);
+      });
     });
-    it('should call endpoint', () => {
-      service.mine(10, 'published').subscribe((data: ItemsData) => {
-        resp = data;
+    describe('with purchases', () => {
+      beforeEach(() => {
+        const res: ResponseOptions = new ResponseOptions({
+          body: JSON.stringify(ITEMS_DATA_V3),
+          headers: new Headers({'x-nextpage': 'init=20'})
+        });
+        const res2: ResponseOptions = new ResponseOptions({
+          body: JSON.stringify(PURCHASES)
+        });
+        spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
+        service.mine(0, 'published').subscribe((data: ItemsData) => {
+          resp = data;
+        });
       });
-      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/published', {
-        init: 10
-      })
+      it('should call purchases', () => {
+        expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/purchases');
+      });
+      it('should set purchased data to featured items', () => {
+        expect(resp.data[0].bumpExpiringDate).toBe(1510221655715);
+        expect(resp.data[0].flags.highlighted).toBeTruthy();
+        expect(resp.data[2].bumpExpiringDate).toBe(1509874085135);
+        expect(resp.data[2].flags.bumped).toBeTruthy();
+      });
     });
-    it('should return an array of items and the init', () => {
-      service.mine(0, 'published').subscribe((data: ItemsData) => {
-        resp = data;
+    describe('with cached purchases', () => {
+      beforeEach(() => {
+        const res: ResponseOptions = new ResponseOptions({
+          body: JSON.stringify(ITEMS_DATA_V3),
+          headers: new Headers({'x-nextpage': 'init=20'})
+        });
+        const res2: ResponseOptions = new ResponseOptions({
+          body: JSON.stringify([])
+        });
+        service['purchases'] = PURCHASES;
+        spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
+        service.mine(0, 'published').subscribe((data: ItemsData) => {
+          resp = data;
+        });
       });
-      expect(resp.data.length).toBe(2);
-      const item = resp.data[0];
-      expect(item.id).toBe(ITEMS_DATA_V3[0].id);
-      expect(item.title).toBe(ITEMS_DATA_V3[0].content.title);
-      expect(item.description).toBe(ITEMS_DATA_V3[0].content.description);
-      expect(item.salePrice).toBe(ITEMS_DATA_V3[0].content.sale_price);
-      expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency_code);
-      expect(item.modifiedDate).toBe(ITEMS_DATA_V3[0].content.modified_date);
-      expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.flags);
-      expect(item.mainImage).toEqual(ITEMS_DATA_V3[0].content.image);
-      expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
-      expect(resp.init).toBe(20);
+      it('should not call purchases', () => {
+        expect(http.get).not.toHaveBeenCalledWith('api/v3/web/items/mine/purchases');
+      });
+      it('should set purchased data to featured items', () => {
+        expect(resp.data[0].bumpExpiringDate).toBe(1510221655715);
+        expect(resp.data[0].flags.highlighted).toBeTruthy();
+        expect(resp.data[2].bumpExpiringDate).toBe(1509874085135);
+        expect(resp.data[2].flags.bumped).toBeTruthy();
+      });
     });
   });
 

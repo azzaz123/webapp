@@ -288,6 +288,12 @@ angular2-moment@^1.3.3:
   dependencies:
     moment "^2.16.0"
 
+"angular2-moment@https://github.com/Wallapop/angular2-moment#2.1.2":
+  version "2.1.2"
+  resolved "https://github.com/Wallapop/angular2-moment#0d3c7fb868a80fd0a7f49f1b3ba6743f2badcab5"
+  dependencies:
+    moment "^2.16.0"
+
 angular2-notifications@0.4.47:
   version "0.4.47"
   resolved "https://registry.yarnpkg.com/angular2-notifications/-/angular2-notifications-0.4.47.tgz#a076d9bfba16a9c34ea01bff17484596cea1d5f4"
@@ -5209,9 +5215,9 @@ shallow-clone@^0.1.2:
     lazy-cache "^0.2.3"
     mixin-object "^2.0.1"
 
-"shield@git+ssh://git@github.com/Wallapop/shield.git#1.16.0":
-  version "1.16.0"
-  resolved "git+ssh://git@github.com/Wallapop/shield.git#b0198530431001e75128ac5ccfba53a44607f749"
+"shield@git+ssh://git@github.com/Wallapop/shield.git#1.16.1":
+  version "1.16.1"
+  resolved "git+ssh://git@github.com/Wallapop/shield.git#73419befd0d96f1eadcb03af4a5f45e0669c14f0"
   dependencies:
     "@angular/animations" "^4.2.2"
     "@angular/common" "^4.0.0"
