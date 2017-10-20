@@ -46,3 +46,22 @@ export interface Purchase {
     urgent: boolean;
   };
 }
+
+export interface Product {
+  id: string;
+  name: string;
+  default_duration_index: number;
+  durations: Duration[];
+}
+
+export interface Duration {
+  id: string;
+  duration: number;
+  market_code: string;
+  original_market_code: string;
+}
+
+export interface SelectedItemsAction {
+  id: string;
+  action: 'selected' | 'deselected';
+}

@@ -5,15 +5,19 @@ import {
   HttpService,
   I18nService,
   Item,
+  ItemBulkResponse,
   ItemService as ItemServiceMaster,
   TrackingService,
-  UserService,
-  ItemBulkResponse
+  UserService
 } from 'shield';
-import { ConversationUser, ItemContent, ItemResponse, ItemsData, Purchase } from './item-response.interface';
+import {
+  ConversationUser, ItemContent, ItemResponse, ItemsData, Product, Purchase,
+  SelectedItemsAction
+} from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 import * as _ from 'lodash';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class ItemService extends ItemServiceMaster {
@@ -22,6 +26,7 @@ export class ItemService extends ItemServiceMaster {
   private API_URL_WEB: string = 'api/v3/web/items';
   public selectedAction: string;
   private purchases: Purchase[];
+  public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
 
   constructor(http: HttpService,
               i18n: I18nService,
@@ -29,6 +34,22 @@ export class ItemService extends ItemServiceMaster {
               eventService: EventService,
               userService: UserService) {
     super(http, i18n, trackingService, eventService, userService);
+  }
+
+  public selectItem(id: string) {
+    this.selectedItems.push(id);
+    this.selectedItems$.next({
+      id: id,
+      action: 'selected'
+    });
+  }
+
+  public deselectItem(id: string) {
+    this.selectedItems = _.without(this.selectedItems, id);
+    this.selectedItems$.next({
+      id: id,
+      action: 'deselected'
+    });
   }
 
   protected mapRecordData(response: any): Item {
@@ -133,6 +154,11 @@ export class ItemService extends ItemServiceMaster {
 
   public getConversationUsers(id: string): Observable<ConversationUser[]> {
     return this.http.get(this.API_URL_V3 + '/' + id + '/conversation-users')
+    .map((r: Response) => r.json());
+  }
+
+  public getAvailableProducts(id: string): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/' + id + '/available-products')
     .map((r: Response) => r.json());
   }
 

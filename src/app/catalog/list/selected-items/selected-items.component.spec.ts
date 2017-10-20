@@ -4,6 +4,9 @@ import { SelectedItemsComponent } from './selected-items.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable } from 'rxjs/Observable';
+import { PRODUCT2_RESPONSE, PRODUCT_RESPONSE } from '../../../../tests/item.fixtures';
 
 describe('SelectedItemsComponent', () => {
   let component: SelectedItemsComponent;
@@ -17,8 +20,11 @@ describe('SelectedItemsComponent', () => {
       providers: [
         {
           provide: ItemService, useValue: {
+          selectedItems$: new ReplaySubject(1),
           selectedItems: [],
-          selectedAction: null
+          selectedAction: null,
+          getAvailableProducts() {
+          }
         }
         }
       ],
@@ -31,20 +37,93 @@ describe('SelectedItemsComponent', () => {
     fixture = TestBed.createComponent(SelectedItemsComponent);
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('ngOnChanges', () => {
-    it('should set selectedItems with items', () => {
-      const ITEMS = createItemsArray(5);
-      component.items = ITEMS;
-      itemService.selectedItems = ['1', '2'];
-      component.ngOnChanges();
-      expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
+  describe('ngOnInit', () => {
+    describe('featured selectedAction', () => {
+
+      beforeEach(() => {
+        itemService.selectedAction = 'feature';
+      });
+
+      describe('action selected', () => {
+        let ITEMS;
+        beforeEach(() => {
+          spyOn(itemService, 'getAvailableProducts').and.returnValues(Observable.of(PRODUCT_RESPONSE), Observable.of(PRODUCT2_RESPONSE));
+          ITEMS = createItemsArray(5);
+          component.items = ITEMS;
+          itemService.selectedItems = ['1', '2'];
+          fixture.detectChanges();
+          itemService.selectedItems$.next({
+            id: '1',
+            action: 'selected'
+          });
+        });
+        it('should set selectedItems with items', () => {
+          expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
+        });
+        it('should call getAvailableProducts', () => {
+          expect(itemService.getAvailableProducts).toHaveBeenCalledWith('1');
+        });
+        it('should add product to selectedProducts', () => {
+          expect(component.selectedProducts[0]).toEqual({
+            itemId: '1',
+            product: PRODUCT_RESPONSE
+          });
+        });
+        it('should update total', () => {
+          expect(component.total).toBe(4.79);
+        });
+        it('should sum all products prices', () => {
+          itemService.selectedItems$.next({
+            id: '2',
+            action: 'selected'
+          });
+          expect(component.total).toBe(12.08);
+        });
+      });
+
+      describe('action deselected', () => {
+        beforeEach(() => {
+          spyOn(itemService, 'getAvailableProducts');
+          component.selectedProducts = [{
+            itemId: '1',
+            product: PRODUCT_RESPONSE
+          }, {
+            itemId: '2',
+            product: PRODUCT2_RESPONSE
+          }];
+          fixture.detectChanges();
+          itemService.selectedItems$.next({
+            id: '1',
+            action: 'deselected'
+          });
+        });
+        it('should remove product from selectedProducts', () => {
+          expect(component.selectedProducts.length).toBe(1);
+          expect(component.selectedProducts[0].itemId).toBe('2');
+        });
+        it('should update total', () => {
+          expect(component.total).toBe(7.29);
+        });
+      });
+
+    });
+
+    describe('other selectedAction', () => {
+      it('should not update total', () => {
+        itemService.selectedAction = 'reserve';
+        fixture.detectChanges();
+        itemService.selectedItems$.next({
+          id: '1',
+          action: 'selected'
+        });
+        expect(component.total).toBe(0);
+      });
     });
   });
 });

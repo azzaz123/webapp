@@ -15,9 +15,12 @@ import {
 
 import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
-import { CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, PURCHASES } from '../../../tests/item.fixtures';
+import {
+  CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, PRODUCT_RESPONSE,
+  PURCHASES
+} from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers } from '@angular/http';
-import { ConversationUser, ItemsData } from './item-response.interface';
+import { ConversationUser, ItemsData, Product } from './item-response.interface';
 
 describe('ItemService', () => {
 
@@ -41,6 +44,46 @@ describe('ItemService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('selectItem', () => {
+    let event;
+    beforeEach(() => {
+      service.selectedItems$.subscribe((e) => {
+        event = e;
+      });
+      service.selectItem('1');
+    });
+    it('should push id into selectedItems', () => {
+      expect(service.selectedItems[0]).toBe('1');
+    });
+    it('should emit event', () => {
+      expect(event).toEqual({
+        id: '1',
+        action: 'selected'
+      })
+    });
+  });
+
+  describe('deselectItem', () => {
+    let event;
+    beforeEach(() => {
+      service.selectedItems = ['1', '2'];
+      service.selectedItems$.subscribe((e) => {
+        event = e;
+      });
+      service.deselectItem('1');
+    });
+    it('should remove id from selectedItems', () => {
+      expect(service.selectedItems.length).toBe(1);
+      expect(service.selectedItems[0]).toBe('2');
+    });
+    it('should emit event', () => {
+      expect(event).toEqual({
+        id: '1',
+        action: 'deselected'
+      })
+    });
   });
 
   describe('mapRecordData', () => {
@@ -214,6 +257,19 @@ describe('ItemService', () => {
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/conversation-users');
       expect(resp).toEqual(CONVERSATION_USERS)
+    });
+  });
+
+  describe('getAvailableProducts', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCT_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: Product
+      service.getAvailableProducts(ITEM_ID).subscribe((r: Product) => {
+        resp = r;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-products');
+      expect(resp).toEqual(PRODUCT_RESPONSE)
     });
   });
 

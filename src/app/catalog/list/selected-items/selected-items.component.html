@@ -11,16 +11,22 @@
       </div>
     </div>
   </div>
-  <button *ngIf="itemService.selectedAction === 'reserve'"
-          class="btn btn-reserve"
-          (click)="onAction.emit()"
-          i18n>Reserve</button>
-  <button *ngIf="itemService.selectedAction === 'delete'"
-          class="btn btn-delete"
-          (click)="onAction.emit()"
-          i18n>Delete</button>
-  <button *ngIf="itemService.selectedAction === 'feature'"
-          class="btn btn-feature"
-          (click)="onAction.emit()"
-          i18n>Continue to Checkout</button>
+  <div class="actions">
+    <ng-container *ngIf="total > 0">
+      <span class="total-label" i18n>Total</span>
+      <span class="total">{{total | number:'1.2-2'}}&euro;</span>
+    </ng-container>
+    <button *ngIf="itemService.selectedAction === 'reserve'"
+            class="btn btn-reserve"
+            (click)="onAction.emit()"
+            i18n>Reserve</button>
+    <button *ngIf="itemService.selectedAction === 'delete'"
+            class="btn btn-delete"
+            (click)="onAction.emit()"
+            i18n>Delete</button>
+    <button *ngIf="itemService.selectedAction === 'feature'"
+            class="btn btn-feature"
+            (click)="onAction.emit()"
+            i18n>Continue to Checkout</button>
+  </div>
 </div>
