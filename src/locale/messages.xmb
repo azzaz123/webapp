@@ -89,7 +89,10 @@
   <msg id="3397082400587006706"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:35</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="3113301792677314615"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:38</source>I sold this for:</msg>
   <msg id="2286494898080570401"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:53</source>Thanks</msg>
-  <msg id="6962699013778688473"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:58</source>Continue</msg>
-  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:28</source>Reactivate</msg>
-  <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:32</source>Pending</msg>
+  <msg id="2928844379959000123"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:54</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
+  <msg id="6962699013778688473"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:55</source>Continue</msg>
+  <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:18</source>Feature Product</msg>
+  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:32</source>Reactivate</msg>
+  <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:36</source>Pending</msg>
+  <msg id="7274286978511770772"><source>app/catalog/list/selected-items/selected-items.component.ts:25</source>Continue to Checkout</msg>
 </messagebundle>

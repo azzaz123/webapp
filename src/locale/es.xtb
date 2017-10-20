@@ -83,11 +83,12 @@
   <translation id="596181013964941327">Reactivar</translation>
   <translation id="3762527362373672599">¡Enhorabuena!</translation>
   <translation id="3870527592184800997">Has vendido <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
-  <translation id="2882903364152951366">Quién lo ha comprado?</translation>
+  <translation id="2882903364152951366">¿Quién lo ha comprado?</translation>
   <translation id="1337808500533761318">Lo he vendido fuera de Wallapop</translation>
-  <translation id="3397082400587006706">Como valoras tu experiencia con <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
+  <translation id="3397082400587006706">Valora tu experiencia con <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
   <translation id="3113301792677314615">Lo he vendido por:</translation>
   <translation id="2286494898080570401">¡Gracias!</translation>
+  <translation id="2928844379959000123">Tu opinión es muy importante para la<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>comunidad Wallapop.</translation>
   <translation id="6962699013778688473">Aceptar</translation>
   <translation id="4416413576346763682">Pendiente</translation>
 </translationbundle>
