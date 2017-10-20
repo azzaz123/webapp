@@ -249,10 +249,6 @@ describe('ListComponent', () => {
         component.reserve();
         tick();
       }));
-      it('should call modal and bulkReserve', () => {
-        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
-        expect(itemService.bulkReserve).toHaveBeenCalled();
-      });
       it('should call the ProductListBulkReserved tracking event', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: '1, 3, 5'});
       });

@@ -7,15 +7,10 @@
     <h2 i18n>Delete items</h2>
     <p i18n>The selected items will be permanently deleted.</p>
   </div>
-  <div *ngIf="type === 2">
-    <h2 i18n>Reserve items</h2>
-    <p i18n>The selected items will be reserved.</p>
-  </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn" i18n (click)="activeModal.dismiss()">Cancel</button>
   <button type="button" class="btn btn-warn" (click)="activeModal.close()">
-    <span i18n *ngIf="type !== 2">Delete</span>
-    <span i18n *ngIf="type === 2">Reserve</span>
+    <span i18n>Delete</span>
   </button>
 </div>
