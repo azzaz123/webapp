@@ -70,8 +70,13 @@
   }
   &.btn-feature {
     background-color: $corporate;
+    width: 210px;
+    transition: none;
   }
   &:not([disabled]):hover {
     opacity: .8;
+  }
+  &.loading {
+    padding: 6px 18px;
   }
 }
