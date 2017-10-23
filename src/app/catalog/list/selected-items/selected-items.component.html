@@ -27,6 +27,7 @@
     <button *ngIf="itemService.selectedAction === 'feature'"
             class="btn btn-feature"
             (click)="featureItems()"
+            [disabled]="total === 0"
             i18n>Continue to Checkout</button>
   </div>
 </div>

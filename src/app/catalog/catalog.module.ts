@@ -12,6 +12,7 @@ import { UtilsModule } from 'shield';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { MomentModule } from 'angular2-moment';
 import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-modal/bump-confirmation-modal.component';
+import { CreditCardModalComponent } from './list/modals/credit-card-modal/credit-card-modal.component';
 
 @NgModule({
   imports: [
@@ -30,12 +31,14 @@ import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-
     ConfirmationModalComponent,
     SoldModalComponent,
     SelectedItemsComponent,
-    BumpConfirmationModalComponent
+    BumpConfirmationModalComponent,
+    CreditCardModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
     ConfirmationModalComponent,
-    SoldModalComponent
+    SoldModalComponent,
+    CreditCardModalComponent
   ]
 })
 export class CatalogModule {

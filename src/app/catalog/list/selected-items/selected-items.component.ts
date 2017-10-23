@@ -4,7 +4,7 @@ import { ItemService } from '../../../core/item/item.service';
 import { Item } from 'shield';
 import * as _ from 'lodash';
 import { Order, Product, SelectedItemsAction } from '../../../core/item/item-response.interface';
-import { SelectedProduct } from './selected-product.interface';
+import { OrderEvent, SelectedProduct } from './selected-product.interface';
 
 @Component({
   selector: 'tsl-selected-items',
@@ -27,7 +27,7 @@ export class SelectedItemsComponent implements OnInit {
 
   @HostBinding('@enterFromBottom') public animation: void;
   @Input() items: Item[];
-  @Output() onAction: EventEmitter<Order[]> = new EventEmitter();
+  @Output() onAction: EventEmitter<OrderEvent> = new EventEmitter();
   public selectedItems: Item[];
   public selectedProducts: SelectedProduct[] = [];
   public total = 0;
@@ -67,12 +67,15 @@ export class SelectedItemsComponent implements OnInit {
         product_id: product.product.durations[0].id
       }
     });
-    this.onAction.emit(order);
+    this.onAction.emit({
+      order: order,
+      total: this.total
+    });
   }
 
   private calculateTotal() {
     this.total = _.sumBy(this.selectedProducts, (product: SelectedProduct) => {
-      return +product.product.durations[0].market_code;
+      return product.product.durations ? +product.product.durations[0].market_code : 0;
     });
   }
 

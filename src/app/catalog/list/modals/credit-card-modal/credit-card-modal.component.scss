@@ -1,0 +1,58 @@
+@import "../../../../../style/_common.scss";
+
+.modal-body .modal-close {
+  @include square(12px);
+  top: 10px;
+  right: 10px;
+  md-icon {
+    @include square(12px);
+    line-height: initial;
+  }
+}
+
+
+#credit-card {
+  width: 330px;
+  height: 210px;
+  background: url(/assets/images/credit-card.svg) no-repeat;
+  font-family: $creditCardFont;
+  font-size: $font-size;
+  color: $white;
+  text-shadow: 0 2px 4px rgba(37, 50, 56, 0.15);
+  position: relative;
+  .date, .number {
+    position: absolute;
+    bottom: 30px;
+  }
+  .date {
+    left: 35px;
+  }
+  .number {
+    right: 40px;
+  }
+}
+
+form {
+  padding: $spacing;
+  padding-top: 10px;
+  label {
+    display: block;
+    font-size: $font-size-S;
+    line-height: 25px;
+    input {
+      margin-right: $spacing-S;
+    }
+    strong {
+      font-size: $font-size;
+      margin-left: 30px;
+    }
+  }
+  button {
+    border-radius: 6px;
+    font-size: $font-size-S;
+    font-weight: bold;
+    padding: $spacing-S 0;
+    margin-top: $spacing;
+    cursor: pointer;
+  }
+}

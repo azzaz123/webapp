@@ -9,7 +9,8 @@ import {
   MOCK_ITEM,
   MockTrackingService,
   PaymentService,
-  TrackingService
+  TrackingService,
+  FINANCIAL_CARD
 } from 'shield';
 
 import { ListComponent } from './list.component';
@@ -25,6 +26,8 @@ import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal
 import { Order } from '../../core/item/item-response.interface';
 import { ORDER } from '../../../tests/item.fixtures';
 import { UUID } from 'angular2-uuid';
+import { Router } from '@angular/router';
+import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -37,6 +40,9 @@ describe('ListComponent', () => {
   let itemerviceSpy: jasmine.Spy;
   let paymentService: PaymentService;
   let route: ActivatedRoute;
+  let router: Router;
+  let componentInstance: any = {};
+  let modalSpy: jasmine.Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -65,9 +71,7 @@ describe('ListComponent', () => {
           open() {
             return {
               result: Promise.resolve(),
-              componentInstance: {
-                type: null
-              }
+              componentInstance: componentInstance
             };
           }
         }
@@ -88,11 +92,19 @@ describe('ListComponent', () => {
         {
           provide: PaymentService, useValue: {
           getFinancialCard() {
+          },
+          pay() {
+            return Observable.of('');
           }
         }
         }, {
           provide: ErrorsService, useValue: {
             show() {
+            }
+          }
+        }, {
+          provide: Router, useValue: {
+            navigate() {
             }
           }
         }],
@@ -110,9 +122,10 @@ describe('ListComponent', () => {
     toastr = TestBed.get(ToastrService);
     route = TestBed.get(ActivatedRoute);
     paymentService = TestBed.get(PaymentService);
+    router = TestBed.get(Router);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
-    spyOn(modalService, 'open').and.callThrough();
+    modalSpy = spyOn(modalService, 'open').and.callThrough();
     spyOn(toastr, 'error');
     fixture.detectChanges();
   });
@@ -324,22 +337,103 @@ describe('ListComponent', () => {
     let eventId: string;
     beforeEach(() => {
       spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.of([]));
-      spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.throw(''));
       spyOn(UUID, 'UUID').and.returnValue('UUID');
       eventId = null;
       component.sabadellSubmit.subscribe((id: string) => {
         eventId = id;
       });
-      component.feature([ORDER]);
     });
-    it('should call purchaseProducts', () => {
-      expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+    describe('without credit card', () => {
+      beforeEach(() => {
+        spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.throw(''));
+        component.feature({
+          order: [ORDER],
+          total: 10
+        });
+      });
+      it('should submit sabadell with orderId', () => {
+        expect(eventId).toBe('UUID');
+      });
     });
-    it('should call getFinancialCard', () => {
-      expect(paymentService.getFinancialCard).toHaveBeenCalled();
+    describe('with credit card', () => {
+      beforeEach(() => {
+        spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
+      });
+      describe('user wants new one', () => {
+        beforeEach(fakeAsync(() => {
+          modalSpy.and.returnValue({
+            result: Promise.resolve('new'),
+            componentInstance: componentInstance
+          });
+          component.feature({
+            order: [ORDER],
+            total: 10
+          });
+        }));
+        it('should submit sabadell with orderId', () => {
+          expect(eventId).toBe('UUID');
+        });
+      });
+      describe('user wants old one', () => {
+        beforeEach(fakeAsync(() => {
+          modalSpy.and.returnValue({
+            result: Promise.resolve('old'),
+            componentInstance: componentInstance
+          });
+          spyOn(router, 'navigate');
+        }));
+        describe('payment ok', () => {
+          beforeEach(fakeAsync(() => {
+            spyOn(paymentService, 'pay').and.callThrough();
+            spyOn(component, 'deselect');
+            component.feature({
+              order: [ORDER],
+              total: 10
+            });
+            tick(1000);
+          }));
+          it('should redirect to code 200', () => {
+            expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
+          });
+          it('should call deselect', () => {
+            expect(component.deselect).toHaveBeenCalled();
+          });
+        });
+        describe('payment ko', () => {
+          beforeEach(fakeAsync(() => {
+            spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
+            component.feature({
+              order: [ORDER],
+              total: 10
+            });
+          }));
+          it('should redirect to code 400', () => {
+            expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 400}]);
+          });
+        });
+        afterEach(() => {
+          it('should call pay', () => {
+            expect(paymentService.pay).toHaveBeenCalledWith('UUID');
+          });
+        });
+      });
+      afterEach(() => {
+        it('should open modal', () => {
+          expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
+        });
+        it('should set financialCard and total to componentInstance', () => {
+          expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
+          expect(componentInstance.total).toBe(10);
+        });
+      });
     });
-    it('should submit sabadell with orderId', () => {
-      expect(eventId).toBe('UUID');
+    afterEach(() => {
+      it('should call purchaseProducts', () => {
+        expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+      });
+      it('should call getFinancialCard', () => {
+        expect(paymentService.getFinancialCard).toHaveBeenCalled();
+      });
     });
   });
 
