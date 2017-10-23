@@ -38,7 +38,7 @@
     "ngx-cookie": "^1.0.0",
     "ngx-toastr": "^5.0.7",
     "rxjs": "5.3.0",
-    "shield": "git+ssh://git@github.com/Wallapop/shield.git#1.16.1",
+    "shield": "git+ssh://git@github.com/Wallapop/shield.git#1.18.0",
     "angular2-moment": "https://github.com/Wallapop/angular2-moment#2.1.2",
     "zone.js": "^0.8.4"
   },

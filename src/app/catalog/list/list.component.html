@@ -28,5 +28,6 @@
 </div>
 <tsl-selected-items *ngIf="itemService.selectedItems.length"
                     [items]="items"
-                    (onAction)="onAction()"
+                    (onAction)="onAction($event)"
 ></tsl-selected-items>
+<tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

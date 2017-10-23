@@ -1,14 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { Item, TrackingService, ItemBulkResponse, I18nService } from 'shield';
+import { Component, EventEmitter, OnInit } from '@angular/core';
+import {
+  FinancialCard,
+  I18nService,
+  Item,
+  ItemBulkResponse,
+  PaymentService,
+  TrackingService,
+  ErrorsService
+} from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import { ItemsData } from '../../core/item/item-response.interface';
+import { ItemsData, Order } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { ActivatedRoute } from '@angular/router';
+import { UUID } from 'angular2-uuid';
+import { Response } from '@angular/http';
 
 @Component({
   selector: 'tsl-list',
@@ -22,13 +32,16 @@ export class ListComponent implements OnInit {
   public loading: boolean = true;
   private init: number = 0;
   public end: boolean;
+  public sabadellSubmit: EventEmitter<string> = new EventEmitter();
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
               private modalService: NgbModal,
               private route: ActivatedRoute,
               private toastr: ToastrService,
-              private i18n: I18nService) {
+              private i18n: I18nService,
+              private paymentService: PaymentService,
+              private errorService: ErrorsService) {
   }
 
   ngOnInit() {
@@ -88,11 +101,13 @@ export class ListComponent implements OnInit {
     this.itemService.selectedAction = null;
   }
 
-  public onAction() {
+  public onAction($event?: any) {
     if (this.itemService.selectedAction === 'delete') {
       this.delete();
     } else if (this.itemService.selectedAction === 'reserve') {
       this.reserve();
+    } else if (this.itemService.selectedAction === 'feature') {
+      this.feature($event);
     }
   }
 
@@ -127,6 +142,20 @@ export class ListComponent implements OnInit {
       if (response.failedIds.length) {
         this.toastr.error(this.i18n.getTranslations('bulkReserveError'));
       }
+    });
+  }
+
+  public feature(order: Order[]) {
+    const orderId: string = UUID.UUID();
+    this.itemService.purchaseProducts(order, orderId).subscribe((failedProducts: string[]) => {
+      this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
+        console.log('We have card!', financialCard);
+        this.sabadellSubmit.emit(orderId); // TODO: remove this and open credit card dialog passing financialCard
+      }, () => {
+        this.sabadellSubmit.emit(orderId);
+      });
+    }, (error: Response) => {
+      this.errorService.show(error);
     });
   }
 }

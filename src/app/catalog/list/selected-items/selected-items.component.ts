@@ -3,7 +3,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { Item } from 'shield';
 import * as _ from 'lodash';
-import { Product, SelectedItemsAction } from '../../../core/item/item-response.interface';
+import { Order, Product, SelectedItemsAction } from '../../../core/item/item-response.interface';
 import { SelectedProduct } from './selected-product.interface';
 
 @Component({
@@ -27,7 +27,7 @@ export class SelectedItemsComponent implements OnInit {
 
   @HostBinding('@enterFromBottom') public animation: void;
   @Input() items: Item[];
-  @Output() onAction: EventEmitter<any> = new EventEmitter();
+  @Output() onAction: EventEmitter<Order[]> = new EventEmitter();
   public selectedItems: Item[];
   public selectedProducts: SelectedProduct[] = [];
   public total = 0;
@@ -58,6 +58,16 @@ export class SelectedItemsComponent implements OnInit {
         }
       }
     });
+  }
+
+  public featureItems() {
+    const order: Order[] = this.selectedProducts.map((product: SelectedProduct) => {
+      return {
+        item_id: product.itemId,
+        product_id: product.product.durations[0].id
+      }
+    });
+    this.onAction.emit(order);
   }
 
   private calculateTotal() {
