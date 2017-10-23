@@ -18,6 +18,7 @@ import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 import * as _ from 'lodash';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { UUID } from 'angular2-uuid';
 
 @Injectable()
 export class ItemService extends ItemServiceMaster {
@@ -70,7 +71,13 @@ export class ItemService extends ItemServiceMaster {
       content.flags,
       null,
       content.sale_conditions,
-      content.images ? content.images[0] : content.image,
+      content.images ? content.images[0] : {
+        id: UUID.UUID(),
+        original_width: content.image.original_width,
+        original_height: content.image.original_height,
+        average_hex_color: '',
+        urls_by_size: content.image
+      },
       content.images,
       content.web_slug,
       content.modified_date

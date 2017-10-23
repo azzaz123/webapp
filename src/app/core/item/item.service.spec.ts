@@ -21,6 +21,7 @@ import {
 } from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers } from '@angular/http';
 import { ConversationUser, ItemsData, Product } from './item-response.interface';
+import { UUID } from 'angular2-uuid';
 
 describe('ItemService', () => {
 
@@ -142,6 +143,7 @@ describe('ItemService', () => {
         })
       });
       it('should return an array of items and the init', () => {
+        spyOn(UUID, 'UUID').and.returnValue('1');
         service.mine(0, 'published').subscribe((data: ItemsData) => {
           resp = data;
         });
@@ -154,7 +156,13 @@ describe('ItemService', () => {
         expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency_code);
         expect(item.modifiedDate).toBe(ITEMS_DATA_V3[0].content.modified_date);
         expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.flags);
-        expect(item.mainImage).toEqual(ITEMS_DATA_V3[0].content.image);
+        expect(item.mainImage).toEqual({
+          id: '1',
+          original_width: ITEMS_DATA_V3[0].content.image.original_width,
+          original_height: ITEMS_DATA_V3[0].content.image.original_height,
+          average_hex_color: '',
+          urls_by_size: ITEMS_DATA_V3[0].content.image
+        });
         expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
         expect(item.bumpExpiringDate).toBeUndefined();
         expect(resp.init).toBe(20);

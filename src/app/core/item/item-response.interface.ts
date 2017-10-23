@@ -13,7 +13,15 @@ export interface ItemContent {
   flags: ItemFlags;
   id: string;
   images?: Image[];
-  image?: Image;
+  image?: {
+    original: string;
+    small: string;
+    large: string;
+    medium: string;
+    xlarge: string;
+    original_height: number;
+    original_width: number;
+  };
   modified_date: number;
   sale_conditions: ItemSaleConditions;
   sale_price: number;
