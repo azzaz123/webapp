@@ -31,6 +31,7 @@ export class SelectedItemsComponent implements OnInit {
   public selectedItems: Item[];
   public selectedProducts: SelectedProduct[] = [];
   public total = 0;
+  public loading: boolean;
 
   constructor(public itemService: ItemService) {
   }
@@ -67,6 +68,7 @@ export class SelectedItemsComponent implements OnInit {
         product_id: product.product.durations[0].id
       }
     });
+    this.loading = true;
     this.onAction.emit({
       order: order,
       total: this.total

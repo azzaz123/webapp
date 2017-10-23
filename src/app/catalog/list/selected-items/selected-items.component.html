@@ -27,7 +27,10 @@
     <button *ngIf="itemService.selectedAction === 'feature'"
             class="btn btn-feature"
             (click)="featureItems()"
-            [disabled]="total === 0"
-            i18n>Continue to Checkout</button>
+            [disabled]="total === 0 || loading"
+            [ngClass]="{loading: loading}">
+      <span [hidden]="loading" i18n>Continue to Checkout</span>
+      <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
+    </button>
   </div>
 </div>
