@@ -370,6 +370,7 @@ describe('ListComponent', () => {
         describe('payment ok', () => {
           beforeEach(fakeAsync(() => {
             spyOn(paymentService, 'pay').and.callThrough();
+            spyOn(component, 'deselect');
             component.feature({
               order: [ORDER],
               total: 10
@@ -378,6 +379,9 @@ describe('ListComponent', () => {
           }));
           it('should redirect to code 200', () => {
             expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
+          });
+          it('should call deselect', () => {
+            expect(component.deselect).toHaveBeenCalled();
           });
         });
         describe('payment ko', () => {

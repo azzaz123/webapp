@@ -165,6 +165,7 @@ export class ListComponent implements OnInit {
         this.sabadellSubmit.emit(orderId);
       } else {
         this.paymentService.pay(orderId).subscribe(() => {
+          this.deselect();
           setTimeout(() => {
             this.router.navigate(['catalog/list', {code: 200}]);
           }, 1000);

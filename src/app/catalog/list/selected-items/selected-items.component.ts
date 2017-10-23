@@ -75,7 +75,7 @@ export class SelectedItemsComponent implements OnInit {
 
   private calculateTotal() {
     this.total = _.sumBy(this.selectedProducts, (product: SelectedProduct) => {
-      return +product.product.durations[0].market_code;
+      return product.product.durations ? +product.product.durations[0].market_code : 0;
     });
   }
 
