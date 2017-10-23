@@ -1,6 +1,6 @@
 <div [ngClass]="{resized: itemService.selectedItems.length}">
   <div class="checkbox">
-    <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}">
+    <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}" *ngIf="showCheckbox">
       <md-icon svgIcon="check"></md-icon>
     </button>
   </div>
