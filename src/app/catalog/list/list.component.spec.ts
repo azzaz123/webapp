@@ -19,6 +19,8 @@ import * as _ from 'lodash';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
+import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -29,6 +31,7 @@ describe('ListComponent', () => {
   let toastr: ToastrService;
   let trackingServiceSpy: jasmine.Spy;
   let itemerviceSpy: jasmine.Spy;
+  let route: ActivatedRoute;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -67,6 +70,13 @@ describe('ListComponent', () => {
           error() {
           }
         }
+        },
+        {
+          provide: ActivatedRoute, useValue: {
+          queryParams: Observable.of({
+            code: 200
+          })
+        }
         }],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -80,6 +90,7 @@ describe('ListComponent', () => {
     trackingService = TestBed.get(TrackingService);
     modalService = TestBed.get(NgbModal);
     toastr = TestBed.get(ToastrService);
+    route = TestBed.get(ActivatedRoute);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     spyOn(modalService, 'open').and.callThrough();
@@ -89,6 +100,14 @@ describe('ListComponent', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('ngOnInit', () => {
+    it('should open modal', fakeAsync(() => {
+      component.ngOnInit();
+      tick();
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {windowClass: 'review'})
+    }));
   });
 
   describe('getItems', () => {

@@ -1,0 +1,44 @@
+@import "../../../../../style/common";
+
+:host {
+  padding: $spacing-L;
+  text-align: center;
+}
+img {
+  width: 126px;
+  margin-bottom: $spacing;
+  &.fail {
+    width: 63px;
+  }
+}
+p {
+  max-width: 270px;
+  margin: 0 auto $spacing-L auto;
+}
+h1 {
+  font-weight: bold;
+  color: $corporate;
+  font-size: $spacing;
+  margin-bottom: $spacing-S;
+  &.fail {
+    color: $warn;
+  }
+}
+button {
+  @include square(40px);
+  display: inline-block;
+  border-radius: 8px;
+  transition: all .2s ease;
+  padding: 0 $spacing-XL;
+  &.btn-continue {
+    background: $corporate;
+    width: auto;
+    color: $white;
+    border: 1px solid transparent;
+    font-size: $font-size;
+    cursor: pointer;
+    &:hover {
+      background: darken($corporate, 10%);
+    }
+  }
+}

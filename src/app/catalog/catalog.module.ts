@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { MomentModule } from 'angular2-moment';
+import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-modal/bump-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -28,9 +29,11 @@ import { MomentModule } from 'angular2-moment';
     CatalogItemComponent,
     ConfirmationModalComponent,
     SoldModalComponent,
-    SelectedItemsComponent
+    SelectedItemsComponent,
+    BumpConfirmationModalComponent
   ],
   entryComponents: [
+    BumpConfirmationModalComponent,
     ConfirmationModalComponent,
     SoldModalComponent
   ]
