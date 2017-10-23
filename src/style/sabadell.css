@@ -1,0 +1,97 @@
+/*
+  This file is not used here in the app. 
+  It should be uploaded to https://sis.redsys.es/canales/bsabadell/
+*/
+
+html, body {
+  background-color: #eeeeef;
+  color: #2b2b2b;
+}
+.result-info table tr {
+  border-bottom-color: #eeeeef;
+}
+.ticket-header .half-circlel, .ticket-header .half-circler {
+  background-color: #eeeeef;
+}
+.ticket-info table tr {
+  border-bottom-color: #eeeeef;
+}
+.item-imgwr {
+  background-color: #eeeeef;
+}
+.recibo-mod-wr table tr {
+  border-bottom-color: #eeeeef;
+}
+div.evuala-select div.trigger:after {
+  border-top-color: #fdb411;
+}
+div.evuala-select ul.options {
+  background-color: #fdb411;
+}
+.steps-wr .step.active {
+  color: #fdb411;
+}
+.step .num {
+  color: #fdb411;
+}
+.step.active .num {
+  color: #fdb411;
+}
+.icon-cvc-help {
+  background-color: #fdb411;
+}
+.ticket-header {
+}
+.btn-accept, .btn-toggle, .btn-continue {
+  background-color: #fdb411;
+}
+
+.datosDeLaOperacion h3 {
+  color: #fdb411;
+}
+
+.domiciliado-mod-wr p {
+  color: #2b2b2b;
+}
+.cards-mod-wr .table-condensed > tbody > tr > td.text {
+  color: #2b2b2b;
+}
+.logoComercio {
+  visibility: visible;
+}
+.logoEntidad {
+  visibility: hidden;
+}
+.logoEsquema {
+  visibility: hidden;
+}
+.btn-print {
+  visibility: hidden;
+}
+.ticket-mod-wr {
+  visibility: visible;
+}
+.btn-cancel {
+  visibility: hidden;
+}
+.steps-wr {
+  visibility: visible;
+}
+.ticket-mod-wr {
+  background-color: #ffffff;
+}
+.cards-mod-wr {
+  background-color: #ffffff;
+}
+.method-mod-wr {
+  background-color: #ffffff;
+}
+.result-mod-wr {
+  background-color: #ffffff;
+}
+.logoEsquema4b {
+  visibility: hidden;
+}
+.logoEsquemaServired {
+  visibility: hidden;
+}
