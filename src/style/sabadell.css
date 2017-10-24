@@ -68,8 +68,8 @@ div.evuala-select div.trigger:after {
 div.evuala-select ul.options {
   background-color: #fdb411;
 }
-.steps-wr .step.active {
-  color: #fdb411;
+.steps-wr {
+  display: none;
 }
 .step .num {
   color: #13c1ac;
