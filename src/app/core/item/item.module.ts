@@ -6,6 +6,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { TrackingModule, UtilsModule } from 'shield';
 import { ItemSoldComponent } from './item-sold/item-sold.component';
 import { ItemReservedComponent } from './item-reserved/item-reserved.component';
+import { ItemCartFavoriteComponent } from './item-cart-favorite/item-cart-favorite.component';
+import { CardModule } from '../card/card.module';
 
 @NgModule({
   imports: [
@@ -13,13 +15,15 @@ import { ItemReservedComponent } from './item-reserved/item-reserved.component';
     SharedModule,
     MdIconModule,
     CommonModule,
-    UtilsModule
+    UtilsModule,
+    CardModule
   ],
   exports: [
     ItemAvatarComponent,
     ItemSoldComponent,
-    ItemReservedComponent
+    ItemReservedComponent,
+    ItemCartFavoriteComponent
   ],
-  declarations: [ItemAvatarComponent, ItemSoldComponent, ItemReservedComponent]
+  declarations: [ItemAvatarComponent, ItemSoldComponent, ItemReservedComponent, ItemCartFavoriteComponent]
 })
 export class ItemModule { }

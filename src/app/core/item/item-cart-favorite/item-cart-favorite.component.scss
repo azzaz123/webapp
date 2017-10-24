@@ -1,0 +1,33 @@
+@import "../../../../style/_common.scss";
+
+:host /deep/ tsl-card-content{
+  span{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    display:inline-block;
+  }
+}
+
+:host /deep/ tsl-card-footer{
+  position: relative;
+
+  .cart-footer-icon g{
+    fill: $color-favorite-icon-fill;
+    stroke: $color-favorite-icon-stroke;
+  }
+
+  .cart-footer-text{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    user-select: none;
+  }
+
+  &:hover, &:focus{
+    cursor: pointer;
+    background: rgba($grey-100, .2);
+  }
+}

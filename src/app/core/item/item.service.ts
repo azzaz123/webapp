@@ -19,6 +19,7 @@ export class ItemService extends ItemServiceMaster {
 
   protected API_URL_V2: string = 'api/v3/items';
   private API_URL_WEB: string = 'api/v3/web/items';
+  private API_URL_v3_USER: string = 'api/v3/users';
   public selectedAction: string;
 
   constructor(http: HttpService,
@@ -32,6 +33,7 @@ export class ItemService extends ItemServiceMaster {
   protected mapRecordData(response: any): Item {
     const data: ItemResponse = <ItemResponse>response;
     const content: ItemContent = data.content;
+    console.log(content);
     return new Item(
       content.id,
       null,
@@ -76,8 +78,29 @@ export class ItemService extends ItemServiceMaster {
         if (res.length > 0) {
           data = res.map((i: ItemResponse) => {
             const item: Item = this.mapRecordData(i);
-            item.views = i.content.views;
-            item.favorites = i.content.favorites;
+            return item;
+          });
+        }
+        return {
+          data: data,
+          init: nextInit
+        }
+      }
+    );
+  }
+
+  public mineFavorites(init: number): Observable<ItemsData> {
+    return this.http.get(this.API_URL_v3_USER + '/me/items/favorites', {
+      init: init
+    })
+    .map((r: Response) => {
+        const res: ItemResponse[] = r.json();
+        const nextPage: string = r.headers.get('x-nextpage');
+        const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
+        let data: Item[] = [];
+        if (res.length > 0) {
+          data = res.map((i: ItemResponse) => {
+            const item: Item = this.mapRecordData(i);
             return item;
           });
         }
