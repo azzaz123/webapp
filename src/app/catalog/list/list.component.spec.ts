@@ -2,6 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import {
   createItemsArray,
   ErrorsService,
+  FINANCIAL_CARD,
   I18nService,
   Item,
   ITEMS_BULK_RESPONSE,
@@ -9,8 +10,7 @@ import {
   MOCK_ITEM,
   MockTrackingService,
   PaymentService,
-  TrackingService,
-  FINANCIAL_CARD
+  TrackingService
 } from 'shield';
 
 import { ListComponent } from './list.component';
@@ -21,13 +21,13 @@ import * as _ from 'lodash';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
 import { ORDER } from '../../../tests/item.fixtures';
 import { UUID } from 'angular2-uuid';
-import { Router } from '@angular/router';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
+import { Subject } from 'rxjs/Subject';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -43,6 +43,7 @@ describe('ListComponent', () => {
   let router: Router;
   let componentInstance: any = {};
   let modalSpy: jasmine.Spy;
+  const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -84,7 +85,7 @@ describe('ListComponent', () => {
         },
         {
           provide: ActivatedRoute, useValue: {
-          queryParams: Observable.of({
+          params: Observable.of({
             code: 200
           })
         }
@@ -105,7 +106,8 @@ describe('ListComponent', () => {
         }, {
           provide: Router, useValue: {
             navigate() {
-            }
+            },
+            events: routerEvents
           }
         }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -136,9 +138,23 @@ describe('ListComponent', () => {
 
   describe('ngOnInit', () => {
     it('should open modal', fakeAsync(() => {
+      spyOn(router, 'navigate');
       component.ngOnInit();
       tick();
       expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {windowClass: 'review'})
+      expect(router.navigate).toHaveBeenCalledWith(['catalog/list'])
+    }));
+    it('should reset page on router event', fakeAsync(() => {
+      spyOn<any>(component, 'getItems');
+      component['init'] = 40;
+      component.end = true;
+      component.ngOnInit();
+      tick();
+      routerEvents.next(new NavigationEnd(1, 'url', 'url2'));
+      expect(component.scrollTop).toBe(0);
+      expect(component['init']).toBe(0);
+      expect(component.end).toBeFalsy();
+      expect(component['getItems']).toHaveBeenCalledTimes(2);
     }));
   });
 
