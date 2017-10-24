@@ -1,26 +1,25 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import {
+  ErrorsService,
   FinancialCard,
   I18nService,
   Item,
   ItemBulkResponse,
   PaymentService,
-  TrackingService,
-  ErrorsService
+  TrackingService
 } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import { ItemsData, Order } from '../../core/item/item-response.interface';
+import { ItemsData } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UUID } from 'angular2-uuid';
 import { Response } from '@angular/http';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
-import { Router } from '@angular/router';
 import { OrderEvent } from './selected-items/selected-product.interface';
 
 @Component({
@@ -36,6 +35,7 @@ export class ListComponent implements OnInit {
   private init: number = 0;
   public end: boolean;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
+  public scrollTop: number;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -51,10 +51,22 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this.getItems();
     setTimeout(() => {
-      this.route.queryParams.subscribe((params: any) => {
+      this.router.events.subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+          return;
+        }
+        this.scrollTop = 0;
+        this.init = 0;
+        this.end = false;
+        this.getItems();
+      });
+      this.route.params.subscribe((params: any) => {
         if (params && params.code) {
           const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {windowClass: 'review'});
           modalRef.componentInstance.code = params.code;
+          modalRef.result.then(() => {
+            this.router.navigate(['catalog/list']);
+          }, () => {});
         }
       });
     });
