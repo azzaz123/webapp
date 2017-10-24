@@ -50,9 +50,14 @@ body {
   padding: $spacing-L;
 }
 
-button:focus {
-  outline: none;
+button {
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
 }
+
+
 
 #right-panel {
   .card {
