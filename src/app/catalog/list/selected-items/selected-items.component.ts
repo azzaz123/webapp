@@ -1,10 +1,11 @@
-import { Component, EventEmitter, HostBinding, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { Item } from 'shield';
 import * as _ from 'lodash';
 import { Order, Product, SelectedItemsAction } from '../../../core/item/item-response.interface';
 import { OrderEvent, SelectedProduct } from './selected-product.interface';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'tsl-selected-items',
@@ -32,6 +33,7 @@ export class SelectedItemsComponent implements OnInit {
   public selectedProducts: SelectedProduct[] = [];
   public total = 0;
   public loading: boolean;
+  private getAvailableProductsObservable: Observable<Product>;
 
   constructor(public itemService: ItemService) {
   }
@@ -43,7 +45,9 @@ export class SelectedItemsComponent implements OnInit {
       });
       if (this.itemService.selectedAction === 'feature') {
         if (action.action === 'selected') {
-          this.itemService.getAvailableProducts(action.id).subscribe((product: Product) => {
+          this.getAvailableProductsObservable = this.itemService.getAvailableProducts(action.id).share();
+          this.getAvailableProductsObservable.subscribe((product: Product) => {
+            this.getAvailableProductsObservable = null;
             this.selectedProducts.push({
               itemId: action.id,
               product: product
@@ -51,14 +55,24 @@ export class SelectedItemsComponent implements OnInit {
             this.calculateTotal();
           });
         } else if (action.action === 'deselected') {
-          const index: number = _.findIndex(this.selectedProducts, {itemId: action.id});
-          if (index !== -1) {
-            this.selectedProducts.splice(index, 1);
-            this.calculateTotal();
+          if (this.getAvailableProductsObservable) {
+            this.getAvailableProductsObservable.subscribe(() => {
+              this.deselect(action.id);
+            });
+          } else {
+            this.deselect(action.id);
           }
         }
       }
     });
+  }
+
+  private deselect(itemId: string) {
+    const index: number = _.findIndex(this.selectedProducts, {itemId: itemId});
+    if (index !== -1) {
+      this.selectedProducts.splice(index, 1);
+      this.calculateTotal();
+    }
   }
 
   public featureItems() {
