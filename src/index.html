@@ -15,6 +15,70 @@
 </head>
 <body>
   <tsl-root></tsl-root>
+
+  <!-- BEGIN CRITEO LOADER -->
+  <script async="async" type="text/javascript" src="https://static.criteo.net/js/ld/publishertag.js"></script>
+  <script>
+    window.Criteo = window.Criteo || {};
+    window.Criteo.events = window.Criteo.events || [];
+  </script>
+  <!-- END CRITEO LOADER -->
+  <!-- BEGIN CRITEO ZONE MAPPING -->
+  <script>
+    var adUnits = {
+      "placements": [
+        {"slotid": "div-gpt-ad-1508490196308-0", "zoneid": 978109}, /* Wallapop - SP - 240x400 - User detail  */
+      ]
+    };
+  </script>
+  <!-- END CRITEO ZONE MAPPING -->
+  <!-- Google DFP -->
+  <script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+  <script>
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+  </script>
+  <script>
+    googletag.cmd.push(function () {
+      googletag.defineSlot('/130868815/chat_right', [240, 400], 'div-gpt-ad-1508490196308-0').addService(googletag.pubads());
+      googletag.pubads().enableSingleRequest();
+      googletag.pubads().collapseEmptyDivs();
+      googletag.pubads().disableInitialLoad();
+      googletag.enableServices();
+      var launchAdServer = function() {
+        /* Perform key-value targeting for your ad server */
+        Criteo.SetDFPKeyValueTargeting();
+        /* Trigger the ad server */
+        googletag.pubads().refresh();
+      };
+      Criteo.events.push(function () {
+        // Define the price band range
+        Criteo.SetLineItemRanges("0..4.5:0.01;4.50..27:0.05;27..72:0.1");
+        // Call Criteo and execute the callback function for a given timeout
+        Criteo.RequestBids(adUnits, launchAdServer, 1500);
+      });
+    });
+  </script>
+  <script type="text/javascript">
+    var w = window;
+    var doc = window.document;
+    for (i = 0; i < 10; i++) {
+      w = w.parent;
+      if (w.Criteo) {
+        try {
+          w.Criteo.RenderAd("%%PATTERN:crt_bidid%%", doc);
+          break;
+        } catch (e) {
+          continue;
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Ads-->
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+  <!-- Google Analytics -->
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function()
       { (i[r].q=i[r].q||[]).push(arguments)}
