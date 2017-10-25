@@ -54,6 +54,12 @@
   &:hover md-icon g g {
     fill: $grey-900;
   }
+  &.light {
+    md-icon g g {
+      fill: $white;
+      opacity: .5;
+    }
+  }
 }
 
 .main-header-chat {
@@ -152,6 +158,16 @@
           transition: all 0.2s ease-in-out;
           fill: $corporate;
         }
+      }
+    }
+  }
+}
+
+.btn-mobile {
+  &:hover, &:focus, &:active {
+    md-icon {
+      path {
+        fill: $white;
       }
     }
   }

@@ -86,4 +86,6 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('items-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/items-empty-state.svg'));
   mdIconRegistry.addSvgIcon('feature', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/feature.svg'));
   mdIconRegistry.addSvgIcon('upload', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/upload.svg'));
+  mdIconRegistry.addSvgIcon('ios', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/ios.svg'));
+  mdIconRegistry.addSvgIcon('android', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/android.svg'));
 }
