@@ -9,6 +9,7 @@ import { TrackingModule } from 'shield';
 import { ItemService } from './item/item.service';
 import { ConversationService } from './conversation/conversation.service';
 import { EventService } from './event/event.service';
+import { AdModule } from './ad/ad.module';
 
 @NgModule({
   imports: [
@@ -17,13 +18,15 @@ import { EventService } from './event/event.service';
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule
+    TrackingModule,
+    AdModule
   ],
   exports: [
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule
+    TrackingModule,
+    AdModule
   ],
   declarations: []
 })
