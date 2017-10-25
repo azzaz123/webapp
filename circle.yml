@@ -21,17 +21,11 @@ deployment:
     branch: beta
     commands:
       - npm run buildbeta
-      - aws s3 sync dist s3://web-es.beta.wallapop.com --delete
-      - aws s3 cp dist/index.html s3://web-es.beta.wallapop.com/index.html --cache-control max-age=0
+      - aws s3 sync dist s3://web.beta.wallapop.com --delete
+      - aws s3 cp dist/index.html s3://web.beta.wallapop.com/index.html --cache-control max-age=0
       - npm run buildbeta-en
       - aws s3 sync dist s3://web-en.beta.wallapop.com --delete
       - aws s3 cp dist/index.html s3://web-en.beta.wallapop.com/index.html --cache-control max-age=0
-  release:
-    branch: /release.*/
-    commands:
-      - npm run buildbeta
-      - aws s3 sync dist s3://web.beta.wallapop.com --delete
-      - aws s3 cp dist/index.html s3://web.beta.wallapop.com/index.html --cache-control max-age=0
   prod:
     branch: master
     commands:
