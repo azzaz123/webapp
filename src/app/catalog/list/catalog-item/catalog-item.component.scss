@@ -1,32 +1,44 @@
 @import "../../../../style/_common.scss";
 
-.select {
-  @include square(24px);
-  border: 2px solid $grey-100;
-  border-radius: 6px;
-  padding: 0;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+$checkbox-width: 24px;
+$transition: all .5s ease;
+
+.checkbox {
+  transition: $transition;
+  width: 0;
+  opacity: 0;
   float: left;
-  margin-right: $spacing;
-  margin-top: $spacing-L;
-  cursor: pointer;
-  md-icon {
-    display: none;
-    height: 9px;
-    width: 12px;
+  .resized & {
+    width: $checkbox-width;
+    opacity: 1;
   }
-  &.selected {
-    background: $corporate;
-    border-color: transparent;
+  .select {
+    @include square($checkbox-width);
+    border: 2px solid $grey-100;
+    border-radius: 6px;
+    padding: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: $spacing;
+    margin-top: $spacing-L;
+    cursor: pointer;
     md-icon {
-      display: flex;
+      display: none;
+      height: 9px;
+      width: 12px;
     }
-  }
-  &:hover {
-    border-color: $corporate;
+    &.selected {
+      background: $corporate;
+      border-color: transparent;
+      md-icon {
+        display: flex;
+      }
+    }
+    &:hover {
+      border-color: $corporate;
+    }
   }
 }
 
@@ -39,7 +51,8 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
-  &.expired {
+  transition: $transition;
+  &.expired, &.pending {
     &::after {
       content: '';
       position: absolute;
@@ -48,9 +61,17 @@
       bottom: 0;
       left: 0;
       background-color: $white;
-      opacity: .5;
+      opacity: .6;
       z-index: 1;
+      border-radius: $border-radius;
     }
+  }
+  .resized & {
+    margin-left: $checkbox-width + $spacing;
+  }
+  &.selected {
+    background-color: rgba($corporate, 0.2);
+    border: solid 1px $corporate;
   }
   tsl-item-avatar {
     margin: 4px;
@@ -58,11 +79,12 @@
   }
   button {
     border: solid 1px rgba(207, 216, 220, 0.5);
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     background: $white;
     cursor: pointer;
+    float: left;
   }
   .price {
     width: 130px;
@@ -87,14 +109,46 @@
   }
   .actions {
     margin-right: 24px;
+    .resized & {
+      display: none;
+    }
     button {
       @include square(40px);
       border-radius: 8px;
-      margin-left: 5px;
+      margin-left: 12px;
+      transition: all .2s ease;
+      &.btn-feature {
+        background: $grey-700;
+        width: auto;
+        color: $white;
+        padding: 0 $spacing;
+        padding-left: 12px;
+        font-size: $font-size-S;
+        border: 1px solid transparent;
+        &:hover {
+          background: $corporate;
+        }
+        md-icon {
+          width: 19px;
+          height: 21px;
+          margin-right: 9px;
+        }
+      }
+      &.btn-sold {
+        md-icon {
+          height: 17px;
+          width: 17px;
+        }
+        &:hover {
+          background: $sold-bg;
+          border-color: transparent;
+        }
+      }
       &.btn-reserve {
         md-icon {
           height: 15px;
           width: 13px;
+          margin-top: -3px;
         }
         &:hover, &.active {
           background: $reserve-bg;
@@ -113,21 +167,29 @@
       }
     }
   }
-  .btn-reactivate {
+  .btn-reactivate, .btn-pending {
     z-index: 2;
     position: relative;
-    color: $grey-900;
     font-size: $font-size-S;
-    border-radius: $border-radius;
     padding-right: 64px;
     margin-right: 24px;
+    border-radius: $border-radius;
+    color: $grey-900;
     height: 40px;
     md-icon {
       margin-right: 34px;
     }
+  }
+  .btn-reactivate {
     &:hover {
       background-color: $reactivate-bg;
       color: $white;
+    }
+  }
+  .btn-pending {
+    cursor: default;
+    md-icon {
+      margin-left: 4px;
     }
   }
 }

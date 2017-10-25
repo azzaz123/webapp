@@ -1,0 +1,174 @@
+@import "../../../../../style/_common.scss";
+
+#first-step, #second-step, #thanks {
+  p.text {
+    font-size: $font-size;
+    text-align: center;
+    color: $grey-700;
+  }
+}
+
+h1 {
+  color: $corporate;
+  font-size: $font-size-L;
+  font-weight: bold;
+  text-align: center;
+}
+
+.modal-body {
+  padding: $spacing-L;
+}
+
+#first-step {
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: $spacing-L;
+    height: 308px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .congrats {
+    width: 152px;
+    height: 87px;
+    margin: 37px auto;
+    display: block;
+  }
+
+  .conv-user {
+    a {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: calc(100% - 20px);
+      tsl-user-avatar {
+        margin-right: $spacing;
+      }
+      div {
+        flex: 1;
+        border-bottom: 1px solid rgba(207, 216, 220, 0.5);
+        padding: 14px 0;
+        max-width: calc(100% - 50px - #{$spacing});
+        p {
+          margin: 0;
+          font-size: $font-size;
+          &.name {
+            font-weight: bold;
+            color: $grey-900;
+          }
+          &.message {
+            color: $grey-300;
+            @include text-truncate();
+          }
+        }
+      }
+      .arrow-icon {
+        position: absolute;
+        right: -18px;
+        transform: rotate(-90deg);
+        width: 42px;
+        height: 42px;
+        transition: right ease .2s;
+      }
+      &:hover {
+        text-decoration: none;
+        div p.name {
+          color: $corporate;
+        }
+        .arrow-icon {
+          right: -10px;
+        }
+      }
+    }
+  }
+
+  .modal-footer {
+    height: 75px;
+    box-shadow: 0 -2px 4px 0 rgba(37, 50, 56, 0.07);
+    justify-content: center;
+    padding: 0;
+    a {
+      color: $warn;
+      &:hover {
+        color: darken($warn, 20%);
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+#second-step {
+  .modal-body {
+    padding-top: $spacing-XL;
+    padding-left: $spacing-L;
+    padding-right: $spacing-L;
+  }
+
+  h1 {
+    font-size: $font-size-LL;
+    color: $corporate;
+    font-weight: bold;
+    margin-bottom: $spacing-L;
+  }
+
+  h2 {
+    font-size: $font-size-L;
+    color: $grey-900;
+    font-weight: normal;
+    strong {
+      font-weight: bold;
+    }
+  }
+
+  p {
+    font-size: $font-size-S;
+    color: $grey-500;
+    margin-top: $spacing-XS;
+    &.text {
+      color: $grey-900;
+    }
+  }
+
+  tsl-stars-rate {
+    margin: $spacing 0;
+  }
+
+  #price {
+    border: 0;
+    border-bottom: 1px solid $grey-100;
+    border-radius: 0;
+    width: 100px;
+    display: inline;
+    text-align: right;
+    padding: 0;
+    margin-top: $spacing;
+    margin-right: $spacing-S;
+  }
+
+  #price, .currency {
+    font-size: $font-size-L;
+  }
+
+  textarea {
+    height: 230px;
+    margin-top: $spacing-XL;
+    margin-bottom: $spacing;
+  }
+
+}
+
+#thanks {
+  md-icon {
+    width: 192px;
+    height: 352px;
+    margin-top: 45px;
+    margin-bottom: 43px;
+    margin-left: 30px;
+  }
+  .btn {
+    padding: 10px 41px;
+    margin-top: 40px
+  }
+}

@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Item, TrackingService } from 'shield';
-import { DeleteItemComponent } from '../modals/delete-item/delete-item.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
 import * as _ from 'lodash';
+import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -17,7 +17,7 @@ export class CatalogItemComponent implements OnInit {
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
 
   constructor(private modalService: NgbModal,
-              private itemService: ItemService,
+              public itemService: ItemService,
               private trackingService: TrackingService) {
   }
 
@@ -25,27 +25,25 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public deleteItem(item: Item): void {
-    this.modalService.open(DeleteItemComponent).result.then(() => {
-      this.itemService.deleteItem(item.id).subscribe(() => {
-        this.trackingService.track(TrackingService.PRODUCT_DELETED, {product_id: item.id});
-        this.itemChange.emit({
-          item: item,
-          action: 'deleted'
-        });
-      });
-    }, () => {
-    });
+    this.itemService.selectedAction = 'delete';
+    this.select(item);
   }
 
   public reserve(item: Item) {
-    this.itemService.reserveItem(item.id, !item.reserved).subscribe(() => {
-      item.reserved = !item.reserved;
-      if (item.reserved) {
-        this.trackingService.track(TrackingService.PRODUCT_RESERVED, {product_id: item.id});
-      } else {
+    if (!item.reserved) {
+      this.itemService.selectedAction = 'reserve';
+      this.select(item);
+    } else {
+      this.itemService.reserveItem(item.id, false).subscribe(() => {
+        item.reserved = false;
         this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
-      }
-    });
+      });
+    }
+  }
+
+  public featureItem(item: Item): void {
+    this.itemService.selectedAction = 'feature';
+    this.select(item);
   }
 
   public reactivateItem(item: Item) {
@@ -66,6 +64,20 @@ export class CatalogItemComponent implements OnInit {
       this.itemService.selectedItems = _.without(this.itemService.selectedItems, item.id);
       this.trackingService.track(TrackingService.PRODUCT_UN_SELECTED, {product_id: item.id});
     }
+  }
+
+  public setSold(item: Item) {
+    const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {windowClass: 'sold'});
+    modalRef.componentInstance.item = item;
+    modalRef.result.then(() => {
+      item.sold = true;
+      this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+      this.itemChange.emit({
+        item: item,
+        action: 'sold'
+      });
+    }, () => {
+    });
   }
 
 }

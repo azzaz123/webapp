@@ -8,14 +8,17 @@ import {
   TrackingService,
   UserService,
   Item,
-  ITEM_BASE_PATH
+  ITEM_BASE_PATH,
+  ITEMS_BULK_UPDATED_IDS,
+  ITEMS_BULK_RESPONSE
 } from 'shield';
 
 import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
-import { ITEM_DATA_V3, ITEMS_DATA_V3 } from '../../../tests/item.fixtures';
+import { CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3 } from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers } from '@angular/http';
-import { ItemsData } from './item-response.interface';
+import { ConversationUser, ItemsData } from './item-response.interface';
+import { UUID } from 'angular2-uuid';
 
 describe('ItemService', () => {
 
@@ -93,6 +96,7 @@ describe('ItemService', () => {
       })
     });
     it('should return an array of items and the init', () => {
+      spyOn(UUID, 'UUID').and.returnValue('1');
       service.mine(0, 'published').subscribe((data: ItemsData) => {
         resp = data;
       });
@@ -105,7 +109,13 @@ describe('ItemService', () => {
       expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency_code);
       expect(item.modifiedDate).toBe(ITEMS_DATA_V3[0].content.modified_date);
       expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.flags);
-      expect(item.mainImage).toEqual(ITEMS_DATA_V3[0].content.image);
+      expect(item.mainImage).toEqual({
+        id: '1',
+        original_width: ITEMS_DATA_V3[0].content.image.original_width,
+        original_height: ITEMS_DATA_V3[0].content.image.original_height,
+        average_hex_color: '',
+        urls_by_size: ITEMS_DATA_V3[0].content.image
+      });
       expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
       expect(resp.init).toBe(20);
     });
@@ -124,6 +134,39 @@ describe('ItemService', () => {
       spyOn(http, 'put').and.returnValue(Observable.of({}));
       service.reactivateItem(ITEM_ID);
       expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/reactivate');
+    });
+  });
+
+  describe('bulkReserve', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEMS_BULK_RESPONSE)});
+      spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
+      service.selectedItems = ITEMS_BULK_UPDATED_IDS;
+      service.bulkReserve();
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/reserve', {
+        ids: ITEMS_BULK_UPDATED_IDS
+      });
+    });
+  });
+
+  describe('soldOutside', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      service.soldOutside(ITEM_ID);
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/sold');
+    });
+  });
+
+  describe('getConversationUsers', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CONVERSATION_USERS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: ConversationUser[];
+      service.getConversationUsers(ITEM_ID).subscribe((r: ConversationUser[]) => {
+        resp = r;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/conversation-users');
+      expect(resp).toEqual(CONVERSATION_USERS)
     });
   });
 

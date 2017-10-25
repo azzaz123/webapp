@@ -1,4 +1,4 @@
-import { ItemResponse } from '../app/core/item/item-response.interface';
+import { ConversationUser, ItemResponse } from '../app/core/item/item-response.interface';
 
 export const ITEM_DATA_V3: ItemResponse = {
   'id': '0j2ylvwrpmzy',
@@ -103,3 +103,14 @@ export const ITEMS_DATA_V3 = [{
     'favorites': 0
   }
 }];
+
+export const CONVERSATION_USERS: ConversationUser[] = [{
+  id: '1',
+  micro_name: 'Jeff',
+  last_message: 'Hola'
+}, {
+  id: '2',
+  micro_name: 'Enric',
+  last_message: 'Heyyyy'
+}];
+

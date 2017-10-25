@@ -10,5 +10,7 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn" i18n (click)="activeModal.dismiss()">Cancel</button>
-  <button type="button" class="btn btn-warn" i18n (click)="activeModal.close()">Delete</button>
+  <button type="button" class="btn btn-warn" (click)="activeModal.close()">
+    <span i18n>Delete</span>
+  </button>
 </div>

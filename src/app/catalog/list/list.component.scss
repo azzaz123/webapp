@@ -5,7 +5,7 @@ $height: 40px;
 
 .items {
   margin-top: $spacing;
-  margin-bottom: $spacing-XL;
+  margin-bottom: 120px;
 }
 
 tsl-spinner {
@@ -56,6 +56,13 @@ tsl-spinner {
   button {
     cursor: pointer;
     margin-left: 10px;
+    &.btn-reserve {
+      &:hover {
+        background: $reserve-bg;
+        border-color: transparent;
+        color: $white;
+      }
+    }
     &.btn-delete {
       @include square(40px);
       padding: 0;
@@ -75,5 +82,21 @@ tsl-spinner {
     button {
       animation: fadeInFromNone 0.5s ease-in-out;
     }
+  }
+}
+
+tsl-selected-items {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+}
+
+#catalog-empty-state {
+  padding: 0 10px;
+  md-icon {
+    width: 1120px;
+    height: 560px;
   }
 }

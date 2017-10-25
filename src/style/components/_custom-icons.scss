@@ -90,7 +90,7 @@
 }
 
 .actions, .bulk-actions {
-  button {
+  button:not(.btn-feature) {
     md-icon svg g g, svg path {
       fill: $grey-500;
     }
@@ -123,5 +123,19 @@
 .select.selected {
   md-icon svg g g {
     fill: $white;
+  }
+}
+.conv-user {
+  .arrow-icon {
+    svg path {
+      fill: $grey-200;
+    }
+  }
+  &:hover {
+    .arrow-icon {
+      svg path {
+        fill: $corporate;
+      }
+    }
   }
 }

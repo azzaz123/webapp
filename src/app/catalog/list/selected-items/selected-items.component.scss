@@ -1,0 +1,54 @@
+@import "../../../../style/_common.scss";
+
+:host {
+  background-color: $white;
+  box-shadow: 0 -2px 6px 0 rgba(37, 50, 56, 0.05);
+  padding: $spacing $spacing-L;
+  color: $grey-900;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.items {
+  display: flex;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  .last {
+    position: absolute;
+    top: 0;
+    display: block;
+    @include square($item-avatar-size-small);
+    border-radius: 4px;
+    border: solid 1px $grey-100;
+    background: $white;
+    text-align: center;
+    font-weight: bold;
+    line-height: $item-avatar-size-small;
+  }
+}
+
+.btn {
+  color: $white;
+  padding: 10px 18px;
+  cursor: pointer;
+  &.btn-reserve {
+    background-color: $reserve-bg;
+  }
+  &.btn-delete {
+    background-color: $delete-bg;
+  }
+  &.btn-feature {
+    background-color: $corporate;
+  }
+  &:hover {
+    opacity: .8;
+  }
+}

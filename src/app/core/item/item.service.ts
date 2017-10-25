@@ -7,17 +7,20 @@ import {
   Item,
   ItemService as ItemServiceMaster,
   TrackingService,
-  UserService
+  UserService,
+  ItemBulkResponse
 } from 'shield';
-import { ItemContent, ItemResponse, ItemsData } from './item-response.interface';
+import { ConversationUser, ItemContent, ItemResponse, ItemsData } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
+import { UUID } from 'angular2-uuid';
 
 @Injectable()
 export class ItemService extends ItemServiceMaster {
 
   protected API_URL_V2: string = 'api/v3/items';
   private API_URL_WEB: string = 'api/v3/web/items';
+  public selectedAction: string;
 
   constructor(http: HttpService,
               i18n: I18nService,
@@ -45,7 +48,13 @@ export class ItemService extends ItemServiceMaster {
       content.flags,
       null,
       content.sale_conditions,
-      content.images ? content.images[0] : content.image,
+      content.images ? content.images[0] : {
+        id: UUID.UUID(),
+        original_width: content.image.original_width,
+        original_height: content.image.original_height,
+        average_hex_color: '',
+        urls_by_size: content.image
+      },
       content.images,
       content.web_slug,
       content.modified_date
@@ -99,6 +108,22 @@ export class ItemService extends ItemServiceMaster {
 
   public reactivateItem(id: string): Observable<any> {
     return this.http.put(this.API_URL_V3 + '/' + id + '/reactivate');
+  }
+
+  public bulkReserve(): Observable<ItemBulkResponse> {
+    return this.http.put(this.API_URL_V3 + '/reserve', {
+      ids: this.selectedItems
+    })
+    .map((r: Response) => r.json());
+  }
+
+  public soldOutside(id: string): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + id + '/sold');
+  }
+
+  public getConversationUsers(id: string): Observable<ConversationUser[]> {
+    return this.http.get(this.API_URL_V3 + '/' + id + '/conversation-users')
+    .map((r: Response) => r.json());
   }
 
 }
