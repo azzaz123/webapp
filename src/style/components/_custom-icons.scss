@@ -139,3 +139,20 @@
     }
   }
 }
+
+.main-header-upload {
+  &:hover {
+    md-icon {
+      #fill {
+        transition: all 0.2s ease-in-out;
+        fill-opacity: 1;
+      }
+      #plus {
+        rect {
+          transition: all 0.2s ease-in-out;
+          fill: $corporate;
+        }
+      }
+    }
+  }
+}

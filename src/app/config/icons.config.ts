@@ -85,4 +85,5 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('congrats', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/congrats.svg'));
   mdIconRegistry.addSvgIcon('items-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/items-empty-state.svg'));
   mdIconRegistry.addSvgIcon('feature', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/feature.svg'));
+  mdIconRegistry.addSvgIcon('upload', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/upload.svg'));
 }
