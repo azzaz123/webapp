@@ -6,13 +6,13 @@
   border-radius: $border-radius;
   text-align: center;
   .list-group-flush {
-    padding: $spacing 0;
+    padding: $spacing-S 0;
     .list-group-item {
       text-align: center;
       border: 0;
       font-size: $font-size-S;
       color: $grey-700;
-      padding: 0 $spacing $spacing-S $spacing;
+      padding: 0 $spacing $spacing-XXS $spacing;
       display: flex;
       align-items: flex-start;
       background: transparent;
@@ -21,12 +21,13 @@
       }
       > div {
         margin: 0 auto;
+        display: flex;
+        align-items: center;
       }
       md-icon {
         height: 16px;
         width: 16px;
-        margin-right: $spacing-S;
-        margin-top: 1px;
+        margin-right: $spacing-XXS;
       }
     }
   }
