@@ -7,7 +7,6 @@ import {
   I18nService,
   ItemService,
   TrackingService,
-  UserService,
   XmppService,
   PersistencyService
 } from 'shield';
@@ -17,6 +16,8 @@ import { ReportListingComponent } from './modals/report-listing/report-listing.c
 import { ReportUserComponent } from './modals/report-user/report-user.component';
 import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
+import { UserService } from '../core/user/user.service';
+import { UserInfoResponse } from '../core/user/user-info.interface';
 
 @Component({
   selector: 'tsl-chat',
@@ -68,6 +69,15 @@ export class ChatComponent implements OnInit {
       this.currentConversation.active = false;
     }
     this.currentConversation = conversation;
+    const user = this.currentConversation.user;
+
+    if (this.currentConversation.user.scoringStars === undefined || this.currentConversation.user.responseRate === undefined) {
+      this.userService.getInfo(user.id).subscribe((info: UserInfoResponse) => {
+        user.scoringStars = info.scoring_stars;
+        user.responseRate = info.response_rate;
+      });
+    }
+
     if (this.currentConversation) {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);

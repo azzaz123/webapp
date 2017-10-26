@@ -4,12 +4,18 @@
                            (loaded)="onLoaded($event)"></tsl-conversations-panel>
 </div>
 <div id="right-panel" *ngIf="currentConversation">
-  <tsl-user [user]="currentConversation.user" [phone]="currentConversation.phone"></tsl-user>
   <tsl-item [item]="currentConversation.item"></tsl-item>
+  <div class="conversation-ad-text"> Sponsor </div>
+  <tsl-ad slotid="div-gpt-ad-1508490196308-0" height="400" width="240"></tsl-ad>
 </div>
 <div id="center-panel" *ngIf="currentConversation">
   <div id="top-bar">
-    <h5>{{currentConversation?.user.microName}}</h5>
+    <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+    <div class="conversation-header-user-info">
+      <h5>{{currentConversation?.user.microName}}</h5>
+      <tsl-stars *ngIf="currentConversation.user.scoringStars > -1" [stars]="currentConversation.user.scoringStars" [normalized]="false"></tsl-stars>
+    </div>
+
     <!-- Commented until released
     <div class="status-circle" [ngClass]="{'online': currentConversation?.user.online}"></div>
     <span i18n [hidden]="currentConversation?.user.online">Offline</span>
@@ -26,6 +32,11 @@
       </div>
     </div>
   </div>
+
+  <div class="user-detail-wrapper">
+    <tsl-user-detail [user]="currentConversation.user"></tsl-user-detail>
+  </div>
+
   <tsl-messages-panel [currentConversation]="currentConversation"></tsl-messages-panel>
   <tsl-input [currentConversation]="currentConversation"></tsl-input>
 </div>
