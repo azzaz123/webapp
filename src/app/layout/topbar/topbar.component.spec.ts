@@ -11,6 +11,8 @@ import { environment } from '../../../environments/environment';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TEST_HTTP_PROVIDERS } from 'shield';
 import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UploadModalComponent } from './upload-modal/upload-modal.component';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -35,6 +37,7 @@ describe('TopbarComponent', () => {
   let fixture: ComponentFixture<TopbarComponent>;
   let eventService: EventService;
   let windowRef: WindowRef;
+  let modalService: NgbModal;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -61,6 +64,15 @@ describe('TopbarComponent', () => {
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              result: Promise.resolve()
+            };
+          }
+        }
+        },
         EventService, ...TEST_HTTP_PROVIDERS],
       declarations: [TopbarComponent],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -75,6 +87,7 @@ describe('TopbarComponent', () => {
     fixture.detectChanges();
     eventService = TestBed.get(EventService);
     windowRef = TestBed.get(WindowRef);
+    modalService = TestBed.get(NgbModal);
   });
 
   it('should be created', () => {
@@ -187,6 +200,14 @@ describe('TopbarComponent', () => {
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
       .toEqual('https://www.wallapop.com/search?catIds=100' + '&lat=42' + '&lng=2' + '&kws=' + '&verticalId=100');
+    });
+  });
+
+  describe('upload', () => {
+    it('should ', () => {
+      spyOn(modalService, 'open');
+      component.upload();
+      expect(modalService.open).toHaveBeenCalledWith(UploadModalComponent, {windowClass: 'upload'});
     });
   });
 
