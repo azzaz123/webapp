@@ -84,6 +84,7 @@ export class TopbarComponent implements OnInit {
 
   public upload() {
     this.modalService.open(UploadModalComponent, {windowClass: 'upload'});
+    ga('send', 'event', 'upload', 'click');
   }
 
 }
