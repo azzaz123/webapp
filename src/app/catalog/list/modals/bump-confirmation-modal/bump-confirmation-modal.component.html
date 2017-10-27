@@ -1,10 +1,38 @@
-<img [hidden]="code != 200" src="../../../../../assets/images/bump-ok.png" alt="">
-<img class="fail" [hidden]="code == 200" src="../../../../../assets/images/bump-ko.png" alt="">
+<img [hidden]="code !== '200'" src="../../../../../assets/images/bump-ok.png" alt="">
+<img class="fail" [hidden]="code === '200'" src="../../../../../assets/images/bump-ko.png" alt="">
 
-<h1 i18n [hidden]="code != 200" i18n>Congratulations</h1>
-<h1 i18n [hidden]="code == 200" class="fail" i18n>We've failed you bro</h1>
+<div *ngIf="code === '200'">
+  <h1 i18n>Congratulations</h1>
+  <p i18n>Your item(s) have been featured and you can see them in the top position.</p>
+  <button class="btn-continue" (click)="activeModal.close()" i18n>Start selling</button>
+</div>
 
-<p i18n [hidden]="code != 200" i18n>Your item(s) have been featured and you can see them in the top position.</p>
-<p i18n [hidden]="code == 200" i18n>Your item(s) have not been featured because something went wrong with you credit card.</p>
+<div *ngIf="code === '101'">
+  <h1 class="fail" i18n>Something happened...</h1>
+  <p i18n>Your item(s) have not been featured because something went wrong with your credit card.<br />Please check and try again.</p>
+  <button class="btn-continue" (click)="activeModal.close()" i18n>Let’s go</button>
+</div>
 
-<button class="btn-continue" (click)="activeModal.close()" i18n>Continue</button>
+<div *ngIf="code === '102'">
+  <h1 class="fail" i18n>Hmmm…</h1>
+  <p i18n>Your credit card seems suspicious. ¿Why not trying with another account?</p>
+  <button class="btn-continue" (click)="activeModal.close()" i18n>C'mon</button>
+</div>
+
+<div *ngIf="code === '191'">
+  <h1 class="fail" i18n>There has been a mistake</h1>
+  <p i18n>Your credit card has an invalid expiration date. Please check and try again.</p>
+  <button class="btn-continue" (click)="activeModal.close()" i18n>Ok</button>
+</div>
+
+<div *ngIf="code === '909'">
+  <h1 class="fail" i18n>TPV... what?</h1>
+  <p i18n>There has been an unexpected error in the paying system. Why not trying again later?</p>
+  <button class="btn-continue" (click)="activeModal.close()" i18n>Ok</button>
+</div>
+
+<div *ngIf="code === '-1'">
+  <h1 class="fail" i18n>Oops!</h1>
+  <p i18n>We are trying to figure out what happened. Try again later.</p>
+  <button class="btn-continue" (click)="activeModal.close()" i18n>Fine!</button>
+</div>

@@ -62,7 +62,7 @@ export class ListComponent implements OnInit {
       });
       this.route.params.subscribe((params: any) => {
         if (params && params.code) {
-          const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {windowClass: 'review'});
+          const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {windowClass: 'bump-confirm'});
           modalRef.componentInstance.code = params.code;
           modalRef.result.then(() => {
             this.router.navigate(['catalog/list']);

@@ -141,7 +141,7 @@ describe('ListComponent', () => {
       spyOn(router, 'navigate');
       component.ngOnInit();
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {windowClass: 'review'})
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {windowClass: 'bump-confirm'})
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list'])
     }));
     it('should reset page on router event', fakeAsync(() => {
