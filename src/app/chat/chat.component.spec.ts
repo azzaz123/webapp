@@ -4,13 +4,16 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
-  EventService, XmppService, MOCK_CONVERSATION, UserService, ItemService, HttpService, I18nService,
+  EventService, XmppService, MOCK_CONVERSATION, ItemService, HttpService, I18nService,
   ConversationService, TrackingService, MockTrackingService, ITEM_ID, Conversation, PersistencyService
 } from 'shield';
+import { UserService } from '../core/user/user.service';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
+
+import { USER_INFO_RESPONSE } from '../../tests/user.fixtures';
 
 class MockConversationService {
 
@@ -33,6 +36,12 @@ class MockUserService {
 
   public updateBlockStatus() {
   }
+
+
+  getInfo(id: string) {
+    return Observable.of(USER_INFO_RESPONSE)
+  }
+
 }
 
 class MockItemService {

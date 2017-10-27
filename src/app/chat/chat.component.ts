@@ -69,6 +69,16 @@ export class ChatComponent implements OnInit {
       this.currentConversation.active = false;
     }
     this.currentConversation = conversation;
+
+    if (this.currentConversation) {
+      this.currentConversation.active = true;
+      this.conversationService.sendRead(this.currentConversation);
+    }
+
+    if (!this.currentConversation) {
+      return;
+    }
+    
     const user = this.currentConversation.user;
 
     if (this.currentConversation.user.scoringStars === undefined || this.currentConversation.user.responseRate === undefined) {
@@ -76,11 +86,6 @@ export class ChatComponent implements OnInit {
         user.scoringStars = info.scoring_stars;
         user.responseRate = info.response_rate;
       });
-    }
-
-    if (this.currentConversation) {
-      this.currentConversation.active = true;
-      this.conversationService.sendRead(this.currentConversation);
     }
   }
 
