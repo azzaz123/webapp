@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { UserComponent } from './user/user.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { ShieldModule, UtilsModule } from 'shield';
 import { SharedModule } from '../../shared/shared.module';
@@ -14,7 +13,7 @@ import { ItemModule } from '../item/item.module';
     ItemModule,
     UtilsModule
   ],
-  declarations: [UserComponent, UserAvatarComponent ],
-  exports: [UserComponent, UserAvatarComponent]
+  declarations: [UserAvatarComponent ],
+  exports: [UserAvatarComponent]
 })
 export class UserModule { }
