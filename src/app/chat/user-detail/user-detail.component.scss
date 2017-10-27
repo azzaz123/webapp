@@ -1,7 +1,7 @@
 @import "../../../style/_common.scss";
 
-.user-detail{
-  background: white;
+.user-detail {
+  background: $white;
   border: thin solid $grey-50;
   border-radius: $border-radius;
   text-align: center;
@@ -25,8 +25,7 @@
         align-items: center;
       }
       md-icon {
-        height: 16px;
-        width: 16px;
+        @include square(16px);
         margin-right: $spacing-XXS;
       }
     }

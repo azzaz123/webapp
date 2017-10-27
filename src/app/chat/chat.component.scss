@@ -29,11 +29,11 @@
       color: $grey-700;
     }
 
-    tsl-user-avatar{
+    tsl-user-avatar {
       margin-right: $spacing-S;
     }
 
-    .conversation-header-user-info{
+    .conversation-header-user-info {
       display: inline-block;
       flex-grow: 1;
       h5 {
@@ -88,8 +88,8 @@
   border-left: 1px solid $grey-100;
 
   .conversation-ad-text {
-    margin-bottom: 12px;
-    color: #cfd8dc;
+    margin-bottom: $spacing-S;
+    color: $grey-100;
   }
 
   tsl-user {
