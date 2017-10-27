@@ -19,10 +19,9 @@ export class AdComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit() {
-    console.log(googletag);
-    googletag.cmd.push(function()
-      { googletag.display('div-gpt-ad-1508490196308-0');}
-    );
+    googletag.cmd.push(() => {
+      googletag.display(this.slotid);
+    });
   }
 
 }
