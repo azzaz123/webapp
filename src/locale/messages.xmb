@@ -93,7 +93,7 @@
   <msg id="880177930328984754"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:37</source>Fine!</msg>
   <msg id="6686102860613242031"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:11</source>Use this card:</msg>
   <msg id="2005530248451232459"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:15</source>Add a new card</msg>
-  <msg id="2245945893304562487"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:17</source>Pay <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</msg>
+  <msg id="4699023020194351074"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:17</source>Feature for <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</msg>
   <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:11</source>Published</msg>
   <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:12</source>Sold</msg>
   <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:13</source>Expired</msg>
@@ -113,5 +113,5 @@
   <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:41</source>Pending</msg>
   <msg id="3448462145758383019"><source>app/catalog/list/selected-items/selected-items.component.ts:16</source>Total</msg>
   <msg id="2874924373232293084"><source>app/catalog/list/selected-items/selected-items.component.ts:22</source>Reserve</msg>
-  <msg id="7274286978511770772"><source>app/catalog/list/selected-items/selected-items.component.ts:32</source>Continue to Checkout</msg>
+  <msg id="8743988303207163578"><source>app/catalog/list/selected-items/selected-items.component.ts:32</source>Feature Now</msg>
 </messagebundle>

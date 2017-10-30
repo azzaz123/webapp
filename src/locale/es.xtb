@@ -85,7 +85,7 @@
   <translation id="880177930328984754">De acuerdo</translation>
   <translation id="6686102860613242031">Utiliza esta tarjeta:</translation>
   <translation id="2005530248451232459">Añadir nueva tarjeta</translation>
-  <translation id="2245945893304562487">Pagar <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
+  <translation id="4699023020194351074">Destacar por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
   <translation id="4058575476871566236">Publicados</translation>
   <translation id="5529951643694823242" desc="plural" meaning="tab">Vendidos</translation>
   <translation id="464749780222721589">Caducados</translation>
@@ -113,6 +113,5 @@
   <translation id="4416413576346763682">Pendiente</translation>
   <translation id="578471405917460767">Destácalo</translation>
   <translation id="3448462145758383019">Total</translation>
-  <translation id="7274286978511770772">Continuar con la compra</translation>
-
+  <translation id="8743988303207163578">Destacar ya</translation>
 </translationbundle>
