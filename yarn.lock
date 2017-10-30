@@ -288,9 +288,9 @@ angular2-moment@^1.3.3:
   dependencies:
     moment "^2.16.0"
 
-"angular2-moment@https://github.com/Wallapop/angular2-moment#2.1.2":
-  version "2.1.2"
-  resolved "https://github.com/Wallapop/angular2-moment#0d3c7fb868a80fd0a7f49f1b3ba6743f2badcab5"
+"angular2-moment@https://github.com/Wallapop/angular2-moment#2.2.0":
+  version "2.2.0"
+  resolved "https://github.com/Wallapop/angular2-moment#1214d11b4bc5facf1da2c08ad8f24d3f82a72917"
   dependencies:
     moment "^2.16.0"
 
