@@ -17,7 +17,7 @@ export class UserDetailComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  ngOnChanges(changes:  SimpleChanges) {
+  ngOnChanges(changes?: SimpleChanges) {
     if (changes.user) {
       if (this.user.scoringStars === undefined || this.user.responseRate === undefined) {
         this.userService.getInfo(this.user.id).subscribe((info: UserInfoResponse) => {
