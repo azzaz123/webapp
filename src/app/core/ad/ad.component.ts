@@ -9,14 +9,15 @@ declare var googletag: any;
 })
 export class AdComponent implements OnInit, AfterViewInit {
 
-  @Input() slotid;
-  @Input() height;
-  @Input() width;
+  @Input() slotid: string;
+  @Input() height: number;
+  @Input() width: number;
+
+  private googletag: any = googletag;
 
   constructor() { }
 
   ngOnInit() {
-    console.log(googletag)
   }
 
   ngAfterViewInit() {
