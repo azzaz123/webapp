@@ -1,0 +1,43 @@
+<div [ngClass]="{ 'is-drop-over': dragOver }" ngFileDrop (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadService.uploadInput" [options]="options">
+  <div class="drag-area">
+    <ng-container *ngIf="files.length < options.maxUploads; else maxUploads">
+      <md-icon svgIcon="upload"></md-icon>
+      <p i18n>Drop here your files to upload as a product photo</p>
+    </ng-container>
+    <ng-template #maxUploads>
+      <div class="denied-icon">
+        <md-icon svgIcon="cross"></md-icon>
+      </div>
+      <p i18n>
+        You have reached the limit of 8 photos per product.<br />
+        Remove one first if you want to add more.
+      </p>
+    </ng-template>
+  </div>
+  <div class="col-md-12">
+    <h2 i18n>Product Photos</h2>
+  </div>
+  <div class="drop-container">
+    <div class="col-md-12 product-photos-boxes">
+      <span class="change-order-info">
+        <md-icon svgIcon="move-shape"></md-icon>
+        <span i18n>Change the order of the photos</span>
+      </span>
+      <div dnd-sortable-container [sortableData]="files">
+        <label class="product-photo" *ngFor="let i of placeholders" [ngClass]="{'placeholder': !files[i]}" dnd-sortable [sortableIndex]="i" [dragEnabled]="files[i]" (onDropSuccess)="updateOrder()">
+          <a (click)="remove(files[i], $event)">
+            <md-icon svgIcon="close"></md-icon>
+          </a>
+          <img [src]="files[i]?.preview" *ngIf="files[i]" />
+          <input
+            *ngIf="!files[i]"
+            type="file"
+            ngFileSelect
+            [options]="options"
+            multiple="true"/>
+          <span i18n>Primary Photo</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

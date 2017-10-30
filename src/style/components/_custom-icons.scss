@@ -144,3 +144,24 @@
     }
   }
 }
+
+.car-box-selector {
+  svg {
+    @include in-the-middle;
+    width: 26px;
+    height: 26px;
+    g, path {
+      fill: $grey-500;
+    }
+  }
+  &.active {
+    svg g, svg path {
+      fill: $corporate;
+    }
+  }
+  &:hover:not(.active) {
+    svg g, svg path {
+      fill: $white;
+    }
+  }
+}

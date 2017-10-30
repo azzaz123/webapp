@@ -1,0 +1,157 @@
+@import "../../style/_common.scss";
+
+.form-group {
+  margin-bottom: $spacing-L;
+  &.last {
+    margin-bottom: 0;
+  }
+  label {
+    font-size: $font-size-S;
+    color: $grey-500;
+  }
+  .form-control, select.form-control:not([size]):not([multiple]) {
+    display: block;
+    height: 50px;
+    width: 100%;
+    font-size: $font-size;
+    border-color: $grey-50;
+  }
+  select.form-control {
+    -webkit-appearance: none;
+    option {
+      background: $grey-900;
+      color: $white;
+    }
+  }
+  textarea.form-control {
+    line-height: 1.49;
+    &.ng-untouched.ng-pristine {
+      max-height: 36px;
+    }
+  }
+}
+
+/* ng-select */
+
+ng-select {
+  & > div {
+    border: 0 !important;
+    &.disabled {
+      background-color: transparent !important;
+    }
+    & > div.single {
+      & > div.toggle {
+        text-indent: -1000000px;
+        background: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='24' height='24' viewBox='0 0 24 24'><path fill='#607d8b' d='M7.406 7.828l4.594 4.594 4.594-4.594 1.406 1.406-6 6-6-6z'></path></svg>");
+        background-position: 100% 50%;
+        background-repeat: no-repeat;
+        background-position: 100% 100%;
+        &:hover {
+          background-color: transparent !important;
+        }
+      }
+      & > div.value {
+        padding: 0 !important;
+        line-height: 36px !important;
+      }
+    }
+  }
+}
+
+select-dropdown{
+  & > div {
+    background: $grey-900 !important;
+    box-shadow: 0 4px 14px 0 rgba(24, 32, 36, 0.4);
+    border: solid 1px rgba(54, 71, 79, 0.5) !important;
+    border-radius: 4px;
+    z-index: 10 !important;
+    .options {
+      overflow-x: hidden !important;
+      ul li {
+        padding: $spacing-S 24px !important;
+      }
+    }
+    .filter input {
+      background: transparent;
+      border: 0 !important;
+      color: $white !important;
+    }
+  }
+  .highlighted {
+    background-color: $grey-800 !important;
+  }
+  .selected {
+    background-color: transparent !important;
+    color: $corporate;
+  }
+  .selected.highlighted {
+    background-color: $grey-800 !important;
+    color: $corporate !important;
+  }
+}
+
+ng-select, select-dropdown {
+  * {
+    font-family: $wallie !important;
+  }
+}
+
+#carType {
+  select-dropdown {
+    & > div {
+      .options {
+        ul {
+          li {
+            background-repeat: no-repeat;
+            background-position: 18px;
+            padding-left: 60px !important;
+            &:nth-child(1) {
+              background-image: url(/assets/icons/small_car.svg);
+            }
+            &:nth-child(2) {
+              background-image: url(/assets/icons/coupe_cabrio.svg);
+            }
+            &:nth-child(3) {
+              background-image: url(/assets/icons/sedan.svg);
+            }
+            &:nth-child(4) {
+              background-image: url(/assets/icons/family_car.svg);
+            }
+            &:nth-child(5) {
+              background-image: url(/assets/icons/mini_van.svg);
+            }
+            &:nth-child(6) {
+              background-image: url(/assets/icons/4X4.svg);
+            }
+            &:nth-child(7) {
+              background-image: url(/assets/icons/van.svg);
+            }
+            &:nth-child(8) {
+              background-image: url(/assets/icons/others-green.svg);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#currency {
+  select-dropdown {
+    & > div {
+      .options {
+        ul li {
+          padding: $spacing-S $spacing-XXS !important;
+        }
+      }
+    }
+  }
+}
+
+form.disabled {
+  .form-control:disabled {
+    cursor: auto;
+    border: 0;
+  }
+}
+

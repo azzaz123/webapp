@@ -1,0 +1,103 @@
+@import "../../../style/_common.scss";
+
+.container {
+  width: 700px;
+}
+
+.box {
+  border-radius: $border-radius;
+  background-color: $white;
+  border: solid 1px $grey-50;
+  padding: $spacing;
+  margin-bottom: $spacing;
+  h2 {
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $corporate;
+    font-size: $font-size-S;
+    margin-bottom: $spacing;
+  }
+}
+
+.box-header {
+  h1 {
+    font-weight: bold;
+    font-size: $font-size-LL;
+    letter-spacing: .5px;
+    margin: $spacing 0;
+  }
+}
+
+.box-content {
+  border-radius: $border-radius;
+  padding-bottom: $spacing-L;
+}
+
+.product-photos {
+  position: relative;
+}
+
+.chars-counter {
+  font-size: $font-size-XS;
+  color: $grey-200;
+  float: right;
+  margin-top: $spacing-XXS;
+}
+
+.engine-options,
+.terms-options,
+.gear-options {
+  margin: 5px 0 24px;
+  h3 {
+    font-size: $font-size-S;
+    color: $grey-500;
+  }
+}
+
+.terms-options {
+  margin: 0;
+}
+
+.car-box-selector {
+  background-color: rgba(54, 71, 79, .3);
+  border-radius: $border-radius;
+  display: inline-block;
+  @include square($spacing-XL);
+  margin-right: $spacing;
+  line-height: $spacing-XL;
+  position: relative;
+  text-align: center;
+  border: 2px solid transparent;
+  white-space: normal;
+  &.btn {
+    padding: 0;
+    border-radius: $border-radius !important;
+    &:focus, &.focus {
+      box-shadow: none;
+    }
+  }
+  &.active {
+    border-color: $corporate;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  md-icon {
+    height: 26px;
+    width: 26px;
+  }
+  span {
+    display: block;
+    text-transform: uppercase;
+    color: $grey-300;
+    font-weight: bold;
+    font-size: 9px;
+    letter-spacing: .4px;
+    line-height: $font-size-S;
+    margin-top: $spacing-XXS;
+  }
+}
+
+.btn-primary {
+  padding: 10px 25px;
+}

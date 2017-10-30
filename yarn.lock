@@ -3713,6 +3713,14 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
+ng-select:
+  version "1.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/ng-select/-/ng-select-1.0.0-beta.6.tgz#6f835247c1093bb380572b2705df75ff390c2f4d"
+
+ng2-dnd@^4.0.2:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/ng2-dnd/-/ng2-dnd-4.2.0.tgz#85d7ac75199f39a3434b7c32b9ab006677b19b59"
+
 ng2-haversine@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ng2-haversine/-/ng2-haversine-0.1.1.tgz#17b1a41102bd33012717a40cc00020c2ee4e5292"
@@ -3724,6 +3732,10 @@ ngx-cookie:
 ngx-toastr@^5.0.7:
   version "5.2.5"
   resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-5.2.5.tgz#a11e59f7f124c7338bf5ffa3913d41244d7956f9"
+
+"ngx-uploader@https://github.com/Wallapop/ngx-uploader#3.1.2":
+  version "3.1.2"
+  resolved "https://github.com/Wallapop/ngx-uploader#d7c997bffd316efb429c354d8ca11a11007137da"
 
 no-case@^2.2.0:
   version "2.3.1"

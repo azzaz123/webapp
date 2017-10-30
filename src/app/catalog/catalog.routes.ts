@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListComponent } from './list/list.component';
 import { LoggedGuard } from '../core/user/logged.guard';
 import { CatalogComponent } from './catalog.component';
+import { UploadComponent } from './upload/upload.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
       {
         path: 'list',
         component: ListComponent
+      },
+      {
+        path: 'upload',
+        component: UploadComponent
       }
     ]
   },
@@ -28,5 +33,6 @@ export class CatalogRoutingModule {
 
 export const catalogRoutedComponents = [
   CatalogComponent,
-  ListComponent
+  ListComponent,
+  UploadComponent
 ];

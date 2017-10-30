@@ -1,0 +1,157 @@
+@import "../../../../style/_common.scss";
+
+:host {
+  width: 100%;
+}
+
+.drag-area {
+  display: none;
+}
+
+.is-drop-over {
+  position: relative;
+  height: 131px;
+  width: calc(100% - 20px);
+  border: 2px dashed $grey-500;
+  border-radius: $border-radius;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  div {
+    display: none;
+  }
+  .drag-area {
+    display: block;
+    text-align: center;
+    md-icon {
+      @include square(32px);
+    }
+    p {
+      margin: 0;
+      color: $grey-500;
+      font-size: $font-size-S;
+    }
+    .denied-icon {
+      display: inline-block;
+      border: solid 2px $warn;
+      @include square(32px);
+      border-radius: 50%;
+      line-height: 30px;
+      margin-bottom: $spacing-XS;
+      md-icon {
+        @include square(11px);
+      }
+    }
+  }
+}
+
+h2 {
+  display: block;
+  width: 100%;
+  margin-bottom: 28px;
+  font-size: $font-size-S;
+  text-transform: uppercase;
+}
+
+.product-photos-boxes {
+  position: relative;
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  .change-order-info {
+    $change-order-info-height: 16px;
+    position: absolute;
+    top: -#{($spacing-L + ($change-order-info-height/2))};
+    right: 10px;
+    font-size: $font-size-XS;
+    line-height: $change-order-info-height;
+    color: $grey-600;
+    letter-spacing: .5px;
+    md-icon, span {
+      vertical-align: middle;
+    }
+    md-icon {
+      height: $change-order-info-height;
+    }
+  }
+}
+.product-photo {
+  @include square(80px);
+  position: relative;
+  border-radius: $border-radius;
+  margin-right: $spacing;
+  transition: all .25s ease;
+  background-position: center center;
+  background-repeat: no-repeat;
+  &.placeholder {
+    background-image: url(/assets/icons/image.svg);
+    border: 2px dashed $grey-800;
+    &:hover {
+      border-color: $corporate;
+    }
+    &:first-of-type, &:hover {
+      background-image: url(/assets/icons/upload.svg);
+    }
+    &:first-of-type {
+      border-color: $grey-500;
+    }
+  }
+  a {
+    display: none;
+    @include square(19px);
+    background: $grey-800;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    md-icon {
+      @include square(8px);
+    }
+  }
+  &:hover {
+    cursor: move;
+    &:not(.placeholder):not(.dnd-sortable-drag) {
+      transform: scale(1.25);
+      box-shadow: 0 4px 14px 0 rgba(22, 29, 32, 0.6);
+      a {
+        display: block;
+      }
+    }
+  }
+  &:first-of-type {
+    span {
+      display: inline;
+    }
+  }
+  span {
+    $offset: 10px;
+    position: absolute;
+    font-size: $font-size-XXS;
+    left: -#{$offset/2};
+    right: 0;
+    bottom: -24px;
+    font-weight: bold;
+    color: $grey-400;
+    text-transform: uppercase;
+    width: calc(100% + #{$offset});
+    display: none;
+  }
+  input {
+    display: none;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: $border-radius;
+    display: block;
+  }
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
