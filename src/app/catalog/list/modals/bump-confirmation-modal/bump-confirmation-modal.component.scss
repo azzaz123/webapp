@@ -4,6 +4,15 @@
   padding: $spacing-L;
   text-align: center;
 }
+.modal-close {
+  @include square(13px);
+  top: 10px;
+  right: 10px;
+  md-icon {
+    @include square(13px);
+    line-height: initial;
+  }
+}
 img {
   width: 126px;
   margin-bottom: $spacing;

@@ -1,3 +1,7 @@
+<div class="modal-close" (click)="activeModal.dismiss()">
+  <md-icon svgIcon="cross"></md-icon>
+</div>
+
 <img [hidden]="code !== '200'" src="../../../../../assets/images/bump-ok.png" alt="">
 <img class="fail" [hidden]="code === '200'" src="../../../../../assets/images/bump-ko.png" alt="">
 
