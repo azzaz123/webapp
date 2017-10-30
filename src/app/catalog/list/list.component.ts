@@ -188,7 +188,10 @@ export class ListComponent implements OnInit {
             this.router.navigate(['catalog/list', {code: 200}]);
           }, 1000);
         }, () => {
-          this.router.navigate(['catalog/list', {code: -1}]);
+          this.deselect();
+          setTimeout(() => {
+            this.router.navigate(['catalog/list', {code: -1}]);
+          }, 1000);
         });
       }
     }, () => {
