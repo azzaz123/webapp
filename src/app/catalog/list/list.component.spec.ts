@@ -423,8 +423,8 @@ describe('ListComponent', () => {
               total: 10
             });
           }));
-          it('should redirect to code 400', () => {
-            expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 400}]);
+          it('should redirect to code -1', () => {
+            expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
           });
         });
         afterEach(() => {
