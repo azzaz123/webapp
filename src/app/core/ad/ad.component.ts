@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 
-declare var googletag:any;
+declare var googletag: any;
 
 @Component({
   selector: 'tsl-ad',
   templateUrl: './ad.component.html',
   styleUrls: ['./ad.component.scss']
 })
-export class AdComponent implements OnInit, AfterViewInit{
+export class AdComponent implements OnInit, AfterViewInit {
 
   @Input() slotid;
   @Input() height;
@@ -16,6 +16,7 @@ export class AdComponent implements OnInit, AfterViewInit{
   constructor() { }
 
   ngOnInit() {
+    console.log(googletag)
   }
 
   ngAfterViewInit() {
