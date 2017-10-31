@@ -151,17 +151,17 @@
     width: 26px;
     height: 26px;
     g, path {
-      fill: $grey-500;
+      fill: $grey-250;
     }
   }
   &.active {
     svg g, svg path {
-      fill: $corporate;
+      fill: $white;
     }
   }
   &:hover:not(.active) {
     svg g, svg path {
-      fill: $white;
+      fill: $corporate;
     }
   }
 }
