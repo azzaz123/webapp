@@ -21,6 +21,7 @@ import { SelectModule } from 'ng-select';
 import { CarSuggestionsService } from './upload/car-suggestions.service';
 import { CarKeysService } from './upload/car-keys.service';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { ElasticModule } from 'ng-elastic';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
     DndModule,
     ReactiveFormsModule,
     SelectModule,
-    NgbButtonsModule
+    NgbButtonsModule,
+    ElasticModule
   ],
   providers: [
     CarSuggestionsService,

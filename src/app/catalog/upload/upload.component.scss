@@ -19,13 +19,13 @@
   }
 }
 
-.box-header {
-  h1 {
-    font-weight: bold;
-    font-size: $font-size-LL;
-    letter-spacing: .5px;
-    margin: $spacing 0;
-  }
+h1 {
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: .5px;
+  margin: 0;
+  margin-bottom: $spacing;
+  color: $grey-900;
 }
 
 .box-content {
@@ -47,7 +47,7 @@
 .engine-options,
 .terms-options,
 .gear-options {
-  margin: 5px 0 24px;
+  margin: 5px 0 $spacing-L;
   h3 {
     font-size: $font-size-S;
     color: $grey-500;
@@ -55,7 +55,7 @@
 }
 
 .terms-options {
-  margin: 0;
+  margin-bottom: 23px;
 }
 
 .car-box-selector {
@@ -75,16 +75,6 @@
       box-shadow: none;
     }
   }
-  &.active {
-    background-color: $corporate;
-  }
-  &:hover {
-    cursor: pointer;
-  }
-  md-icon {
-    height: 26px;
-    width: 26px;
-  }
   span {
     display: block;
     text-transform: uppercase;
@@ -95,8 +85,26 @@
     line-height: $font-size-S;
     margin-top: $spacing-XXS;
   }
+  &.active {
+    background-color: $corporate;
+    span {
+      color: $corporate;
+    }
+  }
+  &:hover:not(.active) {
+    cursor: pointer;
+    span {
+      color: $grey-700;
+    }
+  }
+  md-icon {
+    height: 26px;
+    width: 26px;
+  }
 }
 
 .btn-primary {
-  padding: 10px 25px;
+  padding: 14px 50px;
+  margin-bottom: 65px;
+  margin-top: $spacing-L - $spacing;
 }

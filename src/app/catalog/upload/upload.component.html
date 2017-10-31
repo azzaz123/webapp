@@ -1,6 +1,6 @@
 <div class="page-content">
   <div class="container">
-    <h1 i18n>Upload new car</h1>
+    <h1 i18n>Upload new {{ '{' }}car{{ '}' }}</h1>
     <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
       <div class="box">
         <h2 i18n>Product info</h2>
@@ -130,11 +130,10 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div class="form-group">
+            <div class="form-group last">
               <label for="tellUs" i18n>Description</label>
               <span class="chars-counter">{{uploadForm.value?.storytelling?.length}}/650</span>
                 <textarea fz-elastic class="form-control" formControlName="storytelling" id="tellUs" maxlength="650"></textarea>
-
             </div>
           </div>
         </div>
@@ -163,14 +162,10 @@
           </label>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-12 text-center">
-          <button type="submit" class="btn btn-primary" [disabled]="loading">
-            <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
-            <span [hidden]="loading" i18n>List new car</span>
-          </button>
-        </div>
-      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
+        <span [hidden]="loading" i18n>List car</span>
+      </button>
     </form>
   </div>
 </div>

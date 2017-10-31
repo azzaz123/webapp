@@ -161,7 +161,7 @@
   }
   &:hover:not(.active) {
     svg g, svg path {
-      fill: $corporate;
+      fill: $grey-700;
     }
   }
 }

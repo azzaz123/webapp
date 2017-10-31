@@ -3713,6 +3713,10 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
+ng-elastic:
+  version "1.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/ng-elastic/-/ng-elastic-1.0.0-beta.3.tgz#dd5b3bdda932d88aab42f343374f01afaf002501"
+
 ng-select:
   version "1.0.0-beta.6"
   resolved "https://registry.yarnpkg.com/ng-select/-/ng-select-1.0.0-beta.6.tgz#6f835247c1093bb380572b2705df75ff390c2f4d"

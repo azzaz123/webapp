@@ -15,6 +15,28 @@
     width: 100%;
     font-size: $font-size;
     border-color: $grey-50;
+    border-radius: 6px;
+    &:hover {
+      border-color: $grey-100;
+    }
+    &.ng-dirty {
+      &.ng-valid {
+        border-color: $grey-200;
+      }
+      &.ng-invalid {
+        border-color: $warn;
+        label {
+          color: $warn;
+        }
+      }
+    }
+    &:focus, &.ng-dirty.ng-invalid:focus, &.ng-dirty.ng-valid:focus {
+      border-color: $corporate;
+      color: $grey-800;
+      outline: none;
+      box-shadow: none;
+      background-color: transparent;
+    }
   }
   select.form-control {
     -webkit-appearance: none;
@@ -25,9 +47,7 @@
   }
   textarea.form-control {
     line-height: 1.49;
-    &.ng-untouched.ng-pristine {
-      max-height: 36px;
-    }
+    min-height: 140px;
   }
 }
 
@@ -60,10 +80,9 @@ ng-select {
 
 select-dropdown{
   & > div {
-    background: $grey-900 !important;
-    box-shadow: 0 4px 14px 0 rgba(24, 32, 36, 0.4);
-    border: solid 1px rgba(54, 71, 79, 0.5) !important;
-    border-radius: 4px;
+    box-shadow: 0 1px 4px 0 rgba(37, 50, 56, 0.05);
+    border: solid 1px $grey-50 !important;
+    border-radius: 6px;
     z-index: 10 !important;
     .options {
       overflow-x: hidden !important;
@@ -74,19 +93,20 @@ select-dropdown{
     .filter input {
       background: transparent;
       border: 0 !important;
-      color: $white !important;
+      color: $grey-800 !important;
     }
   }
   .highlighted {
-    background-color: $grey-800 !important;
+    background-color: $grey-50 !important;
+    color: $grey-800 !important;
   }
   .selected {
     background-color: transparent !important;
     color: $corporate;
   }
   .selected.highlighted {
-    background-color: $grey-800 !important;
-    color: $corporate !important;
+    background-color: $grey-50 !important;
+    color: $grey-800 !important;
   }
 }
 
