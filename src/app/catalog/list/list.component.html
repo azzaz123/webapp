@@ -7,6 +7,7 @@
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
   <div class="container">
+    <img class="banner" src="/assets/images/banner-bump.gif" />
     <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
