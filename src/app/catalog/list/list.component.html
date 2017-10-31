@@ -4,8 +4,10 @@
      [infiniteScrollThrottle]="100"
      [scrollWindow]="false"
      [infiniteScrollDisabled]="end || loading"
-     (scrolled)="loadMore()">
+     (scrolled)="loadMore()"
+     [scrollTop]="scrollTop">
   <div class="container">
+    <img class="banner" src="/assets/images/banner-bump.gif" />
     <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
@@ -28,6 +30,6 @@
 </div>
 <tsl-selected-items *ngIf="itemService.selectedItems.length"
                     [items]="items"
-                    [selectedItemsLength]="itemService.selectedItems.length"
-                    (onAction)="onAction()"
+                    (onAction)="onAction($event)"
 ></tsl-selected-items>
+<tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

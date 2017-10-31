@@ -89,7 +89,7 @@ tsl-selected-items {
   position: absolute;
   bottom: 0;
   right: 0;
-  left: 0;
+  left: $sidebar-width;
   z-index: 10;
 }
 
@@ -99,4 +99,11 @@ tsl-selected-items {
     width: 1120px;
     height: 560px;
   }
+}
+
+.banner {
+  width: 100%;
+  height: auto;
+  margin-bottom: $spacing;
+  margin-top: -$spacing-L;
 }

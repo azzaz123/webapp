@@ -29,7 +29,7 @@ div {
 }
 
 $sold-width: 32px;
-.sold, .reserved {
+.sold, .reserved, .featured {
   @include square($sold-width);
   border-radius: 50%;
   display: flex;
@@ -50,5 +50,13 @@ $sold-width: 32px;
     height: 17px;
     width: 12px;
     vertical-align: sub;
+  }
+}
+
+.featured {
+  background-color: $corporate;
+  md-icon {
+    height: 19px;
+    width: 16px;
   }
 }

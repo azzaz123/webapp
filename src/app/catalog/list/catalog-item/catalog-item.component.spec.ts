@@ -9,6 +9,7 @@ import { ConfirmationModalComponent } from 'app/catalog/list/modals/confirmation
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
+import { MomentModule } from 'angular2-moment';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -20,11 +21,16 @@ describe('CatalogItemComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CatalogItemComponent],
+      imports: [MomentModule],
       providers: [
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
           selectedItems: [],
+          selectItem() {
+          },
+          deselectItem() {
+          },
           deleteItem() {
             return Observable.of({});
           },
@@ -172,6 +178,26 @@ describe('CatalogItemComponent', () => {
     });
 
   });
+
+  describe('select', () => {
+    it('should set selected true and call selectItem', () => {
+      const item: Item = MOCK_ITEM;
+      item.selected = false;
+      spyOn(itemService, 'selectItem');
+      component.select(item);
+      expect(item.selected).toBeTruthy();
+      expect(itemService.selectItem).toHaveBeenCalledWith(ITEM_ID);
+    });
+    it('should set selected false and call deselectItem', () => {
+      const item: Item = MOCK_ITEM;
+      item.selected = true;
+      spyOn(itemService, 'deselectItem');
+      component.select(item);
+      expect(item.selected).toBeFalsy();
+      expect(itemService.deselectItem).toHaveBeenCalledWith(ITEM_ID);
+    });
+  });
+
 
   describe('setSold', () => {
 

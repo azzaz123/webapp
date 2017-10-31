@@ -37,7 +37,7 @@ export class TopbarComponent implements OnInit {
     this.userService.me().subscribe((user) => {
       this.user = user;
       if (user) {
-        this.userUrl = user.webLink.replace('http://es', 'http://' + this.subdomain);
+        this.userUrl = user.webLink.replace('http://es.wallapop.com/', this.homeUrl);
       }
     });
   }
@@ -65,7 +65,7 @@ export class TopbarComponent implements OnInit {
     this.category = newSearch.category_id;
     this.submitForm();
   }
-  
+
   public onCoordinateUpdate(newCoordinate: Coordinate) {
     this.coordinates = newCoordinate;
   }

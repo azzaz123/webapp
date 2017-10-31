@@ -44,3 +44,37 @@ export interface ConversationUser {
   last_message: string;
   image?: Image;
 }
+
+export interface Purchase {
+  expiration_date: number;
+  item_id: string;
+  visibility_flags: {
+    bumped: boolean;
+    highlighted: boolean;
+    urgent: boolean;
+  };
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  default_duration_index: number;
+  durations: Duration[];
+}
+
+export interface Duration {
+  id: string;
+  duration: number;
+  market_code: string;
+  original_market_code: string;
+}
+
+export interface SelectedItemsAction {
+  id: string;
+  action: 'selected' | 'deselected';
+}
+
+export interface Order {
+  item_id: string;
+  product_id: string;
+}

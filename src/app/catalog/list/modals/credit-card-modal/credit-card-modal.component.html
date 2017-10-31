@@ -1,0 +1,19 @@
+<div class="modal-body">
+  <div class="modal-close" (click)="activeModal.dismiss()">
+    <md-icon svgIcon="cross"></md-icon>
+  </div>
+  <div id="credit-card">
+    <div class="date">{{financialCard.expire_date | date:'MM/yy'}}</div>
+    <div class="number">{{financialCard.number}}</div>
+  </div>
+  <form>
+    <label>
+      <input type="radio" name="cardType" [(ngModel)]="cardType" value="old" /> <span i18n>Use this card:</span><br />
+      <strong>{{financialCard.number}}</strong>
+    </label>
+    <label>
+      <input type="radio" name="cardType" [(ngModel)]="cardType" value="new" /> <span i18n>Add a new card</span>
+    </label>
+    <button class="btn btn-primary btn-block" (click)="activeModal.close(cardType)" i18n>Feature for {{total | number:'1.2-2'}} Euros</button>
+  </form>
+</div>

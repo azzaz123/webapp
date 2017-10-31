@@ -54,6 +54,11 @@
   &:hover md-icon g g {
     fill: $grey-900;
   }
+  .modal.bump-confirm & {
+    md-icon g g {
+      fill: $grey-200;
+    }
+  }
 }
 
 .main-header-chat {

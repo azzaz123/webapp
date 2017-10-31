@@ -1,8 +1,11 @@
-import { Component, EventEmitter, HostBinding, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { Item } from 'shield';
 import * as _ from 'lodash';
+import { Order, Product, SelectedItemsAction } from '../../../core/item/item-response.interface';
+import { OrderEvent, SelectedProduct } from './selected-product.interface';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'tsl-selected-items',
@@ -18,33 +21,77 @@ import * as _ from 'lodash';
         style({transform: 'translateY(0%)'}),
         animate('300ms', style({transform: 'translateY(100%)'}))
       ])
-    ]),
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({opacity: 0}),
-        animate('300ms', style({opacity: 1}))
-      ]),
-      transition(':leave', [
-        style({opacity: 1}),
-        animate('300ms', style({opacity: 0}))
-      ])
     ])
   ]
 })
-export class SelectedItemsComponent implements OnChanges {
+export class SelectedItemsComponent implements OnInit {
 
   @HostBinding('@enterFromBottom') public animation: void;
   @Input() items: Item[];
-  @Input() selectedItemsLength: number;
-  @Output() onAction: EventEmitter<any> = new EventEmitter();
+  @Output() onAction: EventEmitter<OrderEvent> = new EventEmitter();
   public selectedItems: Item[];
+  public selectedProducts: SelectedProduct[] = [];
+  public total = 0;
+  public loading: boolean;
+  private getAvailableProductsObservable: Observable<Product>;
 
   constructor(public itemService: ItemService) {
   }
 
-  ngOnChanges() {
-    this.selectedItems = this.itemService.selectedItems.map((id: string) => {
-      return <Item>_.find(this.items, {id: id});
+  ngOnInit() {
+    this.itemService.selectedItems$.subscribe((action: SelectedItemsAction) => {
+      this.selectedItems = this.itemService.selectedItems.map((id: string) => {
+        return <Item>_.find(this.items, {id: id});
+      });
+      if (this.itemService.selectedAction === 'feature') {
+        if (action.action === 'selected') {
+          this.getAvailableProductsObservable = this.itemService.getAvailableProducts(action.id).share();
+          this.getAvailableProductsObservable.subscribe((product: Product) => {
+            this.getAvailableProductsObservable = null;
+            this.selectedProducts.push({
+              itemId: action.id,
+              product: product
+            });
+            this.calculateTotal();
+          });
+        } else if (action.action === 'deselected') {
+          if (this.getAvailableProductsObservable) {
+            this.getAvailableProductsObservable.subscribe(() => {
+              this.deselect(action.id);
+            });
+          } else {
+            this.deselect(action.id);
+          }
+        }
+      }
+    });
+  }
+
+  private deselect(itemId: string) {
+    const index: number = _.findIndex(this.selectedProducts, {itemId: itemId});
+    if (index !== -1) {
+      this.selectedProducts.splice(index, 1);
+      this.calculateTotal();
+    }
+  }
+
+  public featureItems() {
+    const order: Order[] = this.selectedProducts.map((product: SelectedProduct) => {
+      return {
+        item_id: product.itemId,
+        product_id: product.product.durations[0].id
+      }
+    });
+    this.loading = true;
+    this.onAction.emit({
+      order: order,
+      total: this.total
+    });
+  }
+
+  private calculateTotal() {
+    this.total = _.sumBy(this.selectedProducts, (product: SelectedProduct) => {
+      return product.product.durations ? +product.product.durations[0].market_code : 0;
     });
   }
 

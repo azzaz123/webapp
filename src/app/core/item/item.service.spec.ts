@@ -15,9 +15,12 @@ import {
 
 import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
-import { CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3 } from '../../../tests/item.fixtures';
+import {
+  CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, ORDER, PRODUCT_RESPONSE,
+  PURCHASES
+} from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers } from '@angular/http';
-import { ConversationUser, ItemsData } from './item-response.interface';
+import { ConversationUser, ItemsData, Product } from './item-response.interface';
 import { UUID } from 'angular2-uuid';
 
 describe('ItemService', () => {
@@ -42,6 +45,46 @@ describe('ItemService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('selectItem', () => {
+    let event;
+    beforeEach(() => {
+      service.selectedItems$.subscribe((e) => {
+        event = e;
+      });
+      service.selectItem('1');
+    });
+    it('should push id into selectedItems', () => {
+      expect(service.selectedItems[0]).toBe('1');
+    });
+    it('should emit event', () => {
+      expect(event).toEqual({
+        id: '1',
+        action: 'selected'
+      })
+    });
+  });
+
+  describe('deselectItem', () => {
+    let event;
+    beforeEach(() => {
+      service.selectedItems = ['1', '2'];
+      service.selectedItems$.subscribe((e) => {
+        event = e;
+      });
+      service.deselectItem('1');
+    });
+    it('should remove id from selectedItems', () => {
+      expect(service.selectedItems.length).toBe(1);
+      expect(service.selectedItems[0]).toBe('2');
+    });
+    it('should emit event', () => {
+      expect(event).toEqual({
+        id: '1',
+        action: 'deselected'
+      })
+    });
   });
 
   describe('mapRecordData', () => {
@@ -80,44 +123,74 @@ describe('ItemService', () => {
 
   describe('mine', () => {
     let resp: ItemsData;
-    beforeEach(() => {
-      const res: ResponseOptions = new ResponseOptions({
-        body: JSON.stringify(ITEMS_DATA_V3),
-        headers: new Headers({'x-nextpage': 'init=20'})
+    describe('no purchases', () => {
+      beforeEach(() => {
+        const res: ResponseOptions = new ResponseOptions({
+          body: JSON.stringify(ITEMS_DATA_V3),
+          headers: new Headers({'x-nextpage': 'init=20'})
+        });
+        const res2: ResponseOptions = new ResponseOptions({
+          body: JSON.stringify([])
+        });
+        spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
       });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      it('should call endpoint', () => {
+        service.mine(10, 'published').subscribe((data: ItemsData) => {
+          resp = data;
+        });
+        expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/published', {
+          init: 10
+        })
+      });
+      it('should return an array of items and the init', () => {
+        spyOn(UUID, 'UUID').and.returnValue('1');
+        service.mine(0, 'published').subscribe((data: ItemsData) => {
+          resp = data;
+        });
+        expect(resp.data.length).toBe(4);
+        const item = resp.data[0];
+        expect(item.id).toBe(ITEMS_DATA_V3[0].id);
+        expect(item.title).toBe(ITEMS_DATA_V3[0].content.title);
+        expect(item.description).toBe(ITEMS_DATA_V3[0].content.description);
+        expect(item.salePrice).toBe(ITEMS_DATA_V3[0].content.sale_price);
+        expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency_code);
+        expect(item.modifiedDate).toBe(ITEMS_DATA_V3[0].content.modified_date);
+        expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.flags);
+        expect(item.mainImage).toEqual({
+          id: '1',
+          original_width: ITEMS_DATA_V3[0].content.image.original_width,
+          original_height: ITEMS_DATA_V3[0].content.image.original_height,
+          average_hex_color: '',
+          urls_by_size: ITEMS_DATA_V3[0].content.image
+        });
+        expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
+        expect(item.bumpExpiringDate).toBeUndefined();
+        expect(resp.init).toBe(20);
+      });
     });
-    it('should call endpoint', () => {
-      service.mine(10, 'published').subscribe((data: ItemsData) => {
-        resp = data;
+    describe('with purchases', () => {
+      beforeEach(() => {
+        const res: ResponseOptions = new ResponseOptions({
+          body: JSON.stringify(ITEMS_DATA_V3),
+          headers: new Headers({'x-nextpage': 'init=20'})
+        });
+        const res2: ResponseOptions = new ResponseOptions({
+          body: JSON.stringify(PURCHASES)
+        });
+        spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
+        service.mine(0, 'published').subscribe((data: ItemsData) => {
+          resp = data;
+        });
       });
-      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/published', {
-        init: 10
-      })
-    });
-    it('should return an array of items and the init', () => {
-      spyOn(UUID, 'UUID').and.returnValue('1');
-      service.mine(0, 'published').subscribe((data: ItemsData) => {
-        resp = data;
+      it('should call purchases', () => {
+        expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/purchases');
       });
-      expect(resp.data.length).toBe(2);
-      const item = resp.data[0];
-      expect(item.id).toBe(ITEMS_DATA_V3[0].id);
-      expect(item.title).toBe(ITEMS_DATA_V3[0].content.title);
-      expect(item.description).toBe(ITEMS_DATA_V3[0].content.description);
-      expect(item.salePrice).toBe(ITEMS_DATA_V3[0].content.sale_price);
-      expect(item.currencyCode).toBe(ITEMS_DATA_V3[0].content.currency_code);
-      expect(item.modifiedDate).toBe(ITEMS_DATA_V3[0].content.modified_date);
-      expect(item.flags).toEqual(ITEMS_DATA_V3[0].content.flags);
-      expect(item.mainImage).toEqual({
-        id: '1',
-        original_width: ITEMS_DATA_V3[0].content.image.original_width,
-        original_height: ITEMS_DATA_V3[0].content.image.original_height,
-        average_hex_color: '',
-        urls_by_size: ITEMS_DATA_V3[0].content.image
+      it('should set purchased data to featured items', () => {
+        expect(resp.data[0].bumpExpiringDate).toBe(1510221655715);
+        expect(resp.data[0].flags.highlighted).toBeTruthy();
+        expect(resp.data[2].bumpExpiringDate).toBe(1509874085135);
+        expect(resp.data[2].flags.bumped).toBeTruthy();
       });
-      expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEMS_DATA_V3[0].content.web_slug);
-      expect(resp.init).toBe(20);
     });
   });
 
@@ -167,6 +240,32 @@ describe('ItemService', () => {
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/conversation-users');
       expect(resp).toEqual(CONVERSATION_USERS)
+    });
+  });
+
+  describe('getAvailableProducts', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCT_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: Product;
+      service.getAvailableProducts(ITEM_ID).subscribe((r: Product) => {
+        resp = r;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-products');
+      expect(resp).toEqual(PRODUCT_RESPONSE)
+    });
+  });
+
+  describe('purchaseProducts', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(['1234'])});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      let resp: string[];
+      service.purchaseProducts([ORDER], 'UUID').subscribe((r: string[]) => {
+        resp = r;
+      });
+      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER]);
+      expect(resp).toEqual(['1234'])
     });
   });
 

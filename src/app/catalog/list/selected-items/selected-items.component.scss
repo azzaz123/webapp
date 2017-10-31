@@ -35,10 +35,33 @@
   }
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.total-label {
+  font-size: $font-size-XS;
+  text-align: right;
+  font-weight: bold;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin-right: $spacing;
+}
+
+.total {
+  font-size: $font-size-XL;
+  text-align: right;
+  font-weight: bold;
+  margin-right: $spacing;
+}
+
 .btn {
   color: $white;
   padding: 10px 18px;
-  cursor: pointer;
+  &:not([disabled]) {
+    cursor: pointer;
+  }
   &.btn-reserve {
     background-color: $reserve-bg;
   }
@@ -47,8 +70,13 @@
   }
   &.btn-feature {
     background-color: $corporate;
+    width: 227px;
+    transition: none;
   }
-  &:hover {
+  &:not([disabled]):hover {
     opacity: .8;
+  }
+  &.loading {
+    padding: 6px 18px;
   }
 }
