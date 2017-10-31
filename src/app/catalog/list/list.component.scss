@@ -100,3 +100,10 @@ tsl-selected-items {
     height: 560px;
   }
 }
+
+.banner {
+  width: 100%;
+  height: auto;
+  margin-bottom: $spacing;
+  margin-top: -$spacing-L;
+}
