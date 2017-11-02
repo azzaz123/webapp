@@ -95,4 +95,5 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('automatic', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/automatic.svg'));
   mdIconRegistry.addSvgIcon('gasoil', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/gasoil.svg'));
   mdIconRegistry.addSvgIcon('gasoline', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/gasoline.svg'));
+  mdIconRegistry.addSvgIcon('upload', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/upload.svg'));
 }
