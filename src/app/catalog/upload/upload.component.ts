@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
 import { IOption } from 'ng-select';
@@ -27,6 +27,7 @@ export class UploadComponent implements OnInit {
   ];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
+  @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -137,6 +138,8 @@ export class UploadComponent implements OnInit {
       }
       if (!this.uploadForm.get('images').valid) {
         this.errorsService.i18nError('missingImageError');
+      } else {
+        this.scrollPanel.nativeElement.scrollTop = 0;
       }
     }
   }
