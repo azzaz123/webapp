@@ -65,10 +65,9 @@ ng-select {
     & > div.single {
       & > div.toggle {
         text-indent: -1000000px;
-        background: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='24' height='24' viewBox='0 0 24 24'><path fill='#13C1AC' d='M7.406 7.828l4.594 4.594 4.594-4.594 1.406 1.406-6 6-6-6z'></path></svg>");
-        background-position: 100% 50%;
+        background: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='30' height='30' viewBox='0 0 30 30'><path fill='#13C1AC' d='M16.323 16.682a.56.56 0 0 0-.825 0 .649.649 0 0 0 0 .878L19 21.285a.56.56 0 0 0 .826 0l3.503-3.725a.649.649 0 0 0 0-.878.56.56 0 0 0-.826 0l-3.09 3.286-3.09-3.286z'/></svg>");
         background-repeat: no-repeat;
-        background-position: 100% 100%;
+        background-position: 0 -2px;
         &:hover {
           background-color: transparent !important;
         }
@@ -94,7 +93,8 @@ select-dropdown{
     .options {
       overflow-x: hidden !important;
       ul li {
-        padding: $spacing-S 24px !important;
+        padding: $spacing-S !important;
+        border-top: 1px solid $grey-50;
       }
     }
     .filter input {
