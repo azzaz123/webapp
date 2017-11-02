@@ -50,8 +50,7 @@ export class UploadComponent implements OnInit {
       gearbox: '',
       sale_conditions: fb.group({
         fix_price: false,
-        exchange_allowed: false,
-        shipping_allowed: false
+        exchange_allowed: false
       })
     });
   }
