@@ -15,6 +15,10 @@ div {
   &.big {
     @include square-avatar($item-avatar-size-big);
   }
+  &.full {
+    width: 100%;
+    padding-top: 100%;
+  }
 }
 
 .overlay {
