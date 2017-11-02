@@ -104,14 +104,15 @@
     text-align: center;
     line-height: 18px;
     md-icon {
-      @include square(8px);
+      width: 7px;
+      height: 9px;
     }
   }
   &:hover {
     cursor: move;
     &:not(.placeholder):not(.dnd-sortable-drag) {
       transform: scale(1.25);
-      box-shadow: 0 4px 14px 0 rgba(22, 29, 32, 0.6);
+      box-shadow: 0 4px 6px 0 rgba(37, 50, 56, 0.15);
       a {
         display: block;
       }
