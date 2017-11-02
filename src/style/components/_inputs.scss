@@ -37,6 +37,9 @@
       box-shadow: none;
       background-color: transparent;
     }
+    &::placeholder {
+      color: $grey-200;
+    }
   }
   select.form-control {
     -webkit-appearance: none;
@@ -73,6 +76,10 @@ ng-select {
       & > div.value {
         padding: 0 !important;
         line-height: 36px !important;
+      }
+      & > div.placeholder {
+        padding: 0 !important;
+        color: $grey-200 !important;
       }
     }
   }
