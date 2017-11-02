@@ -30,17 +30,16 @@ export class UploadService {
   }
 
   public uploadOtherImages(itemId: string) {
+    const url = this.API_URL + '/' + itemId + '/picture';
     const inputEvent: UploadInput = {
       type: 'uploadAll',
-      url: this.API_URL + '/' + itemId + '/picture',
+      url: url,
       method: 'POST',
       fieldName: 'image',
       data: {
         order: '$order'
       },
-      headers: {
-        'Authorization': 'Bearer ' + this.accessTokenService.accessToken
-      }
+      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
     };
     this.uploadInput.emit(inputEvent);
   }
