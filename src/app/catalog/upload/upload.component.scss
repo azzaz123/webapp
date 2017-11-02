@@ -26,6 +26,12 @@ h1 {
   margin: 0;
   margin-bottom: $spacing;
   color: $grey-900;
+  .upload-close-icon {
+    float: right;
+    md-icon {
+      @include square(12px);
+    }
+  }
 }
 
 .box-content {
