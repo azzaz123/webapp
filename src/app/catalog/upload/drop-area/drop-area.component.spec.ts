@@ -5,9 +5,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ErrorsService } from 'shield';
 import { UploadService } from './upload.service';
 import {
-  CAR_ID, UPLOAD_FILE, UPLOAD_FILE_NAME, UPLOADED_FILE_FIRST,
+  CAR_ID,
+  UPLOAD_FILE,
+  UPLOAD_FILE_NAME,
+  UPLOADED_FILE_FIRST,
   UPLOADED_FILE_OTHER
-} from '../../../../test/fixtures/upload.fixtures';
+} from '../../../../tests/upload.fixtures';
 import { UploadFile, UploadStatus } from 'ngx-uploader';
 
 describe('DropAreaComponent', () => {
@@ -136,7 +139,7 @@ describe('DropAreaComponent', () => {
       expect(component.dragOver).toBeFalsy();
     });
     it('should call onUploadDone if event done', () => {
-      spyOn(component, 'onUploadDone');
+      spyOn<any>(component, 'onUploadDone');
       component.onUploadOutput({
         type: 'done',
         file: UPLOADED_FILE_FIRST

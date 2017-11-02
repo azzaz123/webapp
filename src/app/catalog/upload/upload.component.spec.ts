@@ -7,8 +7,8 @@ import { CarSuggestionsService } from './car-suggestions.service';
 import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from './car-keys.service';
 import { TEST_HTTP_PROVIDERS, ErrorsService } from 'shield';
-import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../test/fixtures/car.fixtures';
 import { Router } from '@angular/router';
+import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../tests/car.fixtures';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -83,8 +83,8 @@ describe('UploadComponent', () => {
 
   describe('ngOnInit', () => {
     it('should call getBrands and getCarTypes', () => {
-      spyOn(component, 'getBrands');
-      spyOn(component, 'getCarTypes');
+      spyOn<any>(component, 'getBrands');
+      spyOn<any>(component, 'getCarTypes');
       component.ngOnInit();
       expect(component['getBrands']).toHaveBeenCalled();
       expect(component['getCarTypes']).toHaveBeenCalled();
@@ -199,12 +199,6 @@ describe('UploadComponent', () => {
       spyOn(errorService, 'i18nError');
       component.onSubmit();
       expect(errorService.i18nError).toHaveBeenCalledWith('missingImageError');
-    });
-    it('should not show image error if is set', () => {
-      spyOn(errorService, 'i18nError');
-      component.uploadForm.get('images').patchValue([{'image': true}]);
-      component.onSubmit();
-      expect(errorService.i18nError).not.toHaveBeenCalled();
     });
     it('should not accept sale_price < 0', () => {
       component.uploadForm.get('sale_price').patchValue(-1);

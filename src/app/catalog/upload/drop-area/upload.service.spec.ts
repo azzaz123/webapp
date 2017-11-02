@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { UploadFile, UploadInput } from 'ngx-uploader';
 import { UploadService } from './upload.service';
-import { TEST_HTTP_PROVIDERS, AccessTokenService } from 'shield';
+import { TEST_HTTP_PROVIDERS, AccessTokenService, HttpService } from 'shield';
 import { environment } from '../../../../environments/environment';
 import { CAR_ID, UPLOAD_FILE, UPLOAD_FILE_ID } from '../../../../tests/upload.fixtures';
 
@@ -10,16 +10,25 @@ describe('UploadService', () => {
   let service: UploadService;
   let response: UploadInput;
   let accessTokenService: AccessTokenService;
+  let http: HttpService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ...TEST_HTTP_PROVIDERS,
-        UploadService
+        UploadService,
+        {
+          provide: HttpService, useValue: {
+          getOptions() {
+            return {}
+          }
+        }
+        }
       ]
     });
     service = TestBed.get(UploadService);
     accessTokenService = TestBed.get(AccessTokenService);
+    http = TestBed.get(HttpService);
     response = null;
     service.uploadInput.subscribe((r: UploadInput) => {
       response = r;
@@ -36,6 +45,16 @@ describe('UploadService', () => {
         test: 'hola',
         hola: 'hey'
       };
+      const headers = {
+        'Authorization': 'Bearer thetoken'
+      };
+      spyOn(http, 'getOptions').and.returnValue({
+        headers: {
+          toJSON() {
+            return headers;
+          }
+        }
+      });
       accessTokenService.storeAccessToken('thetoken');
       service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
       expect(response).toEqual({
@@ -48,9 +67,7 @@ describe('UploadService', () => {
             type: 'application/json'
           })
         },
-        headers: {
-          'Authorization': 'Bearer thetoken'
-        },
+        headers: headers,
         file: UPLOAD_FILE
       });
     });
@@ -59,6 +76,16 @@ describe('UploadService', () => {
   describe('uploadOtherImages', () => {
     it('should emit uploadFile event', () => {
       accessTokenService.storeAccessToken('thetoken');
+      const headers = {
+        'Authorization': 'Bearer thetoken'
+      };
+      spyOn(http, 'getOptions').and.returnValue({
+        headers: {
+          toJSON() {
+            return headers;
+          }
+        }
+      });
       service.uploadOtherImages(CAR_ID);
       expect(response).toEqual({
         type: 'uploadAll',
@@ -68,9 +95,7 @@ describe('UploadService', () => {
         data: {
           order: '$order'
         },
-        headers: {
-          'Authorization': 'Bearer thetoken'
-        }
+        headers: headers
       });
     });
   });
