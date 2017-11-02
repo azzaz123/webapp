@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { UploadFile, UploadInput } from 'ngx-uploader';
 import { environment } from '../../../../environments/environment';
-import { AccessTokenService } from 'shield';
+import { AccessTokenService, HttpService } from 'shield';
 
 @Injectable()
 export class UploadService {
@@ -9,7 +9,7 @@ export class UploadService {
   private API_URL: string = environment.baseUrl + 'api/v3/items/cars';
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
-  constructor(private accessTokenService: AccessTokenService) {
+  constructor(private accessTokenService: AccessTokenService, private http: HttpService) {
   }
 
   public createItemWithFirstImage(values: any, file: UploadFile) {
@@ -23,9 +23,7 @@ export class UploadService {
           type: 'application/json'
         })
       },
-      headers: {
-        'Authorization': 'Bearer ' + this.accessTokenService.accessToken
-      },
+      headers: this.http.getOptions(null, this.API_URL, 'POST').headers.toJSON(),
       file: file
     };
     this.uploadInput.emit(inputEvent);
