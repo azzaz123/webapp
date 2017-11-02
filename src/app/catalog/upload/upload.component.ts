@@ -139,6 +139,7 @@ export class UploadComponent implements OnInit {
       if (!this.uploadForm.get('images').valid) {
         this.errorsService.i18nError('missingImageError');
       } else {
+        this.errorsService.i18nError('formErrors');
         this.scrollPanel.nativeElement.scrollTop = 0;
       }
     }
