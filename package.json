@@ -43,7 +43,7 @@
     "ngx-toastr": "^5.0.7",
     "ngx-uploader": "https://github.com/Wallapop/ngx-uploader#3.1.2",
     "rxjs": "5.3.0",
-    "shield": "git+ssh://git@github.com/Wallapop/shield.git#1.18.1",
+    "shield": "git+ssh://git@github.com/Wallapop/shield.git#1.18.2",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
