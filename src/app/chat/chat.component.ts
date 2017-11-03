@@ -7,9 +7,9 @@ import {
   I18nService,
   ItemService,
   TrackingService,
-  UserService,
   XmppService,
-  PersistencyService
+  PersistencyService,
+  UserService
 } from 'shield';
 import { ToastrService } from 'ngx-toastr';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
@@ -68,6 +68,7 @@ export class ChatComponent implements OnInit {
       this.currentConversation.active = false;
     }
     this.currentConversation = conversation;
+
     if (this.currentConversation) {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);

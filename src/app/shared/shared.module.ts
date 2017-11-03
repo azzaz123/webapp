@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { MdIconModule } from '@angular/material';
+import { AdComponent } from '../shared/ad/ad.component';
 
 @NgModule({
   imports: [
@@ -12,10 +13,12 @@ import { MdIconModule } from '@angular/material';
   ],
   exports: [
     CommonModule,
-    SpinnerComponent
+    SpinnerComponent,
+    AdComponent
   ],
   declarations: [
-    SpinnerComponent
+    SpinnerComponent,
+    AdComponent
   ]
 })
 export class SharedModule { }
