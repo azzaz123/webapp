@@ -1,6 +1,9 @@
 @import "../../../../style/_common.scss";
 
 :host /deep/ tsl-card-content{
+
+  padding-top: $spacing-S;
+
   span{
     overflow: hidden;
     white-space: nowrap;
@@ -14,8 +17,11 @@
   position: relative;
 
   .cart-footer-icon g{
-    fill: $color-favorite-icon-fill;
     stroke: $color-favorite-icon-stroke;
+
+    &.active {
+      fill: $color-favorite-icon-fill;
+    }
   }
 
   .cart-footer-text{

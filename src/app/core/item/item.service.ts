@@ -42,8 +42,8 @@ export class ItemService extends ItemServiceMaster {
       content.description,
       content.category_id,
       null,
-      content.sale_price,
-      content.currency_code,
+      content.sale_price || content.price,
+      content.currency_code || content.currency,
       content.modified_date,
       content.url,
       content.flags,
@@ -89,7 +89,7 @@ export class ItemService extends ItemServiceMaster {
     );
   }
 
-  public mineFavorites(init: number): Observable<ItemsData> {
+  public myFavorites(init: number): Observable<ItemsData> {
     return this.http.get(this.API_URL_v3_USER + '/me/items/favorites', {
       init: init
     })
@@ -124,6 +124,12 @@ export class ItemService extends ItemServiceMaster {
 
   public reactivateItem(id: string): Observable<any> {
     return this.http.put(this.API_URL_V3 + '/' + id + '/reactivate');
+  }
+
+  public favoritedItem(id: string, favorited: boolean): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + id + '/favorited', {
+      favorited: favorited
+    });
   }
 
   public bulkReserve(): Observable<ItemBulkResponse> {

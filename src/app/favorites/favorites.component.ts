@@ -15,60 +15,27 @@ export class FavoritesComponent implements OnInit {
   public selectedStatus: string = 'published';
   public loading: boolean = true;
   private init: number = 0;
-  private size: number = 20;
   public end:boolean = false;
 
   public masonryOptions = {
     gutter: 20
-  }
+  };
 
-  public items = [
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-    // new Item(null, null, null, 'title fjdsaljfdlsaj djsa lfj slkfj lsaddj l', 'Description', null, null, 999, 'EUR', null, null, null, null, null, null, null, null, null),
-  ];
+  public items = [];
 
   constructor(public itemService: ItemService
   ) { }
 
   ngOnInit() {
-    // this.itemService.mineFavorites(this.init).subscribe((itemsData: ItemsData) => {
-    //   console.log(itemsData)
-    // });
-    this.itemService.mine(this.init, this.selectedStatus).subscribe((itemsData: ItemsData) => {
+    this.getItems();
+  }
+
+  private getItems(append?: boolean) {
+    this.loading = true;
+    if (!append) {
+      this.items = [];
+    }
+    this.itemService.myFavorites(this.init).subscribe((itemsData: ItemsData) => {
       const items = itemsData.data;
       this.init = itemsData.init;
       this.items = this.items.concat(items);
@@ -79,8 +46,8 @@ export class FavoritesComponent implements OnInit {
     });
   }
 
-  loadMore() {
-    console.log('load more');
+  public loadMore() {
+    this.getItems(true);
   }
 
 }
