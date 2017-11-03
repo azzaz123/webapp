@@ -62,11 +62,15 @@ export class ListComponent implements OnInit {
       });
       this.route.params.subscribe((params: any) => {
         if (params && params.code) {
-          const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {windowClass: 'review'});
+          const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {
+            windowClass: 'bump-confirm',
+            backdrop: 'static'
+          });
           modalRef.componentInstance.code = params.code;
           modalRef.result.then(() => {
             this.router.navigate(['catalog/list']);
-          }, () => {});
+          }, () => {
+          });
         }
       });
     });
@@ -188,10 +192,14 @@ export class ListComponent implements OnInit {
             this.router.navigate(['catalog/list', {code: 200}]);
           }, 1000);
         }, () => {
-          this.router.navigate(['catalog/list', {code: 400}]);
+          this.deselect();
+          setTimeout(() => {
+            this.router.navigate(['catalog/list', {code: -1}]);
+          }, 1000);
         });
       }
     }, () => {
+      this.deselect();
     })
   }
 }

@@ -192,31 +192,6 @@ describe('ItemService', () => {
         expect(resp.data[2].flags.bumped).toBeTruthy();
       });
     });
-    describe('with cached purchases', () => {
-      beforeEach(() => {
-        const res: ResponseOptions = new ResponseOptions({
-          body: JSON.stringify(ITEMS_DATA_V3),
-          headers: new Headers({'x-nextpage': 'init=20'})
-        });
-        const res2: ResponseOptions = new ResponseOptions({
-          body: JSON.stringify([])
-        });
-        service['purchases'] = PURCHASES;
-        spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
-        service.mine(0, 'published').subscribe((data: ItemsData) => {
-          resp = data;
-        });
-      });
-      it('should not call purchases', () => {
-        expect(http.get).not.toHaveBeenCalledWith('api/v3/web/items/mine/purchases');
-      });
-      it('should set purchased data to featured items', () => {
-        expect(resp.data[0].bumpExpiringDate).toBe(1510221655715);
-        expect(resp.data[0].flags.highlighted).toBeTruthy();
-        expect(resp.data[2].bumpExpiringDate).toBe(1509874085135);
-        expect(resp.data[2].flags.bumped).toBeTruthy();
-      });
-    });
   });
 
   describe('deleteItem', () => {

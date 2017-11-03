@@ -24,8 +24,8 @@
   <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:12</source>Load more</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source>Delete conversation</msg>
   <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will delete the conversation.</msg>
-  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:16</source>Cancel</msg>
-  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:18</source><source>app/catalog/list/selected-items/selected-items.component.ts:21</source>Delete</msg>
+  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:12</source>Cancel</msg>
+  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:14</source><source>app/catalog/list/selected-items/selected-items.component.ts:26</source>Delete</msg>
   <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.ts:2</source><source>app/chat/modals/report-listing/report-listing.component.ts:25</source><source>app/chat/modals/report-user/report-user.component.ts:2</source><source>app/chat/modals/report-user/report-user.component.ts:28</source>Report</msg>
   <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.ts:22</source>I&apos;m reporting this user because...</msg>
   <msg id="20327443157350316"><source>app/chat/modals/block-user/block-user.component.ts:2</source>Block user</msg>
@@ -64,24 +64,45 @@
   <msg id="7430416142942514215"><source>app/chat/message/review-modal/review-modal.component.ts:15</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:46</source>Publish</msg>
   <msg id="7992914064106893139"><source>app/chat/message/review-button/review-button.component.ts:1</source>Review now</msg>
   <msg id="2506703378559967461"><source>app/chat/message/review-button/review-button.component.ts:4</source>Thanks for rating</msg>
+  <msg id="8449883832889120108"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:7</source>List it, list _ _!</msg>
+  <msg id="4756123017615469412"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:8</source>We are loading at 80% (it is almost done) the integration of the product listing functionality in our website. Meanwhile, you can do it from the app.</msg>
+  <msg id="4662379784661986854"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:9</source>Download wallapop now in:</msg>
   <msg id="3734434835434478522"><source>app/layout/topbar/topbar.component.ts:27</source>Wall</msg>
   <msg id="2127032578120864096"><source>app/layout/topbar/topbar.component.ts:43</source>My Profile</msg>
-  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:44</source>Logout</msg>
+  <msg id="3825726981798982045"><source>app/layout/topbar/topbar.component.ts:44</source><source>app/layout/sidebar/sidebar.component.ts:5</source>My Catalog</msg>
+  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:45</source>Logout</msg>
+  <msg id="4631973437945665426"><source>app/layout/topbar/topbar.component.ts:50</source>List it</msg>
   <msg id="5371960677736303052"><source>app/layout/topbar/geolocation/geolocation.component.ts:9</source>Where?</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
-  <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:5</source>Catalog</msg>
   <msg id="5657739434954342535"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:3</source>Delete item</msg>
   <msg id="5455708050129988024"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:4</source>This will delete the item.</msg>
   <msg id="321759774936322640"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:7</source>Delete items</msg>
   <msg id="447264229278731832"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:8</source>The selected items will be permanently deleted.</msg>
-  <msg id="8607128558364427780"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:11</source>Reserve items</msg>
-  <msg id="7498605020756139080"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:12</source>The selected items will be reserved.</msg>
-  <msg id="2874924373232293084"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:19</source><source>app/catalog/list/selected-items/selected-items.component.ts:17</source>Reserve</msg>
-  <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:10</source>Published</msg>
-  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:11</source>Sold</msg>
-  <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:12</source>Expired</msg>
-  <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:16</source>1 item selected</msg>
-  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:17</source><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
+  <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source>Congratulations</msg>
+  <msg id="9213119646873056135"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:10</source>Your item(s) have been featured and you can see them in the top position.</msg>
+  <msg id="8982629098121976758"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:11</source>Start selling</msg>
+  <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:15</source>Something happened...</msg>
+  <msg id="3979232265698800722"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:16</source>Your item(s) have not been featured because something went wrong with your credit card.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Please check and try again.</msg>
+  <msg id="3275068756845590930"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:17</source>Let’s go</msg>
+  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:21</source>Hmmm…</msg>
+  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:22</source>Your credit card seems suspicious. ¿Why not trying with another account?</msg>
+  <msg id="833526722817345312"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:23</source>C&apos;mon</msg>
+  <msg id="6811335180251341277"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:27</source>There has been a mistake</msg>
+  <msg id="4140116217223755546"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:28</source>Your credit card has an invalid expiration date. Please check and try again.</msg>
+  <msg id="8720977247725652816"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:29</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:35</source>Ok</msg>
+  <msg id="2044384665651917054"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:33</source>TPV... what?</msg>
+  <msg id="5578025610796640405"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:34</source>There has been an unexpected error in the paying system. Why not trying again later?</msg>
+  <msg id="8766840274158243690"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:39</source>Oops!</msg>
+  <msg id="2785911750257412726"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:40</source>We are trying to figure out what happened. Try again later.</msg>
+  <msg id="880177930328984754"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:41</source>Fine!</msg>
+  <msg id="6686102860613242031"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:11</source>Use this card:</msg>
+  <msg id="2005530248451232459"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:15</source>Add a new card</msg>
+  <msg id="4699023020194351074"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:17</source>Feature for <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</msg>
+  <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:12</source>Published</msg>
+  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:13</source>Sold</msg>
+  <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:14</source>Expired</msg>
+  <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:18</source>1 item selected</msg>
+  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:19</source><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
   <msg id="3762527362373672599"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:6</source>Congratulations!</msg>
   <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
@@ -91,8 +112,10 @@
   <msg id="2286494898080570401"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:53</source>Thanks</msg>
   <msg id="2928844379959000123"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:54</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
   <msg id="6962699013778688473"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:55</source>Continue</msg>
-  <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:18</source>Feature Product</msg>
-  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:32</source>Reactivate</msg>
-  <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:36</source>Pending</msg>
-  <msg id="7274286978511770772"><source>app/catalog/list/selected-items/selected-items.component.ts:25</source>Continue to Checkout</msg>
+  <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:19</source>Feature Product</msg>
+  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:37</source>Reactivate</msg>
+  <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:41</source>Pending</msg>
+  <msg id="3448462145758383019"><source>app/catalog/list/selected-items/selected-items.component.ts:16</source>Total</msg>
+  <msg id="2874924373232293084"><source>app/catalog/list/selected-items/selected-items.component.ts:22</source>Reserve</msg>
+  <msg id="8743988303207163578"><source>app/catalog/list/selected-items/selected-items.component.ts:32</source>Feature Now</msg>
 </messagebundle>

@@ -5,7 +5,7 @@ $height: 40px;
 
 .items {
   margin-top: $spacing;
-  margin-bottom: $spacing-XL;
+  margin-bottom: 120px;
 }
 
 tsl-spinner {
@@ -99,4 +99,11 @@ tsl-selected-items {
     width: 1120px;
     height: 560px;
   }
+}
+
+.banner {
+  width: 100%;
+  height: auto;
+  margin-bottom: $spacing;
+  margin-top: -$spacing-L;
 }

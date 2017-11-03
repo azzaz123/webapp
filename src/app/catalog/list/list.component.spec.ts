@@ -141,7 +141,7 @@ describe('ListComponent', () => {
       spyOn(router, 'navigate');
       component.ngOnInit();
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {windowClass: 'review'})
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {windowClass: 'bump-confirm', backdrop: 'static'});
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list'])
     }));
     it('should reset page on router event', fakeAsync(() => {
@@ -397,11 +397,11 @@ describe('ListComponent', () => {
             componentInstance: componentInstance
           });
           spyOn(router, 'navigate');
+          spyOn(component, 'deselect');
         }));
         describe('payment ok', () => {
           beforeEach(fakeAsync(() => {
             spyOn(paymentService, 'pay').and.callThrough();
-            spyOn(component, 'deselect');
             component.feature({
               order: [ORDER],
               total: 10
@@ -422,9 +422,13 @@ describe('ListComponent', () => {
               order: [ORDER],
               total: 10
             });
+            tick(1000);
           }));
-          it('should redirect to code 400', () => {
-            expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 400}]);
+          it('should redirect to code -1', () => {
+            expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
+          });
+          it('should call deselect', () => {
+            expect(component.deselect).toHaveBeenCalled();
           });
         });
         afterEach(() => {

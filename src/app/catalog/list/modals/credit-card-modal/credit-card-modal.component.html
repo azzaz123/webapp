@@ -12,8 +12,8 @@
       <strong>{{financialCard.number}}</strong>
     </label>
     <label>
-      <input type="radio" name="cardType" [(ngModel)]="cardType" value="new" /> <span i18n>Add new card</span>
+      <input type="radio" name="cardType" [(ngModel)]="cardType" value="new" /> <span i18n>Add a new card</span>
     </label>
-    <button class="btn btn-primary btn-block" (click)="activeModal.close(cardType)" i18n>Pay {{total | number:'1.2-2'}} Euros</button>
+    <button class="btn btn-primary btn-block" (click)="activeModal.close(cardType)" i18n>Feature for {{total | number:'1.2-2'}} Euros</button>
   </form>
 </div>

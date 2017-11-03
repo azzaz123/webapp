@@ -8,7 +8,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class BumpConfirmationModalComponent implements OnInit {
 
-  public code: number;
+  public code: string;
 
   constructor(public activeModal: NgbActiveModal) { }
 

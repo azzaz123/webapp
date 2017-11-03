@@ -26,7 +26,6 @@ export class ItemService extends ItemServiceMaster {
   protected API_URL_V2: string = 'api/v3/items';
   private API_URL_WEB: string = 'api/v3/web/items';
   public selectedAction: string;
-  private purchases: Purchase[];
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
 
   constructor(http: HttpService,
@@ -170,14 +169,8 @@ export class ItemService extends ItemServiceMaster {
   }
 
   private getPurchases(): Observable<Purchase[]> {
-    if (this.purchases) {
-      return Observable.of(this.purchases);
-    }
     return this.http.get(this.API_URL_WEB + '/mine/purchases')
-    .map((r: Response) => r.json())
-    .do((purchases: Purchase[]) => {
-      this.purchases = purchases;
-    });
+    .map((r: Response) => r.json());
   }
 
   public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {

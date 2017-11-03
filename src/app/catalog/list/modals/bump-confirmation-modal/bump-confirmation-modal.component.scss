@@ -1,8 +1,17 @@
-@import "../../../../../style/common";
+@import "../../../../../style/_common.scss";
 
 :host {
   padding: $spacing-L;
   text-align: center;
+}
+.modal-close {
+  @include square(13px);
+  top: 10px;
+  right: 10px;
+  md-icon {
+    @include square(13px);
+    line-height: initial;
+  }
 }
 img {
   width: 126px;
@@ -12,7 +21,7 @@ img {
   }
 }
 p {
-  max-width: 270px;
+  max-width: 300px;
   margin: 0 auto $spacing-L auto;
 }
 h1 {

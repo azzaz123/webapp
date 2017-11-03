@@ -59,13 +59,37 @@
   <translation id="7430416142942514215">Publicar</translation>
   <translation id="7992914064106893139">Valorar ahora</translation>
   <translation id="2506703378559967461">Gracias por tu valoración</translation>
+  <translation id="8449883832889120108">¡Súbelo, súbe _ _ !</translation>
+  <translation id="4756123017615469412">Estamos al 80% (ya casi lo tenemos) de integrar la funcionalidad de subida de producto en la web. Mientras tanto puedes hacerlo desde la app.</translation>
+  <translation id="4662379784661986854">Descarga wallapop ahora en:</translation>
   <translation id="4580988005648117665">Buscar</translation>
   <translation id="2127032578120864096">Mi Perfil</translation>
   <translation id="3797778920049399855">Cerrar sesión</translation>
+  <translation id="4631973437945665426">Súbelo</translation>
   <translation id="5371960677736303052">¿Dónde?</translation>
   <translation id="1902100407096396858">Categorías</translation>
   <translation id="3734434835434478522">Muro</translation>
-  <translation id="4588618843305891254">Catálogo</translation>
+  <translation id="3825726981798982045">Mi Catálogo</translation>
+  <translation id="855735721940425245">¡Enhorabuena!</translation>
+  <translation id="9213119646873056135">Tu producto ha sido destacado. Ahora podrás verlo en las primeras posiciones del muro. </translation>
+  <translation id="8982629098121976758">A vender</translation>
+  <translation id="3174905759883607970">Ha ocurrido algo…</translation>
+  <translation id="3979232265698800722">No hemos podido destacar tu producto porque hay un error con la tarjeta de crédito.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Revisa los datos o utiliza otra tarjeta y empieza a destacar.</translation>
+  <translation id="3275068756845590930">Vamos</translation>
+  <translation id="2502391471711660975">Hmmm…</translation>
+  <translation id="6711831572034428010">Ha habido un error. Tu tarjeta bancaria parece sospechosa. ¿Por qué no pruebas con otra?</translation>
+  <translation id="833526722817345312">¡Vale!</translation>
+  <translation id="6811335180251341277">Ha habido un error</translation>
+  <translation id="4140116217223755546">La fecha de caducidad de tu tarjeta es incorrecta. Revísalo y vuelve a probar. </translation>
+  <translation id="8720977247725652816">Venga</translation>
+  <translation id="2044384665651917054">TPV… ¿qué?</translation>
+  <translation id="5578025610796640405">Ha habido un error inesperado en el sistema pago.  ¿Por qué no pruebas de nuevo?</translation>
+  <translation id="8766840274158243690">¡Ups!</translation>
+  <translation id="2785911750257412726">Un unicornio desbocado ha desmontado algo. Vuelve a probarlo más tarde. </translation>
+  <translation id="880177930328984754">De acuerdo</translation>
+  <translation id="6686102860613242031">Utiliza esta tarjeta:</translation>
+  <translation id="2005530248451232459">Añadir nueva tarjeta</translation>
+  <translation id="4699023020194351074">Destacar por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
   <translation id="4058575476871566236">Publicados</translation>
   <translation id="5529951643694823242" desc="plural" meaning="tab">Vendidos</translation>
   <translation id="464749780222721589">Caducados</translation>
@@ -91,4 +115,7 @@
   <translation id="2928844379959000123">Tu opinión es muy importante para la<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>comunidad Wallapop.</translation>
   <translation id="6962699013778688473">Aceptar</translation>
   <translation id="4416413576346763682">Pendiente</translation>
+  <translation id="578471405917460767">Destácalo</translation>
+  <translation id="3448462145758383019">Total</translation>
+  <translation id="8743988303207163578">Destacar ya</translation>
 </translationbundle>

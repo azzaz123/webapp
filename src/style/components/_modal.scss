@@ -25,6 +25,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     right: 20px;
     top: 20px;
     z-index: 99;
+    text-align: left;
   }
   .modal-back {
     cursor: pointer;
@@ -97,18 +98,30 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.review, .modal.sold {
+.modal.review, .modal.sold, .modal.upload {
   .modal-dialog, .modal-content {
     max-width: 600px;
   }
   .modal-dialog {
     margin-top: 50px;
   }
+  .modal-content {
+    border-radius: $border-radius;
+  }
 }
 
 .modal.credit-card {
   .modal-dialog, .modal-content {
     max-width: 370px;
+  }
+  .modal-dialog {
+    margin-top: 50px;
+  }
+}
+
+.modal.bump-confirm {
+  .modal-dialog, .modal-content {
+    max-width: 448px;
   }
   .modal-dialog {
     margin-top: 50px;
