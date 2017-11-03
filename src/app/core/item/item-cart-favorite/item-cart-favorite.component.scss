@@ -16,10 +16,12 @@
 :host /deep/ tsl-card-footer{
   position: relative;
 
-  .cart-footer-icon g{
-    stroke: $color-favorite-icon-stroke;
+  .cart-footer-icon {
+    g {
+      stroke: $color-favorite-icon-stroke;
+    }
 
-    &.active {
+    &.active g{
       fill: $color-favorite-icon-fill;
     }
   }
