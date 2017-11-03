@@ -101,6 +101,7 @@ export class ItemService extends ItemServiceMaster {
         if (res.length > 0) {
           data = res.map((i: ItemResponse) => {
             const item: Item = this.mapRecordData(i);
+            item.favorited = true;
             return item;
           });
         }
