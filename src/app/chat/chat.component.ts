@@ -8,7 +8,8 @@ import {
   ItemService,
   TrackingService,
   XmppService,
-  PersistencyService
+  PersistencyService,
+  UserService
 } from 'shield';
 import { ToastrService } from 'ngx-toastr';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
@@ -16,7 +17,6 @@ import { ReportListingComponent } from './modals/report-listing/report-listing.c
 import { ReportUserComponent } from './modals/report-user/report-user.component';
 import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
-import { UserService } from '../core/user/user.service';
 
 @Component({
   selector: 'tsl-chat',
