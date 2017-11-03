@@ -73,10 +73,6 @@ export class ChatComponent implements OnInit {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);
     }
-
-    if (!this.currentConversation) {
-      return;
-    }
   }
 
   public onLoaded(event: any) {
