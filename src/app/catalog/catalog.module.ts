@@ -22,6 +22,7 @@ import { CarSuggestionsService } from './upload/upload-car/car-suggestions.servi
 import { CarKeysService } from './upload/upload-car/car-keys.service';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElasticModule } from 'ng-elastic';
+import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
   imports: [
