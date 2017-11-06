@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from './car-keys.service';
 import { TEST_HTTP_PROVIDERS, ErrorsService } from 'shield';
 import { Router } from '@angular/router';
-import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../tests/car.fixtures';
+import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../../tests/car.fixtures';
 
 describe('UploadComponent', () => {
   let component: UploadCarComponent;

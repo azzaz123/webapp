@@ -18,8 +18,8 @@ import { UploadService } from './upload/drop-area/upload.service';
 import { NgUploaderModule } from 'ngx-uploader';
 import { DndModule } from 'ng2-dnd';
 import { SelectModule } from 'ng-select';
-import { CarSuggestionsService } from './upload/car-suggestions.service';
-import { CarKeysService } from './upload/car-keys.service';
+import { CarSuggestionsService } from './upload/upload-car/car-suggestions.service';
+import { CarKeysService } from './upload/upload-car/car-keys.service';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElasticModule } from 'ng-elastic';
 

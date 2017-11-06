@@ -5,7 +5,7 @@ import { IOption } from 'ng-select';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import { ErrorsService } from 'shield';
-import { UploadEvent } from './upload-event.interface';
+import { UploadEvent } from '../upload-event.interface';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 
 @Component({
