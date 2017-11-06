@@ -1,15 +1,15 @@
-<div class="wrapper" [ngClass]="{ 'is-drop-over': dragOver }" ngFileDrop (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadService.uploadInput" [options]="options">
+<div class="wrapper" [ngClass]="{ 'is-drop-over': dragOver, 'photos-number-4': maxUploads === 4 }" ngFileDrop (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadService.uploadInput" [options]="options">
   <div class="drag-area">
-    <ng-container *ngIf="files.length < options.maxUploads; else maxUploads">
+    <ng-container *ngIf="files.length < options.maxUploads; else maxUploadsReached">
       <md-icon svgIcon="upload"></md-icon>
       <p i18n>Drop here your files to upload as a product photo</p>
     </ng-container>
-    <ng-template #maxUploads>
+    <ng-template #maxUploadsReached>
       <div class="denied-icon">
           <md-icon svgIcon="cross"></md-icon>
       </div>
       <p i18n>
-        You have reached the limit of 8 photos per product.<br />
+        You have reached the limit of {{maxUploads}} photos per product.<br />
         Remove one first if you want to add more.
       </p>
     </ng-template>

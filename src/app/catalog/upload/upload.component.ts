@@ -35,7 +35,7 @@ export class UploadComponent implements OnInit {
       title: ['', [Validators.required]],
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
-      description: '',
+      description: ['', [Validators.required]],
       sale_conditions: fb.group({
         fix_price: false,
         exchange_allowed: false,

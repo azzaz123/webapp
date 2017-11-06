@@ -35,6 +35,7 @@ export class UploadCarComponent implements OnInit {
               private router: Router,
               private errorsService: ErrorsService) {
     this.uploadForm = fb.group({
+      category_id: '100',
       images: [[], [Validators.required]],
       model: [{value: '', disabled: true}, [Validators.required]],
       brand: ['', [Validators.required]],
