@@ -33,7 +33,6 @@ export class ItemService extends ItemServiceMaster {
   protected mapRecordData(response: any): Item {
     const data: ItemResponse = <ItemResponse>response;
     const content: ItemContent = data.content;
-    console.log(content);
     return new Item(
       content.id,
       null,
@@ -127,8 +126,8 @@ export class ItemService extends ItemServiceMaster {
     return this.http.put(this.API_URL_V3 + '/' + id + '/reactivate');
   }
 
-  public favoritedItem(id: string, favorited: boolean): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + id + '/favorited', {
+  public favoriteItem(id: string, favorited: boolean): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + id + '/favorite', {
       favorited: favorited
     });
   }
