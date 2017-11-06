@@ -13,15 +13,15 @@ export class FavoritesComponent implements OnInit {
 
   // public items: Item[] = [];
   public selectedStatus: string = 'published';
-  public loading: boolean = true;
+  public loading: boolean = false;
   private init: number = 0;
-  public end:boolean = false;
+  public end: boolean = false;
 
   public masonryOptions = {
     gutter: 20
   };
 
-  public items = [];
+  public items: Item[] = [];
 
   constructor(public itemService: ItemService
   ) { }
@@ -31,6 +31,10 @@ export class FavoritesComponent implements OnInit {
   }
 
   private getItems(append?: boolean) {
+    if (this.loading === true) {
+      return;
+    }
+
     this.loading = true;
     if (!append) {
       this.items = [];
@@ -41,9 +45,18 @@ export class FavoritesComponent implements OnInit {
       this.items = this.items.concat(items);
       this.loading = false;
       this.end = !this.init;
-
-      console.log(this.items);
     });
+  }
+
+  onFavoriteChange(item: Item) {
+    this.removeItem(item);
+  }
+
+  removeItem(item: Item) {
+    if (this.items.length) {
+      const index = this.items.indexOf(item);
+      this.items.splice(index, 1);
+    }
   }
 
   public loadMore() {
