@@ -5,6 +5,7 @@ import { IOption } from 'ng-select';
 import { UploadEvent } from './upload-event.interface';
 import { ErrorsService } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
+import { CategoryService } from '../../core/category/category.service';
 
 @Component({
   selector: 'tsl-upload',
@@ -18,7 +19,7 @@ export class UploadComponent implements OnInit {
     {value: 'EUR', label: '€'},
     {value: 'USD', label: '$'}
   ];
-  public categories:  IOption[] = [];
+  public categories: IOption[] = [];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
@@ -26,7 +27,8 @@ export class UploadComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
-              private errorsService: ErrorsService) {
+              private errorsService: ErrorsService,
+              private categoryService: CategoryService) {
     this.uploadForm = fb.group({
       category_id: ['', [Validators.required]],
       images: [[], [Validators.required]],
@@ -47,8 +49,13 @@ export class UploadComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.categoryService.getUploadCategories().subscribe((categories: IOption[]) => {
+      this.categories = categories;
+    });
     this.route.params.subscribe((params: any) => {
-      console.log(params);
+      if (params.catId) {
+        this.uploadForm.get('category_id').patchValue(params.catId);
+      }
     });
   }
 
