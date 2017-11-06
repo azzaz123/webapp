@@ -1,8 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Item } from 'shield';
 import { ItemService } from '../../../core/item/item.service';
-import {log} from "util";
 
 @Component({
   selector: 'tsl-item-cart-favorite',
@@ -12,7 +11,7 @@ import {log} from "util";
 export class ItemCartFavoriteComponent implements OnInit {
 
   @Input() item: Item;
-  public images;
+  @Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
 
   constructor(public itemService: ItemService) {
   }
@@ -21,6 +20,11 @@ export class ItemCartFavoriteComponent implements OnInit {
   }
 
   favorite() {
+    const favorite = !this.item.favorited;
+    this.itemService.favoriteItem(this.item.id, favorite).subscribe(() => {
+      this.item.favorited = favorite;
+      this.onFavoriteChange.emit(this.item);
+    });
   }
 
 }
