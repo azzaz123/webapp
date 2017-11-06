@@ -1,5 +1,5 @@
 <div class="page-content" #scrollPanel>
-  <div class="container">
+  <div class="container upload-page">
     <h1>
       <span i18n>Upload new {{ '{' }}car{{ '}' }}</span>
       <a class="upload-close-icon" [routerLink]="['/catalog/list']">
@@ -92,40 +92,40 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-6 engine-options">
+          <div class="col-sm-6 selector-container">
             <h3 i18n>Engine</h3>
             <div ngbRadioGroup name="radioBasic" formControlName="engine">
-              <label class="btn car-box-selector">
+              <label class="btn selector">
                 <input type="radio" value="gasoline">
                 <md-icon svgIcon="gasoline"></md-icon>
                 <span i18n>Gasoline</span>
               </label>
-              <label class="btn car-box-selector">
+              <label class="btn selector">
                 <input type="radio" value="gasoil">
                 <md-icon svgIcon="gasoil"></md-icon>
                 <span i18n>Gasoil</span>
               </label>
-              <label class="btn car-box-selector">
+              <label class="btn selector">
                 <input type="radio" value="electric-hybrid">
                 <md-icon svgIcon="electric"></md-icon>
                 <span i18n>Electric</span>
               </label>
-              <label class="btn car-box-selector">
+              <label class="btn selector">
                 <input type="radio" value="others">
                 <md-icon svgIcon="others"></md-icon>
                 <span i18n>Others</span>
               </label>
             </div>
           </div>
-          <div class="col-sm-6 gear-options">
+          <div class="col-sm-6 selector-container">
             <h3 i18n>Gear box</h3>
             <div ngbRadioGroup name="radioBasic" formControlName="gearbox">
-              <label class="btn car-box-selector">
+              <label class="btn selector">
                 <input type="radio" value="manual">
                 <md-icon svgIcon="manual"></md-icon>
                 <span i18n>Manual</span>
               </label>
-              <label class="btn car-box-selector">
+              <label class="btn selector">
                 <input type="radio" value="automatic">
                 <md-icon svgIcon="automatic"></md-icon>
                 <span i18n>Automatic</span>
@@ -149,14 +149,14 @@
                        formControlName="images"></tsl-drop-area>
       </div>
       <div class="box">
-        <div class="col-sm-12 terms-options" formGroupName="sale_conditions" data-toggle="buttons">
-          <h3 i18n>Terms</h3>
-          <label class="btn car-box-selector" [class.active]="uploadForm.value.sale_conditions.fix_price">
+        <div class="selector-container terms-options" formGroupName="sale_conditions" data-toggle="buttons">
+          <h2 i18n>Extras</h2>
+          <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.fix_price">
             <input type="checkbox" formControlName="fix_price">
             <md-icon svgIcon="firm-price"></md-icon>
-            <span i18n>Fixed Price</span>
+            <span i18n>Firm Price</span>
           </label>
-          <label class="btn car-box-selector" [class.active]="uploadForm.value.sale_conditions.exchange_allowed">
+          <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.exchange_allowed">
             <input type="checkbox" formControlName="exchange_allowed">
             <md-icon svgIcon="accept-trades"></md-icon>
             <span i18n>Accept trades</span>
