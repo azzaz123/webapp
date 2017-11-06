@@ -40,14 +40,10 @@ describe('UploadService', () => {
   });
 
   describe('createItemWithFirstImage', () => {
-    it('should emit uploadFile event', () => {
-      const VALUES: any = {
-        test: 'hola',
-        hola: 'hey'
-      };
-      const headers = {
-        'Authorization': 'Bearer thetoken'
-      };
+    const headers = {
+      'Authorization': 'Bearer thetoken'
+    };
+    beforeEach(() => {
       spyOn(http, 'getOptions').and.returnValue({
         headers: {
           toJSON() {
@@ -56,29 +52,61 @@ describe('UploadService', () => {
         }
       });
       accessTokenService.storeAccessToken('thetoken');
-      service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
-      expect(response).toEqual({
-        type: 'uploadFile',
-        url: environment.baseUrl + 'api/v3/items/cars',
-        method: 'POST',
-        fieldName: 'image',
-        data: {
-          item_car: new Blob([JSON.stringify(VALUES)], {
-            type: 'application/json'
-          })
-        },
-        headers: headers,
-        file: UPLOAD_FILE
+    });
+    describe('car', () => {
+      it('should emit uploadFile event', () => {
+        const VALUES: any = {
+          test: 'hola',
+          hola: 'hey',
+          category_id: '100'
+        };
+        service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
+        expect(response).toEqual({
+          type: 'uploadFile',
+          url: environment.baseUrl + 'api/v3/items/cars',
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            item_car: new Blob([JSON.stringify(VALUES)], {
+              type: 'application/json'
+            })
+          },
+          headers: headers,
+          file: UPLOAD_FILE
+        });
+      });
+    });
+    describe('normal item', () => {
+      it('should emit uploadFile event', () => {
+        const VALUES: any = {
+          test: 'hola',
+          hola: 'hey',
+          category_id: '200'
+        };
+        service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
+        expect(response).toEqual({
+          type: 'uploadFile',
+          url: environment.baseUrl + 'api/v3/items',
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            item: new Blob([JSON.stringify(VALUES)], {
+              type: 'application/json'
+            })
+          },
+          headers: headers,
+          file: UPLOAD_FILE
+        });
       });
     });
   });
 
   describe('uploadOtherImages', () => {
-    it('should emit uploadFile event', () => {
+    const headers = {
+      'Authorization': 'Bearer thetoken'
+    };
+    beforeEach(() => {
       accessTokenService.storeAccessToken('thetoken');
-      const headers = {
-        'Authorization': 'Bearer thetoken'
-      };
       spyOn(http, 'getOptions').and.returnValue({
         headers: {
           toJSON() {
@@ -86,16 +114,35 @@ describe('UploadService', () => {
           }
         }
       });
-      service.uploadOtherImages(CAR_ID);
-      expect(response).toEqual({
-        type: 'uploadAll',
-        url: environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture',
-        method: 'POST',
-        fieldName: 'image',
-        data: {
-          order: '$order'
-        },
-        headers: headers
+    });
+    describe('car', () => {
+      it('should emit uploadFile event', () => {
+        service.uploadOtherImages(CAR_ID, '/cars');
+        expect(response).toEqual({
+          type: 'uploadAll',
+          url: environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture',
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            order: '$order'
+          },
+          headers: headers
+        });
+      });
+    });
+    describe('normal item', () => {
+      it('should emit uploadFile event', () => {
+        service.uploadOtherImages(CAR_ID, '');
+        expect(response).toEqual({
+          type: 'uploadAll',
+          url: environment.baseUrl + 'api/v3/items/' + CAR_ID + '/picture',
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            order: '$order'
+          },
+          headers: headers
+        });
       });
     });
   });

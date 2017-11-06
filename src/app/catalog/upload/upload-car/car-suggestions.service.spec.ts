@@ -7,7 +7,7 @@ import { ResponseOptions, Response } from '@angular/http';
 import {
   CAR_BRANDS, CAR_BRANDS_RESPONSE, CAR_MODELS, CAR_MODELS_RESPONSE, CAR_VERSIONS, CAR_VERSIONS_RESPONSE, CAR_YEARS,
   CAR_YEARS_RESPONSE
-} from '../../../tests/car.fixtures';
+} from '../../../../tests/car.fixtures';
 import { Observable } from 'rxjs/Observable';
 
 describe('CarSuggestionsService', () => {

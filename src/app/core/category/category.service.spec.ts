@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { TEST_HTTP_PROVIDERS, HttpService } from 'shield';
+import { TEST_HTTP_PROVIDERS, HttpService, I18nService } from 'shield';
 import { CategoryService } from './category.service';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
 import { CategoryResponse } from './category-response.interface';
@@ -11,7 +11,11 @@ let http: HttpService;
 describe('CategoryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CategoryService, ...TEST_HTTP_PROVIDERS]
+      providers: [
+        CategoryService,
+        ...TEST_HTTP_PROVIDERS,
+        I18nService
+      ]
     });
     service = TestBed.get(CategoryService);
     http = TestBed.get(HttpService);
@@ -27,6 +31,12 @@ describe('CategoryService', () => {
       });
       expect(response).toEqual(CATEGORY_DATA_WEB);
     })
+  });
+
+  describe('getUploadCategories', () => {
+    xit('should ', () => {
+
+    });
   });
 
 });
