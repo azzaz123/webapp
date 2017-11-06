@@ -10,10 +10,10 @@ import { isPresent } from 'ng2-dnd/src/dnd.utils';
 
 @Component({
   selector: 'tsl-upload',
-  templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss']
+  templateUrl: './upload-car.component.html',
+  styleUrls: ['./upload-car.component.scss']
 })
-export class UploadComponent implements OnInit {
+export class UploadCarComponent implements OnInit {
 
   public uploadForm: FormGroup;
   public models: IOption[];

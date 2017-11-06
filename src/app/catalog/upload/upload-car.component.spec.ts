@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UploadComponent } from './upload.component';
+import { UploadCarComponent } from './upload-car.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
 import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../tests/car.fixtures';
 
 describe('UploadComponent', () => {
-  let component: UploadComponent;
-  let fixture: ComponentFixture<UploadComponent>;
+  let component: UploadCarComponent;
+  let fixture: ComponentFixture<UploadCarComponent>;
   let carSuggestionsService: CarSuggestionsService;
   let carKeysService: CarKeysService;
   let errorService: ErrorsService;
@@ -61,14 +61,14 @@ describe('UploadComponent', () => {
         }
         }
       ],
-      declarations: [UploadComponent],
+      declarations: [UploadCarComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UploadComponent);
+    fixture = TestBed.createComponent(UploadCarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     carSuggestionsService = TestBed.get(CarSuggestionsService);
