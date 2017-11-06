@@ -6,7 +6,7 @@
     <h5 class="tsl-card-title"> {{item.salePrice | currency:item.currencyCode:true}} </h5>
     <span> {{item.title}} </span>
   </tsl-card-content>
-  <tsl-card-footer (click)="favorite()">
+  <tsl-card-footer (click)="removeFavoriteModal()">
     <md-icon svgIcon="heart" class="cart-footer-icon" [ngClass]="{active: item.favorited}"></md-icon>
     <span class="cart-footer-text"> Remove </span>
   </tsl-card-footer>
