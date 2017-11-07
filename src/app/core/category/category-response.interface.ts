@@ -1,3 +1,4 @@
+import { IOption } from 'ng-select';
 export interface CategoryResponse {
   categoryId: number;
   countryCode: string;
@@ -18,3 +19,8 @@ export interface CategoryConsumerGoodsResponse {
   icon_id: string;
   vertical_id: string;
 }
+
+export interface CategoryOption extends IOption {
+  icon_id: string;
+}
+

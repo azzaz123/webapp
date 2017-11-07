@@ -35,7 +35,14 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="category" i18n>Category</label>
-              <ng-select class="form-control" formControlName="category_id" id="category" [options]="categories" noFilter="10"></ng-select>
+              <ng-select i18n-placeholder placeholder="Category" class="form-control" formControlName="category_id" id="category" [options]="categories" noFilter="10">
+                <ng-template
+                  #optionTemplate
+                  let-option="option">
+                  <md-icon svgIcon="cat_{{option?.icon_id}}"></md-icon>
+                  {{option?.label}}
+                </ng-template>
+              </ng-select>
             </div>
           </div>
         </div>

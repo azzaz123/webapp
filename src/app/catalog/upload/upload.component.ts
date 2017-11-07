@@ -6,6 +6,7 @@ import { UploadEvent } from './upload-event.interface';
 import { ErrorsService } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { CategoryService } from '../../core/category/category.service';
+import { CategoryOption } from '../../core/category/category-response.interface';
 
 @Component({
   selector: 'tsl-upload',
@@ -19,7 +20,7 @@ export class UploadComponent implements OnInit {
     {value: 'EUR', label: '€'},
     {value: 'USD', label: '$'}
   ];
-  public categories: IOption[] = [];
+  public categories: CategoryOption[] = [];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
@@ -49,7 +50,7 @@ export class UploadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.categoryService.getUploadCategories().subscribe((categories: IOption[]) => {
+    this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories;
     });
     this.route.params.subscribe((params: any) => {

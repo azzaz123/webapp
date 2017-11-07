@@ -1,5 +1,8 @@
-import { CategoryConsumerGoodsResponse, CategoryResponse } from '../app/core/category/category-response.interface';
-import { IOption } from 'ng-select';
+import {
+  CategoryConsumerGoodsResponse,
+  CategoryOption,
+  CategoryResponse
+} from '../app/core/category/category-response.interface';
 
 export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
   {
@@ -47,13 +50,16 @@ export const CATEGORIES_DATA_CONSUMER_GOODS: CategoryConsumerGoodsResponse[] = [
   'vertical_id': 'consumer_goods'
 }];
 
-export const CATEGORIES_OPTIONS: IOption[] = [{
+export const CATEGORIES_OPTIONS: CategoryOption[] = [{
   value: '12465',
-  label: 'Fashion & Accessories'
+  label: 'Fashion & Accessories',
+  icon_id: 't-shirt'
 }, {
   value: '12467',
-  label: 'Home & Garden'
+  label: 'Home & Garden',
+  icon_id: 'furniture'
 }, {
   value: '12545',
-  label: 'Electronics'
+  label: 'Electronics',
+  icon_id: 'smartphone'
 }];
