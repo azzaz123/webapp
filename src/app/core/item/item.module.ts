@@ -7,7 +7,6 @@ import { TrackingModule, UtilsModule } from 'shield';
 import { ItemSoldComponent } from './item-sold/item-sold.component';
 import { ItemReservedComponent } from './item-reserved/item-reserved.component';
 import { ItemCartFavoriteComponent } from './item-cart-favorite/item-cart-favorite.component';
-import { CardModule } from '../card/card.module';
 
 @NgModule({
   imports: [
@@ -15,8 +14,7 @@ import { CardModule } from '../card/card.module';
     SharedModule,
     MdIconModule,
     CommonModule,
-    UtilsModule,
-    CardModule
+    UtilsModule
   ],
   exports: [
     ItemAvatarComponent,

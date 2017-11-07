@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CardModule } from '../../card/card.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
 import { MdIconModule } from '@angular/material';
 import { ItemService } from '../item.service';
@@ -12,7 +12,7 @@ describe('ItemCartFavoriteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CardModule, MdIconModule, ItemService],
+      imports: [SharedModule, MdIconModule, ItemService],
       declarations: [ ItemCartFavoriteComponent ],
       providers: [{
         provide: ItemService, useValue: ItemService
