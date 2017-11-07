@@ -7,12 +7,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UploadComponent } from './upload.component';
 import { Observable } from 'rxjs/Observable';
 import { CategoryService } from '../../core/category/category.service';
+import { CATEGORIES_OPTIONS } from '../../../tests/category.fixtures';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
   let errorService: ErrorsService;
   let router: Router;
+  let categoryService: CategoryService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,7 +45,7 @@ describe('UploadComponent', () => {
         {
           provide: CategoryService, useValue: {
           getUploadCategories() {
-            return Observable.of([]);
+            return Observable.of(CATEGORIES_OPTIONS);
           }
         }
         }
@@ -57,6 +59,8 @@ describe('UploadComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadComponent);
     component = fixture.componentInstance;
+    categoryService = TestBed.get(CategoryService);
+    spyOn(categoryService, 'getUploadCategories').and.callThrough();
     fixture.detectChanges();
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
@@ -67,8 +71,12 @@ describe('UploadComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    xit('should ', () => {
-
+    it('should get and set categories', () => {
+      expect(categoryService.getUploadCategories).toHaveBeenCalled();
+      expect(component.categories).toEqual(CATEGORIES_OPTIONS);
+    });
+    it('should set form category_id', () => {
+      expect(component.uploadForm.get('category_id').value).toBe(200);
     });
   });
 
