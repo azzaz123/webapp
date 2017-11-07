@@ -5,7 +5,7 @@ import { HttpService, TEST_HTTP_PROVIDERS, I18nService } from 'shield';
 import { ResponseOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { IOption } from 'ng-select';
-import { CAR_BODY_TYPES, CAR_BODY_TYPES_RESPONSE } from '../../../tests/car.fixtures';
+import { CAR_BODY_TYPES, CAR_BODY_TYPES_RESPONSE } from '../../../../tests/car.fixtures';
 
 describe('CarKeysService', () => {
 
