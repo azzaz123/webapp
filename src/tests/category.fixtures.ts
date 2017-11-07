@@ -1,4 +1,4 @@
-import { CategoryResponse } from '../app/core/category/category-response.interface';
+import { CategoryConsumerGoodsResponse, CategoryResponse } from '../app/core/category/category-response.interface';
 import { IOption } from 'ng-select';
 
 export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
@@ -30,7 +30,7 @@ export const CATEGORY_DATA_WEB: Array<CategoryResponse> = [
   }
 ];
 
-export const CATEGORIES_DATA_CONSUMER_GOODS: any = [{
+export const CATEGORIES_DATA_CONSUMER_GOODS: CategoryConsumerGoodsResponse[] = [{
   'category_id': 12465,
   'name': 'Fashion & Accessories',
   'icon_id': 't-shirt',

@@ -12,4 +12,9 @@ export interface CategoryResponse {
   visible: boolean;
 }
 
-
+export interface CategoryConsumerGoodsResponse {
+  category_id: number;
+  name: string;
+  icon_id: string;
+  vertical_id: string;
+}
