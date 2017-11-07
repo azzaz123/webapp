@@ -80,6 +80,19 @@
           </label>
         </div>
       </div>
+      <div class="box">
+        <div class="selector-container shipping-options"  data-toggle="buttons">
+          <h2 i18n>Shipping</h2>
+          <p i18n>If you are going to ship with wallapop, we need to know hou much does your product weight.</p>
+          <div ngbRadioGroup name="radioBasic" formGroupName="delivery_info">
+            <label class="btn selector" *ngFor="let delivery of deliveryInfo">
+              <input type="radio" [value]="delivery.value.max_weight_kg">
+              <md-icon svgIcon="shipping-{{delivery.value.max_weight_kg}}"></md-icon>
+              <span i18n><strong>{{delivery.value.max_weight_kg}}kg Max</strong><br />{{delivery.size}}</span>
+            </label>
+          </div>
+        </div>
+      </div>
       <button type="submit" class="btn btn-primary" [disabled]="loading">
         <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
         <span [hidden]="loading" i18n>List item</span>

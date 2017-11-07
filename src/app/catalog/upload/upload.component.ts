@@ -20,6 +20,31 @@ export class UploadComponent implements OnInit {
     {value: 'EUR', label: '€'},
     {value: 'USD', label: '$'}
   ];
+  public deliveryInfo: any = [{
+    size: '20x38x40cm',
+    value: {
+      min_weight_kg: 0,
+      max_weight_kg: 5
+    }
+  }, {
+    size: '30x40x50cm',
+    value: {
+      min_weight_kg: 5.1,
+      max_weight_kg: 10
+    }
+  }, {
+    size: '40x50x60cm',
+    value: {
+      min_weight_kg: 10.1,
+      max_weight_kg: 20
+    }
+  }, {
+    size: '50x60x60cm',
+    value: {
+      min_weight_kg: 20.1,
+      max_weight_kg: 30
+    }
+  }];
   public categories: CategoryOption[] = [];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
@@ -42,10 +67,7 @@ export class UploadComponent implements OnInit {
         exchange_allowed: false,
         shipping_allowed: false
       }),
-      delivery_info: fb.group({
-        min_weight_kg: '',
-        max_weight_kg: ''
-      })
+      delivery_info: ['']
     });
   }
 
