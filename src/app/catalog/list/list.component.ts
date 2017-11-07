@@ -6,7 +6,8 @@ import {
   Item,
   ItemBulkResponse,
   PaymentService,
-  TrackingService
+  TrackingService,
+  DEFAULT_ERROR_MESSAGE
 } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
@@ -174,7 +175,12 @@ export class ListComponent implements OnInit {
         this.sabadellSubmit.emit(orderId);
       });
     }, (error: Response) => {
-      this.errorService.show(error);
+      this.deselect();
+      if (error) {
+        this.errorService.show(error);
+      } else {
+        this.toastr.error(DEFAULT_ERROR_MESSAGE);
+      }
     });
   }
 

@@ -316,6 +316,20 @@
       bottom: 0;
     }
   }
+  .main-header-upload {
+    border-radius: 100px;
+    font-weight: bold;
+    font-size: $font-size-S;
+    color: $white;
+    padding-left: $spacing-XS;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    md-icon {
+      vertical-align: middle;
+      margin-right: $spacing-XXS;
+      @include square(26px);
+    }
+  }
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {

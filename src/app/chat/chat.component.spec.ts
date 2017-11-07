@@ -4,8 +4,8 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
-  EventService, XmppService, MOCK_CONVERSATION, UserService, ItemService, HttpService, I18nService,
-  ConversationService, TrackingService, MockTrackingService, ITEM_ID, Conversation, PersistencyService
+  EventService, XmppService, MOCK_CONVERSATION, ItemService, HttpService, I18nService,
+  ConversationService, TrackingService, MockTrackingService, ITEM_ID, Conversation, PersistencyService, UserService
 } from 'shield';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';

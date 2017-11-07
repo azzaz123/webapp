@@ -14,6 +14,7 @@ import { CategoryService } from '../core/category/category.service';
 import { GeolocationService } from '../core/geolocation/geolocation.service';
 import { SuggesterService } from '../core/suggester/suggester.service';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { UploadModalComponent } from './topbar/upload-modal/upload-modal.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     TopbarComponent,
     SidebarComponent
   ],
-  declarations: [TopbarComponent, GeolocationComponent, CategoriesListComponent, SuggesterComponent, SidebarComponent],
+  declarations: [TopbarComponent, GeolocationComponent, CategoriesListComponent, SuggesterComponent, SidebarComponent, UploadModalComponent],
+  entryComponents: [UploadModalComponent],
   providers: [GeolocationService, CategoryService, SuggesterService]
 })
 export class LayoutModule {

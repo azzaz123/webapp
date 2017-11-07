@@ -1,0 +1,71 @@
+@import "../../../../style/_common.scss";
+
+.header {
+  background: $corporate url(/assets/images/work-in-progress.svg) no-repeat center;
+  height: 192px;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  .modal-close {
+    top: $spacing;
+    right: $spacing;
+    @include square(13px);
+    md-icon {
+      @include square(13px);
+      line-height: unset;
+    }
+  }
+}
+
+.modal-body {
+  text-align: center;
+  padding: 40px 70px;
+  h1 {
+    font-weight: bold;
+    font-size: $font-size-L;
+    text-transform: uppercase;
+  }
+  p {
+    font-size: $font-size;
+    &.small {
+      font-size: $font-size-S;
+      color: $grey-250;
+      margin-top: 40px;
+    }
+  }
+  .btn-mobile {
+    width: 172px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: $border-radius;
+    border: solid 1px $grey-100;
+    display: inline-block;
+    font-weight: bold;
+    font-size: $font-size-S;
+    text-align: center;
+    color: $corporate;
+    margin-top: $spacing;
+    &:hover, &:focus, &:active {
+      background: $corporate;
+      color: $white;
+      text-decoration: none;
+      border-color: transparent;
+    }
+    md-icon {
+      vertical-align: sub;
+      margin-right: 18px;
+    }
+    &.ios {
+      margin-right: $spacing-L;
+      md-icon {
+        width: 16px;
+        height: 20px;
+      }
+    }
+    &.android {
+      md-icon {
+        width: 17px;
+        height: 19px;
+      }
+    }
+  }
+}
