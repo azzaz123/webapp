@@ -48,14 +48,14 @@
     height: 15px;
     line-height: 30px;
   }
-  md-icon g g {
+  md-icon path {
     fill: $grey-700;
   }
-  &:hover md-icon g g {
+  &:hover md-icon path {
     fill: $grey-900;
   }
   .modal.bump-confirm & {
-    md-icon g g {
+    md-icon path {
       fill: $grey-200;
     }
   }
@@ -147,6 +147,35 @@
       svg path {
         fill: $corporate;
       }
+    }
+  }
+}
+
+.selector {
+  svg {
+    @include in-the-middle;
+    width: 26px;
+    height: 26px;
+    g, path {
+      fill: $grey-250;
+    }
+  }
+  &.active {
+    svg g, svg path {
+      fill: $white;
+    }
+  }
+  &:hover:not(.active) {
+    svg g, svg path {
+      fill: $grey-700;
+    }
+  }
+}
+
+.upload-close-icon {
+  &:hover {
+    md-icon path {
+      fill: $corporate;
     }
   }
 }

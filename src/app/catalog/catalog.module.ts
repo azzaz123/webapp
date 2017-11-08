@@ -7,12 +7,21 @@ import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { MdIconModule } from '@angular/material';
 import { ConfirmationModalComponent } from './list/modals/confirmation-modal/confirmation-modal.component';
 import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { MomentModule } from 'angular2-moment';
 import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { CreditCardModalComponent } from './list/modals/credit-card-modal/credit-card-modal.component';
+import { DropAreaComponent } from './upload/drop-area/drop-area.component';
+import { UploadService } from './upload/drop-area/upload.service';
+import { NgUploaderModule } from 'ngx-uploader';
+import { DndModule } from 'ng2-dnd';
+import { SelectModule } from 'ng-select';
+import { CarSuggestionsService } from './upload/upload-car/car-suggestions.service';
+import { CarKeysService } from './upload/upload-car/car-keys.service';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { ElasticModule } from 'ng-elastic';
 
 @NgModule({
   imports: [
@@ -23,7 +32,18 @@ import { CreditCardModalComponent } from './list/modals/credit-card-modal/credit
     MdIconModule,
     InfiniteScrollModule,
     UtilsModule,
-    MomentModule
+    MomentModule,
+    NgUploaderModule,
+    DndModule,
+    ReactiveFormsModule,
+    SelectModule,
+    NgbButtonsModule,
+    ElasticModule
+  ],
+  providers: [
+    CarSuggestionsService,
+    CarKeysService,
+    UploadService
   ],
   declarations: [
     catalogRoutedComponents,
@@ -32,7 +52,8 @@ import { CreditCardModalComponent } from './list/modals/credit-card-modal/credit
     SoldModalComponent,
     SelectedItemsComponent,
     BumpConfirmationModalComponent,
-    CreditCardModalComponent
+    CreditCardModalComponent,
+    DropAreaComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

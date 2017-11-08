@@ -1,0 +1,184 @@
+@import "../../style/_common.scss";
+
+.form-group {
+  margin-bottom: $spacing-L;
+  &.last {
+    margin-bottom: 0;
+  }
+  label {
+    font-size: $font-size-S;
+    color: $grey-500;
+  }
+  .form-control, select.form-control:not([size]):not([multiple]) {
+    display: block;
+    height: 50px;
+    width: 100%;
+    font-size: $font-size;
+    border-color: $grey-50;
+    border-radius: 6px;
+    &:hover {
+      border-color: $grey-100;
+    }
+    &.ng-dirty {
+      &.ng-valid {
+        border-color: $grey-200;
+      }
+      &.ng-invalid {
+        border-color: $warn;
+        label {
+          color: $warn;
+        }
+      }
+    }
+    &:focus, &.ng-dirty.ng-invalid:focus, &.ng-dirty.ng-valid:focus {
+      border-color: $corporate;
+      color: $grey-800;
+      outline: none;
+      box-shadow: none;
+      background-color: transparent;
+    }
+    &::placeholder {
+      color: $grey-200;
+    }
+  }
+  select.form-control {
+    -webkit-appearance: none;
+    option {
+      background: $grey-900;
+      color: $white;
+    }
+  }
+  textarea.form-control {
+    line-height: 1.49;
+    min-height: 140px;
+  }
+}
+
+/* ng-select */
+
+ng-select {
+  & > div {
+    border: 0 !important;
+    &.disabled {
+      background-color: transparent !important;
+    }
+    & > div.single {
+      & > div.toggle {
+        text-indent: -1000000px;
+        background: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='30' height='30' viewBox='0 0 30 30'><path fill='#13C1AC' d='M16.323 16.682a.56.56 0 0 0-.825 0 .649.649 0 0 0 0 .878L19 21.285a.56.56 0 0 0 .826 0l3.503-3.725a.649.649 0 0 0 0-.878.56.56 0 0 0-.826 0l-3.09 3.286-3.09-3.286z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: 0 -2px;
+        &:hover {
+          background-color: transparent !important;
+        }
+      }
+      & > div.value {
+        padding: 0 !important;
+        line-height: 36px !important;
+      }
+      & > div.placeholder {
+        padding: 0 !important;
+        color: $grey-200 !important;
+      }
+    }
+  }
+}
+
+select-dropdown{
+  & > div {
+    box-shadow: 0 1px 4px 0 rgba(37, 50, 56, 0.05);
+    border: solid 1px $grey-50 !important;
+    border-radius: 6px;
+    z-index: 10 !important;
+    .options {
+      overflow-x: hidden !important;
+      ul li {
+        padding: $spacing-S !important;
+        border-top: 1px solid $grey-50;
+      }
+    }
+    .filter input {
+      background: transparent;
+      border: 0 !important;
+      color: $grey-800 !important;
+    }
+  }
+  .highlighted {
+    background-color: $grey-50 !important;
+    color: $grey-800 !important;
+  }
+  .selected {
+    background-color: transparent !important;
+    color: $corporate;
+  }
+  .selected.highlighted {
+    background-color: $grey-50 !important;
+    color: $grey-800 !important;
+  }
+}
+
+ng-select, select-dropdown {
+  * {
+    font-family: $wallie !important;
+  }
+}
+
+#carType {
+  select-dropdown {
+    & > div {
+      .options {
+        ul {
+          li {
+            background-repeat: no-repeat;
+            background-position: 18px;
+            padding-left: 60px !important;
+            &:nth-child(1) {
+              background-image: url(/assets/icons/small_car.svg);
+            }
+            &:nth-child(2) {
+              background-image: url(/assets/icons/coupe_cabrio.svg);
+            }
+            &:nth-child(3) {
+              background-image: url(/assets/icons/sedan.svg);
+            }
+            &:nth-child(4) {
+              background-image: url(/assets/icons/family_car.svg);
+            }
+            &:nth-child(5) {
+              background-image: url(/assets/icons/mini_van.svg);
+            }
+            &:nth-child(6) {
+              background-image: url(/assets/icons/4X4.svg);
+            }
+            &:nth-child(7) {
+              background-image: url(/assets/icons/van.svg);
+            }
+            &:nth-child(8) {
+              background-image: url(/assets/icons/others-green.svg);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#currency {
+  select-dropdown {
+    & > div {
+      .options {
+        ul li {
+          padding: $spacing-S $spacing-XXS !important;
+        }
+      }
+    }
+  }
+}
+
+form.disabled {
+  .form-control:disabled {
+    cursor: auto;
+    border: 0;
+  }
+}
+

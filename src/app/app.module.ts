@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
 import { environment } from '../environments/environment';
 import { CatalogModule } from './catalog/catalog.module';
+import { DndModule } from 'ng2-dnd';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { CatalogModule } from './catalog/catalog.module';
     ChatModule,
     CookieModule.forRoot(),
     CoreModule.forRoot(),
+    DndModule.forRoot(),
     BrowserModule,
     LoginModule,
     HttpModule,

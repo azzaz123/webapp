@@ -20,6 +20,7 @@
       "prefix": "tsl",
       "styles": [
         "../node_modules/ngx-toastr/toastr.css",
+        "../node_modules/ng2-dnd/style.css",
         "style/styles.scss"
       ],
       "scripts": [
