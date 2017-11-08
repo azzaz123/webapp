@@ -24,6 +24,10 @@ const routes: Routes = [
       {
         path: 'upload/:catId',
         component: UploadComponent
+      },
+      {
+        path: 'upload',
+        component: UploadComponent
       }
     ]
   },
