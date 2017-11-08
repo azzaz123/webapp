@@ -7,13 +7,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UploadComponent } from './upload.component';
 import { Observable } from 'rxjs/Observable';
 import { CategoryService } from '../../core/category/category.service';
-import { CATEGORIES_OPTIONS } from '../../../tests/category.fixtures';
+import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../tests/category.fixtures';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
   let errorService: ErrorsService;
   let router: Router;
+  let route: ActivatedRoute;
   let categoryService: CategoryService;
 
   beforeEach(async(() => {
@@ -23,9 +24,7 @@ describe('UploadComponent', () => {
         TEST_HTTP_PROVIDERS,
         {
           provide: ActivatedRoute, useValue: {
-          params: Observable.of({
-            catId: 200
-          })
+          params: Observable.of({})
         }
         },
         {
@@ -61,9 +60,9 @@ describe('UploadComponent', () => {
     component = fixture.componentInstance;
     categoryService = TestBed.get(CategoryService);
     spyOn(categoryService, 'getUploadCategories').and.callThrough();
-    fixture.detectChanges();
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
+    route = TestBed.get(ActivatedRoute);
   });
 
   it('should create', () => {
@@ -72,17 +71,30 @@ describe('UploadComponent', () => {
 
   describe('ngOnInit', () => {
     it('should get and set categories', () => {
+      fixture.detectChanges();
       expect(categoryService.getUploadCategories).toHaveBeenCalled();
-      expect(component.categories).toEqual(CATEGORIES_OPTIONS);
+      expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
     });
-    it('should set form category_id', () => {
-      expect(component.uploadForm.get('category_id').value).toBe(200);
+    describe('with preselected category', () => {
+      beforeEach(() => {
+        route.params = Observable.of({
+          catId: '13000'
+        });
+        fixture.detectChanges();
+      });
+      it('should set form category_id', () => {
+        expect(component.uploadForm.get('category_id').value).toBe('13000');
+      });
+      it('should set fixedCategory', () => {
+        expect(component.fixedCategory).toBe('Real Estate');
+      });
     });
   });
 
   describe('onSubmit', () => {
     it('should emit uploadEvent if form is valid', () => {
       let input: any;
+      component.uploadForm.get('category_id').patchValue('200');
       component.uploadForm.get('title').patchValue('test');
       component.uploadForm.get('description').patchValue('test');
       component.uploadForm.get('sale_price').patchValue(1000000);
@@ -118,6 +130,7 @@ describe('UploadComponent', () => {
       expect(component.uploadForm.valid).toBeFalsy();
     });
     it('should set delivery_info as required when shipping_allowed true', () => {
+      fixture.detectChanges();
       expect(component.uploadForm.get('delivery_info').valid).toBeTruthy();
       component.uploadForm.get('sale_conditions.shipping_allowed').patchValue(true);
       expect(component.uploadForm.get('delivery_info').valid).toBeFalsy();

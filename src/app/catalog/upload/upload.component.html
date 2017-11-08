@@ -35,7 +35,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="category" i18n>Category</label>
-              <ng-select i18n-placeholder placeholder="Category" class="form-control" formControlName="category_id" id="category" [options]="categories" noFilter="10">
+              <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category" class="form-control" formControlName="category_id" id="category" [options]="categories" noFilter="10">
                 <ng-template
                   #optionTemplate
                   let-option="option">
@@ -43,6 +43,7 @@
                   {{option?.label}}
                 </ng-template>
               </ng-select>
+              <input *ngIf="fixedCategory" disabled type="text" class="form-control" [value]="fixedCategory" />
             </div>
           </div>
         </div>

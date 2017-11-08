@@ -7,6 +7,7 @@ import { ErrorsService } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { CategoryService } from '../../core/category/category.service';
 import { CategoryOption } from '../../core/category/category-response.interface';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-upload',
@@ -47,6 +48,7 @@ export class UploadComponent implements OnInit {
   }];
   public categories: CategoryOption[] = [];
   public loading: boolean;
+  public fixedCategory: string;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
@@ -67,18 +69,22 @@ export class UploadComponent implements OnInit {
         exchange_allowed: false,
         shipping_allowed: false
       }),
-      delivery_info: ['']
+      delivery_info: [null]
     });
   }
 
   ngOnInit() {
-    this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
-      this.categories = categories;
-    });
     this.route.params.subscribe((params: any) => {
-      if (params.catId) {
-        this.uploadForm.get('category_id').patchValue(params.catId);
-      }
+      this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
+        this.categories =  categories.filter((category: CategoryOption) => {
+          return category.value !== '13000' && category.value !== '13200';
+        });
+        if (params.catId) {
+          this.uploadForm.get('category_id').patchValue(params.catId);
+          const fixedCategory = _.find(categories, {value: params.catId});
+          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+        }
+      });
     });
     this.uploadForm.get('sale_conditions.shipping_allowed').valueChanges.subscribe((value: boolean) => {
       const deliveryInfoControl: AbstractControl = this.uploadForm.get('delivery_info');

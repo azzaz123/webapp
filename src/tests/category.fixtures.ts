@@ -48,9 +48,19 @@ export const CATEGORIES_DATA_CONSUMER_GOODS: CategoryConsumerGoodsResponse[] = [
   'name': 'Electronics',
   'icon_id': 'smartphone',
   'vertical_id': 'consumer_goods'
+}, {
+  'category_id': 13200,
+  'name': 'Services',
+  'icon_id': 'toolbox',
+  'vertical_id': 'consumer_goods'
+}, {
+  'category_id': 13000,
+  'name': 'Real Estate',
+  'icon_id': 'house',
+  'vertical_id': 'consumer_goods'
 }];
 
-export const CATEGORIES_OPTIONS: CategoryOption[] = [{
+export const CATEGORIES_OPTIONS_CONSUMER_GOODS: CategoryOption[] = [{
   value: '12465',
   label: 'Fashion & Accessories',
   icon_id: 't-shirt'
@@ -63,3 +73,16 @@ export const CATEGORIES_OPTIONS: CategoryOption[] = [{
   label: 'Electronics',
   icon_id: 'smartphone'
 }];
+
+export const CATEGORIES_OPTIONS: CategoryOption[] = [
+  ...CATEGORIES_OPTIONS_CONSUMER_GOODS, {
+  value: '13200',
+  label: 'Services',
+  icon_id: 'toolbox'
+}, {
+  value: '13000',
+  label: 'Real Estate',
+  icon_id: 'house'
+}];
+
+
