@@ -117,6 +117,11 @@ describe('UploadComponent', () => {
       component.uploadForm.get('sale_price').patchValue(9999999999);
       expect(component.uploadForm.valid).toBeFalsy();
     });
+    it('should set delivery_info as required when shipping_allowed true', () => {
+      expect(component.uploadForm.get('delivery_info').valid).toBeTruthy();
+      component.uploadForm.get('sale_conditions.shipping_allowed').patchValue(true);
+      expect(component.uploadForm.get('delivery_info').valid).toBeFalsy();
+    })
   });
 
   describe('onUploaded', () => {
