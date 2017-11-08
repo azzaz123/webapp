@@ -56,6 +56,10 @@ $form-control-height: 50px;
   }
 }
 
+h2.ng-invalid {
+  color: $warn !important;
+}
+
 /* ng-select */
 
 ng-select {

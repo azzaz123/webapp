@@ -80,6 +80,15 @@ export class UploadComponent implements OnInit {
         this.uploadForm.get('category_id').patchValue(params.catId);
       }
     });
+    this.uploadForm.get('sale_conditions.shipping_allowed').valueChanges.subscribe((value: boolean) => {
+      const deliveryInfoControl: AbstractControl = this.uploadForm.get('delivery_info');
+      if (value) {
+        deliveryInfoControl.setValidators([Validators.required]);
+      } else {
+        deliveryInfoControl.setValidators([]);
+      }
+      deliveryInfoControl.updateValueAndValidity();
+    });
   }
 
   onSubmit() {
