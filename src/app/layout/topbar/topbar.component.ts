@@ -5,6 +5,8 @@ import { environment } from '../../../environments/environment';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { CategoryResponse } from '../../core/category/category-response.interface';
 import { SuggesterResponse } from '../../core/suggester/suggester-response.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UploadModalComponent } from './upload-modal/upload-modal.component';
 
 @Component({
   selector: 'tsl-topbar',
@@ -29,6 +31,7 @@ export class TopbarComponent implements OnInit {
 
   constructor(public userService: UserService,
               private windowRef: WindowRef,
+              private modalService: NgbModal,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
@@ -77,6 +80,11 @@ export class TopbarComponent implements OnInit {
 
   public onKeywordUpdate(newKeyword: string) {
     this.kws = newKeyword;
+  }
+
+  public upload() {
+    this.modalService.open(UploadModalComponent, {windowClass: 'upload'});
+    ga('send', 'event', 'upload', 'click');
   }
 
 }

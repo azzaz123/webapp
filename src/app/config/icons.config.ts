@@ -107,9 +107,11 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('automatic', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/automatic.svg'));
   mdIconRegistry.addSvgIcon('gasoil', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/gasoil.svg'));
   mdIconRegistry.addSvgIcon('gasoline', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/gasoline.svg'));
-  mdIconRegistry.addSvgIcon('upload', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/upload.svg'));
   mdIconRegistry.addSvgIcon('shipping-5', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/shipping-5.svg'));
   mdIconRegistry.addSvgIcon('shipping-10', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/shipping-10.svg'));
   mdIconRegistry.addSvgIcon('shipping-20', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/shipping-20.svg'));
   mdIconRegistry.addSvgIcon('shipping-30', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/shipping-30.svg'));
+  mdIconRegistry.addSvgIcon('upload-dnd', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/upload-dnd.svg'));
+  mdIconRegistry.addSvgIcon('ios', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/ios.svg'));
+  mdIconRegistry.addSvgIcon('android', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/android.svg'));
 }
