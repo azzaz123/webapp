@@ -20,8 +20,9 @@ import { DndModule } from 'ng2-dnd';
 import { SelectModule } from 'ng-select';
 import { CarSuggestionsService } from './upload/upload-car/car-suggestions.service';
 import { CarKeysService } from './upload/upload-car/car-keys.service';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElasticModule } from 'ng-elastic';
+import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { ElasticModule } from 'ng-elastic';
     ReactiveFormsModule,
     SelectModule,
     NgbButtonsModule,
-    ElasticModule
+    ElasticModule,
+    NgbDropdownModule
   ],
   providers: [
     CarSuggestionsService,
@@ -53,7 +55,8 @@ import { ElasticModule } from 'ng-elastic';
     SelectedItemsComponent,
     BumpConfirmationModalComponent,
     CreditCardModalComponent,
-    DropAreaComponent
+    DropAreaComponent,
+    CategorySelectorComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
