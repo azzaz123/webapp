@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, EventEmitter, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
@@ -14,7 +14,7 @@ import * as _ from 'lodash';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent implements OnInit {
+export class UploadComponent implements OnInit, AfterViewChecked {
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -51,6 +51,8 @@ export class UploadComponent implements OnInit {
   public fixedCategory: string;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
+  @ViewChild('title') titleField: ElementRef;
+  private focused: boolean;
 
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
@@ -94,6 +96,15 @@ export class UploadComponent implements OnInit {
         deliveryInfoControl.setValidators([]);
       }
       deliveryInfoControl.updateValueAndValidity();
+    });
+  }
+
+  ngAfterViewChecked() {
+    setTimeout(() => {
+      if (this.titleField && !this.focused) {
+        this.titleField.nativeElement.focus();
+        this.focused = true;
+      }
     });
   }
 
