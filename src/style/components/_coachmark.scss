@@ -1,0 +1,56 @@
+.popover {
+  border-radius: 6px;
+  background-color: rgba($corporate-light, .5);
+  border: none;
+  font-size: $font-size-XS;
+  line-height: 1.33;
+  color: $grey-700;
+  left: calc((100vw - 700px) / 2 + 667px) !important;
+  z-index: 99 !important;
+  &.popover-right {
+    margin-left: 40px;
+  }
+  &::before, &::after {
+    content: none;
+  }
+  .popover-content {
+    width: 220px;
+    display: flex;
+    padding: 15px;
+    md-icon {
+      width: 35px;
+      height: 28px;
+      margin-right: $spacing-S;
+      & /deep/ {
+        path {
+          fill: $corporate;
+        }
+      }
+      &[svgIcon=messages] {
+        width: 100px;
+        height: 63px;
+        margin-right: 8px;
+        margin-top: -20px;
+        margin-left: -8px;
+      }
+      &[svgIcon=views] {
+        & /deep/ {
+          path {
+            stroke: $corporate;
+            fill: none;
+            &#Fill-3 {
+              stroke: none;
+              fill: $corporate
+            }
+          }
+        }
+      }
+    }
+  }
+  &#ngb-popover-5 {
+    margin-top: -40px;
+  }
+  &#ngb-popover-6 {
+    margin-top: 30px;
+  }
+}

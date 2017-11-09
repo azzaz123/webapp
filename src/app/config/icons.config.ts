@@ -60,6 +60,7 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('home', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/home.svg'));
   mdIconRegistry.addSvgIcon('messages', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/messages.svg'));
   mdIconRegistry.addSvgIcon('arrow-waterfall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-waterfall.svg'));
+  mdIconRegistry.addSvgIcon('category_All', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_All.svg'));
   mdIconRegistry.addSvgIcon('category_Appliances', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Appliances.svg'));
   mdIconRegistry.addSvgIcon('category_Babies', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Babies.svg'));
   mdIconRegistry.addSvgIcon('category_Cars', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Cars.svg'));
@@ -118,4 +119,7 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('herocat-consumer-goods', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-consumer-goods.svg'));
   mdIconRegistry.addSvgIcon('herocat-real-estate', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-real-estate.svg'));
   mdIconRegistry.addSvgIcon('herocat-services', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-services.svg'));
+  mdIconRegistry.addSvgIcon('camera', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/camera.svg'));
+  mdIconRegistry.addSvgIcon('smove-shape', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/smove-shape.svg'));
+  mdIconRegistry.addSvgIcon('speaker', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/speaker.svg'));
 }

@@ -14,7 +14,14 @@
             <div class="form-group">
               <label for="headline" i18n>What are you selling?</label>
               <span class="chars-counter">{{uploadForm.value?.title?.length}}/50</span>
-              <input i18n-placeholder placeholder="In a couple of words…" type="text" class="form-control" formControlName="title" #title id="headline" maxlength="50"/>
+              <input i18n-placeholder placeholder="In a couple of words…"
+                     type="text" class="form-control" formControlName="title"
+                     [ngbPopover]="coachmarkTitle" triggers="focus:blur" placement="right" container="body"
+                     #title id="headline" maxlength="50" />
+              <ng-template #coachmarkTitle>
+                <md-icon svgIcon="views"></md-icon>
+                <div i18n>Give your ad a descriptive title to improve its visibility.</div>
+              </ng-template>
             </div>
           </div>
         </div>
@@ -22,20 +29,31 @@
           <div class="col-sm-4">
             <div class="form-group">
               <label for="price" i18n>Price</label>
-              <input i18n-placeholder placeholder="Fair price" type="number" class="form-control" formControlName="sale_price" id="price" min="0" max="999999999"/>
+              <input i18n-placeholder placeholder="Fair price"
+                     type="number" class="form-control" formControlName="sale_price"
+                     [ngbPopover]="coachmarkPrice" triggers="focus:blur" placement="right" container="body"
+                     id="price" min="0" max="999999999"/>
+              <ng-template #coachmarkPrice>
+                <md-icon svgIcon="category_All"></md-icon>
+                <div i18n>Select a category and a fair price.</div>
+              </ng-template>
             </div>
           </div>
           <div class="col-sm-2">
             <div class="form-group">
               <label for="currency" i18n>Currency</label>
-              <ng-select class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
-                         noFilter="10"></ng-select>
+              <ng-select class="form-control" formControlName="currency_code" id="currency"
+                         [ngbPopover]="coachmarkPrice" placement="right" #p="ngbPopover" (closed)="p.close()" container="body"
+                         [options]="currencies" noFilter="10"></ng-select>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
               <label for="category" i18n>Category</label>
-              <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category" class="form-control" formControlName="category_id" id="category" [options]="categories" noFilter="10">
+              <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category"
+                         class="form-control" formControlName="category_id"
+                         [ngbPopover]="coachmarkPrice" placement="right" #p="ngbPopover" (closed)="p.close()" container="body"
+                         id="category" [options]="categories" noFilter="10">
                 <ng-template
                   #optionTemplate
                   let-option="option">
@@ -52,16 +70,31 @@
             <div class="form-group last">
               <label for="tellUs" i18n>Description</label>
               <span class="chars-counter">{{uploadForm.value?.description?.length}}/650</span>
-              <textarea i18n-placeholder placeholder="Tell us more about what you are selling..." fz-elastic class="form-control" formControlName="description" id="tellUs" maxlength="650"></textarea>
+              <textarea i18n-placeholder placeholder="Tell us more about what you are selling..." fz-elastic class="form-control"
+                        [ngbPopover]="coachmarkDescription" triggers="focus:blur" placement="right" container="body"
+                        formControlName="description" id="tellUs" maxlength="650"></textarea>
+              <ng-template #coachmarkDescription>
+                <md-icon svgIcon="messages"></md-icon>
+                <div i18n>Details really matter. The best description can improve your experience</div>
+              </ng-template>
             </div>
           </div>
         </div>
       </div>
-      <div class="box product-photos">
+      <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave" placement="right" container="body">
         <h2 i18n>Pictures</h2>
-        <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)" formControlName="images"></tsl-drop-area>
+        <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)" formControlName="images"
+                       [ngbPopover]="coachmarkDrag" triggers="mouseenter:mouseleave" placement="right" container="body"></tsl-drop-area>
+        <ng-template #coachmarkPictures>
+          <md-icon svgIcon="camera"></md-icon>
+          <div i18n>Drag and drop files to upload. Max size: 4MB.</div>
+        </ng-template>
+        <ng-template #coachmarkDrag>
+          <md-icon svgIcon="move-shape"></md-icon>
+          <div i18n>Pick up and drag the images around to re-order them.</div>
+        </ng-template>
       </div>
-      <div class="box">
+      <div class="box" [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave" placement="right" container="body">
         <div class="selector-container terms-options" formGroupName="sale_conditions" data-toggle="buttons">
           <h2 i18n>Extras</h2>
           <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.fix_price">
@@ -80,6 +113,10 @@
             <span i18n>Accept trades</span>
           </label>
         </div>
+        <ng-template #coachmarkExtras>
+          <md-icon svgIcon="speaker"></md-icon>
+          <div i18n>What do you want your customers to know?</div>
+        </ng-template>
       </div>
       <div class="box" [hidden]="!uploadForm.value.sale_conditions.shipping_allowed">
         <div class="selector-container shipping-options"  data-toggle="buttons">
