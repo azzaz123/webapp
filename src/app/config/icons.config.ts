@@ -122,4 +122,6 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('camera', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/camera.svg'));
   mdIconRegistry.addSvgIcon('smove-shape', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/smove-shape.svg'));
   mdIconRegistry.addSvgIcon('speaker', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/speaker.svg'));
+  mdIconRegistry.addSvgIcon('twitter', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/twitter.svg'));
+  mdIconRegistry.addSvgIcon('facebook', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/facebook.svg'));
 }

@@ -23,6 +23,7 @@ import { CarKeysService } from './upload/upload-car/car-keys.service';
 import { NgbButtonsModule, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElasticModule } from 'ng-elastic';
 import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
+import { UploadConfirmationModalComponent } from './list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -57,13 +58,15 @@ import { CategorySelectorComponent } from './upload/category-selector/category-s
     BumpConfirmationModalComponent,
     CreditCardModalComponent,
     DropAreaComponent,
-    CategorySelectorComponent
+    CategorySelectorComponent,
+    UploadConfirmationModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
     ConfirmationModalComponent,
     SoldModalComponent,
-    CreditCardModalComponent
+    CreditCardModalComponent,
+    UploadConfirmationModalComponent
   ]
 })
 export class CatalogModule {

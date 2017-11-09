@@ -1,0 +1,22 @@
+<div class="header">
+  <div class="modal-close light" (click)="activeModal.dismiss()">
+    <md-icon svgIcon="cross"></md-icon>
+  </div>
+  <h1 i18n>Congratulations!</h1>
+  <p i18n>Your ad is ready.</p>
+</div>
+<div class="modal-body">
+
+  <p i18n>Promote your product to sell it faster:</p>
+  <button class="btn-feature" (click)="activeModal.close()">
+    <md-icon svgIcon="feature"></md-icon>
+    <span i18n>Feature Product</span>
+  </button>
+
+  <p i18n>Or share it with your friends:</p>
+
+  <div class="social-icons">
+    <a (click)="facebookShare()"><md-icon svgIcon="facebook"></md-icon></a>
+    <a><md-icon svgIcon="twitter"></md-icon></a>
+  </div>
+</div>

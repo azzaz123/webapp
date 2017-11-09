@@ -22,6 +22,7 @@ import { UUID } from 'angular2-uuid';
 import { Response } from '@angular/http';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { OrderEvent } from './selected-items/selected-product.interface';
+import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 
 @Component({
   selector: 'tsl-list',
@@ -37,6 +38,7 @@ export class ListComponent implements OnInit {
   public end: boolean;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public scrollTop: number;
+  private uploadModalRef: NgbModalRef;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -73,6 +75,18 @@ export class ListComponent implements OnInit {
           }, () => {
           });
         }
+        if (params && params.created) {
+          this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
+            windowClass: 'upload',
+          });
+          this.uploadModalRef.result.then(() => {
+            const newItem: Item = this.items[0];
+            this.itemService.selectedAction = 'feature';
+            newItem.selected = true;
+            this.itemService.selectItem(newItem.id);
+          }, () => {
+          });
+        }
       });
     });
   }
@@ -106,6 +120,7 @@ export class ListComponent implements OnInit {
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
       this.end = !this.init;
+      this.uploadModalRef.componentInstance.item = this.items[0];
     });
   }
 
