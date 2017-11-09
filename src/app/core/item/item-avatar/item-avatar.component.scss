@@ -17,9 +17,13 @@ div {
   &.full {
     width: 100%;
     padding-top: 100%;
-
-    span{
-      display: none;
+    span {
+      position: absolute;
+      top: $spacing-S;
+      left: $spacing-S;
+      &.overlay {
+        background: none;
+      }
     }
   }
 }
