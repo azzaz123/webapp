@@ -16,7 +16,7 @@
               <span class="chars-counter">{{uploadForm.value?.title?.length}}/50</span>
               <input i18n-placeholder placeholder="In a couple of words…"
                      type="text" class="form-control" formControlName="title"
-                     [ngbPopover]="coachmarkTitle" triggers="focus:blur" placement="right" container="body"
+                     [ngbPopover]="coachmarkTitle"
                      #title id="headline" maxlength="50" />
               <ng-template #coachmarkTitle>
                 <md-icon svgIcon="views"></md-icon>
@@ -31,7 +31,7 @@
               <label for="price" i18n>Price</label>
               <input i18n-placeholder placeholder="Fair price"
                      type="number" class="form-control" formControlName="sale_price"
-                     [ngbPopover]="coachmarkPrice" triggers="focus:blur" placement="right" container="body"
+                     [ngbPopover]="coachmarkPrice"
                      id="price" min="0" max="999999999"/>
               <ng-template #coachmarkPrice>
                 <md-icon svgIcon="category_All"></md-icon>
@@ -43,7 +43,7 @@
             <div class="form-group">
               <label for="currency" i18n>Currency</label>
               <ng-select class="form-control" formControlName="currency_code" id="currency"
-                         [ngbPopover]="coachmarkPrice" placement="right" #p="ngbPopover" (closed)="p.close()" container="body"
+                         [ngbPopover]="coachmarkPrice" #p="ngbPopover" triggers="click" (closed)="p.close()"
                          [options]="currencies" noFilter="10"></ng-select>
             </div>
           </div>
@@ -52,7 +52,7 @@
               <label for="category" i18n>Category</label>
               <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category"
                          class="form-control" formControlName="category_id"
-                         [ngbPopover]="coachmarkPrice" placement="right" #p="ngbPopover" (closed)="p.close()" container="body"
+                         [ngbPopover]="coachmarkPrice" #p="ngbPopover" triggers="click" (closed)="p.close()"
                          id="category" [options]="categories" noFilter="10">
                 <ng-template
                   #optionTemplate
@@ -71,7 +71,7 @@
               <label for="tellUs" i18n>Description</label>
               <span class="chars-counter">{{uploadForm.value?.description?.length}}/650</span>
               <textarea i18n-placeholder placeholder="Tell us more about what you are selling..." fz-elastic class="form-control"
-                        [ngbPopover]="coachmarkDescription" triggers="focus:blur" placement="right" container="body"
+                        [ngbPopover]="coachmarkDescription"
                         formControlName="description" id="tellUs" maxlength="650"></textarea>
               <ng-template #coachmarkDescription>
                 <md-icon svgIcon="messages"></md-icon>
@@ -81,10 +81,10 @@
           </div>
         </div>
       </div>
-      <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave" placement="right" container="body">
+      <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
         <h2 i18n>Pictures</h2>
         <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)" formControlName="images"
-                       [ngbPopover]="coachmarkDrag" triggers="mouseenter:mouseleave" placement="right" container="body"></tsl-drop-area>
+                       [ngbPopover]="coachmarkDrag" triggers="mouseenter:mouseleave"></tsl-drop-area>
         <ng-template #coachmarkPictures>
           <md-icon svgIcon="camera"></md-icon>
           <div i18n>Drag and drop files to upload. Max size: 4MB.</div>
@@ -94,7 +94,7 @@
           <div i18n>Pick up and drag the images around to re-order them.</div>
         </ng-template>
       </div>
-      <div class="box" [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave" placement="right" container="body">
+      <div class="box" [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">
         <div class="selector-container terms-options" formGroupName="sale_conditions" data-toggle="buttons">
           <h2 i18n>Extras</h2>
           <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.fix_price">

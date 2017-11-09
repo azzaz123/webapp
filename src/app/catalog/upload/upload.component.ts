@@ -8,6 +8,7 @@ import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { CategoryService } from '../../core/category/category.service';
 import { CategoryOption } from '../../core/category/category-response.interface';
 import * as _ from 'lodash';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-upload',
@@ -58,7 +59,8 @@ export class UploadComponent implements OnInit, AfterViewChecked {
               private route: ActivatedRoute,
               private router: Router,
               private errorsService: ErrorsService,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       category_id: ['', [Validators.required]],
       images: [[], [Validators.required]],
@@ -73,6 +75,9 @@ export class UploadComponent implements OnInit, AfterViewChecked {
       }),
       delivery_info: [null]
     });
+    config.placement = 'right';
+    config.triggers = 'focus:blur';
+    config.container = 'body';
   }
 
   ngOnInit() {
