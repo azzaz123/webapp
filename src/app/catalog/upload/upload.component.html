@@ -43,7 +43,7 @@
             <div class="form-group">
               <label for="currency" i18n>Currency</label>
               <ng-select class="form-control" formControlName="currency_code" id="currency"
-                         [ngbPopover]="coachmarkPrice" #p="ngbPopover" triggers="click" (closed)="p.close()"
+                         [ngbPopover]="coachmarkPrice" #p="ngbPopover" triggers="click" (blur)="p.close()"
                          [options]="currencies" noFilter="10"></ng-select>
             </div>
           </div>
@@ -52,7 +52,7 @@
               <label for="category" i18n>Category</label>
               <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category"
                          class="form-control" formControlName="category_id"
-                         [ngbPopover]="coachmarkPrice" #p="ngbPopover" triggers="click" (closed)="p.close()"
+                         [ngbPopover]="coachmarkPrice" #p="ngbPopover" triggers="click" (blur)="p.close()"
                          id="category" [options]="categories" noFilter="10">
                 <ng-template
                   #optionTemplate
