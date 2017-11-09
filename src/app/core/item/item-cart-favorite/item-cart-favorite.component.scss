@@ -1,41 +1,50 @@
 @import "../../../../style/_common.scss";
 
-:host /deep/ tsl-card-content{
+tsl-card {
+  cursor: pointer;
 
-  padding-top: $spacing-S;
-
-  span{
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: 100%;
-    display:inline-block;
+  & /deep/ tsl-card-image{
+    display: block;
+    padding: $spacing-XXS;
   }
-}
 
-:host /deep/ tsl-card-footer{
-  position: relative;
+  & /deep/ tsl-card-content{
 
-  .cart-footer-icon {
-    g {
-      stroke: $color-favorite-icon-stroke;
-    }
+    padding-top: $spacing-S;
 
-    &.active g{
-      fill: $color-favorite-icon-fill;
+    span{
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+      display:inline-block;
     }
   }
 
-  .cart-footer-text{
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    left: 0;
-    user-select: none;
-  }
+  & /deep/ tsl-card-footer{
+    position: relative;
 
-  &:hover, &:focus{
-    cursor: pointer;
-    background: rgba($grey-100, .2);
+    .cart-footer-icon {
+      g {
+        stroke: $color-favorite-icon-stroke;
+      }
+
+      &.active g{
+        fill: $color-favorite-icon-fill;
+      }
+    }
+
+    .cart-footer-text{
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      left: 0;
+      user-select: none;
+    }
+
+    &:hover, &:focus{
+      cursor: pointer;
+      background: rgba($grey-100, .2);
+    }
   }
 }
