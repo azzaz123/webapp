@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AddressResponse, Coordinate } from '../../../core/geolocation/address-response.interface';
+import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../../core/geolocation/geolocation.service';
 import { GeolocationResponse } from '../../../core/geolocation/geolocation-response.interface';
 
@@ -34,8 +34,8 @@ export class GeolocationComponent implements OnInit {
   public formatter = (x: any) => x.description;
 
   public selectItem(address: GeolocationResponse) {
-    this.geolocationService.geocode(address.item.placeId).subscribe((data: AddressResponse) => {
-      this.newCoordinate.emit(data.result.geometry.location);
+    this.geolocationService.geocode(address.item.description).subscribe((data: Coordinate) => {
+      this.newCoordinate.emit(data);
     });
   }
 }

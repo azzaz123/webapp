@@ -5,8 +5,8 @@ import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures';
 import { Observable } from 'rxjs/Observable';
 import { ResponseOptions, Response } from '@angular/http';
 import { GeolocationResponse } from './geolocation-response.interface';
-import { AddressResponse } from './address-response.interface';
-import { ADDRESS_DATA_WEB } from '../../../tests/address.fixtures';
+import { Coordinate } from './address-response.interface';
+import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures';
 
 let service: GeolocationService;
 let http: HttpService;
@@ -35,13 +35,13 @@ describe('GeolocationService', () => {
 
   describe('geocode', () => {
     it('should return location coordinates', () => {
-      let result: AddressResponse;
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ADDRESS_DATA_WEB)});
+      let result: Coordinate;
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(COORDINATE_DATA_WEB)});
       spyOn(http, 'getNoBase').and.returnValue(Observable.of(new Response(res)));
-      service.geocode('ChIJ5TCOcRaYpBIRCmZHTz37sEQ').subscribe((data: AddressResponse) => {
+      service.geocode('ChIJ5TCOcRaYpBIRCmZHTz37sEQ').subscribe((data: Coordinate) => {
         result = data;
       });
-      expect(result).toEqual(ADDRESS_DATA_WEB);
+      expect(result).toEqual(COORDINATE_DATA_WEB);
     })
   });
 
