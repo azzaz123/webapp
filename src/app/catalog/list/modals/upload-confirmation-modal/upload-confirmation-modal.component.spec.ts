@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UploadConfirmationModalComponent } from './upload-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { WindowRef } from 'shield';
 
 describe('UploadConfirmationModalComponent', () => {
   let component: UploadConfirmationModalComponent;
@@ -12,7 +13,8 @@ describe('UploadConfirmationModalComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ UploadConfirmationModalComponent ],
       providers: [
-        NgbActiveModal
+        NgbActiveModal,
+        WindowRef
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
