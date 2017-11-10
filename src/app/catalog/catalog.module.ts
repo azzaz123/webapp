@@ -24,6 +24,7 @@ import { NgbButtonsModule, NgbDropdownModule, NgbPopoverModule } from '@ng-boots
 import { ElasticModule } from 'ng-elastic';
 import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
 import { UploadConfirmationModalComponent } from './list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { PreviewModalComponent } from './upload/preview-modal/preview-modal.component';
 
 @NgModule({
   imports: [
@@ -59,14 +60,16 @@ import { UploadConfirmationModalComponent } from './list/modals/upload-confirmat
     CreditCardModalComponent,
     DropAreaComponent,
     CategorySelectorComponent,
-    UploadConfirmationModalComponent
+    UploadConfirmationModalComponent,
+    PreviewModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
     ConfirmationModalComponent,
     SoldModalComponent,
     CreditCardModalComponent,
-    UploadConfirmationModalComponent
+    UploadConfirmationModalComponent,
+    PreviewModalComponent
   ]
 })
 export class CatalogModule {
