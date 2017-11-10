@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
 
 import { Item, WindowRef } from 'shield';
-import { ItemService } from '../../../core/item/item.service';
+import { ItemService } from '../item.service';
 import { environment } from '../../../../environments/environment';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/confirmation-modal.component';
@@ -17,7 +17,7 @@ export class ItemCartFavoriteComponent implements OnInit {
   @Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
   private homeUrl: string
 
-  constructor(public itemService: ItemService,
+  constructor(private itemService: ItemService,
               private modalService: NgbModal,
               private windowRef: WindowRef,
               @Inject('SUBDOMAIN') private subdomain: string
