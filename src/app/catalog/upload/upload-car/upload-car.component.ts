@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ErrorsService } from 'shield';
 import { UploadEvent } from '../upload-event.interface';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-upload',
@@ -33,7 +34,8 @@ export class UploadCarComponent implements OnInit {
               private carSuggestionsService: CarSuggestionsService,
               private carKeysService: CarKeysService,
               private router: Router,
-              private errorsService: ErrorsService) {
+              private errorsService: ErrorsService,
+              config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       category_id: '100',
       images: [[], [Validators.required]],
@@ -55,11 +57,17 @@ export class UploadCarComponent implements OnInit {
         exchange_allowed: false
       })
     });
+    config.placement = 'right';
+    config.triggers = 'focus:blur';
+    config.container = 'body';
   }
 
   ngOnInit() {
     this.getBrands();
     this.getCarTypes();
+  }
+
+  public noop() {
   }
 
   private getBrands() {
