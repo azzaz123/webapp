@@ -6,7 +6,7 @@ import { AccessTokenService, HttpService } from 'shield';
 @Injectable()
 export class UploadService {
 
-  private API_URL: string = environment.baseUrl + 'api/v3/items';
+  private API_URL: string = 'api/v3/items';
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
   constructor(private accessTokenService: AccessTokenService, private http: HttpService) {
@@ -25,7 +25,7 @@ export class UploadService {
   private buildUploadEvent(values: any, file: UploadFile, url: string, fieldName: string): UploadInput {
     return {
       type: 'uploadFile',
-      url: url,
+      url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
       data: {
