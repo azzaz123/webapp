@@ -5,17 +5,23 @@
   <button class="btn btn-primary" (click)="activeModal.close()">
     <span i18n>Submit Ad</span>
   </button>
+  <ngb-carousel interval="0">
+    <ng-template ngbSlide *ngFor="let image of itemPreview.images">
+      <img [src]="image.preview" />
+    </ng-template>
+  </ngb-carousel>
   <p class="price">{{itemPreview.sale_price | currency:itemPreview.currency_code:true}}</p>
   <h1>{{itemPreview.title}}</h1>
-  <p class="description">{{itemPreview.description}}</p>
+  <p class="description" [ngClass]="{last: !itemPreview.sale_conditions.fix_price
+      && !itemPreview.sale_conditions.shipping_allowed && !itemPreview.sale_conditions.exchange_allowed}">{{itemPreview.description}}</p>
   <div class="extras">
     <div *ngIf="itemPreview.sale_conditions.fix_price">
       <md-icon svgIcon="firm-price"></md-icon>
-      <span i18n>Fixed Price</span>
+      <span i18n>Firm Price</span>
     </div>
     <div *ngIf="itemPreview.sale_conditions.shipping_allowed">
       <md-icon svgIcon="shipping-available"></md-icon>
-      <span i18n>Shipping allowed</span>
+      <span i18n>Shipping available</span>
     </div>
     <div *ngIf="itemPreview.sale_conditions.exchange_allowed">
       <md-icon svgIcon="accept-trades"></md-icon>

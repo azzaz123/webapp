@@ -17,14 +17,20 @@ p {
   font-weight: bold;
   line-height: $font-size-XL;
   margin-bottom: $spacing-S;
+  margin-top: $spacing;
 }
 
 .description {
   font-size: 18px;
   border-top: 1px solid #f3f3f3;
-  border-bottom: 1px solid #f3f3f3;
   padding: $spacing 0;
-  margin-bottom: $spacing;
+  &:not(.last){
+    border-bottom: 1px solid #f3f3f3;
+    margin-bottom: $spacing;
+  }
+  &.last {
+    padding-bottom: 0;
+  }
 }
 
 .extras {

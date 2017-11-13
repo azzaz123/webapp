@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -6,14 +6,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './preview-modal.component.html',
   styleUrls: ['./preview-modal.component.scss']
 })
-export class PreviewModalComponent implements OnInit {
+export class PreviewModalComponent {
 
   public itemPreview: any;
 
   constructor(public activeModal: NgbActiveModal) { }
-
-  ngOnInit() {
-    console.log(this.itemPreview);
-  }
 
 }
