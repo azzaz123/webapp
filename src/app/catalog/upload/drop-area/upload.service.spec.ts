@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { UploadFile, UploadInput } from 'ngx-uploader';
 import { UploadService } from './upload.service';
-import { TEST_HTTP_PROVIDERS, AccessTokenService, HttpService } from 'shield';
+import { TEST_HTTP_PROVIDERS, AccessTokenService, HttpService, ITEM_ID } from 'shield';
 import { environment } from '../../../../environments/environment';
 import { CAR_ID, UPLOAD_FILE, UPLOAD_FILE_ID } from '../../../../tests/upload.fixtures';
 
@@ -132,10 +132,10 @@ describe('UploadService', () => {
     });
     describe('normal item', () => {
       it('should emit uploadFile event', () => {
-        service.uploadOtherImages(CAR_ID, '');
+        service.uploadOtherImages(ITEM_ID, '');
         expect(response).toEqual({
           type: 'uploadAll',
-          url: environment.baseUrl + 'api/v3/items/' + CAR_ID + '/picture',
+          url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture',
           method: 'POST',
           fieldName: 'image',
           data: {

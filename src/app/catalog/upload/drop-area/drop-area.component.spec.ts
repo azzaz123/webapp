@@ -2,13 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DropAreaComponent } from './drop-area.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ErrorsService } from 'shield';
+import { ErrorsService, ITEM_ID } from 'shield';
 import { UploadService } from './upload.service';
 import {
   CAR_ID,
   UPLOAD_FILE,
   UPLOAD_FILE_NAME,
-  UPLOADED_FILE_FIRST,
+  UPLOADED_FILE_FIRST, UPLOADED_FILE_FIRST_ITEM,
   UPLOADED_FILE_OTHER
 } from '../../../../tests/upload.fixtures';
 import { UploadFile, UploadStatus } from 'ngx-uploader';
@@ -186,10 +186,10 @@ describe('DropAreaComponent', () => {
               spyOn(uploadService, 'uploadOtherImages');
               component['onUploadDone']({
                 type: 'done',
-                file: UPLOADED_FILE_FIRST
+                file: UPLOADED_FILE_FIRST_ITEM
               });
-              expect(component['itemId']).toBe(CAR_ID);
-              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(CAR_ID, '');
+              expect(component['itemId']).toBe(ITEM_ID);
+              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(ITEM_ID, '');
             });
           });
           describe('car item', () => {
