@@ -119,10 +119,13 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('herocat-consumer-goods', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-consumer-goods.svg'));
   mdIconRegistry.addSvgIcon('herocat-real-estate', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-real-estate.svg'));
   mdIconRegistry.addSvgIcon('herocat-services', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-services.svg'));
-  mdIconRegistry.addSvgIcon('camera', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/camera.svg'));
-  mdIconRegistry.addSvgIcon('smove-shape', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/smove-shape.svg'));
-  mdIconRegistry.addSvgIcon('speaker', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/speaker.svg'));
-  mdIconRegistry.addSvgIcon('help', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/help.svg'));
+  mdIconRegistry.addSvgIcon('cm-camera', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-camera.svg'));
+  mdIconRegistry.addSvgIcon('cm-drag', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-drag.svg'));
+  mdIconRegistry.addSvgIcon('cm-speaker', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-speaker.svg'));
+  mdIconRegistry.addSvgIcon('cm-question', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-question.svg'));
+  mdIconRegistry.addSvgIcon('cm-categories', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-categories.svg'));
+  mdIconRegistry.addSvgIcon('cm-chat', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-chat.svg'));
+  mdIconRegistry.addSvgIcon('cm-eye', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-eye.svg'));
   mdIconRegistry.addSvgIcon('twitter', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/twitter.svg'));
   mdIconRegistry.addSvgIcon('facebook', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/facebook.svg'));
 }
