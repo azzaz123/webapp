@@ -30,11 +30,7 @@ export class FavoritesComponent implements OnInit {
     this.getItems();
   }
 
-  private getItems(append?: boolean) {
-    if (this.loading === true) {
-      return;
-    }
-
+  public getItems(append?: boolean) {
     this.loading = true;
     if (!append) {
       this.items = [];
