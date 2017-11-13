@@ -95,6 +95,28 @@
   <translation id="464749780222721589">Caducados</translation>
   <translation id="5262427597279775777">1 producto seleccionado</translation>
   <translation id="3618067650338827326"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
+  <translation id="8894377483833272091">Precio</translation>
+  <translation id="4327471061205783634">Moneda</translation>
+  <translation id="3322682308330601072">¿Qué estás vendiendo?</translation>
+  <translation id="4902817035128594900">Descripción</translation>
+  <translation id="4756709840226839708">Extras</translation>
+  <translation id="7026441111090698984">Precio No negociable</translation>
+  <translation id="1292901362619782619">Acepto intercambios</translation>
+  <translation id="5479149141238830712">Información de tu producto</translation>
+  <translation id="368364095324628291">En dos palabras...</translation>
+  <translation id="5315989345504029668">Escribe bien (y sin faltas de ortografía) para que te encuentren más fácilmente.</translation>
+  <translation id="6649229882788371997">(No te pases)</translation>
+  <translation id="3306762056923998233">Añade un precio justo y la categoría que mejor representa a tu producto.</translation>
+  <translation id="1806667489382256324">Categoría</translation>
+  <translation id="5433438112560949935">Añade información relevante como estado, modelo, color...</translation>
+  <translation id="7493287338252374869">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
+  <translation id="8405309693308875139">Fotos</translation>
+  <translation id="4810826740470768717">Puedes arrastrar las imágenes de tu producto aquí. Máximo 4MB.</translation>
+  <translation id="6422484577082828397">Selecciona y mueve una imagen para cambiar el orden.</translation>
+  <translation id="8260444303636416171">Hago envíos</translation>
+  <translation id="2806917038528218276">Cosas que suelen preguntar los compradores...</translation>
+  <translation id="6390066056926289377"><ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>kg Max<ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
+  <translation id="6622336784189066984">Subir producto</translation>
   <translation id="939504866402110526">No tienes productos a la venta</translation>
   <translation id="935769667569121167">No has vendido nada aún</translation>
   <translation id="5657739434954342535">Borrar producto</translation>
@@ -119,5 +141,9 @@
   <translation id="3448462145758383019">Total</translation>
   <translation id="8743988303207163578">Destacar ya</translation>
   <translation id="1592360651866563240">Sponsor</translation>
-
+  <translation id="6145572175629887249">Foto principal</translation>
+  <translation id="954702980611036148">Coches</translation>
+  <translation id="8432027249343784512">Inmobiliaria</translation>
+  <translation id="7143579180750436311">Servicios</translation>
+  <translation id="8082411042640087452">Todo lo demás</translation>
 </translationbundle>
