@@ -18,33 +18,11 @@
     display: flex;
     padding: 15px;
     md-icon {
-      width: 35px;
-      height: 28px;
+      @include square(26px);
       margin-right: $spacing-S;
-      & /deep/ {
-        path {
-          fill: $corporate;
-        }
-      }
-      &[svgIcon=messages] {
-        width: 100px;
-        height: 63px;
-        margin-right: 8px;
-        margin-top: -20px;
-        margin-left: -8px;
-      }
-      &[svgIcon=views] {
-        & /deep/ {
-          path {
-            stroke: $corporate;
-            fill: none;
-            &#Fill-3 {
-              stroke: none;
-              fill: $corporate
-            }
-          }
-        }
-      }
+      display: inline-table;
+      margin-top: -5px;
+      margin-left: -4px;
     }
   }
   &#ngb-popover-5 {
