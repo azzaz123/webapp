@@ -8,8 +8,7 @@ import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { CategoryService } from '../../core/category/category.service';
 import { CategoryOption } from '../../core/category/category-response.interface';
 import * as _ from 'lodash';
-import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-import { PreviewModalComponent } from './preview-modal/preview-modal.component';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-upload',
@@ -61,7 +60,6 @@ export class UploadComponent implements OnInit, AfterViewChecked {
               private router: Router,
               private errorsService: ErrorsService,
               private categoryService: CategoryService,
-              private modalService: NgbModal,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       category_id: ['', [Validators.required]],
@@ -144,17 +142,6 @@ export class UploadComponent implements OnInit, AfterViewChecked {
 
   onError(response: any) {
     this.loading = false;
-  }
-
-  preview() {
-    const modalRef: NgbModalRef = this.modalService.open(PreviewModalComponent, {
-      windowClass: 'preview'
-    });
-    modalRef.componentInstance.itemPreview = this.uploadForm.value;
-    modalRef.result.then(() => {
-      this.onSubmit();
-    }, () => {
-    });
   }
 
   private min(min: number): ValidatorFn {
