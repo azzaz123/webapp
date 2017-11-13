@@ -135,6 +135,7 @@
         <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
         <span [hidden]="loading" i18n>Post Ad</span>
       </button>
+      <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid" i18n>Preview</button>
     </form>
   </div>
 </div>
