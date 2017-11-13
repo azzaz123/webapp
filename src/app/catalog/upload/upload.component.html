@@ -1,7 +1,7 @@
 <div class="page-content" #scrollPanel>
   <div class="container upload-page">
     <h1>
-      <span i18n>Upload new {{ '{' }}product{{ '}' }}</span>
+      <tsl-category-selector [categoryId]="uploadForm.value.category_id"></tsl-category-selector>
       <a class="upload-close-icon" [routerLink]="['/catalog/list']">
         <md-icon svgIcon="cross"></md-icon>
       </a>
