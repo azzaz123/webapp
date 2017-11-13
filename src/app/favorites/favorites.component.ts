@@ -44,11 +44,11 @@ export class FavoritesComponent implements OnInit {
     });
   }
 
-  onFavoriteChange(item: Item) {
+  public onFavoriteChange(item: Item) {
     this.removeItem(item);
   }
 
-  removeItem(item: Item) {
+  public removeItem(item: Item) {
     if (this.items.length) {
       const index = this.items.indexOf(item);
       this.items.splice(index, 1);
