@@ -14,7 +14,6 @@ export class FavoritesComponent implements OnInit {
   // public items: Item[] = [];
   public selectedStatus: string = 'published';
   public loading: boolean = false;
-  private init: number = 0;
   public end: boolean = false;
 
   public masonryOptions = {
@@ -35,12 +34,11 @@ export class FavoritesComponent implements OnInit {
     if (!append) {
       this.items = [];
     }
-    this.itemService.myFavorites(this.init).subscribe((itemsData: ItemsData) => {
+    this.itemService.myFavorites(this.items.length).subscribe((itemsData: ItemsData) => {
       const items = itemsData.data;
-      this.init = itemsData.init;
       this.items = this.items.concat(items);
       this.loading = false;
-      this.end = !this.init;
+      this.end = !itemsData.init;
     });
   }
 
