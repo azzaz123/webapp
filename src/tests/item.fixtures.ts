@@ -212,3 +212,17 @@ export const ORDER: Order = {
   item_id: '1',
   product_id: '2'
 };
+
+export const UPLOAD_FORM_ITEM_VALUES: any = {
+  title: 'The title',
+  description: 'The description',
+  category_id: '12545',
+  sale_price: 123.45,
+  currency_code: 'EUR',
+  sale_conditions: {
+    fix_price: false,
+    exchange_allowed: false,
+    shipping_allowed: false
+  },
+  delivery_info: {}
+};
