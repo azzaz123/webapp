@@ -145,8 +145,7 @@
       </div>
       <div class="box product-photos">
         <h2 i18n>Pictures</h2>
-        <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
-                       formControlName="images"></tsl-drop-area>
+        <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)" formControlName="images" [maxUploads]="8"></tsl-drop-area>
       </div>
       <div class="box">
         <div class="selector-container terms-options" formGroupName="sale_conditions" data-toggle="buttons">
