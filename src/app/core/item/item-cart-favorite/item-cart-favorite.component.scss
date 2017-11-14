@@ -3,12 +3,12 @@
 tsl-card {
   cursor: pointer;
 
-  & /deep/ tsl-card-image{
+  & /deep/ tsl-card-image {
     display: block;
     padding: $spacing-XXS;
   }
 
-  & /deep/ tsl-card-content{
+  & /deep/ tsl-card-content {
 
     padding-top: $spacing-S;
 
@@ -21,7 +21,7 @@ tsl-card {
     }
   }
 
-  & /deep/ tsl-card-footer{
+  & /deep/ tsl-card-footer {
     position: relative;
 
     .cart-footer-icon {
@@ -34,7 +34,7 @@ tsl-card {
       }
     }
 
-    .cart-footer-text{
+    .cart-footer-text {
       position: absolute;
       width: 100%;
       text-align: center;
@@ -42,7 +42,7 @@ tsl-card {
       user-select: none;
     }
 
-    &:hover, &:focus{
+    &:hover, &:focus {
       cursor: pointer;
       background: rgba($grey-100, .2);
     }
