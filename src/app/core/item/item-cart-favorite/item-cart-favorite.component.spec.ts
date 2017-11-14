@@ -106,25 +106,22 @@ describe('ItemCartFavoriteComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'removeFavorite').and.callThrough();
       removeFavoriteButton = fixture.debugElement.nativeElement.querySelector('tsl-card-footer');
+      removeFavoriteButton.click();
     }));
 
     it('when click tsl-cardFooter should call removeFavoriteModal method', () => {
-      removeFavoriteButton.click();
       expect(component.removeFavoriteModal).toHaveBeenCalled();
     });
 
     it('should open accept modal', () => {
-      removeFavoriteButton.click();
       expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
     });
 
     it('should set modal type "3" ', () => {
-      removeFavoriteButton.click();
       expect(component['modalRef'].componentInstance.type).toEqual(3);
     });
 
     it('should call removeFavorite method ', fakeAsync(() => {
-      removeFavoriteButton.click();
       tick();
       expect(component.removeFavorite).toHaveBeenCalled();
     }));
