@@ -33,7 +33,7 @@ export class ItemService extends ItemServiceMaster {
   protected mapRecordData(response: any): Item {
     const data: ItemResponse = <ItemResponse>response;
     const content: ItemContent = data.content;
-    return new Item(
+    const item: Item =  new Item(
       content.id,
       null,
       content.seller_id,
@@ -53,6 +53,7 @@ export class ItemService extends ItemServiceMaster {
       content.web_slug,
       content.modified_date
     );
+    return item;
   }
 
   public reportListing(itemId: number | string,
@@ -65,8 +66,8 @@ export class ItemService extends ItemServiceMaster {
     });
   }
 
-  public mine(init: number, status?: string): Observable<ItemsData> {
-    return this.http.get(this.API_URL_WEB + '/mine/' + status, {
+  public getPaginationItems(url: string, init): Observable<ItemsData> {
+    return this.http.get(url, {
       init: init
     })
     .map((r: Response) => {
@@ -78,6 +79,7 @@ export class ItemService extends ItemServiceMaster {
           data = res.map((i: ItemResponse) => {
             const item: Item = this.mapRecordData(i);
             item.views = i.content.views;
+            item.favorites = i.content.favorites;
             return item;
           });
         }
@@ -89,28 +91,19 @@ export class ItemService extends ItemServiceMaster {
     );
   }
 
+  public mine(init: number, status?: string): Observable<ItemsData> {
+    return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init)
+  }
+
   public myFavorites(init: number): Observable<ItemsData> {
-    return this.http.get(this.API_URL_v3_USER + '/me/items/favorites', {
-      init: init
+    return this.getPaginationItems(this.API_URL_v3_USER + '/me/items/favorites', init)
+    .map((itemsData: ItemsData) => {
+      itemsData.data = itemsData.data.map((item: Item) => {
+        item.favorited = true;
+        return item;
+      });
+      return itemsData;
     })
-    .map((r: Response) => {
-        const res: ItemResponse[] = r.json();
-        const nextPage: string = r.headers.get('x-nextpage');
-        const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
-        let data: Item[] = [];
-        if (res.length > 0) {
-          data = res.map((i: ItemResponse) => {
-            const item: Item = this.mapRecordData(i);
-            item.favorited = true;
-            return item;
-          });
-        }
-        return {
-          data: data,
-          init: nextInit
-        }
-      }
-    );
   }
 
   public deleteItem(id: string): Observable<any> {
@@ -128,6 +121,7 @@ export class ItemService extends ItemServiceMaster {
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {
+    console.log('serv', this.API_URL_V3 + '/' + id + '/favorite', favorited);
     return this.http.put(this.API_URL_V3 + '/' + id + '/favorite', {
       favorited: favorited
     });
