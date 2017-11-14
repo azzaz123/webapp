@@ -31,4 +31,18 @@
   &#ngb-popover-6 {
     margin-top: 30px;
   }
+  .page-catalog-upload-100 & {
+    &#ngb-popover-5 {
+      margin-top: 0;
+    }
+    &#ngb-popover-6 {
+      margin-top: 0;
+    }
+    &#ngb-popover-9 {
+      margin-top: -40px;
+    }
+    &#ngb-popover-10 {
+      margin-top: 30px;
+    }
+  }
 }

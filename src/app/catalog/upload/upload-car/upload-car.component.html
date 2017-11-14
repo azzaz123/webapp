@@ -182,10 +182,10 @@
           </div>
         </div>
       </div>
-      <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="click">
+      <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
         <h2 i18n>Photos</h2>
         <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
-                       [ngbPopover]="coachmarkDrag" triggers="click"
+                       [ngbPopover]="coachmarkDrag" triggers="mouseenter:mouseleave"
                        formControlName="images" [maxUploads]="8"></tsl-drop-area>
         <ng-template #coachmarkPictures>
           <md-icon svgIcon="cm-camera"></md-icon>
