@@ -120,7 +120,7 @@ describe('ItemCartFavoriteComponent', () => {
 
     it('should set modal type "3" ', () => {
       removeFavoriteButton.click();
-      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+      expect(component['modalRef'].componentInstance.type).toEqual(3);
     });
 
     it('should call removeFavorite method ', fakeAsync(() => {
