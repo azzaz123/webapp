@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
@@ -8,6 +8,7 @@ import { UploadComponent } from './upload.component';
 import { Observable } from 'rxjs/Observable';
 import { CategoryService } from '../../core/category/category.service';
 import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../tests/category.fixtures';
+import { NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -19,8 +20,10 @@ describe('UploadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [NgbPopoverModule],
       providers: [
         FormBuilder,
+        NgbPopoverConfig,
         TEST_HTTP_PROVIDERS,
         {
           provide: ActivatedRoute, useValue: {
@@ -89,6 +92,22 @@ describe('UploadComponent', () => {
         expect(component.fixedCategory).toBe('Real Estate');
       });
     });
+  });
+
+  describe('ngAfterViewChecked', () => {
+    it('should set focus', fakeAsync(() => {
+      component.titleField = {
+        nativeElement: {
+          focus() {
+          }
+        }
+      };
+      spyOn(component.titleField.nativeElement, 'focus');
+      fixture.detectChanges();
+      tick();
+      expect(component.titleField.nativeElement.focus).toHaveBeenCalled();
+      expect(component['focused']).toBeTruthy();
+    }));
   });
 
   describe('onSubmit', () => {

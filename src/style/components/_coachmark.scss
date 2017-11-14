@@ -1,0 +1,34 @@
+.popover {
+  border-radius: 6px;
+  background-color: rgba($corporate-light, .5);
+  border: none;
+  font-size: $font-size-XS;
+  line-height: 1.33;
+  color: $grey-700;
+  left: calc((100vw - 700px) / 2 + 667px) !important;
+  z-index: 99 !important;
+  &.popover-right {
+    margin-left: 40px;
+  }
+  &::before, &::after {
+    content: none;
+  }
+  .popover-content {
+    width: 220px;
+    display: flex;
+    padding: 15px;
+    md-icon {
+      @include square(26px);
+      margin-right: $spacing-S;
+      display: inline-table;
+      margin-top: -5px;
+      margin-left: -4px;
+    }
+  }
+  &#ngb-popover-5 {
+    margin-top: -40px;
+  }
+  &#ngb-popover-6 {
+    margin-top: 30px;
+  }
+}

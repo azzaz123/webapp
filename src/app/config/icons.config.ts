@@ -60,6 +60,7 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('home', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/home.svg'));
   mdIconRegistry.addSvgIcon('messages', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/messages.svg'));
   mdIconRegistry.addSvgIcon('arrow-waterfall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-waterfall.svg'));
+  mdIconRegistry.addSvgIcon('category_All', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_All.svg'));
   mdIconRegistry.addSvgIcon('category_Appliances', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Appliances.svg'));
   mdIconRegistry.addSvgIcon('category_Babies', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Babies.svg'));
   mdIconRegistry.addSvgIcon('category_Cars', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Cars.svg'));
@@ -118,4 +119,11 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('herocat-consumer-goods', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-consumer-goods.svg'));
   mdIconRegistry.addSvgIcon('herocat-real-estate', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-real-estate.svg'));
   mdIconRegistry.addSvgIcon('herocat-services', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-services.svg'));
+  mdIconRegistry.addSvgIcon('cm-camera', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-camera.svg'));
+  mdIconRegistry.addSvgIcon('cm-drag', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-drag.svg'));
+  mdIconRegistry.addSvgIcon('cm-speaker', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-speaker.svg'));
+  mdIconRegistry.addSvgIcon('cm-question', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-question.svg'));
+  mdIconRegistry.addSvgIcon('cm-categories', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-categories.svg'));
+  mdIconRegistry.addSvgIcon('cm-chat', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-chat.svg'));
+  mdIconRegistry.addSvgIcon('cm-eye', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-eye.svg'));
 }
