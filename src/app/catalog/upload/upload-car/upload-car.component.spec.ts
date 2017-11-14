@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { UploadCarComponent } from './upload-car.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -9,7 +9,8 @@ import { CarKeysService } from './car-keys.service';
 import { TEST_HTTP_PROVIDERS, ErrorsService } from 'shield';
 import { Router } from '@angular/router';
 import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../../tests/car.fixtures';
-import { NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 
 describe('UploadCarComponent', () => {
   let component: UploadCarComponent;
@@ -18,6 +19,10 @@ describe('UploadCarComponent', () => {
   let carKeysService: CarKeysService;
   let errorService: ErrorsService;
   let router: Router;
+  let modalService: NgbModal;
+  let componentInstance: any = {
+    getBodyType: jasmine.createSpy('getBodyType')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -62,6 +67,16 @@ describe('UploadCarComponent', () => {
           i18nError() {
           }
         }
+        },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              result: Promise.resolve(),
+              componentInstance: componentInstance
+            };
+          }
+        }
         }
       ],
       declarations: [UploadCarComponent],
@@ -78,6 +93,7 @@ describe('UploadCarComponent', () => {
     carKeysService = TestBed.get(CarKeysService);
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
+    modalService = TestBed.get(NgbModal);
   });
 
   it('should create', () => {
@@ -250,6 +266,54 @@ describe('UploadCarComponent', () => {
       component.loading = true;
       component.onError('response');
       expect(component.loading).toBeFalsy();
+    });
+  });
+
+  describe('preview', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(component, 'onSubmit');
+      component.uploadForm.get('title').patchValue('test');
+      component.uploadForm.get('model').patchValue('test');
+      component.uploadForm.get('brand').patchValue('test');
+      component.uploadForm.get('year').patchValue('1900');
+      component.uploadForm.get('storytelling').patchValue('test');
+      component.uploadForm.get('sale_price').patchValue(1000000);
+      component.uploadForm.get('currency_code').patchValue('EUR');
+      component.uploadForm.get('images').patchValue([{'image': true}]);
+      component.preview();
+    }));
+    it('should open modal', () => {
+      expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
+        windowClass: 'preview'
+      })
+    });
+    it('should set itemPreview', () => {
+      expect(componentInstance.itemPreview).toEqual({
+        category_id: '100',
+        title: 'test',
+        brand: 'test',
+        storytelling: 'test',
+        sale_price: 1000000,
+        currency_code: 'EUR',
+        images: [{'image': true}],
+        num_seats: '',
+        body_type: '',
+        km: '',
+        engine: '',
+        gearbox: '',
+        sale_conditions: {
+          fix_price: false,
+          exchange_allowed: false
+        }
+      });
+    });
+    it('should submit form', fakeAsync(() => {
+      tick();
+      expect(component.onSubmit).toHaveBeenCalled();
+    }));
+    it('should call getBodyType', () => {
+      expect(componentInstance.getBodyType).toHaveBeenCalled();
     });
   });
 
