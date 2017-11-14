@@ -90,6 +90,7 @@ describe('ItemCartFavoriteComponent', () => {
       spyOn(component.onFavoriteChange, 'emit')
     })
     it('should set favorited property to false', () => {
+      component.item.favorited = true;
       component.removeFavorite();
       expect(component.item.favorited).toBeFalsy();
     });
