@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
-import { Item } from 'shield';
+import { Item, TrackingService } from 'shield';
 import * as _ from 'lodash';
 import { Order, Product, SelectedItemsAction } from '../../../core/item/item-response.interface';
 import { OrderEvent, SelectedProduct } from './selected-product.interface';
@@ -35,7 +35,8 @@ export class SelectedItemsComponent implements OnInit {
   public loading: boolean;
   private getAvailableProductsObservable: Observable<Product>;
 
-  constructor(public itemService: ItemService) {
+  constructor(public itemService: ItemService,
+              private trackingService: TrackingService) {
   }
 
   ngOnInit() {
@@ -87,6 +88,7 @@ export class SelectedItemsComponent implements OnInit {
       order: order,
       total: this.total
     });
+    this.trackingService.track(TrackingService.CATALOG_FEATURED_CHECKOUT, order);
   }
 
   private calculateTotal() {

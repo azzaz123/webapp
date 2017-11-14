@@ -27,6 +27,8 @@ import { MdIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { environment } from '../environments/environment';
+import { CookieOptions, CookieService } from "ngx-cookie/index";
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'tsl-root',
@@ -37,6 +39,8 @@ export class AppComponent implements OnInit {
 
   public loggingOut: boolean;
   public hideSidebar: boolean;
+  private previousUrl: string;
+  private currentUrl: string;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -53,7 +57,8 @@ export class AppComponent implements OnInit {
               private winRef: WindowRef,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private debugService: DebugService) {
+              private debugService: DebugService,
+              private cookieService: CookieService) {
     this.config();
   }
 
@@ -64,6 +69,8 @@ export class AppComponent implements OnInit {
     this.setTitle();
     this.router.events.distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {
+        this.previousUrl = previous.url;
+        this.currentUrl = current.url;
         return previous.url === current.url;
       }
       return true;
@@ -73,11 +80,27 @@ export class AppComponent implements OnInit {
     });
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
+    if (!this.cookieService.get('app_session_id')) {
+      let uuid: string = UUID.UUID();
+      this.setCookie('app_session_id', uuid, 900000);
+      this.trackingService.track(TrackingService.APP_OPEN, { referer_url: this.previousUrl, current_url: this.currentUrl });
+    }
   }
 
   private config() {
     configMoment(this.i18n.locale);
     configIcons(this.mdIconRegistry, this.sanitizer);
+  }
+
+  private setCookie(name: string, token, expiration: number) {
+    let expirationDate: Date = new Date();
+    expirationDate.setTime(expirationDate.getTime() + expiration);
+    const options: CookieOptions = {
+      path: '/',
+      domain: '.wallapop.com',
+      expires: expirationDate
+    };
+    this.cookieService.put(name, token, options);
   }
 
   private subscribeEvents() {

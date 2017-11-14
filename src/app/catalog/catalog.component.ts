@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TrackingService } from 'shield';
 
 @Component({
   selector: 'tsl-catalog',
@@ -8,10 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CatalogComponent implements OnInit {
 
-  constructor() {
+  constructor(private trackingService: TrackingService) {
   }
 
   ngOnInit() {
+    this.trackingService.track(TrackingService.CATALOG_VIEW_ITEMS);
   }
 
 }
