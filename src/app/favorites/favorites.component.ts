@@ -10,7 +10,7 @@ import { Item } from 'shield';
 })
 export class FavoritesComponent implements OnInit {
 
-  // public items: Item[] = [];
+  public items: Item[] = [];
   public selectedStatus: string = 'published';
   public loading: boolean = false;
   public end: boolean = false;
@@ -18,8 +18,6 @@ export class FavoritesComponent implements OnInit {
   public masonryOptions = {
     gutter: 20
   };
-
-  public items: Item[] = [];
 
   constructor(public itemService: ItemService
   ) { }
