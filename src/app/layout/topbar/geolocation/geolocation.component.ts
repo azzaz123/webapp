@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../../core/geolocation/geolocation.service';
 import { GeolocationResponse } from '../../../core/geolocation/geolocation-response.interface';
+import { CookieService } from 'ngx-cookie';
 
 @Component({
   selector: 'tsl-geolocation',
@@ -14,9 +15,10 @@ export class GeolocationComponent implements OnInit {
   private MIN_LENGTH = 3;
   public focus: boolean;
   public model: any;
+  public expirationDate: any;
   @Output() public newCoordinate = new EventEmitter<Coordinate>();
 
-  constructor(private geolocationService: GeolocationService) { }
+  constructor(private geolocationService: GeolocationService, private cookieService: CookieService) { }
 
   ngOnInit() {
   }
@@ -36,6 +38,10 @@ export class GeolocationComponent implements OnInit {
   public selectItem(address: GeolocationResponse) {
     this.geolocationService.geocode(address.item.description).subscribe((data: Coordinate) => {
       this.newCoordinate.emit(data);
+      this.expirationDate = new Date();
+      this.expirationDate.setTime(this.expirationDate.getTime() + (15 * 60 * 1000));
+      this.cookieService.put('searchLat', data.latitude.toString(), {expires: this.expirationDate, domain: '.wallapop.com'});
+      this.cookieService.put('searchLng', data.longitude.toString(), {expires: this.expirationDate, domain: '.wallapop.com'});
     });
   }
 }

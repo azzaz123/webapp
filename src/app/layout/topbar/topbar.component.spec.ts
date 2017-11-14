@@ -13,6 +13,7 @@ import { TEST_HTTP_PROVIDERS } from 'shield';
 import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UploadModalComponent } from './upload-modal/upload-modal.component';
+import { CookieService } from 'ngx-cookie';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -38,6 +39,7 @@ describe('TopbarComponent', () => {
   let eventService: EventService;
   let windowRef: WindowRef;
   let modalService: NgbModal;
+  let cookieService: CookieService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -88,6 +90,7 @@ describe('TopbarComponent', () => {
     eventService = TestBed.get(EventService);
     windowRef = TestBed.get(WindowRef);
     modalService = TestBed.get(NgbModal);
+    cookieService = TestBed.get(CookieService);
   });
 
   it('should be created', () => {
@@ -118,6 +121,8 @@ describe('TopbarComponent', () => {
       component.coordinates = {'latitude': 0.0, 'longitude': 0.0};
       component.onCoordinateUpdate(newCoordinates);
       expect(component.coordinates).toEqual(newCoordinates);
+      expect(cookieService.put).toHaveBeenCalledWith('searchLat', newCoordinates.latitude);
+      expect(cookieService.put).toHaveBeenCalledWith('searchLng', newCoordinates.longitude);
     });
   });
 
@@ -132,16 +137,6 @@ describe('TopbarComponent', () => {
 
   describe('search form', () => {
     beforeEach(() => {
-      component.latEl = {
-        nativeElement: {
-          value: '42'
-        }
-      };
-      component.lngEl = {
-        nativeElement: {
-          value: '2'
-        }
-      };
       component.kwsEl = {
         nativeElement: {
           value: 'iphone'
@@ -181,7 +176,7 @@ describe('TopbarComponent', () => {
       component.category = CATEGORY_DATA_WEB[1].categoryId;
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=' + '&verticalId=');
+      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&kws=' + '&verticalId=');
     });
 
     it('should redirect to the web when category is not set', () => {
@@ -192,14 +187,14 @@ describe('TopbarComponent', () => {
       };
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=' + '&verticalId=');
+      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&kws=' + '&verticalId=');
     });
 
     it('should submit the search form for cars', () => {
       component.category = CATEGORY_DATA_WEB[0].categoryId;
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('https://www.wallapop.com/search?catIds=100' + '&lat=42' + '&lng=2' + '&kws=' + '&verticalId=100');
+      .toEqual('https://www.wallapop.com/search?catIds=100' + '&kws=' + '&verticalId=100');
     });
   });
 
