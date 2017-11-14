@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ItemService } from '../core/item/item.service';
 import { ItemsData } from '../core/item/item-response.interface';
 import { Item } from 'shield';

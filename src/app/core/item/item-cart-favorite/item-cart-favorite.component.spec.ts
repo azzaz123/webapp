@@ -1,6 +1,5 @@
 import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-
 import { SharedModule } from '../../../shared/shared.module';
 import { Observable } from 'rxjs/Observable';
 import { ItemCartFavoriteComponent } from './item-cart-favorite.component';

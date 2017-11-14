@@ -11,7 +11,7 @@ import { CardModule } from './card/card.module';
     CardModule,
     CommonModule,
     MdIconModule,
-    NgbModule.forRoot(),
+    NgbModule.forRoot()
   ],
   exports: [
     CardModule,

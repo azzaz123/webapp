@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
-
 import { Item, WindowRef } from 'shield';
 import { ItemService } from '../item.service';
 import { environment } from '../../../../environments/environment';
