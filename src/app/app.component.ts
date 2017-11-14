@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import {
   ErrorsService,
   EventService,
@@ -13,7 +13,7 @@ import {
   XmppService,
   DebugService
 } from 'shield';
-import { DomSanitizer, Title } from '@angular/platform-browser';
+import { DOCUMENT, DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
 import { configIcons } from './config/icons.config';
 import 'rxjs/add/operator/map';
@@ -25,7 +25,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
 import { MdIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 
 @Component({
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
 
   public loggingOut: boolean;
   public hideSidebar: boolean;
+  private previousUrl: string;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -53,6 +54,8 @@ export class AppComponent implements OnInit {
               private winRef: WindowRef,
               private router: Router,
               private activatedRoute: ActivatedRoute,
+              private renderer: Renderer2,
+              @Inject(DOCUMENT) private document: Document,
               private debugService: DebugService) {
     this.config();
   }
@@ -62,6 +65,7 @@ export class AppComponent implements OnInit {
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
+    this.setBodyClass();
     this.router.events.distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {
         return previous.url === current.url;
@@ -132,6 +136,21 @@ export class AppComponent implements OnInit {
       const title = !(event['title']) ? 'Wallapop' : event['title'];
       this.titleService.setTitle(title);
       this.hideSidebar = event['hideSidebar'];
+    });
+  }
+
+  private setBodyClass() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        if (this.previousUrl) {
+          this.renderer.removeClass(this.document.body, this.previousUrl);
+        }
+        const currentUrlSlug = 'page-' + event.url.slice(1).replace(/\//g, '-');
+        if (currentUrlSlug) {
+          this.renderer.addClass(document.body, currentUrlSlug);
+        }
+        this.previousUrl = currentUrlSlug;
+      }
     });
   }
 
