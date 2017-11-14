@@ -20,7 +20,7 @@ import { DndModule } from 'ng2-dnd';
 import { SelectModule } from 'ng-select';
 import { CarSuggestionsService } from './upload/upload-car/car-suggestions.service';
 import { CarKeysService } from './upload/upload-car/car-keys.service';
-import { NgbButtonsModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElasticModule } from 'ng-elastic';
 import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
 
@@ -40,7 +40,8 @@ import { CategorySelectorComponent } from './upload/category-selector/category-s
     SelectModule,
     NgbButtonsModule,
     ElasticModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    NgbPopoverModule
   ],
   providers: [
     CarSuggestionsService,

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, EventEmitter, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
@@ -8,13 +8,14 @@ import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { CategoryService } from '../../core/category/category.service';
 import { CategoryOption } from '../../core/category/category-response.interface';
 import * as _ from 'lodash';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent implements OnInit {
+export class UploadComponent implements OnInit, AfterViewChecked {
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -51,12 +52,15 @@ export class UploadComponent implements OnInit {
   public fixedCategory: string;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
+  @ViewChild('title') titleField: ElementRef;
+  private focused: boolean;
 
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
               private errorsService: ErrorsService,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       category_id: ['', [Validators.required]],
       images: [[], [Validators.required]],
@@ -71,6 +75,9 @@ export class UploadComponent implements OnInit {
       }),
       delivery_info: [null]
     });
+    config.placement = 'right';
+    config.triggers = 'focus:blur';
+    config.container = 'body';
   }
 
   ngOnInit() {
@@ -94,6 +101,15 @@ export class UploadComponent implements OnInit {
         deliveryInfoControl.setValidators([]);
       }
       deliveryInfoControl.updateValueAndValidity();
+    });
+  }
+
+  ngAfterViewChecked() {
+    setTimeout(() => {
+      if (this.titleField && !this.focused) {
+        this.titleField.nativeElement.focus();
+        this.focused = true;
+      }
     });
   }
 
