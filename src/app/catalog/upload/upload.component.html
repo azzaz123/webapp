@@ -82,7 +82,7 @@
         </div>
       </div>
       <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
-        <h2 i18n>Photos</h2>
+        <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos</h2>
         <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)" formControlName="images"
                        [ngbPopover]="coachmarkDrag" triggers="mouseenter:mouseleave"></tsl-drop-area>
         <ng-template #coachmarkPictures>
