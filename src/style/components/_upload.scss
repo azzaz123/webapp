@@ -117,9 +117,15 @@
     }
   }
 
-  .btn-primary {
+  .btn {
     padding: 14px 50px;
     margin-bottom: 65px;
     margin-top: $spacing-L - $spacing;
+    &.btn-link {
+      color: $corporate;
+      &[disabled] {
+        opacity: .5;
+      }
+    }
   }
 }
