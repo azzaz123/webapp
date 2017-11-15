@@ -65,7 +65,7 @@
   <msg id="1404539941798522798"><source>app/chat/user-detail/user-detail.component.ts:15</source>Typically responds within 3 hours</msg>
   <msg id="5927748278732131263"><source>app/chat/user-detail/user-detail.component.ts:16</source>Typically responds within a day</msg>
   <msg id="6807057680918467236"><source>app/chat/user-detail/user-detail.component.ts:17</source>Responds in more than 24 hours</msg>
-  <msg id="3322682308330601072"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:5</source><source>app/catalog/upload/upload.component.ts:15</source>What are you selling?</msg>
+  <msg id="6978679917020254081" desc="title" meaning="modal"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:5</source>What are you selling?</msg>
   <msg id="954702980611036148"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:11</source><source>app/catalog/upload/category-selector/category-selector.component.ts:14</source>Cars</msg>
   <msg id="8432027249343784512"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:17</source><source>app/catalog/upload/category-selector/category-selector.component.ts:18</source>Real Estate</msg>
   <msg id="7143579180750436311"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:23</source><source>app/catalog/upload/category-selector/category-selector.component.ts:22</source>Services</msg>
@@ -159,6 +159,7 @@
   <msg id="2224879576270143088"><source>app/catalog/upload/upload-car/upload-car.component.ts:210</source>What sellers usually ask...</msg>
   <msg id="3535134560822959404"><source>app/catalog/upload/upload-car/upload-car.component.ts:215</source>Post your ad</msg>
   <msg id="4138346261331244869"><source>app/catalog/upload/upload-car/upload-car.component.ts:217</source><source>app/catalog/upload/upload.component.ts:133</source>How does it look?</msg>
+  <msg id="3322682308330601072"><source>app/catalog/upload/upload.component.ts:15</source>What are you selling?</msg>
   <msg id="368364095324628291"><source>app/catalog/upload/upload.component.ts:17</source>In two words...</msg>
   <msg id="5315989345504029668"><source>app/catalog/upload/upload.component.ts:23</source>Don&apos;t make errors so that people will find you easily.</msg>
   <msg id="6649229882788371997"><source>app/catalog/upload/upload.component.ts:32</source>(don&apos;t go crazy)</msg>
