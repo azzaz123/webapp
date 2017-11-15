@@ -33,6 +33,8 @@ import 'rxjs/add/observable/throw';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import createSpy = jasmine.createSpy;
+import { CookieService } from 'ngx-cookie';
+import { UUID } from 'angular2-uuid';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -46,6 +48,7 @@ let titleService: Title;
 let trackingService: TrackingService;
 let window: any;
 let conversationService: ConversationService;
+let cookieService: CookieService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
@@ -141,6 +144,14 @@ describe('App', () => {
           })
         }
         },
+        {
+          provide: CookieService, useValue: {
+            put(key, value) {
+            },
+            get(value) {
+            }
+          }
+        },
         ...
           TEST_HTTP_PROVIDERS
       ],
@@ -159,6 +170,7 @@ describe('App', () => {
     trackingService = TestBed.get(TrackingService);
     window = TestBed.get(WindowRef).nativeWindow;
     conversationService = TestBed.get(ConversationService);
+    cookieService = TestBed.get(CookieService);
     spyOn(notificationService, 'init');
   });
 
@@ -166,6 +178,41 @@ describe('App', () => {
     let app: AppComponent = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
+
+  fdescribe('ngOnInit', () => {
+    beforeEach(() => {
+      spyOn(trackingService, 'track');
+      component.ngOnInit();
+    });
+    it('should send open_app event if cookie does not exist', () => {
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.APP_OPEN,
+        { referer_url: component.previousUrl, current_url: component.currentUrl });
+    });
+    it('should call set cookie', () => {
+      const currentDate = new Date();
+      const expirationDate = new Date(currentDate.getTime() + ( 900000 ));
+      spyOn(UUID, 'UUID').and.returnValue('UUID');
+      jasmine.clock().mockDate(currentDate);
+      component.setCookie.toHaveBeenCalledWith(name, UUID, expirationDate);
+    });
+    jasmine.clock().uninstall();
+  });
+
+  fdescribe('set cookie', () => {
+    jasmine.clock().install();
+    spyOn(cookieService, 'put');
+    const currentDate = new Date();
+    const expirationDate = new Date(currentDate.getTime() + ( 900000 ));
+    jasmine.clock().mockDate(currentDate);
+    const cookieOptions = {path: '/', domain: '.wallapop.com', expires: expirationDate};
+    spyOn(UUID, 'UUID').and.returnValue('UUID');
+
+    it('should create a cookie', () => {
+      expect(cookieService.put).toHaveBeenCalledWith('app_session_id', UUID , cookieOptions);
+    });
+
+    jasmine.clock().uninstall();
+  });
 
   describe('subscribeEvents', () => {
 

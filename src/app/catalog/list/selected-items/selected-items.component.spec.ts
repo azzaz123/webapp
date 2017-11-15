@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { createItemsArray } from 'shield';
+import { createItemsArray, TrackingService, MockTrackingService } from 'shield';
 import { SelectedItemsComponent } from './selected-items.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
@@ -14,6 +14,8 @@ describe('SelectedItemsComponent', () => {
   let component: SelectedItemsComponent;
   let fixture: ComponentFixture<SelectedItemsComponent>;
   let itemService: ItemService;
+  let trackingService: TrackingService;
+  let trackingServiceSpy: jasmine.Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -28,7 +30,8 @@ describe('SelectedItemsComponent', () => {
           getAvailableProducts() {
           }
         }
-        }
+        },
+        {provide: TrackingService, useClass: MockTrackingService},
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -39,6 +42,7 @@ describe('SelectedItemsComponent', () => {
     fixture = TestBed.createComponent(SelectedItemsComponent);
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
+    trackingService = TestBed.get(TrackingService);
   });
 
   it('should be created', () => {
@@ -130,6 +134,9 @@ describe('SelectedItemsComponent', () => {
   });
 
   describe('featureItems', () => {
+    beforeEach(() => {
+      spyOn(trackingService, 'track');
+    });
     it('should emit order', () => {
       let orderEvent: OrderEvent;
       component.selectedProducts = [{
@@ -156,6 +163,28 @@ describe('SelectedItemsComponent', () => {
         ],
         total: 4.79 + 7.29
       });
+    });
+    it('should send event featured_checkout', () => {
+      let order: Array<Order>;
+      component.selectedProducts = [{
+        itemId: '1',
+        product: PRODUCT_RESPONSE
+      }, {
+        itemId: '2',
+        product: PRODUCT2_RESPONSE
+      }];
+      order = [
+        {
+          item_id: '1',
+          product_id: 'l1kmzngg6n3p'
+        },
+        {
+          item_id: '2',
+          product_id: 'g24g2jhg4jh24'
+        }
+      ];
+      component.featureItems();
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CATALOG_FEATURED_CHECKOUT, order);
     });
   });
 });
