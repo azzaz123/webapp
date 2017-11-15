@@ -88,7 +88,7 @@ describe('ItemCartFavoriteComponent', () => {
   describe('removeFavorite', () => {
     beforeEach(() => {
       spyOn(component.onFavoriteChange, 'emit')
-    })
+    });
     it('should set favorited property to false', () => {
       component.item.favorited = true;
       component.removeFavorite();
@@ -119,7 +119,7 @@ describe('ItemCartFavoriteComponent', () => {
     });
 
     it('should set modal type "3" ', () => {
-      expect(component['modalRef'].componentInstance.type).toEqual(3);
+      expect(modalRef.componentInstance.type).toEqual(3);
     });
 
     it('should call removeFavorite method ', fakeAsync(() => {
