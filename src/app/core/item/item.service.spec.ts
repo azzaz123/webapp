@@ -123,20 +123,21 @@ describe('ItemService', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
     });
     it('should call endpoint', () => {
-      service.mine(10, 'published').subscribe((data: ItemsData) => {
+      service.myFavorites(10).subscribe((data: ItemsData) => {
         resp = data;
       });
-      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/published', {
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/favorites', {
         init: 10
       })
     });
     it('should return an array of items and the init', () => {
-      service.mine(0, 'published').subscribe((data: ItemsData) => {
+      service.myFavorites(0).subscribe((data: ItemsData) => {
         resp = data;
       });
       expect(resp.data.length).toBe(2);
       const item = resp.data[0];
       expect(item.id).toBe(ITEMS_DATA_v3_FAVORITES[0].id);
+      expect(item.favorited).toBe(true);
       expect(item.title).toBe(ITEMS_DATA_v3_FAVORITES[0].content.title);
       expect(item.description).toBe(ITEMS_DATA_v3_FAVORITES[0].content.description);
       expect(item.salePrice).toBe(ITEMS_DATA_v3_FAVORITES[0].content.price);
@@ -145,7 +146,7 @@ describe('ItemService', () => {
       expect(item.mainImage).toEqual(ITEMS_DATA_v3_FAVORITES[0].content.image);
       expect(resp.init).toBe(20);
     });
-  })
+  });
 
   describe('favoriteItem', () => {
     it('should call endpoint, with favorited param false', () => {
