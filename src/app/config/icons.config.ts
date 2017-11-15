@@ -126,4 +126,6 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('cm-categories', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-categories.svg'));
   mdIconRegistry.addSvgIcon('cm-chat', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-chat.svg'));
   mdIconRegistry.addSvgIcon('cm-eye', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-eye.svg'));
+  mdIconRegistry.addSvgIcon('twitter', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/twitter.svg'));
+  mdIconRegistry.addSvgIcon('facebook', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/facebook.svg'));
 }
