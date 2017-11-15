@@ -65,9 +65,11 @@
   <msg id="1404539941798522798"><source>app/chat/user-detail/user-detail.component.ts:15</source>Typically responds within 3 hours</msg>
   <msg id="5927748278732131263"><source>app/chat/user-detail/user-detail.component.ts:16</source>Typically responds within a day</msg>
   <msg id="6807057680918467236"><source>app/chat/user-detail/user-detail.component.ts:17</source>Responds in more than 24 hours</msg>
-  <msg id="8449883832889120108"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:7</source>List it, list _ _!</msg>
-  <msg id="4756123017615469412"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:8</source>We are loading at 80% (it is almost done) the integration of the product listing functionality in our website. Meanwhile, you can do it from the app.</msg>
-  <msg id="4662379784661986854"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:9</source>Download wallapop now in:</msg>
+  <msg id="3322682308330601072"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:5</source><source>app/catalog/upload/upload.component.ts:15</source>What are you selling?</msg>
+  <msg id="954702980611036148"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:11</source><source>app/catalog/upload/category-selector/category-selector.component.ts:14</source>Cars</msg>
+  <msg id="8432027249343784512"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:17</source><source>app/catalog/upload/category-selector/category-selector.component.ts:18</source>Real Estate</msg>
+  <msg id="7143579180750436311"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:23</source><source>app/catalog/upload/category-selector/category-selector.component.ts:22</source>Services</msg>
+  <msg id="8082411042640087452"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:29</source><source>app/catalog/upload/category-selector/category-selector.component.ts:26</source>Consumer goods</msg>
   <msg id="3734434835434478522"><source>app/layout/topbar/topbar.component.ts:27</source>Wall</msg>
   <msg id="2127032578120864096"><source>app/layout/topbar/topbar.component.ts:43</source>My Profile</msg>
   <msg id="3825726981798982045"><source>app/layout/topbar/topbar.component.ts:44</source><source>app/layout/sidebar/sidebar.component.ts:5</source>My Catalog</msg>
@@ -157,7 +159,6 @@
   <msg id="2224879576270143088"><source>app/catalog/upload/upload-car/upload-car.component.ts:210</source>What sellers usually ask...</msg>
   <msg id="3535134560822959404"><source>app/catalog/upload/upload-car/upload-car.component.ts:215</source>Post your ad</msg>
   <msg id="4138346261331244869"><source>app/catalog/upload/upload-car/upload-car.component.ts:217</source><source>app/catalog/upload/upload.component.ts:133</source>How does it look?</msg>
-  <msg id="3322682308330601072"><source>app/catalog/upload/upload.component.ts:15</source>What are you selling?</msg>
   <msg id="368364095324628291"><source>app/catalog/upload/upload.component.ts:17</source>In two words...</msg>
   <msg id="5315989345504029668"><source>app/catalog/upload/upload.component.ts:23</source>Don&apos;t make errors so that people will find you easily.</msg>
   <msg id="6649229882788371997"><source>app/catalog/upload/upload.component.ts:32</source>(don&apos;t go crazy)</msg>
@@ -190,8 +191,4 @@
   <msg id="2747754575131239854"><source>app/catalog/upload/category-selector/category-selector.component.ts:5</source>Upload new <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>house<ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></msg>
   <msg id="4281260549834200026"><source>app/catalog/upload/category-selector/category-selector.component.ts:6</source>Upload new <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>service<ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></msg>
   <msg id="1824303616152932586"><source>app/catalog/upload/category-selector/category-selector.component.ts:7</source>Upload new <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>product<ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></msg>
-  <msg id="954702980611036148"><source>app/catalog/upload/category-selector/category-selector.component.ts:14</source>Cars</msg>
-  <msg id="8432027249343784512"><source>app/catalog/upload/category-selector/category-selector.component.ts:18</source>Real Estate</msg>
-  <msg id="7143579180750436311"><source>app/catalog/upload/category-selector/category-selector.component.ts:22</source>Services</msg>
-  <msg id="8082411042640087452"><source>app/catalog/upload/category-selector/category-selector.component.ts:26</source>Consumer goods</msg>
 </messagebundle>
