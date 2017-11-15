@@ -78,7 +78,7 @@ describe('GeolocationComponent', () => {
 
       jasmine.clock().mockDate(currentDate);
 
-      const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
+      const cookieOptions = {expires: expirationDate};
 
       expect(component.newCoordinate.emit).toHaveBeenCalledWith(COORDINATE_DATA_WEB);
       expect(cookieService.put).toHaveBeenCalledWith('searchLat', COORDINATE_DATA_WEB.latitude.toString(), cookieOptions);
