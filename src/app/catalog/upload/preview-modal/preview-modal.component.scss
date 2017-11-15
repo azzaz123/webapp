@@ -1,0 +1,59 @@
+@import "../../../../style/common";
+
+.modal-body {
+  color: $grey-900;
+}
+
+p {
+  margin: 0;
+}
+
+.price, h1 {
+  font-size: $font-size-XL;
+  margin-bottom: $spacing;
+}
+
+.price {
+  font-weight: bold;
+  line-height: $font-size-XL;
+  margin-bottom: $spacing-S;
+  margin-top: $spacing;
+}
+
+.description {
+  font-size: 18px;
+  border-top: 1px solid #f3f3f3;
+  padding: $spacing 0;
+  &:not(.last){
+    border-bottom: 1px solid #f3f3f3;
+    margin-bottom: $spacing;
+  }
+  &.last {
+    padding-bottom: 0;
+  }
+}
+
+.extras {
+  overflow: hidden;
+  div {
+    float: left;
+    font-size: $font-size-XS;
+    text-align: center;
+    width: 75px;
+    margin: 0 $spacing;
+    md-icon {
+      @include square(32px);
+      display: block;
+      margin: 0 auto;
+      margin-bottom: $spacing-S;
+      & /deep/ path {
+        fill: $grey-900;
+      }
+    }
+  }
+}
+
+.btn {
+  padding: 14px 18px;
+  margin: 0 0 $spacing-S;
+}

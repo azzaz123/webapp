@@ -20,9 +20,11 @@ import { DndModule } from 'ng2-dnd';
 import { SelectModule } from 'ng-select';
 import { CarSuggestionsService } from './upload/upload-car/car-suggestions.service';
 import { CarKeysService } from './upload/upload-car/car-keys.service';
-import { NgbButtonsModule, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbCarouselModule, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElasticModule } from 'ng-elastic';
 import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
+import { UploadConfirmationModalComponent } from './list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { PreviewModalComponent } from './upload/preview-modal/preview-modal.component';
 
 @NgModule({
   imports: [
@@ -41,7 +43,8 @@ import { CategorySelectorComponent } from './upload/category-selector/category-s
     NgbButtonsModule,
     ElasticModule,
     NgbDropdownModule,
-    NgbPopoverModule
+    NgbPopoverModule,
+    NgbCarouselModule
   ],
   providers: [
     CarSuggestionsService,
@@ -57,13 +60,17 @@ import { CategorySelectorComponent } from './upload/category-selector/category-s
     BumpConfirmationModalComponent,
     CreditCardModalComponent,
     DropAreaComponent,
-    CategorySelectorComponent
+    CategorySelectorComponent,
+    UploadConfirmationModalComponent,
+    PreviewModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
     ConfirmationModalComponent,
     SoldModalComponent,
-    CreditCardModalComponent
+    CreditCardModalComponent,
+    UploadConfirmationModalComponent,
+    PreviewModalComponent
   ]
 })
 export class CatalogModule {

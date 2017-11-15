@@ -99,6 +99,11 @@
   <msg id="6686102860613242031"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:11</source>Use this card:</msg>
   <msg id="2005530248451232459"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:15</source>Add a new card</msg>
   <msg id="4699023020194351074"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:17</source>Feature for <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</msg>
+  <msg id="3762527362373672599"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:6</source>Congratulations!</msg>
+  <msg id="868815663264397508"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:6</source>Your item is now on Wallapop</msg>
+  <msg id="8199257104398637162"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:10</source>Promote it and sell it quicker</msg>
+  <msg id="7976214204076569605"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:13</source>Feature it</msg>
+  <msg id="2091018015289565203"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:16</source>Share it with your friends:</msg>
   <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:12</source>Published</msg>
   <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:13</source>Sold</msg>
   <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:14</source>Expired</msg>
@@ -157,7 +162,6 @@
   <msg id="8555950532490646539"><source>app/catalog/upload/upload.component.ts:124</source>If you are going to ship with wallapop, we need to know hou much does your product weight.</msg>
   <msg id="6390066056926289377"><source>app/catalog/upload/upload.component.ts:129</source><ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>kg Max<ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></msg>
   <msg id="6622336784189066984"><source>app/catalog/upload/upload.component.ts:136</source>Post Ad</msg>
-  <msg id="3762527362373672599"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:6</source>Congratulations!</msg>
   <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>

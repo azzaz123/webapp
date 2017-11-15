@@ -8,7 +8,8 @@ import { UploadComponent } from './upload.component';
 import { Observable } from 'rxjs/Observable';
 import { CategoryService } from '../../core/category/category.service';
 import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../tests/category.fixtures';
-import { NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { PreviewModalComponent } from './preview-modal/preview-modal.component';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -17,6 +18,8 @@ describe('UploadComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
   let categoryService: CategoryService;
+  let modalService: NgbModal;
+  let componentInstance: any = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -50,6 +53,16 @@ describe('UploadComponent', () => {
             return Observable.of(CATEGORIES_OPTIONS);
           }
         }
+        },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              result: Promise.resolve(),
+              componentInstance: componentInstance
+            };
+          }
+        }
         }
       ],
       declarations: [UploadComponent],
@@ -66,6 +79,7 @@ describe('UploadComponent', () => {
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
     route = TestBed.get(ActivatedRoute);
+    modalService = TestBed.get(NgbModal);
   });
 
   it('should create', () => {
@@ -175,6 +189,45 @@ describe('UploadComponent', () => {
       component.onError('response');
       expect(component.loading).toBeFalsy();
     });
+  });
+
+  describe('preview', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(component, 'onSubmit');
+      component.uploadForm.get('category_id').patchValue('200');
+      component.uploadForm.get('title').patchValue('test');
+      component.uploadForm.get('description').patchValue('test');
+      component.uploadForm.get('sale_price').patchValue(1000000);
+      component.uploadForm.get('currency_code').patchValue('EUR');
+      component.uploadForm.get('images').patchValue([{'image': true}]);
+      component.preview();
+    }));
+    it('should open modal', () => {
+      expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
+        windowClass: 'preview'
+      })
+    });
+    it('should set itemPreview', () => {
+      expect(componentInstance.itemPreview).toEqual({
+        category_id: '200',
+        title: 'test',
+        description: 'test',
+        'sale_price': 1000000,
+        currency_code: 'EUR',
+        images: [{'image': true}],
+        sale_conditions: {
+          fix_price: false,
+          exchange_allowed: false,
+          shipping_allowed: false
+        },
+        delivery_info: null
+      });
+    });
+    it('should submit form', fakeAsync(() => {
+      tick();
+      expect(component.onSubmit).toHaveBeenCalled();
+    }));
   });
 
 });

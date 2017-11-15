@@ -127,3 +127,12 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     margin-top: 50px;
   }
 }
+
+.modal.preview {
+  .modal-dialog, .modal-content {
+    max-width: 700px;
+  }
+  .modal-dialog {
+    margin-top: 35px;
+  }
+}
