@@ -21,6 +21,7 @@ export class GeolocationComponent implements OnInit {
   constructor(private geolocationService: GeolocationService, private cookieService: CookieService) { }
 
   ngOnInit() {
+    this.model = this.cookieService.get('searchPosName')
   }
 
   public search = (text$: Observable<string>) =>
@@ -42,7 +43,7 @@ export class GeolocationComponent implements OnInit {
 
       this.expirationDate = new Date();
       this.expirationDate.setTime(this.expirationDate.getTime() + (15 * 60 * 1000));
-      const cookieOptions = {expires: this.expirationDate, domain: '.wallapop.com'};
+      const cookieOptions = {expires: this.expirationDate}; //, domain: '.wallapop.com'};
 
       this.cookieService.put('searchLat', data.latitude.toString(), cookieOptions);
       this.cookieService.put('searchLng', data.longitude.toString(), cookieOptions);
