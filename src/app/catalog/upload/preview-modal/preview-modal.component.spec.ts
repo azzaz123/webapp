@@ -6,6 +6,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { UPLOAD_FORM_ITEM_VALUES } from '../../../../tests/item.fixtures';
 import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from '../upload-car/car-keys.service';
+import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
 
 describe('PreviewModalComponent', () => {
   let component: PreviewModalComponent;
@@ -16,6 +18,7 @@ describe('PreviewModalComponent', () => {
     TestBed.configureTestingModule({
       providers: [
         NgbActiveModal,
+        DecimalPipe,
         {
           provide: CarKeysService, useValue: {
           getTypeName() {
@@ -24,7 +27,7 @@ describe('PreviewModalComponent', () => {
         }
         },
       ],
-      declarations: [ PreviewModalComponent ],
+      declarations: [ PreviewModalComponent, CustomCurrencyPipe ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();

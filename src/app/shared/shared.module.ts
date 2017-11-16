@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { MdIconModule } from '@angular/material';
-import { AdComponent } from '../shared/ad/ad.component';
+import { AdComponent } from './ad/ad.component';
+import { CustomCurrencyPipe } from './custom-currency/custom-currency.pipe';
 
 @NgModule({
   imports: [
@@ -14,11 +15,16 @@ import { AdComponent } from '../shared/ad/ad.component';
   exports: [
     CommonModule,
     SpinnerComponent,
-    AdComponent
+    AdComponent,
+    CustomCurrencyPipe
   ],
   declarations: [
     SpinnerComponent,
-    AdComponent
+    AdComponent,
+    CustomCurrencyPipe
+  ],
+  providers: [
+    DecimalPipe
   ]
 })
 export class SharedModule { }

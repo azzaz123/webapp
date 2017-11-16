@@ -10,7 +10,7 @@
       <img [src]="image.preview" />
     </ng-template>
   </ngb-carousel>
-  <p class="price">{{itemPreview.sale_price | currency:itemPreview.currency_code:true}}</p>
+  <p class="price">{{itemPreview.sale_price | customCurrency:itemPreview.currency_code}}</p>
   <h1>{{itemPreview.title}}</h1>
   <p class="car-info" *ngIf="itemPreview.model">
     {{itemPreview.model}} {{itemPreview.brand}} - {{itemPreview.year}}
