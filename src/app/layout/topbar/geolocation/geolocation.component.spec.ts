@@ -83,6 +83,7 @@ describe('GeolocationComponent', () => {
       expect(component.newCoordinate.emit).toHaveBeenCalledWith(COORDINATE_DATA_WEB);
       expect(cookieService.put).toHaveBeenCalledWith('searchLat', COORDINATE_DATA_WEB.latitude.toString(), cookieOptions);
       expect(cookieService.put).toHaveBeenCalledWith('searchLng', COORDINATE_DATA_WEB.longitude.toString(), cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith('searchPosName', GEOLOCATION_DATA_WEB.item.description, cookieOptions);
 
       jasmine.clock().uninstall();
     });

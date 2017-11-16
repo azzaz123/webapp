@@ -36,13 +36,17 @@ export class GeolocationComponent implements OnInit {
   public formatter = (x: any) => x.description;
 
   public selectItem(address: GeolocationResponse) {
+
     this.geolocationService.geocode(address.item.description).subscribe((data: Coordinate) => {
       this.newCoordinate.emit(data);
+
       this.expirationDate = new Date();
       this.expirationDate.setTime(this.expirationDate.getTime() + (15 * 60 * 1000));
       const cookieOptions = {expires: this.expirationDate, domain: '.wallapop.com'};
+
       this.cookieService.put('searchLat', data.latitude.toString(), cookieOptions);
       this.cookieService.put('searchLng', data.longitude.toString(), cookieOptions);
+      this.cookieService.put('searchPosName', address.item.description, cookieOptions);
     });
   }
 }
