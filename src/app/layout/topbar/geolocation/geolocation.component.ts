@@ -40,8 +40,9 @@ export class GeolocationComponent implements OnInit {
       this.newCoordinate.emit(data);
       this.expirationDate = new Date();
       this.expirationDate.setTime(this.expirationDate.getTime() + (15 * 60 * 1000));
-      this.cookieService.put('searchLat', data.latitude.toString(), {expires: this.expirationDate});
-      this.cookieService.put('searchLng', data.longitude.toString(), {expires: this.expirationDate});
+      const cookieOptions = {expires: this.expirationDate, domain: '.wallapop.com'};
+      this.cookieService.put('searchLat', data.latitude.toString(), cookieOptions);
+      this.cookieService.put('searchLng', data.longitude.toString(), cookieOptions);
     });
   }
 }
