@@ -80,10 +80,15 @@ export class AppComponent implements OnInit {
     });
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
-    if (!this.cookieService.get('app_session_id')) {
+    this.updateSessionCookie();
+    this.trackAppOpen();
+  }
+
+  private updateSessionCookie() {
+    const sessionCookie = this.cookieService.get('app_session_id');
+    if (!sessionCookie) {
       let uuid: string = UUID.UUID();
       this.setCookie('app_session_id', uuid, 900000);
-      this.trackingService.track(TrackingService.APP_OPEN, { referer_url: this.previousUrl, current_url: this.currentUrl });
     }
   }
 
@@ -92,22 +97,35 @@ export class AppComponent implements OnInit {
     configIcons(this.mdIconRegistry, this.sanitizer);
   }
 
-  private setCookie(name: string, token, expiration: number) {
+  private setCookie(name: string, token: string, expiration: number) {
     let expirationDate: Date = new Date();
     expirationDate.setTime(expirationDate.getTime() + expiration);
     const options: CookieOptions = {
       path: '/',
-      domain: '.wallapop.com',
       expires: expirationDate
     };
     this.cookieService.put(name, token, options);
+  }
+
+  private trackAppOpen() {
+    const sessionCookie = this.cookieService.get('app_session_id');
+    if (!sessionCookie) {
+      this.userService.me().subscribe(
+        () => {
+          this.trackingService.track(TrackingService.APP_OPEN, {
+            referer_url: this.previousUrl,
+            current_url: this.currentUrl
+          });
+        },
+        (error: any) => {
+        });
+    }
   }
 
   private subscribeEvents() {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
       this.userService.me().subscribe(
         (user: User) => {
-          this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_IN, {user_id: user.id});
           this.xmppService.connect(user.id, accessToken);
           this.conversationService.init().subscribe();
           appboy.changeUser(user.id);

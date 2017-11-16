@@ -15,7 +15,6 @@ describe('SelectedItemsComponent', () => {
   let fixture: ComponentFixture<SelectedItemsComponent>;
   let itemService: ItemService;
   let trackingService: TrackingService;
-  let trackingServiceSpy: jasmine.Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
