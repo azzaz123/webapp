@@ -20,8 +20,10 @@ export class GeolocationComponent implements OnInit {
   constructor(private geolocationService: GeolocationService, private cookieService: CookieService) { }
 
   ngOnInit() {
-    this.model.placeId = this.cookieService.get('searchPosName');
-    this.model.description = this.cookieService.get('searchPosName');
+    const searchPosName = this.cookieService.get('searchPosName');
+    if (searchPosName) {
+      this.model.description = searchPosName;
+    }
   }
 
   public search = (text$: Observable<string>) =>
