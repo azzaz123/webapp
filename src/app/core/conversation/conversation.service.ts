@@ -57,8 +57,8 @@ export class ConversationService extends ConversationServiceMaster {
       const response: ConversationResponse = r.json();
       this.userService.me().subscribe(
         (user: User) => {
-          //this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW,
-          //{ user_id: user.id, item_id: itemId, thread_id: response.conversation_id });
+          this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW,
+          { user_id: user.id, item_id: itemId, thread_id: response.conversation_id });
         }
       );
       return Observable.forkJoin(
