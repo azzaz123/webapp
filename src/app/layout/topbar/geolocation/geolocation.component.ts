@@ -14,16 +14,14 @@ export class GeolocationComponent implements OnInit {
 
   private MIN_LENGTH = 3;
   public focus: boolean;
-  public expirationDate: any;
   @Output() public newCoordinate = new EventEmitter<Coordinate>();
   @Input() model;
 
   constructor(private geolocationService: GeolocationService, private cookieService: CookieService) { }
 
   ngOnInit() {
-    /*this.model = {};
-    this.model.placeId = '';
-    this.model.description = this.cookieService.get('searchPosName');*/
+    this.model.placeId = this.cookieService.get('searchPosName');
+    this.model.description = this.cookieService.get('searchPosName');
   }
 
   public search = (text$: Observable<string>) =>
@@ -43,9 +41,9 @@ export class GeolocationComponent implements OnInit {
     this.geolocationService.geocode(address.item.description).subscribe((data: Coordinate) => {
       this.newCoordinate.emit(data);
 
-      this.expirationDate = new Date();
-      this.expirationDate.setTime(this.expirationDate.getTime() + (15 * 60 * 1000));
-      const cookieOptions = {expires: this.expirationDate, domain: '.wallapop.com'};
+      const expirationDate = new Date();
+      expirationDate.setTime(expirationDate.getTime() + (15 * 60 * 1000));
+      const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
 
       this.cookieService.put('searchLat', data.latitude.toString(), cookieOptions);
       this.cookieService.put('searchLng', data.longitude.toString(), cookieOptions);
