@@ -26,7 +26,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { ConversationService } from './conversation.service';
 import { Observable } from 'rxjs/Observable';
 
-fdescribe('ConversationService', () => {
+describe('ConversationService', () => {
   let mockBackend: MockBackend;
   let http: HttpService;
   let service: ConversationService;
