@@ -16,8 +16,9 @@
     {{itemPreview.model}} {{itemPreview.brand}} - {{itemPreview.year}}
     <span *ngIf="itemPreview.km"> - {{itemPreview.km | number}} km</span>
   </p>
-  <p class="description" [ngClass]="{last: !hasExtras && !hasCarExtras}"
-  >{{itemPreview.description || itemPreview.storytelling}}</p>
+  <p class="description" [ngClass]="{last: !hasExtras && !hasCarExtras}">
+    {{itemPreview.description || itemPreview.storytelling}}
+  </p>
   <div class="extras car-extras" *ngIf="hasCarExtras" [ngClass]="{last: !hasExtras}">
     <div *ngIf="itemPreview.gearbox">
       <md-icon [svgIcon]="itemPreview.gearbox"></md-icon>

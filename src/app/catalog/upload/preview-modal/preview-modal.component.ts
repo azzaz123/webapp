@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CarKeysService } from '../upload-car/car-keys.service';
+import { CarUploadForm, ItemUploadForm } from '../../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-preview-modal',
@@ -9,7 +10,7 @@ import { CarKeysService } from '../upload-car/car-keys.service';
 })
 export class PreviewModalComponent {
 
-  public itemPreview: any;
+  public itemPreview: CarUploadForm;
   public bodyType: string;
 
   get hasCarExtras() {

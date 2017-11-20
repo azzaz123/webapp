@@ -39,7 +39,6 @@ describe('CarKeysService', () => {
     }));
     it('should call endpoint', () => {
       expect(http.get).toHaveBeenCalledWith('api/v3/cars/keys/bodytype', {language: 'en'});
-
     });
     it('should return options', () => {
       expect(response).toEqual(CAR_BODY_TYPES);

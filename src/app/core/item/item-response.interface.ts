@@ -78,3 +78,31 @@ export interface Order {
   item_id: string;
   product_id: string;
 }
+
+export interface ItemUploadForm {
+  category_id: string;
+  images: any[];
+  title: string;
+  sale_price: number;
+  currency_code: string;
+  description?: string;
+  sale_conditions: {
+    fix_price: boolean;
+    exchange_allowed: boolean;
+    shipping_allowed?: boolean;
+  };
+  delivery_info?: any;
+}
+
+export interface CarUploadForm extends ItemUploadForm {
+  model: string;
+  brand: string;
+  year: string;
+  version: string;
+  num_seats: number;
+  body_type: string;
+  km: number;
+  storytelling: string;
+  engine: string;
+  gearbox: string;
+}
