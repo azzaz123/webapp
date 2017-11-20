@@ -9,8 +9,9 @@ import { CarKeysService } from './car-keys.service';
 import { TEST_HTTP_PROVIDERS, ErrorsService } from 'shield';
 import { Router } from '@angular/router';
 import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../../tests/car.fixtures';
+import { NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
-describe('UploadComponent', () => {
+describe('UploadCarComponent', () => {
   let component: UploadCarComponent;
   let fixture: ComponentFixture<UploadCarComponent>;
   let carSuggestionsService: CarSuggestionsService;
@@ -20,9 +21,11 @@ describe('UploadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [NgbPopoverModule],
       providers: [
         FormBuilder,
         TEST_HTTP_PROVIDERS,
+        NgbPopoverConfig,
         {
           provide: CarSuggestionsService, useValue: {
           getBrands() {
@@ -167,6 +170,9 @@ describe('UploadComponent', () => {
   });
 
   describe('onSubmit', () => {
+    it('should has category set by default', () => {
+      expect(component.uploadForm.get('category_id').value).toBe('100');
+    });
     it('should emit uploadEvent if form is valid', () => {
       let input: any;
       component.uploadForm.get('model').patchValue('test');

@@ -5,7 +5,6 @@ import { CoreModule } from '../core/core.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { MdIconModule } from '@angular/material';
-import { ConfirmationModalComponent } from './list/modals/confirmation-modal/confirmation-modal.component';
 import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
@@ -20,8 +19,11 @@ import { DndModule } from 'ng2-dnd';
 import { SelectModule } from 'ng-select';
 import { CarSuggestionsService } from './upload/upload-car/car-suggestions.service';
 import { CarKeysService } from './upload/upload-car/car-keys.service';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbCarouselModule, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElasticModule } from 'ng-elastic';
+import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
+import { UploadConfirmationModalComponent } from './list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { PreviewModalComponent } from './upload/preview-modal/preview-modal.component';
 
 @NgModule({
   imports: [
@@ -38,7 +40,10 @@ import { ElasticModule } from 'ng-elastic';
     ReactiveFormsModule,
     SelectModule,
     NgbButtonsModule,
-    ElasticModule
+    ElasticModule,
+    NgbDropdownModule,
+    NgbPopoverModule,
+    NgbCarouselModule
   ],
   providers: [
     CarSuggestionsService,
@@ -48,18 +53,21 @@ import { ElasticModule } from 'ng-elastic';
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,
-    ConfirmationModalComponent,
     SoldModalComponent,
     SelectedItemsComponent,
     BumpConfirmationModalComponent,
     CreditCardModalComponent,
-    DropAreaComponent
+    DropAreaComponent,
+    CategorySelectorComponent,
+    UploadConfirmationModalComponent,
+    PreviewModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
-    ConfirmationModalComponent,
     SoldModalComponent,
-    CreditCardModalComponent
+    CreditCardModalComponent,
+    UploadConfirmationModalComponent,
+    PreviewModalComponent
   ]
 })
 export class CatalogModule {

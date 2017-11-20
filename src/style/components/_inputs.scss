@@ -1,5 +1,7 @@
 @import "../../style/_common.scss";
 
+$form-control-height: 50px;
+
 .form-group {
   margin-bottom: $spacing-L;
   &.last {
@@ -11,7 +13,7 @@
   }
   .form-control, select.form-control:not([size]):not([multiple]) {
     display: block;
-    height: 50px;
+    height: $form-control-height;
     width: 100%;
     font-size: $font-size;
     border-color: $grey-50;
@@ -54,31 +56,47 @@
   }
 }
 
+h2.ng-invalid {
+  color: $warn !important;
+}
+
 /* ng-select */
 
 ng-select {
+  padding: 0 !important;
   & > div {
     border: 0 !important;
+    height: $form-control-height - 3;
+    margin-left: -1px;
     &.disabled {
       background-color: transparent !important;
     }
     & > div.single {
+      height: $form-control-height;
       & > div.toggle {
         text-indent: -1000000px;
         background: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='30' height='30' viewBox='0 0 30 30'><path fill='#13C1AC' d='M16.323 16.682a.56.56 0 0 0-.825 0 .649.649 0 0 0 0 .878L19 21.285a.56.56 0 0 0 .826 0l3.503-3.725a.649.649 0 0 0 0-.878.56.56 0 0 0-.826 0l-3.09 3.286-3.09-3.286z'/></svg>");
         background-repeat: no-repeat;
-        background-position: 0 -2px;
+        background-position: 7px 6px;
+        height: $form-control-height;
+        width: $form-control-height !important;
         &:hover {
           background-color: transparent !important;
         }
       }
       & > div.value {
-        padding: 0 !important;
-        line-height: 36px !important;
+        height: $form-control-height;
+        padding-left: 12px !important;
+        line-height: $form-control-height !important;
+        md-icon {
+          display: none;
+        }
       }
       & > div.placeholder {
-        padding: 0 !important;
         color: $grey-200 !important;
+        height: $form-control-height;
+        line-height: $form-control-height !important;
+        padding-left: 12px !important;
       }
     }
   }
@@ -89,18 +107,48 @@ select-dropdown{
     box-shadow: 0 1px 4px 0 rgba(37, 50, 56, 0.05);
     border: solid 1px $grey-50 !important;
     border-radius: 6px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
     z-index: 10 !important;
     .options {
       overflow-x: hidden !important;
       ul li {
         padding: $spacing-S !important;
         border-top: 1px solid $grey-50;
+        line-height: 24px;
+        md-icon {
+          @include square(38px);
+          vertical-align: middle;
+          margin-right: 5px;
+          margin-top: -6px;
+          margin-bottom: -6px;
+          g g {
+            fill: $grey-900;
+          }
+        }
+        &.selected {
+          md-icon {
+            g g {
+              fill: $corporate;
+            }
+          }
+          &.highlighted {
+            md-icon {
+              g g {
+                fill: $grey-800 ;
+              }
+            }
+          }
+        }
       }
     }
-    .filter input {
-      background: transparent;
-      border: 0 !important;
-      color: $grey-800 !important;
+    .filter {
+      border-bottom: 1px solid $grey-50;
+      input {
+        background: transparent;
+        border: 0 !important;
+        color: $grey-800 !important;
+      }
     }
   }
   .highlighted {
@@ -157,18 +205,6 @@ ng-select, select-dropdown {
               background-image: url(/assets/icons/others-green.svg);
             }
           }
-        }
-      }
-    }
-  }
-}
-
-#currency {
-  select-dropdown {
-    & > div {
-      .options {
-        ul li {
-          padding: $spacing-S $spacing-XXS !important;
         }
       }
     }

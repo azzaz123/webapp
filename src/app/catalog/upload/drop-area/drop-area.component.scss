@@ -2,6 +2,7 @@
 
 :host {
   width: 100%;
+  display: block;
 }
 
 .wrapper {
@@ -56,22 +57,6 @@
   display: flex;
   text-align: center;
   justify-content: space-between;
-  .change-order-info {
-    $change-order-info-height: 16px;
-    position: absolute;
-    top: -#{($spacing-L + ($change-order-info-height/2))};
-    right: 10px;
-    font-size: $font-size-XS;
-    line-height: $change-order-info-height;
-    color: $grey-600;
-    letter-spacing: .5px;
-    md-icon, span {
-      vertical-align: middle;
-    }
-    md-icon {
-      height: $change-order-info-height;
-    }
-  }
 }
 .product-photo {
   @include square(65px);
@@ -81,10 +66,16 @@
   transition: all .25s ease;
   background-position: center center;
   background-repeat: no-repeat;
+  .photos-number-4 & {
+    @include square(147px);
+  }
   &.placeholder {
     background-image: url(/assets/icons/camera.svg);
     border: 2px dashed $grey-100;
     background-size: 26px;
+    .photos-number-4 & {
+      background-size: 51px;
+    }
     &:hover {
       border-color: $corporate;
     }
@@ -113,6 +104,9 @@
     &:not(.placeholder):not(.dnd-sortable-drag) {
       transform: scale(1.25);
       box-shadow: 0 4px 6px 0 rgba(37, 50, 56, 0.15);
+      .photos-number-4 & {
+        transform: scale(1.15);
+      }
       a {
         display: block;
       }
@@ -135,6 +129,9 @@
     text-transform: uppercase;
     width: calc(100% + #{$offset});
     display: none;
+    .photos-number-4 & {
+      bottom: -30px;
+    }
   }
   input {
     display: none;

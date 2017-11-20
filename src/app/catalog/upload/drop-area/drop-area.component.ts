@@ -23,9 +23,10 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Input() uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @Output() onUploaded: EventEmitter<string> = new EventEmitter();
   @Output() onError: EventEmitter<string> = new EventEmitter();
+  @Input() maxUploads = 4;
   dragOver: boolean;
   files: UploadFile[] = [];
-  placeholders: number[] = _.range(8);
+  placeholders: number[];
   options: NgUploaderOptions;
   private itemId: string;
 
@@ -38,13 +39,14 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   constructor(private errorsService: ErrorsService,
               public uploadService: UploadService) {
-    this.options = {
-      allowedExtensions: ['jpg', 'png'],
-      maxUploads: 8
-    };
   }
 
   ngOnInit() {
+    this.options = {
+      allowedExtensions: ['jpg', 'png'],
+      maxUploads: this.maxUploads
+    };
+    this.placeholders = _.range(this.maxUploads);
     this.uploadEvent.subscribe((event: UploadEvent) => {
       if (event.type === 'create') {
         delete event.values.images;
@@ -102,7 +104,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
         if (output.file.response.id) {
           this.itemId = output.file.response.id;
           if (this.files.length > 1) {
-            this.uploadService.uploadOtherImages(output.file.response.id);
+            this.uploadService.uploadOtherImages(output.file.response.id, this.maxUploads === 8 ? '/cars' : '');
           } else {
             this.onUploaded.emit(this.itemId);
           }

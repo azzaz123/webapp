@@ -5,6 +5,7 @@ import { ListComponent } from './list/list.component';
 import { LoggedGuard } from '../core/user/logged.guard';
 import { CatalogComponent } from './catalog.component';
 import { UploadCarComponent } from './upload/upload-car/upload-car.component';
+import { UploadComponent } from './upload/upload.component';
 
 const routes: Routes = [
   {
@@ -17,8 +18,16 @@ const routes: Routes = [
         component: ListComponent
       },
       {
-        path: 'upload-car',
+        path: 'upload/100',
         component: UploadCarComponent
+      },
+      {
+        path: 'upload/:catId',
+        component: UploadComponent
+      },
+      {
+        path: 'upload',
+        component: UploadComponent
       }
     ]
   },
@@ -34,5 +43,6 @@ export class CatalogRoutingModule {
 export const catalogRoutedComponents = [
   CatalogComponent,
   ListComponent,
+  UploadComponent,
   UploadCarComponent
 ];
