@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../../tests/car.fixtures';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
+import { UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures';
 
 describe('UploadCarComponent', () => {
   let component: UploadCarComponent;
@@ -191,13 +192,7 @@ describe('UploadCarComponent', () => {
     });
     it('should emit uploadEvent if form is valid', () => {
       let input: any;
-      component.uploadForm.get('model').patchValue('test');
-      component.uploadForm.get('brand').patchValue('test');
-      component.uploadForm.get('title').patchValue('test');
-      component.uploadForm.get('year').patchValue(2017);
-      component.uploadForm.get('sale_price').patchValue(1000000);
-      component.uploadForm.get('currency_code').patchValue('EUR');
-      component.uploadForm.get('images').patchValue([{'image': true}]);
+      component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
       expect(component.uploadForm.valid).toBeTruthy();
       component.uploadEvent.subscribe((i: any) => {
         input = i;
@@ -273,14 +268,10 @@ describe('UploadCarComponent', () => {
     beforeEach(fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'onSubmit');
-      component.uploadForm.get('title').patchValue('test');
-      component.uploadForm.get('model').patchValue('test');
-      component.uploadForm.get('brand').patchValue('test');
-      component.uploadForm.get('year').patchValue('1900');
-      component.uploadForm.get('storytelling').patchValue('test');
-      component.uploadForm.get('sale_price').patchValue(1000000);
-      component.uploadForm.get('currency_code').patchValue('EUR');
-      component.uploadForm.get('images').patchValue([{'image': true}]);
+      component.uploadForm.get('model').enable();
+      component.uploadForm.get('year').enable();
+      component.uploadForm.get('version').enable();
+      component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
       component.preview();
     }));
     it('should open modal', () => {
@@ -289,24 +280,7 @@ describe('UploadCarComponent', () => {
       })
     });
     it('should set itemPreview', () => {
-      expect(componentInstance.itemPreview).toEqual({
-        category_id: '100',
-        title: 'test',
-        brand: 'test',
-        storytelling: 'test',
-        sale_price: 1000000,
-        currency_code: 'EUR',
-        images: [{'image': true}],
-        num_seats: '',
-        body_type: '',
-        km: '',
-        engine: '',
-        gearbox: '',
-        sale_conditions: {
-          fix_price: false,
-          exchange_allowed: false
-        }
-      });
+      expect(componentInstance.itemPreview).toEqual(UPLOAD_FORM_CAR_VALUES);
     });
     it('should submit form', fakeAsync(() => {
       tick();
