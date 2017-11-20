@@ -1,5 +1,6 @@
-import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
+  DebugService,
   ErrorsService,
   EventService,
   I18nService,
@@ -10,10 +11,9 @@ import {
   User,
   UserService,
   WindowRef,
-  XmppService,
-  DebugService
+  XmppService
 } from 'shield';
-import { DOCUMENT, DomSanitizer, Title } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
 import { configIcons } from './config/icons.config';
 import 'rxjs/add/operator/map';
@@ -25,7 +25,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
 import { MdIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
-import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 
 @Component({
@@ -54,8 +54,6 @@ export class AppComponent implements OnInit {
               private winRef: WindowRef,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private renderer: Renderer2,
-              @Inject(DOCUMENT) private document: Document,
               private debugService: DebugService) {
     this.config();
   }
