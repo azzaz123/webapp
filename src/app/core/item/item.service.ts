@@ -33,7 +33,7 @@ export class ItemService extends ItemServiceMaster {
   protected mapRecordData(response: any): Item {
     const data: ItemResponse = <ItemResponse>response;
     const content: ItemContent = data.content;
-    const item: Item =  new Item(
+    return new Item(
       content.id,
       null,
       content.seller_id,
@@ -53,7 +53,6 @@ export class ItemService extends ItemServiceMaster {
       content.web_slug,
       content.modified_date
     );
-    return item;
   }
 
   public reportListing(itemId: number | string,
@@ -121,7 +120,6 @@ export class ItemService extends ItemServiceMaster {
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    console.log('serv', this.API_URL_V3 + '/' + id + '/favorite', favorited);
     return this.http.put(this.API_URL_V3 + '/' + id + '/favorite', {
       favorited: favorited
     });

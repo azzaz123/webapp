@@ -14,8 +14,7 @@ export class ItemCartFavoriteComponent implements OnInit {
 
   @Input() item: Item;
   @Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
-  private homeUrl: string
-  private modalRef: NgbModalRef
+  private homeUrl: string;
 
   constructor(private itemService: ItemService,
               private modalService: NgbModal,
@@ -34,9 +33,9 @@ export class ItemCartFavoriteComponent implements OnInit {
 
   removeFavoriteModal(e: Event) {
     e.stopPropagation();
-    this.modalRef = this.modalService.open(ConfirmationModalComponent);
-    this.modalRef.componentInstance.type = 3;
-    this.modalRef.result.then(() => {
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.type = 3;
+    modalRef.result.then(() => {
       this.removeFavorite();
     }, () => {});
   }
