@@ -56,7 +56,8 @@ describe('CatalogItemComponent', () => {
             };
           }
         }
-        }
+        },
+        { provide: 'SUBDOMAIN', useValue: 'es'}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -75,6 +76,12 @@ describe('CatalogItemComponent', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('ngOnInit', () => {
+    it('should set link', () => {
+      expect(component.link).toBe('https://es.wallapop.com/item/webslug-9jd7ryx5odjk');
+    });
   });
 
   describe('deleteItem', () => {

@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Item, TrackingService } from 'shield';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
 import * as _ from 'lodash';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -15,13 +16,16 @@ export class CatalogItemComponent implements OnInit {
 
   @Input() item: Item;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
+  public link: string;
 
   constructor(private modalService: NgbModal,
               public itemService: ItemService,
-              private trackingService: TrackingService) {
+              private trackingService: TrackingService,
+              @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
   ngOnInit() {
+    this.link = environment.siteUrl.replace('es', this.subdomain) + 'item/' + this.item.webSlug;
   }
 
   get showCheckbox() {
