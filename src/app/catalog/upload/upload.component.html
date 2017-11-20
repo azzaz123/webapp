@@ -97,7 +97,7 @@
             <md-icon svgIcon="firm-price"></md-icon>
             <span i18n>Firm Price</span>
           </label>
-          <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.shipping_allowed">
+          <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.shipping_allowed" [hidden]="fixedCategory">
             <input type="checkbox" formControlName="shipping_allowed">
             <md-icon svgIcon="shipping-available"></md-icon>
             <span i18n>Shipping available</span>
