@@ -249,11 +249,6 @@ describe('UploadCarComponent', () => {
   });
 
   describe('onUploaded', () => {
-    it('should open success message', () => {
-      spyOn(errorService, 'i18nSuccess');
-      component.onUploaded('1234');
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('productCreated');
-    });
     it('should redirect', () => {
       spyOn(router, 'navigate');
       component.onUploaded('1234');

@@ -138,7 +138,6 @@ export class UploadComponent implements OnInit, AfterViewChecked {
   }
 
   onUploaded(itemId: string) {
-    this.errorsService.i18nSuccess('productCreated');
     this.router.navigate(['/catalog/list', {created: true}]);
   }
 
