@@ -17,7 +17,7 @@ import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
 import {
   CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, ORDER, PRODUCT_RESPONSE,
-  PURCHASES
+  PURCHASES, ITEMS_DATA_v3_FAVORITES
 } from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers } from '@angular/http';
 import { ConversationUser, ItemsData, Product } from './item-response.interface';
@@ -191,6 +191,57 @@ describe('ItemService', () => {
         expect(resp.data[2].bumpExpiringDate).toBe(1509874085135);
         expect(resp.data[2].flags.bumped).toBeTruthy();
       });
+    });
+  });
+
+  describe('myFavorites', () => {
+    let resp: ItemsData;
+    beforeEach(() => {
+      const res: ResponseOptions = new ResponseOptions({
+        body: JSON.stringify(ITEMS_DATA_v3_FAVORITES),
+        headers: new Headers({'x-nextpage': 'init=20'})
+      });
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+    });
+    it('should call endpoint', () => {
+      service.myFavorites(10).subscribe((data: ItemsData) => {
+        resp = data;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/favorites', {
+        init: 10
+      })
+    });
+    it('should return an array of items and the init', () => {
+      service.myFavorites(0).subscribe((data: ItemsData) => {
+        resp = data;
+      });
+      expect(resp.data.length).toBe(2);
+      const item = resp.data[0];
+      expect(item.id).toBe(ITEMS_DATA_v3_FAVORITES[0].id);
+      expect(item.favorited).toBe(true);
+      expect(item.title).toBe(ITEMS_DATA_v3_FAVORITES[0].content.title);
+      expect(item.description).toBe(ITEMS_DATA_v3_FAVORITES[0].content.description);
+      expect(item.salePrice).toBe(ITEMS_DATA_v3_FAVORITES[0].content.price);
+      expect(item.currencyCode).toBe(ITEMS_DATA_v3_FAVORITES[0].content.currency);
+      expect(item.flags).toEqual(ITEMS_DATA_v3_FAVORITES[0].content.flags);
+      expect(item.mainImage).toEqual(ITEMS_DATA_v3_FAVORITES[0].content.image);
+      expect(resp.init).toBe(20);
+    });
+  });
+
+  describe('favoriteItem', () => {
+    it('should call endpoint, with favorited param false', () => {
+      const favorited = false;
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      service.favoriteItem(ITEM_ID, favorited);
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/favorite', { favorited });
+    });
+
+    it('should call endpoint, with favorited param true', () => {
+      const favorited = true;
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      service.favoriteItem(ITEM_ID, favorited);
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/favorite', { favorited });
     });
   });
 

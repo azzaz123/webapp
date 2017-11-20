@@ -6,6 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { TrackingModule, UtilsModule } from 'shield';
 import { ItemSoldComponent } from './item-sold/item-sold.component';
 import { ItemReservedComponent } from './item-reserved/item-reserved.component';
+import { ItemCartFavoriteComponent } from './item-cart-favorite/item-cart-favorite.component';
 
 @NgModule({
   imports: [
@@ -18,8 +19,9 @@ import { ItemReservedComponent } from './item-reserved/item-reserved.component';
   exports: [
     ItemAvatarComponent,
     ItemSoldComponent,
-    ItemReservedComponent
+    ItemReservedComponent,
+    ItemCartFavoriteComponent
   ],
-  declarations: [ItemAvatarComponent, ItemSoldComponent, ItemReservedComponent]
+  declarations: [ItemAvatarComponent, ItemSoldComponent, ItemReservedComponent, ItemCartFavoriteComponent]
 })
 export class ItemModule { }

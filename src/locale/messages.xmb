@@ -24,8 +24,8 @@
   <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:12</source>Load more</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source>Delete conversation</msg>
   <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will delete the conversation.</msg>
-  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:12</source>Cancel</msg>
-  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:14</source><source>app/catalog/list/selected-items/selected-items.component.ts:26</source>Delete</msg>
+  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source>Cancel</msg>
+  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:22</source><source>app/catalog/list/selected-items/selected-items.component.ts:26</source>Delete</msg>
   <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.ts:2</source><source>app/chat/modals/report-listing/report-listing.component.ts:25</source><source>app/chat/modals/report-user/report-user.component.ts:2</source><source>app/chat/modals/report-user/report-user.component.ts:28</source>Report</msg>
   <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.ts:22</source>I&apos;m reporting this user because...</msg>
   <msg id="20327443157350316"><source>app/chat/modals/block-user/block-user.component.ts:2</source>Block user</msg>
@@ -49,8 +49,19 @@
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.ts:3</source>Connected</msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
+  <msg id="5657739434954342535"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:3</source>Delete item</msg>
+  <msg id="5455708050129988024"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:4</source>This will delete the item.</msg>
+  <msg id="321759774936322640"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:7</source>Delete items</msg>
+  <msg id="447264229278731832"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:8</source>The selected items will be permanently deleted.</msg>
+  <msg id="8607128558364427780"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:11</source>Reserve items</msg>
+  <msg id="7498605020756139080"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:12</source>The selected items will be reserved.</msg>
+  <msg id="3870006899502072841"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:15</source>Remove item from favorites</msg>
+  <msg id="3870268043917301466"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:16</source>The item will be removed from favorites.</msg>
+  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:23</source><source>app/catalog/list/selected-items/selected-items.component.ts:22</source>Reserve</msg>
+  <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source>Remove</msg>
   <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
   <msg id="6543433128416987560"><source>app/core/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
+  <msg id="8212177249756365917"><source>app/core/item/item-cart-favorite/item-cart-favorite.component.ts:11</source> Remove </msg>
   <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:33</source>Messages</msg>
   <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
   <msg id="8806073135680763560"><source>app/chat/message/review-modal/review-modal.component.ts:3</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
@@ -71,14 +82,12 @@
   <msg id="3734434835434478522"><source>app/layout/topbar/topbar.component.ts:27</source>Wall</msg>
   <msg id="2127032578120864096"><source>app/layout/topbar/topbar.component.ts:43</source>My Profile</msg>
   <msg id="3825726981798982045"><source>app/layout/topbar/topbar.component.ts:44</source><source>app/layout/sidebar/sidebar.component.ts:5</source>My Catalog</msg>
-  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:45</source>Logout</msg>
-  <msg id="4631973437945665426"><source>app/layout/topbar/topbar.component.ts:50</source>List it</msg>
+  <msg id="7803450916719855197"><source>app/layout/topbar/topbar.component.ts:45</source> Favorites</msg>
+  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:46</source>Logout</msg>
+  <msg id="4631973437945665426"><source>app/layout/topbar/topbar.component.ts:51</source>List it</msg>
   <msg id="5371960677736303052"><source>app/layout/topbar/geolocation/geolocation.component.ts:9</source>Where?</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
-  <msg id="5657739434954342535"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:3</source>Delete item</msg>
-  <msg id="5455708050129988024"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:4</source>This will delete the item.</msg>
-  <msg id="321759774936322640"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:7</source>Delete items</msg>
-  <msg id="447264229278731832"><source>app/catalog/list/modals/confirmation-modal/confirmation-modal.component.ts:8</source>The selected items will be permanently deleted.</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:12</source>Favorites</msg>
   <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source>Congratulations</msg>
   <msg id="9213119646873056135"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:10</source>Your item(s) have been featured and you can see them in the top position.</msg>
   <msg id="8982629098121976758"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:11</source>Start selling</msg>
@@ -142,9 +151,11 @@
   <msg id="8116946231188094802"><source>app/catalog/upload/upload-car/upload-car.component.ts:141</source>Tell us more about what you are selling...</msg>
   <msg id="2977636378219052362"><source>app/catalog/upload/upload-car/upload-car.component.ts:147</source>Pictures</msg>
   <msg id="4756709840226839708"><source>app/catalog/upload/upload-car/upload-car.component.ts:152</source><source>app/catalog/upload/upload.component.ts:99</source>Extras</msg>
-  <msg id="7026441111090698984"><source>app/catalog/upload/upload-car/upload-car.component.ts:156</source><source>app/catalog/upload/upload.component.ts:103</source>Firm Price</msg>
-  <msg id="1292901362619782619"><source>app/catalog/upload/upload-car/upload-car.component.ts:161</source><source>app/catalog/upload/upload.component.ts:113</source>Accept trades</msg>
+  <msg id="7026441111090698984"><source>app/catalog/upload/upload-car/upload-car.component.ts:156</source><source>app/catalog/upload/preview-modal/preview-modal.component.ts:20</source><source>app/catalog/upload/upload.component.ts:103</source>Firm Price</msg>
+  <msg id="1292901362619782619"><source>app/catalog/upload/upload-car/upload-car.component.ts:161</source><source>app/catalog/upload/preview-modal/preview-modal.component.ts:28</source><source>app/catalog/upload/upload.component.ts:113</source>Accept trades</msg>
   <msg id="2867535118804337378"><source>app/catalog/upload/upload-car/upload-car.component.ts:167</source>List car</msg>
+  <msg id="3088723279740360142"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source>Submit Ad</msg>
+  <msg id="8260444303636416171"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:24</source><source>app/catalog/upload/upload.component.ts:108</source>Shipping available</msg>
   <msg id="5479149141238830712"><source>app/catalog/upload/upload.component.ts:11</source>Information about your item </msg>
   <msg id="368364095324628291"><source>app/catalog/upload/upload.component.ts:17</source>In two words...</msg>
   <msg id="5315989345504029668"><source>app/catalog/upload/upload.component.ts:23</source>Don&apos;t make errors so that people will find you easily.</msg>
@@ -156,12 +167,12 @@
   <msg id="8405309693308875139"><source>app/catalog/upload/upload.component.ts:85</source>Photos</msg>
   <msg id="4810826740470768717"><source>app/catalog/upload/upload.component.ts:90</source>You can drag and drop your photos here. Max 4MB.</msg>
   <msg id="6422484577082828397"><source>app/catalog/upload/upload.component.ts:94</source>Select and drag to change the order.</msg>
-  <msg id="8260444303636416171"><source>app/catalog/upload/upload.component.ts:108</source>Shipping available</msg>
   <msg id="2806917038528218276"><source>app/catalog/upload/upload.component.ts:118</source>FAQ</msg>
   <msg id="5972351850683239127"><source>app/catalog/upload/upload.component.ts:123</source>Shipping</msg>
   <msg id="8555950532490646539"><source>app/catalog/upload/upload.component.ts:124</source>If you are going to ship with wallapop, we need to know hou much does your product weight.</msg>
   <msg id="6390066056926289377"><source>app/catalog/upload/upload.component.ts:129</source><ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>kg Max<ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></msg>
   <msg id="6622336784189066984"><source>app/catalog/upload/upload.component.ts:136</source>Post Ad</msg>
+  <msg id="4138346261331244869"><source>app/catalog/upload/upload.component.ts:138</source>How does it look?</msg>
   <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
@@ -174,7 +185,6 @@
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:41</source>Reactivate</msg>
   <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:45</source>Pending</msg>
   <msg id="3448462145758383019"><source>app/catalog/list/selected-items/selected-items.component.ts:16</source>Total</msg>
-  <msg id="2874924373232293084"><source>app/catalog/list/selected-items/selected-items.component.ts:22</source>Reserve</msg>
   <msg id="8743988303207163578"><source>app/catalog/list/selected-items/selected-items.component.ts:32</source>Feature Now</msg>
   <msg id="5112037422043971210"><source>app/catalog/upload/drop-area/drop-area.component.ts:5</source>Drop here your files to upload as a product photo</msg>
   <msg id="6246188542738847279"><source>app/catalog/upload/drop-area/drop-area.component.ts:11,14</source>

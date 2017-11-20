@@ -8,7 +8,8 @@ export interface ItemResponse {
 
 export interface ItemContent {
   category_id: number;
-  currency_code: string;
+  currency_code?: string;
+  currency?: string;
   description: string;
   flags: ItemFlags;
   id: string;
@@ -24,7 +25,8 @@ export interface ItemContent {
   };
   modified_date: number;
   sale_conditions: ItemSaleConditions;
-  sale_price: number;
+  sale_price?: number;
+  price?: number;
   seller_id: string;
   title: string;
   url: string;

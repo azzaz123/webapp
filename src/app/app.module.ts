@@ -15,6 +15,7 @@ import { LayoutModule } from './layout/layout.module';
 import { environment } from '../environments/environment';
 import { CatalogModule } from './catalog/catalog.module';
 import { DndModule } from 'ng2-dnd';
+import { FavoritesModule } from './favorites/favorites.module';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { DndModule } from 'ng2-dnd';
     HttpModule,
     AppRoutingModule,
     LayoutModule,
-    CatalogModule
+    CatalogModule,
+    FavoritesModule
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

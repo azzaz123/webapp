@@ -25,6 +25,7 @@ export class ItemService extends ItemServiceMaster {
 
   protected API_URL_V2: string = 'api/v3/items';
   private API_URL_WEB: string = 'api/v3/web/items';
+  private API_URL_v3_USER: string = 'api/v3/users';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
 
@@ -63,8 +64,8 @@ export class ItemService extends ItemServiceMaster {
       content.description,
       content.category_id,
       null,
-      content.sale_price,
-      content.currency_code,
+      content.sale_price || content.price,
+      content.currency_code || content.currency,
       content.modified_date,
       content.url,
       content.flags,
@@ -93,8 +94,8 @@ export class ItemService extends ItemServiceMaster {
     });
   }
 
-  public mine(init: number, status?: string): Observable<ItemsData> {
-    return this.http.get(this.API_URL_WEB + '/mine/' + status, {
+  public getPaginationItems(url: string, init): Observable<ItemsData> {
+    return this.http.get(url, {
       init: init
     })
     .map((r: Response) => {
@@ -133,6 +134,21 @@ export class ItemService extends ItemServiceMaster {
     });
   }
 
+  public mine(init: number, status?: string): Observable<ItemsData> {
+    return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init)
+  }
+
+  public myFavorites(init: number): Observable<ItemsData> {
+    return this.getPaginationItems(this.API_URL_v3_USER + '/me/items/favorites', init)
+    .map((itemsData: ItemsData) => {
+      itemsData.data = itemsData.data.map((item: Item) => {
+        item.favorited = true;
+        return item;
+      });
+      return itemsData;
+    })
+  }
+
   public deleteItem(id: string): Observable<any> {
     return this.http.delete(this.API_URL_V3 + '/' + id);
   }
@@ -145,6 +161,12 @@ export class ItemService extends ItemServiceMaster {
 
   public reactivateItem(id: string): Observable<any> {
     return this.http.put(this.API_URL_V3 + '/' + id + '/reactivate');
+  }
+
+  public favoriteItem(id: string, favorited: boolean): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + id + '/favorite', {
+      favorited: favorited
+    });
   }
 
   public bulkReserve(): Observable<ItemBulkResponse> {

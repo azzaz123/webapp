@@ -33,6 +33,12 @@ $sidebar-section-circle-size: 50px;
       transition: .15s fill ease;
     }
   }
+  & /deep/ [svgIcon=heart]{
+    g {
+      fill: transparent !important;
+      stroke: $white;
+    }
+  }
 }
 
 h2 {

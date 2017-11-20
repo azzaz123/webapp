@@ -5,7 +5,6 @@ import { CoreModule } from '../core/core.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { MdIconModule } from '@angular/material';
-import { ConfirmationModalComponent } from './list/modals/confirmation-modal/confirmation-modal.component';
 import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
@@ -54,7 +53,6 @@ import { PreviewModalComponent } from './upload/preview-modal/preview-modal.comp
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,
-    ConfirmationModalComponent,
     SoldModalComponent,
     SelectedItemsComponent,
     BumpConfirmationModalComponent,
@@ -66,7 +64,6 @@ import { PreviewModalComponent } from './upload/preview-modal/preview-modal.comp
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
-    ConfirmationModalComponent,
     SoldModalComponent,
     CreditCardModalComponent,
     UploadConfirmationModalComponent,
