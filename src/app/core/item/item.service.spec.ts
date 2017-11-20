@@ -212,6 +212,7 @@ describe('ItemService', () => {
       })
     });
     it('should return an array of items and the init', () => {
+      spyOn(UUID, 'UUID').and.returnValue('1');
       service.myFavorites(0).subscribe((data: ItemsData) => {
         resp = data;
       });
@@ -224,7 +225,13 @@ describe('ItemService', () => {
       expect(item.salePrice).toBe(ITEMS_DATA_v3_FAVORITES[0].content.price);
       expect(item.currencyCode).toBe(ITEMS_DATA_v3_FAVORITES[0].content.currency);
       expect(item.flags).toEqual(ITEMS_DATA_v3_FAVORITES[0].content.flags);
-      expect(item.mainImage).toEqual(ITEMS_DATA_v3_FAVORITES[0].content.image);
+      expect(item.mainImage).toEqual({
+        id: '1',
+        original_width: ITEMS_DATA_v3_FAVORITES[0].content.image.original_width,
+        original_height: ITEMS_DATA_v3_FAVORITES[0].content.image.original_height,
+        average_hex_color: '',
+        urls_by_size: ITEMS_DATA_v3_FAVORITES[0].content.image
+      });
       expect(resp.init).toBe(20);
     });
   });
