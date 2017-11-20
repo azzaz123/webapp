@@ -65,7 +65,6 @@ export class AppComponent implements OnInit {
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
-    this.setBodyClass();
     this.router.events.distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {
         return previous.url === current.url;
@@ -136,21 +135,6 @@ export class AppComponent implements OnInit {
       const title = !(event['title']) ? 'Wallapop' : event['title'];
       this.titleService.setTitle(title);
       this.hideSidebar = event['hideSidebar'];
-    });
-  }
-
-  private setBodyClass() {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        if (this.previousUrl) {
-          this.renderer.removeClass(this.document.body, this.previousUrl);
-        }
-        const currentUrlSlug = 'page-' + event.url.slice(1).replace(/\//g, '-');
-        if (currentUrlSlug) {
-          this.renderer.addClass(document.body, currentUrlSlug);
-        }
-        this.previousUrl = currentUrlSlug;
-      }
     });
   }
 
