@@ -21,6 +21,7 @@ import { CardModule } from './card/card.module';
     AdComponent
   ],
   declarations: [
+    AdComponent,
     ConfirmationModalComponent,
     SpinnerComponent,
   ],
