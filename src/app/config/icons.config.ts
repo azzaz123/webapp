@@ -126,6 +126,10 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('cm-categories', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-categories.svg'));
   mdIconRegistry.addSvgIcon('cm-chat', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-chat.svg'));
   mdIconRegistry.addSvgIcon('cm-eye', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-eye.svg'));
+  mdIconRegistry.addSvgIcon('cm-car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-car.svg'));
+  mdIconRegistry.addSvgIcon('cm-money', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-money.svg'));
+  mdIconRegistry.addSvgIcon('cm-seats', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-seats.svg'));
+  mdIconRegistry.addSvgIcon('cm-velocity', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-velocity.svg'));
   mdIconRegistry.addSvgIcon('twitter', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/twitter.svg'));
   mdIconRegistry.addSvgIcon('facebook', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/facebook.svg'));
 }
