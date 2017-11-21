@@ -1,0 +1,15 @@
+<div class="page-content"
+  infinite-scroll
+  [infiniteScrollDistance]="3"
+  [infiniteScrollThrottle]="100"
+  [scrollWindow]="false"
+  [infiniteScrollDisabled]="end || loading"
+  (scrolled)="loadMore()">
+  <div class="container">
+    <masonry [options]="masonryOptions">
+      <masonry-brick class="brick" *ngFor="let item of items">
+        <tsl-item-cart-favorite [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-cart-favorite>
+      </masonry-brick>
+    </masonry>
+  </div>
+</div>

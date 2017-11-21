@@ -33,6 +33,9 @@ describe('GeolocationComponent', () => {
         {
           provide: CookieService, useValue: {
             put(key, value) {
+            },
+            get(key) {
+              return 'Barcelona, Spain';
             }
           }
         },
@@ -44,6 +47,7 @@ describe('GeolocationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GeolocationComponent);
     component = fixture.componentInstance;
+    component.model = {description: 'Barcelona, Spain'};
     fixture.detectChanges();
     eventService = TestBed.get(EventService);
     geolocationService = TestBed.get(GeolocationService);

@@ -18,7 +18,7 @@ import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
-import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';

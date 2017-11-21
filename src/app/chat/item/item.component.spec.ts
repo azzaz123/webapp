@@ -5,6 +5,8 @@ import { ItemComponent } from './item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, ITEM_WEB_SLUG, ItemService, MOCK_ITEM } from 'shield';
+import { DecimalPipe } from '@angular/common';
+import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 
 describe('Component: Item', () => {
 
@@ -13,14 +15,16 @@ describe('Component: Item', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ItemComponent],
-      providers: [{
-        provide: ItemService, useValue: {
+      declarations: [ItemComponent, CustomCurrencyPipe],
+      providers: [
+        DecimalPipe,
+        {
+          provide: ItemService, useValue: {
           getCounters() {
             return Observable.of(ITEM_COUNTERS_DATA);
           }
         }
-      }],
+        }],
       schemas: [NO_ERRORS_SCHEMA]
     });
     fixture = TestBed.createComponent(ItemComponent);

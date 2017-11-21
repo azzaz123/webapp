@@ -5,11 +5,13 @@ import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from 'app/catalog/list/modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from 'app/shared/confirmation-modal/confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 import { MomentModule } from 'angular2-moment';
+import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -20,9 +22,10 @@ describe('CatalogItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CatalogItemComponent],
+      declarations: [CatalogItemComponent, CustomCurrencyPipe],
       imports: [MomentModule],
       providers: [
+        DecimalPipe,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
@@ -53,7 +56,8 @@ describe('CatalogItemComponent', () => {
             };
           }
         }
-        }
+        },
+        { provide: 'SUBDOMAIN', useValue: 'es'}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -72,6 +76,12 @@ describe('CatalogItemComponent', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('ngOnInit', () => {
+    it('should set link', () => {
+      expect(component.link).toBe('https://es.wallapop.com/item/webslug-9jd7ryx5odjk');
+    });
   });
 
   describe('deleteItem', () => {

@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { ErrorsService } from 'shield';
 import { UploadEvent } from '../upload-event.interface';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
+import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
+import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 
 @Component({
   selector: 'tsl-upload',
@@ -23,7 +25,7 @@ export class UploadCarComponent implements OnInit {
   public carTypes: IOption[];
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
-    {value: 'USD', label: '$'}
+    {value: 'GBP', label: '£'}
   ];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
@@ -33,7 +35,9 @@ export class UploadCarComponent implements OnInit {
               private carSuggestionsService: CarSuggestionsService,
               private carKeysService: CarKeysService,
               private router: Router,
-              private errorsService: ErrorsService) {
+              private errorsService: ErrorsService,
+              private modalService: NgbModal,
+              config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       category_id: '100',
       images: [[], [Validators.required]],
@@ -55,11 +59,17 @@ export class UploadCarComponent implements OnInit {
         exchange_allowed: false
       })
     });
+    config.placement = 'right';
+    config.triggers = 'focus:blur';
+    config.container = 'body';
   }
 
   ngOnInit() {
     this.getBrands();
     this.getCarTypes();
+  }
+
+  public noop() {
   }
 
   private getBrands() {
@@ -147,7 +157,6 @@ export class UploadCarComponent implements OnInit {
   }
 
   onUploaded(itemId: string) {
-    this.errorsService.i18nSuccess('productCreated');
     this.router.navigate(['/catalog/list', {created: true}]);
   }
 
@@ -165,6 +174,18 @@ export class UploadCarComponent implements OnInit {
     this.uploadForm.get(field)[action]();
     this.uploadForm.get(field).setValue('');
     this.markFieldAsPristine(field);
+  }
+
+  preview() {
+    const modalRef: NgbModalRef = this.modalService.open(PreviewModalComponent, {
+      windowClass: 'preview'
+    });
+    modalRef.componentInstance.itemPreview = this.uploadForm.value;
+    modalRef.componentInstance.getBodyType();
+    modalRef.result.then(() => {
+      this.onSubmit();
+    }, () => {
+    });
   }
 
   private min(min: number): ValidatorFn {

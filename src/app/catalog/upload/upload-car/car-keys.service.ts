@@ -9,15 +9,31 @@ import * as _ from 'lodash';
 export class CarKeysService {
 
   private API_URL: string = 'api/v3/cars/keys';
+  private cache: any[];
 
   constructor(private http: HttpService,
               private i18n: I18nService) {
   }
 
   getTypes(): Observable<IOption[]> {
-    return this.http.get(this.API_URL + '/bodytype', {language: this.i18n.locale})
-    .map((r: Response) => r.json())
+    return this.getTypesData()
+    .do((values: any[]) => this.cache = values)
     .map((values: any[]) => this.toSelectOptions(values));
+  }
+
+  getTypeName(id: string): Observable<string> {
+    return this.getTypesData()
+    .map((values: any[]) => {
+      return _.filter(values, {id: id})[0].text;
+    })
+  }
+
+  private getTypesData(): Observable<any[]> {
+    if (this.cache) {
+      return Observable.of(this.cache);
+    }
+    return this.http.get(this.API_URL + '/bodytype', {language: this.i18n.locale})
+    .map((r: Response) => r.json());
   }
 
   private toSelectOptions(values: any[]): IOption[] {

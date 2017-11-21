@@ -1,4 +1,8 @@
-import { ConversationUser, ItemResponse, Order, Product, Purchase } from '../app/core/item/item-response.interface';
+import {
+  CarUploadForm,
+  ConversationUser, ItemResponse, ItemUploadForm, Order, Product,
+  Purchase
+} from '../app/core/item/item-response.interface';
 
 export const ITEM_DATA_V3: ItemResponse = {
   'id': '0j2ylvwrpmzy',
@@ -174,6 +178,97 @@ export const ITEMS_DATA_V3 = [{
   }
 }];
 
+export const ITEMS_DATA_v3_FAVORITES = [{
+  'id': 'lqzmrdgogy6v',
+  'type': 'consumer_goods',
+  'content': {
+    'id': 'lqzmrdgogy6v',
+    'title': 'Ducati diavel',
+    'description': 'Hola vendo mi preciosa Ducati diavel \nCon 13.000km\nAño 2011\nExtras como',
+    'image': {
+      'original': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W1024',
+      'xsmall': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W320',
+      'small': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W320',
+      'large': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W800',
+      'medium': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W640',
+      'xlarge': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=386147626&pictureSize=W1024',
+      'original_width': 1024,
+      'original_height': 768
+    },
+    'user': {
+      'id': '9nz0g7kgrjok',
+      'micro_name': 'Sergio M.',
+      'image': {
+        'original': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
+        'xsmall': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W320',
+        'small': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W320',
+        'large': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
+        'medium': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
+        'xlarge': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=44934557&pictureSize=W640',
+        'original_width': 720,
+        'original_height': 1280
+      },
+      'online': false,
+      'kind': 'normal'
+    },
+    'flags': {
+      'pending': false,
+      'sold': false,
+      'reserved': false,
+      'banned': false,
+      'expired': false
+    },
+    'visibility_flags': {
+      'bumped': false,
+      'highlighted': false,
+      'urgent': false,
+      'country_bumped': false
+    },
+    'price': 10000,
+    'currency': 'EUR',
+    'web_slug': 'ducati-diavel-172859908'
+  }
+}, {
+  'id': 'xpzppyk2xkz3',
+  'type': 'consumer_goods',
+  'content': {
+    'id': 'xpzppyk2xkz3',
+    'title': 'Ducati 175 TS-SPORT',
+    'description': 'Se vende ducati 175 TS-SPORT del año 1965 restaurada',
+    'image': {
+      'original': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
+      'xsmall': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W320',
+      'small': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W320',
+      'large': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
+      'medium': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
+      'xlarge': 'http://cdn-beta.wallapop.com/shnm-portlet/images?pictureId=355418054&pictureSize=W640',
+      'original_width': 447,
+      'original_height': 640
+    },
+    'user': {'id': 'g0j232rpgd6y',
+      'micro_name': 'Alex S.',
+      'online': false,
+      'kind': 'normal'
+    },
+    'flags': {
+      'pending': false,
+      'sold': false,
+      'reserved': false,
+      'banned': false,
+      'expired': false
+    },
+    'visibility_flags': {
+      'bumped': false,
+      'highlighted': false,
+      'urgent': false,
+      'country_bumped': false
+    },
+    'price': 3399,
+    'currency': 'EUR',
+    'web_slug': 'ducati-175-ts-sport-159670398'
+  }
+}];
+
 export const CONVERSATION_USERS: ConversationUser[] = [{
   id: '1',
   micro_name: 'Jeff',
@@ -213,7 +308,7 @@ export const ORDER: Order = {
   product_id: '2'
 };
 
-export const UPLOAD_FORM_ITEM_VALUES: any = {
+export const UPLOAD_FORM_ITEM_VALUES: ItemUploadForm = {
   title: 'The title',
   description: 'The description',
   category_id: '12545',
@@ -224,5 +319,27 @@ export const UPLOAD_FORM_ITEM_VALUES: any = {
     exchange_allowed: false,
     shipping_allowed: false
   },
-  delivery_info: {}
+  images: [{'image': true}]
+};
+
+export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
+  title: 'The title',
+  storytelling: 'The description',
+  model: 'model',
+  brand: 'brand',
+  year: 'year',
+  version: 'version',
+  num_seats: 4,
+  body_type: 'body_type',
+  km: 1000,
+  engine: 'engine',
+  gearbox: 'gearbox',
+  category_id: '100',
+  sale_price: 123.45,
+  currency_code: 'EUR',
+  sale_conditions: {
+    fix_price: false,
+    exchange_allowed: false
+  },
+  images: [{'image': true}]
 };

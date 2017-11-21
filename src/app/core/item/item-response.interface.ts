@@ -8,7 +8,8 @@ export interface ItemResponse {
 
 export interface ItemContent {
   category_id: number;
-  currency_code: string;
+  currency_code?: string;
+  currency?: string;
   description: string;
   flags: ItemFlags;
   id: string;
@@ -24,7 +25,8 @@ export interface ItemContent {
   };
   modified_date: number;
   sale_conditions: ItemSaleConditions;
-  sale_price: number;
+  sale_price?: number;
+  price?: number;
   seller_id: string;
   title: string;
   url: string;
@@ -77,4 +79,32 @@ export interface SelectedItemsAction {
 export interface Order {
   item_id: string;
   product_id: string;
+}
+
+export interface ItemUploadForm {
+  category_id: string;
+  images: any[];
+  title: string;
+  sale_price: number;
+  currency_code: string;
+  description?: string;
+  sale_conditions: {
+    fix_price: boolean;
+    exchange_allowed: boolean;
+    shipping_allowed?: boolean;
+  };
+  delivery_info?: any;
+}
+
+export interface CarUploadForm extends ItemUploadForm {
+  model: string;
+  brand: string;
+  year: string;
+  version: string;
+  num_seats: number;
+  body_type: string;
+  km: number;
+  storytelling: string;
+  engine: string;
+  gearbox: string;
 }

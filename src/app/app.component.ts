@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  DebugService,
   ErrorsService,
   EventService,
   I18nService,
@@ -10,8 +11,7 @@ import {
   User,
   UserService,
   WindowRef,
-  XmppService,
-  DebugService
+  XmppService
 } from 'shield';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
 
   public loggingOut: boolean;
   public hideSidebar: boolean;
+  private previousUrl: string;
 
   constructor(private event: EventService,
               private xmppService: XmppService,

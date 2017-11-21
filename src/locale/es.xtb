@@ -46,10 +46,13 @@
   <translation id="1404539941798522798">Responde en menos de 3 horas</translation>
   <translation id="5927748278732131263">Responde el mismo día</translation>
   <translation id="6807057680918467236">Responde en 24 horas o más</translation>
+  <translation id="6978679917020254081" desc="title" meaning="modal">¿Qué quieres vender?</translation>
   <translation id="3894950702316166331">Cargando...</translation>
   <translation id="8998211649643752990">Estamos cargando todos tus mensajes por primera vez. Estarán disponibles antes de que acaben las obras de la Sagrada Família, un abrazo.</translation>
+  <translation id="4814285799071780083">Eliminar</translation>
   <translation id="4338022632676445411">Vendido</translation>
   <translation id="6543433128416987560">Reservado</translation>
+  <translation id="8212177249756365917">Eliminar</translation>
   <translation id="6452372740127749380">Mensajes</translation>
   <translation id="1064116145041965896">Cita</translation>
   <translation id="2821179408673282599">Inicio</translation>
@@ -99,14 +102,55 @@
   <translation id="464749780222721589">Caducados</translation>
   <translation id="5262427597279775777">1 producto seleccionado</translation>
   <translation id="3618067650338827326"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
+  <translation id="243983274320667129">Información de tu producto</translation>
+  <translation id="1511766279515968094">Marca</translation>
+  <translation id="3937675945889395823">Ej: Seat</translation>
+  <translation id="8348894888237155755">Lo básico: marca y modelo.</translation>
+  <translation id="1141886420788473147">Modelo</translation>
+  <translation id="2547360803785971520">Ej: Ibiza</translation>
+  <translation id="1464072562214937907">Año</translation>
+  <translation id="4990206185334832640">De matriculación</translation>
   <translation id="8894377483833272091">Precio</translation>
+  <translation id="4614938265782792299">Con cariño...</translation>
+  <translation id="8975942198634017778">Dínos cuánto quieres por él que no se lo diremos a nadie ;)</translation>
   <translation id="4327471061205783634">Moneda</translation>
-  <translation id="3322682308330601072">¿Qué estás vendiendo?</translation>
+  <translation id="5701618810648052610">Título</translation>
+  <translation id="1502561792056358737">Esto es lo que se verá en tu anuncio</translation>
+  <translation id="2374867267744164173">Sin miedo, cuanto más descriptivo, más fácil será que lo encuentren.</translation>
+  <translation id="7367942639781560564">Información relevante</translation>
+  <translation id="2724055831234181057">Versión</translation>
+  <translation id="8422000809081880557">¿Es alguna versión o serie específica?</translation>
+  <translation id="764453674498400202">Número de plazas</translation>
+  <translation id="4486490403948802296">Escribe un número</translation>
+  <translation id="988756868045673037">¿Cabe toda tu familia o solo el perro?</translation>
+  <translation id="2068484566855301885">Tipo de coche</translation>
+  <translation id="980829858200282983">Pequeño, coupé, sedán, familiar, furgoneta...</translation>
+  <translation id="3817917717199474011">¿Es para hacer una escapadita el finde o para el día a día?</translation>
+  <translation id="5430617499425264578">Kilómetros</translation>
+  <translation id="1955180263634698200">¡Con precisión!</translation>
+  <translation id="8722082542322229824">Motor</translation>
+  <translation id="7493844856700299080">Gasolina</translation>
+  <translation id="1763954588841728713">Diesel</translation>
+  <translation id="3250359485015452319">Eléctrico</translation>
+  <translation id="8258001121894230907">Otros...</translation>
+  <translation id="6234112553577946460">Esto es importante, créenos.</translation>
+  <translation id="3577268427399505619">Cambio</translation>
+  <translation id="2233560223291461480">Manual</translation>
+  <translation id="810888510148304696">Automático</translation>
   <translation id="4902817035128594900">Descripción</translation>
+  <translation id="4908480064602665904">Cuéntanos más. ¿Usado o nuevo? ¿Rojo o amarillo? ¿Tiene algún golpecito?</translation>
+  <translation id="6236574297221800719">No te dejes nada. Los detalles son clave para vender más rápido.</translation>
+  <translation id="8405309693308875139">Fotos</translation>
+  <translation id="5606765042409911268">Puedes arrastrar las imágenes de tu producto aquí. Selecciona y mueve una imagen para cambiar el orden. Máximo 10MB.</translation>
   <translation id="4756709840226839708">Extras</translation>
-  <translation id="7026441111090698984">Precio No negociable</translation>
+  <translation id="7026441111090698984">Precio no negociable</translation>
   <translation id="1292901362619782619">Acepto intercambios</translation>
-  <translation id="5479149141238830712">Información de tu producto</translation>
+  <translation id="2224879576270143088">Cosas que suelen preguntar los compradores...</translation>
+  <translation id="3535134560822959404">Subir coche</translation>
+  <translation id="3088723279740360142">Submit Ad</translation>
+  <translation id="4138346261331244869">¿Cómo quedará?</translation>
+  <translation id="8260444303636416171">Hago envíos</translation>
+  <translation id="3322682308330601072">¿Qué estás vendiendo?</translation>
   <translation id="368364095324628291">En dos palabras...</translation>
   <translation id="5315989345504029668">Escribe bien (y sin faltas de ortografía) para que te encuentren más fácilmente.</translation>
   <translation id="6649229882788371997">(No te pases)</translation>
@@ -114,12 +158,10 @@
   <translation id="1806667489382256324">Categoría</translation>
   <translation id="5433438112560949935">Añade información relevante como estado, modelo, color...</translation>
   <translation id="7493287338252374869">Cada detalle cuenta, ¡así que cuéntanos más!</translation>
-  <translation id="8405309693308875139">Fotos</translation>
-  <translation id="4810826740470768717">Puedes arrastrar las imágenes de tu producto aquí. Máximo 4MB.</translation>
-  <translation id="6422484577082828397">Selecciona y mueve una imagen para cambiar el orden.</translation>
-  <translation id="8260444303636416171">Hago envíos</translation>
   <translation id="2806917038528218276">Cosas que suelen preguntar los compradores...</translation>
   <translation id="6390066056926289377"><ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>kg Max<ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
+  <translation id="5972351850683239127">Envíos</translation>
+  <translation id="3007176586514020023">Dínos cuánto pesa tu producto. Recuerda que tienes que contar también con el embalaje.</translation>
   <translation id="6622336784189066984">Subir producto</translation>
   <translation id="939504866402110526">No tienes productos a la venta</translation>
   <translation id="935769667569121167">No has vendido nada aún</translation>
@@ -145,7 +187,13 @@
   <translation id="3448462145758383019">Total</translation>
   <translation id="8743988303207163578">Destacar ya</translation>
   <translation id="1592360651866563240">Sponsor</translation>
+  <translation id="5112037422043971210">Deja tus fotos aquí para subirlas</translation>
+  <translation id="1417432796546296307">Ya has llegado al límite de <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> fotos por producto.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Elimina una foto primero antes de añadir otra.</translation>
   <translation id="6145572175629887249">Foto principal</translation>
+  <translation id="3645155297059148047">Subir nuevo <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>coche<ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
+  <translation id="2747754575131239854">Subir nueva <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>casa<ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
+  <translation id="4281260549834200026">Subir nuevo <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>servicio<ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
+  <translation id="1824303616152932586">Subir nuevo <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>producto<ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
   <translation id="954702980611036148">Coches</translation>
   <translation id="8432027249343784512">Inmobiliaria</translation>
   <translation id="7143579180750436311">Servicios</translation>

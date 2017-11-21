@@ -1,4 +1,4 @@
-@import "../../../../style/common";
+@import "../../../../style/_common.scss";
 
 .modal-body {
   color: $grey-900;
@@ -10,7 +10,12 @@ p {
 
 .price, h1 {
   font-size: $font-size-XL;
-  margin-bottom: $spacing;
+}
+
+h1 {
+  border-bottom: 1px solid $preview-border-color;
+  padding-bottom: $spacing;
+  margin-bottom: 0;
 }
 
 .price {
@@ -20,17 +25,26 @@ p {
   margin-top: $spacing;
 }
 
-.description {
-  font-size: 18px;
-  border-top: 1px solid #f3f3f3;
+.description, .car-info {
+  font-size: $font-size;
   padding: $spacing 0;
   &:not(.last){
-    border-bottom: 1px solid #f3f3f3;
+    border-bottom: 1px solid $preview-border-color;
     margin-bottom: $spacing;
   }
   &.last {
     padding-bottom: 0;
   }
+  &:empty {
+    margin: 0 !important;
+    border: 0 !important;
+    padding-top: 0;
+  }
+}
+
+.car-info {
+  padding: $spacing-S 0;
+  margin-bottom: 0 !important;
 }
 
 .extras {
@@ -49,6 +63,16 @@ p {
       & /deep/ path {
         fill: $grey-900;
       }
+    }
+  }
+  &.car-extras {
+    border-bottom: 1px solid $preview-border-color;
+    padding-bottom: $spacing;
+    margin-bottom: $spacing;
+    &.last {
+      padding-bottom: 0;
+      border: 0;
+      margin-bottom: 0;
     }
   }
 }

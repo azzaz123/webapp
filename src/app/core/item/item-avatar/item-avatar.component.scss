@@ -2,7 +2,6 @@
 
 div {
   @include square-avatar($item-avatar-size);
-  float: left;
   margin-right: $item-avatar-margin;
   display: flex;
   position: relative;
@@ -14,6 +13,18 @@ div {
   }
   &.big {
     @include square-avatar($item-avatar-size-big);
+  }
+  &.full {
+    width: 100%;
+    padding-top: 100%;
+    span {
+      position: absolute;
+      top: $spacing-S;
+      left: $spacing-S;
+      &.overlay {
+        background: none;
+      }
+    }
   }
 }
 
