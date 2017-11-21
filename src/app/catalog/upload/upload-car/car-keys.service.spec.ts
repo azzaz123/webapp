@@ -31,7 +31,7 @@ describe('CarKeysService', () => {
   describe('getTypes', () => {
     let response: IOption[];
     beforeEach(fakeAsync(() => {
-      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_BODY_TYPES_RESPONSE)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_BODY_TYPES_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       service.getTypes().subscribe((r: IOption[]) => {
         response = r;
@@ -39,10 +39,26 @@ describe('CarKeysService', () => {
     }));
     it('should call endpoint', () => {
       expect(http.get).toHaveBeenCalledWith('api/v3/cars/keys/bodytype', {language: 'en'});
-
     });
     it('should return options', () => {
       expect(response).toEqual(CAR_BODY_TYPES);
+    });
+  });
+
+  describe('getTypeName', () => {
+    let response: string;
+    beforeEach(fakeAsync(() => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_BODY_TYPES_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getTypeName('small_car').subscribe((r: string) => {
+        response = r;
+      });
+    }));
+    it('should call endpoint', () => {
+      expect(http.get).toHaveBeenCalledWith('api/v3/cars/keys/bodytype', {language: 'en'});
+    });
+    it('should return the filtered text', () => {
+      expect(response).toEqual('Small');
     });
   });
 });

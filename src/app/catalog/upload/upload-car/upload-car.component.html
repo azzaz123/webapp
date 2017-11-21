@@ -136,7 +136,7 @@
               </label>
               <label class="btn selector">
                 <input type="radio" value="electric-hybrid">
-                <md-icon svgIcon="electric"></md-icon>
+                <md-icon svgIcon="electric-hybrid"></md-icon>
                 <span i18n>Electric</span>
               </label>
               <label class="btn selector">
@@ -219,6 +219,7 @@
         <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
         <span [hidden]="loading" i18n>Post your ad</span>
       </button>
+      <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid" i18n>How does it look?</button>
     </form>
   </div>
 </div>
