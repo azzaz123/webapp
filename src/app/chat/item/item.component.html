@@ -10,7 +10,7 @@
   </div>
   <div class="card-block">
     <h5 class="card-title">{{item.title}}</h5>
-    <div class="float-left price">{{item.salePrice | customCurrency:item.currencyCode:true}}</div>
+    <div class="float-left price">{{item.salePrice | customCurrency:item.currencyCode}}</div>
     <div class="float-right stats">
       <md-icon svgIcon="views"></md-icon>
       {{item.views}}
