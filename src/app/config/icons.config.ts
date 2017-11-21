@@ -103,7 +103,7 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('accept-trades', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/accept-trades.svg'));
   mdIconRegistry.addSvgIcon('others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/others.svg'));
   mdIconRegistry.addSvgIcon('move-shape', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/move-shape.svg'));
-  mdIconRegistry.addSvgIcon('electric', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/electric.svg'));
+  mdIconRegistry.addSvgIcon('electric-hybrid', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/electric.svg'));
   mdIconRegistry.addSvgIcon('manual', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/manual.svg'));
   mdIconRegistry.addSvgIcon('automatic', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/automatic.svg'));
   mdIconRegistry.addSvgIcon('gasoil', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/gasoil.svg'));
@@ -132,4 +132,12 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('cm-velocity', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-velocity.svg'));
   mdIconRegistry.addSvgIcon('twitter', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/twitter.svg'));
   mdIconRegistry.addSvgIcon('facebook', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/facebook.svg'));
+  mdIconRegistry.addSvgIcon('car-type-small_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/small_car.svg'));
+  mdIconRegistry.addSvgIcon('car-type-coupe_cabrio', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/coupe_cabrio.svg'));
+  mdIconRegistry.addSvgIcon('car-type-sedan', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/sedan.svg'));
+  mdIconRegistry.addSvgIcon('car-type-family_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/family_car.svg'));
+  mdIconRegistry.addSvgIcon('car-type-mini_van', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/mini_van.svg'));
+  mdIconRegistry.addSvgIcon('car-type-4X4', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/4X4.svg'));
+  mdIconRegistry.addSvgIcon('car-type-van', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/van.svg'));
+  mdIconRegistry.addSvgIcon('car-type-others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/others.svg'));
 }

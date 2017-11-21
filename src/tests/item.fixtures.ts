@@ -1,4 +1,8 @@
-import { ConversationUser, ItemResponse, Order, Product, Purchase } from '../app/core/item/item-response.interface';
+import {
+  CarUploadForm,
+  ConversationUser, ItemResponse, ItemUploadForm, Order, Product,
+  Purchase
+} from '../app/core/item/item-response.interface';
 
 export const ITEM_DATA_V3: ItemResponse = {
   'id': '0j2ylvwrpmzy',
@@ -304,7 +308,7 @@ export const ORDER: Order = {
   product_id: '2'
 };
 
-export const UPLOAD_FORM_ITEM_VALUES: any = {
+export const UPLOAD_FORM_ITEM_VALUES: ItemUploadForm = {
   title: 'The title',
   description: 'The description',
   category_id: '12545',
@@ -315,5 +319,27 @@ export const UPLOAD_FORM_ITEM_VALUES: any = {
     exchange_allowed: false,
     shipping_allowed: false
   },
-  delivery_info: {}
+  images: [{'image': true}]
+};
+
+export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
+  title: 'The title',
+  storytelling: 'The description',
+  model: 'model',
+  brand: 'brand',
+  year: 'year',
+  version: 'version',
+  num_seats: 4,
+  body_type: 'body_type',
+  km: 1000,
+  engine: 'engine',
+  gearbox: 'gearbox',
+  category_id: '100',
+  sale_price: 123.45,
+  currency_code: 'EUR',
+  sale_conditions: {
+    fix_price: false,
+    exchange_allowed: false
+  },
+  images: [{'image': true}]
 };

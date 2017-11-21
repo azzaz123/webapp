@@ -10,11 +10,42 @@
       <img [src]="image.preview" />
     </ng-template>
   </ngb-carousel>
-  <p class="price">{{itemPreview.sale_price | currency:itemPreview.currency_code:true}}</p>
+  <p class="price">{{itemPreview.sale_price | customCurrency:itemPreview.currency_code}}</p>
   <h1>{{itemPreview.title}}</h1>
-  <p class="description" [ngClass]="{last: !itemPreview.sale_conditions.fix_price
-      && !itemPreview.sale_conditions.shipping_allowed && !itemPreview.sale_conditions.exchange_allowed}">{{itemPreview.description}}</p>
-  <div class="extras">
+  <p class="car-info" *ngIf="itemPreview.model">
+    {{itemPreview.model}} {{itemPreview.brand}} - {{itemPreview.year}}
+    <span *ngIf="itemPreview.km"> - {{itemPreview.km | number}} km</span>
+  </p>
+  <p class="description" [ngClass]="{last: !hasExtras && !hasCarExtras}">
+    {{itemPreview.description || itemPreview.storytelling}}
+  </p>
+  <div class="extras car-extras" *ngIf="hasCarExtras" [ngClass]="{last: !hasExtras}">
+    <div *ngIf="itemPreview.gearbox">
+      <md-icon [svgIcon]="itemPreview.gearbox"></md-icon>
+      <span [ngSwitch]="itemPreview.gearbox">
+        <ng-container *ngSwitchCase="'manual'" i18n>Manual</ng-container>
+        <ng-container *ngSwitchCase="'automatic'" i18n>Automatic</ng-container>
+      </span>
+    </div>
+    <div *ngIf="itemPreview.body_type && bodyType">
+      <md-icon [svgIcon]="'car-type-' + itemPreview.body_type"></md-icon>
+      <span>{{bodyType}}</span>
+    </div>
+    <div *ngIf="itemPreview.num_seats">
+      <md-icon svgIcon="cm-seats"></md-icon>
+      <span>{{itemPreview.num_seats}}</span>
+    </div>
+    <div *ngIf="itemPreview.engine">
+      <md-icon [svgIcon]="itemPreview.engine"></md-icon>
+      <span [ngSwitch]="itemPreview.engine">
+        <ng-container *ngSwitchCase="'gasoline'" i18n>Petrol</ng-container>
+        <ng-container *ngSwitchCase="'gasoil'" i18n>Diesel</ng-container>
+        <ng-container *ngSwitchCase="'electric-hybrid'" i18n>Electric</ng-container>
+        <ng-container *ngSwitchCase="'others'" i18n>Other...</ng-container>
+      </span>
+    </div>
+  </div>
+  <div class="extras" *ngIf="hasExtras">
     <div *ngIf="itemPreview.sale_conditions.fix_price">
       <md-icon svgIcon="firm-price"></md-icon>
       <span i18n>Firm Price</span>

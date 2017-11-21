@@ -10,6 +10,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 import { MomentModule } from 'angular2-moment';
+import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -20,9 +22,10 @@ describe('CatalogItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CatalogItemComponent],
+      declarations: [CatalogItemComponent, CustomCurrencyPipe],
       imports: [MomentModule],
       providers: [
+        DecimalPipe,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {

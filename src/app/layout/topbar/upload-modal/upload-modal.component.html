@@ -1,18 +1,32 @@
-<div class="header">
+<div class="modal-body">
   <div class="modal-close light" (click)="activeModal.dismiss()">
     <md-icon svgIcon="cross"></md-icon>
   </div>
-</div>
-<div class="modal-body">
-  <h1 i18n>List it, list _ _!</h1>
-  <p i18n>We are loading at 80% (it is almost done) the integration of the product listing functionality in our website. Meanwhile, you can do it from the app.</p>
-  <p class="small" i18n>Download wallapop now in:</p>
-  <a class="btn-mobile ios" href="https://app.adjust.com/rh6uzq?&_pid=web&_me=www&campaign=desktop_footer" target="_blank">
-    <md-icon svgIcon="ios"></md-icon>
-    Apple Store
-  </a>
-  <a class="btn-mobile android" href="https://app.adjust.com/dst7wh?&_pid=web&_me=www&campaign=desktop_footer" target="_blank">
-    <md-icon svgIcon="android"></md-icon>
-    Google Play
-  </a>
+  <p i18n="modal|title">What are you selling?</p>
+  <div class="types">
+    <a class="type" [routerLink]="['/catalog/upload/100']" (click)="activeModal.close()">
+      <div class="square">
+        <md-icon svgIcon="herocat-cars"></md-icon>
+      </div>
+      <span i18n>Cars</span>
+    </a>
+    <a class="type" [routerLink]="['/catalog/upload/13000']" (click)="activeModal.close()">
+      <div class="square">
+        <md-icon svgIcon="herocat-real-estate"></md-icon>
+      </div>
+      <span i18n>Real Estate</span>
+    </a>
+    <a class="type" [routerLink]="['/catalog/upload/13200']" (click)="activeModal.close()">
+      <div class="square">
+        <md-icon svgIcon="herocat-services"></md-icon>
+      </div>
+      <span i18n>Services</span>
+    </a>
+    <a class="type" [routerLink]="['/catalog/upload']" (click)="activeModal.close()">
+      <div class="square">
+        <md-icon svgIcon="herocat-consumer-goods"></md-icon>
+      </div>
+      <span i18n>Consumer goods</span>
+    </a>
+  </div>
 </div>

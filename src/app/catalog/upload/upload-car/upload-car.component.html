@@ -14,7 +14,7 @@
             <div class="form-group">
               <label for="brand" i18n>Make</label>
               <ng-select i18n-placeholder placeholder="E.g. Seat" class="form-control" formControlName="brand" id="brand"
-                         [ngbPopover]="coachmarkMake" #p="ngbPopover" triggers="click" (blur)="p.close()"
+                         [ngbPopover]="coachmarkMake" #p1="ngbPopover" triggers="manual" (opened)="p1.open()" (closed)="p1.close()"
                          [options]="brands" (selected)="getModels($event.value)"></ng-select>
               <ng-template #coachmarkMake>
                 <md-icon svgIcon="cm-car"></md-icon>
@@ -27,7 +27,7 @@
             <div class="form-group">
               <label for="model" i18n>Model</label>
               <ng-select i18n-placeholder placeholder="E.g. Ibiza" class="form-control" formControlName="model" id="model"
-                         [ngbPopover]="coachmarkMake" #p="ngbPopover" triggers="click" (blur)="p.close()"
+                         [ngbPopover]="coachmarkMake" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
                          [options]="models" (selected)="getYears($event.value)"></ng-select>
             </div>
           </div>
@@ -56,7 +56,7 @@
             <div class="form-group">
               <label for="currency" i18n>Currency</label>
               <ng-select class="form-control" formControlName="currency_code" id="currency" [options]="currencies"
-                         [ngbPopover]="coachmarkPrice" #p="ngbPopover" triggers="click" (blur)="p.close()"
+                         [ngbPopover]="coachmarkPrice" #p3="ngbPopover" triggers="manual" (opened)="p3.open()" (closed)="p3.close()"
                          noFilter="10"></ng-select>
             </div>
           </div>
@@ -105,7 +105,7 @@
               <label for="carType" i18n>Type of car</label>
               <ng-select i18n-placeholder placeholder="Small, coupé, sedan, family, van..."
                          class="form-control" formControlName="body_type" id="carType" [options]="carTypes"
-                         [ngbPopover]="coachmarkType" #p="ngbPopover" triggers="click" (blur)="p.close()"
+                         [ngbPopover]="coachmarkType" #p4="ngbPopover" triggers="manual" (opened)="p4.open()" (closed)="p4.close()"
                          noFilter="20"></ng-select>
               <ng-template #coachmarkType>
                 <md-icon svgIcon="cm-velocity"></md-icon>
@@ -136,7 +136,7 @@
               </label>
               <label class="btn selector">
                 <input type="radio" value="electric-hybrid">
-                <md-icon svgIcon="electric"></md-icon>
+                <md-icon svgIcon="electric-hybrid"></md-icon>
                 <span i18n>Electric</span>
               </label>
               <label class="btn selector">
@@ -183,17 +183,12 @@
         </div>
       </div>
       <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
-        <h2 i18n>Photos</h2>
+        <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos</h2>
         <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
-                       [ngbPopover]="coachmarkDrag" triggers="mouseenter:mouseleave"
                        formControlName="images" [maxUploads]="8"></tsl-drop-area>
         <ng-template #coachmarkPictures>
-          <md-icon svgIcon="cm-camera"></md-icon>
-          <div i18n>You can drag and drop your photos here. Max 4MB.</div>
-        </ng-template>
-        <ng-template #coachmarkDrag>
           <md-icon svgIcon="cm-drag"></md-icon>
-          <div i18n>Select and drag to change the order.</div>
+          <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 4MB.</div>
         </ng-template>
       </div>
       <div class="box" [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">
@@ -219,6 +214,7 @@
         <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
         <span [hidden]="loading" i18n>Post your ad</span>
       </button>
+      <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid" i18n>How does it look?</button>
     </form>
   </div>
 </div>
