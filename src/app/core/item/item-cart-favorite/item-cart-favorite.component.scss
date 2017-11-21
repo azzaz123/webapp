@@ -25,6 +25,7 @@ tsl-card {
     position: relative;
 
     .cart-footer-icon {
+      position: absolute;
       g {
         stroke: $color-favorite-icon-stroke;
       }
@@ -35,11 +36,7 @@ tsl-card {
     }
 
     .cart-footer-text {
-      position: absolute;
-      width: 100%;
       text-align: center;
-      left: 0;
-      user-select: none;
     }
 
     &:hover, &:focus {
