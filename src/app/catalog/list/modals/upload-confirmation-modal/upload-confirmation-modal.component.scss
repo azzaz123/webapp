@@ -86,5 +86,11 @@ button {
     md-icon {
       @include square(18px);
     }
+    &:hover {
+      background-color: #d8dbdd;
+      md-icon /deep/ path {
+        fill: #a3afb5;
+      }
+    }
   }
 }
