@@ -43,8 +43,9 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit() {
     this.options = {
-      allowedExtensions: ['jpg', 'png'],
-      maxUploads: this.maxUploads
+      allowedExtensions: ['jpg', 'jpeg'],
+      maxUploads: this.maxUploads,
+      maxSize: 10485760 // 10 MB
     };
     this.placeholders = _.range(this.maxUploads);
     this.uploadEvent.subscribe((event: UploadEvent) => {
