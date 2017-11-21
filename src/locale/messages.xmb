@@ -118,45 +118,55 @@
   <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:14</source>Expired</msg>
   <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:18</source>1 item selected</msg>
   <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:19</source><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
-  <msg id="8099925907947331844"><source>app/catalog/upload/upload-car/upload-car.component.ts:11</source>Product info</msg>
-  <msg id="2559885490456050359"><source>app/catalog/upload/upload-car/upload-car.component.ts:15</source>Brand</msg>
-  <msg id="6696117550644685907"><source>app/catalog/upload/upload-car/upload-car.component.ts:16</source>The brand of your vehicle</msg>
-  <msg id="1141886420788473147"><source>app/catalog/upload/upload-car/upload-car.component.ts:23</source>Model</msg>
-  <msg id="3181378570807916438"><source>app/catalog/upload/upload-car/upload-car.component.ts:24</source>Model of your vehicle</msg>
-  <msg id="1464072562214937907"><source>app/catalog/upload/upload-car/upload-car.component.ts:32</source>Year</msg>
-  <msg id="6998857591604591189"><source>app/catalog/upload/upload-car/upload-car.component.ts:33</source>Year of fabrication</msg>
-  <msg id="8894377483833272091"><source>app/catalog/upload/upload-car/upload-car.component.ts:39</source><source>app/catalog/upload/upload.component.ts:31</source>Price</msg>
-  <msg id="949671553895989504"><source>app/catalog/upload/upload-car/upload-car.component.ts:40</source>Fair price</msg>
-  <msg id="4327471061205783634"><source>app/catalog/upload/upload-car/upload-car.component.ts:47</source><source>app/catalog/upload/upload.component.ts:44</source>Currency</msg>
-  <msg id="5701618810648052610"><source>app/catalog/upload/upload-car/upload-car.component.ts:56</source>Title</msg>
-  <msg id="3322682308330601072"><source>app/catalog/upload/upload-car/upload-car.component.ts:58</source><source>app/catalog/upload/upload.component.ts:15</source>What are you selling?</msg>
-  <msg id="2398655724453891613"><source>app/catalog/upload/upload-car/upload-car.component.ts:64</source>Additional info</msg>
-  <msg id="2724055831234181057"><source>app/catalog/upload/upload-car/upload-car.component.ts:68</source>Version</msg>
-  <msg id="3298775187721798973"><source>app/catalog/upload/upload-car/upload-car.component.ts:69</source>Version of your vehicle</msg>
-  <msg id="764453674498400202"><source>app/catalog/upload/upload-car/upload-car.component.ts:74</source>Number of seats</msg>
-  <msg id="116624970072107738"><source>app/catalog/upload/upload-car/upload-car.component.ts:75</source>Number of seats of your vehicle</msg>
-  <msg id="3906132697662863149"><source>app/catalog/upload/upload-car/upload-car.component.ts:82</source>Car Type</msg>
-  <msg id="4380994160731016805"><source>app/catalog/upload/upload-car/upload-car.component.ts:83</source>Car type of your vehicle</msg>
-  <msg id="5430617499425264578"><source>app/catalog/upload/upload-car/upload-car.component.ts:89</source>Kilometers</msg>
-  <msg id="1009834073649854297"><source>app/catalog/upload/upload-car/upload-car.component.ts:90</source>Kilometers of your vehicle</msg>
-  <msg id="8660789270969799469"><source>app/catalog/upload/upload-car/upload-car.component.ts:96</source>Engine</msg>
-  <msg id="6639719078865772828"><source>app/catalog/upload/upload-car/upload-car.component.ts:101</source>Gasoline</msg>
-  <msg id="4315897679023301428"><source>app/catalog/upload/upload-car/upload-car.component.ts:106</source>Gasoil</msg>
-  <msg id="3250359485015452319"><source>app/catalog/upload/upload-car/upload-car.component.ts:111</source>Electric</msg>
-  <msg id="7040288612202036661"><source>app/catalog/upload/upload-car/upload-car.component.ts:116</source>Others</msg>
-  <msg id="2911671916474065765"><source>app/catalog/upload/upload-car/upload-car.component.ts:121</source>Gear box</msg>
-  <msg id="2233560223291461480"><source>app/catalog/upload/upload-car/upload-car.component.ts:126</source>Manual</msg>
-  <msg id="810888510148304696"><source>app/catalog/upload/upload-car/upload-car.component.ts:131</source>Automatic</msg>
-  <msg id="4902817035128594900"><source>app/catalog/upload/upload-car/upload-car.component.ts:139</source><source>app/catalog/upload/upload.component.ts:71</source>Description</msg>
-  <msg id="8116946231188094802"><source>app/catalog/upload/upload-car/upload-car.component.ts:141</source>Tell us more about what you are selling...</msg>
-  <msg id="2977636378219052362"><source>app/catalog/upload/upload-car/upload-car.component.ts:147</source>Pictures</msg>
-  <msg id="4756709840226839708"><source>app/catalog/upload/upload-car/upload-car.component.ts:152</source><source>app/catalog/upload/upload.component.ts:99</source>Extras</msg>
-  <msg id="7026441111090698984"><source>app/catalog/upload/upload-car/upload-car.component.ts:156</source><source>app/catalog/upload/preview-modal/preview-modal.component.ts:20</source><source>app/catalog/upload/upload.component.ts:103</source>Firm Price</msg>
-  <msg id="1292901362619782619"><source>app/catalog/upload/upload-car/upload-car.component.ts:161</source><source>app/catalog/upload/preview-modal/preview-modal.component.ts:28</source><source>app/catalog/upload/upload.component.ts:113</source>Accept trades</msg>
-  <msg id="2867535118804337378"><source>app/catalog/upload/upload-car/upload-car.component.ts:167</source>List car</msg>
+  <msg id="243983274320667129"><source>app/catalog/upload/upload-car/upload-car.component.ts:11</source><source>app/catalog/upload/upload.component.ts:11</source>Information about your item</msg>
+  <msg id="1511766279515968094"><source>app/catalog/upload/upload-car/upload-car.component.ts:15</source>Make</msg>
+  <msg id="3937675945889395823"><source>app/catalog/upload/upload-car/upload-car.component.ts:16</source>E.g. Seat</msg>
+  <msg id="8348894888237155755"><source>app/catalog/upload/upload-car/upload-car.component.ts:21</source>The basics: make and model.</msg>
+  <msg id="1141886420788473147"><source>app/catalog/upload/upload-car/upload-car.component.ts:28</source>Model</msg>
+  <msg id="2547360803785971520"><source>app/catalog/upload/upload-car/upload-car.component.ts:29</source>E.g. Ibiza</msg>
+  <msg id="1464072562214937907"><source>app/catalog/upload/upload-car/upload-car.component.ts:38</source>Year</msg>
+  <msg id="4990206185334832640"><source>app/catalog/upload/upload-car/upload-car.component.ts:39</source>Number plate</msg>
+  <msg id="8894377483833272091"><source>app/catalog/upload/upload-car/upload-car.component.ts:45</source><source>app/catalog/upload/upload.component.ts:31</source>Price</msg>
+  <msg id="4614938265782792299"><source>app/catalog/upload/upload-car/upload-car.component.ts:46</source>With love...</msg>
+  <msg id="8975942198634017778"><source>app/catalog/upload/upload-car/upload-car.component.ts:51</source>Tell us how much you want for it: we won&apos;t tell anyone ;)</msg>
+  <msg id="4327471061205783634"><source>app/catalog/upload/upload-car/upload-car.component.ts:57</source><source>app/catalog/upload/upload.component.ts:44</source>Currency</msg>
+  <msg id="5701618810648052610"><source>app/catalog/upload/upload-car/upload-car.component.ts:67</source>Title</msg>
+  <msg id="1502561792056358737"><source>app/catalog/upload/upload-car/upload-car.component.ts:69</source>This is what you will see in the ad</msg>
+  <msg id="2374867267744164173"><source>app/catalog/upload/upload-car/upload-car.component.ts:74</source>Go for it! The more you say the better chance they have of finding of reaching you.</msg>
+  <msg id="7367942639781560564"><source>app/catalog/upload/upload-car/upload-car.component.ts:81</source>Relevant information</msg>
+  <msg id="2724055831234181057"><source>app/catalog/upload/upload-car/upload-car.component.ts:85</source>Version</msg>
+  <msg id="8422000809081880557"><source>app/catalog/upload/upload-car/upload-car.component.ts:86</source>Is is a particular model or series?</msg>
+  <msg id="764453674498400202"><source>app/catalog/upload/upload-car/upload-car.component.ts:91</source>Number of seats</msg>
+  <msg id="4486490403948802296"><source>app/catalog/upload/upload-car/upload-car.component.ts:92</source>Add a number</msg>
+  <msg id="988756868045673037"><source>app/catalog/upload/upload-car/upload-car.component.ts:97</source>Can all your family fit in there or just the dog?</msg>
+  <msg id="2068484566855301885"><source>app/catalog/upload/upload-car/upload-car.component.ts:105</source>Type of car</msg>
+  <msg id="980829858200282983"><source>app/catalog/upload/upload-car/upload-car.component.ts:106</source>Small, coupé, sedan, family, van...</msg>
+  <msg id="3817917717199474011"><source>app/catalog/upload/upload-car/upload-car.component.ts:112</source>Is it for getting around at the weekend or for everyday use?</msg>
+  <msg id="5430617499425264578"><source>app/catalog/upload/upload-car/upload-car.component.ts:118</source>Kilometers</msg>
+  <msg id="1955180263634698200"><source>app/catalog/upload/upload-car/upload-car.component.ts:119</source>Exact kilometers</msg>
+  <msg id="8722082542322229824"><source>app/catalog/upload/upload-car/upload-car.component.ts:125</source>Motor</msg>
+  <msg id="7493844856700299080"><source>app/catalog/upload/upload-car/upload-car.component.ts:130</source>Petrol</msg>
+  <msg id="1763954588841728713"><source>app/catalog/upload/upload-car/upload-car.component.ts:135</source>Diesel</msg>
+  <msg id="3250359485015452319"><source>app/catalog/upload/upload-car/upload-car.component.ts:140</source>Electric</msg>
+  <msg id="8258001121894230907"><source>app/catalog/upload/upload-car/upload-car.component.ts:145</source>Other...</msg>
+  <msg id="6234112553577946460"><source>app/catalog/upload/upload-car/upload-car.component.ts:150</source>It&apos;s important, trust us!</msg>
+  <msg id="3577268427399505619"><source>app/catalog/upload/upload-car/upload-car.component.ts:154</source>Transmission</msg>
+  <msg id="2233560223291461480"><source>app/catalog/upload/upload-car/upload-car.component.ts:159</source>Manual</msg>
+  <msg id="810888510148304696"><source>app/catalog/upload/upload-car/upload-car.component.ts:164</source>Automatic</msg>
+  <msg id="4902817035128594900"><source>app/catalog/upload/upload-car/upload-car.component.ts:172</source><source>app/catalog/upload/upload.component.ts:71</source>Description</msg>
+  <msg id="4908480064602665904"><source>app/catalog/upload/upload-car/upload-car.component.ts:174</source>Tell us more. Used or new? Yellow or red? Has it got any bumps?</msg>
+  <msg id="6236574297221800719"><source>app/catalog/upload/upload-car/upload-car.component.ts:179</source>Don&apos;t leave anything out. The details are key to selling faster.</msg>
+  <msg id="8405309693308875139"><source>app/catalog/upload/upload-car/upload-car.component.ts:186</source><source>app/catalog/upload/upload.component.ts:85</source>Photos</msg>
+  <msg id="4810826740470768717"><source>app/catalog/upload/upload-car/upload-car.component.ts:192</source><source>app/catalog/upload/upload.component.ts:90</source>You can drag and drop your photos here. Max 4MB.</msg>
+  <msg id="6422484577082828397"><source>app/catalog/upload/upload-car/upload-car.component.ts:196</source><source>app/catalog/upload/upload.component.ts:94</source>Select and drag to change the order.</msg>
+  <msg id="4756709840226839708"><source>app/catalog/upload/upload-car/upload-car.component.ts:201</source><source>app/catalog/upload/upload.component.ts:99</source>Extras</msg>
+  <msg id="7026441111090698984"><source>app/catalog/upload/upload-car/upload-car.component.ts:205</source><source>app/catalog/upload/preview-modal/preview-modal.component.ts:20</source><source>app/catalog/upload/upload.component.ts:103</source>Firm Price</msg>
+  <msg id="1292901362619782619"><source>app/catalog/upload/upload-car/upload-car.component.ts:210</source><source>app/catalog/upload/preview-modal/preview-modal.component.ts:28</source><source>app/catalog/upload/upload.component.ts:113</source>Accept trades</msg>
+  <msg id="2224879576270143088"><source>app/catalog/upload/upload-car/upload-car.component.ts:215</source>What sellers usually ask...</msg>
+  <msg id="3535134560822959404"><source>app/catalog/upload/upload-car/upload-car.component.ts:220</source>Post your ad</msg>
   <msg id="3088723279740360142"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source>Submit Ad</msg>
   <msg id="8260444303636416171"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:24</source><source>app/catalog/upload/upload.component.ts:108</source>Shipping available</msg>
-  <msg id="5479149141238830712"><source>app/catalog/upload/upload.component.ts:11</source>Information about your item </msg>
+  <msg id="3322682308330601072"><source>app/catalog/upload/upload.component.ts:15</source>What are you selling?</msg>
   <msg id="368364095324628291"><source>app/catalog/upload/upload.component.ts:17</source>In two words...</msg>
   <msg id="5315989345504029668"><source>app/catalog/upload/upload.component.ts:23</source>Don&apos;t make errors so that people will find you easily.</msg>
   <msg id="6649229882788371997"><source>app/catalog/upload/upload.component.ts:32</source>(don&apos;t go crazy)</msg>
@@ -164,13 +174,9 @@
   <msg id="1806667489382256324"><source>app/catalog/upload/upload.component.ts:52</source><source>app/catalog/upload/upload.component.ts:53</source>Category</msg>
   <msg id="5433438112560949935"><source>app/catalog/upload/upload.component.ts:73</source>Add relevant information such as condition, model, color...</msg>
   <msg id="7493287338252374869"><source>app/catalog/upload/upload.component.ts:78</source>Every detail helps: so tell us more!</msg>
-  <msg id="8405309693308875139"><source>app/catalog/upload/upload.component.ts:85</source>Photos</msg>
-  <msg id="4810826740470768717"><source>app/catalog/upload/upload.component.ts:90</source>You can drag and drop your photos here. Max 4MB.</msg>
-  <msg id="6422484577082828397"><source>app/catalog/upload/upload.component.ts:94</source>Select and drag to change the order.</msg>
   <msg id="2806917038528218276"><source>app/catalog/upload/upload.component.ts:118</source>FAQ</msg>
   <msg id="5972351850683239127"><source>app/catalog/upload/upload.component.ts:123</source>Shipping</msg>
-  <msg id="8555950532490646539"><source>app/catalog/upload/upload.component.ts:124</source>If you are going to ship with wallapop, we need to know hou much does your product weight.</msg>
-  <msg id="6390066056926289377"><source>app/catalog/upload/upload.component.ts:129</source><ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>kg Max<ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></msg>
+  <msg id="3007176586514020023"><source>app/catalog/upload/upload.component.ts:124</source>Tell us how much it weighs.</msg>
   <msg id="6622336784189066984"><source>app/catalog/upload/upload.component.ts:136</source>Post Ad</msg>
   <msg id="4138346261331244869"><source>app/catalog/upload/upload.component.ts:138</source>How does it look?</msg>
   <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
@@ -187,11 +193,8 @@
   <msg id="3448462145758383019"><source>app/catalog/list/selected-items/selected-items.component.ts:16</source>Total</msg>
   <msg id="8743988303207163578"><source>app/catalog/list/selected-items/selected-items.component.ts:32</source>Feature Now</msg>
   <msg id="5112037422043971210"><source>app/catalog/upload/drop-area/drop-area.component.ts:5</source>Drop here your files to upload as a product photo</msg>
-  <msg id="6246188542738847279"><source>app/catalog/upload/drop-area/drop-area.component.ts:11,14</source>
-        You have reached the limit of <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
-        Remove one first if you want to add more.
-      </msg>
-  <msg id="6145572175629887249"><source>app/catalog/upload/drop-area/drop-area.component.ts:31</source>Main photo</msg>
+  <msg id="1417432796546296307"><source>app/catalog/upload/drop-area/drop-area.component.ts:11</source>You have reached the limit of <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Remove one first if you want to add more.</msg>
+  <msg id="6145572175629887249"><source>app/catalog/upload/drop-area/drop-area.component.ts:28</source>Main photo</msg>
   <msg id="3645155297059148047"><source>app/catalog/upload/category-selector/category-selector.component.ts:4</source>Upload new <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>car<ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></msg>
   <msg id="2747754575131239854"><source>app/catalog/upload/category-selector/category-selector.component.ts:5</source>Upload new <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>house<ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></msg>
   <msg id="4281260549834200026"><source>app/catalog/upload/category-selector/category-selector.component.ts:6</source>Upload new <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>service<ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></msg>
