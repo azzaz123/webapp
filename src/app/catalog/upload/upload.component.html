@@ -43,7 +43,7 @@
             <div class="form-group">
               <label for="currency" i18n>Currency</label>
               <ng-select class="form-control" formControlName="currency_code" id="currency"
-                         [ngbPopover]="coachmarkPrice" #p="ngbPopover" triggers="click" (blur)="p.close()"
+                         [ngbPopover]="coachmarkPrice" #p1="ngbPopover" triggers="manual" (opened)="p1.open()" (closed)="p1.close()"
                          [options]="currencies" noFilter="10"></ng-select>
             </div>
           </div>
@@ -52,7 +52,7 @@
               <label for="category" i18n>Category</label>
               <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category"
                          class="form-control" formControlName="category_id"
-                         [ngbPopover]="coachmarkPrice" #p="ngbPopover" triggers="click" (blur)="p.close()"
+                         [ngbPopover]="coachmarkPrice" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
                          id="category" [options]="categories" noFilter="10">
                 <ng-template
                   #optionTemplate
@@ -82,16 +82,11 @@
         </div>
       </div>
       <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
-        <h2 i18n>Photos</h2>
-        <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)" formControlName="images"
-                       [ngbPopover]="coachmarkDrag" triggers="mouseenter:mouseleave"></tsl-drop-area>
+        <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos</h2>
+        <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)" formControlName="images"></tsl-drop-area>
         <ng-template #coachmarkPictures>
-          <md-icon svgIcon="cm-camera"></md-icon>
-          <div i18n>You can drag and drop your photos here. Max 4MB.</div>
-        </ng-template>
-        <ng-template #coachmarkDrag>
           <md-icon svgIcon="cm-drag"></md-icon>
-          <div i18n>Select and drag to change the order.</div>
+          <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 4MB.</div>
         </ng-template>
       </div>
       <div class="box" [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">

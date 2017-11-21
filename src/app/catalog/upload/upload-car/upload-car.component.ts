@@ -25,7 +25,7 @@ export class UploadCarComponent implements OnInit {
   public carTypes: IOption[];
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
-    {value: 'USD', label: '$'}
+    {value: 'GBP', label: '£'}
   ];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();

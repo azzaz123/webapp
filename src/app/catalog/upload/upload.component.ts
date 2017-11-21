@@ -21,7 +21,7 @@ export class UploadComponent implements OnInit, AfterViewChecked {
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
-    {value: 'USD', label: '$'}
+    {value: 'GBP', label: '£'}
   ];
   public deliveryInfo: any = [{
     size: '20x38x40cm',
