@@ -89,7 +89,8 @@
   <msg id="4631973437945665426"><source>app/layout/topbar/topbar.component.ts:51</source>List it</msg>
   <msg id="5371960677736303052"><source>app/layout/topbar/geolocation/geolocation.component.ts:9</source>Where?</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:12</source>Favorites</msg>
+  <msg id="6932865105766151309"><source>app/layout/sidebar/sidebar.component.ts:12</source>Upload</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:19</source>Favorites</msg>
   <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source>Congratulations</msg>
   <msg id="9213119646873056135"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:10</source>Your item(s) have been featured and you can see them in the top position.</msg>
   <msg id="8982629098121976758"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:11</source>Start selling</msg>
@@ -121,15 +122,15 @@
   <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:18</source>1 item selected</msg>
   <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:19</source><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
   <msg id="3088723279740360142"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source>Submit Ad</msg>
-  <msg id="2233560223291461480"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:25</source><source>app/catalog/upload/upload-car/upload-car.component.ts:159</source>Manual</msg>
-  <msg id="810888510148304696"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:26</source><source>app/catalog/upload/upload-car/upload-car.component.ts:164</source>Automatic</msg>
-  <msg id="7493844856700299080"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:40</source><source>app/catalog/upload/upload-car/upload-car.component.ts:130</source>Petrol</msg>
-  <msg id="1763954588841728713"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:41</source><source>app/catalog/upload/upload-car/upload-car.component.ts:135</source>Diesel</msg>
-  <msg id="3250359485015452319"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:42</source><source>app/catalog/upload/upload-car/upload-car.component.ts:140</source>Electric</msg>
-  <msg id="8258001121894230907"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:43</source><source>app/catalog/upload/upload-car/upload-car.component.ts:145</source>Other...</msg>
-  <msg id="7026441111090698984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:50</source><source>app/catalog/upload/upload-car/upload-car.component.ts:200</source><source>app/catalog/upload/upload.component.ts:98</source>Firm Price</msg>
-  <msg id="8260444303636416171"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:54</source><source>app/catalog/upload/upload.component.ts:103</source>Shipping available</msg>
-  <msg id="1292901362619782619"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:58</source><source>app/catalog/upload/upload-car/upload-car.component.ts:205</source><source>app/catalog/upload/upload.component.ts:108</source>Accept trades</msg>
+  <msg id="2233560223291461480"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:26</source><source>app/catalog/upload/upload-car/upload-car.component.ts:159</source>Manual</msg>
+  <msg id="810888510148304696"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:27</source><source>app/catalog/upload/upload-car/upload-car.component.ts:164</source>Automatic</msg>
+  <msg id="7493844856700299080"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:41</source><source>app/catalog/upload/upload-car/upload-car.component.ts:130</source>Petrol</msg>
+  <msg id="1763954588841728713"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:42</source><source>app/catalog/upload/upload-car/upload-car.component.ts:135</source>Diesel</msg>
+  <msg id="3250359485015452319"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:43</source><source>app/catalog/upload/upload-car/upload-car.component.ts:140</source>Electric</msg>
+  <msg id="8258001121894230907"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:44</source><source>app/catalog/upload/upload-car/upload-car.component.ts:145</source>Other...</msg>
+  <msg id="7026441111090698984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:51</source><source>app/catalog/upload/upload-car/upload-car.component.ts:200</source><source>app/catalog/upload/upload.component.ts:98</source>Firm Price</msg>
+  <msg id="8260444303636416171"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:55</source><source>app/catalog/upload/upload.component.ts:103</source>Shipping available</msg>
+  <msg id="1292901362619782619"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:59</source><source>app/catalog/upload/upload-car/upload-car.component.ts:205</source><source>app/catalog/upload/upload.component.ts:108</source>Accept trades</msg>
   <msg id="243983274320667129"><source>app/catalog/upload/upload-car/upload-car.component.ts:11</source><source>app/catalog/upload/upload.component.ts:11</source>Information about your item</msg>
   <msg id="1511766279515968094"><source>app/catalog/upload/upload-car/upload-car.component.ts:15</source>Make</msg>
   <msg id="3937675945889395823"><source>app/catalog/upload/upload-car/upload-car.component.ts:16</source>E.g. Seat</msg>
