@@ -82,13 +82,11 @@
   <msg id="7143579180750436311"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:23</source><source>app/catalog/upload/category-selector/category-selector.component.ts:22</source>Services</msg>
   <msg id="8082411042640087452"><source>app/layout/topbar/upload-modal/upload-modal.component.ts:29</source><source>app/catalog/upload/category-selector/category-selector.component.ts:26</source>Consumer goods</msg>
   <msg id="3734434835434478522"><source>app/layout/topbar/topbar.component.ts:27</source>Wall</msg>
-  <msg id="2127032578120864096"><source>app/layout/topbar/topbar.component.ts:43</source>My Profile</msg>
-  <msg id="3825726981798982045"><source>app/layout/topbar/topbar.component.ts:44</source><source>app/layout/sidebar/sidebar.component.ts:5</source>My Catalog</msg>
-  <msg id="7803450916719855197"><source>app/layout/topbar/topbar.component.ts:45</source> Favorites</msg>
-  <msg id="3797778920049399855"><source>app/layout/topbar/topbar.component.ts:46</source>Logout</msg>
-  <msg id="4631973437945665426"><source>app/layout/topbar/topbar.component.ts:51</source>List it</msg>
+  <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.ts:38</source>My Zone</msg>
+  <msg id="4631973437945665426"><source>app/layout/topbar/topbar.component.ts:43</source>List it</msg>
   <msg id="5371960677736303052"><source>app/layout/topbar/geolocation/geolocation.component.ts:9</source>Where?</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
+  <msg id="3825726981798982045"><source>app/layout/sidebar/sidebar.component.ts:5</source>My Catalog</msg>
   <msg id="6932865105766151309"><source>app/layout/sidebar/sidebar.component.ts:12</source>Upload</msg>
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:19</source>Favorites</msg>
   <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source>Congratulations</msg>
