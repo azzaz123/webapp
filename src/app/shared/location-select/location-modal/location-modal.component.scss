@@ -1,0 +1,28 @@
+@import '../../../../../style/common';
+
+agm-map {
+  height: 500px;
+}
+
+.modal-body {
+  padding: 0;
+  .form-control {
+    position: absolute;
+    top: $spacing;
+    left: $spacing;
+    z-index: 100;
+    width: calc(100% - 115px);
+    &:focus {
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+  }
+  .btn {
+    $height: 38px;
+    position: absolute;
+    top: $spacing;
+    right: $spacing;
+    height: $height;
+    line-height: $height;
+    padding: 0 $spacing-M;
+  }
+}

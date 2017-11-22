@@ -7,6 +7,7 @@ import { AdComponent } from './ad/ad.component';
 import { CustomCurrencyPipe } from './custom-currency/custom-currency.pipe';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
+import { LocationSelectComponent } from './location-select/location-select.component';
 
 @NgModule({
   imports: [
@@ -20,13 +21,15 @@ import { CardModule } from './card/card.module';
     CommonModule,
     SpinnerComponent,
     AdComponent,
-    CustomCurrencyPipe
+    CustomCurrencyPipe,
+    LocationSelectComponent
   ],
   declarations: [
     AdComponent,
     ConfirmationModalComponent,
     SpinnerComponent,
-    CustomCurrencyPipe
+    CustomCurrencyPipe,
+    LocationSelectComponent
   ],
   providers: [
     DecimalPipe

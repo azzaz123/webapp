@@ -1,0 +1,17 @@
+<div class="modal-body">
+  <input placeholder="type an address" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" class="form-control" #search [formControl]="searchControl">
+  <agm-map [latitude]="latitude"
+           [longitude]="longitude"
+           [zoom]="zoom"
+           [scrollwheel]="false"
+           [streetViewControl]="false"
+           [zoomControl]="false"
+  >
+    <agm-marker
+      [latitude]="latitude"
+      [longitude]="longitude"
+      iconUrl="assets/images/map_pointer.png"
+    ></agm-marker>
+  </agm-map>
+  <button type="button" class="btn btn-secondary" (click)="close()">Ok</button>
+</div>
