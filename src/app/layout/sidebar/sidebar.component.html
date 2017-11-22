@@ -7,20 +7,21 @@
 
 <a class="sidebar-section" [routerLink]="['/catalog/upload']" routerLinkActive="active">
   <div class="sidebar-section-circle">
-    <md-icon svgIcon="navigation_catalog"></md-icon>
+    <md-icon svgIcon="navigation_upload"></md-icon>
   </div>
   <h2 i18n>Upload</h2>
 </a>
 
 <a class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active">
   <div class="sidebar-section-circle">
-    <md-icon svgIcon="heart"></md-icon>
+    <md-icon svgIcon="navigation_favorites"></md-icon>
   </div>
   <h2 i18n>Favorites</h2>
 </a>
 
 <a class="sidebar-section logout-item" (click)="logout()">
   <div class="sidebar-section-circle">
-    <md-icon svgIcon="navigation_catalog"></md-icon>
+    <md-icon svgIcon="navigation_logout"></md-icon>
   </div>
+  <h2 i18n>Logout</h2>
 </a>
