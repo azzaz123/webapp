@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProfileModalComponent } from './profile-modal/profile-modal.component';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -8,10 +10,16 @@ import { UserService } from '../../core/user/user.service';
 })
 export class SidebarComponent {
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private modalService: NgbModal) {
   }
 
   public logout() {
     this.userService.logout();
+  }
+
+  public openProfileModal($event: any) {
+    $event.preventDefault();
+    this.modalService.open(ProfileModalComponent, {windowClass: 'profile'});
   }
 }
