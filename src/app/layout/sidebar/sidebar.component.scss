@@ -71,4 +71,13 @@ h2 {
       transition: .15s color ease;
     }
   }
+  &.logout-item {
+    position: absolute;
+    bottom: $spacing;
+    left: $spacing;
+    padding: 0;
+    .sidebar-section-circle {
+      margin: 0;
+    }
+  }
 }
