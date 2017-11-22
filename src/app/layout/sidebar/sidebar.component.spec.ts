@@ -32,15 +32,21 @@ describe('SidebarComponent', () => {
     userService = TestBed.get(UserService);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('logout', () => {
+    const preventDefault = jasmine.createSpy('preventDefault');
+    const event = {preventDefault: preventDefault};
+
     beforeEach(() => {
       spyOn(userService, 'logout');
-      component.logout();
+      component.logout(event);
     });
+
+    it('should prevent event', () => {
+      component.logout(event);
+
+      expect(preventDefault).toHaveBeenCalled();
+    });
+
     it('should logout', () => {
       expect(userService.logout).toHaveBeenCalled();
     });
