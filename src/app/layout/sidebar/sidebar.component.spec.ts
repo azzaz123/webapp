@@ -42,16 +42,22 @@ describe('SidebarComponent', () => {
     modalService = TestBed.get(NgbModal);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('logout', () => {
-    it('should logout', () => {
+    const preventDefault = jasmine.createSpy('preventDefault');
+    const event = {preventDefault: preventDefault};
+
+    beforeEach(() => {
       spyOn(userService, 'logout');
+      component.logout(event);
+    });
 
-      component.logout();
+    it('should prevent event', () => {
+      component.logout(event);
 
+      expect(preventDefault).toHaveBeenCalled();
+    });
+
+    it('should logout', () => {
       expect(userService.logout).toHaveBeenCalled();
     });
   });

@@ -14,7 +14,8 @@ export class SidebarComponent {
               private modalService: NgbModal) {
   }
 
-  public logout() {
+  public logout($event: any) {
+    $event.preventDefault();
     this.userService.logout();
   }
 
