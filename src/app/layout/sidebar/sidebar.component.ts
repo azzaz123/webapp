@@ -11,7 +11,8 @@ export class SidebarComponent {
   constructor(private userService: UserService) {
   }
 
-  public logout() {
+  public logout($event: any) {
+    $event.preventDefault();
     this.userService.logout();
   }
 }
