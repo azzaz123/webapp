@@ -66,12 +66,14 @@
   <translation id="4662379784661986854">Descarga wallapop ahora en:</translation>
   <translation id="4580988005648117665">Buscar</translation>
   <translation id="2127032578120864096">Mi Perfil</translation>
+  <translation id="7803450916719855197">Favoritos</translation>
   <translation id="3797778920049399855">Cerrar sesión</translation>
   <translation id="4631973437945665426">Súbelo</translation>
   <translation id="5371960677736303052">¿Dónde?</translation>
   <translation id="1902100407096396858">Categorías</translation>
   <translation id="3734434835434478522">Muro</translation>
   <translation id="3825726981798982045">Mi Catálogo</translation>
+  <translation id="4085930761302974863">Favoritos</translation>
   <translation id="855735721940425245">¡Enhorabuena!</translation>
   <translation id="9213119646873056135">Tu producto ha sido destacado. Ahora podrás verlo en las primeras posiciones del muro. </translation>
   <translation id="8982629098121976758">A vender</translation>
@@ -171,6 +173,8 @@
   <translation id="447264229278731832">Se borrarán permanentemente los productos.</translation>
   <translation id="8607128558364427780">Reservar productos</translation>
   <translation id="7498605020756139080">Se reservarán los productos.</translation>
+  <translation id="3870006899502072841">Borrar producto de favoritos</translation>
+  <translation id="3870268043917301466">¿Quieres eliminar definitivamente?</translation>
   <translation id="2874924373232293084">Reservar</translation>
   <translation id="596181013964941327">Reactivar</translation>
   <translation id="3762527362373672599">¡Enhorabuena!</translation>
