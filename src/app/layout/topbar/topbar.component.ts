@@ -45,10 +45,6 @@ export class TopbarComponent implements OnInit {
     });
   }
 
-  logout() {
-    this.userService.logout();
-  }
-
   public submitForm() {
     const categoryId = (this.category) ? this.category : this.categoryEl.nativeElement.value;
     const kws = (this.kws) ? this.kws : '';
