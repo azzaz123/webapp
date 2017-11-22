@@ -98,7 +98,7 @@ describe('GeolocationComponent', () => {
       it('the location search field should not have any value', () => {
         spyOn(cookieService, 'get').and.returnValue(undefined);
         fixture.detectChanges();
-        expect(component.model.description).toBeUndefined();
+        expect(component.model.description).toBe('');
       });
     });
 
