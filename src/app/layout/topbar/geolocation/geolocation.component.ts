@@ -15,7 +15,7 @@ export class GeolocationComponent implements OnInit {
   private MIN_LENGTH = 3;
   public focus: boolean;
   @Output() public newCoordinate = new EventEmitter<Coordinate>();
-  public model: any = {};
+  public model: any = {description: ''};
 
   constructor(private geolocationService: GeolocationService, private cookieService: CookieService) { }
 
