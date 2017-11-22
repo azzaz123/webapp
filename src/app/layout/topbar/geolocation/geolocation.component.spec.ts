@@ -36,6 +36,8 @@ describe('GeolocationComponent', () => {
             },
             get(key) {
               return 'Barcelona, Spain';
+            },
+            remove(key) {
             }
           }
         },
@@ -47,8 +49,6 @@ describe('GeolocationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GeolocationComponent);
     component = fixture.componentInstance;
-    component.model = {description: 'Barcelona, Spain'};
-    fixture.detectChanges();
     eventService = TestBed.get(EventService);
     geolocationService = TestBed.get(GeolocationService);
     cookieService = TestBed.get(CookieService);
@@ -90,6 +90,23 @@ describe('GeolocationComponent', () => {
       expect(cookieService.put).toHaveBeenCalledWith('searchPosName', GEOLOCATION_DATA_WEB.item.description, cookieOptions);
 
       jasmine.clock().uninstall();
+    });
+  });
+
+  describe('ngOnInit', (): void => {
+    describe('when cookie searchPosName is not informed', (): void => {
+      it('the location search field should not have any value', () => {
+        spyOn(cookieService, 'get').and.returnValue(undefined);
+        fixture.detectChanges();
+        expect(component.model.description).toBeUndefined();
+      });
+    });
+
+    describe('when cookie searchPosName is informed', (): void => {
+      it('the location search field should have the same value of the cookie', () => {
+        fixture.detectChanges();
+        expect(component.model.description).toBe('Barcelona, Spain');
+      });
     });
   });
 

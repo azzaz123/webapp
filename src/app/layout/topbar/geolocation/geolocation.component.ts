@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../../core/geolocation/geolocation.service';
@@ -15,7 +15,7 @@ export class GeolocationComponent implements OnInit {
   private MIN_LENGTH = 3;
   public focus: boolean;
   @Output() public newCoordinate = new EventEmitter<Coordinate>();
-  @Input() model: any;
+  public model: any = {};
 
   constructor(private geolocationService: GeolocationService, private cookieService: CookieService) { }
 
