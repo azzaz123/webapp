@@ -25,8 +25,6 @@ export class TopbarComponent implements OnInit {
   public model: any;
   public userUrl: string;
   @ViewChild('categoryEl') categoryEl: ElementRef;
-  @ViewChild('latEl') latEl: ElementRef;
-  @ViewChild('lngEl') lngEl: ElementRef;
   @ViewChild('kwsEl') kwsEl: ElementRef;
 
   constructor(public userService: UserService,
@@ -45,16 +43,11 @@ export class TopbarComponent implements OnInit {
     });
   }
 
-  logout() {
-    this.userService.logout();
-  }
-
   public submitForm() {
     const categoryId = (this.category) ? this.category : this.categoryEl.nativeElement.value;
     const kws = (this.kws) ? this.kws : '';
     const verticalId = (categoryId === 100) ? categoryId : '';
-    this.windowRef.nativeWindow.location.href = this.homeUrl + 'search?catIds=' + categoryId + '&lat='
-      +  this.latEl.nativeElement.value + '&lng=' + this.lngEl.nativeElement.value + '&kws=' + kws
+    this.windowRef.nativeWindow.location.href = this.homeUrl + 'search?catIds=' + categoryId + '&kws=' + kws
       + '&verticalId=' + verticalId;
   }
 

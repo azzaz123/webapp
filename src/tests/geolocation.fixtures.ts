@@ -4,6 +4,6 @@ export const GEOLOCATION_DATA_WEB: GeolocationResponse =
 {
   'item': {
     'placeId': 'ChIJ5TCOcRaYpBIRCmZHTz37sEQ',
-    'description': 'Barcelona, España'
+    'description': 'Barcelona, Spain'
   }
 };

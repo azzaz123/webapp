@@ -9,27 +9,6 @@
   }
 }
 
-.sidebar-section {
-  md-icon {
-    g g, g {
-      fill: rgba($white, .5);
-      opacity: 1;
-    }
-  }
-  &.active md-icon {
-    g g, g {
-      fill: $white;
-      opacity: 1;
-    }
-  }
-  &:hover md-icon {
-    g g, g {
-      fill: $white;
-      opacity: 1;
-    }
-  }
-}
-
 .report-ban-reason {
   &.selected md-icon {
     g g, path {
