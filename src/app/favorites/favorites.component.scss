@@ -1,5 +1,8 @@
+@import "../../style/_common.scss";
+
 :host /deep/ .container {
   width: 1200px;
+  margin-bottom: $spacing-L;
 }
 
 :host /deep/ .brick {
