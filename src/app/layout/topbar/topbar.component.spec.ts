@@ -47,8 +47,6 @@ describe('TopbarComponent', () => {
           provide: UserService, useValue: {
             me(): Observable<User> {
               return Observable.of(MOCK_USER);
-            },
-            logout() {
             }
           },
         },
@@ -99,16 +97,6 @@ describe('TopbarComponent', () => {
       component.user = null;
       component.ngOnInit();
       expect(component.user).toBe(MOCK_USER);
-    });
-  });
-
-  describe('logout', () => {
-    beforeEach(() => {
-      spyOn(userService, 'logout');
-      component.logout();
-    });
-    it('should logout', () => {
-      expect(userService.logout).toHaveBeenCalled();
     });
   });
 
