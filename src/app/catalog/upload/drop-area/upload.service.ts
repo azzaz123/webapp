@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { Headers } from '@angular/http';
 import { UploadFile, UploadInput } from 'ngx-uploader';
 import { environment } from '../../../../environments/environment';
 import { AccessTokenService, HttpService } from 'shield';
@@ -19,6 +20,7 @@ export class UploadService {
     } else {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
     }
+    console.log(inputEvent);
     this.uploadInput.emit(inputEvent);
   }
 
@@ -33,7 +35,7 @@ export class UploadService {
           type: 'application/json'
         })
       },
-      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      headers: this.getHeaders(url, values),
       file: file
     };
   }
@@ -48,7 +50,7 @@ export class UploadService {
       data: {
         order: '$order'
       },
-      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      headers: this.getHeaders(url),
     };
     this.uploadInput.emit(inputEvent);
   }
@@ -67,6 +69,15 @@ export class UploadService {
       files: files
     };
     this.uploadInput.emit(inputEvent);
+  }
+
+  private getHeaders(url: string, values?: any): any {
+    const headers: Headers = this.http.getOptions(null, url, 'POST').headers;
+    if (values.location) {
+      headers.append('X-LocationLatitude', values.location.latitude);
+      headers.append('X-LocationLongitude', values.location.longitude);
+    }
+    return headers.toJSON();
   }
 
 }
