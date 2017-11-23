@@ -8,6 +8,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ProfileModalComponent {
 
+  public userUrl: string;
+
   constructor(public activeModal: NgbActiveModal) {
   }
 

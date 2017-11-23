@@ -26,46 +26,9 @@
   }
   p {
     font-size: $font-size;
-    &.small {
-      font-size: $font-size-S;
-      color: $grey-250;
-      margin-top: 40px;
-    }
+    color: $grey-300;
   }
-  .btn-mobile {
-    width: 172px;
-    height: 50px;
-    line-height: 50px;
-    border-radius: $border-radius;
-    border: solid 1px $grey-100;
-    display: inline-block;
-    font-weight: bold;
-    font-size: $font-size-S;
-    text-align: center;
-    color: $corporate;
-    margin-top: $spacing;
-    &:hover, &:focus, &:active {
-      background: $corporate;
-      color: $white;
-      text-decoration: none;
-      border-color: transparent;
-    }
-    md-icon {
-      vertical-align: sub;
-      margin-right: 18px;
-    }
-    &.ios {
-      margin-right: $spacing-L;
-      md-icon {
-        width: 16px;
-        height: 20px;
-      }
-    }
-    &.android {
-      md-icon {
-        width: 17px;
-        height: 19px;
-      }
-    }
+  .btn-primary {
+    margin-top: $spacing-L;
   }
 }

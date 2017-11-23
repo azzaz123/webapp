@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileModalComponent } from './profile-modal/profile-modal.component';
 import { User } from 'shield';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -12,14 +13,19 @@ import { User } from 'shield';
 export class SidebarComponent implements OnInit {
 
   public user: User;
+  public userUrl: string;
 
   constructor(private userService: UserService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
   ngOnInit() {
     this.userService.me().subscribe((user) => {
       this.user = user;
+      if (user) {
+        this.userUrl = user.webLink.replace('http://es.wallapop.com/', environment.siteUrl.replace('es', this.subdomain));
+      }
     });
   }
 
@@ -30,6 +36,7 @@ export class SidebarComponent implements OnInit {
 
   public openProfileModal($event: any) {
     $event.preventDefault();
-    this.modalService.open(ProfileModalComponent, {windowClass: 'profile'});
+    const modalRef: NgbModalRef = this.modalService.open(ProfileModalComponent, {windowClass: 'profile'});
+    modalRef.componentInstance.userUrl = this.userUrl;
   }
 }
