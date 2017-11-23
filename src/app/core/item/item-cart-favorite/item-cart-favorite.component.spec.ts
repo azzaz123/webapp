@@ -77,7 +77,6 @@ describe('ItemCartFavoriteComponent', () => {
 
   describe('goToItemDetail', () => {
     it('should change window url', () => {
-      console.log(windowRef.nativeWindow);
       spyOn(windowRef.nativeWindow, 'open');
       const MOCK_ITEM_URL: string = environment.siteUrl.replace('es', subdomain) + 'item/' + MOCK_ITEM.webSlug;
       component.goToItemDetail();
