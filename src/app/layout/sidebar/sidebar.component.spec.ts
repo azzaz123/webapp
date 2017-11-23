@@ -42,8 +42,6 @@ describe('SidebarComponent', () => {
     });
 
     it('should prevent event', () => {
-      component.logout(event);
-
       expect(preventDefault).toHaveBeenCalled();
     });
 
