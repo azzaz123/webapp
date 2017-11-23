@@ -42,7 +42,7 @@ export class LocationSelectComponent implements OnChanges {
       if (this.control.value) {
         modal.componentInstance.setLocation(this.control.value, this.latitudeControl.value, this.longitudeControl.value);
       }
-      modal.result.then((result: google.maps.places.PlaceResult) => {
+      modal.result.then((result: any) => {
         if (result && result.formatted_address && result.geometry) {
           this.control.setValue(result.formatted_address);
           this.latitudeControl.setValue(result.geometry.location.lat());

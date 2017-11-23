@@ -1,6 +1,5 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MapsAPILoader } from '@agm/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -14,19 +13,18 @@ export class LocationModalComponent implements OnInit {
   public latitude = 41.3968332;
   public longitude = 2.161399699999947;
   public zoom = 12;
-  private result: google.maps.places.PlaceResult;
+  private result: any;
 
   @ViewChild('search') searchElementRef: ElementRef;
 
   constructor(public activeModal: NgbActiveModal,
-              private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone) {
     this.searchControl = new FormControl();
   }
 
   ngOnInit() {
     this.searchElementRef.nativeElement.focus();
-    this.mapsAPILoader.load().then(() => {
+    /*this.mapsAPILoader.load().then(() => {
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['address']
       });
@@ -43,7 +41,7 @@ export class LocationModalComponent implements OnInit {
           }
         });
       });
-    });
+    });*/
   }
 
   public setLocation(address: string, latitude: number, longitude: number) {

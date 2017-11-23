@@ -75,7 +75,12 @@ export class UploadComponent implements OnInit, AfterViewChecked {
         exchange_allowed: false,
         shipping_allowed: false
       }),
-      delivery_info: [null]
+      delivery_info: [null],
+      location: this.fb.group({
+        address: ['', [Validators.required]],
+        latitude: ['', [Validators.required]],
+        longitude: ['', [Validators.required]],
+      }),
     });
     config.placement = 'right';
     config.triggers = 'focus:blur';

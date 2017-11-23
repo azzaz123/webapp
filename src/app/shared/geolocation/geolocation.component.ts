@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Coordinate } from '../../../core/geolocation/address-response.interface';
-import { GeolocationService } from '../../../core/geolocation/geolocation.service';
-import { GeolocationResponse } from '../../../core/geolocation/geolocation-response.interface';
+import { Coordinate } from '../../core/geolocation/address-response.interface';
+import { GeolocationService } from '../../core/geolocation/geolocation.service';
+import { GeolocationResponse } from '../../core/geolocation/geolocation-response.interface';
 import { CookieService } from 'ngx-cookie';
 
 @Component({

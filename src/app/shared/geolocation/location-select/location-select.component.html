@@ -1,0 +1,6 @@
+<div [formGroup]="form">
+  <div [formGroupName]="name">
+    <label for="location">Location</label>
+    <input #input type="text" class="form-control" formControlName="address" id="location" (focus)="open(input)" />
+  </div>
+</div>
