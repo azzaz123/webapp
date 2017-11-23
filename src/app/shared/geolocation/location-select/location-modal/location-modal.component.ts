@@ -1,6 +1,7 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl } from '@angular/forms';
+import { Coordinate } from '../../../../core/geolocation/address-response.interface';
 
 @Component({
   selector: 'tsl-location-modal',
@@ -12,10 +13,10 @@ export class LocationModalComponent implements OnInit {
   public searchControl: FormControl;
   public latitude = 41.3968332;
   public longitude = 2.161399699999947;
+  public coordinates: Coordinate;
   public zoom = 12;
   private result: any;
 
-  @ViewChild('search') searchElementRef: ElementRef;
 
   constructor(public activeModal: NgbActiveModal,
               private ngZone: NgZone) {
@@ -23,25 +24,6 @@ export class LocationModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchElementRef.nativeElement.focus();
-    /*this.mapsAPILoader.load().then(() => {
-      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ['address']
-      });
-      autocomplete.addListener('place_changed', () => {
-        this.ngZone.run(() => {
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-          if (place && place.geometry) {
-            this.result = place;
-            this.latitude = place.geometry.location.lat();
-            this.longitude = place.geometry.location.lng();
-            this.zoom = 16;
-          } else {
-            this.result = null;
-          }
-        });
-      });
-    });*/
   }
 
   public setLocation(address: string, latitude: number, longitude: number) {
@@ -51,8 +33,16 @@ export class LocationModalComponent implements OnInit {
     this.zoom = 16;
   }
 
+  public onCoordinateUpdate(newCoordinate: Coordinate) {
+    this.coordinates = newCoordinate;
+  }
+
   public close() {
-    this.activeModal.close(this.result);
+    this.activeModal.close({
+      latitude: this.coordinates.latitude,
+      longitude: this.coordinates.longitude,
+      name: this.coordinates.name
+    });
   }
 
 }

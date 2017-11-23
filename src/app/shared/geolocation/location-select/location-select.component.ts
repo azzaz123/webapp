@@ -2,6 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { LocationModalComponent } from './location-modal/location-modal.component';
+import { Coordinate } from '../../../core/geolocation/address-response.interface';
 
 @Component({
   selector: 'tsl-location-select',
@@ -35,18 +36,16 @@ export class LocationSelectComponent implements OnChanges {
       element.blur();
       this.control.markAsDirty();
       const modal: NgbModalRef = this.modalService.open(LocationModalComponent, {
-        backdrop: 'static',
-        keyboard: false,
         size: 'lg'
       });
       if (this.control.value) {
         modal.componentInstance.setLocation(this.control.value, this.latitudeControl.value, this.longitudeControl.value);
       }
-      modal.result.then((result: any) => {
-        if (result && result.formatted_address && result.geometry) {
-          this.control.setValue(result.formatted_address);
-          this.latitudeControl.setValue(result.geometry.location.lat());
-          this.longitudeControl.setValue(result.geometry.location.lng());
+      modal.result.then((result: Coordinate) => {
+        if (result) {
+          this.control.setValue(result.name);
+          this.latitudeControl.setValue(result.latitude);
+          this.longitudeControl.setValue(result.longitude);
         }
       }, () => {
       });
