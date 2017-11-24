@@ -1,5 +1,5 @@
 <div class="modal-body">
-  <tsl-geolocation (newCoordinate)="onCoordinateUpdate($event)"></tsl-geolocation>
-
+  <tsl-geolocation class="form-control" (newCoordinate)="onCoordinateUpdate($event)"></tsl-geolocation>
+  <tsl-here-maps [coordinates]="coordinates"></tsl-here-maps>
   <button type="button" class="btn btn-secondary" (click)="close()">Ok</button>
 </div>

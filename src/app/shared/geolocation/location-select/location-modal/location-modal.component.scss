@@ -1,19 +1,30 @@
 @import '../../../../../style/common';
 
-agm-map {
+tsl-here-maps {
   height: 500px;
+  width: 100%;
+  display: block;
 }
 
 .modal-body {
   padding: 0;
-  .form-control {
+  tsl-geolocation {
     position: absolute;
     top: $spacing;
     left: $spacing;
     z-index: 100;
     width: calc(100% - 115px);
-    &:focus {
-      border-color: rgba(0, 0, 0, 0.15);
+    display: block;
+    padding: 0;
+    & /deep/ {
+      .header-location {
+        input {
+          width: 100%;
+        }
+        .dropdown-menu {
+          width: 100%;
+        }
+      }
     }
   }
   .btn {

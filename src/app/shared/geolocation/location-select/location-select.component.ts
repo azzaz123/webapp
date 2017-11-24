@@ -36,7 +36,7 @@ export class LocationSelectComponent implements OnChanges {
       element.blur();
       this.control.markAsDirty();
       const modal: NgbModalRef = this.modalService.open(LocationModalComponent, {
-        size: 'lg'
+        windowClass: 'location'
       });
       if (this.control.value) {
         modal.componentInstance.setLocation(this.control.value, this.latitudeControl.value, this.longitudeControl.value);
