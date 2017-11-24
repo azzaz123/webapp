@@ -35,11 +35,21 @@ export class HereMapsComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.coordinates) {
-      this.map.setCenter({
+      const markerCoordinates = {
         lat: this.coordinates.latitude,
         lng: this.coordinates.longitude
-      });
+      };
+      this.map.setCenter(markerCoordinates);
+      this.addMarker(markerCoordinates);
+      this.map.setZoom(15);
     }
+  }
+
+  private addMarker(coordinates: any) {
+    // const markerIcon = H.map.Icon('/assets/images/user-marker.png');
+    // const marker = new H.map.Marker(coordinates, {icon: markerIcon});
+    const marker = new H.map.Marker(coordinates);
+    this.map.addObject(marker);
   }
 
 }
