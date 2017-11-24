@@ -20,11 +20,12 @@ export class UploadService {
     } else {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
     }
-    console.log(inputEvent);
     this.uploadInput.emit(inputEvent);
   }
 
   private buildUploadEvent(values: any, file: UploadFile, url: string, fieldName: string): UploadInput {
+    const headers: any = this.getHeaders(url, values);
+    delete values.location;
     return {
       type: 'uploadFile',
       url: environment.baseUrl + url,
@@ -35,7 +36,7 @@ export class UploadService {
           type: 'application/json'
         })
       },
-      headers: this.getHeaders(url, values),
+      headers: headers,
       file: file
     };
   }
@@ -74,8 +75,8 @@ export class UploadService {
   private getHeaders(url: string, values?: any): any {
     const headers: Headers = this.http.getOptions(null, url, 'POST').headers;
     if (values.location) {
-      headers.append('X-LocationLatitude', values.location.latitude);
-      headers.append('X-LocationLongitude', values.location.longitude);
+      headers.append('X-LocationLatitude', values.location.latitude.toString());
+      headers.append('X-LocationLongitude', values.location.longitude.toString());
     }
     return headers.toJSON();
   }
