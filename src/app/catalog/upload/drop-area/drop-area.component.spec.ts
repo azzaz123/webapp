@@ -2,13 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DropAreaComponent } from './drop-area.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ErrorsService } from 'shield';
+import { ErrorsService, ITEM_ID } from 'shield';
 import { UploadService } from './upload.service';
 import {
   CAR_ID,
   UPLOAD_FILE,
   UPLOAD_FILE_NAME,
-  UPLOADED_FILE_FIRST,
+  UPLOADED_FILE_FIRST, UPLOADED_FILE_FIRST_ITEM,
   UPLOADED_FILE_OTHER
 } from '../../../../tests/upload.fixtures';
 import { UploadFile, UploadStatus } from 'ngx-uploader';
@@ -52,7 +52,6 @@ describe('DropAreaComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DropAreaComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     uploadService = TestBed.get(UploadService);
     errorsService = TestBed.get(ErrorsService);
   });
@@ -62,12 +61,22 @@ describe('DropAreaComponent', () => {
   });
 
   describe('ngOnInit', () => {
+    it('should set 4 placehodlers', () => {
+      fixture.detectChanges();
+      expect(component.placeholders.length).toBe(4);
+    });
+    it('should set 8 placehodlers', () => {
+      component.maxUploads = 8;
+      fixture.detectChanges();
+      expect(component.placeholders.length).toBe(8);
+    });
     it('should subscribe to uploadEvent and call createItemWithFirstImage', () => {
       const VALUES = {
         test: 'test'
       };
       component.files = [UPLOAD_FILE];
       spyOn(uploadService, 'createItemWithFirstImage');
+      fixture.detectChanges();
       component.uploadEvent.emit({
         type: 'create',
         values: VALUES
@@ -171,15 +180,30 @@ describe('DropAreaComponent', () => {
     describe('with response 200', () => {
       describe('first image upload', () => {
         describe('with many images', () => {
-          it('should set itemId and call uploadOtherImages', () => {
-            component.files = [UPLOAD_FILE, UPLOAD_FILE];
-            spyOn(uploadService, 'uploadOtherImages');
-            component['onUploadDone']({
-              type: 'done',
-              file: UPLOADED_FILE_FIRST
+          describe('normal item', () => {
+            it('should set itemId and call uploadOtherImages', () => {
+              component.files = [UPLOAD_FILE, UPLOAD_FILE];
+              spyOn(uploadService, 'uploadOtherImages');
+              component['onUploadDone']({
+                type: 'done',
+                file: UPLOADED_FILE_FIRST_ITEM
+              });
+              expect(component['itemId']).toBe(ITEM_ID);
+              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(ITEM_ID, '');
             });
-            expect(component['itemId']).toBe(CAR_ID);
-            expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(CAR_ID);
+          });
+          describe('car item', () => {
+            it('should set itemId and call uploadOtherImages', () => {
+              component.files = [UPLOAD_FILE, UPLOAD_FILE];
+              component.maxUploads = 8;
+              spyOn(uploadService, 'uploadOtherImages');
+              component['onUploadDone']({
+                type: 'done',
+                file: UPLOADED_FILE_FIRST
+              });
+              expect(component['itemId']).toBe(CAR_ID);
+              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(CAR_ID, '/cars');
+            });
           });
         });
         describe('with only one image', () => {

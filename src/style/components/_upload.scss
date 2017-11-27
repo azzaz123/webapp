@@ -1,12 +1,6 @@
 .upload-page {
 
   h1 {
-    font-weight: bold;
-    font-size: 18px;
-    letter-spacing: .5px;
-    margin: 0;
-    margin-bottom: $spacing;
-    color: $grey-900;
     .upload-close-icon {
       float: right;
       md-icon {
@@ -27,6 +21,11 @@
       color: $corporate;
       font-size: $font-size-S;
       margin-bottom: $spacing;
+    }
+    p {
+      color: $grey-500;
+      font-size: $font-size-S;
+      line-height: 1.29;
     }
   }
 
@@ -90,11 +89,46 @@
         width: 26px;
       }
     }
+    &.shipping-options {
+      h2 {
+        margin-bottom: $spacing-S;
+      }
+      .selector {
+        margin-left: 10px;
+        margin-right: 40px;
+        md-icon, svg {
+          width: 30px;
+          height: 34px;
+        }
+        span {
+          text-transform: none;
+          font-weight: normal;
+          font-size: $font-size-XS;
+          letter-spacing: .6px;
+          line-height: 17px;
+          margin-left: -10px;
+          margin-right: -10px;
+          margin-top: 0;
+          strong {
+            font-weight: bold;
+          }
+        }
+      }
+    }
   }
 
-  .btn-primary {
+  .btn-primary, .btn-link {
     padding: 14px 50px;
     margin-bottom: 65px;
     margin-top: $spacing-L - $spacing;
+  }
+  .btn-link {
+    color: $corporate;
+    &[disabled] {
+      opacity: .5;
+    }
+    &:focus {
+      box-shadow: none;
+    }
   }
 }

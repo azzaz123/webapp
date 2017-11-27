@@ -6,34 +6,43 @@ import { AccessTokenService, HttpService } from 'shield';
 @Injectable()
 export class UploadService {
 
-  private API_URL: string = environment.baseUrl + 'api/v3/items/cars';
+  private API_URL: string = 'api/v3/items';
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
   constructor(private accessTokenService: AccessTokenService, private http: HttpService) {
   }
 
   public createItemWithFirstImage(values: any, file: UploadFile) {
-    const inputEvent: UploadInput = {
-      type: 'uploadFile',
-      url: this.API_URL,
-      method: 'POST',
-      fieldName: 'image',
-      data: {
-        item_car: new Blob([JSON.stringify(values)], {
-          type: 'application/json'
-        })
-      },
-      headers: this.http.getOptions(null, this.API_URL, 'POST').headers.toJSON(),
-      file: file
-    };
+    let inputEvent: UploadInput;
+    if (values.category_id === '100') {
+      inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/cars', 'item_car');
+    } else {
+      inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
+    }
     this.uploadInput.emit(inputEvent);
   }
 
-  public uploadOtherImages(itemId: string) {
-    const url = this.API_URL + '/' + itemId + '/picture';
+  private buildUploadEvent(values: any, file: UploadFile, url: string, fieldName: string): UploadInput {
+    return {
+      type: 'uploadFile',
+      url: environment.baseUrl + url,
+      method: 'POST',
+      fieldName: 'image',
+      data: {
+        [fieldName]: new Blob([JSON.stringify(values)], {
+          type: 'application/json'
+        })
+      },
+      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      file: file
+    };
+  }
+
+  public uploadOtherImages(itemId: string, extraPath: string) {
+    const url = this.API_URL + extraPath + '/' + itemId + '/picture';
     const inputEvent: UploadInput = {
       type: 'uploadAll',
-      url: url,
+      url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
       data: {
