@@ -4,6 +4,7 @@ import { LocationSelectComponent } from './location-select.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures';
+import { CookieService } from 'ngx-cookie';
 
 describe('LocationSelectComponent', () => {
   let component: LocationSelectComponent;
@@ -13,6 +14,7 @@ describe('LocationSelectComponent', () => {
   const componentInstance: any = {
     init: jasmine.createSpy('init')
   };
+  let cookieService: CookieService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,12 +24,18 @@ describe('LocationSelectComponent', () => {
       providers: [
         {
           provide: NgbModal, useValue: {
-            open() {
-              return {
-                componentInstance: componentInstance,
-                result: Promise.resolve(USER_LOCATION_COORDINATES)
-              }
+          open() {
+            return {
+              componentInstance: componentInstance,
+              result: Promise.resolve(USER_LOCATION_COORDINATES)
             }
+          }
+        }
+        },
+        {
+          provide: CookieService, useValue: {
+          get() {
+          }
         }
         }
       ],
@@ -50,6 +58,7 @@ describe('LocationSelectComponent', () => {
         longitude: ['', [Validators.required]],
       })
     });
+    cookieService = TestBed.get(CookieService);
     component.name = 'location';
     fixture.detectChanges();
   });
@@ -137,6 +146,17 @@ describe('LocationSelectComponent', () => {
         component.form.get('location.address').setValue(USER_LOCATION_COORDINATES.name);
         component.form.get('location.latitude').setValue(USER_LOCATION_COORDINATES.latitude);
         component.form.get('location.longitude').setValue(USER_LOCATION_COORDINATES.longitude);
+        component.open(element);
+        tick(100);
+        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
+      }));
+    });
+    describe('with cookies', () => {
+      it('should set coordinates from cookie', fakeAsync(() => {
+        spyOn(cookieService, 'get').and.returnValues(
+          USER_LOCATION_COORDINATES.latitude,
+          USER_LOCATION_COORDINATES.longitude,
+          USER_LOCATION_COORDINATES.name);
         component.open(element);
         tick(100);
         expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);

@@ -3,6 +3,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { LocationModalComponent } from './location-modal/location-modal.component';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { CookieService } from 'ngx-cookie';
 
 @Component({
   selector: 'tsl-location-select',
@@ -17,7 +18,8 @@ export class LocationSelectComponent implements OnChanges {
   private latitudeControl: AbstractControl;
   private longitudeControl: AbstractControl;
 
-  constructor(private modalService: NgbModal) {
+  constructor(private modalService: NgbModal,
+              private cookieService: CookieService) {
   }
 
   ngOnChanges(changes?: any) {
@@ -38,11 +40,20 @@ export class LocationSelectComponent implements OnChanges {
       const modal: NgbModalRef = this.modalService.open(LocationModalComponent, {
         windowClass: 'location'
       });
+      const lat: string = this.cookieService.get('searchLat');
+      const lng: string = this.cookieService.get('searchLng');
+      const name: string = this.cookieService.get('searchPosName');
       if (this.control.value) {
         modal.componentInstance.init({
           latitude: this.latitudeControl.value,
           longitude: this.longitudeControl.value,
           name: this.control.value
+        });
+      } else if (lat && lng) {
+        modal.componentInstance.init({
+          latitude: lat,
+          longitude: lng,
+          name: name
         });
       } else {
         modal.componentInstance.init();
