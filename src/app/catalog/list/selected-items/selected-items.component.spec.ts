@@ -183,7 +183,8 @@ describe('SelectedItemsComponent', () => {
         }
       ];
       component.featureItems();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CATALOG_FEATURED_CHECKOUT, order);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CATALOG_FEATURED_CHECKOUT,
+        { item_id: order[0].item_id, bump_type: order[0].product_id });
     });
   });
 });
