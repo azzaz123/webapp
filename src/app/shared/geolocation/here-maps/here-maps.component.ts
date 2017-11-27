@@ -47,7 +47,6 @@ export class HereMapsComponent implements OnInit, OnChanges {
 
   private addMarker(coordinates: any) {
     const markerIcon = new H.map.Icon('/assets/icons/user-marker.svg');
-    console.log(markerIcon);
     const marker = new H.map.Marker(coordinates, {icon: markerIcon});
     this.map.addObject(marker);
   }
