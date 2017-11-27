@@ -41,7 +41,10 @@ describe('GeolocationService', () => {
       service.geocode('Barcelona').subscribe((data: Coordinate) => {
         result = data;
       });
-      expect(result).toEqual(COORDINATE_DATA_WEB);
+      expect(result).toEqual({
+        ...COORDINATE_DATA_WEB,
+        name: 'Barcelona'
+      });
     })
   });
 
