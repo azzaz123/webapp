@@ -4,6 +4,7 @@ import { UploadService } from './upload.service';
 import { TEST_HTTP_PROVIDERS, AccessTokenService, HttpService, ITEM_ID } from 'shield';
 import { environment } from '../../../../environments/environment';
 import { CAR_ID, UPLOAD_FILE, UPLOAD_FILE_ID } from '../../../../tests/upload.fixtures';
+import { UserService } from '../../../core/user/user.service';
 
 describe('UploadService', () => {
 
@@ -22,6 +23,11 @@ describe('UploadService', () => {
           getOptions() {
             return {}
           }
+        }
+        },
+        {
+          provide: UserService, useValue: {
+            user: {}
         }
         }
       ]

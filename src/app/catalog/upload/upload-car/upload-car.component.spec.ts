@@ -6,12 +6,13 @@ import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
 import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from './car-keys.service';
-import { TEST_HTTP_PROVIDERS, ErrorsService } from 'shield';
+import { TEST_HTTP_PROVIDERS, ErrorsService, MOCK_USER } from 'shield';
 import { Router } from '@angular/router';
 import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../../tests/car.fixtures';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures';
+import { UserService } from '../../../core/user/user.service';
 
 describe('UploadCarComponent', () => {
   let component: UploadCarComponent;
@@ -77,6 +78,13 @@ describe('UploadCarComponent', () => {
               componentInstance: componentInstance
             };
           }
+        }
+        },
+        {
+          provide: UserService, useValue: {
+            me() {
+              return Observable.of(MOCK_USER);
+            }
         }
         }
       ],

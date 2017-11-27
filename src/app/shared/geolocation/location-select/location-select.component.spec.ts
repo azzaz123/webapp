@@ -1,17 +1,18 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { LocationSelectComponent } from './location-select.component';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MockModal } from '../../../../test/utils';
-import { USER_ADDRESS, USER_LATITUDE, USER_LONGITUDE } from '../../../../test/fixtures/user.fixtures';
-import { MAPS_RESULT } from '../../../../test/fixtures/google-maps.fixtures';
+import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures';
 
 describe('LocationSelectComponent', () => {
   let component: LocationSelectComponent;
   let fixture: ComponentFixture<LocationSelectComponent>;
   let fb: FormBuilder;
   let modalService: NgbModal;
+  const componentInstance: any = {
+    setLocation: jasmine.createSpy('setLocation')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,7 +21,14 @@ describe('LocationSelectComponent', () => {
       ],
       providers: [
         {
-          provide: NgbModal, useClass: MockModal
+          provide: NgbModal, useValue: {
+            open() {
+              return {
+                componentInstance: componentInstance,
+                result: Promise.resolve(USER_LOCATION_COORDINATES)
+              }
+            }
+        }
         }
       ],
       declarations: [LocationSelectComponent]
@@ -68,7 +76,7 @@ describe('LocationSelectComponent', () => {
       component.ngOnChanges();
       expect(component.form.get('location.address').dirty).toBeFalsy();
     });
-    it('should not mark address as dirty', () => {
+    it('should mark address as dirty', () => {
       component.form.get('location.address').setValue('test');
       component.ngOnChanges();
       expect(component.form.get('location.address').dirty).toBeTruthy();
@@ -87,9 +95,7 @@ describe('LocationSelectComponent', () => {
     }));
     describe('with result', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(modalService, 'open').and.returnValue({
-          result: Promise.resolve(MAPS_RESULT)
-        });
+        spyOn(modalService, 'open').and.callThrough();
         component.open(element);
         tick(100);
       }));
@@ -103,9 +109,9 @@ describe('LocationSelectComponent', () => {
         expect(modalService.open).toHaveBeenCalled();
       });
       it('should set location', () => {
-        expect(component.form.get('location.address').value).toEqual(USER_ADDRESS);
-        expect(component.form.get('location.latitude').value).toEqual(USER_LATITUDE);
-        expect(component.form.get('location.longitude').value).toEqual(USER_LONGITUDE);
+        expect(component.form.get('location.address').value).toEqual(USER_LOCATION_COORDINATES.name);
+        expect(component.form.get('location.latitude').value).toEqual(USER_LOCATION_COORDINATES.latitude);
+        expect(component.form.get('location.longitude').value).toEqual(USER_LOCATION_COORDINATES.longitude);
       });
     });
     describe('without result', () => {
@@ -117,26 +123,26 @@ describe('LocationSelectComponent', () => {
         tick(100);
       }));
       it('should NOT set location', () => {
-        expect(component.form.get('location.address').value).toEqual('');
-        expect(component.form.get('location.latitude').value).toEqual('');
-        expect(component.form.get('location.longitude').value).toEqual('');
+        expect(component.form.get('location.address').value).toBeUndefined();
+        expect(component.form.get('location.latitude').value).toBeUndefined();
+        expect(component.form.get('location.longitude').value).toBeUndefined();
       });
     });
     describe('with form values', () => {
       it('should set location on modal instance', fakeAsync(() => {
-        let spy = jasmine.createSpy('setLocation');
+        const spy = jasmine.createSpy('setLocation');
         spyOn(modalService, 'open').and.returnValue({
           result: Promise.resolve({}),
           componentInstance: {
             setLocation: spy
           }
         });
-        component.form.get('location.address').setValue(USER_ADDRESS);
-        component.form.get('location.latitude').setValue(USER_LATITUDE);
-        component.form.get('location.longitude').setValue(USER_LONGITUDE);
+        component.form.get('location.address').setValue(USER_LOCATION_COORDINATES.name);
+        component.form.get('location.latitude').setValue(USER_LOCATION_COORDINATES.latitude);
+        component.form.get('location.longitude').setValue(USER_LOCATION_COORDINATES.longitude);
         component.open(element);
         tick(100);
-        expect(spy).toHaveBeenCalledWith(USER_ADDRESS, USER_LATITUDE, USER_LONGITUDE);
+        expect(spy).toHaveBeenCalledWith(USER_LOCATION_COORDINATES.name, USER_LOCATION_COORDINATES.latitude, USER_LOCATION_COORDINATES.longitude);
       }));
     });
 

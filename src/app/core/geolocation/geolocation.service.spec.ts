@@ -38,7 +38,7 @@ describe('GeolocationService', () => {
       let result: Coordinate;
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(COORDINATE_DATA_WEB)});
       spyOn(http, 'getNoBase').and.returnValue(Observable.of(new Response(res)));
-      service.geocode('ChIJ5TCOcRaYpBIRCmZHTz37sEQ').subscribe((data: Coordinate) => {
+      service.geocode('Barcelona').subscribe((data: Coordinate) => {
         result = data;
       });
       expect(result).toEqual(COORDINATE_DATA_WEB);

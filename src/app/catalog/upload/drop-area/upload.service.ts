@@ -28,15 +28,17 @@ export class UploadService {
 
   private buildUploadEvent(values: any, file: UploadFile, url: string, fieldName: string): UploadInput {
     const headers: any = this.getHeaders(url, values);
-    this.userService.user.location = {
-      id: 1,
-      approximated_latitude: values.location.latitude,
-      approximated_longitude: values.location.longitude,
-      city: values.location.name,
-      zip: '12345',
-      approxRadius: 1
-    };
-    delete values.location;
+    if (values.location) {
+      this.userService.user.location = {
+        id: 1,
+        approximated_latitude: values.location.latitude,
+        approximated_longitude: values.location.longitude,
+        city: values.location.name,
+        zip: '12345',
+        approxRadius: 1
+      };
+      delete values.location;
+    }
     return {
       type: 'uploadFile',
       url: environment.baseUrl + url,
@@ -85,7 +87,7 @@ export class UploadService {
 
   private getHeaders(url: string, values?: any): any {
     const headers: Headers = this.http.getOptions(null, url, 'POST').headers;
-    if (values.location) {
+    if (values && values.location) {
       headers.append('X-LocationLatitude', values.location.latitude.toString());
       headers.append('X-LocationLongitude', values.location.longitude.toString());
     }

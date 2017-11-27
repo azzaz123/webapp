@@ -36,7 +36,7 @@ export interface Geometry {
 export interface Coordinate {
   latitude: number;
   longitude: number;
-  name: string;
+  name?: string;
 }
 
 export interface Positioning {

@@ -15,11 +15,8 @@ export class LocationModalComponent implements OnInit {
   public longitude = 2.161399699999947;
   public coordinates: Coordinate;
   public zoom = 12;
-  private result: any;
 
-
-  constructor(public activeModal: NgbActiveModal,
-              private ngZone: NgZone) {
+  constructor(public activeModal: NgbActiveModal) {
     this.searchControl = new FormControl();
   }
 
@@ -39,11 +36,7 @@ export class LocationModalComponent implements OnInit {
 
   public close() {
     if (this.coordinates) {
-      this.activeModal.close({
-        latitude: this.coordinates.latitude,
-        longitude: this.coordinates.longitude,
-        name: this.coordinates.name
-      });
+      this.activeModal.close(this.coordinates);
     } else {
       this.activeModal.dismiss();
     }
