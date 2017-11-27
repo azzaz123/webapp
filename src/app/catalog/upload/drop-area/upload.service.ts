@@ -3,6 +3,7 @@ import { Headers } from '@angular/http';
 import { UploadFile, UploadInput } from 'ngx-uploader';
 import { environment } from '../../../../environments/environment';
 import { AccessTokenService, HttpService } from 'shield';
+import { UserService } from '../../../core/user/user.service';
 
 @Injectable()
 export class UploadService {
@@ -10,7 +11,9 @@ export class UploadService {
   private API_URL: string = 'api/v3/items';
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
-  constructor(private accessTokenService: AccessTokenService, private http: HttpService) {
+  constructor(private accessTokenService: AccessTokenService,
+              private http: HttpService,
+              private userService: UserService) {
   }
 
   public createItemWithFirstImage(values: any, file: UploadFile) {
@@ -25,6 +28,14 @@ export class UploadService {
 
   private buildUploadEvent(values: any, file: UploadFile, url: string, fieldName: string): UploadInput {
     const headers: any = this.getHeaders(url, values);
+    this.userService.user.location = {
+      id: 1,
+      approximated_latitude: values.location.latitude,
+      approximated_longitude: values.location.longitude,
+      city: values.location.name,
+      zip: '12345',
+      approxRadius: 1
+    };
     delete values.location;
     return {
       type: 'uploadFile',
