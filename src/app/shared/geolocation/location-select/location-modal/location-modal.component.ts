@@ -38,11 +38,15 @@ export class LocationModalComponent implements OnInit {
   }
 
   public close() {
-    this.activeModal.close({
-      latitude: this.coordinates.latitude,
-      longitude: this.coordinates.longitude,
-      name: this.coordinates.name
-    });
+    if (this.coordinates) {
+      this.activeModal.close({
+        latitude: this.coordinates.latitude,
+        longitude: this.coordinates.longitude,
+        name: this.coordinates.name
+      });
+    } else {
+      this.activeModal.dismiss();
+    }
   }
 
 }
