@@ -54,6 +54,7 @@ describe('HereMapsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HereMapsComponent);
     component = fixture.componentInstance;
+    component.coordinates = USER_LOCATION_COORDINATES;
     fixture.detectChanges();
   });
 
@@ -74,20 +75,20 @@ describe('HereMapsComponent', () => {
       expect(H.Map).toHaveBeenCalledWith(component.mapEl.nativeElement, 'map');
       expect(Map.setZoom).toHaveBeenCalledWith(5);
       expect(Map.setCenter).toHaveBeenCalledWith({
-        lat: 40.42028,
-        lng: -3.70578
+        lat: USER_LOCATION_COORDINATES.latitude,
+        lng: USER_LOCATION_COORDINATES.longitude
       });
     });
   });
 
   describe('ngOnChanges', () => {
     beforeEach(() => {
-      component.coordinates = USER_LOCATION_COORDINATES;
       spyOn(Map, 'setZoom');
       spyOn(Map, 'setCenter');
       spyOn(map, 'Icon').and.callThrough();
       spyOn(map, 'Marker').and.callThrough();
       spyOn(Map, 'addObject');
+      component.zoom = 15;
       component.ngOnChanges();
     });
     it('should set map center and zoom', () => {

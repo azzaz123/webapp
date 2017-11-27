@@ -54,6 +54,14 @@ describe('GeolocationComponent', () => {
     cookieService = TestBed.get(CookieService);
   });
 
+  describe('ngOnChanges', () => {
+    it('should set model.description with value', () => {
+      component.value = 'Barcelona';
+      component.ngOnChanges();
+      expect(component.model.description).toBe('Barcelona');
+    });
+  });
+
   describe('search', (): void => {
     beforeEach(() => {
       spyOn(geolocationService, 'search').and.callThrough();

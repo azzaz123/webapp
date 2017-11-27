@@ -48,13 +48,19 @@ describe('LocationModalComponent', () => {
     });
   });
 
-  describe('setLocation', () => {
+  describe('init', () => {
     it('should set location', () => {
-      component.setLocation(USER_LOCATION_COORDINATES.name, USER_LOCATION_COORDINATES.latitude, USER_LOCATION_COORDINATES.longitude);
-      expect(component.searchControl.value).toBe(USER_LOCATION_COORDINATES.name);
-      expect(component.latitude).toBe(USER_LOCATION_COORDINATES.latitude);
-      expect(component.longitude).toBe(USER_LOCATION_COORDINATES.longitude);
-      expect(component.zoom).toBe(16);
+      component.init(USER_LOCATION_COORDINATES);
+      expect(component.coordinates).toEqual(USER_LOCATION_COORDINATES);
+      expect(component.zoom).toBe(15);
+    });
+    it('should set default location', () => {
+      component.init();
+      expect(component.coordinates).toEqual({
+        latitude: 40.42028,
+        longitude: -3.70578
+      });
+      expect(component.zoom).toBe(5);
     });
   });
 

@@ -11,7 +11,7 @@ describe('LocationSelectComponent', () => {
   let fb: FormBuilder;
   let modalService: NgbModal;
   const componentInstance: any = {
-    setLocation: jasmine.createSpy('setLocation')
+    init: jasmine.createSpy('init')
   };
 
   beforeEach(async(() => {
@@ -113,11 +113,15 @@ describe('LocationSelectComponent', () => {
         expect(component.form.get('location.latitude').value).toEqual(USER_LOCATION_COORDINATES.latitude);
         expect(component.form.get('location.longitude').value).toEqual(USER_LOCATION_COORDINATES.longitude);
       });
+      it('should call init with no params', () => {
+        expect(componentInstance.init).toHaveBeenCalled();
+      });
     });
     describe('without result', () => {
       beforeEach(fakeAsync(() => {
         spyOn(modalService, 'open').and.returnValue({
-          result: Promise.resolve({})
+          result: Promise.resolve({}),
+          componentInstance: componentInstance
         });
         component.open(element);
         tick(100);
@@ -130,19 +134,12 @@ describe('LocationSelectComponent', () => {
     });
     describe('with form values', () => {
       it('should set location on modal instance', fakeAsync(() => {
-        const spy = jasmine.createSpy('setLocation');
-        spyOn(modalService, 'open').and.returnValue({
-          result: Promise.resolve({}),
-          componentInstance: {
-            setLocation: spy
-          }
-        });
         component.form.get('location.address').setValue(USER_LOCATION_COORDINATES.name);
         component.form.get('location.latitude').setValue(USER_LOCATION_COORDINATES.latitude);
         component.form.get('location.longitude').setValue(USER_LOCATION_COORDINATES.longitude);
         component.open(element);
         tick(100);
-        expect(spy).toHaveBeenCalledWith(USER_LOCATION_COORDINATES.name, USER_LOCATION_COORDINATES.latitude, USER_LOCATION_COORDINATES.longitude);
+        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
       }));
     });
 
