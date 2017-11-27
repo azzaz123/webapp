@@ -10,28 +10,27 @@ import { Coordinate } from '../../../../core/geolocation/address-response.interf
 })
 export class LocationModalComponent implements OnInit {
 
-  public searchControl: FormControl;
-  public latitude = 41.3968332;
-  public longitude = 2.161399699999947;
   public coordinates: Coordinate;
-  public zoom = 12;
+  public zoom;
+  private defaultCoordinates: Coordinate = {
+    latitude: 40.42028,
+    longitude: -3.70578
+  };
 
   constructor(public activeModal: NgbActiveModal) {
-    this.searchControl = new FormControl();
   }
 
   ngOnInit() {
   }
 
-  public setLocation(address: string, latitude: number, longitude: number) {
-    this.searchControl.setValue(address);
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.zoom = 16;
+  public init(coordinates?: Coordinate) {
+    this.coordinates = coordinates ? coordinates : this.defaultCoordinates;
+    this.zoom = coordinates ? 15 : 5;
   }
 
   public onCoordinateUpdate(newCoordinate: Coordinate) {
     this.coordinates = newCoordinate;
+    this.zoom = 15;
   }
 
   public close() {

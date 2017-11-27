@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { makeAnimationEvent } from '@angular/animations/browser/src/render/shared';
 
 @Component({
   selector: 'tsl-here-maps',
@@ -9,13 +10,11 @@ import { Coordinate } from '../../../core/geolocation/address-response.interface
 export class HereMapsComponent implements OnInit, OnChanges {
 
   @Input() coordinates: Coordinate;
+  @Input() zoom = 5;
   @ViewChild('map') mapEl: ElementRef;
   public platform: any;
   private map: any;
-  private defaultCoordinates: any = {
-    lat: 40.42028,
-    lng: -3.70578
-  };
+
 
   constructor() {
     this.platform = new H.service.Platform({
@@ -29,19 +28,20 @@ export class HereMapsComponent implements OnInit, OnChanges {
   ngOnInit() {
     const defaultLayers = this.platform.createDefaultLayers();
     this.map = new H.Map(this.mapEl.nativeElement, defaultLayers.normal.map);
-    this.map.setZoom(5);
-    this.map.setCenter(this.defaultCoordinates);
+    const coordinates = this.getCenter();
+    this.map.setCenter(coordinates);
+    this.map.setZoom(this.zoom);
+    if (this.zoom === 15) {
+      this.addMarker(coordinates);
+    }
   }
 
   ngOnChanges() {
-    if (this.coordinates) {
-      const markerCoordinates = {
-        lat: this.coordinates.latitude,
-        lng: this.coordinates.longitude
-      };
-      this.map.setCenter(markerCoordinates);
-      this.addMarker(markerCoordinates);
-      this.map.setZoom(15);
+    if (this.map) {
+      const coordinates = this.getCenter();
+      this.map.setCenter(coordinates);
+      this.addMarker(coordinates);
+      this.map.setZoom(this.zoom);
     }
   }
 
@@ -49,6 +49,13 @@ export class HereMapsComponent implements OnInit, OnChanges {
     const markerIcon = new H.map.Icon('/assets/icons/user-marker.svg');
     const marker = new H.map.Marker(coordinates, {icon: markerIcon});
     this.map.addObject(marker);
+  }
+
+  private getCenter() {
+    return {
+      lat: this.coordinates.latitude,
+      lng: this.coordinates.longitude
+    };
   }
 
 }

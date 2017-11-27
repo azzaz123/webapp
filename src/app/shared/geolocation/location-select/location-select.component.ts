@@ -39,7 +39,13 @@ export class LocationSelectComponent implements OnChanges {
         windowClass: 'location'
       });
       if (this.control.value) {
-        modal.componentInstance.setLocation(this.control.value, this.latitudeControl.value, this.longitudeControl.value);
+        modal.componentInstance.init({
+          latitude: this.latitudeControl.value,
+          longitude: this.longitudeControl.value,
+          name: this.control.value
+        });
+      } else {
+        modal.componentInstance.init();
       }
       modal.result.then((result: Coordinate) => {
         if (result) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../core/geolocation/geolocation.service';
@@ -10,11 +10,12 @@ import { CookieService } from 'ngx-cookie';
   templateUrl: './geolocation.component.html',
   styleUrls: ['./geolocation.component.scss']
 })
-export class GeolocationComponent implements OnInit {
+export class GeolocationComponent implements OnInit, OnChanges {
 
   private MIN_LENGTH = 3;
   public focus: boolean;
   @Output() public newCoordinate = new EventEmitter<Coordinate>();
+  @Input() value: string;
   public model: any = {description: ''};
 
   constructor(private geolocationService: GeolocationService, private cookieService: CookieService) { }
@@ -23,6 +24,12 @@ export class GeolocationComponent implements OnInit {
     const searchPosName = this.cookieService.get('searchPosName');
     if (searchPosName) {
       this.model.description = searchPosName;
+    }
+  }
+
+  ngOnChanges(changes?: any) {
+    if (this.value) {
+      this.model.description = this.value;
     }
   }
 
