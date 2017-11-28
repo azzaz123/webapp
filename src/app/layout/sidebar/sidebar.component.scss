@@ -24,6 +24,9 @@ $sidebar-section-circle-size: 50px;
     background-color: $corporate !important;
   }
   border-radius: 50%;
+  .profile-item & {
+    background-color: transparent;
+  }
 }
 
 .sidebar-section {
@@ -77,6 +80,17 @@ h2 {
     h2 {
       color: $white;
       transition: .15s color ease;
+    }
+  }
+  &.profile-item {
+    tsl-user-avatar {
+      opacity: .5;
+      transition: .15s opacity ease;
+    }
+    &:hover {
+      tsl-user-avatar {
+        opacity: 1;
+      }
     }
   }
   &.logout-item {

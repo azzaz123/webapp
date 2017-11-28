@@ -86,10 +86,14 @@
   <msg id="4631973437945665426"><source>app/layout/topbar/topbar.component.ts:41</source>List it</msg>
   <msg id="5371960677736303052"><source>app/layout/topbar/geolocation/geolocation.component.ts:9</source>Where?</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
-  <msg id="3825726981798982045"><source>app/layout/sidebar/sidebar.component.ts:5</source>My Catalog</msg>
-  <msg id="6932865105766151309"><source>app/layout/sidebar/sidebar.component.ts:12</source>Upload</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:19</source>Favorites</msg>
-  <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:26</source>Logout</msg>
+  <msg id="5004693703954133084"><source>app/layout/sidebar/profile-modal/profile-modal.component.ts:7</source>Work in progress!</msg>
+  <msg id="2137395090058746678"><source>app/layout/sidebar/profile-modal/profile-modal.component.ts:8</source>Editing your profile through our website will be available sooner than expected. Meanwhile, do you want to see how your profile looks?</msg>
+  <msg id="2320775595188539431"><source>app/layout/sidebar/profile-modal/profile-modal.component.ts:9</source>Go to My profile</msg>
+  <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:5</source>Profile</msg>
+  <msg id="3825726981798982045"><source>app/layout/sidebar/sidebar.component.ts:12</source>My Catalog</msg>
+  <msg id="6932865105766151309"><source>app/layout/sidebar/sidebar.component.ts:19</source>Upload</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:26</source>Favorites</msg>
+  <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:33</source>Logout</msg>
   <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source>Congratulations</msg>
   <msg id="9213119646873056135"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:10</source>Your item(s) have been featured and you can see them in the top position.</msg>
   <msg id="8982629098121976758"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:11</source>Start selling</msg>
