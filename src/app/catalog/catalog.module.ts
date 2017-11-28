@@ -24,6 +24,7 @@ import { ElasticModule } from 'ng-elastic';
 import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
 import { UploadConfirmationModalComponent } from './list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { PreviewModalComponent } from './upload/preview-modal/preview-modal.component';
+import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { PreviewModalComponent } from './upload/preview-modal/preview-modal.comp
     ElasticModule,
     NgbDropdownModule,
     NgbPopoverModule,
-    NgbCarouselModule
+    NgbCarouselModule,
+    GeolocationModule
   ],
   providers: [
     CarSuggestionsService,

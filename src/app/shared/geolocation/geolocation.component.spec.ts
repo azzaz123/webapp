@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeolocationComponent } from './geolocation.component';
 import { Observable } from 'rxjs/Observable';
-import { GEOLOCATION_DATA_WEB } from '../../../../tests/geolocation.fixtures';
-import { COORDINATE_DATA_WEB } from '../../../../tests/address.fixtures';
-import { EventService } from '../../../core/event/event.service';
-import { GeolocationService } from '../../../core/geolocation/geolocation.service';
+import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures';
+import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures';
+import { EventService } from '../../core/event/event.service';
+import { GeolocationService } from '../../core/geolocation/geolocation.service';
 import { CookieService } from 'ngx-cookie';
 
 describe('GeolocationComponent', () => {
@@ -52,6 +52,15 @@ describe('GeolocationComponent', () => {
     eventService = TestBed.get(EventService);
     geolocationService = TestBed.get(GeolocationService);
     cookieService = TestBed.get(CookieService);
+  });
+
+  describe('ngOnChanges', () => {
+    it('should set model.description with value', () => {
+      const LOCATION_NAME = 'Barcelona';
+      component.value = LOCATION_NAME;
+      component.ngOnChanges();
+      expect(component.model.description).toBe(LOCATION_NAME);
+    });
   });
 
   describe('search', (): void => {
