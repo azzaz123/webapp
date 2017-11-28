@@ -98,5 +98,8 @@ h2 {
     bottom: $spacing;
     left: $spacing;
     padding: 0;
+    h2 {
+      width: $sidebar-section-circle-size;
+    }
   }
 }
