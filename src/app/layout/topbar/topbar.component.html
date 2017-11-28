@@ -10,8 +10,6 @@
       <form id="js-main-search-form" method="get">
         <tsl-suggester (newSearchSubmit)="onSearchSubmit($event)" (newKeyword)="onKeywordUpdate($event)"
                        (newSearch)="onSearchUpdate($event)"></tsl-suggester>
-        <input id="main-search-hidden-lat" #latEl name="lat" type="hidden" value="{{ coordinates?.latitude }}"/>
-        <input id="main-search-hidden-lng" #lngEl name="lng" type="hidden" value="{{ coordinates?.longitude }}"/>
         <input id="main-search-hidden-category" #categoryEl name="category" type="hidden" value="{{ category }}"/>
       </form>
       <tsl-geolocation (newCoordinate)="onCoordinateUpdate($event)"></tsl-geolocation>
@@ -33,19 +31,11 @@
     <span i18n>Messages</span>
     <div class="horizontal-line"></div>
   </a>
-  <div class="topbar-menu-dropdown" ngbDropdown>
-    <div ngbDropdownToggle>
-      <tsl-user-avatar class="topbar-avatar" [size]="32" [user]="user" *ngIf="user"></tsl-user-avatar>
-      <span class="topbar-user-name">{{user?.microName}}</span>
-      <md-icon svgIcon="arrow-waterfall" class="topbar-icon"></md-icon>
-    </div>
-    <div class="dropdown-menu dropdown-menu-right">
-      <a class="dropdown-item" href="{{userUrl}}" i18n>My Profile</a>
-      <a class="dropdown-item" [routerLink]="['/catalog/list']" i18n>My Catalog</a>
-      <a class="dropdown-item" [routerLink]="['/favorites']" i18n> Favorites</a>
-      <a class="dropdown-item" (click)="logout()" i18n>Logout</a>
-    </div>
-  </div>
+  <a class="main-header-my-zone menu-link" [routerLink]="['/catalog/list']">
+    <tsl-user-avatar class="topbar-avatar" [size]="32" [user]="user" *ngIf="user"></tsl-user-avatar>
+    <span i18n>My Zone</span>
+    <div class="horizontal-line"></div>
+  </a>
   <button class="main-header-upload btn btn-primary" (click)="upload()">
     <md-icon svgIcon="upload"></md-icon>
     <span i18n>List it</span>

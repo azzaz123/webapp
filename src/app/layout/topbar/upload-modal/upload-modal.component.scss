@@ -1,70 +1,56 @@
 @import "../../../../style/_common.scss";
 
-.header {
-  background: $corporate url(/assets/images/work-in-progress.svg) no-repeat center;
-  height: 192px;
-  border-top-left-radius: $border-radius;
-  border-top-right-radius: $border-radius;
-  .modal-close {
-    top: $spacing;
-    right: $spacing;
+.modal-close {
+  top: $spacing;
+  right: $spacing;
+  @include square(13px);
+  md-icon {
     @include square(13px);
-    md-icon {
-      @include square(13px);
-      line-height: unset;
-    }
+    line-height: unset;
   }
 }
 
 .modal-body {
   text-align: center;
-  padding: 40px 70px;
-  h1 {
-    font-weight: bold;
-    font-size: $font-size-L;
-    text-transform: uppercase;
-  }
+  padding: 40px 130px;
+  background: $corporate;
+  border-radius: $border-radius;
   p {
     font-size: $font-size;
-    &.small {
-      font-size: $font-size-S;
-      color: $grey-250;
-      margin-top: 40px;
-    }
+    color: $white;
   }
-  .btn-mobile {
-    width: 172px;
-    height: 50px;
-    line-height: 50px;
-    border-radius: $border-radius;
-    border: solid 1px $grey-100;
-    display: inline-block;
-    font-weight: bold;
-    font-size: $font-size-S;
-    text-align: center;
-    color: $corporate;
-    margin-top: $spacing;
-    &:hover, &:focus, &:active {
-      background: $corporate;
-      color: $white;
-      text-decoration: none;
-      border-color: transparent;
-    }
-    md-icon {
-      vertical-align: sub;
-      margin-right: 18px;
-    }
-    &.ios {
-      margin-right: $spacing-L;
+
+}
+
+.types {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: $spacing-L;
+  font-size: $font-size-S;
+  .type {
+    width: 150px;
+    display: block;
+    color: $white;
+    margin-bottom: $spacing-L;
+    .square {
+      @include square(150px);
+      border-radius: $border-radius;
+      background: $white;
+      border: solid 1px $grey-50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: $spacing-XS;
       md-icon {
-        width: 16px;
-        height: 20px;
+        @include square(100px);
       }
     }
-    &.android {
-      md-icon {
-        width: 17px;
-        height: 19px;
+    &:hover {
+      text-decoration: none;
+      .square {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 10px 0 rgba(37, 50, 56, .1);
       }
     }
   }

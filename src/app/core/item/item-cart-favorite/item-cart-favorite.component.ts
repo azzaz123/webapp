@@ -28,7 +28,8 @@ export class ItemCartFavoriteComponent implements OnInit {
   }
 
   goToItemDetail() {
-    this.windowRef.nativeWindow.location.href = this.homeUrl + 'item/' + this.item.webSlug;
+    const url = this.homeUrl + 'item/' + this.item.webSlug;
+    this.windowRef.nativeWindow.open(url);
   }
 
   removeFavoriteModal(e: Event) {

@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UploadModalComponent } from './upload-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('UploadModalComponent', () => {
   let component: UploadModalComponent;
@@ -10,6 +11,7 @@ describe('UploadModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       providers: [
         NgbActiveModal
       ],

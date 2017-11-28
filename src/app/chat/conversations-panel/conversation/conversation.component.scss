@@ -22,6 +22,10 @@ $menu-width-and-spacing: 10px;
   &:hover {
     background-color: rgba($grey-100, .2);
   }
+
+  & /deep/ tsl-item-avatar div {
+    float: left;
+  }
 }
 .conversation-info {
   display: flex;

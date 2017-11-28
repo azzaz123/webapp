@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { UploadCarComponent } from './upload-car.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -9,7 +9,9 @@ import { CarKeysService } from './car-keys.service';
 import { TEST_HTTP_PROVIDERS, ErrorsService } from 'shield';
 import { Router } from '@angular/router';
 import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../../tests/car.fixtures';
-import { NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
+import { UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures';
 
 describe('UploadCarComponent', () => {
   let component: UploadCarComponent;
@@ -18,6 +20,10 @@ describe('UploadCarComponent', () => {
   let carKeysService: CarKeysService;
   let errorService: ErrorsService;
   let router: Router;
+  let modalService: NgbModal;
+  let componentInstance: any = {
+    getBodyType: jasmine.createSpy('getBodyType')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -62,6 +68,16 @@ describe('UploadCarComponent', () => {
           i18nError() {
           }
         }
+        },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              result: Promise.resolve(),
+              componentInstance: componentInstance
+            };
+          }
+        }
         }
       ],
       declarations: [UploadCarComponent],
@@ -78,6 +94,7 @@ describe('UploadCarComponent', () => {
     carKeysService = TestBed.get(CarKeysService);
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
+    modalService = TestBed.get(NgbModal);
   });
 
   it('should create', () => {
@@ -175,13 +192,7 @@ describe('UploadCarComponent', () => {
     });
     it('should emit uploadEvent if form is valid', () => {
       let input: any;
-      component.uploadForm.get('model').patchValue('test');
-      component.uploadForm.get('brand').patchValue('test');
-      component.uploadForm.get('title').patchValue('test');
-      component.uploadForm.get('year').patchValue(2017);
-      component.uploadForm.get('sale_price').patchValue(1000000);
-      component.uploadForm.get('currency_code').patchValue('EUR');
-      component.uploadForm.get('images').patchValue([{'image': true}]);
+      component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
       expect(component.uploadForm.valid).toBeTruthy();
       component.uploadEvent.subscribe((i: any) => {
         input = i;
@@ -233,11 +244,6 @@ describe('UploadCarComponent', () => {
   });
 
   describe('onUploaded', () => {
-    it('should open success message', () => {
-      spyOn(errorService, 'i18nSuccess');
-      component.onUploaded('1234');
-      expect(errorService.i18nSuccess).toHaveBeenCalledWith('productCreated');
-    });
     it('should redirect', () => {
       spyOn(router, 'navigate');
       component.onUploaded('1234');
@@ -250,6 +256,33 @@ describe('UploadCarComponent', () => {
       component.loading = true;
       component.onError('response');
       expect(component.loading).toBeFalsy();
+    });
+  });
+
+  describe('preview', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(component, 'onSubmit');
+      component.uploadForm.get('model').enable();
+      component.uploadForm.get('year').enable();
+      component.uploadForm.get('version').enable();
+      component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
+      component.preview();
+    }));
+    it('should open modal', () => {
+      expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
+        windowClass: 'preview'
+      })
+    });
+    it('should set itemPreview', () => {
+      expect(componentInstance.itemPreview).toEqual(UPLOAD_FORM_CAR_VALUES);
+    });
+    it('should submit form', fakeAsync(() => {
+      tick();
+      expect(component.onSubmit).toHaveBeenCalled();
+    }));
+    it('should call getBodyType', () => {
+      expect(componentInstance.getBodyType).toHaveBeenCalled();
     });
   });
 

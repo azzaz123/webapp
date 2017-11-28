@@ -24,19 +24,30 @@ $sidebar-section-circle-size: 50px;
     background-color: $corporate !important;
   }
   border-radius: 50%;
+  .profile-item & {
+    background-color: transparent;
+  }
+}
+
+.sidebar-section {
   md-icon {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
+    @include square(34px);
     g g {
       transition: .15s fill ease;
     }
   }
-  & /deep/ [svgIcon=heart]{
-    g {
-      fill: transparent !important;
-      stroke: $white;
+  & /deep/ path {
+    fill: rgba($white, .5);
+  }
+  &.active, &:hover {
+    md-icon {
+      & /deep/ path {
+        fill: $white;
+      }
     }
   }
 }
@@ -70,5 +81,22 @@ h2 {
       color: $white;
       transition: .15s color ease;
     }
+  }
+  &.profile-item {
+    tsl-user-avatar {
+      opacity: .5;
+      transition: .15s opacity ease;
+    }
+    &:hover {
+      tsl-user-avatar {
+        opacity: 1;
+      }
+    }
+  }
+  &.logout-item {
+    position: absolute;
+    bottom: $spacing;
+    left: $spacing;
+    padding: 0;
   }
 }

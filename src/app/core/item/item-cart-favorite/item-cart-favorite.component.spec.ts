@@ -39,9 +39,7 @@ describe('ItemCartFavoriteComponent', () => {
       providers: [
         { provide: WindowRef, useValue: {
             nativeWindow: {
-              location: {
-                href: environment.siteUrl
-              }
+              open: () => {}
             }
           }
         },
@@ -79,9 +77,10 @@ describe('ItemCartFavoriteComponent', () => {
 
   describe('goToItemDetail', () => {
     it('should change window url', () => {
+      spyOn(windowRef.nativeWindow, 'open');
       const MOCK_ITEM_URL: string = environment.siteUrl.replace('es', subdomain) + 'item/' + MOCK_ITEM.webSlug;
       component.goToItemDetail();
-      expect(windowRef.nativeWindow.location.href).toEqual(MOCK_ITEM_URL);
+      expect(windowRef.nativeWindow.open).toHaveBeenCalledWith(MOCK_ITEM_URL);
     })
   });
 

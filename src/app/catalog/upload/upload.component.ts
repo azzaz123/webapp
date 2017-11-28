@@ -21,7 +21,7 @@ export class UploadComponent implements OnInit, AfterViewChecked {
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
-    {value: 'USD', label: '$'}
+    {value: 'GBP', label: '£'}
   ];
   public deliveryInfo: any = [{
     size: '20x38x40cm',
@@ -138,7 +138,6 @@ export class UploadComponent implements OnInit, AfterViewChecked {
   }
 
   onUploaded(itemId: string) {
-    this.errorsService.i18nSuccess('productCreated');
     this.router.navigate(['/catalog/list', {created: true}]);
   }
 
