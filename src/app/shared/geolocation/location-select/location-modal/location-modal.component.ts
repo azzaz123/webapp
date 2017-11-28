@@ -2,35 +2,29 @@ import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core'
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormControl } from '@angular/forms';
 import { Coordinate } from '../../../../core/geolocation/address-response.interface';
+import { DEFAULT_COORDINATES, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER } from '../../here-maps/here-maps.component';
 
 @Component({
   selector: 'tsl-location-modal',
   templateUrl: './location-modal.component.html',
   styleUrls: ['./location-modal.component.scss']
 })
-export class LocationModalComponent implements OnInit {
+export class LocationModalComponent {
 
   public coordinates: Coordinate;
   public zoom;
-  private defaultCoordinates: Coordinate = {
-    latitude: 40.42028,
-    longitude: -3.70578
-  };
 
   constructor(public activeModal: NgbActiveModal) {
   }
 
-  ngOnInit() {
-  }
-
   public init(coordinates?: Coordinate) {
-    this.coordinates = coordinates ? coordinates : this.defaultCoordinates;
-    this.zoom = coordinates ? 15 : 5;
+    this.coordinates = coordinates ? coordinates : DEFAULT_COORDINATES;
+    this.zoom = coordinates ? MAP_ZOOM_MARKER : MAP_ZOOM_GENERAL;
   }
 
   public onCoordinateUpdate(newCoordinate: Coordinate) {
     this.coordinates = newCoordinate;
-    this.zoom = 15;
+    this.zoom = MAP_ZOOM_MARKER;
   }
 
   public close() {

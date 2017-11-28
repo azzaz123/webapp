@@ -109,10 +109,6 @@ describe('UploadCarComponent', () => {
     userService = TestBed.get(UserService);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('ngOnInit', () => {
     it('should call getBrands and getCarTypes', () => {
       spyOn<any>(component, 'getBrands');
@@ -128,21 +124,17 @@ describe('UploadCarComponent', () => {
       expect(component.user).toEqual(MOCK_USER);
     });
     describe('user without location', () => {
-      beforeEach(() => {
-        component.ngOnInit();
-      });
       it('should not add location control', () => {
+        component.ngOnInit();
         expect(component.uploadForm.get('location.address')).toBeFalsy();
         expect(component.uploadForm.get('location.latitude')).toBeFalsy();
         expect(component.uploadForm.get('location.longitude')).toBeFalsy();
       });
     });
     describe('user with location', () => {
-      beforeEach(() => {
+      it('should add location control', () => {
         spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER_NO_LOCATION));
         component.ngOnInit();
-      });
-      it('should add location control', () => {
         expect(component.uploadForm.get('location.address')).toBeTruthy();
         expect(component.uploadForm.get('location.latitude')).toBeTruthy();
         expect(component.uploadForm.get('location.longitude')).toBeTruthy();

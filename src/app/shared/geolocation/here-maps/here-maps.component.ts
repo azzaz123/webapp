@@ -2,6 +2,14 @@ import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@ang
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { makeAnimationEvent } from '@angular/animations/browser/src/render/shared';
 
+export const MAP_ZOOM_GENERAL = 5;
+export const MAP_ZOOM_MARKER = 15;
+export const USER_MARKER = '/assets/icons/user-marker.svg';
+export const DEFAULT_COORDINATES: Coordinate = {
+  latitude: 40.42028,
+  longitude: -3.70578
+};
+
 @Component({
   selector: 'tsl-here-maps',
   templateUrl: './here-maps.component.html',
@@ -10,7 +18,7 @@ import { makeAnimationEvent } from '@angular/animations/browser/src/render/share
 export class HereMapsComponent implements OnInit, OnChanges {
 
   @Input() coordinates: Coordinate;
-  @Input() zoom = 5;
+  @Input() zoom = MAP_ZOOM_GENERAL;
   @ViewChild('map') mapEl: ElementRef;
   public platform: any;
   private map: any;
@@ -31,7 +39,7 @@ export class HereMapsComponent implements OnInit, OnChanges {
     const coordinates = this.getCenter();
     this.map.setCenter(coordinates);
     this.map.setZoom(this.zoom);
-    if (this.zoom === 15) {
+    if (this.zoom === MAP_ZOOM_MARKER) {
       this.addMarker(coordinates);
     }
   }
@@ -46,7 +54,7 @@ export class HereMapsComponent implements OnInit, OnChanges {
   }
 
   private addMarker(coordinates: any) {
-    const markerIcon = new H.map.Icon('/assets/icons/user-marker.svg');
+    const markerIcon = new H.map.Icon(USER_MARKER);
     const marker = new H.map.Marker(coordinates, {icon: markerIcon});
     this.map.addObject(marker);
   }

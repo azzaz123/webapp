@@ -56,9 +56,10 @@ describe('GeolocationComponent', () => {
 
   describe('ngOnChanges', () => {
     it('should set model.description with value', () => {
-      component.value = 'Barcelona';
+      const LOCATION_NAME = 'Barcelona';
+      component.value = LOCATION_NAME;
       component.ngOnChanges();
-      expect(component.model.description).toBe('Barcelona');
+      expect(component.model.description).toBe(LOCATION_NAME);
     });
   });
 

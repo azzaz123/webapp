@@ -4,6 +4,7 @@ import { LocationModalComponent } from './location-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { USER_LOCATION_COORDINATES } from '../../../../../tests/user.fixtures';
+import { DEFAULT_COORDINATES, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER } from '../../here-maps/here-maps.component';
 
 describe('LocationModalComponent', () => {
   let component: LocationModalComponent;
@@ -35,10 +36,6 @@ describe('LocationModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('close', () => {
     it('should close modal', () => {
       spyOn(activeModal, 'close');
@@ -52,15 +49,12 @@ describe('LocationModalComponent', () => {
     it('should set location', () => {
       component.init(USER_LOCATION_COORDINATES);
       expect(component.coordinates).toEqual(USER_LOCATION_COORDINATES);
-      expect(component.zoom).toBe(15);
+      expect(component.zoom).toBe(MAP_ZOOM_MARKER);
     });
     it('should set default location', () => {
       component.init();
-      expect(component.coordinates).toEqual({
-        latitude: 40.42028,
-        longitude: -3.70578
-      });
-      expect(component.zoom).toBe(5);
+      expect(component.coordinates).toEqual(DEFAULT_COORDINATES);
+      expect(component.zoom).toBe(MAP_ZOOM_GENERAL);
     });
   });
 

@@ -1,7 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HereMapsComponent } from './here-maps.component';
+import { HereMapsComponent, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER, USER_MARKER } from './here-maps.component';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures';
+
+const ICON = {url: 'icon'};
+const MARKER = {marker: 'marker'};
 
 const platform = {
   createDefaultLayers() {
@@ -14,17 +17,20 @@ const platform = {
 };
 
 const Map = {
-  setZoom() {},
-  setCenter() {},
-  addObject() {}
+  setZoom() {
+  },
+  setCenter() {
+  },
+  addObject() {
+  }
 };
 
 const map = {
   Icon: () => {
-    return {url: 'icon'};
+    return ICON;
   },
   Marker: () => {
-    return {marker: 'marker'};
+    return MARKER;
   }
 };
 
@@ -46,7 +52,7 @@ describe('HereMapsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HereMapsComponent ]
+      declarations: [HereMapsComponent]
     })
     .compileComponents();
   }));
@@ -56,55 +62,68 @@ describe('HereMapsComponent', () => {
     component = fixture.componentInstance;
     component.coordinates = USER_LOCATION_COORDINATES;
     fixture.detectChanges();
-  });
-
-  it('should be created', () => {
-    expect(component).toBeTruthy();
+    spyOn(Map, 'setZoom');
+    spyOn(Map, 'setCenter');
+    spyOn(map, 'Icon').and.callThrough();
+    spyOn(map, 'Marker').and.callThrough();
+    spyOn(Map, 'addObject');
   });
 
   describe('ngOnInit', () => {
-    it('should instantiate map', () => {
+    beforeEach(() => {
       spyOn(H, 'Map').and.callThrough();
       spyOn(platform, 'createDefaultLayers').and.callThrough();
-      spyOn(Map, 'setZoom');
-      spyOn(Map, 'setCenter');
       component.mapEl = {
         nativeElement: {}
       };
+    });
+
+    it('should instantiate map', () => {
       component.ngOnInit();
+
       expect(H.Map).toHaveBeenCalledWith(component.mapEl.nativeElement, 'map');
-      expect(Map.setZoom).toHaveBeenCalledWith(5);
+      expect(Map.setZoom).toHaveBeenCalledWith(MAP_ZOOM_GENERAL);
       expect(Map.setCenter).toHaveBeenCalledWith({
         lat: USER_LOCATION_COORDINATES.latitude,
         lng: USER_LOCATION_COORDINATES.longitude
       });
+    });
+
+    it('should add marker if zoom is the marker zoom', () => {
+      component.zoom = MAP_ZOOM_MARKER;
+
+      component.ngOnInit();
+
+      expect(map.Icon).toHaveBeenCalledWith(USER_MARKER);
+      expect(map.Marker).toHaveBeenCalledWith({
+        lat: USER_LOCATION_COORDINATES.latitude,
+        lng: USER_LOCATION_COORDINATES.longitude
+      }, {icon: ICON});
+      expect(Map.addObject).toHaveBeenCalledWith(MARKER);
     });
   });
 
   describe('ngOnChanges', () => {
     beforeEach(() => {
-      spyOn(Map, 'setZoom');
-      spyOn(Map, 'setCenter');
-      spyOn(map, 'Icon').and.callThrough();
-      spyOn(map, 'Marker').and.callThrough();
-      spyOn(Map, 'addObject');
-      component.zoom = 15;
+      component.zoom = MAP_ZOOM_MARKER;
       component.ngOnChanges();
     });
+
     it('should set map center and zoom', () => {
-      expect(Map.setZoom).toHaveBeenCalledWith(15);
+      expect(Map.setZoom).toHaveBeenCalledWith(MAP_ZOOM_MARKER);
       expect(Map.setCenter).toHaveBeenCalledWith({
         lat: USER_LOCATION_COORDINATES.latitude,
         lng: USER_LOCATION_COORDINATES.longitude
       });
     });
+
     it('should add marker with icon', () => {
-      expect(map.Icon).toHaveBeenCalledWith('/assets/icons/user-marker.svg');
+      expect(map.Icon).toHaveBeenCalledWith(USER_MARKER);
       expect(map.Marker).toHaveBeenCalledWith({
         lat: USER_LOCATION_COORDINATES.latitude,
         lng: USER_LOCATION_COORDINATES.longitude
-      }, {icon: {url: 'icon'}});
-      expect(Map.addObject).toHaveBeenCalledWith({marker: 'marker'});
+      }, {icon: ICON});
+      expect(Map.addObject).toHaveBeenCalledWith(MARKER);
     });
   });
 });

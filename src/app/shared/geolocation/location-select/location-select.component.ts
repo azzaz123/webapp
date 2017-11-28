@@ -5,6 +5,8 @@ import { LocationModalComponent } from './location-modal/location-modal.componen
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { CookieService } from 'ngx-cookie';
 
+export const LOCATION_MODAL_TIMEOUT = 100;
+
 @Component({
   selector: 'tsl-location-select',
   templateUrl: './location-select.component.html',
@@ -59,14 +61,12 @@ export class LocationSelectComponent implements OnChanges {
         modal.componentInstance.init();
       }
       modal.result.then((result: Coordinate) => {
-        if (result) {
-          this.control.setValue(result.name);
-          this.latitudeControl.setValue(result.latitude);
-          this.longitudeControl.setValue(result.longitude);
-        }
+        this.control.setValue(result.name);
+        this.latitudeControl.setValue(result.latitude);
+        this.longitudeControl.setValue(result.longitude);
       }, () => {
       });
-    }, 100);
+    }, LOCATION_MODAL_TIMEOUT);
 
   }
 
