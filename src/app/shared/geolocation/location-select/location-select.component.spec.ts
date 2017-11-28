@@ -139,7 +139,7 @@ describe('LocationSelectComponent', () => {
     });
 
     describe('without result', () => {
-      it('should NOT set location', () => {
+      it('should NOT set location', fakeAsync(() => {
         spyOn(modalService, 'open').and.returnValue({
           result: Promise.resolve({}),
           componentInstance: componentInstance
@@ -151,7 +151,7 @@ describe('LocationSelectComponent', () => {
         expect(component.form.get('location.address').value).toBeUndefined();
         expect(component.form.get('location.latitude').value).toBeUndefined();
         expect(component.form.get('location.longitude').value).toBeUndefined();
-      });
+      }));
     });
 
     describe('with form values', () => {
