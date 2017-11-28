@@ -80,8 +80,8 @@ export class AppComponent implements OnInit {
     });
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
-    this.updateSessionCookie();
     this.trackAppOpen();
+    this.updateSessionCookie();
   }
 
   private updateSessionCookie() {

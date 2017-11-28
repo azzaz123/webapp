@@ -76,13 +76,12 @@ describe('GeolocationComponent', () => {
       jasmine.clock().install();
       spyOn(component.newCoordinate, 'emit');
       spyOn(cookieService, 'put');
-      component.selectItem(GEOLOCATION_DATA_WEB);
       const currentDate = new Date();
       const expirationDate = new Date(currentDate.getTime() + ( 15 * 60 * 1000));
-
       jasmine.clock().mockDate(currentDate);
-
       const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
+
+      component.selectItem(GEOLOCATION_DATA_WEB);
 
       expect(component.newCoordinate.emit).toHaveBeenCalledWith(COORDINATE_DATA_WEB);
       expect(cookieService.put).toHaveBeenCalledWith('searchLat', COORDINATE_DATA_WEB.latitude.toString(), cookieOptions);
