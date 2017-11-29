@@ -7,7 +7,6 @@ import {
   Message,
   MessageService,
   NotificationService,
-  TrackingService,
   User,
   UserService,
   WindowRef,
@@ -27,6 +26,7 @@ import { MdIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { environment } from '../environments/environment';
+import { TrackingService } from './core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-root',
