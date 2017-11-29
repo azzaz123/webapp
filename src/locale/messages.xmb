@@ -126,7 +126,7 @@
   <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:14</source>Expired</msg>
   <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:18</source>1 item selected</msg>
   <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:19</source><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
-  <msg id="3088723279740360142"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source>Submit Ad</msg>
+  <msg id="6622336784189066984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source><source>app/catalog/upload/upload.component.ts:138</source>Post Ad</msg>
   <msg id="2233560223291461480"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:26</source><source>app/catalog/upload/upload-car/upload-car.component.ts:166</source>Manual</msg>
   <msg id="810888510148304696"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:27</source><source>app/catalog/upload/upload-car/upload-car.component.ts:171</source>Automatic</msg>
   <msg id="7493844856700299080"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:41</source><source>app/catalog/upload/upload-car/upload-car.component.ts:137</source>Petrol</msg>
@@ -185,7 +185,6 @@
   <msg id="2806917038528218276"><source>app/catalog/upload/upload.component.ts:120</source>FAQ</msg>
   <msg id="5972351850683239127"><source>app/catalog/upload/upload.component.ts:125</source>Shipping</msg>
   <msg id="3007176586514020023"><source>app/catalog/upload/upload.component.ts:126</source>Tell us how much it weighs.</msg>
-  <msg id="6622336784189066984"><source>app/catalog/upload/upload.component.ts:138</source>Post Ad</msg>
   <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
