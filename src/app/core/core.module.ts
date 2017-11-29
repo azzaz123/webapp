@@ -10,6 +10,7 @@ import { ItemService } from './item/item.service';
 import { ConversationService } from './conversation/conversation.service';
 import { EventService } from './event/event.service';
 import { TrackingService } from './tracking/tracking.service';
+import { TrackEventDirective } from './tracking/track-event.directive';
 
 @NgModule({
   imports: [
@@ -24,9 +25,10 @@ import { TrackingService } from './tracking/tracking.service';
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule
+    TrackingModule,
+    TrackEventDirective
   ],
-  declarations: []
+  declarations: [TrackEventDirective]
 })
 export class CoreModule {
 

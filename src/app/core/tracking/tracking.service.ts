@@ -101,6 +101,10 @@ export class TrackingService extends TrackingServiceMaster {
     name: '384',
     category: CATEGORY_IDS['ProInventoryManagement']
   };
+  public static PRODUCT_VIEWED: TrackingEventBase = {
+    name: '385',
+    category: CATEGORY_IDS['ProInventoryManagement']
+  };
   public static USER_PROFILE_REPPORTED: TrackingEventBase = {
     name: '386',
     category: CATEGORY_IDS['Repport']
