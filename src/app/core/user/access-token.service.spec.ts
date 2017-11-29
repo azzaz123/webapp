@@ -2,9 +2,11 @@ import { TestBed } from '@angular/core/testing';
 
 import { AccessTokenService } from './access-token.service';
 import { CookieService } from 'ngx-cookie';
+import { environment } from '../../../environments/environment';
 
 describe('AccessTokenService', () => {
-
+  const aToken = 'abc';
+  const cookieName = 'accessToken';
   let service: AccessTokenService;
   let cookieService: CookieService;
 
@@ -14,15 +16,11 @@ describe('AccessTokenService', () => {
         AccessTokenService,
         {
           provide: CookieService, useValue: {
-          value: null,
           put(value) {
-            this.value = value;
           },
           remove() {
-            this.value = null;
           },
           get () {
-            return this.value;
           }
         }
         }
@@ -32,41 +30,83 @@ describe('AccessTokenService', () => {
     cookieService = TestBed.get(CookieService);
   });
 
-  it('should instantiate', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('storeAccessToken', () => {
-    it('should call setItem and store token', () => {
+    it('should call setItem and store token with suffix if is not production', () => {
+      environment.production = false;
+      environment.cookieSuffix = 'Beta';
       spyOn(cookieService, 'put');
-      service.storeAccessToken('abc');
-      expect(cookieService.put).toHaveBeenCalledWith('accessToken', 'abc');
-      expect(service['_accessToken']).toEqual('abc');
+
+      service.storeAccessToken(aToken);
+
+      expect(cookieService.put).toHaveBeenCalledWith(cookieName + environment.cookieSuffix, aToken);
+      expect(service['_accessToken']).toEqual(aToken);
+    });
+
+    it('should call setItem and store token without suffix if is production', () => {
+      environment.production = true;
+      spyOn(cookieService, 'put');
+
+      service.storeAccessToken(aToken);
+
+      expect(cookieService.put).toHaveBeenCalledWith(cookieName, aToken);
+      expect(service['_accessToken']).toEqual(aToken);
     });
   });
 
-  describe('deleteAccessToken', () => {
-    it('should delete token and call removeItem', () => {
-      service['_accessToken'] = 'abc';
+  describe('deleteAccessToken should remove cookie and delete token', () => {
+    it('with suffix if is not production', () => {
+      service['_accessToken'] = aToken;
+      environment.production = false;
+      environment.cookieSuffix = 'Beta';
       spyOn(cookieService, 'remove');
+
       service.deleteAccessToken();
-      expect(cookieService.remove['calls'].argsFor(0)[0]).toBe('accessToken');
-      expect(cookieService.remove['calls'].argsFor(0)[1]).toEqual({domain: '.wallapop.com'});
+
+      expect(cookieService.remove['calls'].argsFor(0)[0]).toBe(cookieName + environment.cookieSuffix);
+      expect(service['_accessToken']).toBeNull();
+    });
+
+    it('without suffix if is production', () => {
+      service['_accessToken'] = aToken;
+      environment.production = true;
+      spyOn(cookieService, 'remove');
+
+      service.deleteAccessToken();
+
+      expect(cookieService.remove['calls'].argsFor(0)[0]).toBe(cookieName);
       expect(service['_accessToken']).toBeNull();
     });
   });
 
-  describe('get accessToken', () => {
-    it('should get token from local storage if not set and set it', () => {
-      spyOn(cookieService, 'get').and.returnValue('abc');
-      expect(service.accessToken).toBe('abc');
-      expect(cookieService.get).toHaveBeenCalledWith('accessToken');
-      expect(service['_accessToken']).toEqual('abc');
+  describe('get accessToken should get token', () => {
+    it('with suffix if is not production and cache it', () => {
+      environment.production = false;
+      environment.cookieSuffix = 'Beta';
+      spyOn(cookieService, 'get').and.returnValue(aToken);
+
+      const token = service.accessToken;
+
+      expect(token).toBe(aToken);
+      expect(cookieService.get).toHaveBeenCalledWith(cookieName + environment.cookieSuffix);
     });
-    it('should not call getItem if token is set', () => {
+
+    it('without suffix if is production and cache it', () => {
+      environment.production = true;
+      spyOn(cookieService, 'get').and.returnValue(aToken);
+
+      const token = service.accessToken;
+
+      expect(token).toBe(aToken);
+      expect(cookieService.get).toHaveBeenCalledWith(cookieName);
+    });
+
+    it('from cache if has been called before', () => {
       spyOn(cookieService, 'get');
-      service['_accessToken'] = 'abc';
-      expect(service.accessToken).toBe('abc');
+      service['_accessToken'] = aToken;
+
+      const token = service.accessToken
+
+      expect(token).toBe(aToken);
       expect(cookieService.get).not.toHaveBeenCalled();
     });
   });
