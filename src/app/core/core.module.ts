@@ -9,6 +9,7 @@ import { TrackingModule } from 'shield';
 import { ItemService } from './item/item.service';
 import { ConversationService } from './conversation/conversation.service';
 import { EventService } from './event/event.service';
+import { TrackingService } from './tracking/tracking.service';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ export class CoreModule {
         ItemService,
         UserService,
         ConversationService,
-        EventService
+        EventService,
+        TrackingService
       ]
     };
   }
