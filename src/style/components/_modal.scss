@@ -98,7 +98,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.review, .modal.sold, .modal.profile {
+.modal.review, .modal.sold, .modal.profile, .modal.upload {
   .modal-dialog, .modal-content {
     max-width: 600px;
   }
@@ -136,3 +136,4 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     margin-top: 35px;
   }
 }
+
