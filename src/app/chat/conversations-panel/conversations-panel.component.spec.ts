@@ -38,6 +38,7 @@ import { ConversationService } from '../../core/conversation/conversation.servic
 import { EventService } from 'app/core/event/event.service';
 import { UserService } from '../../core/user/user.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('Component: ConversationsPanel', () => {
 
@@ -57,6 +58,7 @@ describe('Component: ConversationsPanel', () => {
     TestBed.configureTestingModule({
       imports: [
         MomentModule,
+        RouterTestingModule,
         ShieldModule.forRoot({
           cacheAllConversations: false,
           environment: environment,
