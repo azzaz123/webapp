@@ -13,7 +13,6 @@ import {
   MockTrackingService,
   NotificationService,
   TEST_HTTP_PROVIDERS,
-  TrackingService,
   USER_DATA,
   USER_ID,
   UserService,
@@ -33,6 +32,7 @@ import 'rxjs/add/observable/throw';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import createSpy = jasmine.createSpy;
+import { TrackingService } from './core/tracking/tracking.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;

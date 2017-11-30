@@ -10,7 +10,6 @@ import {
   MOCK_ITEM,
   MockTrackingService,
   PaymentService,
-  TrackingService
 } from 'shield';
 
 import { ListComponent } from './list.component';
@@ -29,6 +28,7 @@ import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { TrackingService } from '../../core/tracking/tracking.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;

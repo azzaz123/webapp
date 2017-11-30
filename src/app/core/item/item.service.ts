@@ -7,7 +7,6 @@ import {
   Item,
   ItemBulkResponse,
   ItemService as ItemServiceMaster,
-  TrackingService,
   UserService
 } from 'shield';
 import {
@@ -19,6 +18,7 @@ import { ITEM_BAN_REASONS } from './ban-reasons';
 import * as _ from 'lodash';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { UUID } from 'angular2-uuid';
+import { TrackingService } from '../tracking/tracking.service';
 
 @Injectable()
 export class ItemService extends ItemServiceMaster {

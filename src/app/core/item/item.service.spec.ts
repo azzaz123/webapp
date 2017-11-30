@@ -5,7 +5,6 @@ import {
   I18nService,
   ITEM_ID,
   TEST_HTTP_PROVIDERS,
-  TrackingService,
   UserService,
   Item,
   ITEM_BASE_PATH,
@@ -22,6 +21,7 @@ import {
 import { ResponseOptions, Response, Headers } from '@angular/http';
 import { ConversationUser, ItemsData, Product } from './item-response.interface';
 import { UUID } from 'angular2-uuid';
+import { TrackingService } from '../tracking/tracking.service';
 
 describe('ItemService', () => {
 

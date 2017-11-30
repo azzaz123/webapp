@@ -6,7 +6,6 @@ import {
   EventService,
   I18nService,
   ItemService,
-  TrackingService,
   XmppService,
   PersistencyService,
   UserService
@@ -17,6 +16,7 @@ import { ReportListingComponent } from './modals/report-listing/report-listing.c
 import { ReportUserComponent } from './modals/report-user/report-user.component';
 import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
+import { TrackingService } from '../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-chat',
