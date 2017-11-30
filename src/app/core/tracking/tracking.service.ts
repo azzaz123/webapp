@@ -3,10 +3,10 @@ import {
   HttpService,
   NavigatorService,
   ShieldConfig,
+  TrackingEventBase,
   TrackingService as TrackingServiceMaster,
   UserService,
-  WindowRef,
-  TrackingEventBase
+  WindowRef
 } from 'shield';
 import { Router } from '@angular/router';
 
@@ -22,7 +22,8 @@ const CATEGORY_IDS: any = {
   Open: '107',
   MyProfile: '48',
   Purchase: '53',
-  Conversations: '7'
+  Conversations: '7',
+  Menu: '41'
 };
 
 @Injectable()
@@ -125,11 +126,39 @@ export class TrackingService extends TrackingServiceMaster {
     category: CATEGORY_IDS['Purchase']
   };
   public static CONVERSATION_CREATE_NEW: TrackingEventBase = {
-    name: '435',
+    name: '121',
     category: CATEGORY_IDS['Conversations']
   };
   public static FEATURED_PURCHASE_FINAL: TrackingEventBase = {
     name: '566',
+    category: CATEGORY_IDS['Button']
+  };
+  public static MYZONE_MENU_PROFILE: TrackingEventBase = {
+    name: '582',
+    category: CATEGORY_IDS.Menu
+  };
+  public static MYZONE_MENU_UPLOAD: TrackingEventBase = {
+    name: '583',
+    category: CATEGORY_IDS.Menu
+  };
+  public static MYZONE_MENU_CATALOG: TrackingEventBase = {
+    name: '584',
+    category: CATEGORY_IDS.Menu
+  };
+  public static MYZONE_MENU_FAVOURITES: TrackingEventBase = {
+    name: '585',
+    category: CATEGORY_IDS.Menu
+  };
+  public static MYZONE_MENU_LOGOUT: TrackingEventBase = {
+    name: '586',
+    category: CATEGORY_IDS.Menu
+  };
+  public static MYZONE_LERDI_BEHAVIOR: TrackingEventBase = {
+    name: '588',
+    category: CATEGORY_IDS.Menu
+  };
+  public static CATALOG_FEATURED_CHECKOUT: TrackingEventBase = {
+    name: '565',
     category: CATEGORY_IDS['Button']
   };
 

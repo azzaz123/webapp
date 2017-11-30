@@ -15,6 +15,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { UploadModalComponent } from './topbar/upload-modal/upload-modal.component';
 import { ProfileModalComponent } from './sidebar/profile-modal/profile-modal.component';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
     FormsModule,
     NgbModule,
     UserModule,
-    GeolocationModule
+    GeolocationModule,
+    CoreModule
   ],
   exports: [
     TopbarComponent,

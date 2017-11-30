@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import {
   ErrorsService,
   FinancialCard,
@@ -29,7 +29,7 @@ import { TrackingService } from '../../core/tracking/tracking.service';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
 
   public items: Item[] = [];
   public selectedStatus: string = 'published';
@@ -39,6 +39,7 @@ export class ListComponent implements OnInit {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public scrollTop: number;
   private uploadModalRef: NgbModalRef;
+  private active: boolean = true;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -54,7 +55,7 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this.getItems();
     setTimeout(() => {
-      this.router.events.subscribe((evt) => {
+      this.router.events.takeWhile(() => this.active).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
           return;
         }
@@ -89,6 +90,10 @@ export class ListComponent implements OnInit {
         }
       });
     });
+  }
+
+  ngOnDestroy() {
+    this.active = false;
   }
 
   public filterByStatus(status: string) {
