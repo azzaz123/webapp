@@ -182,9 +182,9 @@ describe('SelectedItemsComponent', () => {
           product_id: 'g24g2jhg4jh24'
         }
       ];
+      let result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
       component.featureItems();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CATALOG_FEATURED_CHECKOUT,
-        { item_id: order[0].item_id, bump_type: order[0].product_id });
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CATALOG_FEATURED_CHECKOUT, result);
     });
   });
 });

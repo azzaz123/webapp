@@ -80,16 +80,11 @@ export class AppComponent implements OnInit {
     });
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
-    this.trackAppOpen();
-    this.updateSessionCookie();
   }
 
   private updateSessionCookie() {
-    const sessionCookie = this.cookieService.get('app_session_id');
-    if (!sessionCookie) {
       let uuid: string = UUID.UUID();
       this.setCookie('app_session_id', uuid, 900000);
-    }
   }
 
   private config() {
@@ -108,18 +103,7 @@ export class AppComponent implements OnInit {
   }
 
   private trackAppOpen() {
-    const sessionCookie = this.cookieService.get('app_session_id');
-    if (!sessionCookie) {
-      this.userService.me().subscribe(
-        () => {
-          this.trackingService.track(TrackingService.APP_OPEN, {
-            referer_url: this.previousUrl,
-            current_url: this.currentUrl
-          });
-        },
-        (error: any) => {
-        });
-    }
+    this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
   }
 
   private subscribeEvents() {
@@ -130,6 +114,10 @@ export class AppComponent implements OnInit {
           this.conversationService.init().subscribe();
           appboy.changeUser(user.id);
           appboy.openSession();
+          if (!this.cookieService.get('app_session_id')) {
+            this.trackAppOpen();
+            this.updateSessionCookie();
+          }
         },
         (error: any) => {
           this.userService.logout();

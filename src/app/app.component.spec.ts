@@ -181,42 +181,6 @@ describe('App', () => {
     expect(app).toBeTruthy();
   }));
 
-  describe('ngOnInit', () => {
-    beforeEach(fakeAsync(() => {
-      let mockBackend = TestBed.get(MockBackend);
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
-        connection.mockRespond(new Response(res));
-      });
-      spyOn(trackingService, 'track');
-    }));
-    it('should send open_app event if cookie does not exist', () => {
-      component.ngOnInit();
-      
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.APP_OPEN,
-        { referer_url: component.previousUrl, current_url: component.currentUrl });
-    });
-    it('should call set cookie if cookie does not exist', () => {
-      spyOn(UUID, 'UUID').and.returnValue('UUID');
-      spyOn(component, 'setCookie');
-      spyOn(cookieService, 'get').and.returnValue(null);
-      
-      component.ngOnInit();
-      
-      expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
-      expect(component.setCookie).toHaveBeenCalledWith('app_session_id', 'UUID', 900000);
-    });
-    it('should not call set cookie if cookie exists', () => {
-      spyOn(component, 'setCookie');
-      spyOn(cookieService, 'get').and.returnValue('1-2-3');
-      
-      component.ngOnInit();
-     
-      expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
-      expect(component.setCookie).not.toHaveBeenCalled();
-    });
-  });
-
   describe('set cookie', () => {
     it('should create a cookie', () => {
       spyOn(UUID, 'UUID').and.returnValue('1-2-3');
@@ -227,7 +191,7 @@ describe('App', () => {
       jasmine.clock().mockDate(currentDate);
       const cookieOptions = {path: '/', expires: expirationDate};
 
-      component.ngOnInit();
+      component.updateSessionCookie();
 
       expect(cookieService.put).toHaveBeenCalledWith('app_session_id', UUID.UUID() , cookieOptions);
       jasmine.clock().uninstall();
@@ -269,6 +233,40 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
         
         expect(conversationService.init).toHaveBeenCalledTimes(1);
+      });
+
+      it('should send open_app event if cookie does not exist', () => {
+        spyOn(trackingService, 'track');
+        spyOn(cookieService, 'get').and.returnValue(null);
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.APP_OPEN,
+          { referer_url: component.previousUrl, current_url: component.currentUrl });
+      });
+
+      it('should call update session cookie if cookie does not exist', () => {
+        spyOn(component, 'updateSessionCookie');
+        spyOn(cookieService, 'get').and.returnValue(null);
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
+        expect(component.updateSessionCookie).toHaveBeenCalled();
+      });
+
+      it('should not call update session cookie if cookie exists', () => {
+        spyOn(component, 'updateSessionCookie');
+        spyOn(cookieService, 'get').and.returnValue('1-2-3');
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
+        expect(component.updateSessionCookie).not.toHaveBeenCalled();
       });
 
     });
