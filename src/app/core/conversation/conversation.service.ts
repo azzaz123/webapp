@@ -14,12 +14,12 @@ import {
   NotificationService,
   PersistencyService,
   ShieldConfig,
-  TrackingService,
   UserService,
   XmppService,
   User
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
+import { TrackingService } from '../tracking/tracking.service';
 
 @Injectable()
 export class ConversationService extends ConversationServiceMaster {

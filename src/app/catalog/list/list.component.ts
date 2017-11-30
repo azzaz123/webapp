@@ -6,7 +6,6 @@ import {
   Item,
   ItemBulkResponse,
   PaymentService,
-  TrackingService,
   DEFAULT_ERROR_MESSAGE
 } from 'shield';
 import { ItemService } from '../../core/item/item.service';
@@ -23,6 +22,7 @@ import { Response } from '@angular/http';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { OrderEvent } from './selected-items/selected-product.interface';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { TrackingService } from '../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-list',

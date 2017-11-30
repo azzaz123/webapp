@@ -5,7 +5,6 @@ import {
   I18nService,
   ITEM_ID,
   TEST_HTTP_PROVIDERS,
-  TrackingService,
   UserService,
   Item,
   ITEM_BASE_PATH,
@@ -22,6 +21,7 @@ import {
 import { ResponseOptions, Response, Headers } from '@angular/http';
 import { ConversationUser, ItemsData, Product } from './item-response.interface';
 import { UUID } from 'angular2-uuid';
+import { TrackingService } from '../tracking/tracking.service';
 
 describe('ItemService', () => {
 
@@ -41,10 +41,6 @@ describe('ItemService', () => {
     });
     service = TestBed.get(ItemService);
     http = TestBed.get(HttpService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
   });
 
   describe('selectItem', () => {
@@ -90,6 +86,7 @@ describe('ItemService', () => {
   describe('mapRecordData', () => {
     it('should map item data', () => {
       const item: Item = service['mapRecordData'](ITEM_DATA_V3);
+
       expect(item instanceof Item).toBeTruthy();
       expect(item.id).toBe(ITEM_DATA_V3.id);
       expect(item.title).toBe(ITEM_DATA_V3.content.title);
@@ -104,6 +101,20 @@ describe('ItemService', () => {
       expect(item.mainImage).toEqual(ITEM_DATA_V3.content.images[0]);
       expect(item.images).toEqual(ITEM_DATA_V3.content.images);
       expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEM_DATA_V3.content.web_slug);
+    });
+
+    it('should map item data with price equal 0', () => {
+      const ITEM_WITH_PRICE_ZERO = {
+        id: ITEM_DATA_V3.id,
+        content: {
+          ...ITEM_DATA_V3.content,
+          sale_price: 0
+        }
+      };
+      const item: Item = service['mapRecordData'](ITEM_WITH_PRICE_ZERO);
+
+      expect(item instanceof Item).toBeTruthy();
+      expect(item.salePrice).toBe(0);
     });
   });
 
@@ -241,14 +252,14 @@ describe('ItemService', () => {
       const favorited = false;
       spyOn(http, 'put').and.returnValue(Observable.of({}));
       service.favoriteItem(ITEM_ID, favorited);
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/favorite', { favorited });
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/favorite', {favorited});
     });
 
     it('should call endpoint, with favorited param true', () => {
       const favorited = true;
       spyOn(http, 'put').and.returnValue(Observable.of({}));
       service.favoriteItem(ITEM_ID, favorited);
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/favorite', { favorited });
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/favorite', {favorited});
     });
   });
 

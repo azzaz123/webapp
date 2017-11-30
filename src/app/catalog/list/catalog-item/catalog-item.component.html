@@ -5,11 +5,11 @@
     </button>
   </div>
   <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected, pending: item.flags.pending}">
-    <a href="{{link}}" target="_blank" tslTrack="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="image"><tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar></a>
-    <a href="{{link}}" target="_blank" tslTrack="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="price">
+    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="image"><tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar></a>
+    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="price">
       <span>{{item.salePrice | customCurrency:item.currencyCode}}</span>
     </a>
-    <a href="{{link}}" target="_blank" tslTrack="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="title">
+    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="title">
       <span>{{item.title}}</span>
     </a>
     <span class="visibility">

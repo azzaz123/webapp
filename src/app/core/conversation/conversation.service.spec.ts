@@ -14,7 +14,6 @@ import {
   PersistencyService,
   SECOND_MOCK_CONVERSATION,
   TEST_HTTP_PROVIDERS,
-  TrackingService,
   MockTrackingService,
   UserService,
   XmppService,
@@ -25,6 +24,7 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
 import { ConversationService } from './conversation.service';
 import { Observable } from 'rxjs/Observable';
+import { TrackingService } from '../tracking/tracking.service';
 
 describe('ConversationService', () => {
   let mockBackend: MockBackend;

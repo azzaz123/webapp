@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ErrorsService, TEST_HTTP_PROVIDERS } from 'shield';
+import { ErrorsService, TEST_HTTP_PROVIDERS, MOCK_USER, User, USER_ID } from 'shield';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UploadComponent } from './upload.component';
 import { Observable } from 'rxjs/Observable';
@@ -10,6 +10,9 @@ import { CategoryService } from '../../core/category/category.service';
 import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../tests/category.fixtures';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from './preview-modal/preview-modal.component';
+import { UserService } from '../../core/user/user.service';
+
+export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -20,6 +23,7 @@ describe('UploadComponent', () => {
   let categoryService: CategoryService;
   let modalService: NgbModal;
   let componentInstance: any = {};
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -63,6 +67,13 @@ describe('UploadComponent', () => {
             };
           }
         }
+        },
+        {
+          provide: UserService, useValue: {
+          me() {
+            return Observable.of(MOCK_USER);
+          }
+        }
         }
       ],
       declarations: [UploadComponent],
@@ -80,10 +91,7 @@ describe('UploadComponent', () => {
     router = TestBed.get(Router);
     route = TestBed.get(ActivatedRoute);
     modalService = TestBed.get(NgbModal);
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
+    userService = TestBed.get(UserService);
   });
 
   describe('ngOnInit', () => {
@@ -104,6 +112,29 @@ describe('UploadComponent', () => {
       });
       it('should set fixedCategory', () => {
         expect(component.fixedCategory).toBe('Real Estate');
+      });
+    });
+    it('should call me and set user', () => {
+      spyOn(userService, 'me').and.callThrough();
+      component.ngOnInit();
+      expect(userService.me).toHaveBeenCalled();
+      expect(component.user).toEqual(MOCK_USER);
+    });
+    describe('user without location', () => {
+      it('should not add location control', () => {
+        component.ngOnInit();
+        expect(component.uploadForm.get('location.address')).toBeFalsy();
+        expect(component.uploadForm.get('location.latitude')).toBeFalsy();
+        expect(component.uploadForm.get('location.longitude')).toBeFalsy();
+      });
+    });
+    describe('user with location', () => {
+      it('should add location control', () => {
+        spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER_NO_LOCATION));
+        component.ngOnInit();
+        expect(component.uploadForm.get('location.address')).toBeTruthy();
+        expect(component.uploadForm.get('location.latitude')).toBeTruthy();
+        expect(component.uploadForm.get('location.longitude')).toBeTruthy();
       });
     });
   });

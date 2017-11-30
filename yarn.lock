@@ -165,6 +165,10 @@
   version "2.0.34"
   resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.34.tgz#9cbac4f41cb039436141785e1be50b3ab10a04a9"
 
+"@types/heremaps":
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/@types/heremaps/-/heremaps-3.0.10.tgz#b35d3174ee2e42b63dc07a69ad9abea74fff70f9"
+
 "@types/jasmine@2.5.45":
   version "2.5.45"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.45.tgz#58928a621d014ce6ab59c5a9c41071f7328b0ca9"

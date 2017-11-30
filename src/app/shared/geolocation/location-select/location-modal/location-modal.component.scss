@@ -1,0 +1,39 @@
+@import '../../../../../style/_common.scss';
+
+tsl-here-maps {
+  height: 500px;
+  width: 100%;
+  display: block;
+}
+
+.modal-body {
+  padding: 0;
+  tsl-geolocation {
+    position: absolute;
+    top: $spacing;
+    left: $spacing;
+    z-index: 100;
+    width: calc(100% - 115px);
+    display: block;
+    padding: 0;
+    & /deep/ {
+      .header-location {
+        input {
+          width: 100%;
+        }
+        .dropdown-menu {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .btn {
+    $height: 38px;
+    position: absolute;
+    top: $spacing;
+    right: $spacing;
+    height: $height;
+    line-height: $height;
+    padding: 0 $spacing-M;
+  }
+}

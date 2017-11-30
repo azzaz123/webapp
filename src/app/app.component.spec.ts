@@ -13,7 +13,6 @@ import {
   MockTrackingService,
   NotificationService,
   TEST_HTTP_PROVIDERS,
-  TrackingService,
   USER_DATA,
   USER_ID,
   UserService,
@@ -35,6 +34,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import createSpy = jasmine.createSpy;
 import { CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
+import { TrackingService } from './core/tracking/tracking.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;

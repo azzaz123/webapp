@@ -7,7 +7,6 @@ import {
   Message,
   MessageService,
   NotificationService,
-  TrackingService,
   User,
   UserService,
   WindowRef,
@@ -29,6 +28,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from "ngx-cookie/index";
 import { UUID } from 'angular2-uuid';
+import { TrackingService } from './core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-root',

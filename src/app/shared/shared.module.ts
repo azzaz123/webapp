@@ -7,13 +7,20 @@ import { AdComponent } from './ad/ad.component';
 import { CustomCurrencyPipe } from './custom-currency/custom-currency.pipe';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
+import { LocationSelectComponent } from './geolocation/location-select/location-select.component';
+import { LocationModalComponent } from './geolocation/location-select/location-modal/location-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { GeolocationComponent } from './geolocation/geolocation.component';
+import { GeolocationModule } from './geolocation/geolocation.module';
 
 @NgModule({
   imports: [
     CardModule,
     CommonModule,
     MdIconModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    ReactiveFormsModule,
+    GeolocationModule
   ],
   exports: [
     CardModule,

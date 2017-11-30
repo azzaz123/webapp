@@ -3,13 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
 import { UploadEvent } from './upload-event.interface';
-import { ErrorsService } from 'shield';
+import { ErrorsService, User } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { CategoryService } from '../../core/category/category.service';
 import { CategoryOption } from '../../core/category/category-response.interface';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from './preview-modal/preview-modal.component';
+import { UserService } from '../../core/user/user.service';
 
 @Component({
   selector: 'tsl-upload',
@@ -51,6 +52,7 @@ export class UploadComponent implements OnInit, AfterViewChecked {
   public categories: CategoryOption[] = [];
   public loading: boolean;
   public fixedCategory: string;
+  public user: User;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
   @ViewChild('title') titleField: ElementRef;
@@ -62,6 +64,7 @@ export class UploadComponent implements OnInit, AfterViewChecked {
               private errorsService: ErrorsService,
               private categoryService: CategoryService,
               private modalService: NgbModal,
+              private userService: UserService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       category_id: ['', [Validators.required]],
@@ -85,7 +88,7 @@ export class UploadComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.route.params.subscribe((params: any) => {
       this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
-        this.categories =  categories.filter((category: CategoryOption) => {
+        this.categories = categories.filter((category: CategoryOption) => {
           return category.value !== '13000' && category.value !== '13200';
         });
         if (params.catId) {
@@ -103,6 +106,16 @@ export class UploadComponent implements OnInit, AfterViewChecked {
         deliveryInfoControl.setValidators([]);
       }
       deliveryInfoControl.updateValueAndValidity();
+    });
+    this.userService.me().subscribe((user: User) => {
+      this.user = user;
+      if (!this.user.location) {
+        this.uploadForm.addControl('location', this.fb.group({
+          address: ['', [Validators.required]],
+          latitude: ['', [Validators.required]],
+          longitude: ['', [Validators.required]],
+        }));
+      }
     });
   }
 
