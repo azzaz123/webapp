@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { createItemsArray, TrackingService, MockTrackingService } from 'shield';
+import { createItemsArray, MockTrackingService } from 'shield';
 import { SelectedItemsComponent } from './selected-items.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { PRODUCT2_RESPONSE, PRODUCT_RESPONSE } from '../../../../tests/item.fixtures';
 import { Order } from '../../../core/item/item-response.interface';
 import { OrderEvent } from './selected-product.interface';
+import { TrackingService } from "../../../core/tracking/tracking.service";
 
 describe('SelectedItemsComponent', () => {
   let component: SelectedItemsComponent;

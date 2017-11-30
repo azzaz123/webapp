@@ -1,11 +1,12 @@
 import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
-import { Item, TrackingService } from 'shield';
+import { Item } from 'shield';
 import * as _ from 'lodash';
 import { Order, Product, SelectedItemsAction } from '../../../core/item/item-response.interface';
 import { OrderEvent, SelectedProduct } from './selected-product.interface';
 import { Observable } from 'rxjs/Observable';
+import { TrackingService } from "../../../core/tracking/tracking.service";
 
 @Component({
   selector: 'tsl-selected-items',

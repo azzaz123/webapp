@@ -63,10 +63,19 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscribeEvents();
+    this.subscribeEventUserLogin();
+    this.subscribeEventUserLogout();
+    this.subscribeUnreadMessages();
+    this.subscribeEventNewMessage();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
+    this.updateUrlAndSendAnalytics();
+    appboy.initialize(environment.appboy);
+    appboy.display.automaticallyShowNewInAppMessages();
+  }
+
+  private updateUrlAndSendAnalytics() {
     this.router.events.distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {
         this.previousUrl = previous.url;
@@ -78,18 +87,16 @@ export class AppComponent implements OnInit {
       ga('set', 'page', x.url);
       ga('send', 'pageview');
     });
-    appboy.initialize(environment.appboy);
-    appboy.display.automaticallyShowNewInAppMessages();
-  }
-
-  private updateSessionCookie() {
-      let uuid: string = UUID.UUID();
-      this.setCookie('app_session_id', uuid, 900000);
   }
 
   private config() {
     configMoment(this.i18n.locale);
     configIcons(this.mdIconRegistry, this.sanitizer);
+  }
+
+  private updateSessionCookie() {
+    let uuid: string = UUID.UUID();
+    this.setCookie('app_session_id', uuid, 900000);
   }
 
   private setCookie(name: string, token: string, expiration: number) {
@@ -103,10 +110,10 @@ export class AppComponent implements OnInit {
   }
 
   private trackAppOpen() {
-    this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
+      this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
   }
 
-  private subscribeEvents() {
+  private subscribeEventUserLogin() {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
       this.userService.me().subscribe(
         (user: User) => {
@@ -124,6 +131,9 @@ export class AppComponent implements OnInit {
           this.errorsService.show(error, true);
         });
     });
+  }
+
+  private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
       this.xmppService.disconnect();
@@ -134,6 +144,9 @@ export class AppComponent implements OnInit {
         this.winRef.nativeWindow.location.reload();
       }
     });
+  }
+
+  private subscribeUnreadMessages() {
     this.messageService.totalUnreadMessages$.subscribe((unreadMessages: number) => {
       let title: string = this.titleService.getTitle().split(') ')[1];
       title = title ? title : this.titleService.getTitle();
@@ -142,6 +155,9 @@ export class AppComponent implements OnInit {
       }
       this.titleService.setTitle(title);
     });
+  }
+
+  private subscribeEventNewMessage() {
     this.event.subscribe(EventService.NEW_MESSAGE, (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate));
   }
 

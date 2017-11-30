@@ -1,10 +1,11 @@
 import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CatalogComponent } from './catalog.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TrackingService, MockTrackingService, UserService, MOCK_USER, USER_DATA } from 'shield';
+import { MockTrackingService, UserService, MOCK_USER, USER_DATA } from 'shield';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Observable } from "rxjs/Observable";
 import { Response, ResponseOptions} from '@angular/http';
+import { TrackingService } from "../core/tracking/tracking.service";
 
 describe('CatalogComponent', () => {
   let component: CatalogComponent;

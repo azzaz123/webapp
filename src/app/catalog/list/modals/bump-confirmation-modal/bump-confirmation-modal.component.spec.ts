@@ -2,10 +2,11 @@ import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BumpConfirmationModalComponent } from './bump-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TrackingService, MockTrackingService, UserService, USER_DATA, MOCK_USER } from 'shield';
+import { MockTrackingService, UserService, USER_DATA, MOCK_USER } from 'shield';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions} from '@angular/http';
 import { Observable } from "rxjs/Observable";
+import { TrackingService } from "../../../../core/tracking/tracking.service";
 
 let component: BumpConfirmationModalComponent;
 let fixture: ComponentFixture<BumpConfirmationModalComponent>;
