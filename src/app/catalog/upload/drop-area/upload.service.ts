@@ -1,7 +1,9 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { Headers } from '@angular/http';
 import { UploadFile, UploadInput } from 'ngx-uploader';
 import { environment } from '../../../../environments/environment';
 import { AccessTokenService, HttpService } from 'shield';
+import { UserService } from '../../../core/user/user.service';
 
 @Injectable()
 export class UploadService {
@@ -9,7 +11,9 @@ export class UploadService {
   private API_URL: string = 'api/v3/items';
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
-  constructor(private accessTokenService: AccessTokenService, private http: HttpService) {
+  constructor(private accessTokenService: AccessTokenService,
+              private http: HttpService,
+              private userService: UserService) {
   }
 
   public createItemWithFirstImage(values: any, file: UploadFile) {
@@ -23,6 +27,18 @@ export class UploadService {
   }
 
   private buildUploadEvent(values: any, file: UploadFile, url: string, fieldName: string): UploadInput {
+    const headers: any = this.getHeaders(url, values);
+    if (values.location) {
+      this.userService.user.location = {
+        id: 1,
+        approximated_latitude: values.location.latitude,
+        approximated_longitude: values.location.longitude,
+        city: values.location.name,
+        zip: '12345',
+        approxRadius: 1
+      };
+      delete values.location;
+    }
     return {
       type: 'uploadFile',
       url: environment.baseUrl + url,
@@ -33,7 +49,7 @@ export class UploadService {
           type: 'application/json'
         })
       },
-      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      headers: headers,
       file: file
     };
   }
@@ -48,7 +64,7 @@ export class UploadService {
       data: {
         order: '$order'
       },
-      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      headers: this.getHeaders(url),
     };
     this.uploadInput.emit(inputEvent);
   }
@@ -67,6 +83,15 @@ export class UploadService {
       files: files
     };
     this.uploadInput.emit(inputEvent);
+  }
+
+  private getHeaders(url: string, values?: any): any {
+    const headers: Headers = this.http.getOptions(null, url, 'POST').headers;
+    if (values && values.location) {
+      headers.append('X-LocationLatitude', values.location.latitude.toString());
+      headers.append('X-LocationLongitude', values.location.longitude.toString());
+    }
+    return headers.toJSON();
   }
 
 }

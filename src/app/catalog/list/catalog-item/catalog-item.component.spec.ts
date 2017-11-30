@@ -1,5 +1,5 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { MOCK_ITEM, Item, TrackingService, MockTrackingService, ITEM_ID } from 'shield';
+import { MOCK_ITEM, Item, MockTrackingService, ITEM_ID } from 'shield';
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
@@ -12,6 +12,7 @@ import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 import { MomentModule } from 'angular2-moment';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
+import { TrackingService } from '../../../core/tracking/tracking.service';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;

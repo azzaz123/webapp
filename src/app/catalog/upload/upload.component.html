@@ -65,6 +65,13 @@
             </div>
           </div>
         </div>
+        <div class="row" *ngIf="user && !user.location">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <tsl-location-select [form]="uploadForm" name="location"></tsl-location-select>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group last">

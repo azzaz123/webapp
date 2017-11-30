@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { Item, TrackingService } from 'shield';
+import { Item } from 'shield';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
 import * as _ from 'lodash';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 import { environment } from '../../../../environments/environment';
+import { TrackingService } from '../../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-catalog-item',

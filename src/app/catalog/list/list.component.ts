@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import {
   ErrorsService,
   FinancialCard,
@@ -6,7 +6,6 @@ import {
   Item,
   ItemBulkResponse,
   PaymentService,
-  TrackingService,
   DEFAULT_ERROR_MESSAGE
 } from 'shield';
 import { ItemService } from '../../core/item/item.service';
@@ -23,13 +22,14 @@ import { Response } from '@angular/http';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { OrderEvent } from './selected-items/selected-product.interface';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { TrackingService } from '../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
 
   public items: Item[] = [];
   public selectedStatus: string = 'published';
@@ -39,6 +39,7 @@ export class ListComponent implements OnInit {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public scrollTop: number;
   private uploadModalRef: NgbModalRef;
+  private active: boolean = true;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -54,7 +55,7 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this.getItems();
     setTimeout(() => {
-      this.router.events.subscribe((evt) => {
+      this.router.events.takeWhile(() => this.active).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
           return;
         }
@@ -89,6 +90,10 @@ export class ListComponent implements OnInit {
         }
       });
     });
+  }
+
+  ngOnDestroy() {
+    this.active = false;
   }
 
   public filterByStatus(status: string) {
