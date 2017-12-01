@@ -187,8 +187,7 @@ export class TrackingService extends TrackingServiceMaster {
               private http: HttpService,
               private userService: UserService,
               private winRef: WindowRef,
-              private router: Router,
-              private config: ShieldConfig) {
+              private router: Router) {
     super();
     this.setSessionStartTime();
   }
@@ -213,7 +212,6 @@ export class TrackingService extends TrackingServiceMaster {
       this.router.url,
       this.userService.user.id,
       this.sessionStartTime,
-      this.config,
       event);
     newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName);
     if (attributes) {

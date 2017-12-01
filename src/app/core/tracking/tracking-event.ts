@@ -26,7 +26,7 @@ export class TrackingEvent {
       os: null
     },
     app: {
-      id: 'protool',
+      id: 'web',
       version: '2.0',
     },
     sdkVersion: '1.0',
@@ -35,7 +35,7 @@ export class TrackingEvent {
     window: null
   }];
 
-  constructor(window: any, origin: string, userId: string, sessionStartTime: string, config: ShieldConfig, event?: TrackingEventBase) {
+  constructor(window: any, origin: string, userId: string, sessionStartTime: string, event?: TrackingEventBase) {
     this.sessions[0].events[0] = event;
     this.sessions[0].events[0].id = UUID.UUID();
     this.sessions[0].userId = userId;
@@ -46,7 +46,6 @@ export class TrackingEvent {
     this.sessions[0].events[0].timestamp =
       `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${now.toLocaleTimeString()}.${now.getMilliseconds()}`;
     this.sessions[0].events[0].type = '0';
-    this.sessions[0].app.id = config.appId;
   }
 
   private setEntryPoint(origin: string) {

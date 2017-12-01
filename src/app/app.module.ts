@@ -26,7 +26,6 @@ import { FavoritesModule } from './favorites/favorites.module';
       cacheAllConversations: false,
       environment: environment,
       addSignature: true,
-      appId: 'web',
       conversationIdName: 'conversation_id',
       conversationUserId: 'other_user_id'
     }),

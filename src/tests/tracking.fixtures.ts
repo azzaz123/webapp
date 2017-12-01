@@ -12,5 +12,4 @@ export const TRACKING_EVENT: TrackingEvent = new TrackingEvent({
   'chat',
   'userId',
   '2016-04-05 10:59:39.977',
-  new ShieldConfig(),
   TrackingService.PRODUCT_DELETED);
