@@ -10,7 +10,7 @@ import { ItemService } from './item/item.service';
 import { ConversationService } from './conversation/conversation.service';
 import { EventService } from './event/event.service';
 import { TrackingService } from './tracking/tracking.service';
-import { TrackEventDirective } from './tracking/track-event.directive';
+import { CustomTrackingModule } from './tracking/custom-tracking.module';
 
 @NgModule({
   imports: [
@@ -19,16 +19,16 @@ import { TrackEventDirective } from './tracking/track-event.directive';
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule
+    TrackingModule,
+    CustomTrackingModule
   ],
   exports: [
     CommonModule,
     UserModule,
     ItemModule,
     TrackingModule,
-    TrackEventDirective
-  ],
-  declarations: [TrackEventDirective]
+    CustomTrackingModule
+  ]
 })
 export class CoreModule {
 
