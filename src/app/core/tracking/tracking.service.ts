@@ -3,12 +3,15 @@ import {
   HttpService,
   NavigatorService,
   ShieldConfig,
-  TrackingEventBase,
   TrackingService as TrackingServiceMaster,
   UserService,
   WindowRef
 } from 'shield';
 import { Router } from '@angular/router';
+import { UUID } from 'angular2-uuid';
+import * as CryptoJS from 'crypto-js';
+import { TrackingEvent } from './tracking-event';
+import { TrackingEventBase } from './tracking-event-base.interface';
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -175,13 +178,53 @@ export class TrackingService extends TrackingServiceMaster {
     category: CATEGORY_IDS.Button
   };
 
-  constructor(navigatorService: NavigatorService,
-              http: HttpService,
-              userService: UserService,
-              winRef: WindowRef,
-              router: Router,
-              config: ShieldConfig) {
-    super(navigatorService, http, userService, winRef, router, config);
+  public static TRACKING_SESSION_UUID: string = UUID.UUID();
+  private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
+  private preClickStreamURL = 'https://precollector.wallapop.com/clickstream.json/sendEvents';
+  private proClickStreamURL = 'https://collector.wallapop.com/clickstream.json/sendEvents';
+  private sessionStartTime: string = null;
+
+  constructor(private navigatorService: NavigatorService,
+              private http: HttpService,
+              private userService: UserService,
+              private winRef: WindowRef,
+              private router: Router,
+              private config: ShieldConfig) {
+    super();
+    this.setSessionStartTime();
+  }
+
+  track(event: TrackingEventBase, attributes?: any) {
+    const newEvent: TrackingEvent = this.createNewEvent(event, attributes);
+    delete newEvent['sessions'][0]['window'];
+    const stringifiedEvent: string = JSON.stringify(newEvent);
+    const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
+    if (this.config.environment.production) {
+      this.http.postNoBase(this.proClickStreamURL, stringifiedEvent, sha1Body).subscribe();
+    } else {
+      this.http.postNoBase(this.preClickStreamURL, stringifiedEvent, sha1Body).subscribe();
+    }
+  }
+
+  private setSessionStartTime() {
+    const now = new Date();
+    this.sessionStartTime =
+      `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${now.toLocaleTimeString()}.${now.getMilliseconds()}`;
+  }
+
+
+  private createNewEvent(event: TrackingEventBase, attributes?: any) {
+    const newEvent: TrackingEvent = new TrackingEvent(this.winRef.nativeWindow,
+      this.router.url,
+      this.userService.user.id,
+      this.sessionStartTime,
+      this.config,
+      event);
+    newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName);
+    if (attributes) {
+      newEvent.setAttributes(attributes);
+    }
+    return newEvent;
   }
 
 }

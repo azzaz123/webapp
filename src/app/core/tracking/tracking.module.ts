@@ -14,5 +14,5 @@ import { TrackEventDirective } from './track-event.directive';
     TrackingService
   ],
 })
-export class CustomTrackingModule {
+export class TrackingModule {
 }
