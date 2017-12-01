@@ -7,83 +7,82 @@ import {
   Conversation,
   createConversationsArray,
   HttpService,
-  I18nService,
-  ItemService,
   Message,
-  MessageService,
   MOCK_CONVERSATION,
-  MOCK_ITEM,
   MOCK_MESSAGE,
-  MOCK_USER,
   MockedPersistencyService,
   MockTrackingService,
   NEW_CONVERSATION_RESPONSE,
   NotificationService,
   PersistencyService,
   SECOND_MOCK_CONVERSATION,
-  ShieldModule,
   TEST_HTTP_PROVIDERS,
   User,
-  USER_ID,
-  XmppService
+  USER_ID
 } from 'shield';
 import { ConversationComponent } from './conversation/conversation.component';
 import { Observable } from 'rxjs/Observable';
-
-import { HaversineService } from 'ng2-haversine';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { EventService } from 'app/core/event/event.service';
 import { UserService } from '../../core/user/user.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 describe('Component: ConversationsPanel', () => {
 
   let component: ConversationsPanelComponent;
-  let service: ConversationService;
+  let conversationService: ConversationService;
   let eventService: EventService;
   let userService: UserService;
-  let messageService: MessageService;
-  let notificationService: NotificationService;
   let route: ActivatedRoute;
   let http: HttpService;
   let trackingService: TrackingService;
   let elRef: ElementRef;
-  let conversationService: ConversationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         MomentModule,
-        RouterTestingModule,
-        ShieldModule.forRoot({
-          cacheAllConversations: false,
-          environment: environment,
-          addSignature: true,
-          appId: 'web',
-          conversationIdName: 'conversation_id',
-          conversationUserId: 'other_user_id'
-        })
+        RouterTestingModule
       ],
       declarations: [ConversationsPanelComponent, ConversationComponent],
       providers: [
         {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: TrackingService, useClass: MockTrackingService},
         ...TEST_HTTP_PROVIDERS,
-        ConversationService,
-        PersistencyService,
-        HaversineService,
-        MessageService,
+        {
+          provide: ConversationService, useValue: {
+          stream$: new ReplaySubject(1),
+          loadMore() {
+            return Observable.of([]);
+          },
+          getPage() {
+            return Observable.of([]);
+          },
+          getByItemId() {
+            return Observable.of([]);
+          },
+          getConversationPage() {
+          },
+          createConversation() {
+            return Observable.of([]);
+          },
+          getSingleConversationMessages() {
+            return Observable.of([]);
+          },
+          addLead() {
+          },
+          sendRead() {
+          }
+        }
+        },
         EventService,
         {provide: UserService, useValue: {
           queryParams: {}
         }},
-        ItemService,
-        XmppService,
-        I18nService,
         {
           provide: ElementRef, useValue: {
           nativeElement: {
@@ -97,12 +96,6 @@ describe('Component: ConversationsPanel', () => {
         }
         },
         {
-          provide: NotificationService, useValue: {
-          sendBrowserNotification() {
-          }
-        }
-        },
-        {
           provide: ActivatedRoute, useValue: {
           queryParams: Observable.of({})
         }
@@ -110,22 +103,15 @@ describe('Component: ConversationsPanel', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
-    service = TestBed.get(ConversationService);
+    conversationService = TestBed.get(ConversationService);
     eventService = TestBed.get(EventService);
     http = TestBed.get(HttpService);
     component = TestBed.createComponent(ConversationsPanelComponent).componentInstance;
     userService = TestBed.get(UserService);
     userService['_user'] = new User(USER_ID);
-    messageService = TestBed.get(MessageService);
-    notificationService = TestBed.get(NotificationService);
     route = TestBed.get(ActivatedRoute);
     trackingService = TestBed.get(TrackingService);
     elRef = TestBed.get(ElementRef);
-    conversationService = TestBed.get(ConversationService);
-    spyOn(service, 'loadNotStoredMessages').and.callFake((param) => {
-      return Observable.of(param);
-    });
-
   });
 
   describe('getConversations', () => {
@@ -137,7 +123,7 @@ describe('Component: ConversationsPanel', () => {
       describe('with no params', () => {
         beforeEach(() => {
           spyOn(trackingService, 'track');
-          spyOn(service, 'getPage').and.returnValue(Observable.of(CONVERSATIONS));
+          spyOn(conversationService, 'getPage').and.returnValue(Observable.of(CONVERSATIONS));
           component['getConversations']();
         });
         it('should set conversations', () => {
@@ -152,14 +138,14 @@ describe('Component: ConversationsPanel', () => {
       });
       it('should NOT call setCurrentConversationFromQueryParams if already called', () => {
         component['currentConversationSet'] = true;
+        spyOn(conversationService, 'getPage').and.returnValue(Observable.of(CONVERSATIONS));
         component['getConversations']();
-        service.stream$.next(CONVERSATIONS);
         expect(component['setCurrentConversationFromQueryParams']).not.toHaveBeenCalled();
       });
       it('should replace conversations', () => {
         component.conversations = CONVERSATIONS;
+        spyOn(conversationService, 'getPage').and.returnValue(Observable.of(CONVERSATIONS));
         component['getConversations']();
-        service.stream$.next(CONVERSATIONS);
         expect(component.conversations).toEqual(CONVERSATIONS);
       });
     });
@@ -167,7 +153,7 @@ describe('Component: ConversationsPanel', () => {
       beforeEach(() => {
         spyOn<any>(component, 'setCurrentConversationFromQueryParams');
         component['getConversations']();
-        service.stream$.next([]);
+        conversationService.stream$.next([]);
       });
       it('should NOT set conversations', () => {
         expect(component.conversations.length).toBe(0);
@@ -237,7 +223,7 @@ describe('Component: ConversationsPanel', () => {
 
     beforeEach(() => {
       component.conversations = CONVERSATIONS;
-      service.leads = CONVERSATIONS;
+      conversationService.leads = CONVERSATIONS;
     });
 
     it('should set the current conversation from query params', () => {
@@ -333,7 +319,7 @@ describe('Component: ConversationsPanel', () => {
 
   describe('sendRead', () => {
     beforeEach(() => {
-      spyOn(service, 'sendRead');
+      spyOn(conversationService, 'sendRead');
       spyOn(Visibility, 'onVisible').and.callFake((callback: Function) => callback());
     });
     it('should send conversation read confirm if the conversation open is the current', fakeAsync(() => {
@@ -342,13 +328,13 @@ describe('Component: ConversationsPanel', () => {
       message.fromBuyer = true;
       component['sendRead'](message);
       tick(1000);
-      expect(service.sendRead).toHaveBeenCalled();
+      expect(conversationService.sendRead).toHaveBeenCalled();
     }));
     it('should NOT send conversation read confirm if the conversation open is NOT the current', fakeAsync(() => {
       component['conversation'] = SECOND_MOCK_CONVERSATION;
       component['sendRead'](MOCK_MESSAGE);
       tick(1000);
-      expect(service.sendRead).not.toHaveBeenCalled();
+      expect(conversationService.sendRead).not.toHaveBeenCalled();
     }));
   });
   describe('setCurrentConversationWithConversationId', () => {

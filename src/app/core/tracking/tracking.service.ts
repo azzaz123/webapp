@@ -4,7 +4,6 @@ import {
   NavigatorService,
   ShieldConfig,
   TrackingService as TrackingServiceMaster,
-  UserService,
   WindowRef
 } from 'shield';
 import { Router } from '@angular/router';
@@ -12,6 +11,8 @@ import { UUID } from 'angular2-uuid';
 import * as CryptoJS from 'crypto-js';
 import { TrackingEvent } from './tracking-event';
 import { TrackingEventBase } from './tracking-event-base.interface';
+import { UserService } from '../user/user.service';
+import { environment } from '../../../environments/environment';
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -199,7 +200,7 @@ export class TrackingService extends TrackingServiceMaster {
     delete newEvent['sessions'][0]['window'];
     const stringifiedEvent: string = JSON.stringify(newEvent);
     const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
-    if (this.config.environment.production) {
+    if (environment.production) {
       this.http.postNoBase(this.proClickStreamURL, stringifiedEvent, sha1Body).subscribe();
     } else {
       this.http.postNoBase(this.preClickStreamURL, stringifiedEvent, sha1Body).subscribe();

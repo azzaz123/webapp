@@ -76,7 +76,6 @@ describe('Service: Tracking', () => {
     it('should do a post to the PRO clickstream if the environment is production', () => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
       spyOn<any>(service, 'createNewEvent').and.callThrough();
-      environment.production = true;
       service.track(TrackingService.MESSAGE_NOTIFIED, {conversation_id: 'conversation'});
       expect(http.postNoBase['calls'].argsFor(0)[0]).toBe(service['proClickStreamURL']);
     });
