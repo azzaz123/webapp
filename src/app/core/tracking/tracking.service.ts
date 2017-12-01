@@ -181,8 +181,6 @@ export class TrackingService extends TrackingServiceMaster {
 
   public static TRACKING_SESSION_UUID: string = UUID.UUID();
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
-  private preClickStreamURL = 'https://precollector.wallapop.com/clickstream.json/sendEvents';
-  private proClickStreamURL = 'https://collector.wallapop.com/clickstream.json/sendEvents';
   private sessionStartTime: string = null;
 
   constructor(private navigatorService: NavigatorService,
@@ -200,11 +198,7 @@ export class TrackingService extends TrackingServiceMaster {
     delete newEvent['sessions'][0]['window'];
     const stringifiedEvent: string = JSON.stringify(newEvent);
     const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
-    if (environment.production) {
-      this.http.postNoBase(this.proClickStreamURL, stringifiedEvent, sha1Body).subscribe();
-    } else {
-      this.http.postNoBase(this.preClickStreamURL, stringifiedEvent, sha1Body).subscribe();
-    }
+    this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body).subscribe();
   }
 
   private setSessionStartTime() {

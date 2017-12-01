@@ -6,7 +6,6 @@ import { HttpService, NavigatorService, TEST_HTTP_PROVIDERS, WindowRef } from 's
 import { Observable } from 'rxjs/Observable';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../user/user.service';
-import { environment } from '../../../environments/environment';
 
 let service: TrackingService;
 
@@ -73,18 +72,11 @@ describe('Service: Tracking', () => {
       expect((service as any).createNewEvent).toHaveBeenCalledWith(TrackingService.MESSAGE_NOTIFIED,
         {conversation_id: 'conversation'});
     });
-    it('should do a post to the PRO clickstream if the environment is production', () => {
+    it('should do a post to clickstream', () => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
       spyOn<any>(service, 'createNewEvent').and.callThrough();
       service.track(TrackingService.MESSAGE_NOTIFIED, {conversation_id: 'conversation'});
-      expect(http.postNoBase['calls'].argsFor(0)[0]).toBe(service['proClickStreamURL']);
-    });
-    it('should do a post to the PRE clickstream if the environment is not production', () => {
-      spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
-      spyOn<any>(service, 'createNewEvent').and.callThrough();
-      environment.production = false;
-      service.track(TrackingService.MESSAGE_NOTIFIED, {conversation_id: 'conversation'});
-      expect(http.postNoBase['calls'].argsFor(0)[0]).toBe(service['preClickStreamURL']);
+      expect(http.postNoBase['calls'].argsFor(0)[0]).toBe('https://collector.wallapop.com/clickstream.json/sendEvents');
     });
   });
 
