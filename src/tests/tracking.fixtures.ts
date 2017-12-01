@@ -1,4 +1,3 @@
-import { ShieldConfig } from 'shield';
 import { TrackingEvent } from '../app/core/tracking/tracking-event';
 import { TrackingService } from '../app/core/tracking/tracking.service';
 
