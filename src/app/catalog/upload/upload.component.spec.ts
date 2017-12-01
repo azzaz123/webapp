@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ErrorsService, TEST_HTTP_PROVIDERS, MOCK_USER, User, USER_ID, USER_LOCATION } from 'shield';
+import { ErrorsService, TEST_HTTP_PROVIDERS, MOCK_USER, User, USER_ID, Location } from 'shield';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UploadComponent } from './upload.component';
 import { Observable } from 'rxjs/Observable';
@@ -13,6 +13,19 @@ import { PreviewModalComponent } from './preview-modal/preview-modal.component';
 import { UserService } from '../../core/user/user.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
+
+export const USER_LOCATION: Location = {
+  'id': 101,
+  'approximated_latitude': 41.399132621722174,
+  'approximated_longitude': 2.17585484411869,
+  'city': 'Barcelona',
+  'zip': '08009',
+  'approxRadius': 0,
+  'title': '08009, Barcelona',
+  'full_address': 'Carrer Sant Pere Mes Baix, Barcelona'
+};
+
+MOCK_USER.location = USER_LOCATION;
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -123,7 +136,7 @@ describe('UploadComponent', () => {
     it('should add user location values', () => {
       component.ngOnInit();
 
-      expect(component.uploadForm.get('location.address').value).toBe(USER_LOCATION.title);
+      expect(component.uploadForm.get('location.address').value).toBe(USER_LOCATION.full_address);
       expect(component.uploadForm.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
       expect(component.uploadForm.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);
     });
@@ -242,7 +255,7 @@ describe('UploadComponent', () => {
         },
         delivery_info: null,
         location: {
-          address: USER_LOCATION.title,
+          address: USER_LOCATION.full_address,
           latitude: USER_LOCATION.approximated_latitude,
           longitude: USER_LOCATION.approximated_longitude
         }

@@ -116,7 +116,7 @@ export class UploadComponent implements OnInit, AfterViewChecked {
       this.user = user;
       if (user.location) {
         this.uploadForm.get('location').patchValue({
-          address: user.location.title || user.location.city,
+          address: user.location.full_address,
           latitude: user.location.approximated_latitude,
           longitude: user.location.approximated_longitude
         });
