@@ -269,7 +269,9 @@ export class TrackingService extends TrackingServiceMaster {
   };
   public static CATALOG_FEATURED_CHECKOUT: TrackingEventBase = {
     name: '565',
-    category: CATEGORY_IDS['Button']
+    category: CATEGORY_IDS['Button'],
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
   };
 
   public static TRACKING_SESSION_UUID: string = UUID.UUID();
