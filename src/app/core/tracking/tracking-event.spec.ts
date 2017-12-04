@@ -1,4 +1,4 @@
-import { SCREEN_MAPPING, TrackingEvent } from './tracking-event';
+import { TrackingEvent } from './tracking-event';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures';
 
 describe('TrackingEvent', () => {
@@ -30,11 +30,6 @@ describe('TrackingEvent', () => {
       const attributes = {product_id: 5};
       TRACKING_EVENT.setAttributes(attributes);
       expect(TRACKING_EVENT['sessions'][0]['events'][0]['attributes']).toEqual(attributes);
-    });
-  });
-  describe('setScreenIfEmpty', () => {
-    it('should set the screen using the number from the constant', () => {
-      expect(TRACKING_EVENT['sessions'][0].events[0].screen).toBe(SCREEN_MAPPING.chat)
     });
   });
 });

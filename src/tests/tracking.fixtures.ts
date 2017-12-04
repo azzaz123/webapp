@@ -8,7 +8,6 @@ export const TRACKING_EVENT: TrackingEvent = new TrackingEvent({
     },
     locale: 'es'
   },
-  'chat',
   'userId',
   '2016-04-05 10:59:39.977',
   TrackingService.PRODUCT_DELETED);
