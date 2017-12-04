@@ -23,7 +23,7 @@ export class BumpConfirmationModalComponent implements OnInit {
         if (this.code === '200') {
           this.trackingService.track(TrackingService.FEATURED_PURCHASE_SUCCESS);
         } else {
-          this.trackingService.track(TrackingService.FEATURED_PURCHASE_ERROR, { code_error: this.code });
+          this.trackingService.track(TrackingService.FEATURED_PURCHASE_ERROR, { error_code: this.code });
         }
       });
   }

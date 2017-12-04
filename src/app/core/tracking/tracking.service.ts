@@ -199,7 +199,7 @@ export class TrackingService extends TrackingServiceMaster {
     name: '121',
     category: CATEGORY_IDS.Conversations,
     screen: SCREENS_IDS.ItemDetail,
-    type: TYPES_IDS.Button
+    type: TYPES_IDS.ActionServer
   };
   public static FEATURED_PURCHASE_FINAL: TrackingEventBase = {
     name: '566',
