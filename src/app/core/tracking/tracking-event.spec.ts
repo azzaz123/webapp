@@ -1,4 +1,4 @@
-import { TrackingEvent } from './tracking-event';
+import { SCREEN_MAPPING, TrackingEvent } from './tracking-event';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures';
 
 describe('TrackingEvent', () => {
@@ -27,13 +27,14 @@ describe('TrackingEvent', () => {
   });
   describe('setAttributes', () => {
     it('should set the attributes of the event to the given ones', () => {
-      TRACKING_EVENT.setAttributes({product_id: 5});
-      expect(TRACKING_EVENT['sessions'][0]['events'][0]['attributes']).toEqual({product_id: 5});
+      const attributes = {product_id: 5};
+      TRACKING_EVENT.setAttributes(attributes);
+      expect(TRACKING_EVENT['sessions'][0]['events'][0]['attributes']).toEqual(attributes);
     });
   });
-  describe('setEntryPoint', () => {
-    it('should set the entryPoint using the number from the constant', () => {
-      expect(TRACKING_EVENT['sessions'][0].entryPoint).toBe('89')
+  describe('setScreenIfEmpty', () => {
+    it('should set the screen using the number from the constant', () => {
+      expect(TRACKING_EVENT['sessions'][0].events[0].screen).toBe(SCREEN_MAPPING.chat)
     });
   });
 });
