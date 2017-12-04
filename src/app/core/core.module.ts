@@ -5,12 +5,11 @@ import { CookieModule } from 'ngx-cookie';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
-import { TrackingModule } from 'shield';
 import { ItemService } from './item/item.service';
 import { ConversationService } from './conversation/conversation.service';
 import { EventService } from './event/event.service';
 import { TrackingService } from './tracking/tracking.service';
-import { TrackEventDirective } from './tracking/track-event.directive';
+import { TrackingModule } from './tracking/tracking.module';
 
 @NgModule({
   imports: [
@@ -25,10 +24,8 @@ import { TrackEventDirective } from './tracking/track-event.directive';
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule,
-    TrackEventDirective
-  ],
-  declarations: [TrackEventDirective]
+    TrackingModule
+  ]
 })
 export class CoreModule {
 

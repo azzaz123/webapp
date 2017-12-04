@@ -5,13 +5,14 @@ import { Observable } from 'rxjs/Observable';
 import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
 import { MdIconModule } from '@angular/material';
 import { ItemService } from '../item.service';
-import { WindowRef, USER_ID } from 'shield';
+import { WindowRef, USER_ID, MockTrackingService } from 'shield';
 import { environment } from '../../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   MOCK_ITEM
 } from 'shield';
 import {ConfirmationModalComponent} from '../../../shared/confirmation-modal/confirmation-modal.component';
+import { TrackingService } from '../../tracking/tracking.service';
 
 describe('ItemCartFavoriteComponent', () => {
   let component: ItemCartFavoriteComponent;
@@ -55,6 +56,7 @@ describe('ItemCartFavoriteComponent', () => {
             }
           }
         },
+        {provide: TrackingService, useClass: MockTrackingService},
         { provide: 'SUBDOMAIN', useValue: 'www'}
       ],
       schemas: [NO_ERRORS_SCHEMA]
