@@ -6,6 +6,7 @@ import { TrackingEvent } from './tracking-event';
 import { TrackingEventBase } from './tracking-event-base.interface';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
+import { getTimestamp } from './getTimestamp.func';
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -288,9 +289,7 @@ export class TrackingService extends TrackingServiceMaster {
   }
 
   private setSessionStartTime() {
-    const now = new Date();
-    this.sessionStartTime =
-      `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${now.toLocaleTimeString()}.${now.getMilliseconds()}`;
+    this.sessionStartTime = getTimestamp();
   }
 
 

@@ -1,6 +1,7 @@
 import { TrackingService } from './tracking.service';
 import { UUID } from 'angular2-uuid';
 import { TrackingEventBase } from './tracking-event-base.interface';
+import { getTimestamp } from './getTimestamp.func';
 
 export class TrackingEvent {
   private sessions: any[] = [{
@@ -31,13 +32,7 @@ export class TrackingEvent {
     this.sessions[0].userId = userId;
     this.sessions[0].window = window;
     this.sessions[0].startTimestamp = sessionStartTime;
-    this.setTimestamp();
-  }
-
-  private setTimestamp() {
-    const now: Date = new Date();
-    const timestamp = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${now.toLocaleTimeString()}.${now.getMilliseconds()}`;
-    this.sessions[0].events[0].timestamp = timestamp;
+    this.sessions[0].events[0].timestamp = getTimestamp();
   }
 
   public setDeviceInfo(operativeSystemVersion: string, OSName: string) {
