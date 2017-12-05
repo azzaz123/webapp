@@ -90,10 +90,9 @@ export class SelectedItemsComponent implements OnInit {
       total: this.total
     });
 
-    //let result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
+    let result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
 
-
-    this.trackingService.track(TrackingService.CATALOG_FEATURED_CHECKOUT, {item_id: order[0].item_id, bump_type: order[0].product_id});
+    this.trackingService.track(TrackingService.CATALOG_FEATURED_CHECKOUT, result);
   }
 
   private calculateTotal() {
