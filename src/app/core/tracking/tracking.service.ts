@@ -196,10 +196,10 @@ export class TrackingService extends TrackingServiceMaster {
     type: TYPES_IDS.Error
   };
   public static CONVERSATION_CREATE_NEW: TrackingEventBase = {
-    name: '435',
+    name: '121',
     category: CATEGORY_IDS.Conversations,
     screen: SCREENS_IDS.ItemDetail,
-    type: TYPES_IDS.Button
+    type: TYPES_IDS.ActionServer
   };
   public static FEATURED_PURCHASE_FINAL: TrackingEventBase = {
     name: '566',
@@ -265,6 +265,12 @@ export class TrackingService extends TrackingServiceMaster {
     name: '592',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.WorkInProgess,
+    type: TYPES_IDS.Tap
+  };
+  public static CATALOG_FEATURED_CHECKOUT: TrackingEventBase = {
+    name: '565',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyCatalog,
     type: TYPES_IDS.Tap
   };
 

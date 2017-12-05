@@ -26,6 +26,8 @@ import { MdIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { environment } from '../environments/environment';
+import { CookieOptions, CookieService } from "ngx-cookie/index";
+import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 
 @Component({
@@ -38,6 +40,7 @@ export class AppComponent implements OnInit {
   public loggingOut: boolean;
   public hideSidebar: boolean;
   private previousUrl: string;
+  private currentUrl: string;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -54,17 +57,29 @@ export class AppComponent implements OnInit {
               private winRef: WindowRef,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private debugService: DebugService) {
+              private debugService: DebugService,
+              private cookieService: CookieService) {
     this.config();
   }
 
   ngOnInit() {
-    this.subscribeEvents();
+    this.subscribeEventUserLogin();
+    this.subscribeEventUserLogout();
+    this.subscribeUnreadMessages();
+    this.subscribeEventNewMessage();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
+    this.updateUrlAndSendAnalytics();
+    appboy.initialize(environment.appboy);
+    appboy.display.automaticallyShowNewInAppMessages();
+  }
+
+  private updateUrlAndSendAnalytics() {
     this.router.events.distinctUntilChanged((previous: any, current: any) => {
       if (current instanceof NavigationEnd) {
+        this.previousUrl = previous.url;
+        this.currentUrl = current.url;
         return previous.url === current.url;
       }
       return true;
@@ -72,8 +87,6 @@ export class AppComponent implements OnInit {
       ga('set', 'page', x.url);
       ga('send', 'pageview');
     });
-    appboy.initialize(environment.appboy);
-    appboy.display.automaticallyShowNewInAppMessages();
   }
 
   private config() {
@@ -81,21 +94,46 @@ export class AppComponent implements OnInit {
     configIcons(this.mdIconRegistry, this.sanitizer);
   }
 
-  private subscribeEvents() {
+  private updateSessionCookie() {
+    let uuid: string = UUID.UUID();
+    this.setCookie('app_session_id', uuid, 900000);
+  }
+
+  private setCookie(name: string, token: string, expiration: number) {
+    let expirationDate: Date = new Date();
+    expirationDate.setTime(expirationDate.getTime() + expiration);
+    const options: CookieOptions = {
+      path: '/',
+      expires: expirationDate
+    };
+    this.cookieService.put(name, token, options);
+  }
+
+  private trackAppOpen() {
+      this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
+  }
+
+  private subscribeEventUserLogin() {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
       this.userService.me().subscribe(
         (user: User) => {
-          this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_IN, {user_id: user.id});
           this.xmppService.connect(user.id, accessToken);
           this.conversationService.init().subscribe();
           appboy.changeUser(user.id);
           appboy.openSession();
+          if (!this.cookieService.get('app_session_id')) {
+            this.trackAppOpen();
+            this.updateSessionCookie();
+          }
         },
         (error: any) => {
           this.userService.logout();
           this.errorsService.show(error, true);
         });
     });
+  }
+
+  private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
       this.xmppService.disconnect();
@@ -106,6 +144,9 @@ export class AppComponent implements OnInit {
         this.winRef.nativeWindow.location.reload();
       }
     });
+  }
+
+  private subscribeUnreadMessages() {
     this.messageService.totalUnreadMessages$.subscribe((unreadMessages: number) => {
       let title: string = this.titleService.getTitle().split(') ')[1];
       title = title ? title : this.titleService.getTitle();
@@ -114,6 +155,9 @@ export class AppComponent implements OnInit {
       }
       this.titleService.setTitle(title);
     });
+  }
+
+  private subscribeEventNewMessage() {
     this.event.subscribe(EventService.NEW_MESSAGE, (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate));
   }
 

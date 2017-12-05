@@ -210,6 +210,7 @@ export class ListComponent implements OnInit, OnDestroy {
     const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, {windowClass: 'credit-card'});
     modalRef.componentInstance.financialCard = financialCard;
     modalRef.componentInstance.total = total;
+    this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, { select_card: financialCard.id });
     modalRef.result.then((result: string) => {
       if (result === 'new') {
         this.sabadellSubmit.emit(orderId);

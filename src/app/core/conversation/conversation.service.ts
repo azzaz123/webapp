@@ -15,7 +15,8 @@ import {
   PersistencyService,
   ShieldConfig,
   UserService,
-  XmppService
+  XmppService,
+  User
 } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { TrackingService } from '../tracking/tracking.service';
@@ -54,6 +55,12 @@ export class ConversationService extends ConversationServiceMaster {
     options.headers.append('Content-Type', 'application/json');
     return this.http.post(`api/v3/conversations`, JSON.stringify({item_id: itemId}), options).flatMap((r: Response) => {
       const response: ConversationResponse = r.json();
+      this.userService.me().subscribe(
+        (user: User) => {
+          this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW,
+          { user_id: user.id, item_id: itemId, thread_id: response.conversation_id });
+        }
+      );
       return Observable.forkJoin(
         this.userService.get(response.other_user_id),
         this.itemService.get(itemId)
