@@ -91,7 +91,7 @@ export class SelectedItemsComponent implements OnInit {
     });
 
     let result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
-
+    result = Object.assign({}, result);
     this.trackingService.track(TrackingService.CATALOG_FEATURED_CHECKOUT, result);
   }
 

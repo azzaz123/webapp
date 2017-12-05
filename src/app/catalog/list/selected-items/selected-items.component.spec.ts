@@ -152,11 +152,12 @@ describe('SelectedItemsComponent', () => {
       component['calculateTotal']();
       component.featureItems();
       expect(orderEvent).toEqual({
-        order: [{
-          item_id: '1',
-          product_id: 'l1kmzngg6n3p'
-        }
-          , {
+        order: [
+          {
+            item_id:    '1',
+            product_id: 'l1kmzngg6n3p'
+          },
+          {
             item_id: '2',
             product_id: 'g24g2jhg4jh24'
           }
@@ -165,7 +166,6 @@ describe('SelectedItemsComponent', () => {
       });
     });
     it('should send event featured_checkout', () => {
-      let order: Array<Order>;
       component.selectedProducts = [{
         itemId: '1',
         product: PRODUCT_RESPONSE
@@ -173,17 +173,16 @@ describe('SelectedItemsComponent', () => {
         itemId: '2',
         product: PRODUCT2_RESPONSE
       }];
-      order = [
-        {
-          item_id: '1',
-          product_id: 'l1kmzngg6n3p'
+      const result = {
+        0: {
+          item_id:   '1',
+          bump_type: 'l1kmzngg6n3p'
         },
-        {
-          item_id: '2',
-          product_id: 'g24g2jhg4jh24'
+        1: {
+          item_id:   '2',
+          bump_type: 'g24g2jhg4jh24'
         }
-      ];
-      let result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
+      };
       component.featureItems();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CATALOG_FEATURED_CHECKOUT, result);
     });
