@@ -15,7 +15,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { UploadModalComponent } from './topbar/upload-modal/upload-modal.component';
 import { ProfileModalComponent } from './sidebar/profile-modal/profile-modal.component';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
-import { CustomTrackingModule } from '../core/tracking/custom-tracking.module';
+import { TrackingModule } from '../core/tracking/tracking.module';
 
 @NgModule({
   imports: [
@@ -27,7 +27,7 @@ import { CustomTrackingModule } from '../core/tracking/custom-tracking.module';
     NgbModule,
     UserModule,
     GeolocationModule,
-    CustomTrackingModule
+    TrackingModule
   ],
   exports: [
     TopbarComponent,

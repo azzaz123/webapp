@@ -5,12 +5,11 @@ import { CookieModule } from 'ngx-cookie';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
-import { TrackingModule } from 'shield';
 import { ItemService } from './item/item.service';
 import { ConversationService } from './conversation/conversation.service';
 import { EventService } from './event/event.service';
 import { TrackingService } from './tracking/tracking.service';
-import { CustomTrackingModule } from './tracking/custom-tracking.module';
+import { TrackingModule } from './tracking/tracking.module';
 
 @NgModule({
   imports: [
@@ -19,15 +18,13 @@ import { CustomTrackingModule } from './tracking/custom-tracking.module';
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule,
-    CustomTrackingModule
+    TrackingModule
   ],
   exports: [
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule,
-    CustomTrackingModule
+    TrackingModule
   ]
 })
 export class CoreModule {
