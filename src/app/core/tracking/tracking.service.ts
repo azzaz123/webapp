@@ -23,7 +23,8 @@ const CATEGORY_IDS: any = {
   MyProfile: '48',
   Purchase: '53',
   Conversations: '7',
-  Menu: '41'
+  Menu: '41',
+  ItemDetail: '103'
 };
 
 @Injectable()
@@ -156,6 +157,22 @@ export class TrackingService extends TrackingServiceMaster {
   public static MYZONE_LERDI_BEHAVIOR: TrackingEventBase = {
     name: '588',
     category: CATEGORY_IDS.Menu
+  };
+  public static FAVOURITES_BUTTON_UNFAVORITE: TrackingEventBase = {
+    name: '589',
+    category: CATEGORY_IDS.Button
+  };
+  public static FAVOURITES_ITEMDETAIL_FROMFAVORITES: TrackingEventBase = {
+    name: '590',
+    category: CATEGORY_IDS.ItemDetail
+  };
+  public static WORKINPROGRESS_BUTTON_CLOSE: TrackingEventBase = {
+    name: '591',
+    category: CATEGORY_IDS.Button
+  };
+  public static WORKINPROGRESS_BUTTON_VIEWPROFILE: TrackingEventBase = {
+    name: '592',
+    category: CATEGORY_IDS.Button
   };
 
   constructor(navigatorService: NavigatorService,

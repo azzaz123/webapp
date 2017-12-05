@@ -118,7 +118,10 @@ describe('SidebarComponent', () => {
 
       component.openProfileModal(event);
 
-      expect(modalService.open).toHaveBeenCalledWith(ProfileModalComponent, {windowClass: 'profile'});
+      expect(modalService.open).toHaveBeenCalledWith(ProfileModalComponent,{
+        windowClass: 'profile',
+        backdrop: 'static'
+      });
       expect(componentInstance.userUrl).toBe('url');
     });
   });

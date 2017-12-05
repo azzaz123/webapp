@@ -36,7 +36,10 @@ export class SidebarComponent implements OnInit {
 
   public openProfileModal($event: any) {
     $event.preventDefault();
-    const modalRef: NgbModalRef = this.modalService.open(ProfileModalComponent, {windowClass: 'profile'});
+    const modalRef: NgbModalRef = this.modalService.open(ProfileModalComponent, {
+      windowClass: 'profile',
+      backdrop: 'static'
+    });
     modalRef.componentInstance.userUrl = this.userUrl;
   }
 }
