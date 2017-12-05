@@ -16,6 +16,10 @@ describe('SelectedItemsComponent', () => {
   let fixture: ComponentFixture<SelectedItemsComponent>;
   let itemService: ItemService;
   let trackingService: TrackingService;
+  const aBumpType = 'l1kmzngg6n3p';
+  const anotherBumpType = 'g24g2jhg4jh24';
+  const anId = '1';
+  const anotherId = '2';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,38 +62,45 @@ describe('SelectedItemsComponent', () => {
 
       describe('action selected', () => {
         let ITEMS;
+
         beforeEach(() => {
           spyOn(itemService, 'getAvailableProducts').and.returnValues(Observable.of(PRODUCT_RESPONSE), Observable.of(PRODUCT2_RESPONSE));
           ITEMS = createItemsArray(5);
           component.items = ITEMS;
-          itemService.selectedItems = ['1', '2'];
+          itemService.selectedItems = [anId, anotherId];
           fixture.detectChanges();
           itemService.selectedItems$.next({
-            id: '1',
+            id: anId,
             action: 'selected'
           });
         });
+
         it('should set selectedItems with items', () => {
           expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
         });
+
         it('should call getAvailableProducts', () => {
-          expect(itemService.getAvailableProducts).toHaveBeenCalledWith('1');
+          expect(itemService.getAvailableProducts).toHaveBeenCalledWith(anId);
         });
+
         it('should add product to selectedProducts', () => {
           expect(component.selectedProducts[0]).toEqual({
-            itemId: '1',
+            itemId: anId,
             product: PRODUCT_RESPONSE
           });
         });
+
         it('should update total', () => {
           expect(component.total).toBe(4.79);
         });
+
         it('should sum all products prices', () => {
           itemService.selectedItems$.next({
-            id: '2',
+            id: anotherId,
             action: 'selected'
           });
-          expect(component.total).toBe(12.08);
+
+          expect(component.total).toBe(4.79 + 7.29);
         });
       });
 
@@ -97,22 +108,24 @@ describe('SelectedItemsComponent', () => {
         beforeEach(() => {
           spyOn(itemService, 'getAvailableProducts');
           component.selectedProducts = [{
-            itemId: '1',
+            itemId: anId,
             product: PRODUCT_RESPONSE
           }, {
-            itemId: '2',
+            itemId: anotherId,
             product: PRODUCT2_RESPONSE
           }];
           fixture.detectChanges();
           itemService.selectedItems$.next({
-            id: '1',
+            id: anId,
             action: 'deselected'
           });
         });
+
         it('should remove product from selectedProducts', () => {
           expect(component.selectedProducts.length).toBe(1);
-          expect(component.selectedProducts[0].itemId).toBe('2');
+          expect(component.selectedProducts[0].itemId).toBe(anotherId);
         });
+
         it('should update total', () => {
           expect(component.total).toBe(7.29);
         });
@@ -124,10 +137,12 @@ describe('SelectedItemsComponent', () => {
       it('should not update total', () => {
         itemService.selectedAction = 'reserve';
         fixture.detectChanges();
+
         itemService.selectedItems$.next({
-          id: '1',
+          id: anId,
           action: 'selected'
         });
+
         expect(component.total).toBe(0);
       });
     });
@@ -137,53 +152,62 @@ describe('SelectedItemsComponent', () => {
     beforeEach(() => {
       spyOn(trackingService, 'track');
     });
+
     it('should emit order', () => {
       let orderEvent: OrderEvent;
       component.selectedProducts = [{
-        itemId: '1',
+        itemId: anId,
         product: PRODUCT_RESPONSE
       }, {
-        itemId: '2',
+        itemId: anotherId,
         product: PRODUCT2_RESPONSE
       }];
       component.onAction.subscribe((order: OrderEvent) => {
         orderEvent = order;
       });
+
       component['calculateTotal']();
       component.featureItems();
+
       expect(orderEvent).toEqual({
         order: [
           {
-            item_id:    '1',
-            product_id: 'l1kmzngg6n3p'
+            item_id: anId,
+            product_id: aBumpType
           },
           {
-            item_id: '2',
-            product_id: 'g24g2jhg4jh24'
+            item_id: anotherId,
+            product_id: anotherBumpType
           }
         ],
         total: 4.79 + 7.29
       });
     });
+
     it('should send event featured_checkout', () => {
       component.selectedProducts = [{
-        itemId: '1',
+        itemId: anId,
         product: PRODUCT_RESPONSE
       }, {
-        itemId: '2',
+        itemId: anotherId,
         product: PRODUCT2_RESPONSE
       }];
       const result = {
-        0: {
-          item_id:   '1',
-          bump_type: 'l1kmzngg6n3p'
-        },
-        1: {
-          item_id:   '2',
-          bump_type: 'g24g2jhg4jh24'
-        }
+        selected_products:
+        [
+          {
+            item_id: anId,
+            bump_type: aBumpType,
+          },
+          {
+            item_id: anotherId,
+            bump_type: anotherBumpType,
+          }
+        ]
       };
+
       component.featureItems();
+
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CATALOG_FEATURED_CHECKOUT, result);
     });
   });
