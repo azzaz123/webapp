@@ -9,10 +9,10 @@ describe('CategorySelectorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CategorySelectorComponent ],
+      declarations: [CategorySelectorComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -21,7 +21,16 @@ describe('CategorySelectorComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
+  describe('setCategory', () => {
+    it('should emit category', () => {
+      let category: string;
+      component.onSelect.subscribe((cat: string) => {
+        category = cat;
+      });
+
+      component.setCategory(123);
+
+      expect(category).toBe('123');
+    })
   });
 });

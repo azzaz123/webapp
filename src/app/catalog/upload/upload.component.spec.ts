@@ -13,12 +13,34 @@ describe('UploadComponent', () => {
       declarations: [UploadComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadComponent);
     component = fixture.componentInstance;
+  });
+
+  describe('setCategory', () => {
+    it('should set categoryId', () => {
+      const CATEGORY = '123';
+
+      component.setCategory(CATEGORY);
+
+      expect(component.categoryId).toBe(CATEGORY);
+    });
+  });
+
+  describe('onValidationError', () => {
+    it('should set scrollTop to 0', () => {
+      component.scrollPanel = {
+        nativeElement: {}
+      };
+
+      component.onValidationError();
+
+      expect(component.scrollPanel.nativeElement.scrollTop).toBe(0);
+    });
   });
 
 });
