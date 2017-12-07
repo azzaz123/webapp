@@ -1,0 +1,10 @@
+<div class="box">
+  <h2 i18n>All your products are localized in:</h2>
+  <div class="row" *ngIf="user">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <tsl-location-select [form]="form" [name]="name"></tsl-location-select>
+      </div>
+    </div>
+  </div>
+</div>

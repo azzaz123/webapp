@@ -2,13 +2,12 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ErrorsService, MOCK_USER, TEST_HTTP_PROVIDERS, User, USER_ID, Location } from 'shield';
+import { ErrorsService, Location, MOCK_USER, TEST_HTTP_PROVIDERS, User, USER_ID } from 'shield';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UploadProductComponent } from './upload-product.component';
 import { CategoryService } from '../../../core/category/category.service';
-import { UserService } from '../../../core/user/user.service';
 import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../../tests/category.fixtures';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 
@@ -35,7 +34,6 @@ describe('UploadProductComponent', () => {
   let categoryService: CategoryService;
   let modalService: NgbModal;
   let componentInstance: any = {};
-  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -74,13 +72,6 @@ describe('UploadProductComponent', () => {
             };
           }
         }
-        },
-        {
-          provide: UserService, useValue: {
-          me() {
-            return Observable.of(MOCK_USER);
-          }
-        }
         }
       ],
       declarations: [UploadProductComponent],
@@ -97,23 +88,6 @@ describe('UploadProductComponent', () => {
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
-    userService = TestBed.get(UserService);
-  });
-
-  describe('ngOnInit', () => {
-    it('should call me and set user', () => {
-      spyOn(userService, 'me').and.callThrough();
-      component.ngOnInit();
-      expect(userService.me).toHaveBeenCalled();
-      expect(component.user).toEqual(MOCK_USER);
-    });
-    it('should add user location values', () => {
-      component.ngOnInit();
-
-      expect(component.uploadForm.get('location.address').value).toBe(USER_LOCATION.full_address);
-      expect(component.uploadForm.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
-      expect(component.uploadForm.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);
-    });
   });
 
   describe('ngOnChanges', () => {
@@ -162,6 +136,11 @@ describe('UploadProductComponent', () => {
       component.uploadForm.get('sale_price').patchValue(1000000);
       component.uploadForm.get('currency_code').patchValue('EUR');
       component.uploadForm.get('images').patchValue([{'image': true}]);
+      component.uploadForm.get('location').patchValue({
+        address: USER_LOCATION.full_address,
+        latitude: USER_LOCATION.approximated_latitude,
+        longitude: USER_LOCATION.approximated_longitude
+      });
       expect(component.uploadForm.valid).toBeTruthy();
       component.uploadEvent.subscribe((i: any) => {
         input = i;
@@ -226,6 +205,11 @@ describe('UploadProductComponent', () => {
       component.uploadForm.get('sale_price').patchValue(1000000);
       component.uploadForm.get('currency_code').patchValue('EUR');
       component.uploadForm.get('images').patchValue([{'image': true}]);
+      component.uploadForm.get('location').patchValue({
+        address: USER_LOCATION.full_address,
+        latitude: USER_LOCATION.approximated_latitude,
+        longitude: USER_LOCATION.approximated_longitude
+      });
       component.preview();
       tick();
     }));

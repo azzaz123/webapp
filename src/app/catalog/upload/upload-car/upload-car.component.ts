@@ -4,12 +4,11 @@ import { CarSuggestionsService } from './car-suggestions.service';
 import { IOption } from 'ng-select';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
-import { ErrorsService, User } from 'shield';
+import { ErrorsService } from 'shield';
 import { UploadEvent } from '../upload-event.interface';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { UserService } from '../../../core/user/user.service';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -30,7 +29,6 @@ export class UploadCarComponent implements OnInit {
     {value: 'GBP', label: '£'}
   ];
   public loading: boolean;
-  public user: User;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
 
   constructor(private fb: FormBuilder,
@@ -39,7 +37,6 @@ export class UploadCarComponent implements OnInit {
               private router: Router,
               private errorsService: ErrorsService,
               private modalService: NgbModal,
-              private userService: UserService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       category_id: '100',
@@ -75,16 +72,6 @@ export class UploadCarComponent implements OnInit {
   ngOnInit() {
     this.getBrands();
     this.getCarTypes();
-    this.userService.me().subscribe((user: User) => {
-      this.user = user;
-      if (user.location) {
-        this.uploadForm.get('location').patchValue({
-          address: user.location.title || user.location.city,
-          latitude: user.location.approximated_latitude,
-          longitude: user.location.approximated_longitude
-        });
-      }
-    });
   }
 
   public noop() {

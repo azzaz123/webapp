@@ -7,6 +7,7 @@ import { LocationModalComponent } from './location-select/location-modal/locatio
 import { MdIconModule } from '@angular/material';
 import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapsComponent } from './here-maps/here-maps.component';
+import { LocationBoxComponent } from './location-box/location-box.component';
 
 @NgModule({
   imports: [
@@ -19,13 +20,15 @@ import { HereMapsComponent } from './here-maps/here-maps.component';
   exports: [
     CommonModule,
     LocationSelectComponent,
-    GeolocationComponent
+    GeolocationComponent,
+    LocationBoxComponent
   ],
   declarations: [
     LocationSelectComponent,
     LocationModalComponent,
     GeolocationComponent,
-    HereMapsComponent
+    HereMapsComponent,
+    LocationBoxComponent
   ],
   entryComponents: [
     LocationModalComponent

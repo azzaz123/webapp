@@ -12,14 +12,13 @@ import {
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { ErrorsService, User } from 'shield';
+import { ErrorsService } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryOption } from '../../../core/category/category-response.interface';
 import { UploadEvent } from '../upload-event.interface';
 import { CategoryService } from '../../../core/category/category.service';
-import { UserService } from '../../../core/user/user.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 
 @Component({
@@ -64,7 +63,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   public categories: CategoryOption[] = [];
   public loading: boolean;
   public fixedCategory: string;
-  public user: User;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
@@ -74,7 +72,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
               private errorsService: ErrorsService,
               private categoryService: CategoryService,
               private modalService: NgbModal,
-              private userService: UserService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       category_id: ['', [Validators.required]],
@@ -109,16 +106,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         deliveryInfoControl.setValidators([]);
       }
       deliveryInfoControl.updateValueAndValidity();
-    });
-    this.userService.me().subscribe((user: User) => {
-      this.user = user;
-      if (user.location) {
-        this.uploadForm.get('location').patchValue({
-          address: user.location.full_address,
-          latitude: user.location.approximated_latitude,
-          longitude: user.location.approximated_longitude
-        });
-      }
     });
   }
 
