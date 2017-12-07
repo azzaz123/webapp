@@ -36,6 +36,9 @@ export class LocationBoxComponent implements OnInit {
         });
       }
     });
+    this.form.get(this.name).valueChanges.subscribe((location: Coordinate) => {
+      this.coordinates = location;
+    });
   }
 
 }
