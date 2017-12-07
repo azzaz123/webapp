@@ -2,8 +2,8 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ErrorsService, TEST_HTTP_PROVIDERS, MOCK_USER, User, USER_ID } from 'shield';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ErrorsService, MOCK_USER, TEST_HTTP_PROVIDERS, User, USER_ID } from 'shield';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UploadProductComponent } from './upload-product.component';
@@ -19,7 +19,6 @@ describe('UploadProductComponent', () => {
   let fixture: ComponentFixture<UploadProductComponent>;
   let errorService: ErrorsService;
   let router: Router;
-  let route: ActivatedRoute;
   let categoryService: CategoryService;
   let modalService: NgbModal;
   let componentInstance: any = {};
@@ -32,11 +31,6 @@ describe('UploadProductComponent', () => {
         FormBuilder,
         NgbPopoverConfig,
         TEST_HTTP_PROVIDERS,
-        {
-          provide: ActivatedRoute, useValue: {
-          params: Observable.of({})
-        }
-        },
         {
           provide: Router, useValue: {
           navigate() {
@@ -89,31 +83,11 @@ describe('UploadProductComponent', () => {
     spyOn(categoryService, 'getUploadCategories').and.callThrough();
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
-    route = TestBed.get(ActivatedRoute);
     modalService = TestBed.get(NgbModal);
     userService = TestBed.get(UserService);
   });
 
   describe('ngOnInit', () => {
-    it('should get and set categories', () => {
-      fixture.detectChanges();
-      expect(categoryService.getUploadCategories).toHaveBeenCalled();
-      expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
-    });
-    describe('with preselected category', () => {
-      beforeEach(() => {
-        route.params = Observable.of({
-          catId: '13000'
-        });
-        fixture.detectChanges();
-      });
-      it('should set form category_id', () => {
-        expect(component.uploadForm.get('category_id').value).toBe('13000');
-      });
-      it('should set fixedCategory', () => {
-        expect(component.fixedCategory).toBe('Real Estate');
-      });
-    });
     it('should call me and set user', () => {
       spyOn(userService, 'me').and.callThrough();
       component.ngOnInit();
@@ -135,6 +109,26 @@ describe('UploadProductComponent', () => {
         expect(component.uploadForm.get('location.address')).toBeTruthy();
         expect(component.uploadForm.get('location.latitude')).toBeTruthy();
         expect(component.uploadForm.get('location.longitude')).toBeTruthy();
+      });
+    });
+  });
+
+  describe('ngOnChanges', () => {
+    it('should get and set categories', () => {
+      component.ngOnChanges();
+      expect(categoryService.getUploadCategories).toHaveBeenCalled();
+      expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
+    });
+    describe('with preselected category', () => {
+      beforeEach(() => {
+        component.categoryId = '13000';
+        component.ngOnChanges();
+      });
+      it('should set form category_id', () => {
+        expect(component.uploadForm.get('category_id').value).toBe('13000');
+      });
+      it('should set fixedCategory', () => {
+        expect(component.fixedCategory).toBe('Real Estate');
       });
     });
   });

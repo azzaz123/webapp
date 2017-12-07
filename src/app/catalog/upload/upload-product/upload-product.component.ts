@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
 import { ErrorsService, User } from 'shield';
@@ -70,7 +70,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   private focused: boolean;
 
   constructor(private fb: FormBuilder,
-              private route: ActivatedRoute,
               private router: Router,
               private errorsService: ErrorsService,
               private categoryService: CategoryService,

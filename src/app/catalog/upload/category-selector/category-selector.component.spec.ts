@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CategorySelectorComponent } from './category-selector.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('CategorySelectorComponent', () => {
   let component: CategorySelectorComponent;
@@ -8,7 +9,8 @@ describe('CategorySelectorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CategorySelectorComponent ]
+      declarations: [ CategorySelectorComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
