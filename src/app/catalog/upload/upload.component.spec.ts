@@ -20,5 +20,5 @@ describe('UploadComponent', () => {
     fixture = TestBed.createComponent(UploadComponent);
     component = fixture.componentInstance;
   });
-  
+
 });

@@ -25,6 +25,7 @@ import { UploadConfirmationModalComponent } from './list/modals/upload-confirmat
 import { PreviewModalComponent } from './upload/preview-modal/preview-modal.component';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { UploadProductComponent } from './upload/upload-product/upload-product.component';
+import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import { UploadProductComponent } from './upload/upload-product/upload-product.c
     DropAreaComponent,
     UploadConfirmationModalComponent,
     PreviewModalComponent,
-    UploadProductComponent
+    UploadProductComponent,
+    CategorySelectorComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
