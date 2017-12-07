@@ -14,8 +14,10 @@ import {
   PersistencyService,
   SECOND_MOCK_CONVERSATION,
   TEST_HTTP_PROVIDERS,
+  MockTrackingService,
   UserService,
-  XmppService
+  XmppService,
+  USER_DATA
 } from 'shield';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
@@ -31,6 +33,7 @@ describe('ConversationService', () => {
   let itemService: ItemService;
   let userService: UserService;
   let messageService: MessageService;
+  let trackingService: TrackingService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,6 +41,9 @@ describe('ConversationService', () => {
       providers: [
         {
           provide: UserService, useValue: {
+          me: () => {
+            return Observable.of(MOCK_USER);
+          },
           get: () => {
           }
         }
@@ -57,10 +63,12 @@ describe('ConversationService', () => {
           }
         }
         },
-        {provide: TrackingService, useValue: {}},
+        {provide: TrackingService, useClass: MockTrackingService
+        },
         {provide: NotificationService, usevalue: {}},
         ...TEST_HTTP_PROVIDERS,
         ConversationService,
+        MockBackend
       ]
     });
     mockBackend = TestBed.get(MockBackend);
@@ -69,7 +77,7 @@ describe('ConversationService', () => {
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     messageService = TestBed.get(MessageService);
-
+    trackingService = TestBed.get(TrackingService);
   });
 
   it('should be created', inject([ConversationService], (service: ConversationService) => {
@@ -105,6 +113,23 @@ describe('ConversationService', () => {
       expect(conversation.modifiedDate).toBe(NEW_CONVERSATION_RESPONSE.modified_date);
       expect(conversation.user).toEqual(MOCK_USER);
       expect(conversation.item).toEqual(MOCK_ITEM);
+    });
+    it('should send the tracking event new_conversation', () => {
+      let conversation: Conversation;
+      spyOn(userService, 'get').and.returnValue(Observable.of(MOCK_USER));
+      spyOn(itemService, 'get').and.returnValue(Observable.of(MOCK_ITEM));
+      spyOn(trackingService, 'track');
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+        connection.mockRespond(new Response(res));
+      });
+
+      service.createConversation(MOCK_ITEM.id).subscribe((convResponse: Conversation) => {
+        conversation = convResponse;
+      });
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
+        { user_id: MOCK_USER.id, item_id: MOCK_ITEM.id, thread_id: conversation.id });
     });
   });
   describe('getSingleConversationMessages', () => {

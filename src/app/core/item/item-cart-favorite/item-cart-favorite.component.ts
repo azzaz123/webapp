@@ -4,6 +4,7 @@ import { ItemService } from '../item.service';
 import { environment } from '../../../../environments/environment';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/confirmation-modal.component';
+import { TrackingService } from '../../tracking/tracking.service';
 
 @Component({
   selector: 'tsl-item-cart-favorite',
@@ -19,6 +20,7 @@ export class ItemCartFavoriteComponent implements OnInit {
   constructor(private itemService: ItemService,
               private modalService: NgbModal,
               private windowRef: WindowRef,
+              private trackingService: TrackingService,
               @Inject('SUBDOMAIN') private subdomain: string
   ) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
@@ -45,6 +47,7 @@ export class ItemCartFavoriteComponent implements OnInit {
     this.itemService.favoriteItem(this.item.id, false).subscribe(() => {
       this.item.favorited = false;
       this.onFavoriteChange.emit(this.item);
+      this.trackingService.track(TrackingService.FAVOURITES_BUTTON_UNFAVORITE);
     });
   }
 

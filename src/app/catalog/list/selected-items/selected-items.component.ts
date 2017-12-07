@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { Order, Product, SelectedItemsAction } from '../../../core/item/item-response.interface';
 import { OrderEvent, SelectedProduct } from './selected-product.interface';
 import { Observable } from 'rxjs/Observable';
+import { TrackingService } from "../../../core/tracking/tracking.service";
 
 @Component({
   selector: 'tsl-selected-items',
@@ -35,7 +36,8 @@ export class SelectedItemsComponent implements OnInit {
   public loading: boolean;
   private getAvailableProductsObservable: Observable<Product>;
 
-  constructor(public itemService: ItemService) {
+  constructor(public itemService: ItemService,
+              private trackingService: TrackingService) {
   }
 
   ngOnInit() {
@@ -87,6 +89,9 @@ export class SelectedItemsComponent implements OnInit {
       order: order,
       total: this.total
     });
+
+    let result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
+    this.trackingService.track(TrackingService.CATALOG_FEATURED_CHECKOUT, { selected_products: result });
   }
 
   private calculateTotal() {
