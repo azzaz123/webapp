@@ -5,6 +5,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures';
 import { CookieService } from 'ngx-cookie';
+import { UserService } from '../../../core/user/user.service';
+import { Observable } from 'rxjs/Observable';
+import { USER_LOCATION, MOCK_USER } from 'shield';
 
 describe('LocationSelectComponent', () => {
   let component: LocationSelectComponent;
@@ -15,6 +18,7 @@ describe('LocationSelectComponent', () => {
     init: jasmine.createSpy('init')
   };
   let cookieService: CookieService;
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,6 +39,14 @@ describe('LocationSelectComponent', () => {
         {
           provide: CookieService, useValue: {
           get() {
+          }
+        }
+        },
+        {
+          provide: UserService, useValue: {
+          user: MOCK_USER,
+          updateLocation() {
+            return Observable.of(USER_LOCATION);
           }
         }
         }
@@ -59,6 +71,7 @@ describe('LocationSelectComponent', () => {
       })
     });
     cookieService = TestBed.get(CookieService);
+    userService = TestBed.get(UserService);
     component.name = 'location';
     fixture.detectChanges();
   });
@@ -111,6 +124,8 @@ describe('LocationSelectComponent', () => {
     describe('with result', () => {
       beforeEach(fakeAsync(() => {
         spyOn(modalService, 'open').and.callThrough();
+        spyOn(userService, 'updateLocation').and.callThrough();
+
         component.open(element);
         tick(LOCATION_MODAL_TIMEOUT);
       }));
@@ -136,22 +151,14 @@ describe('LocationSelectComponent', () => {
       it('should call init with no params', () => {
         expect(componentInstance.init).toHaveBeenCalled();
       });
-    });
 
-    describe('without result', () => {
-      it('should NOT set location', fakeAsync(() => {
-        spyOn(modalService, 'open').and.returnValue({
-          result: Promise.resolve({}),
-          componentInstance: componentInstance
-        });
+      it('should call updateLocation', () => {
+        expect(userService.updateLocation).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
+      });
 
-        component.open(element);
-        tick(LOCATION_MODAL_TIMEOUT);
-
-        expect(component.form.get('location.address').value).toBeUndefined();
-        expect(component.form.get('location.latitude').value).toBeUndefined();
-        expect(component.form.get('location.longitude').value).toBeUndefined();
-      }));
+      it('should set user location', () => {
+        expect(userService.user.location).toEqual(USER_LOCATION);
+      });
     });
 
     describe('with form values', () => {

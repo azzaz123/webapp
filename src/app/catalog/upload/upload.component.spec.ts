@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ErrorsService, TEST_HTTP_PROVIDERS, MOCK_USER, User, USER_ID } from 'shield';
+import { ErrorsService, TEST_HTTP_PROVIDERS, MOCK_USER, User, USER_ID, Location } from 'shield';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UploadComponent } from './upload.component';
 import { Observable } from 'rxjs/Observable';
@@ -13,6 +13,19 @@ import { PreviewModalComponent } from './preview-modal/preview-modal.component';
 import { UserService } from '../../core/user/user.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
+
+export const USER_LOCATION: Location = {
+  'id': 101,
+  'approximated_latitude': 41.399132621722174,
+  'approximated_longitude': 2.17585484411869,
+  'city': 'Barcelona',
+  'zip': '08009',
+  'approxRadius': 0,
+  'title': '08009, Barcelona',
+  'full_address': 'Carrer Sant Pere Mes Baix, Barcelona'
+};
+
+MOCK_USER.location = USER_LOCATION;
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -120,22 +133,12 @@ describe('UploadComponent', () => {
       expect(userService.me).toHaveBeenCalled();
       expect(component.user).toEqual(MOCK_USER);
     });
-    describe('user without location', () => {
-      it('should not add location control', () => {
-        component.ngOnInit();
-        expect(component.uploadForm.get('location.address')).toBeFalsy();
-        expect(component.uploadForm.get('location.latitude')).toBeFalsy();
-        expect(component.uploadForm.get('location.longitude')).toBeFalsy();
-      });
-    });
-    describe('user with location', () => {
-      it('should add location control', () => {
-        spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER_NO_LOCATION));
-        component.ngOnInit();
-        expect(component.uploadForm.get('location.address')).toBeTruthy();
-        expect(component.uploadForm.get('location.latitude')).toBeTruthy();
-        expect(component.uploadForm.get('location.longitude')).toBeTruthy();
-      });
+    it('should add user location values', () => {
+      component.ngOnInit();
+
+      expect(component.uploadForm.get('location.address').value).toBe(USER_LOCATION.full_address);
+      expect(component.uploadForm.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
+      expect(component.uploadForm.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);
     });
   });
 
@@ -158,6 +161,7 @@ describe('UploadComponent', () => {
   describe('onSubmit', () => {
     it('should emit uploadEvent if form is valid', () => {
       let input: any;
+      fixture.detectChanges();
       component.uploadForm.get('category_id').patchValue('200');
       component.uploadForm.get('title').patchValue('test');
       component.uploadForm.get('description').patchValue('test');
@@ -221,6 +225,7 @@ describe('UploadComponent', () => {
     beforeEach(fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'onSubmit');
+      fixture.detectChanges();
       component.uploadForm.get('category_id').patchValue('200');
       component.uploadForm.get('title').patchValue('test');
       component.uploadForm.get('description').patchValue('test');
@@ -228,6 +233,7 @@ describe('UploadComponent', () => {
       component.uploadForm.get('currency_code').patchValue('EUR');
       component.uploadForm.get('images').patchValue([{'image': true}]);
       component.preview();
+      tick();
     }));
     it('should open modal', () => {
       expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
@@ -247,11 +253,15 @@ describe('UploadComponent', () => {
           exchange_allowed: false,
           shipping_allowed: false
         },
-        delivery_info: null
+        delivery_info: null,
+        location: {
+          address: USER_LOCATION.full_address,
+          latitude: USER_LOCATION.approximated_latitude,
+          longitude: USER_LOCATION.approximated_longitude
+        }
       });
     });
     it('should submit form', fakeAsync(() => {
-      tick();
       expect(component.onSubmit).toHaveBeenCalled();
     }));
   });

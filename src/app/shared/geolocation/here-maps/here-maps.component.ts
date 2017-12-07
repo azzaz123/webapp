@@ -22,6 +22,7 @@ export class HereMapsComponent implements OnInit, OnChanges {
   @ViewChild('map') mapEl: ElementRef;
   public platform: any;
   private map: any;
+  private marker: any;
 
 
   constructor() {
@@ -55,8 +56,11 @@ export class HereMapsComponent implements OnInit, OnChanges {
 
   private addMarker(coordinates: any) {
     const markerIcon = new H.map.Icon(USER_MARKER);
-    const marker = new H.map.Marker(coordinates, {icon: markerIcon});
-    this.map.addObject(marker);
+    if (this.marker) {
+      this.map.removeObject(this.marker);
+    }
+    this.marker = new H.map.Marker(coordinates, {icon: markerIcon});
+    this.map.addObject(this.marker);
   }
 
   private getCenter() {
