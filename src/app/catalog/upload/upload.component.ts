@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'tsl-upload',
@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class UploadComponent implements OnInit {
 
   public categoryId: string;
+  @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
   constructor() {
   }
@@ -18,6 +19,10 @@ export class UploadComponent implements OnInit {
 
   public setCategory(categoryId: string) {
     this.categoryId = categoryId;
+  }
+
+  public onValidationError() {
+    this.scrollPanel.nativeElement.scrollTop = 0;
   }
 
 }

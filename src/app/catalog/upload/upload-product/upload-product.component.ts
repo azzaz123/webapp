@@ -1,5 +1,12 @@
 import {
-  AfterViewChecked, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit,
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
   ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,6 +30,7 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 export class UploadProductComponent implements OnInit, AfterViewChecked, OnChanges {
 
   @Input() categoryId: string;
+  @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
@@ -58,7 +66,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   public fixedCategory: string;
   public user: User;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
-  @ViewChild('scrollPanel') scrollPanel: ElementRef;
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
 
@@ -153,7 +160,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         this.errorsService.i18nError('missingImageError');
       } else {
         this.errorsService.i18nError('formErrors');
-        this.scrollPanel.nativeElement.scrollTop = 0;
+        this.onValidationError.emit();
       }
     }
   }
