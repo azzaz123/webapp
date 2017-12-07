@@ -12,7 +12,7 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { UserService } from '../../../core/user/user.service';
 
 @Component({
-  selector: 'tsl-upload',
+  selector: 'tsl-upload-car',
   templateUrl: './upload-car.component.html',
   styleUrls: ['./upload-car.component.scss']
 })

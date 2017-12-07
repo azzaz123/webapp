@@ -1,5 +1,7 @@
 <div class="page-content" #scrollPanel>
   <div class="container upload-page">
-    <tsl-category-selector></tsl-category-selector>
+    <tsl-category-selector (onSelect)="setCategory($event)"></tsl-category-selector>
+    <tsl-upload-car *ngIf="categoryId === '100'"></tsl-upload-car>
+    <tsl-upload-product *ngIf="categoryId && categoryId !== '100'" [categoryId]="categoryId"></tsl-upload-product>
   </div>
 </div>

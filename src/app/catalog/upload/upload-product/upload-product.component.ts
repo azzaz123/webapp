@@ -1,4 +1,7 @@
-import { AfterViewChecked, Component, ElementRef, EventEmitter, OnChanges, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit,
+  ViewChild
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
@@ -17,8 +20,9 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
   templateUrl: './upload-product.component.html',
   styleUrls: ['./upload-product.component.scss']
 })
-export class UploadProductComponent implements OnInit, AfterViewChecked {
+export class UploadProductComponent implements OnInit, AfterViewChecked, OnChanges {
 
+  @Input() categoryId: string;
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
@@ -86,18 +90,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params: any) => {
-      this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
-        this.categories = categories.filter((category: CategoryOption) => {
-          return category.value !== '13000' && category.value !== '13200';
-        });
-        if (params.catId) {
-          this.uploadForm.get('category_id').patchValue(params.catId);
-          const fixedCategory = _.find(categories, {value: params.catId});
-          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
-        }
-      });
-    });
     this.uploadForm.get('sale_conditions.shipping_allowed').valueChanges.subscribe((value: boolean) => {
       const deliveryInfoControl: AbstractControl = this.uploadForm.get('delivery_info');
       if (value) {
@@ -115,6 +107,22 @@ export class UploadProductComponent implements OnInit, AfterViewChecked {
           latitude: ['', [Validators.required]],
           longitude: ['', [Validators.required]],
         }));
+      }
+    });
+  }
+
+  ngOnChanges(changes?: any) {
+    this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
+      this.categories = categories.filter((category: CategoryOption) => {
+        return category.value !== '13000' && category.value !== '13200';
+      });
+      if (this.categoryId && this.categoryId !== '-1') {
+        this.uploadForm.get('category_id').patchValue(this.categoryId);
+        const fixedCategory = _.find(categories, {value: this.categoryId});
+        this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+      } else {
+        this.fixedCategory = null;
+        this.uploadForm.get('category_id').patchValue('');
       }
     });
   }
