@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
 import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from './car-keys.service';
-import { TEST_HTTP_PROVIDERS, ErrorsService, MOCK_USER, USER_ID, User } from 'shield';
+import { TEST_HTTP_PROVIDERS, ErrorsService, MOCK_USER, USER_ID, User, USER_LOCATION } from 'shield';
 import { Router } from '@angular/router';
 import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../../tests/car.fixtures';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -123,22 +123,12 @@ describe('UploadCarComponent', () => {
       expect(userService.me).toHaveBeenCalled();
       expect(component.user).toEqual(MOCK_USER);
     });
-    describe('user without location', () => {
-      it('should not add location control', () => {
-        component.ngOnInit();
-        expect(component.uploadForm.get('location.address')).toBeFalsy();
-        expect(component.uploadForm.get('location.latitude')).toBeFalsy();
-        expect(component.uploadForm.get('location.longitude')).toBeFalsy();
-      });
-    });
-    describe('user with location', () => {
-      it('should add location control', () => {
-        spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER_NO_LOCATION));
-        component.ngOnInit();
-        expect(component.uploadForm.get('location.address')).toBeTruthy();
-        expect(component.uploadForm.get('location.latitude')).toBeTruthy();
-        expect(component.uploadForm.get('location.longitude')).toBeTruthy();
-      });
+    it('should add user location values', () => {
+      component.ngOnInit();
+
+      expect(component.uploadForm.get('location.address').value).toBe(USER_LOCATION.title);
+      expect(component.uploadForm.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
+      expect(component.uploadForm.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);
     });
   });
 

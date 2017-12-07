@@ -7,13 +7,16 @@ import {
   Item,
   LoginResponse,
   User,
-  UserService as UserServiceMaster
+  UserService as UserServiceMaster,
+  Location,
+  USER_LOCATION
 } from 'shield';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
 import { environment } from '../../../environments/environment';
 import { UserInfoResponse } from './user-info.interface';
+import { Coordinate } from '../geolocation/address-response.interface';
 
 @Injectable()
 export class UserService extends UserServiceMaster {
@@ -64,6 +67,15 @@ export class UserService extends UserServiceMaster {
 
   public getInfo(id: string): Observable<UserInfoResponse> {
     return this.http.get(this.API_URL_V3 + '/' + id + '/extra-info')
+    .map((r: Response) => r.json())
+  }
+
+  public updateLocation(coordinates: Coordinate): Observable<Location> {
+    return this.http.put(this.API_URL_V3 + '/me/location', {
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+      fullAddress: coordinates.name
+    })
     .map((r: Response) => r.json())
   }
 

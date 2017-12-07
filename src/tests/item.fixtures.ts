@@ -1,8 +1,14 @@
 import {
   CarUploadForm,
-  ConversationUser, ItemResponse, ItemUploadForm, Order, Product,
+  ConversationUser,
+  ItemResponse,
+  ItemUploadForm,
+  Order,
+  Product,
   Purchase
 } from '../app/core/item/item-response.interface';
+import { USER_LOCATION } from 'shield';
+
 
 export const ITEM_DATA_V3: ItemResponse = {
   'id': '0j2ylvwrpmzy',
@@ -245,7 +251,8 @@ export const ITEMS_DATA_v3_FAVORITES = [{
       'original_width': 447,
       'original_height': 640
     },
-    'user': {'id': 'g0j232rpgd6y',
+    'user': {
+      'id': 'g0j232rpgd6y',
       'micro_name': 'Alex S.',
       'online': false,
       'kind': 'normal'
@@ -341,5 +348,10 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
     fix_price: false,
     exchange_allowed: false
   },
-  images: [{'image': true}]
+  images: [{'image': true}],
+  location: {
+    address: USER_LOCATION.title,
+    latitude: USER_LOCATION.approximated_latitude,
+    longitude: USER_LOCATION.approximated_longitude
+  }
 };

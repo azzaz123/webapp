@@ -60,6 +60,11 @@ export class UploadCarComponent implements OnInit {
       sale_conditions: fb.group({
         fix_price: false,
         exchange_allowed: false
+      }),
+      location: this.fb.group({
+        address: ['', [Validators.required]],
+        latitude: ['', [Validators.required]],
+        longitude: ['', [Validators.required]],
       })
     });
     config.placement = 'right';
@@ -72,12 +77,12 @@ export class UploadCarComponent implements OnInit {
     this.getCarTypes();
     this.userService.me().subscribe((user: User) => {
       this.user = user;
-      if (!this.user.location) {
-        this.uploadForm.addControl('location', this.fb.group({
-          address: ['', [Validators.required]],
-          latitude: ['', [Validators.required]],
-          longitude: ['', [Validators.required]],
-        }));
+      if (user.location) {
+        this.uploadForm.get('location').patchValue({
+          address: user.location.title || user.location.city,
+          latitude: user.location.approximated_latitude,
+          longitude: user.location.approximated_longitude
+        });
       }
     });
   }
