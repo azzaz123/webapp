@@ -1,8 +1,8 @@
 @import "../../../../style/_common.scss";
 
 .box {
-  tsl-here-maps {
-    padding-top: $spacing;
+  tsl-here-maps, .fake-map {
+    margin-top: $spacing;
     display: block;
   }
   p {
@@ -12,4 +12,11 @@
   .form-group, p {
     margin-bottom: 0;
   }
+}
+
+.fake-map {
+  height: 130px;
+  border-radius: $border-radius;
+  border: solid 1px $grey-50;
+  background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
 }
