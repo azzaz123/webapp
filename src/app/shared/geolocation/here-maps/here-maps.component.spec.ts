@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { HereMapsComponent, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER, USER_MARKER } from './here-maps.component';
 import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures';
@@ -59,7 +59,7 @@ describe('HereMapsComponent', () => {
     .compileComponents();
   }));
 
-  beforeEach(() => {
+  beforeEach(fakeAsync(() => {
     fixture = TestBed.createComponent(HereMapsComponent);
     component = fixture.componentInstance;
     component.coordinates = USER_LOCATION_COORDINATES;
@@ -70,7 +70,8 @@ describe('HereMapsComponent', () => {
     spyOn(map, 'Marker').and.callThrough();
     spyOn(Map, 'addObject');
     spyOn(Map, 'removeObject');
-  });
+    tick();
+  }));
 
   describe('ngOnInit', () => {
     beforeEach(() => {
@@ -81,8 +82,9 @@ describe('HereMapsComponent', () => {
       };
     });
 
-    it('should instantiate map', () => {
+    it('should instantiate map', fakeAsync(() => {
       component.ngOnInit();
+      tick();
 
       expect(H.Map).toHaveBeenCalledWith(component.mapEl.nativeElement, 'map');
       expect(Map.setZoom).toHaveBeenCalledWith(MAP_ZOOM_GENERAL);
@@ -90,12 +92,13 @@ describe('HereMapsComponent', () => {
         lat: USER_LOCATION_COORDINATES.latitude,
         lng: USER_LOCATION_COORDINATES.longitude
       });
-    });
+    }));
 
-    it('should add marker if zoom is the marker zoom', () => {
+    it('should add marker if zoom is the marker zoom', fakeAsync(() => {
       component.zoom = MAP_ZOOM_MARKER;
 
       component.ngOnInit();
+      tick();
 
       expect(map.Icon).toHaveBeenCalledWith(USER_MARKER);
       expect(map.Marker).toHaveBeenCalledWith({
@@ -103,7 +106,7 @@ describe('HereMapsComponent', () => {
         lng: USER_LOCATION_COORDINATES.longitude
       }, {icon: ICON});
       expect(Map.addObject).toHaveBeenCalledWith(MARKER);
-    });
+    }));
   });
 
   describe('ngOnChanges', () => {

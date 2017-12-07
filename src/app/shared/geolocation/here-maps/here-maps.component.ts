@@ -19,6 +19,7 @@ export class HereMapsComponent implements OnInit, OnChanges {
 
   @Input() coordinates: Coordinate;
   @Input() zoom = MAP_ZOOM_GENERAL;
+  @Input() size = 'normal';
   @ViewChild('map') mapEl: ElementRef;
   public platform: any;
   private map: any;
@@ -35,14 +36,16 @@ export class HereMapsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    const defaultLayers = this.platform.createDefaultLayers();
-    this.map = new H.Map(this.mapEl.nativeElement, defaultLayers.normal.map);
-    const coordinates = this.getCenter();
-    this.map.setCenter(coordinates);
-    this.map.setZoom(this.zoom);
-    if (this.zoom === MAP_ZOOM_MARKER) {
-      this.addMarker(coordinates);
-    }
+    setTimeout(() => {
+      const defaultLayers = this.platform.createDefaultLayers();
+      this.map = new H.Map(this.mapEl.nativeElement, defaultLayers.normal.map);
+      const coordinates = this.getCenter();
+      this.map.setCenter(coordinates);
+      this.map.setZoom(this.zoom);
+      if (+this.zoom === MAP_ZOOM_MARKER) {
+        this.addMarker(coordinates);
+      }
+    });
   }
 
   ngOnChanges() {

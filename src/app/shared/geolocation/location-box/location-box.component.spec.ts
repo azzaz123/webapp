@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MOCK_USER } from 'shield';
 import { LocationBoxComponent } from './location-box.component';
 import { UserService } from '../../../core/user/user.service';
@@ -59,12 +59,13 @@ describe('LocationBoxComponent', () => {
       expect(component.user).toEqual(MOCK_USER);
     });
 
-    it('should add user location values', () => {
+    it('should add user location values', fakeAsync(() => {
       component.ngOnInit();
+      tick();
 
       expect(component.form.get('location.address').value).toBe(USER_LOCATION.full_address);
       expect(component.form.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
       expect(component.form.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);
-    });
+    }));
   });
 });

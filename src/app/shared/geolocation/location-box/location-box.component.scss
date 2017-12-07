@@ -1,0 +1,15 @@
+@import "../../../../style/_common.scss";
+
+.box {
+  tsl-here-maps {
+    padding-top: $spacing;
+    display: block;
+  }
+  p {
+    color: $grey-250;
+    margin-top: $spacing;
+  }
+  .form-group, p {
+    margin-bottom: 0;
+  }
+}

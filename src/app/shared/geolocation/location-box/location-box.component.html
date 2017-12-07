@@ -4,6 +4,9 @@
     <div class="col-sm-12">
       <div class="form-group">
         <tsl-location-select [form]="form" [name]="name"></tsl-location-select>
+        <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"></tsl-here-maps>
+        <p>Ésta localización situa tu usuario de wallapop y por lo tanto afecta a todos tus productos.
+          Las personas que estén cerca de este punto serán las primeras en ver tu catálogo :)</p>
       </div>
     </div>
   </div>

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserService } from '../../../core/user/user.service';
 import { User } from 'shield';
+import { Coordinate } from '../../../core/geolocation/address-response.interface';
 
 @Component({
   selector: 'tsl-location-box',
@@ -13,17 +14,25 @@ export class LocationBoxComponent implements OnInit {
   @Input() form: FormGroup;
   @Input() name: string;
   public user: User;
+  public coordinates: Coordinate;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {
+  }
 
   ngOnInit() {
     this.userService.me().subscribe((user: User) => {
       this.user = user;
       if (user.location) {
-        this.form.get(this.name).patchValue({
-          address: user.location.full_address,
-          latitude: user.location.approximated_latitude,
-          longitude: user.location.approximated_longitude
+        setTimeout(() => {
+          this.form.get(this.name).patchValue({
+            address: user.location.full_address || user.location.city,
+            latitude: user.location.approximated_latitude,
+            longitude: user.location.approximated_longitude
+          });
+          this.coordinates = {
+            latitude: user.location.approximated_latitude,
+            longitude: user.location.approximated_longitude
+          }
         });
       }
     });
