@@ -5,6 +5,7 @@ import { makeAnimationEvent } from '@angular/animations/browser/src/render/share
 export const MAP_ZOOM_GENERAL = 5;
 export const MAP_ZOOM_MARKER = 15;
 export const USER_MARKER = '/assets/icons/user-marker.svg';
+export const USER_MARKER_SMALL = '/assets/icons/user-marker-small.svg';
 export const DEFAULT_COORDINATES: Coordinate = {
   latitude: 40.42028,
   longitude: -3.70578
@@ -58,7 +59,8 @@ export class HereMapsComponent implements OnInit, OnChanges {
   }
 
   private addMarker(coordinates: any) {
-    const markerIcon = new H.map.Icon(USER_MARKER);
+    const icon = this.size === 'small' ? USER_MARKER_SMALL : USER_MARKER;
+    const markerIcon = new H.map.Icon(icon);
     if (this.marker) {
       this.map.removeObject(this.marker);
     }
