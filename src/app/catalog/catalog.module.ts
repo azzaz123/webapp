@@ -21,7 +21,6 @@ import { CarSuggestionsService } from './upload/upload-car/car-suggestions.servi
 import { CarKeysService } from './upload/upload-car/car-keys.service';
 import { NgbButtonsModule, NgbCarouselModule, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElasticModule } from 'ng-elastic';
-import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
 import { UploadConfirmationModalComponent } from './list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { PreviewModalComponent } from './upload/preview-modal/preview-modal.component';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
@@ -60,7 +59,6 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
     BumpConfirmationModalComponent,
     CreditCardModalComponent,
     DropAreaComponent,
-    CategorySelectorComponent,
     UploadConfirmationModalComponent,
     PreviewModalComponent
   ],

@@ -1,14 +1,5 @@
 .upload-page {
 
-  h1 {
-    .upload-close-icon {
-      float: right;
-      md-icon {
-        @include square(12px);
-      }
-    }
-  }
-
   .box {
     border-radius: $border-radius;
     background-color: $white;
