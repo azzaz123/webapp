@@ -94,6 +94,11 @@ export interface ItemUploadForm {
     shipping_allowed?: boolean;
   };
   delivery_info?: any;
+  location?: {
+    address: string;
+    latitude: number;
+    longitude: number;
+  };
 }
 
 export interface CarUploadForm extends ItemUploadForm {

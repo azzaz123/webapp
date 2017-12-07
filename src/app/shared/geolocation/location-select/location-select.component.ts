@@ -4,6 +4,8 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { LocationModalComponent } from './location-modal/location-modal.component';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { CookieService } from 'ngx-cookie';
+import { UserService } from '../../../core/user/user.service';
+import { Location } from 'shield';
 
 export const LOCATION_MODAL_TIMEOUT = 100;
 
@@ -21,7 +23,8 @@ export class LocationSelectComponent implements OnChanges {
   private longitudeControl: AbstractControl;
 
   constructor(private modalService: NgbModal,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private userService: UserService) {
   }
 
   ngOnChanges(changes?: any) {
@@ -61,13 +64,15 @@ export class LocationSelectComponent implements OnChanges {
         modal.componentInstance.init();
       }
       modal.result.then((result: Coordinate) => {
-        this.control.setValue(result.name);
-        this.latitudeControl.setValue(result.latitude);
-        this.longitudeControl.setValue(result.longitude);
+        this.userService.updateLocation(result).subscribe((location: Location) => {
+          this.control.setValue(result.name);
+          this.latitudeControl.setValue(result.latitude);
+          this.longitudeControl.setValue(result.longitude);
+          this.userService.user.location = location;
+        });
       }, () => {
       });
     }, LOCATION_MODAL_TIMEOUT);
 
   }
-
 }

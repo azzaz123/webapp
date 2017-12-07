@@ -22,6 +22,8 @@ const Map = {
   setCenter() {
   },
   addObject() {
+  },
+  removeObject() {
   }
 };
 
@@ -67,6 +69,7 @@ describe('HereMapsComponent', () => {
     spyOn(map, 'Icon').and.callThrough();
     spyOn(map, 'Marker').and.callThrough();
     spyOn(Map, 'addObject');
+    spyOn(Map, 'removeObject');
   });
 
   describe('ngOnInit', () => {
@@ -125,5 +128,12 @@ describe('HereMapsComponent', () => {
       }, {icon: ICON});
       expect(Map.addObject).toHaveBeenCalledWith(MARKER);
     });
+
+    it('should remove marker before adding a new one', () => {
+      component.ngOnChanges();
+
+      expect(Map.removeObject).toHaveBeenCalledWith(MARKER);
+    });
+
   });
 });

@@ -15,12 +15,13 @@ import {
   TEST_HTTP_PROVIDERS,
   User,
   USER_ID,
-  USER_LOCATION
+  USER_LOCATION,
+  Location
 } from 'shield';
 import { HaversineService } from 'ng2-haversine';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { USER_INFO_RESPONSE } from '../../../tests/user.fixtures';
+import { USER_INFO_RESPONSE, USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures';
 import { UserInfoResponse } from './user-info.interface';
 
 describe('UserService', () => {
@@ -150,6 +151,23 @@ describe('UserService', () => {
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/extra-info');
       expect(resp).toEqual(USER_INFO_RESPONSE);
+    });
+  });
+
+  describe('updateLocation', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_LOCATION)});
+      spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
+      let resp: Location;
+      service.updateLocation(USER_LOCATION_COORDINATES).subscribe((response: Location) => {
+        resp = response;
+      });
+      expect(http.put).toHaveBeenCalledWith('api/v3/users/me/location', {
+        latitude: USER_LOCATION_COORDINATES.latitude,
+        longitude: USER_LOCATION_COORDINATES.longitude,
+        fullAddress: USER_LOCATION_COORDINATES.name
+      });
+      expect(resp).toEqual(USER_LOCATION);
     });
   });
 

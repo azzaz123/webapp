@@ -78,7 +78,12 @@ export class UploadComponent implements OnInit, AfterViewChecked {
         exchange_allowed: false,
         shipping_allowed: false
       }),
-      delivery_info: [null]
+      delivery_info: [null],
+      location: this.fb.group({
+        address: ['', [Validators.required]],
+        latitude: ['', [Validators.required]],
+        longitude: ['', [Validators.required]],
+      })
     });
     config.placement = 'right';
     config.triggers = 'focus:blur';
@@ -109,12 +114,12 @@ export class UploadComponent implements OnInit, AfterViewChecked {
     });
     this.userService.me().subscribe((user: User) => {
       this.user = user;
-      if (!this.user.location) {
-        this.uploadForm.addControl('location', this.fb.group({
-          address: ['', [Validators.required]],
-          latitude: ['', [Validators.required]],
-          longitude: ['', [Validators.required]],
-        }));
+      if (user.location) {
+        this.uploadForm.get('location').patchValue({
+          address: user.location.full_address,
+          latitude: user.location.approximated_latitude,
+          longitude: user.location.approximated_longitude
+        });
       }
     });
   }
