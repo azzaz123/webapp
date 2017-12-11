@@ -483,7 +483,11 @@ describe('ListComponent', () => {
     });
     describe('error', () => {
       beforeEach(() => {
-        spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.throw(''));
+        spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.throw({
+          text() {
+            return '';
+          }
+        }));
         spyOn(component, 'deselect');
         component.feature({
           order: [ORDER],
