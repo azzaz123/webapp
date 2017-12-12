@@ -24,6 +24,8 @@ import { ElasticModule } from 'ng-elastic';
 import { UploadConfirmationModalComponent } from './list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { PreviewModalComponent } from './upload/preview-modal/preview-modal.component';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
+import { UploadProductComponent } from './upload/upload-product/upload-product.component';
+import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
 
 @NgModule({
   imports: [
@@ -60,7 +62,9 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
     CreditCardModalComponent,
     DropAreaComponent,
     UploadConfirmationModalComponent,
-    PreviewModalComponent
+    PreviewModalComponent,
+    UploadProductComponent,
+    CategorySelectorComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

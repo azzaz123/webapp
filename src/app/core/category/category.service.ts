@@ -9,9 +9,11 @@ import { IOption } from 'ng-select';
 export class CategoryService {
 
   private API_URL = 'api/v3/categories';
+  private categories: CategoryOption[];
 
   constructor(private http: HttpService,
-              private i18n: I18nService) { }
+              private i18n: I18nService) {
+  }
 
   public getCategories(): Observable<CategoryResponse[]> {
     return this.http.getNoBase(environment.siteUrl + 'rest/categories')
@@ -19,9 +21,13 @@ export class CategoryService {
   }
 
   public getUploadCategories(): Observable<CategoryOption[]> {
+    if (this.categories) {
+      return Observable.of(this.categories);
+    }
     return this.http.get(this.API_URL + '/keys/consumer_goods', {language: this.i18n.locale})
-    .map(res => res.json())
-    .map((categories: CategoryConsumerGoodsResponse[]) => this.toSelectOptions(categories));
+      .map(res => res.json())
+      .map((categories: CategoryConsumerGoodsResponse[]) => this.toSelectOptions(categories))
+      .do((categories: CategoryOption[]) => this.categories = categories);
   }
 
   private toSelectOptions(categories: CategoryConsumerGoodsResponse[]): CategoryOption[] {
