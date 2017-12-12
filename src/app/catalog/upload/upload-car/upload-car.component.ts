@@ -163,7 +163,6 @@ export class UploadCarComponent implements OnInit {
         this.errorsService.i18nError('formErrors');
         this.onValidationError.emit();
       }
-      this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
   }
 
