@@ -1,3 +1,35 @@
-<p>
-  profile works!
-</p>
+<div class="page-content">
+  <div class="container">
+    <div class="box">
+      <div class="box-header">
+        <h1 i18n>Profile settings</h1>
+        <p i18n>Don't forget to save your changes</p>
+      </div>
+      <div class="box-content">
+        <div class="row profile-pic">
+          <div class="col-4">
+            <tsl-user-avatar [user]="userService.me() | async" size="80"></tsl-user-avatar>
+            <div>
+              <h2 i18n>Change Profile Picture</h2>
+              <p i18n>This is the image the users will
+                see when they check your profile</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 offset-3">
+            <form>
+              <div class="form-group row">
+                <label for="first_name" class="col-3" i18n>First Name:</label>
+                <div class="col-9">
+                  <input type="text" class="form-control" id="first_name">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

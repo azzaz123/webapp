@@ -1,0 +1,52 @@
+@import "../../style/_common.scss";
+
+$border: solid 1px $grey-50;
+
+.box {
+  background-color: $white;
+  border-radius: $border-radius;
+  border: $border;
+  .box-header, .box-content {
+    padding: $spacing-L;
+  }
+  .box-header {
+    border-bottom: $border;
+    h1 {
+      font-weight: bold;
+      color: $grey-700;
+      font-size: $font-size-L;
+      letter-spacing: 0.5px;
+    }
+    p {
+      color: $grey-250;
+      margin-bottom: 0;
+    }
+  }
+  .profile-pic {
+    padding-bottom: $spacing-L;
+    border-bottom: $border;
+    margin-bottom: $spacing-L;
+    h2 {
+      font-size: $font-size;
+      font-weight: normal;
+      color: $grey-900;
+    }
+    p {
+      font-size: $font-size-S;
+      line-height: 1.29;
+      color: $grey-300;
+      margin-bottom: 0;
+    }
+    .col-4 {
+      display: flex;
+      align-items: center;
+    }
+    tsl-user-avatar {
+      margin-right: $spacing;
+    }
+  }
+  label {
+    text-align: right;
+    line-height: 50px;
+  }
+}
