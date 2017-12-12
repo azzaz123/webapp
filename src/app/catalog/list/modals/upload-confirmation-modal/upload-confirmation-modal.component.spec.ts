@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UploadConfirmationModalComponent } from './upload-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { WindowRef } from 'shield';
+import { WindowRef, MockTrackingService } from 'shield';
+import { TrackingService } from '../../../../core/tracking/tracking.service';
 
 describe('UploadConfirmationModalComponent', () => {
   let component: UploadConfirmationModalComponent;
@@ -14,7 +14,8 @@ describe('UploadConfirmationModalComponent', () => {
       declarations: [ UploadConfirmationModalComponent ],
       providers: [
         NgbActiveModal,
-        WindowRef
+        WindowRef,
+        {provide: TrackingService, useClass: MockTrackingService}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

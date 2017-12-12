@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ErrorsService, Location, MOCK_USER, TEST_HTTP_PROVIDERS, User, USER_ID } from 'shield';
+import { ErrorsService, Location, MOCK_USER, TEST_HTTP_PROVIDERS, User, USER_ID, MockTrackingService } from 'shield';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +10,7 @@ import { UploadProductComponent } from './upload-product.component';
 import { CategoryService } from '../../../core/category/category.service';
 import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../../tests/category.fixtures';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
+import { TrackingService } from '../../../core/tracking/tracking.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -42,6 +43,7 @@ describe('UploadProductComponent', () => {
         FormBuilder,
         NgbPopoverConfig,
         TEST_HTTP_PROVIDERS,
+        {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: Router, useValue: {
           navigate() {
