@@ -149,6 +149,9 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
           this.uploadForm.controls[control].markAsDirty();
         }
       }
+      if (!this.uploadForm.get('location.address').valid) {
+        this.uploadForm.get('location.address').markAsDirty();
+      }
       if (!this.uploadForm.get('images').valid) {
         this.errorsService.i18nError('missingImageError');
       } else {

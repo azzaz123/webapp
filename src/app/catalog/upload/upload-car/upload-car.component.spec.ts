@@ -211,6 +211,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('title').dirty).toBeTruthy();
       expect(component.uploadForm.get('year').dirty).toBeTruthy();
       expect(component.uploadForm.get('sale_price').dirty).toBeTruthy();
+      expect(component.uploadForm.get('location.address').dirty).toBeTruthy();
     });
     it('should show image error', () => {
       spyOn(errorService, 'i18nError');
