@@ -34,7 +34,6 @@
   <msg id="5118689036165223498"><source>app/chat/modals/unblock-user/unblock-user.component.ts:2</source>Unblock user</msg>
   <msg id="2565755719057925105"><source>app/chat/modals/unblock-user/unblock-user.component.ts:3</source>You&apos;ll be able to send or receive messages from this user again. Do you wish to continue?</msg>
   <msg id="4859202148272511129"><source>app/chat/modals/unblock-user/unblock-user.component.ts:7</source>Unblock</msg>
-  <msg id="1592360651866563240"><source>app/chat/chat.component.ts:8</source> Sponsor </msg>
   <msg id="2711435905501432474"><source>app/chat/chat.component.ts:28</source>Report this Listing</msg>
   <msg id="5918739414324010673"><source>app/chat/chat.component.ts:29</source>Report this User</msg>
   <msg id="3909560892838036974"><source>app/chat/chat.component.ts:30</source>Block this User</msg>
