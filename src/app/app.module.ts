@@ -16,10 +16,11 @@ import { environment } from '../environments/environment';
 import { CatalogModule } from './catalog/catalog.module';
 import { DndModule } from 'ng2-dnd';
 import { FavoritesModule } from './favorites/favorites.module';
+import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     ShieldModule.forRoot({
@@ -40,7 +41,8 @@ import { FavoritesModule } from './favorites/favorites.module';
     AppRoutingModule,
     LayoutModule,
     CatalogModule,
-    FavoritesModule
+    FavoritesModule,
+    ProfileModule
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
