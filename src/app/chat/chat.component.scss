@@ -3,6 +3,7 @@
 :host {
   display: block;
   overflow: hidden;
+  margin-left: $sidebar-width;
 }
 
 #left-panel {
