@@ -57,13 +57,6 @@
         </div>
       </div>
     </div>
-    <div class="row" *ngIf="user">
-      <div class="col-sm-12">
-        <div class="form-group">
-          <tsl-location-select [form]="uploadForm" name="location"></tsl-location-select>
-        </div>
-      </div>
-    </div>
     <div class="row">
       <div class="col-md-12">
         <div class="form-group last">
@@ -125,6 +118,7 @@
       </div>
     </div>
   </div>
+  <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
   <button type="submit" class="btn btn-primary" [disabled]="loading">
     <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
     <span [hidden]="loading" i18n>Post Ad</span>

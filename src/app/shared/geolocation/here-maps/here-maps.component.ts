@@ -5,6 +5,7 @@ import { makeAnimationEvent } from '@angular/animations/browser/src/render/share
 export const MAP_ZOOM_GENERAL = 5;
 export const MAP_ZOOM_MARKER = 15;
 export const USER_MARKER = '/assets/icons/user-marker.svg';
+export const USER_MARKER_SMALL = '/assets/icons/user-marker-small.svg';
 export const DEFAULT_COORDINATES: Coordinate = {
   latitude: 40.42028,
   longitude: -3.70578
@@ -19,6 +20,7 @@ export class HereMapsComponent implements OnInit, OnChanges {
 
   @Input() coordinates: Coordinate;
   @Input() zoom = MAP_ZOOM_GENERAL;
+  @Input() size = 'normal';
   @ViewChild('map') mapEl: ElementRef;
   public platform: any;
   private map: any;
@@ -35,14 +37,16 @@ export class HereMapsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    const defaultLayers = this.platform.createDefaultLayers();
-    this.map = new H.Map(this.mapEl.nativeElement, defaultLayers.normal.map);
-    const coordinates = this.getCenter();
-    this.map.setCenter(coordinates);
-    this.map.setZoom(this.zoom);
-    if (this.zoom === MAP_ZOOM_MARKER) {
-      this.addMarker(coordinates);
-    }
+    setTimeout(() => {
+      const defaultLayers = this.platform.createDefaultLayers();
+      this.map = new H.Map(this.mapEl.nativeElement, defaultLayers.normal.map);
+      const coordinates = this.getCenter();
+      this.map.setCenter(coordinates);
+      this.map.setZoom(this.zoom);
+      if (+this.zoom === MAP_ZOOM_MARKER) {
+        this.addMarker(coordinates);
+      }
+    });
   }
 
   ngOnChanges() {
@@ -55,7 +59,8 @@ export class HereMapsComponent implements OnInit, OnChanges {
   }
 
   private addMarker(coordinates: any) {
-    const markerIcon = new H.map.Icon(USER_MARKER);
+    const icon = this.size === 'small' ? USER_MARKER_SMALL : USER_MARKER;
+    const markerIcon = new H.map.Icon(icon);
     if (this.marker) {
       this.map.removeObject(this.marker);
     }

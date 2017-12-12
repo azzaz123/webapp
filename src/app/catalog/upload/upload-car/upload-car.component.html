@@ -55,7 +55,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <div class="form-group">
+        <div class="form-group last">
           <label for="headline" i18n>Title</label>
           <span class="chars-counter">{{uploadForm.value?.title?.length}}/50</span>
           <input i18n-placeholder placeholder="This is what you will see in the ad" type="text"
@@ -65,13 +65,6 @@
             <md-icon svgIcon="cm-eye"></md-icon>
             <div i18n>Go for it! The more you say the better chance they have of finding of reaching you.</div>
           </ng-template>
-        </div>
-      </div>
-    </div>
-    <div class="row" *ngIf="user">
-      <div class="col-sm-12">
-        <div class="form-group last">
-          <tsl-location-select [form]="uploadForm" name="location"></tsl-location-select>
         </div>
       </div>
     </div>
@@ -209,6 +202,7 @@
       <div i18n>What sellers usually ask...</div>
     </ng-template>
   </div>
+  <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
   <button type="submit" class="btn btn-primary" [disabled]="loading">
     <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
     <span [hidden]="loading" i18n>Post your ad</span>

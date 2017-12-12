@@ -8,7 +8,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class CategorySelectorComponent {
 
   @Output() onSelect: EventEmitter<string> = new EventEmitter();
-  private category: number;
+  public category: number;
 
   constructor() {
   }

@@ -1,0 +1,14 @@
+<div class="box">
+  <h2 i18n>All your products are localized in:</h2>
+  <div class="row" *ngIf="user">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <tsl-location-select [form]="form" [name]="name"></tsl-location-select>
+        <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"></tsl-here-maps>
+        <div class="fake-map" *ngIf="!coordinates"></div>
+        <p>Ésta localización situa tu usuario de wallapop y por lo tanto afecta a todos tus productos.
+          Las personas que estén cerca de este punto serán las primeras en ver tu catálogo :)</p>
+      </div>
+    </div>
+  </div>
+</div>
