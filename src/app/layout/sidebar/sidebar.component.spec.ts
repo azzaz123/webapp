@@ -29,8 +29,6 @@ describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let userService: UserService;
-  let modalService: NgbModal;
-  let componentInstance: any = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,15 +45,6 @@ describe('SidebarComponent', () => {
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
-        },
-        {
-          provide: NgbModal, useValue: {
-          open() {
-            return {
-              componentInstance: componentInstance
-            };
-          }
-        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -67,7 +56,6 @@ describe('SidebarComponent', () => {
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
-    modalService = TestBed.get(NgbModal);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
   });
@@ -102,27 +90,4 @@ describe('SidebarComponent', () => {
     });
   });
 
-  describe('openProfileModal', () => {
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {preventDefault: preventDefault};
-
-    it('should prevent event', () => {
-      component.openProfileModal(event);
-
-      expect(preventDefault).toHaveBeenCalled();
-    });
-
-    it('should open modal', () => {
-      spyOn(modalService, 'open').and.callThrough();
-      component.userUrl = 'url';
-
-      component.openProfileModal(event);
-
-      expect(modalService.open).toHaveBeenCalledWith(ProfileModalComponent,{
-        windowClass: 'profile',
-        backdrop: 'static'
-      });
-      expect(componentInstance.userUrl).toBe('url');
-    });
-  });
 });
