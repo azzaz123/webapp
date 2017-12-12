@@ -22,7 +22,8 @@ const CATEGORY_IDS: any = {
   Purchase: '53',
   Conversations: '7',
   Menu: '41',
-  ItemDetail: '103'
+  ItemDetail: '103',
+  UploadForm: '114'
 };
 
 const SCREENS_IDS: any = {
@@ -35,7 +36,8 @@ const SCREENS_IDS: any = {
   ProCatalog: '91',
   Wall: '110',
   MyCatalog: '138',
-  ItemDetail: '115'
+  ItemDetail: '115',
+  UploadForm: '139'
 };
 
 const TYPES_IDS: any = {
@@ -271,6 +273,54 @@ export class TrackingService extends TrackingServiceMaster {
     name: '565',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static MYZONE_UPLOAD: TrackingEventBase = {
+    name: '602',
+    category: CATEGORY_IDS.UploadForm,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static UPLOADFORM_CHOOSEHEROCATEGORY: TrackingEventBase = {
+    name: '595',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Tap
+  };
+  public static UPLOADFORM_UPLOADFROMFORM: TrackingEventBase = {
+    name: '596',
+    category: CATEGORY_IDS.UploadForm,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Tap
+  };
+  public static UPLOADFORM_PREVIEW: TrackingEventBase = {
+    name: '597',
+    category: CATEGORY_IDS.UploadForm,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Tap
+  };
+  public static UPLOADFORM_UPLOADFROMPREVIEW: TrackingEventBase = {
+    name: '603',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.ItemDetail,
+    type: TYPES_IDS.Tap
+  };
+  public static UPLOADFORM_SUCCESS: TrackingEventBase = {
+    name: '598',
+    category: CATEGORY_IDS.UploadForm,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Success
+  };
+  public static UPLOADFORM_ERROR: TrackingEventBase = {
+    name: '599',
+    category: CATEGORY_IDS.UploadForm,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Error
+  };
+  public static UPLOADFORM_FEATURED: TrackingEventBase = {
+    name: '600',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.UploadForm,
     type: TYPES_IDS.Tap
   };
 
