@@ -34,6 +34,7 @@ describe('UploadProductComponent', () => {
   let router: Router;
   let categoryService: CategoryService;
   let modalService: NgbModal;
+  let trackingService: TrackingService;
   let componentInstance: any = {};
 
   beforeEach(async(() => {
@@ -90,6 +91,7 @@ describe('UploadProductComponent', () => {
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
+    trackingService = TestBed.get(TrackingService);
   });
 
   describe('ngOnChanges', () => {
@@ -190,9 +192,13 @@ describe('UploadProductComponent', () => {
 
   describe('onError', () => {
     it('should set loading to false', () => {
+      spyOn(trackingService, 'track');
       component.loading = true;
+
       component.onError('response');
+
       expect(component.loading).toBeFalsy();
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
     });
   });
 

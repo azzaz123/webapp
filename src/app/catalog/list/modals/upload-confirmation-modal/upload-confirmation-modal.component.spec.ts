@@ -8,10 +8,11 @@ import { TrackingService } from '../../../../core/tracking/tracking.service';
 describe('UploadConfirmationModalComponent', () => {
   let component: UploadConfirmationModalComponent;
   let fixture: ComponentFixture<UploadConfirmationModalComponent>;
+  let trackingService: TrackingService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UploadConfirmationModalComponent ],
+      declarations: [UploadConfirmationModalComponent],
       providers: [
         NgbActiveModal,
         WindowRef,
@@ -25,10 +26,18 @@ describe('UploadConfirmationModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadConfirmationModalComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    trackingService = TestBed.get(TrackingService);
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+    it('should track open', () => {
+      spyOn(trackingService, 'track');
+
+      fixture.detectChanges();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_SUCCESS);
+    });
   });
+
+
 });
