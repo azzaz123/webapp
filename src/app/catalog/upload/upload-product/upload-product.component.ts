@@ -158,7 +158,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         this.errorsService.i18nError('formErrors');
         this.onValidationError.emit();
       }
-      this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
   }
 

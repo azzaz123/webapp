@@ -24,6 +24,7 @@ describe('UploadCarComponent', () => {
   let errorService: ErrorsService;
   let router: Router;
   let modalService: NgbModal;
+  let trackingService: TrackingService;
   let componentInstance: any = {
     getBodyType: jasmine.createSpy('getBodyType')
   };
@@ -99,6 +100,7 @@ describe('UploadCarComponent', () => {
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
+    trackingService = TestBed.get(TrackingService);
   });
 
   describe('ngOnInit', () => {
@@ -254,9 +256,13 @@ describe('UploadCarComponent', () => {
 
   describe('onError', () => {
     it('should set loading to false', () => {
+      spyOn(trackingService, 'track');
       component.loading = true;
+
       component.onError('response');
+
       expect(component.loading).toBeFalsy();
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
     });
   });
 
