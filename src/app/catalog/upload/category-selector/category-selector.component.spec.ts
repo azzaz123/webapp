@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CategorySelectorComponent } from './category-selector.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 describe('CategorySelectorComponent', () => {
   let component: CategorySelectorComponent;
@@ -9,6 +10,7 @@ describe('CategorySelectorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      providers: [NgbPopoverConfig],
       declarations: [CategorySelectorComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })

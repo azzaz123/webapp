@@ -1,5 +1,15 @@
 @import "../../../../style/_common.scss";
 
+.box {
+  h2 {
+    margin-bottom: $spacing-XS;
+  }
+  p {
+    color: $grey-250;
+    margin-bottom: $spacing;
+  }
+}
+
 .types {
   display: flex;
   flex-wrap: wrap;
