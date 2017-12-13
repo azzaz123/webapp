@@ -5,6 +5,7 @@ import { CoreModule } from '../core/core.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MdIconModule } from '@angular/material';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
     CoreModule,
     ReactiveFormsModule,
     MdIconModule,
-    NgbButtonsModule
+    NgbButtonsModule,
+    GeolocationModule
   ],
   declarations: [
     profileRoutedComponents

@@ -18,28 +18,28 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-6 offset-3">
+            <div class="col-10 offset-2">
               <div class="form-group row">
-                <label for="first_name" class="col-4" i18n>First Name:</label>
-                <div class="col-8">
+                <label for="first_name" class="col-3" i18n>First Name:</label>
+                <div class="col-5">
                   <input type="text" class="form-control" id="first_name" formControlName="first_name" />
                 </div>
               </div>
               <div class="form-group row">
-                <label for="last_name" class="col-4" i18n>Last Name:</label>
-                <div class="col-8">
+                <label for="last_name" class="col-3" i18n>Last Name:</label>
+                <div class="col-5">
                   <input type="text" class="form-control" id="last_name" formControlName="last_name" />
                 </div>
               </div>
               <div class="form-group row">
-                <label for="birth_date" class="col-4" i18n>Date of Birth:</label>
-                <div class="col-8">
+                <label for="birth_date" class="col-3" i18n>Date of Birth:</label>
+                <div class="col-5">
                   <input type="date" class="form-control" id="birth_date" formControlName="birth_date" />
                 </div>
               </div>
               <div class="form-group row">
-                <label class="col-4" i18n>Gender:</label>
-                <div class="col-8">
+                <label class="col-3" i18n>Gender:</label>
+                <div class="col-5">
                   <div ngbRadioGroup name="radioBasic" formControlName="gender">
                     <label class="btn select">
                       <input type="radio" value="M">
@@ -52,6 +52,12 @@
                       <div i18n>Female</div>
                     </label>
                   </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-3" i18n>Location:</label>
+                <div class="col-9">
+                  <tsl-location-box [form]="profileForm" name="location"></tsl-location-box>
                 </div>
               </div>
             </div>

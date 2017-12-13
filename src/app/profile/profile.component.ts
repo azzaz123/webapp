@@ -23,7 +23,12 @@ export class ProfileComponent implements OnInit {
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
       birth_date: ['', [Validators.required]],
-      gender: ['', [Validators.required]]
+      gender: ['', [Validators.required]],
+      location: this.fb.group({
+        address: ['', [Validators.required]],
+        latitude: ['', [Validators.required]],
+        longitude: ['', [Validators.required]],
+      })
     });
   }
 

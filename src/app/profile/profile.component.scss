@@ -104,5 +104,18 @@ $form-control-height: 42px;
         }
       }
     }
+    tsl-location-box {
+      /deep/ .box {
+        h2 {
+          display: none;
+        }
+        p {
+          font-size: $font-size-S;
+        }
+        .form-group .form-control {
+          width: calc(100% - 13px);
+        }
+      }
+    }
   }
 }
