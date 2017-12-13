@@ -31,6 +31,7 @@ const MOCK_USER = new User(
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -59,10 +60,26 @@ describe('ProfileComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
+    userService = TestBed.get(UserService);
+    spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+    it('should call userService.me', () => {
+      expect(userService.me).toHaveBeenCalled();
+    });
+    it('should set the private user variable with the content of the user', () => {
+      expect(component.user).toBe(MOCK_USER);
+    });
+    it('should set userUrl', () => {
+      expect(component.userUrl).toBe('https://www.wallapop.com/user/webslug-l1kmzn82zn3p');
+    });
+    it('should set profileForm with user data', () => {
+      expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
+      expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
+      expect(component.profileForm.get('birth_date').value).toBe('1987-02-10');
+      expect(component.profileForm.get('gender').value).toBe('M');
+    });
   });
 });
