@@ -198,7 +198,7 @@ export class ListComponent implements OnInit, OnDestroy {
       });
     }, (error: Response) => {
       this.deselect();
-      if (error) {
+      if (error.text()) {
         this.errorService.show(error);
       } else {
         this.toastr.error(DEFAULT_ERROR_MESSAGE);
