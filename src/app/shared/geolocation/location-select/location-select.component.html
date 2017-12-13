@@ -1,6 +1,5 @@
 <div [formGroup]="form">
   <div [formGroupName]="name">
-    <label for="location" i18n>Location</label>
-    <input #input type="text" class="form-control" placeholder="Set a location for your product" i18n-placeholder formControlName="address" id="location" (focus)="open(input)" />
+    <input #input type="text" class="form-control" placeholder="Set a location" i18n-placeholder formControlName="address" id="location" (focus)="open(input)" />
   </div>
 </div>

@@ -18,14 +18,6 @@ const routes: Routes = [
         component: ListComponent
       },
       {
-        path: 'upload/100',
-        component: UploadCarComponent
-      },
-      {
-        path: 'upload/:catId',
-        component: UploadComponent
-      },
-      {
         path: 'upload',
         component: UploadComponent
       }

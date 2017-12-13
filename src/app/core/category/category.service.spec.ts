@@ -20,7 +20,7 @@ describe('CategoryService', () => {
         ...TEST_HTTP_PROVIDERS,
         {
           provide: I18nService, useValue: {
-            locale: 'es'
+          locale: 'es'
         }
         }
       ]
@@ -34,22 +34,41 @@ describe('CategoryService', () => {
       let response: CategoryResponse[];
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CATEGORY_DATA_WEB)});
       spyOn(http, 'getNoBase').and.returnValue(Observable.of(new Response(res)));
+
       service.getCategories().subscribe((data: CategoryResponse[]) => {
         response = data;
       });
+
       expect(response).toEqual(CATEGORY_DATA_WEB);
-    })
+    });
   });
 
   describe('getUploadCategories', () => {
-    it('should return the json from the categories and convert it into options', () => {
-      let response: IOption[];
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CATEGORIES_DATA_CONSUMER_GOODS)});
+    let response: IOption[];
+    const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CATEGORIES_DATA_CONSUMER_GOODS)});
+    beforeEach(() => {
+      response = null;
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+    });
+
+    it('should return the json from the categories and convert it into options', () => {
       service.getUploadCategories().subscribe((data: IOption[]) => {
         response = data;
       });
+
       expect(http.get).toHaveBeenCalledWith('api/v3/categories/keys/consumer_goods', {language: 'es'});
+      expect(response).toEqual(CATEGORIES_OPTIONS);
+    });
+
+    it('should cache results', () => {
+      service.getUploadCategories().subscribe((data: IOption[]) => {
+        response = data;
+      });
+      service.getUploadCategories().subscribe((data: IOption[]) => {
+        response = data;
+      });
+
+      expect(http.get).toHaveBeenCalledTimes(1);
       expect(response).toEqual(CATEGORIES_OPTIONS);
     });
   });

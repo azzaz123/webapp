@@ -1,47 +1,38 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CategorySelectorComponent } from './category-selector.component';
-import { Router } from '@angular/router';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 describe('CategorySelectorComponent', () => {
   let component: CategorySelectorComponent;
   let fixture: ComponentFixture<CategorySelectorComponent>;
-  let route: Router;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CategorySelectorComponent ],
-      providers: [
-        {
-          provide: Router, useValue: {
-            navigate() {
-            }
-        }
-        }
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      providers: [NgbPopoverConfig],
+      declarations: [CategorySelectorComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CategorySelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    route = TestBed.get(Router);
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
+  describe('setCategory', () => {
+    it('should emit category', () => {
+      let category: string;
+      component.onSelect.subscribe((cat: string) => {
+        category = cat;
+      });
 
-  describe('changeCategory', () => {
-    it('should call navigate', () => {
-      spyOn(route, 'navigate');
-      component.changeCategory('100');
-      expect(route.navigate).toHaveBeenCalledWith(['/catalog/upload/100'])
+      component.setCategory(123);
+
+      expect(category).toBe('123');
     })
   });
-
 });

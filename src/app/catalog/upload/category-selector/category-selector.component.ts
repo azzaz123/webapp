@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-category-selector',
@@ -8,13 +8,18 @@ import { Router } from '@angular/router';
 })
 export class CategorySelectorComponent {
 
-  @Input() categoryId: string;
+  @Output() onSelect: EventEmitter<string> = new EventEmitter();
+  public category: number;
 
-  constructor(private router: Router) {
+  constructor(config: NgbPopoverConfig) {
+    config.placement = 'right';
+    config.triggers = 'focus:blur';
+    config.container = 'body';
   }
 
-  public changeCategory(categoryId: string) {
-    this.router.navigate(['/catalog/upload/' + categoryId]);
+  setCategory(value: number) {
+    this.category = value;
+    this.onSelect.emit(value.toString());
   }
 
 }

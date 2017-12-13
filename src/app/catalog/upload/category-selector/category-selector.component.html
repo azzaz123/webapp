@@ -1,29 +1,48 @@
-<div ngbDropdown class="title">
-  <a ngbDropdownToggle>
-    <ng-container [ngSwitch]="categoryId">
-      <ng-container *ngSwitchCase="'100'" i18n>Upload new {{ '{' }}car{{ '}' }}</ng-container>
-      <ng-container *ngSwitchCase="'13000'" i18n>Upload new {{ '{' }}house{{ '}' }}</ng-container>
-      <ng-container *ngSwitchCase="'13200'" i18n>Upload new {{ '{' }}service{{ '}' }}</ng-container>
-      <ng-container *ngSwitchDefault i18n>Upload new {{ '{' }}product{{ '}' }}</ng-container>
-    </ng-container>
-    <md-icon svgIcon="arrow-waterfall" class="arrow-icon"></md-icon>
-  </a>
-  <div class="dropdown-menu">
-    <button class="dropdown-item" (click)="changeCategory('100')">
-      <md-icon svgIcon="herocat-cars"></md-icon>
-      <span i18n>Cars</span>
-    </button>
-    <button class="dropdown-item" (click)="changeCategory('13000')">
-      <md-icon svgIcon="herocat-real-estate"></md-icon>
-      <span i18n>Real Estate</span>
-    </button>
-    <button class="dropdown-item" (click)="changeCategory('13200')">
-      <md-icon svgIcon="herocat-services"></md-icon>
-      <span i18n>Services</span>
-    </button>
-    <button class="dropdown-item" (click)="changeCategory('')">
-      <md-icon svgIcon="herocat-consumer-goods"></md-icon>
-      <span i18n>Consumer goods</span>
-    </button>
+<div class="box" [ngbPopover]="coachmarkCategory" triggers="mouseenter:mouseleave">
+  <h2 i18n>What will you sell?</h2>
+  <p i18n>Set the product type you will list</p>
+  <div class="row">
+    <div class="col-sm-12 types">
+      <a class="type"
+         (click)="setCategory(-1)"
+         [ngClass]="{active: category === -1}"
+         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '590'}">
+        <div class="square">
+          <md-icon svgIcon="herocat-consumer-goods"></md-icon>
+        </div>
+        <span i18n>Something I don't use anymore</span>
+      </a>
+      <a class="type"
+         (click)="setCategory(100)"
+         [ngClass]="{active: category === 100}"
+         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '100'}">
+        <div class="square">
+          <md-icon svgIcon="herocat-cars"></md-icon>
+        </div>
+        <span i18n>A car</span>
+      </a>
+      <a class="type"
+         (click)="setCategory(13200)"
+         [ngClass]="{active: category === 13200}"
+         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '13200'}">
+        <div class="square">
+          <md-icon svgIcon="herocat-services"></md-icon>
+        </div>
+        <span i18n>My services</span>
+      </a>
+      <a class="type"
+         (click)="setCategory(13000)"
+         [ngClass]="{active: category === 13000}"
+         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '13000'}">
+        <div class="square">
+          <md-icon svgIcon="herocat-real-estate"></md-icon>
+        </div>
+        <span i18n>A property</span>
+      </a>
+    </div>
   </div>
+  <ng-template #coachmarkCategory>
+    <md-icon svgIcon="cm-hero"></md-icon>
+    <div i18n>It's important you select the product type or service to be reached by the other users.</div>
+  </ng-template>
 </div>

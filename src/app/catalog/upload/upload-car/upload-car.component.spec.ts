@@ -6,13 +6,13 @@ import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
 import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from './car-keys.service';
-import { TEST_HTTP_PROVIDERS, ErrorsService, MOCK_USER, USER_ID, User, USER_LOCATION } from 'shield';
+import { ErrorsService, TEST_HTTP_PROVIDERS, User, USER_ID, MockTrackingService } from 'shield';
 import { Router } from '@angular/router';
 import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../../tests/car.fixtures';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures';
-import { UserService } from '../../../core/user/user.service';
+import { TrackingService } from '../../../core/tracking/tracking.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -24,10 +24,10 @@ describe('UploadCarComponent', () => {
   let errorService: ErrorsService;
   let router: Router;
   let modalService: NgbModal;
+  let trackingService: TrackingService;
   let componentInstance: any = {
     getBodyType: jasmine.createSpy('getBodyType')
   };
-  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,6 +36,7 @@ describe('UploadCarComponent', () => {
         FormBuilder,
         TEST_HTTP_PROVIDERS,
         NgbPopoverConfig,
+        {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: CarSuggestionsService, useValue: {
           getBrands() {
@@ -82,13 +83,6 @@ describe('UploadCarComponent', () => {
             };
           }
         }
-        },
-        {
-          provide: UserService, useValue: {
-            me() {
-              return Observable.of(MOCK_USER);
-            }
-        }
         }
       ],
       declarations: [UploadCarComponent],
@@ -106,7 +100,7 @@ describe('UploadCarComponent', () => {
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
-    userService = TestBed.get(UserService);
+    trackingService = TestBed.get(TrackingService);
   });
 
   describe('ngOnInit', () => {
@@ -116,19 +110,6 @@ describe('UploadCarComponent', () => {
       component.ngOnInit();
       expect(component['getBrands']).toHaveBeenCalled();
       expect(component['getCarTypes']).toHaveBeenCalled();
-    });
-    it('should call me and set user', () => {
-      spyOn(userService, 'me').and.callThrough();
-      component.ngOnInit();
-      expect(userService.me).toHaveBeenCalled();
-      expect(component.user).toEqual(MOCK_USER);
-    });
-    it('should add user location values', () => {
-      component.ngOnInit();
-
-      expect(component.uploadForm.get('location.address').value).toBe(USER_LOCATION.title);
-      expect(component.uploadForm.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
-      expect(component.uploadForm.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);
     });
   });
 
@@ -232,6 +213,7 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('title').dirty).toBeTruthy();
       expect(component.uploadForm.get('year').dirty).toBeTruthy();
       expect(component.uploadForm.get('sale_price').dirty).toBeTruthy();
+      expect(component.uploadForm.get('location.address').dirty).toBeTruthy();
     });
     it('should show image error', () => {
       spyOn(errorService, 'i18nError');
@@ -274,9 +256,13 @@ describe('UploadCarComponent', () => {
 
   describe('onError', () => {
     it('should set loading to false', () => {
+      spyOn(trackingService, 'track');
       component.loading = true;
+
       component.onError('response');
+
       expect(component.loading).toBeFalsy();
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
     });
   });
 

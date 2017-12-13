@@ -1,7 +1,13 @@
 #map {
-  width: 700px;
-  height: 500px;
   & > /deep/ div {
     border-radius: 0.3rem;
+  }
+  &.normal {
+    width: 700px;
+    height: 500px;
+  }
+  &.small {
+    width: 638px;
+    height: 130px;
   }
 }
