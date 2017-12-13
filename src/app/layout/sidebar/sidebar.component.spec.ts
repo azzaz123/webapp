@@ -3,8 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SidebarComponent } from './sidebar.component';
 import { UserService } from '../../core/user/user.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProfileModalComponent } from './profile-modal/profile-modal.component';
 import { Observable } from 'rxjs/Observable';
 import { User, USER_DATA } from 'shield';
 
