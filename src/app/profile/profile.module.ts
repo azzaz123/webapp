@@ -2,12 +2,18 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
 import { CoreModule } from '../core/core.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MdIconModule } from '@angular/material';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
     CommonModule,
     ProfileRoutingModule,
-    CoreModule
+    CoreModule,
+    ReactiveFormsModule,
+    MdIconModule,
+    NgbButtonsModule
   ],
   declarations: [
     profileRoutedComponents

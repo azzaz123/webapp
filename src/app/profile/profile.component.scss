@@ -1,6 +1,7 @@
 @import "../../style/_common.scss";
 
 $border: solid 1px $grey-50;
+$form-control-height: 42px;
 
 .box {
   background-color: $white;
@@ -14,12 +15,11 @@ $border: solid 1px $grey-50;
     h1 {
       font-weight: bold;
       color: $grey-700;
-      font-size: $font-size-L;
-      letter-spacing: 0.5px;
+      font-size: $font-size-LL;
+      letter-spacing: 0.6px;
     }
-    p {
-      color: $grey-250;
-      margin-bottom: 0;
+    .public-profile {
+      font-size: $font-size-S;
     }
   }
   .profile-pic {
@@ -45,8 +45,64 @@ $border: solid 1px $grey-50;
       margin-right: $spacing;
     }
   }
-  label {
-    text-align: right;
-    line-height: 50px;
+  .form-group {
+    label {
+      text-align: right;
+      line-height: $form-control-height;
+      color: $grey-900;
+      font-size: $font-size;
+      padding-right: 69px;
+    }
+    .form-control {
+      height: $form-control-height;
+    }
+    .btn-group {
+      width: 100%;
+    }
+    .select {
+      height: 100px;
+      width: calc(50% - #{$spacing / 2});
+      border-radius: $border-radius;
+      border: solid 2px $grey-50;
+      cursor: pointer;
+      padding: 0;
+      text-align: center;
+      &:first-of-type {
+        margin-right: $spacing;
+      }
+      md-icon {
+        @include square(42px);
+        margin-top: 25px;
+        /deep/ path {
+          transition: fill 0.2s ease-in-out;
+        }
+      }
+      div {
+        margin-top: -22px;
+        font-size: $font-size-S;
+      }
+      &.active {
+        background-color: $corporate;
+        border-color: transparent;
+        box-shadow: 0 2px 6px 0 rgba(19, 193, 172, 0.2);
+        md-icon {
+          /deep/ path {
+            fill: $white;
+          }
+        }
+        div {
+          font-weight: bold;
+          color: $white;
+        }
+      }
+      &:hover:not(.active) {
+        border-color: $grey-300;
+        md-icon {
+          /deep/ path {
+            fill: $grey-300;
+          }
+        }
+      }
+    }
   }
 }
