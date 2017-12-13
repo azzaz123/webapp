@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Item, WindowRef } from 'shield';
+import { TrackingService } from '../../../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-upload-confirmation-modal',
@@ -11,10 +12,13 @@ export class UploadConfirmationModalComponent implements OnInit {
 
   public item: Item;
 
-  constructor(public activeModal: NgbActiveModal, private window: WindowRef) {
+  constructor(public activeModal: NgbActiveModal,
+              private window: WindowRef,
+              private trackingService: TrackingService) {
   }
 
   ngOnInit() {
+    this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS);
   }
 
   public facebookShare() {

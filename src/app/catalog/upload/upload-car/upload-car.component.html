@@ -203,9 +203,13 @@
     </ng-template>
   </div>
   <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
-  <button type="submit" class="btn btn-primary" [disabled]="loading">
+  <button type="submit" class="btn btn-primary" [disabled]="loading" tslTrackEvent="UPLOADFORM_UPLOADFROMFORM">
     <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
     <span [hidden]="loading" i18n>Post your ad</span>
   </button>
-  <button type="button" (click)="preview()" class="btn btn-link" [disabled]="!uploadForm.valid" i18n>How does it look?</button>
+  <button type="button"
+          (click)="preview()"
+          class="btn btn-link"
+          [disabled]="!uploadForm.valid"
+          tslTrackEvent="UPLOADFORM_PREVIEW" i18n>How does it look?</button>
 </form>

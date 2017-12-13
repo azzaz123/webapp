@@ -2,7 +2,7 @@
   <div class="modal-close" (click)="activeModal.dismiss()">
     <md-icon svgIcon="cross"></md-icon>
   </div>
-  <button class="btn btn-primary" (click)="activeModal.close()">
+  <button class="btn btn-primary" (click)="activeModal.close()" tslTrackEvent="UPLOADFORM_UPLOADFROMPREVIEW">
     <span i18n>Post Ad</span>
   </button>
   <ngb-carousel interval="0">

@@ -6,12 +6,13 @@ import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
 import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from './car-keys.service';
-import { ErrorsService, TEST_HTTP_PROVIDERS, User, USER_ID } from 'shield';
+import { ErrorsService, TEST_HTTP_PROVIDERS, User, USER_ID, MockTrackingService } from 'shield';
 import { Router } from '@angular/router';
 import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../../tests/car.fixtures';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures';
+import { TrackingService } from '../../../core/tracking/tracking.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -23,6 +24,7 @@ describe('UploadCarComponent', () => {
   let errorService: ErrorsService;
   let router: Router;
   let modalService: NgbModal;
+  let trackingService: TrackingService;
   let componentInstance: any = {
     getBodyType: jasmine.createSpy('getBodyType')
   };
@@ -34,6 +36,7 @@ describe('UploadCarComponent', () => {
         FormBuilder,
         TEST_HTTP_PROVIDERS,
         NgbPopoverConfig,
+        {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: CarSuggestionsService, useValue: {
           getBrands() {
@@ -97,6 +100,7 @@ describe('UploadCarComponent', () => {
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
+    trackingService = TestBed.get(TrackingService);
   });
 
   describe('ngOnInit', () => {
@@ -251,9 +255,13 @@ describe('UploadCarComponent', () => {
 
   describe('onError', () => {
     it('should set loading to false', () => {
+      spyOn(trackingService, 'track');
       component.loading = true;
+
       component.onError('response');
+
       expect(component.loading).toBeFalsy();
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
     });
   });
 
