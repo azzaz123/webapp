@@ -289,7 +289,7 @@ export class TrackingService extends TrackingServiceMaster {
   };
   public static UPLOADFORM_UPLOADFROMFORM: TrackingEventBase = {
     name: '596',
-    category: CATEGORY_IDS.UploadForm,
+    category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.UploadForm,
     type: TYPES_IDS.Tap
   };
