@@ -133,6 +133,7 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('cm-money', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-money.svg'));
   mdIconRegistry.addSvgIcon('cm-seats', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-seats.svg'));
   mdIconRegistry.addSvgIcon('cm-velocity', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-velocity.svg'));
+  mdIconRegistry.addSvgIcon('cm-hero', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-hero.svg'));
   mdIconRegistry.addSvgIcon('twitter', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/twitter.svg'));
   mdIconRegistry.addSvgIcon('facebook', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/facebook.svg'));
   mdIconRegistry.addSvgIcon('car-type-small_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/small_car.svg'));

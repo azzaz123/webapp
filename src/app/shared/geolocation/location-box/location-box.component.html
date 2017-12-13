@@ -1,4 +1,4 @@
-<div class="box">
+<div class="box" [ngbPopover]="coachmarkLocation" triggers="mouseenter:mouseleave">
   <h2 i18n>Your products are:</h2>
   <div class="row" *ngIf="user">
     <div class="col-sm-12">
@@ -11,3 +11,7 @@
     </div>
   </div>
 </div>
+<ng-template #coachmarkLocation>
+  <md-icon svgIcon="cm-categories"></md-icon>
+  <div i18n>Mark the location in a place where you usually are. This will help other users to find you and improve your user experience.</div>
+</ng-template>

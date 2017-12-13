@@ -1,4 +1,4 @@
-<div class="box">
+<div class="box" [ngbPopover]="coachmarkCategory" triggers="mouseenter:mouseleave">
   <h2 i18n>What will you sell?</h2>
   <p i18n>Set the product type you will list</p>
   <div class="row">
@@ -41,4 +41,8 @@
       </a>
     </div>
   </div>
+  <ng-template #coachmarkCategory>
+    <md-icon svgIcon="cm-hero"></md-icon>
+    <div i18n>It's important you select the product type or service to be reached by the other users.</div>
+  </ng-template>
 </div>
