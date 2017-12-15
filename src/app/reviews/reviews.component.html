@@ -1,0 +1,14 @@
+<div class="page-content"
+     infinite-scroll
+     [infiniteScrollDistance]="5"
+     [infiniteScrollThrottle]="100"
+     [scrollWindow]="false"
+     [infiniteScrollDisabled]="end || loading"
+     (scrolled)="loadMore()"
+     [scrollTop]="scrollTop">
+  <div class="container">
+    <div class="row items">
+      <tsl-review-item *ngFor="let review of reviews" [review]="review" class="col-md-12"></tsl-review-item>
+    </div>
+  </div>
+</div>
