@@ -4,8 +4,6 @@ import { ReviewItem } from "./review-item";
 
 export class MyReviews {
 
-  private _selected: boolean = false;
-
   constructor(private _item: ReviewItem,
               private _review?: Review,
               private _type?: string,
@@ -28,12 +26,15 @@ export class MyReviews {
     return this._type;
   }
 
-  get selected(): boolean {
-    return this._selected;
+  get isSold(): boolean {
+    return this.type === 'sell';
   }
 
-  set selected(value: boolean) {
-    this._selected = value;
+  get isBought(): boolean {
+    return this.type === 'buy';
   }
 
+  get isDeleted(): boolean {
+    return !this.item.id;
+  }
 }

@@ -1,12 +1,19 @@
 <div class="row">
   <div class="separator"></div>
   <div class="col-1 images-container">
-    <tsl-item-avatar [item]="this.review.item.image"></tsl-item-avatar>
+    <tsl-item-avatar *ngIf="this.review.isSold" [item]="this.review.item.image"></tsl-item-avatar>
+    <tsl-item-avatar *ngIf="this.review.isBought" [item]="category"></tsl-item-avatar>
     <tsl-user-avatar [user]="this.review.user.image.small" size="40"></tsl-user-avatar>
   </div>
   <div class="col-11">
-    <span i18n>You sold:</span>
-    <span><a href="#">{{ this.review.item.title }}</a></span>
+    <div *ngIf="this.review.isSold">
+      <span i18n>You sold:</span>
+      <span><a href="#">{{ this.review.item.title }}</a></span>
+    </div>
+    <div *ngIf="this.review.isBought">
+      <span i18n>You bought:</span>
+      <span>CATEGORY</span>
+    </div>
     <tsl-stars [stars]="this.review.review.scoring" [normalized]="false"></tsl-stars>
     <p>{{ this.review.review.comments }}</p>
     <span i18n>Posted by</span><span><a href="#">{{ this.review.user.micro_name }}</a></span><span i18n>on</span>
