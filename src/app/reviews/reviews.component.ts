@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Review } from "../core/review/review";
-import { ReviewService } from "../core/review/review.service";
-import { ReviewsData } from "../core/review/review-response.interface";
+import { MyReviews } from "../core/my-reviews/my-reviews";
+import { MyReviewsService } from "../core/my-reviews/my-reviews.service";
+import { MyReviewsData } from "../core/my-reviews/my-reviews-response.interface";
 
 @Component({
   selector: 'tsl-reviews',
@@ -10,13 +10,13 @@ import { ReviewsData } from "../core/review/review-response.interface";
 })
 export class ReviewsComponent implements OnInit {
 
-  public reviews: Review[] = [];
+  public reviews: MyReviews[] = [];
   public loading: boolean = true;
   private init: number = 0;
   public end: boolean;
   public scrollTop: number;
   
-  constructor(public reviewService: ReviewService) { }
+  constructor(public myReviewsService: MyReviewsService) { }
 
   ngOnInit() {
     this.getReviews();
@@ -27,7 +27,7 @@ export class ReviewsComponent implements OnInit {
     if (!append) {
       this.reviews = [];
     }
-    this.reviewService.myReviews(this.init).subscribe((reviewsData: ReviewsData) => {
+    this.myReviewsService.myReviews(this.init).subscribe((reviewsData: MyReviewsData) => {
       const reviews = reviewsData.data;
       this.init = reviewsData.init;
       this.reviews = append ? this.reviews.concat(reviews) : reviews;

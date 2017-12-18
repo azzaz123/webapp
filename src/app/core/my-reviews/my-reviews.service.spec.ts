@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { ReviewService } from './review.service.ts';
+import { ReviewService } from './my-reviews.service.ts';
 
 describe('ReviewService', () => {
   beforeEach(() => {

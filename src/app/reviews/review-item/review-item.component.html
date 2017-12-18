@@ -1,3 +1,13 @@
-<p>
-  review-item works!
-</p>
+<div>
+  <div class="separator"></div>
+  <div class="images-container">
+    <tsl-item-avatar [item]="this.review.item.image"></tsl-item-avatar>
+    <tsl-user-avatar [user]="this.review.user.image.small" size="40"></tsl-user-avatar>
+  </div>
+  <span i18n>You sold:</span>
+  <h1>{{ this.review.item.title }}</h1>
+  <tsl-stars [stars]="this.review.review.scoring" [normalized]="false"></tsl-stars>
+  <p>{{ this.review.review.comments }}</p>
+  <span i18n>Posted by</span> {{ this.review.user.micro_name }} <span i18n>on</span>
+  <span> {{ this.review.review.date | date:'shortTime' }}</span>
+</div>

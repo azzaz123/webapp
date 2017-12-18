@@ -5,7 +5,8 @@ import { CoreModule } from "../core/core.module";
 import { InfiniteScrollModule } from "angular2-infinite-scroll/angular2-infinite-scroll";
 import { MdIconModule } from '@angular/material';
 import { ReviewItemComponent } from './review-item/review-item.component';
-import { ReviewService } from "../core/review/review.service";
+import { MyReviewsService } from "../core/my-reviews/my-reviews.service";
+import { UtilsModule } from 'shield';
 
 @NgModule({
   imports: [
@@ -13,14 +14,15 @@ import { ReviewService } from "../core/review/review.service";
     ReviewsRoutingModule,
     CoreModule,
     MdIconModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    UtilsModule
   ],
   declarations: [
     reviewsRoutedComponents,
     ReviewItemComponent
   ],
   providers: [
-    ReviewService
+    MyReviewsService
   ]
 })
 export class ReviewsModule { }

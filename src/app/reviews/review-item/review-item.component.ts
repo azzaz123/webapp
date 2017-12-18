@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Review } from "../../core/reviews/review";
+import { MyReviews } from "../../core/my-reviews/my-reviews";
 
 @Component({
   selector: 'tsl-review-item',
@@ -8,7 +8,7 @@ import { Review } from "../../core/reviews/review";
 })
 export class ReviewItemComponent implements OnInit {
 
-  @Input() review: Review;
+  @Input() review: MyReviews;
 
   constructor() { }
 

@@ -1,31 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable";
-import { ReviewsData, ReviewResponse } from "./review-response.interface";
+import { MyReviewsResponse, MyReviewsData } from "./my-reviews-response.interface";
 import { Response } from '@angular/http';
 import {
   HttpService,
 } from 'shield';
-import { Review } from "./review";
+import { MyReviews } from "./my-reviews";
 
 @Injectable()
-export class ReviewService {
+export class MyReviewsService {
 
   private API_URL_WEB: string = 'api/v3/web/items';
   private API_URL_v3_USER: string = 'api/v3/users';
   
   constructor(private http: HttpService) { }
 
-  public getPaginationReviews(url: string, init): Observable<ReviewsData> {
+  public getPaginationReviews(url: string, init): Observable<MyReviewsData> {
     return this.http.get(url, {
         init: init
       })
       .map((r: Response) => {
-          const res: ReviewResponse[] = r.json();
+          const res: MyReviewsResponse[] = r.json();
           const nextPage: string = r.headers.get('x-nextpage');
           const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
-          let data: Review[] = [];
+          let data: MyReviews[] = [];
           if (res.length > 0) {
-            data = res.map((i: ReviewResponse) => {
+            data = res.map((i: MyReviewsResponse) => {
               return this.mapRecordData(i);
             });
           }
@@ -37,19 +37,16 @@ export class ReviewService {
       )
   }
   
-  public myReviews(init: number): Observable<ReviewsData> {
-    return this.getPaginationReviews(this.API_URL_WEB + '/myreviews/', init)
+  public myReviews(init: number): Observable<MyReviewsData> {
+    return this.getPaginationReviews(this.API_URL_v3_USER + '/me/reviews', init)
   }
 
-  protected mapRecordData(data: ReviewResponse): Review {
-    return new Review(
-      data.id,
-      data.title,
-      data.description,
-      data.category,
-      data.saleDate,
-      data.image,
-      data.transactionUser
+  private mapRecordData(data: MyReviewsResponse): MyReviews {
+    return new MyReviews(
+      data.item,
+      data.review,
+      data.type,
+      data.user
     );
   }
 
