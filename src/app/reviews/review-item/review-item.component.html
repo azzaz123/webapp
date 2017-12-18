@@ -1,13 +1,15 @@
-<div>
+<div class="row">
   <div class="separator"></div>
-  <div class="images-container">
+  <div class="col-1 images-container">
     <tsl-item-avatar [item]="this.review.item.image"></tsl-item-avatar>
     <tsl-user-avatar [user]="this.review.user.image.small" size="40"></tsl-user-avatar>
   </div>
-  <span i18n>You sold:</span>
-  <h1>{{ this.review.item.title }}</h1>
-  <tsl-stars [stars]="this.review.review.scoring" [normalized]="false"></tsl-stars>
-  <p>{{ this.review.review.comments }}</p>
-  <span i18n>Posted by</span> {{ this.review.user.micro_name }} <span i18n>on</span>
-  <span> {{ this.review.review.date | date:'shortTime' }}</span>
+  <div class="col-11">
+    <span i18n>You sold:</span>
+    <span><a href="#">{{ this.review.item.title }}</a></span>
+    <tsl-stars [stars]="this.review.review.scoring" [normalized]="false"></tsl-stars>
+    <p>{{ this.review.review.comments }}</p>
+    <span i18n>Posted by</span><span><a href="#">{{ this.review.user.micro_name }}</a></span><span i18n>on</span>
+    <span> {{ this.review.review.date | date:'shortTime' }}</span>
+  </div>
 </div>

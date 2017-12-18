@@ -1,20 +1,24 @@
-<div class="box">
-  <h1 i18n>Your Reviews</h1>
-  <p i18n>This is what the people think about you.</p>
-  <div class="rating-box">
-    <tsl-stars [stars]="90" [normalized]="false"></tsl-stars>
-  </div>
-  <div class="page-content" infinite-scroll
-       [infiniteScrollDistance]="5"
-       [infiniteScrollThrottle]="100"
-       [scrollWindow]="false"
-       [infiniteScrollDisabled]="end || loading"
-       (scrolled)="loadMore()"
-       [scrollTop]="scrollTop">
-    <div class="container">
-      <div class="row items">
-        <tsl-review-item *ngFor="let review of reviews" [review]="review" class="col-md-12"></tsl-review-item>
+<div class="page-content"
+     infinite-scroll
+     [infiniteScrollDistance]="5"
+     [infiniteScrollThrottle]="100"
+     [scrollWindow]="false"
+     [infiniteScrollDisabled]="end || loading"
+     (scrolled)="loadMore()"
+     [scrollTop]="scrollTop">
+  <div class="container">
+    <div class="review-header row">
+      <div class="col-10">
+        <h1 i18n>Your Reviews</h1>
+        <p i18n>This is what the people think about you.</p>
       </div>
+      <div class="user-average col-2">
+        <p i18n>Your average</p>
+        <tsl-stars [stars]="90" [normalized]="false"></tsl-stars>
+      </div>
+    </div>
+    <div class="row items">
+      <tsl-review-item *ngFor="let review of reviews" [review]="review" class="col-md-12"></tsl-review-item>
     </div>
   </div>
 </div>
