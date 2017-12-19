@@ -30,7 +30,11 @@ export class MyReviewsService {
           let data: MyReviews[] = [];
           if (res.length > 0) {
             data = res.map((i: any) => {
-              i.item.category = this.findCategory(i.item.category_id);
+              this.categoryService.getCategories().subscribe((categories: CategoryResponse[]) => {
+                i.item.category = categories.find((category: CategoryResponse) => {
+                  return category.categoryId === i.item.category_id;
+                });
+              });
               return this.mapRecordData(i);
             });
           }
@@ -53,14 +57,6 @@ export class MyReviewsService {
       data.type,
       data.user
     );
-  }
-
-  public findCategory(id: number) {
-    this.categoryService.getCategories().subscribe((categories: CategoryResponse[]) => {
-      return categories.find((category: CategoryResponse) => {
-        return category.categoryId === id;
-      });
-    });
   }
 
 }

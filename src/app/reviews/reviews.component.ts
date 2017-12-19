@@ -24,9 +24,9 @@ export class ReviewsComponent implements OnInit {
 
   private getReviews(append?: boolean) {
     this.loading = true;
-    /*if (!append) {
+    if (!append) {
       this.reviews = [];
-    }*/
+    }
     this.myReviewsService.myReviews(this.init).subscribe((reviewsData: MyReviewsData) => {
       const reviews = reviewsData.data;
       this.init = reviewsData.init;
