@@ -1,17 +1,19 @@
+import { CategoryResponse } from "../category/category-response.interface";
 export class ReviewItem {
 
   constructor(private _id: string,
-              private _category_id?: number,
+              private _category?: CategoryResponse,
               private _title?: string,
-              private _image?: ReviewImage) {
+              private _image?: ReviewImage,
+              private _webLink?: string) {
   }
 
   get id(): string {
     return this._id;
   }
 
-  get category_id(): number {
-    return this._category_id;
+  get category(): CategoryResponse {
+    return this._category;
   }
 
   get title(): string {
@@ -20,6 +22,10 @@ export class ReviewItem {
 
   get image(): ReviewImage {
     return this._image;
+  }
+
+  get webLink(): string {
+    return this._webLink;
   }
 
 }

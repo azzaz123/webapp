@@ -6,6 +6,8 @@ import {
   HttpService,
 } from 'shield';
 import { MyReviews } from "./my-reviews";
+import { CategoryService } from "../category/category.service";
+import { CategoryResponse } from "../category/category-response.interface";
 
 @Injectable()
 export class MyReviewsService {
@@ -13,7 +15,9 @@ export class MyReviewsService {
   private API_URL_WEB: string = 'api/v3/web/items';
   private API_URL_v3_USER: string = 'api/v3/users';
   
-  constructor(private http: HttpService) { }
+  constructor(private http: HttpService,
+              private categoryService: CategoryService) {
+  }
 
   public getPaginationReviews(url: string, init): Observable<MyReviewsData> {
     return this.http.get(url, {
@@ -25,7 +29,8 @@ export class MyReviewsService {
           const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
           let data: MyReviews[] = [];
           if (res.length > 0) {
-            data = res.map((i: MyReviewsResponse) => {
+            data = res.map((i: any) => {
+              i.item.category = this.findCategory(i.item.category_id);
               return this.mapRecordData(i);
             });
           }
@@ -38,7 +43,7 @@ export class MyReviewsService {
   }
   
   public myReviews(init: number): Observable<MyReviewsData> {
-    return this.getPaginationReviews(this.API_URL_v3_USER + '/me/reviews', init)
+    return this.getPaginationReviews(this.API_URL_v3_USER + '/me/reviews', init);
   }
 
   private mapRecordData(data: MyReviewsResponse): MyReviews {
@@ -48,6 +53,14 @@ export class MyReviewsService {
       data.type,
       data.user
     );
+  }
+
+  public findCategory(id: number) {
+    this.categoryService.getCategories().subscribe((categories: CategoryResponse[]) => {
+      return categories.find((category: CategoryResponse) => {
+        return category.categoryId === id;
+      });
+    });
   }
 
 }

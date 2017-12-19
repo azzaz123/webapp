@@ -8,11 +8,11 @@
   <div class="col-11">
     <div *ngIf="this.review.isSold">
       <span i18n>You sold:</span>
-      <span><a href="#">{{ this.review.item.title }}</a></span>
+      <span><a href="{{ this.review.item.webLink }}">{{ this.review.item.title }}</a></span>
     </div>
     <div *ngIf="this.review.isBought">
       <span i18n>You bought:</span>
-      <span>CATEGORY</span>
+      <span>{{ this.review.item.category.title }}</span>
     </div>
     <tsl-stars [stars]="this.review.review.scoring" [normalized]="false"></tsl-stars>
     <p>{{ this.review.review.comments }}</p>
