@@ -20,7 +20,7 @@ deployment:
       - npm run builddev
       - aws s3 sync dist s3://web.dev.wallapop.com --delete
   docker:
-    branch: feature/CLOUD-457
+    branch: feature/.*
     commands:
       - npm run builddocker
       - docker build -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$CIRCLE_BRANCH .
