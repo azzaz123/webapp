@@ -23,9 +23,9 @@ deployment:
     branch: /feature.*/
     commands:
       - npm run builddocker
-      - docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:${CIRCLE_BRANCH} .
+      - docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:latest .
       - $(aws ecr get-login --no-include-email --region eu-west-1)
-      - docker push 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:${CIRCLE_BRANCH}
+      - docker push 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:latest
   beta:
     tag: /beta-.*/
     commands:
