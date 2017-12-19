@@ -1,6 +1,6 @@
 export const environment: any = {
-  production: true,
-  name: 'prod',
+  production: false,
+  name: 'docker',
   baseUrl: 'http://api-gateway:9000/',
   xmppDomain: 'wallapop.com',
   wsUrl: 'wss://mongooseimprotool-prod.wallapop.com:443/ws-xmpp',
