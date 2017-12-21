@@ -2,8 +2,9 @@
   <div class="separator"></div>
   <div class="col-1 images-container">
     <div class="purchase-image">
-      <div tslsanitizedBackground="x" [fallback]="fallback" [ngClass]="size"
-           *ngIf="this.review.isSold">{{ this.review.item.image | json }}</div>
+      <div tslsanitizedBackground="{{ this.review.item.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"
+           *ngIf="this.review.isSold && this.review.item.image"></div>
+      <img src="{{ fallback }}" *ngIf="this.review.isSold && !this.review.item.image" class="image"/>
       <md-icon *ngIf="this.review.isBought" svgIcon="{{this.review.item.category.iconName}}"></md-icon>
     </div>
     <tsl-user-avatar class="avatar" [user]="this.review.user.image.small" size="40"></tsl-user-avatar>
