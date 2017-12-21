@@ -21,14 +21,13 @@ deployment:
       - aws s3 sync dist s3://web.dev.wallapop.com --delete
   docker:
     branch: /feature.*/
-    #- npm run builddocker
-    #
-    #- $(aws ecr get-login --no-include-email --region eu-west-1)
-    #- docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$BRANCH"
     commands:
       - |
+      npm run builddocker
       export BRANCH=$( echo $CIRCLE_BRANCH | awk -Ffeature/ '/feature/{print $2}' | tr '[:upper:]' '[:lower:]' )
       docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$BRANCH .
+      $(aws ecr get-login --no-include-email --region eu-west-1)
+      docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$BRANCH"
   beta:
     tag: /beta-.*/
     commands:
