@@ -1,4 +1,6 @@
 machine:
+  environment:
+    BRANCH: $( echo $CIRCLE_BRANCH | awk -Ffeature/ '/feature/{print $2}' | tr '[:upper:]' '[:lower:]' )
   node:
     version: 7.5.0
   services:
@@ -22,12 +24,10 @@ deployment:
   docker:
     branch: /feature.*/
     commands:
-      - |
-      npm run builddocker
-      export BRANCH=$( echo $CIRCLE_BRANCH | awk -Ffeature/ '/feature/{print $2}' | tr '[:upper:]' '[:lower:]' )
-      docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$BRANCH .
-      $(aws ecr get-login --no-include-email --region eu-west-1)
-      docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$BRANCH"
+      #- npm run builddocker
+      - docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$BRANCH .
+      #- $(aws ecr get-login --no-include-email --region eu-west-1)
+      #- docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$BRANCH"
   beta:
     tag: /beta-.*/
     commands:
