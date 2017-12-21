@@ -1,27 +1,32 @@
 @import "../../style/_common.scss";
 
 .review-header {
-  padding: $spacing-L;
   h1 {
     font-size: $font-size-LL;
   }
   p {
     font-size: $font-size-S;
     color: $grey-250;
+    margin-bottom: 0;
   }
   .user-average {
     p {
       color: $grey-500;
     }
   }
+  .row {
+    margin-right: 0;
+    margin-left: 0;
+  }
 }
 
 .container {
   background-color: $white;
   border-radius: $border-radius;
+  padding: $spacing-L;
 }
 
-:host /deep/ tsl-stars {
+:host /deep/ .header-rating {
   md-icon {
     width: 22px;
     height: 21px;

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MyReviews } from "../core/my-reviews/my-reviews";
 import { MyReviewsService } from "../core/my-reviews/my-reviews.service";
 import { MyReviewsData } from "../core/my-reviews/my-reviews-response.interface";
+import { UserService } from "../core/user/user.service";
+import { User } from "shield";
 
 @Component({
   selector: 'tsl-reviews',
@@ -15,11 +17,20 @@ export class ReviewsComponent implements OnInit {
   private init: number = 0;
   public end: boolean;
   public scrollTop: number;
+  public userScore: number;
   
-  constructor(public myReviewsService: MyReviewsService) { }
+  constructor(public myReviewsService: MyReviewsService,
+              private userService: UserService) { }
 
   ngOnInit() {
+    this.getUserReview();
     this.getReviews();
+  }
+
+  private getUserReview(){
+    this.userService.me().subscribe((user: User) => {
+      this.userScore = user.scoringStars;
+    });
   }
 
   private getReviews(append?: boolean) {

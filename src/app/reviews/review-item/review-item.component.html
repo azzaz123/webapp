@@ -1,22 +1,33 @@
-<div class="row">
+<div class="review-item row">
   <div class="separator"></div>
   <div class="col-1 images-container">
-    <tsl-item-avatar *ngIf="this.review.isSold" [item]="this.review.item.image"></tsl-item-avatar>
-    <tsl-item-avatar *ngIf="this.review.isBought" [item]="category"></tsl-item-avatar>
-    <tsl-user-avatar [user]="this.review.user.image.small" size="40"></tsl-user-avatar>
+    <div class="purchase-image">
+      <div tslsanitizedBackground="x" [fallback]="fallback" [ngClass]="size"
+           *ngIf="this.review.isSold">{{ this.review.item.image | json }}</div>
+      <md-icon *ngIf="this.review.isBought" svgIcon="{{this.review.item.category.iconName}}"></md-icon>
+    </div>
+    <tsl-user-avatar class="avatar" [user]="this.review.user.image.small" size="40"></tsl-user-avatar>
   </div>
-  <div class="col-11">
+  <div class="info col-10">
     <div *ngIf="this.review.isSold">
-      <span i18n>You sold:</span>
-      <span><a href="{{ this.review.item.webLink }}" target="_blank">{{ this.review.item.title }}</a></span>
+      <span class="review-type" i18n>You sold:</span>
+      <div class="review-title">
+        <a *ngIf="this.review.item.id" href="{{ this.review.item.webLink }}" target="_blank">{{ this.review.item.title }}</a>
+        <span *ngIf="!this.review.item.id" i18n>Unknown Product</span>
+      </div>
     </div>
     <div *ngIf="this.review.isBought">
-      <span i18n>You bought:</span>
-      <span>{{ this.review.item.category.title }}</span>
+      <span class="review-type" i18n>You bought:</span>
+      <div class="review-title">
+        <span>{{ this.review.item.category.title }}</span>
+      </div>
     </div>
-    <tsl-stars [stars]="this.review.review.scoring" [normalized]="false"></tsl-stars>
-    <p>{{ this.review.review.comments }}</p>
-    <span i18n>Posted by</span><span><a href="{{ this.review.item.webSlug }}" target="_blank">{{ this.review.user.micro_name }}</a></span><span i18n>on</span>
-    <span> {{ this.review.review.date | date:'shortTime' }}</span>
+    <tsl-stars class="review-rating" [stars]="this.review.review.scoring" [normalized]="false"></tsl-stars>
+    <p class="review-comment">{{ this.review.review.comments }}</p>
+    <div class="review-credits">
+      <span i18n>Posted by</span>
+      <span><a href="{{ this.review.item.webSlug }}" target="_blank">{{ this.review.user.micro_name }}</a></span>
+      <span i18n>on</span><span> {{ this.review.review.date | date:'shortTime' }}</span>
+    </div>
   </div>
 </div>
