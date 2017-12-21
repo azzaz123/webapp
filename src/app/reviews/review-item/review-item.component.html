@@ -11,14 +11,14 @@
   </div>
   <div class="info col-10">
     <div *ngIf="this.review.isSold">
-      <span class="review-type" i18n>You sold:</span>
+      <span class="review-type" i18n>Sold:</span>
       <div class="review-title">
-        <a *ngIf="this.review.item.id" href="{{ this.review.item.webLink }}" target="_blank">{{ this.review.item.title }}</a>
-        <span *ngIf="!this.review.item.id" i18n>Unknown Product</span>
+        <a *ngIf="this.review.item.id" href="{{ this.review.item.web_link }}" target="_blank">{{ this.review.item.title }}</a>
+        <span *ngIf="!this.review.item.id" i18n>A wallapop item</span>
       </div>
     </div>
     <div *ngIf="this.review.isBought">
-      <span class="review-type" i18n>You bought:</span>
+      <span class="review-type" i18n>Bought:</span>
       <div class="review-title">
         <span>{{ this.review.item.category.title }}</span>
       </div>
@@ -27,7 +27,7 @@
     <p class="review-comment">{{ this.review.review.comments }}</p>
     <div class="review-credits">
       <span i18n>Posted by</span>
-      <span><a href="{{ this.review.item.webSlug }}" target="_blank">{{ this.review.user.micro_name }}</a></span>
+      <span><a href="{{ this.review.user.web_slug }}" target="_blank">{{ this.review.user.micro_name }}</a></span>
       <span i18n>on</span><span> {{ this.review.review.date | date:'shortTime' }}</span>
     </div>
   </div>
