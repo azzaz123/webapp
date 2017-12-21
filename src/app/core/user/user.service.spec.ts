@@ -164,8 +164,7 @@ describe('UserService', () => {
       });
       expect(http.put).toHaveBeenCalledWith('api/v3/users/me/location', {
         latitude: USER_LOCATION_COORDINATES.latitude,
-        longitude: USER_LOCATION_COORDINATES.longitude,
-        fullAddress: USER_LOCATION_COORDINATES.name
+        longitude: USER_LOCATION_COORDINATES.longitude
       });
       expect(resp).toEqual(USER_LOCATION);
     });

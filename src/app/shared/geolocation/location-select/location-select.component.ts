@@ -65,7 +65,7 @@ export class LocationSelectComponent implements OnChanges {
       }
       modal.result.then((result: Coordinate) => {
         this.userService.updateLocation(result).subscribe((location: Location) => {
-          this.control.setValue(result.name);
+          this.control.setValue(location.title);
           this.latitudeControl.setValue(result.latitude);
           this.longitudeControl.setValue(result.longitude);
           this.userService.user.location = location;
