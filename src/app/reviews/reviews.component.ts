@@ -19,7 +19,7 @@ export class ReviewsComponent implements OnInit {
   public scrollTop: number;
   public userScore: number;
   
-  constructor(public myReviewsService: MyReviewsService,
+  constructor(private myReviewsService: MyReviewsService,
               private userService: UserService) { }
 
   ngOnInit() {
@@ -27,18 +27,15 @@ export class ReviewsComponent implements OnInit {
     this.getReviews();
   }
 
-  private getUserReview(){
+  public getUserReview(){
     this.userService.me().subscribe((user: User) => {
       this.userScore = user.scoringStars;
     });
   }
 
-  private getReviews(append?: boolean) {
+  public getReviews(append?: boolean) {
     this.loading = true;
-    if (!append) {
-      this.reviews = [];
-    }
-    this.myReviewsService.myReviews(this.init).subscribe((reviewsData: MyReviewsData) => {
+    this.myReviewsService.myReviews(this.reviews.length).subscribe((reviewsData: MyReviewsData) => {
       const reviews = reviewsData.data;
       this.init = reviewsData.init;
       this.reviews = append ? this.reviews.concat(reviews) : reviews;

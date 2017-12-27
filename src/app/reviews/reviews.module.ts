@@ -13,9 +13,9 @@ import { UtilsModule } from 'shield';
     CommonModule,
     ReviewsRoutingModule,
     CoreModule,
+    UtilsModule,
     MdIconModule,
     InfiniteScrollModule,
-    UtilsModule
   ],
   declarations: [
     reviewsRoutedComponents,

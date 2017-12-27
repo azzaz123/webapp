@@ -1,14 +1,27 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { ReviewService } from './my-reviews.service.ts';
+import { MyReviewsService } from './my-reviews.service';
+import {
+  HttpService
+} from 'shield';
+import { CategoryService } from '../../core/category/category.service';
+import { Observable } from "rxjs/Observable";
+import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures";
 
-describe('ReviewService', () => {
+describe('MyReviewsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ReviewService]
+      providers: [MyReviewsService,
+        {provide: HttpService, useValue: {}},
+        {provide: CategoryService, useValue: {
+          getCategories: () => {
+            return Observable.of(CATEGORY_DATA_WEB);
+          }
+        }},
+      ]
     });
   });
 
-  it('should be created', inject([ReviewService], (service: ReviewService) => {
+  it('should be created', inject([MyReviewsService], (service: MyReviewsService) => {
     expect(service).toBeTruthy();
   }));
 });
