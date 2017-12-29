@@ -4,6 +4,7 @@ export class ReviewItem {
 
   constructor(private _id: string,
               private _category?: CategoryResponse,
+              private _category_id?: number,
               private _title?: string,
               private _image?: ReviewImage,
               private _webLink?: string) {
@@ -15,6 +16,10 @@ export class ReviewItem {
 
   get category(): CategoryResponse {
     return this._category;
+  }
+
+  get category_id(): number {
+    return this._category_id;
   }
 
   get title(): string {

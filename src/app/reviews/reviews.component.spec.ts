@@ -3,11 +3,11 @@ import { ReviewsComponent } from './reviews.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MyReviewsService } from "../core/my-reviews/my-reviews.service";
 import { Observable } from "rxjs/Observable";
-import { MY_REVIEWS_DATA, MOCK_MY_REVIEWS } from "../../tests/review.fixtures";
+import { MOCK_MY_REVIEWS } from "../../tests/review.fixtures";
 import { MOCK_USER } from 'shield';
 import { UserService } from '../core/user/user.service';
 
-fdescribe('ReviewsComponent', () => {
+describe('ReviewsComponent', () => {
   let component: ReviewsComponent;
   let fixture: ComponentFixture<ReviewsComponent>;
   let myReviewsService: MyReviewsService;
@@ -59,31 +59,52 @@ fdescribe('ReviewsComponent', () => {
 
     it('should call myReviews OnInit', () => {
       component.ngOnInit();
+
       expect(component.getReviews).toHaveBeenCalled();
     });
 
     it('should call myReviews with reviews length', () => {
       let itemLength = component.reviews.length;
+
       component.getReviews(true);
+
       expect(myReviewsService.myReviews).toHaveBeenCalledWith(itemLength);
     });
 
     it('if append argument is true, current component.item should add ', () => {
       component.reviews = [MOCK_MY_REVIEWS];
       component.getReviews(true);
+
       expect(component.reviews).toEqual([MOCK_MY_REVIEWS, MOCK_MY_REVIEWS, MOCK_MY_REVIEWS]);
     });
 
     it('should set loading to false', () => {
       component.loading = true;
       component.getReviews();
+
       expect(component.loading).toBeFalsy();
     });
 
     it('should set end true if no init', () => {
       myReviewsServiceSpy.and.returnValue(Observable.of({data: [MOCK_MY_REVIEWS, MOCK_MY_REVIEWS], init: null}));
+
       component.getReviews();
+
       expect(component['end']).toBeTruthy();
+    });
+  });
+
+  describe('getUserReview', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(component, 'getUserReview').and.callThrough();
+      spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER));
+    }));
+
+    it('should get the user score', () => {
+      component.getUserReview();
+
+      expect(userService.me).toHaveBeenCalled();
+      expect(component.userScore).toEqual(MOCK_USER.scoringStars);
     });
   });
 
@@ -94,7 +115,8 @@ fdescribe('ReviewsComponent', () => {
 
     it('should call getReviews with true', () => {
       component.loadMore();
-      expect(component.geReviews).toHaveBeenCalledWith(true);
+
+      expect(component.getReviews).toHaveBeenCalledWith(true);
     });
   });
   
