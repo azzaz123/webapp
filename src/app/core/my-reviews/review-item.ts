@@ -7,7 +7,7 @@ export class ReviewItem {
               private _category_id?: number,
               private _title?: string,
               private _image?: ReviewImage,
-              private _webLink?: string) {
+              private _web_link?: string) {
   }
 
   get id(): string {
@@ -30,14 +30,13 @@ export class ReviewItem {
     return this._image;
   }
 
-  get webLink(): string {
-    return this._webLink;
+  get web_link(): string {
+    return this._web_link;
   }
 
 }
 
-interface ReviewImage {
-  id: string;
+export interface ReviewImage {
   large: string;
   medium: string;
   original: string;
