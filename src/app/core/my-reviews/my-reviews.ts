@@ -4,7 +4,7 @@ import { ReviewItem } from "./review-item";
 
 export class MyReviews {
 
-  constructor(private _item: ReviewItem,
+  constructor(private _item?: ReviewItem,
               private _review?: Review,
               private _type?: string,
               private _user?: ReviewUser) {
@@ -32,9 +32,5 @@ export class MyReviews {
 
   get isBought(): boolean {
     return this.type === 'buy';
-  }
-
-  get isDeleted(): boolean {
-    return !this.item.id;
   }
 }

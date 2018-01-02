@@ -2,32 +2,34 @@
   <div class="separator"></div>
   <div class="col-1 images-container">
     <div class="purchase-image">
-      <div tslsanitizedBackground="{{ this.review.item.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"
-           *ngIf="this.review.isSold && this.review.item.image"></div>
-      <img src="{{ fallback }}" *ngIf="this.review.isSold && !this.review.item.image" class="image"/>
-      <md-icon *ngIf="this.review.isBought" class="reviews-list-category-ico" svgIcon="{{this.review.item.category?.iconName}}"></md-icon>
+      <div tslsanitizedBackground="{{ this.review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"
+           *ngIf="this.review.isSold && this.review.item?.image"></div>
+      <img src="{{ fallback }}" *ngIf="this.review.isSold && !this.review.item?.image" class="image"/>
+      <md-icon *ngIf="this.review.isBought && this.review.item" class="reviews-list-category-ico" svgIcon="{{this.review.item.category.iconName}}"></md-icon>
     </div>
-    <tsl-user-avatar class="avatar" [user]="this.review.user.image.small" size="40"></tsl-user-avatar>
+    <tsl-user-avatar class="avatar" [user]="this.review.user?.image?.small" size="40"></tsl-user-avatar>
   </div>
   <div class="info col-10">
     <div *ngIf="this.review.isSold">
       <span class="review-type" i18n>Sold:</span>
       <div class="review-title">
-        <a *ngIf="this.review.item.id" href="{{ this.review.item.web_link }}" target="_blank">{{ this.review.item.title }}</a>
-        <span *ngIf="!this.review.item.id" i18n>A wallapop item</span>
+        <a *ngIf="this.review.item?.id" href="{{ itemWebLink }}" target="_blank">{{ this.review.item.title }}</a>
+        <span *ngIf="!this.review.item?.id" i18n>A wallapop item</span>
       </div>
     </div>
     <div *ngIf="this.review.isBought">
       <span class="review-type" i18n>Bought:</span>
       <div class="review-title">
-        <span>{{ this.review.item.category?.title }}</span>
+        <span *ngIf="this.review.item?.category">{{ this.review.item.category.title }}</span>
+        <span *ngIf="!this.review.item" i18n>A wallapop item</span>
       </div>
     </div>
     <tsl-stars class="review-rating" [stars]="this.review.review.scoring" [normalized]="false"></tsl-stars>
     <p class="review-comment">{{ this.review.review.comments }}</p>
     <div class="review-credits">
       <span i18n>Posted by</span>
-      <span><a href="{{ this.review.user.web_slug }}" target="_blank">{{ this.review.user.micro_name }}</a></span>
+      <span *ngIf="this.review.user"><a href="{{ userWebSlug }}" target="_blank">{{ this.review.user.micro_name }}</a></span>
+      <span *ngIf="!this.review.user" i18n>A wallapop user</span>
       <span i18n>on</span><span> {{ this.review.review.date | date:'shortTime' }}</span>
     </div>
   </div>

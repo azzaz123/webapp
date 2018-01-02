@@ -67,7 +67,7 @@
   <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
   <msg id="6543433128416987560"><source>app/core/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="8212177249756365917"><source>app/core/item/item-cart-favorite/item-cart-favorite.component.ts:11</source> Remove </msg>
-  <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:31</source>Messages</msg>
+  <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:31</source><source>app/layout/sidebar/sidebar.component.ts:19</source>Messages</msg>
   <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
   <msg id="8806073135680763560"><source>app/chat/message/review-modal/review-modal.component.ts:3</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="4650730844441578299"><source>app/chat/message/review-modal/review-modal.component.ts:4</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:36</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
@@ -90,7 +90,6 @@
   <msg id="2320775595188539431"><source>app/layout/sidebar/profile-modal/profile-modal.component.ts:9</source>Go to My profile</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:5</source>Profile</msg>
   <msg id="3825726981798982045"><source>app/layout/sidebar/sidebar.component.ts:12</source>My Catalog</msg>
-  <msg id="6932865105766151309"><source>app/layout/sidebar/sidebar.component.ts:19</source>Upload</msg>
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:26</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:33</source>Reviews</msg>
   <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:40</source>Logout</msg>
@@ -209,8 +208,9 @@
   <msg id="5920163859202883782"><source>app/reviews/reviews.component.ts:13</source>This is what they think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:16</source>Your average</msg>
   <msg id="5653113390991708232"><source>app/reviews/review-item/review-item.component.ts:14</source>Sold:</msg>
-  <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.ts:17</source>A wallapop item</msg>
+  <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.ts:17</source><source>app/reviews/review-item/review-item.component.ts:24</source>A wallapop item</msg>
   <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.ts:21</source>Bought:</msg>
-  <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:29</source>Posted by</msg>
-  <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:31</source>on</msg>
+  <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:30</source>Posted by</msg>
+  <msg id="4058570269839203992"><source>app/reviews/review-item/review-item.component.ts:32</source>A wallapop user</msg>
+  <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:33</source>on</msg>
 </messagebundle>

@@ -30,11 +30,13 @@ export class MyReviewsService {
           let data: MyReviews[] = [];
           if (res.length > 0) {
             data = res.map((i: any) => {
-              this.categoryService.getCategories().subscribe((categories: CategoryResponse[]) => {
-                i.item.category = categories.find((category: CategoryResponse) => {
-                  return category.categoryId === i.item.category_id;
+              if(i.item) {
+                this.categoryService.getCategories().subscribe((categories: CategoryResponse[]) => {
+                  i.item.category = categories.find((category: CategoryResponse) => {
+                    return category.categoryId === i.item.category_id;
+                  });
                 });
-              });
+              }
               return this.mapRecordData(i);
             });
           }
