@@ -10,8 +10,7 @@ const routes: Routes = [
     component: ChatComponent,
     canActivate: [LoggedGuard],
     data: {
-      title: 'Chat',
-      hideSidebar: true
+      title: 'Chat'
     }
   }
 ];

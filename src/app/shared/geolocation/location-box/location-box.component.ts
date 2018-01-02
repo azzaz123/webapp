@@ -25,7 +25,7 @@ export class LocationBoxComponent implements OnInit {
       if (user.location) {
         setTimeout(() => {
           this.form.get(this.name).patchValue({
-            address: user.location.full_address || user.location.city,
+            address: user.location.title,
             latitude: user.location.approximated_latitude,
             longitude: user.location.approximated_longitude
           });
