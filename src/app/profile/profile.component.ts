@@ -46,7 +46,9 @@ export class ProfileComponent implements OnInit {
   onSubmit() {
     if (this.profileForm.valid) {
       delete this.profileForm.value.location;
-      this.userService.edit(this.profileForm.value).subscribe();
+      this.userService.edit(this.profileForm.value).subscribe(() => {
+        this.errorsService.i18nSuccess('userEdited');
+      });
     } else {
       for (let control in this.profileForm.controls) {
         if (this.profileForm.controls.hasOwnProperty(control) && !this.profileForm.controls[control].valid) {

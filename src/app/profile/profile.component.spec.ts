@@ -61,6 +61,8 @@ describe('ProfileComponent', () => {
         {
           provide: ErrorsService, useValue: {
           i18nError() {
+          },
+          i18nSuccess() {
           }
         }
         }
@@ -104,16 +106,26 @@ describe('ProfileComponent', () => {
 
   describe('onSubmit', () => {
 
-    it('should call edit if form is valid', () => {
-      spyOn(userService, 'edit').and.callThrough();
-      component.profileForm.patchValue(USER_EDIT_DATA);
-      component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
-      component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
-      component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+    describe('valid form', () => {
 
-      component.onSubmit();
+      beforeEach(() => {
+        spyOn(userService, 'edit').and.callThrough();
+        spyOn(errorsService, 'i18nSuccess');
+        component.profileForm.patchValue(USER_EDIT_DATA);
+        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
+        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
+        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
 
-      expect(userService.edit).toHaveBeenCalledWith(USER_EDIT_DATA);
+        component.onSubmit();
+      });
+
+      it('should call edit', () => {
+        expect(userService.edit).toHaveBeenCalledWith(USER_EDIT_DATA);
+      });
+
+      it('should call i18nSuccess', () => {
+        expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
+      });
     });
 
     describe('invalid form', () => {
