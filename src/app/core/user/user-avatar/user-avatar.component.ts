@@ -21,7 +21,7 @@ export class UserAvatarComponent implements OnChanges {
   }
 
   ngOnChanges(changes?: any) {
-    if (changes.imageUrl && typeof changes.imageUrl.currentValue === 'object') {
+    if (changes && changes.imageUrl && typeof changes.imageUrl.currentValue === 'object') {
       this.uploadedAvatar = changes.imageUrl.currentValue;
     } else if (this.user) {
       this.avatar = this.user.image ? this.user.image.urls_by_size.medium : PLACEHOLDER_AVATAR;

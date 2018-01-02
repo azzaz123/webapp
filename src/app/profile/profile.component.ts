@@ -86,7 +86,7 @@ export class ProfileComponent implements OnInit {
         this.file = output.file;
         break;
       case 'done':
-        this.removeFromQueue();
+        this.removeFromQueue(output);
         this.onUploadDone(output);
         break;
       case 'rejected':
@@ -112,10 +112,10 @@ export class ProfileComponent implements OnInit {
     this.userService.user.image.urls_by_size.medium = output.file.preview;
   }
 
-  private removeFromQueue() {
+  private removeFromQueue(output) {
     this.uploadInput.emit({
       type: 'remove',
-      id: this.file.id
+      id: output.file.id
     });
   }
 
