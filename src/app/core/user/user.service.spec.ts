@@ -21,7 +21,7 @@ import {
 import { HaversineService } from 'ng2-haversine';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { USER_INFO_RESPONSE, USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures';
+import { USER_EDIT_DATA, USER_INFO_RESPONSE, USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures';
 import { UserInfoResponse } from './user-info.interface';
 
 describe('UserService', () => {
@@ -167,6 +167,15 @@ describe('UserService', () => {
         longitude: USER_LOCATION_COORDINATES.longitude
       });
       expect(resp).toEqual(USER_LOCATION);
+    });
+  });
+
+  describe('edit', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: ''});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      service.edit(USER_EDIT_DATA).subscribe();
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/me', USER_EDIT_DATA);
     });
   });
 

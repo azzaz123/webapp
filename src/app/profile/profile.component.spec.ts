@@ -1,11 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { User, USER_DATA } from 'shield';
+import { User, USER_DATA, ErrorsService } from 'shield';
 import { ProfileComponent } from './profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { USER_EDIT_DATA, USER_LOCATION_COORDINATES } from '../../tests/user.fixtures';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -28,10 +29,14 @@ const MOCK_USER = new User(
   USER_DATA.gender
 );
 
+const USER_BIRTH_DATE = '1987-02-10';
+const USER_GENDER = 'M';
+
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
   let userService: UserService;
+  let errorsService: ErrorsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -44,14 +49,23 @@ describe('ProfileComponent', () => {
           provide: UserService, useValue: {
           me() {
             return Observable.of(MOCK_USER);
+          },
+          edit() {
+            return Observable.of({});
           }
         }
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
+        },
+        {
+          provide: ErrorsService, useValue: {
+          i18nError() {
+          }
+        }
         }
       ],
-      declarations: [ ProfileComponent ],
+      declarations: [ProfileComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -61,25 +75,69 @@ describe('ProfileComponent', () => {
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
+    errorsService = TestBed.get(ErrorsService);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
+
     it('should call userService.me', () => {
       expect(userService.me).toHaveBeenCalled();
     });
+
     it('should set the private user variable with the content of the user', () => {
       expect(component.user).toBe(MOCK_USER);
     });
+
     it('should set userUrl', () => {
       expect(component.userUrl).toBe('https://www.wallapop.com/user/webslug-l1kmzn82zn3p');
     });
+
     it('should set profileForm with user data', () => {
       expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
       expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
-      expect(component.profileForm.get('birth_date').value).toBe('1987-02-10');
-      expect(component.profileForm.get('gender').value).toBe('M');
+      expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
+      expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
+    });
+  });
+
+  describe('onSubmit', () => {
+
+    it('should call edit if form is valid', () => {
+      spyOn(userService, 'edit').and.callThrough();
+      component.profileForm.patchValue(USER_EDIT_DATA);
+      component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
+      component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
+      component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+
+      component.onSubmit();
+
+      expect(userService.edit).toHaveBeenCalledWith(USER_EDIT_DATA);
+    });
+
+    describe('invalid form', () => {
+
+      beforeEach(() => {
+        spyOn(errorsService, 'i18nError');
+        component.profileForm.get('first_name').patchValue('');
+        component.profileForm.get('last_name').patchValue('');
+        component.profileForm.get('birth_date').patchValue('');
+        component.profileForm.get('gender').patchValue('');
+
+        component.onSubmit();
+      });
+
+      it('should set dirty invalid fields', () => {
+        expect(component.profileForm.get('first_name').dirty).toBeTruthy();
+        expect(component.profileForm.get('last_name').dirty).toBeTruthy();
+        expect(component.profileForm.get('birth_date').dirty).toBeTruthy();
+        expect(component.profileForm.get('gender').dirty).toBeTruthy();
+      });
+
+      it('should call i18nError if form is invalid', () => {
+        expect(errorsService.i18nError).toHaveBeenCalledWith('formErrors');
+      });
     });
   });
 });
