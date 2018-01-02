@@ -33,10 +33,6 @@ describe('MyReviewsService', () => {
     http = TestBed.get(HttpService);
   });
 
-  it('should be created', inject([MyReviewsService], (service: MyReviewsService) => {
-    expect(service).toBeTruthy();
-  }));
-
   describe('getPaginationReviews', () => {
     let resp: MyReviewsData;
     beforeEach(() => {

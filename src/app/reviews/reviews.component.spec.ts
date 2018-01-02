@@ -46,10 +46,6 @@ describe('ReviewsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('getReviews', () => {
 
     beforeEach(fakeAsync(() => {
