@@ -25,7 +25,6 @@ deployment:
     branch: /feature.*/
     commands:
       - npm run builddocker
-      - sed -is 's@dockXXX@dock123@' dist/main.bundle.js
       - docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$BRANCH .
       - $(aws ecr get-login --region eu-west-1)
       - docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$BRANCH"
