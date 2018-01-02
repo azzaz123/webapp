@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { environment } from '../../environments/environment';
-import { User, ErrorsService } from 'shield';
+import { User, ErrorsService, HttpService } from 'shield';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { UploadOutput, UploadFile, UploadInput, NgUploaderOptions } from 'ngx-uploader';
 
 @Component({
   selector: 'tsl-profile',
@@ -15,10 +16,14 @@ export class ProfileComponent implements OnInit {
   public user: User;
   public userUrl: string;
   public profileForm: FormGroup;
+  file: UploadFile;
+  uploadInput: EventEmitter<UploadInput> = new EventEmitter();
+  options: NgUploaderOptions;
 
   constructor(private userService: UserService,
               private fb: FormBuilder,
               private errorsService: ErrorsService,
+              private http: HttpService,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
@@ -34,6 +39,11 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.options = {
+      allowedExtensions: ['jpg', 'jpeg'],
+      maxUploads: 1,
+      maxSize: 10485760 // 10 MB
+    };
     this.userService.me().subscribe((user) => {
       this.user = user;
       if (user) {
@@ -43,7 +53,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  public onSubmit() {
     if (this.profileForm.valid) {
       delete this.profileForm.value.location;
       this.userService.edit(this.profileForm.value).subscribe(() => {
@@ -64,6 +74,41 @@ export class ProfileComponent implements OnInit {
     this.profileForm.get('last_name').patchValue(this.user.lastName);
     this.profileForm.get('birth_date').patchValue(moment(this.user.birthDate).format('YYYY-MM-DD'));
     this.profileForm.get('gender').patchValue(this.user.gender.toUpperCase().substr(0, 1));
+  }
+
+  public onUploadOutput(output: UploadOutput): void {
+    switch (output.type) {
+      case 'addedToQueue':
+        this.file = output.file;
+        this.uploadPicture();
+        break;
+      case 'uploading':
+        this.file = output.file;
+        break;
+      case 'done':
+        this.onUploadDone(output);
+        break;
+      case 'rejected':
+        this.errorsService.i18nError(output.reason, output.file.name);
+        break;
+    }
+  }
+
+  private uploadPicture() {
+    const url = environment.baseUrl + 'api/v3/users/me/image';
+    const uploadinput: UploadInput = {
+      type: 'uploadFile',
+      url: url,
+      method: 'POST',
+      fieldName: 'image',
+      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      file: this.file
+    };
+    this.uploadInput.emit(uploadinput);
+  }
+
+  private onUploadDone(output: UploadOutput) {
+    this.userService.user.image.urls_by_size.medium = output.file.preview;
   }
 
 }

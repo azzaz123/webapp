@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MdIconModule } from '@angular/material';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
+import { NgUploaderModule } from 'ngx-uploader';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
     ReactiveFormsModule,
     MdIconModule,
     NgbButtonsModule,
-    GeolocationModule
+    GeolocationModule,
+    NgUploaderModule
   ],
   declarations: [
     profileRoutedComponents

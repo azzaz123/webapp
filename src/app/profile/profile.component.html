@@ -8,14 +8,25 @@
           <a class="public-profile" [href]="userUrl" i18n>View my public profile</a>
         </div>
         <div class="box-content">
-          <div class="row profile-pic">
+          <div class="row profile-pic align-items-center">
             <div class="col-4">
-              <tsl-user-avatar [user]="user" size="80"></tsl-user-avatar>
+              <tsl-user-avatar [user]="user" [imageUrl]="user?.image.urls_by_size.medium" size="80"></tsl-user-avatar>
               <div>
                 <h2 i18n>Change Profile Picture</h2>
                 <p i18n>This is the image the users will
                   see when they check your profile</p>
               </div>
+            </div>
+            <div class="col">
+              <label class="btn btn-upload">
+                <input
+                  type="file"
+                  ngFileSelect
+                  (uploadOutput)="onUploadOutput($event)"
+                  [uploadInput]="uploadInput"
+                  [options]="options" />
+                <span i18n>Upload Photo</span>
+              </label>
             </div>
           </div>
           <div class="row">
