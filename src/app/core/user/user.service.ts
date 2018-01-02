@@ -73,8 +73,7 @@ export class UserService extends UserServiceMaster {
   public updateLocation(coordinates: Coordinate): Observable<Location> {
     return this.http.put(this.API_URL_V3 + '/me/location', {
       latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
-      fullAddress: coordinates.name
+      longitude: coordinates.longitude
     })
     .map((r: Response) => r.json())
   }
