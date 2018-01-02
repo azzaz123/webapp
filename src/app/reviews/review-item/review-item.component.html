@@ -20,7 +20,7 @@
     <div *ngIf="this.review.isBought">
       <span class="review-type" i18n>Bought:</span>
       <div class="review-title">
-        <span>{{ this.review.item.category.title }}</span>
+        <span>{{ this.review.item.category?.title }}</span>
       </div>
     </div>
     <tsl-stars class="review-rating" [stars]="this.review.review.scoring" [normalized]="false"></tsl-stars>
