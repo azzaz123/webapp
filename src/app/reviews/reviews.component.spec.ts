@@ -6,6 +6,7 @@ import { Observable } from "rxjs/Observable";
 import { MOCK_MY_REVIEWS } from "../../tests/review.fixtures";
 import { MOCK_USER } from 'shield';
 import { UserService } from '../core/user/user.service';
+import {USER_INFO_RESPONSE} from "../../tests/user.fixtures";
 
 describe('ReviewsComponent', () => {
   let component: ReviewsComponent;
@@ -22,6 +23,9 @@ describe('ReviewsComponent', () => {
             provide: UserService, useValue: {
               me() {
                 return Observable.of(MOCK_USER);
+              },
+              getInfo() {
+                return Observable.of(USER_INFO_RESPONSE);
               }
             }
           },
@@ -93,14 +97,16 @@ describe('ReviewsComponent', () => {
   describe('getUserReview', () => {
     beforeEach(fakeAsync(() => {
       spyOn(component, 'getUserReview').and.callThrough();
-      spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER));
+      spyOn(userService, 'me').and.callThrough();
+      spyOn(userService, 'getInfo').and.callThrough();
     }));
 
     it('should get the user score', () => {
       component.getUserReview();
 
       expect(userService.me).toHaveBeenCalled();
-      expect(component.userScore).toEqual(MOCK_USER.scoringStars);
+      expect(userService.getInfo).toHaveBeenCalled();
+      expect(component.userScore).toEqual(USER_INFO_RESPONSE.scoring_stars);
     });
   });
 

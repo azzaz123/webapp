@@ -4,6 +4,7 @@ import { MyReviewsService } from "../core/my-reviews/my-reviews.service";
 import { MyReviewsData } from "../core/my-reviews/my-reviews-response.interface";
 import { UserService } from "../core/user/user.service";
 import { User } from "shield";
+import { UserInfoResponse } from "../core/user/user-info.interface";
 
 @Component({
   selector: 'tsl-reviews',
@@ -29,7 +30,9 @@ export class ReviewsComponent implements OnInit {
 
   public getUserReview(){
     this.userService.me().subscribe((user: User) => {
-      this.userScore = user.scoringStars;
+      this.userService.getInfo(user.id).subscribe((info: UserInfoResponse) => {
+        this.userScore = info.scoring_stars;
+      });
     });
   }
 
