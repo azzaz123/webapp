@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { environment } from '../../environments/environment';
-import { User } from 'shield';
+import { User, ErrorsService } from 'shield';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 
@@ -18,6 +18,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private userService: UserService,
               private fb: FormBuilder,
+              private errorsService: ErrorsService,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
@@ -43,7 +44,17 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.profileForm.value);
+    if (this.profileForm.valid) {
+      delete this.profileForm.value.location;
+      this.userService.edit(this.profileForm.value).subscribe();
+    } else {
+      for (let control in this.profileForm.controls) {
+        if (this.profileForm.controls.hasOwnProperty(control) && !this.profileForm.controls[control].valid) {
+          this.profileForm.controls[control].markAsDirty();
+        }
+      }
+      this.errorsService.i18nError('formErrors');
+    }
   }
 
   private setUserData() {
