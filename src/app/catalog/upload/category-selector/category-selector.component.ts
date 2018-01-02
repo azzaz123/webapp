@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'tsl-category-selector',
@@ -10,7 +11,10 @@ export class CategorySelectorComponent {
   @Output() onSelect: EventEmitter<string> = new EventEmitter();
   public category: number;
 
-  constructor() {
+  constructor(config: NgbPopoverConfig) {
+    config.placement = 'right';
+    config.triggers = 'focus:blur';
+    config.container = 'body';
   }
 
   setCategory(value: number) {

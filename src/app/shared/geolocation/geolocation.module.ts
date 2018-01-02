@@ -5,7 +5,7 @@ import { LocationSelectComponent } from './location-select/location-select.compo
 import { GeolocationComponent } from './geolocation.component';
 import { LocationModalComponent } from './location-select/location-modal/location-modal.component';
 import { MdIconModule } from '@angular/material';
-import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopoverModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapsComponent } from './here-maps/here-maps.component';
 import { LocationBoxComponent } from './location-box/location-box.component';
 
@@ -15,7 +15,8 @@ import { LocationBoxComponent } from './location-box/location-box.component';
     ReactiveFormsModule,
     FormsModule,
     MdIconModule,
-    NgbTypeaheadModule
+    NgbTypeaheadModule,
+    NgbPopoverModule
   ],
   exports: [
     CommonModule,

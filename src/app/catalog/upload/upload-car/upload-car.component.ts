@@ -9,6 +9,7 @@ import { UploadEvent } from '../upload-event.interface';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
+import { TrackingService } from '../../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -37,6 +38,7 @@ export class UploadCarComponent implements OnInit {
               private router: Router,
               private errorsService: ErrorsService,
               private modalService: NgbModal,
+              private trackingService: TrackingService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       category_id: '100',
@@ -152,6 +154,9 @@ export class UploadCarComponent implements OnInit {
           this.uploadForm.controls[control].markAsDirty();
         }
       }
+      if (!this.uploadForm.get('location.address').valid) {
+        this.uploadForm.get('location.address').markAsDirty();
+      }
       if (!this.uploadForm.get('images').valid) {
         this.errorsService.i18nError('missingImageError');
       } else {
@@ -167,6 +172,7 @@ export class UploadCarComponent implements OnInit {
 
   onError(response: any) {
     this.loading = false;
+    this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
   }
 
   private markFieldAsPristine(field: string) {

@@ -91,7 +91,7 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('wall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wall.svg'));
   mdIconRegistry.addSvgIcon('check', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/check.svg'));
   mdIconRegistry.addSvgIcon('navigation_catalog', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_catalog.svg'));
-  mdIconRegistry.addSvgIcon('navigation_upload', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_upload.svg'));
+  mdIconRegistry.addSvgIcon('navigation_messages', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_messages.svg'));
   mdIconRegistry.addSvgIcon('navigation_favorites', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_favorites.svg'));
   mdIconRegistry.addSvgIcon('navigation_logout', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_logout.svg'));
   mdIconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/delete.svg'));
@@ -133,6 +133,8 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('cm-money', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-money.svg'));
   mdIconRegistry.addSvgIcon('cm-seats', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-seats.svg'));
   mdIconRegistry.addSvgIcon('cm-velocity', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-velocity.svg'));
+  mdIconRegistry.addSvgIcon('cm-hero', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-hero.svg'));
+  mdIconRegistry.addSvgIcon('cm-location', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-location.svg'));
   mdIconRegistry.addSvgIcon('twitter', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/twitter.svg'));
   mdIconRegistry.addSvgIcon('facebook', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/facebook.svg'));
   mdIconRegistry.addSvgIcon('car-type-small_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/small_car.svg'));

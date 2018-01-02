@@ -20,6 +20,7 @@ import { CategoryOption } from '../../../core/category/category-response.interfa
 import { UploadEvent } from '../upload-event.interface';
 import { CategoryService } from '../../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
+import { TrackingService } from '../../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-upload-product',
@@ -72,6 +73,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
               private errorsService: ErrorsService,
               private categoryService: CategoryService,
               private modalService: NgbModal,
+              private trackingService: TrackingService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       category_id: ['', [Validators.required]],
@@ -147,6 +149,9 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
           this.uploadForm.controls[control].markAsDirty();
         }
       }
+      if (!this.uploadForm.get('location.address').valid) {
+        this.uploadForm.get('location.address').markAsDirty();
+      }
       if (!this.uploadForm.get('images').valid) {
         this.errorsService.i18nError('missingImageError');
       } else {
@@ -162,6 +167,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   onError(response: any) {
     this.loading = false;
+    this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
   }
 
   preview() {
