@@ -1,13 +1,45 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PasswordModalComponent } from './password-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { UserService } from '../../../core/user/user.service';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorsService } from 'shield';
 
 describe('PasswordModalComponent', () => {
   let component: PasswordModalComponent;
   let fixture: ComponentFixture<PasswordModalComponent>;
+  let userService: UserService;
+  let activeModal: NgbActiveModal;
+  let errorsService: ErrorsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule
+      ],
+      providers: [
+        {
+          provide: UserService, useValue: {
+          updatePassword() {
+            return Observable.of({});
+          }
+        }
+        },
+        {
+          provide: NgbActiveModal, useValue: {
+          close() {
+          }
+        }
+        },
+        {
+          provide: ErrorsService, useValue: {
+          i18nError() {
+          }
+        }
+        }
+      ],
       declarations: [ PasswordModalComponent ]
     })
     .compileComponents();
@@ -17,9 +49,71 @@ describe('PasswordModalComponent', () => {
     fixture = TestBed.createComponent(PasswordModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    userService = TestBed.get(UserService);
+    activeModal = TestBed.get(NgbActiveModal);
+    errorsService = TestBed.get(ErrorsService);
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
+  describe('onSubmit', () => {
+
+    const OLD_PASSWORD = 'old_password';
+    const NEW_PASSWORD = 'password';
+
+    describe('valid form', () => {
+
+      beforeEach(() => {
+        spyOn(userService, 'updatePassword').and.callThrough();
+        spyOn(activeModal, 'close');
+        component.passwordForm.get('old_password').patchValue(OLD_PASSWORD);
+        component.passwordForm.get('new_password').patchValue(NEW_PASSWORD);
+        component.passwordForm.get('repeat_password').patchValue(NEW_PASSWORD);
+
+        component.onSubmit();
+      });
+
+      it('should update password', () => {
+        expect(userService.updatePassword).toHaveBeenCalledWith(OLD_PASSWORD, NEW_PASSWORD);
+      });
+
+      it('should close modal', () => {
+        expect(activeModal.close).toHaveBeenCalled();
+      });
+
+    });
+
+    describe('invalid form', () => {
+
+      beforeEach(() => {
+        spyOn(errorsService, 'i18nError');
+      });
+
+      it('should be invalid if fields are empty', () => {
+        component.onSubmit();
+
+        expect(component.passwordForm.valid).toBeFalsy();
+        expect(errorsService.i18nError).toHaveBeenCalledWith('formErrors');
+      });
+
+      it('should be invalid if passwords do not match', () => {
+        component.passwordForm.get('old_password').patchValue(OLD_PASSWORD);
+        component.passwordForm.get('new_password').patchValue(NEW_PASSWORD);
+        component.passwordForm.get('repeat_password').patchValue('test');
+
+        component.onSubmit();
+
+        expect(component.passwordForm.valid).toBeFalsy();
+        expect(errorsService.i18nError).toHaveBeenCalledWith('passwordMatch');
+      });
+
+      it('should set dirty invalid fields', () => {
+        component.onSubmit();
+
+        expect(component.passwordForm.get('old_password').dirty).toBeTruthy();
+        expect(component.passwordForm.get('new_password').dirty).toBeTruthy();
+        expect(component.passwordForm.get('repeat_password').dirty).toBeTruthy();
+      });
+
+    });
+
   });
 });

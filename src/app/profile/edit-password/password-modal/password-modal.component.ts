@@ -44,7 +44,7 @@ export class PasswordModalComponent {
           this.passwordForm.controls[control].markAsDirty();
         }
       }
-      if (this.passwordForm.errors.match) {
+      if (this.passwordForm.errors && this.passwordForm.errors.match) {
         this.errorsService.i18nError('passwordMatch');
       } else {
         this.errorsService.i18nError('formErrors');
