@@ -1,4 +1,4 @@
-import { ReviewUser } from './review-user';
+import { User } from 'shield';
 import { Review } from "./review";
 import { ReviewItem } from "./review-item";
 
@@ -7,7 +7,7 @@ export class MyReviews {
   constructor(private _item?: ReviewItem,
               private _review?: Review,
               private _type?: string,
-              private _user?: ReviewUser) {
+              private _user?: User) {
   }
 
   get item(): ReviewItem {
@@ -18,7 +18,7 @@ export class MyReviews {
     return this._review;
   }
 
-  get user(): ReviewUser {
+  get user(): User {
     return this._user;
   }
 

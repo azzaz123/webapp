@@ -16,6 +16,12 @@ export class CategoryService {
               private i18n: I18nService) {
   }
 
+  public getCategoryById(id: number): Observable<CategoryResponse> {
+    return this.getCategories().map((categories: CategoryResponse[]) => {
+      return categories.find((category: CategoryResponse) => category.categoryId === id);
+    });
+  }
+
   public getCategories(): Observable<CategoryResponse[]> {
     if (this.categories) {
       return Observable.of(this.categories);

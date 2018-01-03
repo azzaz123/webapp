@@ -5,9 +5,9 @@
       <div tslsanitizedBackground="{{ this.review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"
            *ngIf="this.review.isSold && this.review.item?.image"></div>
       <img src="{{ fallback }}" *ngIf="this.review.isSold && !this.review.item?.image" class="image"/>
-      <md-icon *ngIf="this.review.isBought && this.review.item" class="reviews-list-category-ico" svgIcon="{{this.review.item.category.iconName}}"></md-icon>
+      <md-icon *ngIf="this.review.isBought && this.review.item" class="reviews-list-category-ico" svgIcon="{{ categoryIconName }}"></md-icon>
     </div>
-    <tsl-user-avatar class="avatar" [user]="this.review.user?.image?.small" size="40"></tsl-user-avatar>
+    <tsl-user-avatar class="avatar" *ngIf="this.review.user" [user]="this.review.user" size="40"></tsl-user-avatar>
   </div>
   <div class="info col-10">
     <div *ngIf="this.review.isSold">
@@ -20,7 +20,7 @@
     <div *ngIf="this.review.isBought">
       <span class="review-type" i18n>Bought:</span>
       <div class="review-title">
-        <span *ngIf="this.review.item?.category">{{ this.review.item.category.title }}</span>
+        <span *ngIf="this.review.item?.categoryId">{{ categoryName }}</span>
         <span *ngIf="!this.review.item" i18n>A wallapop item</span>
       </div>
     </div>
@@ -28,9 +28,9 @@
     <p class="review-comment">{{ this.review.review.comments }}</p>
     <div class="review-credits">
       <span i18n>Posted by</span>
-      <span *ngIf="this.review.user"><a href="{{ userWebSlug }}" target="_blank">{{ this.review.user.micro_name }}</a></span>
+      <span *ngIf="this.review.user"><a href="{{ userWebSlug }}" target="_blank">{{ this.review.user.microName }}</a></span>
       <span *ngIf="!this.review.user" i18n>A wallapop user</span>
-      <span i18n>on</span><span> {{ this.review.review.date | date:'shortTime' }}</span>
+      <span i18n>on</span><span> {{ this.review.review.date | date:'longDate' }}</span>
     </div>
   </div>
 </div>

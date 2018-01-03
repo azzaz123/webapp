@@ -1,39 +1,37 @@
-import { CategoryResponse } from "../category/category-response.interface";
+import { Item } from 'shield';
 
-export class ReviewItem {
+export class ReviewItem extends Item {
 
-  constructor(private _id: string,
-              private _category?: CategoryResponse,
-              private _category_id?: number,
-              private _title?: string,
+  constructor(_id: string,
+              _categoryId?: number,
+              _title?: string,
               private _image?: ReviewImage,
-              private _web_link?: string) {
-  }
-
-  get id(): string {
-    return this._id;
-  }
-
-  get category(): CategoryResponse {
-    return this._category;
-  }
-
-  get category_id(): number {
-    return this._category_id;
-  }
-
-  get title(): string {
-    return this._title;
+              _web_link?: string) {
+    super (
+      _id,
+      null,
+      null,
+      _title,
+      null,
+      _categoryId,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      _web_link,
+      null
+    )
   }
 
   get image(): ReviewImage {
     return this._image;
   }
-
-  get web_link(): string {
-    return this._web_link;
-  }
-
 }
 
 export interface ReviewImage {

@@ -1,7 +1,7 @@
 import { TestBed, inject, fakeAsync, async } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { MyReviewsService } from './my-reviews.service';
-import { HttpService, TEST_HTTP_PROVIDERS } from 'shield';
+import { HttpService, TEST_HTTP_PROVIDERS, MOCK_USER } from 'shield';
 import { CategoryService } from '../../core/category/category.service';
 import { Observable } from "rxjs/Observable";
 import { CATEGORY_DATA_WEB } from "../../../tests/category.fixtures";
@@ -10,7 +10,7 @@ import { MyReviews } from "./my-reviews";
 import { MOCK_MY_REVIEWS, MY_REVIEWS_DATA } from "../../../tests/review.fixtures";
 import { Response, ResponseOptions, Headers } from '@angular/http';
 
-describe('MyReviewsService', () => {
+fdescribe('MyReviewsService', () => {
 
   let service: MyReviewsService;
   let http : HttpService;
@@ -72,11 +72,10 @@ describe('MyReviewsService', () => {
         resp = data;
       });
       const review = resp.data[0];
-
       expect(review.item).toEqual(MY_REVIEWS_DATA[0].item);
       expect(review.review).toEqual(MY_REVIEWS_DATA[0].review);
       expect(review.type).toEqual(MY_REVIEWS_DATA[0].type);
-      expect(review.user).toEqual(MY_REVIEWS_DATA[0].user);
+      expect(review.user).toEqual(MOCK_USER);
     });
   });
 
