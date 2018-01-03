@@ -1,9 +1,10 @@
+///<reference path="../../tests/review.fixtures.ts"/>
 import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReviewsComponent } from './reviews.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MyReviewsService } from "../core/my-reviews/my-reviews.service";
 import { Observable } from "rxjs/Observable";
-import { MOCK_MY_REVIEWS } from "../../tests/review.fixtures";
+import { MOCK_REVIEWS } from "../../tests/review.fixtures";
 import { MOCK_USER } from 'shield';
 import { UserService } from '../core/user/user.service';
 import {USER_INFO_RESPONSE} from "../../tests/user.fixtures";
@@ -32,7 +33,7 @@ describe('ReviewsComponent', () => {
           {
             provide: MyReviewsService, useValue: {
               myReviews () {
-                return Observable.of({data: [MOCK_MY_REVIEWS, MOCK_MY_REVIEWS], init: 2});
+                return Observable.of({data: MOCK_REVIEWS, init: 2});
               }
             }
           },
@@ -64,7 +65,7 @@ describe('ReviewsComponent', () => {
     });
 
     it('should call myReviews with reviews length', () => {
-      let itemLength = component.reviews.length;
+      const itemLength = component.reviews.length;
 
       component.getReviews(true);
 
@@ -72,10 +73,11 @@ describe('ReviewsComponent', () => {
     });
 
     it('if append argument is true, current component.item should add ', () => {
-      component.reviews = [MOCK_MY_REVIEWS];
+      component.reviews = MOCK_REVIEWS;
+
       component.getReviews(true);
 
-      expect(component.reviews).toEqual([MOCK_MY_REVIEWS, MOCK_MY_REVIEWS, MOCK_MY_REVIEWS]);
+      expect(component.reviews).toEqual([ MOCK_REVIEWS[0], MOCK_REVIEWS[0] ]);
     });
 
     it('should set loading to false', () => {
@@ -86,7 +88,7 @@ describe('ReviewsComponent', () => {
     });
 
     it('should set end true if no init', () => {
-      myReviewsServiceSpy.and.returnValue(Observable.of({data: [MOCK_MY_REVIEWS, MOCK_MY_REVIEWS], init: null}));
+      myReviewsServiceSpy.and.returnValue(Observable.of({data: MOCK_REVIEWS, init: null}));
 
       component.getReviews();
 

@@ -7,21 +7,22 @@ import {
   User
 } from 'shield';
 import { MyReviews } from './my-reviews';
-import { CategoryService } from '../category/category.service';
-import { CategoryResponse } from '../category/category-response.interface';
 import { ReviewItem } from './review-item';
-import {Review} from "./review";
+import { Review } from "./review";
 
 @Injectable()
 export class MyReviewsService {
 
   private API_URL_v3_USER: string = 'api/v3/users';
   
-  constructor(private http: HttpService,
-              private categoryService: CategoryService) {
+  constructor(private http: HttpService) {
   }
 
-  public getPaginationReviews(url: string, init): Observable<MyReviewsData> {
+  public myReviews(init: number): Observable<MyReviewsData> {
+    return this.getPaginationReviews(this.API_URL_v3_USER + '/me/reviews', init);
+  }
+
+  private getPaginationReviews(url: string, init): Observable<MyReviewsData> {
     return this.http.get(url, {
         init: init
       })
@@ -91,9 +92,5 @@ export class MyReviewsService {
       null,
       reviewResponse.user.web_slug
     );
-  }
-
-  public myReviews(init: number): Observable<MyReviewsData> {
-    return this.getPaginationReviews(this.API_URL_v3_USER + '/me/reviews', init);
   }
 }
