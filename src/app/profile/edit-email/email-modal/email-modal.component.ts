@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { isPresent } from 'ngx-cookie/src/utils';
 import { UserService } from '../../../core/user/user.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorsService } from 'shield';
 
 @Component({
   selector: 'tsl-email-modal',
@@ -13,7 +15,9 @@ export class EmailModalComponent implements OnInit {
   public emailForm: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private userService: UserService) {
+              private userService: UserService,
+              private activeModal: NgbActiveModal,
+              private errorsService: ErrorsService) {
     this.emailForm = fb.group({
       email_address: ['', [Validators.required, this.email]],
       repeat_email_address: ['', [Validators.required, this.email]]
@@ -27,7 +31,9 @@ export class EmailModalComponent implements OnInit {
     if (this.emailForm.valid) {
       const email = this.emailForm.get('email_address').value;
       this.userService.updateEmail(email).subscribe(() => {
-
+        this.activeModal.close(email);
+      }, () => {
+        this.errorsService.i18nError('serverError');
       });
     }
   }

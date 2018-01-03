@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from './email-modal/email-modal.component';
 
@@ -9,6 +9,8 @@ import { EmailModalComponent } from './email-modal/email-modal.component';
 })
 export class EditEmailComponent implements OnInit {
 
+  @Input() email: string;
+
   constructor(private modalService: NgbModal) {
   }
 
@@ -16,7 +18,10 @@ export class EditEmailComponent implements OnInit {
   }
 
   openModal() {
-    const modalRef: NgbModalRef = this.modalService.open(EmailModalComponent, {windowClass: 'account-details'});
+    this.modalService.open(EmailModalComponent, {windowClass: 'account-details'}).result.then((email: string) => {
+      this.email = email;
+    }, () => {
+    });
   }
 
 }
