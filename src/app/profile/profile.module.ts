@@ -7,6 +7,8 @@ import { MdIconModule } from '@angular/material';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { NgUploaderModule } from 'ngx-uploader';
+import { EditEmailComponent } from './edit-email/edit-email.component';
+import { EmailModalComponent } from './edit-email/email-modal/email-modal.component';
 
 @NgModule({
   imports: [
@@ -20,7 +22,10 @@ import { NgUploaderModule } from 'ngx-uploader';
     NgUploaderModule
   ],
   declarations: [
-    profileRoutedComponents
-  ]
+    profileRoutedComponents,
+    EditEmailComponent,
+    EmailModalComponent
+  ],
+  entryComponents: [EmailModalComponent]
 })
 export class ProfileModule { }

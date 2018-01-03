@@ -1,0 +1,19 @@
+@import "../../../../style/_common.scss";
+
+.modal-body {
+  text-align: center;
+  padding: 50px $spacing-XL;
+}
+
+h1 {
+  font-size: 18px;
+  color: $grey-800;
+  font-weight: bold;
+}
+
+p {
+  font-size: $font-size-S;
+  color: $grey-300;
+  margin: 0;
+  margin-bottom: $spacing-XL;
+}

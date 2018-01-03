@@ -1,0 +1,14 @@
+<div class="modal-body">
+  <h1 i18n>Change your email address</h1>
+  <p i18n>Enter your details below</p>
+
+    <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input type="email" placeholder="New email" class="form-control" formControlName="email_address" />
+      </div>
+      <div class="form-group">
+        <input type="email" placeholder="Confirm email" class="form-control" formControlName="repeat_email_address" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" i18n>Change email</button>
+    </form>
+</div>
