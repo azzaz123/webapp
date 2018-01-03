@@ -13,15 +13,15 @@ import { ErrorsService } from 'shield';
 export class EmailModalComponent {
 
   public emailForm: FormGroup;
+  public currentEmail: string;
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
               private activeModal: NgbActiveModal,
               private errorsService: ErrorsService) {
     this.emailForm = fb.group({
-      email_address: ['', [Validators.required, this.email]],
-      repeat_email_address: ['', [Validators.required, this.email]]
-    }, {validator: this.match('email_address', 'repeat_email_address')});
+      email_address: ['', [Validators.required, this.email]]
+    });
   }
 
   public onSubmit() {
@@ -40,14 +40,6 @@ export class EmailModalComponent {
       }
       this.errorsService.i18nError('formErrors');
     }
-  }
-
-  private match(field: string, confirmField: string): Function {
-    return (group: FormGroup): { [key: string]: any } => {
-      if (group.controls[field] && group.controls[confirmField]) {
-        return (group.controls[field].value !== group.controls[confirmField].value) ? {'match': true} : null;
-      }
-    };
   }
 
   private email(control: AbstractControl): { [key: string]: boolean } {

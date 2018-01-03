@@ -1,7 +1,6 @@
 @import "../../../../style/_common.scss";
 
 .modal-body {
-  text-align: center;
   padding: 50px $spacing-XL;
 }
 
@@ -16,4 +15,12 @@ p {
   color: $grey-300;
   margin: 0;
   margin-bottom: $spacing-XL;
+}
+
+h1, p {
+  text-align: center;
+}
+
+div.form-control {
+  line-height: 32px;
 }

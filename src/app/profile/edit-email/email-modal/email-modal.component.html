@@ -4,10 +4,12 @@
 
     <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <input type="email" placeholder="New email" class="form-control" formControlName="email_address" />
+        <label i18n>Current email</label>
+        <div class="form-control">{{currentEmail}}</div>
       </div>
       <div class="form-group">
-        <input type="email" placeholder="Confirm email" class="form-control" formControlName="repeat_email_address" />
+        <label for="email" i18n>New email</label>
+        <input type="email" placeholder="New email" class="form-control" id="email" formControlName="email_address" />
       </div>
       <button type="submit" class="btn btn-primary btn-block" i18n>Change email</button>
     </form>

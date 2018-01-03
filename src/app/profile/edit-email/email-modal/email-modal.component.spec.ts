@@ -52,7 +52,7 @@ describe('EmailModalComponent', () => {
     activeModal = TestBed.get(NgbActiveModal);
   });
 
-  fdescribe('onSubmit', () => {
+  describe('onSubmit', () => {
 
     describe('valid form', () => {
 
@@ -60,7 +60,6 @@ describe('EmailModalComponent', () => {
         spyOn(userService, 'updateEmail').and.callThrough();
         spyOn(activeModal, 'close');
         component.emailForm.get('email_address').patchValue(USER_EMAIL);
-        component.emailForm.get('repeat_email_address').patchValue(USER_EMAIL);
 
         component.onSubmit();
       });
@@ -91,20 +90,10 @@ describe('EmailModalComponent', () => {
         expect(component.emailForm.valid).toBeFalsy();
       });
 
-      it('should be invalid if emails does not match', () => {
-        component.emailForm.get('email_address').patchValue(USER_EMAIL);
-        component.emailForm.get('repeat_email_address').patchValue('test@wallapop.com');
-
-        component.onSubmit();
-
-        expect(component.emailForm.valid).toBeFalsy();
-      });
-
       it('should set dirty invalid fields', () => {
         component.onSubmit();
 
         expect(component.emailForm.get('email_address').dirty).toBeTruthy();
-        expect(component.emailForm.get('repeat_email_address').dirty).toBeTruthy();
       });
 
     });

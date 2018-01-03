@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from './email-modal/email-modal.component';
 
 @Component({
@@ -16,7 +16,8 @@ export class EditEmailComponent {
 
   openModal(element: HTMLElement) {
     element.blur();
-    this.modalService.open(EmailModalComponent, {windowClass: 'account-details'});
+    const modalRef: NgbModalRef = this.modalService.open(EmailModalComponent, {windowClass: 'account-details'});
+    modalRef.componentInstance.currentEmail = this.email;
   }
 
 }

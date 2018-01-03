@@ -10,6 +10,7 @@ describe('EditEmailComponent', () => {
   let component: EditEmailComponent;
   let fixture: ComponentFixture<EditEmailComponent>;
   let modalService: NgbModal;
+  const componentInstance: any = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,6 +21,9 @@ describe('EditEmailComponent', () => {
         {
           provide: NgbModal, useValue: {
           open() {
+            return {
+              componentInstance: componentInstance
+            }
           }
         }
         }
@@ -47,6 +51,7 @@ describe('EditEmailComponent', () => {
       };
       spyOn(element, 'blur');
       spyOn(modalService, 'open').and.callThrough();
+      component.email = USER_EMAIL;
 
       component.openModal(element);
     }));
@@ -57,6 +62,10 @@ describe('EditEmailComponent', () => {
 
     it('should open modal', () => {
       expect(modalService.open).toHaveBeenCalledWith(EmailModalComponent, {windowClass: 'account-details'});
+    });
+
+    it('should set currentEmail', () => {
+      expect(componentInstance.currentEmail).toBe(USER_EMAIL);
     });
 
   });
