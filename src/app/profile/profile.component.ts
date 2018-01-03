@@ -109,7 +109,11 @@ export class ProfileComponent implements OnInit {
   }
 
   private onUploadDone(output: UploadOutput) {
-    this.userService.user.image.urls_by_size.medium = output.file.preview;
+    if (output.file.progress.data.responseStatus === 204) {
+      this.userService.user.image.urls_by_size.medium = output.file.preview;
+    } else {
+      this.errorsService.i18nError('serverError');
+    }
   }
 
   private removeFromQueue(output) {
