@@ -35,6 +35,13 @@ export class EmailModalComponent implements OnInit {
       }, () => {
         this.errorsService.i18nError('serverError');
       });
+    } else {
+      for (let control in this.emailForm.controls) {
+        if (this.emailForm.controls.hasOwnProperty(control) && !this.emailForm.controls[control].valid) {
+          this.emailForm.controls[control].markAsDirty();
+        }
+      }
+      this.errorsService.i18nError('formErrors');
     }
   }
 
