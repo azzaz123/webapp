@@ -195,7 +195,8 @@ describe('ProfileComponent', () => {
         fieldName: 'image',
         headers: headers,
         file: UPLOAD_FILE
-      })
+      });
+      expect(http.getOptions).toHaveBeenCalledWith(null, 'api/v3/users/me/image', 'POST');
     });
 
     it('should set file if event is uploading', () => {
@@ -207,10 +208,13 @@ describe('ProfileComponent', () => {
       expect(component.file).toEqual(UPLOAD_FILE);
     });
 
-    it('should send remove event and set image if event is done', () => {
+    it('should send remove event and set image if event is done and status 204', () => {
+      const file = {...UPLOAD_FILE};
+      file.progress.data.responseStatus = 204;
+
       component.onUploadOutput({
         type: 'done',
-        file: UPLOAD_FILE
+        file: file
       });
 
       expect(uploadEvent).toEqual({
@@ -218,6 +222,19 @@ describe('ProfileComponent', () => {
         id: UPLOAD_FILE_ID
       });
       expect(userService.user.image.urls_by_size.medium).toBe(UPLOAD_FILE.preview);
+    });
+
+    it('should shoew error if event is done and status not 204', () => {
+      spyOn(errorsService, 'i18nError');
+      const file = {...UPLOAD_FILE};
+      file.progress.data.responseStatus = 0;
+
+      component.onUploadOutput({
+        type: 'done',
+        file: file
+      });
+
+      expect(errorsService.i18nError).toHaveBeenCalledWith('serverError');
     });
 
   });
