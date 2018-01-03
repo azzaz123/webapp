@@ -35,7 +35,7 @@ describe('UploadProductComponent', () => {
   let categoryService: CategoryService;
   let modalService: NgbModal;
   let trackingService: TrackingService;
-  let componentInstance: any = {};
+  const componentInstance: any = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -100,20 +100,25 @@ describe('UploadProductComponent', () => {
       expect(categoryService.getUploadCategories).toHaveBeenCalled();
       expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);
     });
+
     describe('with preselected category', () => {
       beforeEach(() => {
         component.categoryId = '13000';
         component.ngOnChanges();
       });
+
       it('should set form category_id', () => {
         expect(component.uploadForm.get('category_id').value).toBe('13000');
       });
+
       it('should set form sale_conditions.shipping_allowed', () => {
         expect(component.uploadForm.get('sale_conditions.shipping_allowed').value).toBe(false);
       });
+
       it('should set form delivery_info', () => {
         expect(component.uploadForm.get('delivery_info').value).toBe(null);
       });
+
       it('should set fixedCategory', () => {
         expect(component.fixedCategory).toBe('Real Estate');
       });
@@ -151,6 +156,7 @@ describe('UploadProductComponent', () => {
         latitude: USER_LOCATION.approximated_latitude,
         longitude: USER_LOCATION.approximated_longitude
       });
+
       expect(component.uploadForm.valid).toBeTruthy();
       component.uploadEvent.subscribe((i: any) => {
         input = i;
@@ -162,27 +168,38 @@ describe('UploadProductComponent', () => {
       });
       expect(component.loading).toBeTruthy();
     });
+
     it('should set dirty invalid fields', () => {
       component.onSubmit();
+
       expect(component.uploadForm.get('title').dirty).toBeTruthy();
       expect(component.uploadForm.get('sale_price').dirty).toBeTruthy();
       expect(component.uploadForm.get('location.address').dirty).toBeTruthy();
     });
+
     it('should show image error', () => {
       spyOn(errorService, 'i18nError');
+
       component.onSubmit();
+
       expect(errorService.i18nError).toHaveBeenCalledWith('missingImageError');
     });
+
     it('should not accept sale_price < 0', () => {
       component.uploadForm.get('sale_price').patchValue(-1);
+
       expect(component.uploadForm.valid).toBeFalsy();
     });
+
     it('should not accept sale_price > 999999999', () => {
       component.uploadForm.get('sale_price').patchValue(9999999999);
+
       expect(component.uploadForm.valid).toBeFalsy();
     });
+
     it('should set delivery_info as required when shipping_allowed true', () => {
       fixture.detectChanges();
+
       expect(component.uploadForm.get('delivery_info').valid).toBeTruthy();
       component.uploadForm.get('sale_conditions.shipping_allowed').patchValue(true);
       expect(component.uploadForm.get('delivery_info').valid).toBeFalsy();
@@ -192,7 +209,9 @@ describe('UploadProductComponent', () => {
   describe('onUploaded', () => {
     it('should redirect', () => {
       spyOn(router, 'navigate');
+
       component.onUploaded('1234');
+
       expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {created: true}]);
     });
   });
@@ -228,11 +247,13 @@ describe('UploadProductComponent', () => {
       component.preview();
       tick();
     }));
+
     it('should open modal', () => {
       expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
         windowClass: 'preview'
       })
     });
+
     it('should set itemPreview', () => {
       expect(componentInstance.itemPreview).toEqual({
         category_id: '200',
@@ -254,6 +275,7 @@ describe('UploadProductComponent', () => {
         }
       });
     });
+
     it('should submit form', fakeAsync(() => {
       expect(component.onSubmit).toHaveBeenCalled();
     }));
