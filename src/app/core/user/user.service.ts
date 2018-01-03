@@ -89,4 +89,11 @@ export class UserService extends UserServiceMaster {
     });
   }
 
+  public updatePassword(oldPassword: string, newPassword: string): Observable<any> {
+    return this.http.post(this.API_URL_V3 + '/me/password', {
+      old_password: oldPassword,
+      new_password: newPassword
+    });
+  }
+
 }
