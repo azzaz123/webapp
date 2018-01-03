@@ -5,11 +5,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ErrorsService } from 'shield';
+import { ErrorsService, USER_EMAIL } from 'shield';
 
 describe('EmailModalComponent', () => {
   let component: EmailModalComponent;
   let fixture: ComponentFixture<EmailModalComponent>;
+  let userService: UserService;
+  let activeModal: NgbActiveModal;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -46,9 +48,66 @@ describe('EmailModalComponent', () => {
     fixture = TestBed.createComponent(EmailModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    userService = TestBed.get(UserService);
+    activeModal = TestBed.get(NgbActiveModal);
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
+  fdescribe('onSubmit', () => {
+
+    describe('valid form', () => {
+
+      beforeEach(() => {
+        spyOn(userService, 'updateEmail').and.callThrough();
+        spyOn(activeModal, 'close');
+        component.emailForm.get('email_address').patchValue(USER_EMAIL);
+        component.emailForm.get('repeat_email_address').patchValue(USER_EMAIL);
+
+        component.onSubmit();
+      });
+
+      it('should update email', () => {
+        expect(userService.updateEmail).toHaveBeenCalledWith(USER_EMAIL);
+      });
+
+      it('should close modal', () => {
+        expect(activeModal.close).toHaveBeenCalledWith(USER_EMAIL);
+      });
+
+    });
+
+    describe('invalid form', () => {
+
+      it('should be invalid if fields are empty', () => {
+        component.onSubmit();
+
+        expect(component.emailForm.valid).toBeFalsy();
+      });
+
+      it('should be invalid if email is not email', () => {
+        component.emailForm.get('email_address').patchValue('hola');
+
+        component.onSubmit();
+
+        expect(component.emailForm.valid).toBeFalsy();
+      });
+
+      it('should be invalid if emails does not match', () => {
+        component.emailForm.get('email_address').patchValue(USER_EMAIL);
+        component.emailForm.get('repeat_email_address').patchValue('test@wallapop.com');
+
+        component.onSubmit();
+
+        expect(component.emailForm.valid).toBeFalsy();
+      });
+
+      it('should set dirty invalid fields', () => {
+        component.onSubmit();
+
+        expect(component.emailForm.get('email_address').dirty).toBeTruthy();
+        expect(component.emailForm.get('repeat_email_address').dirty).toBeTruthy();
+      });
+
+    });
+
   });
 });
