@@ -152,6 +152,7 @@ describe('ProfileComponent', () => {
         expect(component.profileForm.get('last_name').dirty).toBeTruthy();
         expect(component.profileForm.get('birth_date').dirty).toBeTruthy();
         expect(component.profileForm.get('gender').dirty).toBeTruthy();
+        expect(component.profileForm.get('location.address').dirty).toBeTruthy();
       });
 
       it('should call i18nError if form is invalid', () => {

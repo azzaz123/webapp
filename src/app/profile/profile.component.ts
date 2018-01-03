@@ -65,6 +65,9 @@ export class ProfileComponent implements OnInit {
           this.profileForm.controls[control].markAsDirty();
         }
       }
+      if (!this.profileForm.get('location.address').valid) {
+        this.profileForm.get('location.address').markAsDirty();
+      }
       this.errorsService.i18nError('formErrors');
     }
   }
