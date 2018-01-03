@@ -108,6 +108,12 @@ describe('UploadProductComponent', () => {
       it('should set form category_id', () => {
         expect(component.uploadForm.get('category_id').value).toBe('13000');
       });
+      it('should set form sale_conditions.shipping_allowed', () => {
+        expect(component.uploadForm.get('sale_conditions.shipping_allowed').value).toBe(false);
+      });
+      it('should set form delivery_info', () => {
+        expect(component.uploadForm.get('delivery_info').value).toBe(null);
+      });
       it('should set fixedCategory', () => {
         expect(component.fixedCategory).toBe('Real Estate');
       });
