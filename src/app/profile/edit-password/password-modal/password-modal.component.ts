@@ -31,8 +31,12 @@ export class PasswordModalComponent {
       const newPassword = this.passwordForm.get('new_password').value;
       this.userService.updatePassword(oldPassword, newPassword).subscribe(() => {
         this.activeModal.close();
-      }, () => {
-        this.errorsService.i18nError('serverError');
+      }, (response) => {
+        if (response.status === 403) {
+          this.errorsService.i18nError('notValidPassword');
+        } else {
+          this.errorsService.i18nError('serverError');
+        }
       });
     } else {
       for (let control in this.passwordForm.controls) {
@@ -40,7 +44,12 @@ export class PasswordModalComponent {
           this.passwordForm.controls[control].markAsDirty();
         }
       }
-      this.errorsService.i18nError('formErrors');
+      if (this.passwordForm.errors.match) {
+        this.errorsService.i18nError('passwordMatch');
+      } else {
+        this.errorsService.i18nError('formErrors');
+      }
+
     }
   }
 
