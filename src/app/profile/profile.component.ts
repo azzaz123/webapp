@@ -96,10 +96,10 @@ export class ProfileComponent implements OnInit {
   }
 
   private uploadPicture() {
-    const url = environment.baseUrl + 'api/v3/users/me/image';
+    const url = 'api/v3/users/me/image';
     const uploadinput: UploadInput = {
       type: 'uploadFile',
-      url: url,
+      url: environment.baseUrl + url,
       method: 'POST',
       fieldName: 'image',
       headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
