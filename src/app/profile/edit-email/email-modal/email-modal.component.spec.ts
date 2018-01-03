@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EmailModalComponent } from './email-modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Observable } from 'rxjs/Observable';
+import { UserService } from '../../../core/user/user.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorsService } from 'shield';
 
 describe('EmailModalComponent', () => {
   let component: EmailModalComponent;
@@ -8,7 +13,31 @@ describe('EmailModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EmailModalComponent ]
+      imports: [
+        ReactiveFormsModule
+      ],
+      providers: [
+        {
+          provide: UserService, useValue: {
+          updateEmail() {
+            return Observable.of({});
+          }
+        }
+        },
+        {
+          provide: NgbActiveModal, useValue: {
+          close() {
+          }
+        }
+        },
+        {
+          provide: ErrorsService, useValue: {
+          i18nError() {
+          }
+        }
+        }
+      ],
+      declarations: [EmailModalComponent]
     })
     .compileComponents();
   }));

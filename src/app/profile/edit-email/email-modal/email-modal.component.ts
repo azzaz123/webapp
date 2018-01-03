@@ -10,7 +10,7 @@ import { ErrorsService } from 'shield';
   templateUrl: './email-modal.component.html',
   styleUrls: ['./email-modal.component.scss']
 })
-export class EmailModalComponent implements OnInit {
+export class EmailModalComponent {
 
   public emailForm: FormGroup;
 
@@ -22,9 +22,6 @@ export class EmailModalComponent implements OnInit {
       email_address: ['', [Validators.required, this.email]],
       repeat_email_address: ['', [Validators.required, this.email]]
     }, {validator: this.match('email_address', 'repeat_email_address')});
-  }
-
-  ngOnInit() {
   }
 
   public onSubmit() {
