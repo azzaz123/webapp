@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { isPresent } from 'ngx-cookie/src/utils';
+import { UserService } from '../../../core/user/user.service';
 
 @Component({
   selector: 'tsl-email-modal',
@@ -11,7 +12,8 @@ export class EmailModalComponent implements OnInit {
 
   public emailForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private userService: UserService) {
     this.emailForm = fb.group({
       email_address: ['', [Validators.required, this.email]],
       repeat_email_address: ['', [Validators.required, this.email]]
@@ -21,9 +23,12 @@ export class EmailModalComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit() {
+  public onSubmit() {
     if (this.emailForm.valid) {
-      console.log('valid');
+      const email = this.emailForm.get('email_address').value;
+      this.userService.updateEmail(email).subscribe(() => {
+
+      });
     }
   }
 
