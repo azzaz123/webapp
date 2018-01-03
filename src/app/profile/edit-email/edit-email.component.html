@@ -1,1 +1,1 @@
-<input type="text" class="form-control" (click)="openModal()" [(ngModel)]="email" />
+<input #input type="text" class="form-control" (focus)="openModal(input)" [(ngModel)]="email" />

@@ -17,7 +17,8 @@ export class EditEmailComponent implements OnInit {
   ngOnInit() {
   }
 
-  openModal() {
+  openModal(element: HTMLElement) {
+    element.blur();
     this.modalService.open(EmailModalComponent, {windowClass: 'account-details'}).result.then((email: string) => {
       this.email = email;
     }, () => {
