@@ -246,7 +246,7 @@ export class TrackingService extends TrackingServiceMaster {
     type: TYPES_IDS.Tap
   };
   public static MYZONE_MENU_REVIEWS: TrackingEventBase = {
-    name: '000',
+    name: '609',
     category: CATEGORY_IDS.Menu,
     screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
