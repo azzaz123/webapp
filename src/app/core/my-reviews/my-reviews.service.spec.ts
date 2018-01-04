@@ -24,7 +24,7 @@ describe('MyReviewsService', () => {
     http = TestBed.get(HttpService);
   });
 
-  describe('myReviews', () => {
+  describe('getPaginationReviews', () => {
     let resp: MyReviewsData;
 
     beforeEach(() => {
@@ -34,7 +34,7 @@ describe('MyReviewsService', () => {
       });
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
 
-      service.myReviews(init).subscribe((data: MyReviewsData) => {
+      service.getPaginationReviews(init).subscribe((data: MyReviewsData) => {
         resp = data;
       });
     });
@@ -44,7 +44,7 @@ describe('MyReviewsService', () => {
     });
 
     it('should return an array of reviews', () => {
-      expect(resp.data[0]).toEqual(MOCK_REVIEWS[0]);
+      expect(resp.data).toEqual(MOCK_REVIEWS);
     });
   });
 });

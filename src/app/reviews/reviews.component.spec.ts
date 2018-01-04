@@ -1,13 +1,12 @@
-///<reference path="../../tests/review.fixtures.ts"/>
 import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReviewsComponent } from './reviews.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MyReviewsService } from "../core/my-reviews/my-reviews.service";
-import { Observable } from "rxjs/Observable";
-import { MOCK_REVIEWS } from "../../tests/review.fixtures";
+import { MyReviewsService } from '../core/my-reviews/my-reviews.service';
+import { Observable } from 'rxjs/Observable';
+import { MOCK_REVIEWS } from '../../tests/review.fixtures';
 import { MOCK_USER } from 'shield';
 import { UserService } from '../core/user/user.service';
-import {USER_INFO_RESPONSE} from "../../tests/user.fixtures";
+import { USER_INFO_RESPONSE } from '../../tests/user.fixtures';
 
 describe('ReviewsComponent', () => {
   let component: ReviewsComponent;
@@ -32,7 +31,7 @@ describe('ReviewsComponent', () => {
           },
           {
             provide: MyReviewsService, useValue: {
-              myReviews () {
+              getPaginationReviews () {
                 return Observable.of({data: MOCK_REVIEWS, init: 2});
               }
             }
@@ -55,21 +54,21 @@ describe('ReviewsComponent', () => {
 
     beforeEach(fakeAsync(() => {
       spyOn(component, 'getReviews').and.callThrough();
-      myReviewsServiceSpy = spyOn(myReviewsService, 'myReviews').and.callThrough();
+      myReviewsServiceSpy = spyOn(myReviewsService, 'getPaginationReviews').and.callThrough();
     }));
 
-    it('should call myReviews OnInit', () => {
+    it('should call getReviews OnInit', () => {
       component.ngOnInit();
 
       expect(component.getReviews).toHaveBeenCalled();
     });
 
-    it('should call myReviews with reviews length', () => {
+    it('should call getReviews with reviews length', () => {
       const itemLength = component.reviews.length;
 
       component.getReviews(true);
 
-      expect(myReviewsService.myReviews).toHaveBeenCalledWith(itemLength);
+      expect(myReviewsService.getPaginationReviews).toHaveBeenCalledWith(itemLength);
     });
 
     it('if append argument is true, current component.item should add ', () => {
@@ -96,15 +95,15 @@ describe('ReviewsComponent', () => {
     });
   });
 
-  describe('getUserReview', () => {
+  describe('getUserScore', () => {
     beforeEach(fakeAsync(() => {
-      spyOn(component, 'getUserReview').and.callThrough();
+      spyOn(component, 'getUserScore').and.callThrough();
       spyOn(userService, 'me').and.callThrough();
       spyOn(userService, 'getInfo').and.callThrough();
     }));
 
     it('should get the user score', () => {
-      component.getUserReview();
+      component.getUserScore();
 
       expect(userService.me).toHaveBeenCalled();
       expect(userService.getInfo).toHaveBeenCalled();

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MyReviews } from "../core/my-reviews/my-reviews";
-import { MyReviewsService } from "../core/my-reviews/my-reviews.service";
-import { MyReviewsData } from "../core/my-reviews/my-reviews-response.interface";
-import { UserService } from "../core/user/user.service";
-import { User } from "shield";
-import { UserInfoResponse } from "../core/user/user-info.interface";
+import { MyReviews } from '../core/my-reviews/my-reviews';
+import { MyReviewsService } from '../core/my-reviews/my-reviews.service';
+import { MyReviewsData } from '../core/my-reviews/my-reviews-response.interface';
+import { UserService } from '../core/user/user.service';
+import { User } from 'shield';
+import { UserInfoResponse } from '../core/user/user-info.interface';
 
 @Component({
   selector: 'tsl-reviews',
@@ -24,11 +24,11 @@ export class ReviewsComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit() {
-    this.getUserReview();
+    this.getUserScore();
     this.getReviews();
   }
 
-  public getUserReview(){
+  public getUserScore() {
     this.userService.me().subscribe((user: User) => {
       this.userService.getInfo(user.id).subscribe((info: UserInfoResponse) => {
         this.userScore = info.scoring_stars;
@@ -38,7 +38,7 @@ export class ReviewsComponent implements OnInit {
 
   public getReviews(append?: boolean) {
     this.loading = true;
-    this.myReviewsService.myReviews(this.reviews.length).subscribe((reviewsData: MyReviewsData) => {
+    this.myReviewsService.getPaginationReviews(this.reviews.length).subscribe((reviewsData: MyReviewsData) => {
       const reviews = reviewsData.data;
       this.init = reviewsData.init;
       this.reviews = append ? this.reviews.concat(reviews) : reviews;

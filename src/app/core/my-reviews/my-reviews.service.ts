@@ -18,12 +18,8 @@ export class MyReviewsService {
   constructor(private http: HttpService) {
   }
 
-  public myReviews(init: number): Observable<MyReviewsData> {
-    return this.getPaginationReviews(this.API_URL_v3_USER + '/me/reviews', init);
-  }
-
-  private getPaginationReviews(url: string, init): Observable<MyReviewsData> {
-    return this.http.get(url, {
+  public getPaginationReviews(init: number): Observable<MyReviewsData> {
+    return this.http.get(this.API_URL_v3_USER + '/me/reviews', {
         init: init
       })
       .map((r: Response) => {
@@ -42,9 +38,9 @@ export class MyReviewsService {
 
   private mapResponse(res: MyReviewsResponse[]): MyReviews[] {
     return res.map((reviewResponse: MyReviewsResponse) => {
-      const item = this.mapItem(reviewResponse);
-      const user = this.mapUser(reviewResponse);
-      const review = this.mapReview(reviewResponse);
+      const item: ReviewItem = this.mapItem(reviewResponse);
+      const user: User = this.mapUser(reviewResponse);
+      const review: Review = this.mapReview(reviewResponse);
 
       return new MyReviews(
         item,
