@@ -40,12 +40,10 @@ describe('RestrictInputDirective', () => {
       data: VALID
     });
 
-    fixture.detectChanges();
-
     expect(fixture.componentInstance.value).toBe(TEXT + VALID);
   });
 
-  it('should remove an invalid input', fakeAsync(() => {
+  it('should remove an invalid input', () => {
     const TEXT = 'hola';
     const INVALID = '😄';
 
@@ -56,6 +54,6 @@ describe('RestrictInputDirective', () => {
     });
 
     expect(fixture.componentInstance.value).toBe(TEXT);
-  }));
+  });
 
 });
