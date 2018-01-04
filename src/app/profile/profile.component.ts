@@ -98,6 +98,10 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  public openUnsubscribeModal() {
+
+  }
+
   private uploadPicture() {
     const url = 'api/v3/users/me/image';
     const uploadinput: UploadInput = {
