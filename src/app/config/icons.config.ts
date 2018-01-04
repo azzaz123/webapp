@@ -145,4 +145,6 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('car-type-4X4', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/4X4.svg'));
   mdIconRegistry.addSvgIcon('car-type-van', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/van.svg'));
   mdIconRegistry.addSvgIcon('car-type-others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/others.svg'));
+  mdIconRegistry.addSvgIcon('male', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/male.svg'));
+  mdIconRegistry.addSvgIcon('female', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/female.svg'));
 }

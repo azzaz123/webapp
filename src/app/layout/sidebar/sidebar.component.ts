@@ -1,7 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ProfileModalComponent } from './profile-modal/profile-modal.component';
 import { User } from 'shield';
 import { environment } from '../../../environments/environment';
 
@@ -16,7 +14,6 @@ export class SidebarComponent implements OnInit {
   public userUrl: string;
 
   constructor(private userService: UserService,
-              private modalService: NgbModal,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -32,14 +29,5 @@ export class SidebarComponent implements OnInit {
   public logout($event: any) {
     $event.preventDefault();
     this.userService.logout();
-  }
-
-  public openProfileModal($event: any) {
-    $event.preventDefault();
-    const modalRef: NgbModalRef = this.modalService.open(ProfileModalComponent, {
-      windowClass: 'profile',
-      backdrop: 'static'
-    });
-    modalRef.componentInstance.userUrl = this.userUrl;
   }
 }

@@ -19,9 +19,11 @@ export class UserAvatarComponent implements OnChanges {
   }
 
   ngOnChanges(changes?: any) {
-    this.avatar = this.user.image ? this.user.image.urls_by_size.medium : PLACEHOLDER_AVATAR;
-    if (environment.production || environment.name === 'beta') {
-      this.avatar = this.avatar.replace(/^http:\/\//i, 'https://');
+    if (this.user) {
+      this.avatar = this.user.image ? this.user.image.urls_by_size.medium : PLACEHOLDER_AVATAR;
+      if (environment.production || environment.name === 'beta') {
+        this.avatar = this.avatar.replace(/^http:\/\//i, 'https://');
+      }
     }
     this.fallback = PLACEHOLDER_AVATAR;
   }

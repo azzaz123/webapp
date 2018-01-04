@@ -1,10 +1,11 @@
-/* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SidebarComponent } from './sidebar.component';
-import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
 import { User, USER_DATA } from 'shield';
+import { ProfileComponent } from './profile.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { UserService } from '../core/user/user.service';
+import { Observable } from 'rxjs/Observable';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -20,38 +21,44 @@ const MOCK_USER = new User(
   USER_DATA.online,
   USER_DATA.type,
   USER_DATA.received_reports,
-  USER_DATA.web_slug
+  USER_DATA.web_slug,
+  USER_DATA.first_name,
+  USER_DATA.last_name,
+  USER_DATA.birth_date,
+  USER_DATA.gender
 );
 
-describe('SidebarComponent', () => {
-  let component: SidebarComponent;
-  let fixture: ComponentFixture<SidebarComponent>;
+describe('ProfileComponent', () => {
+  let component: ProfileComponent;
+  let fixture: ComponentFixture<ProfileComponent>;
   let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SidebarComponent],
+      imports: [
+        ReactiveFormsModule,
+        NgbButtonsModule
+      ],
       providers: [
         {
           provide: UserService, useValue: {
-          logout() {
-          },
-          me(): Observable<User> {
+          me() {
             return Observable.of(MOCK_USER);
           }
-        },
+        }
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         }
       ],
+      declarations: [ ProfileComponent ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SidebarComponent);
+    fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
     spyOn(userService, 'me').and.callThrough();
@@ -68,24 +75,11 @@ describe('SidebarComponent', () => {
     it('should set userUrl', () => {
       expect(component.userUrl).toBe('https://www.wallapop.com/user/webslug-l1kmzn82zn3p');
     });
-  });
-
-  describe('logout', () => {
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {preventDefault: preventDefault};
-
-    beforeEach(() => {
-      spyOn(userService, 'logout');
-      component.logout(event);
-    });
-
-    it('should prevent event', () => {
-      expect(preventDefault).toHaveBeenCalled();
-    });
-
-    it('should logout', () => {
-      expect(userService.logout).toHaveBeenCalled();
+    it('should set profileForm with user data', () => {
+      expect(component.profileForm.get('first_name').value).toBe(USER_DATA.first_name);
+      expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
+      expect(component.profileForm.get('birth_date').value).toBe('1987-02-10');
+      expect(component.profileForm.get('gender').value).toBe('M');
     });
   });
-
 });
