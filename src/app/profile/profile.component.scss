@@ -22,6 +22,10 @@ $form-control-height: 42px;
     .public-profile {
       font-size: $font-size-S;
     }
+    .btn-primary {
+      float: right;
+      padding: 10px 30px;
+    }
   }
   .profile-pic {
     padding-bottom: $spacing-L;

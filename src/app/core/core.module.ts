@@ -10,6 +10,7 @@ import { ConversationService } from './conversation/conversation.service';
 import { EventService } from './event/event.service';
 import { TrackingService } from './tracking/tracking.service';
 import { TrackingModule } from './tracking/tracking.module';
+import { I18nService } from './i18n/i18n.service';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ export class CoreModule {
         UserService,
         ConversationService,
         EventService,
-        TrackingService
+        TrackingService,
+        I18nService
       ]
     };
   }
