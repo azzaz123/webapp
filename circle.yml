@@ -27,7 +27,7 @@ deployment:
       - npm run builddocker
       - docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:ft-$BRANCH .
       - $(aws ecr get-login --region eu-west-1)
-      - docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$BRANCH"
+      - docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:ft-$BRANCH"
   beta:
     tag: /beta-.*/
     commands:
