@@ -1,0 +1,25 @@
+@import "../../../style/_common.scss";
+
+$modal-border-radius: 20px;
+
+.header {
+  background: $corporate url(/assets/images/unsubscribe.svg) no-repeat center;
+  height: 230px;
+  border-top-left-radius: $modal-border-radius;
+  border-top-right-radius: $modal-border-radius;
+}
+
+.modal-body {
+  text-align: center;
+  h1 {
+    font-size: $font-size-M;
+    font-weight: bold;
+    margin: 5px;
+  }
+  p {
+    margin: 0;
+    margin-bottom: 25px;
+    color: $grey-300;
+    font-size: $font-size;
+  }
+}
