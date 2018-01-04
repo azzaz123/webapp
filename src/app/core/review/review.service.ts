@@ -1,32 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { MyReviewsResponse, MyReviewsData } from './my-reviews-response.interface';
+import { ReviewResponse, ReviewsData } from './review-response.interface';
 import { Response } from '@angular/http';
 import {
   HttpService,
   User
 } from 'shield';
-import { MyReviews } from './my-reviews';
+import { Review } from './review';
 import { ReviewItem } from './review-item';
-import { Review } from "./review";
 
 @Injectable()
-export class MyReviewsService {
+export class ReviewService {
 
   private API_URL_v3_USER: string = 'api/v3/users';
   
   constructor(private http: HttpService) {
   }
 
-  public getPaginationReviews(init: number): Observable<MyReviewsData> {
+  public getPaginationReviews(init: number): Observable<ReviewsData> {
     return this.http.get(this.API_URL_v3_USER + '/me/reviews', {
         init: init
       })
       .map((r: Response) => {
-          const res: MyReviewsResponse[] = r.json();
+          const res: ReviewResponse[] = r.json();
           const nextPage: string = r.headers.get('x-nextpage');
           const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
-          const data: MyReviews[] = this.mapResponse(res);
+          const data: Review[] = this.mapResponse(res);
 
           return {
             data: data,
@@ -36,30 +35,23 @@ export class MyReviewsService {
       )
   }
 
-  private mapResponse(res: MyReviewsResponse[]): MyReviews[] {
-    return res.map((reviewResponse: MyReviewsResponse) => {
+  private mapResponse(res: ReviewResponse[]): Review[] {
+    return res.map((reviewResponse: ReviewResponse) => {
       const item: ReviewItem = this.mapItem(reviewResponse);
       const user: User = this.mapUser(reviewResponse);
-      const review: Review = this.mapReview(reviewResponse);
 
-      return new MyReviews(
-        item,
-        review,
+      return new Review(
+        reviewResponse.review.date,
+        reviewResponse.review.scoring,
         reviewResponse.type,
+        reviewResponse.review.comments,
+        item,
         user
       );
     });
   }
 
-  private mapReview(reviewResponse: MyReviewsResponse): Review {
-    return new Review(
-      reviewResponse.review.comments,
-      reviewResponse.review.date,
-      reviewResponse.review.scoring
-    );
-  }
-
-  private mapItem(reviewResponse: MyReviewsResponse): ReviewItem {
+  private mapItem(reviewResponse: ReviewResponse): ReviewItem {
     if (!reviewResponse.item) { return null; }
 
     return new ReviewItem(
@@ -71,7 +63,7 @@ export class MyReviewsService {
     );
   }
 
-  private mapUser(reviewResponse: MyReviewsResponse): User {
+  private mapUser(reviewResponse: ReviewResponse): User {
     return new User(
       reviewResponse.user.id,
       reviewResponse.user.micro_name,

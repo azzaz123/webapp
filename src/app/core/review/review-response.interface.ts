@@ -1,6 +1,7 @@
-import { MyReviews } from "./my-reviews";
+import { Review } from "./review";
 
-export interface MyReviewsResponse {
+export interface ReviewResponse {
+  type: string;
   item: {
     category_id: number;
     id: string;
@@ -13,7 +14,6 @@ export interface MyReviewsResponse {
     date: number;
     scoring: number;
   };
-  type: string;
   user: {
     id: string;
     image: ReviewImageResponse;
@@ -22,8 +22,8 @@ export interface MyReviewsResponse {
   };
 }
 
-export interface MyReviewsData {
-  data: MyReviews[];
+export interface ReviewsData {
+  data: Review[];
   init: number;
 }
 

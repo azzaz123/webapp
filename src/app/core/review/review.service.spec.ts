@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { MyReviewsService } from './my-reviews.service';
+import { ReviewService } from './review.service';
 import { HttpService, TEST_HTTP_PROVIDERS } from 'shield';
 import { Observable } from "rxjs/Observable";
-import { MyReviewsData } from "./my-reviews-response.interface";
-import { MY_REVIEWS_RESPONSE, MOCK_REVIEWS } from "../../../tests/review.fixtures";
+import { ReviewsData } from "./review-response.interface";
+import { REVIEWS_RESPONSE, MOCK_REVIEWS } from "../../../tests/review.fixtures";
 import { Response, ResponseOptions, Headers } from '@angular/http';
 
-describe('MyReviewsService', () => {
+describe('ReviewService', () => {
 
-  let service: MyReviewsService;
+  let service: ReviewService;
   let http : HttpService;
   const API_URL_v3_USER: string = 'api/v3/users/me/reviews';
   const init: number = 1;
@@ -16,25 +16,25 @@ describe('MyReviewsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        MyReviewsService,
+        ReviewService,
         ...TEST_HTTP_PROVIDERS
       ]
     });
-    service = TestBed.get(MyReviewsService);
+    service = TestBed.get(ReviewService);
     http = TestBed.get(HttpService);
   });
 
   describe('getPaginationReviews', () => {
-    let resp: MyReviewsData;
+    let resp: ReviewsData;
 
     beforeEach(() => {
       const res: ResponseOptions = new ResponseOptions({
-        body: JSON.stringify(MY_REVIEWS_RESPONSE),
+        body: JSON.stringify(REVIEWS_RESPONSE),
         headers: new Headers({'x-nextpage': 'init=1'})
       });
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
 
-      service.getPaginationReviews(init).subscribe((data: MyReviewsData) => {
+      service.getPaginationReviews(init).subscribe((data: ReviewsData) => {
         resp = data;
       });
     });

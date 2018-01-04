@@ -1,7 +1,7 @@
 import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReviewsComponent } from './reviews.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MyReviewsService } from '../core/my-reviews/my-reviews.service';
+import { ReviewService } from '../core/review/review.service';
 import { Observable } from 'rxjs/Observable';
 import { MOCK_REVIEWS } from '../../tests/review.fixtures';
 import { MOCK_USER } from 'shield';
@@ -11,7 +11,7 @@ import { USER_INFO_RESPONSE } from '../../tests/user.fixtures';
 describe('ReviewsComponent', () => {
   let component: ReviewsComponent;
   let fixture: ComponentFixture<ReviewsComponent>;
-  let myReviewsService: MyReviewsService;
+  let reviewService: ReviewService;
   let userService: UserService;
   let myReviewsServiceSpy: jasmine.Spy;
 
@@ -30,7 +30,7 @@ describe('ReviewsComponent', () => {
             }
           },
           {
-            provide: MyReviewsService, useValue: {
+            provide: ReviewService, useValue: {
               getPaginationReviews () {
                 return Observable.of({data: MOCK_REVIEWS, init: 2});
               }
@@ -45,7 +45,7 @@ describe('ReviewsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ReviewsComponent);
     userService = TestBed.get(UserService);
-    myReviewsService = TestBed.get(MyReviewsService);
+    reviewService = TestBed.get(ReviewService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -54,7 +54,7 @@ describe('ReviewsComponent', () => {
 
     beforeEach(fakeAsync(() => {
       spyOn(component, 'getReviews').and.callThrough();
-      myReviewsServiceSpy = spyOn(myReviewsService, 'getPaginationReviews').and.callThrough();
+      myReviewsServiceSpy = spyOn(reviewService, 'getPaginationReviews').and.callThrough();
     }));
 
     it('should call getReviews OnInit', () => {
@@ -68,7 +68,7 @@ describe('ReviewsComponent', () => {
 
       component.getReviews(true);
 
-      expect(myReviewsService.getPaginationReviews).toHaveBeenCalledWith(itemLength);
+      expect(reviewService.getPaginationReviews).toHaveBeenCalledWith(itemLength);
     });
 
     it('if append argument is true, current component.item should add ', () => {

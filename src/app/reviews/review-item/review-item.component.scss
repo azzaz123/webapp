@@ -50,8 +50,7 @@
         border: 4px solid $white;
       }
     }
-    .purchase-image {
-      background-color: $corporate;
+    .review-image {
       width: 80px;
       height: 80px;
       border-radius: $border-radius;
@@ -67,6 +66,9 @@
       md-icon {
         @include square(50px);
       }
+    }
+    .purchase {
+      background-color: $corporate;
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MyReviews } from "../../core/my-reviews/my-reviews";
+import { Review } from "../../core/review/review";
 import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, ITEM_BASE_PATH } from 'shield';
 import { environment } from "../../../environments/environment";
 import { CategoryService } from '../../core/category/category.service';
@@ -12,7 +12,7 @@ import { CategoryResponse } from "../../core/category/category-response.interfac
 })
 export class ReviewItemComponent implements OnInit {
 
-  @Input() review: MyReviews;
+  @Input() review: Review;
   public fallback: string;
   public itemWebLink: string;
   public userWebSlug: string;
