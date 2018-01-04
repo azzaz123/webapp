@@ -49,6 +49,21 @@ $form-control-height: 42px;
     tsl-user-avatar {
       margin-right: $spacing;
     }
+    .btn-upload {
+      background-color: $grey-50;
+      border: solid 1px $grey-100;
+      color: $grey-600;
+      font-size: $font-size-S;
+      padding: $spacing-S $spacing;
+      margin-left: 43px;
+      cursor: pointer;
+      &:hover {
+        background-color: $grey-100;
+      }
+      input {
+        display: none;
+      }
+    }
   }
   .form-group {
     label {
