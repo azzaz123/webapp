@@ -277,7 +277,7 @@ describe('DropAreaComponent', () => {
         let event: boolean;
         spyOn(errorsService, 'i18nError');
         component.onError.subscribe(() => {
-          event = true
+          event = true;
         });
         component['onUploadDone']({
           type: 'done',
