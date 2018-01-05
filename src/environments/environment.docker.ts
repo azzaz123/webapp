@@ -6,5 +6,6 @@ export const environment: any = {
   wsUrl: 'wss://mongooseim:5282/ws-xmpp',
   siteUrl: 'https://es.dockXXX.wallapp.com/',
   appboy: '47b54d36-7a86-4c05-9bfc-2d7b8aadd1ce',
+  cookieSuffix: 'dockXXX',
   clickStreamURL: 'https://collector.wallapop.com/clickstream.json/sendEvents'
 };
