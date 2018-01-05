@@ -68,7 +68,8 @@ export class I18nService {
       formErrors: 'There are some errors!',
       userEdited: 'Your data has been edited correctly',
       notValidPassword: 'Current password is not valid',
-      passwordMatch: 'Passwords don\'t match'
+      passwordMatch: 'Passwords don\'t match',
+      passwordMinLength: 'Password length should be at least 8 characters'
     },
     es: {
       daysMomentConfig: {
@@ -134,7 +135,8 @@ export class I18nService {
       formErrors: 'Hay unos errores!',
       userEdited: 'Tus datos se han editado correctamente',
       notValidPassword: 'La contraseña corriente no es valida',
-      passwordMatch: 'Las contraseñas no coinciden'
+      passwordMatch: 'Las contraseñas no coinciden',
+      passwordMinLength: 'La contraseña tiene que ser de almenos 8 caracteres'
     }
   };
 
