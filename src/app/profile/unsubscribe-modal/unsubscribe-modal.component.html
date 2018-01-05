@@ -1,7 +1,33 @@
-<div class="header"></div>
-<div class="modal-body">
+<div class="header" [hidden]="step === 2"></div>
+<div class="modal-body" [hidden]="step === 2">
 
-  <h1 i18>¿SEGURO QUE QUIERES HACERLO?</h1>
-  <p i18n>Si te das de baja, probablemente acaben despidiendo a alguno de nuestros compañeros de trabajo. Tio, piénsatelo, haznos ése favor.</p>
+  <h1 i18>¿Seguro que quieres darte de baja?</h1>
+  <p i18n>Nunca es tarde para cambiar de opinión, ¿eh?<br />Piensa que el equipo estará muy triste si te vas :(</p>
 
+  <button class="btn btn-secondary" (click)="step = 2" i18n>Sí, quiero darme de baja</button>
+  <button class="btn btn-secondary" (click)="activeModal.dismiss()" i18n>No, va, quiero seguir con vosotros</button>
+
+</div>
+
+<div class="modal-body" [hidden]="step === 1">
+  <div class="modal-close" (click)="activeModal.dismiss()">
+    <md-icon svgIcon="cross"></md-icon>
+  </div>
+  <h1 class="title" i18>¿Podrías decirnos el motivo por el que quieres darte de baja? Descuida, no se lo diremos a nadie</h1>
+  <button class="btn btn-secondary btn-block btn-reason"
+          *ngFor="let reason of reasons"
+          [ngClass]="{selected: selectedReason === reason.id}"
+          (click)="selectedReason = reason.id">{{reason.title}}</button>
+
+  <p class="custom-reason">
+    <span class="float-left" i18n>El motivo es...</span>
+    <span class="float-right counter">{{customReason?.length || 0}}/650</span>
+  </p>
+  <textarea i18n-placeholder placeholder="Cuéntanos, que te ha ocurrido…"
+            class="form-control"
+            [(ngModel)]="customReason"
+            maxlength="650"></textarea>
+  <div class="text-right">
+    <button class="btn btn-primary" [disabled]="!selectedReason && !customReason" (click)="send()" i18n>Send</button>
+  </div>
 </div>
