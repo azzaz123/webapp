@@ -27,6 +27,28 @@
   margin-bottom: $spacing-XL;
 }
 
+.reviews-empty-state {
+  border-top: 1px solid $grey-50;
+  margin: 20px 10px;
+  padding-top: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  & .mat-icon {
+    width: 50%;
+    height: unset;
+  }
+  & .message {
+    width: 41%;
+    color: $grey-500;
+    font-size: $font-size-LL;
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
+}
+
 :host /deep/ .header-rating {
   md-icon {
     width: 22px;
