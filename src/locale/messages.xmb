@@ -215,13 +215,14 @@
   <msg id="8134597337896146328"><source>app/profile/profile.component.ts:69</source>Product location:</msg>
   <msg id="6631334172623029500"><source>app/profile/profile.component.ts:79</source>Email:</msg>
   <msg id="6865009229971482891"><source>app/profile/profile.component.ts:85</source>Password:</msg>
-  <msg id="1565414593431904012"><source>app/profile/edit-email/email-modal/email-modal.component.ts:2</source>Change your email address</msg>
-  <msg id="8925373988407059995"><source>app/profile/edit-email/email-modal/email-modal.component.ts:3</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:3</source>Enter your details below</msg>
+  <msg id="4284869171317534738"><source>app/profile/edit-email/email-modal/email-modal.component.ts:2</source>New email?</msg>
+  <msg id="4200745758819613954"><source>app/profile/edit-email/email-modal/email-modal.component.ts:3</source>You can update it now</msg>
   <msg id="6357315990612654699"><source>app/profile/edit-email/email-modal/email-modal.component.ts:7</source>Current email</msg>
   <msg id="264068562357780835"><source>app/profile/edit-email/email-modal/email-modal.component.ts:11</source><source>app/profile/edit-email/email-modal/email-modal.component.ts:12</source>New email</msg>
   <msg id="3000005804987112527"><source>app/profile/edit-email/email-modal/email-modal.component.ts:14</source>Change email</msg>
   <msg id="663479896495999030"><source>app/profile/edit-email/email-modal/email-modal.component.ts:16</source>In order to update your email address you will need to confirm it. Go to your inbox to confirm the updated information.</msg>
-  <msg id="1230331341407897186"><source>app/profile/edit-password/password-modal/password-modal.component.ts:2</source>Change your Password</msg>
+  <msg id="9071783025483844562"><source>app/profile/edit-password/password-modal/password-modal.component.ts:2</source>Update your password</msg>
+  <msg id="3978297542992522451"><source>app/profile/edit-password/password-modal/password-modal.component.ts:3</source>Your safety is a must! ;)</msg>
   <msg id="5340498030552368470"><source>app/profile/edit-password/password-modal/password-modal.component.ts:7</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:8</source>Current password</msg>
   <msg id="3588415639242079458"><source>app/profile/edit-password/password-modal/password-modal.component.ts:11</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:12</source>New password</msg>
   <msg id="8656126574213649581"><source>app/profile/edit-password/password-modal/password-modal.component.ts:15</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:16</source>Confirm new password</msg>
