@@ -1,0 +1,8 @@
+<div class="page-content" #scrollPanel>
+  <div class="container upload-page">
+    <tsl-upload-product *ngIf="item.categoryId && item.categoryId !== 100"
+                        [item]="item"
+                        (onValidationError)="onValidationError()">
+    </tsl-upload-product>
+  </div>
+</div>

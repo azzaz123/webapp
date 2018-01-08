@@ -32,6 +32,9 @@
       <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
         <md-icon svgIcon="reserved"></md-icon>
       </button>
+      <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]">
+        <md-icon svgIcon="edit"></md-icon>
+      </button>
       <button class="btn-delete" (click)="deleteItem(item)">
         <md-icon svgIcon="delete"></md-icon>
       </button>
