@@ -78,8 +78,22 @@ export class UserService extends UserServiceMaster {
     })
     .map((r: Response) => r.json())
   }
+
   public edit(data: UserData): Observable<any> {
     return this.http.post(this.API_URL_V3 + '/me', data);
+  }
+
+  public updateEmail(email: string): Observable<any> {
+    return this.http.post(this.API_URL_V3 + '/me/email', {
+      email_address: email
+    });
+  }
+
+  public updatePassword(oldPassword: string, newPassword: string): Observable<any> {
+    return this.http.post(this.API_URL_V3 + '/me/password', {
+      old_password: oldPassword,
+      new_password: newPassword
+    });
   }
 
 }
