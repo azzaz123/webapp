@@ -2,12 +2,12 @@
   <div class="container">
     <div class="box">
       <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-        <div class="box-header">
-          <button type="submit" class="btn btn-primary" i18n>Save</button>
-          <h1 i18n>Profile settings</h1>
-          <a class="public-profile" [href]="userUrl" target="_blank" i18n>View my public profile</a>
-        </div>
         <div class="box-content">
+          <div class="box-header">
+            <button type="submit" class="btn btn-primary" i18n>Save</button>
+            <h1 i18n>Profile settings</h1>
+            <a class="public-profile" [href]="userUrl" target="_blank" i18n>View my public profile</a>
+          </div>
           <div class="row profile-pic align-items-center">
             <div class="col-4">
               <tsl-user-avatar [user]="user" [imageUrl]="user?.image.urls_by_size.medium" size="80"></tsl-user-avatar>
