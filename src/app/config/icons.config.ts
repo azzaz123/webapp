@@ -91,7 +91,7 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('wall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wall.svg'));
   mdIconRegistry.addSvgIcon('check', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/check.svg'));
   mdIconRegistry.addSvgIcon('navigation_catalog', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_catalog.svg'));
-  mdIconRegistry.addSvgIcon('navigation_upload', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_upload.svg'));
+  mdIconRegistry.addSvgIcon('navigation_messages', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_messages.svg'));
   mdIconRegistry.addSvgIcon('navigation_favorites', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_favorites.svg'));
   mdIconRegistry.addSvgIcon('navigation_logout', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_logout.svg'));
   mdIconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/delete.svg'));
@@ -145,4 +145,6 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('car-type-4X4', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/4X4.svg'));
   mdIconRegistry.addSvgIcon('car-type-van', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/van.svg'));
   mdIconRegistry.addSvgIcon('car-type-others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/others.svg'));
+  mdIconRegistry.addSvgIcon('male', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/male.svg'));
+  mdIconRegistry.addSvgIcon('female', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/female.svg'));
 }

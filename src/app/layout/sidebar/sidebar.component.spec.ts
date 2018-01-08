@@ -3,8 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SidebarComponent } from './sidebar.component';
 import { UserService } from '../../core/user/user.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProfileModalComponent } from './profile-modal/profile-modal.component';
 import { Observable } from 'rxjs/Observable';
 import { User, USER_DATA } from 'shield';
 
@@ -29,8 +27,6 @@ describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let userService: UserService;
-  let modalService: NgbModal;
-  let componentInstance: any = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,15 +43,6 @@ describe('SidebarComponent', () => {
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
-        },
-        {
-          provide: NgbModal, useValue: {
-          open() {
-            return {
-              componentInstance: componentInstance
-            };
-          }
-        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -67,7 +54,6 @@ describe('SidebarComponent', () => {
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
-    modalService = TestBed.get(NgbModal);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
   });
@@ -102,27 +88,4 @@ describe('SidebarComponent', () => {
     });
   });
 
-  describe('openProfileModal', () => {
-    const preventDefault = jasmine.createSpy('preventDefault');
-    const event = {preventDefault: preventDefault};
-
-    it('should prevent event', () => {
-      component.openProfileModal(event);
-
-      expect(preventDefault).toHaveBeenCalled();
-    });
-
-    it('should open modal', () => {
-      spyOn(modalService, 'open').and.callThrough();
-      component.userUrl = 'url';
-
-      component.openProfileModal(event);
-
-      expect(modalService.open).toHaveBeenCalledWith(ProfileModalComponent,{
-        windowClass: 'profile',
-        backdrop: 'static'
-      });
-      expect(componentInstance.userUrl).toBe('url');
-    });
-  });
 });

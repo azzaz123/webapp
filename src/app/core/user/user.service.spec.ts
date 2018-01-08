@@ -16,12 +16,13 @@ import {
   User,
   USER_ID,
   USER_LOCATION,
-  Location
+  Location,
+  USER_EMAIL
 } from 'shield';
 import { HaversineService } from 'ng2-haversine';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { USER_INFO_RESPONSE, USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures';
+import { USER_EDIT_DATA, USER_INFO_RESPONSE, USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures';
 import { UserInfoResponse } from './user-info.interface';
 
 describe('UserService', () => {
@@ -164,10 +165,47 @@ describe('UserService', () => {
       });
       expect(http.put).toHaveBeenCalledWith('api/v3/users/me/location', {
         latitude: USER_LOCATION_COORDINATES.latitude,
-        longitude: USER_LOCATION_COORDINATES.longitude,
-        fullAddress: USER_LOCATION_COORDINATES.name
+        longitude: USER_LOCATION_COORDINATES.longitude
       });
       expect(resp).toEqual(USER_LOCATION);
+    });
+  });
+
+  describe('edit', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: ''});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      service.edit(USER_EDIT_DATA).subscribe();
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/me', USER_EDIT_DATA);
+    });
+  });
+
+  describe('updateEmail', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: ''});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+
+      service.updateEmail(USER_EMAIL).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/email', {
+        email_address: USER_EMAIL
+      });
+    });
+  });
+
+  describe('updatePassword', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: ''});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      const OLD_PASSWORD = 'old';
+      const NEW_PASSWORD = 'new';
+
+      service.updatePassword(OLD_PASSWORD, NEW_PASSWORD).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/password', {
+        old_password: OLD_PASSWORD,
+        new_password: NEW_PASSWORD
+      });
     });
   });
 

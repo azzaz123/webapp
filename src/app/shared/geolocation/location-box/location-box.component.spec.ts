@@ -63,7 +63,7 @@ describe('LocationBoxComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(component.form.get('location.address').value).toBe(USER_LOCATION.full_address);
+      expect(component.form.get('location.address').value).toBe(USER_LOCATION.title);
       expect(component.form.get('location.latitude').value).toBe(USER_LOCATION.approximated_latitude);
       expect(component.form.get('location.longitude').value).toBe(USER_LOCATION.approximated_longitude);
     }));

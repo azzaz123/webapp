@@ -17,6 +17,7 @@ import { Response } from '@angular/http';
 import { environment } from '../../../environments/environment';
 import { UserInfoResponse } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
+import { UserData } from './user-data.interface';
 
 @Injectable()
 export class UserService extends UserServiceMaster {
@@ -73,10 +74,26 @@ export class UserService extends UserServiceMaster {
   public updateLocation(coordinates: Coordinate): Observable<Location> {
     return this.http.put(this.API_URL_V3 + '/me/location', {
       latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
-      fullAddress: coordinates.name
+      longitude: coordinates.longitude
     })
     .map((r: Response) => r.json())
+  }
+
+  public edit(data: UserData): Observable<any> {
+    return this.http.post(this.API_URL_V3 + '/me', data);
+  }
+
+  public updateEmail(email: string): Observable<any> {
+    return this.http.post(this.API_URL_V3 + '/me/email', {
+      email_address: email
+    });
+  }
+
+  public updatePassword(oldPassword: string, newPassword: string): Observable<any> {
+    return this.http.post(this.API_URL_V3 + '/me/password', {
+      old_password: oldPassword,
+      new_password: newPassword
+    });
   }
 
 }

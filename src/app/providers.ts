@@ -1,12 +1,13 @@
 import { InjectionToken, Provider } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
-import { AccessTokenService, ConversationService, UserService, ItemService, EventService, TrackingService } from 'shield';
+import { AccessTokenService, ConversationService, UserService, ItemService, EventService, TrackingService, I18nService } from 'shield';
 import { AccessTokenService as CustomAccessTokenService } from './core/user/access-token.service';
 import { ItemService as CustomItemService } from './core/item/item.service';
 import { ConversationService as CustomConversationService } from './core/conversation/conversation.service';
 import { UserService as CustomUserService } from './core/user/user.service';
 import { EventService as CustomEventService } from './core/event/event.service';
 import { TrackingService as CustomTrackingService } from './core/tracking/tracking.service';
+import { I18nService as CustomI18nService } from './core/i18n/i18n.service';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -38,6 +39,10 @@ export const PROVIDERS: Provider[] = [
   {
     provide: TrackingService,
     useExisting: CustomTrackingService
+  },
+  {
+    provide: I18nService,
+    useExisting: CustomI18nService
   }
 ];
 
