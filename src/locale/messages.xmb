@@ -34,14 +34,14 @@
   <msg id="5118689036165223498"><source>app/chat/modals/unblock-user/unblock-user.component.ts:2</source>Unblock user</msg>
   <msg id="2565755719057925105"><source>app/chat/modals/unblock-user/unblock-user.component.ts:3</source>You&apos;ll be able to send or receive messages from this user again. Do you wish to continue?</msg>
   <msg id="4859202148272511129"><source>app/chat/modals/unblock-user/unblock-user.component.ts:7</source>Unblock</msg>
-  <msg id="2711435905501432474"><source>app/chat/chat.component.ts:28</source>Report this Listing</msg>
-  <msg id="5918739414324010673"><source>app/chat/chat.component.ts:29</source>Report this User</msg>
-  <msg id="3909560892838036974"><source>app/chat/chat.component.ts:30</source>Block this User</msg>
-  <msg id="7240635163184231751"><source>app/chat/chat.component.ts:31</source>Unblock this User</msg>
-  <msg id="3437274703198746531"><source>app/chat/chat.component.ts:47,48</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+  <msg id="2711435905501432474"><source>app/chat/chat.component.ts:27</source>Report this Listing</msg>
+  <msg id="5918739414324010673"><source>app/chat/chat.component.ts:28</source>Report this User</msg>
+  <msg id="3909560892838036974"><source>app/chat/chat.component.ts:29</source>Block this User</msg>
+  <msg id="7240635163184231751"><source>app/chat/chat.component.ts:30</source>Unblock this User</msg>
+  <msg id="3437274703198746531"><source>app/chat/chat.component.ts:46,47</source>Choose a conversation<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
         from the list on the left</msg>
-  <msg id="3325766019344626759"><source>app/chat/chat.component.ts:49</source>There are no messages</msg>
-  <msg id="6334569300046707546"><source>app/chat/chat.component.ts:50,51</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
+  <msg id="3325766019344626759"><source>app/chat/chat.component.ts:48</source>There are no messages</msg>
+  <msg id="6334569300046707546"><source>app/chat/chat.component.ts:49,50</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
         Try again later.</msg>
   <msg id="4896863464728200563"><source>app/chat/input/input.component.ts:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.ts:2</source>Waiting for network...</msg>
@@ -67,7 +67,7 @@
   <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
   <msg id="6543433128416987560"><source>app/core/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="8212177249756365917"><source>app/core/item/item-cart-favorite/item-cart-favorite.component.ts:11</source> Remove </msg>
-  <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:31</source>Messages</msg>
+  <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:31</source><source>app/layout/sidebar/sidebar.component.ts:19</source>Messages</msg>
   <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
   <msg id="8806073135680763560"><source>app/chat/message/review-modal/review-modal.component.ts:3</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="4650730844441578299"><source>app/chat/message/review-modal/review-modal.component.ts:4</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:36</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
@@ -85,12 +85,8 @@
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.ts:36</source>My Zone</msg>
   <msg id="4631973437945665426"><source>app/layout/topbar/topbar.component.ts:41</source>List it</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
-  <msg id="5004693703954133084"><source>app/layout/sidebar/profile-modal/profile-modal.component.ts:7</source>Work in progress!</msg>
-  <msg id="2137395090058746678"><source>app/layout/sidebar/profile-modal/profile-modal.component.ts:8</source>Editing your profile through our website will be available sooner than expected. Meanwhile, do you want to see how your profile looks?</msg>
-  <msg id="2320775595188539431"><source>app/layout/sidebar/profile-modal/profile-modal.component.ts:9</source>Go to My profile</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:5</source>Profile</msg>
   <msg id="3825726981798982045"><source>app/layout/sidebar/sidebar.component.ts:12</source>My Catalog</msg>
-  <msg id="6932865105766151309"><source>app/layout/sidebar/sidebar.component.ts:19</source>Upload</msg>
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:26</source>Favorites</msg>
   <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:33</source>Logout</msg>
   <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source>Congratulations</msg>
@@ -204,4 +200,30 @@
   <msg id="6822624572232933913"><source>app/catalog/upload/category-selector/category-selector.component.ts:31</source>My services</msg>
   <msg id="4895100071976641944"><source>app/catalog/upload/category-selector/category-selector.component.ts:40</source>A property</msg>
   <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:46</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
+  <msg id="3768927257183755959"><source>app/profile/profile.component.ts:7</source>Save</msg>
+  <msg id="9032739290449539063"><source>app/profile/profile.component.ts:8</source>Your info</msg>
+  <msg id="7022993325750262876"><source>app/profile/profile.component.ts:9</source>View my public profile</msg>
+  <msg id="438622500917182822"><source>app/profile/profile.component.ts:15</source>Change your profile picture</msg>
+  <msg id="742511623287973747"><source>app/profile/profile.component.ts:16</source>This is the picture linked to your account</msg>
+  <msg id="1897498190172236951"><source>app/profile/profile.component.ts:27</source>Upload picture</msg>
+  <msg id="529882100731018983"><source>app/profile/profile.component.ts:34</source>First Name:</msg>
+  <msg id="6335971540734973333"><source>app/profile/profile.component.ts:40</source>Last Name:</msg>
+  <msg id="7338814826142544882"><source>app/profile/profile.component.ts:46</source>Date of birth:</msg>
+  <msg id="6283914624769804238"><source>app/profile/profile.component.ts:52</source>Gender:</msg>
+  <msg id="8012344910054029733"><source>app/profile/profile.component.ts:58</source>Male</msg>
+  <msg id="5667840900782067941"><source>app/profile/profile.component.ts:63</source>Female</msg>
+  <msg id="8134597337896146328"><source>app/profile/profile.component.ts:69</source>Product location:</msg>
+  <msg id="6631334172623029500"><source>app/profile/profile.component.ts:79</source>Email:</msg>
+  <msg id="6865009229971482891"><source>app/profile/profile.component.ts:85</source>Password:</msg>
+  <msg id="1565414593431904012"><source>app/profile/edit-email/email-modal/email-modal.component.ts:2</source>Change your email address</msg>
+  <msg id="8925373988407059995"><source>app/profile/edit-email/email-modal/email-modal.component.ts:3</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:3</source>Enter your details below</msg>
+  <msg id="6357315990612654699"><source>app/profile/edit-email/email-modal/email-modal.component.ts:7</source>Current email</msg>
+  <msg id="264068562357780835"><source>app/profile/edit-email/email-modal/email-modal.component.ts:11</source><source>app/profile/edit-email/email-modal/email-modal.component.ts:12</source>New email</msg>
+  <msg id="3000005804987112527"><source>app/profile/edit-email/email-modal/email-modal.component.ts:14</source>Change email</msg>
+  <msg id="663479896495999030"><source>app/profile/edit-email/email-modal/email-modal.component.ts:16</source>In order to update your email address you will need to confirm it. Go to your inbox to confirm the updated information.</msg>
+  <msg id="1230331341407897186"><source>app/profile/edit-password/password-modal/password-modal.component.ts:2</source>Change your Password</msg>
+  <msg id="5340498030552368470"><source>app/profile/edit-password/password-modal/password-modal.component.ts:7</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:8</source>Current password</msg>
+  <msg id="3588415639242079458"><source>app/profile/edit-password/password-modal/password-modal.component.ts:11</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:12</source>New password</msg>
+  <msg id="8656126574213649581"><source>app/profile/edit-password/password-modal/password-modal.component.ts:15</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:16</source>Confirm new password</msg>
+  <msg id="4021752662928002901"><source>app/profile/edit-password/password-modal/password-modal.component.ts:18</source>Update</msg>
 </messagebundle>
