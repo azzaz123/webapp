@@ -9,6 +9,8 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { NgUploaderModule } from 'ngx-uploader';
 import { EditEmailComponent } from './edit-email/edit-email.component';
 import { EmailModalComponent } from './edit-email/email-modal/email-modal.component';
+import { EditPasswordComponent } from './edit-password/edit-password.component';
+import { PasswordModalComponent } from './edit-password/password-modal/password-modal.component';
 
 @NgModule({
   imports: [
@@ -25,8 +27,13 @@ import { EmailModalComponent } from './edit-email/email-modal/email-modal.compon
   declarations: [
     profileRoutedComponents,
     EditEmailComponent,
-    EmailModalComponent
+    EmailModalComponent,
+    EditPasswordComponent,
+    PasswordModalComponent
   ],
-  entryComponents: [EmailModalComponent]
+  entryComponents: [
+    EmailModalComponent,
+    PasswordModalComponent
+  ]
 })
 export class ProfileModule { }
