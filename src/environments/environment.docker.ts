@@ -1,7 +1,7 @@
 export const environment: any = {
   production: false,
   name: 'docker',
-  baseUrl: 'https://apigw.dockXXX.wallapop.com/',
+  baseUrl: 'https://dockXXX.wallapop.com/',
   xmppDomain: 'dockXXX.wallapop.com',
   wsUrl: 'wss://mongooseim:5282/ws-xmpp',
   siteUrl: 'https://es.dockXXX.wallapop.com/',
