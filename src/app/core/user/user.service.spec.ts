@@ -16,7 +16,8 @@ import {
   User,
   USER_ID,
   USER_LOCATION,
-  Location
+  Location,
+  USER_EMAIL
 } from 'shield';
 import { HaversineService } from 'ng2-haversine';
 import { Response, ResponseOptions } from '@angular/http';
@@ -176,6 +177,35 @@ describe('UserService', () => {
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
       service.edit(USER_EDIT_DATA).subscribe();
       expect(http.post).toHaveBeenCalledWith('api/v3/users/me', USER_EDIT_DATA);
+    });
+  });
+
+  describe('updateEmail', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: ''});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+
+      service.updateEmail(USER_EMAIL).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/email', {
+        email_address: USER_EMAIL
+      });
+    });
+  });
+
+  describe('updatePassword', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: ''});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      const OLD_PASSWORD = 'old';
+      const NEW_PASSWORD = 'new';
+
+      service.updatePassword(OLD_PASSWORD, NEW_PASSWORD).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/password', {
+        old_password: OLD_PASSWORD,
+        new_password: NEW_PASSWORD
+      });
     });
   });
 

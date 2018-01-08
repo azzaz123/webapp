@@ -120,6 +120,8 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         this.uploadForm.get('category_id').patchValue(this.categoryId);
         const fixedCategory = _.find(categories, {value: this.categoryId});
         this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+        this.uploadForm.get('sale_conditions.shipping_allowed').patchValue(false);
+        this.uploadForm.get('delivery_info').patchValue(null);
       } else {
         this.fixedCategory = null;
         this.uploadForm.get('category_id').patchValue('');
