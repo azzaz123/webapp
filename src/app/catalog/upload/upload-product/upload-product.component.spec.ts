@@ -2,7 +2,18 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ErrorsService, Location, MOCK_USER, TEST_HTTP_PROVIDERS, User, USER_ID, MockTrackingService } from 'shield';
+import {
+  ErrorsService,
+  ITEM_CATEGORY_ID,
+  ITEM_DELIVERY_INFO,
+  Location,
+  MOCK_ITEM,
+  MOCK_USER,
+  MockTrackingService,
+  TEST_HTTP_PROVIDERS,
+  User,
+  USER_ID
+} from 'shield';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -92,6 +103,30 @@ describe('UploadProductComponent', () => {
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
+  });
+
+  describe('ngOnInit', () => {
+    it('should set item if exists', () => {
+      component.item = MOCK_ITEM;
+
+      component.ngOnInit();
+
+      expect(component.uploadForm.value).toEqual({
+        title: MOCK_ITEM.title,
+        sale_price: MOCK_ITEM.salePrice,
+        currency_code: MOCK_ITEM.currencyCode,
+        description: MOCK_ITEM.description,
+        sale_conditions: MOCK_ITEM.saleConditions,
+        category_id: ITEM_CATEGORY_ID + '',
+        delivery_info: ITEM_DELIVERY_INFO,
+        images: [],
+        location: {
+          address: '',
+          latitude: '',
+          longitude: ''
+        }
+      })
+    });
   });
 
   describe('ngOnChanges', () => {
