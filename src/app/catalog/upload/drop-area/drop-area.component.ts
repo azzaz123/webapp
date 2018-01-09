@@ -5,6 +5,7 @@ import { ErrorsService, Image } from 'shield';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
+import { ItemService } from '../../../core/item/item.service';
 
 @Component({
   selector: 'tsl-drop-area',
@@ -39,7 +40,8 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   };
 
   constructor(private errorsService: ErrorsService,
-              public uploadService: UploadService) {
+              public uploadService: UploadService,
+              private itemService: ItemService) {
   }
 
   ngOnInit() {
@@ -50,9 +52,22 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     };
     this.placeholders = _.range(this.maxUploads);
     this.uploadEvent.subscribe((event: UploadEvent) => {
+      delete event.values.images;
       if (event.type === 'create') {
-        delete event.values.images;
         this.uploadService.createItemWithFirstImage(event.values, this.files[0]);
+      } else if (event.type === 'update') {
+        this.updateItem(event.values);
+      }
+    });
+  }
+
+  private updateItem(values: any) {
+    this.itemService.update(values).subscribe(() => {
+      this.onUploaded.emit('updated');
+    }, (response) => {
+      if (response.message) {
+        this.onError.emit(response);
+        this.errorsService.i18nError('serverError', response.message);
       }
     });
   }
@@ -154,13 +169,13 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
           if (this.files.length > 1) {
             this.uploadService.uploadOtherImages(output.file.response.id, this.maxUploads === 8 ? '/cars' : '');
           } else {
-            this.onUploaded.emit(this.itemId);
+            this.onUploaded.emit('created');
           }
         } else {
           if (_.every(this.files, (file: UploadFile) => {
               return file.progress.status === UploadStatus.Done;
             })) {
-            this.onUploaded.emit(this.itemId);
+            this.onUploaded.emit('created');
           }
         }
       } else {

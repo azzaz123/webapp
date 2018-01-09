@@ -201,4 +201,13 @@ export class ItemService extends ItemServiceMaster {
     .map((r: Response) => r.json());
   }
 
+  public update(item: any): Observable<Item> {
+    return this.http.put(this.API_URL_V3 + '/' + item.id, item)
+    .map((r: Response) => r.json())
+    .map((r: any) => this.mapRecordData(r))
+    .do((updatedItem: Item) => {
+      this.store[item.id] = updatedItem;
+    });
+  }
+
 }

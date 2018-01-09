@@ -87,6 +87,8 @@ export class ListComponent implements OnInit, OnDestroy {
             this.itemService.selectItem(newItem.id);
           }, () => {
           });
+        } else if (params && params.updated) {
+          this.toastr.success(this.i18n.getTranslations('itemUpdated'));
         }
       });
     });

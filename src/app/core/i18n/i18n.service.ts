@@ -68,7 +68,8 @@ export class I18nService {
       formErrors: 'There are some errors!',
       userEdited: 'Your data has been edited correctly',
       notValidPassword: 'Current password is not valid',
-      passwordMatch: 'Passwords don\'t match'
+      passwordMatch: 'Passwords don\'t match',
+      itemUpdated: 'The item has been updated correctly'
     },
     es: {
       daysMomentConfig: {
@@ -134,7 +135,8 @@ export class I18nService {
       formErrors: 'Hay unos errores!',
       userEdited: 'Tus datos se han editado correctamente',
       notValidPassword: 'La contraseña corriente no es valida',
-      passwordMatch: 'Las contraseñas no coinciden'
+      passwordMatch: 'Las contraseñas no coinciden',
+      itemUpdated: 'El producto se ha editado correctamente'
     }
   };
 

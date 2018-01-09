@@ -168,7 +168,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     if (this.uploadForm.valid) {
       this.loading = true;
       this.uploadEvent.emit({
-        type: 'create',
+        type: this.item ? 'update' : 'create',
         values: this.uploadForm.value
       });
     } else {
@@ -189,8 +189,8 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     }
   }
 
-  onUploaded(itemId: string) {
-    this.router.navigate(['/catalog/list', {created: true}]);
+  onUploaded(action: string) {
+    this.router.navigate(['/catalog/list', {[action]: true}]);
   }
 
   onError(response: any) {
