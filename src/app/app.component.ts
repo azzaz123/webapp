@@ -30,7 +30,6 @@ import { CookieOptions, CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { AdService} from './core/ad/ad.service';
-import { AdsRefreshRate } from './core/ad/ad.interface';
 
 @Component({
   selector: 'tsl-root',
@@ -204,12 +203,11 @@ export class AppComponent implements OnInit {
   }
 
   private setAdRefreshRate() {
-    this.adService.getRefreshRate().subscribe((data: AdsRefreshRate) => {
-      console.log(data);
-      if (data.value) {
+    this.adService.getRefreshRate().subscribe((value: number) => {
+      if (value) {
         setInterval(() => {
           googletag.pubads().refresh();
-        }, data.value);
+        }, value);
       }
     })
   }

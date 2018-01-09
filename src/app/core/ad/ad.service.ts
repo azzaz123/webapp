@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import {
   HttpService,
 } from 'shield';
-import { AdsRefreshRate } from './ad.interface';
 import { environment } from '../../../environments/environment';
 
 @Injectable()
@@ -14,7 +13,7 @@ export class AdService {
   constructor(private http: HttpService
   ) {}
 
-  public getRefreshRate(): Observable<AdsRefreshRate> {
+  public getRefreshRate(): Observable<number> {
     return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
   }
 
