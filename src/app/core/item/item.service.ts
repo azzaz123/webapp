@@ -202,9 +202,15 @@ export class ItemService extends ItemServiceMaster {
   }
 
   public update(item: any, deletedImagesIds: string[]): Observable<Item> {
-    return Observable.forkJoin(
-      deletedImagesIds.map((pictureId) => this.deletePicture(item.id, pictureId))
-    )
+    let observable: Observable<any>;
+    if (deletedImagesIds.length) {
+      observable = Observable.forkJoin(
+        deletedImagesIds.map((pictureId) => this.deletePicture(item.id, pictureId))
+      )
+    } else {
+      observable = Observable.of({});
+    }
+    return observable
     .flatMap(() => {
       return this.updateItem(item);
     });

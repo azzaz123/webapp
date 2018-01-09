@@ -64,7 +64,14 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   private updateItem(values: any) {
     this.itemService.update(values, this.deletedImagesIds).subscribe(() => {
-      this.onUploaded.emit('updated');
+      const filesToUpload = this.files.filter((file) => {
+        return file.progress.status !== UploadStatus.Done
+      });
+      if (filesToUpload.length > 0) {
+        this.uploadService.uploadOtherImages(values.id, this.maxUploads === 8 ? '/cars' : '');
+      } else {
+        this.onUploaded.emit('updated');
+      }
     }, (response) => {
       if (response.message) {
         this.onError.emit(response);
@@ -176,7 +183,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
           if (_.every(this.files, (file: UploadFile) => {
               return file.progress.status === UploadStatus.Done;
             })) {
-            this.onUploaded.emit('created');
+            this.onUploaded.emit(this.images ? 'updated' : 'created');
           }
         }
       } else {
@@ -196,7 +203,6 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     if (file.response) {
       this.deletedImagesIds.push(file.id);
     }
-    console.log(this.deletedImagesIds);
   }
 
   public updateOrder() {

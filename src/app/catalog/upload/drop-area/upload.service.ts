@@ -73,7 +73,7 @@ export class UploadService {
   public setInitialImages(files: UploadFile[]) {
     const inputEvent: UploadInput = {
       type: 'initialImages',
-      files: files
+      files: [...files]
     };
     this.uploadInput.emit(inputEvent);
   }
