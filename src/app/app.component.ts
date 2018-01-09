@@ -203,12 +203,8 @@ export class AppComponent implements OnInit {
   }
 
   private setAdRefreshRate() {
-    this.adService.getRefreshRate().subscribe((value: number) => {
-      if (value) {
-        setInterval(() => {
-          googletag.pubads().refresh();
-        }, value);
-      }
+    this.adService.getRefreshRate().subscribe(() => {
+      googletag.pubads().refresh();
     })
   }
 }
