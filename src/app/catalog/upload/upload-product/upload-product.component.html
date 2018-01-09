@@ -121,7 +121,8 @@
   <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
   <button type="submit" class="btn btn-primary" [disabled]="loading" tslTrackEvent="UPLOADFORM_UPLOADFROMFORM">
     <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
-    <span [hidden]="loading" i18n>Post Ad</span>
+    <span [hidden]="loading" *ngIf="!item" i18n>Post Ad</span>
+    <span [hidden]="loading" *ngIf="item" i18n>Update</span>
   </button>
   <button type="button"
           (click)="preview()"
