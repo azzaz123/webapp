@@ -110,7 +110,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       }
       deliveryInfoControl.updateValueAndValidity();
     });
-    console.log(this.item);
     if (this.item) {
       this.uploadForm.patchValue({
         title: this.item.title,
