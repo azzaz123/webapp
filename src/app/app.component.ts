@@ -29,6 +29,8 @@ import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
+import { AdService} from './core/ad/ad.service';
+import { AdsRefreshRate } from './core/ad/ad.interface';
 
 @Component({
   selector: 'tsl-root',
@@ -61,7 +63,8 @@ export class AppComponent implements OnInit {
               private debugService: DebugService,
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private adService: AdService) {
     this.config();
   }
 
@@ -75,6 +78,7 @@ export class AppComponent implements OnInit {
     this.setTitle();
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
+    this.setAdRefreshRate();
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
   }
@@ -199,6 +203,15 @@ export class AppComponent implements OnInit {
     });
   }
 
-
+  private setAdRefreshRate() {
+    this.adService.getRefreshRate().subscribe((data: AdsRefreshRate) => {
+      console.log(data);
+      if (data.value) {
+        setInterval(() => {
+          googletag.pubads().refresh();
+        }, data.value);
+      }
+    })
+  }
 }
 
