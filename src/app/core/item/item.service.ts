@@ -73,8 +73,8 @@ export class ItemService extends ItemServiceMaster {
       content.sale_conditions,
       content.images ? content.images[0] : {
         id: UUID.UUID(),
-        original_width: content.image.original_width,
-        original_height: content.image.original_height,
+        original_width: content.image ? content.image.original_width : null,
+        original_height: content.image ? content.image.original_height : null,
         average_hex_color: '',
         urls_by_size: content.image
       },
@@ -201,13 +201,26 @@ export class ItemService extends ItemServiceMaster {
     .map((r: Response) => r.json());
   }
 
-  public update(item: any): Observable<Item> {
+  public update(item: any, deletedImagesIds: string[]): Observable<Item> {
+    return Observable.forkJoin(
+      deletedImagesIds.map((pictureId) => this.deletePicture(item.id, pictureId))
+    )
+    .flatMap(() => {
+      return this.updateItem(item);
+    });
+  }
+
+  private updateItem(item: any): Observable<Item> {
     return this.http.put(this.API_URL_V3 + '/' + item.id, item)
     .map((r: Response) => r.json())
     .map((r: any) => this.mapRecordData(r))
     .do((updatedItem: Item) => {
       this.store[item.id] = updatedItem;
     });
+  }
+
+  private deletePicture(itemId: string, pictureId: string): Observable<any> {
+    return this.http.delete(this.API_URL_V3 + '/' + itemId + '/picture/' + pictureId);
   }
 
 }

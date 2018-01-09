@@ -31,6 +31,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   placeholders: number[];
   options: NgUploaderOptions;
   private itemId: string;
+  private deletedImagesIds: string[] = [];
 
   private setDragOver = _.throttle((dragOver: boolean) => {
     this.dragOver = dragOver;
@@ -62,7 +63,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   }
 
   private updateItem(values: any) {
-    this.itemService.update(values).subscribe(() => {
+    this.itemService.update(values, this.deletedImagesIds).subscribe(() => {
       this.onUploaded.emit('updated');
     }, (response) => {
       if (response.message) {
@@ -192,6 +193,10 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     event.stopPropagation();
     event.preventDefault();
     this.uploadService.removeImage(file);
+    if (file.response) {
+      this.deletedImagesIds.push(file.id);
+    }
+    console.log(this.deletedImagesIds);
   }
 
   public updateOrder() {
