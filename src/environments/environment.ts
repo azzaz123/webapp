@@ -8,7 +8,7 @@ export const environment: any = {
   name: 'local',
   baseUrl: 'https://apigw.dockXXX.wallapop.com/',
   xmppDomain: 'dock115.wallapop.com',
-  wsUrl: 'ws://dock115.wallapop.com:5282/ws-xmpp',
+  wsUrl: 'ws://dock115.wallapop.com:5281/ws-xmpp',
   siteUrl: 'http://es.dev.wallapop.com:8080/',
   bypass: 'p3-9p0dJk2cHp3-4RsW0',
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
