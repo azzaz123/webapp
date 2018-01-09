@@ -57,10 +57,8 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     });
   }
 
-  private createFakeFiles() {
-    let index = -1;
-    this.files = this.images.map((image: Image) => {
-      index++;
+  private convertImagesToFiles() {
+    this.files = this.images.map((image: Image, index: number) => {
       return {
         fileIndex: index,
         preview: image.urls_by_size.medium,
@@ -110,7 +108,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     switch (output.type) {
       case 'ready':
         if (this.images) {
-          this.createFakeFiles();
+          this.convertImagesToFiles();
           this.uploadService.setInitialImages(this.files);
           setTimeout(() => {
             this.propagateChange(this.files);

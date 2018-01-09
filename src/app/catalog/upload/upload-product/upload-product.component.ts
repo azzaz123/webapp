@@ -12,7 +12,7 @@ import {
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { ErrorsService, Item } from 'shield';
+import { ErrorsService, Item, DeliveryInfo } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -125,7 +125,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     }
   }
 
-  private getDeliveryInfo() {
+  private getDeliveryInfo(): DeliveryInfo {
     if (!this.item.deliveryInfo) {
       return null;
     }
