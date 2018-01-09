@@ -112,6 +112,9 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
         if (this.images) {
           this.createFakeFiles();
           this.uploadService.setInitialImages(this.files);
+          setTimeout(() => {
+            this.propagateChange(this.files);
+          });
         }
         break;
       case 'addedToQueue':

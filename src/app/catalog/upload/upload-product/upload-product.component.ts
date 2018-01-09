@@ -77,6 +77,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
               private trackingService: TrackingService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
+      id: '',
       category_id: ['', [Validators.required]],
       images: [[], [Validators.required]],
       title: ['', [Validators.required]],
@@ -112,6 +113,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     });
     if (this.item) {
       this.uploadForm.patchValue({
+        id: this.item.id,
         title: this.item.title,
         sale_price: this.item.salePrice,
         currency_code: this.item.currencyCode,

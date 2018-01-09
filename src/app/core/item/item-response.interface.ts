@@ -113,4 +113,5 @@ export interface CarUploadForm extends ItemUploadForm {
   storytelling: string;
   engine: string;
   gearbox: string;
+  id?: string;
 }

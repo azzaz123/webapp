@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { DropAreaComponent } from './drop-area.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -176,13 +176,15 @@ describe('DropAreaComponent', () => {
       });
       expect(component.files).toEqual([UPLOAD_FILE, UPLOAD_FILE]);
     });
-    it('should set initial files if there are images and event is ready', () => {
+    it('should set initial files if there are images and event is ready', fakeAsync(() => {
       component.images = [IMAGE, IMAGE];
       spyOn(uploadService, 'setInitialImages');
+      spyOn(component, 'propagateChange');
 
       component.onUploadOutput({
         type: 'ready'
       });
+      tick();
 
       expect(component.files[0].fileIndex).toBe(0);
       expect(component.files[0].preview).toBe(IMAGE.urls_by_size.medium);
@@ -193,7 +195,8 @@ describe('DropAreaComponent', () => {
       expect(component.files[1].id).toBe(IMAGE.id);
       expect(component.files[1].response).toEqual(IMAGE);
       expect(uploadService.setInitialImages).toHaveBeenCalledWith(component.files);
-    });
+      expect(component.propagateChange).toHaveBeenCalledWith(component.files);
+    }));
   });
 
   describe('onUploadDone', () => {

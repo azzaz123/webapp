@@ -112,6 +112,7 @@ describe('UploadProductComponent', () => {
       component.ngOnInit();
 
       expect(component.uploadForm.value).toEqual({
+        id: MOCK_ITEM.id,
         title: MOCK_ITEM.title,
         sale_price: MOCK_ITEM.salePrice,
         currency_code: MOCK_ITEM.currencyCode,
@@ -291,6 +292,7 @@ describe('UploadProductComponent', () => {
 
     it('should set itemPreview', () => {
       expect(componentInstance.itemPreview).toEqual({
+        id: '',
         category_id: '200',
         title: 'test',
         description: 'test',
