@@ -11,6 +11,7 @@ import { EventService } from './event/event.service';
 import { TrackingService } from './tracking/tracking.service';
 import { TrackingModule } from './tracking/tracking.module';
 import { I18nService } from './i18n/i18n.service';
+import { AdService } from './ad/ad.service';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { I18nService } from './i18n/i18n.service';
     UserModule,
     ItemModule,
     TrackingModule
-  ]
+  ],
+  providers: [AdService]
 })
 export class CoreModule {
 
