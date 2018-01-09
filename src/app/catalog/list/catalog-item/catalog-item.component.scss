@@ -165,33 +165,26 @@ $feature-button-width: 170px;
         font-weight: bold;
       }
       &.btn-sold {
-        md-icon {
-          height: 17px;
-          width: 17px;
-        }
         &:hover {
           background: $sold-bg;
           border-color: transparent;
         }
       }
       &.btn-reserve {
-        md-icon {
-          height: 15px;
-          width: 13px;
-          margin-top: -3px;
-        }
         &:hover, &.active {
           background: $reserve-bg;
           border-color: transparent;
         }
       }
       &.btn-delete {
-        md-icon {
-          height: 19px;
-          width: 16px;
-        }
         &:hover {
           background: $delete-bg;
+          border-color: transparent;
+        }
+      }
+      &.btn-edit {
+        &:hover {
+          background: $edit-bg;
           border-color: transparent;
         }
       }
