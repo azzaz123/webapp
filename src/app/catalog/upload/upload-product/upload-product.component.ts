@@ -171,6 +171,11 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
           this.fixedCategory = null;
           this.uploadForm.get('category_id').patchValue('');
         }
+      } else {
+        if (this.categoryService.isHeroCategory(this.item.categoryId)) {
+          const fixedCategory = _.find(categories, {value: this.item.categoryId.toString()});
+          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+        }
       }
     });
   }
