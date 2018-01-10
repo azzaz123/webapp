@@ -12,7 +12,9 @@ import {
   MockTrackingService,
   TEST_HTTP_PROVIDERS,
   User,
-  USER_ID
+  USER_ID,
+  Item,
+  ITEM_DATA
 } from 'shield';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -74,6 +76,8 @@ describe('UploadProductComponent', () => {
           provide: CategoryService, useValue: {
           getUploadCategories() {
             return Observable.of(CATEGORIES_OPTIONS);
+          },
+          isHeroCategory() {
           }
         }
         },
@@ -156,6 +160,24 @@ describe('UploadProductComponent', () => {
       });
 
       it('should set fixedCategory', () => {
+        expect(component.fixedCategory).toBe('Real Estate');
+      });
+    });
+
+    describe('edit mode', () => {
+      it('should set fixedCategory if is hero category', () => {
+        spyOn(categoryService, 'isHeroCategory').and.returnValue(true);
+        component.item = new Item(
+          ITEM_DATA.id,
+          ITEM_DATA.legacy_id,
+          ITEM_DATA.owner,
+          ITEM_DATA.title,
+          ITEM_DATA.description,
+          13000
+        );
+
+        component.ngOnChanges();
+
         expect(component.fixedCategory).toBe('Real Estate');
       });
     });

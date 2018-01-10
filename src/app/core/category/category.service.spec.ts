@@ -73,4 +73,14 @@ describe('CategoryService', () => {
     });
   });
 
+  describe('isHeroCategory', () => {
+    it('should return true if categoryId is a hero category', () => {
+      expect(service.isHeroCategory(100)).toBeTruthy();
+    });
+
+    it('should return false if categoryId is not a hero category', () => {
+      expect(service.isHeroCategory(5)).toBeFalsy();
+    });
+  });
+
 });

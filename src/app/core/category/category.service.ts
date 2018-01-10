@@ -10,6 +10,7 @@ export class CategoryService {
 
   private API_URL = 'api/v3/categories';
   private categories: CategoryOption[];
+  private heroCategoriesIds = [100, 13200, 13000];
 
   constructor(private http: HttpService,
               private i18n: I18nService) {
@@ -28,6 +29,10 @@ export class CategoryService {
       .map(res => res.json())
       .map((categories: CategoryConsumerGoodsResponse[]) => this.toSelectOptions(categories))
       .do((categories: CategoryOption[]) => this.categories = categories);
+  }
+
+  public isHeroCategory(categoryId: number) {
+    return this.heroCategoriesIds.indexOf(categoryId) !== -1;
   }
 
   private toSelectOptions(categories: CategoryConsumerGoodsResponse[]): CategoryOption[] {
