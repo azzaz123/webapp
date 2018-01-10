@@ -11,7 +11,7 @@ import 'rxjs/add/operator/timeInterval';
 @Injectable()
 export class AdService {
 
-  private ENDPOINT_REFRESH_RATE: string = 'rest/ads/refreshRate';
+  private ENDPOINT_REFRESH_RATE = 'rest/ads/refreshRate';
 
   constructor(private http: HttpService
   ) {}
