@@ -207,7 +207,7 @@
   <msg id="4185227957442923918"><source>app/reviews/reviews.component.ts:12</source>Your Reviews</msg>
   <msg id="5920163859202883782"><source>app/reviews/reviews.component.ts:13</source>This is what they think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:16</source>Your average</msg>
-  <msg id="5185939984032318009"><source>app/reviews/reviews.component.ts:27</source>Nobody has written a review about you because you didn&apos;t buy or sell anything yet.</msg>
+  <msg id="5327426729320041573"><source>app/reviews/reviews.component.ts:27</source>Nobody has written a review about you because you didn&apos;t buy or sell anything yet. Wake up!</msg>
   <msg id="5653113390991708232"><source>app/reviews/review-item/review-item.component.ts:14</source>Sold:</msg>
   <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.ts:17</source><source>app/reviews/review-item/review-item.component.ts:24</source>A wallapop item</msg>
   <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.ts:21</source>Bought:</msg>
