@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('ExitConfirmationModalComponent', () => {
   let component: ExitConfirmationModalComponent;
@@ -8,7 +9,8 @@ describe('ExitConfirmationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExitConfirmationModalComponent ]
+      declarations: [ ExitConfirmationModalComponent ],
+      providers: [NgbActiveModal]
     })
     .compileComponents();
   }));

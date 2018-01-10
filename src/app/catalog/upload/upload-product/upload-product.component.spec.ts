@@ -12,7 +12,8 @@ import {
   MockTrackingService,
   TEST_HTTP_PROVIDERS,
   User,
-  USER_ID
+  USER_ID,
+  IMAGE
 } from 'shield';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -91,7 +92,7 @@ describe('UploadProductComponent', () => {
       declarations: [UploadProductComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -130,6 +131,34 @@ describe('UploadProductComponent', () => {
     });
   });
 
+  describe('detectFormChanges', () => {
+
+    let formChanged: boolean;
+
+    beforeEach(() => {
+      component.item = MOCK_ITEM;
+      component.onFormChanged.subscribe((value: boolean) => {
+        formChanged = value;
+      });
+
+      component.ngOnInit();
+    });
+
+    it('should emit changed event if form values changes', () => {
+      component.uploadForm.get('title').patchValue('new title');
+      fixture.detectChanges();
+
+      expect(formChanged).toBeTruthy();
+    });
+
+    it('should emit changed event if form images changes', () => {
+      component.uploadForm.get('images').patchValue([IMAGE, IMAGE]);
+      fixture.detectChanges();
+
+      expect(formChanged).toBeTruthy();
+    });
+  });
+
   describe('ngOnChanges', () => {
     it('should get and set categories', () => {
       component.ngOnChanges();
@@ -162,7 +191,8 @@ describe('UploadProductComponent', () => {
   });
 
   describe('ngAfterViewChecked', () => {
-    it('should set focus', fakeAsync(() => {
+
+    beforeEach(() => {
       component.titleField = {
         nativeElement: {
           focus() {
@@ -170,10 +200,21 @@ describe('UploadProductComponent', () => {
         }
       };
       spyOn(component.titleField.nativeElement, 'focus');
+    });
+
+    it('should set focus', fakeAsync(() => {
       fixture.detectChanges();
       tick();
       expect(component.titleField.nativeElement.focus).toHaveBeenCalled();
       expect(component['focused']).toBeTruthy();
+    }));
+
+    it('should NOT set focus if update mode', fakeAsync(() => {
+      component.item = MOCK_ITEM;
+      fixture.detectChanges();
+      tick();
+      expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();
+      expect(component['focused']).toBeFalsy()
     }));
   });
 
@@ -243,6 +284,17 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onUploaded', () => {
+    it('should emit form changed event', () => {
+      let formChanged = true;
+      component.onFormChanged.subscribe((value: boolean) => {
+        formChanged = value;
+      });
+
+      component.onUploaded('created');
+
+      expect(formChanged).toBeFalsy();
+    });
+
     it('should redirect', () => {
       spyOn(router, 'navigate');
 
