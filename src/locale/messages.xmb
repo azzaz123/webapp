@@ -91,7 +91,7 @@
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:5</source>Profile</msg>
   <msg id="3825726981798982045"><source>app/layout/sidebar/sidebar.component.ts:12</source>My Catalog</msg>
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:26</source>Favorites</msg>
-  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:33</source>Reviews</msg>
+  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:33</source><source>app/reviews/reviews.component.ts:21</source>Reviews</msg>
   <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:40</source>Logout</msg>
   <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source>Congratulations</msg>
   <msg id="9213119646873056135"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:10</source>Your item(s) have been featured and you can see them in the top position.</msg>
@@ -207,7 +207,7 @@
   <msg id="4185227957442923918"><source>app/reviews/reviews.component.ts:12</source>Your Reviews</msg>
   <msg id="5920163859202883782"><source>app/reviews/reviews.component.ts:13</source>This is what they think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:16</source>Your average</msg>
-  <msg id="5185939984032318009"><source>app/reviews/reviews.component.ts:23</source>Nobody has written a review about you because you didn&apos;t buy or sell anything yet.</msg>
+  <msg id="5185939984032318009"><source>app/reviews/reviews.component.ts:27</source>Nobody has written a review about you because you didn&apos;t buy or sell anything yet.</msg>
   <msg id="5653113390991708232"><source>app/reviews/review-item/review-item.component.ts:14</source>Sold:</msg>
   <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.ts:17</source><source>app/reviews/review-item/review-item.component.ts:24</source>A wallapop item</msg>
   <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.ts:21</source>Bought:</msg>
