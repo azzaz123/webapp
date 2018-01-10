@@ -67,7 +67,7 @@ export class ReviewService {
     return new User(
       reviewResponse.user.id,
       reviewResponse.user.micro_name,
-      {urls_by_size: reviewResponse.user.image},
+      reviewResponse.user.image ? {urls_by_size: reviewResponse.user.image}: null,
       null,
       null,
       null,
