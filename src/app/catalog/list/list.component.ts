@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import {
   ErrorsService,
   FinancialCard,
-  I18nService,
   Item,
   ItemBulkResponse,
   PaymentService,
@@ -23,6 +22,7 @@ import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card
 import { OrderEvent } from './selected-items/selected-product.interface';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-list',

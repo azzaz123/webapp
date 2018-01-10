@@ -26,6 +26,26 @@ export const UPLOAD_FILE: UploadFile = {
   preview: 'abcdef'
 };
 
+export const UPLOAD_FILE_DONE: UploadFile = {
+  fileIndex: 0,
+  file: new File(['file'], ''),
+  id: UPLOAD_FILE_ID,
+  name: UPLOAD_FILE_NAME,
+  size: 123,
+  type: 'image/jpeg',
+  progress: {
+    status: UploadStatus.Done,
+    data: {
+      percentage: 0,
+      speed: null,
+      speedHuman: null,
+      responseStatus: 200
+    }
+  },
+  lastModifiedDate: UPLOAD_FILE_DATE,
+  preview: 'abcdef'
+};
+
 export const CAR_ID: string = 'xzo81pgg4469';
 
 export const UPLOADED_RESPONSE = {

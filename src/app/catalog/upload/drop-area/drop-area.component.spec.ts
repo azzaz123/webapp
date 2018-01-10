@@ -6,12 +6,14 @@ import { ErrorsService, ITEM_ID, IMAGE } from 'shield';
 import { UploadService } from './upload.service';
 import {
   CAR_ID,
-  UPLOAD_FILE,
+  UPLOAD_FILE, UPLOAD_FILE_DONE,
   UPLOAD_FILE_NAME,
   UPLOADED_FILE_FIRST, UPLOADED_FILE_FIRST_ITEM,
   UPLOADED_FILE_OTHER
 } from '../../../../tests/upload.fixtures';
 import { UploadFile, UploadStatus } from 'ngx-uploader';
+import { ItemService } from '../../../core/item/item.service';
+import { Observable } from 'rxjs/Observable';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;
@@ -40,6 +42,13 @@ describe('DropAreaComponent', () => {
           updateOrder() {
           },
           setInitialImages() {
+          }
+        }
+        },
+        {
+          provide: ItemService, useValue: {
+          update() {
+            Observable.of({});
           }
         }
         }
@@ -241,17 +250,14 @@ describe('DropAreaComponent', () => {
               file: UPLOADED_FILE_FIRST
             });
             expect(component['itemId']).toBe(CAR_ID);
-            expect(response).toEqual(CAR_ID);
+            expect(response).toEqual('created');
           });
         });
       });
       describe('other image upload', () => {
         it('should emit onUploaded event if every file has been uploaded', () => {
           let response: string;
-          let fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
-          fileUploaded.progress.status = UploadStatus.Done;
-          component.files = [fileUploaded, fileUploaded, fileUploaded];
-          component['itemId'] = CAR_ID;
+          component.files = [UPLOAD_FILE_DONE, UPLOAD_FILE_DONE, UPLOAD_FILE_DONE];
           component.onUploaded.subscribe((r: string) => {
             response = r;
           });
@@ -259,13 +265,11 @@ describe('DropAreaComponent', () => {
             type: 'done',
             file: UPLOADED_FILE_OTHER
           });
-          expect(response).toEqual(CAR_ID);
+          expect(response).toEqual('created');
         });
         it('should NOT emit onUploaded event if not every file has been uploaded', () => {
           let response: string;
-          let fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
-          fileUploaded.progress.status = UploadStatus.Done;
-          component.files = [fileUploaded, fileUploaded, UPLOAD_FILE];
+          component.files = [UPLOAD_FILE, UPLOAD_FILE, UPLOAD_FILE_DONE];
           component.onUploaded.subscribe((r: string) => {
             response = r;
           });

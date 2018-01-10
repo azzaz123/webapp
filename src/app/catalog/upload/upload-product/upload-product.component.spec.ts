@@ -246,7 +246,7 @@ describe('UploadProductComponent', () => {
     it('should redirect', () => {
       spyOn(router, 'navigate');
 
-      component.onUploaded('1234');
+      component.onUploaded('created');
 
       expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {created: true}]);
     });
