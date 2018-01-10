@@ -8,6 +8,7 @@ import { UploadCarComponent } from './upload/upload-car/upload-car.component';
 import { UploadComponent } from './upload/upload.component';
 import { EditComponent } from './edit/edit.component';
 import { ItemResolverService } from './item-resolver.service';
+import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
       {
         path: 'edit/:id',
         component: EditComponent,
+        canDeactivate: [ExitConfirmGuard],
         resolve: {
           item: ItemResolverService
         }

@@ -27,6 +27,7 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { UploadProductComponent } from './upload/upload-product/upload-product.component';
 import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
 import { ItemResolverService } from './item-resolver.service';
+import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/exit-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -66,14 +67,16 @@ import { ItemResolverService } from './item-resolver.service';
     UploadConfirmationModalComponent,
     PreviewModalComponent,
     UploadProductComponent,
-    CategorySelectorComponent
+    CategorySelectorComponent,
+    ExitConfirmationModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
     SoldModalComponent,
     CreditCardModalComponent,
     UploadConfirmationModalComponent,
-    PreviewModalComponent
+    PreviewModalComponent,
+    ExitConfirmationModalComponent
   ]
 })
 export class CatalogModule {

@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Item } from 'shield';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 
 @Component({
   selector: 'tsl-edit',
@@ -11,8 +13,10 @@ export class EditComponent implements OnInit {
 
   public item: Item;
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
+  private hasNotSavedChanges: boolean;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -21,6 +25,19 @@ export class EditComponent implements OnInit {
 
   public onValidationError() {
     this.scrollPanel.nativeElement.scrollTop = 0;
+  }
+
+  public canExit() {
+    if (!this.hasNotSavedChanges) {
+      return true;
+    }
+    return this.modalService.open(ExitConfirmationModalComponent, {
+      backdrop: 'static'
+    }).result;
+  }
+
+  public onFormChanged(notSavedChanges: boolean) {
+    this.hasNotSavedChanges = notSavedChanges;
   }
 
 }

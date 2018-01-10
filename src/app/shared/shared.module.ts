@@ -9,6 +9,7 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
 import { CardModule } from './card/card.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
+import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { GeolocationModule } from './geolocation/geolocation.module';
     CustomCurrencyPipe
   ],
   providers: [
-    DecimalPipe
+    DecimalPipe,
+    ExitConfirmGuard
   ],
   entryComponents: [
     ConfirmationModalComponent
