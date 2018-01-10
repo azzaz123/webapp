@@ -211,12 +211,21 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   onUploaded(action: string) {
     this.onFormChanged.emit(false);
+    if (this.item) {
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
+    } else {
+      this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
+    }
     this.router.navigate(['/catalog/list', {[action]: true}]);
   }
 
   onError(response: any) {
     this.loading = false;
-    this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
+    if (this.item) {
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {category: this.uploadForm.value.category_id});
+    } else {
+      this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
+    }
   }
 
   preview() {

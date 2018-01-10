@@ -32,7 +32,7 @@
       <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
         <md-icon svgIcon="btn-reserved"></md-icon>
       </button>
-      <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]">
+      <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}">
         <md-icon svgIcon="btn-edit"></md-icon>
       </button>
       <button class="btn-delete" (click)="deleteItem(item)">

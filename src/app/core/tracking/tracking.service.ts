@@ -37,7 +37,8 @@ const SCREENS_IDS: any = {
   Wall: '110',
   MyCatalog: '138',
   ItemDetail: '115',
-  UploadForm: '139'
+  UploadForm: '139',
+  MyItemDetail: '114'
 };
 
 const TYPES_IDS: any = {
@@ -321,6 +322,30 @@ export class TrackingService extends TrackingServiceMaster {
     name: '600',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_EDITITEM: TrackingEventBase = {
+    name: '612',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static MYITEMDETAIL_EDITITEM_SUCCESS: TrackingEventBase = {
+    name: '613',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyItemDetail,
+    type: TYPES_IDS.Success
+  };
+  public static MYITEMDETAIL_EDITITEM_ERROR: TrackingEventBase = {
+    name: '614',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyItemDetail,
+    type: TYPES_IDS.Error
+  };
+  public static MYITEMDETAIL_CANCELEDIT: TrackingEventBase = {
+    name: '615',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyItemDetail,
     type: TYPES_IDS.Tap
   };
 
