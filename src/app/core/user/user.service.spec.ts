@@ -21,8 +21,9 @@ import {
 import { HaversineService } from 'ng2-haversine';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { USER_INFO_RESPONSE, USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures';
+import {USER_INFO_RESPONSE, USER_LOCATION_COORDINATES, USERS_STATS, USERS_STATS_RESPONSE} from '../../../tests/user.fixtures';
 import { UserInfoResponse } from './user-info.interface';
+import { UserStatsResponse } from './user-stats.interface';
 
 describe('UserService', () => {
 
@@ -167,6 +168,21 @@ describe('UserService', () => {
         longitude: USER_LOCATION_COORDINATES.longitude
       });
       expect(resp).toEqual(USER_LOCATION);
+    });
+  });
+
+  describe('getStats', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USERS_STATS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+
+      let resp: UserStatsResponse;
+      service.getStats().subscribe((response: UserStatsResponse) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/stats');
+      expect(resp).toEqual(USERS_STATS_RESPONSE);
     });
   });
 

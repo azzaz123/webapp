@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { MOCK_REVIEWS } from '../../tests/review.fixtures';
 import { MOCK_USER } from 'shield';
 import { UserService } from '../core/user/user.service';
-import { USER_INFO_RESPONSE } from '../../tests/user.fixtures';
+import {USER_INFO_RESPONSE, USERS_STATS, USERS_STATS_RESPONSE} from '../../tests/user.fixtures';
 
 describe('ReviewsComponent', () => {
   let component: ReviewsComponent;
@@ -26,6 +26,9 @@ describe('ReviewsComponent', () => {
               },
               getInfo() {
                 return Observable.of(USER_INFO_RESPONSE);
+              },
+              getStats() {
+                return Observable.of(USERS_STATS_RESPONSE);
               }
             }
           },
@@ -122,5 +125,18 @@ describe('ReviewsComponent', () => {
       expect(component.getReviews).toHaveBeenCalledWith(true);
     });
   });
-  
+
+  describe('getReviewsNum', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(component, 'getReviewsNum').and.callThrough();
+      spyOn(userService, 'getStats').and.callThrough();
+    }));
+
+    it('should get reviews number', () => {
+      component.getReviewsNum();
+
+      expect(userService.getStats).toHaveBeenCalled();
+      expect(component.reviewsNum).toEqual(USERS_STATS_RESPONSE.counters.reviews);
+    });
+  })
 });

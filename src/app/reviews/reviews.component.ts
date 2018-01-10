@@ -5,6 +5,7 @@ import { UserService } from '../core/user/user.service';
 import { User } from 'shield';
 import { UserInfoResponse } from '../core/user/user-info.interface';
 import { ReviewsData } from '../core/review/review-response.interface';
+import { UserStatsResponse } from '../core/user/user-stats.interface';
 
 @Component({
   selector: 'tsl-reviews',
@@ -19,13 +20,15 @@ export class ReviewsComponent implements OnInit {
   public end: boolean;
   public scrollTop: number;
   public userScore: number;
-  
+  public reviewsNum: number;
+
   constructor(private myReviewsService: ReviewService,
               private userService: UserService) { }
 
   ngOnInit() {
     this.getUserScore();
     this.getReviews();
+    this.getReviewsNum();
   }
 
   public getUserScore() {
@@ -44,6 +47,12 @@ export class ReviewsComponent implements OnInit {
       this.reviews = append ? this.reviews.concat(reviews) : reviews;
       this.loading = false;
       this.end = !this.init;
+    });
+  }
+
+  public getReviewsNum() {
+    this.userService.getStats().subscribe((stats: UserStatsResponse) => {
+      this.reviewsNum = stats.counters.reviews;
     });
   }
 

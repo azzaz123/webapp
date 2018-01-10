@@ -8,13 +8,17 @@
      [scrollTop]="scrollTop">
   <div class="container">
     <div class="review-header row">
-      <div class="col-10">
+      <div class="col-9">
         <h1 i18n>Your Reviews</h1>
         <p i18n>This is what they think about you. </p>
       </div>
       <div class="user-average col-2">
         <p i18n>Your average</p>
         <tsl-stars class="header-rating" [stars]="this.userScore" [normalized]="false"></tsl-stars>
+      </div>
+      <div class="user-number-reviews text-center col-1">
+        <p>{{ reviewsNum }}</p>
+        <p i18n>Reviews</p>
       </div>
     </div>
     <div class="row items">
