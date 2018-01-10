@@ -5,6 +5,8 @@ import {
 } from 'shield';
 import { environment } from '../../../environments/environment';
 import 'rxjs/add/observable/interval';
+import 'rxjs/add/observable/empty';
+import 'rxjs/add/operator/timeInterval';
 
 @Injectable()
 export class AdService {
@@ -14,10 +16,10 @@ export class AdService {
   constructor(private http: HttpService
   ) {}
 
-  public getRefreshRate(): Observable<number> {
+  public getRefreshRate(): Observable<any> {
     return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
       .flatMap((refreshRate: number) => {
-        return Observable.interval(refreshRate);
+        return refreshRate ? Observable.interval(refreshRate) : Observable.empty()
       })
   }
 
