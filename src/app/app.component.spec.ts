@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, tick, TestBed, discardPeriodicTasks } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
@@ -35,6 +35,7 @@ import createSpy = jasmine.createSpy;
 import { CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
+import { AdService } from './core/ad/ad.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -49,11 +50,12 @@ let trackingService: TrackingService;
 let window: any;
 let conversationService: ConversationService;
 let cookieService: CookieService;
+let adService: AdService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
 
-describe('App', () => {
+fdescribe('App', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -154,6 +156,14 @@ describe('App', () => {
             }
           }
         },
+        {
+          provide: AdService,
+          useValue: {
+            getRefreshRate() {
+              return Observable.empty();
+            }
+          }
+        },
         ...
           TEST_HTTP_PROVIDERS
       ],
@@ -173,6 +183,7 @@ describe('App', () => {
     window = TestBed.get(WindowRef).nativeWindow;
     conversationService = TestBed.get(ConversationService);
     cookieService = TestBed.get(CookieService);
+    adService = TestBed.get(AdService);
     spyOn(notificationService, 'init');
   });
 
@@ -213,25 +224,25 @@ describe('App', () => {
 
       it('should call the eventService.subscribe passing the login event', () => {
         spyOn(eventService, 'subscribe').and.callThrough();
-        
+
         component.ngOnInit();
-        
+
         expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.USER_LOGIN);
       });
 
       it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
         spyOn(xmppService, 'connect').and.callThrough();
-        
+
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        
+
         expect(xmppService.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
 
       it('should call conversationService.init', () => {
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        
+
         expect(conversationService.init).toHaveBeenCalledTimes(1);
       });
 
@@ -280,26 +291,26 @@ describe('App', () => {
       spyOn(userService, 'logout');
       spyOn(errorsService, 'show');
       spyOn(userService, 'me').and.returnValue(Observable.throw(ERROR));
-      
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-      
+
       expect(userService.logout).toHaveBeenCalled();
       expect(errorsService.show).toHaveBeenCalled();
     }));
 
     it('should init notifications', () => {
       component.ngOnInit();
-      
+
       expect(notificationService.init).toHaveBeenCalled();
     });
 
     it('should call disconnect on logout', () => {
       spyOn(xmppService, 'disconnect');
-      
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
-      
+
       expect(xmppService.disconnect).toHaveBeenCalled();
     });
   });
@@ -376,4 +387,18 @@ describe('App', () => {
     })
   });
 
+
+  it('should refresh google ad', fakeAsync(() => {
+    const refreshRate = 1000;
+    const pubads = {refresh () {}}
+    spyOn(adService, 'getRefreshRate').and.returnValue(Observable.interval(refreshRate));
+    spyOn(googletag, 'pubads').and.returnValue(pubads);
+    spyOn(pubads, 'refresh');
+
+    component.ngOnInit();
+    tick(refreshRate);
+
+    expect(pubads.refresh).toHaveBeenCalled();
+    discardPeriodicTasks();
+  }))
 });
