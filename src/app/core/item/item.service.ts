@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+import { RequestOptions, Response, Headers } from '@angular/http';
 import {
   EventService,
   HttpService,
@@ -219,14 +219,17 @@ export class ItemService extends ItemServiceMaster {
   private updateItem(item: any): Observable<Item> {
     return this.http.put(this.API_URL_V3 + '/' + item.id, item)
     .map((r: Response) => r.json())
-    .map((r: any) => this.mapRecordData(r))
-    .do((updatedItem: Item) => {
-      this.store[item.id] = updatedItem;
-    });
+    .map((r: any) => this.mapRecordData(r));
   }
 
   private deletePicture(itemId: string, pictureId: string): Observable<any> {
     return this.http.delete(this.API_URL_V3 + '/' + itemId + '/picture/' + pictureId);
+  }
+
+  public get(id: string): Observable<Item> {
+    return this.http.get(this.API_URL_V3 + `/${id}`)
+    .map((r: Response) => r.json())
+    .map((r: any) => this.mapRecordData(r));
   }
 
 }
