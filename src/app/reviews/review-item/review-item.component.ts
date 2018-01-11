@@ -25,11 +25,11 @@ export class ReviewItemComponent implements OnInit {
     this.fallback = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
     this.itemWebLink = this.review.item.webLink.replace(ITEM_BASE_PATH, environment.siteUrl + 'item/');
     this.userWebSlug = this.review.user.webLink.replace(USER_BASE_PATH, environment.siteUrl + 'user/');
-    
+
     this.categoryService.getCategoryById(this.review.item.categoryId).subscribe((category: CategoryResponse) => {
       this.categoryName = category.title;
       this.categoryIconName = category.iconName;
-    })
+    });
   }
 
 }

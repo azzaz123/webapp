@@ -8,6 +8,8 @@ import { CategoryService } from '../../core/category/category.service';
 import { Observable } from 'rxjs/Observable';
 
 const category = CATEGORY_DATA_WEB[0];
+const WEB_SLUG_ITEM_ES = 'https://es.wallapop.com/item/';
+const WEB_SLUG_USER_ES = 'https://es.wallapop.com/user/';
 
 describe('ReviewItemComponent', () => {
   let component: ReviewItemComponent;
@@ -48,11 +50,11 @@ describe('ReviewItemComponent', () => {
     });
 
     it('should set itemWebLink', () => {
-      expect(component.itemWebLink).toBe(ITEM_BASE_PATH + MOCK_REVIEWS[0].item.webSlug);
+      expect(component.itemWebLink).toBe(WEB_SLUG_ITEM_ES + MOCK_REVIEWS[0].item.webSlug);
     });
 
     it('should set userWebSlug', () => {
-      expect(component.userWebSlug).toBe(USER_BASE_PATH + REVIEWS_RESPONSE[0].user.web_slug);
+      expect(component.userWebSlug).toBe(WEB_SLUG_USER_ES + REVIEWS_RESPONSE[0].user.web_slug);
     });
   });
 });
