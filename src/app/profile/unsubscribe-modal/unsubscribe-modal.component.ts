@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from '../../core/user/user.service';
+import { UnsubscribeReason } from '../../core/user/unsubscribe-reason.interface';
 
 @Component({
   selector: 'tsl-unsubscribe-modal',
@@ -9,33 +11,25 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class UnsubscribeModalComponent implements OnInit {
 
   public step = 1;
-  public reasons: any[];
+  public reasons: UnsubscribeReason[];
   public selectedReason: number;
   public customReason: string;
 
-  constructor(public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal,
+              private userService: UserService) {
+  }
 
   ngOnInit() {
-    this.reasons = [{
-      id: 1,
-      title: 'Ya no utilizo la app'
-    }, {
-      id: 2,
-      title: 'No encuentro productos interesantes ni compradores interesados'
-    }, {
-      id: 3,
-      title: 'Utilizo otra plataforma'
-    }, {
-      id: 4,
-      title: 'Tengo problemas técnicos con el servicio'
-    }, {
-      id: 5,
-      title: 'He tenido problemas de seguridad'
-    }];
+    this.userService.getUnsubscribeReasons().subscribe((reasons: UnsubscribeReason[]) => {
+      this.reasons = reasons;
+    });
   }
 
   public send() {
-    this.activeModal.close();
+    this.userService.unsubscribe(this.selectedReason, this.customReason).subscribe(() => {
+      this.activeModal.close();
+      this.userService.logout();
+    });
   }
 
 }

@@ -18,6 +18,7 @@ import { environment } from '../../../environments/environment';
 import { UserInfoResponse } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
 import { UserData } from './user-data.interface';
+import { UnsubscribeReason } from './unsubscribe-reason.interface';
 
 @Injectable()
 export class UserService extends UserServiceMaster {
@@ -93,6 +94,18 @@ export class UserService extends UserServiceMaster {
     return this.http.post(this.API_URL_V3 + '/me/password', {
       old_password: oldPassword,
       new_password: newPassword
+    });
+  }
+
+  public getUnsubscribeReasons(): Observable<UnsubscribeReason[]> {
+    return this.http.get(this.API_URL_V3 + '/me/unsubscribe/reason', {language: this.i18n.locale})
+    .map((r: Response) => r.json());
+  }
+
+  public unsubscribe(reasonId: number, otherReason: string): Observable<any> {
+    return this.http.post(this.API_URL_V3 + '/me/unsubscribe', {
+      reason_id: reasonId,
+      other_reason: otherReason
     });
   }
 

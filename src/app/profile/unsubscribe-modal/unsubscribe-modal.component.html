@@ -1,11 +1,11 @@
 <div class="header" [hidden]="step === 2"></div>
 <div class="modal-body" [hidden]="step === 2">
 
-  <h1 i18>¿Seguro que quieres darte de baja?</h1>
-  <p i18n>Nunca es tarde para cambiar de opinión, ¿eh?<br />Piensa que el equipo estará muy triste si te vas :(</p>
+  <h1 i18>Are you sure you want to close your account?</h1>
+  <p i18n>It's never too late to change your mind, you know?<br />The team will be sad to see you go :(</p>
 
-  <button class="btn btn-secondary" (click)="step = 2" i18n>Sí, quiero darme de baja</button>
-  <button class="btn btn-secondary" (click)="activeModal.dismiss()" i18n>No, va, quiero seguir con vosotros</button>
+  <button class="btn btn-secondary" (click)="step = 2" i18n>Yes, I do want to close my account</button>
+  <button class="btn btn-secondary" (click)="activeModal.dismiss()" i18n>No, I want to stay</button>
 
 </div>
 
@@ -13,21 +13,20 @@
   <div class="modal-close" (click)="activeModal.dismiss()">
     <md-icon svgIcon="cross"></md-icon>
   </div>
-  <h1 class="title" i18>¿Podrías decirnos el motivo por el que quieres darte de baja? Descuida, no se lo diremos a nadie</h1>
+  <h1 class="title" i18>Can you tell us why you want to close your account? We won't tell anyone.</h1>
   <button class="btn btn-secondary btn-block btn-reason"
           *ngFor="let reason of reasons"
-          [ngClass]="{selected: selectedReason === reason.id}"
-          (click)="selectedReason = reason.id">{{reason.title}}</button>
+          [ngClass]="{selected: selectedReason === reason.reason_id}"
+          (click)="selectedReason = reason.reason_id">{{reason.name}}</button>
 
   <p class="custom-reason">
-    <span class="float-left" i18n>El motivo es...</span>
-    <span class="float-right counter">{{customReason?.length || 0}}/650</span>
+    <span class="float-right counter">{{customReason?.length || 0}}/300</span>
   </p>
-  <textarea i18n-placeholder placeholder="Cuéntanos, que te ha ocurrido…"
+  <textarea [hidden]="selectedReason !== 6" i18n-placeholder placeholder="Tell us what happened..."
             class="form-control"
             [(ngModel)]="customReason"
-            maxlength="650"></textarea>
+            maxlength="300"></textarea>
   <div class="text-right">
-    <button class="btn btn-primary" [disabled]="!selectedReason && !customReason" (click)="send()" i18n>Send</button>
+    <button class="btn btn-primary" [disabled]="!selectedReason || selectedReason === 6 && !customReason" (click)="send()" i18n>Send</button>
   </div>
 </div>
