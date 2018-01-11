@@ -26,12 +26,11 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Output() onError: EventEmitter<string> = new EventEmitter();
   @Input() maxUploads = 4;
   @Input() images: Image[];
+  @Input() itemId: string;
   dragOver: boolean;
   files: UploadFile[] = [];
   placeholders: number[];
   options: NgUploaderOptions;
-  private itemId: string;
-  private deletedImagesIds: string[] = [];
 
   private setDragOver = _.throttle((dragOver: boolean) => {
     this.dragOver = dragOver;
@@ -63,15 +62,8 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   }
 
   private updateItem(values: any) {
-    this.itemService.update(values, this.deletedImagesIds).subscribe(() => {
-      const filesToUpload = this.files.filter((file) => {
-        return file.progress.status !== UploadStatus.Done
-      });
-      if (filesToUpload.length > 0) {
-        this.uploadService.uploadOtherImages(values.id, this.maxUploads === 8 ? '/cars' : '');
-      } else {
-        this.onUploaded.emit('updated');
-      }
+    this.itemService.update(values).subscribe(() => {
+      this.onUploaded.emit('updated');
     }, (response) => {
       if (response.message) {
         this.onError.emit(response);
@@ -139,8 +131,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
         }
         break;
       case 'addedToQueue':
-        this.files.push(output.file);
-        this.propagateChange(this.files);
+        this.uploadPictureNow(output);
         break;
       case 'uploading':
         const index = this.files.findIndex(file => file.id === output.file.id);
@@ -169,6 +160,15 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     }
   }
 
+  private uploadPictureNow(output: UploadOutput) {
+    if (this.images) {
+      this.uploadService.uploadOtherImages(this.itemId, this.maxUploads === 8 ? '/cars' : '');
+    } else {
+      this.files.push(output.file);
+      this.propagateChange(this.files);
+    }
+  }
+
   private onUploadDone(output: UploadOutput) {
     if (output.file.response) {
       if (output.file.progress.data.responseStatus === 200) {
@@ -180,10 +180,14 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
             this.onUploaded.emit('created');
           }
         } else {
-          if (_.every(this.files, (file: UploadFile) => {
+          if (!this.images && _.every(this.files, (file: UploadFile) => {
               return file.progress.status === UploadStatus.Done;
             })) {
             this.onUploaded.emit(this.images ? 'updated' : 'created');
+          } else {
+            this.files.push(output.file);
+            this.propagateChange(this.files);
+            this.errorsService.i18nSuccess('imageUploaded');
           }
         }
       } else {
@@ -199,9 +203,13 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   public remove(file: UploadFile, event: Event) {
     event.stopPropagation();
     event.preventDefault();
-    this.uploadService.removeImage(file);
-    if (file.response) {
-      this.deletedImagesIds.push(file.id);
+    if (this.images) {
+      const fileId = file.response.id || file.response;
+      this.itemService.deletePicture(this.itemId, fileId).subscribe(() => {
+        this.uploadService.removeImage(file);
+      });
+    } else {
+      this.uploadService.removeImage(file);
     }
   }
 
