@@ -353,8 +353,6 @@ describe('Component: Chat', () => {
     discardPeriodicTasks();
   }))
 
-  // it('should un subscribe refresh ad when destroy component')
-
   it('should unsubscribe refresh ad when destroy component', () => {
     component.ngOnInit();
     spyOn(component.refreshAdSubscription, 'unsubscribe');
