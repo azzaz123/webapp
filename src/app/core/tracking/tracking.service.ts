@@ -37,7 +37,8 @@ const SCREENS_IDS: any = {
   Wall: '110',
   MyCatalog: '138',
   ItemDetail: '115',
-  UploadForm: '139'
+  UploadForm: '139',
+  MyProfile: '112'
 };
 
 const TYPES_IDS: any = {
@@ -321,6 +322,12 @@ export class TrackingService extends TrackingServiceMaster {
     name: '600',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Tap
+  };
+  public static MYPROFILE_UNSUBSCRIBE: TrackingEventBase = {
+    name: '608',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyProfile,
     type: TYPES_IDS.Tap
   };
 
