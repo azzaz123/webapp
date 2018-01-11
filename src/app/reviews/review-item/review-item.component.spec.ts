@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReviewItemComponent } from './review-item.component';
-import { SanitizedBackgroundDirective } from 'shield';
+import { SanitizedBackgroundDirective, USER_BASE_PATH, ITEM_BASE_PATH } from 'shield';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_REVIEWS } from '../../../tests/review.fixtures';
+import { MOCK_REVIEWS, REVIEWS_RESPONSE } from '../../../tests/review.fixtures';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
 import { CategoryService } from '../../core/category/category.service';
 import { Observable } from 'rxjs/Observable';
@@ -48,11 +48,11 @@ describe('ReviewItemComponent', () => {
     });
 
     it('should set itemWebLink', () => {
-      expect(component.itemWebLink).toBe('https://es.wallapop.com/item/' + component.review.item.webSlug);
+      expect(component.itemWebLink).toBe(ITEM_BASE_PATH + MOCK_REVIEWS[0].item.webSlug);
     });
 
     it('should set userWebSlug', () => {
-      expect(component.userWebSlug).toBe(component.review.user.webLink);
+      expect(component.userWebSlug).toBe(USER_BASE_PATH + REVIEWS_RESPONSE[0].user.web_slug);
     });
   });
 });

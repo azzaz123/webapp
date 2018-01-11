@@ -7,7 +7,10 @@ const routes: Routes = [
   {
     path: 'reviews',
     component: ReviewsComponent,
-    canActivate: [LoggedGuard]
+    canActivate: [LoggedGuard],
+    data: {
+      isMyZone: true
+    }
   }
 ];
 
