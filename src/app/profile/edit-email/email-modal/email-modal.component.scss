@@ -15,6 +15,11 @@ p {
   color: $grey-300;
   margin: 0;
   margin-bottom: $spacing-XL;
+  &.note {
+    color: $grey-250;
+    margin: 0;
+    margin-top: $spacing;
+  }
 }
 
 h1, p {
