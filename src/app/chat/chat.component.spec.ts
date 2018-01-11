@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { TrackingService } from '../core/tracking/tracking.service';
+import { AdService } from '../core/ad/ad.service';
 
 class MockConversationService {
 
@@ -62,6 +63,7 @@ describe('Component: Chat', () => {
   let modalService: NgbModal;
   let xmppService: XmppService;
   let persistencyService: PersistencyService;
+  let adService: AdService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -91,6 +93,14 @@ describe('Component: Chat', () => {
           unblockUser() {
           }
         }
+        },
+        {
+          provide: AdService,
+          useValue: {
+            getRefreshRate() {
+              return Observable.empty();
+            }
+          }
         }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -105,6 +115,7 @@ describe('Component: Chat', () => {
     modalService = TestBed.get(NgbModal);
     xmppService = TestBed.get(XmppService);
     persistencyService = TestBed.get(PersistencyService);
+    adService = TestBed.get(AdService);
   });
 
   it('should create an instance', () => {
@@ -327,5 +338,29 @@ describe('Component: Chat', () => {
       expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
     }));
   });
+
+  it('should refresh google ad', fakeAsync(() => {
+    const refreshRate = 1000;
+    const pubads = {refresh () {}}
+    spyOn(adService, 'getRefreshRate').and.returnValue(Observable.interval(refreshRate));
+    spyOn(googletag, 'pubads').and.returnValue(pubads);
+    spyOn(pubads, 'refresh');
+
+    component.ngOnInit();
+    tick(refreshRate);
+
+    expect(pubads.refresh).toHaveBeenCalled();
+    discardPeriodicTasks();
+  }))
+
+  // it('should un subscribe refresh ad when destroy component')
+
+  it('should unsubscribe refresh ad when destroy component', () => {
+    component.ngOnInit();
+    spyOn(component.refreshAdSubscription, 'unsubscribe');
+    component.ngOnDestroy();
+
+    expect(component.refreshAdSubscription.unsubscribe ).toHaveBeenCalled();
+  })
 
 });

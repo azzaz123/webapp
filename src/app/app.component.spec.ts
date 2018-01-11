@@ -35,7 +35,6 @@ import createSpy = jasmine.createSpy;
 import { CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
-import { AdService } from './core/ad/ad.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -50,12 +49,11 @@ let trackingService: TrackingService;
 let window: any;
 let conversationService: ConversationService;
 let cookieService: CookieService;
-let adService: AdService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
 
-fdescribe('App', () => {
+describe('App', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -156,14 +154,6 @@ fdescribe('App', () => {
             }
           }
         },
-        {
-          provide: AdService,
-          useValue: {
-            getRefreshRate() {
-              return Observable.empty();
-            }
-          }
-        },
         ...
           TEST_HTTP_PROVIDERS
       ],
@@ -183,7 +173,6 @@ fdescribe('App', () => {
     window = TestBed.get(WindowRef).nativeWindow;
     conversationService = TestBed.get(ConversationService);
     cookieService = TestBed.get(CookieService);
-    adService = TestBed.get(AdService);
     spyOn(notificationService, 'init');
   });
 
@@ -386,19 +375,4 @@ fdescribe('App', () => {
       expect(component.hideSidebar).toBeTruthy();
     })
   });
-
-
-  it('should refresh google ad', fakeAsync(() => {
-    const refreshRate = 1000;
-    const pubads = {refresh () {}}
-    spyOn(adService, 'getRefreshRate').and.returnValue(Observable.interval(refreshRate));
-    spyOn(googletag, 'pubads').and.returnValue(pubads);
-    spyOn(pubads, 'refresh');
-
-    component.ngOnInit();
-    tick(refreshRate);
-
-    expect(pubads.refresh).toHaveBeenCalled();
-    discardPeriodicTasks();
-  }))
 });
