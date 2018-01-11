@@ -8,8 +8,7 @@ import {
   LoginResponse,
   User,
   UserService as UserServiceMaster,
-  Location,
-  USER_LOCATION
+  Location
 } from 'shield';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Observable } from 'rxjs/Observable';
@@ -18,6 +17,7 @@ import { environment } from '../../../environments/environment';
 import { UserInfoResponse } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
 import { UserData } from './user-data.interface';
+import { CookieService } from 'ngx-cookie';
 
 @Injectable()
 export class UserService extends UserServiceMaster {
@@ -29,8 +29,15 @@ export class UserService extends UserServiceMaster {
               i18n: I18nService,
               haversineService: HaversineService,
               accessTokenService: AccessTokenService,
-              @Inject('SUBDOMAIN') private subdomain: string) {
+              @Inject('SUBDOMAIN') private subdomain: string,
+              private cookieService: CookieService) {
     super(http, event, i18n, haversineService, accessTokenService);
+  }
+
+  private deleteSessionCookie() {
+    const cookieSubdomain: string = this.subdomain.charAt(0).toUpperCase() + this.subdomain.slice(1);
+    this.cookieService.remove('accessToken' + cookieSubdomain);
+    this.cookieService.remove('deviceAccessToken' + cookieSubdomain);
   }
 
   public login(data: any): Observable<LoginResponse> {
@@ -47,6 +54,7 @@ export class UserService extends UserServiceMaster {
     this.http.postNoBase(URL + 'rest/logout', undefined, undefined, true).subscribe((response) => {
       const redirectUrl: any = response['_body'];
       this.accessTokenService.deleteAccessToken();
+      //this.deleteSessionCookie();
       this.event.emit(EventService.USER_LOGOUT, redirectUrl);
     });
   }
