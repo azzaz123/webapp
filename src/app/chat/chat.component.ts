@@ -67,7 +67,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.firstLoad = true;
     });
 
-    this.setAdRefreshRate();
+    this.initRefreshAds();
   }
 
   ngOnDestroy () {
@@ -159,8 +159,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setAdRefreshRate() {
-    this.refreshAdSubscription = this.adService.getRefreshRate().subscribe(() => {
+  private initRefreshAds() {
+    this.refreshAdSubscription = this.adService.refreshAds().subscribe(() => {
       googletag.pubads().refresh();
     })
   }

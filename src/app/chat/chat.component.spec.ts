@@ -97,7 +97,7 @@ describe('Component: Chat', () => {
         {
           provide: AdService,
           useValue: {
-            getRefreshRate() {
+            refreshAds() {
               return Observable.empty();
             }
           }
@@ -342,7 +342,7 @@ describe('Component: Chat', () => {
   it('should refresh google ad', fakeAsync(() => {
     const refreshRate = 1000;
     const pubads = {refresh () {}}
-    spyOn(adService, 'getRefreshRate').and.returnValue(Observable.interval(refreshRate));
+    spyOn(adService, 'refreshAds').and.returnValue(Observable.interval(refreshRate));
     spyOn(googletag, 'pubads').and.returnValue(pubads);
     spyOn(pubads, 'refresh');
 

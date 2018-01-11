@@ -16,7 +16,7 @@ export class AdService {
   constructor(private http: HttpService
   ) {}
 
-  public getRefreshRate(): Observable<any> {
+  public refreshAds(): Observable<any> {
     return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
       .flatMap((refreshRate: number) => {
         return refreshRate ? Observable.interval(refreshRate) : Observable.empty()

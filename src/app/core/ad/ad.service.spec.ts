@@ -26,7 +26,7 @@ describe('AdService', () => {
     mockBackend = TestBed.get(MockBackend);
   });
 
-  describe ('getRefreshRate', () => {
+  describe ('refreshAds', () => {
     it('should refresh ads with its rate' , fakeAsync(() => {
       const refreshRate = 1000;
       mockBackend.connections.subscribe((connection: MockConnection) => {
@@ -36,7 +36,7 @@ describe('AdService', () => {
       const numberOfTimes = 2;
       let timesCalled = 0 ;
 
-      service.getRefreshRate().subscribe(() => {
+      service.refreshAds().subscribe(() => {
         timesCalled++;
       });
       tick(numberOfTimes * refreshRate);
@@ -52,7 +52,7 @@ describe('AdService', () => {
       });
       let refreshed = false;
 
-      service.getRefreshRate().subscribe(() => {
+      service.refreshAds().subscribe(() => {
         refreshed = true;
       });
 
