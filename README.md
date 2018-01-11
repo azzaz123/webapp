@@ -3,12 +3,15 @@
 ## Dependencies
 
 You need to have installed the node version specified on `.nvmrc` and [yarn](https://yarnpkg.com/lang/en/).
+
 To manage node versions, it is recommended to use a version manager like [nvm](https://github.com/creationix/nvm) on linux or [n](https://github.com/tj/n) on macOS.
+
 To install the project dependencies you need to use `yarn install`.
 
 ## Environments
 
 You have the environment variables on `src/environments/environment.ts`, you can change them locally to suit your needs.
+
 Beware that some request are done to the wallapopBackend API and other are done to the public web API, so you may need to run locally also the web project.
 
 ## Development server
