@@ -22,7 +22,6 @@ export class TopbarComponent implements OnInit {
   public homeUrl: string;
   public model: any;
   public userUrl: string;
-  public routeActived: any;
   @Input() isMyZone: boolean;
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('kwsEl') kwsEl: ElementRef;
