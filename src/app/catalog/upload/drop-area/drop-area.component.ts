@@ -117,12 +117,12 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
           }
         }
       } else {
-        if (output.file.response.message) {
-          this.onError.emit(output.file.response);
-          this.errorsService.i18nError('serverError', output.file.response.message);
-        }
+        this.errorsService.i18nError('serverError', output.file.response.message ? output.file.response.message : '');
+        this.onError.emit();
       }
-
+    } else {
+      this.errorsService.i18nError('serverError');
+      this.onError.emit();
     }
   }
 
