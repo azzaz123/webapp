@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from 'shield';
+import { isPresent } from 'ngx-cookie/src/utils';
 
 @Component({
   selector: 'tsl-password-modal',
@@ -20,7 +21,7 @@ export class PasswordModalComponent {
               private errorsService: ErrorsService) {
     this.passwordForm = fb.group({
       old_password: ['', [Validators.required]],
-      new_password: ['', [Validators.required]],
+      new_password: ['', [Validators.required, Validators.minLength(8)]],
       repeat_password: ['', [Validators.required]]
     }, {validator: this.match('new_password', 'repeat_password')});
   }
@@ -44,12 +45,13 @@ export class PasswordModalComponent {
           this.passwordForm.controls[control].markAsDirty();
         }
       }
-      if (this.passwordForm.errors && this.passwordForm.errors.match) {
+      if (this.passwordForm.get('new_password').errors && this.passwordForm.get('new_password').errors.minlength) {
+        this.errorsService.i18nError('passwordMinLength');
+      } else if (this.passwordForm.errors && this.passwordForm.errors.match) {
         this.errorsService.i18nError('passwordMatch');
       } else {
         this.errorsService.i18nError('formErrors');
       }
-
     }
   }
 
