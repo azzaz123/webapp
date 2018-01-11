@@ -131,7 +131,11 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
         }
         break;
       case 'addedToQueue':
-        this.uploadPictureNow(output);
+        if (this.images) {
+          this.uploadService.uploadOtherImages(this.itemId, this.maxUploads === 8 ? '/cars' : '');
+        } else {
+          this.pictureUploaded(output);
+        }
         break;
       case 'uploading':
         const index = this.files.findIndex(file => file.id === output.file.id);
@@ -160,15 +164,6 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  private uploadPictureNow(output: UploadOutput) {
-    if (this.images) {
-      this.uploadService.uploadOtherImages(this.itemId, this.maxUploads === 8 ? '/cars' : '');
-    } else {
-      this.files.push(output.file);
-      this.propagateChange(this.files);
-    }
-  }
-
   private onUploadDone(output: UploadOutput) {
     if (output.file.response) {
       if (output.file.progress.data.responseStatus === 200) {
@@ -185,9 +180,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
             })) {
             this.onUploaded.emit(this.images ? 'updated' : 'created');
           } else {
-            this.files.push(output.file);
-            this.propagateChange(this.files);
-            this.errorsService.i18nSuccess('imageUploaded');
+            this.pictureUploadedOnUpdate(output);
           }
         }
       } else {
@@ -198,6 +191,16 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
       }
 
     }
+  }
+
+  private pictureUploadedOnUpdate(output: UploadOutput) {
+    this.pictureUploaded(output);
+    this.errorsService.i18nSuccess('imageUploaded');
+  }
+
+  private pictureUploaded(output: UploadOutput) {
+    this.files.push(output.file);
+    this.propagateChange(this.files);
   }
 
   public remove(file: UploadFile, event: Event) {
