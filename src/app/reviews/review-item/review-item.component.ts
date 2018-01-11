@@ -27,11 +27,12 @@ export class ReviewItemComponent implements OnInit {
       this.review.item.webLink.replace(ITEM_BASE_PATH, environment.siteUrl + 'item/') : null;
     this.userWebSlug = this.review.user ?
       this.review.user.webLink.replace(USER_BASE_PATH, environment.siteUrl + 'user/') : null;
-
-    this.categoryService.getCategoryById(this.review.item.categoryId).subscribe((category: CategoryResponse) => {
-      this.categoryName = category.title;
-      this.categoryIconName = category.iconName;
-    });
+    if (this.review.item) {
+      this.categoryService.getCategoryById(this.review.item.categoryId).subscribe((category: CategoryResponse) => {
+        this.categoryName = category.title;
+        this.categoryIconName = category.iconName;
+      });
+    }
   }
 
 }
