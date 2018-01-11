@@ -2,6 +2,7 @@ import { UserInfoResponse } from '../app/core/user/user-info.interface';
 import { Coordinate } from '../app/core/geolocation/address-response.interface';
 import { USER_LOCATION, USER_DATA } from 'shield';
 import { UserData } from '../app/core/user/user-data.interface';
+import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
 
 export const SCORING_STARS = 91;
 export const RESPONSE_RATE = 'less_than_one_hour';
@@ -23,3 +24,14 @@ export const USER_EDIT_DATA: UserData = {
   birth_date: '1987-02-10T00:00:00.000Z',
   gender: 'M'
 };
+
+export const REASONS: UnsubscribeReason[] = [{
+  name: 'Test',
+  reason_id: 1
+}, {
+  name: 'Test 2',
+  reason_id: 2
+}];
+
+export const SELECTED_REASON = 1;
+export const CUSTOM_REASON = 'bye';

@@ -6,11 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { UnsubscribeReason } from '../../core/user/unsubscribe-reason.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-
-const REASONS: UnsubscribeReason[] = [{
-  name: 'Test',
-  reason_id: 1
-}];
+import { CUSTOM_REASON, REASONS, SELECTED_REASON } from '../../../tests/user.fixtures';
 
 describe('UnsubscribeModalComponent', () => {
   let component: UnsubscribeModalComponent;
@@ -66,9 +62,6 @@ describe('UnsubscribeModalComponent', () => {
   });
 
   describe('send', () => {
-
-    const SELECTED_REASON = 1;
-    const CUSTOM_REASON = 'bye';
 
     it('should call unsubscribe, close and logout', () => {
       spyOn(userService, 'unsubscribe').and.callThrough();

@@ -22,8 +22,13 @@ import {
 import { HaversineService } from 'ng2-haversine';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { USER_EDIT_DATA, USER_INFO_RESPONSE, USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures';
+import {
+  CUSTOM_REASON,
+  REASONS, SELECTED_REASON, USER_EDIT_DATA, USER_INFO_RESPONSE,
+  USER_LOCATION_COORDINATES
+} from '../../../tests/user.fixtures';
 import { UserInfoResponse } from './user-info.interface';
+import { UnsubscribeReason } from './unsubscribe-reason.interface';
 
 describe('UserService', () => {
 
@@ -205,6 +210,35 @@ describe('UserService', () => {
       expect(http.post).toHaveBeenCalledWith('api/v3/users/me/password', {
         old_password: OLD_PASSWORD,
         new_password: NEW_PASSWORD
+      });
+    });
+  });
+
+  describe('getUnsubscribeReasons', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(REASONS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: UnsubscribeReason[];
+
+      service.getUnsubscribeReasons().subscribe((response: UnsubscribeReason[]) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/unsubscribe/reason', {language: 'en'});
+      expect(resp).toEqual(REASONS);
+    });
+  });
+
+  describe('unsubscribe', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: ''});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+
+      service.unsubscribe(SELECTED_REASON, CUSTOM_REASON).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/unsubscribe', {
+        reason_id: SELECTED_REASON,
+        other_reason: CUSTOM_REASON
       });
     });
   });
