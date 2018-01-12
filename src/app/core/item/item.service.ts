@@ -217,4 +217,10 @@ export class ItemService extends ItemServiceMaster {
     .map((r: any) => this.mapRecordData(r));
   }
 
+  public updatePicturesOrder(itemId: string, picturesOrder: {[fileId: string]: number}): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + itemId + '/change-picture-order', {
+      pictures_order: picturesOrder
+    });
+  }
+
 }

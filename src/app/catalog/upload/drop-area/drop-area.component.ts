@@ -228,6 +228,11 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   public updateOrder() {
     this.uploadService.updateOrder(this.files);
+    const picturesOrder = {};
+    this.files.forEach((file, index) => {
+      picturesOrder[file.response.id || file.response] = index + 1;
+    });
+    this.itemService.updatePicturesOrder(this.itemId, picturesOrder).subscribe();
   }
 
 }
