@@ -24,6 +24,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { USER_EDIT_DATA, USER_INFO_RESPONSE, USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures';
 import { UserInfoResponse } from './user-info.interface';
+import { CookieService } from 'ngx-cookie';
 
 describe('UserService', () => {
 
@@ -32,6 +33,7 @@ describe('UserService', () => {
   let haversineService: HaversineService;
   let accessTokenService: AccessTokenService;
   let event: EventService;
+  let cookieService: CookieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -44,6 +46,12 @@ describe('UserService', () => {
         ...TEST_HTTP_PROVIDERS,
         {
           provide: 'SUBDOMAIN', useValue: 'www'
+        },
+        {
+          provide: CookieService, useValue: {
+            remove(key) {
+            }
+          }
         }
       ]
     });
@@ -52,6 +60,7 @@ describe('UserService', () => {
     haversineService = TestBed.get(HaversineService);
     accessTokenService = TestBed.get(AccessTokenService);
     event = TestBed.get(EventService);
+    cookieService = TestBed.get(CookieService);
   });
 
   it('should be created', () => {
@@ -85,6 +94,7 @@ describe('UserService', () => {
   describe('logout', () => {
     const res: ResponseOptions = new ResponseOptions({body: 'redirect_url'});
     let redirectUrl: string;
+
     beforeEach(() => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of(new Response(res)));
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
@@ -93,6 +103,7 @@ describe('UserService', () => {
       });
       service.logout();
     });
+
     it('should call endpoint', () => {
       expect(http.postNoBase).toHaveBeenCalledWith('https://www.wallapop.com/rest/logout', undefined, undefined, true);
     });

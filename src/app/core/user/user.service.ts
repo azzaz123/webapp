@@ -35,9 +35,10 @@ export class UserService extends UserServiceMaster {
   }
 
   private deleteSessionCookie() {
+    const cookieOptions = { domain: '.wallapop.com' };
     const cookieSubdomain: string = this.subdomain.charAt(0).toUpperCase() + this.subdomain.slice(1);
-    this.cookieService.remove('accessToken' + cookieSubdomain);
-    this.cookieService.remove('deviceAccessToken' + cookieSubdomain);
+    this.cookieService.remove('accessToken' + cookieSubdomain, cookieOptions);
+    this.cookieService.remove('deviceAccessToken' + cookieSubdomain, cookieOptions);
   }
 
   public login(data: any): Observable<LoginResponse> {
@@ -54,7 +55,7 @@ export class UserService extends UserServiceMaster {
     this.http.postNoBase(URL + 'rest/logout', undefined, undefined, true).subscribe((response) => {
       const redirectUrl: any = response['_body'];
       this.accessTokenService.deleteAccessToken();
-      //this.deleteSessionCookie();
+      this.deleteSessionCookie();
       this.event.emit(EventService.USER_LOGOUT, redirectUrl);
     });
   }
