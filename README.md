@@ -1,28 +1,42 @@
 # Webapp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.1.
+## Dependencies
+
+You need to have installed the node version specified on `.nvmrc` and [yarn](https://yarnpkg.com/lang/en/).
+
+To manage node versions, it is recommended to use a version manager like [nvm](https://github.com/creationix/nvm) on linux or [n](https://github.com/tj/n) on macOS.
+
+To install the project dependencies you need to use `yarn install`.
+
+## Environments
+
+You have the environment variables on `src/environments/environment.ts`, you can change them locally to suit your needs.
+
+Beware that some request are done to the wallapopBackend API and other are done to the public web API, so you may need to run locally also the web project.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `yarn start` for a dev server, or `yarn serve` for a dev server with a complete build (Using aot, i18n etc.). Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `yarn test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Code scaffolding
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+Run `yarn ng generate component component-name` to generate a new component. You can also use `yarn ng generate directive|pipe|service|class|module`.
 
-## Further help
+## Build
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+You can run any of the following commands to build the project for each environment.
+The build artifacts will be stored in the `dist/` directory.
+
+```
+yarn builddev
+yarn builddocker
+yarn builddocker-en
+yarn buildbeta
+yarn buildbeta-en
+yarn buildprod
+yarn buildprod-en
+```
