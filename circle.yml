@@ -30,8 +30,17 @@ deployment:
       - docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:ft-$BRANCH .
       - $(aws ecr get-login --region eu-west-1)
       - docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:ft-$BRANCH"
-  beta:
-    tag: /beta-.*/
+  release:
+    branch: /release.*/
+    commands:
+      - npm run buildbeta
+      - aws s3 sync dist s3://web.beta.wallapop.com --delete
+      - aws s3 cp dist/index.html s3://web.beta.wallapop.com/index.html --cache-control max-age=0
+      - npm run buildbeta-en
+      - aws s3 sync dist s3://web-en.beta.wallapop.com --delete
+      - aws s3 cp dist/index.html s3://web-en.beta.wallapop.com/index.html --cache-control max-age=0
+  hotfix:
+    branch: /hotfix.*/
     commands:
       - npm run buildbeta
       - aws s3 sync dist s3://web.beta.wallapop.com --delete
@@ -48,3 +57,7 @@ deployment:
       - npm run buildprod-en
       - aws s3 sync dist s3://web-en.wallapop.com --delete
       - aws s3 cp dist/index.html s3://web-en.wallapop.com/index.html --cache-control max-age=0
+      - npm run builddocker
+      - docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:stable .
+      - $(aws ecr get-login --region eu-west-1)
+      - docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:stable"
