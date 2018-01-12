@@ -6,6 +6,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
 import { ItemService } from '../../../core/item/item.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 
 @Component({
   selector: 'tsl-drop-area',
@@ -41,7 +43,8 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   constructor(private errorsService: ErrorsService,
               public uploadService: UploadService,
-              private itemService: ItemService) {
+              private itemService: ItemService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -207,13 +210,20 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     event.stopPropagation();
     event.preventDefault();
     if (this.images) {
+      this.removeConfirmation(file);
+    } else {
+      this.uploadService.removeImage(file);
+    }
+  }
+
+  private removeConfirmation(file: UploadFile) {
+    this.modalService.open(RemoveConfirmModalComponent).result.then(() => {
       const fileId = file.response.id || file.response;
       this.itemService.deletePicture(this.itemId, fileId).subscribe(() => {
         this.uploadService.removeImage(file);
       });
-    } else {
-      this.uploadService.removeImage(file);
-    }
+    }, () => {
+    });
   }
 
   public updateOrder() {
