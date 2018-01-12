@@ -74,6 +74,9 @@ $form-control-height: 42px;
       color: $grey-900;
       font-size: $font-size;
       padding-right: 69px;
+      &.col-3 {
+        line-height: 20px;
+      }
     }
     .form-control {
       height: $form-control-height;
