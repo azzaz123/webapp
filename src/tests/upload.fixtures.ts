@@ -22,7 +22,8 @@ export const UPLOAD_FILE: UploadFile = {
       responseStatus: 200
     }
   },
-  lastModifiedDate: UPLOAD_FILE_DATE
+  lastModifiedDate: UPLOAD_FILE_DATE,
+  preview: 'abcdef'
 };
 
 export const CAR_ID: string = 'xzo81pgg4469';

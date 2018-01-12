@@ -1,7 +1,8 @@
 import { UserInfoResponse } from '../app/core/user/user-info.interface';
 import { Coordinate } from '../app/core/geolocation/address-response.interface';
-import { USER_LOCATION } from 'shield';
-import {Counters, Ratings, UserStatsResponse} from '../app/core/user/user-stats.interface';
+import { Counters, Ratings, UserStatsResponse } from '../app/core/user/user-stats.interface';
+import { USER_LOCATION, USER_DATA } from 'shield';
+import { UserData } from '../app/core/user/user-data.interface';
 
 export const SCORING_STARS = 91;
 export const RESPONSE_RATE = 'less_than_one_hour';
@@ -82,4 +83,11 @@ export const COUNTERS = [
 export const USERS_STATS = {
   ratings: RATINGS,
   counters: COUNTERS
+};
+
+export const USER_EDIT_DATA: UserData = {
+  first_name: USER_DATA.first_name,
+  last_name: USER_DATA.last_name,
+  birth_date: '1987-02-10T00:00:00.000Z',
+  gender: 'M'
 };

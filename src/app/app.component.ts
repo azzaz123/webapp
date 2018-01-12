@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import {
   DebugService,
   ErrorsService,
@@ -12,7 +12,7 @@ import {
   WindowRef,
   XmppService
 } from 'shield';
-import { DomSanitizer, Title } from '@angular/platform-browser';
+import { DOCUMENT, DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
 import { configIcons } from './config/icons.config';
 import 'rxjs/add/operator/map';
@@ -24,9 +24,9 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
 import { MdIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
-import { CookieOptions, CookieService } from "ngx-cookie/index";
+import { CookieOptions, CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 
@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
   public hideSidebar: boolean;
   private previousUrl: string;
   private currentUrl: string;
+  private previousSlug: string;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -58,6 +59,8 @@ export class AppComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private debugService: DebugService,
+              private renderer: Renderer2,
+              @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService) {
     this.config();
   }
@@ -70,6 +73,7 @@ export class AppComponent implements OnInit {
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
+    this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
@@ -180,4 +184,21 @@ export class AppComponent implements OnInit {
     });
   }
 
+  private setBodyClass() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        if (this.previousSlug) {
+          this.renderer.removeClass(this.document.body, this.previousSlug);
+        }
+        const currentUrlSlug = 'page-' + event.url.slice(1).replace(/\//g, '-');
+        if (currentUrlSlug) {
+          this.renderer.addClass(document.body, currentUrlSlug);
+        }
+        this.previousSlug = currentUrlSlug;
+      }
+    });
+  }
+
+
 }
+

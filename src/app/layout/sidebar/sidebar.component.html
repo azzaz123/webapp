@@ -1,6 +1,6 @@
-<a href="#" class="sidebar-section profile-item" (click)="openProfileModal($event)" tslTrackEvent="MYZONE_MENU_PROFILE">
+<a class="sidebar-section profile-item" [routerLink]="['/profile']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_PROFILE">
   <div class="sidebar-section-circle">
-    <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" *ngIf="user"></tsl-user-avatar>
+    <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" *ngIf="user" [imageUrl]="user?.image?.urls_by_size.medium"></tsl-user-avatar>
   </div>
   <h2 i18n>Profile</h2>
 </a>
