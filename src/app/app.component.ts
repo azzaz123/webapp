@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
 
   public loggingOut: boolean;
   public hideSidebar: boolean;
+  public isMyZone: boolean;
   private previousUrl: string;
   private currentUrl: string;
   private previousSlug: string;
@@ -181,6 +182,7 @@ export class AppComponent implements OnInit {
       const title = !(event['title']) ? 'Wallapop' : event['title'];
       this.titleService.setTitle(title);
       this.hideSidebar = event['hideSidebar'];
+      this.isMyZone = event['isMyZone'];
     });
   }
 
