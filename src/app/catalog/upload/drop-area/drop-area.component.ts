@@ -6,6 +6,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
 import { ItemService } from '../../../core/item/item.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 
 @Component({
   selector: 'tsl-drop-area',
@@ -26,12 +28,11 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Output() onError: EventEmitter<string> = new EventEmitter();
   @Input() maxUploads = 4;
   @Input() images: Image[];
+  @Input() itemId: string;
   dragOver: boolean;
   files: UploadFile[] = [];
   placeholders: number[];
   options: NgUploaderOptions;
-  private itemId: string;
-  private deletedImagesIds: string[] = [];
 
   private setDragOver = _.throttle((dragOver: boolean) => {
     this.dragOver = dragOver;
@@ -42,7 +43,8 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   constructor(private errorsService: ErrorsService,
               public uploadService: UploadService,
-              private itemService: ItemService) {
+              private itemService: ItemService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -63,15 +65,8 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   }
 
   private updateItem(values: any) {
-    this.itemService.update(values, this.deletedImagesIds).subscribe(() => {
-      const filesToUpload = this.files.filter((file) => {
-        return file.progress.status !== UploadStatus.Done
-      });
-      if (filesToUpload.length > 0) {
-        this.uploadService.uploadOtherImages(values.id, this.maxUploads === 8 ? '/cars' : '');
-      } else {
-        this.onUploaded.emit('updated');
-      }
+    this.itemService.update(values).subscribe(() => {
+      this.onUploaded.emit('updated');
     }, (response) => {
       if (response.message) {
         this.onError.emit(response);
@@ -139,8 +134,11 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
         }
         break;
       case 'addedToQueue':
-        this.files.push(output.file);
-        this.propagateChange(this.files);
+        if (this.images) {
+          this.uploadService.uploadOtherImages(this.itemId, this.maxUploads === 8 ? '/cars' : '');
+        } else {
+          this.pictureUploaded(output);
+        }
         break;
       case 'uploading':
         const index = this.files.findIndex(file => file.id === output.file.id);
@@ -180,10 +178,12 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
             this.onUploaded.emit('created');
           }
         } else {
-          if (_.every(this.files, (file: UploadFile) => {
+          if (!this.images && _.every(this.files, (file: UploadFile) => {
               return file.progress.status === UploadStatus.Done;
             })) {
             this.onUploaded.emit(this.images ? 'updated' : 'created');
+          } else {
+            this.pictureUploadedOnUpdate(output);
           }
         }
       } else {
@@ -196,17 +196,45 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     }
   }
 
+  private pictureUploadedOnUpdate(output: UploadOutput) {
+    this.pictureUploaded(output);
+    this.errorsService.i18nSuccess('imageUploaded');
+  }
+
+  private pictureUploaded(output: UploadOutput) {
+    this.files.push(output.file);
+    this.propagateChange(this.files);
+  }
+
   public remove(file: UploadFile, event: Event) {
     event.stopPropagation();
     event.preventDefault();
-    this.uploadService.removeImage(file);
-    if (file.response) {
-      this.deletedImagesIds.push(file.id);
+    if (this.images) {
+      this.removeConfirmation(file);
+    } else {
+      this.uploadService.removeImage(file);
     }
+  }
+
+  private removeConfirmation(file: UploadFile) {
+    this.modalService.open(RemoveConfirmModalComponent).result.then(() => {
+      const fileId = file.response.id || file.response;
+      this.itemService.deletePicture(this.itemId, fileId).subscribe(() => {
+        this.uploadService.removeImage(file);
+      });
+    }, () => {
+    });
   }
 
   public updateOrder() {
     this.uploadService.updateOrder(this.files);
+    if (this.images) {
+      const picturesOrder = {};
+      this.files.forEach((file, index) => {
+        picturesOrder[file.response.id || file.response] = index;
+      });
+      this.itemService.updatePicturesOrder(this.itemId, picturesOrder).subscribe();
+    }
   }
 
 }

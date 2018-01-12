@@ -201,28 +201,13 @@ export class ItemService extends ItemServiceMaster {
     .map((r: Response) => r.json());
   }
 
-  public update(item: any, deletedImagesIds: string[]): Observable<Item> {
-    let observable: Observable<any>;
-    if (deletedImagesIds.length) {
-      observable = Observable.forkJoin(
-        deletedImagesIds.map((pictureId) => this.deletePicture(item.id, pictureId))
-      )
-    } else {
-      observable = Observable.of({});
-    }
-    return observable
-    .flatMap(() => {
-      return this.updateItem(item);
-    });
-  }
-
-  private updateItem(item: any): Observable<Item> {
+  public update(item: any): Observable<Item> {
     return this.http.put(this.API_URL_V3 + '/' + item.id, item)
     .map((r: Response) => r.json())
     .map((r: any) => this.mapRecordData(r));
   }
 
-  private deletePicture(itemId: string, pictureId: string): Observable<any> {
+  public deletePicture(itemId: string, pictureId: string): Observable<any> {
     return this.http.delete(this.API_URL_V3 + '/' + itemId + '/picture/' + pictureId);
   }
 
@@ -230,6 +215,12 @@ export class ItemService extends ItemServiceMaster {
     return this.http.get(this.API_URL_V3 + `/${id}`)
     .map((r: Response) => r.json())
     .map((r: any) => this.mapRecordData(r));
+  }
+
+  public updatePicturesOrder(itemId: string, picturesOrder: {[fileId: string]: number}): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + itemId + '/change-picture-order', {
+      pictures_order: picturesOrder
+    });
   }
 
 }

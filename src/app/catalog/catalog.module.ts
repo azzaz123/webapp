@@ -28,6 +28,7 @@ import { UploadProductComponent } from './upload/upload-product/upload-product.c
 import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
 import { ItemResolverService } from './item-resolver.service';
 import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/exit-confirmation-modal.component';
+import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-modal/remove-confirm-modal.component';
 
 @NgModule({
   imports: [
@@ -68,7 +69,9 @@ import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/e
     PreviewModalComponent,
     UploadProductComponent,
     CategorySelectorComponent,
-    ExitConfirmationModalComponent
+    ExitConfirmationModalComponent,
+    CategorySelectorComponent,
+    RemoveConfirmModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -76,7 +79,9 @@ import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/e
     CreditCardModalComponent,
     UploadConfirmationModalComponent,
     PreviewModalComponent,
-    ExitConfirmationModalComponent
+    ExitConfirmationModalComponent,
+    PreviewModalComponent,
+    RemoveConfirmModalComponent
   ]
 })
 export class CatalogModule {

@@ -1,5 +1,5 @@
 import { UploadFile, UploadStatus } from 'ngx-uploader';
-import { ITEM_ID } from 'shield';
+import { ITEM_ID, IMAGE } from 'shield';
 
 
 export const UPLOAD_FILE_NAME: string = 'file.jpg';
@@ -43,7 +43,8 @@ export const UPLOAD_FILE_DONE: UploadFile = {
     }
   },
   lastModifiedDate: UPLOAD_FILE_DATE,
-  preview: 'abcdef'
+  preview: 'abcdef',
+  response: IMAGE
 };
 
 export const CAR_ID: string = 'xzo81pgg4469';
