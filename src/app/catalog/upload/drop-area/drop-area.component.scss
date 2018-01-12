@@ -100,8 +100,8 @@
     }
   }
   &:hover {
-    cursor: move;
-    &:not(.placeholder):not(.dnd-sortable-drag) {
+    &:not(.placeholder):not(.dnd-sortable-drag):not(.one-image) {
+      cursor: move;
       transform: scale(1.25);
       box-shadow: 0 4px 6px 0 rgba(37, 50, 56, 0.15);
       .photos-number-4 & {
@@ -116,6 +116,9 @@
     span {
       display: inline;
     }
+  }
+  &.one-image {
+    cursor: auto;
   }
   span {
     $offset: 10px;
