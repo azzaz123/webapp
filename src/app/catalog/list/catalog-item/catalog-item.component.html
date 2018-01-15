@@ -27,13 +27,16 @@
       </button>
       </span>
       <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
-        <md-icon svgIcon="sold"></md-icon>
+        <md-icon svgIcon="btn-sold"></md-icon>
       </button>
       <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
-        <md-icon svgIcon="reserved"></md-icon>
+        <md-icon svgIcon="btn-reserved"></md-icon>
+      </button>
+      <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]">
+        <md-icon svgIcon="btn-edit"></md-icon>
       </button>
       <button class="btn-delete" (click)="deleteItem(item)">
-        <md-icon svgIcon="delete"></md-icon>
+        <md-icon svgIcon="btn-delete"></md-icon>
       </button>
     </span>
     <button class="btn-reactivate" (click)="reactivateItem(item)" *ngIf="item.flags.expired">

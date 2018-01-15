@@ -1,0 +1,25 @@
+@import "../../../style/_common.scss";
+
+.container {
+  width: $upload-form-width;
+}
+
+.upload-close-icon {
+  position: absolute;
+  right: -20px;
+  md-icon {
+    @include square(12px);
+    /deep/ path {
+      fill: $grey-600;
+
+    }
+  }
+  &:hover {
+    md-icon {
+      /deep/ path {
+        fill: $grey-900;
+      }
+    }
+  }
+}
+
