@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../core/user/user.service';
 import { UnsubscribeReason } from '../../core/user/unsubscribe-reason.interface';
+import { EventService } from '../../core/event/event.service';
+import { AccessTokenService } from 'shield';
 
 @Component({
   selector: 'tsl-unsubscribe-modal',
@@ -16,7 +18,9 @@ export class UnsubscribeModalComponent implements OnInit {
   public customReason: string;
 
   constructor(public activeModal: NgbActiveModal,
-              private userService: UserService) {
+              private userService: UserService,
+              private event: EventService,
+              private accessTokenService: AccessTokenService) {
   }
 
   ngOnInit() {
@@ -28,7 +32,8 @@ export class UnsubscribeModalComponent implements OnInit {
   public send() {
     this.userService.unsubscribe(this.selectedReason, this.customReason).subscribe(() => {
       this.activeModal.close();
-      this.userService.logout();
+      this.accessTokenService.deleteAccessToken();
+      this.event.emit(EventService.USER_LOGOUT);
     });
   }
 

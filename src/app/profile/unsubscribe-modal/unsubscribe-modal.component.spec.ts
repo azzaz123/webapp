@@ -3,16 +3,19 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UnsubscribeModalComponent } from './unsubscribe-modal.component';
 import { UserService } from '../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
-import { UnsubscribeReason } from '../../core/user/unsubscribe-reason.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CUSTOM_REASON, REASONS, SELECTED_REASON } from '../../../tests/user.fixtures';
+import { AccessTokenService } from 'shield';
+import { EventService } from '../../core/event/event.service';
 
 describe('UnsubscribeModalComponent', () => {
   let component: UnsubscribeModalComponent;
   let fixture: ComponentFixture<UnsubscribeModalComponent>;
   let userService: UserService;
   let activeModal: NgbActiveModal;
+  let accessTokenService: AccessTokenService;
+  let event: EventService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,14 +28,24 @@ describe('UnsubscribeModalComponent', () => {
           },
           unsubscribe() {
             return Observable.of({});
-          },
-          logout() {
           }
         }
         },
         {
           provide: NgbActiveModal, useValue: {
             close() {
+            }
+        }
+        },
+        {
+          provide: AccessTokenService, useValue: {
+          deleteAccessToken() {
+          }
+        }
+        },
+        {
+          provide: EventService, useValue: {
+            emit() {
             }
         }
         }
@@ -48,6 +61,8 @@ describe('UnsubscribeModalComponent', () => {
     fixture.detectChanges();
     userService = TestBed.get(UserService);
     activeModal = TestBed.get(NgbActiveModal);
+    accessTokenService = TestBed.get(AccessTokenService);
+    event = TestBed.get(EventService);
   });
 
   describe('ngOnInit', () => {
@@ -63,10 +78,11 @@ describe('UnsubscribeModalComponent', () => {
 
   describe('send', () => {
 
-    it('should call unsubscribe, close and logout', () => {
+    it('should call unsubscribe, deleteAccessToken and emit logout event', () => {
       spyOn(userService, 'unsubscribe').and.callThrough();
       spyOn(activeModal, 'close');
-      spyOn(userService, 'logout');
+      spyOn(accessTokenService, 'deleteAccessToken');
+      spyOn(event, 'emit');
       component.selectedReason = SELECTED_REASON;
       component.customReason = CUSTOM_REASON;
 
@@ -74,7 +90,8 @@ describe('UnsubscribeModalComponent', () => {
 
       expect(userService.unsubscribe).toHaveBeenCalledWith(SELECTED_REASON, CUSTOM_REASON);
       expect(activeModal.close).toHaveBeenCalled();
-      expect(userService.logout).toHaveBeenCalled();
+      expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
+      expect(event.emit).toHaveBeenCalledWith(EventService.USER_LOGOUT);
     });
   });
 });
