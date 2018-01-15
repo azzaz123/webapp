@@ -10,6 +10,7 @@ import {
   UserService
 } from 'shield';
 import {
+  CarContent,
   ConversationUser, ItemContent, ItemResponse, ItemsData, Order, Product, Purchase,
   SelectedItemsAction
 } from './item-response.interface';
@@ -19,6 +20,7 @@ import * as _ from 'lodash';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from '../tracking/tracking.service';
+import { Car } from './car';
 
 @Injectable()
 export class ItemService extends ItemServiceMaster {
@@ -56,6 +58,44 @@ export class ItemService extends ItemServiceMaster {
   protected mapRecordData(response: any): Item {
     const data: ItemResponse = <ItemResponse>response;
     const content: ItemContent = data.content;
+    if (data.type === 'cars') {
+      return this.mapCar(content);
+    }
+    return this.mapItem(content);
+  }
+
+  private mapCar(content: CarContent): Car {
+    return new Car(
+      content.id,
+      content.seller_id,
+      content.title,
+      content.description,
+      content.sale_price,
+      content.currency_code,
+      content.modified_date,
+      content.url,
+      content.flags,
+      content.sale_conditions,
+      content.images,
+      content.web_slug,
+      content.brand,
+      content.model,
+      content.year,
+      content.km,
+      content.gearbox,
+      content.engine,
+      content.color,
+      content.horsepower,
+      content.body_type,
+      content.num_doors,
+      content.extras,
+      content.warranty,
+      content.num_seats,
+      content.condition
+    );
+  }
+
+  private mapItem(content: ItemContent): Item {
     return new Item(
       content.id,
       null,
@@ -217,7 +257,7 @@ export class ItemService extends ItemServiceMaster {
     .map((r: any) => this.mapRecordData(r));
   }
 
-  public updatePicturesOrder(itemId: string, picturesOrder: {[fileId: string]: number}): Observable<any> {
+  public updatePicturesOrder(itemId: string, picturesOrder: { [fileId: string]: number }): Observable<any> {
     return this.http.put(this.API_URL_V3 + '/' + itemId + '/change-picture-order', {
       pictures_order: picturesOrder
     });

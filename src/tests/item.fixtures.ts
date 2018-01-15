@@ -355,3 +355,36 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
     longitude: USER_LOCATION.approximated_longitude
   }
 };
+
+export const CAR_DATA = {
+  'id': '5nv4z47rzy73',
+  'type': 'cars',
+  'content': {
+    'id': '5nv4z47rzy73',
+    'currency_code': 'EUR',
+    'seller_id': 'l1kmzn82zn3p',
+    'modified_date': 1429186498000,
+    'images': [],
+    'url': 'http://dock112.wallapop.com/i/514?_pid=wi&_uid=101',
+    'title': 'SEAT Ibiza 9 seats',
+    'brand': 'SEAT',
+    'model': 'Ibiza',
+    'year': 2015,
+    'sale_price': 10000.0,
+    'km': 100000,
+    'gearbox': 'manual',
+    'engine': 'gasoil',
+    'color': 'red',
+    'horsepower': 100.0,
+    'body_type': 'small_car',
+    'num_doors': 3,
+    'extras': [],
+    'storytelling': '',
+    'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
+    'flags': {'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false},
+    'warranty': false,
+    'num_seats': 9,
+    'condition': 'brand_new',
+    'web_slug': 'seat-ibiza-9-seats-514'
+  }
+};
