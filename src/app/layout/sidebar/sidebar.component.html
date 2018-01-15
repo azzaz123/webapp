@@ -26,6 +26,13 @@
   <h2 i18n>Favorites</h2>
 </a>
 
+<a class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_REVIEWS">
+  <div class="sidebar-section-circle">
+    <md-icon svgIcon="navigation_reviews"></md-icon>
+  </div>
+  <h2 i18n>Reviews</h2>
+</a>
+
 <a href="#" class="sidebar-section logout-item" (click)="logout($event)" tslTrackEvent="MYZONE_MENU_LOGOUT">
   <div class="sidebar-section-circle">
     <md-icon svgIcon="navigation_logout"></md-icon>
