@@ -382,21 +382,34 @@ describe('DropAreaComponent', () => {
     describe('with error response', () => {
       it('should call i18nError', () => {
         let fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
-        let response: any;
+        let event: boolean;
         fileUploaded.progress.data.responseStatus = 400;
         fileUploaded.response = {
           message: 'error'
         };
         spyOn(errorsService, 'i18nError');
-        component.onError.subscribe((r: any) => {
-          response = r;
+        component.onError.subscribe(() => {
+          event = true
         });
         component['onUploadDone']({
           type: 'done',
           file: fileUploaded
         });
         expect(errorsService.i18nError).toHaveBeenCalledWith('serverError', 'error');
-        expect(response).toEqual(fileUploaded.response);
+        expect(event).toBeTruthy()
+      });
+      it('should call i18nError event if no error message', () => {
+        let event: boolean;
+        spyOn(errorsService, 'i18nError');
+        component.onError.subscribe(() => {
+          event = true;
+        });
+        component['onUploadDone']({
+          type: 'done',
+          file: UPLOAD_FILE
+        });
+        expect(errorsService.i18nError).toHaveBeenCalledWith('serverError');
+        expect(event).toBeTruthy();
       });
     });
   });

@@ -18,7 +18,10 @@ const routes: Routes = [
     children: [
       {
         path: 'list',
-        component: ListComponent
+        component: ListComponent,
+        data: {
+          isMyZone: true
+        }
       },
       {
         path: 'upload',

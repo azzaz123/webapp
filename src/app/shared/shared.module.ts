@@ -10,6 +10,7 @@ import { CardModule } from './card/card.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
 import { ExitConfirmGuard } from './guards/exit-confirm.guard';
+import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 
 @NgModule({
   imports: [
@@ -25,13 +26,15 @@ import { ExitConfirmGuard } from './guards/exit-confirm.guard';
     CommonModule,
     SpinnerComponent,
     AdComponent,
-    CustomCurrencyPipe
+    CustomCurrencyPipe,
+    RestrictInputDirective
   ],
   declarations: [
     AdComponent,
     ConfirmationModalComponent,
     SpinnerComponent,
-    CustomCurrencyPipe
+    CustomCurrencyPipe,
+    RestrictInputDirective
   ],
   providers: [
     DecimalPipe,

@@ -58,6 +58,7 @@ describe('PasswordModalComponent', () => {
 
     const OLD_PASSWORD = 'old_password';
     const NEW_PASSWORD = 'password';
+    const SHORT_PASSWORD = 'short';
 
     describe('valid form', () => {
 
@@ -103,6 +104,17 @@ describe('PasswordModalComponent', () => {
 
         expect(component.passwordForm.valid).toBeFalsy();
         expect(errorsService.i18nError).toHaveBeenCalledWith('passwordMatch');
+      });
+
+      it('should be invalid if new password is too short (< 8 chars)', () => {
+        component.passwordForm.get('old_password').patchValue(OLD_PASSWORD);
+        component.passwordForm.get('new_password').patchValue(SHORT_PASSWORD);
+        component.passwordForm.get('repeat_password').patchValue(SHORT_PASSWORD);
+
+        component.onSubmit();
+
+        expect(component.passwordForm.valid).toBeFalsy();
+        expect(errorsService.i18nError).toHaveBeenCalledWith('passwordMinLength');
       });
 
       it('should set dirty invalid fields', () => {

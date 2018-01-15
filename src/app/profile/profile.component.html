@@ -5,16 +5,15 @@
         <div class="box-content">
           <div class="box-header">
             <button type="submit" class="btn btn-primary" i18n>Save</button>
-            <h1 i18n>Profile settings</h1>
+            <h1 i18n>Your info</h1>
             <a class="public-profile" [href]="userUrl" target="_blank" i18n>View my public profile</a>
           </div>
           <div class="row profile-pic align-items-center">
             <div class="col-4">
               <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.medium" size="80"></tsl-user-avatar>
               <div>
-                <h2 i18n>Change Profile Picture</h2>
-                <p i18n>This is the image the users will
-                  see when they check your profile</p>
+                <h2 i18n>Change your profile picture</h2>
+                <p i18n>This is the picture linked to your account</p>
               </div>
             </div>
             <div class="col">
@@ -25,7 +24,7 @@
                   (uploadOutput)="onUploadOutput($event)"
                   [uploadInput]="uploadInput"
                   [options]="options" />
-                <span i18n>Upload Photo</span>
+                <span i18n>Upload picture</span>
               </label>
             </div>
           </div>
@@ -34,17 +33,17 @@
               <div class="form-group row">
                 <label for="first_name" class="col-3" i18n>First Name:</label>
                 <div class="col-5">
-                  <input type="text" class="form-control" id="first_name" formControlName="first_name" />
+                  <input type="text" class="form-control" id="first_name" formControlName="first_name" tslRestrictInput maxlength="50" />
                 </div>
               </div>
               <div class="form-group row">
                 <label for="last_name" class="col-3" i18n>Last Name:</label>
                 <div class="col-5">
-                  <input type="text" class="form-control" id="last_name" formControlName="last_name" />
+                  <input type="text" class="form-control" id="last_name" formControlName="last_name" tslRestrictInput maxlength="50" />
                 </div>
               </div>
               <div class="form-group row">
-                <label for="birth_date" class="col-3" i18n>Date of Birth:</label>
+                <label for="birth_date" class="col-3" i18n>Date of birth:</label>
                 <div class="col-5">
                   <input type="date" class="form-control" id="birth_date" formControlName="birth_date" />
                 </div>
@@ -67,7 +66,7 @@
                 </div>
               </div>
               <div class="form-group row">
-                <label class="col-3" i18n>Location:</label>
+                <label class="col-3" i18n>Product location:</label>
                 <div class="col-9">
                   <tsl-location-box [form]="profileForm" name="location"></tsl-location-box>
                 </div>
@@ -77,7 +76,7 @@
           <div class="row account-settings">
             <div class="col-10 offset-2">
               <div class="form-group row">
-                <label class="col-3" i18n>Email Address:</label>
+                <label class="col-3" i18n>Email:</label>
                 <div class="col-5">
                   <tsl-edit-email [email]="user?.email"></tsl-edit-email>
                 </div>

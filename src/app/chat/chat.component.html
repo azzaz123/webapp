@@ -23,7 +23,7 @@
     <div ngbDropdown class="conversation-header-menu">
       <md-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></md-icon>
       <div class="dropdown-menu dropdown-menu-right">
-        <!--<button class="dropdown-item" (click)="archiveConversation()" i18n *ngIf="!currentConversation?.archived">Delete conversation</button>-->
+        <button class="dropdown-item" (click)="archiveConversation()" i18n *ngIf="!currentConversation?.archived">Delete conversation</button>
         <button class="dropdown-item" (click)="reportListingAction()" *ngIf="currentConversation?.item.owner !== userService.user?.id" i18n>Report this Listing</button>
         <button class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
         <button [hidden]="xmppService.isBlocked(currentConversation?.user.id)" class="dropdown-item warn" (click)="blockUserAction()" i18n>Block this User</button>
