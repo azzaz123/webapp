@@ -9,6 +9,7 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
 import { CardModule } from './card/card.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
+import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 
 @NgModule({
   imports: [
@@ -24,13 +25,15 @@ import { GeolocationModule } from './geolocation/geolocation.module';
     CommonModule,
     SpinnerComponent,
     AdComponent,
-    CustomCurrencyPipe
+    CustomCurrencyPipe,
+    RestrictInputDirective
   ],
   declarations: [
     AdComponent,
     ConfirmationModalComponent,
     SpinnerComponent,
-    CustomCurrencyPipe
+    CustomCurrencyPipe,
+    RestrictInputDirective
   ],
   providers: [
     DecimalPipe

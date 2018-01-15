@@ -9,26 +9,37 @@ import { IOption } from 'ng-select';
 export class CategoryService {
 
   private API_URL = 'api/v3/categories';
-  private categories: CategoryOption[];
+  private uploadCategories: CategoryOption[];
+  private categories: CategoryResponse[];
   private heroCategoriesIds = [100, 13200, 13000];
 
   constructor(private http: HttpService,
               private i18n: I18nService) {
   }
 
+  public getCategoryById(id: number): Observable<CategoryResponse> {
+    return this.getCategories().map((categories: CategoryResponse[]) => {
+      return categories.find((category: CategoryResponse) => category.categoryId === id);
+    });
+  }
+
   public getCategories(): Observable<CategoryResponse[]> {
+    if (this.categories) {
+      return Observable.of(this.categories);
+    }
     return this.http.getNoBase(environment.siteUrl + 'rest/categories')
-      .map(res => res.json());
+      .map(res => res.json())
+      .do((categories: CategoryResponse[]) => this.categories = categories);
   }
 
   public getUploadCategories(): Observable<CategoryOption[]> {
-    if (this.categories) {
-      return Observable.of(this.categories);
+    if (this.uploadCategories) {
+      return Observable.of(this.uploadCategories);
     }
     return this.http.get(this.API_URL + '/keys/consumer_goods', {language: this.i18n.locale})
       .map(res => res.json())
       .map((categories: CategoryConsumerGoodsResponse[]) => this.toSelectOptions(categories))
-      .do((categories: CategoryOption[]) => this.categories = categories);
+      .do((categories: CategoryOption[]) => this.uploadCategories = categories);
   }
 
   public isHeroCategory(categoryId: number) {
@@ -42,5 +53,4 @@ export class CategoryService {
       icon_id: category.icon_id
     }));
   }
-
 }

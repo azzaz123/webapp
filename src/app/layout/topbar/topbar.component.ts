@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { User, WindowRef } from 'shield';
 import { UserService } from '../../core/user/user.service';
 import { environment } from '../../../environments/environment';
@@ -22,6 +22,7 @@ export class TopbarComponent implements OnInit {
   public homeUrl: string;
   public model: any;
   public userUrl: string;
+  @Input() isMyZone: boolean;
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('kwsEl') kwsEl: ElementRef;
 
