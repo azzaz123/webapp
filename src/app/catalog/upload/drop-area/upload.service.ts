@@ -40,7 +40,7 @@ export class UploadService {
   }
 
   public uploadOtherImages(itemId: string, extraPath: string) {
-    const url = this.API_URL + extraPath + '/' + itemId + '/picture';
+    const url = this.API_URL + extraPath + '/' + itemId + '/picture2';
     const inputEvent: UploadInput = {
       type: 'uploadAll',
       url: environment.baseUrl + url,

@@ -159,7 +159,7 @@ describe('UploadService', () => {
         service.uploadOtherImages(CAR_ID, '/cars');
         expect(response).toEqual({
           type: 'uploadAll',
-          url: environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture',
+          url: environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
           method: 'POST',
           fieldName: 'image',
           data: {
@@ -174,7 +174,7 @@ describe('UploadService', () => {
         service.uploadOtherImages(ITEM_ID, '');
         expect(response).toEqual({
           type: 'uploadAll',
-          url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture',
+          url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',
           method: 'POST',
           fieldName: 'image',
           data: {
