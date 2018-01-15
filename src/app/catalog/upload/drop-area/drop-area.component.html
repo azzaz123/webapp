@@ -18,7 +18,10 @@
           <a (click)="remove(files[i], $event)">
             <md-icon svgIcon="cross"></md-icon>
           </a>
-          <img [src]="files[i]?.preview" *ngIf="files[i]" />
+          <img [src]="files[i]?.preview" *ngIf="files[i] && files[i]?.preview" />
+          <div class="loader" *ngIf="images?.length > 0 && (files[i]?.progress?.status === 0 || files[i]?.progress?.status === 1)">
+            <md-icon svgIcon="spinner" class="spinner corporate" ></md-icon>
+          </div>
           <input
             *ngIf="!files[i]"
             type="file"

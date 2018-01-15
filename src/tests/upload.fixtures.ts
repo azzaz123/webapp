@@ -104,5 +104,6 @@ export const UPLOADED_FILE_FIRST_ITEM: UploadFile = <UploadFile>{
 
 export const UPLOADED_FILE_OTHER: UploadFile = <UploadFile>{
   ...UPLOAD_FILE,
+  id: 'otherId',
   response: 21341421435
 };

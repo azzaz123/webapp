@@ -186,7 +186,7 @@ describe('DropAreaComponent', () => {
       expect(component.propagateChange).toHaveBeenCalledWith(component.files);
       component.onUploadOutput({
         type: 'addedToQueue',
-        file: UPLOAD_FILE
+        file: UPLOADED_FILE_OTHER
       });
       expect(component.files.length).toEqual(2);
     });

@@ -135,6 +135,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
         break;
       case 'addedToQueue':
         if (this.images) {
+          this.files.push(output.file);
           this.uploadService.uploadSingleImage(output.file, this.itemId, this.maxUploads === 8 ? '/cars' : '');
         } else {
           this.pictureUploaded(output);
@@ -202,7 +203,12 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   }
 
   private pictureUploaded(output: UploadOutput) {
-    this.files.push(output.file);
+    const index = this.files.findIndex(file => file.id === output.file.id);
+    if (index !== -1) {
+      this.files[index] = output.file;
+    } else {
+      this.files.push(output.file);
+    }
     this.propagateChange(this.files);
   }
 
