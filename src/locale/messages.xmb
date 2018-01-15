@@ -24,8 +24,8 @@
   <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:12</source>Load more</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:26</source>Delete conversation</msg>
   <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will delete the conversation.</msg>
-  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source>Cancel</msg>
-  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:22</source><source>app/catalog/list/selected-items/selected-items.component.ts:26</source>Delete</msg>
+  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source>Cancel</msg>
+  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:22</source><source>app/catalog/list/selected-items/selected-items.component.ts:26</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
   <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.ts:2</source><source>app/chat/modals/report-listing/report-listing.component.ts:25</source><source>app/chat/modals/report-user/report-user.component.ts:2</source><source>app/chat/modals/report-user/report-user.component.ts:28</source>Report</msg>
   <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.ts:22</source>I&apos;m reporting this user because...</msg>
   <msg id="20327443157350316"><source>app/chat/modals/block-user/block-user.component.ts:2</source>Block user</msg>
@@ -181,6 +181,8 @@
   <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:48</source>Pending</msg>
   <msg id="3448462145758383019"><source>app/catalog/list/selected-items/selected-items.component.ts:16</source>Total</msg>
   <msg id="8743988303207163578"><source>app/catalog/list/selected-items/selected-items.component.ts:32</source>Feature Now</msg>
+  <msg id="6261406176927621365"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:2</source>Delete photo</msg>
+  <msg id="4267028037176582017"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:3</source>The photo will be permanently deleted. Are you sure you want to proceed?</msg>
   <msg id="5112037422043971210"><source>app/catalog/upload/drop-area/drop-area.component.ts:5</source>Drop here your files to upload as a product photo</msg>
   <msg id="1417432796546296307"><source>app/catalog/upload/drop-area/drop-area.component.ts:11</source>You have reached the limit of <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Remove one first if you want to add more.</msg>
   <msg id="6145572175629887249"><source>app/catalog/upload/drop-area/drop-area.component.ts:28</source>Main photo</msg>

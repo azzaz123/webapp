@@ -71,7 +71,6 @@ export class I18nService {
       passwordMatch: 'Passwords don\'t match',
       itemUpdated: 'The item has been updated correctly',
       imageUploaded: 'Image uploaded!',
-      passwordMatch: 'Passwords don\'t match',
       passwordMinLength: 'Password length should be at least 8 characters'
     },
     es: {
@@ -141,7 +140,6 @@ export class I18nService {
       passwordMatch: 'Las contraseñas no coinciden',
       itemUpdated: 'El producto se ha editado correctamente',
       imageUploaded: 'La imagen se ha cargado!',
-      passwordMatch: 'Las contraseñas no coinciden',
       passwordMinLength: 'La contraseña tiene que ser de almenos 8 caracteres'
     }
   };
