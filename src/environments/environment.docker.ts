@@ -7,5 +7,5 @@ export const environment: any = {
   siteUrl: 'https://es.dockXXX.wallapop.com/',
   appboy: '47b54d36-7a86-4c05-9bfc-2d7b8aadd1ce',
   cookieSuffix: 'dockXXX',
-  clickStreamURL: 'https://collector.wallapop.com/clickstream.json/sendEvents'
+  clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents'
 };
