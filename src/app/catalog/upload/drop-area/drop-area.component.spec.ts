@@ -48,6 +48,8 @@ describe('DropAreaComponent', () => {
           updateOrder() {
           },
           setInitialImages() {
+          },
+          uploadSingleImage() {
           }
         }
         },
@@ -184,7 +186,7 @@ describe('DropAreaComponent', () => {
       expect(component.propagateChange).toHaveBeenCalledWith(component.files);
       component.onUploadOutput({
         type: 'addedToQueue',
-        file: UPLOAD_FILE
+        file: UPLOADED_FILE_OTHER
       });
       expect(component.files.length).toEqual(2);
     });
@@ -192,14 +194,14 @@ describe('DropAreaComponent', () => {
     it('should upload file if event addedToQueue and edit mode', () => {
       component.images = [IMAGE, IMAGE];
       component.itemId = ITEM_ID;
-      spyOn(uploadService, 'uploadOtherImages');
+      spyOn(uploadService, 'uploadSingleImage');
 
       component.onUploadOutput({
         type: 'addedToQueue',
         file: UPLOAD_FILE
       });
 
-      expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(ITEM_ID, '');
+      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(UPLOAD_FILE, ITEM_ID, '');
 
     });
 
