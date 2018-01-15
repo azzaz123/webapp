@@ -135,7 +135,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
         break;
       case 'addedToQueue':
         if (this.images) {
-          this.uploadService.uploadOtherImages(this.itemId, this.maxUploads === 8 ? '/cars' : '');
+          this.uploadService.uploadSingleImage(output.file, this.itemId, this.maxUploads === 8 ? '/cars' : '');
         } else {
           this.pictureUploaded(output);
         }
