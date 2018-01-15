@@ -16,6 +16,7 @@ import { environment } from '../environments/environment';
 import { CatalogModule } from './catalog/catalog.module';
 import { DndModule } from 'ng2-dnd';
 import { FavoritesModule } from './favorites/favorites.module';
+import { ReviewsModule } from './reviews/reviews.module';
 import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
@@ -41,6 +42,7 @@ import { ProfileModule } from './profile/profile.module';
     AppRoutingModule,
     LayoutModule,
     CatalogModule,
+    ReviewsModule,
     FavoritesModule,
     ProfileModule
   ],

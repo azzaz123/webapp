@@ -30,6 +30,11 @@
     margin-right: $spacing-XXS;
     margin-left: $spacing-S;
   }
+  &.active {
+    span {
+      color: $corporate;
+    }
+  }
 }
 .topbar-icon {
   height: 36px;

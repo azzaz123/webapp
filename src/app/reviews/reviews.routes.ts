@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { FavoritesComponent } from './favorites.component';
+import { ReviewsComponent } from './reviews.component';
 import { LoggedGuard } from '../core/user/logged.guard';
 
 const routes: Routes = [
   {
-    path: 'favorites',
-    component: FavoritesComponent,
+    path: 'reviews',
+    component: ReviewsComponent,
     canActivate: [LoggedGuard],
     data: {
       isMyZone: true
@@ -18,8 +18,8 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class FavoritesRoutingModule { }
+export class ReviewsRoutingModule { }
 
-export const favoritesRoutedComponents = [
-  FavoritesComponent
+export const reviewsRoutedComponents = [
+  ReviewsComponent
 ];
