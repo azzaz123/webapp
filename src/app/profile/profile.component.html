@@ -3,12 +3,14 @@
     <div class="box">
       <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
         <div class="box-content">
-          <div class="box-header">
-            <button type="submit" class="btn btn-primary" i18n>Save</button>
-            <h1 i18n>Your info</h1>
-            <a class="public-profile" [href]="userUrl" target="_blank" i18n>View my public profile</a>
+          <div class="row box-header box-section">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary" tslTrackEvent="MYPROFILE_SAVEBUTTON" i18n>Save</button>
+              <h1 i18n>Your info</h1>
+              <a class="public-profile" [href]="userUrl" target="_blank" i18n>View my public profile</a>
+            </div>
           </div>
-          <div class="row profile-pic align-items-center">
+          <div class="row profile-pic align-items-center box-section">
             <div class="col-4">
               <tsl-user-avatar [user]="user" [imageUrl]="user?.image?.urls_by_size.medium" size="80"></tsl-user-avatar>
               <div>
@@ -28,7 +30,7 @@
               </label>
             </div>
           </div>
-          <div class="row">
+          <div class="row box-section">
             <div class="col-10 offset-2">
               <div class="form-group row">
                 <label for="first_name" class="col-3" i18n>First Name:</label>
@@ -73,7 +75,7 @@
               </div>
             </div>
           </div>
-          <div class="row account-settings">
+          <div class="row box-section">
             <div class="col-10 offset-2">
               <div class="form-group row">
                 <label class="col-3" i18n>Email:</label>
@@ -87,6 +89,11 @@
                   <tsl-edit-password></tsl-edit-password>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 unsubscribe-section">
+              <a (click)="openUnsubscribeModal()" tslTrackEvent="MYPROFILE_UNSUBSCRIBE" i18n>Close account</a>
             </div>
           </div>
         </div>

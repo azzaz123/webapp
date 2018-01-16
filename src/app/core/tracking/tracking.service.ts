@@ -38,7 +38,8 @@ const SCREENS_IDS: any = {
   MyCatalog: '138',
   ItemDetail: '115',
   UploadForm: '139',
-  MyItemDetail: '114'
+  MyItemDetail: '114',
+  MyProfile: '112'
 };
 
 const TYPES_IDS: any = {
@@ -352,6 +353,18 @@ export class TrackingService extends TrackingServiceMaster {
     name: '615',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyItemDetail,
+    type: TYPES_IDS.Tap
+  };
+  public static MYPROFILE_UNSUBSCRIBE: TrackingEventBase = {
+    name: '608',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyProfile,
+    type: TYPES_IDS.Tap
+  };
+  public static MYPROFILE_SAVEBUTTON: TrackingEventBase = {
+    name: '611',
+    category: CATEGORY_IDS.MyProfile,
+    screen: SCREENS_IDS.MyProfile,
     type: TYPES_IDS.Tap
   };
 
