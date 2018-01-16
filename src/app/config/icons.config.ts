@@ -149,4 +149,8 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('reviews-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/reviews-empty-state.svg'));
   mdIconRegistry.addSvgIcon('male', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/male.svg'));
   mdIconRegistry.addSvgIcon('female', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/female.svg'));
+  mdIconRegistry.addSvgIcon('btn-delete', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-delete.svg'));
+  mdIconRegistry.addSvgIcon('btn-edit', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-edit.svg'));
+  mdIconRegistry.addSvgIcon('btn-reserved', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-reserved.svg'));
+  mdIconRegistry.addSvgIcon('btn-sold', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-sold.svg'));
 }

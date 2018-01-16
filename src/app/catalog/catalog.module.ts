@@ -26,6 +26,7 @@ import { PreviewModalComponent } from './upload/preview-modal/preview-modal.comp
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { UploadProductComponent } from './upload/upload-product/upload-product.component';
 import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
+import { ItemResolverService } from './item-resolver.service';
 
 @NgModule({
   imports: [
@@ -51,7 +52,8 @@ import { CategorySelectorComponent } from './upload/category-selector/category-s
   providers: [
     CarSuggestionsService,
     CarKeysService,
-    UploadService
+    UploadService,
+    ItemResolverService
   ],
   declarations: [
     catalogRoutedComponents,
