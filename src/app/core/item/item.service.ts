@@ -80,7 +80,8 @@ export class ItemService extends ItemServiceMaster {
       },
       content.images,
       content.web_slug,
-      content.modified_date
+      content.modified_date,
+      content.delivery_info
     );
   }
 
