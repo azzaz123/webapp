@@ -5,11 +5,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { USER_EDIT_DATA, USER_LOCATION_COORDINATES } from '../../tests/user.fixtures';
 import { UPLOAD_FILE, UPLOAD_FILE_ID } from '../../tests/upload.fixtures';
 import { UploadInput } from 'ngx-uploader';
 import { environment } from '../../environments/environment';
+import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -41,6 +42,7 @@ describe('ProfileComponent', () => {
   let userService: UserService;
   let errorsService: ErrorsService;
   let http: HttpService;
+  let modalService: NgbModal;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -71,6 +73,12 @@ describe('ProfileComponent', () => {
           i18nSuccess() {
           }
         }
+        },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+          }
+        }
         }
       ],
       declarations: [ProfileComponent],
@@ -85,6 +93,7 @@ describe('ProfileComponent', () => {
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
     http = TestBed.get(HttpService);
+    modalService = TestBed.get(NgbModal);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
   });
@@ -238,5 +247,15 @@ describe('ProfileComponent', () => {
       expect(errorsService.i18nError).toHaveBeenCalledWith('serverError');
     });
 
+  });
+
+  describe('openUnsubscribeModal', () => {
+    it('should open modal', () => {
+      spyOn(modalService, 'open');
+
+      component.openUnsubscribeModal();
+
+      expect(modalService.open).toHaveBeenCalledWith(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
+    });
   });
 });

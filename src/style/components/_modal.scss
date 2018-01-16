@@ -146,3 +146,16 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
+.modal.unsubscribe {
+  .modal-dialog, .modal-content {
+    max-width: 630px;
+  }
+  .modal-dialog {
+    margin-top: 50px;
+  }
+  .modal-content {
+    border-radius: 20px;
+  }
+}
+
+
