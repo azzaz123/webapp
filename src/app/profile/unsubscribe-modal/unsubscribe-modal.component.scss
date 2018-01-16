@@ -1,0 +1,64 @@
+@import "../../../style/_common.scss";
+
+$modal-border-radius: 20px;
+
+.header {
+  background: $corporate url(/assets/images/unsubscribe.svg) no-repeat center;
+  height: 230px;
+  border-top-left-radius: $modal-border-radius;
+  border-top-right-radius: $modal-border-radius;
+}
+
+.modal-body {
+  text-align: center;
+  padding: $spacing-L;
+  h1 {
+    font-size: $font-size-M;
+    font-weight: bold;
+    margin-bottom: $spacing-L;
+    text-transform: uppercase;
+  }
+  p {
+    margin: 0;
+    margin-bottom: 25px;
+    color: $grey-300;
+    font-size: $font-size;
+  }
+  .btn {
+    padding: $spacing-S $spacing;
+    &.btn-secondary {
+      border: 0;
+      background-color: $grey-50;
+      color: $grey-500;
+      margin: 0 $spacing-XXS;
+      &:hover, &.selected {
+        background-color: $grey-100;
+      }
+      &.btn-reason {
+        margin: 0;
+        margin-bottom: $spacing;
+      }
+    }
+    &.btn-primary {
+      padding: $spacing-S $spacing-L;
+    }
+  }
+
+  .custom-reason {
+    font-size: $font-size-S;
+    margin-bottom: $spacing-S;
+    overflow: hidden;
+    margin-top: $spacing-L;
+  }
+  .counter {
+    font-size: $font-size-XS;
+  }
+  textarea {
+    border-radius: $border-radius;
+    height: 160px;
+    margin-bottom: $spacing;
+  }
+  .title {
+    margin-right: $spacing;
+  }
+}

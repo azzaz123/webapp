@@ -11,6 +11,7 @@ import { EditEmailComponent } from './edit-email/edit-email.component';
 import { EmailModalComponent } from './edit-email/email-modal/email-modal.component';
 import { EditPasswordComponent } from './edit-password/edit-password.component';
 import { PasswordModalComponent } from './edit-password/password-modal/password-modal.component';
+import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 
 @NgModule({
   imports: [
@@ -29,11 +30,13 @@ import { PasswordModalComponent } from './edit-password/password-modal/password-
     EditEmailComponent,
     EmailModalComponent,
     EditPasswordComponent,
-    PasswordModalComponent
+    PasswordModalComponent,
+    UnsubscribeModalComponent
   ],
   entryComponents: [
     EmailModalComponent,
-    PasswordModalComponent
+    PasswordModalComponent,
+    UnsubscribeModalComponent
   ]
 })
 export class ProfileModule { }
