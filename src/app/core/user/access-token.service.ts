@@ -7,19 +7,23 @@ import { environment } from '../../../environments/environment';
 export class AccessTokenService implements IAccessTokenService {
 
   private _accessToken: string;
+  private cookieOptions = { domain: '.wallapop.com' };
 
   constructor(private cookieService: CookieService) {
   }
 
   public storeAccessToken(accessToken: string): void {
     const cookieName = this.getCookieName();
-    this.cookieService.put(cookieName, accessToken);
+    const cookieOptions = { domain: '.wallapop.com' };
+    this.cookieService.put(cookieName, accessToken, cookieOptions);
     this._accessToken = accessToken;
   }
 
   public deleteAccessToken() {
     const cookieName = this.getCookieName();
-    this.cookieService.remove(cookieName);
+    const cookieOptions = { domain: '.wallapop.com' };
+    this.cookieService.remove(cookieName, cookieOptions);
+    this.cookieService.remove('device' + cookieName, this.cookieOptions);
     this.cookieService.remove('subdomain');
     this._accessToken = null;
   }
