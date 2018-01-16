@@ -69,7 +69,7 @@ export class ItemService extends ItemServiceMaster {
       content.id,
       content.seller_id,
       content.title,
-      content.description,
+      content.storytelling,
       content.sale_price,
       content.currency_code,
       content.modified_date,
@@ -91,7 +91,8 @@ export class ItemService extends ItemServiceMaster {
       content.extras,
       content.warranty,
       content.num_seats,
-      content.condition
+      content.condition,
+      content.version
     );
   }
 
@@ -241,10 +242,9 @@ export class ItemService extends ItemServiceMaster {
     .map((r: Response) => r.json());
   }
 
-  public update(item: any): Observable<Item> {
-    return this.http.put(this.API_URL_V3 + '/' + item.id, item)
-    .map((r: Response) => r.json())
-    .map((r: any) => this.mapRecordData(r));
+  public update(item: any): Observable<any> {
+    return this.http.put(this.API_URL_V3 + (item.category_id === '100' ? '/cars/' : '/') + item.id, item)
+    .map((r: Response) => r.json());
   }
 
   public deletePicture(itemId: string, pictureId: string): Observable<any> {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
 import { IOption } from 'ng-select';
@@ -10,6 +10,7 @@ import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { Car } from '../../../core/item/car';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -19,6 +20,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 export class UploadCarComponent implements OnInit {
 
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
+  @Input() item: Car;
   public uploadForm: FormGroup;
   public models: IOption[];
   public years: IOption[];
@@ -41,6 +43,7 @@ export class UploadCarComponent implements OnInit {
               private trackingService: TrackingService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
+      id: '',
       category_id: '100',
       images: [[], [Validators.required]],
       model: [{value: '', disabled: true}, [Validators.required]],
@@ -74,6 +77,34 @@ export class UploadCarComponent implements OnInit {
   ngOnInit() {
     this.getBrands();
     this.getCarTypes();
+    this.setItemData();
+  }
+
+  private setItemData() {
+    if (this.item) {
+      this.uploadForm.patchValue({
+        id: this.item.id,
+        title: this.item.title,
+        sale_price: this.item.salePrice,
+        currency_code: this.item.currencyCode,
+        storytelling: this.item.description,
+        sale_conditions: this.item.saleConditions,
+        category_id: this.item.categoryId.toString(),
+        num_seats: this.item.numSeats,
+        body_type: this.item.bodyType,
+        km: this.item.km,
+        engine: this.item.engine,
+        gearbox: this.item.gearbox,
+        brand: this.item.brand,
+        model: this.item.model,
+        year: this.item.year.toString(),
+        version: this.item.version
+      });
+      this.getCarTypes();
+      this.getModels(this.item.brand, true);
+      this.getYears(this.item.model, true);
+      this.getVersions(this.item.year.toString(), true);
+    }
   }
 
   public noop() {
@@ -93,59 +124,67 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  public getModels(brand: string) {
+  public getModels(brand: string, editMode: boolean = false) {
     this.carSuggestionsService.getModels(brand).subscribe((models: IOption[]) => {
       this.models = models;
-      this.toggleField('model', 'enable');
-      this.toggleField('year', 'disable');
-      this.toggleField('version', 'disable');
+      this.toggleField('model', 'enable', !editMode);
+      if (!editMode) {
+        this.toggleField('year', 'disable');
+        this.toggleField('version', 'disable');
+      }
       this.resetTitle();
     });
   }
 
-  public getYears(model: string) {
+  public getYears(model: string, editMode: boolean = false) {
     this.carSuggestionsService.getYears(
       this.uploadForm.get('brand').value,
       model
     ).subscribe((years: IOption[]) => {
       this.years = years;
-      this.toggleField('year', 'enable');
-      this.toggleField('version', 'disable');
+      this.toggleField('year', 'enable', !editMode);
+      if (!editMode) {
+        this.toggleField('version', 'disable');
+      }
       this.resetTitle();
     });
   }
 
-  public getVersions(year: string) {
+  public getVersions(year: string, editMode: boolean = false) {
     this.carSuggestionsService.getVersions(
       this.uploadForm.get('brand').value,
       this.uploadForm.get('model').value,
       year
     ).subscribe((versions: IOption[]) => {
       this.versions = versions;
-      this.toggleField('version', 'enable');
+      this.toggleField('version', 'enable', !editMode);
     });
     this.setTitle();
   }
 
   private setTitle() {
-    this.uploadForm.get('title').patchValue(
-      this.uploadForm.get('brand').value + ' ' +
-      this.uploadForm.get('model').value + ' ' +
-      this.uploadForm.get('year').value
-    );
-    this.uploadForm.get('title').markAsDirty();
+    if (!this.item) {
+      this.uploadForm.get('title').patchValue(
+        this.uploadForm.get('brand').value + ' ' +
+        this.uploadForm.get('model').value + ' ' +
+        this.uploadForm.get('year').value
+      );
+      this.uploadForm.get('title').markAsDirty();
+    }
   }
 
   private resetTitle() {
-    this.uploadForm.get('title').patchValue('');
-    this.uploadForm.get('title').markAsPristine();
+    if (!this.item) {
+      this.uploadForm.get('title').patchValue('');
+      this.uploadForm.get('title').markAsPristine();
+    }
   }
 
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
       this.uploadEvent.emit({
-        type: 'create',
+        type: this.item ? 'update' : 'create',
         values: this.uploadForm.value
       });
     } else {
@@ -166,8 +205,8 @@ export class UploadCarComponent implements OnInit {
     }
   }
 
-  onUploaded(itemId: string) {
-    this.router.navigate(['/catalog/list', {created: true}]);
+  onUploaded(action: string) {
+    this.router.navigate(['/catalog/list', {[action]: true}]);
   }
 
   onError(response: any) {
@@ -181,9 +220,11 @@ export class UploadCarComponent implements OnInit {
     });
   }
 
-  private toggleField(field: string, action: string) {
+  private toggleField(field: string, action: string, reset: boolean = true) {
     this.uploadForm.get(field)[action]();
-    this.uploadForm.get(field).setValue('');
+    if (reset) {
+      this.uploadForm.get(field).setValue('');
+    }
     this.markFieldAsPristine(field);
   }
 

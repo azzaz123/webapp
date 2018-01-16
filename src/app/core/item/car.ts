@@ -27,7 +27,8 @@ export class Car extends Item {
               private _extras?: any[],
               private _warranty?: boolean,
               private _numSeats?: number,
-              private _condition?: string) {
+              private _condition?: string,
+              private _version?: string) {
     super(
       id,
       0,
@@ -102,6 +103,10 @@ export class Car extends Item {
 
   get condition(): string {
     return this._condition;
+  }
+
+  get version(): string {
+    return this._version;
   }
 
 }
