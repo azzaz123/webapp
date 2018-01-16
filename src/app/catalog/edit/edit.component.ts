@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Item } from 'shield';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 
 @Component({
@@ -31,9 +31,11 @@ export class EditComponent implements OnInit {
     if (!this.hasNotSavedChanges) {
       return true;
     }
-    return this.modalService.open(ExitConfirmationModalComponent, {
+    const modalRef: NgbModalRef = this.modalService.open(ExitConfirmationModalComponent, {
       backdrop: 'static'
-    }).result;
+    });
+    modalRef.componentInstance.item = this.item;
+    return modalRef.result;
   }
 
   public onFormChanged(notSavedChanges: boolean) {
