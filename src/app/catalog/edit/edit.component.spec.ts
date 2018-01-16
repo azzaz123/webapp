@@ -11,6 +11,7 @@ describe('EditComponent', () => {
   let component: EditComponent;
   let fixture: ComponentFixture<EditComponent>;
   let modalService: NgbModal;
+  const componentInstance: any = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -30,7 +31,8 @@ describe('EditComponent', () => {
           provide: NgbModal, useValue: {
           open() {
             return {
-              result: Promise.resolve(true)
+              result: Promise.resolve(true),
+              componentInstance: componentInstance
             }
           }
         }
@@ -85,6 +87,7 @@ describe('EditComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(ExitConfirmationModalComponent, {
         backdrop: 'static'
       });
+      expect(componentInstance.item).toEqual(MOCK_ITEM);
       expect(notSavedChanges).toBeTruthy();
     }));
   });

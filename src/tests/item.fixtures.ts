@@ -9,6 +9,7 @@ import {
 } from '../app/core/item/item-response.interface';
 import { USER_LOCATION } from 'shield';
 
+export const PICTURE_ID = '9jd7ryx5odjk';
 
 export const ITEM_DATA_V3: ItemResponse = {
   'id': '0j2ylvwrpmzy',

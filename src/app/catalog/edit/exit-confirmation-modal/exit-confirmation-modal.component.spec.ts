@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MOCK_ITEM } from 'shield';
 
 describe('ExitConfirmationModalComponent', () => {
   let component: ExitConfirmationModalComponent;
@@ -10,7 +12,8 @@ describe('ExitConfirmationModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ExitConfirmationModalComponent ],
-      providers: [NgbActiveModal]
+      providers: [NgbActiveModal],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -18,6 +21,7 @@ describe('ExitConfirmationModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ExitConfirmationModalComponent);
     component = fixture.componentInstance;
+    component.item = MOCK_ITEM;
     fixture.detectChanges();
   });
 
