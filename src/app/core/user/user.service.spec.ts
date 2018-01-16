@@ -29,7 +29,6 @@ import {
 } from '../../../tests/user.fixtures';
 import { UserInfoResponse } from './user-info.interface';
 import { UserStatsResponse } from './user-stats.interface';
-import { CookieService } from 'ngx-cookie';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 
 describe('UserService', () => {
@@ -39,7 +38,6 @@ describe('UserService', () => {
   let haversineService: HaversineService;
   let accessTokenService: AccessTokenService;
   let event: EventService;
-  let cookieService: CookieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -52,12 +50,6 @@ describe('UserService', () => {
         ...TEST_HTTP_PROVIDERS,
         {
           provide: 'SUBDOMAIN', useValue: 'www'
-        },
-        {
-          provide: CookieService, useValue: {
-            remove(key) {
-            }
-          }
         }
       ]
     });
@@ -66,7 +58,6 @@ describe('UserService', () => {
     haversineService = TestBed.get(HaversineService);
     accessTokenService = TestBed.get(AccessTokenService);
     event = TestBed.get(EventService);
-    cookieService = TestBed.get(CookieService);
   });
 
   it('should be created', () => {
