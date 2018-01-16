@@ -11,6 +11,7 @@ import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootst
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Car } from '../../../core/item/car';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -20,6 +21,7 @@ import { Car } from '../../../core/item/car';
 export class UploadCarComponent implements OnInit {
 
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
+  @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Input() item: Car;
   public uploadForm: FormGroup;
   public models: IOption[];
@@ -33,6 +35,7 @@ export class UploadCarComponent implements OnInit {
   ];
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
+  private oldFormValue: any;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -104,7 +107,25 @@ export class UploadCarComponent implements OnInit {
       this.getModels(this.item.brand, true);
       this.getYears(this.item.model, true);
       this.getVersions(this.item.year.toString(), true);
+      this.detectFormChanges();
     }
+  }
+
+  private detectFormChanges() {
+    this.uploadForm.valueChanges.subscribe((value) => {
+      if (this.brands && this.carTypes && this.models && this.years && this.versions) {
+        const oldItemData = _.omit(this.oldFormValue, ['images', 'location']);
+        const newItemData = _.omit(value, ['images', 'location']);
+        if (!this.oldFormValue) {
+          this.oldFormValue = value;
+        } else {
+          if (!_.isEqual(oldItemData, newItemData)) {
+            this.onFormChanged.emit(true);
+          }
+        }
+        this.oldFormValue = value;
+      }
+    });
   }
 
   public noop() {
