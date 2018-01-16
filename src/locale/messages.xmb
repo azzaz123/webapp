@@ -205,6 +205,7 @@
   <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:5</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
   <msg id="859827593140377121"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:7</source>Yes, I do want to close my account</msg>
   <msg id="3339283489391878454"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:8</source>No, I want to stay</msg>
+  <msg id="6908290931448223055"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:16</source>Can you tell us why you want to close your account? We won&apos;t tell anyone.</msg>
   <msg id="7818739675790737204"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:25</source>Tell us what happened...</msg>
   <msg id="6490688569532630280"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:30</source>Send</msg>
   <msg id="3768927257183755959"><source>app/profile/profile.component.ts:8</source>Save</msg>
