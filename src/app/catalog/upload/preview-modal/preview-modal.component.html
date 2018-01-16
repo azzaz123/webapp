@@ -3,7 +3,8 @@
     <md-icon svgIcon="cross"></md-icon>
   </div>
   <button class="btn btn-primary" (click)="activeModal.close()" tslTrackEvent="UPLOADFORM_UPLOADFROMPREVIEW">
-    <span i18n>Post Ad</span>
+    <span *ngIf="!itemPreview.id" i18n>Post Ad</span>
+    <span *ngIf="itemPreview.id" i18n>Update</span>
   </button>
   <ngb-carousel interval="0">
     <ng-template ngbSlide *ngFor="let image of itemPreview.images">

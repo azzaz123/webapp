@@ -6,6 +6,8 @@ import { LoggedGuard } from '../core/user/logged.guard';
 import { CatalogComponent } from './catalog.component';
 import { UploadCarComponent } from './upload/upload-car/upload-car.component';
 import { UploadComponent } from './upload/upload.component';
+import { EditComponent } from './edit/edit.component';
+import { ItemResolverService } from './item-resolver.service';
 
 const routes: Routes = [
   {
@@ -15,11 +17,21 @@ const routes: Routes = [
     children: [
       {
         path: 'list',
-        component: ListComponent
+        component: ListComponent,
+        data: {
+          isMyZone: true
+        }
       },
       {
         path: 'upload',
         component: UploadComponent
+      },
+      {
+        path: 'edit/:id',
+        component: EditComponent,
+        resolve: {
+          item: ItemResolverService
+        }
       }
     ]
   },
@@ -36,5 +48,6 @@ export const catalogRoutedComponents = [
   CatalogComponent,
   ListComponent,
   UploadComponent,
-  UploadCarComponent
+  UploadCarComponent,
+  EditComponent
 ];

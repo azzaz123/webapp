@@ -13,8 +13,11 @@ h1 {
 p {
   font-size: $font-size-S;
   color: $grey-300;
-  margin: 0;
-  margin-bottom: $spacing-XL;
+  margin: 0 0 $spacing-XL;
+  &.note {
+    color: $grey-250;
+    margin: $spacing 0 0;
+  }
 }
 
 h1, p {

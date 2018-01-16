@@ -12,7 +12,7 @@ import {
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { ErrorsService } from 'shield';
+import { ErrorsService, Item, DeliveryInfo } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -30,6 +30,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 export class UploadProductComponent implements OnInit, AfterViewChecked, OnChanges {
 
   @Input() categoryId: string;
+  @Input() item: Item;
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -76,6 +77,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
               private trackingService: TrackingService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
+      id: '',
       category_id: ['', [Validators.required]],
       images: [[], [Validators.required]],
       title: ['', [Validators.required]],
@@ -109,22 +111,46 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       }
       deliveryInfoControl.updateValueAndValidity();
     });
+    if (this.item) {
+      this.uploadForm.patchValue({
+        id: this.item.id,
+        title: this.item.title,
+        sale_price: this.item.salePrice,
+        currency_code: this.item.currencyCode,
+        description: this.item.description,
+        sale_conditions: this.item.saleConditions,
+        category_id: this.item.categoryId.toString(),
+        delivery_info: this.getDeliveryInfo()
+      });
+    }
   }
+
+  private getDeliveryInfo(): DeliveryInfo {
+    if (!this.item.deliveryInfo) {
+      return null;
+    }
+    return this.deliveryInfo.find((deliveryInfo) => {
+      return deliveryInfo.value.min_weight_kg === this.item.deliveryInfo.min_weight_kg &&
+        deliveryInfo.value.max_weight_kg === this.item.deliveryInfo.max_weight_kg;
+    }).value;
+  };
 
   ngOnChanges(changes?: any) {
     this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories.filter((category: CategoryOption) => {
         return category.value !== '13000' && category.value !== '13200';
       });
-      if (this.categoryId && this.categoryId !== '-1') {
-        this.uploadForm.get('category_id').patchValue(this.categoryId);
-        const fixedCategory = _.find(categories, {value: this.categoryId});
-        this.fixedCategory = fixedCategory ? fixedCategory.label : null;
-        this.uploadForm.get('sale_conditions.shipping_allowed').patchValue(false);
-        this.uploadForm.get('delivery_info').patchValue(null);
-      } else {
-        this.fixedCategory = null;
-        this.uploadForm.get('category_id').patchValue('');
+      if (!this.item) {
+        if (this.categoryId && this.categoryId !== '-1') {
+          this.uploadForm.get('category_id').patchValue(this.categoryId);
+          const fixedCategory = _.find(categories, {value: this.categoryId});
+          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+          this.uploadForm.get('sale_conditions.shipping_allowed').patchValue(false);
+          this.uploadForm.get('delivery_info').patchValue(null);
+        } else {
+          this.fixedCategory = null;
+          this.uploadForm.get('category_id').patchValue('');
+        }
       }
     });
   }
