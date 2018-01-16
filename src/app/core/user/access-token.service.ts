@@ -21,7 +21,7 @@ export class AccessTokenService implements IAccessTokenService {
   public deleteAccessToken() {
     const cookieName = this.getCookieName();
     this.cookieService.remove(cookieName, this.cookieOptions);
-    this.cookieService.remove('device' + cookieName.charAt(0).toUpperCase(), this.cookieOptions);
+    this.cookieService.remove('device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1), this.cookieOptions);
     this.cookieService.remove('subdomain');
     this._accessToken = null;
   }
