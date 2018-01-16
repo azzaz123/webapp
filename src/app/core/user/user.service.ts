@@ -5,10 +5,10 @@ import {
   HttpService,
   I18nService,
   Item,
+  Location,
   LoginResponse,
   User,
-  UserService as UserServiceMaster,
-  Location
+  UserService as UserServiceMaster
 } from 'shield';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Observable } from 'rxjs/Observable';
@@ -19,6 +19,7 @@ import { Coordinate } from '../geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
 import { UserData } from './user-data.interface';
 import { CookieService } from 'ngx-cookie';
+import { UnsubscribeReason } from './unsubscribe-reason.interface';
 
 @Injectable()
 export class UserService extends UserServiceMaster {
@@ -117,6 +118,18 @@ export class UserService extends UserServiceMaster {
     return this.http.post(this.API_URL_V3 + '/me/password', {
       old_password: oldPassword,
       new_password: newPassword
+    });
+  }
+
+  public getUnsubscribeReasons(): Observable<UnsubscribeReason[]> {
+    return this.http.get(this.API_URL_V3 + '/me/unsubscribe/reason', {language: this.i18n.locale})
+    .map((r: Response) => r.json());
+  }
+
+  public unsubscribe(reasonId: number, otherReason: string): Observable<any> {
+    return this.http.post(this.API_URL_V3 + '/me/unsubscribe', {
+      reason_id: reasonId,
+      other_reason: otherReason
     });
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+import { RequestOptions, Response, Headers } from '@angular/http';
 import {
   EventService,
   HttpService,
@@ -73,8 +73,8 @@ export class ItemService extends ItemServiceMaster {
       content.sale_conditions,
       content.images ? content.images[0] : {
         id: UUID.UUID(),
-        original_width: content.image.original_width,
-        original_height: content.image.original_height,
+        original_width: content.image ? content.image.original_width : null,
+        original_height: content.image ? content.image.original_height : null,
         average_hex_color: '',
         urls_by_size: content.image
       },
@@ -199,6 +199,28 @@ export class ItemService extends ItemServiceMaster {
   public purchaseProducts(orderParams: Order[], orderId: string): Observable<string[]> {
     return this.http.post(this.API_URL_WEB + '/purchase/products/' + orderId, orderParams)
     .map((r: Response) => r.json());
+  }
+
+  public update(item: any): Observable<Item> {
+    return this.http.put(this.API_URL_V3 + '/' + item.id, item)
+    .map((r: Response) => r.json())
+    .map((r: any) => this.mapRecordData(r));
+  }
+
+  public deletePicture(itemId: string, pictureId: string): Observable<any> {
+    return this.http.delete(this.API_URL_V3 + '/' + itemId + '/picture/' + pictureId);
+  }
+
+  public get(id: string): Observable<Item> {
+    return this.http.get(this.API_URL_V3 + `/${id}`)
+    .map((r: Response) => r.json())
+    .map((r: any) => this.mapRecordData(r));
+  }
+
+  public updatePicturesOrder(itemId: string, picturesOrder: {[fileId: string]: number}): Observable<any> {
+    return this.http.put(this.API_URL_V3 + '/' + itemId + '/change-picture-order', {
+      pictures_order: picturesOrder
+    });
   }
 
 }

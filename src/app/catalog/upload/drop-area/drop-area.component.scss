@@ -100,8 +100,8 @@
     }
   }
   &:hover {
-    cursor: move;
-    &:not(.placeholder):not(.dnd-sortable-drag) {
+    &:not(.placeholder):not(.dnd-sortable-drag):not(.one-image) {
+      cursor: move;
       transform: scale(1.25);
       box-shadow: 0 4px 6px 0 rgba(37, 50, 56, 0.15);
       .photos-number-4 & {
@@ -116,6 +116,9 @@
     span {
       display: inline;
     }
+  }
+  &.one-image {
+    cursor: auto;
   }
   span {
     $offset: 10px;
@@ -146,5 +149,17 @@
 
   &:last-of-type {
     margin-right: 0;
+  }
+
+  .loader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba($white, .9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

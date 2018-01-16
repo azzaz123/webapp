@@ -40,7 +40,7 @@ export class UploadService {
   }
 
   public uploadOtherImages(itemId: string, extraPath: string) {
-    const url = this.API_URL + extraPath + '/' + itemId + '/picture';
+    const url = this.API_URL + extraPath + '/' + itemId + '/picture2';
     const inputEvent: UploadInput = {
       type: 'uploadAll',
       url: environment.baseUrl + url,
@@ -50,6 +50,22 @@ export class UploadService {
         order: '$order'
       },
       headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+    };
+    this.uploadInput.emit(inputEvent);
+  }
+
+  public uploadSingleImage(file: UploadFile, itemId: string, extraPath: string) {
+    const url = this.API_URL + extraPath + '/' + itemId + '/picture2';
+    const inputEvent: UploadInput = {
+      type: 'uploadFile',
+      url: environment.baseUrl + url,
+      method: 'POST',
+      fieldName: 'image',
+      data: {
+        order: '$order'
+      },
+      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
+      file: file
     };
     this.uploadInput.emit(inputEvent);
   }
@@ -73,7 +89,7 @@ export class UploadService {
   public setInitialImages(files: UploadFile[]) {
     const inputEvent: UploadInput = {
       type: 'initialImages',
-      files: files
+      files: [...files]
     };
     this.uploadInput.emit(inputEvent);
   }

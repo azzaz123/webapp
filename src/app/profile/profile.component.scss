@@ -9,10 +9,15 @@ $form-control-height: 42px;
   border: $border;
   margin-bottom: $spacing-XL;
   .box-content {
-    padding: $spacing-L;
+    padding: $spacing-L $spacing-L + 10;
+  }
+  .box-section {
+    padding: $spacing-L 0;
+    border-bottom: $border;
   }
   .box-header {
     border-bottom: $border;
+    padding-top: 0;
     h1 {
       font-weight: bold;
       color: $grey-700;
@@ -26,11 +31,6 @@ $form-control-height: 42px;
       float: right;
       padding: 10px 30px;
     }
-  }
-  .box-header, .profile-pic {
-    padding-bottom: $spacing-L;
-    border-bottom: $border;
-    margin-bottom: $spacing-L;
   }
   .profile-pic {
     h2 {
@@ -68,6 +68,9 @@ $form-control-height: 42px;
     }
   }
   .form-group {
+    &:last-of-type {
+      margin-bottom: 0;
+    }
     label {
       text-align: right;
       line-height: $form-control-height;
@@ -146,8 +149,17 @@ $form-control-height: 42px;
       }
     }
   }
-  .account-settings {
-    border-top: $border;
+  .unsubscribe-section {
     padding-top: $spacing-L;
+    text-align: center;
+    a {
+      text-decoration: underline;
+      color: $grey-100;
+      font-size: $font-size-S;
+      cursor: pointer;
+      &:hover {
+        text-decoration: none;
+      }
+    }
   }
 }

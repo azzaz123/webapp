@@ -69,6 +69,8 @@ export class I18nService {
       userEdited: 'Your data has been edited correctly',
       notValidPassword: 'Current password is not valid',
       passwordMatch: 'Passwords don\'t match',
+      itemUpdated: 'The item has been updated correctly',
+      imageUploaded: 'Image uploaded!',
       passwordMinLength: 'Password length should be at least 8 characters'
     },
     es: {
@@ -136,6 +138,8 @@ export class I18nService {
       userEdited: 'Tus datos se han editado correctamente',
       notValidPassword: 'La contraseña corriente no es valida',
       passwordMatch: 'Las contraseñas no coinciden',
+      itemUpdated: 'El producto se ha editado correctamente',
+      imageUploaded: 'La imagen se ha cargado!',
       passwordMinLength: 'La contraseña tiene que ser de almenos 8 caracteres'
     }
   };

@@ -5,6 +5,9 @@ import { ErrorsService, Image } from 'shield';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
+import { ItemService } from '../../../core/item/item.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 
 @Component({
   selector: 'tsl-drop-area',
@@ -25,11 +28,11 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Output() onError: EventEmitter<string> = new EventEmitter();
   @Input() maxUploads = 4;
   @Input() images: Image[];
+  @Input() itemId: string;
   dragOver: boolean;
   files: UploadFile[] = [];
   placeholders: number[];
   options: NgUploaderOptions;
-  private itemId: string;
 
   private setDragOver = _.throttle((dragOver: boolean) => {
     this.dragOver = dragOver;
@@ -39,7 +42,9 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   };
 
   constructor(private errorsService: ErrorsService,
-              public uploadService: UploadService) {
+              public uploadService: UploadService,
+              private itemService: ItemService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -50,10 +55,21 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     };
     this.placeholders = _.range(this.maxUploads);
     this.uploadEvent.subscribe((event: UploadEvent) => {
+      delete event.values.images;
       if (event.type === 'create') {
-        delete event.values.images;
         this.uploadService.createItemWithFirstImage(event.values, this.files[0]);
+      } else if (event.type === 'update') {
+        this.updateItem(event.values);
       }
+    });
+  }
+
+  private updateItem(values: any) {
+    this.itemService.update(values).subscribe(() => {
+      this.onUploaded.emit('updated');
+    }, (response) => {
+      this.onError.emit(response);
+      this.errorsService.i18nError('serverError', response.message ? response.message : '');
     });
   }
 
@@ -116,8 +132,12 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
         }
         break;
       case 'addedToQueue':
-        this.files.push(output.file);
-        this.propagateChange(this.files);
+        if (this.images) {
+          this.files.push(output.file);
+          this.uploadService.uploadSingleImage(output.file, this.itemId, this.maxUploads === 8 ? '/cars' : '');
+        } else {
+          this.pictureUploaded(output);
+        }
         break;
       case 'uploading':
         const index = this.files.findIndex(file => file.id === output.file.id);
@@ -154,13 +174,15 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
           if (this.files.length > 1) {
             this.uploadService.uploadOtherImages(output.file.response.id, this.maxUploads === 8 ? '/cars' : '');
           } else {
-            this.onUploaded.emit(this.itemId);
+            this.onUploaded.emit('created');
           }
         } else {
-          if (_.every(this.files, (file: UploadFile) => {
+          if (!this.images && _.every(this.files, (file: UploadFile) => {
               return file.progress.status === UploadStatus.Done;
             })) {
-            this.onUploaded.emit(this.itemId);
+            this.onUploaded.emit(this.images ? 'updated' : 'created');
+          } else {
+            this.pictureUploadedOnUpdate(output);
           }
         }
       } else {
@@ -173,14 +195,50 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     }
   }
 
+  private pictureUploadedOnUpdate(output: UploadOutput) {
+    this.pictureUploaded(output);
+    this.errorsService.i18nSuccess('imageUploaded');
+  }
+
+  private pictureUploaded(output: UploadOutput) {
+    const index = this.files.findIndex(file => file.id === output.file.id);
+    if (index !== -1) {
+      this.files[index] = output.file;
+    } else {
+      this.files.push(output.file);
+    }
+    this.propagateChange(this.files);
+  }
+
   public remove(file: UploadFile, event: Event) {
     event.stopPropagation();
     event.preventDefault();
-    this.uploadService.removeImage(file);
+    if (this.images) {
+      this.removeConfirmation(file);
+    } else {
+      this.uploadService.removeImage(file);
+    }
+  }
+
+  private removeConfirmation(file: UploadFile) {
+    this.modalService.open(RemoveConfirmModalComponent).result.then(() => {
+      const fileId = file.response.id || file.response;
+      this.itemService.deletePicture(this.itemId, fileId).subscribe(() => {
+        this.uploadService.removeImage(file);
+      });
+    }, () => {
+    });
   }
 
   public updateOrder() {
     this.uploadService.updateOrder(this.files);
+    if (this.images) {
+      const picturesOrder = {};
+      this.files.forEach((file, index) => {
+        picturesOrder[file.response.id || file.response] = index;
+      });
+      this.itemService.updatePicturesOrder(this.itemId, picturesOrder).subscribe();
+    }
   }
 
 }

@@ -24,8 +24,8 @@
   <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:12</source>Load more</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:26</source>Delete conversation</msg>
   <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will delete the conversation.</msg>
-  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source>Cancel</msg>
-  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:22</source><source>app/catalog/list/selected-items/selected-items.component.ts:26</source>Delete</msg>
+  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source>Cancel</msg>
+  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:22</source><source>app/catalog/list/selected-items/selected-items.component.ts:26</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
   <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.ts:2</source><source>app/chat/modals/report-listing/report-listing.component.ts:25</source><source>app/chat/modals/report-user/report-user.component.ts:2</source><source>app/chat/modals/report-user/report-user.component.ts:28</source>Report</msg>
   <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.ts:22</source>I&apos;m reporting this user because...</msg>
   <msg id="20327443157350316"><source>app/chat/modals/block-user/block-user.component.ts:2</source>Block user</msg>
@@ -167,6 +167,10 @@
   <msg id="2224879576270143088"><source>app/catalog/upload/upload-car/upload-car.component.ts:202</source>What sellers usually ask...</msg>
   <msg id="3535134560822959404"><source>app/catalog/upload/upload-car/upload-car.component.ts:208</source>Post your ad</msg>
   <msg id="4138346261331244869"><source>app/catalog/upload/upload-car/upload-car.component.ts:214</source><source>app/catalog/upload/upload-product/upload-product.component.ts:131</source>How does it look?</msg>
+  <msg id="4918814479561513634"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:2</source>Do you want to leave this page?</msg>
+  <msg id="6618892692857491514"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
+  <msg id="3542042671420335679"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:6</source>No</msg>
+  <msg id="4510233521290203619"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:7</source>Yes, leave</msg>
   <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
@@ -180,6 +184,8 @@
   <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:48</source>Pending</msg>
   <msg id="3448462145758383019"><source>app/catalog/list/selected-items/selected-items.component.ts:16</source>Total</msg>
   <msg id="8743988303207163578"><source>app/catalog/list/selected-items/selected-items.component.ts:32</source>Feature Now</msg>
+  <msg id="6261406176927621365"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:2</source>Delete photo</msg>
+  <msg id="4267028037176582017"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:3</source>The photo will be permanently deleted. Are you sure you want to proceed?</msg>
   <msg id="5112037422043971210"><source>app/catalog/upload/drop-area/drop-area.component.ts:5</source>Drop here your files to upload as a product photo</msg>
   <msg id="1417432796546296307"><source>app/catalog/upload/drop-area/drop-area.component.ts:11</source>You have reached the limit of <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Remove one first if you want to add more.</msg>
   <msg id="6145572175629887249"><source>app/catalog/upload/drop-area/drop-area.component.ts:28</source>Main photo</msg>
@@ -211,21 +217,29 @@
   <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:30</source>Posted by</msg>
   <msg id="4058570269839203992"><source>app/reviews/review-item/review-item.component.ts:32</source>A wallapop user</msg>
   <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:33</source>on</msg>
-  <msg id="3768927257183755959"><source>app/profile/profile.component.ts:7</source>Save</msg>
-  <msg id="9032739290449539063"><source>app/profile/profile.component.ts:8</source>Your info</msg>
-  <msg id="7022993325750262876"><source>app/profile/profile.component.ts:9</source>View my public profile</msg>
-  <msg id="438622500917182822"><source>app/profile/profile.component.ts:15</source>Change your profile picture</msg>
-  <msg id="742511623287973747"><source>app/profile/profile.component.ts:16</source>This is the picture linked to your account</msg>
-  <msg id="1897498190172236951"><source>app/profile/profile.component.ts:27</source>Upload picture</msg>
-  <msg id="529882100731018983"><source>app/profile/profile.component.ts:34</source>First Name:</msg>
-  <msg id="6335971540734973333"><source>app/profile/profile.component.ts:40</source>Last Name:</msg>
-  <msg id="7338814826142544882"><source>app/profile/profile.component.ts:46</source>Date of birth:</msg>
-  <msg id="6283914624769804238"><source>app/profile/profile.component.ts:52</source>Gender:</msg>
-  <msg id="8012344910054029733"><source>app/profile/profile.component.ts:58</source>Male</msg>
-  <msg id="5667840900782067941"><source>app/profile/profile.component.ts:63</source>Female</msg>
-  <msg id="8134597337896146328"><source>app/profile/profile.component.ts:69</source>Product location:</msg>
-  <msg id="6631334172623029500"><source>app/profile/profile.component.ts:79</source>Email:</msg>
-  <msg id="6865009229971482891"><source>app/profile/profile.component.ts:85</source>Password:</msg>
+  <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:4</source>Are you sure you want to close your account?</msg>
+  <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:5</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
+  <msg id="859827593140377121"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:7</source>Yes, I do want to close my account</msg>
+  <msg id="3339283489391878454"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:8</source>No, I want to stay</msg>
+  <msg id="6908290931448223055"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:16</source>Can you tell us why you want to close your account? We won&apos;t tell anyone.</msg>
+  <msg id="7818739675790737204"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:25</source>Tell us what happened...</msg>
+  <msg id="6490688569532630280"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:30</source>Send</msg>
+  <msg id="3768927257183755959"><source>app/profile/profile.component.ts:8</source>Save</msg>
+  <msg id="9032739290449539063"><source>app/profile/profile.component.ts:9</source>Your info</msg>
+  <msg id="7022993325750262876"><source>app/profile/profile.component.ts:10</source>View my public profile</msg>
+  <msg id="438622500917182822"><source>app/profile/profile.component.ts:17</source>Change your profile picture</msg>
+  <msg id="742511623287973747"><source>app/profile/profile.component.ts:18</source>This is the picture linked to your account</msg>
+  <msg id="1897498190172236951"><source>app/profile/profile.component.ts:29</source>Upload picture</msg>
+  <msg id="529882100731018983"><source>app/profile/profile.component.ts:36</source>First Name:</msg>
+  <msg id="6335971540734973333"><source>app/profile/profile.component.ts:42</source>Last Name:</msg>
+  <msg id="7338814826142544882"><source>app/profile/profile.component.ts:48</source>Date of birth:</msg>
+  <msg id="6283914624769804238"><source>app/profile/profile.component.ts:54</source>Gender:</msg>
+  <msg id="8012344910054029733"><source>app/profile/profile.component.ts:60</source>Male</msg>
+  <msg id="5667840900782067941"><source>app/profile/profile.component.ts:65</source>Female</msg>
+  <msg id="8134597337896146328"><source>app/profile/profile.component.ts:71</source>Product location:</msg>
+  <msg id="6631334172623029500"><source>app/profile/profile.component.ts:81</source>Email:</msg>
+  <msg id="6865009229971482891"><source>app/profile/profile.component.ts:87</source>Password:</msg>
+  <msg id="2322688793988378029"><source>app/profile/profile.component.ts:96</source>Close account</msg>
   <msg id="4284869171317534738"><source>app/profile/edit-email/email-modal/email-modal.component.ts:2</source>New email?</msg>
   <msg id="4200745758819613954"><source>app/profile/edit-email/email-modal/email-modal.component.ts:3</source>You can update it now</msg>
   <msg id="6357315990612654699"><source>app/profile/edit-email/email-modal/email-modal.component.ts:7</source>Current email</msg>
