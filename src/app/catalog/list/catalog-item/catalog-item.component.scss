@@ -190,6 +190,11 @@ $feature-button-width: 170px;
       }
     }
   }
+  &.sold {
+    .actions {
+      min-width: auto;
+    }
+  }
   .btn-reactivate, .btn-pending {
     z-index: 2;
     position: relative;
