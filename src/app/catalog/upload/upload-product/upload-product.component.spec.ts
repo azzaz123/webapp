@@ -154,13 +154,6 @@ describe('UploadProductComponent', () => {
 
       expect(formChanged).toBeTruthy();
     });
-
-    it('should not emit changed event if form images changes', () => {
-      component.uploadForm.get('images').patchValue([IMAGE, IMAGE]);
-      fixture.detectChanges();
-
-      expect(formChanged).toBeFalsy();
-    });
   });
 
   describe('ngOnChanges', () => {

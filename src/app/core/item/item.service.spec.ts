@@ -332,14 +332,14 @@ describe('ItemService', () => {
     it('should call endpoint and return response', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
       spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
-      let item: Item;
+      let item: any;
 
-      service.update(ITEM_DATA).subscribe((r: Item) => {
+      service.update(ITEM_DATA).subscribe((r: any) => {
         item = r;
       });
 
       expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID, ITEM_DATA);
-      checkItemResponse(item);
+      expect(item).toEqual(ITEM_DATA_V3);
     });
   });
 

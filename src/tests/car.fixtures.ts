@@ -75,7 +75,7 @@ export const CAR_VERSIONS: IOption[] = toSelectOptions(CAR_VERSIONS_RESPONSE);
 
 function toSelectOptions(values: any[]): IOption[] {
   return _.map(values, (label: any) => ({
-    value: label,
-    label: label
+    value: label.toString(),
+    label: label.toString()
   }));
 }

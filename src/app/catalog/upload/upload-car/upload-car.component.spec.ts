@@ -249,8 +249,8 @@ describe('UploadCarComponent', () => {
   describe('onUploaded', () => {
     it('should redirect', () => {
       spyOn(router, 'navigate');
-      component.onUploaded('1234');
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {created: true}]);
+      component.onUploaded('updated');
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {updated: true}]);
     });
   });
 
