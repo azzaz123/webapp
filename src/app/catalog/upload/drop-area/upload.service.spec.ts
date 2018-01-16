@@ -206,4 +206,17 @@ describe('UploadService', () => {
       });
     });
   });
+
+  describe('setInitialImages', () => {
+    it('should emit initialImages event', () => {
+      const FILES: UploadFile[] = [UPLOAD_FILE, UPLOAD_FILE, UPLOAD_FILE];
+
+      service.setInitialImages(FILES);
+
+      expect(response).toEqual({
+        type: 'initialImages',
+        files: FILES
+      });
+    });
+  });
 });

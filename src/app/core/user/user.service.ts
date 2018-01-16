@@ -16,6 +16,7 @@ import { Response } from '@angular/http';
 import { environment } from '../../../environments/environment';
 import { UserInfoResponse } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
+import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
 import { UserData } from './user-data.interface';
 import { CookieService } from 'ngx-cookie';
 
@@ -88,6 +89,28 @@ export class UserService extends UserServiceMaster {
     .map((r: Response) => r.json())
   }
 
+  public getStats(): Observable<UserStatsResponse> {
+    return this.http.get(this.API_URL_V3 + '/me/stats')
+      .map((r: Response) => {
+        return {
+          ratings: this.toRatingsStats(r.json().ratings),
+          counters: this.toCountersStats(r.json().counters)
+        }
+      });
+  }
+
+  public toRatingsStats(ratings): Ratings {
+    return ratings.reduce(({}, rating) => {
+      return { reviews: rating.value };
+    }, {});
+  }
+
+  public toCountersStats(counters): Counters {
+    return counters.reduce((counterObj, counter) => {
+      counterObj[counter.type] = counter.value;
+      return counterObj;
+    }, {});
+  }
   public edit(data: UserData): Observable<any> {
     return this.http.post(this.API_URL_V3 + '/me', data);
   }

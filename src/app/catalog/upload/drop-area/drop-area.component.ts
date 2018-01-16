@@ -1,7 +1,7 @@
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { NgUploaderOptions, UploadFile, UploadOutput, UploadStatus } from 'ngx-uploader';
 import * as _ from 'lodash';
-import { ErrorsService } from 'shield';
+import { ErrorsService, Image } from 'shield';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
@@ -24,6 +24,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Output() onUploaded: EventEmitter<string> = new EventEmitter();
   @Output() onError: EventEmitter<string> = new EventEmitter();
   @Input() maxUploads = 4;
+  @Input() images: Image[];
   dragOver: boolean;
   files: UploadFile[] = [];
   placeholders: number[];
@@ -56,6 +57,43 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     });
   }
 
+  private convertImagesToFiles() {
+    this.files = this.images.map((image: Image, index: number) => {
+      return {
+        fileIndex: index,
+        preview: image.urls_by_size.medium,
+        file: {
+          lastModifiedDate: '',
+          name: '',
+          webkitRelativePath: '',
+          size: 1,
+          type: 'jpg',
+          msClose() {
+          },
+          msDetachStream() {
+          },
+          slice() {
+            return new Blob();
+          }
+        },
+        id: image.id,
+        lastModifiedDate: new Date(),
+        name: '',
+        size: 1,
+        type: 'jpg',
+        progress: {
+          status: UploadStatus.Done,
+          data: {
+            percentage: 100,
+            speed: null,
+            speedHuman: null
+          }
+        },
+        response: image
+      }
+    });
+  }
+
   public writeValue(value: any) {
   }
 
@@ -68,6 +106,15 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   public onUploadOutput(output: UploadOutput): void {
     switch (output.type) {
+      case 'ready':
+        if (this.images) {
+          this.convertImagesToFiles();
+          this.uploadService.setInitialImages(this.files);
+          setTimeout(() => {
+            this.propagateChange(this.files);
+          });
+        }
+        break;
       case 'addedToQueue':
         this.files.push(output.file);
         this.propagateChange(this.files);
