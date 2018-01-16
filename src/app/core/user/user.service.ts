@@ -18,7 +18,6 @@ import { UserInfoResponse } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
 import { UserData } from './user-data.interface';
-import { CookieService } from 'ngx-cookie';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 
 @Injectable()
@@ -31,8 +30,7 @@ export class UserService extends UserServiceMaster {
               i18n: I18nService,
               haversineService: HaversineService,
               accessTokenService: AccessTokenService,
-              @Inject('SUBDOMAIN') private subdomain: string,
-              private cookieService: CookieService) {
+              @Inject('SUBDOMAIN') private subdomain: string) {
     super(http, event, i18n, haversineService, accessTokenService);
   }
 
