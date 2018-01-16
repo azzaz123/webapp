@@ -336,6 +336,12 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.MyProfile,
     type: TYPES_IDS.Tap
   };
+  public static MYPROFILE_SAVEBUTTON: TrackingEventBase = {
+    name: '611',
+    category: CATEGORY_IDS.MyProfile,
+    screen: SCREENS_IDS.MyProfile,
+    type: TYPES_IDS.Tap
+  };
 
   public static TRACKING_SESSION_UUID: string = UUID.UUID();
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
