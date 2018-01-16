@@ -1,4 +1,4 @@
 export interface UploadEvent {
-  type: 'create';
+  type: 'create' | 'update';
   values: any;
 };

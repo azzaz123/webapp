@@ -159,7 +159,7 @@ describe('UploadService', () => {
         service.uploadOtherImages(CAR_ID, '/cars');
         expect(response).toEqual({
           type: 'uploadAll',
-          url: environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture',
+          url: environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
           method: 'POST',
           fieldName: 'image',
           data: {
@@ -174,13 +174,61 @@ describe('UploadService', () => {
         service.uploadOtherImages(ITEM_ID, '');
         expect(response).toEqual({
           type: 'uploadAll',
-          url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture',
+          url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',
           method: 'POST',
           fieldName: 'image',
           data: {
             order: '$order'
           },
           headers: headers
+        });
+      });
+    });
+  });
+
+  describe('uploadSingleImage', () => {
+    const headers = {
+      'Authorization': 'Bearer thetoken'
+    };
+    beforeEach(() => {
+      accessTokenService.storeAccessToken('thetoken');
+      spyOn(http, 'getOptions').and.returnValue({
+        headers: {
+          toJSON() {
+            return headers;
+          }
+        }
+      });
+    });
+    describe('car', () => {
+      it('should emit uploadFile event', () => {
+        service.uploadSingleImage(UPLOAD_FILE, CAR_ID, '/cars');
+        expect(response).toEqual({
+          type: 'uploadFile',
+          url: environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            order: '$order'
+          },
+          headers: headers,
+          file: UPLOAD_FILE
+        });
+      });
+    });
+    describe('normal item', () => {
+      it('should emit uploadFile event', () => {
+        service.uploadSingleImage(UPLOAD_FILE, ITEM_ID, '');
+        expect(response).toEqual({
+          type: 'uploadFile',
+          url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            order: '$order'
+          },
+          headers: headers,
+          file: UPLOAD_FILE
         });
       });
     });
