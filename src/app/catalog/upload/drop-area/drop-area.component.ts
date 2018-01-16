@@ -68,10 +68,8 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     this.itemService.update(values).subscribe(() => {
       this.onUploaded.emit('updated');
     }, (response) => {
-      if (response.message) {
-        this.onError.emit(response);
-        this.errorsService.i18nError('serverError', response.message);
-      }
+      this.onError.emit(response);
+      this.errorsService.i18nError('serverError', response.message ? response.message : '');
     });
   }
 

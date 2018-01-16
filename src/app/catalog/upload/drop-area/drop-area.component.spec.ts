@@ -16,6 +16,7 @@ import { ItemService } from '../../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
+import { PICTURE_ID } from '../../../../tests/item.fixtures';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;
@@ -90,10 +91,6 @@ describe('DropAreaComponent', () => {
     errorsService = TestBed.get(ErrorsService);
     itemService = TestBed.get(ItemService);
     modalService = TestBed.get(NgbModal);
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   describe('ngOnInit', () => {
@@ -434,7 +431,7 @@ describe('DropAreaComponent', () => {
       tick();
 
       expect(modalService.open).toHaveBeenCalledWith(RemoveConfirmModalComponent);
-      expect(itemService.deletePicture).toHaveBeenCalledWith(ITEM_ID, '9jd7ryx5odjk');
+      expect(itemService.deletePicture).toHaveBeenCalledWith(ITEM_ID, PICTURE_ID);
       expect(uploadService.removeImage).toHaveBeenCalledWith(UPLOAD_FILE_DONE);
     }));
   });
@@ -456,7 +453,7 @@ describe('DropAreaComponent', () => {
       component.updateOrder();
 
       expect(itemService.updatePicturesOrder).toHaveBeenCalledWith(ITEM_ID, {
-        '9jd7ryx5odjk': 0
+        [PICTURE_ID]: 0
       });
     });
   });
