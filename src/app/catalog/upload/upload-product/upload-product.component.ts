@@ -132,12 +132,10 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     this.uploadForm.valueChanges.subscribe((value) => {
       const oldItemData = _.omit(this.oldFormValue, ['images', 'location']);
       const newItemData = _.omit(value, ['images', 'location']);
-      const newImagesIds = _.map(value.images, 'id');
-      const originalImagesIds = _.map(this.item.images, 'id');
       if (!this.oldFormValue) {
         this.oldFormValue = value;
       } else {
-        if (!_.isEqual(oldItemData, newItemData) || !_.isEqual(newImagesIds, originalImagesIds)) {
+        if (!_.isEqual(oldItemData, newItemData)) {
           this.onFormChanged.emit(true);
         }
         this.oldFormValue = value;

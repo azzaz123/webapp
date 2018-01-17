@@ -24,7 +24,9 @@ import { ResponseOptions, Response, Headers } from '@angular/http';
 import { ConversationUser, ItemsData, Product } from './item-response.interface';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from '../tracking/tracking.service';
-import { UPLOAD_FILE_ID } from '../../../tests/upload.fixtures';
+import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures';
+import { CAR_DATA, CAR_DATA_FORM, MOCK_CAR } from '../../../tests/car.fixtures';
+import { Car } from './car';
 
 describe('ItemService', () => {
 
@@ -105,6 +107,12 @@ describe('ItemService', () => {
 
       expect(item instanceof Item).toBeTruthy();
       expect(item.salePrice).toBe(0);
+    });
+
+    it('should map car data', () => {
+      const car: Car = <Car>service['mapRecordData'](CAR_DATA);
+
+      expect(car).toEqual(MOCK_CAR);
     });
   });
 
@@ -332,14 +340,27 @@ describe('ItemService', () => {
     it('should call endpoint and return response', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
       spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
-      let item: Item;
+      let item: any;
 
-      service.update(ITEM_DATA).subscribe((r: Item) => {
+      service.update(ITEM_DATA).subscribe((r: any) => {
         item = r;
       });
 
       expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID, ITEM_DATA);
-      checkItemResponse(item);
+      expect(item).toEqual(ITEM_DATA_V3);
+    });
+
+    it('should call CAR endpoint if category is 100 and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_DATA)});
+      spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
+      let item: any;
+
+      service.update(CAR_DATA_FORM).subscribe((r: any) => {
+        item = r;
+      });
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/cars/' + CAR_ID, CAR_DATA_FORM);
+      expect(item).toEqual(CAR_DATA);
     });
   });
 
