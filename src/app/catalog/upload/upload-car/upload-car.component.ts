@@ -64,7 +64,8 @@ export class UploadCarComponent implements OnInit {
       gearbox: '',
       sale_conditions: fb.group({
         fix_price: false,
-        exchange_allowed: false
+        exchange_allowed: false,
+        shipping_allowed: false
       }),
       location: this.fb.group({
         address: ['', [Validators.required]],
@@ -103,7 +104,6 @@ export class UploadCarComponent implements OnInit {
         year: this.item.year.toString(),
         version: this.item.version
       });
-      this.getCarTypes();
       this.getModels(this.item.brand, true);
       this.getYears(this.item.model, true);
       this.getVersions(this.item.year.toString(), true);

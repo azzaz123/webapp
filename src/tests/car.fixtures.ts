@@ -1,5 +1,7 @@
 import * as _ from 'lodash';
 import { IOption } from 'ng-select';
+import { Car } from '../app/core/item/car';
+import { CAR_ID } from './upload.fixtures';
 
 export const CAR_BODY_TYPES_RESPONSE: any = [{
   'id': 'small_car',
@@ -78,4 +80,76 @@ function toSelectOptions(values: any[]): IOption[] {
     value: label.toString(),
     label: label.toString()
   }));
-}
+};
+
+export const CAR_CONTENT_DATA = {
+  'id': CAR_ID,
+  'currency_code': 'EUR',
+  'seller_id': 'l1kmzn82zn3p',
+  'modified_date': 1429186498000,
+  'images': [],
+  'url': 'http://dock112.wallapop.com/i/514?_pid=wi&_uid=101',
+  'title': 'SEAT Ibiza 9 seats',
+  'brand': 'SEAT',
+  'model': 'Ibiza',
+  'year': 2015,
+  'sale_price': 10000.0,
+  'km': 100000,
+  'gearbox': 'manual',
+  'engine': 'gasoil',
+  'color': 'red',
+  'horsepower': 100.0,
+  'body_type': 'small_car',
+  'num_doors': 3,
+  'extras': [],
+  'storytelling': '',
+  'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
+  'flags': {'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false},
+  'warranty': false,
+  'num_seats': 9,
+  'condition': 'brand_new',
+  'web_slug': 'seat-ibiza-9-seats-514',
+  'version': 'version'
+};
+
+export const CAR_DATA_FORM = {
+  ...CAR_CONTENT_DATA,
+  category_id: '100'
+};
+
+export const CAR_DATA = {
+  'id': CAR_ID,
+  'type': 'cars',
+  'content': CAR_CONTENT_DATA
+};
+
+export const MOCK_CAR: Car = new Car(
+  CAR_DATA.content.id,
+  CAR_DATA.content.seller_id,
+  CAR_DATA.content.title,
+  CAR_DATA.content.storytelling,
+  CAR_DATA.content.sale_price,
+  CAR_DATA.content.currency_code,
+  CAR_DATA.content.modified_date,
+  CAR_DATA.content.url,
+  CAR_DATA.content.flags,
+  CAR_DATA.content.sale_conditions,
+  CAR_DATA.content.images,
+  CAR_DATA.content.web_slug,
+  CAR_DATA.content.brand,
+  CAR_DATA.content.model,
+  CAR_DATA.content.year,
+  CAR_DATA.content.km,
+  CAR_DATA.content.gearbox,
+  CAR_DATA.content.engine,
+  CAR_DATA.content.color,
+  CAR_DATA.content.horsepower,
+  CAR_DATA.content.body_type,
+  CAR_DATA.content.num_doors,
+  CAR_DATA.content.extras,
+  CAR_DATA.content.warranty,
+  CAR_DATA.content.num_seats,
+  CAR_DATA.content.condition,
+  CAR_DATA.content.version
+);
+
