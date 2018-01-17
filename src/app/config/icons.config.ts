@@ -153,4 +153,5 @@ export function configIcons(mdIconRegistry: MdIconRegistry, sanitizer: DomSaniti
   mdIconRegistry.addSvgIcon('btn-edit', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-edit.svg'));
   mdIconRegistry.addSvgIcon('btn-reserved', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-reserved.svg'));
   mdIconRegistry.addSvgIcon('btn-sold', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-sold.svg'));
+  mdIconRegistry.addSvgIcon('favorites-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/favorites-empty-state.svg'));
 }

@@ -206,6 +206,7 @@
   <msg id="6822624572232933913"><source>app/catalog/upload/category-selector/category-selector.component.ts:31</source>My services</msg>
   <msg id="4895100071976641944"><source>app/catalog/upload/category-selector/category-selector.component.ts:40</source>A property</msg>
   <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:46</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
+  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:12</source>In this list you can see all the products you saved as favourite</msg>
   <msg id="4185227957442923918"><source>app/reviews/reviews.component.ts:12</source>Your Reviews</msg>
   <msg id="5263225898611875859"><source>app/reviews/reviews.component.ts:13</source>This is what people think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:16</source>Your average</msg>
