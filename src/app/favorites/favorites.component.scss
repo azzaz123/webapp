@@ -15,9 +15,10 @@
   width: 100%;
   display: flex;
   align-items: center;
+  height: 90vh;
   & .mat-icon {
     width: 100%;
-    height: unset;
+    height: 100%;
   }
   & .message {
     width: 35%;
