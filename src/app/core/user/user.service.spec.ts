@@ -91,6 +91,7 @@ describe('UserService', () => {
   describe('logout', () => {
     const res: ResponseOptions = new ResponseOptions({body: 'redirect_url'});
     let redirectUrl: string;
+
     beforeEach(() => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of(new Response(res)));
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
@@ -99,6 +100,7 @@ describe('UserService', () => {
       });
       service.logout();
     });
+
     it('should call endpoint', () => {
       expect(http.postNoBase).toHaveBeenCalledWith('https://www.wallapop.com/rest/logout', undefined, undefined, true);
     });
