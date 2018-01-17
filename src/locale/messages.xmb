@@ -188,7 +188,7 @@
   <msg id="4267028037176582017"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:3</source>The photo will be permanently deleted. Are you sure you want to proceed?</msg>
   <msg id="5112037422043971210"><source>app/catalog/upload/drop-area/drop-area.component.ts:5</source>Drop here your files to upload as a product photo</msg>
   <msg id="1417432796546296307"><source>app/catalog/upload/drop-area/drop-area.component.ts:11</source>You have reached the limit of <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Remove one first if you want to add more.</msg>
-  <msg id="6145572175629887249"><source>app/catalog/upload/drop-area/drop-area.component.ts:28</source>Main photo</msg>
+  <msg id="6145572175629887249"><source>app/catalog/upload/drop-area/drop-area.component.ts:31</source>Main photo</msg>
   <msg id="3322682308330601072"><source>app/catalog/upload/upload-product/upload-product.component.ts:7</source>What are you selling?</msg>
   <msg id="368364095324628291"><source>app/catalog/upload/upload-product/upload-product.component.ts:9</source>In two words...</msg>
   <msg id="5315989345504029668"><source>app/catalog/upload/upload-product/upload-product.component.ts:15</source>Don&apos;t make errors so that people will find you easily.</msg>
@@ -207,6 +207,7 @@
   <msg id="6822624572232933913"><source>app/catalog/upload/category-selector/category-selector.component.ts:31</source>My services</msg>
   <msg id="4895100071976641944"><source>app/catalog/upload/category-selector/category-selector.component.ts:40</source>A property</msg>
   <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:46</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
+  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:12</source>In this list you can see all the products you saved as favourite</msg>
   <msg id="4185227957442923918"><source>app/reviews/reviews.component.ts:12</source>Your Reviews</msg>
   <msg id="5263225898611875859"><source>app/reviews/reviews.component.ts:13</source>This is what people think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:16</source>Your average</msg>
