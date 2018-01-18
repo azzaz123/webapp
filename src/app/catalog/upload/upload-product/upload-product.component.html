@@ -105,7 +105,7 @@
       <div i18n>FAQ</div>
     </ng-template>
   </div>
-  <div class="box" [hidden]="!uploadForm.value.sale_conditions.shipping_allowed">
+  <div class="box" [hidden]="!uploadForm.value.sale_conditions.shipping_allowed" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave">
     <div class="selector-container shipping-options"  data-toggle="buttons">
       <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.delivery_info.valid && uploadForm.controls.delivery_info.dirty}" i18n>Shipping</h2>
       <p i18n>Tell us how much it weighs.</p>
@@ -117,6 +117,10 @@
         </label>
       </div>
     </div>
+    <ng-template #coachmarkShipping>
+      <md-icon svgIcon="cm-shipping"></md-icon>
+      <div i18n>Important for shipping.</div>
+    </ng-template>
   </div>
   <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
   <button type="submit" class="btn btn-primary" [disabled]="loading">

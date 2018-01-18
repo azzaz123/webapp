@@ -118,8 +118,8 @@
   <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:14</source>Expired</msg>
   <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:18</source>1 item selected</msg>
   <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:19</source><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
-  <msg id="6622336784189066984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source><source>app/catalog/upload/upload-car/upload-car.component.ts:208</source><source>app/catalog/upload/upload-product/upload-product.component.ts:124</source>Post Ad</msg>
-  <msg id="4021752662928002901"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:7</source><source>app/catalog/upload/upload-car/upload-car.component.ts:209</source><source>app/catalog/upload/upload-product/upload-product.component.ts:125</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:18</source>Update</msg>
+  <msg id="6622336784189066984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source><source>app/catalog/upload/upload-car/upload-car.component.ts:208</source><source>app/catalog/upload/upload-product/upload-product.component.ts:128</source>Post Ad</msg>
+  <msg id="4021752662928002901"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:7</source><source>app/catalog/upload/upload-car/upload-car.component.ts:209</source><source>app/catalog/upload/upload-product/upload-product.component.ts:129</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:18</source>Update</msg>
   <msg id="2233560223291461480"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:27</source><source>app/catalog/upload/upload-car/upload-car.component.ts:151</source>Manual</msg>
   <msg id="810888510148304696"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:28</source><source>app/catalog/upload/upload-car/upload-car.component.ts:156</source>Automatic</msg>
   <msg id="7493844856700299080"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:42</source><source>app/catalog/upload/upload-car/upload-car.component.ts:122</source>Petrol</msg>
@@ -165,7 +165,7 @@
   <msg id="7052953914167063593"><source>app/catalog/upload/upload-car/upload-car.component.ts:183</source><source>app/catalog/upload/upload-product/upload-product.component.ts:81</source>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</msg>
   <msg id="4756709840226839708"><source>app/catalog/upload/upload-car/upload-car.component.ts:188</source><source>app/catalog/upload/upload-product/upload-product.component.ts:86</source>Extras</msg>
   <msg id="2224879576270143088"><source>app/catalog/upload/upload-car/upload-car.component.ts:202</source>What sellers usually ask...</msg>
-  <msg id="4138346261331244869"><source>app/catalog/upload/upload-car/upload-car.component.ts:215</source><source>app/catalog/upload/upload-product/upload-product.component.ts:131</source>How does it look?</msg>
+  <msg id="4138346261331244869"><source>app/catalog/upload/upload-car/upload-car.component.ts:215</source><source>app/catalog/upload/upload-product/upload-product.component.ts:135</source>How does it look?</msg>
   <msg id="4918814479561513634"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:2</source>Do you want to leave this page?</msg>
   <msg id="6618892692857491514"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
   <msg id="3542042671420335679"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:6</source>No</msg>
@@ -199,6 +199,7 @@
   <msg id="2806917038528218276"><source>app/catalog/upload/upload-product/upload-product.component.ts:105</source>FAQ</msg>
   <msg id="5972351850683239127"><source>app/catalog/upload/upload-product/upload-product.component.ts:110</source>Shipping</msg>
   <msg id="3007176586514020023"><source>app/catalog/upload/upload-product/upload-product.component.ts:111</source>Tell us how much it weighs.</msg>
+  <msg id="3336512716830718777"><source>app/catalog/upload/upload-product/upload-product.component.ts:122</source>Important for shipping.</msg>
   <msg id="1551801042919193607"><source>app/catalog/upload/category-selector/category-selector.component.ts:2</source>What will you sell?</msg>
   <msg id="2649260508337759251"><source>app/catalog/upload/category-selector/category-selector.component.ts:3</source>Set the product type you will list</msg>
   <msg id="7926180204931135155"><source>app/catalog/upload/category-selector/category-selector.component.ts:13</source>Something I don&apos;t use anymore</msg>
