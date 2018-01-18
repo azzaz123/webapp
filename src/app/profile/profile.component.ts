@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { environment } from '../../environments/environment';
-import { User, ErrorsService, HttpService } from 'shield';
+import { User, HttpService } from 'shield';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { UploadOutput, UploadFile, UploadInput, NgUploaderOptions } from 'ngx-uploader';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
+import { ErrorsService } from '../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-profile',

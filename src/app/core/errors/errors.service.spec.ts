@@ -102,27 +102,27 @@ describe('Service: Errors', () => {
 
   describe('i18nError', () => {
     it('should call toastr.error with i18n message', () => {
-      spyOn(i18n, 'getTranslations').and.returnValue('message');
+      spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
       service.i18nError('key');
-      expect(toasts.error).toHaveBeenCalledWith('message', 'Oops!');
+      expect(toasts.error).toHaveBeenCalledWith('message', 'title');
     });
     it('should call toastr.error with i18n message, concatenting text', () => {
-      spyOn(i18n, 'getTranslations').and.returnValue('message');
+      spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
       service.i18nError('key', 'text');
-      expect(toasts.error).toHaveBeenCalledWith('messagetext', 'Oops!');
+      expect(toasts.error).toHaveBeenCalledWith('messagetext', 'title');
     });
   });
 
   describe('i18nSuccess', () => {
     it('should call toastr.success with i18n message', () => {
-      spyOn(i18n, 'getTranslations').and.returnValue('message');
+      spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
       service.i18nSuccess('key');
-      expect(toasts.success).toHaveBeenCalledWith('message', 'Yup!');
+      expect(toasts.success).toHaveBeenCalledWith('message', 'title');
     });
     it('should call toastr.success with i18n message, concatenting text', () => {
-      spyOn(i18n, 'getTranslations').and.returnValue('message');
+      spyOn(i18n, 'getTranslations').and.returnValues('message', 'title');
       service.i18nSuccess('key', 'text');
-      expect(toasts.success).toHaveBeenCalledWith('messagetext', 'Yup!');
+      expect(toasts.success).toHaveBeenCalledWith('messagetext', 'title');
     });
   });
 

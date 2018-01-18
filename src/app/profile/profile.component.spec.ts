@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ErrorsService, TEST_HTTP_PROVIDERS, User, USER_DATA, HttpService, IMAGE } from 'shield';
+import { TEST_HTTP_PROVIDERS, User, USER_DATA, HttpService, IMAGE } from 'shield';
 import { ProfileComponent } from './profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -11,6 +11,7 @@ import { UPLOAD_FILE, UPLOAD_FILE_ID } from '../../tests/upload.fixtures';
 import { UploadInput } from 'ngx-uploader';
 import { environment } from '../../environments/environment';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
+import { ErrorsService } from '../core/errors/errors.service';
 
 const MOCK_USER = new User(
   USER_DATA.id,

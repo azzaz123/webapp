@@ -31,10 +31,10 @@ export class ErrorsService {
   }
 
   i18nError(key: string, contacText: string = '', titleKey?: string) {
-    this.toastr.error(this.i18n.getTranslations(key) + contacText, titleKey ? this.i18n.getTranslations(titleKey) : 'Oops!');
+    this.toastr.error(this.i18n.getTranslations(key) + contacText, titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.getTranslations('defaultErrorTitle'));
   }
 
   i18nSuccess(key: string, contacText: string = '', titleKey?: string) {
-    this.toastr.success(this.i18n.getTranslations(key) + contacText, titleKey ? this.i18n.getTranslations(titleKey) : 'Yup!');
+    this.toastr.success(this.i18n.getTranslations(key) + contacText, titleKey ? this.i18n.getTranslations(titleKey) : this.i18n.getTranslations('defaultSuccessTitle'));
   }
 }

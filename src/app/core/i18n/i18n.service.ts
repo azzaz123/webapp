@@ -72,7 +72,9 @@ export class I18nService {
       passwordMatch: 'Passwords don\'t match',
       itemUpdated: 'The item has been updated correctly',
       imageUploaded: 'Image uploaded!',
-      passwordMinLength: 'Password length should be at least 8 characters'
+      passwordMinLength: 'Password length should be at least 8 characters',
+      defaultErrorTitle: 'Oops!',
+      defaultSuccessTitle: 'Yup!'
     },
     es: {
       daysMomentConfig: {
@@ -138,11 +140,13 @@ export class I18nService {
       formErrors: 'Revisa los campos en rojo',
       formErrorsTitle: '¡Ojo!',
       userEdited: 'Tus datos se han editado correctamente',
-      notValidPassword: 'La contraseña corriente no es valida',
+      notValidPassword: 'La contraseña actual no es válida',
       passwordMatch: 'Las contraseñas no coinciden',
       itemUpdated: 'El producto se ha editado correctamente',
       imageUploaded: 'La imagen se ha cargado!',
-      passwordMinLength: 'La contraseña tiene que ser de almenos 8 caracteres'
+      passwordMinLength: 'La contraseña tiene que ser de almenos 8 caracteres',
+      defaultErrorTitle: '¡Ups!',
+      defaultSuccessTitle: '¡Bien!'
     }
   };
 
