@@ -38,7 +38,7 @@ describe('AccessTokenService', () => {
 
       service.storeAccessToken(aToken);
 
-      expect(cookieService.put).toHaveBeenCalledWith(cookieName + environment.cookieSuffix, aToken, { domain: 'localhost' });
+      expect(cookieService.put).toHaveBeenCalledWith(cookieName + environment.cookieSuffix, aToken, { domain: '.wallapop.com' });
       expect(service['_accessToken']).toEqual(aToken);
     });
 

@@ -13,14 +13,14 @@ export class AccessTokenService implements IAccessTokenService {
 
   public storeAccessToken(accessToken: string): void {
     const cookieName = this.getCookieName();
-    let cookieOptions = environment.production ? { domain: '.wallapop.com' } : { domain: 'localhost' };
+    let cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.put(cookieName, accessToken, cookieOptions);
     this._accessToken = accessToken;
   }
 
   public deleteAccessToken() {
     const cookieName = this.getCookieName();
-    let cookieOptions = environment.production ? { domain: '.wallapop.com' } : { domain: 'localhost' };
+    let cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
     this.cookieService.remove(cookieName, cookieOptions);
     this.cookieService.remove('device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1), cookieOptions);
     this.cookieService.remove('subdomain');
