@@ -4,6 +4,7 @@ import { UserService } from '../../core/user/user.service';
 import { UnsubscribeReason } from '../../core/user/unsubscribe-reason.interface';
 import { EventService } from '../../core/event/event.service';
 import { AccessTokenService } from 'shield';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'tsl-unsubscribe-modal',
@@ -33,7 +34,7 @@ export class UnsubscribeModalComponent implements OnInit {
     this.userService.unsubscribe(this.selectedReason, this.customReason).subscribe(() => {
       this.activeModal.close();
       this.accessTokenService.deleteAccessToken();
-      this.event.emit(EventService.USER_LOGOUT);
+      this.event.emit(EventService.USER_LOGOUT, environment.siteUrl);
     });
   }
 
