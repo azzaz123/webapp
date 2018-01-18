@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
   public loggingOut: boolean;
   public hideSidebar: boolean;
   public isMyZone: boolean;
+  public isProducts: boolean;
   private previousUrl: string;
   private currentUrl: string;
   private previousSlug: string;
@@ -183,6 +184,7 @@ export class AppComponent implements OnInit {
       this.titleService.setTitle(title);
       this.hideSidebar = event['hideSidebar'];
       this.isMyZone = event['isMyZone'];
+      this.isProducts = event['isProducts'];
     });
   }
 
