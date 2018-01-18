@@ -8,7 +8,8 @@ import {
   Location,
   LoginResponse,
   User,
-  UserService as UserServiceMaster
+  UserService as UserServiceMaster,
+  UserResponse
 } from 'shield';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Observable } from 'rxjs/Observable';
@@ -102,8 +103,13 @@ export class UserService extends UserServiceMaster {
       return counterObj;
     }, {});
   }
-  public edit(data: UserData): Observable<any> {
-    return this.http.post(this.API_URL_V3 + '/me', data);
+  public edit(data: UserData): Observable<User> {
+    return this.http.post(this.API_URL_V3 + '/me', data)
+    .map((r: Response) => r.json())
+    .map((r: UserResponse) => this.mapRecordData(r))
+    .do((user: User) => {
+      this._user = user;
+    })
   }
 
   public updateEmail(email: string): Observable<any> {
