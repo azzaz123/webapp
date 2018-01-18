@@ -101,5 +101,10 @@ h2 {
     h2 {
       width: $sidebar-section-circle-size;
     }
+    &:hover {
+      .sidebar-section-circle {
+        background-color: $warn;
+      }
+    }
   }
 }
