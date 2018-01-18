@@ -1,0 +1,8 @@
+#toast-container .toast {
+  &.toast-success {
+    background-color: $success;
+  }
+  &.toast-error {
+    background-color: $warn;
+  }
+}
