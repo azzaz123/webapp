@@ -59,11 +59,16 @@ $form-control-height: 42px;
       padding: $spacing-S $spacing;
       margin-left: 43px;
       cursor: pointer;
-      &:hover {
+      &:hover:not(.disabled) {
         background-color: $grey-100;
       }
       input {
         display: none;
+      }
+      .spinner {
+        @include square(15px);
+        margin-right: $spacing-XS;
+        vertical-align: bottom;
       }
     }
   }

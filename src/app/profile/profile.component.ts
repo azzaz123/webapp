@@ -97,6 +97,7 @@ export class ProfileComponent implements OnInit {
         break;
       case 'rejected':
         this.errorsService.i18nError(output.reason, output.file.name);
+        this.file = null;
         break;
     }
   }
@@ -131,6 +132,7 @@ export class ProfileComponent implements OnInit {
       type: 'remove',
       id: output.file.id
     });
+    this.file = null;
   }
 
 }
