@@ -11,6 +11,7 @@ import { EventService } from './event/event.service';
 import { TrackingService } from './tracking/tracking.service';
 import { TrackingModule } from './tracking/tracking.module';
 import { I18nService } from './i18n/i18n.service';
+import { ErrorsService } from './errors/errors.service';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ export class CoreModule {
         ConversationService,
         EventService,
         TrackingService,
-        I18nService
+        I18nService,
+        ErrorsService
       ]
     };
   }

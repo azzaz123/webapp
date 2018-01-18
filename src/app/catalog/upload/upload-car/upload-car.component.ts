@@ -4,7 +4,6 @@ import { CarSuggestionsService } from './car-suggestions.service';
 import { IOption } from 'ng-select';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
-import { ErrorsService } from 'shield';
 import { UploadEvent } from '../upload-event.interface';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -12,6 +11,7 @@ import { PreviewModalComponent } from '../preview-modal/preview-modal.component'
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Car } from '../../../core/item/car';
 import * as _ from 'lodash';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -220,7 +220,7 @@ export class UploadCarComponent implements OnInit {
       if (!this.uploadForm.get('images').valid) {
         this.errorsService.i18nError('missingImageError');
       } else {
-        this.errorsService.i18nError('formErrors');
+        this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
         this.onValidationError.emit();
       }
     }

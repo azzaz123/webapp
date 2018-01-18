@@ -12,7 +12,7 @@ import {
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { ErrorsService, Item, DeliveryInfo } from 'shield';
+import { Item, DeliveryInfo } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -21,6 +21,7 @@ import { UploadEvent } from '../upload-event.interface';
 import { CategoryService } from '../../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-upload-product',
@@ -206,7 +207,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       if (!this.uploadForm.get('images').valid) {
         this.errorsService.i18nError('missingImageError');
       } else {
-        this.errorsService.i18nError('formErrors');
+        this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
         this.onValidationError.emit();
       }
     }
