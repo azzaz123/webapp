@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
 import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from './car-keys.service';
-import { ErrorsService, TEST_HTTP_PROVIDERS, User, USER_ID, MockTrackingService, IMAGE } from 'shield';
+import { TEST_HTTP_PROVIDERS, User, USER_ID, MockTrackingService, IMAGE } from 'shield';
 import { Router } from '@angular/router';
 import {
   CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS,
@@ -16,6 +16,7 @@ import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-b
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 

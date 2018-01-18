@@ -3,7 +3,6 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import {
-  ErrorsService,
   ITEM_CATEGORY_ID,
   ITEM_DELIVERY_INFO,
   Location,
@@ -25,6 +24,7 @@ import { CategoryService } from '../../../core/category/category.service';
 import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../../tests/category.fixtures';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
