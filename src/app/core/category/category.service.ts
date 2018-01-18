@@ -36,7 +36,8 @@ export class CategoryService {
     if (this.uploadCategories) {
       return Observable.of(this.uploadCategories);
     }
-    return this.http.get(this.API_URL + '/keys/consumer_goods', {language: this.i18n.locale})
+    const lang = this.i18n.locale === 'es' ? this.i18n.locale + '_ES' : this.i18n.locale;
+    return this.http.get(this.API_URL + '/keys/consumer_goods', {language: lang})
       .map(res => res.json())
       .map((categories: CategoryConsumerGoodsResponse[]) => this.toSelectOptions(categories))
       .do((categories: CategoryOption[]) => this.uploadCategories = categories);
