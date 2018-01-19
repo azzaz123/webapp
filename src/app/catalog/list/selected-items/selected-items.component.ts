@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { Item } from 'shield';
@@ -25,7 +25,7 @@ import { TrackingService } from "../../../core/tracking/tracking.service";
     ])
   ]
 })
-export class SelectedItemsComponent implements OnInit {
+export class SelectedItemsComponent implements OnInit, OnDestroy {
 
   @HostBinding('@enterFromBottom') public animation: void;
   @Input() items: Item[];
@@ -35,38 +35,57 @@ export class SelectedItemsComponent implements OnInit {
   public total = 0;
   public loading: boolean;
   private getAvailableProductsObservable: Observable<Product>;
+  private active = true;
+  private selectedProductsIds: string[] = [];
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService) {
   }
 
   ngOnInit() {
-    this.itemService.selectedItems$.subscribe((action: SelectedItemsAction) => {
-      this.selectedItems = this.itemService.selectedItems.map((id: string) => {
-        return <Item>_.find(this.items, {id: id});
-      });
-      if (this.itemService.selectedAction === 'feature') {
-        if (action.action === 'selected') {
-          this.getAvailableProductsObservable = this.itemService.getAvailableProducts(action.id).share();
-          this.getAvailableProductsObservable.subscribe((product: Product) => {
-            this.getAvailableProductsObservable = null;
-            this.selectedProducts.push({
-              itemId: action.id,
-              product: product
-            });
-            this.calculateTotal();
-          });
-        } else if (action.action === 'deselected') {
-          if (this.getAvailableProductsObservable) {
-            this.getAvailableProductsObservable.subscribe(() => {
-              this.deselect(action.id);
-            });
-          } else {
-            this.deselect(action.id);
-          }
-        }
-      }
+    this.itemService.selectedItems$.takeWhile(() => {
+      return this.active;
+    }).subscribe((action: SelectedItemsAction) => {
+      this.initSelectedItems(action);
     });
+  }
+
+  ngOnDestroy() {
+    this.active = false;
+  }
+
+  private initSelectedItems(action: SelectedItemsAction) {
+    if (action.action === 'selected' && this.selectedProductsIds.find((id: string) => {
+        return id === action.id;
+      })) {
+      return;
+    }
+    this.selectedItems = this.itemService.selectedItems.map((id: string) => {
+      return <Item>_.find(this.items, {id: id});
+    });
+    if (this.itemService.selectedAction === 'feature') {
+      if (action.action === 'selected') {
+        this.selectedProductsIds.push(action.id);
+        this.getAvailableProductsObservable = this.itemService.getAvailableProducts(action.id).share();
+        this.getAvailableProductsObservable.subscribe((product: Product) => {
+          this.getAvailableProductsObservable = null;
+          this.selectedProducts.push({
+            itemId: action.id,
+            product: product
+          });
+          this.calculateTotal();
+        });
+      } else if (action.action === 'deselected') {
+        if (this.getAvailableProductsObservable) {
+          this.getAvailableProductsObservable.subscribe(() => {
+            this.deselect(action.id);
+          });
+        } else {
+          this.deselect(action.id);
+        }
+        this.selectedProductsIds = _.without(this.selectedProductsIds, action.id);
+      }
+    }
   }
 
   private deselect(itemId: string) {

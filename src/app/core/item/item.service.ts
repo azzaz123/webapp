@@ -173,6 +173,15 @@ export class ItemService extends ItemServiceMaster {
         });
         return itemsData;
       })
+    })
+    .map((itemsData: ItemsData) => {
+      this.selectedItems.forEach((selectedItemId: string) => {
+        const index: number = _.findIndex(itemsData.data, {id: selectedItemId});
+        if (index !== -1) {
+          itemsData.data[index].selected = true;
+        }
+      });
+      return itemsData;
     });
   }
 
