@@ -10,6 +10,8 @@
       Commit: '{{ commit }}'
       Bucket_ES: '{{ origin_bucket_es }}'
       Bucket_EN: '{{ origin_bucket_en }}'
+      Host_ES: '{{ host_es }}'
+      Hostt_EN: '{{ host_en }}'
   when: env_action != 'destroy'
 
 #########
