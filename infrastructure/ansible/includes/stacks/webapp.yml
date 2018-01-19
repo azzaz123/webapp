@@ -1,6 +1,6 @@
 - name: Set stack name
   set_fact:
-    stack_name: 'Tesla-{{ env }}'
+    stack_name: 'Webapp-{{ env }}'
 
 - name: Set template parameters
   set_fact:
@@ -8,10 +8,10 @@
       EnvName: '{{ env }}'
       Branch: '{{ branch }}'
       Commit: '{{ commit }}'
-      Bucket_ES: '{{ origin_bucket_es }}'
-      Bucket_EN: '{{ origin_bucket_en }}'
-      Host_ES: '{{ host_es }}'
-      Hostt_EN: '{{ host_en }}'
+      BucketES: '{{ origin_bucket_es }}'
+      BucketEN: '{{ origin_bucket_en }}'
+      HostES: '{{ host_es }}'
+      HostEN: '{{ host_en }}'
   when: env_action != 'destroy'
 
 #########
