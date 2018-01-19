@@ -70,7 +70,7 @@ export class ItemService extends ItemServiceMaster {
       content.seller_id,
       content.title,
       content.storytelling,
-      content.sale_price,
+      content.sale_price === undefined ? content.price : content.sale_price,
       content.currency_code,
       content.modified_date,
       content.url,
