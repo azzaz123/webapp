@@ -25,6 +25,11 @@ Parameters:
 Conditions:
   IsProdEnv: !Equals [ !Ref EnvName, prod ]
 
+Mappings:
+  Certificates:
+    Wildcard:
+      default: "arn:aws:acm:us-east-1:745640521341:certificate/34cb22eb-e316-4600-abcf-11803c69f764"
+
 Resources:
   WebEsDistribution:
     Type: AWS::CloudFront::Distribution
@@ -58,7 +63,7 @@ Resources:
           - IsProdEnv
           - IamCertificateId: 'ASCAJHGNNZ3LDFECH7X46'
             SslSupportMethod: 'sni-only'
-          - AcmCertificateArn: 'arn:aws:acm:us-east-1:745640521341:certificate/34cb22eb-e316-4600-abcf-11803c69f764'
+          - AcmCertificateArn: !FindInMap ["Certificates", "Wildcard", "default"]
             SslSupportMethod: 'sni-only'
       Tags:
       - Key: Branch
@@ -100,7 +105,7 @@ Resources:
           - IsProdEnv
           - IamCertificateId: 'ASCAJHGNNZ3LDFECH7X46'
             SslSupportMethod: 'sni-only'
-          - AcmCertificateArn: 'arn:aws:acm:us-east-1:745640521341:certificate/34cb22eb-e316-4600-abcf-11803c69f764'
+          - AcmCertificateArn: !FindInMap ["Certificates", "Wildcard", "default"]
             SslSupportMethod: 'sni-only'
       Tags:
       - Key: Branch
