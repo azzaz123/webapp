@@ -8,7 +8,8 @@
       EnvName: '{{ env }}'
       Branch: '{{ branch }}'
       Commit: '{{ commit }}'
-      Bucket: '{{ origin_bucket }}'
+      Bucket_ES: '{{ origin_bucket_es }}'
+      Bucket_EN: '{{ origin_bucket_en }}'
   when: env_action != 'destroy'
 
 #########

@@ -1,1 +1,2 @@
-origin_bucket: 'admin.wallapop.com'
+origin_bucket_es: 'web-es.wallapop.com'
+origin_bucket_en: 'web-en.wallapop.com'
