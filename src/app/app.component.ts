@@ -79,6 +79,7 @@ export class AppComponent implements OnInit {
     this.updateUrlAndSendAnalytics();
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
+    appboy.registerAppboyPushMessages();
   }
 
   private updateUrlAndSendAnalytics() {
