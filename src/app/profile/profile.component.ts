@@ -46,7 +46,7 @@ export class ProfileComponent implements OnInit {
     this.options = {
       allowedExtensions: ['jpg', 'jpeg'],
       maxUploads: 1,
-      maxSize: 10485760 // 10 MB
+      maxSize: 3145728 // 3 MB
     };
     this.userService.me().subscribe((user) => {
       this.user = user;
@@ -124,7 +124,7 @@ export class ProfileComponent implements OnInit {
     if (output.file.progress.data.responseStatus === 204) {
       this.userService.user.image.urls_by_size.medium = output.file.preview;
     } else {
-      this.errorsService.i18nError('serverError');
+      this.errorsService.i18nError('serverError', output.file.response.message ? output.file.response.message : '');
     }
   }
 
