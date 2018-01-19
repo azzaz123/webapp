@@ -8,15 +8,18 @@ Parameters:
   Commit:
     Description: Commit
     Type: String
-  Bucket:
-    Description: Bucket
+  Bucket_ES:
+    Description: Bucket_ES
+    Type: String
+  Bucket_EN:
+    Description: Bucket_EN
     Type: String
 
 Conditions:
   IsProdEnv: !Equals [ !Ref EnvName, prod ]
 
 Resources:
-  adminDistribution:
+  WebEsDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
@@ -38,7 +41,7 @@ Resources:
         Enabled: 'true'
         HttpVersion: http2
         Origins:
-        - DomainName: !Join [ ".", [ !Ref Bucket, "s3.amazonaws.com" ] ]
+        - DomainName: !Join [ ".", [ !Ref Bucket_ES, "s3.amazonaws.com" ] ]
           Id: myS3Origin
           S3OriginConfig:
             OriginAccessIdentity: origin-access-identity/cloudfront/ECJ0NOZMYCRH1
@@ -58,13 +61,66 @@ Resources:
       - Key: Env
         Value: !Ref EnvName
 
-  adminRecordSetGroup:
+  WebEnDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+        - !Ref Bucket
+        CustomErrorResponses:
+        - ErrorCachingMinTTL: 60
+          ErrorCode: 404
+          ResponseCode: 404
+          ResponsePagePath: '/'
+        DefaultCacheBehavior:
+          ForwardedValues:
+            QueryString: 'false'
+            Cookies:
+              Forward: none
+          TargetOriginId: myS3Origin
+          ViewerProtocolPolicy: redirect-to-https
+        DefaultRootObject: index.html
+        Enabled: 'true'
+        HttpVersion: http2
+        Origins:
+        - DomainName: !Join [ ".", [ !Ref Bucket_EN, "s3.amazonaws.com" ] ]
+          Id: myS3Origin
+          S3OriginConfig:
+            OriginAccessIdentity: origin-access-identity/cloudfront/ECJ0NOZMYCRH1
+        PriceClass: PriceClass_100
+        ViewerCertificate:
+          !If
+          - IsProdEnv
+          - IamCertificateId: 'ASCAJHGNNZ3LDFECH7X46'
+            SslSupportMethod: 'sni-only'
+          - AcmCertificateArn: 'arn:aws:acm:us-east-1:745640521341:certificate/34cb22eb-e316-4600-abcf-11803c69f764'
+            SslSupportMethod: 'sni-only'
+      Tags:
+      - Key: Branch
+        Value: !Ref Branch
+      - Key: Commit
+        Value: !Ref Commit
+      - Key: Env
+        Value: !Ref EnvName
+
+  WebEsRecordSetGroup:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       HostedZoneName: 'wallapop.com.'
       RecordSets:
       - AliasTarget:
-          DNSName: !GetAtt adminDistribution.DomainName
+          DNSName: !GetAtt WebEsDistribution.DomainName
           HostedZoneId: Z2FDTNDATAQYW2
-        Name: !Ref Bucket
+        Name: !Ref Bucket_ES
+        Type: A
+
+  WebEnRecordSetGroup:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneName: 'wallapop.com.'
+      RecordSets:
+      - AliasTarget:
+          DNSName: !GetAtt WebEnDistribution.DomainName
+          HostedZoneId: Z2FDTNDATAQYW2
+        Name: !Ref Bucket_EN
         Type: A
