@@ -45,7 +45,7 @@ export class Car extends Item {
       flags,
       null,
       saleConditions,
-      image && image.id ? {
+      image ? {
         id: '1',
         original_width: image ? image.original_width : null,
         original_height: image ? image.original_height : null,
