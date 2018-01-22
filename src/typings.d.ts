@@ -10,3 +10,4 @@ declare let analytics: any;
 declare let appboy: any;
 declare let ga: Function;
 declare var googletag: any;
+declare let H: any;

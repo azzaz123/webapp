@@ -1,12 +1,10 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import {
   ErrorsService,
   FinancialCard,
-  I18nService,
   Item,
   ItemBulkResponse,
   PaymentService,
-  TrackingService,
   DEFAULT_ERROR_MESSAGE
 } from 'shield';
 import { ItemService } from '../../core/item/item.service';
@@ -14,7 +12,7 @@ import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
 import { ItemsData } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -22,13 +20,16 @@ import { UUID } from 'angular2-uuid';
 import { Response } from '@angular/http';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { OrderEvent } from './selected-items/selected-product.interface';
+import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
 
   public items: Item[] = [];
   public selectedStatus: string = 'published';
@@ -37,6 +38,9 @@ export class ListComponent implements OnInit {
   public end: boolean;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public scrollTop: number;
+  private uploadModalRef: NgbModalRef;
+  private active: boolean = true;
+  private firstItemLoad = true;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -52,7 +56,7 @@ export class ListComponent implements OnInit {
   ngOnInit() {
     this.getItems();
     setTimeout(() => {
-      this.router.events.subscribe((evt) => {
+      this.router.events.takeWhile(() => this.active).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
           return;
         }
@@ -73,8 +77,35 @@ export class ListComponent implements OnInit {
           }, () => {
           });
         }
+        if (params && params.created) {
+          this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
+            windowClass: 'upload',
+          });
+          this.uploadModalRef.result.then(() => {
+            const newItem: Item = this.items[0];
+            this.itemService.selectedAction = 'feature';
+            newItem.selected = true;
+            this.itemService.selectItem(newItem.id);
+          }, () => {
+          });
+        } else if (params && params.updated) {
+          this.toastr.success(this.i18n.getTranslations('itemUpdated'));
+        }
       });
     });
+  }
+
+  private restoreSelectedItems() {
+    this.itemService.selectedItems.forEach((itemId: string) => {
+      this.itemService.selectedItems$.next({
+        id: itemId,
+        action: 'selected'
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    this.active = false;
   }
 
   public filterByStatus(status: string) {
@@ -106,6 +137,15 @@ export class ListComponent implements OnInit {
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
       this.end = !this.init;
+      if (this.uploadModalRef) {
+        this.uploadModalRef.componentInstance.item = this.items[0];
+      }
+      if (this.firstItemLoad) {
+        setTimeout(() => {
+          this.restoreSelectedItems();
+        });
+      }
+      this.firstItemLoad = false;
     });
   }
 
@@ -176,7 +216,7 @@ export class ListComponent implements OnInit {
       });
     }, (error: Response) => {
       this.deselect();
-      if (error) {
+      if (error.text()) {
         this.errorService.show(error);
       } else {
         this.toastr.error(DEFAULT_ERROR_MESSAGE);
@@ -188,6 +228,7 @@ export class ListComponent implements OnInit {
     const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, {windowClass: 'credit-card'});
     modalRef.componentInstance.financialCard = financialCard;
     modalRef.componentInstance.total = total;
+    this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, { select_card: financialCard.id });
     modalRef.result.then((result: string) => {
       if (result === 'new') {
         this.sabadellSubmit.emit(orderId);

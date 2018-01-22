@@ -1,0 +1,33 @@
+@import "../../style/_common.scss";
+
+:host /deep/ .container {
+  width: 1200px;
+  margin-bottom: $spacing-L;
+}
+
+:host /deep/ .brick {
+  width: 220px;
+}
+
+.favorites-empty-state {
+  margin: 20px 10px;
+  padding-top: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 90vh;
+  & .mat-icon {
+    width: 100%;
+    height: 100%;
+  }
+  & .message {
+    width: 35%;
+    color: $grey-500;
+    font-size: $font-size-LL;
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+}

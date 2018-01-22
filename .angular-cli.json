@@ -9,7 +9,9 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "manifest.json",
+        "service-worker.js"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -20,6 +22,7 @@
       "prefix": "tsl",
       "styles": [
         "../node_modules/ngx-toastr/toastr.css",
+        "../node_modules/ng2-dnd/style.css",
         "style/styles.scss"
       ],
       "scripts": [
@@ -32,6 +35,7 @@
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
+        "docker": "environments/environment.docker.ts",
         "beta": "environments/environment.beta.ts",
         "prod": "environments/environment.prod.ts"
       }

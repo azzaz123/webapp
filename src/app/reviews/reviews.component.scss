@@ -1,0 +1,68 @@
+@import "../../style/_common.scss";
+
+.review-header {
+  h1 {
+    font-size: $font-size-LL;
+    font-weight: 700;
+  }
+  p {
+    font-size: $font-size-S;
+    color: $grey-250;
+    margin-bottom: 0;
+  }
+  .user-average {
+    p {
+      color: $grey-500;
+    }
+  }
+
+  .user-number-reviews {
+    p:first-child {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+  }
+
+  .row {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+.container {
+  background-color: $white;
+  border-radius: $border-radius;
+  padding: $spacing-L;
+  margin-bottom: $spacing-XL;
+}
+
+.reviews-empty-state {
+  border-top: 1px solid $grey-50;
+  margin: 20px 10px;
+  padding-top: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  & .mat-icon {
+    width: 50%;
+    height: unset;
+  }
+  & .message {
+    width: 45%;
+    color: $grey-500;
+    font-size: $font-size-LL;
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+}
+
+:host /deep/ .header-rating {
+  md-icon {
+    width: 22px;
+    height: 21px;
+  }
+}

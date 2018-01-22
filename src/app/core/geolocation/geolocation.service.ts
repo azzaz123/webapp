@@ -3,7 +3,7 @@ import { HttpService } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
 import { GeolocationResponse } from './geolocation-response.interface';
-import { AddressResponse } from './address-response.interface';
+import { Coordinate } from './address-response.interface';
 
 @Injectable()
 export class GeolocationService {
@@ -15,19 +15,24 @@ export class GeolocationService {
   public search(query: string): Observable<GeolocationResponse[]> {
     let params: any =  {
       query: query,
-      apiKey: this.apiKey
+      provider: 'here'
     };
     return this.http.getNoBase(environment.siteUrl + 'maps/places', params)
       .map(res => res.json());
   }
 
-  public geocode(placeId: string): Observable<AddressResponse> {
+  public geocode(placeId: string): Observable<Coordinate> {
     let params: any =  {
       placeId: placeId,
-      apiKey: this.apiKey
     };
-    return this.http.getNoBase(environment.siteUrl + 'maps/place', params)
-      .map(res => res.json());
+    return this.http.getNoBase(environment.siteUrl + '/maps/here/place', params)
+      .map(res => res.json())
+      .map((res: any) => {
+        return {
+          ...res,
+          name: placeId
+        }
+      });
   }
 
 }

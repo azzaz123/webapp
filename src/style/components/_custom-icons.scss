@@ -9,27 +9,6 @@
   }
 }
 
-.sidebar-section {
-  md-icon {
-    g g, g {
-      fill: rgba($white, .5);
-      opacity: 1;
-    }
-  }
-  &.active md-icon {
-    g g, g {
-      fill: $white;
-      opacity: 1;
-    }
-  }
-  &:hover md-icon {
-    g g, g {
-      fill: $white;
-      opacity: 1;
-    }
-  }
-}
-
 .report-ban-reason {
   &.selected md-icon {
     g g, path {
@@ -48,19 +27,19 @@
     height: 15px;
     line-height: 30px;
   }
-  md-icon g g {
+  md-icon path {
     fill: $grey-700;
   }
-  &:hover md-icon g g {
+  &:hover md-icon path {
     fill: $grey-900;
   }
   .modal.bump-confirm & {
-    md-icon g g {
+    md-icon path {
       fill: $grey-200;
     }
   }
   &.light {
-    md-icon g g {
+    md-icon path {
       fill: $white;
       opacity: .5;
     }
@@ -78,6 +57,12 @@
 .main-search-category-ico {
   svg g g {
     fill: $grey-900;
+  }
+}
+
+.reviews-list-category-ico {
+  svg g g {
+    fill: $white;
   }
 }
 
@@ -147,6 +132,35 @@
       svg path {
         fill: $corporate;
       }
+    }
+  }
+}
+
+.selector {
+  svg {
+    @include in-the-middle;
+    width: 26px;
+    height: 26px;
+    g, path {
+      fill: $grey-250;
+    }
+  }
+  &.active {
+    svg g, svg path {
+      fill: $white;
+    }
+  }
+  &:hover:not(.active) {
+    svg g, svg path {
+      fill: $grey-700;
+    }
+  }
+}
+
+.upload-close-icon {
+  &:hover {
+    md-icon path {
+      fill: $corporate;
     }
   }
 }

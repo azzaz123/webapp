@@ -1,0 +1,17 @@
+<div class="box" [ngbPopover]="coachmarkLocation" triggers="mouseenter:mouseleave">
+  <h2 i18n>Your products are in:</h2>
+  <div class="row" *ngIf="user">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <tsl-location-select [form]="form" [name]="name"></tsl-location-select>
+        <tsl-here-maps *ngIf="coordinates" [coordinates]="coordinates" zoom="15" size="small"></tsl-here-maps>
+        <div class="fake-map" *ngIf="!coordinates"></div>
+        <p i18n>This is the spot where your wallapop profile is located. We will show all your products here.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #coachmarkLocation>
+  <md-icon svgIcon="cm-location"></md-icon>
+  <div i18n>Mark the location in a place where you usually are. This will help other users to find you and improve your user experience.</div>
+</ng-template>

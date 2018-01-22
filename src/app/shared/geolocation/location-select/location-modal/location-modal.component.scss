@@ -1,0 +1,42 @@
+@import '../../../../../style/_common.scss';
+
+$btn-height: 38px;
+$btn-width: 85px;
+
+tsl-here-maps {
+  height: 500px;
+  width: 100%;
+  display: block;
+}
+
+.modal-body {
+  padding: 0;
+  tsl-geolocation {
+    position: absolute;
+    top: $spacing;
+    left: $spacing;
+    z-index: 100;
+    width: calc(100% + #{-$spacing * 2 - $btn-width - $spacing-S});
+    display: block;
+    padding: 0;
+    & /deep/ {
+      .header-location {
+        input {
+          width: 100%;
+        }
+        .dropdown-menu {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .btn {
+    position: absolute;
+    top: $spacing;
+    right: $spacing;
+    height: $btn-height;
+    line-height: $btn-height;
+    padding: 0 $spacing-M;
+    width: $btn-width;
+  }
+}

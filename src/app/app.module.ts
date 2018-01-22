@@ -14,17 +14,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
 import { environment } from '../environments/environment';
 import { CatalogModule } from './catalog/catalog.module';
+import { DndModule } from 'ng2-dnd';
+import { FavoritesModule } from './favorites/favorites.module';
+import { ReviewsModule } from './reviews/reviews.module';
+import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     ShieldModule.forRoot({
       cacheAllConversations: false,
       environment: environment,
       addSignature: true,
-      appId: 'web',
       conversationIdName: 'conversation_id',
       conversationUserId: 'other_user_id'
     }),
@@ -32,12 +35,16 @@ import { CatalogModule } from './catalog/catalog.module';
     ChatModule,
     CookieModule.forRoot(),
     CoreModule.forRoot(),
+    DndModule.forRoot(),
     BrowserModule,
     LoginModule,
     HttpModule,
     AppRoutingModule,
     LayoutModule,
-    CatalogModule
+    CatalogModule,
+    ReviewsModule,
+    FavoritesModule,
+    ProfileModule
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

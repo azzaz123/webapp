@@ -20,11 +20,21 @@
     text-decoration: none;
   }
 }
-.topbar-user-name {
-  font-size: $font-size-S;
-  color: $grey-900;
-  margin-right: $spacing-XXS;
-  margin-left: $spacing-S;
+.main-header-my-zone {
+  tsl-user-avatar {
+    margin-left: $spacing-XS;
+  }
+  span {
+    font-size: $font-size-S;
+    color: $grey-900;
+    margin-right: $spacing-XXS;
+    margin-left: $spacing-S;
+  }
+  &.active {
+    span {
+      color: $corporate;
+    }
+  }
 }
 .topbar-icon {
   height: 36px;
@@ -36,9 +46,6 @@
       color: $corporate;
     }
   }
-}
-.topbar-avatar {
-  margin-bottom: -14px;
 }
 .topbar-logo-icon {
   width: 49px;
@@ -66,11 +73,6 @@
       }
     }
   }
-}
-.topbar-menu-dropdown {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
 }
 .dropdown-main-search {
   & {

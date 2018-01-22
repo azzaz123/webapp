@@ -1,0 +1,11 @@
+#map {
+  & > /deep/ div {
+    border-radius: 0.3rem;
+  }
+  &.normal {
+    height: 500px;
+  }
+  &.small {
+    height: 130px;
+  }
+}

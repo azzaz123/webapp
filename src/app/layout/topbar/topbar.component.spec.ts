@@ -1,18 +1,14 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../core/user/user.service';
-import { USER_DATA, User, WindowRef } from 'shield';
+import { TEST_HTTP_PROVIDERS, User, USER_DATA, WindowRef } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../../core/event/event.service';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
 import { environment } from '../../../environments/environment';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TEST_HTTP_PROVIDERS } from 'shield';
 import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UploadModalComponent } from './upload-modal/upload-modal.component';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -37,7 +33,6 @@ describe('TopbarComponent', () => {
   let fixture: ComponentFixture<TopbarComponent>;
   let eventService: EventService;
   let windowRef: WindowRef;
-  let modalService: NgbModal;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,8 +42,6 @@ describe('TopbarComponent', () => {
           provide: UserService, useValue: {
             me(): Observable<User> {
               return Observable.of(MOCK_USER);
-            },
-            logout() {
             }
           },
         },
@@ -64,15 +57,6 @@ describe('TopbarComponent', () => {
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         },
-        {
-          provide: NgbModal, useValue: {
-          open() {
-            return {
-              result: Promise.resolve()
-            };
-          }
-        }
-        },
         EventService, ...TEST_HTTP_PROVIDERS],
       declarations: [TopbarComponent],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -87,7 +71,6 @@ describe('TopbarComponent', () => {
     fixture.detectChanges();
     eventService = TestBed.get(EventService);
     windowRef = TestBed.get(WindowRef);
-    modalService = TestBed.get(NgbModal);
   });
 
   it('should be created', () => {
@@ -102,20 +85,10 @@ describe('TopbarComponent', () => {
     });
   });
 
-  describe('logout', () => {
-    beforeEach(() => {
-      spyOn(userService, 'logout');
-      component.logout();
-    });
-    it('should logout', () => {
-      expect(userService.logout).toHaveBeenCalled();
-    });
-  });
-
   describe('update coordinate', () => {
-    let newCoordinates = {'lat': 41.2, 'lng': 2.1};
+    let newCoordinates = {'latitude': 41.2, 'longitude': 2.1};
     it('should update the user coordinates', () => {
-      component.coordinates = {'lat': 0.0, 'lng': 0.0};
+      component.coordinates = {'latitude': 0.0, 'longitude': 0.0};
       component.onCoordinateUpdate(newCoordinates);
       expect(component.coordinates).toEqual(newCoordinates);
     });
@@ -132,16 +105,6 @@ describe('TopbarComponent', () => {
 
   describe('search form', () => {
     beforeEach(() => {
-      component.latEl = {
-        nativeElement: {
-          value: '42'
-        }
-      };
-      component.lngEl = {
-        nativeElement: {
-          value: '2'
-        }
-      };
       component.kwsEl = {
         nativeElement: {
           value: 'iphone'
@@ -181,7 +144,7 @@ describe('TopbarComponent', () => {
       component.category = CATEGORY_DATA_WEB[1].categoryId;
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=' + '&verticalId=');
+      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&kws=' + '&verticalId=');
     });
 
     it('should redirect to the web when category is not set', () => {
@@ -192,22 +155,14 @@ describe('TopbarComponent', () => {
       };
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&lat=42' + '&lng=2' + '&kws=' + '&verticalId=');
+      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&kws=' + '&verticalId=');
     });
 
     it('should submit the search form for cars', () => {
       component.category = CATEGORY_DATA_WEB[0].categoryId;
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('https://www.wallapop.com/search?catIds=100' + '&lat=42' + '&lng=2' + '&kws=' + '&verticalId=100');
-    });
-  });
-
-  describe('upload', () => {
-    it('should ', () => {
-      spyOn(modalService, 'open');
-      component.upload();
-      expect(modalService.open).toHaveBeenCalledWith(UploadModalComponent, {windowClass: 'upload'});
+      .toEqual('https://www.wallapop.com/search?catIds=100' + '&kws=' + '&verticalId=100');
     });
   });
 

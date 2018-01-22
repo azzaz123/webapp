@@ -1,0 +1,26 @@
+<div class="modal-body">
+  <div *ngIf="!type">
+    <h2 i18n>Delete item</h2>
+    <p i18n>This will delete the item.</p>
+  </div>
+  <div *ngIf="type === 1">
+    <h2 i18n>Delete items</h2>
+    <p i18n>The selected items will be permanently deleted.</p>
+  </div>
+  <div *ngIf="type === 2">
+    <h2 i18n>Reserve items</h2>
+    <p i18n>The selected items will be reserved.</p>
+  </div>
+  <div *ngIf="type === 3">
+    <h2 i18n>Remove item from favorites</h2>
+    <p i18n>The item will be removed from favorites.</p>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn" i18n (click)="activeModal.dismiss()">Cancel</button>
+  <button type="button" class="btn btn-warn" (click)="activeModal.close()">
+    <span i18n *ngIf="type === 1">Delete</span>
+    <span i18n *ngIf="type === 2">Reserve</span>
+    <span i18n *ngIf="type === 3">Remove</span>
+  </button>
+</div>

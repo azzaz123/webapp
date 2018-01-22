@@ -1,4 +1,4 @@
-import { ItemFlags, Image, ItemSaleConditions, Item } from 'shield';
+import { ItemFlags, Image, ItemSaleConditions, Item, DeliveryInfo } from 'shield';
 
 export interface ItemResponse {
   content: ItemContent;
@@ -8,7 +8,8 @@ export interface ItemResponse {
 
 export interface ItemContent {
   category_id: number;
-  currency_code: string;
+  currency_code?: string;
+  currency?: string;
   description: string;
   flags: ItemFlags;
   id: string;
@@ -24,13 +25,34 @@ export interface ItemContent {
   };
   modified_date: number;
   sale_conditions: ItemSaleConditions;
-  sale_price: number;
+  sale_price?: number;
+  price?: number;
   seller_id: string;
   title: string;
   url: string;
   web_slug: string;
   favorites?: number;
   views?: number;
+  delivery_info?: DeliveryInfo;
+}
+
+export interface CarContent extends ItemContent {
+  brand?: string;
+  model?: string;
+  year?: number;
+  km?: number;
+  gearbox?: string;
+  engine?: string;
+  color?: string;
+  horsepower?: number;
+  body_type?: string;
+  num_doors?: number;
+  extras?: any[];
+  storytelling?: string;
+  warranty?: false;
+  num_seats?: number;
+  condition?: string;
+  version?: string;
 }
 
 export interface ItemsData {
@@ -77,4 +99,38 @@ export interface SelectedItemsAction {
 export interface Order {
   item_id: string;
   product_id: string;
+}
+
+export interface ItemUploadForm {
+  category_id: string;
+  images: any[];
+  title: string;
+  sale_price: number;
+  currency_code: string;
+  description?: string;
+  sale_conditions: {
+    fix_price: boolean;
+    exchange_allowed: boolean;
+    shipping_allowed?: boolean;
+  };
+  delivery_info?: any;
+  location?: {
+    address: string;
+    latitude: number;
+    longitude: number;
+  };
+}
+
+export interface CarUploadForm extends ItemUploadForm {
+  model: string;
+  brand: string;
+  year: string;
+  version: string;
+  num_seats: number;
+  body_type: string;
+  km: number;
+  storytelling: string;
+  engine: string;
+  gearbox: string;
+  id?: string;
 }

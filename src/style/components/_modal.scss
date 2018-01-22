@@ -5,10 +5,11 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
 .modal-backdrop.show {
   opacity: .85;
 }
-.modal-dialog {
-  margin-top: 250px;
+.modal {
+  display: flex !important;
+  justify-content: center;
+  flex-direction: column;
 }
-
 .modal-content {
   max-width: 400px;
   margin: 0 auto;
@@ -62,11 +63,11 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     margin-bottom: 0;
     font-size: $font-size-S;
   }
-  .btn:not(.btn-primary) {
+  .btn:not(.btn-primary):not(.btn-secondary) {
     color: $grey-800;
     background-color: transparent;
     outline: 0;
-    border-left: 1px solid #cfd8dc;
+    border-left: 1px solid $color-grey-separator;
     padding: 0 $spacing;
     border-radius: 0;
     &:first-child {
@@ -90,40 +91,80 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
 }
 
 .modal.report {
-  .modal-dialog, .modal-content {
-    max-width: 480px;
-  }
+  $modal-width: 480px;
   .modal-dialog {
-    margin-top: 50px;
+    max-width: $modal-width;
+  }
+  .modal-content {
+    width: $modal-width !important;
+    max-width: unset;
   }
 }
 
-.modal.review, .modal.sold, .modal.upload {
-  .modal-dialog, .modal-content {
-    max-width: 600px;
-  }
+.modal.review, .modal.sold, .modal.profile, .modal.upload {
+  $modal-width: 600px;
   .modal-dialog {
-    margin-top: 50px;
+    max-width: $modal-width;
   }
   .modal-content {
     border-radius: $border-radius;
+    width: $modal-width !important;
+    max-width: unset;
   }
 }
 
 .modal.credit-card {
-  .modal-dialog, .modal-content {
-    max-width: 370px;
-  }
+  $modal-width: 370px;
   .modal-dialog {
-    margin-top: 50px;
+    max-width: $modal-width;
+  }
+  .modal-content {
+    width: $modal-width !important;
+    max-width: unset;
   }
 }
 
 .modal.bump-confirm {
-  .modal-dialog, .modal-content {
-    max-width: 448px;
-  }
+  $modal-width: 448px;
   .modal-dialog {
-    margin-top: 50px;
+    max-width: $modal-width;
+  }
+  .modal-content {
+   width: $modal-width !important;
+    max-width: unset;
+  }
+}
+
+.modal.preview, .modal.location  {
+  $modal-width: 700px;
+  .modal-dialog {
+    max-width: $modal-width;
+  }
+  .modal-content {
+    width: $modal-width !important;
+    max-width: unset;
+  }
+}
+
+.modal.account-details {
+  $modal-width: 460px;
+  .modal-dialog {
+    max-width: $modal-width;
+  }
+  .modal-content {
+    width: $modal-width !important;
+    max-width: unset;
+  }
+}
+
+.modal.unsubscribe {
+  $modal-width: 630px;
+  .modal-dialog {
+    max-width: $modal-width;
+  }
+  .modal-content {
+    border-radius: 20px;
+    width: $modal-width !important;
+    max-width: unset;
   }
 }

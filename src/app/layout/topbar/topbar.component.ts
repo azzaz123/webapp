@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { User, WindowRef } from 'shield';
 import { UserService } from '../../core/user/user.service';
 import { environment } from '../../../environments/environment';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { CategoryResponse } from '../../core/category/category-response.interface';
 import { SuggesterResponse } from '../../core/suggester/suggester-response.interface';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UploadModalComponent } from './upload-modal/upload-modal.component';
 
 @Component({
   selector: 'tsl-topbar',
@@ -24,14 +22,12 @@ export class TopbarComponent implements OnInit {
   public homeUrl: string;
   public model: any;
   public userUrl: string;
+  @Input() isMyZone: boolean;
   @ViewChild('categoryEl') categoryEl: ElementRef;
-  @ViewChild('latEl') latEl: ElementRef;
-  @ViewChild('lngEl') lngEl: ElementRef;
   @ViewChild('kwsEl') kwsEl: ElementRef;
 
   constructor(public userService: UserService,
               private windowRef: WindowRef,
-              private modalService: NgbModal,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
@@ -45,16 +41,11 @@ export class TopbarComponent implements OnInit {
     });
   }
 
-  logout() {
-    this.userService.logout();
-  }
-
   public submitForm() {
     const categoryId = (this.category) ? this.category : this.categoryEl.nativeElement.value;
     const kws = (this.kws) ? this.kws : '';
     const verticalId = (categoryId === 100) ? categoryId : '';
-    this.windowRef.nativeWindow.location.href = this.homeUrl + 'search?catIds=' + categoryId + '&lat='
-      +  this.latEl.nativeElement.value + '&lng=' + this.lngEl.nativeElement.value + '&kws=' + kws
+    this.windowRef.nativeWindow.location.href = this.homeUrl + 'search?catIds=' + categoryId + '&kws=' + kws
       + '&verticalId=' + verticalId;
   }
 
@@ -80,11 +71,6 @@ export class TopbarComponent implements OnInit {
 
   public onKeywordUpdate(newKeyword: string) {
     this.kws = newKeyword;
-  }
-
-  public upload() {
-    this.modalService.open(UploadModalComponent, {windowClass: 'upload'});
-    ga('send', 'event', 'upload', 'click');
   }
 
 }

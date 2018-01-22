@@ -3,14 +3,12 @@ import {
   createItemsArray,
   ErrorsService,
   FINANCIAL_CARD,
-  I18nService,
   Item,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
   MockTrackingService,
   PaymentService,
-  TrackingService
 } from 'shield';
 
 import { ListComponent } from './list.component';
@@ -18,7 +16,7 @@ import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
-import { ConfirmationModalComponent } from './modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -28,6 +26,9 @@ import { ORDER } from '../../../tests/item.fixtures';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
+import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -64,6 +65,8 @@ describe('ListComponent', () => {
           bulkReserve() {
           },
           purchaseProducts() {
+          },
+          selectItem() {
           }
         }
         },
@@ -80,6 +83,8 @@ describe('ListComponent', () => {
         {
           provide: ToastrService, useValue: {
           error() {
+          },
+          success() {
           }
         }
         },
@@ -132,12 +137,8 @@ describe('ListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('ngOnInit', () => {
-    it('should open modal', fakeAsync(() => {
+    it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');
       component.ngOnInit();
       tick();
@@ -155,6 +156,28 @@ describe('ListComponent', () => {
       expect(component['init']).toBe(0);
       expect(component.end).toBeFalsy();
       expect(component['getItems']).toHaveBeenCalledTimes(2);
+    }));
+    it('should open upload confirmation modal', fakeAsync(() => {
+      spyOn(itemService, 'selectItem');
+      route.params = Observable.of({
+        created: true
+      });
+      component.ngOnInit();
+      tick();
+      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, {windowClass: 'upload'});
+      expect(itemService.selectedAction).toBe('feature');
+      expect(itemService.selectItem).toHaveBeenCalledWith(component.items[0].id);
+      expect(component.items[0].selected).toBeTruthy();
+    }));
+
+    it('should open toastr', fakeAsync(() => {
+      spyOn(toastr, 'success');
+      route.params = Observable.of({
+        updated: true
+      });
+      component.ngOnInit();
+      tick();
+      expect(toastr.success).toHaveBeenCalledWith('The item has been updated correctly');
     }));
   });
 
@@ -185,6 +208,13 @@ describe('ListComponent', () => {
       itemerviceSpy.and.returnValue(Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: null}));
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
+    });
+    it('should set item to upload modal', () => {
+      component['uploadModalRef'] = <any>{
+        componentInstance: componentInstance
+      };
+      component.ngOnInit();
+      expect(component['uploadModalRef'].componentInstance.item).toEqual(component.items[0]);
     });
   });
 
@@ -461,7 +491,11 @@ describe('ListComponent', () => {
     });
     describe('error', () => {
       beforeEach(() => {
-        spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.throw(''));
+        spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.throw({
+          text() {
+            return '';
+          }
+        }));
         spyOn(component, 'deselect');
         component.feature({
           order: [ORDER],

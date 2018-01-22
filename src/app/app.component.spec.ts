@@ -13,7 +13,6 @@ import {
   MockTrackingService,
   NotificationService,
   TEST_HTTP_PROVIDERS,
-  TrackingService,
   USER_DATA,
   USER_ID,
   UserService,
@@ -33,6 +32,9 @@ import 'rxjs/add/observable/throw';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import createSpy = jasmine.createSpy;
+import { CookieService } from 'ngx-cookie';
+import { UUID } from 'angular2-uuid';
+import { TrackingService } from './core/tracking/tracking.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -46,6 +48,7 @@ let titleService: Title;
 let trackingService: TrackingService;
 let window: any;
 let conversationService: ConversationService;
+let cookieService: CookieService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
@@ -141,6 +144,16 @@ describe('App', () => {
           })
         }
         },
+        {
+          provide: CookieService, useValue: {
+          value: null,
+            put() {
+            },
+            get () {
+              return this.value;
+            }
+          }
+        },
         ...
           TEST_HTTP_PROVIDERS
       ],
@@ -159,6 +172,7 @@ describe('App', () => {
     trackingService = TestBed.get(TrackingService);
     window = TestBed.get(WindowRef).nativeWindow;
     conversationService = TestBed.get(ConversationService);
+    cookieService = TestBed.get(CookieService);
     spyOn(notificationService, 'init');
   });
 
@@ -166,6 +180,23 @@ describe('App', () => {
     let app: AppComponent = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
+
+  describe('set cookie', () => {
+    it('should create a cookie', () => {
+      spyOn(UUID, 'UUID').and.returnValue('1-2-3');
+      spyOn(cookieService, 'put');
+      jasmine.clock().install();
+      const currentDate = new Date();
+      const expirationDate = new Date(currentDate.getTime() + ( 900000 ));
+      jasmine.clock().mockDate(currentDate);
+      const cookieOptions = {path: '/', expires: expirationDate};
+
+      component.updateSessionCookie();
+
+      expect(cookieService.put).toHaveBeenCalledWith('app_session_id', UUID.UUID() , cookieOptions);
+      jasmine.clock().uninstall();
+    });
+  });
 
   describe('subscribeEvents', () => {
 
@@ -182,29 +213,62 @@ describe('App', () => {
 
       it('should call the eventService.subscribe passing the login event', () => {
         spyOn(eventService, 'subscribe').and.callThrough();
+        
         component.ngOnInit();
+        
         expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.USER_LOGIN);
       });
 
       it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
         spyOn(xmppService, 'connect').and.callThrough();
+        
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        
         expect(xmppService.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
 
       it('should call conversationService.init', () => {
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        
         expect(conversationService.init).toHaveBeenCalledTimes(1);
       });
 
-      it('should track the MyProfileLoggedIn event', () => {
+      it('should send open_app event if cookie does not exist', () => {
         spyOn(trackingService, 'track');
+        spyOn(cookieService, 'get').and.returnValue(null);
+
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MY_PROFILE_LOGGED_IN, {user_id: USER_DATA.id});
+
+        expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.APP_OPEN,
+          { referer_url: component.previousUrl, current_url: component.currentUrl });
       });
+
+      it('should call update session cookie if cookie does not exist', () => {
+        spyOn(component, 'updateSessionCookie');
+        spyOn(cookieService, 'get').and.returnValue(null);
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
+        expect(component.updateSessionCookie).toHaveBeenCalled();
+      });
+
+      it('should not call update session cookie if cookie exists', () => {
+        spyOn(component, 'updateSessionCookie');
+        spyOn(cookieService, 'get').and.returnValue('1-2-3');
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
+        expect(component.updateSessionCookie).not.toHaveBeenCalled();
+      });
+
     });
 
     it('should logout the user and show the error if token is expired', fakeAsync(() => {
@@ -216,21 +280,26 @@ describe('App', () => {
       spyOn(userService, 'logout');
       spyOn(errorsService, 'show');
       spyOn(userService, 'me').and.returnValue(Observable.throw(ERROR));
+      
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+      
       expect(userService.logout).toHaveBeenCalled();
       expect(errorsService.show).toHaveBeenCalled();
     }));
 
     it('should init notifications', () => {
       component.ngOnInit();
+      
       expect(notificationService.init).toHaveBeenCalled();
     });
 
     it('should call disconnect on logout', () => {
       spyOn(xmppService, 'disconnect');
+      
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
+      
       expect(xmppService.disconnect).toHaveBeenCalled();
     });
   });
@@ -238,10 +307,11 @@ describe('App', () => {
   describe('config event tracking', () => {
 
     beforeEach(() => {
-      component.ngOnInit();
       spyOn(trackingService, 'track');
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
+
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MY_PROFILE_LOGGED_OUT);
     });
   });
@@ -259,12 +329,14 @@ describe('App', () => {
       it('should update the title with unread messages when > 0', () => {
         component.ngOnInit();
         messageService.totalUnreadMessages$.next(100);
+
         expect(titleService.setTitle).toHaveBeenCalledWith('(100) Chat');
       });
 
       it('should update the title just with the title when unread messages are 0', () => {
         component.ngOnInit();
         messageService.totalUnreadMessages$.next(0);
+
         expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
       });
     });
@@ -276,12 +348,14 @@ describe('App', () => {
       it('should update the title with unread messages when > 0', () => {
         component.ngOnInit();
         messageService.totalUnreadMessages$.next(100);
+
         expect(titleService.setTitle).toHaveBeenCalledWith('(100) Chat');
       });
 
       it('should update the title just with the title when unread messages are 0', () => {
         component.ngOnInit();
         messageService.totalUnreadMessages$.next(0);
+
         expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
       });
     });
@@ -292,10 +366,12 @@ describe('App', () => {
     it('should set title', () => {
       spyOn(titleService, 'setTitle');
       component['setTitle']();
+
       expect(titleService.setTitle).toHaveBeenCalledWith('Chat');
     });
     it('should set hideSidebar true', () => {
       component['setTitle']();
+
       expect(component.hideSidebar).toBeTruthy();
     })
   });

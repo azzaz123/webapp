@@ -1,0 +1,19 @@
+<div class="page-content"
+  infinite-scroll
+  [infiniteScrollDistance]="3"
+  [infiniteScrollThrottle]="100"
+  [scrollWindow]="false"
+  [infiniteScrollDisabled]="end || loading"
+  (scrolled)="loadMore()">
+  <div class="container">
+    <masonry [options]="masonryOptions">
+      <div class="favorites-empty-state" *ngIf="!items.length && !loading">
+        <md-icon svgIcon="favorites-empty-state" class="image"></md-icon>
+        <div class="message" i18n>In this list you can see all the products you saved as favourite</div>
+      </div>
+      <masonry-brick class="brick" *ngFor="let item of items">
+        <tsl-item-cart-favorite [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-cart-favorite>
+      </masonry-brick>
+    </masonry>
+  </div>
+</div>

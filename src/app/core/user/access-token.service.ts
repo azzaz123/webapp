@@ -12,29 +12,32 @@ export class AccessTokenService implements IAccessTokenService {
   }
 
   public storeAccessToken(accessToken: string): void {
-    this.cookieService.put('accessToken', accessToken);
+    const cookieName = this.getCookieName();
+    let cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+    this.cookieService.put(cookieName, accessToken, cookieOptions);
     this._accessToken = accessToken;
   }
 
   public deleteAccessToken() {
-    if (environment.name !== 'local') {
-      this.cookieService.remove('accessToken', {domain: '.wallapop.com'});
-      this.cookieService.remove('subdomain', {domain: '.wallapop.com'});
-    } else {
-      this.cookieService.remove('accessToken');
-      this.cookieService.remove('subdomain');
-    }
+    const cookieName = this.getCookieName();
+    let cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+    this.cookieService.remove(cookieName, cookieOptions);
+    this.cookieService.remove('device' + cookieName.charAt(0).toUpperCase() + cookieName.slice(1), cookieOptions);
+    this.cookieService.remove('subdomain');
     this._accessToken = null;
   }
 
   get accessToken(): string {
     if (!this._accessToken) {
-      const accessToken: string = this.cookieService.get('accessToken');
-      if (accessToken) {
-        this._accessToken = accessToken;
-      }
+      const cookieName = this.getCookieName();
+      this._accessToken = this.cookieService.get(cookieName);
     }
     return this._accessToken;
+  }
+
+  private getCookieName() {
+    const cookieName = 'accessToken';
+    return environment.production ? cookieName : cookieName + environment.cookieSuffix;
   }
 
 }

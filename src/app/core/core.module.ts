@@ -5,10 +5,13 @@ import { CookieModule } from 'ngx-cookie';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
-import { TrackingModule } from 'shield';
 import { ItemService } from './item/item.service';
 import { ConversationService } from './conversation/conversation.service';
 import { EventService } from './event/event.service';
+import { TrackingService } from './tracking/tracking.service';
+import { TrackingModule } from './tracking/tracking.module';
+import { I18nService } from './i18n/i18n.service';
+import { ErrorsService } from './errors/errors.service';
 
 @NgModule({
   imports: [
@@ -24,8 +27,7 @@ import { EventService } from './event/event.service';
     UserModule,
     ItemModule,
     TrackingModule
-  ],
-  declarations: []
+  ]
 })
 export class CoreModule {
 
@@ -38,7 +40,10 @@ export class CoreModule {
         ItemService,
         UserService,
         ConversationService,
-        EventService
+        EventService,
+        TrackingService,
+        I18nService,
+        ErrorsService
       ]
     };
   }
