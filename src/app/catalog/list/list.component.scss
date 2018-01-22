@@ -6,6 +6,24 @@ $height: 40px;
 .items {
   margin-top: $spacing;
   margin-bottom: 120px;
+  .add-item {
+    width: 100%;
+    svg {
+      width: 100%;
+    }
+    &:hover {
+      svg {
+        .dashed-border {
+          stroke: #0f9989;
+          transition: all .2s ease;
+        }
+        .pic, .button, text {
+          fill: #0f9989;
+          transition: all .2s ease;
+        }
+      }
+    }
+  }
 }
 
 tsl-spinner {
