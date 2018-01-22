@@ -75,7 +75,7 @@
   </div>
   <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
     <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos</h2>
-    <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)" formControlName="images" [images]="item?.images"></tsl-drop-area>
+    <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)" formControlName="images" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <md-icon svgIcon="cm-drag"></md-icon>
       <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 10MB.</div>
@@ -119,7 +119,7 @@
     </div>
   </div>
   <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
-  <button type="submit" class="btn btn-primary" [disabled]="loading" tslTrackEvent="UPLOADFORM_UPLOADFROMFORM">
+  <button type="submit" class="btn btn-primary" [disabled]="loading">
     <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
     <span [hidden]="loading" *ngIf="!item" i18n>Post Ad</span>
     <span [hidden]="loading" *ngIf="item" i18n>Update</span>

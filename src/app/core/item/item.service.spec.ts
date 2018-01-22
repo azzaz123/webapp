@@ -9,7 +9,9 @@ import {
   Item,
   ITEM_BASE_PATH,
   ITEMS_BULK_UPDATED_IDS,
-  ITEMS_BULK_RESPONSE
+  ITEMS_BULK_RESPONSE,
+  MOCK_ITEM,
+  ITEM_DATA
 } from 'shield';
 
 import { ItemService } from './item.service';
@@ -22,6 +24,9 @@ import { ResponseOptions, Response, Headers } from '@angular/http';
 import { ConversationUser, ItemsData, Product } from './item-response.interface';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from '../tracking/tracking.service';
+import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures';
+import { CAR_DATA, CAR_DATA_FORM, MOCK_CAR } from '../../../tests/car.fixtures';
+import { Car } from './car';
 
 describe('ItemService', () => {
 
@@ -87,20 +92,7 @@ describe('ItemService', () => {
     it('should map item data', () => {
       const item: Item = service['mapRecordData'](ITEM_DATA_V3);
 
-      expect(item instanceof Item).toBeTruthy();
-      expect(item.id).toBe(ITEM_DATA_V3.id);
-      expect(item.title).toBe(ITEM_DATA_V3.content.title);
-      expect(item.description).toBe(ITEM_DATA_V3.content.description);
-      expect(item.categoryId).toBe(ITEM_DATA_V3.content.category_id);
-      expect(item.salePrice).toBe(ITEM_DATA_V3.content.sale_price);
-      expect(item.currencyCode).toBe(ITEM_DATA_V3.content.currency_code);
-      expect(item.modifiedDate).toBe(ITEM_DATA_V3.content.modified_date);
-      expect(item.url).toBe(ITEM_DATA_V3.content.url);
-      expect(item.flags).toEqual(ITEM_DATA_V3.content.flags);
-      expect(item.saleConditions).toEqual(ITEM_DATA_V3.content.sale_conditions);
-      expect(item.mainImage).toEqual(ITEM_DATA_V3.content.images[0]);
-      expect(item.images).toEqual(ITEM_DATA_V3.content.images);
-      expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEM_DATA_V3.content.web_slug);
+      checkItemResponse(item);
     });
 
     it('should map item data with price equal 0', () => {
@@ -115,6 +107,12 @@ describe('ItemService', () => {
 
       expect(item instanceof Item).toBeTruthy();
       expect(item.salePrice).toBe(0);
+    });
+
+    it('should map car data', () => {
+      const car: Car = <Car>service['mapRecordData'](CAR_DATA);
+
+      expect(car).toEqual(MOCK_CAR);
     });
   });
 
@@ -338,4 +336,89 @@ describe('ItemService', () => {
     });
   });
 
+  describe('update', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
+      spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
+      let item: any;
+
+      service.update(ITEM_DATA).subscribe((r: any) => {
+        item = r;
+      });
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID, ITEM_DATA);
+      expect(item).toEqual(ITEM_DATA_V3);
+    });
+
+    it('should call CAR endpoint if category is 100 and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_DATA)});
+      spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
+      let item: any;
+
+      service.update(CAR_DATA_FORM).subscribe((r: any) => {
+        item = r;
+      });
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/cars/' + CAR_ID, CAR_DATA_FORM);
+      expect(item).toEqual(CAR_DATA);
+    });
+  });
+
+  describe('deletePicture', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'delete').and.returnValue(Observable.of({}));
+
+      service.deletePicture(ITEM_ID, UPLOAD_FILE_ID);
+
+      expect(http.delete).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/picture/' + UPLOAD_FILE_ID);
+    });
+  });
+
+  describe('get', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let item: Item;
+
+      service.get(ITEM_ID).subscribe((r: Item) => {
+        item = r;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID);
+      checkItemResponse(item);
+    });
+  });
+
+  describe('updatePicturesOrder', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      const picturesOrder = {
+        [UPLOAD_FILE_ID]: 0
+      };
+
+      service.updatePicturesOrder(ITEM_ID, picturesOrder);
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/change-picture-order', {
+        pictures_order: picturesOrder
+      });
+    });
+  });
+
 });
+
+function checkItemResponse(item: Item) {
+  expect(item instanceof Item).toBeTruthy();
+  expect(item.id).toBe(ITEM_DATA_V3.id);
+  expect(item.title).toBe(ITEM_DATA_V3.content.title);
+  expect(item.description).toBe(ITEM_DATA_V3.content.description);
+  expect(item.categoryId).toBe(ITEM_DATA_V3.content.category_id);
+  expect(item.salePrice).toBe(ITEM_DATA_V3.content.sale_price);
+  expect(item.currencyCode).toBe(ITEM_DATA_V3.content.currency_code);
+  expect(item.modifiedDate).toBe(ITEM_DATA_V3.content.modified_date);
+  expect(item.url).toBe(ITEM_DATA_V3.content.url);
+  expect(item.flags).toEqual(ITEM_DATA_V3.content.flags);
+  expect(item.saleConditions).toEqual(ITEM_DATA_V3.content.sale_conditions);
+  expect(item.mainImage).toEqual(ITEM_DATA_V3.content.images[0]);
+  expect(item.images).toEqual(ITEM_DATA_V3.content.images);
+  expect(item.webLink).toEqual(ITEM_BASE_PATH + ITEM_DATA_V3.content.web_slug);
+}

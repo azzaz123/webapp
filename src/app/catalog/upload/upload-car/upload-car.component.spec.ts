@@ -6,9 +6,12 @@ import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
 import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from './car-keys.service';
-import { ErrorsService, TEST_HTTP_PROVIDERS, User, USER_ID, MockTrackingService } from 'shield';
+import { ErrorsService, TEST_HTTP_PROVIDERS, User, USER_ID, MockTrackingService, IMAGE } from 'shield';
 import { Router } from '@angular/router';
-import { CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS } from '../../../../tests/car.fixtures';
+import {
+  CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS,
+  MOCK_CAR
+} from '../../../../tests/car.fixtures';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures';
@@ -110,6 +113,61 @@ describe('UploadCarComponent', () => {
       component.ngOnInit();
       expect(component['getBrands']).toHaveBeenCalled();
       expect(component['getCarTypes']).toHaveBeenCalled();
+    });
+
+    describe('edit mode', () => {
+
+      it('should set form value', () => {
+        spyOn<any>(component, 'getModels').and.callThrough();
+        spyOn<any>(component, 'getYears').and.callThrough();
+        spyOn<any>(component, 'getVersions').and.callThrough();
+        component.item = MOCK_CAR;
+
+        component.ngOnInit();
+
+        expect(component.uploadForm.value).toEqual({
+          id: MOCK_CAR.id,
+          title: MOCK_CAR.title,
+          sale_price: MOCK_CAR.salePrice,
+          currency_code: MOCK_CAR.currencyCode,
+          storytelling: MOCK_CAR.description,
+          sale_conditions: MOCK_CAR.saleConditions,
+          category_id: MOCK_CAR.categoryId.toString(),
+          num_seats: MOCK_CAR.numSeats,
+          body_type: MOCK_CAR.bodyType,
+          km: MOCK_CAR.km,
+          engine: MOCK_CAR.engine,
+          gearbox: MOCK_CAR.gearbox,
+          brand: MOCK_CAR.brand,
+          model: MOCK_CAR.model,
+          year: MOCK_CAR.year.toString(),
+          version: MOCK_CAR.version,
+          images: [],
+          location: {
+            address: '',
+            latitude: '',
+            longitude: ''
+          }
+        });
+        expect(component['getModels']).toHaveBeenCalledWith(MOCK_CAR.brand, true);
+        expect(component['getYears']).toHaveBeenCalledWith(MOCK_CAR.model, true);
+        expect(component['getVersions']).toHaveBeenCalledWith(MOCK_CAR.year.toString(), true);
+      });
+
+      it('should emit changed event if form values changes', () => {
+        let formChanged: boolean;
+        component.item = MOCK_CAR;
+        component.onFormChanged.subscribe((value: boolean) => {
+          formChanged = value;
+        });
+        component.ngOnInit();
+        component.uploadForm.get('images').patchValue([IMAGE]);
+
+        component.uploadForm.get('title').patchValue('new title');
+        fixture.detectChanges();
+
+        expect(formChanged).toBeTruthy();
+      });
     });
   });
 
@@ -249,8 +307,8 @@ describe('UploadCarComponent', () => {
   describe('onUploaded', () => {
     it('should redirect', () => {
       spyOn(router, 'navigate');
-      component.onUploaded('1234');
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {created: true}]);
+      component.onUploaded('updated');
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {updated: true}]);
     });
   });
 

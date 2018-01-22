@@ -32,6 +32,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @Input() categoryId: string;
   @Input() item: Item;
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
+  @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
@@ -68,6 +69,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
+  private oldFormValue: any;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -122,7 +124,23 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         category_id: this.item.categoryId.toString(),
         delivery_info: this.getDeliveryInfo()
       });
+      this.detectFormChanges();
     }
+  }
+
+  private detectFormChanges() {
+    this.uploadForm.valueChanges.subscribe((value) => {
+      const oldItemData = _.omit(this.oldFormValue, ['images', 'location']);
+      const newItemData = _.omit(value, ['images', 'location']);
+      if (!this.oldFormValue) {
+        this.oldFormValue = value;
+      } else {
+        if (!_.isEqual(oldItemData, newItemData)) {
+          this.onFormChanged.emit(true);
+        }
+        this.oldFormValue = value;
+      }
+    });
   }
 
   private getDeliveryInfo(): DeliveryInfo {
@@ -151,13 +169,18 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
           this.fixedCategory = null;
           this.uploadForm.get('category_id').patchValue('');
         }
+      } else {
+        if (this.categoryService.isHeroCategory(this.item.categoryId)) {
+          const fixedCategory = _.find(categories, {value: this.item.categoryId.toString()});
+          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+        }
       }
     });
   }
 
   ngAfterViewChecked() {
     setTimeout(() => {
-      if (this.titleField && !this.focused) {
+      if (!this.item && this.titleField && !this.focused) {
         this.titleField.nativeElement.focus();
         this.focused = true;
       }
@@ -168,7 +191,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     if (this.uploadForm.valid) {
       this.loading = true;
       this.uploadEvent.emit({
-        type: 'create',
+        type: this.item ? 'update' : 'create',
         values: this.uploadForm.value
       });
     } else {
@@ -189,13 +212,23 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     }
   }
 
-  onUploaded(itemId: string) {
-    this.router.navigate(['/catalog/list', {created: true}]);
+  onUploaded(action: string) {
+    this.onFormChanged.emit(false);
+    if (this.item) {
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
+    } else {
+      this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
+    }
+    this.router.navigate(['/catalog/list', {[action]: true}]);
   }
 
   onError(response: any) {
     this.loading = false;
-    this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
+    if (this.item) {
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {category: this.uploadForm.value.category_id});
+    } else {
+      this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
+    }
   }
 
   preview() {

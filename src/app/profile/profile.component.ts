@@ -5,6 +5,8 @@ import { User, ErrorsService, HttpService } from 'shield';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { UploadOutput, UploadFile, UploadInput, NgUploaderOptions } from 'ngx-uploader';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 
 @Component({
   selector: 'tsl-profile',
@@ -24,6 +26,7 @@ export class ProfileComponent implements OnInit {
               private fb: FormBuilder,
               private errorsService: ErrorsService,
               private http: HttpService,
+              private modalService: NgbModal,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
@@ -96,6 +99,10 @@ export class ProfileComponent implements OnInit {
         this.errorsService.i18nError(output.reason, output.file.name);
         break;
     }
+  }
+
+  public openUnsubscribeModal() {
+    this.modalService.open(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
   }
 
   private uploadPicture() {

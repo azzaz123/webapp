@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from 'shield';
-import { TrackingService } from "../../../../core/tracking/tracking.service";
+import { TrackingService } from '../../../../core/tracking/tracking.service';
 
 @Component({
   selector:    'tsl-bump-confirmation-modal',

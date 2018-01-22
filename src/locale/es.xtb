@@ -158,6 +158,10 @@
   <translation id="3535134560822959404">Subir coche</translation>
   <translation id="3088723279740360142">Submit Ad</translation>
   <translation id="4138346261331244869">¿Cómo quedará?</translation>
+  <translation id="4918814479561513634">¿Estas seguro que quieres abandonar esta página?</translation>
+  <translation id="6618892692857491514">Hay información que no has guardado. Si te vas sin guardar perderás los cambios que has hecho. </translation>
+  <translation id="3542042671420335679">No</translation>
+  <translation id="4510233521290203619">Sí, me voy</translation>
   <translation id="8260444303636416171">Hago envíos</translation>
   <translation id="3322682308330601072">¿Qué estás vendiendo?</translation>
   <translation id="368364095324628291">En dos palabras...</translation>
@@ -198,6 +202,8 @@
   <translation id="578471405917460767">Destácalo</translation>
   <translation id="3448462145758383019">Total</translation>
   <translation id="8743988303207163578">Destacar ya</translation>
+  <translation id="6261406176927621365">Borrar foto</translation>
+  <translation id="4267028037176582017">Se borrará permanentemente la foto. ¿Estás seguro que quieres proceder?</translation>
   <translation id="5112037422043971210">Deja tus fotos aquí para subirlas</translation>
   <translation id="1417432796546296307">Ya has llegado al límite de <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> fotos por producto.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Elimina una foto primero antes de añadir otra.</translation>
   <translation id="6145572175629887249">Foto principal</translation>
@@ -208,6 +214,13 @@
   <translation id="6822624572232933913">Mis servicios</translation>
   <translation id="4895100071976641944">Una vivienda</translation>
   <translation id="8222521338018520589">Es importante que marques bien el tipo de producto o servicio para que lo encuentren el resto de wallapopers.</translation>
+  <translation id="2921056091899795948">¿Seguro que quieres darte de baja?</translation>
+  <translation id="6787712303097193375">Nunca es tarde para cambiar de opinión, ¿eh? Piensa que el equipo estará muy triste si te vas :(</translation>
+  <translation id="859827593140377121">Sí, quiero darme de baja</translation>
+  <translation id="3339283489391878454">No, va, quiero seguir con vosotros</translation>
+  <translation id="6908290931448223055">¿Podrías decirnos el motivo por el que quieres darte de baja? Descuida, no se lo diremos a nadie.</translation>
+  <translation id="7818739675790737204">Cuéntanos, que te ha ocurrido...</translation>
+  <translation id="6490688569532630280">Enviar</translation>
   <translation id="3768927257183755959">Guardar</translation>
   <translation id="9032739290449539063">Tus datos</translation>
   <translation id="7022993325750262876">Ver mi perfil público</translation>
@@ -223,6 +236,7 @@
   <translation id="8134597337896146328">Ubicación de tus productos:</translation>
   <translation id="6631334172623029500">Email:</translation>
   <translation id="6865009229971482891">Contraseña:</translation>
+  <translation id="2322688793988378029">Quiero darme de baja</translation>
   <translation id="4284869171317534738">¿Nuevo email?</translation>
   <translation id="4200745758819613954">Aquí puedes actualizarlo</translation>
   <translation id="6357315990612654699">Email actual</translation>
@@ -246,4 +260,5 @@
   <translation id="9029286143304711365">Opiniones</translation>
   <translation id="5327426729320041573">Nadie ha opinado sobre ti por que todavía no has comprado ni vendido nada ¡Espabila!</translation>
   <translation id="6707361102856436710">Productos</translation>
+  <translation id="2027740642468122404">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
 </translationbundle>

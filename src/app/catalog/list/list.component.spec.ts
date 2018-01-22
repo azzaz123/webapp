@@ -3,7 +3,6 @@ import {
   createItemsArray,
   ErrorsService,
   FINANCIAL_CARD,
-  I18nService,
   Item,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
@@ -29,6 +28,7 @@ import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card
 import { Subject } from 'rxjs/Subject';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -83,6 +83,8 @@ describe('ListComponent', () => {
         {
           provide: ToastrService, useValue: {
           error() {
+          },
+          success() {
           }
         }
         },
@@ -135,10 +137,6 @@ describe('ListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('ngOnInit', () => {
     it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');
@@ -170,6 +168,16 @@ describe('ListComponent', () => {
       expect(itemService.selectedAction).toBe('feature');
       expect(itemService.selectItem).toHaveBeenCalledWith(component.items[0].id);
       expect(component.items[0].selected).toBeTruthy();
+    }));
+
+    it('should open toastr', fakeAsync(() => {
+      spyOn(toastr, 'success');
+      route.params = Observable.of({
+        updated: true
+      });
+      component.ngOnInit();
+      tick();
+      expect(toastr.success).toHaveBeenCalledWith('The item has been updated correctly');
     }));
   });
 
