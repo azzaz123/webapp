@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { DropAreaComponent } from './drop-area.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ErrorsService, ITEM_ID, IMAGE } from 'shield';
+import { ITEM_ID, IMAGE } from 'shield';
 import { UploadService } from './upload.service';
 import {
   CAR_ID,
@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 import { PICTURE_ID } from '../../../../tests/item.fixtures';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;

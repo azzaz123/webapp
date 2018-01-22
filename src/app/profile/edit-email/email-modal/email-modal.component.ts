@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { isPresent } from 'ngx-cookie/src/utils';
 import { UserService } from '../../../core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ErrorsService } from 'shield';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-email-modal',

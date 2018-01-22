@@ -102,7 +102,7 @@
   <translation id="6686102860613242031">Utiliza esta tarjeta:</translation>
   <translation id="2005530248451232459">Añadir nueva tarjeta</translation>
   <translation id="4699023020194351074">Destacar por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</translation>
-  <translation id="868815663264397508">Ya tienes un producto subido a wallapop.</translation>
+  <translation id="868815663264397508">Ya tienes tu producto subido a wallapop.</translation>
   <translation id="8199257104398637162">Promociónalo y véndelo más rápido</translation>
   <translation id="7976214204076569605">Destacar</translation>
   <translation id="2091018015289565203">O compártelo con tus amigos:</translation>
@@ -150,7 +150,7 @@
   <translation id="4908480064602665904">Cuéntanos más. ¿Usado o nuevo? ¿Rojo o amarillo? ¿Tiene algún golpecito?</translation>
   <translation id="6236574297221800719">No te dejes nada. Los detalles son clave para vender más rápido.</translation>
   <translation id="8405309693308875139">Fotos</translation>
-  <translation id="5606765042409911268">Puedes arrastrar las imágenes de tu producto aquí. Selecciona y mueve una imagen para cambiar el orden. Máximo 10MB.</translation>
+  <translation id="7052953914167063593">Puedes arrastrar las imágenes de tu producto aquí. Selecciona y mueve una imagen para cambiar el orden. Máximo 10MB. Sólo aceptamos formatos .jpg.</translation>
   <translation id="4756709840226839708">Extras</translation>
   <translation id="7026441111090698984">Precio no negociable</translation>
   <translation id="1292901362619782619">Acepto intercambios</translation>
@@ -175,6 +175,7 @@
   <translation id="6390066056926289377"><ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>kg Max<ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
   <translation id="5972351850683239127">Envíos</translation>
   <translation id="3007176586514020023">Dínos cuánto pesa tu producto. Recuerda que tienes que contar también con el embalaje.</translation>
+  <translation id="3336512716830718777">Importante para hacer envíos.</translation>
   <translation id="4021752662928002901">Actualizar</translation>
   <translation id="6622336784189066984">Subir producto</translation>
   <translation id="939504866402110526">No tienes productos a la venta</translation>
@@ -225,7 +226,7 @@
   <translation id="9032739290449539063">Tus datos</translation>
   <translation id="7022993325750262876">Ver mi perfil público</translation>
   <translation id="438622500917182822">Cambia tu imagen de perfil</translation>
-  <translation id="742511623287973747">Esta es la imagen con la que la comunidad identificará tu perfil</translation>
+  <translation id="1315384386910114762">Esta es la imagen con la que la comunidad identificará tu perfil. Sólo aceptamos formatos .jpg</translation>
   <translation id="1897498190172236951">Sube una foto de ti</translation>
   <translation id="529882100731018983">Nombre:</translation>
   <translation id="6335971540734973333">Apellidos:</translation>
@@ -256,9 +257,10 @@
   <translation id="4179349933130995178">Compraste:</translation>
   <translation id="6629130724635125976">Por</translation>
   <translation id="4101941266124151376">el</translation>
-  <translation id="4058570269839203992">Un usuario de wallapop</translation>
+  <translation id="5941682960252754908">un usuario de wallapop</translation>
   <translation id="9029286143304711365">Opiniones</translation>
   <translation id="5327426729320041573">Nadie ha opinado sobre ti por que todavía no has comprado ni vendido nada ¡Espabila!</translation>
   <translation id="6707361102856436710">Productos</translation>
   <translation id="2027740642468122404">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
+  <translation id="792930787826735850">Tu perfil</translation>
 </translationbundle>

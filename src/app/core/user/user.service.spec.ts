@@ -17,7 +17,8 @@ import {
   USER_ID,
   USER_LOCATION,
   Location,
-  USER_EMAIL
+  USER_EMAIL,
+  USER_DATA
 } from 'shield';
 import { HaversineService } from 'ng2-haversine';
 import { Response, ResponseOptions } from '@angular/http';
@@ -195,11 +196,18 @@ describe('UserService', () => {
   });
 
   describe('edit', () => {
-    it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: ''});
+    it('should call endpoint, return user and set it', () => {
+      const res: ResponseOptions = new ResponseOptions({body: USER_DATA});
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
-      service.edit(USER_EDIT_DATA).subscribe();
+      spyOn<any>(service, 'mapRecordData').and.returnValue(MOCK_USER);
+      let resp: User;
+
+      service.edit(USER_EDIT_DATA).subscribe((user: User) => {
+        resp = user;
+      });
       expect(http.post).toHaveBeenCalledWith('api/v3/users/me', USER_EDIT_DATA);
+      expect(resp).toEqual(MOCK_USER);
+      expect(service['_user']).toEqual(MOCK_USER);
     });
   });
 

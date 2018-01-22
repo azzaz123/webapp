@@ -40,6 +40,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public scrollTop: number;
   private uploadModalRef: NgbModalRef;
   private active: boolean = true;
+  private firstItemLoad = true;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -94,6 +95,15 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
+  private restoreSelectedItems() {
+    this.itemService.selectedItems.forEach((itemId: string) => {
+      this.itemService.selectedItems$.next({
+        id: itemId,
+        action: 'selected'
+      });
+    });
+  }
+
   ngOnDestroy() {
     this.active = false;
   }
@@ -130,6 +140,12 @@ export class ListComponent implements OnInit, OnDestroy {
       if (this.uploadModalRef) {
         this.uploadModalRef.componentInstance.item = this.items[0];
       }
+      if (this.firstItemLoad) {
+        setTimeout(() => {
+          this.restoreSelectedItems();
+        });
+      }
+      this.firstItemLoad = false;
     });
   }
 

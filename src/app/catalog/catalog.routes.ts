@@ -20,12 +20,17 @@ const routes: Routes = [
         path: 'list',
         component: ListComponent,
         data: {
-          isMyZone: true
+          isMyZone: true,
+          isProducts: true
         }
       },
       {
         path: 'upload',
-        component: UploadComponent
+        component: UploadComponent,
+        data: {
+          isMyZone: true,
+          isProducts: true
+        }
       },
       {
         path: 'edit/:id',
@@ -33,6 +38,10 @@ const routes: Routes = [
         canDeactivate: [ExitConfirmGuard],
         resolve: {
           item: ItemResolverService
+        },
+        data: {
+          isMyZone: true,
+          isProducts: true
         }
       }
     ]

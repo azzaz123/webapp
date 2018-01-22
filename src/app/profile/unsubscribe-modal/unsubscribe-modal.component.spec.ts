@@ -8,6 +8,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CUSTOM_REASON, REASONS, SELECTED_REASON } from '../../../tests/user.fixtures';
 import { AccessTokenService } from 'shield';
 import { EventService } from '../../core/event/event.service';
+import { environment } from '../../../environments/environment';
 
 describe('UnsubscribeModalComponent', () => {
   let component: UnsubscribeModalComponent;
@@ -91,7 +92,7 @@ describe('UnsubscribeModalComponent', () => {
       expect(userService.unsubscribe).toHaveBeenCalledWith(SELECTED_REASON, CUSTOM_REASON);
       expect(activeModal.close).toHaveBeenCalled();
       expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
-      expect(event.emit).toHaveBeenCalledWith(EventService.USER_LOGOUT);
+      expect(event.emit).toHaveBeenCalledWith(EventService.USER_LOGOUT, environment.siteUrl);
     });
   });
 });

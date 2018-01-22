@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { environment } from '../../environments/environment';
-import { User, ErrorsService, HttpService } from 'shield';
+import { User, HttpService } from 'shield';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { UploadOutput, UploadFile, UploadInput, NgUploaderOptions } from 'ngx-uploader';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
+import { ErrorsService } from '../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-profile',
@@ -45,7 +46,7 @@ export class ProfileComponent implements OnInit {
     this.options = {
       allowedExtensions: ['jpg', 'jpeg'],
       maxUploads: 1,
-      maxSize: 10485760 // 10 MB
+      maxSize: 3145728 // 3 MB
     };
     this.userService.me().subscribe((user) => {
       this.user = user;
@@ -97,6 +98,7 @@ export class ProfileComponent implements OnInit {
         break;
       case 'rejected':
         this.errorsService.i18nError(output.reason, output.file.name);
+        this.file = null;
         break;
     }
   }
@@ -122,7 +124,7 @@ export class ProfileComponent implements OnInit {
     if (output.file.progress.data.responseStatus === 204) {
       this.userService.user.image.urls_by_size.medium = output.file.preview;
     } else {
-      this.errorsService.i18nError('serverError');
+      this.errorsService.i18nError('serverError', output.file.response.message ? output.file.response.message : '');
     }
   }
 
@@ -131,6 +133,7 @@ export class ProfileComponent implements OnInit {
       type: 'remove',
       id: output.file.id
     });
+    this.file = null;
   }
 
 }

@@ -1,13 +1,14 @@
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { NgUploaderOptions, UploadFile, UploadOutput, UploadStatus } from 'ngx-uploader';
 import * as _ from 'lodash';
-import { ErrorsService, Image } from 'shield';
+import { Image } from 'shield';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
 import { ItemService } from '../../../core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-drop-area',
@@ -33,9 +34,12 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   files: UploadFile[] = [];
   placeholders: number[];
   options: NgUploaderOptions;
+  isSafari: boolean;
 
   private setDragOver = _.throttle((dragOver: boolean) => {
-    this.dragOver = dragOver;
+    if (!this.isSafari) {
+      this.dragOver = dragOver;
+    }
   }, 100);
 
   propagateChange = (_: any) => {
@@ -45,6 +49,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
               public uploadService: UploadService,
               private itemService: ItemService,
               private modalService: NgbModal) {
+    this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   }
 
   ngOnInit() {

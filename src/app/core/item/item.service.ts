@@ -70,8 +70,8 @@ export class ItemService extends ItemServiceMaster {
       content.seller_id,
       content.title,
       content.storytelling,
-      content.sale_price,
-      content.currency_code,
+      content.sale_price === undefined ? content.price : content.sale_price,
+      content.currency_code || content.currency,
       content.modified_date,
       content.url,
       content.flags,
@@ -92,7 +92,8 @@ export class ItemService extends ItemServiceMaster {
       content.warranty,
       content.num_seats,
       content.condition,
-      content.version
+      content.version,
+      content.image
     );
   }
 
@@ -173,6 +174,15 @@ export class ItemService extends ItemServiceMaster {
         });
         return itemsData;
       })
+    })
+    .map((itemsData: ItemsData) => {
+      this.selectedItems.forEach((selectedItemId: string) => {
+        const index: number = _.findIndex(itemsData.data, {id: selectedItemId});
+        if (index !== -1) {
+          itemsData.data[index].selected = true;
+        }
+      });
+      return itemsData;
     });
   }
 
@@ -254,7 +264,10 @@ export class ItemService extends ItemServiceMaster {
   public get(id: string): Observable<Item> {
     return this.http.get(this.API_URL_V3 + `/${id}`)
     .map((r: Response) => r.json())
-    .map((r: any) => this.mapRecordData(r));
+    .map((r: any) => this.mapRecordData(r))
+    .catch(() => {
+      return Observable.of(this.getFakeItem(id));
+    });
   }
 
   public updatePicturesOrder(itemId: string, picturesOrder: { [fileId: string]: number }): Observable<any> {

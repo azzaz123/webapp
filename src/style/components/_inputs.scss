@@ -64,6 +64,9 @@ h2.ng-invalid {
 
 ng-select {
   padding: 0 !important;
+  &[aria-describedby] {
+    border-color: $corporate !important;
+  }
   & > div {
     border: 0 !important;
     height: $form-control-height - 3;

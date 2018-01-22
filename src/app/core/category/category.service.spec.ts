@@ -56,7 +56,7 @@ describe('CategoryService', () => {
         response = data;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/categories/keys/consumer_goods', {language: 'es'});
+      expect(http.get).toHaveBeenCalledWith('api/v3/categories/keys/consumer_goods', {language: 'es_ES'});
       expect(response).toEqual(CATEGORIES_OPTIONS);
     });
 

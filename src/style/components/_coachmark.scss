@@ -9,6 +9,7 @@ $coachmark-left-margin: 33px;
   color: $grey-700;
   left: calc((100vw - #{$upload-form-width} + #{$sidebar-width}) / 2 + #{$upload-form-width} - #{$coachmark-left-margin}) !important;
   z-index: 99 !important;
+  font-family: $wallie;
   &.popover-right {
     margin-left: 40px;
   }
