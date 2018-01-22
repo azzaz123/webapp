@@ -38,6 +38,15 @@
 .actions {
   display: flex;
   align-items: center;
+  &.feature {
+    margin-bottom: $spacing-S;
+    .address {
+      position: absolute;
+      bottom: 0;
+      font-size: $font-size-XS;
+      color: $grey-300;
+    }
+  }
 }
 
 .total-label {
@@ -50,10 +59,11 @@
 }
 
 .total {
-  font-size: $font-size-XL;
+  font-size: $font-size-XXXL;
   text-align: right;
   font-weight: bold;
-  margin-right: $spacing;
+  margin-right: 130px;
+  width: 155px;
 }
 
 .btn {
