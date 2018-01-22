@@ -39,12 +39,12 @@
   display: flex;
   align-items: center;
   &.feature {
-    margin-bottom: $spacing-S;
+    margin: $spacing-XS 0;
     .address {
       position: absolute;
       bottom: 0;
-      font-size: $font-size-XS;
-      color: $grey-300;
+      font-size: $font-size-XXXS;
+      color: $grey-250;
     }
   }
 }
@@ -59,11 +59,11 @@
 }
 
 .total {
-  font-size: $font-size-XXXL;
+  font-size: 38px;
   text-align: right;
   font-weight: bold;
-  margin-right: 130px;
-  width: 155px;
+  margin-right: 80px;
+  width: 125px;
 }
 
 .btn {
