@@ -92,7 +92,8 @@ export class ItemService extends ItemServiceMaster {
       content.warranty,
       content.num_seats,
       content.condition,
-      content.version
+      content.version,
+      content.image
     );
   }
 

@@ -1,4 +1,4 @@
-import { Item, ItemFlags, ItemSaleConditions, Image } from 'shield';
+import { Image, Item, ItemFlags, ItemSaleConditions } from 'shield';
 
 export class Car extends Item {
 
@@ -28,7 +28,8 @@ export class Car extends Item {
               private _warranty?: boolean,
               private _numSeats?: number,
               private _condition?: string,
-              private _version?: string) {
+              private _version?: string,
+              image?: any) {
     super(
       id,
       0,
@@ -44,7 +45,13 @@ export class Car extends Item {
       flags,
       null,
       saleConditions,
-      images ? images[0] : null,
+      {
+        id: '1',
+        original_width: image ? image.original_width : null,
+        original_height: image ? image.original_height : null,
+        average_hex_color: '',
+        urls_by_size: image
+      },
       images,
       webSlug);
   }
