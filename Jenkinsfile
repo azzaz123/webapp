@@ -34,7 +34,7 @@ node {
     }
   }
 
-  if (BRANCH_NAME == "beta") {
+  if (BRANCH_NAME == "develop") {
     stage('Deploy Beta') {
       docker.image('745640521341.dkr.ecr.eu-west-1.amazonaws.com/infra-ci:' + dockerTag).inside {
         sh '/usr/local/bin/entrypoint.sh && \
