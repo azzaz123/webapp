@@ -1,5 +1,8 @@
 :host {
-  > div {
-    margin: 0 auto;
+  .tsl-ad {
+    text-align: center;
+    > div {
+      display: inline-block;
+    }
   }
 }
