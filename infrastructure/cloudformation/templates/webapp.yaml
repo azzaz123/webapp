@@ -115,24 +115,24 @@ Resources:
       - Key: Env
         Value: !Ref EnvName
 
-  WebEsRecordSetGroup:
-    Type: AWS::Route53::RecordSetGroup
-    Properties:
-      HostedZoneName: 'wallapop.com.'
-      RecordSets:
-      - AliasTarget:
-          DNSName: !GetAtt WebEsDistribution.DomainName
-          HostedZoneId: Z2FDTNDATAQYW2
-        Name: !Ref HostES
-        Type: A
-
-  WebEnRecordSetGroup:
-    Type: AWS::Route53::RecordSetGroup
-    Properties:
-      HostedZoneName: 'wallapop.com.'
-      RecordSets:
-      - AliasTarget:
-          DNSName: !GetAtt WebEnDistribution.DomainName
-          HostedZoneId: Z2FDTNDATAQYW2
-        Name: !Ref HostEN
-        Type: A
+#  WebEsRecordSetGroup:
+#    Type: AWS::Route53::RecordSetGroup
+#    Properties:
+#      HostedZoneName: 'wallapop.com.'
+#      RecordSets:
+#      - AliasTarget:
+#          DNSName: !GetAtt WebEsDistribution.DomainName
+#          HostedZoneId: Z2FDTNDATAQYW2
+#        Name: !Ref HostES
+#        Type: A
+#
+#  WebEnRecordSetGroup:
+#    Type: AWS::Route53::RecordSetGroup
+#    Properties:
+#      HostedZoneName: 'wallapop.com.'
+#      RecordSets:
+#      - AliasTarget:
+#          DNSName: !GetAtt WebEnDistribution.DomainName
+#          HostedZoneId: Z2FDTNDATAQYW2
+#        Name: !Ref HostEN
+#        Type: A
