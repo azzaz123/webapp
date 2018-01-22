@@ -216,7 +216,7 @@
   <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.ts:17</source><source>app/reviews/review-item/review-item.component.ts:24</source>A wallapop item</msg>
   <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.ts:21</source>Bought:</msg>
   <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:30</source>Posted by</msg>
-  <msg id="4058570269839203992"><source>app/reviews/review-item/review-item.component.ts:32</source>A wallapop user</msg>
+  <msg id="4058570269839203992"><source>app/reviews/review-item/review-item.component.ts:32</source>a wallapop user</msg>
   <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:33</source>on</msg>
   <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:4</source>Are you sure you want to close your account?</msg>
   <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:5</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
