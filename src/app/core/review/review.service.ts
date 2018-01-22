@@ -64,6 +64,8 @@ export class ReviewService {
   }
 
   private mapUser(reviewResponse: ReviewResponse): User {
+    if (!reviewResponse.user) { return null; }
+
     return new User(
       reviewResponse.user.id,
       reviewResponse.user.micro_name,
