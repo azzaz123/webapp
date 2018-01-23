@@ -16,6 +16,7 @@ $height: 40px;
     }
     &:hover {
       $hover-color: #0f9989;
+      text-decoration: none;
       svg {
         .dashed-border {
           stroke: $hover-color;
