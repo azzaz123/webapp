@@ -10,16 +10,18 @@ $height: 40px;
     width: 100%;
     svg {
       width: 100%;
+      .dashed-border, .pic, .button, text {
+        transition: all .2s ease;
+      }
     }
     &:hover {
+      $hover-color: #0f9989;
       svg {
         .dashed-border {
-          stroke: #0f9989;
-          transition: all .2s ease;
+          stroke: $hover-color;
         }
         .pic, .button, text {
-          fill: #0f9989;
-          transition: all .2s ease;
+          fill: $hover-color;
         }
       }
     }
