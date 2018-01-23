@@ -21,6 +21,8 @@ window['googletag'] = {
   cmd: [],
   display: (slotid: string) => {}
 };
+window['gtag'] = function() {};
+window['fbq'] = function() {};
 
 // Prevent Karma from running prematurely.
 __karma__.loaded = function () {};
