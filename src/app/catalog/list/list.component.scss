@@ -113,9 +113,10 @@ tsl-selected-items {
 
 #catalog-empty-state {
   padding: 0 10px;
+  width: 100%;
   md-icon {
-    width: 1120px;
-    height: 560px;
+    width: 100%;
+    height: auto;
   }
 }
 
