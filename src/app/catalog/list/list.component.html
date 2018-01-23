@@ -20,7 +20,7 @@
       </ng-container>
     </a>
     <div class="row items">
-      <a class="add-item col-md-12" [routerLink]="['/catalog/upload']" *ngIf="!loading">
+      <a class="add-item col-md-12" [routerLink]="['/catalog/upload']" *ngIf="!loading && selectedStatus === 'published'">
         <svg xmlns="http://www.w3.org/2000/svg" width="1181" height="88" viewBox="0 0 1181 88">
           <g fill="none" fill-rule="evenodd" transform="translate(.668 .023)">
             <path fill="#FFF" d="M11.484 1.589h1157.001c5.523 0 10 4.477 10 10v64.885c0 5.523-4.477 10-10 10h-1157c-5.524 0-10-4.477-10-10V11.59c0-5.523 4.476-10 10-10z"/>
