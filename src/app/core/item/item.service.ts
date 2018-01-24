@@ -253,7 +253,8 @@ export class ItemService extends ItemServiceMaster {
   }
 
   public update(item: any): Observable<any> {
-    return this.http.put(this.API_URL_V3 + (item.category_id === '100' ? '/cars/' : '/') + item.id, item)
+    const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
+    return this.http.put(this.API_URL_V3 + (item.category_id === '100' ? '/cars/' : '/') + item.id, item, options)
     .map((r: Response) => r.json());
   }
 

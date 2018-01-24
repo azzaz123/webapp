@@ -20,7 +20,7 @@ import {
   CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, ORDER, PRODUCT_RESPONSE,
   PURCHASES, ITEMS_DATA_v3_FAVORITES
 } from '../../../tests/item.fixtures';
-import { ResponseOptions, Response, Headers } from '@angular/http';
+import { ResponseOptions, Response, Headers, RequestOptions } from '@angular/http';
 import { ConversationUser, ItemsData, Product } from './item-response.interface';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from '../tracking/tracking.service';
@@ -337,6 +337,9 @@ describe('ItemService', () => {
   });
 
   describe('update', () => {
+
+    const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
+
     it('should call endpoint and return response', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
       spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
@@ -346,7 +349,7 @@ describe('ItemService', () => {
         item = r;
       });
 
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID, ITEM_DATA);
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID, ITEM_DATA, options);
       expect(item).toEqual(ITEM_DATA_V3);
     });
 
@@ -359,7 +362,7 @@ describe('ItemService', () => {
         item = r;
       });
 
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/cars/' + CAR_ID, CAR_DATA_FORM);
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/cars/' + CAR_ID, CAR_DATA_FORM, options);
       expect(item).toEqual(CAR_DATA);
     });
   });
