@@ -9,6 +9,7 @@ import {
 } from '../app/core/item/item-response.interface';
 import { USER_LOCATION } from 'shield';
 
+export const PICTURE_ID = '9jd7ryx5odjk';
 
 export const ITEM_DATA_V3: ItemResponse = {
   'id': '0j2ylvwrpmzy',
@@ -44,7 +45,7 @@ export const ITEM_DATA_V3: ItemResponse = {
 
 export const ITEMS_DATA_V3 = [{
   'id': '1',
-  'type': 'cars',
+  'type': 'consumer_goods',
   'content': {
     'id': '1',
     'title': 'Toyota Yaris 1.3 99CV',
@@ -79,7 +80,7 @@ export const ITEMS_DATA_V3 = [{
   }
 }, {
   'id': '2',
-  'type': 'cars',
+  'type': 'consumer_goods',
   'content': {
     'id': '2',
     'title': 'Volvo V70 XC AWD Cross Country',
@@ -114,7 +115,7 @@ export const ITEMS_DATA_V3 = [{
   }
 }, {
   'id': '3',
-  'type': 'cars',
+  'type': 'consumer_goods',
   'content': {
     'id': '3',
     'title': 'Volvo V70 XC AWD Cross Country',
@@ -149,7 +150,7 @@ export const ITEMS_DATA_V3 = [{
   }
 }, {
   'id': '4',
-  'type': 'cars',
+  'type': 'consumer_goods',
   'content': {
     'id': '4',
     'title': 'Volvo V70 XC AWD Cross Country',
@@ -330,6 +331,7 @@ export const UPLOAD_FORM_ITEM_VALUES: ItemUploadForm = {
 };
 
 export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
+  id: '',
   title: 'The title',
   storytelling: 'The description',
   model: 'model',
@@ -346,7 +348,8 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   currency_code: 'EUR',
   sale_conditions: {
     fix_price: false,
-    exchange_allowed: false
+    exchange_allowed: false,
+    shipping_allowed: false
   },
   images: [{'image': true}],
   location: {

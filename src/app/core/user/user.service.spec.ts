@@ -17,13 +17,20 @@ import {
   USER_ID,
   USER_LOCATION,
   Location,
-  USER_EMAIL
+  USER_EMAIL,
+  USER_DATA
 } from 'shield';
 import { HaversineService } from 'ng2-haversine';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { USER_EDIT_DATA, USER_INFO_RESPONSE, USER_LOCATION_COORDINATES } from '../../../tests/user.fixtures';
+import {
+  CUSTOM_REASON,
+  REASONS, SELECTED_REASON, USER_INFO_RESPONSE,
+  USER_LOCATION_COORDINATES, USERS_STATS, USERS_STATS_RESPONSE, USER_EDIT_DATA
+} from '../../../tests/user.fixtures';
 import { UserInfoResponse } from './user-info.interface';
+import { UserStatsResponse } from './user-stats.interface';
+import { UnsubscribeReason } from './unsubscribe-reason.interface';
 
 describe('UserService', () => {
 
@@ -85,6 +92,7 @@ describe('UserService', () => {
   describe('logout', () => {
     const res: ResponseOptions = new ResponseOptions({body: 'redirect_url'});
     let redirectUrl: string;
+
     beforeEach(() => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of(new Response(res)));
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
@@ -93,6 +101,7 @@ describe('UserService', () => {
       });
       service.logout();
     });
+
     it('should call endpoint', () => {
       expect(http.postNoBase).toHaveBeenCalledWith('https://www.wallapop.com/rest/logout', undefined, undefined, true);
     });
@@ -171,12 +180,34 @@ describe('UserService', () => {
     });
   });
 
+  describe('getStats', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USERS_STATS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+
+      let resp: UserStatsResponse;
+      service.getStats().subscribe((response: UserStatsResponse) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/stats');
+      expect(resp).toEqual(USERS_STATS_RESPONSE);
+    });
+  });
+
   describe('edit', () => {
-    it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: ''});
+    it('should call endpoint, return user and set it', () => {
+      const res: ResponseOptions = new ResponseOptions({body: USER_DATA});
       spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
-      service.edit(USER_EDIT_DATA).subscribe();
+      spyOn<any>(service, 'mapRecordData').and.returnValue(MOCK_USER);
+      let resp: User;
+
+      service.edit(USER_EDIT_DATA).subscribe((user: User) => {
+        resp = user;
+      });
       expect(http.post).toHaveBeenCalledWith('api/v3/users/me', USER_EDIT_DATA);
+      expect(resp).toEqual(MOCK_USER);
+      expect(service['_user']).toEqual(MOCK_USER);
     });
   });
 
@@ -205,6 +236,35 @@ describe('UserService', () => {
       expect(http.post).toHaveBeenCalledWith('api/v3/users/me/password', {
         old_password: OLD_PASSWORD,
         new_password: NEW_PASSWORD
+      });
+    });
+  });
+
+  describe('getUnsubscribeReasons', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(REASONS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: UnsubscribeReason[];
+
+      service.getUnsubscribeReasons().subscribe((response: UnsubscribeReason[]) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/unsubscribe/reason', {language: 'en'});
+      expect(resp).toEqual(REASONS);
+    });
+  });
+
+  describe('unsubscribe', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: ''});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+
+      service.unsubscribe(SELECTED_REASON, CUSTOM_REASON).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/unsubscribe', {
+        reason_id: SELECTED_REASON,
+        other_reason: CUSTOM_REASON
       });
     });
   });

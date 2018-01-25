@@ -5,7 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ErrorsService, USER_EMAIL } from 'shield';
+import { USER_EMAIL } from 'shield';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 describe('EmailModalComponent', () => {
   let component: EmailModalComponent;

@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import {
   ErrorsService,
   FinancialCard,
-  I18nService,
   Item,
   ItemBulkResponse,
   PaymentService,
@@ -23,6 +22,7 @@ import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card
 import { OrderEvent } from './selected-items/selected-product.interface';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-list',
@@ -40,6 +40,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public scrollTop: number;
   private uploadModalRef: NgbModalRef;
   private active: boolean = true;
+  private firstItemLoad = true;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -87,7 +88,18 @@ export class ListComponent implements OnInit, OnDestroy {
             this.itemService.selectItem(newItem.id);
           }, () => {
           });
+        } else if (params && params.updated) {
+          this.toastr.success(this.i18n.getTranslations('itemUpdated'));
         }
+      });
+    });
+  }
+
+  private restoreSelectedItems() {
+    this.itemService.selectedItems.forEach((itemId: string) => {
+      this.itemService.selectedItems$.next({
+        id: itemId,
+        action: 'selected'
       });
     });
   }
@@ -128,6 +140,12 @@ export class ListComponent implements OnInit, OnDestroy {
       if (this.uploadModalRef) {
         this.uploadModalRef.componentInstance.item = this.items[0];
       }
+      if (this.firstItemLoad) {
+        setTimeout(() => {
+          this.restoreSelectedItems();
+        });
+      }
+      this.firstItemLoad = false;
     });
   }
 

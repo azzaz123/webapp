@@ -26,6 +26,9 @@ import { PreviewModalComponent } from './upload/preview-modal/preview-modal.comp
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { UploadProductComponent } from './upload/upload-product/upload-product.component';
 import { CategorySelectorComponent } from './upload/category-selector/category-selector.component';
+import { ItemResolverService } from './item-resolver.service';
+import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/exit-confirmation-modal.component';
+import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-modal/remove-confirm-modal.component';
 
 @NgModule({
   imports: [
@@ -51,7 +54,8 @@ import { CategorySelectorComponent } from './upload/category-selector/category-s
   providers: [
     CarSuggestionsService,
     CarKeysService,
-    UploadService
+    UploadService,
+    ItemResolverService
   ],
   declarations: [
     catalogRoutedComponents,
@@ -64,14 +68,20 @@ import { CategorySelectorComponent } from './upload/category-selector/category-s
     UploadConfirmationModalComponent,
     PreviewModalComponent,
     UploadProductComponent,
-    CategorySelectorComponent
+    CategorySelectorComponent,
+    ExitConfirmationModalComponent,
+    CategorySelectorComponent,
+    RemoveConfirmModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
     SoldModalComponent,
     CreditCardModalComponent,
     UploadConfirmationModalComponent,
-    PreviewModalComponent
+    PreviewModalComponent,
+    ExitConfirmationModalComponent,
+    PreviewModalComponent,
+    RemoveConfirmModalComponent
   ]
 })
 export class CatalogModule {

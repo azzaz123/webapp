@@ -9,25 +9,42 @@ import { IOption } from 'ng-select';
 export class CategoryService {
 
   private API_URL = 'api/v3/categories';
-  private categories: CategoryOption[];
+  private uploadCategories: CategoryOption[];
+  private categories: CategoryResponse[];
+  private heroCategoriesIds = [100, 13200, 13000];
 
   constructor(private http: HttpService,
               private i18n: I18nService) {
   }
 
-  public getCategories(): Observable<CategoryResponse[]> {
-    return this.http.getNoBase(environment.siteUrl + 'rest/categories')
-      .map(res => res.json());
+  public getCategoryById(id: number): Observable<CategoryResponse> {
+    return this.getCategories().map((categories: CategoryResponse[]) => {
+      return categories.find((category: CategoryResponse) => category.categoryId === id);
+    });
   }
 
-  public getUploadCategories(): Observable<CategoryOption[]> {
+  public getCategories(): Observable<CategoryResponse[]> {
     if (this.categories) {
       return Observable.of(this.categories);
     }
-    return this.http.get(this.API_URL + '/keys/consumer_goods', {language: this.i18n.locale})
+    return this.http.getNoBase(environment.siteUrl + 'rest/categories')
+      .map(res => res.json())
+      .do((categories: CategoryResponse[]) => this.categories = categories);
+  }
+
+  public getUploadCategories(): Observable<CategoryOption[]> {
+    if (this.uploadCategories) {
+      return Observable.of(this.uploadCategories);
+    }
+    const lang = this.i18n.locale === 'es' ? this.i18n.locale + '_ES' : this.i18n.locale;
+    return this.http.get(this.API_URL + '/keys/consumer_goods', {language: lang})
       .map(res => res.json())
       .map((categories: CategoryConsumerGoodsResponse[]) => this.toSelectOptions(categories))
-      .do((categories: CategoryOption[]) => this.categories = categories);
+      .do((categories: CategoryOption[]) => this.uploadCategories = categories);
+  }
+
+  public isHeroCategory(categoryId: number) {
+    return this.heroCategoriesIds.indexOf(categoryId) !== -1;
   }
 
   private toSelectOptions(categories: CategoryConsumerGoodsResponse[]): CategoryOption[] {
@@ -37,5 +54,4 @@ export class CategoryService {
       icon_id: category.icon_id
     }));
   }
-
 }

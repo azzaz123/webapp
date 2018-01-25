@@ -56,7 +56,7 @@ describe('CategoryService', () => {
         response = data;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/categories/keys/consumer_goods', {language: 'es'});
+      expect(http.get).toHaveBeenCalledWith('api/v3/categories/keys/consumer_goods', {language: 'es_ES'});
       expect(response).toEqual(CATEGORIES_OPTIONS);
     });
 
@@ -70,6 +70,16 @@ describe('CategoryService', () => {
 
       expect(http.get).toHaveBeenCalledTimes(1);
       expect(response).toEqual(CATEGORIES_OPTIONS);
+    });
+  });
+
+  describe('isHeroCategory', () => {
+    it('should return true if categoryId is a hero category', () => {
+      expect(service.isHeroCategory(100)).toBeTruthy();
+    });
+
+    it('should return false if categoryId is not a hero category', () => {
+      expect(service.isHeroCategory(5)).toBeFalsy();
     });
   });
 

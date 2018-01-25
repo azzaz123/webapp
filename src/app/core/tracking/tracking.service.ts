@@ -37,7 +37,9 @@ const SCREENS_IDS: any = {
   Wall: '110',
   MyCatalog: '138',
   ItemDetail: '115',
-  UploadForm: '139'
+  UploadForm: '139',
+  MyItemDetail: '114',
+  MyProfile: '112'
 };
 
 const TYPES_IDS: any = {
@@ -245,6 +247,12 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
   };
+  public static MYZONE_MENU_REVIEWS: TrackingEventBase = {
+    name: '609',
+    category: CATEGORY_IDS.Menu,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
   public static FAVOURITES_BUTTON_UNFAVORITE: TrackingEventBase = {
     name: '589',
     category: CATEGORY_IDS.Button,
@@ -321,6 +329,42 @@ export class TrackingService extends TrackingServiceMaster {
     name: '600',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_EDITITEM: TrackingEventBase = {
+    name: '612',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static MYITEMDETAIL_EDITITEM_SUCCESS: TrackingEventBase = {
+    name: '613',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyItemDetail,
+    type: TYPES_IDS.Success
+  };
+  public static MYITEMDETAIL_EDITITEM_ERROR: TrackingEventBase = {
+    name: '614',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyItemDetail,
+    type: TYPES_IDS.Error
+  };
+  public static MYITEMDETAIL_CANCELEDIT: TrackingEventBase = {
+    name: '615',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyItemDetail,
+    type: TYPES_IDS.Tap
+  };
+  public static MYPROFILE_UNSUBSCRIBE: TrackingEventBase = {
+    name: '608',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyProfile,
+    type: TYPES_IDS.Tap
+  };
+  public static MYPROFILE_SAVEBUTTON: TrackingEventBase = {
+    name: '611',
+    category: CATEGORY_IDS.MyProfile,
+    screen: SCREENS_IDS.MyProfile,
     type: TYPES_IDS.Tap
   };
 

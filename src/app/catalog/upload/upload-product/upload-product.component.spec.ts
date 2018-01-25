@@ -2,7 +2,20 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ErrorsService, Location, MOCK_USER, TEST_HTTP_PROVIDERS, User, USER_ID, MockTrackingService } from 'shield';
+import {
+  ITEM_CATEGORY_ID,
+  ITEM_DELIVERY_INFO,
+  Location,
+  MOCK_ITEM,
+  MOCK_USER,
+  MockTrackingService,
+  TEST_HTTP_PROVIDERS,
+  User,
+  USER_ID,
+  IMAGE,
+  Item,
+  ITEM_DATA
+} from 'shield';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +24,7 @@ import { CategoryService } from '../../../core/category/category.service';
 import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../../tests/category.fixtures';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -63,6 +77,8 @@ describe('UploadProductComponent', () => {
           provide: CategoryService, useValue: {
           getUploadCategories() {
             return Observable.of(CATEGORIES_OPTIONS);
+          },
+          isHeroCategory() {
           }
         }
         },
@@ -80,7 +96,7 @@ describe('UploadProductComponent', () => {
       declarations: [UploadProductComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -92,6 +108,52 @@ describe('UploadProductComponent', () => {
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
+  });
+
+  describe('ngOnInit', () => {
+    it('should set item if exists', () => {
+      component.item = MOCK_ITEM;
+
+      component.ngOnInit();
+
+      expect(component.uploadForm.value).toEqual({
+        id: MOCK_ITEM.id,
+        title: MOCK_ITEM.title,
+        sale_price: MOCK_ITEM.salePrice,
+        currency_code: MOCK_ITEM.currencyCode,
+        description: MOCK_ITEM.description,
+        sale_conditions: MOCK_ITEM.saleConditions,
+        category_id: ITEM_CATEGORY_ID + '',
+        delivery_info: ITEM_DELIVERY_INFO,
+        images: [],
+        location: {
+          address: '',
+          latitude: '',
+          longitude: ''
+        }
+      })
+    });
+  });
+
+  describe('detectFormChanges', () => {
+
+    let formChanged: boolean;
+
+    beforeEach(() => {
+      component.item = MOCK_ITEM;
+      component.onFormChanged.subscribe((value: boolean) => {
+        formChanged = value;
+      });
+
+      component.ngOnInit();
+    });
+
+    it('should emit changed event if form values changes', () => {
+      component.uploadForm.get('title').patchValue('new title');
+      fixture.detectChanges();
+
+      expect(formChanged).toBeTruthy();
+    });
   });
 
   describe('ngOnChanges', () => {
@@ -123,10 +185,29 @@ describe('UploadProductComponent', () => {
         expect(component.fixedCategory).toBe('Real Estate');
       });
     });
+
+    describe('edit mode', () => {
+      it('should set fixedCategory if is hero category', () => {
+        spyOn(categoryService, 'isHeroCategory').and.returnValue(true);
+        component.item = new Item(
+          ITEM_DATA.id,
+          ITEM_DATA.legacy_id,
+          ITEM_DATA.owner,
+          ITEM_DATA.title,
+          ITEM_DATA.description,
+          13000
+        );
+
+        component.ngOnChanges();
+
+        expect(component.fixedCategory).toBe('Real Estate');
+      });
+    });
   });
 
   describe('ngAfterViewChecked', () => {
-    it('should set focus', fakeAsync(() => {
+
+    beforeEach(() => {
       component.titleField = {
         nativeElement: {
           focus() {
@@ -134,10 +215,21 @@ describe('UploadProductComponent', () => {
         }
       };
       spyOn(component.titleField.nativeElement, 'focus');
+    });
+
+    it('should set focus', fakeAsync(() => {
       fixture.detectChanges();
       tick();
       expect(component.titleField.nativeElement.focus).toHaveBeenCalled();
       expect(component['focused']).toBeTruthy();
+    }));
+
+    it('should NOT set focus if update mode', fakeAsync(() => {
+      component.item = MOCK_ITEM;
+      fixture.detectChanges();
+      tick();
+      expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();
+      expect(component['focused']).toBeFalsy()
     }));
   });
 
@@ -207,10 +299,21 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onUploaded', () => {
+    it('should emit form changed event', () => {
+      let formChanged = true;
+      component.onFormChanged.subscribe((value: boolean) => {
+        formChanged = value;
+      });
+
+      component.onUploaded('created');
+
+      expect(formChanged).toBeFalsy();
+    });
+
     it('should redirect', () => {
       spyOn(router, 'navigate');
 
-      component.onUploaded('1234');
+      component.onUploaded('created');
 
       expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {created: true}]);
     });
@@ -256,6 +359,7 @@ describe('UploadProductComponent', () => {
 
     it('should set itemPreview', () => {
       expect(componentInstance.itemPreview).toEqual({
+        id: '',
         category_id: '200',
         title: 'test',
         description: 'test',

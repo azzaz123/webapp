@@ -39,8 +39,8 @@ export class CarSuggestionsService {
 
   private toSelectOptions(values: string[]): IOption[] {
     return _.map(values, (label: string) => ({
-      value: label,
-      label: label
+      value: label.toString(),
+      label: label.toString()
     }));
   }
 

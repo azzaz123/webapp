@@ -1,4 +1,4 @@
-import { ItemFlags, Image, ItemSaleConditions, Item } from 'shield';
+import { ItemFlags, Image, ItemSaleConditions, Item, DeliveryInfo } from 'shield';
 
 export interface ItemResponse {
   content: ItemContent;
@@ -33,6 +33,26 @@ export interface ItemContent {
   web_slug: string;
   favorites?: number;
   views?: number;
+  delivery_info?: DeliveryInfo;
+}
+
+export interface CarContent extends ItemContent {
+  brand?: string;
+  model?: string;
+  year?: number;
+  km?: number;
+  gearbox?: string;
+  engine?: string;
+  color?: string;
+  horsepower?: number;
+  body_type?: string;
+  num_doors?: number;
+  extras?: any[];
+  storytelling?: string;
+  warranty?: false;
+  num_seats?: number;
+  condition?: string;
+  version?: string;
 }
 
 export interface ItemsData {
@@ -112,4 +132,5 @@ export interface CarUploadForm extends ItemUploadForm {
   storytelling: string;
   engine: string;
   gearbox: string;
+  id?: string;
 }

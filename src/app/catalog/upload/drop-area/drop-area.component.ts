@@ -1,10 +1,14 @@
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { NgUploaderOptions, UploadFile, UploadOutput, UploadStatus } from 'ngx-uploader';
 import * as _ from 'lodash';
-import { ErrorsService } from 'shield';
+import { Image } from 'shield';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
+import { ItemService } from '../../../core/item/item.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-drop-area',
@@ -24,21 +28,28 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Output() onUploaded: EventEmitter<string> = new EventEmitter();
   @Output() onError: EventEmitter<string> = new EventEmitter();
   @Input() maxUploads = 4;
+  @Input() images: Image[];
+  @Input() itemId: string;
   dragOver: boolean;
   files: UploadFile[] = [];
   placeholders: number[];
   options: NgUploaderOptions;
-  private itemId: string;
+  isSafari: boolean;
 
   private setDragOver = _.throttle((dragOver: boolean) => {
-    this.dragOver = dragOver;
+    if (!this.isSafari) {
+      this.dragOver = dragOver;
+    }
   }, 100);
 
   propagateChange = (_: any) => {
   };
 
   constructor(private errorsService: ErrorsService,
-              public uploadService: UploadService) {
+              public uploadService: UploadService,
+              private itemService: ItemService,
+              private modalService: NgbModal) {
+    this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   }
 
   ngOnInit() {
@@ -49,9 +60,57 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     };
     this.placeholders = _.range(this.maxUploads);
     this.uploadEvent.subscribe((event: UploadEvent) => {
+      delete event.values.images;
       if (event.type === 'create') {
-        delete event.values.images;
         this.uploadService.createItemWithFirstImage(event.values, this.files[0]);
+      } else if (event.type === 'update') {
+        this.updateItem(event.values);
+      }
+    });
+  }
+
+  private updateItem(values: any) {
+    this.itemService.update(values).subscribe(() => {
+      this.onUploaded.emit('updated');
+    }, (response) => {
+      this.onError.emit(response);
+      this.errorsService.i18nError('serverError', response.message ? response.message : '');
+    });
+  }
+
+  private convertImagesToFiles() {
+    this.files = this.images.map((image: Image, index: number) => {
+      return {
+        fileIndex: index,
+        preview: image.urls_by_size.medium,
+        file: {
+          lastModifiedDate: '',
+          name: '',
+          webkitRelativePath: '',
+          size: 1,
+          type: 'jpg',
+          msClose() {
+          },
+          msDetachStream() {
+          },
+          slice() {
+            return new Blob();
+          }
+        },
+        id: image.id,
+        lastModifiedDate: new Date(),
+        name: '',
+        size: 1,
+        type: 'jpg',
+        progress: {
+          status: UploadStatus.Done,
+          data: {
+            percentage: 100,
+            speed: null,
+            speedHuman: null
+          }
+        },
+        response: image
       }
     });
   }
@@ -68,9 +127,22 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   public onUploadOutput(output: UploadOutput): void {
     switch (output.type) {
+      case 'ready':
+        if (this.images) {
+          this.convertImagesToFiles();
+          this.uploadService.setInitialImages(this.files);
+          setTimeout(() => {
+            this.propagateChange(this.files);
+          });
+        }
+        break;
       case 'addedToQueue':
-        this.files.push(output.file);
-        this.propagateChange(this.files);
+        if (this.images) {
+          this.files.push(output.file);
+          this.uploadService.uploadSingleImage(output.file, this.itemId, this.maxUploads === 8 ? '/cars' : '');
+        } else {
+          this.pictureUploaded(output);
+        }
         break;
       case 'uploading':
         const index = this.files.findIndex(file => file.id === output.file.id);
@@ -107,13 +179,15 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
           if (this.files.length > 1) {
             this.uploadService.uploadOtherImages(output.file.response.id, this.maxUploads === 8 ? '/cars' : '');
           } else {
-            this.onUploaded.emit(this.itemId);
+            this.onUploaded.emit('created');
           }
         } else {
-          if (_.every(this.files, (file: UploadFile) => {
+          if (!this.images && _.every(this.files, (file: UploadFile) => {
               return file.progress.status === UploadStatus.Done;
             })) {
-            this.onUploaded.emit(this.itemId);
+            this.onUploaded.emit(this.images ? 'updated' : 'created');
+          } else {
+            this.pictureUploadedOnUpdate(output);
           }
         }
       } else {
@@ -126,14 +200,50 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     }
   }
 
+  private pictureUploadedOnUpdate(output: UploadOutput) {
+    this.pictureUploaded(output);
+    this.errorsService.i18nSuccess('imageUploaded');
+  }
+
+  private pictureUploaded(output: UploadOutput) {
+    const index = this.files.findIndex(file => file.id === output.file.id);
+    if (index !== -1) {
+      this.files[index] = output.file;
+    } else {
+      this.files.push(output.file);
+    }
+    this.propagateChange(this.files);
+  }
+
   public remove(file: UploadFile, event: Event) {
     event.stopPropagation();
     event.preventDefault();
-    this.uploadService.removeImage(file);
+    if (this.images) {
+      this.removeConfirmation(file);
+    } else {
+      this.uploadService.removeImage(file);
+    }
+  }
+
+  private removeConfirmation(file: UploadFile) {
+    this.modalService.open(RemoveConfirmModalComponent).result.then(() => {
+      const fileId = file.response.id || file.response;
+      this.itemService.deletePicture(this.itemId, fileId).subscribe(() => {
+        this.uploadService.removeImage(file);
+      });
+    }, () => {
+    });
   }
 
   public updateOrder() {
     this.uploadService.updateOrder(this.files);
+    if (this.images) {
+      const picturesOrder = {};
+      this.files.forEach((file, index) => {
+        picturesOrder[file.response.id || file.response] = index;
+      });
+      this.itemService.updatePicturesOrder(this.itemId, picturesOrder).subscribe();
+    }
   }
 
 }

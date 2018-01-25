@@ -7,7 +7,10 @@ const routes: Routes = [
   {
     path: 'favorites',
     component: FavoritesComponent,
-    canActivate: [LoggedGuard]
+    canActivate: [LoggedGuard],
+    data: {
+      isMyZone: true
+    }
   }
 ];
 

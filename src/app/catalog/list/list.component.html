@@ -28,7 +28,7 @@
     </div>
   </div>
 </div>
-<tsl-selected-items *ngIf="itemService.selectedItems.length"
+<tsl-selected-items *ngIf="items.length && itemService.selectedItems.length"
                     [items]="items"
                     (onAction)="onAction($event)"
 ></tsl-selected-items>

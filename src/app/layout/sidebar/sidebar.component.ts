@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { User } from 'shield';
 import { environment } from '../../../environments/environment';
@@ -12,6 +12,7 @@ export class SidebarComponent implements OnInit {
 
   public user: User;
   public userUrl: string;
+  @Input() isProducts: boolean;
 
   constructor(private userService: UserService,
               @Inject('SUBDOMAIN') private subdomain: string) {

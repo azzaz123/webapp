@@ -8,7 +8,10 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [LoggedGuard]
+    canActivate: [LoggedGuard],
+    data: {
+      isMyZone: true
+    }
   }
 ];
 

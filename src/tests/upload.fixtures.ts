@@ -1,5 +1,5 @@
 import { UploadFile, UploadStatus } from 'ngx-uploader';
-import { ITEM_ID } from 'shield';
+import { ITEM_ID, IMAGE } from 'shield';
 
 
 export const UPLOAD_FILE_NAME: string = 'file.jpg';
@@ -24,6 +24,27 @@ export const UPLOAD_FILE: UploadFile = {
   },
   lastModifiedDate: UPLOAD_FILE_DATE,
   preview: 'abcdef'
+};
+
+export const UPLOAD_FILE_DONE: UploadFile = {
+  fileIndex: 0,
+  file: new File(['file'], ''),
+  id: UPLOAD_FILE_ID,
+  name: UPLOAD_FILE_NAME,
+  size: 123,
+  type: 'image/jpeg',
+  progress: {
+    status: UploadStatus.Done,
+    data: {
+      percentage: 0,
+      speed: null,
+      speedHuman: null,
+      responseStatus: 200
+    }
+  },
+  lastModifiedDate: UPLOAD_FILE_DATE,
+  preview: 'abcdef',
+  response: IMAGE
 };
 
 export const CAR_ID: string = 'xzo81pgg4469';
@@ -83,5 +104,6 @@ export const UPLOADED_FILE_FIRST_ITEM: UploadFile = <UploadFile>{
 
 export const UPLOADED_FILE_OTHER: UploadFile = <UploadFile>{
   ...UPLOAD_FILE,
+  id: 'otherId',
   response: 21341421435
 };
