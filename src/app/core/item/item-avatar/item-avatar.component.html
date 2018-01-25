@@ -4,12 +4,12 @@
   [ngClass]="size">
   <span class="overlay" *ngIf="item?.sold || item?.reserved || item?.featured"></span>
   <span class="sold" *ngIf="item?.sold">
-    <md-icon svgIcon="sold"></md-icon>
+    <mat-icon svgIcon="sold"></mat-icon>
   </span>
   <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured">
-    <md-icon svgIcon="reserved"></md-icon>
+    <mat-icon svgIcon="reserved"></mat-icon>
   </span>
   <span class="featured" *ngIf="item?.featured && !item?.sold">
-    <md-icon svgIcon="feature"></md-icon>
+    <mat-icon svgIcon="feature"></mat-icon>
   </span>
 </div>

@@ -31,7 +31,7 @@
       align-items: center;
       justify-content: center;
       margin-bottom: $spacing-XS;
-      md-icon {
+      mat-icon {
         @include square(43px);
         opacity: .5;
       }
@@ -41,7 +41,7 @@
       color: $grey-800;
       .square {
         border: solid 2px $grey-300;
-        md-icon {
+        mat-icon {
           opacity: 1;
         }
       }
@@ -49,7 +49,7 @@
     &:first-of-type {
       .square {
         width: 297px;
-        md-icon {
+        mat-icon {
           width: 265px;
           height: 56px;
         }
@@ -59,7 +59,7 @@
       color: $corporate;
       .square {
         background-color: $corporate;
-        md-icon {
+        mat-icon {
           opacity: 1;
           /deep/ {
             .black {

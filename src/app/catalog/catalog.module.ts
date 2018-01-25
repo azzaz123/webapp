@@ -4,7 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CoreModule } from '../core/core.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
-import { MdIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
@@ -36,7 +36,7 @@ import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-m
     FormsModule,
     CoreModule,
     CatalogRoutingModule,
-    MdIconModule,
+    MatIconModule,
     InfiniteScrollModule,
     UtilsModule,
     MomentModule,

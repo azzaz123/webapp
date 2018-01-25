@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { SuggesterResponse } from "../../../core/suggester/suggester-response.interface";
+import { SuggesterResponse } from '../../../core/suggester/suggester-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { SuggesterService } from '../../../core/suggester/suggester.service';
 

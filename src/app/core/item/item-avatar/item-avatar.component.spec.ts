@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemAvatarComponent } from './item-avatar.component';
 import { SanitizedBackgroundDirective } from 'shield';
-import { MdIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import {
   MOCK_ITEM, ITEM_MAIN_IMAGE, USER_ID,
   FAKE_ITEM_IMAGE_SMALL_BASE_PATH,  Item,
@@ -17,7 +17,7 @@ describe('ItemAvatarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MdIconModule
+        MatIconModule
       ],
       declarations: [
         ItemAvatarComponent,

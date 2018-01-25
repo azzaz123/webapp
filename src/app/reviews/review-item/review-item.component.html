@@ -5,7 +5,7 @@
       <div tslsanitizedBackground="{{ this.review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"
            *ngIf="this.review.isSold && this.review.item?.image"></div>
       <img src="{{ fallback }}" *ngIf="this.review.isSold && !this.review.item?.image" class="image"/>
-      <md-icon *ngIf="this.review.isBought && this.review.item" class="reviews-list-category-ico" svgIcon="{{ categoryIconName }}"></md-icon>
+      <mat-icon *ngIf="this.review.isBought && this.review.item" class="reviews-list-category-ico" svgIcon="{{ categoryIconName }}"></mat-icon>
     </div>
     <tsl-user-avatar class="avatar" *ngIf="this.review.user" [user]="this.review.user" size="40"></tsl-user-avatar>
   </div>

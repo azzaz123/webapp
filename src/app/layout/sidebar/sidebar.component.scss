@@ -30,7 +30,7 @@ $sidebar-section-circle-size: 50px;
 }
 
 .sidebar-section {
-  md-icon {
+  mat-icon {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -44,7 +44,7 @@ $sidebar-section-circle-size: 50px;
     fill: rgba($white, .5);
   }
   &.active, &:hover {
-    md-icon {
+    mat-icon {
       & /deep/ path {
         fill: $white;
       }

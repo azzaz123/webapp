@@ -43,7 +43,7 @@
         </svg>
       </a>
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
-        <md-icon svgIcon="items-empty-state" class="image"></md-icon>
+        <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
       </div>
       <tsl-catalog-item *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" class="col-md-12"></tsl-catalog-item>
       <tsl-spinner [hidden]="!loading"></tsl-spinner>

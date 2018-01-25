@@ -8,7 +8,7 @@
   <div class="container">
     <masonry [options]="masonryOptions">
       <div class="favorites-empty-state" *ngIf="!items.length && !loading">
-        <md-icon svgIcon="favorites-empty-state" class="image"></md-icon>
+        <mat-icon svgIcon="favorites-empty-state" class="image"></mat-icon>
         <div class="message" i18n>In this list you can see all the products you saved as favourite</div>
       </div>
       <masonry-brick class="brick" *ngFor="let item of items">

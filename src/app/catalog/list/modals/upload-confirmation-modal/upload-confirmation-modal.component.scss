@@ -16,7 +16,7 @@ $feature-button-width: 170px;
     top: $spacing;
     right: $spacing;
     @include square(13px);
-    md-icon {
+    mat-icon {
       @include square(13px);
       line-height: unset;
     }
@@ -64,7 +64,7 @@ button {
   &:hover {
     background: $corporate;
   }
-  md-icon {
+  mat-icon {
     width: 19px;
     height: 21px;
     margin-right: 9px;
@@ -83,12 +83,12 @@ button {
     @include square(34px);
     margin: 6px;
     cursor: pointer;
-    md-icon {
+    mat-icon {
       @include square(18px);
     }
     &:hover {
       background-color: #d8dbdd;
-      md-icon /deep/ path {
+      mat-icon /deep/ path {
         fill: #a3afb5;
       }
     }

@@ -1,10 +1,10 @@
 <div id="dropdown-main-search-btn" class="topbar-menu-dropdown" ngbDropdown ngbDropdownToggle>
-  <md-icon svgIcon="categories" class="topbar-icon"></md-icon>
-  <md-icon svgIcon="arrow-waterfall" class="arrow-icon"></md-icon>
+  <mat-icon svgIcon="categories" class="topbar-icon"></mat-icon>
+  <mat-icon svgIcon="arrow-waterfall" class="arrow-icon"></mat-icon>
   <ul class="dropdown-menu dropdown-menu-left">
       <li class="dropdown-item" *ngFor="let category of categories">
         <a (click)="selectCategory(category)">
-          <md-icon svgIcon="{{ category.iconName }}" class="main-search-category-ico"></md-icon>
+          <mat-icon svgIcon="{{ category.iconName }}" class="main-search-category-ico"></mat-icon>
           <span>{{ category.title }}</span>
         </a>
         <div class="list-separator"></div>

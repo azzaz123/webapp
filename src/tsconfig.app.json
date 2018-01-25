@@ -2,13 +2,21 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
+    "baseUrl": "./",
     "module": "es2015",
-    "baseUrl": "",
     "types": []
   },
+  "include": [
+    "../node_modules/shield",
+    "../node_modules/angular2-masonry",
+    "./"
+  ],
   "exclude": [
     "test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "../node_modules/shield/e2e",
+    "../node_modules/shield/**/*.spec.ts",
+    "../node_modules/shield/lib/typings.d.ts"
   ],
   "angularCompilerOptions": {
     "genDir": "../src/locale"

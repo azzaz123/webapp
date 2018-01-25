@@ -26,7 +26,7 @@
     }
   }
   .review-rating {
-    md-icon {
+    mat-icon {
       width: 15px;
       height: 14px;
     }
@@ -69,7 +69,7 @@
         background-size: cover;
         border-radius: $border-radius;
       }
-      md-icon {
+      mat-icon {
         @include square(50px);
       }
     }

@@ -83,10 +83,10 @@ $menu-width-and-spacing: 10px;
     .user-name-row-right {
       flex: none;
     }
-    md-icon, span {
+    mat-icon, span {
       vertical-align: middle;
     }
-    md-icon {
+    mat-icon {
       height: $phone-icon-adjusted-size;
     }
     .badge-pill {
@@ -106,7 +106,7 @@ $menu-width-and-spacing: 10px;
     p.message {
       color: $grey-600;
     }
-    md-icon {
+    mat-icon {
       height: 15px;
       width: 15px;
       vertical-align: bottom;

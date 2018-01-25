@@ -22,7 +22,7 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
-import { MdIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
               private messageService: MessageService,
               private titleService: Title,
               private sanitizer: DomSanitizer,
-              private mdIconRegistry: MdIconRegistry,
+              private MatIconRegistry: MatIconRegistry,
               private trackingService: TrackingService,
               private i18n: I18nService,
               private conversationService: ConversationService,
@@ -98,7 +98,7 @@ export class AppComponent implements OnInit {
 
   private config() {
     configMoment(this.i18n.locale);
-    configIcons(this.mdIconRegistry, this.sanitizer);
+    configIcons(this.MatIconRegistry, this.sanitizer);
   }
 
   private updateSessionCookie() {

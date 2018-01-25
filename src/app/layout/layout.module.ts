@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TopbarComponent } from './topbar/topbar.component';
-import { MdIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -20,7 +20,7 @@ import { TrackingModule } from '../core/tracking/tracking.module';
     RouterModule,
     CommonModule,
     NgbDropdownModule,
-    MdIconModule,
+    MatIconModule,
     FormsModule,
     NgbModule,
     UserModule,

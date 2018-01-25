@@ -20,7 +20,7 @@ $coachmark-left-margin: 33px;
     width: 220px;
     display: flex;
     padding: 15px;
-    md-icon {
+    mat-icon {
       @include square(26px);
       margin-right: $spacing-S;
       display: inline-table;

@@ -4,11 +4,11 @@
                     [hidden]="conversation.messages.length === 0 && conversation.item.owner === userService.user.id"
                     (click)="setCurrentConversation(conversation)"></tsl-conversation>
   <div id="loader" [hidden]="conversations.length > 0">
-    <md-icon svgIcon="conversations-mock"></md-icon>
+    <mat-icon svgIcon="conversations-mock"></mat-icon>
   </div>
   <div class="load-more-container" *ngIf="conversations.length > 0 && !conversationService.ended">
     <a class="load-more" (click)="loadMore()">
-      <md-icon svgIcon="spinner" [hidden]="!loading || page === 1" class="spinner"></md-icon>
+      <mat-icon svgIcon="spinner" [hidden]="!loading || page === 1" class="spinner"></mat-icon>
       <span [hidden]="loading" i18n>Load more</span>
     </a>
   </div>
