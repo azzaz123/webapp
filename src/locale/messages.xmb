@@ -118,6 +118,8 @@
   <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:14</source>Expired</msg>
   <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:18</source>1 item selected</msg>
   <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:19</source><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
+  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:28</source>Upload an item to my catalog</msg>
+  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:29</source>Upload another item to my catalog</msg>
   <msg id="6622336784189066984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source><source>app/catalog/upload/upload-car/upload-car.component.ts:208</source><source>app/catalog/upload/upload-product/upload-product.component.ts:128</source>Post Ad</msg>
   <msg id="4021752662928002901"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:7</source><source>app/catalog/upload/upload-car/upload-car.component.ts:209</source><source>app/catalog/upload/upload-product/upload-product.component.ts:129</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:18</source>Update</msg>
   <msg id="2233560223291461480"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:27</source><source>app/catalog/upload/upload-car/upload-car.component.ts:151</source>Manual</msg>
