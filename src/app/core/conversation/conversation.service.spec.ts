@@ -114,23 +114,6 @@ describe('ConversationService', () => {
       expect(conversation.user).toEqual(MOCK_USER);
       expect(conversation.item).toEqual(MOCK_ITEM);
     });
-    it('should send the tracking event new_conversation', () => {
-      let conversation: Conversation;
-      spyOn(userService, 'get').and.returnValue(Observable.of(MOCK_USER));
-      spyOn(itemService, 'get').and.returnValue(Observable.of(MOCK_ITEM));
-      spyOn(trackingService, 'track');
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
-        connection.mockRespond(new Response(res));
-      });
-
-      service.createConversation(MOCK_ITEM.id).subscribe((convResponse: Conversation) => {
-        conversation = convResponse;
-      });
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
-        { user_id: MOCK_USER.id, item_id: MOCK_ITEM.id, thread_id: conversation.id });
-    });
   });
   describe('getSingleConversationMessages', () => {
     beforeEach(() => {
