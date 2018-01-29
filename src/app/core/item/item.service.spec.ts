@@ -20,7 +20,7 @@ import {
   CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, ORDER, PRODUCT_RESPONSE,
   PURCHASES, ITEMS_DATA_v3_FAVORITES
 } from '../../../tests/item.fixtures';
-import { ResponseOptions, Response, Headers } from '@angular/http';
+import { ResponseOptions, Response, Headers, RequestOptions } from '@angular/http';
 import { ConversationUser, ItemsData, Product } from './item-response.interface';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from '../tracking/tracking.service';
@@ -337,6 +337,9 @@ describe('ItemService', () => {
   });
 
   describe('update', () => {
+
+    const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
+
     it('should call endpoint and return response', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
       spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));

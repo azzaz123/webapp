@@ -111,6 +111,8 @@ export class SelectedItemsComponent implements OnInit, OnDestroy {
 
     let result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
     this.trackingService.track(TrackingService.CATALOG_FEATURED_CHECKOUT, { selected_products: result });
+    gtag('event', 'conversion', {'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM'});
+    fbq('track', '176083133152402', {});
   }
 
   private calculateTotal() {

@@ -11,10 +11,11 @@
       </div>
     </div>
   </div>
-  <div class="actions">
+  <div class="actions" [ngClass]="itemService.selectedAction">
     <ng-container *ngIf="total > 0">
       <span class="total-label" i18n>Total</span>
       <span class="total">{{total | number:'1.2-2'}}&euro;</span>
+      <span class="address">Avenida Meridiana 89, 08026 Barcelona, España</span>
     </ng-container>
     <button *ngIf="itemService.selectedAction === 'reserve'"
             class="btn btn-reserve"

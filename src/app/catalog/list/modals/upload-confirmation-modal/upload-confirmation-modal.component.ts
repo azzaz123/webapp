@@ -19,6 +19,8 @@ export class UploadConfirmationModalComponent implements OnInit {
 
   ngOnInit() {
     this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS);
+    gtag('event', 'conversion', {'send_to': 'AW-829909973/7aOVCJvxvHsQ1dfdiwM'});
+    fbq('track', '567634953582843', {});
   }
 
   public facebookShare() {

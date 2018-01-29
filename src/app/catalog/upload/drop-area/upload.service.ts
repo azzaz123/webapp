@@ -2,6 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { UploadFile, UploadInput } from 'ngx-uploader';
 import { environment } from '../../../../environments/environment';
 import { HttpService } from 'shield';
+import { Headers, RequestOptions } from '@angular/http';
 
 @Injectable()
 export class UploadService {
@@ -24,6 +25,7 @@ export class UploadService {
 
   private buildUploadEvent(values: any, file: UploadFile, url: string, fieldName: string): UploadInput {
     delete values.location;
+    const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
     return {
       type: 'uploadFile',
       url: environment.baseUrl + url,

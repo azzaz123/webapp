@@ -5,9 +5,10 @@ import { TrackingService } from './tracking.service';
 import { HttpService, NavigatorService, TEST_HTTP_PROVIDERS, WindowRef } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../user/user.service';
+import { CookieService } from 'ngx-cookie';
 
 let service: TrackingService;
-
+let cookieService: CookieService;
 let http: HttpService;
 let window: any;
 
@@ -52,6 +53,15 @@ describe('Service: Tracking', () => {
             },
             locale: 'es'
           }
+        }
+        },
+        {
+          provide: CookieService, useValue: {
+          put(key, value) {
+          },
+          get(key) {
+            return 'a-b-c';
+          },
         }
         },
         {provide: NavigatorService, useClass: MockedNavigatorService},

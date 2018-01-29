@@ -6,6 +6,27 @@ $height: 40px;
 .items {
   margin-top: $spacing;
   margin-bottom: 120px;
+  .add-item {
+    width: 100%;
+    svg {
+      width: 100%;
+      .dashed-border, .pic, .button, text {
+        transition: all .2s ease;
+      }
+    }
+    &:hover {
+      $hover-color: #0f9989;
+      text-decoration: none;
+      svg {
+        .dashed-border {
+          stroke: $hover-color;
+        }
+        .pic, .button, text {
+          fill: $hover-color;
+        }
+      }
+    }
+  }
 }
 
 tsl-spinner {
@@ -95,9 +116,10 @@ tsl-selected-items {
 
 #catalog-empty-state {
   padding: 0 10px;
+  width: 100%;
   md-icon {
-    width: 1120px;
-    height: 560px;
+    width: 100%;
+    height: auto;
   }
 }
 
