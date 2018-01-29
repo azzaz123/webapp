@@ -36,7 +36,7 @@ export class UploadService {
           type: 'application/json'
         })
       },
-      headers: this.http.getOptions(options, url, 'POST').headers.toJSON(),
+      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
       file: file
     };
   }

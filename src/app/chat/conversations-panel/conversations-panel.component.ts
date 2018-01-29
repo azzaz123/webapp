@@ -142,6 +142,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       this.conversationService.getSingleConversationMessages(newConversation).subscribe((newConversationWithMessages: Conversation) => {
         this.conversationService.addLead(newConversationWithMessages);
         this.setCurrentConversation(newConversationWithMessages);
+        this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW,
+          { user_id: newConversationWithMessages.user.id, item_id: newConversationWithMessages.item.id,
+            thread_id: newConversationWithMessages.id });
       });
     });
   }
