@@ -64,7 +64,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.firstLoad = true;
     });
 
-    this.initRefreshAds();
+    this.adService.startAdsRefresh();
   }
 
   ngOnDestroy () {
@@ -154,9 +154,5 @@ export class ChatComponent implements OnInit, OnDestroy {
       });
     }, () => {
     });
-  }
-
-  private initRefreshAds() {
-    this.adService.startAdsRefresh();
   }
 }
