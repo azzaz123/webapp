@@ -1,5 +1,39 @@
 <div id="main-veil">
   <div id="content-veil">
 
+    <div class="step-0" *ngIf="tutorialService.step === 0" [@fade]>
+      <h1 i18n>¡Bienvenido a la nueva web!</h1>
+      <p>Ya puedes acceder a todas las funciones básicas de wallapop desde la web. Es mucho más cómodo y podrás seguir chateando desde tu oficina sin que te pille el jefe!</p>
+    </div>
+
+    <div class="step step-1" *ngIf="tutorialService.step === 1" [@fade]>
+      <p i18n>Edita desde aquí toda tu información personal, cuentas de correo y contraseñas.</p>
+    </div>
+
+    <div class="step step-2" *ngIf="tutorialService.step === 2" [@fade]>
+      <p i18n>Desde ésta sección tendrás acceso a todo tu catálogo,
+        podrás subir nuevos productos, editarlos, comprar destacados y vender más rápido!</p>
+    </div>
+
+    <div class="step step-3" *ngIf="tutorialService.step === 3" [@fade]>
+      <p i18n>Accede desde aquí a todos tus chats y
+        disfruta de una experiencia mucho más cómoda.
+        Un secreto: ¡Creemos que desde aquí llegan mejor los mensajes!</p>
+    </div>
+
+    <div class="step step-4" *ngIf="tutorialService.step === 4" [@fade]>
+      <p i18n>Todos aquellos productos que hayas marcado como favoritos
+        tanto en la web como en la app los encontrarás en esta sección.</p>
+    </div>
+
+    <div class="step step-5" *ngIf="tutorialService.step === 5" [@fade]>
+      <p i18n>Aquí podrás ver la valoración que te han dado los usuarios a los que has comprado o has vendido algo de wallapop </p>
+    </div>
+
+    <div id="controls">
+      <button (click)="nextStep()" class="btn btn-next" [hidden]="tutorialService.step === 5" i18n>Next</button>
+      <button [routerLink]="['/catalog/list']" [hidden]="tutorialService.step < 5" class="btn btn-next" i18n>End</button>
+    </div>
+
   </div>
 </div>
