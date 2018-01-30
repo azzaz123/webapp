@@ -368,7 +368,6 @@ export class TrackingService extends TrackingServiceMaster {
     type: TYPES_IDS.Tap
   };
 
-  public static TRACKING_SESSION_UUID: string = UUID.UUID();
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
 

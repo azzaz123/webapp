@@ -1,11 +1,10 @@
-import { TrackingService } from './tracking.service';
 import { UUID } from 'angular2-uuid';
 import { TrackingEventBase } from './tracking-event-base.interface';
 import { getTimestamp } from './getTimestamp.func';
 
 export class TrackingEvent {
   private sessions: any[] = [{
-    id: TrackingService.TRACKING_SESSION_UUID,
+    id: UUID.UUID(),
     startTimestamp: null,
     userId: '',
     device: {
