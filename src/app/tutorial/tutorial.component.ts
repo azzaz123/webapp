@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TutorialService } from '../core/tutorial/tutorial.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import * as _ from 'lodash';
@@ -22,11 +22,15 @@ import * as _ from 'lodash';
     )
   ],
 })
-export class TutorialComponent implements OnDestroy {
+export class TutorialComponent implements OnInit, OnDestroy {
 
   public dots = _.range(6);
 
   constructor(public tutorialService: TutorialService) { }
+
+  ngOnInit() {
+    this.tutorialService.setDisplayed();
+  }
 
   ngOnDestroy() {
     this.tutorialService.step = 0;

@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
 import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
+import { TutorialGuard } from './guards/tutorial.guard';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { RestrictInputDirective } from './restrict-input/restrict-input.directiv
   ],
   providers: [
     DecimalPipe,
-    ExitConfirmGuard
+    ExitConfirmGuard,
+    TutorialGuard
   ],
   entryComponents: [
     ConfirmationModalComponent
