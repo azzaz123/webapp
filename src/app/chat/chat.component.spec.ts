@@ -97,8 +97,9 @@ describe('Component: Chat', () => {
         {
           provide: AdService,
           useValue: {
-            refreshAds() {
-              return Observable.empty();
+            startAdsRefresh() {
+            },
+            stopAdsRefresh() {
             }
           }
         }
@@ -339,26 +340,17 @@ describe('Component: Chat', () => {
     }));
   });
 
-  it('should refresh google ad', fakeAsync(() => {
-    const refreshRate = 1000;
-    const pubads = {refresh () {}}
-    spyOn(adService, 'refreshAds').and.returnValue(Observable.interval(refreshRate));
-    spyOn(googletag, 'pubads').and.returnValue(pubads);
-    spyOn(pubads, 'refresh');
-
+  it('should call startAdsRefresh when init component', () => {
+    spyOn(adService, 'startAdsRefresh');
     component.ngOnInit();
-    tick(refreshRate);
+    expect(adService.startAdsRefresh).toHaveBeenCalled();
+  });
 
-    expect(pubads.refresh).toHaveBeenCalled();
-    discardPeriodicTasks();
-  }))
-
-  it('should unsubscribe refresh ad when destroy component', () => {
+  it('should call stopAdsRefresh when destroy component', () => {
     component.ngOnInit();
-    spyOn(component.refreshAdSubscription, 'unsubscribe');
+    spyOn(adService, 'stopAdsRefresh');
     component.ngOnDestroy();
-
-    expect(component.refreshAdSubscription.unsubscribe ).toHaveBeenCalled();
+    expect(adService.stopAdsRefresh).toHaveBeenCalled();
   })
 
 });
