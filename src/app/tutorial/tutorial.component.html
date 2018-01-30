@@ -30,7 +30,15 @@
       <p i18n>Aquí podrás ver la valoración que te han dado los usuarios a los que has comprado o has vendido algo de wallapop </p>
     </div>
 
+    <a [routerLink]="['/catalog/list']" id="close">
+      <md-icon svgIcon="cross"></md-icon><br />
+      <span i18n>Skip explanation</span>
+    </a>
+
     <div id="controls">
+      <div class="dots">
+        <div class="dot" *ngFor="let dot of dots" [ngClass]="{active: dot === tutorialService.step}"></div>
+      </div>
       <button (click)="nextStep()" class="btn btn-next" [hidden]="tutorialService.step === 5" i18n>Next</button>
       <button [routerLink]="['/catalog/list']" [hidden]="tutorialService.step < 5" class="btn btn-next" i18n>End</button>
     </div>

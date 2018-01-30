@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { TutorialService } from '../core/tutorial/tutorial.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-tutorial',
@@ -22,6 +23,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ],
 })
 export class TutorialComponent implements OnDestroy {
+
+  public dots = _.range(6);
 
   constructor(public tutorialService: TutorialService) { }
 
