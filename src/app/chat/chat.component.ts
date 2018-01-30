@@ -18,7 +18,6 @@ import {BlockUserComponent} from './modals/block-user/block-user.component';
 import {UnblockUserComponent} from './modals/unblock-user/unblock-user.component';
 import {TrackingService} from '../core/tracking/tracking.service';
 import {AdService} from '../core/ad/ad.service';
-import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'tsl-chat',
@@ -32,8 +31,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   public conversationsTotal: number;
   public connectionError: boolean;
   public firstLoad: boolean;
-
-  public refreshAdSubscription: Subscription;
 
   constructor(private conversationService: ConversationService,
               private itemService: ItemService,
@@ -71,7 +68,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy () {
-    this.refreshAdSubscription.unsubscribe();
+    this.adService.stopAdsRefresh();
   }
 
   public onCurrentConversationChange(conversation: Conversation) {
@@ -160,8 +157,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   private initRefreshAds() {
-    this.refreshAdSubscription = this.adService.refreshAds().subscribe(() => {
-      googletag.pubads().refresh();
-    })
+    this.adService.startAdsRefresh();
   }
 }
