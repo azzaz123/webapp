@@ -1,0 +1,20 @@
+@import "../../style/_common.scss";
+
+#main-veil {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10000;
+}
+
+#content-veil {
+  position: absolute;
+  top: $topbar-height;
+  right: 0;
+  bottom: 0;
+  left: $sidebar-width;
+  z-index: 20000;
+  background-color: $corporate;
+}

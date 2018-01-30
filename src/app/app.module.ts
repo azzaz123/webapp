@@ -18,6 +18,7 @@ import { DndModule } from 'ng2-dnd';
 import { FavoritesModule } from './favorites/favorites.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { ProfileModule } from './profile/profile.module';
+import { TutorialModule } from './tutorial/tutorial.module';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { ProfileModule } from './profile/profile.module';
     CatalogModule,
     ReviewsModule,
     FavoritesModule,
-    ProfileModule
+    ProfileModule,
+    TutorialModule
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
