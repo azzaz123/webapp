@@ -370,7 +370,7 @@ describe('Component: ConversationsPanel', () => {
     });
   });
 
-  fdescribe('createConversationAndSetItCurrent', () => {
+  describe('createConversationAndSetItCurrent', () => {
     beforeEach(() => {
       (component as any).newConversationItemId = 'newConversationItemId';
       spyOn(conversationService, 'addLead');

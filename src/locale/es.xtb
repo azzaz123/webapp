@@ -72,7 +72,6 @@
   <translation id="6932865105766151309">Subir</translation>
   <translation id="4085930761302974863">Favoritos</translation>
   <translation id="3797778920049399855">Cerrar sesión</translation>
-  <translation id="4631973437945665426">Súbelo</translation>
   <translation id="4053902008669548465">Mi zona</translation>
   <translation id="4359291232904891489">Marca la localización</translation>
   <translation id="5371960677736303052">¿Dónde?</translation>
@@ -265,4 +264,5 @@
   <translation id="6707361102856436710">Productos</translation>
   <translation id="2027740642468122404">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
   <translation id="792930787826735850">Tu perfil</translation>
+  <translation id="4818441514225396186">Subir producto</translation>
 </translationbundle>
