@@ -49,8 +49,6 @@
       var launchAdServer = function() {
         /* Perform key-value targeting for your ad server */
         Criteo.SetDFPKeyValueTargeting();
-        /* Trigger the ad server */
-        googletag.pubads().refresh();
       };
       Criteo.events.push(function () {
         // Define the price band range

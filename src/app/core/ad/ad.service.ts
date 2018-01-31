@@ -42,7 +42,6 @@ export class AdService {
     }).flatMap(() => {
       return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
     }).flatMap((refreshRate: number) => {
-      refreshRate = 5000;
       return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0)
     }).subscribe(() => {
       this.refreshAdWithKeyWords();
