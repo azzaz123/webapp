@@ -5,60 +5,100 @@ import {
   discardPeriodicTasks
 } from '@angular/core/testing';
 import { AdService } from './ad.service';
-import { TEST_HTTP_PROVIDERS, HttpService } from 'shield';
+import { TEST_HTTP_PROVIDERS, HttpService, MOCK_USER } from 'shield';
+import { UserService } from '../user/user.service';
+import { CookieService } from 'ngx-cookie';
 import { ResponseOptions, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 
 let service: AdService;
 let http: HttpService;
+let userService: UserService;
 let mockBackend: MockBackend;
-describe('AdService', () => {
+let cookieService: CookieService;
+const cookies = {
+  brand: 'bmv',
+  content: 'i3',
+  category: '100',
+  minprice: '1000',
+  maxprice: '20000'
+};
+
+fdescribe('AdService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         AdService,
-        ...TEST_HTTP_PROVIDERS
-      ]
+        ...TEST_HTTP_PROVIDERS,
+        {
+          provide: UserService,
+          useValue: {
+            me() {
+              return Observable.of(MOCK_USER)
+            }
+          }
+        },
+        {
+          provide: CookieService,
+          useValue: {
+            cookies: {},
+            put(key, value) {
+              this.cookies[key] = value;
+            },
+            get (key) {
+              return this.cookies[key];
+            }
+          }
+        }
+      ],
     });
-
-    service = TestBed.get(AdService);
     http = TestBed.get(HttpService);
+    userService = TestBed.get(UserService);
     mockBackend = TestBed.get(MockBackend);
+    cookieService = TestBed.get(CookieService);
+    Object.keys(cookies).forEach(key => {
+      cookieService.put(key, cookies[key]);
+    });
+    service = TestBed.get(AdService);
   });
 
-  describe ('refreshAds', () => {
-    it('should refresh ads with its rate' , fakeAsync(() => {
-      const refreshRate = 1000;
+  describe ('refreshAds should', () => {
+    const refreshRate = 1000;
+    const pubads = {
+      setTargeting () {},
+      refresh () {}
+    }
+
+    beforeEach(() => {
       mockBackend.connections.subscribe((connection: MockConnection) => {
         const res: ResponseOptions = new ResponseOptions({body: refreshRate});
         connection.mockRespond(new Response(res));
+
+        spyOn(googletag, 'pubads').and.returnValue(pubads);
+        spyOn(pubads, 'setTargeting');
+        spyOn(pubads, 'refresh');
       });
-      const numberOfTimes = 2;
-      let timesCalled = 0 ;
+    });
 
-      service.refreshAds().subscribe(() => {
-        timesCalled++;
+    it('send keyWords', fakeAsync(() => {
+      service.startAdsRefresh();
+      tick(1);
+
+      Object.keys(cookies).forEach(key => {
+        expect(pubads.setTargeting).toHaveBeenCalledWith(key, cookies[key]);
       });
-      tick(numberOfTimes * refreshRate);
-
-      expect(timesCalled).toEqual(numberOfTimes);
-      discardPeriodicTasks();
-    }));
-
-    it('when not receiving refresh rate, should not refresh', fakeAsync(() => {
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        const res: ResponseOptions = new ResponseOptions({body: 0});
-        connection.mockRespond(new Response(res));
-      });
-      let refreshed = false;
-
-      service.refreshAds().subscribe(() => {
-        refreshed = true;
-      });
-
-      tick(2000);
-      expect(refreshed).toBeFalsy();
       discardPeriodicTasks();
     }))
+
+    it('refresh ads with its rate' , fakeAsync(() => {
+      const timesToBeRefreshed = 2;
+
+      service.startAdsRefresh();
+      tick(timesToBeRefreshed * refreshRate );
+
+      expect(pubads.refresh).toHaveBeenCalledTimes(timesToBeRefreshed + 1);
+      discardPeriodicTasks();
+    }));
   })
 });
