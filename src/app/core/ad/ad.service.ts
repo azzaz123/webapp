@@ -4,9 +4,7 @@ import {
   HttpService,
 } from 'shield';
 import { environment } from '../../../environments/environment';
-import 'rxjs/add/observable/interval';
-import 'rxjs/add/observable/empty';
-import 'rxjs/add/operator/timeInterval';
+import 'rxjs/add/observable/timer';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { AdKeyWords } from './ad.interface';
