@@ -25,7 +25,7 @@ const cookies = {
   maxprice: '20000'
 };
 
-fdescribe('AdService', () => {
+describe('AdService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -63,7 +63,7 @@ fdescribe('AdService', () => {
     service = TestBed.get(AdService);
   });
 
-  describe ('refreshAds should', () => {
+  describe ('refreshAds', () => {
     const refreshRate = 1000;
     const pubads = {
       setTargeting () {},
@@ -71,34 +71,83 @@ fdescribe('AdService', () => {
     }
 
     beforeEach(() => {
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        const res: ResponseOptions = new ResponseOptions({body: refreshRate});
-        connection.mockRespond(new Response(res));
+      spyOn(googletag, 'pubads').and.returnValue(pubads);
+      spyOn(pubads, 'setTargeting');
+      spyOn(pubads, 'refresh');
+    })
 
-        spyOn(googletag, 'pubads').and.returnValue(pubads);
-        spyOn(pubads, 'setTargeting');
-        spyOn(pubads, 'refresh');
+    describe('with refresh rate should', () => {
+      beforeEach(() => {
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          const res: ResponseOptions = new ResponseOptions({body: refreshRate});
+          connection.mockRespond(new Response(res));
+        });
       });
+
+      it('send keyWords', fakeAsync(() => {
+        service.startAdsRefresh();
+        tick(1);
+
+        Object.keys(cookies).forEach(key => {
+          expect(pubads.setTargeting).toHaveBeenCalledWith(key, cookies[key]);
+        });
+        discardPeriodicTasks();
+      }))
+
+      it('refresh ads with its rate', fakeAsync(() => {
+        const timesToBeRefreshed = 2;
+
+        service.startAdsRefresh();
+        tick(timesToBeRefreshed * refreshRate);
+
+        expect(pubads.refresh).toHaveBeenCalledTimes(timesToBeRefreshed + 1);
+        discardPeriodicTasks();
+      }));
+
+      it('only have one refresh interval subscription', fakeAsync(() => {
+        service.startAdsRefresh();
+        tick(refreshRate);
+        service.startAdsRefresh();
+        tick(refreshRate);
+
+        expect(pubads.refresh).toHaveBeenCalledTimes(3);
+        discardPeriodicTasks();
+      }));
+
+      it('stop refresh interval', fakeAsync(() => {
+        service.startAdsRefresh();
+        tick(refreshRate);
+
+        service.stopAdsRefresh();
+        tick(refreshRate);
+
+        expect(pubads.refresh).toHaveBeenCalledTimes(2);
+      }));
+
+      it('handle multiple stops', fakeAsync(() => {
+        service.startAdsRefresh();
+        tick(refreshRate);
+
+        service.stopAdsRefresh();
+        tick(refreshRate);
+        service.stopAdsRefresh();
+        tick(refreshRate);
+
+        expect(pubads.refresh).toHaveBeenCalledTimes(2);
+      }));
     });
 
-    it('send keyWords', fakeAsync(() => {
-      service.startAdsRefresh();
-      tick(1);
-
-      Object.keys(cookies).forEach(key => {
-        expect(pubads.setTargeting).toHaveBeenCalledWith(key, cookies[key]);
+    it('without refresh rate, should not refresh', fakeAsync(() => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        const res: ResponseOptions = new ResponseOptions({body: 0});
+        connection.mockRespond(new Response(res));
       });
+
+      service.startAdsRefresh();
+      tick(refreshRate)
+
+      expect(pubads.refresh).toHaveBeenCalledTimes(1);
       discardPeriodicTasks();
     }))
-
-    it('refresh ads with its rate' , fakeAsync(() => {
-      const timesToBeRefreshed = 2;
-
-      service.startAdsRefresh();
-      tick(timesToBeRefreshed * refreshRate );
-
-      expect(pubads.refresh).toHaveBeenCalledTimes(timesToBeRefreshed + 1);
-      discardPeriodicTasks();
-    }));
   })
 });
