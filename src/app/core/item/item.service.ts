@@ -242,6 +242,11 @@ export class ItemService extends ItemServiceMaster {
     .map((r: Response) => r.json());
   }
 
+  public getAvailableReactivationProducts(id: string): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/' + id + '/available-reactivation-products')
+    .map((r: Response) => r.json());
+  }
+
   private getPurchases(): Observable<Purchase[]> {
     return this.http.get(this.API_URL_WEB + '/mine/purchases')
     .map((r: Response) => r.json());

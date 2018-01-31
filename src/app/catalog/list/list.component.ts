@@ -10,7 +10,7 @@ import {
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import { ItemsData } from '../../core/item/item-response.interface';
+import { ItemsData, Order, Product } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { ToastrService } from 'ngx-toastr';
@@ -150,8 +150,12 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public itemChanged($event: ItemChangeEvent) {
-    const index: number = _.findIndex(this.items, {'_id': $event.item.id});
-    this.items.splice(index, 1);
+    if ($event.action === 'reactivatedWithBump') {
+      this.reactivateWithBump($event.item);
+    } else {
+      const index: number = _.findIndex(this.items, {'_id': $event.item.id});
+      this.items.splice(index, 1);
+    }
   }
 
   public deselect() {
@@ -206,6 +210,24 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
+  private reactivateWithBump(item: Item) {
+    this.itemService.getAvailableReactivationProducts(item.id).subscribe((product: Product) => {
+      if (product.durations) {
+        const order: Order[] = [{
+          item_id: item.id,
+          product_id: product.durations[0].id
+        }];
+        const orderEvent: OrderEvent = {
+          order: order,
+          total: +product.durations[0].market_code
+        };
+        this.feature(orderEvent);
+      } else {
+        this.toastr.error(DEFAULT_ERROR_MESSAGE);
+      }
+    });
+  }
+
   public feature(orderEvent: OrderEvent) {
     const orderId: string = UUID.UUID();
     this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe((failedProducts: string[]) => {
@@ -228,7 +250,7 @@ export class ListComponent implements OnInit, OnDestroy {
     const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, {windowClass: 'credit-card'});
     modalRef.componentInstance.financialCard = financialCard;
     modalRef.componentInstance.total = total;
-    this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, { select_card: financialCard.id });
+    this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
     modalRef.result.then((result: string) => {
       if (result === 'new') {
         this.sabadellSubmit.emit(orderId);
