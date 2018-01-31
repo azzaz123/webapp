@@ -55,7 +55,7 @@ describe('TutorialService', () => {
   });
 
   describe('isAlreadyDisplayed', () => {
-    it('should return true il local storage is set', () => {
+    it('should return true if local storage is set', () => {
       spyOn(localStorage, 'getItem').and.returnValue('true');
       let displayed: boolean;
 
@@ -67,7 +67,7 @@ describe('TutorialService', () => {
       expect(displayed).toBeTruthy();
     });
 
-    it('should return false il local storage is NOT set', () => {
+    it('should return false if local storage is NOT set', () => {
       spyOn(localStorage, 'getItem').and.returnValue(undefined);
       let displayed: boolean;
 
