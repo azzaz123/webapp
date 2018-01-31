@@ -56,7 +56,9 @@ export class AdService {
   }
 
   public stopAdsRefresh(): void {
-    this.adsRefreshSubscription.unsubscribe();
+    if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) {
+      this.adsRefreshSubscription.unsubscribe();
+    }
   }
 
 }
