@@ -370,7 +370,7 @@ describe('Component: ConversationsPanel', () => {
     });
   });
 
-  fdescribe('createConversationAndSetItCurrent', () => {
+  describe('createConversationAndSetItCurrent', () => {
     beforeEach(() => {
       (component as any).newConversationItemId = 'newConversationItemId';
       spyOn(conversationService, 'addLead');
@@ -408,5 +408,6 @@ describe('Component: ConversationsPanel', () => {
         { user_id: conversation.user.id, item_id: conversation.item.id, thread_id: conversation.id });
     });
   });
+
 });
 
