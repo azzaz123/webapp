@@ -8,6 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 describe('TutorialComponent', () => {
   let component: TutorialComponent;
   let fixture: ComponentFixture<TutorialComponent>;
+  let tutorialService: TutorialService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,7 +19,10 @@ describe('TutorialComponent', () => {
           provide: TutorialService, useValue: {
           setDisplayed() {
           },
-          step: 0
+          nextStep() {
+          },
+          resetStep() {
+          }
         }
         }
       ],
@@ -30,10 +34,38 @@ describe('TutorialComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TutorialComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    tutorialService = TestBed.get(TutorialService);
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+    it('should call setDisplayed', () => {
+      spyOn(tutorialService, 'setDisplayed');
+
+      fixture.detectChanges();
+
+      expect(tutorialService.setDisplayed).toHaveBeenCalled();
+    });
   });
+
+  describe('ngOnDestroy', () => {
+    it('should call resetStep', () => {
+      spyOn(tutorialService, 'resetStep');
+
+      component.ngOnDestroy();
+
+      expect(tutorialService.resetStep).toHaveBeenCalled();
+    });
+  });
+
+  describe('nextStep', () => {
+    it('should call nextStep', () => {
+      spyOn(tutorialService, 'nextStep');
+
+      component.nextStep();
+
+      expect(tutorialService.nextStep).toHaveBeenCalled();
+    });
+  });
+
+
 });

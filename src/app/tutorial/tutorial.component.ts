@@ -33,15 +33,11 @@ export class TutorialComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.tutorialService.step = 0;
+    this.tutorialService.resetStep();
   }
 
   nextStep() {
-    this.tutorialService.step++;
-  }
-
-  exit() {
-
+    this.tutorialService.nextStep();
   }
 
 }

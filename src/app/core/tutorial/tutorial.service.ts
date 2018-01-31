@@ -6,10 +6,22 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class TutorialService {
 
-  step = 0;
+  private _step = 0;
   localStorageName = '-tutorial';
 
   constructor(private userService: UserService) {
+  }
+
+  get step(): number {
+    return this._step;
+  }
+
+  public nextStep() {
+    this._step++;
+  }
+
+  public resetStep() {
+    this._step = 0;
   }
 
   public setDisplayed() {

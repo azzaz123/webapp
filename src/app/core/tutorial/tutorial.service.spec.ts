@@ -26,6 +26,24 @@ describe('TutorialService', () => {
     service = TestBed.get(TutorialService);
   });
 
+  describe('nextStep', () => {
+    it('should increment step', () => {
+      service.nextStep();
+
+      expect(service.step).toBe(1);
+    });
+  });
+
+  describe('nextStep', () => {
+    it('should reset step', () => {
+      service.nextStep();
+
+      service.resetStep();
+
+      expect(service.step).toBe(0);
+    });
+  });
+
   describe('setDisplayed', () => {
     it('should set local storage', () => {
       spyOn(localStorage, 'setItem');

@@ -6,6 +6,11 @@ import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
 describe('TutorialGuard', () => {
+
+  let guard: TutorialGuard;
+  let router: Router;
+  let tutorialService: TutorialService;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -19,15 +24,44 @@ describe('TutorialGuard', () => {
         },
         {
           provide: Router, useValue: {
-            navigate() {
-            }
+          navigate() {
+          }
         }
         }
       ]
     });
+    guard = TestBed.get(TutorialGuard);
+    router = TestBed.get(Router);
+    tutorialService = TestBed.get(TutorialService);
   });
 
-  it('should ...', inject([TutorialGuard], (guard: TutorialGuard) => {
-    expect(guard).toBeTruthy();
-  }));
+  describe('canActivate', () => {
+
+    let displayed: boolean;
+
+    beforeEach(() => {
+      spyOn(router, 'navigate');
+      displayed = undefined;
+    });
+
+    it('should redirect if tutorial has not already displayed', () => {
+      (<Observable<boolean>>guard.canActivate()).subscribe((val: boolean) => {
+        displayed = val;
+      });
+
+      expect(router.navigate).toHaveBeenCalledWith(['tutorial']);
+      expect(displayed).toBeFalsy();
+    });
+
+    it('should not redirect if tutorial has already displayed', () => {
+      spyOn(tutorialService, 'isAlreadyDisplayed').and.returnValue(Observable.of(true));
+
+      (<Observable<boolean>>guard.canActivate()).subscribe((val: boolean) => {
+        displayed = val;
+      });
+
+      expect(router.navigate).not.toHaveBeenCalled();
+      expect(displayed).toBeTruthy();
+    });
+  });
 });
