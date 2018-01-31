@@ -39,7 +39,7 @@
         <md-icon svgIcon="btn-delete"></md-icon>
       </button>
     </span>
-    <button class="btn-reactivate" (click)="reactivateItem(item)" *ngIf="item.flags.expired">
+    <button class="btn-reactivate" (click)="openReactivateDialog(item)" *ngIf="item.flags.expired">
       <md-icon svgIcon="clock"></md-icon>
       <span i18n>Reactivate</span>
     </button>

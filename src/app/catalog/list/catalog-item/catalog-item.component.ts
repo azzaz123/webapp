@@ -3,10 +3,10 @@ import { Item } from 'shield';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
-import * as _ from 'lodash';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 import { environment } from '../../../../environments/environment';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -55,6 +55,24 @@ export class CatalogItemComponent implements OnInit {
   public featureItem(item: Item): void {
     this.itemService.selectedAction = 'feature';
     this.select(item);
+  }
+
+  public openReactivateDialog(item: Item) {
+    const modalRef: NgbModalRef = this.modalService.open(ReactivateModalComponent, {
+      windowClass: 'reactivate'
+    });
+    modalRef.componentInstance.item = item;
+    modalRef.result.then((result: string) => {
+      if (result === 'bump') {
+        this.itemChange.emit({
+          item: item,
+          action: 'reactivatedWithBump'
+        });
+      } else {
+        this.reactivateItem(item);
+      }
+    }, () => {
+    });
   }
 
   public reactivateItem(item: Item) {

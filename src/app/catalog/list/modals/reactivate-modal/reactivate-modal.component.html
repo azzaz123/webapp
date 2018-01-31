@@ -1,0 +1,11 @@
+<div class="modal-body">
+  <div class="modal-close" (click)="activeModal.dismiss()">
+    <md-icon svgIcon="cross"></md-icon>
+  </div>
+  <h1 i18n>Esta vez, ¡Véndelo!</h1>
+  <p i18n>Reactiva tu producto y vuelve a las primeras posiciones.<br />
+    Con un poco de suerte lo venderás muy pronto.</p>
+  <button (click)="activeModal.close('bump')" class="btn btn-secondary btn-bump">Reactivar + visibilidad</button>
+  <div class="line"></div>
+  <a class="reactivate" (click)="activeModal.close('reactivate')">Sólo reactivar. plastas, que sois unos plastas</a>
+</div>
