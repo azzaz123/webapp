@@ -63,8 +63,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     }, () => {
       this.firstLoad = true;
     });
-
-    this.adService.startAdsRefresh();
   }
 
   ngOnDestroy () {
@@ -81,6 +79,8 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);
     }
+
+    this.adService.startAdsRefresh();
   }
 
   public onLoaded(event: any) {
