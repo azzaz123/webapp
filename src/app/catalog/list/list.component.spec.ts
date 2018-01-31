@@ -7,6 +7,7 @@ import {
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
+  ITEM_ID,
   MockTrackingService,
   PaymentService,
 } from 'shield';
@@ -22,7 +23,10 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
-import { ORDER } from '../../../tests/item.fixtures';
+import {
+  ORDER, PRODUCT_DURATION_ID, PRODUCT_DURATION_MARKET_CODE,
+  PRODUCT_RESPONSE
+} from '../../../tests/item.fixtures';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
@@ -67,6 +71,8 @@ describe('ListComponent', () => {
           purchaseProducts() {
           },
           selectItem() {
+          },
+          getAvailableReactivationProducts() {
           }
         }
         },
@@ -142,7 +148,10 @@ describe('ListComponent', () => {
       spyOn(router, 'navigate');
       component.ngOnInit();
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {windowClass: 'bump-confirm', backdrop: 'static'});
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'bump-confirm',
+        backdrop: 'static'
+      });
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list'])
     }));
     it('should reset page on router event', fakeAsync(() => {
@@ -246,19 +255,29 @@ describe('ListComponent', () => {
   describe('item changed', () => {
     const TOTAL: number = 5;
     let item: Item;
-    beforeEach(() => {
+
+    it('should remove item when deleted', () => {
       component.items = createItemsArray(TOTAL);
       item = component.items[3];
-    });
-    it('should remove item when deleted', () => {
+
       component.itemChanged({
         item: item,
         action: 'deleted'
       });
-    });
-    afterEach(() => {
+
       expect(component.items.length).toBe(TOTAL - 1);
       expect(_.find(component.items, {'id': item.id})).toBeFalsy();
+    });
+
+    it('should call reactivateWithBump if event is reactivatedWithBump', () => {
+      spyOn<any>(component, 'reactivateWithBump');
+
+      component.itemChanged({
+        item: MOCK_ITEM,
+        action: 'reactivatedWithBump'
+      });
+
+      expect(component['reactivateWithBump']).toHaveBeenCalledWith(MOCK_ITEM);
     });
   });
 
@@ -375,6 +394,24 @@ describe('ListComponent', () => {
       }));
       it('should open error toastr', () => {
         expect(toastr.error).toHaveBeenCalledWith('Some listings have not been reserved due to an error');
+      });
+    });
+  });
+
+  describe('reactivateWithBump', () => {
+    it('should call getAvailableReactivationProducts, create the order and pass it to feature', () => {
+      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+      spyOn(component, 'feature');
+
+      component['reactivateWithBump'](MOCK_ITEM);
+
+      expect(itemService.getAvailableReactivationProducts).toHaveBeenCalledWith(ITEM_ID);
+      expect(component.feature).toHaveBeenCalledWith({
+        order: [{
+          item_id: ITEM_ID,
+          product_id: PRODUCT_DURATION_ID
+        }],
+        total: PRODUCT_DURATION_MARKET_CODE
       });
     });
   });

@@ -13,6 +13,7 @@ import { MomentModule } from 'angular2-moment';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -20,6 +21,9 @@ describe('CatalogItemComponent', () => {
   let itemService: ItemService;
   let modalService: NgbModal;
   let trackingService: TrackingService;
+  const componentInstance = {
+    item: null
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -51,14 +55,12 @@ describe('CatalogItemComponent', () => {
           open() {
             return {
               result: Promise.resolve(),
-              componentInstance: {
-                item: null
-              }
+              componentInstance: componentInstance
             };
           }
         }
         },
-        { provide: 'SUBDOMAIN', useValue: 'es'}
+        {provide: 'SUBDOMAIN', useValue: 'es'}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -159,6 +161,56 @@ describe('CatalogItemComponent', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
       });
     });
+  });
+
+  describe('openReactivateDialog', () => {
+
+   it('should open dialog and set item', () => {
+      spyOn(modalService, 'open').and.callThrough();
+
+      component.openReactivateDialog(MOCK_ITEM);
+
+      expect(modalService.open).toHaveBeenCalledWith(ReactivateModalComponent, {
+        windowClass: 'reactivate'
+      });
+      expect(componentInstance.item).toEqual(MOCK_ITEM);
+    });
+
+    it('should emit reactivatedWithBump event if result is bump', fakeAsync(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve('bump'),
+        componentInstance: componentInstance
+      });
+      let event: ItemChangeEvent;
+      component.itemChange.subscribe((e: ItemChangeEvent) => {
+        event = e;
+      });
+
+      component.openReactivateDialog(MOCK_ITEM);
+      tick();
+
+      expect(event).toEqual({
+        item: MOCK_ITEM,
+        action: 'reactivatedWithBump'
+      });
+    }));
+
+    it('should call reactivateItem if result is NOT bump', fakeAsync(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve('reactivate'),
+        componentInstance: componentInstance
+      });
+      spyOn(component, 'reactivateItem');
+      let event: ItemChangeEvent;
+      component.itemChange.subscribe((e: ItemChangeEvent) => {
+        event = e;
+      });
+
+      component.openReactivateDialog(MOCK_ITEM);
+      tick();
+
+      expect(component.reactivateItem).toHaveBeenCalledWith(MOCK_ITEM);
+    }));
   });
 
   describe('reactivateItem', () => {

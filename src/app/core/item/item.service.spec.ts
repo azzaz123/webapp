@@ -323,6 +323,19 @@ describe('ItemService', () => {
     });
   });
 
+  describe('getAvailableReactivationProducts', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCT_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: Product;
+      service.getAvailableReactivationProducts(ITEM_ID).subscribe((r: Product) => {
+        resp = r;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-reactivation-products');
+      expect(resp).toEqual(PRODUCT_RESPONSE)
+    });
+  });
+
   describe('purchaseProducts', () => {
     it('should call endpoint', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(['1234'])});

@@ -297,11 +297,14 @@ export const PURCHASES: Purchase[] = [{
   'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
 }];
 
+export const PRODUCT_DURATION_ID = 'l1kmzngg6n3p';
+export const PRODUCT_DURATION_MARKET_CODE = 4.79;
+
 export const PRODUCT_RESPONSE: Product = {
   'id': 'd9ke65mjox1m',
   'name': 'WEB-MARKET',
   'default_duration_index': 0,
-  'durations': [{'id': 'l1kmzngg6n3p', 'duration': 168, 'market_code': '4.79', 'original_market_code': '5.99'}]
+  'durations': [{'id': PRODUCT_DURATION_ID, 'duration': 168, 'market_code': PRODUCT_DURATION_MARKET_CODE.toString(), 'original_market_code': '5.99'}]
 };
 
 export const PRODUCT2_RESPONSE: Product = {

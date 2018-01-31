@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReactivateModalComponent } from './reactivate-modal.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('ReactivateModalComponent', () => {
   let component: ReactivateModalComponent;
@@ -8,7 +10,9 @@ describe('ReactivateModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReactivateModalComponent ]
+      declarations: [ ReactivateModalComponent ],
+      providers: [NgbActiveModal],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
