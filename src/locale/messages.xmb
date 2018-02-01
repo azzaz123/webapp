@@ -180,6 +180,10 @@
   <msg id="2286494898080570401"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:53</source>Thanks</msg>
   <msg id="2928844379959000123"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:54</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
   <msg id="6962699013778688473"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:55</source>Continue</msg>
+  <msg id="6071814986980529912"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:5</source>This time, sell it!</msg>
+  <msg id="4836554913661222496"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:6</source>Reactivate this item for <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> and put it in the top positions.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Get more visibility and sell it faster. </msg>
+  <msg id="6877992122026439414"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:7</source>Reactivate + visibility </msg>
+  <msg id="3244863581909362906"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:9</source>Only reactivate it, I don&apos;t want to sell it faster</msg>
   <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:23</source>Feature Product</msg>
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:44</source>Reactivate</msg>
   <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:48</source>Pending</msg>
