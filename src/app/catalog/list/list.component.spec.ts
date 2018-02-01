@@ -24,7 +24,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
 import {
-  ORDER, PRODUCT_DURATION_ID, PRODUCT_DURATION_MARKET_CODE,
+  ORDER, ORDER_EVENT, PRODUCT_DURATION_ID, PRODUCT_DURATION_MARKET_CODE,
   PRODUCT_RESPONSE
 } from '../../../tests/item.fixtures';
 import { UUID } from 'angular2-uuid';
@@ -71,8 +71,6 @@ describe('ListComponent', () => {
           purchaseProducts() {
           },
           selectItem() {
-          },
-          getAvailableReactivationProducts() {
           }
         }
         },
@@ -269,15 +267,15 @@ describe('ListComponent', () => {
       expect(_.find(component.items, {'id': item.id})).toBeFalsy();
     });
 
-    it('should call reactivateWithBump if event is reactivatedWithBump', () => {
-      spyOn<any>(component, 'reactivateWithBump');
+    it('should call feature if event is reactivatedWithBump', () => {
+      spyOn(component, 'feature');
 
       component.itemChanged({
-        item: MOCK_ITEM,
+        orderEvent: ORDER_EVENT,
         action: 'reactivatedWithBump'
       });
 
-      expect(component['reactivateWithBump']).toHaveBeenCalledWith(MOCK_ITEM);
+      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
     });
   });
 
@@ -394,24 +392,6 @@ describe('ListComponent', () => {
       }));
       it('should open error toastr', () => {
         expect(toastr.error).toHaveBeenCalledWith('Some listings have not been reserved due to an error');
-      });
-    });
-  });
-
-  describe('reactivateWithBump', () => {
-    it('should call getAvailableReactivationProducts, create the order and pass it to feature', () => {
-      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
-      spyOn(component, 'feature');
-
-      component['reactivateWithBump'](MOCK_ITEM);
-
-      expect(itemService.getAvailableReactivationProducts).toHaveBeenCalledWith(ITEM_ID);
-      expect(component.feature).toHaveBeenCalledWith({
-        order: [{
-          item_id: ITEM_ID,
-          product_id: PRODUCT_DURATION_ID
-        }],
-        total: PRODUCT_DURATION_MARKET_CODE
       });
     });
   });

@@ -9,7 +9,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ReactivateModalComponent {
 
-  public item: Item;
+  public price: number;
 
   constructor(public activeModal: NgbActiveModal) {
   }

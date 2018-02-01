@@ -151,7 +151,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public itemChanged($event: ItemChangeEvent) {
     if ($event.action === 'reactivatedWithBump') {
-      this.reactivateWithBump($event.item);
+      this.feature($event.orderEvent);
     } else {
       const index: number = _.findIndex(this.items, {'_id': $event.item.id});
       this.items.splice(index, 1);
@@ -206,24 +206,6 @@ export class ListComponent implements OnInit, OnDestroy {
       });
       if (response.failedIds.length) {
         this.toastr.error(this.i18n.getTranslations('bulkReserveError'));
-      }
-    });
-  }
-
-  private reactivateWithBump(item: Item) {
-    this.itemService.getAvailableReactivationProducts(item.id).subscribe((product: Product) => {
-      if (product.durations) {
-        const order: Order[] = [{
-          item_id: item.id,
-          product_id: product.durations[0].id
-        }];
-        const orderEvent: OrderEvent = {
-          order: order,
-          total: +product.durations[0].market_code
-        };
-        this.feature(orderEvent);
-      } else {
-        this.toastr.error(DEFAULT_ERROR_MESSAGE);
       }
     });
   }

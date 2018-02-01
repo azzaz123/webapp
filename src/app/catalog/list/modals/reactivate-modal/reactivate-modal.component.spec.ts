@@ -3,6 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactivateModalComponent } from './reactivate-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
 
 describe('ReactivateModalComponent', () => {
   let component: ReactivateModalComponent;
@@ -10,8 +12,8 @@ describe('ReactivateModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReactivateModalComponent ],
-      providers: [NgbActiveModal],
+      declarations: [ReactivateModalComponent, CustomCurrencyPipe],
+      providers: [NgbActiveModal, DecimalPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();

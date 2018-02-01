@@ -7,7 +7,8 @@ import {
   Product,
   Purchase
 } from '../app/core/item/item-response.interface';
-import { USER_LOCATION } from 'shield';
+import { USER_LOCATION, ITEM_ID } from 'shield';
+import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 
@@ -317,6 +318,14 @@ export const PRODUCT2_RESPONSE: Product = {
 export const ORDER: Order = {
   item_id: '1',
   product_id: '2'
+};
+
+export const ORDER_EVENT: OrderEvent = {
+  order: [{
+    item_id: ITEM_ID,
+    product_id: PRODUCT_DURATION_ID
+  }],
+  total: PRODUCT_DURATION_MARKET_CODE
 };
 
 export const UPLOAD_FORM_ITEM_VALUES: ItemUploadForm = {

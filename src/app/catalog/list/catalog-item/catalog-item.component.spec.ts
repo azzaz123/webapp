@@ -14,6 +14,12 @@ import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-curre
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
+import {
+  ORDER_EVENT, PRODUCT_DURATION_ID, PRODUCT_DURATION_MARKET_CODE,
+  PRODUCT_RESPONSE
+} from '../../../../tests/item.fixtures';
+import { OrderEvent } from '../selected-items/selected-product.interface';
+import { ToastrService } from 'ngx-toastr';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -22,7 +28,7 @@ describe('CatalogItemComponent', () => {
   let modalService: NgbModal;
   let trackingService: TrackingService;
   const componentInstance = {
-    item: null
+    price: null
   };
 
   beforeEach(async(() => {
@@ -47,6 +53,8 @@ describe('CatalogItemComponent', () => {
           },
           reactivateItem() {
             return Observable.of({});
+          },
+          getAvailableReactivationProducts() {
           }
         }
         },
@@ -57,6 +65,12 @@ describe('CatalogItemComponent', () => {
               result: Promise.resolve(),
               componentInstance: componentInstance
             };
+          }
+        }
+        },
+        {
+          provide: ToastrService, useValue: {
+          error() {
           }
         }
         },
@@ -163,17 +177,27 @@ describe('CatalogItemComponent', () => {
     });
   });
 
-  describe('openReactivateDialog', () => {
+  describe('reactivate', () => {
 
-   it('should open dialog and set item', () => {
+    beforeEach(() => {
+      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+    });
+
+    it('should call getAvailableReactivationProducts', () => {
+      component.reactivate(MOCK_ITEM);
+
+      expect(itemService.getAvailableReactivationProducts).toHaveBeenCalledWith(ITEM_ID);
+    });
+
+    it('should open dialog and set price', () => {
       spyOn(modalService, 'open').and.callThrough();
 
-      component.openReactivateDialog(MOCK_ITEM);
+      component.reactivate(MOCK_ITEM);
 
       expect(modalService.open).toHaveBeenCalledWith(ReactivateModalComponent, {
         windowClass: 'reactivate'
       });
-      expect(componentInstance.item).toEqual(MOCK_ITEM);
+      expect(componentInstance.price).toEqual(PRODUCT_DURATION_MARKET_CODE);
     });
 
     it('should emit reactivatedWithBump event if result is bump', fakeAsync(() => {
@@ -186,11 +210,11 @@ describe('CatalogItemComponent', () => {
         event = e;
       });
 
-      component.openReactivateDialog(MOCK_ITEM);
+      component.reactivate(MOCK_ITEM);
       tick();
 
       expect(event).toEqual({
-        item: MOCK_ITEM,
+        orderEvent: ORDER_EVENT,
         action: 'reactivatedWithBump'
       });
     }));
@@ -206,7 +230,7 @@ describe('CatalogItemComponent', () => {
         event = e;
       });
 
-      component.openReactivateDialog(MOCK_ITEM);
+      component.reactivate(MOCK_ITEM);
       tick();
 
       expect(component.reactivateItem).toHaveBeenCalledWith(MOCK_ITEM);

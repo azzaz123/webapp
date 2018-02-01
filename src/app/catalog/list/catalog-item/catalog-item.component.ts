@@ -7,6 +7,10 @@ import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 import { environment } from '../../../../environments/environment';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
+import { Order, Product } from '../../../core/item/item-response.interface';
+import { OrderEvent } from '../selected-items/selected-product.interface';
+import { DEFAULT_ERROR_MESSAGE } from '../../../core/errors/errors.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -22,6 +26,7 @@ export class CatalogItemComponent implements OnInit {
   constructor(private modalService: NgbModal,
               public itemService: ItemService,
               private trackingService: TrackingService,
+              private toastr: ToastrService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -57,15 +62,39 @@ export class CatalogItemComponent implements OnInit {
     this.select(item);
   }
 
-  public openReactivateDialog(item: Item) {
+  public reactivate(item: Item) {
+    this.itemService.getAvailableReactivationProducts(item.id).subscribe((product: Product) => {
+      if (product.durations) {
+        const orderEvent: OrderEvent = this.buildOrderEvent(item, product);
+        this.openReactivateDialog(item, orderEvent);
+      } else {
+        this.toastr.error(DEFAULT_ERROR_MESSAGE);
+      }
+    }, () => {
+      this.toastr.error(DEFAULT_ERROR_MESSAGE);
+    });
+  }
+
+  private buildOrderEvent(item: Item, product: Product): OrderEvent {
+    const order: Order[] = [{
+      item_id: item.id,
+      product_id: product.durations[0].id
+    }];
+    return {
+      order: order,
+      total: +product.durations[0].market_code
+    };
+  }
+
+  private openReactivateDialog(item: Item, orderEvent: OrderEvent) {
     const modalRef: NgbModalRef = this.modalService.open(ReactivateModalComponent, {
       windowClass: 'reactivate'
     });
-    modalRef.componentInstance.item = item;
+    modalRef.componentInstance.price = orderEvent.total;
     modalRef.result.then((result: string) => {
       if (result === 'bump') {
         this.itemChange.emit({
-          item: item,
+          orderEvent: orderEvent,
           action: 'reactivatedWithBump'
         });
       } else {
