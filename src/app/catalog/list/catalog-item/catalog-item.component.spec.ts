@@ -1,11 +1,10 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { MOCK_ITEM, Item, MockTrackingService, ITEM_ID } from 'shield';
+import { Item, ITEM_ID, MOCK_ITEM, MockTrackingService } from 'shield';
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from 'app/shared/confirmation-modal/confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
@@ -14,11 +13,7 @@ import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-curre
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
-import {
-  ORDER_EVENT, PRODUCT_DURATION_ID, PRODUCT_DURATION_MARKET_CODE,
-  PRODUCT_RESPONSE
-} from '../../../../tests/item.fixtures';
-import { OrderEvent } from '../selected-items/selected-product.interface';
+import { ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE, PRODUCT_RESPONSE } from '../../../../tests/item.fixtures';
 import { ToastrService } from 'ngx-toastr';
 
 describe('CatalogItemComponent', () => {

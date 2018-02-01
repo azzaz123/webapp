@@ -7,9 +7,8 @@ import {
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
-  ITEM_ID,
   MockTrackingService,
-  PaymentService,
+  PaymentService
 } from 'shield';
 
 import { ListComponent } from './list.component';
@@ -23,10 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
-import {
-  ORDER, ORDER_EVENT, PRODUCT_DURATION_ID, PRODUCT_DURATION_MARKET_CODE,
-  PRODUCT_RESPONSE
-} from '../../../tests/item.fixtures';
+import { ORDER, ORDER_EVENT } from '../../../tests/item.fixtures';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
