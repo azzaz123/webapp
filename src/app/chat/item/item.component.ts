@@ -17,7 +17,7 @@ export class ItemComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes?: any) {
-    if (this.item.views === undefined || this.item.favorites === undefined) {
+    if (this.item.salePrice && (this.item.views === undefined || this.item.favorites === undefined)) {
       this.itemService.getCounters(this.item.id).takeWhile(() => {
         return this.active;
       }).subscribe((counters: ItemCounters) => {
@@ -25,11 +25,17 @@ export class ItemComponent implements OnChanges, OnDestroy {
         this.item.favorites = counters.favorites;
       });
     }
-    this.itemUrl = this.item.webLink.replace(ITEM_BASE_PATH, environment.siteUrl + 'item/');
+    this.itemUrl = this.item.webSlug ? this.item.webLink.replace(ITEM_BASE_PATH, environment.siteUrl + 'item/') : '#';
   }
 
   ngOnDestroy() {
     this.active = false;
+  }
+
+  prevent($event: Event) {
+    if (this.itemUrl === '#') {
+      $event.preventDefault();
+    }
   }
 
 }
