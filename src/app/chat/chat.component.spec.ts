@@ -340,9 +340,9 @@ describe('Component: Chat', () => {
     }));
   });
 
-  it('should call startAdsRefresh when init component', () => {
+  it('should call start refresh ad when init some conversation', () => {
     spyOn(adService, 'startAdsRefresh');
-    component.ngOnInit();
+    component.onCurrentConversationChange(conversation);
     expect(adService.startAdsRefresh).toHaveBeenCalled();
   });
 
