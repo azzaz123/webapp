@@ -1,4 +1,5 @@
 import {
+  AvailableProductsResponse,
   CarUploadForm,
   ConversationUser,
   ItemResponse,
@@ -306,6 +307,11 @@ export const PRODUCT_RESPONSE: Product = {
   'name': 'WEB-MARKET',
   'default_duration_index': 0,
   'durations': [{'id': PRODUCT_DURATION_ID, 'duration': 168, 'market_code': PRODUCT_DURATION_MARKET_CODE.toString(), 'original_market_code': '5.99'}]
+};
+
+export const PRODUCTS_RESPONSE: AvailableProductsResponse = {
+  default_product_id: '1',
+  products: [PRODUCT_RESPONSE]
 };
 
 export const PRODUCT2_RESPONSE: Product = {
