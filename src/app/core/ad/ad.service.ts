@@ -10,6 +10,7 @@ import { CookieService } from 'ngx-cookie';
 import { AdKeyWords } from './ad.interface';
 import { User } from 'shield';
 import { Subscription } from 'rxjs/Subscription';
+import * as moment from 'moment';
 
 @Injectable()
 export class AdService {
@@ -38,6 +39,9 @@ export class AdService {
     this.adsRefreshSubscription = this.userService.me().do((user: User) => {
       this.adKeyWords.gender = user.gender;
       this.adKeyWords.userId = user.id;
+      if (user.birthDate) {
+        this.adKeyWords.age = moment().diff(user.birthDate, 'years').toString();
+      }
     }).flatMap(() => {
       return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
     }).flatMap((refreshRate: number) => {
