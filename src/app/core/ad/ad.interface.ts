@@ -5,5 +5,8 @@ export interface AdKeyWords {
   category?: string,
   minprice?: string,
   maxprice?: string,
-  gender?: string
+  gender?: string,
+  age?: string,
+  latitude?: string,
+  longitude?: string
 }
