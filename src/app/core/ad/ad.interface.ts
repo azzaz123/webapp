@@ -1,4 +1,5 @@
 export interface AdKeyWords {
+  userId?: string,
   brand?: string,
   content?: string,
   category?: string,

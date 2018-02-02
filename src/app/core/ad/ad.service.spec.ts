@@ -91,6 +91,8 @@ describe('AdService', () => {
         Object.keys(cookies).forEach(key => {
           expect(pubads.setTargeting).toHaveBeenCalledWith(key, cookies[key]);
         });
+        expect(pubads.setTargeting).toHaveBeenCalledWith('gender', MOCK_USER.gender);
+        expect(pubads.setTargeting).toHaveBeenCalledWith('userId', MOCK_USER.id);
         discardPeriodicTasks();
       }))
 

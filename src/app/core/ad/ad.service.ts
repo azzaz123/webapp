@@ -37,6 +37,7 @@ export class AdService {
     if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) { return ; }
     this.adsRefreshSubscription = this.userService.me().do((user: User) => {
       this.adKeyWords.gender = user.gender;
+      this.adKeyWords.userId = user.id;
     }).flatMap(() => {
       return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
     }).flatMap((refreshRate: number) => {
