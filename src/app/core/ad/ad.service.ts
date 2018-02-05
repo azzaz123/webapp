@@ -24,6 +24,7 @@ export class AdService {
               private cookieService: CookieService
   ) {
     this.initKeyWordsFromCookies();
+    this.initPositionKeyWords();
   }
 
   private initKeyWordsFromCookies() {
@@ -34,6 +35,15 @@ export class AdService {
     this.adKeyWords.maxprice = this.cookieService.get('maxprice');
   }
 
+  private initPositionKeyWords() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition( (position) => {
+        this.adKeyWords.latitude = position.coords.latitude.toString();
+        this.adKeyWords.longitude = position.coords.longitude.toString();
+      });
+    }
+  }
+
   public startAdsRefresh(): void {
     if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) { return ; }
     this.adsRefreshSubscription = this.userService.me().do((user: User) => {
@@ -41,6 +51,12 @@ export class AdService {
       this.adKeyWords.userId = user.id;
       if (user.birthDate) {
         this.adKeyWords.age = moment().diff(user.birthDate, 'years').toString();
+      }
+      if (!this.adKeyWords.latitude) {
+        this.adKeyWords.latitude = user.location.approximated_latitude.toString();
+      }
+      if (!this.adKeyWords.longitude) {
+        this.adKeyWords.longitude = user.location.approximated_longitude.toString();
       }
     }).flatMap(() => {
       return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())

@@ -11,6 +11,7 @@ import { CookieService } from 'ngx-cookie';
 import { ResponseOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { MockBackend, MockConnection } from '@angular/http/testing';
+import {Mock} from "protractor/built/driverProviders";
 
 let service: AdService;
 let http: HttpService;
@@ -24,6 +25,22 @@ const cookies = {
   minprice: '1000',
   maxprice: '20000'
 };
+
+const position = {
+  coords: {
+    latitude: 1,
+    longitude: 2
+  }
+};
+
+const AdKeyWords = {
+  ...cookies,
+  gender: MOCK_USER.gender,
+  userId: MOCK_USER.id,
+  latitude: position.coords.latitude.toString(),
+  longitude: position.coords.longitude.toString()
+};
+
 
 describe('AdService', () => {
   beforeEach(() => {
@@ -57,6 +74,9 @@ describe('AdService', () => {
     userService = TestBed.get(UserService);
     mockBackend = TestBed.get(MockBackend);
     cookieService = TestBed.get(CookieService);
+    spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
+      callback(position);
+    });
     Object.keys(cookies).forEach(key => {
       cookieService.put(key, cookies[key]);
     });
@@ -68,13 +88,13 @@ describe('AdService', () => {
     const pubads = {
       setTargeting () {},
       refresh () {}
-    }
+    };
 
     beforeEach(() => {
       spyOn(googletag, 'pubads').and.returnValue(pubads);
       spyOn(pubads, 'setTargeting');
       spyOn(pubads, 'refresh');
-    })
+    });
 
     describe('with refresh rate should', () => {
       beforeEach(() => {
@@ -88,13 +108,24 @@ describe('AdService', () => {
         service.startAdsRefresh();
         tick(1);
 
-        Object.keys(cookies).forEach(key => {
-          expect(pubads.setTargeting).toHaveBeenCalledWith(key, cookies[key]);
+        Object.keys(AdKeyWords).forEach(key => {
+          expect(pubads.setTargeting).toHaveBeenCalledWith(key, AdKeyWords[key]);
         });
-        expect(pubads.setTargeting).toHaveBeenCalledWith('gender', MOCK_USER.gender);
-        expect(pubads.setTargeting).toHaveBeenCalledWith('userId', MOCK_USER.id);
         discardPeriodicTasks();
       }))
+
+      it('without being able to access navigator geolocation, gets approximate position from backend', fakeAsync(() => {
+        spyOn(navigator, 'geolocation').and.returnValue(undefined);
+        service.adKeyWords.latitude = null;
+        service.adKeyWords.longitude = null;
+
+        service.startAdsRefresh();
+        tick(1);
+
+        expect(pubads.setTargeting).toHaveBeenCalledWith('latitude', MOCK_USER.location.approximated_latitude.toString());
+        expect(pubads.setTargeting).toHaveBeenCalledWith('longitude', MOCK_USER.location.approximated_longitude.toString());
+        discardPeriodicTasks();
+      }));
 
       it('refresh ads with its rate', fakeAsync(() => {
         const timesToBeRefreshed = 2;
