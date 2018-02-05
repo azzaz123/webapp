@@ -4,7 +4,14 @@
   </div>
   <h1 i18n>This time, sell it!</h1>
   <p i18n>Reactivate this item for <b>{{price | customCurrency:'EUR'}}</b> and put it in the top positions.<br /> Get more visibility and sell it faster. </p>
-  <button (click)="activeModal.close('bump')" class="btn btn-secondary btn-bump" i18n>Reactivate + visibility </button>
+  <button
+    (click)="activeModal.close('bump')"
+    class="btn btn-secondary btn-bump"
+    tslTrackEvent="MYCATALOG_REACTIVATE_FROMMODAL" [params]="{category: item.categoryId}"
+    i18n>Reactivate + visibility </button>
   <div class="line"></div>
-  <a class="reactivate" (click)="activeModal.close('reactivate')" i18n>Only reactivate it, I don't want to sell it faster</a>
+  <a class="reactivate"
+     (click)="activeModal.close('reactivate')"
+     tslTrackEvent="MYCATALOG_JUSTREACTIVATE" [params]="{category: item.categoryId}"
+     i18n>Only reactivate it, I don't want to sell it faster</a>
 </div>

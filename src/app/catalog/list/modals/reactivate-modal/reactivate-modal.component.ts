@@ -10,6 +10,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ReactivateModalComponent {
 
   public price: number;
+  public item: Item;
 
   constructor(public activeModal: NgbActiveModal) {
   }

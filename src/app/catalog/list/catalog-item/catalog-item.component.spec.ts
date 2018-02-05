@@ -23,7 +23,8 @@ describe('CatalogItemComponent', () => {
   let modalService: NgbModal;
   let trackingService: TrackingService;
   const componentInstance = {
-    price: null
+    price: null,
+    item: null
   };
 
   beforeEach(async(() => {
@@ -193,6 +194,7 @@ describe('CatalogItemComponent', () => {
         windowClass: 'reactivate'
       });
       expect(componentInstance.price).toEqual(PRODUCT_DURATION_MARKET_CODE);
+      expect(componentInstance.item).toEqual(MOCK_ITEM);
     });
 
     it('should emit reactivatedWithBump event if result is bump', fakeAsync(() => {

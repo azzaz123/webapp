@@ -91,6 +91,7 @@ export class CatalogItemComponent implements OnInit {
       windowClass: 'reactivate'
     });
     modalRef.componentInstance.price = orderEvent.total;
+    modalRef.componentInstance.item = item;
     modalRef.result.then((result: string) => {
       if (result === 'bump') {
         this.itemChange.emit({
