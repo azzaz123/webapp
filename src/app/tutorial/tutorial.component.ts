@@ -1,7 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { TutorialService } from '../core/tutorial/tutorial.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import * as _ from 'lodash';
+
+export enum KEY_CODE {
+  RIGHT_ARROW = 39,
+  LEFT_ARROW = 37
+}
+;
 
 @Component({
   selector: 'tsl-tutorial',
@@ -24,9 +30,11 @@ import * as _ from 'lodash';
 })
 export class TutorialComponent implements OnInit, OnDestroy {
 
-  public dots = _.range(6);
+  public dots: number;
 
-  constructor(public tutorialService: TutorialService) { }
+  constructor(public tutorialService: TutorialService) {
+    this.dots = _.range(this.tutorialService.maxSteps);
+  }
 
   ngOnInit() {
     this.tutorialService.setDisplayed();
@@ -38,6 +46,15 @@ export class TutorialComponent implements OnInit, OnDestroy {
 
   nextStep() {
     this.tutorialService.nextStep();
+  }
+
+  @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
+    if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
+      this.tutorialService.nextStep();
+    }
+    if (event.keyCode === KEY_CODE.LEFT_ARROW) {
+      this.tutorialService.prevStep();
+    }
   }
 
 }

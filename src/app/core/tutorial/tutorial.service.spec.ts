@@ -34,7 +34,18 @@ describe('TutorialService', () => {
     });
   });
 
-  describe('nextStep', () => {
+  describe('prevStep', () => {
+    it('should decrement step', () => {
+      service.nextStep();
+      service.nextStep();
+
+      service.prevStep();
+
+      expect(service.step).toBe(1);
+    });
+  });
+
+  describe('resetStep', () => {
     it('should reset step', () => {
       service.nextStep();
 

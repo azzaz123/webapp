@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 export class TutorialService {
 
   private _step = 0;
+  public maxSteps = 6;
   localStorageName = '-tutorial';
 
   constructor(private userService: UserService) {
@@ -17,7 +18,15 @@ export class TutorialService {
   }
 
   public nextStep() {
-    this._step++;
+    if (this._step < this.maxSteps - 1) {
+      this._step++;
+    }
+  }
+
+  public prevStep() {
+    if (this._step > 0) {
+      this._step--;
+    }
   }
 
   public resetStep() {
