@@ -26,7 +26,7 @@
       <p i18n>See your profile reviews. Is the community leaving good feedback?</p>
     </div>
 
-    <a [routerLink]="['/catalog/list']" id="close">
+    <a [routerLink]="['/catalog/list']" id="close" tslTrackEvent="MYZONE_CLOSETUTORIAL">
       <md-icon svgIcon="cross"></md-icon><br />
       <span i18n>Skip</span>
     </a>
@@ -35,8 +35,16 @@
       <div class="dots">
         <div class="dot" *ngFor="let dot of dots" [ngClass]="{active: dot === tutorialService.step}"></div>
       </div>
-      <button (click)="nextStep()" class="btn btn-next" [hidden]="tutorialService.step === 5" i18n>Next</button>
-      <button [routerLink]="['/catalog/list']" [hidden]="tutorialService.step < 5" class="btn btn-next" i18n>Ready!</button>
+      <button (click)="nextStep()"
+              class="btn btn-next"
+              [hidden]="tutorialService.step === 5"
+              tslTrackEvent="MYZONE_NEXTTUTORIAL" [params]="{step: tutorialService.step + 1}"
+              i18n>Next</button>
+      <button [routerLink]="['/catalog/list']"
+              [hidden]="tutorialService.step < 5"
+              class="btn btn-next"
+              tslTrackEvent="MYZONE_NEXTTUTORIAL" [params]="{step: tutorialService.step + 1}"
+              i18n>Ready!</button>
     </div>
 
   </div>
