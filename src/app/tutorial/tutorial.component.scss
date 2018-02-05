@@ -97,15 +97,16 @@
 .step {
   position: absolute;
   left: 67px;
-  width: 650px;
+  width: 770px;
   &.step-1 {
     top: $spacing;
   }
   &.step-2 {
-    top: 100px;
+    top: 110px;
   }
   &.step-3 {
-    top: 195px;
+    top: 205px;
+    width: 820px;
   }
   &.step-4 {
     top: 305px;
