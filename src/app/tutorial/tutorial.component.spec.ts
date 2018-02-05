@@ -22,6 +22,8 @@ describe('TutorialComponent', () => {
           nextStep() {
           },
           resetStep() {
+          },
+          prevStep() {
           }
         }
         }
