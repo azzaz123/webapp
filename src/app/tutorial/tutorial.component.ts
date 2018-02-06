@@ -2,10 +2,12 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { TutorialService } from '../core/tutorial/tutorial.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import * as _ from 'lodash';
+import { Router } from '@angular/router';
 
 export enum KEY_CODE {
   RIGHT_ARROW = 39,
-  LEFT_ARROW = 37
+  LEFT_ARROW = 37,
+  ESC = 27
 }
 ;
 
@@ -32,7 +34,8 @@ export class TutorialComponent implements OnInit, OnDestroy {
 
   public dots: number;
 
-  constructor(public tutorialService: TutorialService) {
+  constructor(public tutorialService: TutorialService,
+              private router: Router) {
     this.dots = _.range(this.tutorialService.maxSteps);
   }
 
@@ -54,6 +57,9 @@ export class TutorialComponent implements OnInit, OnDestroy {
     }
     if (event.keyCode === KEY_CODE.LEFT_ARROW) {
       this.tutorialService.prevStep();
+    }
+    if (event.keyCode === KEY_CODE.ESC) {
+      this.router.navigate(['/catalog/list']);
     }
   }
 
