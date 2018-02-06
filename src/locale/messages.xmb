@@ -254,4 +254,14 @@
   <msg id="5340498030552368470"><source>app/profile/edit-password/password-modal/password-modal.component.ts:7</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:8</source>Current password</msg>
   <msg id="3588415639242079458"><source>app/profile/edit-password/password-modal/password-modal.component.ts:11</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:12</source>New password</msg>
   <msg id="8656126574213649581"><source>app/profile/edit-password/password-modal/password-modal.component.ts:15</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:16</source>Confirm new password</msg>
+  <msg id="8775411328776279097"><source>app/tutorial/tutorial.component.ts:5</source>Introducing our new webpage!</msg>
+  <msg id="6002580040961562985"><source>app/tutorial/tutorial.component.ts:6</source>You&apos;re in the zone to access all of the features of the app.</msg>
+  <msg id="2137505802700728396"><source>app/tutorial/tutorial.component.ts:10</source>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</msg>
+  <msg id="3140417703982763936"><source>app/tutorial/tutorial.component.ts:14</source>From here you can view your items, you can choose to upload more or edit and feature the items you have for sale.</msg>
+  <msg id="4486163214005133487"><source>app/tutorial/tutorial.component.ts:18</source>View your conversations and reply via the webpage or from the app. Oh see it works well from the webpage!</msg>
+  <msg id="5289897176155020957"><source>app/tutorial/tutorial.component.ts:22</source>Your favorites can be seen on the big screen which might help make up your mind.</msg>
+  <msg id="8328195571736012184"><source>app/tutorial/tutorial.component.ts:26</source>See your profile reviews. Is the community leaving good feedback?</msg>
+  <msg id="4563965495368336177"><source>app/tutorial/tutorial.component.ts:31</source>Skip</msg>
+  <msg id="3885497195825665706"><source>app/tutorial/tutorial.component.ts:38</source>Next</msg>
+  <msg id="7160029661601775341"><source>app/tutorial/tutorial.component.ts:39</source>Ready!</msg>
 </messagebundle>

@@ -368,7 +368,19 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.MyProfile,
     type: TYPES_IDS.Tap
   };
-  
+  public static MYZONE_CLOSETUTORIAL: TrackingEventBase = {
+    name: '631',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYZONE_NEXTTUTORIAL: TrackingEventBase = {
+    name: '632',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
   private sessionId: string = null;
