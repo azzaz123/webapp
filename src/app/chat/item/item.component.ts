@@ -17,7 +17,7 @@ export class ItemComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes?: any) {
-    if (this.item.salePrice && (this.item.views === undefined || this.item.favorites === undefined)) {
+    if (this.item.salePrice !== undefined && (this.item.views === undefined || this.item.favorites === undefined)) {
       this.itemService.getCounters(this.item.id).takeWhile(() => {
         return this.active;
       }).subscribe((counters: ItemCounters) => {

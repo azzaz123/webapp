@@ -1,0 +1,51 @@
+<div id="main-veil">
+  <div id="content-veil">
+
+    <div class="step-0" *ngIf="tutorialService.step === 0" [@fade]>
+      <h1 i18n>Introducing our new webpage!</h1>
+      <p i18n>You're in the zone to access all of the features of the app.</p>
+    </div>
+
+    <div class="step step-1" *ngIf="tutorialService.step === 1" [@fade]>
+      <p i18n>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</p>
+    </div>
+
+    <div class="step step-2" *ngIf="tutorialService.step === 2" [@fade]>
+      <p i18n>From here you can view your items, you can choose to upload more or edit and feature the items you have for sale.</p>
+    </div>
+
+    <div class="step step-3" *ngIf="tutorialService.step === 3" [@fade]>
+      <p i18n>View your conversations and reply via the webpage or from the app. Oh see it works well from the webpage!</p>
+    </div>
+
+    <div class="step step-4" *ngIf="tutorialService.step === 4" [@fade]>
+      <p i18n>Your favorites can be seen on the big screen which might help make up your mind.</p>
+    </div>
+
+    <div class="step step-5" *ngIf="tutorialService.step === 5" [@fade]>
+      <p i18n>See your profile reviews. Is the community leaving good feedback?</p>
+    </div>
+
+    <a [routerLink]="['/catalog/list']" id="close" tslTrackEvent="MYZONE_CLOSETUTORIAL">
+      <md-icon svgIcon="cross"></md-icon><br />
+      <span i18n>Skip</span>
+    </a>
+
+    <div id="controls">
+      <div class="dots">
+        <div class="dot" *ngFor="let dot of dots" [ngClass]="{active: dot === tutorialService.step}"></div>
+      </div>
+      <button (click)="nextStep()"
+              class="btn btn-next"
+              [hidden]="tutorialService.step === 5"
+              tslTrackEvent="MYZONE_NEXTTUTORIAL" [params]="{step: tutorialService.step + 1}"
+              i18n>Next</button>
+      <button [routerLink]="['/catalog/list']"
+              [hidden]="tutorialService.step < 5"
+              class="btn btn-next"
+              tslTrackEvent="MYZONE_NEXTTUTORIAL" [params]="{step: tutorialService.step + 1}"
+              i18n>Ready!</button>
+    </div>
+
+  </div>
+</div>
