@@ -9,12 +9,13 @@ import { UploadComponent } from './upload/upload.component';
 import { EditComponent } from './edit/edit.component';
 import { ItemResolverService } from './item-resolver.service';
 import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
+import { TutorialGuard } from '../shared/guards/tutorial.guard';
 
 const routes: Routes = [
   {
     path: 'catalog',
     component: CatalogComponent,
-    canActivate: [LoggedGuard],
+    canActivate: [LoggedGuard, TutorialGuard],
     children: [
       {
         path: 'list',

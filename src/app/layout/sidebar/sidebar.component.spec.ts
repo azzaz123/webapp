@@ -5,6 +5,7 @@ import { SidebarComponent } from './sidebar.component';
 import { UserService } from '../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { User, USER_DATA } from 'shield';
+import { TutorialService } from '../../core/tutorial/tutorial.service';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -32,6 +33,7 @@ describe('SidebarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SidebarComponent],
       providers: [
+        TutorialService,
         {
           provide: UserService, useValue: {
           logout() {

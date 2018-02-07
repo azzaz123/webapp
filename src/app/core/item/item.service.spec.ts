@@ -349,7 +349,7 @@ describe('ItemService', () => {
         item = r;
       });
 
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID, ITEM_DATA);
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID, ITEM_DATA, options);
       expect(item).toEqual(ITEM_DATA_V3);
     });
 
@@ -362,7 +362,7 @@ describe('ItemService', () => {
         item = r;
       });
 
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/cars/' + CAR_ID, CAR_DATA_FORM);
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/cars/' + CAR_ID, CAR_DATA_FORM, options);
       expect(item).toEqual(CAR_DATA);
     });
   });
