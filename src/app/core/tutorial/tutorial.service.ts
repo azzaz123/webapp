@@ -34,7 +34,9 @@ export class TutorialService {
   }
 
   public setDisplayed() {
-    localStorage.setItem(this.userService.user.id + this.localStorageName, 'true');
+    if (this.userService.user) {
+      localStorage.setItem(this.userService.user.id + this.localStorageName, 'true');
+    }
   }
 
   public isAlreadyDisplayed(): Observable<boolean> {
