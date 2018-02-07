@@ -10,7 +10,7 @@
   </div>
   <div class="card-block">
     <h5 class="card-title">{{item.title}}</h5>
-    <div class="float-left price" *ngIf="item.salePrice">{{item.salePrice | customCurrency:item.currencyCode}}</div>
+    <div class="float-left price" *ngIf="item.salePrice !== undefined">{{item.salePrice | customCurrency:item.currencyCode}}</div>
     <div class="float-right stats" *ngIf="item.views !== undefined && item.favorites !== undefined">
       <md-icon svgIcon="views"></md-icon>
       {{item.views}}
