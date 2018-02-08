@@ -3,7 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../core/user/user.service';
-import { TEST_HTTP_PROVIDERS, User, USER_DATA, WindowRef } from 'shield';
+import { TEST_HTTP_PROVIDERS, User, USER_DATA, WindowRef, MessageService } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../../core/event/event.service';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
@@ -53,6 +53,11 @@ describe('TopbarComponent', () => {
               }
             }
           }
+        },
+        {
+          provide: MessageService, useValue: {
+          totalUnreadMessages$: Observable.of(1)
+        }
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
