@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { async, ComponentFixture, fakeAsync, tick, TestBed, discardPeriodicTasks } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {

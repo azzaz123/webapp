@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Conversation,
   ConversationService,
@@ -10,14 +10,14 @@ import {
   UserService,
   XmppService
 } from 'shield';
-import {ToastrService} from 'ngx-toastr';
-import {ArchiveConversationComponent} from './modals/archive-conversation/archive-conversation.component';
-import {ReportListingComponent} from './modals/report-listing/report-listing.component';
-import {ReportUserComponent} from './modals/report-user/report-user.component';
-import {BlockUserComponent} from './modals/block-user/block-user.component';
-import {UnblockUserComponent} from './modals/unblock-user/unblock-user.component';
-import {TrackingService} from '../core/tracking/tracking.service';
-import {AdService} from '../core/ad/ad.service';
+import { ToastrService } from 'ngx-toastr';
+import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
+import { ReportListingComponent } from './modals/report-listing/report-listing.component';
+import { ReportUserComponent } from './modals/report-user/report-user.component';
+import { BlockUserComponent } from './modals/block-user/block-user.component';
+import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
+import { TrackingService } from '../core/tracking/tracking.service';
+import { AdService } from '../core/ad/ad.service';
 
 @Component({
   selector: 'tsl-chat',
