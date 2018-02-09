@@ -18,6 +18,7 @@ import { DndModule } from 'ng2-dnd';
 import { FavoritesModule } from './favorites/favorites.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { ProfileModule } from './profile/profile.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ProfileModule } from './profile/profile.module';
     BrowserModule,
     LoginModule,
     HttpModule,
+    HttpClientModule,
     AppRoutingModule,
     LayoutModule,
     CatalogModule,

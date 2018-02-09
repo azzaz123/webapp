@@ -51,7 +51,7 @@
     "ngx-toastr": "8.1.1",
     "ngx-uploader": "https://github.com/Wallapop/ngx-uploader#3.2.1",
     "rxjs": "^5.5.6",
-    "shield": "github.com/Wallapop/shield.git#angular5",
+    "shield": "git+ssh://git@github.com/Wallapop/shield.git#angular5",
     "web-animations-js": "^2.3.1",
     "zone.js": "^0.8.19"
   },
