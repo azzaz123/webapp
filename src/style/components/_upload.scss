@@ -52,6 +52,9 @@
         &:focus, &.focus {
           box-shadow: none;
         }
+        [ngbButton] {
+          display: none;
+        }
       }
       span {
         display: block;

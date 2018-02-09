@@ -100,8 +100,11 @@ $form-control-height: 42px;
       cursor: pointer;
       padding: 0;
       text-align: center;
+      [ngbButton] {
+        display: none;
+      }
       &:first-of-type {
-        margin-right: $spacing;
+        margin-right: 15px;
       }
       mat-icon {
         @include square(42px);
