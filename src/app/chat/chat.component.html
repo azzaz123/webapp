@@ -20,9 +20,9 @@
     <span i18n [hidden]="currentConversation?.user.online">Offline</span>
     <span i18n [hidden]="!currentConversation?.user.online">Online</span>
     -->
-    <div ngbDropdown class="conversation-header-menu">
+    <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
       <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
-      <div class="dropdown-menu dropdown-menu-right">
+      <div ngbDropdownMenu>
         <button class="dropdown-item" (click)="archiveConversation()" i18n *ngIf="!currentConversation?.archived">Delete conversation</button>
         <button class="dropdown-item" (click)="reportListingAction()" *ngIf="currentConversation?.item.owner !== userService.user?.id" i18n>Report this Listing</button>
         <button class="dropdown-item" (click)="reportUserAction()" i18n>Report this User</button>
