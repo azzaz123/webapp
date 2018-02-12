@@ -213,25 +213,25 @@ describe('App', () => {
 
       it('should call the eventService.subscribe passing the login event', () => {
         spyOn(eventService, 'subscribe').and.callThrough();
-        
+
         component.ngOnInit();
-        
+
         expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.USER_LOGIN);
       });
 
       it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
         spyOn(xmppService, 'connect').and.callThrough();
-        
+
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        
+
         expect(xmppService.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
 
       it('should call conversationService.init', () => {
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        
+
         expect(conversationService.init).toHaveBeenCalledTimes(1);
       });
 
@@ -280,26 +280,26 @@ describe('App', () => {
       spyOn(userService, 'logout');
       spyOn(errorsService, 'show');
       spyOn(userService, 'me').and.returnValue(Observable.throw(ERROR));
-      
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-      
+
       expect(userService.logout).toHaveBeenCalled();
       expect(errorsService.show).toHaveBeenCalled();
     }));
 
     it('should init notifications', () => {
       component.ngOnInit();
-      
+
       expect(notificationService.init).toHaveBeenCalled();
     });
 
     it('should call disconnect on logout', () => {
       spyOn(xmppService, 'disconnect');
-      
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
-      
+
       expect(xmppService.disconnect).toHaveBeenCalled();
     });
   });
@@ -375,5 +375,4 @@ describe('App', () => {
       expect(component.hideSidebar).toBeTruthy();
     })
   });
-
 });
