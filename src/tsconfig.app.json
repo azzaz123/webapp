@@ -8,6 +8,7 @@
   },
   "include": [
     "../node_modules/shield",
+    "../node_modules/ngx-uploader/src/ngx-uploader",
     "../node_modules/angular2-masonry",
     "./"
   ],
@@ -16,7 +17,8 @@
     "**/*.spec.ts",
     "../node_modules/shield/e2e",
     "../node_modules/shield/**/*.spec.ts",
-    "../node_modules/shield/lib/typings.d.ts"
+    "../node_modules/shield/lib/typings.d.ts",
+    "../node_modules/ngx-uploader/src/ngx-uploader/**/*.ngfactory.ts"
   ],
   "angularCompilerOptions": {
     "genDir": "../src/locale"
