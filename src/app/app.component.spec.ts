@@ -375,5 +375,4 @@ describe('App', () => {
       expect(component.hideSidebar).toBeTruthy();
     })
   });
-
 });

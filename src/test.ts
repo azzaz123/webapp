@@ -12,6 +12,11 @@ declare const require: any;
 window['ga'] = function() {};
 window['googletag'] = {
   cmd: [],
+  pubads () {
+    return {
+      refresh () {}
+    }
+  },
   display: (slotid: string) => {}
 };
 window['gtag'] = function() {};
