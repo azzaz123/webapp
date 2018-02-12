@@ -14,6 +14,8 @@ window['googletag'] = {
   cmd: [],
   display: (slotid: string) => {}
 };
+window['gtag'] = function() {};
+window['fbq'] = function() {};
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(

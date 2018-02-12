@@ -19,6 +19,7 @@ import { FavoritesModule } from './favorites/favorites.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { ProfileModule } from './profile/profile.module';
 import { HttpClientModule } from '@angular/common/http';
+import { TutorialModule } from './tutorial/tutorial.module';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { HttpClientModule } from '@angular/common/http';
     CatalogModule,
     ReviewsModule,
     FavoritesModule,
-    ProfileModule
+    ProfileModule,
+    TutorialModule
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

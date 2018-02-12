@@ -7,6 +7,7 @@ import { TrackingEventBase } from './tracking-event-base.interface';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
+import { CookieService } from 'ngx-cookie/index';
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -367,16 +368,41 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.MyProfile,
     type: TYPES_IDS.Tap
   };
+  public static MYZONE_CLOSETUTORIAL: TrackingEventBase = {
+    name: '631',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYZONE_NEXTTUTORIAL: TrackingEventBase = {
+    name: '632',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_UPLOADPRODUCT: TrackingEventBase = {
+    name: '635',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
+  private sessionId: string = null;
+  private deviceAccessTokenId: string = null;
+  private sessionIdCookieName: string = 'session_id';
+  private deviceAccessTokenIdCookieName: string = 'device_access_token_id';
 
   constructor(private navigatorService: NavigatorService,
               private http: HttpService,
               private userService: UserService,
-              private winRef: WindowRef) {
+              private winRef: WindowRef,
+              private cookieService: CookieService) {
     super();
     this.setSessionStartTime();
+    this.setSessionId(this.sessionIdCookieName);
+    this.setDeviceAccessTokenId(this.deviceAccessTokenIdCookieName);
   }
 
   track(event: TrackingEventBase, attributes?: any) {
@@ -391,18 +417,46 @@ export class TrackingService extends TrackingServiceMaster {
     this.sessionStartTime = getTimestamp();
   }
 
-
   private createNewEvent(event: TrackingEventBase, attributes?: any) {
     const newEvent: TrackingEvent = new TrackingEvent(
       this.winRef.nativeWindow,
       this.userService.user.id,
       this.sessionStartTime,
       event);
-    newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName);
+    newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId);
     if (attributes) {
       newEvent.setAttributes(attributes);
     }
+    newEvent.setSessionId(this.sessionId);
     return newEvent;
+  }
+
+  private setSessionId(cookieName: string) {
+    let sessionCookie = this.cookieService.get(cookieName);
+    if (sessionCookie) {
+      this.sessionId = sessionCookie;
+    } else {
+      this.sessionId = UUID.UUID();
+      this.setCookie(this.sessionId, 900000, cookieName);
+    }
+  }
+
+  private setDeviceAccessTokenId(cookieName: string) {
+    let deviceAccessTokenCookie = this.cookieService.get(cookieName);
+    if (deviceAccessTokenCookie) {
+      this.deviceAccessTokenId = deviceAccessTokenCookie;
+    } else {
+      this.deviceAccessTokenId = UUID.UUID();
+      this.setCookie(this.deviceAccessTokenId, 31557000, cookieName);
+    }
+  }
+
+  private setCookie(value: string, expiration: number, cookieName: string) {
+    const expirationDate = new Date();
+    expirationDate.setTime(expirationDate.getTime() + expiration);
+    const cookieOptions = { expires: expirationDate, domain: '.wallapop.com' };
+
+    this.cookieService.put(cookieName, value, cookieOptions);
   }
 
 }

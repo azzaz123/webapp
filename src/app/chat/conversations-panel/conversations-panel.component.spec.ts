@@ -18,7 +18,7 @@ import {
   SECOND_MOCK_CONVERSATION,
   TEST_HTTP_PROVIDERS,
   User,
-  USER_ID
+  USER_ID,
 } from 'shield';
 import { ConversationComponent } from './conversation/conversation.component';
 import { Observable } from 'rxjs/Observable';
@@ -377,7 +377,10 @@ describe('Component: ConversationsPanel', () => {
       spyOn(conversationService, 'createConversation').and.returnValue(Observable.of(SECOND_MOCK_CONVERSATION));
     });
     it('should call createConversation of the service', () => {
+      const conversation = MOCK_CONVERSATION();
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
       (component as any).createConversationAndSetItCurrent();
+
       expect(conversationService.createConversation).toHaveBeenCalledWith('newConversationItemId');
     });
 
@@ -385,11 +388,26 @@ describe('Component: ConversationsPanel', () => {
       const convWithMessages = MOCK_CONVERSATION();
       spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(convWithMessages));
       spyOn(component, 'setCurrentConversation');
+
       (component as any).createConversationAndSetItCurrent();
+
       expect(conversationService.getSingleConversationMessages).toHaveBeenCalledWith(SECOND_MOCK_CONVERSATION);
       expect(conversationService.addLead).toHaveBeenCalledWith(convWithMessages);
       expect(component.setCurrentConversation).toHaveBeenCalledWith(convWithMessages);
     });
+
+    it('should send the tracking event for new conversation created', () => {
+      const conversation = MOCK_CONVERSATION();
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      //spyOn(component, 'setCurrentConversation');
+      spyOn(trackingService, 'track');
+
+      (component as any).createConversationAndSetItCurrent();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
+        { user_id: conversation.user.id, item_id: conversation.item.id, thread_id: conversation.id });
+    });
   });
+
 });
 

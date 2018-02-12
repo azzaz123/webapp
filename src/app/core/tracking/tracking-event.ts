@@ -4,7 +4,7 @@ import { getTimestamp } from './getTimestamp.func';
 
 export class TrackingEvent {
   private sessions: any[] = [{
-    id: UUID.UUID(),
+    id: null,
     startTimestamp: null,
     userId: '',
     device: {
@@ -14,7 +14,8 @@ export class TrackingEvent {
       screenheight: null,
       locale: null,
       type: null,
-      os: null
+      os: null,
+      deviceAccessTokenId: null
     },
     app: {
       id: 'web',
@@ -34,19 +35,24 @@ export class TrackingEvent {
     this.sessions[0].events[0].timestamp = getTimestamp();
   }
 
-  public setDeviceInfo(operativeSystemVersion: string, OSName: string) {
+  public setDeviceInfo(operativeSystemVersion: string, OSName: string, deviceAccessTokenId: string) {
     this.sessions[0].device = {
       platform: OSName,
       screenwidth: this.sessions[0].window.screen.width.toString(),
       screenheight: this.sessions[0].window.screen.height.toString(),
       locale: navigator.language,
       type: 'PC',
-      os: operativeSystemVersion
+      os: operativeSystemVersion,
+      deviceAccessTokenId: deviceAccessTokenId
     };
   }
 
   public setAttributes(attributes: any) {
     this.sessions[0].events[0].attributes = attributes;
+  }
+
+  public setSessionId(sessionId: string) {
+      this.sessions[0].id = sessionId;
   }
 
 }

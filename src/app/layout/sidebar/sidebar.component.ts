@@ -2,6 +2,7 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { User } from 'shield';
 import { environment } from '../../../environments/environment';
+import { TutorialService } from '../../core/tutorial/tutorial.service';
 
 @Component({
   selector: 'tsl-sidebar',
@@ -15,6 +16,7 @@ export class SidebarComponent implements OnInit {
   @Input() isProducts: boolean;
 
   constructor(private userService: UserService,
+              public tutorialService: TutorialService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
