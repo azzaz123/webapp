@@ -181,8 +181,13 @@ export class AppComponent implements OnInit {
     .filter(route => route.outlet === 'primary')
     .mergeMap(route => route.data)
     .subscribe((event) => {
+      let notifications = '';
+      const split: string[] = this.titleService.getTitle().split(' ');
+      if (split.length > 1) {
+        notifications = split[0].trim() + ' ';
+      }
       const title = !(event['title']) ? 'Wallapop' : event['title'];
-      this.titleService.setTitle(title);
+      this.titleService.setTitle(notifications + title);
       this.hideSidebar = event['hideSidebar'];
       this.isMyZone = event['isMyZone'];
       this.isProducts = event['isProducts'];

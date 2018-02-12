@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SidebarComponent } from './sidebar.component';
 import { UserService } from '../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
-import { User, USER_DATA } from 'shield';
+import { User, USER_DATA, MessageService } from 'shield';
 import { TutorialService } from '../../core/tutorial/tutorial.service';
 
 const MOCK_USER = new User(
@@ -45,6 +45,11 @@ describe('SidebarComponent', () => {
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
+        },
+        {
+          provide: MessageService, useValue: {
+          totalUnreadMessages$: Observable.of(1)
+        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]

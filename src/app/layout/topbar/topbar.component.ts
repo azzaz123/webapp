@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { User, WindowRef } from 'shield';
+import { User, WindowRef, MessageService } from 'shield';
 import { UserService } from '../../core/user/user.service';
 import { environment } from '../../../environments/environment';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
@@ -28,6 +28,7 @@ export class TopbarComponent implements OnInit {
 
   constructor(public userService: UserService,
               private windowRef: WindowRef,
+              public messageService: MessageService,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
