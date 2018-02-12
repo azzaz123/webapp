@@ -19,8 +19,5 @@
     "../node_modules/shield/**/*.spec.ts",
     "../node_modules/shield/lib/typings.d.ts",
     "../node_modules/ngx-uploader/src/ngx-uploader/**/*.ngfactory.ts"
-  ],
-  "angularCompilerOptions": {
-    "genDir": "../src/locale"
-  }
+  ]
 }
