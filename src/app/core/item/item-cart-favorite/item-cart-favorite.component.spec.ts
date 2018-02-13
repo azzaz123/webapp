@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { Observable } from 'rxjs/Observable';
 import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
-import { MdIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import { ItemService } from '../item.service';
 import { WindowRef, USER_ID, MockTrackingService } from 'shield';
 import { environment } from '../../../../environments/environment';
@@ -35,7 +35,7 @@ describe('ItemCartFavoriteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, MdIconModule],
+      imports: [SharedModule, MatIconModule],
       declarations: [ ItemCartFavoriteComponent ],
       providers: [
         { provide: WindowRef, useValue: {

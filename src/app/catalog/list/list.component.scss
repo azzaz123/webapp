@@ -87,7 +87,7 @@ tsl-spinner {
     &.btn-delete {
       @include square(40px);
       padding: 0;
-      md-icon {
+      mat-icon {
         height: 16px;
         width: 14px;
         vertical-align: sub;
@@ -117,7 +117,7 @@ tsl-selected-items {
 #catalog-empty-state {
   padding: 0 10px;
   width: 100%;
-  md-icon {
+  mat-icon {
     width: 100%;
     height: auto;
   }

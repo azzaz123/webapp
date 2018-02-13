@@ -25,7 +25,6 @@ import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { MdIconRegistry } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/throw';
@@ -35,6 +34,7 @@ import createSpy = jasmine.createSpy;
 import { CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
+import { MatIconRegistry } from '@angular/material';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -95,7 +95,7 @@ describe('App', () => {
         },
         I18nService,
         {
-          provide: MdIconRegistry, useValue: {
+          provide: MatIconRegistry, useValue: {
           addSvgIcon() {
           },
           addSvgIconInNamespace() {

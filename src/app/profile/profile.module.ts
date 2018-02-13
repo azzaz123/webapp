@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
 import { CoreModule } from '../core/core.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MdIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { NgUploaderModule } from 'ngx-uploader';
@@ -20,7 +20,7 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
     CoreModule,
     ReactiveFormsModule,
     FormsModule,
-    MdIconModule,
+    MatIconModule,
     NgbButtonsModule,
     GeolocationModule,
     NgUploaderModule

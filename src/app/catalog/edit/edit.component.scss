@@ -7,7 +7,7 @@
 .upload-close-icon {
   position: absolute;
   right: -20px;
-  md-icon {
+  mat-icon {
     @include square(12px);
     /deep/ path {
       fill: $grey-600;
@@ -15,7 +15,7 @@
     }
   }
   &:hover {
-    md-icon {
+    mat-icon {
       /deep/ path {
         fill: $grey-900;
       }

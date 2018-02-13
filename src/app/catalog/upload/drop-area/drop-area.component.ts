@@ -26,7 +26,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   @Input() uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   @Output() onUploaded: EventEmitter<string> = new EventEmitter();
-  @Output() onError: EventEmitter<string> = new EventEmitter();
+  @Output() onError: EventEmitter<any> = new EventEmitter();
   @Input() maxUploads = 4;
   @Input() images: Image[];
   @Input() itemId: string;

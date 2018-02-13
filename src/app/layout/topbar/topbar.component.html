@@ -1,6 +1,6 @@
 <div class="topbar-logo-icon">
   <a [href]="homeUrl">
-    <md-icon svgIcon="logo" class="topbar-logo-icon"></md-icon>
+    <mat-icon svgIcon="logo" class="topbar-logo-icon"></mat-icon>
   </a>
 </div>
 <div class="dropdown-main-search">
@@ -15,14 +15,14 @@
       <tsl-geolocation (newCoordinate)="onCoordinateUpdate($event)"></tsl-geolocation>
     </div>
     <button class="search-btn" (click)="submitForm()">
-      <md-icon svgIcon="glass" class="search-glass topbar-icon"></md-icon>
+      <mat-icon svgIcon="glass" class="search-glass topbar-icon"></mat-icon>
     </button>
   </div>
 </div>
 <div class="main-header-login">
   <a class="main-header-chat menu-link" [routerLink]="['/chat']" [routerLinkActive]="['active']">
     <div class="news-badge" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
-    <md-icon svgIcon="messages" class="topbar-icon"></md-icon>
+    <mat-icon svgIcon="messages" class="topbar-icon"></mat-icon>
     <span i18n>Messages</span>
     <div class="horizontal-line"></div>
   </a>
@@ -32,7 +32,7 @@
     <div class="horizontal-line"></div>
   </a>
   <button class="main-header-upload btn btn-primary" [routerLink]="['/catalog/upload']" tslTrackEvent="MYZONE_UPLOAD">
-    <md-icon svgIcon="upload"></md-icon>
+    <mat-icon svgIcon="upload"></mat-icon>
     <span i18n>List a product</span>
   </button>
 </div>

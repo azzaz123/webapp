@@ -1,7 +1,7 @@
 <div class="modal-body center-heading">
   <h1 i18n>Report</h1>
   <div class="modal-close" (click)="activeModal.dismiss()">
-    <md-icon svgIcon="cross"></md-icon>
+    <mat-icon svgIcon="cross"></mat-icon>
   </div>
   <div class="scroll">
     <div [ngClass]="{selected: selectedReportListingReason === reason.id}"
@@ -9,7 +9,7 @@
          (click)="selectReportListingReason(reason.id)" *ngFor="let reason of listingBanReasons">
       <div class="col-3">
         <div class="ban-reason-icon-container">
-          <md-icon svgIcon="report-listing-{{reason.id}}"></md-icon>
+          <mat-icon svgIcon="report-listing-{{reason.id}}"></mat-icon>
         </div>
       </div>
       <div class="col-auto label">

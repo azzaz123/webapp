@@ -1,4 +1,3 @@
-import { TrackingService } from './tracking.service';
 import { UUID } from 'angular2-uuid';
 import { TrackingEventBase } from './tracking-event-base.interface';
 import { getTimestamp } from './getTimestamp.func';
