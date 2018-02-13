@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { environment } from '../../environments/environment';
 import { User, HttpService } from 'shield';
@@ -85,6 +85,13 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
     return this.modalService.open(ExitConfirmationModalComponent, {
       backdrop: 'static'
     }).result;
+  }
+
+  @HostListener('window:beforeunload')
+  handleBeforeUnload() {
+    if (this.hasNotSavedChanges) {
+      return confirm();
+    }
   }
 
   public onSubmit() {
