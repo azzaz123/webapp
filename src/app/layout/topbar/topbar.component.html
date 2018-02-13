@@ -21,7 +21,7 @@
 </div>
 <div class="main-header-login">
   <a class="main-header-chat menu-link" [routerLink]="['/chat']" [routerLinkActive]="['active']">
-    <div class="news-badge"></div>
+    <div class="news-badge" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
     <mat-icon svgIcon="messages" class="topbar-icon"></mat-icon>
     <span i18n>Messages</span>
     <div class="horizontal-line"></div>

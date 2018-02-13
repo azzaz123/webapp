@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 import { Conversation, Message, I18nService } from 'shield';
 
 @Component({
@@ -6,11 +6,12 @@ import { Conversation, Message, I18nService } from 'shield';
   templateUrl: './messages-panel.component.html',
   styleUrls: ['./messages-panel.component.scss']
 })
-export class MessagesPanelComponent implements AfterViewChecked {
+export class MessagesPanelComponent implements AfterViewChecked, OnChanges {
 
   @Input() currentConversation: Conversation;
   @ViewChild('messagesPanel') messagesPanel: ElementRef;
   public momentConfig: any;
+  private alreadyScrolled: boolean;
 
   constructor(i18n: I18nService) {
     this.momentConfig = i18n.getTranslations('daysMomentConfig');
@@ -21,9 +22,14 @@ export class MessagesPanelComponent implements AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    if (this.messagesPanel) {
+    if (this.messagesPanel && !this.alreadyScrolled) {
       this.messagesPanel.nativeElement.scrollTop = this.messagesPanel.nativeElement.scrollHeight;
+      this.alreadyScrolled = true;
     }
+  }
+
+  ngOnChanges(changes?: any) {
+    this.alreadyScrolled = false;
   }
 
 }

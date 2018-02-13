@@ -52,10 +52,10 @@ export class AdService {
       if (user.birthDate) {
         this.adKeyWords.age = moment().diff(user.birthDate, 'years').toString();
       }
-      if (!this.adKeyWords.latitude) {
+      if (!this.adKeyWords.latitude && user.location) {
         this.adKeyWords.latitude = user.location.approximated_latitude.toString();
       }
-      if (!this.adKeyWords.longitude) {
+      if (!this.adKeyWords.longitude && user.location) {
         this.adKeyWords.longitude = user.location.approximated_longitude.toString();
       }
     }).flatMap(() => {

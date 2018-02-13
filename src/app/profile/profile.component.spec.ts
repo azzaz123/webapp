@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TEST_HTTP_PROVIDERS, User, USER_DATA, HttpService, IMAGE } from 'shield';
 import { ProfileComponent } from './profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -12,6 +12,7 @@ import { UploadInput } from 'ngx-uploader';
 import { environment } from '../../environments/environment';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
+import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -78,6 +79,9 @@ describe('ProfileComponent', () => {
         {
           provide: NgbModal, useValue: {
           open() {
+            return {
+              result: Promise.resolve(true)
+            }
           }
         }
         }
@@ -119,6 +123,39 @@ describe('ProfileComponent', () => {
       expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
     });
+
+    it('should detect changed if form values changes', () => {
+      component.ngOnInit();
+
+      component.profileForm.get('first_name').patchValue('new first_name');
+      fixture.detectChanges();
+
+      expect(component['hasNotSavedChanges']).toBeTruthy();
+    });
+  });
+
+  describe('canExit', () => {
+    it('should return true if there are no unsaved changes', () => {
+      const result = component.canExit();
+
+      expect(result).toBeTruthy();
+    });
+
+    it('should open modal if there are unsaved changes', fakeAsync(() => {
+      let notSavedChanges: boolean;
+      component['hasNotSavedChanges'] = true;
+      spyOn(modalService, 'open').and.callThrough();
+
+      (<Promise<boolean>>component.canExit()).then((value: boolean) => {
+        notSavedChanges = value;
+      });
+      tick();
+
+      expect(modalService.open).toHaveBeenCalledWith(ExitConfirmationModalComponent, {
+        backdrop: 'static'
+      });
+      expect(notSavedChanges).toBeTruthy();
+    }));
   });
 
   describe('onSubmit', () => {
@@ -132,6 +169,7 @@ describe('ProfileComponent', () => {
         component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
         component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
         component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
+        component['hasNotSavedChanges'] = true;
 
         component.onSubmit();
       });
@@ -142,6 +180,10 @@ describe('ProfileComponent', () => {
 
       it('should call i18nSuccess', () => {
         expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
+      });
+
+      it('should set hasNotSavedChanges to false', () => {
+        expect(component['hasNotSavedChanges']).toBeFalsy();
       });
     });
 

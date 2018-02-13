@@ -229,14 +229,13 @@
       line-height: $font-size-S;
     }
     .news-badge {
-      display: none;
       height: 8px;
       width: 8px;
       border-radius: 8px;
       background-color: $warn;
       position: absolute;
-      top: 20px;
-      right: 0;
+      left: 25px;
+      top: 23px;
       & .active {
         display: block;
       }

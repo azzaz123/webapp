@@ -11,6 +11,17 @@
   z-index: 99;
 }
 
+.chat-notification-pending {
+  position: absolute;
+  top: $spacing;
+  right: $spacing;
+  width: 10px;
+  height: 10px;
+  background-color: $warn;
+  border-radius: 100%;
+  transform: translateX(100%);
+}
+
 $sidebar-section-circle-size: 50px;
 
 .sidebar-section-circle {
