@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Conversation,
@@ -6,9 +6,9 @@ import {
   EventService,
   I18nService,
   ItemService,
-  XmppService,
   PersistencyService,
-  UserService
+  UserService,
+  XmppService
 } from 'shield';
 import { ToastrService } from 'ngx-toastr';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
@@ -17,13 +17,14 @@ import { ReportUserComponent } from './modals/report-user/report-user.component'
 import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
 import { TrackingService } from '../core/tracking/tracking.service';
+import { AdService } from '../core/ad/ad.service';
 
 @Component({
   selector: 'tsl-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
 
   public currentConversation: Conversation;
   public conversationsLoaded: boolean;
@@ -40,7 +41,8 @@ export class ChatComponent implements OnInit {
               public userService: UserService,
               private eventService: EventService,
               public xmppService: XmppService,
-              private persistencyService: PersistencyService) {
+              private persistencyService: PersistencyService,
+              private adService: AdService) {
   }
 
   ngOnInit() {
@@ -63,6 +65,10 @@ export class ChatComponent implements OnInit {
     });
   }
 
+  ngOnDestroy () {
+    this.adService.stopAdsRefresh();
+  }
+
   public onCurrentConversationChange(conversation: Conversation) {
     if (this.currentConversation) {
       this.currentConversation.active = false;
@@ -73,6 +79,8 @@ export class ChatComponent implements OnInit {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);
     }
+
+    this.adService.startAdsRefresh();
   }
 
   public onLoaded(event: any) {
@@ -147,5 +155,4 @@ export class ChatComponent implements OnInit {
     }, () => {
     });
   }
-
 }
