@@ -144,7 +144,9 @@ export class AppComponent implements OnInit {
   private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
-      this.xmppService.disconnect();
+      try {
+        this.xmppService.disconnect();
+      } catch (err) {}
       this.loggingOut = true;
       if (redirectUrl) {
         this.winRef.nativeWindow.location.href = redirectUrl;
