@@ -48,12 +48,23 @@
   .images-container {
     padding: 0;
     position: relative;
-    tsl-user-avatar {
-      position: absolute;
-      top: 58px;
-      right: -12px;
-      /deep/ .avatar-rounded {
-        border: 4px solid $white;
+    .avatar {
+      tsl-user-avatar {
+        position: absolute;
+        top: 58px;
+        right: -12px;
+        border-radius: 50%;
+        background-color: $white;
+        /deep/ .avatar-rounded {
+          border: 4px solid $white;
+        }
+      }
+      &:hover {
+        tsl-user-avatar {
+          /deep/ .avatar-rounded {
+            opacity: .5;
+          }
+        }
       }
     }
     .review-image {
@@ -68,6 +79,11 @@
         height: 100%;
         background-size: cover;
         border-radius: $border-radius;
+      }
+      a.image {
+        &:hover {
+          opacity: .5;
+        }
       }
       mat-icon {
         @include square(50px);
