@@ -77,6 +77,11 @@ export interface Purchase {
   };
 }
 
+export interface AvailableProductsResponse {
+  default_product_id: string;
+  products: Product[];
+}
+
 export interface Product {
   id: string;
   name: string;

@@ -10,6 +10,7 @@ import {
   UserService
 } from 'shield';
 import {
+  AvailableProductsResponse,
   CarContent,
   ConversationUser, ItemContent, ItemResponse, ItemsData, Order, Product, Purchase,
   SelectedItemsAction
@@ -238,8 +239,15 @@ export class ItemService extends ItemServiceMaster {
   }
 
   public getAvailableProducts(id: string): Observable<Product> {
-    return this.http.get(this.API_URL_WEB + '/' + id + '/available-products')
-    .map((r: Response) => r.json());
+    return this.http.get(this.API_URL_WEB + '/' + id + '/available-visibility-products')
+    .map((r: Response) => r.json())
+    .map((response: AvailableProductsResponse) => response.products[0]);
+  }
+
+  public getAvailableReactivationProducts(id: string): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/' + id + '/available-reactivation-products')
+    .map((r: Response) => r.json())
+    .map((response: AvailableProductsResponse) => response.products[0]);
   }
 
   private getPurchases(): Observable<Purchase[]> {

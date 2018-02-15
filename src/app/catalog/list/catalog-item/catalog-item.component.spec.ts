@@ -1,11 +1,10 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { MOCK_ITEM, Item, MockTrackingService, ITEM_ID } from 'shield';
+import { Item, ITEM_ID, MOCK_ITEM, MockTrackingService } from 'shield';
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from 'app/shared/confirmation-modal/confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
@@ -13,6 +12,9 @@ import { MomentModule } from 'angular2-moment';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
+import { ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE, PRODUCT_RESPONSE } from '../../../../tests/item.fixtures';
+import { ToastrService } from 'ngx-toastr';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -20,6 +22,10 @@ describe('CatalogItemComponent', () => {
   let itemService: ItemService;
   let modalService: NgbModal;
   let trackingService: TrackingService;
+  const componentInstance = {
+    price: null,
+    item: null
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,6 +49,8 @@ describe('CatalogItemComponent', () => {
           },
           reactivateItem() {
             return Observable.of({});
+          },
+          getAvailableReactivationProducts() {
           }
         }
         },
@@ -51,14 +59,18 @@ describe('CatalogItemComponent', () => {
           open() {
             return {
               result: Promise.resolve(),
-              componentInstance: {
-                item: null
-              }
+              componentInstance: componentInstance
             };
           }
         }
         },
-        { provide: 'SUBDOMAIN', useValue: 'es'}
+        {
+          provide: ToastrService, useValue: {
+          error() {
+          }
+        }
+        },
+        {provide: 'SUBDOMAIN', useValue: 'es'}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -159,6 +171,67 @@ describe('CatalogItemComponent', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
       });
     });
+  });
+
+  describe('reactivate', () => {
+
+    beforeEach(() => {
+      spyOn(itemService, 'getAvailableReactivationProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+    });
+
+    it('should call getAvailableReactivationProducts', () => {
+      component.reactivate(MOCK_ITEM);
+
+      expect(itemService.getAvailableReactivationProducts).toHaveBeenCalledWith(ITEM_ID);
+    });
+
+    it('should open dialog and set price', () => {
+      spyOn(modalService, 'open').and.callThrough();
+
+      component.reactivate(MOCK_ITEM);
+
+      expect(modalService.open).toHaveBeenCalledWith(ReactivateModalComponent, {
+        windowClass: 'reactivate'
+      });
+      expect(componentInstance.price).toEqual(PRODUCT_DURATION_MARKET_CODE);
+      expect(componentInstance.item).toEqual(MOCK_ITEM);
+    });
+
+    it('should emit reactivatedWithBump event if result is bump', fakeAsync(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve('bump'),
+        componentInstance: componentInstance
+      });
+      let event: ItemChangeEvent;
+      component.itemChange.subscribe((e: ItemChangeEvent) => {
+        event = e;
+      });
+
+      component.reactivate(MOCK_ITEM);
+      tick();
+
+      expect(event).toEqual({
+        orderEvent: ORDER_EVENT,
+        action: 'reactivatedWithBump'
+      });
+    }));
+
+    it('should call reactivateItem if result is NOT bump', fakeAsync(() => {
+      spyOn(modalService, 'open').and.returnValue({
+        result: Promise.resolve('reactivate'),
+        componentInstance: componentInstance
+      });
+      spyOn(component, 'reactivateItem');
+      let event: ItemChangeEvent;
+      component.itemChange.subscribe((e: ItemChangeEvent) => {
+        event = e;
+      });
+
+      component.reactivate(MOCK_ITEM);
+      tick();
+
+      expect(component.reactivateItem).toHaveBeenCalledWith(MOCK_ITEM);
+    }));
   });
 
   describe('reactivateItem', () => {
