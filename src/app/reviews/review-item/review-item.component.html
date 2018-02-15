@@ -1,30 +1,22 @@
 <div class="review-item row">
-  <div class="separator"></div>
   <div class="col-1 images-container">
-    <div class="review-image" [ngClass]="{'purchase': this.review.isBought}">
+    <div class="review-image">
       <a href="{{ itemWebLink }}" target="_blank" tslsanitizedBackground="{{ this.review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"
-           *ngIf="this.review.isSold && this.review.item?.image"></a>
-      <img src="{{ fallback }}" *ngIf="this.review.isSold && !this.review.item?.image" class="image"/>
-      <mat-icon *ngIf="this.review.isBought && this.review.item" class="reviews-list-category-ico" svgIcon="{{ categoryIconName }}"></mat-icon>
+           *ngIf="this.review.item?.image"></a>
+      <img src="{{ fallback }}" *ngIf="!this.review.item?.image" class="image"/>
     </div>
     <a href="{{ userWebSlug }}" target="_blank" class="avatar">
       <tsl-user-avatar  *ngIf="this.review.user" [user]="this.review.user" size="40"></tsl-user-avatar>
     </a>
   </div>
   <div class="info col-10">
-    <div *ngIf="this.review.isSold">
-      <span class="review-type" i18n>Sold:</span>
-      <div class="review-title">
-        <a *ngIf="this.review.item?.id" href="{{ itemWebLink }}" target="_blank">{{ this.review.item.title }}</a>
-        <span *ngIf="!this.review.item?.id" i18n>A wallapop item</span>
-      </div>
+    <div class="review-type">
+      <span *ngIf="this.review.isSold" i18n>Sold:</span>
+      <span *ngIf="this.review.isBought" i18n>Bought:</span>
     </div>
-    <div *ngIf="this.review.isBought">
-      <span class="review-type" i18n>Bought:</span>
-      <div class="review-title">
-        <span *ngIf="this.review.item?.categoryId">{{ categoryName }}</span>
-        <span *ngIf="!this.review.item" i18n>A wallapop item</span>
-      </div>
+    <div class="review-title">
+      <a *ngIf="this.review.item?.id" href="{{ itemWebLink }}" target="_blank">{{ this.review.item.title }}</a>
+      <span *ngIf="!this.review.item?.id" i18n>A wallapop item</span>
     </div>
     <tsl-stars class="review-rating" [stars]="this.review.scoring" [normalized]="false"></tsl-stars>
     <p class="review-comment">{{ this.review.comments }}</p>

@@ -1,6 +1,7 @@
 @import "../../style/_common.scss";
 
 .review-header {
+  margin: 0 0 $spacing-L 0;
   h1 {
     font-size: $font-size-LL;
     font-weight: 700;
@@ -30,10 +31,11 @@
   }
 }
 
+.review-container {
+  margin: 0 0 $spacing-XS;
+}
+
 .container {
-  background-color: $white;
-  border-radius: $border-radius;
-  padding: $spacing-L;
   margin-bottom: $spacing-XL;
 }
 
