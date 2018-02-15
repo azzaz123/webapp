@@ -369,6 +369,24 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.MyProfile,
     type: TYPES_IDS.Tap
   };
+  public static MYZONE_CLOSETUTORIAL: TrackingEventBase = {
+    name: '631',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYZONE_NEXTTUTORIAL: TrackingEventBase = {
+    name: '632',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_UPLOADPRODUCT: TrackingEventBase = {
+    name: '635',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
   public static MYCATALOG_REACTIVATE_FROMCATALOG: TrackingEventBase = {
     name: '633',
     category: CATEGORY_IDS.Reactivate,
@@ -424,7 +442,7 @@ export class TrackingService extends TrackingServiceMaster {
       this.userService.user.id,
       this.sessionStartTime,
       event);
-    newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId);
+    newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId, this.navigatorService.browserName, this.navigatorService.fullVersion);
     if (attributes) {
       newEvent.setAttributes(attributes);
     }

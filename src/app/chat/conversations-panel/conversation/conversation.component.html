@@ -23,15 +23,15 @@
       <span [hidden]="conversation.unreadMessages == 0 || conversation.active" class="badge badge-primary badge-pill">
         {{conversation.unreadMessages}}
       </span>
-      <md-icon svgIcon="blocked" *ngIf="conversation.user.blocked"></md-icon>
+      <mat-icon svgIcon="blocked" *ngIf="conversation.user.blocked"></mat-icon>
     </div>
 
   </div>
 
   <div class="message-row">
     <p class="message">
-      <md-icon svgIcon="messages-icon" *ngIf="dashboard && !conversation.expectedVisit" placement="top" ngbTooltip="Messages" i18n-ngbTooltip></md-icon>
-      <md-icon svgIcon="calendar" *ngIf="dashboard && conversation.expectedVisit" placement="top" ngbTooltip="Meeting" i18n-ngbTooltip></md-icon>
+      <mat-icon svgIcon="messages-icon" *ngIf="dashboard && !conversation.expectedVisit" placement="top" ngbTooltip="Messages" i18n-ngbTooltip></mat-icon>
+      <mat-icon svgIcon="calendar" *ngIf="dashboard && conversation.expectedVisit" placement="top" ngbTooltip="Meeting" i18n-ngbTooltip></mat-icon>
       {{conversation?.messages[(conversation.messages.length-1)]?.message}}
     </p>
   </div>

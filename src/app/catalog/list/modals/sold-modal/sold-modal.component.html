@@ -1,11 +1,11 @@
 <div id="first-step" [hidden]="selectedUser">
   <div class="modal-body">
     <div class="modal-close" (click)="activeModal.dismiss()">
-      <md-icon svgIcon="cross"></md-icon>
+      <mat-icon svgIcon="cross"></mat-icon>
     </div>
     <h1 i18n>Congratulations!</h1>
     <p class="text" i18n>You sold <strong>{{item.title}}</strong></p>
-    <md-icon class="congrats" svgIcon="commons-congrats"></md-icon>
+    <mat-icon class="congrats" svgIcon="commons-congrats"></mat-icon>
     <p class="text" [hidden]="!conversationUsers.length" i18n>Who bought this from you?</p>
     <ul [hidden]="!conversationUsers.length">
       <li class="conv-user" *ngFor="let convUser of conversationUsers">
@@ -15,7 +15,7 @@
             <p class="name">{{convUser.micro_name}}</p>
             <p class="message">{{convUser.last_message}}</p>
           </div>
-          <md-icon svgIcon="arrow-waterfall" class="arrow-icon"></md-icon>
+          <mat-icon svgIcon="arrow-waterfall" class="arrow-icon"></mat-icon>
         </a>
       </li>
     </ul>
@@ -27,10 +27,10 @@
 <div id="second-step" [hidden]="!selectedUser || thanks">
   <div class="modal-body center-heading">
     <div class="modal-back" (click)="selectedUser = null">
-      <md-icon svgIcon="back-arrow"></md-icon>
+      <mat-icon svgIcon="back-arrow"></mat-icon>
     </div>
     <div class="modal-close" (click)="activeModal.dismiss()">
-      <md-icon svgIcon="cross"></md-icon>
+      <mat-icon svgIcon="cross"></mat-icon>
     </div>
     <h2 i18n>Rate your experience with <strong>{{selectedUser?.micro_name}}</strong></h2>
     <p i18n>Click on the stars to leave your review. The more stars, the better your experience.</p>
@@ -49,7 +49,7 @@
 </div>
 <div id="thanks" [hidden]="!thanks">
   <div class="modal-body center-heading">
-    <md-icon svgIcon="congrats"></md-icon>
+    <mat-icon svgIcon="congrats"></mat-icon>
     <h1 i18n>Thanks</h1>
     <p class="text" i18n>Your feedback is important for the<br />Wallapop community.</p>
     <button class="btn btn-primary" (click)="activeModal.close()" i18n>Continue</button>

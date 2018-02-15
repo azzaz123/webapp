@@ -9,7 +9,7 @@
                      [ngbPopover]="coachmarkMake" #p1="ngbPopover" triggers="manual" (opened)="p1.open()" (closed)="p1.close()"
                      [options]="brands" (selected)="getModels($event.value)"></ng-select>
           <ng-template #coachmarkMake>
-            <md-icon svgIcon="cm-car"></md-icon>
+            <mat-icon svgIcon="cm-car"></mat-icon>
             <div i18n>The basics: make and model.</div>
           </ng-template>
 
@@ -39,7 +39,7 @@
                  [ngbPopover]="coachmarkPrice"
                  max="999999999"/>
           <ng-template #coachmarkPrice>
-            <md-icon svgIcon="cm-money"></md-icon>
+            <mat-icon svgIcon="cm-money"></mat-icon>
             <div i18n>Tell us how much you want for it: we won't tell anyone ;)</div>
           </ng-template>
         </div>
@@ -62,7 +62,7 @@
                  class="form-control" formControlName="title" id="headline" maxlength="50"
                  [ngbPopover]="coachmarkTitle" />
           <ng-template #coachmarkTitle>
-            <md-icon svgIcon="cm-eye"></md-icon>
+            <mat-icon svgIcon="cm-eye"></mat-icon>
             <div i18n>Go for it! The more you say the better chance they have of finding of reaching you.</div>
           </ng-template>
         </div>
@@ -85,7 +85,7 @@
                  [ngbPopover]="coachmarkSeats"
                  formControlName="num_seats" id="seats" min="0" max="99"/>
           <ng-template #coachmarkSeats>
-            <md-icon svgIcon="cm-seats"></md-icon>
+            <mat-icon svgIcon="cm-seats"></mat-icon>
             <div i18n>Can all your family fit in there or just the dog?</div>
           </ng-template>
         </div>
@@ -100,7 +100,7 @@
                      [ngbPopover]="coachmarkType" #p4="ngbPopover" triggers="manual" (opened)="p4.open()" (closed)="p4.close()"
                      noFilter="20"></ng-select>
           <ng-template #coachmarkType>
-            <md-icon svgIcon="cm-velocity"></md-icon>
+            <mat-icon svgIcon="cm-velocity"></mat-icon>
             <div i18n>Is it for getting around at the weekend or for everyday use?</div>
           </ng-template>
         </div>
@@ -116,43 +116,43 @@
       <div class="col-sm-6 selector-container">
         <h3 i18n>Motor</h3>
         <div ngbRadioGroup name="radioBasic" formControlName="engine">
-          <label class="btn selector">
-            <input type="radio" value="gasoline">
-            <md-icon svgIcon="gasoline"></md-icon>
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" value="gasoline">
+            <mat-icon svgIcon="gasoline"></mat-icon>
             <span i18n>Petrol</span>
           </label>
-          <label class="btn selector">
-            <input type="radio" value="gasoil">
-            <md-icon svgIcon="gasoil"></md-icon>
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" value="gasoil">
+            <mat-icon svgIcon="gasoil"></mat-icon>
             <span i18n>Diesel</span>
           </label>
-          <label class="btn selector">
-            <input type="radio" value="electric-hybrid">
-            <md-icon svgIcon="electric-hybrid"></md-icon>
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" value="electric-hybrid">
+            <mat-icon svgIcon="electric-hybrid"></mat-icon>
             <span i18n>Electric</span>
           </label>
-          <label class="btn selector">
-            <input type="radio" value="others">
-            <md-icon svgIcon="others"></md-icon>
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" value="others">
+            <mat-icon svgIcon="others"></mat-icon>
             <span i18n>Other...</span>
           </label>
         </div>
         <ng-template #coachmarkMotor>
-          <md-icon svgIcon="cm-speaker"></md-icon>
+          <mat-icon svgIcon="cm-speaker"></mat-icon>
           <div i18n>It's important, trust us!</div>
         </ng-template>
       </div>
       <div class="col-sm-6 selector-container">
         <h3 i18n>Transmission</h3>
         <div ngbRadioGroup name="radioBasic" formControlName="gearbox">
-          <label class="btn selector">
-            <input type="radio" value="manual">
-            <md-icon svgIcon="manual"></md-icon>
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" value="manual">
+            <mat-icon svgIcon="manual"></mat-icon>
             <span i18n>Manual</span>
           </label>
-          <label class="btn selector">
-            <input type="radio" value="automatic">
-            <md-icon svgIcon="automatic"></md-icon>
+          <label ngbButtonLabel class="btn selector">
+            <input ngbButton type="radio" value="automatic">
+            <mat-icon svgIcon="automatic"></mat-icon>
             <span i18n>Automatic</span>
           </label>
         </div>
@@ -167,7 +167,7 @@
                       [ngbPopover]="coachmarkDescription"
                       fz-elastic class="form-control" formControlName="storytelling" id="tellUs" maxlength="650"></textarea>
           <ng-template #coachmarkDescription>
-            <md-icon svgIcon="cm-chat"></md-icon>
+            <mat-icon svgIcon="cm-chat"></mat-icon>
             <div i18n>Don't leave anything out. The details are key to selling faster.</div>
           </ng-template>
         </div>
@@ -179,7 +179,7 @@
     <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
                    formControlName="images" [maxUploads]="8" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
-      <md-icon svgIcon="cm-drag"></md-icon>
+      <mat-icon svgIcon="cm-drag"></mat-icon>
       <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</div>
     </ng-template>
   </div>
@@ -188,23 +188,23 @@
       <h2 i18n>Extras</h2>
       <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.fix_price">
         <input type="checkbox" formControlName="fix_price">
-        <md-icon svgIcon="firm-price"></md-icon>
+        <mat-icon svgIcon="firm-price"></mat-icon>
         <span i18n>Firm Price</span>
       </label>
       <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.exchange_allowed">
         <input type="checkbox" formControlName="exchange_allowed">
-        <md-icon svgIcon="accept-trades"></md-icon>
+        <mat-icon svgIcon="accept-trades"></mat-icon>
         <span i18n>Accept trades</span>
       </label>
     </div>
     <ng-template #coachmarkExtras>
-      <md-icon svgIcon="cm-question"></md-icon>
+      <mat-icon svgIcon="cm-question"></mat-icon>
       <div i18n>What sellers usually ask...</div>
     </ng-template>
   </div>
   <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
   <button type="submit" class="btn btn-primary" [disabled]="loading">
-    <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
+    <mat-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></mat-icon>
     <span [hidden]="loading" *ngIf="!item" i18n>Post Ad</span>
     <span [hidden]="loading" *ngIf="item" i18n>Update</span>
   </button>

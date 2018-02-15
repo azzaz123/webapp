@@ -1,7 +1,7 @@
 <div [ngClass]="{resized: itemService.selectedItems.length}">
   <div class="checkbox">
     <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}" *ngIf="showCheckbox">
-      <md-icon svgIcon="check"></md-icon>
+      <mat-icon svgIcon="check"></mat-icon>
     </button>
   </div>
   <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected, pending: item.flags.pending, sold: item.sold}">
@@ -13,13 +13,13 @@
       <span>{{item.title}}</span>
     </a>
     <span class="visibility">
-      <md-icon svgIcon="views"></md-icon> {{item.views}}
-      <md-icon svgIcon="heart"></md-icon> {{item.favorites}}
+      <mat-icon svgIcon="views"></mat-icon> {{item.views}}
+      <mat-icon svgIcon="heart"></mat-icon> {{item.favorites}}
     </span>
     <span class="actions" *ngIf="!item.flags.expired && !item.flags.pending">
       <span [hidden]="item.sold">
       <button class="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate">
-         <md-icon svgIcon="feature"></md-icon>
+         <mat-icon svgIcon="feature"></mat-icon>
         <span i18n>Feature Product</span>
       </button>
       <button class="btn-featured" *ngIf="item.bumpExpiringDate">
@@ -27,24 +27,24 @@
       </button>
       </span>
       <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
-        <md-icon svgIcon="btn-sold"></md-icon>
+        <mat-icon svgIcon="btn-sold"></mat-icon>
       </button>
       <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
-        <md-icon svgIcon="btn-reserved"></md-icon>
+        <mat-icon svgIcon="btn-reserved"></mat-icon>
       </button>
       <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">
-        <md-icon svgIcon="btn-edit"></md-icon>
+        <mat-icon svgIcon="btn-edit"></mat-icon>
       </button>
       <button class="btn-delete" (click)="deleteItem(item)">
-        <md-icon svgIcon="btn-delete"></md-icon>
+        <mat-icon svgIcon="btn-delete"></mat-icon>
       </button>
     </span>
     <button class="btn-reactivate" (click)="reactivate(item)" *ngIf="item.flags.expired" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG" [params]="{category: item.categoryId}">
-      <md-icon svgIcon="clock"></md-icon>
+      <mat-icon svgIcon="clock"></mat-icon>
       <span i18n>Reactivate</span>
     </button>
     <button class="btn-pending" *ngIf="item.flags.pending">
-      <md-icon svgIcon="spinner" class="spinner grey"></md-icon>
+      <mat-icon svgIcon="spinner" class="spinner grey"></mat-icon>
       <span i18n>Pending</span>
     </button>
   </div>

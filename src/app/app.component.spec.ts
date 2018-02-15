@@ -25,7 +25,6 @@ import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { MdIconRegistry } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/throw';
@@ -35,6 +34,7 @@ import createSpy = jasmine.createSpy;
 import { CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
+import { MatIconRegistry } from '@angular/material';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -95,7 +95,7 @@ describe('App', () => {
         },
         I18nService,
         {
-          provide: MdIconRegistry, useValue: {
+          provide: MatIconRegistry, useValue: {
           addSvgIcon() {
           },
           addSvgIconInNamespace() {
@@ -213,25 +213,25 @@ describe('App', () => {
 
       it('should call the eventService.subscribe passing the login event', () => {
         spyOn(eventService, 'subscribe').and.callThrough();
-        
+
         component.ngOnInit();
-        
+
         expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.USER_LOGIN);
       });
 
       it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
         spyOn(xmppService, 'connect').and.callThrough();
-        
+
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        
+
         expect(xmppService.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
 
       it('should call conversationService.init', () => {
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        
+
         expect(conversationService.init).toHaveBeenCalledTimes(1);
       });
 
@@ -280,26 +280,26 @@ describe('App', () => {
       spyOn(userService, 'logout');
       spyOn(errorsService, 'show');
       spyOn(userService, 'me').and.returnValue(Observable.throw(ERROR));
-      
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-      
+
       expect(userService.logout).toHaveBeenCalled();
       expect(errorsService.show).toHaveBeenCalled();
     }));
 
     it('should init notifications', () => {
       component.ngOnInit();
-      
+
       expect(notificationService.init).toHaveBeenCalled();
     });
 
     it('should call disconnect on logout', () => {
       spyOn(xmppService, 'disconnect');
-      
+
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
-      
+
       expect(xmppService.disconnect).toHaveBeenCalled();
     });
   });
@@ -375,5 +375,4 @@ describe('App', () => {
       expect(component.hideSidebar).toBeTruthy();
     })
   });
-
 });

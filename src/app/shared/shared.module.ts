@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SpinnerComponent } from './spinner/spinner.component';
-import { MdIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import { AdComponent } from './ad/ad.component';
 import { CustomCurrencyPipe } from './custom-currency/custom-currency.pipe';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
@@ -11,12 +11,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
 import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
+import { TutorialGuard } from './guards/tutorial.guard';
 
 @NgModule({
   imports: [
     CardModule,
     CommonModule,
-    MdIconModule,
+    MatIconModule,
     NgbModule.forRoot(),
     ReactiveFormsModule,
     GeolocationModule
@@ -38,7 +39,8 @@ import { RestrictInputDirective } from './restrict-input/restrict-input.directiv
   ],
   providers: [
     DecimalPipe,
-    ExitConfirmGuard
+    ExitConfirmGuard,
+    TutorialGuard
   ],
   entryComponents: [
     ConfirmationModalComponent

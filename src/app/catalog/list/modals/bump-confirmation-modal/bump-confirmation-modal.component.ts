@@ -22,8 +22,10 @@ export class BumpConfirmationModalComponent implements OnInit {
       () => {
         if (this.code === '200') {
           this.trackingService.track(TrackingService.FEATURED_PURCHASE_SUCCESS);
+          ga('send', 'event', 'Item', 'bump-ok');
         } else {
           this.trackingService.track(TrackingService.FEATURED_PURCHASE_ERROR, { error_code: this.code });
+          ga('send', 'event', 'Item', 'bump-ko');
         }
       });
   }

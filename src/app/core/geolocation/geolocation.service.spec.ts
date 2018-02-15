@@ -30,7 +30,7 @@ describe('GeolocationService', () => {
         result = data;
       });
       expect(result).toEqual(GEOLOCATION_DATA_WEB);
-    })
+    });
   });
 
   describe('geocode', () => {
@@ -46,7 +46,7 @@ describe('GeolocationService', () => {
         ...COORDINATE_DATA_WEB,
         name: LOCATION_NAME
       });
-    })
+    });
   });
 
 });

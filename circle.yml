@@ -2,7 +2,7 @@ machine:
   environment:
     BRANCH: $( echo $CIRCLE_BRANCH | awk -Ffeature/ '/feature/{print $2}' | tr '[:upper:]' '[:lower:]' )
   node:
-    version: 7.5.0
+    version: 8.9.4
   services:
     - docker
 
@@ -11,10 +11,15 @@ general:
     - "./coverage"
 
 dependencies:
-  cache_directories:
-    - ~/.cache/yarn
   override:
     - yarn
+  cache_directories:
+    - ~/.cache/yarn
+
+test:
+  override:
+    - yarn test
+
 deployment:
   dev:
     branch: develop

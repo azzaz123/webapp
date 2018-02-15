@@ -3,13 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Item } from 'shield';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
+import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 
 @Component({
   selector: 'tsl-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })
-export class EditComponent implements OnInit {
+export class EditComponent implements OnInit, CanComponentDeactivate {
 
   public item: Item;
   @ViewChild('scrollPanel') scrollPanel: ElementRef;

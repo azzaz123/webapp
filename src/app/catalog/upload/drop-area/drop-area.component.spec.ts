@@ -139,7 +139,7 @@ describe('DropAreaComponent', () => {
     });
 
     it('should throw error if update has errors from server', () => {
-      let event: string;
+      let event: any;
       const VALUES = {
         test: 'test'
       };
@@ -148,7 +148,7 @@ describe('DropAreaComponent', () => {
       };
       spyOn(itemService, 'update').and.returnValue(Observable.throw(ERROR));
       spyOn(errorsService, 'i18nError');
-      component.onError.subscribe((value: string) => {
+      component.onError.subscribe((value: any) => {
         event = value;
       });
 

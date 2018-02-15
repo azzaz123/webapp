@@ -10,36 +10,36 @@
 }
 
 .report-ban-reason {
-  &.selected md-icon {
+  &.selected mat-icon {
     g g, path {
       fill: $corporate;
     }
 
   }
-  md-icon g g {
+  mat-icon g g {
     fill: $grey-800;
   }
 
 }
 
 .modal-close {
-  md-icon {
+  mat-icon {
     height: 15px;
     line-height: 30px;
   }
-  md-icon path {
+  mat-icon path {
     fill: $grey-700;
   }
-  &:hover md-icon path {
+  &:hover mat-icon path {
     fill: $grey-900;
   }
   .modal.bump-confirm & {
-    md-icon path {
+    mat-icon path {
       fill: $grey-200;
     }
   }
   &.light {
-    md-icon path {
+    mat-icon path {
       fill: $white;
       opacity: .5;
     }
@@ -48,7 +48,7 @@
 
 .main-header-chat {
   &.active {
-    md-icon svg g g {
+    mat-icon svg g g {
       fill: $corporate;
     }
   }
@@ -75,11 +75,11 @@
 }
 
 .search-btn {
-  md-icon svg path{
+  mat-icon svg path{
     fill: $grey-600
   }
   &:hover {
-    md-icon svg path{
+    mat-icon svg path{
       fill: $white;
     }
   }
@@ -87,11 +87,11 @@
 
 .actions, .bulk-actions {
   button:not(.btn-feature) {
-    md-icon svg g g, svg path {
+    mat-icon svg g g, svg path {
       fill: $grey-500;
     }
     &:hover, &.active {
-      md-icon svg g g, svg path {
+      mat-icon svg g g, svg path {
         fill: $white;
       }
     }
@@ -100,14 +100,14 @@
 
 .btn-reactivate {
   &:hover {
-    md-icon svg g g, svg path {
+    mat-icon svg g g, svg path {
       fill: $white;
     }
   }
 }
 
 .visibility {
-  md-icon svg path {
+  mat-icon svg path {
     stroke: $grey-500;
     &#Fill-3 {
       stroke: none;
@@ -117,7 +117,7 @@
 }
 
 .select.selected {
-  md-icon svg g g {
+  mat-icon svg g g {
     fill: $white;
   }
 }
@@ -159,7 +159,7 @@
 
 .upload-close-icon {
   &:hover {
-    md-icon path {
+    mat-icon path {
       fill: $corporate;
     }
   }
@@ -167,7 +167,7 @@
 
 .main-header-upload {
   &:hover {
-    md-icon {
+    mat-icon {
       #fill {
         transition: all 0.2s ease-in-out;
         fill-opacity: 1;
@@ -184,7 +184,7 @@
 
 .btn-mobile {
   &:hover, &:focus, &:active {
-    md-icon {
+    mat-icon {
       path {
         fill: $white;
       }

@@ -9,6 +9,11 @@
   font-weight: bold;
 }
 
+@font-face {
+  font-family: "WallieSkinny";
+  src: url("../assets/fonts/Wallie-Skinny.woff2") format("woff2"), url("../assets/fonts/Wallie-Skinny.woff") format("woff"), url("../assets/fonts/Wallie-Skinny.ttf") format("truetype");
+}
+
 
 @font-face {
   font-family: 'OCRAStd';

@@ -100,10 +100,13 @@ $form-control-height: 42px;
       cursor: pointer;
       padding: 0;
       text-align: center;
-      &:first-of-type {
-        margin-right: $spacing;
+      [ngbButton] {
+        display: none;
       }
-      md-icon {
+      &:first-of-type {
+        margin-right: 15px;
+      }
+      mat-icon {
         @include square(42px);
         margin-top: 25px;
         /deep/ path {
@@ -118,7 +121,7 @@ $form-control-height: 42px;
         background-color: $corporate;
         border-color: transparent;
         box-shadow: 0 2px 6px 0 rgba(19, 193, 172, 0.2);
-        md-icon {
+        mat-icon {
           /deep/ path {
             fill: $white;
           }
@@ -130,7 +133,7 @@ $form-control-height: 42px;
       }
       &:hover:not(.active) {
         border-color: $grey-300;
-        md-icon {
+        mat-icon {
           /deep/ path {
             fill: $grey-300;
           }

@@ -11,7 +11,7 @@
                  [ngbPopover]="coachmarkTitle"
                  #title id="headline" maxlength="50" />
           <ng-template #coachmarkTitle>
-            <md-icon svgIcon="cm-eye"></md-icon>
+            <mat-icon svgIcon="cm-eye"></mat-icon>
             <div i18n>Don't make errors so that people will find you easily.</div>
           </ng-template>
         </div>
@@ -26,7 +26,7 @@
                  [ngbPopover]="coachmarkPrice"
                  id="price" min="0" max="999999999"/>
           <ng-template #coachmarkPrice>
-            <md-icon svgIcon="cm-categories"></md-icon>
+            <mat-icon svgIcon="cm-categories"></mat-icon>
             <div i18n>Add a fair price and the category that best suits your item.</div>
           </ng-template>
         </div>
@@ -49,7 +49,7 @@
             <ng-template
               #optionTemplate
               let-option="option">
-              <md-icon svgIcon="cat_{{option?.icon_id}}"></md-icon>
+              <mat-icon svgIcon="cat_{{option?.icon_id}}"></mat-icon>
               {{option?.label}}
             </ng-template>
           </ng-select>
@@ -66,7 +66,7 @@
                     [ngbPopover]="coachmarkDescription"
                     formControlName="description" id="tellUs" maxlength="650"></textarea>
           <ng-template #coachmarkDescription>
-            <md-icon svgIcon="cm-chat"></md-icon>
+            <mat-icon svgIcon="cm-chat"></mat-icon>
             <div i18n>Every detail helps: so tell us more!</div>
           </ng-template>
         </div>
@@ -77,7 +77,7 @@
     <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos</h2>
     <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)" formControlName="images" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
-      <md-icon svgIcon="cm-drag"></md-icon>
+      <mat-icon svgIcon="cm-drag"></mat-icon>
       <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</div>
     </ng-template>
   </div>
@@ -86,22 +86,22 @@
       <h2 i18n>Extras</h2>
       <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.fix_price">
         <input type="checkbox" formControlName="fix_price">
-        <md-icon svgIcon="firm-price"></md-icon>
+        <mat-icon svgIcon="firm-price"></mat-icon>
         <span i18n>Firm Price</span>
       </label>
       <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.shipping_allowed" [hidden]="fixedCategory">
         <input type="checkbox" formControlName="shipping_allowed">
-        <md-icon svgIcon="shipping-available"></md-icon>
+        <mat-icon svgIcon="shipping-available"></mat-icon>
         <span i18n>Shipping available</span>
       </label>
       <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.exchange_allowed">
         <input type="checkbox" formControlName="exchange_allowed">
-        <md-icon svgIcon="accept-trades"></md-icon>
+        <mat-icon svgIcon="accept-trades"></mat-icon>
         <span i18n>Accept trades</span>
       </label>
     </div>
     <ng-template #coachmarkExtras>
-      <md-icon svgIcon="cm-question"></md-icon>
+      <mat-icon svgIcon="cm-question"></mat-icon>
       <div i18n>FAQ</div>
     </ng-template>
   </div>
@@ -112,19 +112,19 @@
       <div ngbRadioGroup name="radioBasic" formControlName="delivery_info">
         <label class="btn selector" *ngFor="let delivery of deliveryInfo">
           <input type="radio" [value]="delivery.value">
-          <md-icon svgIcon="shipping-{{delivery.value.max_weight_kg}}"></md-icon>
+          <mat-icon svgIcon="shipping-{{delivery.value.max_weight_kg}}"></mat-icon>
           <span><strong>{{delivery.value.max_weight_kg}}kg max</strong><br />{{delivery.size}}</span>
         </label>
       </div>
     </div>
     <ng-template #coachmarkShipping>
-      <md-icon svgIcon="cm-shipping"></md-icon>
+      <mat-icon svgIcon="cm-shipping"></mat-icon>
       <div i18n>Important for shipping.</div>
     </ng-template>
   </div>
   <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
   <button type="submit" class="btn btn-primary" [disabled]="loading">
-    <md-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></md-icon>
+    <mat-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></mat-icon>
     <span [hidden]="loading" *ngIf="!item" i18n>Post Ad</span>
     <span [hidden]="loading" *ngIf="item" i18n>Update</span>
   </button>

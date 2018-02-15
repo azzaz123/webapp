@@ -408,5 +408,6 @@ describe('Component: ConversationsPanel', () => {
         { user_id: conversation.user.id, item_id: conversation.item.id, thread_id: conversation.id });
     });
   });
+
 });
 

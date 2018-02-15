@@ -2,14 +2,14 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item">
       <div>
-        <md-icon svgIcon="location"></md-icon>
+        <mat-icon svgIcon="location"></mat-icon>
         <span [hidden]="!user.itemDistance" i18n="The distance between the user and the item">{{user.itemDistance | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you</span>
         <span [hidden]="user.itemDistance" i18n>No location</span>
       </div>
     </li>
     <li class="list-group-item response-rate" *ngIf="user.responseRate">
       <div>
-        <md-icon svgIcon="time"></md-icon>
+        <mat-icon svgIcon="time"></mat-icon>
         <span [ngSwitch]="user.responseRate">
           <ng-container *ngSwitchCase="'less_than_one_hour'" i18n>Typically responds within an hour</ng-container>
           <ng-container *ngSwitchCase="'less_than_three_hours'" i18n>Typically responds within 3 hours</ng-container>

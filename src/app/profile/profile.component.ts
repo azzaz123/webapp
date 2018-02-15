@@ -1,20 +1,23 @@
-import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostListener, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { environment } from '../../environments/environment';
 import { User, HttpService } from 'shield';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 import { UploadOutput, UploadFile, UploadInput, NgUploaderOptions } from 'ngx-uploader';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
+import { CanComponentDeactivate } from '../shared/guards/can-component-deactivate.interface';
+import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
 
 @Component({
   selector: 'tsl-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, CanComponentDeactivate {
 
   public user: User;
   public userUrl: string;
@@ -22,6 +25,8 @@ export class ProfileComponent implements OnInit {
   file: UploadFile;
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
   options: NgUploaderOptions;
+  private hasNotSavedChanges: boolean;
+  private oldFormValue: any;
 
   constructor(private userService: UserService,
               private fb: FormBuilder,
@@ -53,8 +58,40 @@ export class ProfileComponent implements OnInit {
       if (user) {
         this.userUrl = user.webLink.replace('http://es.wallapop.com/', environment.siteUrl.replace('es', this.subdomain));
         this.setUserData();
+        this.detectFormChanges();
       }
     });
+  }
+
+  private detectFormChanges() {
+    this.profileForm.valueChanges.subscribe((value) => {
+      const oldProfileData = _.omit(this.oldFormValue, ['location']);
+      const newProfileData = _.omit(value, ['location']);
+      if (!this.oldFormValue) {
+        this.oldFormValue = value;
+      } else {
+        if (!_.isEqual(oldProfileData, newProfileData)) {
+          this.hasNotSavedChanges = true;
+        }
+        this.oldFormValue = value;
+      }
+    });
+  }
+
+  public canExit() {
+    if (!this.hasNotSavedChanges) {
+      return true;
+    }
+    return this.modalService.open(ExitConfirmationModalComponent, {
+      backdrop: 'static'
+    }).result;
+  }
+
+  @HostListener('window:beforeunload')
+  handleBeforeUnload() {
+    if (this.hasNotSavedChanges) {
+      return confirm();
+    }
   }
 
   public onSubmit() {
@@ -62,6 +99,7 @@ export class ProfileComponent implements OnInit {
       delete this.profileForm.value.location;
       this.userService.edit(this.profileForm.value).subscribe(() => {
         this.errorsService.i18nSuccess('userEdited');
+        this.hasNotSavedChanges = false;
       });
     } else {
       for (let control in this.profileForm.controls) {
