@@ -423,7 +423,7 @@ export class TrackingService extends TrackingServiceMaster {
       this.userService.user.id,
       this.sessionStartTime,
       event);
-    newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId);
+    newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId, this.navigatorService.browserName, this.navigatorService.fullVersion);
     if (attributes) {
       newEvent.setAttributes(attributes);
     }

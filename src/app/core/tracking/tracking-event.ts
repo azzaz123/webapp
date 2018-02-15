@@ -1,6 +1,7 @@
 import { UUID } from 'angular2-uuid';
 import { TrackingEventBase } from './tracking-event-base.interface';
 import { getTimestamp } from './getTimestamp.func';
+import * as _ from 'lodash';
 
 export class TrackingEvent {
   private sessions: any[] = [{
@@ -35,14 +36,16 @@ export class TrackingEvent {
     this.sessions[0].events[0].timestamp = getTimestamp();
   }
 
-  public setDeviceInfo(operativeSystemVersion: string, OSName: string, deviceAccessTokenId: string) {
+  public setDeviceInfo(operativeSystemVersion: string, OSName: string, deviceAccessTokenId: string, browserName: string, browserVersion: string) {
     this.sessions[0].device = {
+      type: 'Computer',
+      brand: browserName,
+      model: browserVersion,
       platform: OSName,
+      os: operativeSystemVersion,
       screenwidth: this.sessions[0].window.screen.width.toString(),
       screenheight: this.sessions[0].window.screen.height.toString(),
-      locale: navigator.language,
-      type: 'PC',
-      os: operativeSystemVersion,
+      locale: _.replace(navigator.language,"-", "_"),
       deviceAccessTokenId: deviceAccessTokenId
     };
   }
