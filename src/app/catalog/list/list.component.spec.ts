@@ -1,14 +1,13 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   createItemsArray,
-  ErrorsService,
   FINANCIAL_CARD,
   Item,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
   MockTrackingService,
-  PaymentService,
+  PaymentService
 } from 'shield';
 
 import { ListComponent } from './list.component';
@@ -22,13 +21,14 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
-import { ORDER } from '../../../tests/item.fixtures';
+import { ORDER, ORDER_EVENT } from '../../../tests/item.fixtures';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { I18nService } from '../../core/i18n/i18n.service';
+import { ErrorsService } from '../../core/errors/errors.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -42,6 +42,7 @@ describe('ListComponent', () => {
   let paymentService: PaymentService;
   let route: ActivatedRoute;
   let router: Router;
+  let errorService: ErrorsService;
   let componentInstance: any = {};
   let modalSpy: jasmine.Spy;
   const routerEvents: Subject<any> = new Subject();
@@ -106,6 +107,10 @@ describe('ListComponent', () => {
         }, {
           provide: ErrorsService, useValue: {
             show() {
+            },
+            i18nError() {
+            },
+            i18nSuccess() {
             }
           }
         }, {
@@ -130,10 +135,11 @@ describe('ListComponent', () => {
     route = TestBed.get(ActivatedRoute);
     paymentService = TestBed.get(PaymentService);
     router = TestBed.get(Router);
+    errorService = TestBed.get(ErrorsService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
-    spyOn(toastr, 'error');
+    spyOn(errorService, 'i18nError');
     fixture.detectChanges();
   });
 
@@ -142,7 +148,10 @@ describe('ListComponent', () => {
       spyOn(router, 'navigate');
       component.ngOnInit();
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {windowClass: 'bump-confirm', backdrop: 'static'});
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'bump-confirm',
+        backdrop: 'static'
+      });
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list'])
     }));
     it('should reset page on router event', fakeAsync(() => {
@@ -171,13 +180,13 @@ describe('ListComponent', () => {
     }));
 
     it('should open toastr', fakeAsync(() => {
-      spyOn(toastr, 'success');
+      spyOn(errorService, 'i18nSuccess');
       route.params = Observable.of({
         updated: true
       });
       component.ngOnInit();
       tick();
-      expect(toastr.success).toHaveBeenCalledWith('The item has been updated correctly');
+      expect(errorService.i18nSuccess).toHaveBeenCalledWith('itemUpdated');
     }));
   });
 
@@ -246,19 +255,29 @@ describe('ListComponent', () => {
   describe('item changed', () => {
     const TOTAL: number = 5;
     let item: Item;
-    beforeEach(() => {
+
+    it('should remove item when deleted', () => {
       component.items = createItemsArray(TOTAL);
       item = component.items[3];
-    });
-    it('should remove item when deleted', () => {
+
       component.itemChanged({
         item: item,
         action: 'deleted'
       });
-    });
-    afterEach(() => {
+
       expect(component.items.length).toBe(TOTAL - 1);
       expect(_.find(component.items, {'id': item.id})).toBeFalsy();
+    });
+
+    it('should call feature if event is reactivatedWithBump', () => {
+      spyOn(component, 'feature');
+
+      component.itemChanged({
+        orderEvent: ORDER_EVENT,
+        action: 'reactivatedWithBump'
+      });
+
+      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
     });
   });
 
@@ -325,7 +344,7 @@ describe('ListComponent', () => {
         tick();
       }));
       it('should open error toastr', () => {
-        expect(toastr.error).toHaveBeenCalledWith('Some listings have not been deleted due to an error');
+        expect(errorService.i18nError).toHaveBeenCalledWith('bulkDeleteError');
       });
     });
   });
@@ -364,7 +383,7 @@ describe('ListComponent', () => {
         expect(component.items[4].reserved).toBeTruthy();
       });
       it('should not call toastr', () => {
-        expect(toastr.error).not.toHaveBeenCalled();
+        expect(errorService.i18nError).not.toHaveBeenCalled();
       });
     });
     describe('failed', () => {
@@ -374,7 +393,7 @@ describe('ListComponent', () => {
         tick();
       }));
       it('should open error toastr', () => {
-        expect(toastr.error).toHaveBeenCalledWith('Some listings have not been reserved due to an error');
+        expect(errorService.i18nError).toHaveBeenCalledWith('bulkReserveError');
       });
     });
   });
@@ -506,7 +525,7 @@ describe('ListComponent', () => {
         expect(component.deselect).toHaveBeenCalled();
       });
       it('should call toastr', () => {
-        expect(toastr.error).toHaveBeenCalled();
+        expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
       });
     });
 

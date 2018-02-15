@@ -39,7 +39,7 @@
         <mat-icon svgIcon="btn-delete"></mat-icon>
       </button>
     </span>
-    <button class="btn-reactivate" (click)="reactivateItem(item)" *ngIf="item.flags.expired">
+    <button class="btn-reactivate" (click)="reactivate(item)" *ngIf="item.flags.expired" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG" [params]="{category: item.categoryId}">
       <mat-icon svgIcon="clock"></mat-icon>
       <span i18n>Reactivate</span>
     </button>
