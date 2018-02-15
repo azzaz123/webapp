@@ -24,12 +24,28 @@ export interface ItemContent {
     original_width: number;
   };
   modified_date: number;
-  sale_conditions: ItemSaleConditions;
+  sale_conditions?: ItemSaleConditions;
   sale_price?: number;
   price?: number;
   seller_id: string;
   title: string;
-  url: string;
+  url?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,: string;
   web_slug: string;
   favorites?: number;
   views?: number;
@@ -138,4 +154,13 @@ export interface CarUploadForm extends ItemUploadForm {
   engine: string;
   gearbox: string;
   id?: string;
+}
+
+export interface ItemsWithAvailableProductsResponse extends ItemResponse {
+  productList: Product[];
+}
+
+export interface ItemWithProducts {
+  item: Item;
+  product: Product[];
 }

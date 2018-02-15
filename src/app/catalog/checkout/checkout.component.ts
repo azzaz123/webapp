@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ItemService } from '../../core/item/item.service';
+import { ItemWithProducts } from '../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-checkout',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckoutComponent implements OnInit {
 
-  constructor() { }
+  constructor(private itemService: ItemService) {
+  }
 
   ngOnInit() {
+    this.itemService.getItemsWithAvailableProducts(['1']).subscribe((itemsWithProducts: ItemWithProducts[]) => {
+      console.log(itemsWithProducts);
+    });
   }
 
 }
