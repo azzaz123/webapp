@@ -10,6 +10,7 @@ import { EditComponent } from './edit/edit.component';
 import { ItemResolverService } from './item-resolver.service';
 import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
 import { TutorialGuard } from '../shared/guards/tutorial.guard';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const routes: Routes = [
   {
@@ -44,7 +45,15 @@ const routes: Routes = [
           isMyZone: true,
           isProducts: true
         }
-      }
+      },
+      {
+        path: 'checkout',
+        component: CheckoutComponent,
+        data: {
+          isMyZone: true,
+          isProducts: true
+        }
+      },
     ]
   },
 ];
@@ -61,5 +70,6 @@ export const catalogRoutedComponents = [
   ListComponent,
   UploadComponent,
   UploadCarComponent,
-  EditComponent
+  EditComponent,
+  CheckoutComponent
 ];
