@@ -1,0 +1,57 @@
+@import "../../../style/_common.scss";
+
+/deep/ {
+    .header-title {
+        font-size: $font-size-LL;
+        color: $grey-900;
+        font-weight: bold;
+    }
+
+    .header-row {
+        display: flex;
+        align-items: center;
+    }
+
+    .header-row-margin {
+        margin-bottom: $spacing;
+    }
+
+    .header-subtitle {
+        font-size: $font-size-S;
+        color: $grey-300;
+        margin-bottom: 0;
+    }
+
+    .header-separator {
+        color: $grey-300;
+        margin: 0 15px;
+    }
+
+    .header-link {
+        font-size: $font-size-S;
+    }
+
+    .btn-wrapper {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        height: 100%;
+    }
+    
+    .btn-logout, .btn-save {
+        font-size: $font-size-S;
+    }
+
+    .btn-logout {
+        background-color: transparent;
+        border: solid 1px $grey-100;
+        color: $grey-600;
+        margin-right: $spacing;
+        font-size: $font-size-S;
+        &:hover {
+            background-color: $delete-bg;
+            color: $white;
+            border: solid 1px $delete-bg;
+        }
+    }
+}
