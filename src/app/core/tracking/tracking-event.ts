@@ -35,14 +35,16 @@ export class TrackingEvent {
     this.sessions[0].events[0].timestamp = getTimestamp();
   }
 
-  public setDeviceInfo(operativeSystemVersion: string, OSName: string, deviceAccessTokenId: string) {
+  public setDeviceInfo(operativeSystemVersion: string, OSName: string, deviceAccessTokenId: string, browserName: string, browserVersion: string) {
     this.sessions[0].device = {
+      type: 'Computer',
+      brand: browserName,
+      model: browserVersion,
       platform: OSName,
+      os: operativeSystemVersion,
       screenwidth: this.sessions[0].window.screen.width.toString(),
       screenheight: this.sessions[0].window.screen.height.toString(),
       locale: navigator.language,
-      type: 'PC',
-      os: operativeSystemVersion,
       deviceAccessTokenId: deviceAccessTokenId
     };
   }
