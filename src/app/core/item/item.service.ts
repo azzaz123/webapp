@@ -14,7 +14,7 @@ import {
   CarContent,
   ConversationUser, ItemContent, ItemResponse, ItemsData, ItemWithProducts,
   ItemsWithAvailableProductsResponse, Order, Product, Purchase,
-  SelectedItemsAction
+  SelectedItemsAction, ProductDurations, Duration
 } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
@@ -159,7 +159,7 @@ export class ItemService extends ItemServiceMaster {
         return {
           data: data,
           init: nextInit
-        }
+        };
       }
     )
     .flatMap((itemsData: ItemsData) => {
@@ -175,7 +175,7 @@ export class ItemService extends ItemServiceMaster {
           }
         });
         return itemsData;
-      })
+      });
     })
     .map((itemsData: ItemsData) => {
       this.selectedItems.forEach((selectedItemId: string) => {
@@ -189,7 +189,7 @@ export class ItemService extends ItemServiceMaster {
   }
 
   public mine(init: number, status?: string): Observable<ItemsData> {
-    return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init)
+    return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init);
   }
 
   public myFavorites(init: number): Observable<ItemsData> {
@@ -200,7 +200,7 @@ export class ItemService extends ItemServiceMaster {
         return item;
       });
       return itemsData;
-    })
+    });
   }
 
   public deleteItem(id: string): Observable<any> {
@@ -295,10 +295,28 @@ export class ItemService extends ItemServiceMaster {
       return res.map((i: ItemsWithAvailableProductsResponse) => {
         return {
           item: this.mapRecordData(i),
-          product: i.productList
+          products: this.getProductDurations(i.productList)
         };
       });
     });
+  }
+
+  private getProductDurations(productList: Product[]): ProductDurations {
+    const durations: number[] = _.map(productList[0].durations, 'duration');
+    const types: string[] = _.map(productList, 'name');
+    const productDurations = {};
+    durations.forEach((duration: number) => {
+      productDurations[duration] = {};
+      types.forEach((type: string) => {
+        productDurations[duration][type] = this.findDuration(productList, duration, type);
+      });
+    });
+    return productDurations;
+  }
+
+  private findDuration(productList: Product[], duration: number, type: string): Duration {
+    const product: Product = _.find(productList, {name: type});
+    return _.find(product.durations, {duration: duration});
   }
 
 }

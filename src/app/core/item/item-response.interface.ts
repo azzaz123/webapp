@@ -144,7 +144,17 @@ export interface ItemsWithAvailableProductsResponse extends ItemResponse {
   productList: Product[];
 }
 
+export interface ProductDurations {
+  [duration: string]: {
+    citybump: Duration;
+    zonebump: Duration;
+    countrybump: Duration;
+  };
+}
+
 export interface ItemWithProducts {
   item: Item;
-  product: Product[];
+  products: ProductDurations;
 }
+
+

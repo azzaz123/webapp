@@ -1,3 +1,12 @@
-<p>
-  checkout works!
-</p>
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-9">
+        <tsl-checkout-item *ngFor="let item of itemsWithProducts" [itemWithProducts]="item"></tsl-checkout-item>
+      </div>
+      <div class="col-3">
+
+      </div>
+    </div>
+  </div>
+</div>

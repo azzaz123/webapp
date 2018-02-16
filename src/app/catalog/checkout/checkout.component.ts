@@ -9,12 +9,15 @@ import { ItemWithProducts } from '../../core/item/item-response.interface';
 })
 export class CheckoutComponent implements OnInit {
 
+  itemsWithProducts: ItemWithProducts[];
+
   constructor(private itemService: ItemService) {
   }
 
   ngOnInit() {
     this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems).subscribe((itemsWithProducts: ItemWithProducts[]) => {
-      console.log(itemsWithProducts);
+      this.itemsWithProducts = itemsWithProducts;
+      console.log(this.itemsWithProducts);
     });
   }
 
@@ -24,11 +27,6 @@ export class CheckoutComponent implements OnInit {
         item_id: product.itemId,
         product_id: product.product.durations[0].id
       }
-    });
-    this.loading = true;
-    this.onAction.emit({
-      order: order,
-      total: this.total
     });
 
     let result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
