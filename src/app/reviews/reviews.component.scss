@@ -18,6 +18,12 @@
   }
 
   .user-number-reviews {
+    & {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
     p:first-child {
       font-size: 20px;
       font-weight: 700;
