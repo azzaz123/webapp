@@ -29,23 +29,7 @@ export interface ItemContent {
   price?: number;
   seller_id: string;
   title: string;
-  url?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,: string;
+  url?: string;
   web_slug: string;
   favorites?: number;
   views?: number;
