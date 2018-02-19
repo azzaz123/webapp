@@ -11,7 +11,7 @@ import * as _ from 'lodash';
 export class CheckoutItemComponent implements OnInit {
 
   types: string[] = ['zonebump', 'citybump', 'countrybump'];
-  durations: number[];
+  durations: string[];
   durationForm: FormGroup;
 
   @Input() itemWithProducts: ItemWithProducts;

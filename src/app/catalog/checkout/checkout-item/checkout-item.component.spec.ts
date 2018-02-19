@@ -30,7 +30,10 @@ describe('CheckoutItemComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+    it('should set durations and default', () => {
+      expect(component.durations).toEqual(['24', '72', '168']);
+      expect(component.durationForm.get('duration').value).toEqual('72');
+    });
   });
 });

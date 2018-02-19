@@ -9,14 +9,17 @@ import { ITEMS_WITH_PRODUCTS } from '../../../tests/item.fixtures';
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
   let fixture: ComponentFixture<CheckoutComponent>;
+  let itemService: ItemService;
+
+  const SELECTED_ITEMS = ['1', '2', '3'];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckoutComponent ],
+      declarations: [CheckoutComponent],
       providers: [
         {
           provide: ItemService, useValue: {
-          selectedItems: ['id'],
+          selectedItems: SELECTED_ITEMS,
           getItemsWithAvailableProducts() {
             return Observable.of(ITEMS_WITH_PRODUCTS);
           }
@@ -31,10 +34,15 @@ describe('CheckoutComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutComponent);
     component = fixture.componentInstance;
+    itemService = TestBed.get(ItemService);
+    spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+    it('should call getItemsWithAvailableProducts and set it', () => {
+      expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(SELECTED_ITEMS);
+      expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
+    });
   });
 });
