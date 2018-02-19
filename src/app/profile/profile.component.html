@@ -2,7 +2,7 @@
   <div class="container">
     <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
       <tsl-header>
-        <div class="col-6">
+        <div class="col-9">
           <div class="header-row">
             <h1 class="header-title" i18n>Your profile</h1>
           </div>
@@ -12,7 +12,7 @@
             <a class="header-link" [href]="userUrl" target="_blank" i18n>View my public profile</a>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-3">
           <div class="btn-wrapper">
             <button class="btn btn-logout" (click)="logout($event)" tslTrackEvent="MYZONE_MENU_LOGOUT" i18n>Logout</button>
             <button type="submit" class="btn btn-primary btn-save" [ngClass]="{disabled: !hasNotSavedChanges}" tslTrackEvent="MYPROFILE_SAVEBUTTON"

@@ -6,6 +6,16 @@
   [infiniteScrollDisabled]="end || loading"
   (scrolled)="loadMore()">
   <div class="container">
+    <tsl-header>
+      <div class="col-12">
+        <div class="header-row">
+          <h1 class="header-title" i18n>Your favorites</h1>
+        </div>
+        <div class="header-row header-row--margin">
+          <h4 class="header-subtitle" i18n>These are the wallapop products that you like the most</h4>
+        </div>
+      </div>
+    </tsl-header>
     <masonry [options]="masonryOptions">
       <div class="favorites-empty-state" *ngIf="!items.length && !loading">
         <mat-icon svgIcon="favorites-empty-state" class="image"></mat-icon>
