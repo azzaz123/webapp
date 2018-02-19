@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   file: UploadFile;
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
   options: NgUploaderOptions;
-  private hasNotSavedChanges: boolean;
+  public hasNotSavedChanges: boolean;
   private oldFormValue: any;
 
   constructor(private userService: UserService,

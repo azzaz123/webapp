@@ -1,5 +1,4 @@
 <div class="review-item row">
-  <div class="separator"></div>
   <div class="col-1 images-container">
     <div class="review-image" [ngClass]="{'purchase': this.review.isBought}">
       <a href="{{ itemWebLink }}" target="_blank" tslsanitizedBackground="{{ this.review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"
@@ -30,7 +29,7 @@
     <p class="review-comment">{{ this.review.comments }}</p>
     <div class="review-credits">
       <span i18n>Posted by</span>
-      <span *ngIf="this.review.user"><a href="{{ userWebSlug }}" target="_blank">{{ this.review.user.microName }}</a></span>
+      <span *ngIf="this.review.user"><a href="{{ userWebSlug }}" target="_blank" class="review-microname">{{ this.review.user.microName }}</a></span>
       <span *ngIf="!this.review.user" i18n>a wallapop user</span>
       <span i18n>on</span><span> {{ this.review.date | date:'longDate' }}</span>
     </div>
