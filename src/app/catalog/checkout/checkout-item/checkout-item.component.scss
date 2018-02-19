@@ -29,7 +29,7 @@
     }
   }
   .durations {
-    flex: 0 0 123px;
+    flex: 0 0 110px;
     padding-left: $spacing;
     label {
       display: block;
@@ -56,7 +56,7 @@
     }
   }
   .price {
-    flex: 0 0 170px;
+    flex: 0 0 $duration-table-col-width;
     padding: 0 $spacing;
     .btn-price {
       background-color: $grey-50;
@@ -83,6 +83,7 @@
       }
     }
     &.countrybump {
+      margin-right: -$spacing-XXS;
       .btn-price {
         &:hover {
           background-color: $country-bump;

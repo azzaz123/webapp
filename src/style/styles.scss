@@ -58,8 +58,6 @@ button {
   }
 }
 
-
-
 #right-panel {
   .card {
     background-color: $white;
@@ -72,4 +70,10 @@ button, input, optgroup, select, textarea {
 
 .page-profile .popover {
   display: none;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1200px;
+  }
 }

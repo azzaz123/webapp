@@ -2,7 +2,40 @@
   <div class="container">
     <div class="row">
       <div class="col-9">
-        <tsl-checkout-item *ngFor="let item of itemsWithProducts" [itemWithProducts]="item"></tsl-checkout-item>
+        <div class="table-header">
+          <div class="info">
+            <mat-icon svgIcon="feature"></mat-icon>
+            <a href="" i18n>¿Que son los Destacados?</a>
+          </div>
+          <div class="type zone">
+            <div>
+              <mat-icon svgIcon="feature"></mat-icon>
+              <div i18n>Destácalo en tu Barrio</div>
+            </div>
+          </div>
+          <div class="type city">
+            <div>
+              <div>
+                <mat-icon svgIcon="feature"></mat-icon>
+                <mat-icon svgIcon="feature"></mat-icon>
+              </div>
+              <div i18n>Destácalo en tu ciudad</div>
+            </div>
+          </div>
+          <div class="type country">
+            <div>
+              <div>
+                <mat-icon svgIcon="feature"></mat-icon>
+                <mat-icon svgIcon="feature"></mat-icon>
+                <mat-icon svgIcon="feature"></mat-icon>
+              </div>
+              <div i18n>Destácalo en tu País</div>
+            </div>
+          </div>
+        </div>
+        <div class="price-table">
+          <tsl-checkout-item *ngFor="let item of itemsWithProducts" [itemWithProducts]="item"></tsl-checkout-item>
+        </div>
       </div>
       <div class="col-3">
 
