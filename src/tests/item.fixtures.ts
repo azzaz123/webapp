@@ -3,12 +3,12 @@ import {
   CarUploadForm,
   ConversationUser,
   ItemResponse,
-  ItemUploadForm,
+  ItemUploadForm, ItemWithProducts,
   Order,
   Product,
   Purchase
 } from '../app/core/item/item-response.interface';
-import { USER_LOCATION, ITEM_ID } from 'shield';
+import { USER_LOCATION, ITEM_ID, MOCK_ITEM } from 'shield';
 import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
@@ -376,3 +376,136 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
     longitude: USER_LOCATION.approximated_longitude
   }
 };
+
+export const ITEMS_WITH_PRODUCTS: ItemWithProducts[] = [
+  {
+    'item': MOCK_ITEM,
+    'products': {
+      '24': {
+        'citybump': {
+          'id': 'p1k3zlq6xdyo',
+          'duration': 24,
+          'market_code': '3.19',
+          'original_market_code': '3.99'
+        },
+        'zonebump': {
+          'id': 'qpevjrwzk8y4',
+          'duration': 24,
+          'market_code': '3.19',
+          'original_market_code': '3.99'
+        },
+        'countrybump': {
+          'id': '5nv4z4ylzy73',
+          'duration': 24,
+          'market_code': '7.99',
+          'original_market_code': '9.99'
+        }
+      },
+      '72': {
+        'citybump': {
+          'id': '2n08z8oj3wrq',
+          'duration': 72,
+          'market_code': '5.59',
+          'original_market_code': '6.99'
+        },
+        'zonebump': {
+          'id': 'v9owzy2j5g7x',
+          'duration': 72,
+          'market_code': '3.19',
+          'original_market_code': '3.99'
+        },
+        'countrybump': {
+          'id': '2y436edkjdgp',
+          'duration': 72,
+          'market_code': '15.19',
+          'original_market_code': '18.99'
+        }
+      },
+      '168': {
+        'citybump': {
+          'id': 'd9ke65vmjox1',
+          'duration': 168,
+          'market_code': '7.19',
+          'original_market_code': '8.99'
+        },
+        'zonebump': {
+          'id': 'l1kmzngg6n3p',
+          'duration': 168,
+          'market_code': '4.79',
+          'original_market_code': '5.99'
+        },
+        'countrybump': {
+          'id': 'k87v6g05jeoy',
+          'duration': 168,
+          'market_code': '23.19',
+          'original_market_code': '28.99'
+        }
+      }
+    }
+  },
+  {
+    'item': MOCK_ITEM,
+    'products': {
+      '24': {
+        'citybump': {
+          'id': 'p1k3zlq6xdyo',
+          'duration': 24,
+          'market_code': '3.19',
+          'original_market_code': '3.99'
+        },
+        'zonebump': {
+          'id': 'qpevjrwzk8y4',
+          'duration': 24,
+          'market_code': '3.19',
+          'original_market_code': '3.99'
+        },
+        'countrybump': {
+          'id': '5nv4z4ylzy73',
+          'duration': 24,
+          'market_code': '7.99',
+          'original_market_code': '9.99'
+        }
+      },
+      '72': {
+        'citybump': {
+          'id': '2n08z8oj3wrq',
+          'duration': 72,
+          'market_code': '5.59',
+          'original_market_code': '6.99'
+        },
+        'zonebump': {
+          'id': 'v9owzy2j5g7x',
+          'duration': 72,
+          'market_code': '3.19',
+          'original_market_code': '3.99'
+        },
+        'countrybump': {
+          'id': '2y436edkjdgp',
+          'duration': 72,
+          'market_code': '15.19',
+          'original_market_code': '18.99'
+        }
+      },
+      '168': {
+        'citybump': {
+          'id': 'd9ke65vmjox1',
+          'duration': 168,
+          'market_code': '7.19',
+          'original_market_code': '8.99'
+        },
+        'zonebump': {
+          'id': 'l1kmzngg6n3p',
+          'duration': 168,
+          'market_code': '4.79',
+          'original_market_code': '5.99'
+        },
+        'countrybump': {
+          'id': 'k87v6g05jeoy',
+          'duration': 168,
+          'market_code': '23.19',
+          'original_market_code': '28.99'
+        }
+      }
+    }
+  }
+];

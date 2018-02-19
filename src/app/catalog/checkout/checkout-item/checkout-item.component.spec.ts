@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CheckoutItemComponent } from './checkout-item.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
+import { ITEMS_WITH_PRODUCTS } from '../../../../tests/item.fixtures';
 
 describe('CheckoutItemComponent', () => {
   let component: CheckoutItemComponent;
@@ -8,7 +13,12 @@ describe('CheckoutItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckoutItemComponent ]
+      declarations: [ CheckoutItemComponent, CustomCurrencyPipe ],
+      providers: [
+        FormBuilder,
+        DecimalPipe
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -16,6 +26,7 @@ describe('CheckoutItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutItemComponent);
     component = fixture.componentInstance;
+    component.itemWithProducts = ITEMS_WITH_PRODUCTS[0];
     fixture.detectChanges();
   });
 
