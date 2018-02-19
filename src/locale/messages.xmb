@@ -36,14 +36,14 @@
   <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:23</source><source>app/catalog/list/selected-items/selected-items.component.ts:23</source>Reserve</msg>
   <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source>Remove</msg>
   <msg id="8212177249756365917"><source>app/core/item/item-cart-favorite/item-cart-favorite.component.ts:11</source> Remove </msg>
-  <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:20</source><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source>Messages</msg>
+  <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:21</source><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source>Messages</msg>
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.ts:31</source>My Zone</msg>
   <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.ts:36</source>List a product</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:6</source>Profile</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:13</source>Products</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:27</source>Favorites</msg>
-  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:34</source><source>app/reviews/reviews.component.ts:21</source>Reviews</msg>
-  <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:41</source>Logout</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:28</source>Favorites</msg>
+  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:35</source><source>app/reviews/reviews.component.ts:21</source>Reviews</msg>
+  <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:42</source>Logout</msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:26</source>Delete conversation</msg>
@@ -171,7 +171,7 @@
   <msg id="4918814479561513634"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:2</source>Do you want to leave this page?</msg>
   <msg id="6618892692857491514"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
   <msg id="3542042671420335679"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:6</source>No</msg>
-  <msg id="4510233521290203619"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:7</source>Yes, leave</msg>
+  <msg id="4510233521290203619"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:7</source><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:8</source>Yes, leave</msg>
   <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
@@ -181,9 +181,9 @@
   <msg id="2928844379959000123"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:54</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
   <msg id="6962699013778688473"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:55</source>Continue</msg>
   <msg id="6071814986980529912"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:5</source>This time, sell it!</msg>
-  <msg id="4836554913661222496"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:6</source>Reactivate this item for <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> and put it in the top positions.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Get more visibility and sell it faster. </msg>
-  <msg id="6877992122026439414"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:7</source>Reactivate + visibility </msg>
-  <msg id="3244863581909362906"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:9</source>Only reactivate it, I don&apos;t want to sell it faster</msg>
+  <msg id="4836554913661222496"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:6</source>Reactivate this item for <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{price | customCurrency:&apos;EUR&apos;}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> and put it in the top positions.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Get more visibility and sell it faster. </msg>
+  <msg id="6877992122026439414"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:11</source>Reactivate + visibility </msg>
+  <msg id="3244863581909362906"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:16</source>Only reactivate it, I don&apos;t want to sell it faster</msg>
   <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:23</source>Feature Product</msg>
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:44</source>Reactivate</msg>
   <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:48</source>Pending</msg>
@@ -204,7 +204,7 @@
   <msg id="7493287338252374869"><source>app/catalog/upload/upload-product/upload-product.component.ts:70</source>Every detail helps: so tell us more!</msg>
   <msg id="2806917038528218276"><source>app/catalog/upload/upload-product/upload-product.component.ts:105</source>FAQ</msg>
   <msg id="5972351850683239127"><source>app/catalog/upload/upload-product/upload-product.component.ts:110</source>Shipping</msg>
-  <msg id="3007176586514020023"><source>app/catalog/upload/upload-product/upload-product.component.ts:111</source>Tell us how much it weighs.</msg>
+  <msg id="2877776180648049476"><source>app/catalog/upload/upload-product/upload-product.component.ts:111</source>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</msg>
   <msg id="3336512716830718777"><source>app/catalog/upload/upload-product/upload-product.component.ts:122</source>Important for shipping.</msg>
   <msg id="1551801042919193607"><source>app/catalog/upload/category-selector/category-selector.component.ts:2</source>What will you sell?</msg>
   <msg id="2649260508337759251"><source>app/catalog/upload/category-selector/category-selector.component.ts:3</source>Set the product type you will list</msg>
@@ -217,12 +217,12 @@
   <msg id="5263225898611875859"><source>app/reviews/reviews.component.ts:13</source>This is what people think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:16</source>Your average</msg>
   <msg id="5327426729320041573"><source>app/reviews/reviews.component.ts:27</source>Nobody has written a review about you because you didn&apos;t buy or sell anything yet. Wake up!</msg>
-  <msg id="5653113390991708232"><source>app/reviews/review-item/review-item.component.ts:14</source>Sold:</msg>
-  <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.ts:17</source><source>app/reviews/review-item/review-item.component.ts:24</source>A wallapop item</msg>
-  <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.ts:21</source>Bought:</msg>
-  <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:30</source>Posted by</msg>
-  <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.ts:32</source>a wallapop user</msg>
-  <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:33</source>on</msg>
+  <msg id="5653113390991708232"><source>app/reviews/review-item/review-item.component.ts:16</source>Sold:</msg>
+  <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.ts:19</source><source>app/reviews/review-item/review-item.component.ts:26</source>A wallapop item</msg>
+  <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.ts:23</source>Bought:</msg>
+  <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:32</source>Posted by</msg>
+  <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.ts:34</source>a wallapop user</msg>
+  <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:35</source>on</msg>
   <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:12</source>In this list you can see all the products you saved as favourite</msg>
   <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:4</source>Are you sure you want to close your account?</msg>
   <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:5</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
