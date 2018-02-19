@@ -1,6 +1,6 @@
 <div class="item">
   <tsl-item-avatar [item]="itemWithProducts.item" size="big" fallbackLight="true"></tsl-item-avatar>
-  <div class="title">{{itemWithProducts.item._title}}</div>
+  <div class="title">{{itemWithProducts.item.title}}</div>
   <form [formGroup]="durationForm" class="durations border-l">
     <div ngbRadioGroup name="radioBasic" formControlName="duration">
       <label ngbButtonLabel *ngFor="let duration of durations">
