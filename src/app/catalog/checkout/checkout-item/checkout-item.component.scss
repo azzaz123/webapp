@@ -1,0 +1,93 @@
+@import "../../../../style/_common.scss";
+
+.item {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $grey-50;
+  margin-bottom: $spacing-XS;
+  padding: $spacing-XXS;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .title {
+    @include text-truncate();
+    padding-right: $spacing-S;
+  }
+  .border-l {
+    position: relative;
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    &:before {
+      content: '';
+      height: 60px;
+      width: 1px;
+      background-color: $grey-50;
+      position: absolute;
+      top: 11px;
+      left: 0;
+    }
+  }
+  .durations {
+    flex: 0 0 123px;
+    padding-left: $spacing;
+    label {
+      display: block;
+      font-size: $font-size-XS;
+      color: $grey-250;
+      margin: $spacing-XS 0;
+      &.btn {
+        border: 0;
+        background: none;
+        padding: 0;
+        border-radius: 0;
+        text-align: left;
+        &:focus, &.focus {
+          box-shadow: none;
+        }
+      }
+      &.active {
+        color: $grey-900;
+        font-weight: bold;
+      }
+      input {
+        margin-right: $spacing-XS;
+      }
+    }
+  }
+  .price {
+    flex: 0 0 170px;
+    padding: 0 $spacing;
+    .btn-price {
+      background-color: $grey-50;
+      border-radius: 20px;
+      font-size: $font-size-M;
+      text-align: center;
+      width: 100%;
+      &:hover {
+        color: $white;
+      }
+    }
+    &.zonebump {
+      .btn-price {
+        &:hover {
+          background-color: $zone-bump;
+        }
+      }
+    }
+    &.citybump {
+      .btn-price {
+        &:hover {
+          background-color: $city-bump;
+        }
+      }
+    }
+    &.countrybump {
+      .btn-price {
+        &:hover {
+          background-color: $country-bump;
+        }
+      }
+    }
+  }
+}

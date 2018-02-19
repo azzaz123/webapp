@@ -1,13 +1,16 @@
-<div class="row">
-  <form class="col-3" [formGroup]="durationForm">
-    <tsl-item-avatar [item]="itemWithProducts.item" size="big" fallbackLight="true"></tsl-item-avatar>
+<div class="item">
+  <tsl-item-avatar [item]="itemWithProducts.item" size="big" fallbackLight="true"></tsl-item-avatar>
+  <div class="title">{{itemWithProducts.item._title}}</div>
+  <form [formGroup]="durationForm" class="durations border-l">
     <div ngbRadioGroup name="radioBasic" formControlName="duration">
       <label ngbButtonLabel *ngFor="let duration of durations">
         <input ngbButton type="radio" [value]="duration"> <span i18n>{{duration / 24}} days</span>
       </label>
     </div>
   </form>
-  <div class="col-3" *ngFor="let type of types">
-    <button class="btn">{{itemWithProducts.products[durationForm.value.duration][type]?.market_code}}</button>
+  <div *ngFor="let type of types" class="price border-l" [ngClass]="type">
+    <button class="btn btn-price">
+      {{itemWithProducts.products[durationForm.value.duration][type]?.market_code | customCurrency}}
+    </button>
   </div>
 </div>
