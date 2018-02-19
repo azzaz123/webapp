@@ -29,11 +29,11 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   private oldFormValue: any;
 
   constructor(private userService: UserService,
-              private fb: FormBuilder,
-              private errorsService: ErrorsService,
-              private http: HttpService,
-              private modalService: NgbModal,
-              @Inject('SUBDOMAIN') private subdomain: string) {
+    private fb: FormBuilder,
+    private errorsService: ErrorsService,
+    private http: HttpService,
+    private modalService: NgbModal,
+    @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
@@ -172,6 +172,11 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       id: output.file.id
     });
     this.file = null;
+  }
+
+  public logout($event: any) {
+    $event.preventDefault();
+    this.userService.logout();
   }
 
 }

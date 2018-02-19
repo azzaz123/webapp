@@ -41,6 +41,10 @@
     .btn-logout, .btn-save {
         font-size: $font-size-S;
     }
+    
+    .btn-save {
+        margin-right: $spacing;
+    }
 
     .btn-logout {
         background-color: transparent;
