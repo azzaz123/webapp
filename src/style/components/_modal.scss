@@ -168,3 +168,14 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     max-width: unset;
   }
 }
+
+.modal.reactivate {
+  $modal-width: 555px;
+  .modal-dialog {
+    max-width: $modal-width;
+  }
+  .modal-content {
+    width: $modal-width !important;
+    max-width: unset;
+  }
+}

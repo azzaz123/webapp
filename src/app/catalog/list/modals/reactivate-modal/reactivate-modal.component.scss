@@ -1,0 +1,40 @@
+@import "../../../../../style/_common.scss";
+
+.modal-body {
+  background: url(/assets/images/reactivate.svg) no-repeat center 40px;
+  padding-top: 200px;
+  text-align: center;
+  h1 {
+    font-size: $font-size;
+    font-weight: bold;
+    margin-bottom: $spacing-XS;
+  }
+  p {
+    color: $grey-600;
+    margin: 0 0 $spacing;
+  }
+  .btn-bump {
+    background-color: $grey-700;
+    color: $white;
+    font-size: $font-size-S;
+    padding: 10px 30px;
+    border-radius: 20px;
+    border-color: transparent;
+    &:hover {
+      background: $corporate;
+    }
+  }
+  .line {
+    background-color: $grey-50;
+    width: 176px;
+    margin: $spacing auto $spacing-S;
+    height: 2px;
+  }
+  .reactivate {
+    font-size: $font-size-S;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

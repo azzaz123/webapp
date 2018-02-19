@@ -74,7 +74,8 @@ export class I18nService {
       imageUploaded: 'Image uploaded!',
       passwordMinLength: 'Password length should be at least 8 characters',
       defaultErrorTitle: 'Oops!',
-      defaultSuccessTitle: 'Yup!'
+      defaultSuccessTitle: 'Yup!',
+      bumpError: 'Some listings have not been bumped due to an error'
     },
     es: {
       daysMomentConfig: {
@@ -146,7 +147,8 @@ export class I18nService {
       imageUploaded: 'La imagen se ha cargado!',
       passwordMinLength: 'La contraseña tiene que ser de almenos 8 caracteres',
       defaultErrorTitle: '¡Ups!',
-      defaultSuccessTitle: '¡Bien!'
+      defaultSuccessTitle: '¡Bien!',
+      bumpError: 'Algunos productos no se han destacado debido a un error'
     }
   };
 

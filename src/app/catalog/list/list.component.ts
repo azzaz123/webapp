@@ -1,19 +1,11 @@
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import {
-  ErrorsService,
-  FinancialCard,
-  Item,
-  ItemBulkResponse,
-  PaymentService,
-  DEFAULT_ERROR_MESSAGE
-} from 'shield';
+import { FinancialCard, Item, ItemBulkResponse, PaymentService } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
 import { ItemsData } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
-import { ToastrService } from 'ngx-toastr';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { UUID } from 'angular2-uuid';
@@ -22,7 +14,7 @@ import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card
 import { OrderEvent } from './selected-items/selected-product.interface';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { I18nService } from '../../core/i18n/i18n.service';
+import { ErrorsService } from '../../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-list',
@@ -46,8 +38,6 @@ export class ListComponent implements OnInit, OnDestroy {
               private trackingService: TrackingService,
               private modalService: NgbModal,
               private route: ActivatedRoute,
-              private toastr: ToastrService,
-              private i18n: I18nService,
               private paymentService: PaymentService,
               private errorService: ErrorsService,
               private router: Router) {
@@ -89,7 +79,7 @@ export class ListComponent implements OnInit, OnDestroy {
           }, () => {
           });
         } else if (params && params.updated) {
-          this.toastr.success(this.i18n.getTranslations('itemUpdated'));
+          this.errorService.i18nSuccess('itemUpdated');
         }
       });
     });
@@ -150,8 +140,12 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public itemChanged($event: ItemChangeEvent) {
-    const index: number = _.findIndex(this.items, {'_id': $event.item.id});
-    this.items.splice(index, 1);
+    if ($event.action === 'reactivatedWithBump') {
+      this.feature($event.orderEvent);
+    } else {
+      const index: number = _.findIndex(this.items, {'_id': $event.item.id});
+      this.items.splice(index, 1);
+    }
   }
 
   public deselect() {
@@ -183,7 +177,7 @@ export class ListComponent implements OnInit, OnDestroy {
           this.items.splice(index, 1);
         });
         if (response.failedIds.length) {
-          this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
+          this.errorService.i18nError('bulkDeleteError');
         }
       });
     }, () => {
@@ -201,7 +195,7 @@ export class ListComponent implements OnInit, OnDestroy {
         }
       });
       if (response.failedIds.length) {
-        this.toastr.error(this.i18n.getTranslations('bulkReserveError'));
+        this.errorService.i18nError('bulkReserveError');
       }
     });
   }
@@ -209,17 +203,21 @@ export class ListComponent implements OnInit, OnDestroy {
   public feature(orderEvent: OrderEvent) {
     const orderId: string = UUID.UUID();
     this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe((failedProducts: string[]) => {
-      this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
-        this.chooseCreditCard(orderId, orderEvent.total, financialCard);
-      }, () => {
-        this.sabadellSubmit.emit(orderId);
-      });
+      if (failedProducts && failedProducts.length) {
+        this.errorService.i18nError('bumpError');
+      } else {
+        this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
+          this.chooseCreditCard(orderId, orderEvent.total, financialCard);
+        }, () => {
+          this.sabadellSubmit.emit(orderId);
+        });
+      }
     }, (error: Response) => {
       this.deselect();
       if (error.text()) {
         this.errorService.show(error);
       } else {
-        this.toastr.error(DEFAULT_ERROR_MESSAGE);
+        this.errorService.i18nError('bumpError');
       }
     });
   }
@@ -228,7 +226,7 @@ export class ListComponent implements OnInit, OnDestroy {
     const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, {windowClass: 'credit-card'});
     modalRef.componentInstance.financialCard = financialCard;
     modalRef.componentInstance.total = total;
-    this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, { select_card: financialCard.id });
+    this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
     modalRef.result.then((result: string) => {
       if (result === 'new') {
         this.sabadellSubmit.emit(orderId);

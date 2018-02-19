@@ -18,7 +18,7 @@ import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
 import {
   CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, ORDER, PRODUCT_RESPONSE,
-  PURCHASES, ITEMS_DATA_v3_FAVORITES
+  PURCHASES, ITEMS_DATA_v3_FAVORITES, PRODUCTS_RESPONSE
 } from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers, RequestOptions } from '@angular/http';
 import { ConversationUser, ItemsData, Product } from './item-response.interface';
@@ -312,13 +312,26 @@ describe('ItemService', () => {
 
   describe('getAvailableProducts', () => {
     it('should call endpoint', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCT_RESPONSE)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let resp: Product;
       service.getAvailableProducts(ITEM_ID).subscribe((r: Product) => {
         resp = r;
       });
-      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-products');
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-visibility-products');
+      expect(resp).toEqual(PRODUCT_RESPONSE)
+    });
+  });
+
+  describe('getAvailableReactivationProducts', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: Product;
+      service.getAvailableReactivationProducts(ITEM_ID).subscribe((r: Product) => {
+        resp = r;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-reactivation-products');
       expect(resp).toEqual(PRODUCT_RESPONSE)
     });
   });
