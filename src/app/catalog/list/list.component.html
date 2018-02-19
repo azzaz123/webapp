@@ -8,6 +8,16 @@
      [scrollTop]="scrollTop">
   <div class="container">
     <img class="banner" src="/assets/images/banner-bump.gif" />
+    <tsl-header>
+      <div class="col-12">
+        <div class="header-row">
+          <h1 class="header-title" i18n>Your products</h1>
+        </div>
+        <div class="header-row header-row--margin">
+          <h4 class="header-subtitle" i18n>Here you can list items, manage the ones you already have and featured to sell them faster</h4>
+        </div>
+      </div>
+    </tsl-header>
     <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
