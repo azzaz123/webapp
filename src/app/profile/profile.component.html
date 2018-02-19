@@ -1,25 +1,26 @@
 <div class="page-content">
   <div class="container">
-    <tsl-header>
-      <div class="col-6">
-        <div class="header-row">
-          <h1 class="header-title" i18n>Your profile</h1>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <tsl-header>
+        <div class="col-6">
+          <div class="header-row">
+            <h1 class="header-title" i18n>Your profile</h1>
+          </div>
+          <div class="header-row header-row--margin">
+            <h4 class="header-subtitle" i18n>Subtitle for your profile</h4>
+            <div class="header-separator">|</div>
+            <a class="header-link" [href]="userUrl" target="_blank" i18n>View my public profile</a>
+          </div>
         </div>
-        <div class="header-row header-row--margin">
-          <h4 class="header-subtitle" i18n>Subtitle for your profile</h4>
-          <div class="header-separator">|</div>
-          <a class="header-link" [href]="userUrl" target="_blank" i18n>View my public profile</a>
+        <div class="col-6">
+          <div class="btn-wrapper">
+            <button class="btn btn-logout" (click)="logout($event)" tslTrackEvent="MYZONE_MENU_LOGOUT" i18n>Logout</button>
+            <button type="submit" class="btn btn-primary btn-save" [ngClass]="{disabled: !hasNotSavedChanges}" tslTrackEvent="MYPROFILE_SAVEBUTTON"
+              i18n>Save</button>
+          </div>
         </div>
-      </div>
-      <div class="col-6">
-        <div class="btn-wrapper">
-          <button class="btn btn-logout" (click)="logout($event)" tslTrackEvent="MYZONE_MENU_LOGOUT" i18n>Logout</button>
-          <button type="submit" class="btn btn-primary btn-save" tslTrackEvent="MYPROFILE_SAVEBUTTON" i18n>Save</button>
-        </div>
-      </div>
-    </tsl-header>
-    <div class="box">
-      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      </tsl-header>
+      <div class="box">
         <div class="box-content">
           <div class="row profile-pic align-items-center">
             <div class="col-4">
@@ -107,8 +108,8 @@
             </div>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
 
   </div>
 </div>
