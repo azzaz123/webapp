@@ -110,8 +110,8 @@
       <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.delivery_info.valid && uploadForm.controls.delivery_info.dirty}" i18n>Shipping</h2>
       <p i18n>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</p>
       <div ngbRadioGroup name="radioBasic" formControlName="delivery_info">
-        <label class="btn selector" *ngFor="let delivery of deliveryInfo">
-          <input type="radio" [value]="delivery.value">
+        <label ngbButtonLabel class="btn selector" *ngFor="let delivery of deliveryInfo">
+          <input ngbButton type="radio" [value]="delivery.value">
           <mat-icon svgIcon="shipping-{{delivery.value.max_weight_kg}}"></mat-icon>
           <span><strong>{{delivery.value.max_weight_kg}}kg max</strong></span>
         </label>
