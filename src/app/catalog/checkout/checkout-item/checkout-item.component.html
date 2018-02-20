@@ -4,7 +4,8 @@
   <form [formGroup]="durationForm" class="durations border-l">
     <div ngbRadioGroup name="radioBasic" formControlName="duration">
       <label ngbButtonLabel *ngFor="let duration of durations">
-        <input ngbButton type="radio" [value]="duration"> <span i18n>{{duration / 24}} days</span>
+        <input ngbButton type="radio" [value]="duration">
+        <mat-icon svgIcon="radio-button"></mat-icon> <span i18n>{{duration / 24}} days</span>
       </label>
     </div>
   </form>

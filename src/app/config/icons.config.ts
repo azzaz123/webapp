@@ -155,4 +155,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('btn-reserved', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-reserved.svg'));
   matIconRegistry.addSvgIcon('btn-sold', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-sold.svg'));
   matIconRegistry.addSvgIcon('favorites-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/favorites-empty-state.svg'));
+  matIconRegistry.addSvgIcon('radio-button', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/radio-button.svg'));
 }

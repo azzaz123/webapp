@@ -45,13 +45,23 @@
         &:focus, &.focus {
           box-shadow: none;
         }
+        input {
+          display: none;
+        }
+        mat-icon {
+          @include square(18px);
+          vertical-align: text-top;
+          margin-right: $spacing-XS;
+        }
       }
       &.active {
         color: $grey-900;
         font-weight: bold;
       }
-      input {
-        margin-right: $spacing-XS;
+      &:not(.active) {
+        mat-icon /deep/ svg #bullet {
+          display: none;
+        }
       }
     }
   }
