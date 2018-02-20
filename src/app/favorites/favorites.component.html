@@ -7,13 +7,18 @@
   (scrolled)="loadMore()">
   <div class="container">
     <tsl-header>
-      <div class="col-12">
+      <div class="col-11">
         <div class="header-row">
           <h1 class="header-title" i18n>Your favorites</h1>
         </div>
         <div class="header-row header-row--margin">
           <h4 class="header-subtitle" i18n>These are the wallapop products that you like the most</h4>
         </div>
+      </div>
+      <div class="col-1 header-numbers">
+        <p class="header-numbers-top">1000</p>
+        <p class="header-numbers-bottom" i18n>favorites</p>
+        <p class="header-numbers-bottom" [hidden]="true" i18n>favorite</p>
       </div>
     </tsl-header>
     <masonry [options]="masonryOptions">

@@ -9,13 +9,18 @@
   <div class="container">
     <img class="banner" src="/assets/images/banner-bump.gif" />
     <tsl-header>
-      <div class="col-12">
+      <div class="col-11">
         <div class="header-row">
           <h1 class="header-title" i18n>Your products</h1>
         </div>
         <div class="header-row header-row--margin">
           <h4 class="header-subtitle" i18n>Here you can list items, manage the ones you already have and featured to sell them faster</h4>
         </div>
+      </div>
+      <div class="col-1 header-numbers">
+        <p class="header-numbers-top">1000</p>
+        <p class="header-numbers-bottom" i18n>products</p>
+        <p class="header-numbers-bottom" [hidden]="true" i18n>product</p>
       </div>
     </tsl-header>
     <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
