@@ -112,13 +112,15 @@
   <msg id="8199257104398637162"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:10</source>Promote it and sell it quicker</msg>
   <msg id="7976214204076569605"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:13</source>Feature it</msg>
   <msg id="2091018015289565203"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:16</source>Share it with your friends:</msg>
-  <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:12</source>Published</msg>
-  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:13</source>Sold</msg>
-  <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:14</source>Expired</msg>
-  <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:18</source>1 item selected</msg>
-  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:19</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
-  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:31</source>Upload an item to my catalog</msg>
-  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:32</source>Upload another item to my catalog</msg>
+  <msg id="5433688037539750263"><source>app/catalog/list/list.component.ts:14</source>Your products</msg>
+  <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:17</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
+  <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:22</source>Published</msg>
+  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:23</source>Sold</msg>
+  <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:24</source>Expired</msg>
+  <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:28</source>1 item selected</msg>
+  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:29</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
+  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:41</source>Upload an item to my catalog</msg>
+  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:42</source>Upload another item to my catalog</msg>
   <msg id="6622336784189066984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source><source>app/catalog/upload/upload-car/upload-car.component.ts:208</source><source>app/catalog/upload/upload-product/upload-product.component.ts:128</source>Post Ad</msg>
   <msg id="4021752662928002901"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:7</source><source>app/catalog/upload/upload-car/upload-car.component.ts:209</source><source>app/catalog/upload/upload-product/upload-product.component.ts:129</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:18</source>Update</msg>
   <msg id="2233560223291461480"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:27</source><source>app/catalog/upload/upload-car/upload-car.component.ts:151</source>Manual</msg>
@@ -222,7 +224,9 @@
   <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:31</source>Posted by</msg>
   <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.ts:33</source>a wallapop user</msg>
   <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:34</source>on</msg>
-  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:12</source>In this list you can see all the products you saved as favourite</msg>
+  <msg id="6938753357996446484"><source>app/favorites/favorites.component.ts:12</source>Your favorites</msg>
+  <msg id="2988941833994717815"><source>app/favorites/favorites.component.ts:15</source>These are the wallapop products that you like the most</msg>
+  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:22</source>In this list you can see all the products you saved as favourite</msg>
   <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:4</source>Are you sure you want to close your account?</msg>
   <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:5</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
   <msg id="859827593140377121"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:7</source>Yes, I do want to close my account</msg>
