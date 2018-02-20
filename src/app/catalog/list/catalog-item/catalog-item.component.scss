@@ -25,7 +25,7 @@ $feature-button-width: 170px;
     margin-right: $spacing;
     margin-top: $spacing-L;
     cursor: pointer;
-    md-icon {
+    mat-icon {
       display: none;
       height: 9px;
       width: 12px;
@@ -33,7 +33,7 @@ $feature-button-width: 170px;
     &.selected {
       background: $corporate;
       border-color: transparent;
-      md-icon {
+      mat-icon {
         display: flex;
       }
     }
@@ -121,7 +121,7 @@ $feature-button-width: 170px;
     font-size: $font-size-XS;
     color: $grey-500;
     min-width: 115px;
-    md-icon {
+    mat-icon {
       height: 17px;
       width: 19px;
       vertical-align: top;
@@ -150,7 +150,7 @@ $feature-button-width: 170px;
         &:hover {
           background: $corporate;
         }
-        md-icon {
+        mat-icon {
           width: 19px;
           height: 21px;
           margin-right: 9px;
@@ -204,7 +204,7 @@ $feature-button-width: 170px;
     border-radius: $border-radius;
     color: $grey-900;
     height: 40px;
-    md-icon {
+    mat-icon {
       margin-right: 34px;
     }
   }
@@ -216,7 +216,7 @@ $feature-button-width: 170px;
   }
   .btn-pending {
     cursor: default;
-    md-icon {
+    mat-icon {
       margin-left: 4px;
     }
   }

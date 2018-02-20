@@ -24,7 +24,8 @@ const CATEGORY_IDS: any = {
   Conversations: '7',
   Menu: '41',
   ItemDetail: '103',
-  UploadForm: '114'
+  UploadForm: '114',
+  Reactivate: '60'
 };
 
 const SCREENS_IDS: any = {
@@ -386,6 +387,24 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.MyCatalog,
     type: TYPES_IDS.Tap
   };
+  public static MYCATALOG_REACTIVATE_FROMCATALOG: TrackingEventBase = {
+    name: '633',
+    category: CATEGORY_IDS.Reactivate,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_REACTIVATE_FROMMODAL: TrackingEventBase = {
+    name: '634',
+    category: CATEGORY_IDS.Reactivate,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_JUSTREACTIVATE: TrackingEventBase = {
+    name: '635',
+    category: CATEGORY_IDS.Reactivate,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
@@ -423,7 +442,7 @@ export class TrackingService extends TrackingServiceMaster {
       this.userService.user.id,
       this.sessionStartTime,
       event);
-    newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId);
+    newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId, this.navigatorService.browserName, this.navigatorService.fullVersion);
     if (attributes) {
       newEvent.setAttributes(attributes);
     }

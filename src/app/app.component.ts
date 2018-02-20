@@ -22,7 +22,8 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/observable/fromPromise';
-import { MdIconRegistry } from '@angular/material';
+import 'rxjs/add/operator/filter';
+import { MatIconRegistry } from '@angular/material';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
@@ -53,7 +54,7 @@ export class AppComponent implements OnInit {
               private messageService: MessageService,
               private titleService: Title,
               private sanitizer: DomSanitizer,
-              private mdIconRegistry: MdIconRegistry,
+              private matIconRegistry: MatIconRegistry,
               private trackingService: TrackingService,
               private i18n: I18nService,
               private conversationService: ConversationService,
@@ -98,7 +99,7 @@ export class AppComponent implements OnInit {
 
   private config() {
     configMoment(this.i18n.locale);
-    configIcons(this.mdIconRegistry, this.sanitizer);
+    configIcons(this.matIconRegistry, this.sanitizer);
   }
 
   private updateSessionCookie() {
@@ -143,7 +144,9 @@ export class AppComponent implements OnInit {
   private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
-      this.xmppService.disconnect();
+      try {
+        this.xmppService.disconnect();
+      } catch (err) {}
       this.loggingOut = true;
       if (redirectUrl) {
         this.winRef.nativeWindow.location.href = redirectUrl;
@@ -181,8 +184,13 @@ export class AppComponent implements OnInit {
     .filter(route => route.outlet === 'primary')
     .mergeMap(route => route.data)
     .subscribe((event) => {
+      let notifications = '';
+      const split: string[] = this.titleService.getTitle().split(' ');
+      if (split.length > 1) {
+        notifications = split[0].trim() + ' ';
+      }
       const title = !(event['title']) ? 'Wallapop' : event['title'];
-      this.titleService.setTitle(title);
+      this.titleService.setTitle(notifications + title);
       this.hideSidebar = event['hideSidebar'];
       this.isMyZone = event['isMyZone'];
       this.isProducts = event['isProducts'];

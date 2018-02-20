@@ -1,6 +1,6 @@
 <div class="page-content" #scrollPanel>
   <div class="container upload-page">
-    <a class="upload-close-icon" [routerLink]="['/catalog/list']"><md-icon svgIcon="cross"></md-icon></a>
+    <a class="upload-close-icon" [routerLink]="['/catalog/list']"><mat-icon svgIcon="cross"></mat-icon></a>
     <tsl-upload-car *ngIf="item.categoryId === 100"
                     [item]="item"
                     (onValidationError)="onValidationError()"

@@ -30,7 +30,7 @@
   .drag-area {
     display: block;
     text-align: center;
-    md-icon {
+    mat-icon {
       @include square(32px);
     }
     p {
@@ -45,7 +45,7 @@
       border-radius: 50%;
       line-height: 30px;
       margin-bottom: $spacing-XS;
-      md-icon {
+      mat-icon {
         @include square(11px);
       }
     }
@@ -94,7 +94,7 @@
     border-radius: 50%;
     text-align: center;
     line-height: 18px;
-    md-icon {
+    mat-icon {
       width: 7px;
       height: 9px;
     }

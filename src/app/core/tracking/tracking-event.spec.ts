@@ -1,13 +1,16 @@
 import { TrackingEvent } from './tracking-event';
 import { TRACKING_EVENT } from '../../../tests/tracking.fixtures';
+import * as _ from 'lodash';
 
 describe('TrackingEvent', () => {
   const platform: string = 'MacOS';
   const os: string = '5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36';
   const screenWidth: string = '1366';
   const screenHeight: string = '768';
-  const type: string = 'PC';
+  const type: string = 'Computer';
   const deviceAccessTokenId: string = 'a-b-c';
+  const brand: string = 'Chrome';
+  const model: string = '64';
 
   it('should create an instance', () => {
     expect(TRACKING_EVENT).toBeTruthy();
@@ -15,14 +18,16 @@ describe('TrackingEvent', () => {
   });
   describe('setDeviceInfo', () => {
     it('should set the deviceInfo with the given parameters', () => {
-      TRACKING_EVENT.setDeviceInfo(os, platform, deviceAccessTokenId);
+      TRACKING_EVENT.setDeviceInfo(os, platform, deviceAccessTokenId, brand, model);
       expect(TRACKING_EVENT['sessions'][0]['device']).toEqual({
+        type: type,
+        brand: brand,
+        model: model,
         platform: platform,
+        os: os,
         screenwidth: screenWidth,
         screenheight: screenHeight,
-        locale: navigator.language,
-        type: type,
-        os: os,
+        locale: _.replace(navigator.language,"-", "_"),
         deviceAccessTokenId: deviceAccessTokenId
       });
     });

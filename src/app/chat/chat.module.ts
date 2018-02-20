@@ -6,7 +6,7 @@ import { InputComponent } from './input/input.component';
 import { ConnectionAlertComponent } from './connection-alert/connection-alert.component';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { MdIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import { MomentModule } from 'angular2-moment';
 import { ItemComponent } from './item/item.component';
 import { CoreModule } from '../core/core.module';
@@ -32,7 +32,7 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
     FormsModule,
     MomentModule,
     ItemModule,
-    MdIconModule,
+    MatIconModule,
     UserModule,
     NgbTooltipModule,
     NgbDropdownModule,

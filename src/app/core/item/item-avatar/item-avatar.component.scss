@@ -47,7 +47,7 @@ $sold-width: 32px;
   background-color: $white;
   margin: auto;
   z-index: 2;
-  md-icon {
+  mat-icon {
     margin: auto auto;
     @include square(21px);
   }
@@ -57,7 +57,7 @@ $sold-width: 32px;
 }
 
 .reserved {
-  md-icon {
+  mat-icon {
     height: 17px;
     width: 12px;
     vertical-align: sub;
@@ -66,7 +66,7 @@ $sold-width: 32px;
 
 .featured {
   background-color: $corporate;
-  md-icon {
+  mat-icon {
     height: 19px;
     width: 16px;
   }

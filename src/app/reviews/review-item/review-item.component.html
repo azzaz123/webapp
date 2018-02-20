@@ -2,12 +2,14 @@
   <div class="separator"></div>
   <div class="col-1 images-container">
     <div class="review-image" [ngClass]="{'purchase': this.review.isBought}">
-      <div tslsanitizedBackground="{{ this.review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"
-           *ngIf="this.review.isSold && this.review.item?.image"></div>
+      <a href="{{ itemWebLink }}" target="_blank" tslsanitizedBackground="{{ this.review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"
+           *ngIf="this.review.isSold && this.review.item?.image"></a>
       <img src="{{ fallback }}" *ngIf="this.review.isSold && !this.review.item?.image" class="image"/>
-      <md-icon *ngIf="this.review.isBought && this.review.item" class="reviews-list-category-ico" svgIcon="{{ categoryIconName }}"></md-icon>
+      <mat-icon *ngIf="this.review.isBought && this.review.item" class="reviews-list-category-ico" svgIcon="{{ categoryIconName }}"></mat-icon>
     </div>
-    <tsl-user-avatar class="avatar" *ngIf="this.review.user" [user]="this.review.user" size="40"></tsl-user-avatar>
+    <a href="{{ userWebSlug }}" target="_blank" class="avatar">
+      <tsl-user-avatar  *ngIf="this.review.user" [user]="this.review.user" size="40"></tsl-user-avatar>
+    </a>
   </div>
   <div class="info col-10">
     <div *ngIf="this.review.isSold">

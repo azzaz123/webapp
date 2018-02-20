@@ -41,7 +41,7 @@
       border-radius: $border-radius;
       display: inline-block;
       @include square($spacing-XL);
-      margin-right: $spacing;
+      margin-right: $spacing-S;
       line-height: $spacing-XL;
       position: relative;
       text-align: center;
@@ -51,6 +51,9 @@
         border-radius: $border-radius !important;
         &:focus, &.focus {
           box-shadow: none;
+        }
+        [ngbButton] {
+          display: none;
         }
       }
       span {
@@ -75,7 +78,7 @@
           color: $grey-700;
         }
       }
-      md-icon {
+      mat-icon {
         height: 26px;
         width: 26px;
       }
@@ -87,7 +90,7 @@
       .selector {
         margin-left: 10px;
         margin-right: 40px;
-        md-icon, svg {
+        mat-icon, svg {
           width: 30px;
           height: 34px;
         }

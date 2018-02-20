@@ -81,7 +81,7 @@ describe('GeolocationComponent', () => {
   });
 
   describe('select item', (): void => {
-    it('should emit an event with the selected item', () => {
+    it('should emit an event with the selected item', (done) => {
       jasmine.clock().install();
       spyOn(component.newCoordinate, 'emit');
       spyOn(cookieService, 'put');
@@ -89,13 +89,14 @@ describe('GeolocationComponent', () => {
       const expirationDate = new Date(currentDate.getTime() + ( 15 * 60 * 1000));
       jasmine.clock().mockDate(currentDate);
       const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
+      done();
 
-      component.selectItem(GEOLOCATION_DATA_WEB);
+      component.selectItem(GEOLOCATION_DATA_WEB[0]);
 
       expect(component.newCoordinate.emit).toHaveBeenCalledWith(COORDINATE_DATA_WEB);
       expect(cookieService.put).toHaveBeenCalledWith('searchLat', COORDINATE_DATA_WEB.latitude.toString(), cookieOptions);
       expect(cookieService.put).toHaveBeenCalledWith('searchLng', COORDINATE_DATA_WEB.longitude.toString(), cookieOptions);
-      expect(cookieService.put).toHaveBeenCalledWith('searchPosName', GEOLOCATION_DATA_WEB.item.description, cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith('searchPosName', GEOLOCATION_DATA_WEB[0].item.description, cookieOptions);
 
       jasmine.clock().uninstall();
     });

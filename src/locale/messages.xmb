@@ -21,11 +21,33 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <messagebundle>
-  <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:12</source>Load more</msg>
+  <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
+  <msg id="6543433128416987560"><source>app/core/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
+  <msg id="5657739434954342535"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:3</source>Delete item</msg>
+  <msg id="5455708050129988024"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:4</source>This will delete the item.</msg>
+  <msg id="321759774936322640"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:7</source>Delete items</msg>
+  <msg id="447264229278731832"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:8</source>The selected items will be permanently deleted.</msg>
+  <msg id="8607128558364427780"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:11</source>Reserve items</msg>
+  <msg id="7498605020756139080"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:12</source>The selected items will be reserved.</msg>
+  <msg id="3870006899502072841"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:15</source>Remove item from favorites</msg>
+  <msg id="3870268043917301466"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:16</source>The item will be removed from favorites.</msg>
+  <msg id="2159130950882492111"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source>Cancel</msg>
+  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:22</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/catalog/list/selected-items/selected-items.component.ts:27</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
+  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:23</source><source>app/catalog/list/selected-items/selected-items.component.ts:23</source>Reserve</msg>
+  <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source>Remove</msg>
+  <msg id="8212177249756365917"><source>app/core/item/item-cart-favorite/item-cart-favorite.component.ts:11</source> Remove </msg>
+  <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:20</source><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source>Messages</msg>
+  <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.ts:31</source>My Zone</msg>
+  <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.ts:36</source>List a product</msg>
+  <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:6</source>Profile</msg>
+  <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:13</source>Products</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:27</source>Favorites</msg>
+  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:34</source><source>app/reviews/reviews.component.ts:21</source>Reviews</msg>
+  <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:41</source>Logout</msg>
+  <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
+  <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:26</source>Delete conversation</msg>
   <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will delete the conversation.</msg>
-  <msg id="2159130950882492111"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source>Cancel</msg>
-  <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:22</source><source>app/catalog/list/selected-items/selected-items.component.ts:27</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
   <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.ts:2</source><source>app/chat/modals/report-listing/report-listing.component.ts:25</source><source>app/chat/modals/report-user/report-user.component.ts:2</source><source>app/chat/modals/report-user/report-user.component.ts:28</source>Report</msg>
   <msg id="568597304214607466"><source>app/chat/modals/report-user/report-user.component.ts:22</source>I&apos;m reporting this user because...</msg>
   <msg id="20327443157350316"><source>app/chat/modals/block-user/block-user.component.ts:2</source>Block user</msg>
@@ -43,52 +65,30 @@
   <msg id="3325766019344626759"><source>app/chat/chat.component.ts:48</source>There are no messages</msg>
   <msg id="6334569300046707546"><source>app/chat/chat.component.ts:49,50</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
         Try again later.</msg>
+  <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
+  <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:12</source>Load more</msg>
   <msg id="4896863464728200563"><source>app/chat/input/input.component.ts:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.ts:2</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.ts:3</source>Connected</msg>
-  <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
-  <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
-  <msg id="5657739434954342535"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:3</source>Delete item</msg>
-  <msg id="5455708050129988024"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:4</source>This will delete the item.</msg>
-  <msg id="321759774936322640"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:7</source>Delete items</msg>
-  <msg id="447264229278731832"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:8</source>The selected items will be permanently deleted.</msg>
-  <msg id="8607128558364427780"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:11</source>Reserve items</msg>
-  <msg id="7498605020756139080"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:12</source>The selected items will be reserved.</msg>
-  <msg id="3870006899502072841"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:15</source>Remove item from favorites</msg>
-  <msg id="3870268043917301466"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:16</source>The item will be removed from favorites.</msg>
-  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:23</source><source>app/catalog/list/selected-items/selected-items.component.ts:23</source>Reserve</msg>
-  <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source>Remove</msg>
+  <msg id="8806073135680763560"><source>app/chat/message/review-modal/review-modal.component.ts:3</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{user.microName}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
+  <msg id="4650730844441578299"><source>app/chat/message/review-modal/review-modal.component.ts:4</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:36</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
+  <msg id="8149407802234183277"><source>app/chat/message/review-modal/review-modal.component.ts:9</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:40</source>Leave a review...</msg>
+  <msg id="7430416142942514215"><source>app/chat/message/review-modal/review-modal.component.ts:15</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:46</source>Publish</msg>
+  <msg id="7992914064106893139"><source>app/chat/message/review-button/review-button.component.ts:1</source>Review now</msg>
+  <msg id="2506703378559967461"><source>app/chat/message/review-button/review-button.component.ts:4</source>Thanks for rating</msg>
+  <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/chat/user-detail/user-detail.component.ts:6</source><ph name="DISTANCE"><ex>{{user.itemDistance | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you</msg>
+  <msg id="9119757647796405986"><source>app/chat/user-detail/user-detail.component.ts:7</source>No location</msg>
+  <msg id="1166265010439249641"><source>app/chat/user-detail/user-detail.component.ts:14</source>Typically responds within an hour</msg>
+  <msg id="1404539941798522798"><source>app/chat/user-detail/user-detail.component.ts:15</source>Typically responds within 3 hours</msg>
+  <msg id="5927748278732131263"><source>app/chat/user-detail/user-detail.component.ts:16</source>Typically responds within a day</msg>
+  <msg id="6807057680918467236"><source>app/chat/user-detail/user-detail.component.ts:17</source>Responds in more than 24 hours</msg>
   <msg id="8720977247725652816"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.ts:4</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:29</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:35</source>Ok</msg>
   <msg id="4359291232904891489"><source>app/shared/geolocation/location-select/location-select.component.ts:3</source>Set a location</msg>
   <msg id="5371960677736303052"><source>app/shared/geolocation/geolocation.component.ts:9</source>Where?</msg>
   <msg id="958176169457402389"><source>app/shared/geolocation/location-box/location-box.component.ts:2</source>Your products are in:</msg>
   <msg id="4163236016169197783"><source>app/shared/geolocation/location-box/location-box.component.ts:9</source>This is the spot where your wallapop profile is located. We will show all your products here.</msg>
   <msg id="7840802104684576719"><source>app/shared/geolocation/location-box/location-box.component.ts:16</source>Mark the location in a place where you usually are. This will help other users to find you and improve your user experience.</msg>
-  <msg id="4338022632676445411"><source>app/core/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
-  <msg id="6543433128416987560"><source>app/core/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
-  <msg id="8212177249756365917"><source>app/core/item/item-cart-favorite/item-cart-favorite.component.ts:11</source> Remove </msg>
-  <msg id="6452372740127749380"><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:20</source>Messages</msg>
-  <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:34</source>Meeting</msg>
-  <msg id="8806073135680763560"><source>app/chat/message/review-modal/review-modal.component.ts:3</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
-  <msg id="4650730844441578299"><source>app/chat/message/review-modal/review-modal.component.ts:4</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:36</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
-  <msg id="8149407802234183277"><source>app/chat/message/review-modal/review-modal.component.ts:9</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:40</source>Leave a review...</msg>
-  <msg id="7430416142942514215"><source>app/chat/message/review-modal/review-modal.component.ts:15</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:46</source>Publish</msg>
-  <msg id="7992914064106893139"><source>app/chat/message/review-button/review-button.component.ts:1</source>Review now</msg>
-  <msg id="2506703378559967461"><source>app/chat/message/review-button/review-button.component.ts:4</source>Thanks for rating</msg>
-  <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/chat/user-detail/user-detail.component.ts:6</source><ph name="DISTANCE"><ex>DISTANCE</ex></ph>km from you</msg>
-  <msg id="9119757647796405986"><source>app/chat/user-detail/user-detail.component.ts:7</source>No location</msg>
-  <msg id="1166265010439249641"><source>app/chat/user-detail/user-detail.component.ts:14</source>Typically responds within an hour</msg>
-  <msg id="1404539941798522798"><source>app/chat/user-detail/user-detail.component.ts:15</source>Typically responds within 3 hours</msg>
-  <msg id="5927748278732131263"><source>app/chat/user-detail/user-detail.component.ts:16</source>Typically responds within a day</msg>
-  <msg id="6807057680918467236"><source>app/chat/user-detail/user-detail.component.ts:17</source>Responds in more than 24 hours</msg>
-  <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.ts:31</source>My Zone</msg>
-  <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.ts:36</source>List a product</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
-  <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:6</source>Profile</msg>
-  <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:13</source>Products</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:27</source>Favorites</msg>
-  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:34</source><source>app/reviews/reviews.component.ts:21</source>Reviews</msg>
-  <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:41</source>Logout</msg>
   <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source>Congratulations</msg>
   <msg id="9213119646873056135"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:10</source>Your item(s) have been featured and you can see them in the top position.</msg>
   <msg id="8982629098121976758"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:11</source>Start selling</msg>
@@ -107,7 +107,7 @@
   <msg id="880177930328984754"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:41</source>Fine!</msg>
   <msg id="6686102860613242031"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:11</source>Use this card:</msg>
   <msg id="2005530248451232459"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:15</source>Add a new card</msg>
-  <msg id="4699023020194351074"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:17</source>Feature for <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Euros</msg>
+  <msg id="4699023020194351074"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:17</source>Feature for <ph name="INTERPOLATION"><ex>{{total | number:&apos;1.2-2&apos;}}</ex></ph> Euros</msg>
   <msg id="3762527362373672599"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:6</source>Congratulations!</msg>
   <msg id="868815663264397508"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:6</source>Your item is now on Wallapop</msg>
   <msg id="8199257104398637162"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:10</source>Promote it and sell it quicker</msg>
@@ -117,9 +117,9 @@
   <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:13</source>Sold</msg>
   <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:14</source>Expired</msg>
   <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:18</source>1 item selected</msg>
-  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:19</source><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> items selected</msg>
-  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:28</source>Upload an item to my catalog</msg>
-  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:29</source>Upload another item to my catalog</msg>
+  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:19</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
+  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:31</source>Upload an item to my catalog</msg>
+  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:32</source>Upload another item to my catalog</msg>
   <msg id="6622336784189066984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source><source>app/catalog/upload/upload-car/upload-car.component.ts:208</source><source>app/catalog/upload/upload-product/upload-product.component.ts:128</source>Post Ad</msg>
   <msg id="4021752662928002901"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:7</source><source>app/catalog/upload/upload-car/upload-car.component.ts:209</source><source>app/catalog/upload/upload-product/upload-product.component.ts:129</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:18</source>Update</msg>
   <msg id="2233560223291461480"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:27</source><source>app/catalog/upload/upload-car/upload-car.component.ts:151</source>Manual</msg>
@@ -172,14 +172,18 @@
   <msg id="6618892692857491514"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
   <msg id="3542042671420335679"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:6</source>No</msg>
   <msg id="4510233521290203619"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:7</source>Yes, leave</msg>
-  <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
+  <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
-  <msg id="3397082400587006706"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:35</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
+  <msg id="3397082400587006706"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:35</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{selectedUser?.micro_name}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="3113301792677314615"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:38</source>I sold this for:</msg>
   <msg id="2286494898080570401"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:53</source>Thanks</msg>
   <msg id="2928844379959000123"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:54</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
   <msg id="6962699013778688473"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:55</source>Continue</msg>
+  <msg id="6071814986980529912"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:5</source>This time, sell it!</msg>
+  <msg id="4836554913661222496"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:6</source>Reactivate this item for <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> and put it in the top positions.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Get more visibility and sell it faster. </msg>
+  <msg id="6877992122026439414"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:7</source>Reactivate + visibility </msg>
+  <msg id="3244863581909362906"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:9</source>Only reactivate it, I don&apos;t want to sell it faster</msg>
   <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:23</source>Feature Product</msg>
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:44</source>Reactivate</msg>
   <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:48</source>Pending</msg>
@@ -188,7 +192,7 @@
   <msg id="6261406176927621365"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:2</source>Delete photo</msg>
   <msg id="4267028037176582017"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:3</source>The photo will be permanently deleted. Are you sure you want to proceed?</msg>
   <msg id="5112037422043971210"><source>app/catalog/upload/drop-area/drop-area.component.ts:5</source>Drop here your files to upload as a product photo</msg>
-  <msg id="1417432796546296307"><source>app/catalog/upload/drop-area/drop-area.component.ts:11</source>You have reached the limit of <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Remove one first if you want to add more.</msg>
+  <msg id="1417432796546296307"><source>app/catalog/upload/drop-area/drop-area.component.ts:11</source>You have reached the limit of <ph name="INTERPOLATION"><ex>{{maxUploads}}</ex></ph> photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Remove one first if you want to add more.</msg>
   <msg id="6145572175629887249"><source>app/catalog/upload/drop-area/drop-area.component.ts:31</source>Main photo</msg>
   <msg id="3322682308330601072"><source>app/catalog/upload/upload-product/upload-product.component.ts:7</source>What are you selling?</msg>
   <msg id="368364095324628291"><source>app/catalog/upload/upload-product/upload-product.component.ts:9</source>In two words...</msg>
@@ -209,7 +213,6 @@
   <msg id="6822624572232933913"><source>app/catalog/upload/category-selector/category-selector.component.ts:31</source>My services</msg>
   <msg id="4895100071976641944"><source>app/catalog/upload/category-selector/category-selector.component.ts:40</source>A property</msg>
   <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:46</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
-  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:12</source>In this list you can see all the products you saved as favourite</msg>
   <msg id="4185227957442923918"><source>app/reviews/reviews.component.ts:12</source>Your Reviews</msg>
   <msg id="5263225898611875859"><source>app/reviews/reviews.component.ts:13</source>This is what people think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:16</source>Your average</msg>
@@ -220,6 +223,7 @@
   <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:30</source>Posted by</msg>
   <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.ts:32</source>a wallapop user</msg>
   <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:33</source>on</msg>
+  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:12</source>In this list you can see all the products you saved as favourite</msg>
   <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:4</source>Are you sure you want to close your account?</msg>
   <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:5</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
   <msg id="859827593140377121"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:7</source>Yes, I do want to close my account</msg>
@@ -262,6 +266,6 @@
   <msg id="5289897176155020957"><source>app/tutorial/tutorial.component.ts:22</source>Your favorites can be seen on the big screen which might help make up your mind.</msg>
   <msg id="8328195571736012184"><source>app/tutorial/tutorial.component.ts:26</source>See your profile reviews. Is the community leaving good feedback?</msg>
   <msg id="4563965495368336177"><source>app/tutorial/tutorial.component.ts:31</source>Skip</msg>
-  <msg id="3885497195825665706"><source>app/tutorial/tutorial.component.ts:38</source>Next</msg>
-  <msg id="7160029661601775341"><source>app/tutorial/tutorial.component.ts:39</source>Ready!</msg>
+  <msg id="3885497195825665706"><source>app/tutorial/tutorial.component.ts:42</source>Next</msg>
+  <msg id="7160029661601775341"><source>app/tutorial/tutorial.component.ts:47</source>Ready!</msg>
 </messagebundle>

@@ -28,7 +28,7 @@
                   [options]="options"
                   [disabled]="file?.progress?.status === 0 || file?.progress?.status === 1" />
                 <span class="loader" *ngIf="file?.progress?.status === 0 || file?.progress?.status === 1">
-                  <md-icon svgIcon="spinner" class="spinner" ></md-icon>
+                  <mat-icon svgIcon="spinner" class="spinner" ></mat-icon>
                 </span>
                 <span i18n>Upload picture</span>
               </label>
@@ -58,14 +58,14 @@
                 <label class="col-3" i18n>Gender:</label>
                 <div class="col-5">
                   <div ngbRadioGroup name="radioBasic" formControlName="gender">
-                    <label class="btn select">
-                      <input type="radio" value="M">
-                      <md-icon svgIcon="male"></md-icon>
+                    <label ngbButtonLabel class="btn select">
+                      <input ngbButton type="radio" value="M">
+                      <mat-icon svgIcon="male"></mat-icon>
                       <div i18n>Male</div>
                     </label>
-                    <label class="btn select">
-                      <input type="radio" value="F">
-                      <md-icon svgIcon="female"></md-icon>
+                    <label ngbButtonLabel class="btn select">
+                      <input ngbButton type="radio" value="F">
+                      <mat-icon svgIcon="female"></mat-icon>
                       <div i18n>Female</div>
                     </label>
                   </div>

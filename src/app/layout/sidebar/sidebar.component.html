@@ -8,35 +8,36 @@
 
 <a class="sidebar-section" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_MENU_CATALOG" [class.active]="isProducts" [ngClass]="{active: tutorialService.step === 2}">
   <div class="sidebar-section-circle">
-    <md-icon svgIcon="navigation_catalog"></md-icon>
+    <mat-icon svgIcon="navigation_catalog"></mat-icon>
   </div>
   <h2 i18n>Products</h2>
 </a>
 
 <a class="sidebar-section" [routerLink]="['/chat']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CHAT" [ngClass]="{active: tutorialService.step === 3}">
+  <div class="chat-notification-pending" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
   <div class="sidebar-section-circle">
-    <md-icon svgIcon="navigation_messages"></md-icon>
+    <mat-icon svgIcon="navigation_messages"></mat-icon>
   </div>
   <h2 i18n>Messages</h2>
 </a>
 
 <a class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_FAVOURITES" [ngClass]="{active: tutorialService.step === 4}">
   <div class="sidebar-section-circle">
-    <md-icon svgIcon="navigation_favorites"></md-icon>
+    <mat-icon svgIcon="navigation_favorites"></mat-icon>
   </div>
   <h2 i18n>Favorites</h2>
 </a>
 
 <a class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_REVIEWS" [ngClass]="{active: tutorialService.step === 5}">
   <div class="sidebar-section-circle">
-    <md-icon svgIcon="navigation_reviews"></md-icon>
+    <mat-icon svgIcon="navigation_reviews"></mat-icon>
   </div>
   <h2 i18n>Reviews</h2>
 </a>
 
 <a href="#" class="sidebar-section logout-item" (click)="logout($event)" tslTrackEvent="MYZONE_MENU_LOGOUT">
   <div class="sidebar-section-circle">
-    <md-icon svgIcon="navigation_logout"></md-icon>
+    <mat-icon svgIcon="navigation_logout"></mat-icon>
   </div>
   <h2 i18n>Logout</h2>
 </a>

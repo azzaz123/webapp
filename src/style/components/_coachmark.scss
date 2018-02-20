@@ -7,7 +7,7 @@ $coachmark-left-margin: 33px;
   font-size: $font-size-XS;
   line-height: 1.33;
   color: $grey-700;
-  left: calc((100vw - #{$upload-form-width} + #{$sidebar-width}) / 2 + #{$upload-form-width} - #{$coachmark-left-margin}) !important;
+  left: calc((100vw - #{$upload-form-width} + #{$sidebar-width}) / 2 + #{$upload-form-width}) !important;
   z-index: 99 !important;
   font-family: $wallie;
   &.popover-right {
@@ -16,11 +16,11 @@ $coachmark-left-margin: 33px;
   &::before, &::after {
     content: none;
   }
-  .popover-content {
+  .popover-body{
     width: 220px;
     display: flex;
     padding: 15px;
-    md-icon {
+    mat-icon {
       @include square(26px);
       margin-right: $spacing-S;
       display: inline-table;

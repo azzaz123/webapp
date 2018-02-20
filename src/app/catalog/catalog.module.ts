@@ -4,7 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CoreModule } from '../core/core.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
-import { MdIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
@@ -29,6 +29,7 @@ import { CategorySelectorComponent } from './upload/category-selector/category-s
 import { ItemResolverService } from './item-resolver.service';
 import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/exit-confirmation-modal.component';
 import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-modal/remove-confirm-modal.component';
+import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactivate-modal.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,7 @@ import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-m
     FormsModule,
     CoreModule,
     CatalogRoutingModule,
-    MdIconModule,
+    MatIconModule,
     InfiniteScrollModule,
     UtilsModule,
     MomentModule,
@@ -71,7 +72,8 @@ import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-m
     CategorySelectorComponent,
     ExitConfirmationModalComponent,
     CategorySelectorComponent,
-    RemoveConfirmModalComponent
+    RemoveConfirmModalComponent,
+    ReactivateModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -81,7 +83,8 @@ import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-m
     PreviewModalComponent,
     ExitConfirmationModalComponent,
     PreviewModalComponent,
-    RemoveConfirmModalComponent
+    RemoveConfirmModalComponent,
+    ReactivateModalComponent
   ]
 })
 export class CatalogModule {

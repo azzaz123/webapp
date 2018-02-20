@@ -108,6 +108,7 @@ describe('UploadProductComponent', () => {
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
+    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
@@ -150,6 +151,7 @@ describe('UploadProductComponent', () => {
 
     it('should emit changed event if form values changes', () => {
       component.uploadForm.get('title').patchValue('new title');
+      component.ngOnInit();
       fixture.detectChanges();
 
       expect(formChanged).toBeTruthy();
