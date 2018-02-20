@@ -12,19 +12,16 @@ export class CheckoutItemComponent implements OnInit {
 
   types: string[] = ['zonebump', 'citybump', 'countrybump'];
   durations: string[];
-  durationForm: FormGroup;
+  selectedDuration: string;
 
   @Input() itemWithProducts: ItemWithProducts;
 
-  constructor(private fb: FormBuilder) {
-    this.durationForm = fb.group({
-      duration: ''
-    });
+  constructor() {
   }
 
   ngOnInit() {
     this.durations = _.keys(this.itemWithProducts.products);
-    this.durationForm.get('duration').patchValue(this.durations[1]);
+    this.selectedDuration = this.durations[1];
   }
 
 }

@@ -15,7 +15,6 @@ describe('CheckoutItemComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CheckoutItemComponent, CustomCurrencyPipe ],
       providers: [
-        FormBuilder,
         DecimalPipe
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -31,9 +30,9 @@ describe('CheckoutItemComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set durations and default', () => {
+    it('should set durations and default selectedDuration', () => {
       expect(component.durations).toEqual(['24', '72', '168']);
-      expect(component.durationForm.get('duration').value).toEqual('72');
+      expect(component.selectedDuration).toEqual('72');
     });
   });
 });
