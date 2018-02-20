@@ -74,14 +74,21 @@
       font-size: $font-size-M;
       text-align: center;
       width: 100%;
-      &:hover {
+      &:hover, &.selected {
         color: $white;
+      }
+      &.selected {
+        box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+        font-weight: bold;
       }
     }
     &.zonebump {
       .btn-price {
         &:hover {
           background-color: $zone-bump;
+        }
+        &.selected {
+          background-color: $zone-bump-dark;
         }
       }
     }
@@ -90,6 +97,9 @@
         &:hover {
           background-color: $city-bump;
         }
+        &.selected {
+          background-color: $city-bump-dark;
+        }
       }
     }
     &.countrybump {
@@ -97,6 +107,9 @@
       .btn-price {
         &:hover {
           background-color: $country-bump;
+        }
+        &.selected {
+          background-color: $country-bump-dark;
         }
       }
     }

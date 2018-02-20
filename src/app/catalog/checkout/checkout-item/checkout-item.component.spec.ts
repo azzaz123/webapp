@@ -30,9 +30,9 @@ describe('CheckoutItemComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set durations and default selectedDuration', () => {
+    it('should set durations and default duration', () => {
       expect(component.durations).toEqual(['24', '72', '168']);
-      expect(component.selectedDuration).toEqual('72');
+      expect(component.duration).toEqual('72');
     });
   });
 });
