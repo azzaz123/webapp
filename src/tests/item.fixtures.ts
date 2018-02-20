@@ -459,40 +459,34 @@ export const ZONEBUMP_DURATIONS: Duration[] = [{
   'id': 'qpevjrwzk8y4',
   'duration': 24,
   'market_code': '3.19',
-  'original_market_code': '1.99',
-  'is_free': false
+  'original_market_code': '1.99'
 }, {
   'id': 'v9owzy2j5g7x',
   'duration': 72,
   'market_code': '3.19',
-  'original_market_code': '3.99',
-  'is_free': false
+  'original_market_code': '3.99'
 }, {
   'id': 'l1kmzngg6n3p',
   'duration': 168,
   'market_code': '4.79',
-  'original_market_code': '5.99',
-  'is_free': false
+  'original_market_code': '5.99'
 }];
 
 export const COUNTRYBUMP_DURATIONS: Duration[] = [{
   'id': '5nv4z4ylzy73',
   'duration': 24,
   'market_code': '7.99',
-  'original_market_code': '9.99',
-  'is_free': false
+  'original_market_code': '9.99'
 }, {
   'id': '2y436edkjdgp',
   'duration': 72,
   'market_code': '15.19',
-  'original_market_code': '18.99',
-  'is_free': false
+  'original_market_code': '18.99'
 }, {
   'id': 'k87v6g05jeoy',
   'duration': 168,
   'market_code': '23.19',
-  'original_market_code': '28.99',
-  'is_free': false
+  'original_market_code': '28.99'
 }];
 
 export const BUMP_PRODUCTS: ProductDurations = {
@@ -527,8 +521,6 @@ export const ITEMS_WITH_PRODUCTS: ItemWithProducts[] = [
 export const PRODUCT_LIST: Product[] = [{
   'id': 'qvxpzp9630nd',
   'name': 'citybump',
-  'features': ['slider'],
-  'location_name': 'Barcelona',
   'default_duration_index': 1,
   'durations': CITYBUMP_DURATIONS
 }, {

@@ -7,7 +7,7 @@ export interface ItemResponse {
 }
 
 export interface ItemContent {
-  category_id: number;
+  category_id?: number;
   currency_code?: string;
   currency?: string;
   description: string;
