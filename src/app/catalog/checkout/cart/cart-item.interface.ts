@@ -6,8 +6,7 @@ export interface CartItem {
   duration: Duration;
 }
 
-export interface CartItems {
-  zonebump: CartItem[];
-  citybump: CartItem[];
-  countrybump: CartItem[];
+export interface Zonebump {
+  total: number;
+  cartItems: CartItem[];
 }

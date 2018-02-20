@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { CartService } from '../cart/cart.service';
 import { CartItem } from '../cart/cart-item.interface';
+import { BUMP_TYPES } from '../cart/cart';
 
 @Component({
   selector: 'tsl-checkout-item',
@@ -12,7 +13,7 @@ import { CartItem } from '../cart/cart-item.interface';
 })
 export class CheckoutItemComponent implements OnInit {
 
-  types: string[] = ['zonebump', 'citybump', 'countrybump'];
+  types: string[] = BUMP_TYPES;
   durations: string[];
   duration: string;
   selectedType: string;

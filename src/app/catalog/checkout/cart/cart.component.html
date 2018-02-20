@@ -1,0 +1,12 @@
+<ul *ngIf="cart">
+  <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length">
+    <p>{{type}} x{{cart[type].cartItems.length}} - {{cart[type].total | customCurrency}}</p>
+    <ul>
+      <li *ngFor="let cartItem of cart[type].cartItems">
+        <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
+        x{{cartItem.duration.duration / 24}} days - {{cartItem.duration.market_code | customCurrency}}
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>Total: {{(cart?.total | customCurrency) || 0}}</p>
