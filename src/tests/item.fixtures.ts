@@ -1,11 +1,11 @@
 import {
   AvailableProductsResponse,
   CarUploadForm,
-  ConversationUser,
-  ItemResponse,
+  ConversationUser, Duration,
+  ItemResponse, ItemsWithAvailableProductsResponse,
   ItemUploadForm, ItemWithProducts,
   Order,
-  Product,
+  Product, ProductDurations,
   Purchase
 } from '../app/core/item/item-response.interface';
 import { USER_LOCATION, ITEM_ID, Item } from 'shield';
@@ -438,7 +438,7 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   }
 };
 
-export const CITYBUMP_DURATIONS = [{
+export const CITYBUMP_DURATIONS: Duration[] = [{
   'id': 'p1k3zlq6xdyo',
   'duration': 24,
   'market_code': '3.19',
@@ -455,7 +455,7 @@ export const CITYBUMP_DURATIONS = [{
   'original_market_code': '8.99'
 }];
 
-export const ZONEBUMP_DURATIONS = [{
+export const ZONEBUMP_DURATIONS: Duration[] = [{
   'id': 'qpevjrwzk8y4',
   'duration': 24,
   'market_code': '3.19',
@@ -475,7 +475,7 @@ export const ZONEBUMP_DURATIONS = [{
   'is_free': false
 }];
 
-export const COUNTRYBUMP_DURATIONS = [{
+export const COUNTRYBUMP_DURATIONS: Duration[] = [{
   'id': '5nv4z4ylzy73',
   'duration': 24,
   'market_code': '7.99',
@@ -495,7 +495,7 @@ export const COUNTRYBUMP_DURATIONS = [{
   'is_free': false
 }];
 
-export const BUMP_PRODUCTS = {
+export const BUMP_PRODUCTS: ProductDurations = {
   '24': {
     'citybump': CITYBUMP_DURATIONS[0],
     'zonebump': ZONEBUMP_DURATIONS[0],
@@ -524,7 +524,7 @@ export const ITEMS_WITH_PRODUCTS: ItemWithProducts[] = [
   }
 ];
 
-export const PRODUCT_LIST = [{
+export const PRODUCT_LIST: Product[] = [{
   'id': 'qvxpzp9630nd',
   'name': 'citybump',
   'features': ['slider'],
@@ -543,7 +543,7 @@ export const PRODUCT_LIST = [{
   'durations': COUNTRYBUMP_DURATIONS
 }];
 
-export const ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE = [{
+export const ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE: ItemsWithAvailableProductsResponse[] = [{
   'id': '1',
   'type': 'consumer_goods',
   'content': ITEMS_DATA_V3[0].content,

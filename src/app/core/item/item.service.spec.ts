@@ -427,7 +427,6 @@ describe('ItemService', () => {
 
       service.getItemsWithAvailableProducts(['1', '2']).subscribe((r: ItemWithProducts[]) => {
         response = r;
-        console.log(JSON.stringify(response[0].item));
       });
 
       expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-visibility-products', {
