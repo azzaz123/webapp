@@ -167,18 +167,18 @@ describe('ListComponent', () => {
       expect(component['getItems']).toHaveBeenCalledTimes(2);
     }));
     it('should open upload confirmation modal', fakeAsync(() => {
-      spyOn(itemService, 'selectItem');
+      spyOn(component, 'feature');
       route.params = Observable.of({
         created: true
       });
+
+      component.feature(ORDER_EVENT);
       component.ngOnInit();
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, {windowClass: 'upload'});
-      expect(itemService.selectedAction).toBe('feature');
-      expect(itemService.selectItem).toHaveBeenCalledWith(component.items[0].id);
-      expect(component.items[0].selected).toBeTruthy();
-    }));
 
+      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, {windowClass: 'upload'});
+      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
+    }));
     it('should open toastr', fakeAsync(() => {
       spyOn(errorService, 'i18nSuccess');
       route.params = Observable.of({
@@ -218,12 +218,15 @@ describe('ListComponent', () => {
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
-    it('should set item to upload modal', () => {
+    it('should set item to upload modal and call urgentPrice', () => {
       component['uploadModalRef'] = <any>{
         componentInstance: componentInstance
       };
       component.ngOnInit();
+
+      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent);
       expect(component['uploadModalRef'].componentInstance.item).toEqual(component.items[0]);
+      expect(component['uploadModalRef'].componentInstance.urgentPrice).toHaveBeenCalled();
     });
   });
 

@@ -1,14 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UploadConfirmationModalComponent } from './upload-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { WindowRef, MockTrackingService } from 'shield';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { WindowRef, MockTrackingService, MOCK_ITEM } from 'shield';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
+import { ItemService } from '../../../../core/item/item.service';
+import { PRODUCT_RESPONSE } from '../../../../../tests/item.fixtures';
+import { Observable } from 'rxjs/Observable';
 
 describe('UploadConfirmationModalComponent', () => {
   let component: UploadConfirmationModalComponent;
   let fixture: ComponentFixture<UploadConfirmationModalComponent>;
   let trackingService: TrackingService;
+  let itemService: ItemService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -16,9 +20,14 @@ describe('UploadConfirmationModalComponent', () => {
       providers: [
         NgbActiveModal,
         WindowRef,
-        {provide: TrackingService, useClass: MockTrackingService}
+        {provide: TrackingService, useClass: MockTrackingService},
+        {
+          provide: ItemService, useValue: {
+            getUrgentProducts() {}
+          }
+        }
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+        schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -27,6 +36,7 @@ describe('UploadConfirmationModalComponent', () => {
     fixture = TestBed.createComponent(UploadConfirmationModalComponent);
     component = fixture.componentInstance;
     trackingService = TestBed.get(TrackingService);
+    itemService = TestBed.get(ItemService);
   });
 
   describe('ngOnInit', () => {
@@ -36,6 +46,17 @@ describe('UploadConfirmationModalComponent', () => {
       fixture.detectChanges();
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_SUCCESS);
+    });
+  });
+
+  describe('urgentPrice', () => {
+    it('should call urgentPrice', () => {
+      spyOn(itemService, 'getUrgentProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+
+      component.item = MOCK_ITEM;
+      component.urgentPrice();
+
+      expect(itemService.getUrgentProducts).toHaveBeenCalledWith('9jd7ryx5odjk');
     });
   });
 
