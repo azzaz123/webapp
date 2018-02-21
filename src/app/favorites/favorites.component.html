@@ -16,9 +16,11 @@
         </div>
       </div>
       <div class="col-1 header-numbers">
-        <p class="header-numbers-top">1000</p>
-        <p class="header-numbers-bottom" i18n>favorites</p>
-        <p class="header-numbers-bottom" [hidden]="true" i18n>favorite</p>
+        <p class="header-numbers-top">{{favoritesNum}}</p>
+        <p class="header-numbers-bottom">
+          <span *ngIf="favoritesNum > 1 || favoritesNum == 0" i18n>favorites</span>
+          <span *ngIf="favoritesNum == 1" i18n>favorite</span>
+        </p>
       </div>
     </tsl-header>
     <masonry [options]="masonryOptions">
