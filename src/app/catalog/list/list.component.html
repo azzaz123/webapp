@@ -18,9 +18,11 @@
         </div>
       </div>
       <div class="col-1 header-numbers">
-        <p class="header-numbers-top">1000</p>
-        <p class="header-numbers-bottom" i18n>products</p>
-        <p class="header-numbers-bottom" [hidden]="true" i18n>product</p>
+        <p class="header-numbers-top">{{productsNum}}</p>
+        <p class="header-numbers-bottom">
+          <span *ngIf="productsNum > 1 || productsNum == 0" i18n>products</span> 
+          <span *ngIf="productsNum == 1" i18n>product</span> 
+        </p>
       </div>
     </tsl-header>
     <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
