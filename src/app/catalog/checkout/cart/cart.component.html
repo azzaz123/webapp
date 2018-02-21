@@ -2,16 +2,20 @@
 <div class="scroll-panel">
   <ul *ngIf="cart" class="items-list">
     <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
-      <div class="type-total cart-box">
-        <span [ngSwitch]="type">
-          <ng-container *ngSwitchCase="'zonebump'" i18n>Destacado de Barrio</ng-container>
-          <ng-container *ngSwitchCase="'citybump'" i18n>Destacado de Ciudad</ng-container>
-          <ng-container *ngSwitchCase="'countrybump'" i18n>Destacado de País</ng-container>
-        </span>
-        <strong>x {{cart[type].cartItems.length}}</strong><br />
-        <span class="price">{{cart[type].total | customCurrency}}</span>
+      <div class="type-total cart-box" [ngClass]="{collapsed: cart[type].collapsed}"
+           (click)="cart[type].collapsed = !cart[type].collapsed">
+        <div>
+          <span [ngSwitch]="type">
+            <ng-container *ngSwitchCase="'zonebump'" i18n>Destacado de Barrio</ng-container>
+            <ng-container *ngSwitchCase="'citybump'" i18n>Destacado de Ciudad</ng-container>
+            <ng-container *ngSwitchCase="'countrybump'" i18n>Destacado de País</ng-container>
+          </span>
+          <strong>x {{cart[type].cartItems.length}}</strong><br />
+          <span class="price">{{cart[type].total | customCurrency}}</span>
+        </div>
+        <mat-icon svgIcon="arrow-right"></mat-icon>
       </div>
-      <ul>
+      <ul [hidden]="cart[type].collapsed">
         <li *ngFor="let cartItem of cart[type].cartItems" class="cart-item cart-box">
           <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
           <div class="type">

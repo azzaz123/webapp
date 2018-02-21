@@ -60,6 +60,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('home', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/home.svg'));
   matIconRegistry.addSvgIcon('messages', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/messages.svg'));
   matIconRegistry.addSvgIcon('arrow-waterfall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-waterfall.svg'));
+  matIconRegistry.addSvgIcon('arrow-right', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-right.svg'));
   matIconRegistry.addSvgIcon('category_All', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_All.svg'));
   matIconRegistry.addSvgIcon('category_Appliances', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Appliances.svg'));
   matIconRegistry.addSvgIcon('category_Babies', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Babies.svg'));

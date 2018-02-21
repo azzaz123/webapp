@@ -58,9 +58,24 @@ ul, li {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     border: solid 0.5px $grey-100;
     margin-bottom: $spacing-XS;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
   }
   .type-total {
-    padding: $spacing-S;
+    padding: $spacing-S $spacing $spacing-S $spacing-S;
+    cursor: pointer;
+    mat-icon {
+      transform: rotate(-90deg) scale(.8);
+      width: 9px;
+      height: 13px;
+    }
+    &.collapsed {
+      mat-icon {
+        transform: rotate(90deg) scale(.8);
+      }
+    }
   }
   .price {
     color: $grey-500;
@@ -76,10 +91,7 @@ ul, li {
     color: $country-bump;
   }
   .cart-item {
-    display: flex;
     padding: $spacing-XXXS;
-    justify-content: space-between;
-    align-items: center;
     margin-left: $spacing;
     .type {
       flex: 1;

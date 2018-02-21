@@ -9,17 +9,20 @@ export class Cart {
 
   zonebump: Zonebump = {
     total: 0,
-    cartItems: []
+    cartItems: [],
+    collapsed: true
   };
 
   citybump: Zonebump = {
     total: 0,
-    cartItems: []
+    cartItems: [],
+    collapsed: true
   };
 
   countrybump: Zonebump = {
     total: 0,
-    cartItems: []
+    cartItems: [],
+    collapsed: true
   };
 
   calculateTotals() {

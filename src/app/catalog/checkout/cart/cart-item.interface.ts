@@ -9,4 +9,5 @@ export interface CartItem {
 export interface Zonebump {
   total: number;
   cartItems: CartItem[];
+  collapsed: boolean;
 }
