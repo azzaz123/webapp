@@ -1,6 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CartComponent } from './cart.component';
+import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CartService } from './cart.service';
+import { Observable } from 'rxjs/Observable';
+import { Cart } from './cart';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -8,7 +14,16 @@ describe('CartComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CartComponent ]
+      declarations: [ CartComponent, CustomCurrencyPipe ],
+      providers: [
+        DecimalPipe,
+        {
+          provide: CartService, useValue: {
+          cart$: Observable.of(new Cart())
+        }
+        }
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

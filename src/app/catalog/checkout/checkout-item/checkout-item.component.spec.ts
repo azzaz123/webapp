@@ -6,6 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 import { ITEMS_WITH_PRODUCTS } from '../../../../tests/item.fixtures';
+import { CartService } from '../cart/cart.service';
 
 describe('CheckoutItemComponent', () => {
   let component: CheckoutItemComponent;
@@ -15,7 +16,13 @@ describe('CheckoutItemComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CheckoutItemComponent, CustomCurrencyPipe ],
       providers: [
-        DecimalPipe
+        DecimalPipe,
+        {
+          provide: CartService, useValue: {
+          add() {
+          }
+        }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
