@@ -26,8 +26,23 @@ export class Cart {
   };
 
   add(cartItem: CartItem, type: string) {
+    this.removeCartItemFromAnyBump(cartItem.item.id);
     this[type].cartItems.push(cartItem);
     this.calculateTotals();
+  }
+
+  removeCartItem(itemId: string, type: string) {
+    const index = _.findIndex(this[type].cartItems, (c: CartItem) => c.item.id === itemId);
+    if (index !== -1) {
+      this[type].cartItems.splice(index, 1);
+      this.calculateTotals();
+    }
+  }
+
+  private removeCartItemFromAnyBump(itemId: string) {
+    BUMP_TYPES.forEach((type: string) => {
+      this.removeCartItem(itemId, type);
+    });
   }
 
   private calculateTotals() {
