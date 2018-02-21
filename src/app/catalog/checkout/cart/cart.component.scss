@@ -1,0 +1,91 @@
+@import "../../../../style/_common.scss";
+
+$cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
+$title-height: 65px;
+$total-height: 80px;
+$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height});
+
+:host {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $grey-50;
+  display: block;
+  height: $cart-height;
+  width: 280px;
+  position: fixed;
+  padding: 0 $spacing-XS;
+}
+
+h1 {
+  height: $title-height;
+  line-height: $title-height;
+  font-size: $font-size;
+  text-align: center;
+  margin: 0;
+}
+
+.scroll-panel {
+  background-color: rgba($grey-50, 0.3);
+  height: $scroll-panel-height;
+  overflow: auto;
+  border-radius: 5px;
+  padding: $spacing-XS;
+}
+
+.total {
+  height: $total-height;
+  line-height: $total-height;
+  font-size: $font-size-XS;
+  font-weight: bold;
+  padding: 0 $spacing-M;
+  text-transform: uppercase;
+  .price {
+    font-size: $font-size-XL;
+  }
+}
+
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.items-list {
+  font-size: $font-size-XS;
+  .cart-box {
+    border-radius: 5px;
+    background-color: $white;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: solid 0.5px $grey-100;
+    margin-bottom: $spacing-XS;
+  }
+  .type-total {
+    padding: $spacing-S;
+  }
+  .price {
+    color: $grey-500;
+    font-weight: bold;
+  }
+  .zonebump {
+    color: $zone-bump;
+  }
+  .citybump {
+    color: $city-bump;
+  }
+  .countrybump {
+    color: $country-bump;
+  }
+  .cart-item {
+    display: flex;
+    padding: $spacing-XXXS;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: $spacing;
+    .type {
+      flex: 1;
+    }
+    .price {
+      margin-right: $spacing-XS;
+    }
+  }
+}

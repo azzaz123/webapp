@@ -1,12 +1,34 @@
-<ul *ngIf="cart">
-  <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length">
-    <p>{{type}} x{{cart[type].cartItems.length}} - {{cart[type].total | customCurrency}}</p>
-    <ul>
-      <li *ngFor="let cartItem of cart[type].cartItems">
-        <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
-        x{{cartItem.duration.duration / 24}} days - {{cartItem.duration.market_code | customCurrency}}
-      </li>
-    </ul>
-  </li>
-</ul>
-<p>Total: {{(cart?.total | customCurrency) || 0}}</p>
+<h1>Tu lista de la compra</h1>
+<div class="scroll-panel">
+  <ul *ngIf="cart" class="items-list">
+    <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
+      <div class="type-total cart-box">
+        <span [ngSwitch]="type">
+          <ng-container *ngSwitchCase="'zonebump'" i18n>Destacado de Barrio</ng-container>
+          <ng-container *ngSwitchCase="'citybump'" i18n>Destacado de Ciudad</ng-container>
+          <ng-container *ngSwitchCase="'countrybump'" i18n>Destacado de País</ng-container>
+        </span>
+        <strong>x {{cart[type].cartItems.length}}</strong><br />
+        <span class="price">{{cart[type].total | customCurrency}}</span>
+      </div>
+      <ul>
+        <li *ngFor="let cartItem of cart[type].cartItems" class="cart-item cart-box">
+          <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
+          <div class="type">
+            <span [ngSwitch]="type">
+              <ng-container *ngSwitchCase="'zonebump'" i18n>Barrio</ng-container>
+              <ng-container *ngSwitchCase="'citybump'" i18n>Ciudad</ng-container>
+              <ng-container *ngSwitchCase="'countrybump'" i18n>País</ng-container>
+            </span>
+            x {{cartItem.duration.duration / 24}}días
+          </div>
+          <div class="price">{{cartItem.duration.market_code | customCurrency}}</div>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<div class="total">
+  <span class="pull-left" i18n>Total</span>
+  <span class="pull-right price">{{cart?.total | customCurrency}}</span>
+</div>
