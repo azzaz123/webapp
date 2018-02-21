@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { CartService } from '../cart/cart.service';
 import { CartItem } from '../cart/cart-item.interface';
@@ -41,7 +42,7 @@ export class CheckoutItemComponent implements OnInit {
       item: this.itemWithProducts.item,
       duration: this.itemWithProducts.products[this.selectedDuration][type]
     };
-    this.cartService.cart.add(cartItem, type);
+    this.cartService.add(cartItem, type);
   }
 
 }
