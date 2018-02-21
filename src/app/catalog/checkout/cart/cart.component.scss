@@ -22,6 +22,7 @@ h1 {
   font-size: $font-size;
   text-align: center;
   margin: 0;
+  background: url(/assets/icons/cart.svg) no-repeat 10px center;
 }
 
 .scroll-panel {
@@ -64,15 +65,20 @@ ul, li {
     user-select: none;
   }
   .type-total {
-    padding: $spacing-S $spacing $spacing-S $spacing-S;
+    padding: 10px;
     cursor: pointer;
-    mat-icon {
+    .wing-icon {
+      width: 51px;
+      height: 30px;
+      margin-right: $spacing-XS;
+    }
+    .arrow-icon {
       transform: rotate(-90deg) scale(.8);
       width: 9px;
       height: 13px;
     }
     &.collapsed {
-      mat-icon {
+      .arrow-icon {
         transform: rotate(90deg) scale(.8);
       }
     }
@@ -90,12 +96,12 @@ ul, li {
   .countrybump {
     color: $country-bump;
   }
+  .type {
+    flex: 1;
+  }
   .cart-item {
     padding: $spacing-XXXS;
     margin-left: $spacing;
-    .type {
-      flex: 1;
-    }
     .price {
       margin-right: $spacing-XS;
     }
