@@ -99,9 +99,19 @@ ul, li {
   .type {
     flex: 1;
   }
+  .close-icon {
+    @include square(16px);
+    margin-bottom: $spacing-XS;
+    margin-right: $spacing-XS;
+    cursor: pointer;
+  }
   .cart-item {
-    padding: $spacing-XXXS;
-    margin-left: $spacing;
+    display: flex;
+    align-items: center;
+    .cart-box {
+      padding: $spacing-XXXS;
+      flex: 1;
+    }
     .price {
       margin-right: $spacing-XS;
     }

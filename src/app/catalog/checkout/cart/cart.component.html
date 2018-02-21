@@ -17,17 +17,20 @@
         <mat-icon class="arrow-icon" svgIcon="arrow-right"></mat-icon>
       </div>
       <ul [hidden]="cart[type].collapsed">
-        <li *ngFor="let cartItem of cart[type].cartItems" class="cart-item cart-box">
-          <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
-          <div class="type">
-            <span [ngSwitch]="type">
-              <ng-container *ngSwitchCase="'zonebump'" i18n>Barrio</ng-container>
-              <ng-container *ngSwitchCase="'citybump'" i18n>Ciudad</ng-container>
-              <ng-container *ngSwitchCase="'countrybump'" i18n>País</ng-container>
-            </span>
-            x {{cartItem.duration.duration / 24}}días
+        <li *ngFor="let cartItem of cart[type].cartItems" class="cart-item">
+          <mat-icon svgIcon="remove" class="close-icon" (click)="remove(cartItem, type)"></mat-icon>
+          <div class="cart-box">
+            <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
+            <div class="type">
+              <span [ngSwitch]="type">
+                <ng-container *ngSwitchCase="'zonebump'" i18n>Barrio</ng-container>
+                <ng-container *ngSwitchCase="'citybump'" i18n>Ciudad</ng-container>
+                <ng-container *ngSwitchCase="'countrybump'" i18n>País</ng-container>
+              </span>
+              x {{cartItem.duration.duration / 24}}días
+            </div>
+            <div class="price">{{cartItem.duration.market_code | customCurrency}}</div>
           </div>
-          <div class="price">{{cartItem.duration.market_code | customCurrency}}</div>
         </li>
       </ul>
     </li>

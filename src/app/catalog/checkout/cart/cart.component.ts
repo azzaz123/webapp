@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CartService } from './cart.service';
 import { BUMP_TYPES, Cart } from './cart';
+import { CartItem } from './cart-item.interface';
 
 @Component({
   selector: 'tsl-cart',
@@ -14,6 +15,10 @@ export class CartComponent {
 
   constructor(private cartService: CartService) {
     this.cart =  this.cartService.cart;
+  }
+
+  remove(cartItem: CartItem, type: string) {
+    this.cartService.cart.removeCartItem(cartItem.item.id, type);
   }
 
 }
