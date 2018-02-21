@@ -29,6 +29,12 @@ export class CheckoutItemComponent implements OnInit {
   }
 
   select(type: string) {
+    if (this.selectedType === type && this.selectedDuration === this.duration) {
+      this.cartService.cart.removeCartItem(this.itemWithProducts.item.id, type);
+      this.selectedType = null;
+      this.selectedDuration = null;
+      return;
+    }
     this.selectedType = type;
     this.selectedDuration = this.duration;
     const cartItem: CartItem = {
