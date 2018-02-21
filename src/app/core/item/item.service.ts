@@ -285,4 +285,10 @@ export class ItemService extends ItemServiceMaster {
     });
   }
 
+  public getUrgentProducts(itemId: string): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/' + itemId + '/available-urgent-products')
+      .map((r: Response) => r.json())
+      .map((response: AvailableProductsResponse) => response.products[0]);
+  }
+
 }

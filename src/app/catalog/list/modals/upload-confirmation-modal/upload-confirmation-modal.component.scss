@@ -3,8 +3,8 @@
 $feature-button-width: 170px;
 
 .header {
-  background: $corporate url(/assets/images/upload-congrats.svg) no-repeat center 85px;
-  height: 270px;
+  background: $corporate;
+  height: 127px;
   border-top-left-radius: $border-radius;
   border-top-right-radius: $border-radius;
   color: $white;
@@ -24,12 +24,11 @@ $feature-button-width: 170px;
   h1 {
     font-size: 18px;
     font-weight: bold;
-    margin: 5px;
   }
   p {
     opacity: .8;
     margin: 0;
-    margin-bottom: 25px;
+    margin-bottom: 32px;
     color: $white;
     font-size: $font-size;
   }
@@ -39,9 +38,15 @@ $feature-button-width: 170px;
   text-align: center;
   padding: 40px 70px;
   p {
-    font-size: $font-size-S;
-    color: $grey-300;
+    font-size: $font-size;
+    color: $grey-400;
     margin-top: 10px;
+  }
+  .urgent-background {
+    background: url(/assets/images/urgent-background.svg);
+    width: 138px;
+    height: 152px;
+    margin: $spacing-S auto;
   }
 }
 
@@ -50,17 +55,16 @@ button {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 20px;
   transition: all .2s ease;
   background: $grey-700;
-  width: $feature-button-width;
   height: 40px;
   color: $white;
   padding: 0 $spacing;
   padding-left: 12px;
   font-size: $font-size-S;
   border: 1px solid transparent;
-  margin: $spacing-M auto $spacing-XL;
+  margin: $spacing-L auto $spacing;
   &:hover {
     background: $corporate;
   }

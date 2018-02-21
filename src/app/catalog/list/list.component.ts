@@ -71,11 +71,8 @@ export class ListComponent implements OnInit, OnDestroy {
           this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
             windowClass: 'upload',
           });
-          this.uploadModalRef.result.then(() => {
-            const newItem: Item = this.items[0];
-            this.itemService.selectedAction = 'feature';
-            newItem.selected = true;
-            this.itemService.selectItem(newItem.id);
+          this.uploadModalRef.result.then((orderEvent: OrderEvent) => {
+            this.feature(orderEvent);
           }, () => {
           });
         } else if (params && params.updated) {
@@ -129,6 +126,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.end = !this.init;
       if (this.uploadModalRef) {
         this.uploadModalRef.componentInstance.item = this.items[0];
+        this.uploadModalRef.componentInstance.urgentPrice();
       }
       if (this.firstItemLoad) {
         setTimeout(() => {
