@@ -15,8 +15,6 @@
         <div class="col-3">
           <div class="btn-wrapper">
             <button class="btn btn-logout" (click)="logout($event)" tslTrackEvent="MYZONE_MENU_LOGOUT" i18n>Logout</button>
-            <button type="submit" class="btn btn-primary btn-save" [ngClass]="{disabled: !hasNotSavedChanges}" tslTrackEvent="MYPROFILE_SAVEBUTTON"
-              i18n>Save</button>
           </div>
         </div>
       </tsl-header>
@@ -107,6 +105,12 @@
               <a (click)="openUnsubscribeModal()" tslTrackEvent="MYPROFILE_UNSUBSCRIBE" i18n>Close account</a>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary btn-save" [ngClass]="{disabled: !hasNotSavedChanges}" tslTrackEvent="MYPROFILE_SAVEBUTTON"
+            i18n>Save</button>
         </div>
       </div>
     </form>

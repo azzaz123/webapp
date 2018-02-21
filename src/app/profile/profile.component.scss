@@ -6,8 +6,8 @@ $form-control-height: 42px;
 .box {
   background-color: $white;
   border-radius: $border-radius;
-  border: $border;
-  margin-bottom: $spacing-XL;
+  border: $border;  
+  margin-bottom: 20px;
   .box-content {
     padding: $spacing-L $spacing-L + 10;
   }
@@ -171,5 +171,33 @@ $form-control-height: 42px;
         text-decoration: none;
       }
     }
+  }
+}
+
+.btn-wrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 100%;
+}
+  
+.btn-save {
+  margin-right: $spacing;
+  margin-bottom: 65px;
+  padding: 14px 50px;
+  margin-top: 12px;
+}
+
+.btn-logout {
+  padding: 10px 18px;
+  background-color: transparent;
+  border: solid 1px $grey-100;
+  color: $grey-600;
+  margin-right: $spacing;
+  font-size: $font-size-S;
+  &:hover {
+      background-color: $delete-bg;
+      color: $white;
+      border: solid 1px $delete-bg;
   }
 }

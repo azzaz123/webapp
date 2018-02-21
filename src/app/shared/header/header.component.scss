@@ -47,33 +47,4 @@
             margin-bottom: 0;                       
         }
     }
-
-    .btn-wrapper {
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;
-        height: 100%;
-    }
-    
-    .btn-logout, .btn-save {
-        font-size: $font-size-S;
-        padding: 10px 18px;
-    }
-    
-    .btn-save {
-        margin-right: $spacing;
-    }
-
-    .btn-logout {
-        background-color: transparent;
-        border: solid 1px $grey-100;
-        color: $grey-600;
-        margin-right: $spacing;
-        font-size: $font-size-S;
-        &:hover {
-            background-color: $delete-bg;
-            color: $white;
-            border: solid 1px $delete-bg;
-        }
-    }
 }
