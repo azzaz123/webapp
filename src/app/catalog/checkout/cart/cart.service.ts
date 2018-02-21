@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CartItem, Zonebump } from './cart-item.interface';
+import { CartItem } from './cart-item.interface';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Cart } from './cart';
@@ -11,18 +11,14 @@ export class CartService {
   private cart: Cart;
   public cart$: Observable<Cart>;
 
-
   constructor() {
     this.cart$ = this.cartSource.asObservable();
     this.cart = new Cart();
   }
 
   add(cartItem: CartItem, type: string) {
-    this.cart[type].cartItems.push(cartItem);
-    this.cart.calculateTotals();
+    this.cart.add(cartItem, type);
     this.cartSource.next(this.cart);
   }
-
-
 
 }

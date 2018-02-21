@@ -25,7 +25,12 @@ export class Cart {
     collapsed: true
   };
 
-  calculateTotals() {
+  add(cartItem: CartItem, type: string) {
+    this[type].cartItems.push(cartItem);
+    this.calculateTotals();
+  }
+
+  private calculateTotals() {
     this.total = 0;
     BUMP_TYPES.forEach((type: string) => {
       this[type].total = _.sumBy(this[type].cartItems, (c: CartItem) => +c.duration.market_code);

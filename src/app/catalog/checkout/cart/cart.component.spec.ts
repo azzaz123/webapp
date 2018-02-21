@@ -12,6 +12,8 @@ describe('CartComponent', () => {
   let component: CartComponent;
   let fixture: ComponentFixture<CartComponent>;
 
+  const CART = new Cart();
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CartComponent, CustomCurrencyPipe ],
@@ -19,7 +21,7 @@ describe('CartComponent', () => {
         DecimalPipe,
         {
           provide: CartService, useValue: {
-          cart$: Observable.of(new Cart())
+          cart$: Observable.of(CART)
         }
         }
       ],
@@ -34,7 +36,9 @@ describe('CartComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+    it('should set cart', () => {
+      expect(component.cart).toEqual(CART);
+    });
   });
 });
