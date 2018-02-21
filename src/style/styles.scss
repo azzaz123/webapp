@@ -47,8 +47,10 @@ body {
   margin-left: $sidebar-width;
   height: 100vh;
   overflow: auto;
-  background: rgba(236, 239, 241, 0.6);
-  padding: $spacing-L;
+  background: rgba(236, 239, 241, 0.6);  
+  > .container {
+    padding: $spacing-L;
+  }
 }
 
 button {
