@@ -37,7 +37,7 @@ h1 {
   line-height: $total-height;
   font-size: $font-size-XS;
   font-weight: bold;
-  padding: 0 $spacing-M;
+  padding: 0 $spacing-XS;
   text-transform: uppercase;
   .price {
     font-size: $font-size-XL;
@@ -98,6 +98,11 @@ ul, li {
     }
     .price {
       margin-right: $spacing-XS;
+    }
+    tsl-item-avatar {
+      /deep/ div {
+        @include square(32px);
+      }
     }
   }
 }
