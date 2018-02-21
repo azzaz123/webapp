@@ -21,4 +21,8 @@ export class CartService {
     this.cartSource.next(this.cart);
   }
 
+  remove(itemId: string, type: string) {
+    this.cart.removeCartItem(itemId, type);
+  }
+
 }
