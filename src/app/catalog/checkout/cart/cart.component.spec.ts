@@ -21,7 +21,7 @@ describe('CartComponent', () => {
         DecimalPipe,
         {
           provide: CartService, useValue: {
-          cart: CART
+          cart$: Observable.of(CART)
         }
         }
       ],
@@ -36,7 +36,9 @@ describe('CartComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should set cart', () => {
-    expect(component.cart).toEqual(CART);
+  describe('ngOnInit', () => {
+    it('should set cart', () => {
+      expect(component.cart).toEqual(CART);
+    });
   });
 });

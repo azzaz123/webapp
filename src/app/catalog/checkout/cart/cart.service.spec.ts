@@ -14,7 +14,19 @@ describe('CartService', () => {
     service = TestBed.get(CartService);
   });
 
-  it('should set cart', () => {
-    expect(service.cart instanceof Cart).toBeTruthy();
+  describe('add', () => {
+
+    it('should add cartItem to cart and emit it', () => {
+      let cart: Cart;
+      service.cart$.subscribe((c: Cart) => {
+        cart = c;
+      });
+      spyOn<any>(service['cart'], 'add');
+
+      service.add(CART_ITEM_CITYBUMP, 'citybump');
+
+      expect(cart instanceof Cart).toBeTruthy();
+      expect(service['cart'].add).toHaveBeenCalled();
+    });
   });
 });

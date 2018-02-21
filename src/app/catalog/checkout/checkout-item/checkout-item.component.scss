@@ -12,7 +12,6 @@
   .title {
     @include text-truncate();
     padding-right: $spacing-S;
-    flex: 1;
   }
   .border-l {
     position: relative;

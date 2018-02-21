@@ -7,7 +7,6 @@ import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-curre
 import { DecimalPipe } from '@angular/common';
 import { CITYBUMP_DURATIONS, ITEMS_WITH_PRODUCTS, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures';
 import { CartService } from '../cart/cart.service';
-import { Cart } from '../cart/cart';
 
 describe('CheckoutItemComponent', () => {
   let component: CheckoutItemComponent;
@@ -21,7 +20,8 @@ describe('CheckoutItemComponent', () => {
         DecimalPipe,
         {
           provide: CartService, useValue: {
-          cart: new Cart()
+          add() {
+          }
         }
         }
       ],
@@ -50,13 +50,13 @@ describe('CheckoutItemComponent', () => {
       const TYPE = 'citybump';
       const DURATION = '24';
       component.duration = DURATION;
-      spyOn(cartService.cart, 'add');
+      spyOn(cartService, 'add');
 
       component.select(TYPE);
 
       expect(component.selectedType).toBe(TYPE);
       expect(component.selectedDuration).toBe(DURATION);
-      expect(cartService.cart.add).toHaveBeenCalledWith({
+      expect(cartService.add).toHaveBeenCalledWith({
         item: MOCK_ITEM_V3,
         duration: CITYBUMP_DURATIONS[0]
       }, TYPE);
