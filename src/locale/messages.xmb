@@ -42,7 +42,12 @@
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:6</source>Profile</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:13</source>Products</msg>
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:28</source>Favorites</msg>
+<<<<<<< HEAD
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:35</source>Reviews</msg>
+=======
+  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:35</source><source>app/reviews/reviews.component.ts:21</source>Reviews</msg>
+  <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:42</source>Logout</msg>
+>>>>>>> develop
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:26</source>Delete conversation</msg>
@@ -207,7 +212,7 @@
   <msg id="7493287338252374869"><source>app/catalog/upload/upload-product/upload-product.component.ts:70</source>Every detail helps: so tell us more!</msg>
   <msg id="2806917038528218276"><source>app/catalog/upload/upload-product/upload-product.component.ts:105</source>FAQ</msg>
   <msg id="5972351850683239127"><source>app/catalog/upload/upload-product/upload-product.component.ts:110</source>Shipping</msg>
-  <msg id="3007176586514020023"><source>app/catalog/upload/upload-product/upload-product.component.ts:111</source>Tell us how much it weighs.</msg>
+  <msg id="2877776180648049476"><source>app/catalog/upload/upload-product/upload-product.component.ts:111</source>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</msg>
   <msg id="3336512716830718777"><source>app/catalog/upload/upload-product/upload-product.component.ts:122</source>Important for shipping.</msg>
   <msg id="1551801042919193607"><source>app/catalog/upload/category-selector/category-selector.component.ts:2</source>What will you sell?</msg>
   <msg id="2649260508337759251"><source>app/catalog/upload/category-selector/category-selector.component.ts:3</source>Set the product type you will list</msg>

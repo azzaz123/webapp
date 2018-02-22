@@ -44,6 +44,9 @@
   .review-credits {
     font-size: $font-size-S;
     color: $grey-300;
+    a {
+      color: $gray-dark;
+    }
   }
   .review-microname {
     color: $color-grey-item;
@@ -96,9 +99,6 @@
       mat-icon {
         @include square(50px);
       }
-    }
-    .purchase {
-      background-color: $corporate;
     }
   }
 }
