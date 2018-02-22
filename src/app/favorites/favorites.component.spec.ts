@@ -123,10 +123,11 @@ describe('FavoritesComponent', () => {
   describe('removeItem', () => {
     it('should remove item', () => {
       const [item1, item2] = component.items = [MOCK_ITEM, MOCK_ITEM];
-      component.numberOfFavorites = 1;
+      const NUMBEROFFAVORITES = 1;
+      component.numberOfFavorites = NUMBEROFFAVORITES;
       component.removeItem(item1);
       expect(component.items).toEqual([item2]);
-      expect(component.numberOfFavorites).toEqual(0);
+      expect(component.numberOfFavorites).toEqual(NUMBEROFFAVORITES - 1);
     });
   });
 
