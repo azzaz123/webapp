@@ -2,16 +2,27 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 import { CITYBUMP_DURATIONS, ITEMS_WITH_PRODUCTS, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures';
 import { CartService } from '../cart/cart.service';
+import { Cart } from '../cart/cart';
+import { CartChange } from '../cart/cart-item.interface';
+import { Observable } from 'rxjs/Observable';
+import { ITEM_ID } from 'shield';
 
 describe('CheckoutItemComponent', () => {
   let component: CheckoutItemComponent;
   let fixture: ComponentFixture<CheckoutItemComponent>;
   let cartService: CartService;
+
+  const CART = new Cart();
+  const CART_CHANGE: CartChange = {
+    action: 'add',
+    cart: CART,
+    itemId: ITEM_ID,
+    type: 'citybump'
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -21,7 +32,8 @@ describe('CheckoutItemComponent', () => {
         {
           provide: CartService, useValue: {
           add() {
-          }
+          },
+          cart$: Observable.of(CART_CHANGE)
         }
         }
       ],
