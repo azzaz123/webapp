@@ -41,6 +41,7 @@ describe('FavoritesComponent', () => {
     fixture = TestBed.createComponent(FavoritesComponent);
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
+    userService = TestBed.get(UserService);
     fixture.detectChanges();
   });
 
@@ -128,8 +129,7 @@ describe('FavoritesComponent', () => {
   });
 
   describe('getNumberOfFavorites', () => {
-    beforeEach(() => {
-      userService = TestBed.get(UserService);
+    beforeEach(() => {      
       spyOn(component, 'getNumberOfFavorites').and.callThrough();
       spyOn(userService, 'getStats').and.callThrough();      
     });

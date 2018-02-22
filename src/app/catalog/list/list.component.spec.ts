@@ -146,6 +146,7 @@ describe('ListComponent', () => {
     paymentService = TestBed.get(PaymentService);
     router = TestBed.get(Router);
     errorService = TestBed.get(ErrorsService);
+    userService = TestBed.get(UserService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -540,8 +541,7 @@ describe('ListComponent', () => {
     });
 
     describe('getNumberOfProducts', () => {
-      beforeEach(() => {
-        userService = TestBed.get(UserService);
+      beforeEach(() => {        
         spyOn(component, 'getNumberOfProducts').and.callThrough();
         spyOn(userService, 'getStats').and.callThrough();
       });
