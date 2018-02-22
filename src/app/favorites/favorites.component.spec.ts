@@ -123,8 +123,10 @@ describe('FavoritesComponent', () => {
   describe('removeItem', () => {
     it('should remove item', () => {
       const [item1, item2] = component.items = [MOCK_ITEM, MOCK_ITEM];
+      component.numberOfFavorites = 1;
       component.removeItem(item1);
       expect(component.items).toEqual([item2]);
+      expect(component.numberOfFavorites).toEqual(0);
     });
   });
 
@@ -134,9 +136,13 @@ describe('FavoritesComponent', () => {
       spyOn(userService, 'getStats').and.callThrough();      
     });
 
+    it('should call getNumberOfFavorites when component init', () => {
+      component.ngOnInit();
+      expect(component.getNumberOfFavorites).toHaveBeenCalled();
+    });
+
     it('should get number of favorites', () => {
       component.getNumberOfFavorites();
-
       expect(userService.getStats).toHaveBeenCalled();
       expect(component.numberOfFavorites).toEqual(USERS_STATS_RESPONSE.counters.favorites);
     });

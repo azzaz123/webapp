@@ -331,6 +331,7 @@ describe('ListComponent', () => {
     describe('success', () => {
       beforeEach(fakeAsync(() => {
         spyOn(itemService, 'bulkDelete').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
+        spyOn(component, 'getNumberOfProducts');
         component.delete();
         tick();
       }));
@@ -347,6 +348,9 @@ describe('ListComponent', () => {
       it('should track the ProductListbulkDeleted event', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: '1, 3, 5'});
       });
+      it('should call getNumberOfProducts', () => {
+        expect(component.getNumberOfProducts).toHaveBeenCalled();
+      })
     });
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
