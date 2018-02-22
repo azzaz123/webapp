@@ -191,11 +191,6 @@ describe('ListComponent', () => {
   });
 
   describe('getItems', () => {
-    beforeEach(fakeAsync(() => {
-      modalSpy.and.returnValue({
-        componentInstance: componentInstance
-      });
-    }));
     it('should call mines with default values and set items', () => {
       expect(itemService.mine).toHaveBeenCalledWith(0, 'published');
       expect(component.items.length).toBe(2);
@@ -223,16 +218,17 @@ describe('ListComponent', () => {
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
-    it('should set item to upload modal and call urgentPrice', () => {
+    it('should set item to upload modal and call urgentPrice', fakeAsync(() => {
       component['uploadModalRef'] = <any>{
         componentInstance: componentInstance
       };
 
       component.ngOnInit();
+      tick();
 
       expect(component['uploadModalRef'].componentInstance.item).toEqual(component.items[0]);
       expect(component['uploadModalRef'].componentInstance.urgentPrice).toHaveBeenCalled();
-    });
+    }));
   });
 
   describe('filterByStatus', () => {
