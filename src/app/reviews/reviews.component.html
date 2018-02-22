@@ -21,8 +21,9 @@
         <tsl-stars class="header-rating" [stars]="this.userScore" [normalized]="false"></tsl-stars>
       </div>
       <div class="user-number-reviews text-center col-1">
-        <p>{{ reviewsNum }}</p>
-        <p i18n>reviews</p>
+        <p>{{ numberOfReviews }}</p>
+        <p *ngIf="numberOfReviews > 1 || numberOfReviews === 0" i18n>reviews</p>
+        <p *ngIf="numberOfReviews === 1" i18n>review</p>
       </div>
     </tsl-header>
     <div class="row items">

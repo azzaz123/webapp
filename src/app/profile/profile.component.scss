@@ -7,7 +7,7 @@ $form-control-height: 42px;
   background-color: $white;
   border-radius: $border-radius;
   border: $border;
-  margin-bottom: 20px;
+  margin-bottom: $spacing;
   .box-content {
     padding: $spacing-L $spacing-L + 10;
   }
@@ -33,7 +33,7 @@ $form-control-height: 42px;
     }
   }
   .profile-pic {
-    padding: 10px 0 32px 0;
+    padding: 10px 0 $spacing-L 0;
     border-bottom: $border;
     h2 {
       font-size: $font-size;
@@ -185,7 +185,7 @@ $form-control-height: 42px;
   margin-right: $spacing;
   margin-bottom: 65px;
   padding: 14px 50px;
-  margin-top: 12px;
+  margin-top: $spacing-S;
 }
 
 .btn-logout {

@@ -540,11 +540,11 @@ describe('ListComponent', () => {
     });
 
     describe('getNumberOfProducts', () => {
-      beforeEach(fakeAsync(() => {
+      beforeEach(() => {
         userService = TestBed.get(UserService);
         spyOn(component, 'getNumberOfProducts').and.callThrough();
         spyOn(userService, 'getStats').and.callThrough();
-      }));
+      });
 
       it('should get the number of products', () => {
         component.getNumberOfProducts();

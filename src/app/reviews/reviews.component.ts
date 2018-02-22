@@ -20,7 +20,7 @@ export class ReviewsComponent implements OnInit {
   public end: boolean;
   public scrollTop: number;
   public userScore: number;
-  public reviewsNum: number;
+  public numberOfReviews: number;
 
   constructor(private myReviewsService: ReviewService,
               private userService: UserService) { }
@@ -28,7 +28,7 @@ export class ReviewsComponent implements OnInit {
   ngOnInit() {
     this.getUserScore();
     this.getReviews();
-    this.getReviewsNum();
+    this.getNumberOfReviews();
   }
 
   public getUserScore() {
@@ -50,9 +50,9 @@ export class ReviewsComponent implements OnInit {
     });
   }
 
-  public getReviewsNum() {
+  public getNumberOfReviews() {
     this.userService.getStats().subscribe((stats: UserStatsResponse) => {
-      this.reviewsNum = stats.counters.reviews;
+      this.numberOfReviews = stats.counters.reviews;
     });
   }
 

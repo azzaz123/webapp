@@ -128,11 +128,11 @@ describe('FavoritesComponent', () => {
   });
 
   describe('getNumberOfFavorites', () => {
-    beforeEach(fakeAsync(() => {
+    beforeEach(() => {
       userService = TestBed.get(UserService);
       spyOn(component, 'getNumberOfFavorites').and.callThrough();
       spyOn(userService, 'getStats').and.callThrough();      
-    }));
+    });
 
     it('should get number of favorites', () => {
       component.getNumberOfFavorites();
