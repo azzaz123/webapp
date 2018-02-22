@@ -16,7 +16,7 @@ describe('CartComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CartComponent, CustomCurrencyPipe ],
+      declarations: [CartComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         {
@@ -39,6 +39,14 @@ describe('CartComponent', () => {
   describe('ngOnInit', () => {
     it('should set cart', () => {
       expect(component.cart).toEqual(CART);
+    });
+  });
+
+  describe('ngOnDestroy', () => {
+    it('should set active false', () => {
+      component.ngOnDestroy();
+
+      expect(component['active']).toBeFalsy();
     });
   });
 });
