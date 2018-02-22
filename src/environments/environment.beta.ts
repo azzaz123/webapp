@@ -1,5 +1,5 @@
 export const environment: any = {
-  production: true,
+  production: false,
   name: 'beta',
   baseUrl: 'https://beta.wallapop.com/',
   xmppDomain: 'beta.wallapop.com',
