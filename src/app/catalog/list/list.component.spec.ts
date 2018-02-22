@@ -29,6 +29,8 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { ErrorsService } from '../../core/errors/errors.service';
+import { UserService } from '../../core/user/user.service';
+import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -45,6 +47,7 @@ describe('ListComponent', () => {
   let errorService: ErrorsService;
   let componentInstance: any = {};
   let modalSpy: jasmine.Spy;
+  let userService: UserService;
   const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async(() => {
@@ -118,6 +121,13 @@ describe('ListComponent', () => {
             navigate() {
             },
             events: routerEvents
+          }
+        },
+        {
+          provide: UserService, useValue: {
+            getStats() {
+              return Observable.of(USERS_STATS_RESPONSE);
+            }
           }
         }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -528,6 +538,21 @@ describe('ListComponent', () => {
         expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
       });
     });
+
+    describe('getProductsNum', () => {
+      beforeEach(fakeAsync(() => {
+        userService = TestBed.get(UserService);
+        spyOn(component, 'getProductsNum').and.callThrough();
+        spyOn(userService, 'getStats').and.callThrough();
+      }));
+
+      it('should get products number', () => {
+        component.getProductsNum();
+
+        expect(userService.getStats).toHaveBeenCalled();
+        expect(component.productsNum).toEqual(USERS_STATS_RESPONSE.counters.publish);
+      });
+    })
 
   });
 

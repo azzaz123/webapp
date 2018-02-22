@@ -4,12 +4,15 @@ import { MOCK_ITEM } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
+import { UserService } from '../core/user/user.service';
+import { USERS_STATS_RESPONSE } from '../../tests/user.fixtures';
 
 describe('FavoritesComponent', () => {
   let component: FavoritesComponent;
   let fixture: ComponentFixture<FavoritesComponent>;
   let itemService: ItemService;
   let itemServiceSpy: jasmine.Spy;
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,7 +23,14 @@ describe('FavoritesComponent', () => {
             return Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: 2});
           }
         }
-        }
+        },
+        {
+          provide: UserService, useValue: {
+            getStats() {
+              return Observable.of(USERS_STATS_RESPONSE);
+            }
+          }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -116,4 +126,19 @@ describe('FavoritesComponent', () => {
       expect(component.items).toEqual([item2]);
     });
   });
+
+  describe('getFavoritesNum', () => {
+    beforeEach(fakeAsync(() => {
+      userService = TestBed.get(UserService);
+      spyOn(component, 'getFavoritesNum').and.callThrough();
+      spyOn(userService, 'getStats').and.callThrough();      
+    }));
+
+    it('should get favorites number', () => {
+      component.getFavoritesNum();
+
+      expect(userService.getStats).toHaveBeenCalled();
+      expect(component.favoritesNum).toEqual(USERS_STATS_RESPONSE.counters.favorites);
+    });
+  })
 });
