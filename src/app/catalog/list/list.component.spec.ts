@@ -43,7 +43,7 @@ describe('ListComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let errorService: ErrorsService;
-  let componentInstance: any = {};
+  let componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
   let modalSpy: jasmine.Spy;
   const routerEvents: Subject<any> = new Subject();
 
@@ -191,6 +191,11 @@ describe('ListComponent', () => {
   });
 
   describe('getItems', () => {
+    beforeEach(fakeAsync(() => {
+      modalSpy.and.returnValue({
+        componentInstance: componentInstance
+      });
+    }));
     it('should call mines with default values and set items', () => {
       expect(itemService.mine).toHaveBeenCalledWith(0, 'published');
       expect(component.items.length).toBe(2);
@@ -222,9 +227,9 @@ describe('ListComponent', () => {
       component['uploadModalRef'] = <any>{
         componentInstance: componentInstance
       };
+
       component.ngOnInit();
 
-      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent);
       expect(component['uploadModalRef'].componentInstance.item).toEqual(component.items[0]);
       expect(component['uploadModalRef'].componentInstance.urgentPrice).toHaveBeenCalled();
     });

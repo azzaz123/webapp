@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { WindowRef, MockTrackingService, MOCK_ITEM } from 'shield';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { ItemService } from '../../../../core/item/item.service';
-import { PRODUCT_RESPONSE } from '../../../../../tests/item.fixtures';
+import { PRODUCT_RESPONSE, ORDER_EVENT, PRODUCT_DURATION_ID } from '../../../../../tests/item.fixtures';
 import { Observable } from 'rxjs/Observable';
 
 describe('UploadConfirmationModalComponent', () => {
@@ -13,6 +13,7 @@ describe('UploadConfirmationModalComponent', () => {
   let fixture: ComponentFixture<UploadConfirmationModalComponent>;
   let trackingService: TrackingService;
   let itemService: ItemService;
+  let activeModal: NgbActiveModal;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -24,6 +25,12 @@ describe('UploadConfirmationModalComponent', () => {
         {
           provide: ItemService, useValue: {
             getUrgentProducts() {}
+          }
+        },
+        {
+          provide: NgbActiveModal, useValue: {
+            close() {
+            }
           }
         }
       ],
@@ -37,6 +44,7 @@ describe('UploadConfirmationModalComponent', () => {
     component = fixture.componentInstance;
     trackingService = TestBed.get(TrackingService);
     itemService = TestBed.get(ItemService);
+    activeModal = TestBed.get(NgbActiveModal);
   });
 
   describe('ngOnInit', () => {
@@ -56,9 +64,21 @@ describe('UploadConfirmationModalComponent', () => {
       component.item = MOCK_ITEM;
       component.urgentPrice();
 
-      expect(itemService.getUrgentProducts).toHaveBeenCalledWith('9jd7ryx5odjk');
+      expect(itemService.getUrgentProducts).toHaveBeenCalledWith(MOCK_ITEM.id);
     });
   });
 
+  describe('featureUrgentItem', () => {
+    it('should close the modal with an order event', () => {
+      spyOn(activeModal, 'close');
+
+      component.item = MOCK_ITEM;
+      component.productId = PRODUCT_DURATION_ID;
+      component.productPrice = PRODUCT_RESPONSE.durations[0].market_code;
+      component.featureUrgentItem();
+
+      expect(activeModal.close).toHaveBeenCalledWith(ORDER_EVENT)
+    });
+  });
 
 });

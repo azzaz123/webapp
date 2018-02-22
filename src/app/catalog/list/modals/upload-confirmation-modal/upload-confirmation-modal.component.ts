@@ -59,7 +59,6 @@ export class UploadConfirmationModalComponent implements OnInit {
   }
 
   public urgentPrice(): void {
-    console.log('product item ', this.item.id);
     this.getUrgentProductsObservable = this.itemService.getUrgentProducts(this.item.id).share();
     this.getUrgentProductsObservable.subscribe((product: Product) => {
       this.getUrgentProductsObservable = null;
