@@ -6,7 +6,7 @@ export interface CartItem {
   duration: Duration;
 }
 
-export interface Zonebump {
+export interface BumpGroup {
   total: number;
   cartItems: CartItem[];
   collapsed: boolean;

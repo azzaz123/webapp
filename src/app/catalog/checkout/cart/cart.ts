@@ -1,4 +1,4 @@
-import { CartItem, Zonebump } from './cart-item.interface';
+import { CartItem, BumpGroup } from './cart-item.interface';
 import * as _ from 'lodash';
 
 export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];
@@ -7,19 +7,19 @@ export class Cart {
 
   total: number;
 
-  zonebump: Zonebump = {
+  zonebump: BumpGroup = {
     total: 0,
     cartItems: [],
     collapsed: true
   };
 
-  citybump: Zonebump = {
+  citybump: BumpGroup = {
     total: 0,
     cartItems: [],
     collapsed: true
   };
 
-  countrybump: Zonebump = {
+  countrybump: BumpGroup = {
     total: 0,
     cartItems: [],
     collapsed: true
