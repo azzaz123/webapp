@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
 import { BUMP_TYPES, Cart } from './cart';
-import { CartItem } from './cart-item.interface';
+import { CartChange, CartItem } from './cart-item.interface';
 
 @Component({
   selector: 'tsl-cart',
@@ -18,8 +18,8 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.cartService.cart$.takeWhile(() => this.active).subscribe((cart: Cart) => {
-      this.cart = cart;
+    this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
+      this.cart = cartChange.cart;
     });
   }
 

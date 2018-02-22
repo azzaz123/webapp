@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { CartService } from '../cart/cart.service';
 import { CartItem } from '../cart/cart-item.interface';
