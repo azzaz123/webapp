@@ -18,10 +18,10 @@
         </div>
       </div>
       <div class="col-1 header-numbers">
-        <p class="header-numbers-top">{{productsNum}}</p>
+        <p class="header-numbers-top">{{numberOfProducts}}</p>
         <p class="header-numbers-bottom">
-          <span *ngIf="productsNum > 1 || productsNum == 0" i18n>products</span> 
-          <span *ngIf="productsNum == 1" i18n>product</span> 
+          <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span> 
+          <span *ngIf="numberOfProducts === 1" i18n>product</span> 
         </p>
       </div>
     </tsl-header>

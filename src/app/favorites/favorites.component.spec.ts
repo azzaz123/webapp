@@ -127,18 +127,18 @@ describe('FavoritesComponent', () => {
     });
   });
 
-  describe('getFavoritesNum', () => {
+  describe('getNumberOfFavorites', () => {
     beforeEach(fakeAsync(() => {
       userService = TestBed.get(UserService);
-      spyOn(component, 'getFavoritesNum').and.callThrough();
+      spyOn(component, 'getNumberOfFavorites').and.callThrough();
       spyOn(userService, 'getStats').and.callThrough();      
     }));
 
-    it('should get favorites number', () => {
-      component.getFavoritesNum();
+    it('should get number of favorites', () => {
+      component.getNumberOfFavorites();
 
       expect(userService.getStats).toHaveBeenCalled();
-      expect(component.favoritesNum).toEqual(USERS_STATS_RESPONSE.counters.favorites);
+      expect(component.numberOfFavorites).toEqual(USERS_STATS_RESPONSE.counters.favorites);
     });
   })
 });

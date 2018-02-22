@@ -35,7 +35,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private uploadModalRef: NgbModalRef;
   private active: boolean = true;
   private firstItemLoad = true;
-  public productsNum: number;
+  public numberOfProducts: number;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -49,7 +49,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getItems();
-    this.getProductsNum();
+    this.getNumberOfProducts();
     setTimeout(() => {
       this.router.events.takeWhile(() => this.active).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
@@ -184,7 +184,7 @@ export class ListComponent implements OnInit, OnDestroy {
         if (response.failedIds.length) {
           this.errorService.i18nError('bulkDeleteError');
         } else {
-          this.getProductsNum();
+          this.getNumberOfProducts();
         }
       });
     }, () => {
@@ -255,9 +255,9 @@ export class ListComponent implements OnInit, OnDestroy {
     })
   }
 
-  public getProductsNum() {
+  public getNumberOfProducts() {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
-      this.productsNum = userStats.counters.publish;
+      this.numberOfProducts = userStats.counters.publish;
     });
   }
 }

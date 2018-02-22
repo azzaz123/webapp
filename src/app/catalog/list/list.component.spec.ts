@@ -539,18 +539,18 @@ describe('ListComponent', () => {
       });
     });
 
-    describe('getProductsNum', () => {
+    describe('getNumberOfProducts', () => {
       beforeEach(fakeAsync(() => {
         userService = TestBed.get(UserService);
-        spyOn(component, 'getProductsNum').and.callThrough();
+        spyOn(component, 'getNumberOfProducts').and.callThrough();
         spyOn(userService, 'getStats').and.callThrough();
       }));
 
-      it('should get products number', () => {
-        component.getProductsNum();
+      it('should get the number of products', () => {
+        component.getNumberOfProducts();
 
         expect(userService.getStats).toHaveBeenCalled();
-        expect(component.productsNum).toEqual(USERS_STATS_RESPONSE.counters.publish);
+        expect(component.numberOfProducts).toEqual(USERS_STATS_RESPONSE.counters.publish);
       });
     })
 

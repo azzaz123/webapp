@@ -16,7 +16,7 @@ export class FavoritesComponent implements OnInit {
   public selectedStatus: string = 'published';
   public loading: boolean = false;
   public end: boolean = false;
-  public favoritesNum: number;
+  public numberOfFavorites: number;
 
   public masonryOptions = {
     gutter: 20
@@ -26,7 +26,7 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit() {
     this.getItems();
-    this.getFavoritesNum();
+    this.getNumberOfFavorites();
   }
 
   public getItems(append?: boolean) {
@@ -50,7 +50,7 @@ export class FavoritesComponent implements OnInit {
     if (this.items.length) {
       const index = this.items.indexOf(item);
       this.items.splice(index, 1);
-      this.favoritesNum--;
+      this.numberOfFavorites--;
     }
   }
 
@@ -58,9 +58,9 @@ export class FavoritesComponent implements OnInit {
     this.getItems(true);
   }
 
-  public getFavoritesNum() {
+  public getNumberOfFavorites() {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
-      this.favoritesNum = userStats.counters.favorites;
+      this.numberOfFavorites = userStats.counters.favorites;
     });
   }
 
