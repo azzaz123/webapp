@@ -4,6 +4,7 @@ $cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
 $title-height: 65px;
 $total-height: 80px;
 $scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height});
+$clear-cart-height: 38px;
 
 :host {
   background: $white;
@@ -25,12 +26,17 @@ h1 {
   background: url(/assets/icons/cart.svg) no-repeat 10px center;
 }
 
-.scroll-panel {
-  background-color: rgba($grey-50, 0.3);
+.cart-wrapper {
   height: $scroll-panel-height;
-  overflow: auto;
+  background-color: rgba($grey-50, 0.3);
   border-radius: 5px;
+  position: relative;
+}
+
+.scroll-panel {
+  overflow: auto;
   padding: $spacing-XS;
+  height: calc(#{$scroll-panel-height} - #{$clear-cart-height});
 }
 
 .total {
@@ -119,6 +125,26 @@ ul, li {
       /deep/ div {
         @include square(32px);
       }
+    }
+  }
+}
+
+.clean-cart {
+  position: absolute;
+  bottom: 0;
+  font-size: $font-size-S;
+  margin: $spacing-XS;
+  padding: $spacing-XS $spacing-XS 0;
+  border-top: 1px solid $grey-50;
+  width: calc(100% - #{$spacing-XS * 2});
+  a {
+    color: $grey-500;
+    cursor: pointer;
+    mat-icon {
+      width: 13px;
+      height: 15px;
+      margin-right: $spacing-XS;
+      vertical-align: sub;
     }
   }
 }

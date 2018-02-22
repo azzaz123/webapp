@@ -39,6 +39,13 @@ export class Cart {
     }
   }
 
+  clean() {
+    BUMP_TYPES.forEach((type: string) => {
+      this[type].cartItems = [];
+    });
+    this.calculateTotals();
+  }
+
   private removeCartItemFromAnyBump(itemId: string) {
     BUMP_TYPES.forEach((type: string) => {
       this.removeCartItem(itemId, type);

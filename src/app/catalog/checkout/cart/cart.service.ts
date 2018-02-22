@@ -36,4 +36,12 @@ export class CartService {
     });
   }
 
+  clean() {
+    this.cart.clean();
+    this.cartSource.next({
+      action: 'clean',
+      cart: this.cart
+    });
+  }
+
 }

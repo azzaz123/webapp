@@ -28,10 +28,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
     this.durations = _.keys(this.itemWithProducts.products);
     this.duration = this.durations[1];
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
-      if (cartChange.action === 'remove' && cartChange.itemId === this.itemWithProducts.item.id) {
-        this.selectedType = null;
-        this.selectedDuration = null;
-      }
+      this.onRemoveOrClean(cartChange);
     });
   }
 
@@ -51,6 +48,14 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
       duration: this.itemWithProducts.products[this.selectedDuration][type]
     };
     this.cartService.add(cartItem, type);
+  }
+
+  onRemoveOrClean(cartChange: CartChange) {
+    if (cartChange.action === 'remove' && cartChange.itemId === this.itemWithProducts.item.id
+      || cartChange.action === 'clean') {
+      this.selectedType = null;
+      this.selectedDuration = null;
+    }
   }
 
 }

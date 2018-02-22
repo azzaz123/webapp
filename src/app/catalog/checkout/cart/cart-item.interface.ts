@@ -14,8 +14,8 @@ export interface BumpGroup {
 }
 
 export interface CartChange {
-  action: 'add' | 'remove';
+  action: 'add' | 'remove' | 'clean';
   cart: Cart;
-  itemId: string;
-  type: string;
+  itemId?: string;
+  type?: string;
 }
