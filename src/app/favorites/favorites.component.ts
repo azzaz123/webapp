@@ -59,8 +59,8 @@ export class FavoritesComponent implements OnInit {
   }
 
   public getFavoritesNum() {
-    this.userService.getStats().subscribe((stats: UserStatsResponse) => {
-      this.favoritesNum = stats.counters.favorites;
+    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+      this.favoritesNum = userStats.counters.favorites;
     });
   }
 

@@ -256,8 +256,8 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public getProductsNum() {
-    this.userService.getStats().subscribe((stats: UserStatsResponse) => {
-      this.productsNum = stats.counters.publish;
+    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+      this.productsNum = userStats.counters.publish;
     });
   }
 }
