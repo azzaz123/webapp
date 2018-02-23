@@ -42,12 +42,7 @@
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:6</source>Profile</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:13</source>Products</msg>
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:28</source>Favorites</msg>
-<<<<<<< HEAD
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:35</source>Reviews</msg>
-=======
-  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:35</source><source>app/reviews/reviews.component.ts:21</source>Reviews</msg>
-  <msg id="3797778920049399855"><source>app/layout/sidebar/sidebar.component.ts:42</source>Logout</msg>
->>>>>>> develop
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:26</source>Delete conversation</msg>
