@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+ <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE translationbundle [
 <!ELEMENT translationbundle (translation)*>
 <!ATTLIST translationbundle lang CDATA #REQUIRED>
@@ -279,4 +279,8 @@
   <translation id="2027740642468122404">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
   <translation id="792930787826735850">Tu perfil</translation>
   <translation id="4818441514225396186">Subir producto</translation>
+  <translation id="3258601590058086652">¿Tienes prisa para vender tu producto?</translation>
+  <translation id="4495547321385209565">Diferencia tu producto durante 7 días en el muro para que sea más fácil de encontrar mediante el filtro "Urge"</translation>
+  <translation id="4568320268241275650">Marcar como urgente por</translation>
+  <translation id="2091018015289565203">O compártelo con tus amigos:</translation>
 </translationbundle>

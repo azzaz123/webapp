@@ -28,7 +28,7 @@ $feature-button-width: 170px;
   p {
     opacity: .8;
     margin: 0;
-    margin-bottom: 32px;
+    margin-bottom: $spacing-L;
     color: $white;
     font-size: $font-size;
   }
@@ -55,13 +55,13 @@ button {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border-radius: 20px;
+  border-radius: $spacing;
   transition: all .2s ease;
   background: $grey-700;
   height: 40px;
   color: $white;
   padding: 0 $spacing;
-  padding-left: 12px;
+  padding-left: $spacing-S;
   font-size: $font-size-S;
   border: 1px solid transparent;
   margin: $spacing-L auto $spacing;
@@ -91,9 +91,9 @@ button {
       @include square(18px);
     }
     &:hover {
-      background-color: #d8dbdd;
+      background-color: $color-social-background;
       mat-icon /deep/ path {
-        fill: #a3afb5;
+        fill: $color-social-fill;
       }
     }
   }

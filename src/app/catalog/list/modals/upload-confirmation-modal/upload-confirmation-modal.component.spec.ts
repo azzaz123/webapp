@@ -65,6 +65,8 @@ describe('UploadConfirmationModalComponent', () => {
       component.urgentPrice();
 
       expect(itemService.getUrgentProducts).toHaveBeenCalledWith(MOCK_ITEM.id);
+      expect(component.productPrice).toEqual(PRODUCT_RESPONSE.durations[0].market_code);
+      expect(component.productId).toEqual(PRODUCT_RESPONSE.durations[0].id);
     });
   });
 
