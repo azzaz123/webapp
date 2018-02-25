@@ -49,7 +49,7 @@ export interface CarContent extends ItemContent {
   num_doors?: number;
   extras?: any[];
   storytelling?: string;
-  warranty?: false;
+  warranty?: boolean;
   num_seats?: number;
   condition?: string;
   version?: string;

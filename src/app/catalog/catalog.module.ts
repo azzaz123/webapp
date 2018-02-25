@@ -33,6 +33,7 @@ import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactiv
 import { CheckoutItemComponent } from './checkout/checkout-item/checkout-item.component';
 import { CartComponent } from './checkout/cart/cart.component';
 import { CartService } from './checkout/cart/cart.service';
+import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
 
 @NgModule({
   imports: [
@@ -79,7 +80,8 @@ import { CartService } from './checkout/cart/cart.service';
     RemoveConfirmModalComponent,
     ReactivateModalComponent,
     CheckoutItemComponent,
-    CartComponent
+    CartComponent,
+    BumpTutorialComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
