@@ -4,12 +4,15 @@ import { MOCK_ITEM } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
+import { UserService } from '../core/user/user.service';
+import { USERS_STATS_RESPONSE } from '../../tests/user.fixtures';
 
 describe('FavoritesComponent', () => {
   let component: FavoritesComponent;
   let fixture: ComponentFixture<FavoritesComponent>;
   let itemService: ItemService;
   let itemServiceSpy: jasmine.Spy;
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,7 +23,14 @@ describe('FavoritesComponent', () => {
             return Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: 2});
           }
         }
-        }
+        },
+        {
+          provide: UserService, useValue: {
+            getStats() {
+              return Observable.of(USERS_STATS_RESPONSE);
+            }
+          }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -31,6 +41,7 @@ describe('FavoritesComponent', () => {
     fixture = TestBed.createComponent(FavoritesComponent);
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
+    userService = TestBed.get(UserService);
     fixture.detectChanges();
   });
 
@@ -112,8 +123,29 @@ describe('FavoritesComponent', () => {
   describe('removeItem', () => {
     it('should remove item', () => {
       const [item1, item2] = component.items = [MOCK_ITEM, MOCK_ITEM];
+      const NUMBEROFFAVORITES = 1;
+      component.numberOfFavorites = NUMBEROFFAVORITES;
       component.removeItem(item1);
       expect(component.items).toEqual([item2]);
+      expect(component.numberOfFavorites).toEqual(NUMBEROFFAVORITES - 1);
     });
   });
+
+  describe('getNumberOfFavorites', () => {
+    beforeEach(() => {      
+      spyOn(component, 'getNumberOfFavorites').and.callThrough();
+      spyOn(userService, 'getStats').and.callThrough();      
+    });
+
+    it('should call getNumberOfFavorites when component init', () => {
+      component.ngOnInit();
+      expect(component.getNumberOfFavorites).toHaveBeenCalled();
+    });
+
+    it('should get number of favorites', () => {
+      component.getNumberOfFavorites();
+      expect(userService.getStats).toHaveBeenCalled();
+      expect(component.numberOfFavorites).toEqual(USERS_STATS_RESPONSE.counters.favorites);
+    });
+  })
 });

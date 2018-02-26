@@ -1,11 +1,10 @@
 @import "../../../style/_common.scss";
 
 .review-item {
-  & {
-    background-color: $white;
-    border-radius: $border-radius;
-    padding: $spacing-2M $spacing-L;
-  }
+  background-color: $white;
+  border-radius: $border-radius;
+  margin-bottom: $spacing-XS;
+  padding: $spacing;
   .separator {
     width: 100%;
     border-bottom: 1px solid $grey-50;
@@ -48,6 +47,10 @@
     a {
       color: $gray-dark;
     }
+  }
+  .review-microname {
+    color: $color-grey-item;
+    font-weight: bold;
   }
   &.row {
     margin-right: 0;
