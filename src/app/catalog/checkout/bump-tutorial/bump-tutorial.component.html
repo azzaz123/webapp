@@ -1,6 +1,6 @@
 <div class="tutorial main-veil" *ngIf="hidden === false">
     <div class="content-veil">
-        <div class="step step-1 info" *ngIf="bumpTutorialService.step === 0">
+        <div class="step step-1 info" *ngIf="tutorialService.step === 0">
             <h1 i18n>What are the featured items?</h1>
             <p i18n>Featuring your product you'll be able to sell your products much faster. Your items will appear on special
                 areas for featured products and buuyers will have a faster access to your products.
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div class="step step-2 info" *ngIf="bumpTutorialService.step === 1">
+        <div class="step step-2 info" *ngIf="tutorialService.step === 1">
             <h1 i18n>What advantages does it offer?</h1>
             <div class="advantages">
                 <div class="content">
@@ -70,14 +70,14 @@
         </a>
         <div id="controls">
             <div class="dots">
-                <div class="dot" *ngFor="let dot of dots" [ngClass]="{active: dot === bumpTutorialService.step}"></div>
+                <div class="dot" *ngFor="let dot of dots" [ngClass]="{active: dot === tutorialService.step}"></div>
             </div>
             <button (click)="nextStep()"
                     class="btn btn-next"
-                    [hidden]="bumpTutorialService.step === 1"
+                    [hidden]="tutorialService.step === 1"
                     i18n>Next</button>
             <button (click)="hideBumpTutorial()"
-                    [hidden]="bumpTutorialService.step < 1"
+                    [hidden]="tutorialService.step < 1"
                     class="btn btn-next"
                     i18n>Ready!</button>
         </div>

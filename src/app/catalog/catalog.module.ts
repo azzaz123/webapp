@@ -34,7 +34,7 @@ import { CheckoutItemComponent } from './checkout/checkout-item/checkout-item.co
 import { CartComponent } from './checkout/cart/cart.component';
 import { CartService } from './checkout/cart/cart.service';
 import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
-import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
+import {BumpTutorialService} from "./checkout/bump-tutorial/bump-tutorial.service";
 
 @NgModule({
   imports: [

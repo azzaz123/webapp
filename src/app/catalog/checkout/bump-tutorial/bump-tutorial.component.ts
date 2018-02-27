@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { BumpTutorialService } from './bump-tutorial.service';
-import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
+import { TutorialService } from '../../../core/tutorial/tutorial.service';
+import { EventService } from '../../../core/event/event.service';
+import { BumpTutorialService } from "./bump-tutorial.service";
 
 export enum KEY_CODE {
   RIGHT_ARROW = 39,
@@ -17,29 +18,27 @@ export enum KEY_CODE {
 export class BumpTutorialComponent implements OnInit, OnDestroy {
 
   public dots: number = 2;
-  public hidden: boolean = false;
+  public hidden: boolean = true;
 
-  constructor(public bumpTutorialService: BumpTutorialService) {
-    this.dots = _.range(this.bumpTutorialService.maxSteps);
+  constructor(public tutorialService: BumpTutorialService,
+              private eventService: EventService) {
+    this.dots = _.range(this.tutorialService.maxSteps);
   }
 
   ngOnInit() {
-    this.showBumpTutorial();
-    this.bumpTutorialService.setDisplayed();
+    this.eventService.subscribe(EventService.SHOW_BUMP_TUTORIAL, () => this.showBumpTutorial());
   }
-
+  
   ngOnDestroy() {
-    this.bumpTutorialService.resetStep();
+    this.tutorialService.resetStep();
   }
 
   public nextStep(): void {
-    this.bumpTutorialService.nextStep();
+    this.tutorialService.nextStep();
   }
 
   public showBumpTutorial(): void {
-    this.bumpTutorialService.isAlreadyDisplayed().subscribe((displayed: boolean) => {
-      this.hidden = displayed;
-    });
+    this.hidden = false;
   }
 
   public hideBumpTutorial(): void {
@@ -48,10 +47,10 @@ export class BumpTutorialComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
     if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
-      this.bumpTutorialService.nextStep();
+      this.tutorialService.nextStep();
     }
     if (event.keyCode === KEY_CODE.LEFT_ARROW) {
-      this.bumpTutorialService.prevStep();
+      this.tutorialService.prevStep();
     }
     if (event.keyCode === KEY_CODE.ESC) {
       this.hideBumpTutorial();
