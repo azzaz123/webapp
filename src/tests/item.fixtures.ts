@@ -549,26 +549,26 @@ export const ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE: ItemsWithAvailableProductsR
 }];
 
 export const CART_ITEM_CITYBUMP: CartItem = {
-  item: MOCK_ITEM_V3,
+  item: new Item('1', 1, ITEMS_DATA_V3[1].content.seller_id),
   duration: CITYBUMP_DURATIONS[0]
 };
 
 export const CART_ITEM_CITYBUMP2: CartItem = {
-  item: MOCK_ITEM_V3,
+  item: new Item('2', 2, ITEMS_DATA_V3[1].content.seller_id),
   duration: CITYBUMP_DURATIONS[1]
 };
 
 export const CART_ITEM_ZONEBUMP: CartItem = {
-  item: MOCK_ITEM_V3,
+  item: new Item('3', 3, ITEMS_DATA_V3[1].content.seller_id),
   duration: ZONEBUMP_DURATIONS[0]
 };
 
 export const CART_ITEM_COUNTRYBUMP: CartItem = {
-  item: MOCK_ITEM_V3,
+  item: new Item('4', 4, ITEMS_DATA_V3[1].content.seller_id),
   duration: COUNTRYBUMP_DURATIONS[0]
 };
 
 export const CART_ITEM_COUNTRYBUMP2: CartItem = {
-  item: MOCK_ITEM_V3,
+  item: new Item('5', 5, ITEMS_DATA_V3[1].content.seller_id),
   duration: COUNTRYBUMP_DURATIONS[1]
 };
