@@ -24,6 +24,7 @@ export class BumpTutorialComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.showBumpTutorial();
     this.bumpTutorialService.setDisplayed();
   }
 
@@ -35,11 +36,10 @@ export class BumpTutorialComponent implements OnInit, OnDestroy {
     this.bumpTutorialService.nextStep();
   }
 
-  public showBumpTutorial(): Observable<boolean> {
-    return this.bumpTutorialService.isAlreadyDisplayed()
-      .map((displayed: boolean) => {
-        return displayed;
-      });
+  public showBumpTutorial(): void {
+    this.bumpTutorialService.isAlreadyDisplayed().subscribe((displayed: boolean) => {
+      this.hidden = displayed;
+    });
   }
 
   public hideBumpTutorial(): void {

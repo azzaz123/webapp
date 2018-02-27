@@ -87,21 +87,17 @@ describe('BumpTutorialComponent', () => {
     });
 
     it('should show the tutorial if it has not been displayed', () => {
-      (<Observable<boolean>>component.showBumpTutorial()).subscribe((val: boolean) => {
-        displayed = val;
-      });
+      component.showBumpTutorial();
 
-      expect(displayed).toBeFalsy();
+      expect(component.hidden).toBeFalsy();
     });
 
     it('should not show the tutorial if it has already been displayed', () => {
       spyOn(bumpTutorialService, 'isAlreadyDisplayed').and.returnValue(Observable.of(true));
 
-      (<Observable<boolean>>component.showBumpTutorial()).subscribe((val: boolean) => {
-        displayed = val;
-      });
+      component.showBumpTutorial();
 
-      expect(displayed).toBeTruthy();
+      expect(component.hidden).toBeTruthy();
     });
   });
 

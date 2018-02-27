@@ -1,4 +1,4 @@
-<div class="tutorial main-veil" *ngIf="showBumpTutorial() && !hidden">
+<div class="tutorial main-veil" *ngIf="hidden === false">
     <div class="content-veil">
         <div class="step step-1 info" *ngIf="bumpTutorialService.step === 0">
             <h1 i18n>What are the featured items?</h1>
