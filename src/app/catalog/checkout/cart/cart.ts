@@ -1,5 +1,7 @@
 import { CartItem, BumpGroup } from './cart-item.interface';
 import * as _ from 'lodash';
+import { Order } from '../../../core/item/item-response.interface';
+import { UUID } from 'angular2-uuid';
 
 export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];
 
@@ -44,6 +46,24 @@ export class Cart {
       this[type].cartItems = [];
     });
     this.calculateTotals();
+  }
+
+  prepareOrder() {
+    const ordersArray: Order[] = [];
+    BUMP_TYPES.forEach((type: string) => {
+      const orders: Order[] = this[type].cartItems.map((cartItem: CartItem) => {
+        return {
+          item_id: cartItem.item.id,
+          product_id: cartItem.duration.id
+        };
+      });
+      ordersArray.push(...orders);
+    });
+    return ordersArray;
+  }
+
+  getOrderId() {
+    return UUID.UUID();
   }
 
   private removeCartItemFromAnyBump(itemId: string) {

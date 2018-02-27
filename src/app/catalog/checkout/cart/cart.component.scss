@@ -3,7 +3,10 @@
 $cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
 $title-height: 65px;
 $total-height: 80px;
-$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height});
+$button-height: 42px;
+$button-margin: $spacing - $spacing-XS;
+$button-space: $button-height + $spacing;
+$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $button-space});
 $clear-cart-height: 38px;
 
 :host {
@@ -147,4 +150,12 @@ ul, li {
       vertical-align: sub;
     }
   }
+}
+
+.btn-primary {
+  border-radius: 21px;
+  width: calc(100% - #{$button-margin * 2});
+  padding: 10px;
+  margin: $button-margin;
+  margin-top: 0;
 }
