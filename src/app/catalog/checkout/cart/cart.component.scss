@@ -8,6 +8,7 @@ $button-margin: $spacing - $spacing-XS;
 $button-space: $button-height + $spacing;
 $scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $button-space});
 $clear-cart-height: 38px;
+$card-select-height: 150px;
 
 :host {
   background: $white;
@@ -34,12 +35,18 @@ h1 {
   background-color: rgba($grey-50, 0.3);
   border-radius: 5px;
   position: relative;
+  &.has-financial-card {
+    height: calc(#{$scroll-panel-height} - #{$card-select-height});
+  }
 }
 
 .scroll-panel {
   overflow: auto;
   padding: $spacing-XS;
   height: calc(#{$scroll-panel-height} - #{$clear-cart-height});
+  .has-financial-card & {
+    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height});
+  }
 }
 
 .total {

@@ -1,5 +1,5 @@
 <h1>Tu lista de la compra</h1>
-<div class="cart-wrapper">
+<div class="cart-wrapper" [ngClass]="{'has-financial-card': financialCard}">
   <div class="scroll-panel">
     <ul *ngIf="cart" class="items-list">
       <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
@@ -47,6 +47,21 @@
 <div class="total">
   <span class="pull-left" i18n>Total</span>
   <span class="pull-right price">{{cart?.total | customCurrency}}</span>
+</div>
+<div class="select-card">
+  <div ngbRadioGroup name="cardType" [(ngModel)]="cardType">
+    <label ngbButtonLabel>
+      <input ngbButton type="radio" value="old">
+      <div id="credit-card">
+        <div class="date">{{financialCard?.expire_date | date:'MM/yy'}}</div>
+        <div class="number">{{financialCard?.number}}</div>
+      </div>
+    </label>
+    <label ngbButtonLabel>
+      <input ngbButton type="radio" value="new">
+      <span i18n>+ Use a new card</span>
+    </label>
+  </div>
 </div>
 <button class="btn btn-primary" [disabled]="!cart?.total" (click)="checkout()" i18n>Continue to Checkout</button>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>
