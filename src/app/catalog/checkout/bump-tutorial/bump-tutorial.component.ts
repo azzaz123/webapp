@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 export enum KEY_CODE {
   RIGHT_ARROW = 39,
   LEFT_ARROW = 37,
+  ESC = 27
 }
 
 @Component({
@@ -30,18 +31,18 @@ export class BumpTutorialComponent implements OnInit, OnDestroy {
     this.bumpTutorialService.resetStep();
   }
 
-  nextStep() {
+  public nextStep(): void {
     this.bumpTutorialService.nextStep();
   }
 
-  public showTutorial(): Observable<boolean> {
+  public showBumpTutorial(): Observable<boolean> {
     return this.bumpTutorialService.isAlreadyDisplayed()
       .map((displayed: boolean) => {
         return displayed;
       });
   }
 
-  public hideTutorial(): void {
+  public hideBumpTutorial(): void {
     this.hidden = true;
   }
 
@@ -51,6 +52,9 @@ export class BumpTutorialComponent implements OnInit, OnDestroy {
     }
     if (event.keyCode === KEY_CODE.LEFT_ARROW) {
       this.bumpTutorialService.prevStep();
+    }
+    if (event.keyCode === KEY_CODE.ESC) {
+      this.hideBumpTutorial();
     }
   }
 

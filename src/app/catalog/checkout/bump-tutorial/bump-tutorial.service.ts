@@ -17,23 +17,23 @@ export class BumpTutorialService {
     return this._step;
   }
 
-  public nextStep() {
+  public nextStep(): void {
     if (this._step < this.maxSteps - 1) {
       this._step++;
     }
   }
 
-  public prevStep() {
+  public prevStep(): void {
     if (this._step > 0) {
       this._step--;
     }
   }
 
-  public resetStep() {
+  public resetStep(): void {
     this._step = 0;
   }
 
-  public setDisplayed() {
+  public setDisplayed(): void {
     if (this.userService.user) {
       localStorage.setItem(this.userService.user.id + this.localStorageName, 'true');
     }
