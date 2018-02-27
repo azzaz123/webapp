@@ -47,13 +47,9 @@ export class CartComponent implements OnInit, OnDestroy {
   checkout() {
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
-    this.itemService.purchaseProducts(order, orderId).subscribe((failedProducts: string[]) => {
-      if (failedProducts && failedProducts.length) {
-        this.errorService.i18nError('bumpError');
-      } else {
-        this.track(order);
-        this.sabadellSubmit.emit(orderId);
-      }
+    this.itemService.purchaseProducts(order, orderId).subscribe(() => {
+      this.track(order);
+      this.sabadellSubmit.emit(orderId);
     }, (error: Response) => {
       if (error.text()) {
         this.errorService.show(error);

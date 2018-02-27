@@ -572,3 +572,11 @@ export const CART_ITEM_COUNTRYBUMP2: CartItem = {
   item: new Item('5', 5, ITEMS_DATA_V3[1].content.seller_id),
   duration: COUNTRYBUMP_DURATIONS[1]
 };
+
+export const CART_ORDER: Order[] = [
+  {'item_id': CART_ITEM_ZONEBUMP.item.id, 'product_id': CART_ITEM_ZONEBUMP.duration.id},
+  {'item_id': CART_ITEM_CITYBUMP.item.id, 'product_id': CART_ITEM_CITYBUMP.duration.id},
+  {'item_id': CART_ITEM_CITYBUMP2.item.id, 'product_id': CART_ITEM_CITYBUMP2.duration.id},
+  {'item_id': CART_ITEM_COUNTRYBUMP.item.id, 'product_id': CART_ITEM_COUNTRYBUMP.duration.id},
+  {'item_id': CART_ITEM_COUNTRYBUMP2.item.id, 'product_id': CART_ITEM_COUNTRYBUMP2.duration.id}
+];

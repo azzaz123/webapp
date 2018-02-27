@@ -1,9 +1,11 @@
 import { Cart } from './cart';
 import {
   CART_ITEM_CITYBUMP, CART_ITEM_CITYBUMP2, CART_ITEM_COUNTRYBUMP, CART_ITEM_COUNTRYBUMP2,
-  CART_ITEM_ZONEBUMP, ZONEBUMP_DURATIONS
+  CART_ITEM_ZONEBUMP, CART_ORDER, ZONEBUMP_DURATIONS
 } from '../../../../tests/item.fixtures';
 import { CartItem } from './cart-item.interface';
+import { Order } from '../../../core/item/item-response.interface';
+import { UUID } from 'angular2-uuid';
 
 describe('Cart', () => {
 
@@ -68,6 +70,25 @@ describe('Cart', () => {
       expect(cart.citybump.cartItems.length).toBe(0);
       expect(cart.countrybump.cartItems.length).toBe(0);
       expect(cart.total).toBe(0);
+    });
+  });
+
+  describe('prepareOrder', () => {
+    it('should create order array', () => {
+      const order: Order[] = cart.prepareOrder();
+
+      expect(order).toEqual(CART_ORDER);
+    });
+  });
+
+  describe('getOrderId', () => {
+    it('should return uuid', () => {
+      const ID = 'UUID';
+      spyOn(UUID, 'UUID').and.returnValue(ID);
+
+      const uuid = cart.getOrderId();
+
+      expect(uuid).toEqual(ID);
     });
   });
 
