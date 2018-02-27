@@ -23,6 +23,8 @@ describe('CheckoutItemComponent', () => {
     itemId: ITEM_ID,
     type: 'citybump'
   };
+  const TYPE = 'citybump';
+  const DURATION = '24';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -32,6 +34,8 @@ describe('CheckoutItemComponent', () => {
         {
           provide: CartService, useValue: {
           add() {
+          },
+          remove() {
           },
           cart$: Observable.of(CART_CHANGE)
         }
@@ -55,12 +59,49 @@ describe('CheckoutItemComponent', () => {
       expect(component.durations).toEqual(['24', '72', '168']);
       expect(component.duration).toEqual('72');
     });
+
+    it('should reset selected type and duration if action remove', () => {
+      component.selectedType = TYPE;
+      component.selectedDuration = DURATION;
+      const cartChange: CartChange = {
+        action: 'remove',
+        itemId: MOCK_ITEM_V3.id,
+        cart: CART
+      };
+      cartService.cart$ = Observable.of(cartChange);
+
+      component.ngOnInit();
+
+      expect(component.selectedType).toBeNull();
+      expect(component.selectedDuration).toBeNull();
+    });
+
+    it('should reset selected type and duration if action clean', () => {
+      component.selectedType = TYPE;
+      component.selectedDuration = DURATION;
+      const cartChange: CartChange = {
+        action: 'clean',
+        cart: CART
+      };
+      cartService.cart$ = Observable.of(cartChange);
+
+      component.ngOnInit();
+
+      expect(component.selectedType).toBeNull();
+      expect(component.selectedDuration).toBeNull();
+    });
+  });
+
+  describe('ngOnDestroy', () => {
+    it('should set active to false', () => {
+      component.ngOnDestroy();
+
+      expect(component['active']).toBeFalsy();
+    });
   });
 
   describe('select', () => {
     it('should set type, duration and call add', () => {
-      const TYPE = 'citybump';
-      const DURATION = '24';
       component.duration = DURATION;
       spyOn(cartService, 'add');
 
@@ -72,6 +113,15 @@ describe('CheckoutItemComponent', () => {
         item: MOCK_ITEM_V3,
         duration: CITYBUMP_DURATIONS[0]
       }, TYPE);
+    });
+
+    it('should call remove if selected twice', () => {
+      spyOn(cartService, 'remove');
+
+      component.select(TYPE);
+      component.select(TYPE);
+
+      expect(cartService.remove).toHaveBeenCalledWith(MOCK_ITEM_V3.id, TYPE);
     });
   });
 });

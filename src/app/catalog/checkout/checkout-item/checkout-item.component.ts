@@ -50,7 +50,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
     this.cartService.add(cartItem, type);
   }
 
-  onRemoveOrClean(cartChange: CartChange) {
+  private onRemoveOrClean(cartChange: CartChange) {
     if (cartChange.action === 'remove' && cartChange.itemId === this.itemWithProducts.item.id
       || cartChange.action === 'clean') {
       this.selectedType = null;
