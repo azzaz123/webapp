@@ -24,6 +24,7 @@
     <button *ngIf="itemService.selectedAction === 'feature'"
             class="btn btn-feature"
             [routerLink]="['/catalog/checkout']"
+            tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE"
             i18n>Feature Now</button>
   </div>
 </div>

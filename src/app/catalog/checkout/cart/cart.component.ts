@@ -6,6 +6,7 @@ import { Order } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Response } from '@angular/http';
+import { TrackingService } from '../../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-cart',
@@ -21,7 +22,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
   constructor(private cartService: CartService,
               private itemService: ItemService,
-              private errorService: ErrorsService) {
+              private errorService: ErrorsService,
+              private trackingService: TrackingService) {
   }
 
   ngOnInit() {
@@ -49,6 +51,7 @@ export class CartComponent implements OnInit, OnDestroy {
       if (failedProducts && failedProducts.length) {
         this.errorService.i18nError('bumpError');
       } else {
+        this.track(order);
         this.sabadellSubmit.emit(orderId);
       }
     }, (error: Response) => {
@@ -58,6 +61,14 @@ export class CartComponent implements OnInit, OnDestroy {
         this.errorService.i18nError('bumpError');
       }
     });
+  }
+
+  private track(order: Order[]) {
+    const result = order.map(purchase => ({item_id: purchase.item_id, bump_type: purchase.product_id}));
+    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {selected_products: result});
+    ga('send', 'event', 'Item', 'bump-cart');
+    gtag('event', 'conversion', {'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM'});
+    fbq('track', '176083133152402', {});
   }
 
 }
