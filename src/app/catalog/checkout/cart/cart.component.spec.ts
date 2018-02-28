@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
 import { FINANCIAL_CARD, ITEM_ID, MockTrackingService, PaymentService } from 'shield';
-import { CART_ITEM_CITYBUMP, CART_ORDER, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures';
+import { CART_ITEM_CITYBUMP, CART_ORDER, CART_ORDER_TRACK, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -24,6 +24,7 @@ describe('CartComponent', () => {
   let errorService: ErrorsService;
   let paymentService: PaymentService;
   let router: Router;
+  let trackingService: TrackingService;
 
   const CART = new Cart();
   const CART_CHANGE: CartChange = {
@@ -97,6 +98,7 @@ describe('CartComponent', () => {
     errorService = TestBed.get(ErrorsService);
     paymentService = TestBed.get(PaymentService);
     router = TestBed.get(Router);
+    trackingService = TestBed.get(TrackingService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     fixture.detectChanges();
   });
@@ -147,6 +149,7 @@ describe('CartComponent', () => {
         spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.of([]));
         spyOn(component.cart, 'prepareOrder').and.returnValue(CART_ORDER);
         spyOn(component.cart, 'getOrderId').and.returnValue('UUID');
+        spyOn(trackingService, 'track');
         eventId = null;
         component.sabadellSubmit.subscribe((id: string) => {
           eventId = id;
@@ -222,6 +225,12 @@ describe('CartComponent', () => {
       afterEach(() => {
         it('should call purchaseProducts', () => {
           expect(itemService.purchaseProducts).toHaveBeenCalledWith(CART_ORDER, 'UUID');
+        });
+
+        it('should call track', () => {
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+            selected_products: CART_ORDER_TRACK
+          });
         });
       });
     });
