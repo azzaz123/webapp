@@ -49,20 +49,22 @@
   <span class="pull-right price">{{cart?.total | customCurrency}}</span>
 </div>
 <div class="select-card">
-  <div ngbRadioGroup name="cardType" [(ngModel)]="cardType">
-    <label ngbButtonLabel class="custom-radio">
-      <input ngbButton type="radio" value="old">
-      <mat-icon svgIcon="radio-button"></mat-icon>
-      <mat-icon svgIcon="card" class="card-icon"></mat-icon>
-      <div class="number">{{financialCard?.number}}</div>
-      <div class="date">{{financialCard?.expire_date | date:'MM/yy'}}</div>
-    </label>
-    <label ngbButtonLabel class="custom-radio new-card">
-      <input ngbButton type="radio" value="new">
-      <mat-icon svgIcon="radio-button"></mat-icon>
-      <span i18n>+ Use a new card</span>
-    </label>
-  </div>
+  <form>
+    <div ngbRadioGroup name="cardType" [(ngModel)]="cardType">
+      <label ngbButtonLabel class="custom-radio">
+        <input ngbButton type="radio" value="old">
+        <mat-icon svgIcon="radio-button"></mat-icon>
+        <mat-icon svgIcon="card" class="card-icon"></mat-icon>
+        <div class="number">{{financialCard?.number}}</div>
+        <div class="date">{{financialCard?.expire_date | date:'MM/yy'}}</div>
+      </label>
+      <label ngbButtonLabel class="custom-radio new-card">
+        <input ngbButton type="radio" value="new">
+        <mat-icon svgIcon="radio-button"></mat-icon>
+        <span i18n>+ Use a new card</span>
+      </label>
+    </div>
+  </form>
 </div>
 <button class="btn btn-primary" [disabled]="!cart?.total" (click)="checkout()" i18n>Continue to Checkout</button>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>
