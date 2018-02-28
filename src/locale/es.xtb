@@ -165,6 +165,7 @@
   <translation id="4510233521290203619">Sí, me voy</translation>
   <translation id="5411836089142777830">¿Cómo te ayudarán los destacados?</translation>
   <translation id="833919813165214228">Destácalo en tu barrio</translation>
+  <translation id="4721342773618175343">Destácalo en tu provincia</translation>
   <translation id="4828515169928166764">Destácalo en tu ciudad</translation>
   <translation id="7083003813535210826">Destácalo en todo el país</translation>
   <translation id="8260444303636416171">Hago envíos</translation>
@@ -226,9 +227,11 @@
   <translation id="7807518657048523464"><ph name="INTERPOLATION"><ex>{{duration / 24}}</ex></ph> días</translation>
   <translation id="1577612206026464520">Tu lista de deseos</translation>
   <translation id="6801638153695046345">Destacado de Barrio</translation>
+  <translation id="7379728362084736907">Destacado de Provincia</translation>
   <translation id="2789162672363314854">Destacado de Ciudad</translation>
   <translation id="5785357843753565591">Destacado de País</translation>
   <translation id="2906587845957718064">Barrio</translation>
+  <translation id="1186759635333538896">Provincia</translation>
   <translation id="2314075913167237221">Ciudad</translation>
   <translation id="7928837776892145785">País</translation>
   <translation id="6377139538537882652">Eliminar lista</translation>

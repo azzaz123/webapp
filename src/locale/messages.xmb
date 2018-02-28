@@ -174,8 +174,9 @@
   <msg id="4510233521290203619"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:7</source><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:8</source>Yes, leave</msg>
   <msg id="5411836089142777830"><source>app/catalog/checkout/checkout.component.ts:8</source>What can features do for you?</msg>
   <msg id="833919813165214228"><source>app/catalog/checkout/checkout.component.ts:13</source>Feature it locally</msg>
-  <msg id="4828515169928166764"><source>app/catalog/checkout/checkout.component.ts:21</source>Feature it your city</msg>
-  <msg id="7083003813535210826"><source>app/catalog/checkout/checkout.component.ts:29</source>Feature it nationally</msg>
+  <msg id="4721342773618175343"><source>app/catalog/checkout/checkout.component.ts:14</source>Feature it provincially</msg>
+  <msg id="4828515169928166764"><source>app/catalog/checkout/checkout.component.ts:22</source>Feature it your city</msg>
+  <msg id="7083003813535210826"><source>app/catalog/checkout/checkout.component.ts:30</source>Feature it nationally</msg>
   <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
@@ -218,16 +219,18 @@
   <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:46</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
   <msg id="7807518657048523464"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:8</source><ph name="INTERPOLATION"><ex>{{duration / 24}}</ex></ph> days</msg>
   <msg id="1577612206026464520"><source>app/catalog/checkout/cart/cart.component.ts:1</source>Desire list</msg>
-  <msg id="6801638153695046345"><source>app/catalog/checkout/cart/cart.component.ts:11</source>Local bump</msg>
-  <msg id="2789162672363314854"><source>app/catalog/checkout/cart/cart.component.ts:12</source>City bump</msg>
-  <msg id="5785357843753565591"><source>app/catalog/checkout/cart/cart.component.ts:13</source>National bump</msg>
-  <msg id="2906587845957718064"><source>app/catalog/checkout/cart/cart.component.ts:27</source>Local</msg>
-  <msg id="2314075913167237221"><source>app/catalog/checkout/cart/cart.component.ts:28</source>City</msg>
-  <msg id="7928837776892145785"><source>app/catalog/checkout/cart/cart.component.ts:29</source>National</msg>
-  <msg id="6377139538537882652"><source>app/catalog/checkout/cart/cart.component.ts:43</source>Delete list</msg>
-  <msg id="3448462145758383019"><source>app/catalog/checkout/cart/cart.component.ts:48</source>Total</msg>
-  <msg id="6581598798517073714"><source>app/catalog/checkout/cart/cart.component.ts:64</source>+ Add another credit card</msg>
-  <msg id="7274286978511770772"><source>app/catalog/checkout/cart/cart.component.ts:69</source>Continue to Checkout</msg>
+  <msg id="6801638153695046345"><source>app/catalog/checkout/cart/cart.component.ts:12</source>Local bump</msg>
+  <msg id="7379728362084736907"><source>app/catalog/checkout/cart/cart.component.ts:13</source>Provincial bump</msg>
+  <msg id="2789162672363314854"><source>app/catalog/checkout/cart/cart.component.ts:15</source>City bump</msg>
+  <msg id="5785357843753565591"><source>app/catalog/checkout/cart/cart.component.ts:16</source>National bump</msg>
+  <msg id="2906587845957718064"><source>app/catalog/checkout/cart/cart.component.ts:31</source>Local</msg>
+  <msg id="1186759635333538896"><source>app/catalog/checkout/cart/cart.component.ts:32</source>Provincial</msg>
+  <msg id="2314075913167237221"><source>app/catalog/checkout/cart/cart.component.ts:34</source>City</msg>
+  <msg id="7928837776892145785"><source>app/catalog/checkout/cart/cart.component.ts:35</source>National</msg>
+  <msg id="6377139538537882652"><source>app/catalog/checkout/cart/cart.component.ts:49</source>Delete list</msg>
+  <msg id="3448462145758383019"><source>app/catalog/checkout/cart/cart.component.ts:54</source>Total</msg>
+  <msg id="6581598798517073714"><source>app/catalog/checkout/cart/cart.component.ts:70</source>+ Add another credit card</msg>
+  <msg id="7274286978511770772"><source>app/catalog/checkout/cart/cart.component.ts:77</source>Continue to Checkout</msg>
   <msg id="4217728631503591488"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:4</source>What are the featured items?</msg>
   <msg id="1397966754882222231"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:5,7</source>Featuring your product you&apos;ll be able to sell your products much faster. Your items will appear on special
                 areas for featured products and buuyers will have a faster access to your products.
