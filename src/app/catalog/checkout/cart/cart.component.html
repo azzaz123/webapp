@@ -28,7 +28,7 @@
                   <ng-container *ngSwitchCase="'citybump'" i18n>City</ng-container>
                   <ng-container *ngSwitchCase="'countrybump'" i18n>National</ng-container>
                 </span>
-                x {{cartItem.duration.duration / 24}}días
+                x {{cartItem.duration.duration / 24}}<span i18n>days</span>
               </div>
               <div class="price">{{cartItem.duration.market_code | customCurrency}}</div>
             </div>
