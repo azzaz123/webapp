@@ -281,5 +281,5 @@
   <translation id="4818441514225396186">Subir producto</translation>
   <translation id="3258601590058086652">¿Tienes prisa para vender tu producto?</translation>
   <translation id="4495547321385209565">Diferencia tu producto durante 7 días en el muro para que sea más fácil de encontrar mediante el filtro "Urge"</translation>
-  <translation id="4568320268241275650">Marcar como urgente por</translation>
+  <translation id="4568320268241275650">Marcar como urgente por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>€</translation>
 </translationbundle>
