@@ -146,7 +146,7 @@ export interface ItemsWithAvailableProductsResponse extends ItemResponse {
 
 export interface ProductDurations {
   [duration: string]: {
-    citybump: Duration;
+    citybump?: Duration;
     zonebump: Duration;
     countrybump: Duration;
   };

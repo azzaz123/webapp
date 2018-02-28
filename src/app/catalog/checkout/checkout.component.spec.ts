@@ -4,7 +4,7 @@ import { CheckoutComponent } from './checkout.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
-import { ITEMS_WITH_PRODUCTS } from '../../../tests/item.fixtures';
+import { ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE } from '../../../tests/item.fixtures';
 import { Router } from '@angular/router';
 
 describe('CheckoutComponent', () => {
@@ -12,6 +12,7 @@ describe('CheckoutComponent', () => {
   let fixture: ComponentFixture<CheckoutComponent>;
   let itemService: ItemService;
   let router: Router;
+  let spyCall;
 
   const SELECTED_ITEMS = ['1', '2', '3'];
 
@@ -44,7 +45,7 @@ describe('CheckoutComponent', () => {
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
     router = TestBed.get(Router);
-    spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
+    spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
     fixture.detectChanges();
   });
 
@@ -61,6 +62,14 @@ describe('CheckoutComponent', () => {
       component.ngOnInit();
 
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
+    });
+
+    it('should set provincialBump to true if no citybump', () => {
+      spyCall.and.returnValue(Observable.of(ITEMS_WITH_PRODUCTS_PROVINCE));
+
+      component.ngOnInit();
+
+      expect(component.provincialBump).toBeTruthy();
     });
   });
 });

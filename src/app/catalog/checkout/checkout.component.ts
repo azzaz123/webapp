@@ -24,7 +24,7 @@ export class CheckoutComponent implements OnInit {
     }
     this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems).subscribe((itemsWithProducts: ItemWithProducts[]) => {
       this.itemsWithProducts = itemsWithProducts;
-      this.provincialBump = !this.itemsWithProducts[0].products['48'].citybump;
+      this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
     });
   }
 
