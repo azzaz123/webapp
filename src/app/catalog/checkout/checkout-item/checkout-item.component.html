@@ -3,7 +3,7 @@
   <div class="title">{{itemWithProducts.item.title}}</div>
   <form class="durations border-l">
     <div ngbRadioGroup name="duration" [(ngModel)]="duration">
-      <label ngbButtonLabel *ngFor="let duration of durations">
+      <label ngbButtonLabel class="custom-radio" *ngFor="let duration of durations">
         <input ngbButton type="radio" [value]="duration">
         <mat-icon svgIcon="radio-button"></mat-icon> <span i18n>{{duration / 24}} days</span>
       </label>

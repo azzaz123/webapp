@@ -43,26 +43,10 @@
         padding: 0;
         border-radius: 0;
         text-align: left;
-        &:focus, &.focus {
-          box-shadow: none;
-        }
-        input {
-          display: none;
-        }
-        mat-icon {
-          @include square(18px);
-          vertical-align: text-top;
-          margin-right: $spacing-XS;
-        }
       }
       &.active {
         color: $grey-900;
         font-weight: bold;
-      }
-      &:not(.active) {
-        mat-icon /deep/ svg #bullet {
-          display: none;
-        }
       }
     }
   }

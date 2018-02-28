@@ -8,7 +8,7 @@ $button-margin: $spacing - $spacing-XS;
 $button-space: $button-height + $spacing;
 $scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $button-space});
 $clear-cart-height: 38px;
-$card-select-height: 150px;
+$card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
 
 :host {
   background: $white;
@@ -165,4 +165,52 @@ ul, li {
   padding: 10px;
   margin: $button-margin;
   margin-top: 0;
+}
+
+.select-card {
+  margin-bottom: $spacing-S;
+  .btn {
+    width: 100%;
+    border-radius: $border-radius;
+    border: 1px solid rgba($grey-50, .5);
+    display: flex;
+    font-size: $font-size-XS;
+    align-items: center;
+    padding: $spacing-S;
+    height: 50px;
+    color: $grey-250;
+    &.active {
+      border-color: $corporate;
+      color: $grey-900;
+    }
+    .card-icon {
+      flex: 0 0 34px;
+      /deep/ svg {
+        rect, path {
+          transition: $transition-base;
+        }
+      }
+    }
+    .number {
+      flex: 1;
+    }
+    .date {
+      color: $grey-250;
+    }
+    &.new-card {
+      font-size: $font-size;
+    }
+    &:not(.active) {
+      .card-icon {
+        /deep/ svg {
+          rect {
+            fill: $grey-50;
+          }
+          path {
+            fill: $grey-100;
+          }
+        }
+      }
+    }
+  }
 }
