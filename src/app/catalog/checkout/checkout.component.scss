@@ -24,6 +24,7 @@ $offset: 7px;
     }
     a {
       text-decoration: underline;
+      cursor: pointer;
       &:hover {
         text-decoration: none;
       }

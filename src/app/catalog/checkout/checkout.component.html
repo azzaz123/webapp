@@ -5,7 +5,7 @@
         <div class="table-header">
           <div class="info">
             <mat-icon svgIcon="feature"></mat-icon>
-            <a href="" i18n>¿Que son los Destacados?</a>
+            <a i18n (click)="showTutorial()">¿Que son los Destacados?</a>
           </div>
           <div class="type zone">
             <div>
@@ -39,5 +39,5 @@
       </div>
     </div>
   </div>
-  <tsl-bump-tutorial></tsl-bump-tutorial>
+  <tsl-bump-tutorial [showTutorial]="bumpTutorial"></tsl-bump-tutorial>
 </div>
