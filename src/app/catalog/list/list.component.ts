@@ -15,6 +15,8 @@ import { OrderEvent } from './selected-items/selected-product.interface';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
+import { UserService } from '../../core/user/user.service';
+import { UserStatsResponse } from '../../core/user/user-stats.interface';
 
 @Component({
   selector: 'tsl-list',
@@ -33,6 +35,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private uploadModalRef: NgbModalRef;
   private active: boolean = true;
   private firstItemLoad = true;
+  public numberOfProducts: number;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -40,11 +43,13 @@ export class ListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private paymentService: PaymentService,
               private errorService: ErrorsService,
-              private router: Router) {
+              private router: Router, 
+              private userService: UserService) {
   }
 
   ngOnInit() {
     this.getItems();
+    this.getNumberOfProducts();
     setTimeout(() => {
       this.router.events.takeWhile(() => this.active).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
@@ -176,6 +181,8 @@ export class ListComponent implements OnInit, OnDestroy {
         });
         if (response.failedIds.length) {
           this.errorService.i18nError('bulkDeleteError');
+        } else {
+          this.getNumberOfProducts();
         }
       });
     }, () => {
@@ -244,5 +251,11 @@ export class ListComponent implements OnInit, OnDestroy {
     }, () => {
       this.deselect();
     })
+  }
+
+  public getNumberOfProducts() {
+    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+      this.numberOfProducts = userStats.counters.publish;
+    });
   }
 }

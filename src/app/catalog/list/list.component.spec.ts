@@ -29,6 +29,8 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { ErrorsService } from '../../core/errors/errors.service';
+import { UserService } from '../../core/user/user.service';
+import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -45,6 +47,7 @@ describe('ListComponent', () => {
   let errorService: ErrorsService;
   let componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
   let modalSpy: jasmine.Spy;
+  let userService: UserService;
   const routerEvents: Subject<any> = new Subject();
 
   beforeEach(async(() => {
@@ -119,6 +122,13 @@ describe('ListComponent', () => {
             },
             events: routerEvents
           }
+        },
+        {
+          provide: UserService, useValue: {
+            getStats() {
+              return Observable.of(USERS_STATS_RESPONSE);
+            }
+          }
         }],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -136,6 +146,7 @@ describe('ListComponent', () => {
     paymentService = TestBed.get(PaymentService);
     router = TestBed.get(Router);
     errorService = TestBed.get(ErrorsService);
+    userService = TestBed.get(UserService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -324,6 +335,7 @@ describe('ListComponent', () => {
     describe('success', () => {
       beforeEach(fakeAsync(() => {
         spyOn(itemService, 'bulkDelete').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
+        spyOn(component, 'getNumberOfProducts');
         component.delete();
         tick();
       }));
@@ -340,6 +352,9 @@ describe('ListComponent', () => {
       it('should track the ProductListbulkDeleted event', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: '1, 3, 5'});
       });
+      it('should call getNumberOfProducts', () => {
+        expect(component.getNumberOfProducts).toHaveBeenCalled();
+      })
     });
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
@@ -532,6 +547,20 @@ describe('ListComponent', () => {
         expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
       });
     });
+
+    describe('getNumberOfProducts', () => {
+      beforeEach(() => {        
+        spyOn(component, 'getNumberOfProducts').and.callThrough();
+        spyOn(userService, 'getStats').and.callThrough();
+      });
+
+      it('should get the number of products', () => {
+        component.getNumberOfProducts();
+
+        expect(userService.getStats).toHaveBeenCalled();
+        expect(component.numberOfProducts).toEqual(USERS_STATS_RESPONSE.counters.publish);
+      });
+    })
 
   });
 
