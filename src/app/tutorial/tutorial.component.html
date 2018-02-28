@@ -35,7 +35,7 @@
       <div class="dots">
         <div class="dot" *ngFor="let dot of dots" [ngClass]="{active: dot === tutorialService.step}"></div>
       </div>
-      <button (click)="nextStep()"
+      <button (click)="tutorialService.nextStep()"
               class="btn btn-next"
               [hidden]="tutorialService.step === 5"
               tslTrackEvent="MYZONE_NEXTTUTORIAL" [params]="{step: tutorialService.step + 1}"

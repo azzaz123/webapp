@@ -68,16 +68,6 @@ describe('TutorialComponent', () => {
     });
   });
 
-  describe('nextStep', () => {
-    it('should call nextStep', () => {
-      spyOn(tutorialService, 'nextStep');
-
-      component.nextStep();
-
-      expect(tutorialService.nextStep).toHaveBeenCalled();
-    });
-  });
-
   describe('keyEvent', () => {
     it('should call nextStep if keyCode is Right Arrow', () => {
       spyOn(tutorialService, 'nextStep');
