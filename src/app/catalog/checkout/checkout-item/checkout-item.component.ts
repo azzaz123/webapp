@@ -43,6 +43,8 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
     }
     this.selectedType = type;
     this.selectedDuration = this.duration;
+    this.itemWithProducts.item.flags['bump_type'] = type;
+    this.itemWithProducts.item.flags.bumped = true;
     const cartItem: CartItem = {
       item: this.itemWithProducts.item,
       duration: this.itemWithProducts.products[this.selectedDuration][type]
@@ -55,6 +57,8 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
       || cartChange.action === 'clean') {
       this.selectedType = null;
       this.selectedDuration = null;
+      this.itemWithProducts.item.flags['bump_type'] = null;
+      this.itemWithProducts.item.flags.bumped = false;
     }
   }
 
