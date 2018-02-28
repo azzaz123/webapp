@@ -2,12 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BumpTutorialComponent, KEY_CODE } from './bump-tutorial.component';
 import { BumpTutorialService } from './bump-tutorial.service';
-import { Observable } from 'rxjs/Observable';
 
 describe('BumpTutorialComponent', () => {
   let component: BumpTutorialComponent;
   let fixture: ComponentFixture<BumpTutorialComponent>;
-  let bumpTutorialService: BumpTutorialService;
+  let tutorialService: BumpTutorialService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -15,16 +14,11 @@ describe('BumpTutorialComponent', () => {
         providers: [
           {
             provide: BumpTutorialService, useValue: {
-              setDisplayed() {
-              },
               nextStep() {
               },
               resetStep() {
               },
               prevStep() {
-              },
-              isAlreadyDisplayed() {
-                return Observable.of(false);
               }
             }
           }
@@ -37,91 +31,81 @@ describe('BumpTutorialComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BumpTutorialComponent);
     component = fixture.componentInstance;
-    bumpTutorialService = TestBed.get(BumpTutorialService);
+    tutorialService = TestBed.get(BumpTutorialService);
   });
 
   describe('ngOnInit', () => {
-    it('should call setDisplayed', () => {
-      spyOn(bumpTutorialService, 'setDisplayed');
+    it('should call show', () => {
+      spyOn(component, 'show');
 
       fixture.detectChanges();
+      component.showTutorial.emit();
 
-      expect(bumpTutorialService.setDisplayed).toHaveBeenCalled();
+      expect(component.show).toHaveBeenCalled();
     });
   });
 
   describe('ngOnDestroy', () => {
     it('should call resetStep', () => {
-      spyOn(bumpTutorialService, 'resetStep');
+      spyOn(tutorialService, 'resetStep');
 
       component.ngOnDestroy();
 
-      expect(bumpTutorialService.resetStep).toHaveBeenCalled();
+      expect(tutorialService.resetStep).toHaveBeenCalled();
     });
   });
 
-  describe('nextStep', () => {
-    it('should call nextStep', () => {
-      spyOn(bumpTutorialService, 'nextStep');
+  describe('hide', () => {
+    it('should hide the tutorial and reset steps', () => {
+      spyOn(tutorialService, 'resetStep');
 
-      component.nextStep();
-
-      expect(bumpTutorialService.nextStep).toHaveBeenCalled();
-    });
-  });
-
-  describe('hideBumpTutorial', () => {
-    it('should hide the tutorial', () => {
-      component.hideBumpTutorial();
+      component.hide();
 
       expect(component.hidden).toBeTruthy();
+      expect(tutorialService.resetStep).toHaveBeenCalled();
     });
   });
 
-  describe('showBumpTutorial', () => {
-
-    let displayed: boolean;
-
-    beforeEach(() => {
-      displayed = undefined;
-    });
-
-    it('should show the tutorial if it has not been displayed', () => {
-      component.showBumpTutorial();
+  describe('show', () => {
+    it('should show the tutorial', () => {
+      component.show();
 
       expect(component.hidden).toBeFalsy();
-    });
-
-    it('should not show the tutorial if it has already been displayed', () => {
-      spyOn(bumpTutorialService, 'isAlreadyDisplayed').and.returnValue(Observable.of(true));
-
-      component.showBumpTutorial();
-
-      expect(component.hidden).toBeTruthy();
     });
   });
 
   describe('keyEvent', () => {
     it('should call nextStep if keyCode is Right Arrow', () => {
-      spyOn(bumpTutorialService, 'nextStep');
+      spyOn(tutorialService, 'nextStep');
       const event = {
         keyCode: KEY_CODE.RIGHT_ARROW
       };
 
       component.keyEvent(<KeyboardEvent>event);
 
-      expect(bumpTutorialService.nextStep).toHaveBeenCalled();
+      expect(tutorialService.nextStep).toHaveBeenCalled();
     });
 
     it('should call prevStep if keyCode is Left Arrow', () => {
-      spyOn(bumpTutorialService, 'prevStep');
+      spyOn(tutorialService, 'prevStep');
       const event = {
         keyCode: KEY_CODE.LEFT_ARROW
       };
 
       component.keyEvent(<KeyboardEvent>event);
 
-      expect(bumpTutorialService.prevStep).toHaveBeenCalled();
+      expect(tutorialService.prevStep).toHaveBeenCalled();
+    });
+
+    it('should call hide if keyCode is Escape', () => {
+      spyOn(component, 'hide');
+      const event = {
+        keyCode: KEY_CODE.ESC
+      };
+
+      component.keyEvent(<KeyboardEvent>event);
+
+      expect(component.hide).toHaveBeenCalled();
     });
   });
 

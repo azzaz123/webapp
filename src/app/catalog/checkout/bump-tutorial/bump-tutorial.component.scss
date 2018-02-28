@@ -23,8 +23,8 @@
         color: $grey-50;
         font-size: $font-size-L;
         background-color: rgba(37,50,56,0.95);
-        overflow-y: scroll;
         justify-content: space-between;
+        overflow-y: scroll;
       }
       .info {
         width: 60%;
@@ -87,23 +87,26 @@
           }
           .logo {
             display: flex;
-            height: 205px;
+            height: 135px;
             .logo-zone {
-              width: 121px;
-              height: 122px;
+              width: 80px;
+              height: 81px;
               background: url(/assets/images/bump-tutorial-zone.svg);
+              background-size: 80px 81px;
               align-self: flex-end;
             }
             .logo-city {
-              width: 176px;
-              height: 178px;
+              width: 116px;
+              height: 117px;
               background: url(/assets/images/bump-tutorial-city.svg);
+              background-size: 116px 117px;
               align-self: flex-end;
             }
             .logo-country {
-              width: 202px;
-              height: 204px;
+              width: 133px;
+              height: 134px;
               background: url(/assets/images/bump-tutorial-country.svg);
+              background-size: 133px 134px;
               align-self: flex-end;
             }
           }
@@ -140,7 +143,9 @@
         }
       }
       #controls {
-        align-self: flex-end;
+        position: absolute;
+        right: $spacing-M;
+        bottom: $spacing-M;
         .btn-next {
           color: $corporate;
           padding: 10px 48px;

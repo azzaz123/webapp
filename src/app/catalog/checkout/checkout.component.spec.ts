@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CheckoutComponent } from './checkout.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
@@ -70,6 +69,16 @@ describe('CheckoutComponent', () => {
       component.ngOnInit();
 
       expect(component.provincialBump).toBeTruthy();
+    });
+  });
+
+  describe('showTutorial', () => {
+    it('should emit the show tutorial event', () => {
+      spyOn(component.bumpTutorial, 'emit');
+
+      component.showTutorial();
+
+      expect(component.bumpTutorial.emit).toHaveBeenCalled();
     });
   });
 });
