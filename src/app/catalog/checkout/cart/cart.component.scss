@@ -160,7 +160,7 @@ ul, li {
 }
 
 .btn-primary {
-  border-radius: 21px;
+  border-radius: $button-border-radius;
   width: calc(100% - #{$button-margin * 2});
   padding: 10px;
   margin: $button-margin;

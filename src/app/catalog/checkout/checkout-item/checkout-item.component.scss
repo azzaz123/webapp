@@ -55,7 +55,7 @@
     padding: 0 $spacing;
     .btn-price {
       background-color: $grey-50;
-      border-radius: 20px;
+      border-radius: $button-border-radius;
       font-size: $font-size-M;
       text-align: center;
       width: 100%;
