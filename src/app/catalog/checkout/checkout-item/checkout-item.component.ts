@@ -55,9 +55,9 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
   private onRemoveOrClean(cartChange: CartChange) {
     if (cartChange.action === 'remove' && cartChange.itemId === this.itemWithProducts.item.id
       || cartChange.action === 'clean') {
-      this.selectedType = null;
-      this.selectedDuration = null;
-      this.itemWithProducts.item.flags['bump_type'] = null;
+      this.selectedType = undefined;
+      this.selectedDuration = undefined;
+      this.itemWithProducts.item.flags['bump_type'] = undefined;
       this.itemWithProducts.item.flags.bumped = false;
     }
   }
