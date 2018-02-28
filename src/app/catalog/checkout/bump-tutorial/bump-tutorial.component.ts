@@ -17,7 +17,7 @@ export enum KEY_CODE {
 })
 export class BumpTutorialComponent implements OnInit, OnDestroy {
 
-  public dots: number = 2;
+  public dots: number;
   public hidden: boolean = true;
 
   constructor(public tutorialService: BumpTutorialService,
