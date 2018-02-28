@@ -9,7 +9,7 @@
       </label>
     </div>
   </form>
-  <div *ngFor="let type of types" class="price border-l" [ngClass]="type">
+  <div *ngFor="let type of types" class="price border-l" [ngClass]="type" [hidden]="!itemWithProducts.products[duration][type]">
     <button class="btn btn-price"
             (click)="select(type)"
             [ngClass]="{selected: type === selectedType && duration === selectedDuration}">

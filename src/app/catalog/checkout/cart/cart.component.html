@@ -8,7 +8,10 @@
           <mat-icon class="wing-icon" svgIcon="wing-{{type}}"></mat-icon>
           <div class="type">
             <span [ngSwitch]="type">
-              <ng-container *ngSwitchCase="'zonebump'" i18n>Local bump</ng-container>
+              <ng-container *ngSwitchCase="'zonebump'">
+                <ng-container *ngIf="!provincialBump" i18n>Local bump</ng-container>
+                <ng-container *ngIf="provincialBump" i18n>Provincial bump</ng-container>
+              </ng-container>
               <ng-container *ngSwitchCase="'citybump'" i18n>City bump</ng-container>
               <ng-container *ngSwitchCase="'countrybump'" i18n>National bump</ng-container>
             </span>
@@ -24,7 +27,10 @@
               <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
               <div class="type">
                 <span [ngSwitch]="type">
-                  <ng-container *ngSwitchCase="'zonebump'" i18n>Local</ng-container>
+                  <ng-container *ngSwitchCase="'zonebump'">
+                    <ng-container *ngIf="!provincialBump" i18n>Local</ng-container>
+                    <ng-container *ngIf="provincialBump" i18n>Provincial</ng-container>
+                  </ng-container>
                   <ng-container *ngSwitchCase="'citybump'" i18n>City</ng-container>
                   <ng-container *ngSwitchCase="'countrybump'" i18n>National</ng-container>
                 </span>

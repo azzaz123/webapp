@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
 import { BUMP_TYPES, Cart } from './cart';
 import { CartChange, CartItem } from './cart-item.interface';
@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 })
 export class CartComponent implements OnInit, OnDestroy {
 
+  @Input() provincialBump: boolean;
   private active = true;
   public cart: Cart;
   public types: string[] = BUMP_TYPES;
