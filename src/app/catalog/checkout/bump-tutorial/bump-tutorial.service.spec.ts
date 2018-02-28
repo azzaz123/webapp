@@ -1,5 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { BumpTutorialService } from './bump-tutorial.service';
+import { UserService } from '../../../core/user/user.service';
+import { Observable } from 'rxjs/Observable';
+import { MOCK_USER } from 'shield';
 
 describe('BumpTutorialService', () => {
 
@@ -8,7 +11,15 @@ describe('BumpTutorialService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        BumpTutorialService
+        BumpTutorialService,
+        {
+          provide: UserService, useValue: {
+          user: MOCK_USER,
+          me() {
+            return Observable.of(MOCK_USER);
+          }
+        }
+        }
       ]
     });
     service = TestBed.get(BumpTutorialService);

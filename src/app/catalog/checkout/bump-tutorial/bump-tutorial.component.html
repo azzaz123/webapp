@@ -59,7 +59,7 @@
                 <div class="special-background"></div>
             </div>
         </div>
-        <a (click)="hideBumpTutorial()" id="close">
+        <a (click)="hide()" id="close">
             <mat-icon svgIcon="cross"></mat-icon><br />
             <span i18n>Skip</span>
         </a>
@@ -67,11 +67,11 @@
             <div class="dots">
                 <div class="dot" *ngFor="let dot of dots" [ngClass]="{active: dot === tutorialService.step}"></div>
             </div>
-            <button (click)="nextStep()"
+            <button (click)="tutorialService.nextStep()"
                     class="btn btn-next"
                     [hidden]="tutorialService.step === 1"
                     i18n>Next</button>
-            <button (click)="hideBumpTutorial()"
+            <button (click)="hide()"
                     [hidden]="tutorialService.step < 1"
                     class="btn btn-next"
                     i18n>Ready!</button>

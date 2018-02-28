@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { ItemWithProducts } from '../../core/item/item-response.interface';
-import { EventService } from '../../core/event/event.service';
 
 @Component({
   selector: 'tsl-checkout',
@@ -11,9 +10,9 @@ import { EventService } from '../../core/event/event.service';
 export class CheckoutComponent implements OnInit {
 
   itemsWithProducts: ItemWithProducts[];
+  public bumpTutorial: EventEmitter<any> = new EventEmitter();
 
-  constructor(private itemService: ItemService,
-              private event: EventService) {
+  constructor(private itemService: ItemService) {
   }
 
   ngOnInit() {
@@ -23,7 +22,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   public showTutorial() {
-    this.event.emit(EventService.SHOW_BUMP_TUTORIAL);
+    this.bumpTutorial.emit();
   }
 
 }

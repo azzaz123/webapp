@@ -1,17 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CheckoutComponent } from './checkout.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { ITEMS_WITH_PRODUCTS } from '../../../tests/item.fixtures';
-import { EventService } from '../../core/event/event.service';
+
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
   let fixture: ComponentFixture<CheckoutComponent>;
   let itemService: ItemService;
-  let eventService: EventService;
 
   const SELECTED_ITEMS = ['1', '2', '3'];
 
@@ -27,12 +25,6 @@ describe('CheckoutComponent', () => {
           }
         }
         },
-        {
-          provide: EventService, useValue: {
-          emit() {
-          }
-        }
-        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -43,7 +35,6 @@ describe('CheckoutComponent', () => {
     fixture = TestBed.createComponent(CheckoutComponent);
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
-    eventService = TestBed.get(EventService);
     spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
     fixture.detectChanges();
   });
@@ -57,11 +48,11 @@ describe('CheckoutComponent', () => {
 
   describe('showTutorial', () => {
     it('should emit the show tutorial event', () => {
-      spyOn(eventService, 'emit');
+      spyOn(component.bumpTutorial, 'emit');
 
       component.showTutorial();
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.SHOW_BUMP_TUTORIAL);
+      expect(component.bumpTutorial.emit).toHaveBeenCalled();
     });
   });
 });

@@ -1,7 +1,5 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, EventEmitter, Input } from '@angular/core';
 import * as _ from 'lodash';
-import { TutorialService } from '../../../core/tutorial/tutorial.service';
-import { EventService } from '../../../core/event/event.service';
 import { BumpTutorialService } from "./bump-tutorial.service";
 
 export enum KEY_CODE {
@@ -19,30 +17,27 @@ export class BumpTutorialComponent implements OnInit, OnDestroy {
 
   public dots: number;
   public hidden: boolean = true;
+  @Input() showTutorial: EventEmitter<any> = new EventEmitter();
 
-  constructor(public tutorialService: BumpTutorialService,
-              private eventService: EventService) {
+  constructor(public tutorialService: BumpTutorialService) {
     this.dots = _.range(this.tutorialService.maxSteps);
   }
 
   ngOnInit() {
-    this.eventService.subscribe(EventService.SHOW_BUMP_TUTORIAL, () => this.showBumpTutorial());
+    this.showTutorial.subscribe(() => this.show());
   }
-  
+
   ngOnDestroy() {
     this.tutorialService.resetStep();
   }
 
-  public nextStep(): void {
-    this.tutorialService.nextStep();
-  }
-
-  public showBumpTutorial(): void {
+  public show(): void {
     this.hidden = false;
   }
 
-  public hideBumpTutorial(): void {
+  public hide(): void {
     this.hidden = true;
+    this.tutorialService.resetStep();
   }
 
   @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
@@ -53,7 +48,7 @@ export class BumpTutorialComponent implements OnInit, OnDestroy {
       this.tutorialService.prevStep();
     }
     if (event.keyCode === KEY_CODE.ESC) {
-      this.hideBumpTutorial();
+      this.hide();
     }
   }
 

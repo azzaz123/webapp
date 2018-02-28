@@ -8,5 +8,4 @@ export class EventService extends EventServiceMaster {
   public static UPDATE_COORDINATE = 'updateCoordinate';
   public static UPDATE_CATEGORY = 'updateCategory';
   public static UPDATE_SEARCH = 'updateSearch';
-  public static SHOW_BUMP_TUTORIAL = 'showBumpTutorial';
 }
