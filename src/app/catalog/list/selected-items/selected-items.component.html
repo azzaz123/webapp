@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="actions" [ngClass]="itemService.selectedAction">
-    <span class="address">Avenida Meridiana 89, 08026 Barcelona, España</span>
+    <span class="address" *ngIf="itemService.selectedAction === 'feature'">Avenida Meridiana 89, 08026 Barcelona, España</span>
     <button *ngIf="itemService.selectedAction === 'reserve'"
             class="btn btn-reserve"
             (click)="onAction.emit()"
@@ -25,6 +25,6 @@
             class="btn btn-feature"
             [routerLink]="['/catalog/checkout']"
             tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE"
-            i18n>Feature Now</button>
+            i18n="Continue to cart|selected-items-button">Continue</button>
   </div>
 </div>

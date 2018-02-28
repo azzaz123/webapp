@@ -163,6 +163,10 @@
   <translation id="6618892692857491514">Hay información que no has guardado. Si te vas sin guardar perderás los cambios que has hecho. </translation>
   <translation id="3542042671420335679">No</translation>
   <translation id="4510233521290203619">Sí, me voy</translation>
+  <translation id="5411836089142777830">¿Cómo te ayudarán los destacados?</translation>
+  <translation id="833919813165214228">Destácalo en tu barrio</translation>
+  <translation id="4828515169928166764">Destácalo en tu ciudad</translation>
+  <translation id="7083003813535210826">Destácalo en todo el país</translation>
   <translation id="8260444303636416171">Hago envíos</translation>
   <translation id="3322682308330601072">¿Qué estás vendiendo?</translation>
   <translation id="368364095324628291">En dos palabras...</translation>
@@ -205,9 +209,8 @@
   <translation id="6877992122026439414">Reactivar + visibilidad</translation>
   <translation id="3244863581909362906">Sólo reactivar que no quiero venderlo más rápido</translation>
   <translation id="4416413576346763682">Pendiente</translation>
+  <translation id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart">Continuar</translation>
   <translation id="578471405917460767">Destácalo</translation>
-  <translation id="3448462145758383019">Total</translation>
-  <translation id="8743988303207163578">Destacar ya</translation>
   <translation id="6261406176927621365">Borrar foto</translation>
   <translation id="4267028037176582017">Se borrará permanentemente la foto. ¿Estás seguro que quieres proceder?</translation>
   <translation id="5112037422043971210">Deja tus fotos aquí para subirlas</translation>
@@ -220,6 +223,18 @@
   <translation id="6822624572232933913">Mis servicios</translation>
   <translation id="4895100071976641944">Una vivienda</translation>
   <translation id="8222521338018520589">Es importante que marques bien el tipo de producto o servicio para que lo encuentren el resto de wallapopers.</translation>
+  <translation id="7807518657048523464"><ph name="INTERPOLATION"><ex>{{duration / 24}}</ex></ph> días</translation>
+  <translation id="1577612206026464520">Tu lista de deseos</translation>
+  <translation id="6801638153695046345">Destacado de Barrio</translation>
+  <translation id="2789162672363314854">Destacado de Ciudad</translation>
+  <translation id="5785357843753565591">Destacado de País</translation>
+  <translation id="2906587845957718064">Barrio</translation>
+  <translation id="2314075913167237221">Ciudad</translation>
+  <translation id="7928837776892145785">País</translation>
+  <translation id="6377139538537882652">Eliminar lista</translation>
+  <translation id="3448462145758383019">Total</translation>
+  <translation id="6581598798517073714">+ Añadir otra tarjeta</translation>
+  <translation id="7274286978511770772">Comprar</translation>
   <translation id="2921056091899795948">¿Seguro que quieres darte de baja?</translation>
   <translation id="6787712303097193375">Nunca es tarde para cambiar de opinión, ¿eh? Piensa que el equipo estará muy triste si te vas :(</translation>
   <translation id="859827593140377121">Sí, quiero darme de baja</translation>
