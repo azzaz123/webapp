@@ -217,7 +217,7 @@
   <msg id="6822624572232933913"><source>app/catalog/upload/category-selector/category-selector.component.ts:31</source>My services</msg>
   <msg id="4895100071976641944"><source>app/catalog/upload/category-selector/category-selector.component.ts:40</source>A property</msg>
   <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:46</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
-  <msg id="7807518657048523464"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:8</source><ph name="INTERPOLATION"><ex>{{duration / 24}}</ex></ph> days</msg>
+  <msg id="7036284206110282007"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:8</source><source>app/catalog/checkout/cart/cart.component.ts:31</source>days</msg>
   <msg id="1577612206026464520"><source>app/catalog/checkout/cart/cart.component.ts:1</source>Desire list</msg>
   <msg id="6801638153695046345"><source>app/catalog/checkout/cart/cart.component.ts:12</source>Local bump</msg>
   <msg id="7379728362084736907"><source>app/catalog/checkout/cart/cart.component.ts:13</source>Provincial bump</msg>
