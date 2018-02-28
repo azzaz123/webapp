@@ -1,6 +1,6 @@
 <div class="page-content">
   <div class="container">
-    <div class="row">
+    <div class="row" [hidden]="!itemsWithProducts">
       <div class="col">
         <div class="table-header">
           <div class="info">
@@ -38,6 +38,7 @@
         <tsl-cart></tsl-cart>
       </div>
     </div>
+    <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
   </div>
   <tsl-bump-tutorial></tsl-bump-tutorial>
 </div>
