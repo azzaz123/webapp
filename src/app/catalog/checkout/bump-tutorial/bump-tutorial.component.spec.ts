@@ -34,17 +34,6 @@ describe('BumpTutorialComponent', () => {
     tutorialService = TestBed.get(BumpTutorialService);
   });
 
-  describe('ngOnInit', () => {
-    it('should call show', () => {
-      spyOn(component, 'show');
-
-      fixture.detectChanges();
-      component.showTutorial.emit();
-
-      expect(component.show).toHaveBeenCalled();
-    });
-  });
-
   describe('ngOnDestroy', () => {
     it('should call resetStep', () => {
       spyOn(tutorialService, 'resetStep');
