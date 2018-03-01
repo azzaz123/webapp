@@ -17,7 +17,6 @@
         align-items: center;
         position: relative;
         margin-top: $topbar-height;
-        padding: $spacing-XL $spacing-L $spacing-L;
         height: calc(100vh - #{$topbar-height});
         margin-left: $sidebar-width;
         color: $grey-50;
@@ -44,7 +43,7 @@
           flex-direction: column;
           justify-content: center;
           p {
-            max-width: 700px;
+            max-width: 900px;
             align-self: center;
           }
         }
@@ -70,6 +69,7 @@
             p {
               font-size: $font-size-S;
               color: $grey-250;
+              max-width: 350px;
             }
             .box-price {
               flex: 1;
