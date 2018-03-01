@@ -8,11 +8,13 @@ import { CartService } from './cart.service';
 import { Observable } from 'rxjs/Observable';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
-import { ITEM_ID, MockTrackingService } from 'shield';
-import { CART_ITEM_CITYBUMP, CART_ORDER, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures';
+import { FINANCIAL_CARD, ITEM_ID, MockTrackingService, PaymentService } from 'shield';
+import { CART_ITEM_CITYBUMP, CART_ORDER, CART_ORDER_TRACK, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -20,6 +22,9 @@ describe('CartComponent', () => {
   let cartService: CartService;
   let itemService: ItemService;
   let errorService: ErrorsService;
+  let paymentService: PaymentService;
+  let router: Router;
+  let trackingService: TrackingService;
 
   const CART = new Cart();
   const CART_CHANGE: CartChange = {
@@ -31,6 +36,7 @@ describe('CartComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [FormsModule],
       declarations: [CartComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
@@ -50,6 +56,8 @@ describe('CartComponent', () => {
           provide: ItemService, useValue: {
           purchaseProducts() {
             return Observable.of({});
+          },
+          deselectItems() {
           }
         }
         },
@@ -58,6 +66,21 @@ describe('CartComponent', () => {
           i18nError() {
           },
           show() {
+          }
+        }
+        },
+        {
+          provide: PaymentService, useValue: {
+          getFinancialCard() {
+          },
+          pay() {
+            return Observable.of('');
+          }
+        }
+        },
+        {
+          provide: Router, useValue: {
+          navigate() {
           }
         }
         }
@@ -70,15 +93,22 @@ describe('CartComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CartComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     cartService = TestBed.get(CartService);
     itemService = TestBed.get(ItemService);
     errorService = TestBed.get(ErrorsService);
+    paymentService = TestBed.get(PaymentService);
+    router = TestBed.get(Router);
+    trackingService = TestBed.get(TrackingService);
+    spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
+    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
     it('should set cart', () => {
       expect(component.cart).toEqual(CART);
+    });
+    it('should set card', () => {
+      expect(component.financialCard).toEqual(FINANCIAL_CARD);
     });
   });
 
@@ -116,26 +146,94 @@ describe('CartComponent', () => {
 
     describe('success', () => {
       beforeEach(() => {
+        spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.of([]));
         spyOn(component.cart, 'prepareOrder').and.returnValue(CART_ORDER);
         spyOn(component.cart, 'getOrderId').and.returnValue('UUID');
-        spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.of([]));
+        spyOn(trackingService, 'track');
         eventId = null;
         component.sabadellSubmit.subscribe((id: string) => {
           eventId = id;
         });
-
-        component.checkout();
       });
 
-      it('should submit sabadell with orderId', () => {
-        expect(eventId).toBe('UUID');
+      describe('without credit card', () => {
+        it('should submit sabadell with orderId', () => {
+          component.financialCard = null;
+
+          component.checkout();
+
+          expect(eventId).toBe('UUID');
+        });
       });
 
-      it('should call purchaseProducts', () => {
-        expect(itemService.purchaseProducts).toHaveBeenCalledWith(CART_ORDER, 'UUID');
+      describe('with credit card', () => {
+        describe('user wants new one', () => {
+
+          it('should submit sabadell with orderId', () => {
+            component.cardType = 'new';
+
+            component.checkout();
+
+            expect(eventId).toBe('UUID');
+          });
+        });
+
+        describe('user wants old one', () => {
+          beforeEach(() => {
+            spyOn(router, 'navigate');
+          });
+
+          describe('payment ok', () => {
+            beforeEach(() => {
+              spyOn(paymentService, 'pay').and.callThrough();
+              spyOn(itemService, 'deselectItems');
+              itemService.selectedAction = 'feature';
+
+              component.checkout();
+            });
+
+            it('should redirect to code 200', () => {
+              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
+            });
+
+            it('should call deselectItems', () => {
+              expect(itemService.deselectItems).toHaveBeenCalled();
+              expect(itemService.selectedAction).toBeNull();
+            });
+          });
+
+          describe('payment ko', () => {
+            beforeEach(() => {
+              spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
+
+              component.checkout();
+            });
+
+            it('should redirect to code -1', () => {
+              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
+            });
+          });
+
+          afterEach(() => {
+            it('should call pay', () => {
+              expect(paymentService.pay).toHaveBeenCalledWith('UUID');
+            });
+          });
+        });
+      });
+
+      afterEach(() => {
+        it('should call purchaseProducts', () => {
+          expect(itemService.purchaseProducts).toHaveBeenCalledWith(CART_ORDER, 'UUID');
+        });
+
+        it('should call track', () => {
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+            selected_products: CART_ORDER_TRACK
+          });
+        });
       });
     });
-
 
     describe('error', () => {
       it('should call toastr', () => {

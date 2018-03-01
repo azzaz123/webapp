@@ -164,4 +164,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('wing-countrybump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-country.svg'));
   matIconRegistry.addSvgIcon('wing-zonebump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-zone.svg'));
   matIconRegistry.addSvgIcon('remove', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/remove.svg'));
+  matIconRegistry.addSvgIcon('card', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/card.svg'));
 }

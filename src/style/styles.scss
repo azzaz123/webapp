@@ -60,6 +60,12 @@ button {
   }
 }
 
+.btn {
+  &:focus, &.focus {
+    box-shadow: none;
+  }
+}
+
 #right-panel {
   .card {
     background-color: $white;

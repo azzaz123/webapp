@@ -7,6 +7,8 @@ import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Response } from '@angular/http';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { FinancialCard, Item, ItemBulkResponse, PaymentService } from 'shield';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsl-cart',
@@ -19,17 +21,22 @@ export class CartComponent implements OnInit, OnDestroy {
   public cart: Cart;
   public types: string[] = BUMP_TYPES;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
+  public financialCard: FinancialCard;
+  public cardType = 'old';
 
   constructor(private cartService: CartService,
               private itemService: ItemService,
               private errorService: ErrorsService,
-              private trackingService: TrackingService) {
+              private trackingService: TrackingService,
+              private paymentService: PaymentService,
+              private router: Router) {
   }
 
   ngOnInit() {
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
     });
+    this.getCard();
   }
 
   ngOnDestroy() {
@@ -49,7 +56,7 @@ export class CartComponent implements OnInit, OnDestroy {
     const orderId: string = this.cart.getOrderId();
     this.itemService.purchaseProducts(order, orderId).subscribe(() => {
       this.track(order);
-      this.sabadellSubmit.emit(orderId);
+      this.buy(orderId);
     }, (error: Response) => {
       if (error.text()) {
         this.errorService.show(error);
@@ -59,12 +66,32 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
+  private buy(orderId: string) {
+    if (!this.financialCard || this.financialCard && this.cardType === 'new') {
+      this.sabadellSubmit.emit(orderId);
+    } else {
+      this.paymentService.pay(orderId).subscribe(() => {
+        this.itemService.deselectItems();
+        this.itemService.selectedAction = null;
+        this.router.navigate(['catalog/list', {code: 200}]);
+      }, () => {
+        this.router.navigate(['catalog/list', {code: -1}]);
+      });
+    }
+  }
+
   private track(order: Order[]) {
     const result = order.map(purchase => ({item_id: purchase.item_id, bump_type: purchase.product_id}));
     this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {selected_products: result});
     ga('send', 'event', 'Item', 'bump-cart');
     gtag('event', 'conversion', {'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM'});
     fbq('track', '176083133152402', {});
+  }
+
+  private getCard() {
+    this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
+      this.financialCard = financialCard;
+    });
   }
 
 }
