@@ -31,6 +31,8 @@ import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/e
 import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-modal/remove-confirm-modal.component';
 import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactivate-modal.component';
 import { CheckoutItemComponent } from './checkout/checkout-item/checkout-item.component';
+import { CartComponent } from './checkout/cart/cart.component';
+import { CartService } from './checkout/cart/cart.service';
 
 @NgModule({
   imports: [
@@ -57,7 +59,8 @@ import { CheckoutItemComponent } from './checkout/checkout-item/checkout-item.co
     CarSuggestionsService,
     CarKeysService,
     UploadService,
-    ItemResolverService
+    ItemResolverService,
+    CartService
   ],
   declarations: [
     catalogRoutedComponents,
@@ -75,7 +78,8 @@ import { CheckoutItemComponent } from './checkout/checkout-item/checkout-item.co
     CategorySelectorComponent,
     RemoveConfirmModalComponent,
     ReactivateModalComponent,
-    CheckoutItemComponent
+    CheckoutItemComponent,
+    CartComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

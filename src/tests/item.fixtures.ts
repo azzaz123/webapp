@@ -10,6 +10,7 @@ import {
 } from '../app/core/item/item-response.interface';
 import { USER_LOCATION, ITEM_ID, Item } from 'shield';
 import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
+import { CartItem } from '../app/catalog/checkout/cart/cart-item.interface';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 
@@ -546,3 +547,28 @@ export const ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE: ItemsWithAvailableProductsR
   'content': ITEMS_DATA_V3[1].content,
   'productList': PRODUCT_LIST
 }];
+
+export const CART_ITEM_CITYBUMP: CartItem = {
+  item: MOCK_ITEM_V3,
+  duration: CITYBUMP_DURATIONS[0]
+};
+
+export const CART_ITEM_CITYBUMP2: CartItem = {
+  item: MOCK_ITEM_V3,
+  duration: CITYBUMP_DURATIONS[1]
+};
+
+export const CART_ITEM_ZONEBUMP: CartItem = {
+  item: MOCK_ITEM_V3,
+  duration: ZONEBUMP_DURATIONS[0]
+};
+
+export const CART_ITEM_COUNTRYBUMP: CartItem = {
+  item: MOCK_ITEM_V3,
+  duration: COUNTRYBUMP_DURATIONS[0]
+};
+
+export const CART_ITEM_COUNTRYBUMP2: CartItem = {
+  item: MOCK_ITEM_V3,
+  duration: COUNTRYBUMP_DURATIONS[1]
+};

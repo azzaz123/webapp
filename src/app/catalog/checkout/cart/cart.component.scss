@@ -1,0 +1,114 @@
+@import "../../../../style/_common.scss";
+
+$cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
+$title-height: 65px;
+$total-height: 80px;
+$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height});
+
+:host {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $grey-50;
+  display: block;
+  height: $cart-height;
+  width: 280px;
+  position: fixed;
+  padding: 0 $spacing-XS;
+}
+
+h1 {
+  height: $title-height;
+  line-height: $title-height;
+  font-size: $font-size;
+  text-align: center;
+  margin: 0;
+  background: url(/assets/icons/cart.svg) no-repeat 10px center;
+}
+
+.scroll-panel {
+  background-color: rgba($grey-50, 0.3);
+  height: $scroll-panel-height;
+  overflow: auto;
+  border-radius: 5px;
+  padding: $spacing-XS;
+}
+
+.total {
+  height: $total-height;
+  line-height: $total-height;
+  font-size: $font-size-XS;
+  font-weight: bold;
+  padding: 0 $spacing-XS;
+  text-transform: uppercase;
+  .price {
+    font-size: $font-size-XL;
+  }
+}
+
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.items-list {
+  font-size: $font-size-XS;
+  .cart-box {
+    border-radius: 5px;
+    background-color: $white;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: solid 0.5px $grey-100;
+    margin-bottom: $spacing-XS;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  }
+  .type-total {
+    padding: 10px;
+    cursor: pointer;
+    .wing-icon {
+      width: 51px;
+      height: 30px;
+      margin-right: $spacing-XS;
+    }
+    .arrow-icon {
+      transform: rotate(-90deg) scale(.8);
+      width: 9px;
+      height: 13px;
+    }
+    &.collapsed {
+      .arrow-icon {
+        transform: rotate(90deg) scale(.8);
+      }
+    }
+  }
+  .price {
+    color: $grey-500;
+    font-weight: bold;
+  }
+  .zonebump {
+    color: $zone-bump;
+  }
+  .citybump {
+    color: $city-bump;
+  }
+  .countrybump {
+    color: $country-bump;
+  }
+  .type {
+    flex: 1;
+  }
+  .cart-item {
+    padding: $spacing-XXXS;
+    margin-left: $spacing;
+    .price {
+      margin-right: $spacing-XS;
+    }
+    tsl-item-avatar {
+      /deep/ div {
+        @include square(32px);
+      }
+    }
+  }
+}

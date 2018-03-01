@@ -52,24 +52,28 @@ $offset: 7px;
       background-image: linear-gradient(206deg, #2be2d6, #2be2d6, #2ae1d5, #2ae0d4 1%, $zone-bump);
       z-index: 3;
       height: 80px + $offset;
+      mat-icon {
+        width: 40px;
+        height: 44px;
+      }
     }
     &.city {
       background-image: linear-gradient(205deg, #36b6d7, #2b8ea7);
       z-index: 2;
       height: 100px + $offset;
+      mat-icon {
+        width: 66px;
+        height: 44px;
+      }
     }
     &.country {
       background-image: linear-gradient(208deg, #8fd6ff, #56acff);
       box-shadow: none;
       z-index: 1;
       height: 120px + $offset;
-    }
-    mat-icon {
-      height: 33px;
-      width: 29px;
-      margin-left: -9px;
-      &:first-of-type {
-        margin: 0;
+      mat-icon {
+        width: 93px;
+        height: 44px;
       }
     }
   }
@@ -78,4 +82,9 @@ $offset: 7px;
 .price-table {
   z-index: 4;
   position: relative;
+}
+
+.cart {
+  width: 280px;
+  padding: 0 10px;
 }
