@@ -54,7 +54,7 @@
   <span class="pull-left" i18n>Total</span>
   <span class="pull-right price">{{cart?.total | customCurrency}}</span>
 </div>
-<div class="select-card">
+<div class="select-card" *ngIf="financialCard">
   <form>
     <div ngbRadioGroup name="cardType" [(ngModel)]="cardType">
       <label ngbButtonLabel class="custom-radio">
