@@ -1,5 +1,5 @@
 <div class="page-content"
-     infinite-scroll
+     infiniteScroll
      [infiniteScrollDistance]="5"
      [infiniteScrollThrottle]="100"
      [scrollWindow]="false"
@@ -7,26 +7,31 @@
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
   <div class="container">
-    <div class="review-header row">
+    <tsl-header>
       <div class="col-9">
-        <h1 i18n>Your Reviews</h1>
-        <p i18n>This is what people think about you. </p>
+        <div class="header-row">
+          <h1 class="header-title" i18n>Your Reviews</h1>
+        </div>
+        <div class="header-row header-row--margin">
+          <h4 class="header-subtitle" i18n>This is what people think about you. </h4>
+        </div>
       </div>
       <div class="user-average col-2">
         <p i18n>Your average</p>
         <tsl-stars class="header-rating" [stars]="this.userScore" [normalized]="false"></tsl-stars>
       </div>
       <div class="user-number-reviews text-center col-1">
-        <p>{{ reviewsNum }}</p>
-        <p i18n>Reviews</p>
+        <p>{{ numberOfReviews }}</p>
+        <p *ngIf="numberOfReviews > 1 || numberOfReviews === 0" i18n>reviews</p>
+        <p *ngIf="numberOfReviews === 1" i18n>review</p>
       </div>
-    </div>
+    </tsl-header>
     <div class="row items">
       <div class="reviews-empty-state" *ngIf="!reviews.length && !loading">
         <mat-icon svgIcon="reviews-empty-state" class="image"></mat-icon>
         <div class="message" i18n>Nobody has written a review about you because you didn't buy or sell anything yet. Wake up!</div>
       </div>
-      <tsl-review-item *ngFor="let review of reviews" [review]="review" class="col-md-12"></tsl-review-item>
+      <tsl-review-item *ngFor="let review of reviews" [review]="review" class="review-container col-md-12"></tsl-review-item>
     </div>
   </div>
 </div>

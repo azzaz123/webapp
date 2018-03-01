@@ -12,6 +12,7 @@ import { GeolocationModule } from './geolocation/geolocation.module';
 import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 import { TutorialGuard } from './guards/tutorial.guard';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   imports: [
@@ -28,14 +29,16 @@ import { TutorialGuard } from './guards/tutorial.guard';
     SpinnerComponent,
     AdComponent,
     CustomCurrencyPipe,
-    RestrictInputDirective
+    RestrictInputDirective,
+    HeaderComponent
   ],
   declarations: [
     AdComponent,
     ConfirmationModalComponent,
     SpinnerComponent,
     CustomCurrencyPipe,
-    RestrictInputDirective
+    RestrictInputDirective,
+    HeaderComponent
   ],
   providers: [
     DecimalPipe,

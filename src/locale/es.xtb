@@ -111,7 +111,7 @@
   <translation id="5262427597279775777">1 producto seleccionado</translation>
   <translation id="3618067650338827326"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
   <translation id="8141228329244837517">Subir un producto a mi catálogo</translation>
-  <translation id="6946649608831221934">Subir un producto más a mi catalogo</translation>
+  <translation id="6946649608831221934">Subir un producto más a mi catálogo</translation>
   <translation id="243983274320667129">Información de tu producto</translation>
   <translation id="1511766279515968094">Marca</translation>
   <translation id="3937675945889395823">Ej: Seat</translation>
@@ -179,7 +179,7 @@
   <translation id="2806917038528218276">Cosas que suelen preguntar los compradores...</translation>
   <translation id="6390066056926289377"><ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>kg Max<ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph><ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
   <translation id="5972351850683239127">Envíos</translation>
-  <translation id="3007176586514020023">Dínos cuánto pesa tu producto. Recuerda que tienes que contar también con el embalaje.</translation>
+  <translation id="2877776180648049476">Dinos cuánto pesa tu producto. Recuerda que la suma del largo, alto y ancho no puede exceder los 270cm.</translation>
   <translation id="3336512716830718777">Importante para hacer envíos.</translation>
   <translation id="4021752662928002901">Actualizar</translation>
   <translation id="6622336784189066984">Subir producto</translation>
@@ -294,7 +294,7 @@
   <translation id="2027740642468122404">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
   <translation id="792930787826735850">Tu perfil</translation>
   <translation id="4818441514225396186">Subir producto</translation>
-  <translation id="6763447295092579753">Destacando tus productos los harás más visibiles para el resto de la comunidad, gracias a sus funciones especiales. ¿Qué te aportará eso? Básicamente que te contacten más personas y lo vendás más rápido. Mira a continuación cuál encaja mejor con tu tipo de productos:</translation>
+  <translation id="6763447295092579753">Destacando tus productos los harás más visibles para el resto de la comunidad, gracias a sus funciones especiales. ¿Qué te aportará eso? Básicamente que te contacten más personas y lo vendas más rápido. Mira a continuación cuál encaja mejor con tu tipo de productos:</translation>
   <translation id="3358820219972327972">Destácalo en tu barrio</translation>
   <translation id="7811918618267943066">Sé más visible entre los que te rodean. Sube tu producto a las primeras posiciones del muro y promociónalo en tu zona. También podrán chatear contigo directamente desde el muro.</translation>
   <translation id="23518581647153834">desde</translation>
@@ -304,7 +304,17 @@
   <translation id="3737564338592079354">El más potente de todos nuestros destacados. Tu producto se verá en todo el país sin importar la distancia y aparecerá diferenciado del muro, dándote visibilidad más allá de tu zona. </translation>
   <translation id="6730295275086165248">Descubre más ventajas</translation>
   <translation id="7058463678072407504">Una apariencia distinta</translation>
-  <translation id="6289691030035518037">Los productos Destacados tienen una apariencia diferente. Y mucho más visible. A la ficha de tu producto se le añadirán un par de botones con los que el resto de usuario podrán escribirte directamente o guardar tu producto como favorito. </translation>
+  <translation id="6289691030035518037">Los productos Destacados tienen una apariencia diferente. Y mucho más visible. A la ficha de tu producto se le añadirán un par de botones con los que el resto de usuarios podrán escribirte directamente o guardar tu producto como favorito. </translation>
   <translation id="4213947433233162088">Zonas especiales para tu producto</translation>
   <translation id="2483251316426820393">Tus productos Destacados aparecerán en zonas exclusivas y bien diferenciadas del muro, que te darán más visibilidad y preferencia respecto a otros productos.</translation>
+  <translation id="4532380494593950343">Aquí podrás ver y editar los datos de tu perfil</translation>
+  <translation id="5433688037539750263">Tus productos</translation>
+  <translation id="1953428607881051577">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
+  <translation id="6938753357996446484">Tus favoritos</translation>
+  <translation id="2988941833994717815">Estos son los productos de wallapop que más te gustan</translation>
+  <translation id="1339317612974362100">favoritos</translation>
+  <translation id="6799485957303243139">favorito</translation>
+  <translation id="6306441078838263413">opiniones</translation>
+  <translation id="442085080206895883">productos</translation>
+  <translation id="776785241867401546">producto</translation>
 </translationbundle>

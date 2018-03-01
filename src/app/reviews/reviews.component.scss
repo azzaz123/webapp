@@ -1,39 +1,32 @@
 @import "../../style/_common.scss";
 
-.review-header {
-  h1 {
-    font-size: $font-size-LL;
-    font-weight: 700;
-  }
+.user-average, .user-number-reviews {
   p {
     font-size: $font-size-S;
     color: $grey-250;
     margin-bottom: 0;
   }
-  .user-average {
-    p {
-      color: $grey-500;
-    }
-  }
+}
 
-  .user-number-reviews {
-    p:first-child {
-      font-size: 20px;
-      font-weight: 700;
-      line-height: 1.1;
-    }
-  }
-
-  .row {
-    margin-right: 0;
-    margin-left: 0;
+.user-average {
+  p {
+    color: $grey-500;
   }
 }
 
+.user-number-reviews {
+  p:first-child {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+}
+
+.review-container {
+  margin: 0 0 $spacing-XS;
+}
+
 .container {
-  background-color: $white;
-  border-radius: $border-radius;
-  padding: $spacing-L;
   margin-bottom: $spacing-XL;
 }
 

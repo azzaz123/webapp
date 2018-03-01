@@ -7,6 +7,7 @@
   top: $topbar-height;
   bottom: 0;
   background-color: $grey-900;
+  padding-top: $spacing-M;
   height: calc(100vh - #{$topbar-height});
   z-index: 99;
 }
@@ -118,4 +119,11 @@ h2 {
       }
     }
   }
+}
+
+.sidebar-separator {
+  margin: $spacing-L $spacing 0 $spacing;
+	height: 2px;
+	opacity: 0.3;
+	border: solid 1px $grey-50;
 }
