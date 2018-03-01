@@ -3,7 +3,7 @@ import { catalogRoutedComponents, CatalogRoutingModule } from './catalog.routes'
 import { SharedModule } from '../shared/shared.module';
 import { CoreModule } from '../core/core.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
-import { InfiniteScrollModule } from 'angular2-infinite-scroll';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatIconModule } from '@angular/material';
 import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

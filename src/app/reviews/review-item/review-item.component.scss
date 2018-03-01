@@ -1,6 +1,10 @@
 @import "../../../style/_common.scss";
 
 .review-item {
+  background-color: $white;
+  border-radius: $border-radius;
+  margin-bottom: $spacing-XS;
+  padding: $spacing;
   .separator {
     width: 100%;
     border-bottom: 1px solid $grey-50;
@@ -13,7 +17,7 @@
   .review-type {
     font-size: $font-size-S;
     line-height: $font-size-S;
-    color: $corporate;
+    color: $grey-250;
   }
   .review-title {
     font-weight: bold;
@@ -40,6 +44,13 @@
   .review-credits {
     font-size: $font-size-S;
     color: $grey-300;
+    a {
+      color: $gray-dark;
+    }
+  }
+  .review-microname {
+    color: $color-grey-item;
+    font-weight: bold;
   }
   &.row {
     margin-right: 0;
@@ -88,9 +99,6 @@
       mat-icon {
         @include square(50px);
       }
-    }
-    .purchase {
-      background-color: $corporate;
     }
   }
 }

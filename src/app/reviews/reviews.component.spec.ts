@@ -126,17 +126,17 @@ describe('ReviewsComponent', () => {
     });
   });
 
-  describe('getReviewsNum', () => {
+  describe('getNumberOfReviews', () => {
     beforeEach(fakeAsync(() => {
-      spyOn(component, 'getReviewsNum').and.callThrough();
+      spyOn(component, 'getNumberOfReviews').and.callThrough();
       spyOn(userService, 'getStats').and.callThrough();
     }));
 
     it('should get reviews number', () => {
-      component.getReviewsNum();
+      component.getNumberOfReviews();
 
       expect(userService.getStats).toHaveBeenCalled();
-      expect(component.reviewsNum).toEqual(USERS_STATS_RESPONSE.counters.reviews);
+      expect(component.numberOfReviews).toEqual(USERS_STATS_RESPONSE.counters.reviews);
     });
   })
 });

@@ -6,9 +6,9 @@
 export const environment: any = {
   production: false,
   name: 'local',
-  baseUrl: 'http://dock112.corp.wallapop.com:8080/',
-  xmppDomain: 'dock112.wallapop.com',
-  wsUrl: 'ws://dock112.corp.wallapop.com:5281/ws-xmpp',
+  baseUrl: 'http://dock113.corp.wallapop.com:8080/',
+  xmppDomain: 'dock113.wallapop.com',
+  wsUrl: 'ws://dock113.corp.wallapop.com:5281/ws-xmpp',
   siteUrl: 'http://es.dev.wallapop.com:8080/',
   bypass: 'p3-9p0dJk2cHp3-4RsW0',
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',

@@ -39,7 +39,7 @@ export class TrackingEvent {
   public setDeviceInfo(operativeSystemVersion: string, OSName: string, deviceAccessTokenId: string, browserName: string, browserVersion: string) {
     this.sessions[0].device = {
       type: 'Computer',
-      brand: browserName,
+      manufacturer: browserName,
       model: browserVersion,
       platform: OSName,
       os: operativeSystemVersion,

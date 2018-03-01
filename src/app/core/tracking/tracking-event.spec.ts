@@ -9,7 +9,7 @@ describe('TrackingEvent', () => {
   const screenHeight: string = '768';
   const type: string = 'Computer';
   const deviceAccessTokenId: string = 'a-b-c';
-  const brand: string = 'Chrome';
+  const manufacturer: string = 'Chrome';
   const model: string = '64';
 
   it('should create an instance', () => {
@@ -18,10 +18,10 @@ describe('TrackingEvent', () => {
   });
   describe('setDeviceInfo', () => {
     it('should set the deviceInfo with the given parameters', () => {
-      TRACKING_EVENT.setDeviceInfo(os, platform, deviceAccessTokenId, brand, model);
+      TRACKING_EVENT.setDeviceInfo(os, platform, deviceAccessTokenId, manufacturer, model);
       expect(TRACKING_EVENT['sessions'][0]['device']).toEqual({
         type: type,
-        brand: brand,
+        manufacturer: manufacturer,
         model: model,
         platform: platform,
         os: os,
