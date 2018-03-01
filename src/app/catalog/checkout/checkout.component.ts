@@ -30,8 +30,4 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-  public showTutorial() {
-    this.bumpTutorial.show();
-  }
-
 }
