@@ -43,6 +43,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.active = false;
+    this.cartService.clean();
   }
 
   remove(cartItem: CartItem, type: string) {

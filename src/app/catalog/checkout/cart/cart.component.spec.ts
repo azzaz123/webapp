@@ -118,6 +118,14 @@ describe('CartComponent', () => {
 
       expect(component['active']).toBeFalsy();
     });
+
+    it('should call clean', () => {
+      spyOn(cartService, 'clean');
+
+      component.ngOnDestroy();
+
+      expect(cartService.clean).toHaveBeenCalled();
+    });
   });
 
   describe('remove', () => {
