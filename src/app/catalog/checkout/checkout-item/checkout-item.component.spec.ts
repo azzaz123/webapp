@@ -28,7 +28,7 @@ describe('CheckoutItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckoutItemComponent, CustomCurrencyPipe ],
+      declarations: [CheckoutItemComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
         {
@@ -60,35 +60,40 @@ describe('CheckoutItemComponent', () => {
       expect(component.duration).toEqual('72');
     });
 
-    it('should reset selected type and duration if action remove', () => {
-      component.selectedType = TYPE;
-      component.selectedDuration = DURATION;
-      const cartChange: CartChange = {
-        action: 'remove',
-        itemId: MOCK_ITEM_V3.id,
-        cart: CART
-      };
-      cartService.cart$ = Observable.of(cartChange);
+    describe('onRemoveOrClean', () => {
 
-      component.ngOnInit();
+      beforeEach(() => {
+        component.selectedType = TYPE;
+        component.selectedDuration = DURATION;
+      });
 
-      expect(component.selectedType).toBeNull();
-      expect(component.selectedDuration).toBeNull();
+      it('should reset flags, selected type and duration if action remove', () => {
+        const cartChange: CartChange = {
+          action: 'remove',
+          itemId: MOCK_ITEM_V3.id,
+          cart: CART
+        };
+        cartService.cart$ = Observable.of(cartChange);
+
+        component.ngOnInit();
+      });
+
+      it('should reset flags, selected type and duration if action clean', () => {
+        const cartChange: CartChange = {
+          action: 'clean',
+          cart: CART
+        };
+        cartService.cart$ = Observable.of(cartChange);
+
+        component.ngOnInit();
+      });
     });
 
-    it('should reset selected type and duration if action clean', () => {
-      component.selectedType = TYPE;
-      component.selectedDuration = DURATION;
-      const cartChange: CartChange = {
-        action: 'clean',
-        cart: CART
-      };
-      cartService.cart$ = Observable.of(cartChange);
-
-      component.ngOnInit();
-
-      expect(component.selectedType).toBeNull();
-      expect(component.selectedDuration).toBeNull();
+    afterEach(() => {
+      expect(component.selectedType).toBeUndefined();
+      expect(component.selectedDuration).toBeUndefined();
+      expect(component.itemWithProducts.item.flags['bump_type']).toBeUndefined();
+      expect(component.itemWithProducts.item.flags.bumped).toBeFalsy();
     });
   });
 
@@ -101,24 +106,33 @@ describe('CheckoutItemComponent', () => {
   });
 
   describe('select', () => {
-    it('should set type, duration and call add', () => {
+
+    beforeEach(() => {
       component.duration = DURATION;
       spyOn(cartService, 'add');
+      spyOn(cartService, 'remove');
 
       component.select(TYPE);
+    });
 
+    it('should set type and duration', () => {
       expect(component.selectedType).toBe(TYPE);
       expect(component.selectedDuration).toBe(DURATION);
+    });
+
+    it('should call add', () => {
       expect(cartService.add).toHaveBeenCalledWith({
         item: MOCK_ITEM_V3,
         duration: CITYBUMP_DURATIONS[0]
       }, TYPE);
     });
 
-    it('should call remove if selected twice', () => {
-      spyOn(cartService, 'remove');
+    it('should set items flags', () => {
+      expect(component.itemWithProducts.item.flags['bump_type']).toBe(TYPE);
+      expect(component.itemWithProducts.item.flags.bumped).toBeTruthy();
+    });
 
-      component.select(TYPE);
+    it('should call remove if selected twice', () => {
       component.select(TYPE);
 
       expect(cartService.remove).toHaveBeenCalledWith(MOCK_ITEM_V3.id, TYPE);
