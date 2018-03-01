@@ -236,7 +236,7 @@ input::-webkit-calendar-picker-indicator{
     margin-right: $spacing-XS;
   }
   &:not(.active) {
-    [svgIcon="radio-button"] /deep/ svg #bullet {
+    [svgIcon="radio-button"] #bullet {
       display: none;
     }
   }
