@@ -1,14 +1,14 @@
 import {
   AvailableProductsResponse,
   CarUploadForm,
-  ConversationUser,
-  ItemResponse,
-  ItemUploadForm,
+  ConversationUser, Duration,
+  ItemResponse, ItemsWithAvailableProductsResponse,
+  ItemUploadForm, ItemWithProducts,
   Order,
-  Product,
+  Product, ProductDurations,
   Purchase
 } from '../app/core/item/item-response.interface';
-import { USER_LOCATION, ITEM_ID } from 'shield';
+import { USER_LOCATION, ITEM_ID, Item } from 'shield';
 import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
@@ -187,6 +187,62 @@ export const ITEMS_DATA_V3 = [{
   }
 }];
 
+export const MOCK_ITEM_V3: Item = new Item(
+  ITEMS_DATA_V3[0].content.id,
+  null,
+  ITEMS_DATA_V3[0].content.seller_id,
+  ITEMS_DATA_V3[0].content.title,
+  ITEMS_DATA_V3[0].content.description,
+  undefined,
+  null,
+  ITEMS_DATA_V3[0].content.sale_price,
+  ITEMS_DATA_V3[0].content.currency_code,
+  ITEMS_DATA_V3[0].content.modified_date,
+  undefined,
+  ITEMS_DATA_V3[0].content.flags,
+  null,
+  undefined,
+  {
+    id: '1',
+    original_width: ITEMS_DATA_V3[0].content.image.original_width,
+    original_height: ITEMS_DATA_V3[0].content.image.original_height,
+    average_hex_color: '',
+    urls_by_size: ITEMS_DATA_V3[0].content.image
+  },
+  undefined,
+  ITEMS_DATA_V3[0].content.web_slug,
+  ITEMS_DATA_V3[0].content.modified_date,
+  undefined
+);
+
+export const MOCK_ITEM_V3_2: Item = new Item(
+  ITEMS_DATA_V3[1].content.id,
+  null,
+  ITEMS_DATA_V3[1].content.seller_id,
+  ITEMS_DATA_V3[1].content.title,
+  ITEMS_DATA_V3[1].content.description,
+  undefined,
+  null,
+  ITEMS_DATA_V3[1].content.sale_price,
+  ITEMS_DATA_V3[1].content.currency_code,
+  ITEMS_DATA_V3[1].content.modified_date,
+  undefined,
+  ITEMS_DATA_V3[1].content.flags,
+  null,
+  undefined,
+  {
+    id: '2',
+    original_width: ITEMS_DATA_V3[1].content.image.original_width,
+    original_height: ITEMS_DATA_V3[1].content.image.original_height,
+    average_hex_color: '',
+    urls_by_size: ITEMS_DATA_V3[1].content.image
+  },
+  undefined,
+  ITEMS_DATA_V3[1].content.web_slug,
+  ITEMS_DATA_V3[1].content.modified_date,
+  undefined
+);
+
 export const ITEMS_DATA_v3_FAVORITES = [{
   'id': 'lqzmrdgogy6v',
   'type': 'consumer_goods',
@@ -306,7 +362,12 @@ export const PRODUCT_RESPONSE: Product = {
   'id': 'd9ke65mjox1m',
   'name': 'WEB-MARKET',
   'default_duration_index': 0,
-  'durations': [{'id': PRODUCT_DURATION_ID, 'duration': 168, 'market_code': PRODUCT_DURATION_MARKET_CODE.toString(), 'original_market_code': '5.99'}]
+  'durations': [{
+    'id': PRODUCT_DURATION_ID,
+    'duration': 168,
+    'market_code': PRODUCT_DURATION_MARKET_CODE.toString(),
+    'original_market_code': '5.99'
+  }]
 };
 
 export const PRODUCTS_RESPONSE: AvailableProductsResponse = {
@@ -376,3 +437,112 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
     longitude: USER_LOCATION.approximated_longitude
   }
 };
+
+export const CITYBUMP_DURATIONS: Duration[] = [{
+  'id': 'p1k3zlq6xdyo',
+  'duration': 24,
+  'market_code': '3.19',
+  'original_market_code': '1.99'
+}, {
+  'id': '2n08z8oj3wrq',
+  'duration': 72,
+  'market_code': '5.59',
+  'original_market_code': '6.99'
+}, {
+  'id': 'd9ke65vmjox1',
+  'duration': 168,
+  'market_code': '7.19',
+  'original_market_code': '8.99'
+}];
+
+export const ZONEBUMP_DURATIONS: Duration[] = [{
+  'id': 'qpevjrwzk8y4',
+  'duration': 24,
+  'market_code': '3.19',
+  'original_market_code': '1.99'
+}, {
+  'id': 'v9owzy2j5g7x',
+  'duration': 72,
+  'market_code': '3.19',
+  'original_market_code': '3.99'
+}, {
+  'id': 'l1kmzngg6n3p',
+  'duration': 168,
+  'market_code': '4.79',
+  'original_market_code': '5.99'
+}];
+
+export const COUNTRYBUMP_DURATIONS: Duration[] = [{
+  'id': '5nv4z4ylzy73',
+  'duration': 24,
+  'market_code': '7.99',
+  'original_market_code': '9.99'
+}, {
+  'id': '2y436edkjdgp',
+  'duration': 72,
+  'market_code': '15.19',
+  'original_market_code': '18.99'
+}, {
+  'id': 'k87v6g05jeoy',
+  'duration': 168,
+  'market_code': '23.19',
+  'original_market_code': '28.99'
+}];
+
+export const BUMP_PRODUCTS: ProductDurations = {
+  '24': {
+    'citybump': CITYBUMP_DURATIONS[0],
+    'zonebump': ZONEBUMP_DURATIONS[0],
+    'countrybump': COUNTRYBUMP_DURATIONS[0]
+  },
+  '72': {
+    'citybump': CITYBUMP_DURATIONS[1],
+    'zonebump': ZONEBUMP_DURATIONS[1],
+    'countrybump': COUNTRYBUMP_DURATIONS[1]
+  },
+  '168': {
+    'citybump': CITYBUMP_DURATIONS[2],
+    'zonebump': ZONEBUMP_DURATIONS[2],
+    'countrybump': COUNTRYBUMP_DURATIONS[2]
+  }
+};
+
+export const ITEMS_WITH_PRODUCTS: ItemWithProducts[] = [
+  {
+    'item': MOCK_ITEM_V3,
+    'products': BUMP_PRODUCTS
+  },
+  {
+    'item': MOCK_ITEM_V3_2,
+    'products': BUMP_PRODUCTS
+  }
+];
+
+export const PRODUCT_LIST: Product[] = [{
+  'id': 'qvxpzp9630nd',
+  'name': 'citybump',
+  'default_duration_index': 1,
+  'durations': CITYBUMP_DURATIONS
+}, {
+  'id': 'l1kmzng6n3p8',
+  'name': 'zonebump',
+  'default_duration_index': 1,
+  'durations': ZONEBUMP_DURATIONS
+}, {
+  'id': 'gvdqjw4zon09',
+  'name': 'countrybump',
+  'default_duration_index': 1,
+  'durations': COUNTRYBUMP_DURATIONS
+}];
+
+export const ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE: ItemsWithAvailableProductsResponse[] = [{
+  'id': '1',
+  'type': 'consumer_goods',
+  'content': ITEMS_DATA_V3[0].content,
+  'productList': PRODUCT_LIST
+}, {
+  'id': '2',
+  'type': 'consumer_goods',
+  'content': ITEMS_DATA_V3[1].content,
+  'productList': PRODUCT_LIST
+}];

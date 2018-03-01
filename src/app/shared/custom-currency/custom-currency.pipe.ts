@@ -14,7 +14,7 @@ export class CustomCurrencyPipe implements PipeTransform {
   constructor(private decimalPipe: DecimalPipe) {
   }
 
-  transform(value: any, currencyCode?: string, digits?: string): any {
+  transform(value: any, currencyCode: string = 'EUR', digits?: string): any {
     if (currencyCode === 'EUR') {
       return this.decimalPipe.transform(value, digits) + ' ' + this.currencies[currencyCode];
     } else {
