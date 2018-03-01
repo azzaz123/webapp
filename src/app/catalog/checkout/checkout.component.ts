@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class CheckoutComponent implements OnInit {
 
   itemsWithProducts: ItemWithProducts[];
+  provincialBump: boolean;
   public bumpTutorial: EventEmitter<any> = new EventEmitter();
 
   constructor(private itemService: ItemService,
@@ -24,6 +25,7 @@ export class CheckoutComponent implements OnInit {
     }
     this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems).subscribe((itemsWithProducts: ItemWithProducts[]) => {
       this.itemsWithProducts = itemsWithProducts;
+      this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
     });
   }
 

@@ -508,6 +508,21 @@ export const BUMP_PRODUCTS: ProductDurations = {
   }
 };
 
+export const BUMP_PRODUCTS_PROVINCE: ProductDurations = {
+  '24': {
+    'zonebump': ZONEBUMP_DURATIONS[0],
+    'countrybump': COUNTRYBUMP_DURATIONS[0]
+  },
+  '72': {
+    'zonebump': ZONEBUMP_DURATIONS[1],
+    'countrybump': COUNTRYBUMP_DURATIONS[1]
+  },
+  '168': {
+    'zonebump': ZONEBUMP_DURATIONS[2],
+    'countrybump': COUNTRYBUMP_DURATIONS[2]
+  }
+};
+
 export const ITEMS_WITH_PRODUCTS: ItemWithProducts[] = [
   {
     'item': MOCK_ITEM_V3,
@@ -516,6 +531,17 @@ export const ITEMS_WITH_PRODUCTS: ItemWithProducts[] = [
   {
     'item': MOCK_ITEM_V3_2,
     'products': BUMP_PRODUCTS
+  }
+];
+
+export const ITEMS_WITH_PRODUCTS_PROVINCE: ItemWithProducts[] = [
+  {
+    'item': MOCK_ITEM_V3,
+    'products': BUMP_PRODUCTS_PROVINCE
+  },
+  {
+    'item': MOCK_ITEM_V3_2,
+    'products': BUMP_PRODUCTS_PROVINCE
   }
 ];
 

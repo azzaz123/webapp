@@ -10,10 +10,11 @@
           <div class="type zone">
             <div>
               <mat-icon svgIcon="bump-zone"></mat-icon>
-              <div i18n>Feature it locally</div>
+              <div [hidden]="provincialBump" i18n>Feature it locally</div>
+              <div [hidden]="!provincialBump" i18n>Feature it provincially</div>
             </div>
           </div>
-          <div class="type city">
+          <div class="type city" [hidden]="provincialBump">
             <div>
               <div>
                 <mat-icon svgIcon="bump-city"></mat-icon>
@@ -35,7 +36,7 @@
         </div>
       </div>
       <div class="cart">
-        <tsl-cart></tsl-cart>
+        <tsl-cart [provincialBump]="provincialBump"></tsl-cart>
       </div>
     </div>
     <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
