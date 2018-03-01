@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { ItemWithProducts } from '../../core/item/item-response.interface';
 
@@ -10,6 +10,7 @@ import { ItemWithProducts } from '../../core/item/item-response.interface';
 export class CheckoutComponent implements OnInit {
 
   itemsWithProducts: ItemWithProducts[];
+  public bumpTutorial: EventEmitter<any> = new EventEmitter();
 
   constructor(private itemService: ItemService) {
   }
@@ -18,6 +19,10 @@ export class CheckoutComponent implements OnInit {
     this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems).subscribe((itemsWithProducts: ItemWithProducts[]) => {
       this.itemsWithProducts = itemsWithProducts;
     });
+  }
+
+  public showTutorial() {
+    this.bumpTutorial.emit();
   }
 
 }

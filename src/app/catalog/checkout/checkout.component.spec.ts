@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CheckoutComponent } from './checkout.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { ITEMS_WITH_PRODUCTS } from '../../../tests/item.fixtures';
+
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
@@ -24,7 +24,7 @@ describe('CheckoutComponent', () => {
             return Observable.of(ITEMS_WITH_PRODUCTS);
           }
         }
-        }
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -43,6 +43,16 @@ describe('CheckoutComponent', () => {
     it('should call getItemsWithAvailableProducts and set it', () => {
       expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(SELECTED_ITEMS);
       expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
+    });
+  });
+
+  describe('showTutorial', () => {
+    it('should emit the show tutorial event', () => {
+      spyOn(component.bumpTutorial, 'emit');
+
+      component.showTutorial();
+
+      expect(component.bumpTutorial.emit).toHaveBeenCalled();
     });
   });
 });
