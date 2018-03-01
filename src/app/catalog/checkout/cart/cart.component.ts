@@ -23,6 +23,7 @@ export class CartComponent implements OnInit, OnDestroy {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public financialCard: FinancialCard;
   public cardType = 'old';
+  public loading: boolean;
 
   constructor(private cartService: CartService,
               private itemService: ItemService,
@@ -54,10 +55,12 @@ export class CartComponent implements OnInit, OnDestroy {
   checkout() {
     const order: Order[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
-    this.itemService.purchaseProducts(order, orderId).subscribe(() => {
+    this.loading = true;
+    this.itemService.purchaseProducts(order, orderId).subscribe((failedProducts: string[]) => {
       this.track(order);
       this.buy(orderId);
     }, (error: Response) => {
+      this.loading = false;
       if (error.text()) {
         this.errorService.show(error);
       } else {

@@ -1,16 +1,16 @@
 <div class="page-content">
   <div class="container">
-    <div class="row">
+    <div class="row" [hidden]="!itemsWithProducts">
       <div class="col">
         <div class="table-header">
           <div class="info">
             <mat-icon svgIcon="feature"></mat-icon>
-            <a i18n (click)="showTutorial()">¿Que son los Destacados?</a>
+            <a (click)="showTutorial()" i18n>What can features do for you?</a>
           </div>
           <div class="type zone">
             <div>
               <mat-icon svgIcon="bump-zone"></mat-icon>
-              <div i18n>Destácalo en tu Barrio</div>
+              <div i18n>Feature it locally</div>
             </div>
           </div>
           <div class="type city">
@@ -18,7 +18,7 @@
               <div>
                 <mat-icon svgIcon="bump-city"></mat-icon>
               </div>
-              <div i18n>Destácalo en tu ciudad</div>
+              <div i18n>Feature it your city</div>
             </div>
           </div>
           <div class="type country">
@@ -26,7 +26,7 @@
               <div>
                 <mat-icon svgIcon="bump-country"></mat-icon>
               </div>
-              <div i18n>Destácalo en tu País</div>
+              <div i18n>Feature it nationally</div>
             </div>
           </div>
         </div>
@@ -38,6 +38,7 @@
         <tsl-cart></tsl-cart>
       </div>
     </div>
+    <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
   </div>
   <tsl-bump-tutorial [showTutorial]="bumpTutorial"></tsl-bump-tutorial>
 </div>

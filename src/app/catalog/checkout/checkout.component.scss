@@ -25,6 +25,7 @@ $offset: 7px;
     a {
       text-decoration: underline;
       cursor: pointer;
+      color: $corporate;
       &:hover {
         text-decoration: none;
       }
@@ -56,6 +57,9 @@ $offset: 7px;
       mat-icon {
         width: 40px;
         height: 44px;
+      }
+      div {
+        margin-bottom: $spacing-XXS;
       }
     }
     &.city {

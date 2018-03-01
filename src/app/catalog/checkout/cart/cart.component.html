@@ -1,4 +1,4 @@
-<h1>Tu lista de la compra</h1>
+<h1 i18n>Desire list</h1>
 <div class="cart-wrapper" [ngClass]="{'has-financial-card': financialCard}">
   <div class="scroll-panel">
     <ul *ngIf="cart" class="items-list">
@@ -8,9 +8,9 @@
           <mat-icon class="wing-icon" svgIcon="wing-{{type}}"></mat-icon>
           <div class="type">
             <span [ngSwitch]="type">
-              <ng-container *ngSwitchCase="'zonebump'" i18n>Destacado de Barrio</ng-container>
-              <ng-container *ngSwitchCase="'citybump'" i18n>Destacado de Ciudad</ng-container>
-              <ng-container *ngSwitchCase="'countrybump'" i18n>Destacado de País</ng-container>
+              <ng-container *ngSwitchCase="'zonebump'" i18n>Local bump</ng-container>
+              <ng-container *ngSwitchCase="'citybump'" i18n>City bump</ng-container>
+              <ng-container *ngSwitchCase="'countrybump'" i18n>National bump</ng-container>
             </span>
             <strong>x {{cart[type].cartItems.length}}</strong><br />
             <span class="price">{{cart[type].total | customCurrency}}</span>
@@ -24,11 +24,11 @@
               <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
               <div class="type">
                 <span [ngSwitch]="type">
-                  <ng-container *ngSwitchCase="'zonebump'" i18n>Barrio</ng-container>
-                  <ng-container *ngSwitchCase="'citybump'" i18n>Ciudad</ng-container>
-                  <ng-container *ngSwitchCase="'countrybump'" i18n>País</ng-container>
+                  <ng-container *ngSwitchCase="'zonebump'" i18n>Local</ng-container>
+                  <ng-container *ngSwitchCase="'citybump'" i18n>City</ng-container>
+                  <ng-container *ngSwitchCase="'countrybump'" i18n>National</ng-container>
                 </span>
-                x {{cartItem.duration.duration / 24}}días
+                x {{cartItem.duration.duration / 24}}<span i18n>days</span>
               </div>
               <div class="price">{{cartItem.duration.market_code | customCurrency}}</div>
             </div>
@@ -40,7 +40,7 @@
   <div class="clean-cart" [hidden]="!cart?.total">
     <a (click)="clean()">
       <mat-icon svgIcon="delete"></mat-icon>
-      <span i18n>Vaciar lista </span>
+      <span i18n>Delete list</span>
     </a>
   </div>
 </div>
@@ -61,10 +61,13 @@
       <label ngbButtonLabel class="custom-radio new-card">
         <input ngbButton type="radio" value="new">
         <mat-icon svgIcon="radio-button"></mat-icon>
-        <span i18n>+ Use a new card</span>
+        <span i18n>+ Add another credit card</span>
       </label>
     </div>
   </form>
 </div>
-<button class="btn btn-primary" [disabled]="!cart?.total" (click)="checkout()" i18n>Continue to Checkout</button>
+<button class="btn btn-primary" [disabled]="!cart?.total || loading" (click)="checkout()">
+  <mat-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></mat-icon>
+  <span [hidden]="loading" i18n>Continue to Checkout</span>
+</button>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

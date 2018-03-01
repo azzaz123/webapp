@@ -175,10 +175,10 @@
   <msg id="6618892692857491514"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
   <msg id="3542042671420335679"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:6</source>No</msg>
   <msg id="4510233521290203619"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:7</source><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:8</source>Yes, leave</msg>
-  <msg id="9066917259941093983"><source>app/catalog/checkout/checkout.component.ts:8</source>¿Que son los Destacados?</msg>
-  <msg id="2172801654389577031"><source>app/catalog/checkout/checkout.component.ts:13</source>Destácalo en tu Barrio</msg>
-  <msg id="1212526136399897972"><source>app/catalog/checkout/checkout.component.ts:21</source>Destácalo en tu ciudad</msg>
-  <msg id="3158230045242542197"><source>app/catalog/checkout/checkout.component.ts:29</source>Destácalo en tu País</msg>
+  <msg id="5411836089142777830"><source>app/catalog/checkout/checkout.component.ts:8</source><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:4</source>What can features do for you?</msg>
+  <msg id="833919813165214228"><source>app/catalog/checkout/checkout.component.ts:13</source>Feature it locally</msg>
+  <msg id="4828515169928166764"><source>app/catalog/checkout/checkout.component.ts:21</source>Feature it your city</msg>
+  <msg id="7083003813535210826"><source>app/catalog/checkout/checkout.component.ts:29</source>Feature it nationally</msg>
   <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
@@ -194,7 +194,7 @@
   <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:23</source>Feature Product</msg>
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:44</source>Reactivate</msg>
   <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:48</source>Pending</msg>
-  <msg id="8743988303207163578"><source>app/catalog/list/selected-items/selected-items.component.ts:27</source>Feature Now</msg>
+  <msg id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart"><source>app/catalog/list/selected-items/selected-items.component.ts:28</source>Continue</msg>
   <msg id="6261406176927621365"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:2</source>Delete photo</msg>
   <msg id="4267028037176582017"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:3</source>The photo will be permanently deleted. Are you sure you want to proceed?</msg>
   <msg id="5112037422043971210"><source>app/catalog/upload/drop-area/drop-area.component.ts:5</source>Drop here your files to upload as a product photo</msg>
@@ -219,16 +219,18 @@
   <msg id="6822624572232933913"><source>app/catalog/upload/category-selector/category-selector.component.ts:31</source>My services</msg>
   <msg id="4895100071976641944"><source>app/catalog/upload/category-selector/category-selector.component.ts:40</source>A property</msg>
   <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:46</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
-  <msg id="7807518657048523464"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:8</source><ph name="INTERPOLATION"><ex>{{duration / 24}}</ex></ph> days</msg>
-  <msg id="4139731462464136823"><source>app/catalog/checkout/cart/cart.component.ts:11</source>Destacado de Barrio</msg>
-  <msg id="4356967063623087024"><source>app/catalog/checkout/cart/cart.component.ts:12</source>Destacado de Ciudad</msg>
-  <msg id="2269907010531323670"><source>app/catalog/checkout/cart/cart.component.ts:13</source>Destacado de País</msg>
-  <msg id="7973357311896155212"><source>app/catalog/checkout/cart/cart.component.ts:27</source>Barrio</msg>
-  <msg id="469730375491279314"><source>app/catalog/checkout/cart/cart.component.ts:28</source>Ciudad</msg>
-  <msg id="2814390016214831270"><source>app/catalog/checkout/cart/cart.component.ts:29</source>País</msg>
-  <msg id="3515094969236586917"><source>app/catalog/checkout/cart/cart.component.ts:43</source>Vaciar lista </msg>
+  <msg id="7036284206110282007"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:8</source><source>app/catalog/checkout/cart/cart.component.ts:31</source>days</msg>
+  <msg id="1577612206026464520"><source>app/catalog/checkout/cart/cart.component.ts:1</source>Desire list</msg>
+  <msg id="6801638153695046345"><source>app/catalog/checkout/cart/cart.component.ts:11</source>Local bump</msg>
+  <msg id="2789162672363314854"><source>app/catalog/checkout/cart/cart.component.ts:12</source>City bump</msg>
+  <msg id="5785357843753565591"><source>app/catalog/checkout/cart/cart.component.ts:13</source>National bump</msg>
+  <msg id="2906587845957718064"><source>app/catalog/checkout/cart/cart.component.ts:27</source>Local</msg>
+  <msg id="2314075913167237221"><source>app/catalog/checkout/cart/cart.component.ts:28</source>City</msg>
+  <msg id="7928837776892145785"><source>app/catalog/checkout/cart/cart.component.ts:29</source>National</msg>
+  <msg id="6377139538537882652"><source>app/catalog/checkout/cart/cart.component.ts:43</source>Delete list</msg>
   <msg id="3448462145758383019"><source>app/catalog/checkout/cart/cart.component.ts:48</source>Total</msg>
-  <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:4</source>What can features do for you?</msg>
+  <msg id="6581598798517073714"><source>app/catalog/checkout/cart/cart.component.ts:64</source>+ Add another credit card</msg>
+  <msg id="7274286978511770772"><source>app/catalog/checkout/cart/cart.component.ts:71</source>Continue to Checkout</msg>
   <msg id="6763447295092579753"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:5,7</source>By featuring your item you will make it more visible to the restof the community thanks to its special
                 features. What will that give to you? Basically, that more people will contact you and you&apos;ll sell your
                 items quicker. Take a look at which of the following suits you best. </msg>
