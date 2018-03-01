@@ -18,6 +18,20 @@
       font-size: $font-size-S;
       line-height: 1.29;
     }
+    &.urgent {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .content {
+        flex-basis: 70%;
+      }
+      .urgent-background {
+        width: 108px;
+        background: url(/assets/images/urgent-background.svg) no-repeat;
+        background-size: 105px;
+        opacity: 0.3;
+      }
+    }
   }
 
   .chars-counter {
@@ -124,6 +138,53 @@
     }
     &:focus {
       box-shadow: none;
+    }
+  }
+  $checkbox-width: 24px;
+  $transition: all .5s ease;
+  $feature-button-width: 170px;
+
+  .checkbox {
+    transition: $transition;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    .resized & {
+      width: $checkbox-width;
+      opacity: 1;
+    }
+    span {
+      color: $grey-500;
+      &.selected {
+        color: $color-urgent;
+      }
+    }
+    .select {
+      @include square($checkbox-width);
+      border: 2px solid $grey-100;
+      border-radius: 6px;
+      padding: 0;
+      background: transparent;
+      margin-right: $spacing-S;
+      cursor: pointer;
+      mat-icon {
+        display: none;
+        height: 9px;
+        width: 12px;
+      }
+      &.selected {
+        background: $corporate;
+        border-color: transparent;
+        mat-icon {
+          display: flex;
+          /deep/ path {
+            fill: $color-urgent;
+          }
+        }
+      }
+      &:hover {
+        border-color: $color-urgent;
+      }
     }
   }
 }
