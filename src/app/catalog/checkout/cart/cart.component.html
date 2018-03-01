@@ -48,3 +48,5 @@
   <span class="pull-left" i18n>Total</span>
   <span class="pull-right price">{{cart?.total | customCurrency}}</span>
 </div>
+<button class="btn btn-primary" [disabled]="!cart?.total" (click)="checkout()" i18n>Continue to Checkout</button>
+<tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>
