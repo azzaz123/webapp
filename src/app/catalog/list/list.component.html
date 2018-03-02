@@ -6,6 +6,9 @@
      [infiniteScrollDisabled]="end || loading"
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
+  <div class="urgent-message" *ngIf="isUrgent">
+    <p class="loading" i18n>You are being redirect to our payment system<span>.</span><span>.</span><span>.</span></p>
+  </div>
   <div class="container">
     <img class="banner" src="/assets/images/banner-bump.gif" />
     <tsl-header>

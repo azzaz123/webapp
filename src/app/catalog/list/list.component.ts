@@ -3,7 +3,7 @@ import { FinancialCard, Item, ItemBulkResponse, PaymentService } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import { ItemsData } from '../../core/item/item-response.interface';
+import {ItemsData, Order, Product} from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -36,6 +36,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private active: boolean = true;
   private firstItemLoad = true;
   public numberOfProducts: number;
+  public isUrgent: boolean = false;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -80,8 +81,13 @@ export class ListComponent implements OnInit, OnDestroy {
             this.feature(orderEvent);
           }, () => {
           });
+        } else if (params && params.urgent) {
+            this.isUrgent = true;
+            setTimeout(() => {
+              this.getUrgentPrice(params.itemId);
+            }, 3000);
         } else if (params && params.updated) {
-          this.errorService.i18nSuccess('itemUpdated');
+            this.errorService.i18nSuccess('itemUpdated');
         }
       });
     });
@@ -256,6 +262,20 @@ export class ListComponent implements OnInit, OnDestroy {
   public getNumberOfProducts() {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
       this.numberOfProducts = userStats.counters.publish;
+    });
+  }
+
+  private getUrgentPrice(itemId: string): void {
+    this.itemService.getUrgentProducts(itemId).subscribe((product: Product) => {
+      const order: Order[] = [{
+        item_id: itemId,
+        product_id: product.durations[0].id
+      }];
+      const orderEvent: OrderEvent = {
+        order: order,
+        total: +product.durations[0].market_code
+      };
+      this.feature(orderEvent);
     });
   }
 }

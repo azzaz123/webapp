@@ -6,10 +6,10 @@
       for you to be found thanks to the urgent filter.
     </p>
     <div class="checkbox" (click)="selectUrgent()">
-      <button class="select" >
+      <button type="button" class="select" [ngClass]="{'selected': isUrgent}">
         <mat-icon svgIcon="check"></mat-icon>
       </button>
-      <span i18n [ngClass]="{'selected': urgentSelected}">Mark it as urgent</span>
+      <span i18n [ngClass]="{'selected': isUrgent}">Mark it as urgent</span>
     </div>
   </div>
   <div class="urgent-background"></div>

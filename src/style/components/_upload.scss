@@ -167,18 +167,20 @@
       background: transparent;
       margin-right: $spacing-S;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
       mat-icon {
         display: none;
         height: 9px;
         width: 12px;
       }
       &.selected {
-        background: $corporate;
+        background: $color-urgent;
         border-color: transparent;
         mat-icon {
           display: flex;
           /deep/ path {
-            fill: $color-urgent;
+            fill: $white;
           }
         }
       }

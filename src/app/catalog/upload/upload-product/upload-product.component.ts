@@ -22,6 +22,7 @@ import { CategoryService } from '../../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { ItemService } from '../../../core/item/item.service';
 
 @Component({
   selector: 'tsl-upload-product',
@@ -71,6 +72,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
+  public isUrgent: boolean = false;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -78,6 +80,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
               private categoryService: CategoryService,
               private modalService: NgbModal,
               private trackingService: TrackingService,
+              public itemService: ItemService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
@@ -213,14 +216,18 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     }
   }
 
-  onUploaded(action: string) {
+  onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    this.router.navigate(['/catalog/list', {[action]: true}]);
+
+    if (this.isUrgent) {
+      uploadEvent.action = 'urgent';
+    }
+    this.router.navigate(['/catalog/list', {[uploadEvent.action]: true, itemId: uploadEvent.response.id}]);
   }
 
   onError(response: any) {
@@ -261,6 +268,10 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       let v: number = Number(control.value);
       return v > max ? {'max': {'requiredMax': max, 'actualMax': v}} : null;
     };
+  }
+
+  public selectUrgent(isUrgent: boolean): void {
+    this.isUrgent = isUrgent;
   }
 
 }

@@ -36,6 +36,7 @@ export class UploadCarComponent implements OnInit {
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
+  public isUrgent: boolean = false;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -226,14 +227,17 @@ export class UploadCarComponent implements OnInit {
     }
   }
 
-  onUploaded(action: string) {
+  onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    this.router.navigate(['/catalog/list', {[action]: true}]);
+    if (this.isUrgent) {
+      uploadEvent.action = 'urgent';
+    }
+    this.router.navigate(['/catalog/list', {[uploadEvent.action]: true, itemId: uploadEvent.response.id}]);
   }
 
   onError(response: any) {

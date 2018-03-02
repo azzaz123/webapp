@@ -3,7 +3,7 @@ import { NgUploaderOptions, UploadFile, UploadOutput, UploadStatus } from 'ngx-u
 import * as _ from 'lodash';
 import { Image } from 'shield';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { UploadEvent } from '../upload-event.interface';
+import { UploadEvent, UploadedEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
 import { ItemService } from '../../../core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -25,7 +25,7 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 export class DropAreaComponent implements OnInit, ControlValueAccessor {
 
   @Input() uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
-  @Output() onUploaded: EventEmitter<string> = new EventEmitter();
+  @Output() onUploaded: EventEmitter<UploadedEvent> = new EventEmitter();
   @Output() onError: EventEmitter<any> = new EventEmitter();
   @Input() maxUploads = 4;
   @Input() images: Image[];
@@ -70,8 +70,8 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   }
 
   private updateItem(values: any) {
-    this.itemService.update(values).subscribe(() => {
-      this.onUploaded.emit('updated');
+    this.itemService.update(values).subscribe((response: any) => {
+      this.onUploaded.emit({action: 'updated', response: response});
     }, (response) => {
       this.onError.emit(response);
       this.errorsService.i18nError('serverError', response.message ? response.message : '');
@@ -179,13 +179,13 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
           if (this.files.length > 1) {
             this.uploadService.uploadOtherImages(output.file.response.id, this.maxUploads === 8 ? '/cars' : '');
           } else {
-            this.onUploaded.emit('created');
+            this.onUploaded.emit({action: 'created', response: output.file.response});
           }
         } else {
           if (!this.images && _.every(this.files, (file: UploadFile) => {
               return file.progress.status === UploadStatus.Done;
             })) {
-            this.onUploaded.emit(this.images ? 'updated' : 'created');
+            this.onUploaded.emit({action: this.images ? 'updated' : 'created', response: output.file.response});
           } else {
             this.pictureUploadedOnUpdate(output);
           }
