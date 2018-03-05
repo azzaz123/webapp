@@ -48,7 +48,10 @@ body {
   height: 100vh;
   overflow: auto;
   background: rgba(236, 239, 241, 0.6);
-  padding: $spacing-L;
+  padding: 0 $spacing-L;
+  > .container {
+    padding: $spacing-L 10px;
+  }
 }
 
 button {
@@ -58,7 +61,20 @@ button {
   }
 }
 
+.btn {
+  &:focus, &.focus {
+    box-shadow: none;
+  }
+}
 
+.btn-primary {
+  &.disabled, &:disabled {
+    &:active {
+      background-color: $corporate;
+      border-color: $corporate;
+    }
+  }
+}
 
 #right-panel {
   .card {
@@ -72,4 +88,10 @@ button, input, optgroup, select, textarea {
 
 .page-profile .popover {
   display: none;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1200px;
+  }
 }

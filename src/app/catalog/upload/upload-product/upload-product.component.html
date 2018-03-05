@@ -108,12 +108,12 @@
   <div class="box" [hidden]="!uploadForm.value.sale_conditions.shipping_allowed" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave">
     <div class="selector-container shipping-options"  data-toggle="buttons">
       <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.delivery_info.valid && uploadForm.controls.delivery_info.dirty}" i18n>Shipping</h2>
-      <p i18n>Tell us how much it weighs.</p>
+      <p i18n>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</p>
       <div ngbRadioGroup name="radioBasic" formControlName="delivery_info">
         <label ngbButtonLabel class="btn selector" *ngFor="let delivery of deliveryInfo">
           <input ngbButton type="radio" [value]="delivery.value">
           <mat-icon svgIcon="shipping-{{delivery.value.max_weight_kg}}"></mat-icon>
-          <span><strong>{{delivery.value.max_weight_kg}}kg max</strong><br />{{delivery.size}}</span>
+          <span><strong>{{delivery.value.max_weight_kg}}kg max</strong></span>
         </label>
       </div>
     </div>

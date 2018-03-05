@@ -66,8 +66,17 @@ $sold-width: 32px;
 
 .featured {
   background-color: $corporate;
+  border: 1px solid $white;
   mat-icon {
-    height: 19px;
-    width: 16px;
+    @include square(25px);
+  }
+  &.zonebump {
+    background-color: $zone-bump;
+  }
+  &.citybump {
+    background-color: $city-bump;
+  }
+  &.countrybump {
+    background-color: $country-bump;
   }
 }

@@ -30,6 +30,11 @@ import { ItemResolverService } from './item-resolver.service';
 import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/exit-confirmation-modal.component';
 import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-modal/remove-confirm-modal.component';
 import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactivate-modal.component';
+import { CheckoutItemComponent } from './checkout/checkout-item/checkout-item.component';
+import { CartComponent } from './checkout/cart/cart.component';
+import { CartService } from './checkout/cart/cart.service';
+import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
+import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
 
 @NgModule({
   imports: [
@@ -56,7 +61,9 @@ import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactiv
     CarSuggestionsService,
     CarKeysService,
     UploadService,
-    ItemResolverService
+    ItemResolverService,
+    CartService,
+    BumpTutorialService
   ],
   declarations: [
     catalogRoutedComponents,
@@ -73,7 +80,10 @@ import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactiv
     ExitConfirmationModalComponent,
     CategorySelectorComponent,
     RemoveConfirmModalComponent,
-    ReactivateModalComponent
+    ReactivateModalComponent,
+    CheckoutItemComponent,
+    CartComponent,
+    BumpTutorialComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

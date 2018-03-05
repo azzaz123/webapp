@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="244" height="231" viewBox="0 0 244 231">
+    <defs>
+        <filter id="a" width="149.1%" height="138.2%" x="-24.5%" y="-19.1%" filterUnits="objectBoundingBox">
+            <feOffset in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="4"/>
+            <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd" stroke-width="2">
+        <g stroke="#F3F3F3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.005 5.872h101.424M21.344 10.754l-4.882-4.882 4.882-4.339"/>
+        </g>
+        <g stroke="#FFF" filter="url(#a)" transform="translate(9.327 26.545)">
+            <rect width="51.241" height="50.584" rx="10"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.337 58.613H23.27M3.372 65.36h43.503"/>
+        </g>
+        <g stroke="#979797" opacity=".3" transform="translate(69.462 26.545)">
+            <rect width="51.241" height="50.584" rx="10"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5.584 57.81h22.374M5.623 64.38h42.333"/>
+        </g>
+        <g stroke="#979797" opacity=".3" transform="translate(129.598 26.545)">
+            <rect width="51.241" height="50.584" rx="10"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.933 57.81h19.974M2.967 64.38H46.56"/>
+        </g>
+        <g stroke="#979797" opacity=".3" transform="translate(191.256 26.545)">
+            <rect width="51.241" height="50.584" rx="10"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.933 57.81h19.974M2.967 64.38H46.56"/>
+        </g>
+        <g stroke="#979797" opacity=".122" transform="translate(11 103.533)">
+            <rect width="70.516" height="65.891" rx="10"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M1.356 75.304h30.79M1.41 83.862h67.199"/>
+        </g>
+        <g stroke="#979797" opacity=".122" transform="translate(171.582 103.533)">
+            <rect width="70.516" height="65.891" rx="10"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M1.356 75.304h30.79M1.41 83.862h67.199"/>
+        </g>
+        <g stroke="#979797" opacity=".122" transform="translate(91.251 103.533)">
+            <rect width="70.516" height="98.449" rx="10"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M1.356 112.513h30.79M1.41 125.299h67.199"/>
+        </g>
+    </g>
+</svg>

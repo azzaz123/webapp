@@ -1,0 +1,106 @@
+@import "../../../../style/_common.scss";
+
+.item {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $grey-50;
+  margin-bottom: $spacing-XS;
+  padding: $spacing-XXS;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .title {
+    @include text-truncate();
+    padding-right: $spacing-S;
+    flex: 1;
+    max-width: 98px;
+  }
+  .border-l {
+    position: relative;
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    &:before {
+      content: '';
+      height: 60px;
+      width: 1px;
+      background-color: $grey-50;
+      position: absolute;
+      top: 11px;
+      left: 0;
+    }
+  }
+  .durations {
+    flex: 0 0 110px;
+    padding-left: $spacing;
+    label {
+      display: block;
+      font-size: $font-size-XS;
+      color: $grey-250;
+      margin: 6px 0;
+      &.btn {
+        border: 0;
+        background: none;
+        padding: 0;
+        border-radius: 0;
+        text-align: left;
+      }
+      &.active {
+        color: $grey-900;
+        font-weight: bold;
+      }
+    }
+  }
+  .price {
+    flex: 0 0 $duration-table-col-width-md;
+    padding: 0 $spacing;
+    @include media-breakpoint-up(xl) {
+      flex: 0 0 $duration-table-col-width;
+    }
+    .btn-price {
+      background-color: $grey-50;
+      border-radius: $button-border-radius;
+      font-size: $font-size-M;
+      text-align: center;
+      width: 100%;
+      &:hover, &.selected {
+        color: $white;
+      }
+      &.selected {
+        box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+        font-weight: bold;
+      }
+    }
+    &.zonebump {
+      .btn-price {
+        &:hover {
+          background-color: $zone-bump;
+        }
+        &.selected {
+          background-color: $zone-bump-dark;
+        }
+      }
+    }
+    &.citybump {
+      .btn-price {
+        &:hover {
+          background-color: $city-bump;
+        }
+        &.selected {
+          background-color: $city-bump-dark;
+        }
+      }
+    }
+    &.countrybump {
+      margin-right: -$spacing-XXS;
+      .btn-price {
+        &:hover {
+          background-color: $country-bump;
+        }
+        &.selected {
+          background-color: $country-bump-dark;
+        }
+      }
+    }
+  }
+}

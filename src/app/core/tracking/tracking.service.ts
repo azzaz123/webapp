@@ -405,6 +405,18 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.MyCatalog,
     type: TYPES_IDS.Tap
   };
+  public static MYCATALOG_PURCHASE_CHECKOUTCART: TrackingEventBase = {
+    name: '640',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PURCHASE_CONTINUE: TrackingEventBase = {
+    name: '655',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;

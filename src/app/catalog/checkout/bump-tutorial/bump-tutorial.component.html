@@ -1,0 +1,80 @@
+<div class="tutorial main-veil" *ngIf="hidden === false">
+    <div class="content-veil">
+        <div class="step step-1 info" *ngIf="tutorialService.step === 0">
+            <h1 i18n>What can features do for you?</h1>
+            <p i18n>By featuring your item you will make it more visible to the restof the community thanks to its special
+                features. What will that give to you? Basically, that more people will contact you and you'll sell your
+                items quicker. Take a look at which of the following suits you best. </p>
+            <div class="bump-info">
+                <div class="col zone">
+                    <div class="logo"><div class="logo-zone"></div></div>
+                    <h2 i18n>Feature it in your area</h2>
+                    <p i18n>Be more visible to those around you. Upload your product to the top position on the wall and
+                        promote it in your area. Buyers will be able to chat with you directly from the wall.</p>
+                    <div class="box-price">
+                        <p class="from-price" i18n>from</p>
+                        <p class="price">0,99€</p>
+                    </div>
+                </div>
+                <div class="col city">
+                    <div class="logo"><div class="logo-city"></div></div>
+                    <h2 i18n>Feature it in your city</h2>
+                    <p i18n>Be more visible in your city. Boost your ad to the top of the wall and promote it in your city.
+                        Buyers will be able to chat with you directly from the wall.</p>
+                    <div class="box-price">
+                        <p class="from-price" i18n>from</p>
+                        <p class="price">2,99€</p>
+                    </div>
+                </div>
+                <div class="col country">
+                    <div class="logo"><div class="logo-country"></div></div>
+                    <h2 i18n>Feature it in the whole country</h2>
+                    <p i18n>The most powerful of our features. Your item won't be geolocalised but will instead be shown
+                        as highlighted throughout Spain. The ad will appear distinctly on the wall; giving it visibility
+                        not only where you live.</p>
+                    <div class="box-price">
+                        <p class="from-price" i18n>from</p>
+                        <p class="price">6,99€</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="step step-2 info" *ngIf="tutorialService.step === 1">
+            <h1 i18n>Find out about more benefits</h1>
+            <div class="advantages">
+                <div class="content">
+                    <h2 i18n>A different appearance</h2>
+                    <p i18n>The featured items have a distinctive appearance and are much more visible. We will add a couple
+                        of new buttons to your ad that the other users do not have. Buyers will be able to write to you
+                        directly or save your item as a favorite.</p>
+                </div>
+                <div class="appearance-background"></div>
+            </div>
+            <div class="advantages">
+                <div class="content">
+                    <h2 i18n>Special zones for your product</h2>
+                    <p i18n>Your featured items will appear exclusively in certain zones and will stand out from the other
+                        ads with better visibility.</p>
+                </div>
+                <div class="special-background"></div>
+            </div>
+        </div>
+        <a (click)="hide()" id="close">
+            <mat-icon svgIcon="cross"></mat-icon><br />
+            <span i18n>Skip</span>
+        </a>
+        <div id="controls">
+            <div class="dots">
+                <div class="dot" *ngFor="let dot of dots" [ngClass]="{active: dot === tutorialService.step}"></div>
+            </div>
+            <button (click)="tutorialService.nextStep()"
+                    class="btn btn-next"
+                    [hidden]="tutorialService.step === 1"
+                    i18n>Next</button>
+            <button (click)="hide()"
+                    [hidden]="tutorialService.step < 1"
+                    class="btn btn-next"
+                    i18n>Ready!</button>
+        </div>
+    </div>
+</div>
