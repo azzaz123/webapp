@@ -13,18 +13,13 @@ export enum KEY_CODE {
   templateUrl: './bump-tutorial.component.html',
   styleUrls: ['./bump-tutorial.component.scss']
 })
-export class BumpTutorialComponent implements OnInit, OnDestroy {
+export class BumpTutorialComponent implements OnDestroy {
 
   public dots: number;
-  public hidden: boolean = true;
-  @Input() showTutorial: EventEmitter<any> = new EventEmitter();
+  public hidden = true;
 
   constructor(public tutorialService: BumpTutorialService) {
     this.dots = _.range(this.tutorialService.maxSteps);
-  }
-
-  ngOnInit() {
-    this.showTutorial.subscribe(() => this.show());
   }
 
   ngOnDestroy() {

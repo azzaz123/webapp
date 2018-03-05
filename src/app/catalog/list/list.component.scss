@@ -38,6 +38,29 @@ tsl-spinner {
   margin-top: -6px;
 }
 
+.info {
+  text-align: center;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-S;
+  mat-icon {
+    /deep/ svg path {
+      fill: $corporate;
+    }
+    margin-right: $spacing-S;
+  }
+  a {
+    text-decoration: underline;
+    cursor: pointer;
+    color: $corporate;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
 #total-selected {
   padding: 0 $spacing;
   cursor: pointer;

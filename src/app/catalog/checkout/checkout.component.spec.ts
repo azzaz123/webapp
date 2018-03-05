@@ -71,14 +71,4 @@ describe('CheckoutComponent', () => {
       expect(component.provincialBump).toBeTruthy();
     });
   });
-
-  describe('showTutorial', () => {
-    it('should emit the show tutorial event', () => {
-      spyOn(component.bumpTutorial, 'emit');
-
-      component.showTutorial();
-
-      expect(component.bumpTutorial.emit).toHaveBeenCalled();
-    });
-  });
 });

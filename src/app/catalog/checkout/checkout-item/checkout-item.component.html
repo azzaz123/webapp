@@ -1,5 +1,5 @@
 <div class="item">
-  <tsl-item-avatar [item]="itemWithProducts.item" size="big" fallbackLight="true"></tsl-item-avatar>
+  <tsl-item-avatar [item]="itemWithProducts.item" size="big" fallbackLight="true" title="{{itemWithProducts.item.title}}"></tsl-item-avatar>
   <div class="title">{{itemWithProducts.item.title}}</div>
   <form class="durations border-l">
     <div ngbRadioGroup name="duration" [(ngModel)]="duration">
