@@ -18,7 +18,8 @@ import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
 import {
   CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, ORDER, PRODUCT_RESPONSE,
-  PURCHASES, ITEMS_DATA_v3_FAVORITES, PRODUCTS_RESPONSE, ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE, ITEMS_WITH_PRODUCTS
+  PURCHASES, ITEMS_DATA_v3_FAVORITES, PRODUCTS_RESPONSE, ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE, ITEMS_WITH_PRODUCTS,
+  ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE, ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE
 } from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers, RequestOptions } from '@angular/http';
 import { ConversationUser, ItemsData, ItemWithProducts, Product } from './item-response.interface';
@@ -433,6 +434,34 @@ describe('ItemService', () => {
         itemsIds: '1,2'
       });
       expect(response).toEqual(ITEMS_WITH_PRODUCTS);
+    });
+  });
+
+  describe('canMarkAsSold', () => {
+    it('should call endpoint and return true', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let result: boolean;
+
+      service.canMarkAsSold(ITEM_ID).subscribe((can: boolean) => {
+        result = can;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/actions-allowed');
+      expect(result).toBeTruthy();
+    });
+
+    it('should call endpoint and return false', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let result: boolean;
+
+      service.canMarkAsSold(ITEM_ID).subscribe((can: boolean) => {
+        result = can;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/actions-allowed');
+      expect(result).toBeFalsy();
     });
   });
 

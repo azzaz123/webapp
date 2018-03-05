@@ -14,7 +14,7 @@ import {
   CarContent,
   ConversationUser, ItemContent, ItemResponse, ItemsData, ItemWithProducts,
   ItemsWithAvailableProductsResponse, Order, Product, Purchase,
-  SelectedItemsAction, ProductDurations, Duration
+  SelectedItemsAction, ProductDurations, Duration, AllowedActionResponse
 } from './item-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { ITEM_BAN_REASONS } from './ban-reasons';
@@ -298,6 +298,22 @@ export class ItemService extends ItemServiceMaster {
           products: this.getProductDurations(i.productList)
         };
       });
+    });
+  }
+
+  private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
+    return this.http.get(this.API_URL_V3 + `/${id}/actions-allowed`)
+    .map((r: Response) => r.json());
+  }
+
+  public canMarkAsSold(id: string): Observable<boolean> {
+    return this.getActionsAllowed(id)
+    .map((actions: AllowedActionResponse[]) => {
+      const markAsSold: AllowedActionResponse = _.find(actions, {type: 'mark_sold'});
+      if (markAsSold) {
+        return markAsSold.allowed;
+      }
+      return false;
     });
   }
 

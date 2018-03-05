@@ -1,4 +1,5 @@
 import {
+  AllowedActionResponse,
   AvailableProductsResponse,
   CarUploadForm,
   ConversationUser, Duration,
@@ -614,3 +615,68 @@ export const CART_ORDER_TRACK: any[] = [
   {'item_id': CART_ITEM_COUNTRYBUMP.item.id, 'bump_type': CART_ITEM_COUNTRYBUMP.duration.id},
   {'item_id': CART_ITEM_COUNTRYBUMP2.item.id, 'bump_type': CART_ITEM_COUNTRYBUMP2.duration.id}
 ];
+
+export const ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE: AllowedActionResponse[] = [{
+  'type': 'chat',
+  'allowed': false,
+  'cause': 'item_is_mine'
+}, {
+  'type': 'favorite',
+  'allowed': false,
+  'cause': 'item_is_mine'
+}, {
+  'type': 'pay',
+  'allowed': false,
+  'cause': 'item_is_mine'
+}, {
+  'type': 'report',
+  'allowed': false,
+  'cause': 'item_is_mine'
+}, {
+  'type': 'delete',
+  'allowed': true
+}, {
+  'type': 'edit',
+  'allowed': true
+}, {
+  'type': 'mark_sold',
+  'allowed': true
+}, {
+  'type': 'reserve',
+  'allowed': true
+}, {
+  'type': 'share',
+  'allowed': true
+}, {
+  'type': 'reactivate',
+  'allowed': false,
+  'cause': 'item_not_expired'
+}];
+
+export const ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE: AllowedActionResponse[] = [{
+  'type': 'chat',
+  'allowed': false,
+  'cause': 'item_is_mine'
+}, {
+  'type': 'favorite',
+  'allowed': false,
+  'cause': 'item_is_mine'
+}, {
+  'type': 'pay',
+  'allowed': false,
+  'cause': 'item_is_mine'
+}, {
+  'type': 'report',
+  'allowed': false,
+  'cause': 'item_is_mine'
+}, {
+  'type': 'reserve',
+  'allowed': true
+}, {
+  'type': 'share',
+  'allowed': true
+}, {
+  'type': 'reactivate',
+  'allowed': false,
+  'cause': 'item_not_expired'
+}];

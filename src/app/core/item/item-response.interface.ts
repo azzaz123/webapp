@@ -157,4 +157,8 @@ export interface ItemWithProducts {
   products: ProductDurations;
 }
 
-
+export interface AllowedActionResponse {
+  type: string;
+  allowed: boolean;
+  cause?: string;
+}
