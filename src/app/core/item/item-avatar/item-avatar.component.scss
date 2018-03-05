@@ -1,4 +1,4 @@
-@import "../../../../style/_common.scss";
+@import "~style/common";
 
 div {
   @include square-avatar($item-avatar-size);

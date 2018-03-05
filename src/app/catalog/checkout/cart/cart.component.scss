@@ -1,4 +1,4 @@
-@import "../../../../style/_common.scss";
+@import "~style/common";
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
 $title-height: 65px;

@@ -1,9 +1,9 @@
-@import './_fonts-import';
-@import './_variables.scss';
-@import './_animations.scss';
-@import '../../node_modules/bootstrap/scss/bootstrap';
-@import './shared/_shared.scss';
-@import './components/_components.scss';
+@import './fonts-import';
+@import './variables';
+@import './animations';
+@import '~bootstrap/scss/bootstrap';
+@import './shared/shared';
+@import './components/components';
 
 html, body {
   overflow: hidden;

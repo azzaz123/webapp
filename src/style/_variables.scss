@@ -20,7 +20,7 @@ $link-color: $brand-primary;
 $border-radius: 10px;
 $button-border-radius: 20px;
 
-@import '_colors.scss';
-@import '_spacings.scss';
-@import '_fonts.scss';
-@import '_layout.scss';
+@import 'colors';
+@import 'spacings';
+@import 'fonts';
+@import 'layout';

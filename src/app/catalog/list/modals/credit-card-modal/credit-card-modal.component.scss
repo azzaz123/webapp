@@ -1,4 +1,4 @@
-@import "../../../../../style/_common.scss";
+@import "~style/common";
 
 .modal-body .modal-close {
   @include square(12px);

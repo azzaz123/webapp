@@ -1,4 +1,4 @@
-@import './_variables.scss';
-@import './shared/_shared.scss';
-@import '../../node_modules/bootstrap/scss/_variables.scss';
-@import '../../node_modules/bootstrap/scss/_mixins.scss';
+@import './variables';
+@import './shared/shared';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
