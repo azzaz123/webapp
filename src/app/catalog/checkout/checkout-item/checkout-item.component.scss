@@ -13,7 +13,11 @@
     @include text-truncate();
     padding-right: $spacing-S;
     flex: 1;
-    max-width: 98px;
+  }
+  &:not(.provincial-bump) {
+    .title {
+      max-width: 98px;
+    }
   }
   .border-l {
     position: relative;
