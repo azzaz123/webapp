@@ -4,7 +4,10 @@ import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
-import { CITYBUMP_DURATIONS, ITEMS_WITH_PRODUCTS, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures';
+import {
+  CITYBUMP_DURATIONS, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE,
+  MOCK_ITEM_V3
+} from '../../../../tests/item.fixtures';
 import { CartService } from '../cart/cart.service';
 import { Cart } from '../cart/cart';
 import { CartChange } from '../cart/cart-item.interface';
@@ -58,6 +61,14 @@ describe('CheckoutItemComponent', () => {
     it('should set durations and default duration', () => {
       expect(component.durations).toEqual(['24', '72', '168']);
       expect(component.duration).toEqual('72');
+    });
+
+    it('should set provincialBump to true if no citybump', () => {
+      component.itemWithProducts = ITEMS_WITH_PRODUCTS_PROVINCE[0];
+
+      component.ngOnInit();
+
+      expect(component.provincialBump).toBeTruthy();
     });
 
     describe('onRemoveOrClean', () => {

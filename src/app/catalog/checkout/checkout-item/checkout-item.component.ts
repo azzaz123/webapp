@@ -18,6 +18,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
   duration: string;
   selectedType: string;
   selectedDuration: string;
+  provincialBump: boolean;
 
   @Input() itemWithProducts: ItemWithProducts;
 
@@ -30,6 +31,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
     });
+    this.provincialBump = !this.itemWithProducts.products['168'].citybump;
   }
 
   ngOnDestroy() {
