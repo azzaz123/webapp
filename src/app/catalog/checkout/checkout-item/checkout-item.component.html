@@ -1,0 +1,19 @@
+<div class="item" [ngClass]="{'provincial-bump': provincialBump}">
+  <tsl-item-avatar [item]="itemWithProducts.item" size="big" fallbackLight="true" title="{{itemWithProducts.item.title}}"></tsl-item-avatar>
+  <div class="title">{{itemWithProducts.item.title}}</div>
+  <form class="durations border-l">
+    <div ngbRadioGroup name="duration" [(ngModel)]="duration">
+      <label ngbButtonLabel class="custom-radio" *ngFor="let duration of durations">
+        <input ngbButton type="radio" [value]="duration">
+        <mat-icon svgIcon="radio-button"></mat-icon> {{duration / 24}} <span i18n>days</span>
+      </label>
+    </div>
+  </form>
+  <div *ngFor="let type of types" class="price border-l" [ngClass]="type" [hidden]="!itemWithProducts.products[duration][type]">
+    <button class="btn btn-price"
+            (click)="select(type)"
+            [ngClass]="{selected: type === selectedType && duration === selectedDuration}">
+      {{itemWithProducts.products[duration][type]?.market_code | customCurrency}}
+    </button>
+  </div>
+</div>

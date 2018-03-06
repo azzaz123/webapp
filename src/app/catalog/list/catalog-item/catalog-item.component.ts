@@ -7,9 +7,9 @@ import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 import { environment } from '../../../../environments/environment';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
-import { Order, Product } from '../../../core/item/item-response.interface';
+import { AllowedActionResponse, Order, Product } from '../../../core/item/item-response.interface';
 import { OrderEvent } from '../selected-items/selected-product.interface';
-import { DEFAULT_ERROR_MESSAGE } from '../../../core/errors/errors.service';
+import { DEFAULT_ERROR_MESSAGE, ErrorsService } from '../../../core/errors/errors.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -27,6 +27,7 @@ export class CatalogItemComponent implements OnInit {
               public itemService: ItemService,
               private trackingService: TrackingService,
               private toastr: ToastrService,
+              private errorsService: ErrorsService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -126,17 +127,24 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public setSold(item: Item) {
-    const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {windowClass: 'sold'});
-    modalRef.componentInstance.item = item;
-    modalRef.result.then(() => {
-      item.sold = true;
-      this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
-      this.itemChange.emit({
-        item: item,
-        action: 'sold'
-      });
-    }, () => {
+    this.itemService.canMarkAsSold(item.id).subscribe((canMarkAsSold: boolean) => {
+      if (canMarkAsSold) {
+        const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {windowClass: 'sold'});
+        modalRef.componentInstance.item = item;
+        modalRef.result.then(() => {
+          item.sold = true;
+          this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+          this.itemChange.emit({
+            item: item,
+            action: 'sold'
+          });
+        }, () => {
+        });
+      } else {
+        this.errorsService.i18nError('cantEditError');
+      }
     });
+
   }
 
 }

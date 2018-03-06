@@ -5,7 +5,7 @@ export const environment: any = {
   xmppDomain: 'dockXXX.wallapop.com',
   wsUrl: 'wss://dockXXX.wallapop.com:5282/ws-xmpp',
   siteUrl: 'https://es.dockXXX.wallapop.com/',
-  appboy: '47b54d36-7a86-4c05-9bfc-2d7b8aadd1ce',
+  appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
   cookieSuffix: 'dockXXX',
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents'
 };

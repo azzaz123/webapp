@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FinancialCard, Item, ItemBulkResponse, PaymentService } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
@@ -17,7 +17,8 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { UserStatsResponse } from '../../core/user/user-stats.interface';
-import {UrgentConfirmationModalComponent} from "./modals/urgent-confirmation-modal/urgent-confirmation-modal.component";
+import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
+import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 
 @Component({
   selector: 'tsl-list',
@@ -37,6 +38,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private active: boolean = true;
   private firstItemLoad = true;
   public numberOfProducts: number;
+  @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -44,7 +46,7 @@ export class ListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private paymentService: PaymentService,
               private errorService: ErrorsService,
-              private router: Router, 
+              private router: Router,
               private userService: UserService) {
   }
 

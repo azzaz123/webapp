@@ -225,3 +225,19 @@ input::-webkit-calendar-picker-indicator{
   display: none;
 }
 
+.custom-radio {
+  cursor: pointer;
+  input {
+    display: none;
+  }
+  [svgIcon="radio-button"] {
+    @include square(18px);
+    vertical-align: text-top;
+    margin-right: $spacing-XS;
+  }
+  &:not(.active) {
+    [svgIcon="radio-button"] #bullet {
+      display: none;
+    }
+  }
+}

@@ -47,10 +47,6 @@ export class TutorialComponent implements OnInit, OnDestroy {
     this.tutorialService.resetStep();
   }
 
-  nextStep() {
-    this.tutorialService.nextStep();
-  }
-
   @HostListener('window:keyup', ['$event']) keyEvent(event: KeyboardEvent) {
     if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
       this.tutorialService.nextStep();

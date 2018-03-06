@@ -12,11 +12,7 @@
     </div>
   </div>
   <div class="actions" [ngClass]="itemService.selectedAction">
-    <ng-container *ngIf="total > 0">
-      <span class="total-label" i18n>Total</span>
-      <span class="total">{{total | number:'1.2-2'}}&euro;</span>
-      <span class="address">Avenida Meridiana 89, 08026 Barcelona, España</span>
-    </ng-container>
+    <span class="address" *ngIf="itemService.selectedAction === 'feature'">Avenida Meridiana 89, 08026 Barcelona, España</span>
     <button *ngIf="itemService.selectedAction === 'reserve'"
             class="btn btn-reserve"
             (click)="onAction.emit()"
@@ -27,11 +23,8 @@
             i18n>Delete</button>
     <button *ngIf="itemService.selectedAction === 'feature'"
             class="btn btn-feature"
-            (click)="featureItems()"
-            [disabled]="total === 0 || loading"
-            [ngClass]="{loading: loading}">
-      <span [hidden]="loading" i18n>Feature Now</span>
-      <mat-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></mat-icon>
-    </button>
+            [routerLink]="['/catalog/checkout']"
+            tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE"
+            i18n="Continue to cart|selected-items-button">Continue</button>
   </div>
 </div>

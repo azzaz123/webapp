@@ -147,6 +147,7 @@ $feature-button-width: 170px;
         padding-left: 12px;
         font-size: $font-size-S;
         border: 1px solid transparent;
+        border-radius: $button-border-radius;
         &:hover {
           background: $corporate;
         }

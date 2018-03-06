@@ -5,8 +5,8 @@ $feature-button-width: 170px;
 .header {
   background: $corporate;
   height: 127px;
-  border-top-left-radius: $border-radius;
-  border-top-right-radius: $border-radius;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
   color: $white;
   text-align: center;
   display: flex;
@@ -34,9 +34,6 @@ $feature-button-width: 170px;
   }
 }
 
-.modal-content {
-  border-radius: $border-radius;
-}
 .modal-body {
   text-align: center;
   padding: 40px 70px;

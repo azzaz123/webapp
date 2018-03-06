@@ -82,7 +82,7 @@
   <translation id="3734434835434478522">Muro</translation>
   <translation id="3825726981798982045">Mi Catálogo</translation>
   <translation id="855735721940425245">¡Enhorabuena!</translation>
-  <translation id="9213119646873056135">Tu producto ha sido destacado. Ahora podrás verlo en las primeras posiciones del muro. </translation>
+  <translation id="9213119646873056135">Tu(s) producto(s) ha(n) sido destacado(s). Ahora podrás verlo(s) en las primeras posiciones del muro.</translation>
   <translation id="8982629098121976758">A vender</translation>
   <translation id="3174905759883607970">Ha ocurrido algo…</translation>
   <translation id="3979232265698800722">No hemos podido destacar tu producto porque hay un error con la tarjeta de crédito.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Revisa los datos o utiliza otra tarjeta y empieza a destacar.</translation>
@@ -163,6 +163,12 @@
   <translation id="6618892692857491514">Hay información que no has guardado. Si te vas sin guardar perderás los cambios que has hecho. </translation>
   <translation id="3542042671420335679">No</translation>
   <translation id="4510233521290203619">Sí, me voy</translation>
+  <translation id="5411836089142777830">¿Cómo te ayudarán los destacados?</translation>
+  <translation id="833919813165214228">Destácalo en tu barrio</translation>
+  <translation id="4721342773618175343">Destácalo en tu provincia</translation>
+  <translation id="4828515169928166764">Destácalo en tu ciudad</translation>
+  <translation id="7083003813535210826">Destácalo en todo el país</translation>
+  <translation id="8890553633144307762">Atrás</translation>
   <translation id="8260444303636416171">Hago envíos</translation>
   <translation id="3322682308330601072">¿Qué estás vendiendo?</translation>
   <translation id="368364095324628291">En dos palabras...</translation>
@@ -205,9 +211,8 @@
   <translation id="6877992122026439414">Reactivar + visibilidad</translation>
   <translation id="3244863581909362906">Sólo reactivar que no quiero venderlo más rápido</translation>
   <translation id="4416413576346763682">Pendiente</translation>
+  <translation id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart">Continuar</translation>
   <translation id="578471405917460767">Destácalo</translation>
-  <translation id="3448462145758383019">Total</translation>
-  <translation id="8743988303207163578">Destacar ya</translation>
   <translation id="6261406176927621365">Borrar foto</translation>
   <translation id="4267028037176582017">Se borrará permanentemente la foto. ¿Estás seguro que quieres proceder?</translation>
   <translation id="5112037422043971210">Deja tus fotos aquí para subirlas</translation>
@@ -220,6 +225,20 @@
   <translation id="6822624572232933913">Mis servicios</translation>
   <translation id="4895100071976641944">Una vivienda</translation>
   <translation id="8222521338018520589">Es importante que marques bien el tipo de producto o servicio para que lo encuentren el resto de wallapopers.</translation>
+  <translation id="7036284206110282007">días</translation>
+  <translation id="2595297634596426795">Mis destacados</translation>
+  <translation id="6801638153695046345">Destacado de Barrio</translation>
+  <translation id="7379728362084736907">Destacado de Provincia</translation>
+  <translation id="2789162672363314854">Destacado de Ciudad</translation>
+  <translation id="5785357843753565591">Destacado de País</translation>
+  <translation id="2906587845957718064">Barrio</translation>
+  <translation id="1186759635333538896">Provincia</translation>
+  <translation id="2314075913167237221">Ciudad</translation>
+  <translation id="7928837776892145785">País</translation>
+  <translation id="6377139538537882652">Eliminar lista</translation>
+  <translation id="3448462145758383019">Total</translation>
+  <translation id="6581598798517073714">+ Añadir otra tarjeta</translation>
+  <translation id="7274286978511770772">Comprar</translation>
   <translation id="2921056091899795948">¿Seguro que quieres darte de baja?</translation>
   <translation id="6787712303097193375">Nunca es tarde para cambiar de opinión, ¿eh? Piensa que el equipo estará muy triste si te vas :(</translation>
   <translation id="859827593140377121">Sí, quiero darme de baja</translation>
@@ -279,6 +298,19 @@
   <translation id="2027740642468122404">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
   <translation id="792930787826735850">Tu perfil</translation>
   <translation id="4818441514225396186">Subir producto</translation>
+  <translation id="6763447295092579753">Destacando tus productos los harás más visibles para el resto de la comunidad, gracias a sus funciones especiales. ¿Qué te aportará eso? Básicamente que te contacten más personas y lo vendas más rápido. Mira a continuación cuál encaja mejor con tu tipo de productos:</translation>
+  <translation id="3358820219972327972">Destácalo en tu barrio</translation>
+  <translation id="7811918618267943066">Sé más visible entre los que te rodean. Sube tu producto a las primeras posiciones del muro y promociónalo en tu zona. También podrán chatear contigo directamente desde el muro.</translation>
+  <translation id="23518581647153834">desde</translation>
+  <translation id="5159395752955167009">Destácalo en tu ciudad</translation>
+  <translation id="7593136059683274248">Sé más visible en toda tu ciudad. Sube tu producto a las primeras posiciones del muro y promociónalo en tu ciudad. Podrán chatear contigo directamente desde el muro. </translation>
+  <translation id="5670102462972301487">Destácalo en todo el país</translation>
+  <translation id="3737564338592079354">El más potente de todos nuestros destacados. Tu producto se verá en todo el país sin importar la distancia y aparecerá diferenciado del muro, dándote visibilidad más allá de tu zona. </translation>
+  <translation id="6730295275086165248">Descubre más ventajas</translation>
+  <translation id="7058463678072407504">Una apariencia distinta</translation>
+  <translation id="6289691030035518037">Los productos Destacados tienen una apariencia diferente. Y mucho más visible. A la ficha de tu producto se le añadirán un par de botones con los que el resto de usuarios podrán escribirte directamente o guardar tu producto como favorito. </translation>
+  <translation id="4213947433233162088">Zonas especiales para tu producto</translation>
+  <translation id="2483251316426820393">Tus productos Destacados aparecerán en zonas exclusivas y bien diferenciadas del muro, que te darán más visibilidad y preferencia respecto a otros productos.</translation>
   <translation id="3258601590058086652">¿Tienes prisa para vender tu producto?</translation>
   <translation id="4495547321385209565">Diferencia tu producto durante 7 días en el muro para que sea más fácil de encontrar mediante el filtro "Urge"</translation>
   <translation id="4568320268241275650">Marcar como urgente por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>€</translation>

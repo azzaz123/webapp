@@ -18,10 +18,11 @@ import { ItemService } from './item.service';
 import { Observable } from 'rxjs/Observable';
 import {
   CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, ORDER, PRODUCT_RESPONSE,
-  PURCHASES, ITEMS_DATA_v3_FAVORITES, PRODUCTS_RESPONSE
+  PURCHASES, ITEMS_DATA_v3_FAVORITES, PRODUCTS_RESPONSE, ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE, ITEMS_WITH_PRODUCTS,
+  ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE, ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE
 } from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers, RequestOptions } from '@angular/http';
-import { ConversationUser, ItemsData, Product } from './item-response.interface';
+import { ConversationUser, ItemsData, ItemWithProducts, Product } from './item-response.interface';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from '../tracking/tracking.service';
 import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures';
@@ -46,6 +47,7 @@ describe('ItemService', () => {
     });
     service = TestBed.get(ItemService);
     http = TestBed.get(HttpService);
+    spyOn(UUID, 'UUID').and.returnValues('1', '2');
   });
 
   describe('selectItem', () => {
@@ -152,7 +154,6 @@ describe('ItemService', () => {
         })
       });
       it('should return an array of items and the init', () => {
-        spyOn(UUID, 'UUID').and.returnValue('1');
         service.mine(0, 'published').subscribe((data: ItemsData) => {
           resp = data;
         });
@@ -221,7 +222,6 @@ describe('ItemService', () => {
       })
     });
     it('should return an array of items and the init', () => {
-      spyOn(UUID, 'UUID').and.returnValue('1');
       service.myFavorites(0).subscribe((data: ItemsData) => {
         resp = data;
       });
@@ -417,6 +417,51 @@ describe('ItemService', () => {
       expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/change-picture-order', {
         pictures_order: picturesOrder
       });
+    });
+  });
+
+  describe('getItemsWithAvailableProducts', () => {
+    it('should call get', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let response: ItemWithProducts[];
+
+      service.getItemsWithAvailableProducts(['1', '2']).subscribe((r: ItemWithProducts[]) => {
+        response = r;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-visibility-products', {
+        itemsIds: '1,2'
+      });
+      expect(response).toEqual(ITEMS_WITH_PRODUCTS);
+    });
+  });
+
+  describe('canMarkAsSold', () => {
+    it('should call endpoint and return true', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let result: boolean;
+
+      service.canMarkAsSold(ITEM_ID).subscribe((can: boolean) => {
+        result = can;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/actions-allowed');
+      expect(result).toBeTruthy();
+    });
+
+    it('should call endpoint and return false', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let result: boolean;
+
+      service.canMarkAsSold(ITEM_ID).subscribe((can: boolean) => {
+        result = can;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/actions-allowed');
+      expect(result).toBeFalsy();
     });
   });
 
