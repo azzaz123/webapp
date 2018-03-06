@@ -31,6 +31,7 @@ import {
 import { UserInfoResponse } from './user-info.interface';
 import { UserStatsResponse } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
+import { CookieService } from 'ngx-cookie';
 
 describe('UserService', () => {
 
@@ -39,6 +40,7 @@ describe('UserService', () => {
   let haversineService: HaversineService;
   let accessTokenService: AccessTokenService;
   let event: EventService;
+  let cookieService: CookieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -51,6 +53,18 @@ describe('UserService', () => {
         ...TEST_HTTP_PROVIDERS,
         {
           provide: 'SUBDOMAIN', useValue: 'www'
+        },
+        {
+          provide: CookieService,
+          useValue: {
+            cookies: {},
+            put(key, value) {
+              this.cookies[key] = value;
+            },
+            remove (key) {
+              delete this.cookies[key];
+            }
+          }
         }
       ]
     });
@@ -59,6 +73,7 @@ describe('UserService', () => {
     haversineService = TestBed.get(HaversineService);
     accessTokenService = TestBed.get(AccessTokenService);
     event = TestBed.get(EventService);
+    cookieService = TestBed.get(CookieService);
   });
 
   it('should be created', () => {
@@ -99,6 +114,7 @@ describe('UserService', () => {
       event.subscribe(EventService.USER_LOGOUT, (param) => {
         redirectUrl = param;
       });
+      cookieService.put('publisherId', 'someId');
       service.logout();
     });
 
@@ -110,6 +126,10 @@ describe('UserService', () => {
     });
     it('should call event passing redirect url', () => {
       expect(redirectUrl).toBe('redirect_url');
+    });
+
+    it('should remove publisherId from cookie', () => {
+      expect(cookieService['publisherId']).not.toBeDefined();
     });
   });
 
