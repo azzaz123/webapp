@@ -109,7 +109,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <button type="submit" class="btn btn-primary btn-save" [ngClass]="{disabled: !hasNotSavedChanges}" tslTrackEvent="MYPROFILE_SAVEBUTTON"
+          <button type="submit" class="btn btn-primary btn-save" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!hasNotSavedChanges"
             i18n>Save</button>
         </div>
       </div>
