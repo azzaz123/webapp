@@ -30,6 +30,7 @@ import { ItemResolverService } from './item-resolver.service';
 import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/exit-confirmation-modal.component';
 import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-modal/remove-confirm-modal.component';
 import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactivate-modal.component';
+import { UrgentConfirmationModalComponent } from './list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -73,7 +74,8 @@ import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactiv
     ExitConfirmationModalComponent,
     CategorySelectorComponent,
     RemoveConfirmModalComponent,
-    ReactivateModalComponent
+    ReactivateModalComponent,
+    UrgentConfirmationModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -84,7 +86,8 @@ import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactiv
     ExitConfirmationModalComponent,
     PreviewModalComponent,
     RemoveConfirmModalComponent,
-    ReactivateModalComponent
+    ReactivateModalComponent,
+    UrgentConfirmationModalComponent
   ]
 })
 export class CatalogModule {

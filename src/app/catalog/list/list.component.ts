@@ -17,6 +17,7 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { UserStatsResponse } from '../../core/user/user-stats.interface';
+import {UrgentConfirmationModalComponent} from "./modals/urgent-confirmation-modal/urgent-confirmation-modal.component";
 
 @Component({
   selector: 'tsl-list',
@@ -62,10 +63,24 @@ export class ListComponent implements OnInit, OnDestroy {
       });
       this.route.params.subscribe((params: any) => {
         if (params && params.code) {
-          const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {
-            windowClass: 'bump-confirm',
+          const modals = {
+            urgent: {
+              component: UrgentConfirmationModalComponent,
+              windowClass: 'urgent-confirm',
+            },
+            bump: {
+              component: BumpConfirmationModalComponent,
+              windowClass: 'bump-confirm'
+            }
+          };
+          const modalType = localStorage.getItem('transactionType');
+          const modal = modalType ? modals[modalType] : modals.bump;
+
+          const modalRef: NgbModalRef = this.modalService.open(modal.component, {
+            windowClass: modal.windowClass,
             backdrop: 'static'
           });
+          localStorage.removeItem('transactionType');
           modalRef.componentInstance.code = params.code;
           modalRef.result.then(() => {
             this.router.navigate(['catalog/list']);

@@ -55,6 +55,7 @@ export class UploadConfirmationModalComponent implements OnInit {
       order: order,
       total: +this.productPrice
     };
+    localStorage.setItem('transactionType', 'urgent');
     this.activeModal.close(orderEvent);
   }
 

@@ -73,13 +73,15 @@ describe('UploadConfirmationModalComponent', () => {
   describe('featureUrgentItem', () => {
     it('should close the modal with an order event', () => {
       spyOn(activeModal, 'close');
-
+      spyOn(localStorage, 'setItem');
       component.item = MOCK_ITEM;
       component.productId = PRODUCT_DURATION_ID;
       component.productPrice = PRODUCT_RESPONSE.durations[0].market_code;
+
       component.featureUrgentItem();
 
-      expect(activeModal.close).toHaveBeenCalledWith(ORDER_EVENT)
+      expect(activeModal.close).toHaveBeenCalledWith(ORDER_EVENT);
+      expect(localStorage.setItem).toHaveBeenCalledWith('transactionType', 'urgent');
     });
   });
 
