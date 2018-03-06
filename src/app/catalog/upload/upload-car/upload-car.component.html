@@ -203,7 +203,7 @@
     </ng-template>
   </div>
   <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
-  <tsl-urgent-checkbox (urgentSelected)='selectUrgent($event)'></tsl-urgent-checkbox>
+  <tsl-urgent-checkbox [categoryId]="categoryId" (urgentSelected)='selectUrgent($event)'></tsl-urgent-checkbox>
   <button type="submit" class="btn btn-primary" [disabled]="loading">
     <mat-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></mat-icon>
     <span [hidden]="loading" *ngIf="!item" i18n>Post Ad</span>

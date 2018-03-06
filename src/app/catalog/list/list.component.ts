@@ -7,7 +7,7 @@ import {ItemsData, Order, Product} from '../../core/item/item-response.interface
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 import { UUID } from 'angular2-uuid';
 import { Response } from '@angular/http';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
@@ -17,6 +17,8 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { UserStatsResponse } from '../../core/user/user-stats.interface';
+import 'rxjs/add/operator/pairwise';
+import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'tsl-list',
@@ -37,6 +39,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private firstItemLoad = true;
   public numberOfProducts: number;
   public isUrgent: boolean = false;
+  private isRedirect: boolean = false;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -62,6 +65,9 @@ export class ListComponent implements OnInit, OnDestroy {
         this.getItems();
       });
       this.route.params.subscribe((params: any) => {
+        if(!params.urgent) {
+          this.setRedirectToTPV(false);
+        }
         if (params && params.code) {
           const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {
             windowClass: 'bump-confirm',
@@ -83,9 +89,12 @@ export class ListComponent implements OnInit, OnDestroy {
           });
         } else if (params && params.urgent) {
             this.isUrgent = true;
-            setTimeout(() => {
-              this.getUrgentPrice(params.itemId);
-            }, 3000);
+            this.isRedirect = !this.getRedirectToTPV();
+            if (!this.getRedirectToTPV()) {
+              setTimeout(() => {
+                this.getUrgentPrice(params.itemId);
+              }, 3000);
+            }
         } else if (params && params.updated) {
             this.errorService.i18nSuccess('itemUpdated');
         }
@@ -220,6 +229,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
           this.chooseCreditCard(orderId, orderEvent.total, financialCard);
         }, () => {
+          this.setRedirectToTPV(true);
           this.sabadellSubmit.emit(orderId);
         });
       }
@@ -240,6 +250,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
     modalRef.result.then((result: string) => {
       if (result === 'new') {
+        this.setRedirectToTPV(true);
         this.sabadellSubmit.emit(orderId);
       } else {
         this.paymentService.pay(orderId).subscribe(() => {
@@ -278,4 +289,14 @@ export class ListComponent implements OnInit, OnDestroy {
       this.feature(orderEvent);
     });
   }
+
+  private setRedirectToTPV(state: boolean): void {
+    localStorage.setItem('redirectToTPV', state.toString());
+    this.isRedirect = state;
+  }
+
+  private getRedirectToTPV(): boolean {
+    return localStorage.getItem('redirectToTPV') === 'true';
+  }
+
 }

@@ -235,6 +235,7 @@ export class UploadCarComponent implements OnInit {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
     if (this.isUrgent) {
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
       uploadEvent.action = 'urgent';
     }
     this.router.navigate(['/catalog/list', {[uploadEvent.action]: true, itemId: uploadEvent.response.id}]);
@@ -293,6 +294,10 @@ export class UploadCarComponent implements OnInit {
       let v: number = Number(control.value);
       return v > max ? {'max': {'requiredMax': max, 'actualMax': v}} : null;
     };
+  }
+
+  public selectUrgent(isUrgent: boolean): void {
+    this.isUrgent = isUrgent;
   }
 
 }

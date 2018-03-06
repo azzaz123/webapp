@@ -339,6 +339,12 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.UploadForm,
     type: TYPES_IDS.Success
   };
+  public static UPLOADFORM_CHECKBOX_URGENT: TrackingEventBase = {
+    name: '639',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Tap
+  };
   public static MYCATALOG_EDITITEM: TrackingEventBase = {
     name: '612',
     category: CATEGORY_IDS.Button,

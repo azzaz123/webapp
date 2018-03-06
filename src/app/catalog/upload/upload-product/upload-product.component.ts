@@ -22,7 +22,6 @@ import { CategoryService } from '../../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { ItemService } from '../../../core/item/item.service';
 
 @Component({
   selector: 'tsl-upload-product',
@@ -80,7 +79,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
               private categoryService: CategoryService,
               private modalService: NgbModal,
               private trackingService: TrackingService,
-              public itemService: ItemService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
@@ -225,6 +223,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     }
 
     if (this.isUrgent) {
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
       uploadEvent.action = 'urgent';
     }
     this.router.navigate(['/catalog/list', {[uploadEvent.action]: true, itemId: uploadEvent.response.id}]);
