@@ -147,6 +147,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.loading = false;
       this.end = !this.init;
       if (this.uploadModalRef) {
+        console.log(this.uploadModalRef);
         this.uploadModalRef.componentInstance.item = this.items[0];
         this.uploadModalRef.componentInstance.urgentPrice();
       }
