@@ -39,7 +39,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private firstItemLoad = true;
   public numberOfProducts: number;
   public isUrgent: boolean = false;
-  private isRedirect: boolean = false;
+  public isRedirect: boolean = false;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
