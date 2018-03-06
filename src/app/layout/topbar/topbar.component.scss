@@ -175,10 +175,16 @@
     box-shadow: 0 2px 4px 0 rgba(37, 50, 56, 0.05);
     border: 1px solid $grey-100;
     border-left: 0;
+    mat-icon /deep/ svg path{
+      fill: $grey-600
+    }
     &:hover {
       background: $corporate;
       color: $white;
       border-color: $corporate;
+      mat-icon /deep/ svg path{
+        fill: $white;
+      }
     }
     &:focus {
       outline: none;
@@ -278,6 +284,13 @@
       }
     }
   }
+  .main-header-chat {
+    &.active {
+      mat-icon /deep/ svg g g {
+        fill: $corporate;
+      }
+    }
+  }
   .main-header-login-profile {
     & {
       display: none;
@@ -337,6 +350,20 @@
       vertical-align: middle;
       margin-right: $spacing-XXS;
       @include square(26px);
+    }
+    &:hover {
+      mat-icon /deep/ {
+        #fill {
+          transition: all 0.2s ease-in-out;
+          fill-opacity: 1;
+        }
+        #plus {
+          rect {
+            transition: all 0.2s ease-in-out;
+            fill: $corporate;
+          }
+        }
+      }
     }
   }
 }

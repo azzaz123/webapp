@@ -59,6 +59,11 @@
     width: 36px;
     color: $grey-100;
   }
+  &.active {
+    /deep/ svg g path {
+      fill: $corporate;
+    }
+  }
 }
 
 .pac-icon {

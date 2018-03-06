@@ -35,6 +35,9 @@ $feature-button-width: 170px;
       border-color: transparent;
       mat-icon {
         display: flex;
+        /deep/ svg g g {
+          fill: $white;
+        }
       }
     }
     &:hover {
@@ -126,6 +129,13 @@ $feature-button-width: 170px;
       width: 19px;
       vertical-align: top;
       margin-left: 10px;
+      /deep/ svg path {
+        stroke: $grey-500;
+        &#Fill-3 {
+          stroke: none;
+          fill: $grey-500;
+        }
+      }
     }
   }
   .actions {
@@ -139,6 +149,20 @@ $feature-button-width: 170px;
       border-radius: 8px;
       margin-left: 12px;
       transition: all .2s ease;
+      &:not(.btn-feature) {
+        mat-icon /deep/ {
+          svg g g, svg path {
+            fill: $grey-500;
+          }
+        }
+        &:hover, &.active {
+          mat-icon /deep/ {
+            svg g g, svg path {
+              fill: $white;
+            }
+          }
+        }
+      }
       &.btn-feature {
         background: $grey-700;
         width: $feature-button-width;
@@ -213,6 +237,11 @@ $feature-button-width: 170px;
     &:hover {
       background-color: $reactivate-bg;
       color: $white;
+      mat-icon /deep/ {
+        svg g g, svg path {
+          fill: $white;
+        }
+      }
     }
   }
   .btn-pending {

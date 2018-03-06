@@ -83,7 +83,7 @@ tsl-spinner {
   }
 }
 
-#total-selected, .bulk-actions button {
+#total-selected {
   border: solid 1px $grey-100;
   padding: 0 $spacing;
   border-radius: $border-radius;
@@ -94,39 +94,6 @@ tsl-spinner {
   line-height: $height;
   display: inline-block;
   margin-bottom: 2px;
-}
-
-.bulk-actions {
-  button {
-    cursor: pointer;
-    margin-left: 10px;
-    &.btn-reserve {
-      &:hover {
-        background: $reserve-bg;
-        border-color: transparent;
-        color: $white;
-      }
-    }
-    &.btn-delete {
-      @include square(40px);
-      padding: 0;
-      mat-icon {
-        height: 16px;
-        width: 14px;
-        vertical-align: sub;
-      }
-      &:hover {
-        background: $delete-bg;
-        border-color: transparent;
-        color: $white;
-      }
-    }
-  }
-  &.show {
-    button {
-      animation: fadeInFromNone 0.5s ease-in-out;
-    }
-  }
 }
 
 tsl-selected-items {

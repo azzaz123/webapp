@@ -60,6 +60,9 @@
     mat-icon {
       cursor: pointer;
       padding: 0 3px;
+      /deep/ #MVP {
+        fill: $grey-300;
+      }
     }
     .dropdown-item {
       padding: ($spacing /2) $spacing;
