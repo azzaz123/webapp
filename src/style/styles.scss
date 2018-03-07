@@ -2,7 +2,7 @@
 @import 'variables/variables';
 @import './animations';
 @import '~bootstrap/scss/bootstrap';
-@import './shared/shared';
+@import './mixins/mixins';
 @import './components/components';
 
 html, body {

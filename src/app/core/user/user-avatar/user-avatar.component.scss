@@ -27,3 +27,9 @@ div {
 .avatar-50 {
   @include square(50px);
 }
+
+.avatar-rounded {
+  background-size: cover;
+  border-radius: 50%;
+  background-position: center;
+}
