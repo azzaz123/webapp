@@ -10,9 +10,8 @@
     <p class="loading" i18n>You are being redirect to our payment system<span>.</span><span>.</span><span>.</span></p>
   </div>
   <div class="container">
-    <img class="banner" src="/assets/images/banner-bump.gif" />
     <tsl-header>
-      <div class="col-11">
+      <div class="col-7">
         <div class="header-row">
           <h1 class="header-title" i18n>Your products</h1>
         </div>
@@ -20,11 +19,15 @@
           <h4 class="header-subtitle" i18n>Here you can list items, manage the ones you already have and featured to sell them faster</h4>
         </div>
       </div>
+      <div class="col info">
+        <mat-icon svgIcon="feature"></mat-icon>
+        <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
+      </div>
       <div class="col-1 header-numbers">
         <p class="header-numbers-top">{{numberOfProducts}}</p>
         <p class="header-numbers-bottom">
-          <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span> 
-          <span *ngIf="numberOfProducts === 1" i18n>product</span> 
+          <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
+          <span *ngIf="numberOfProducts === 1" i18n>product</span>
         </p>
       </div>
     </tsl-header>
@@ -78,3 +81,4 @@
                     (onAction)="onAction($event)"
 ></tsl-selected-items>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>
+<tsl-bump-tutorial></tsl-bump-tutorial>

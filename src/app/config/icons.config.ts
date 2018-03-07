@@ -60,6 +60,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('home', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/home.svg'));
   matIconRegistry.addSvgIcon('messages', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/messages.svg'));
   matIconRegistry.addSvgIcon('arrow-waterfall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-waterfall.svg'));
+  matIconRegistry.addSvgIcon('arrow-right', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-right.svg'));
   matIconRegistry.addSvgIcon('category_All', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_All.svg'));
   matIconRegistry.addSvgIcon('category_Appliances', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Appliances.svg'));
   matIconRegistry.addSvgIcon('category_Babies', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Babies.svg'));
@@ -156,4 +157,14 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('btn-reserved', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-reserved.svg'));
   matIconRegistry.addSvgIcon('btn-sold', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/btn-sold.svg'));
   matIconRegistry.addSvgIcon('favorites-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/favorites-empty-state.svg'));
+  matIconRegistry.addSvgIcon('radio-button', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/radio-button.svg'));
+  matIconRegistry.addSvgIcon('bump-city', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-city.svg'));
+  matIconRegistry.addSvgIcon('bump-country', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-country.svg'));
+  matIconRegistry.addSvgIcon('bump-zone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-zone.svg'));
+  matIconRegistry.addSvgIcon('wing-citybump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-city.svg'));
+  matIconRegistry.addSvgIcon('wing-countrybump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-country.svg'));
+  matIconRegistry.addSvgIcon('wing-zonebump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-zone.svg'));
+  matIconRegistry.addSvgIcon('wing', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing.svg'));
+  matIconRegistry.addSvgIcon('remove', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/remove.svg'));
+  matIconRegistry.addSvgIcon('card', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/card.svg'));
 }

@@ -7,7 +7,7 @@ export interface ItemResponse {
 }
 
 export interface ItemContent {
-  category_id: number;
+  category_id?: number;
   currency_code?: string;
   currency?: string;
   description: string;
@@ -24,12 +24,12 @@ export interface ItemContent {
     original_width: number;
   };
   modified_date: number;
-  sale_conditions: ItemSaleConditions;
+  sale_conditions?: ItemSaleConditions;
   sale_price?: number;
   price?: number;
   seller_id: string;
   title: string;
-  url: string;
+  url?: string;
   web_slug: string;
   favorites?: number;
   views?: number;
@@ -49,7 +49,7 @@ export interface CarContent extends ItemContent {
   num_doors?: number;
   extras?: any[];
   storytelling?: string;
-  warranty?: false;
+  warranty?: boolean;
   num_seats?: number;
   condition?: string;
   version?: string;
@@ -138,4 +138,27 @@ export interface CarUploadForm extends ItemUploadForm {
   engine: string;
   gearbox: string;
   id?: string;
+}
+
+export interface ItemsWithAvailableProductsResponse extends ItemResponse {
+  productList: Product[];
+}
+
+export interface ProductDurations {
+  [duration: string]: {
+    citybump?: Duration;
+    zonebump: Duration;
+    countrybump: Duration;
+  };
+}
+
+export interface ItemWithProducts {
+  item: Item;
+  products: ProductDurations;
+}
+
+export interface AllowedActionResponse {
+  type: string;
+  allowed: boolean;
+  cause?: string;
 }

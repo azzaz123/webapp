@@ -1,0 +1,210 @@
+@import "../../../../style/_common.scss";
+
+.tutorial {
+  &.main-veil {
+    & {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 10000;
+    }
+    .content-veil {
+      & {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        margin-top: $topbar-height;
+        height: calc(100vh - #{$topbar-height});
+        margin-left: $sidebar-width;
+        color: $grey-50;
+        font-size: $font-size-L;
+        background-color: rgba(37,50,56,0.95);
+        justify-content: center;
+        overflow-y: scroll;
+      }
+      .info {
+        width: 60%;
+        min-width: 800px;
+        text-align: center;
+        &.step-2 {
+          width: 45%;
+        }
+        h1 {
+          font-family: $wallieSkinny;
+        }
+        p, span {
+          font-size: $font-size;
+        }
+        &.step-1 {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          p {
+            max-width: 900px;
+            align-self: center;
+          }
+        }
+        .bump-info {
+          display: flex;
+          flex-direction: row;
+          margin: $spacing-L 0 0 0;
+          .col {
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid #4f5c61;
+            display: flex;
+            flex: 1;
+            &:last-child {
+              border-right: none;
+            }
+            h2 {
+              font-size: $font-size-LL;
+              font-weight: bold;
+              margin: $spacing 0 $spacing-S;
+              width: 80%;
+            }
+            p {
+              font-size: $font-size-S;
+              color: $grey-250;
+              max-width: 350px;
+            }
+            .box-price {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-end;
+              p {
+                color: $grey-500;
+                margin: 0;
+              }
+              .price {
+                font-size: $font-size-XXXL;
+                font-weight: bold;
+                color: $white;
+                line-height: 3rem;
+              }
+              .from-price {
+                text-transform: uppercase;
+              }
+              .users {
+                color: $white;
+              }
+            }
+          }
+          .logo {
+            display: flex;
+            height: 135px;
+            .logo-zone {
+              width: 80px;
+              height: 81px;
+              background: url(/assets/images/bump-tutorial-zone.svg);
+              background-size: 80px 81px;
+              align-self: flex-end;
+            }
+            .logo-city {
+              width: 116px;
+              height: 117px;
+              background: url(/assets/images/bump-tutorial-city.svg);
+              background-size: 116px 117px;
+              align-self: flex-end;
+            }
+            .logo-country {
+              width: 133px;
+              height: 134px;
+              background: url(/assets/images/bump-tutorial-country.svg);
+              background-size: 133px 134px;
+              align-self: flex-end;
+            }
+          }
+        }
+        .advantages {
+          display: flex;
+          flex-direction: row;
+          margin-top: $spacing-XL;
+          justify-content: space-between;
+          .content {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            width: 50%;
+            margin-right: $spacing-XL;
+            h2 {
+              font-size: $font-size-LL;
+              font-weight: bold;
+            }
+            p {
+              color: $grey-250;
+            }
+          }
+          .special-background {
+            background: url(/assets/images/bump-tutorial-slice2.svg);
+            width: 244px;
+            height: 230px;
+          }
+          .appearance-background {
+            background: url(/assets/images/bump-tutorial-slice1.svg) no-repeat;
+            width: 244px;
+            height: 194px;
+          }
+        }
+      }
+      #controls {
+        position: absolute;
+        right: $spacing-M;
+        bottom: $spacing-M;
+        .btn-next {
+          color: $corporate;
+          padding: 10px 48px;
+          border-radius: 100px;
+          background: $white;
+          &:hover {
+            color: $corporate-dark;
+          }
+        }
+        .dots {
+          text-align: center;
+          margin-bottom: $spacing;
+          .dot {
+            display: inline-block;
+            @include square(7.6px);
+            opacity: 0.3;
+            background-color: $white;
+            border-radius: 50%;
+            margin: 0 4px;
+            vertical-align: middle;
+            &.active {
+              @include square(10.8px);
+              opacity: 1;
+            }
+          }
+        }
+      }
+      #close {
+        position: absolute;
+        right: $spacing;
+        top: 50px;
+        color: $white;
+        text-align: center;
+        cursor: pointer;
+        span {
+          opacity: 0.6;
+          font-size: $font-size;
+        }
+        mat-icon {
+          /deep/ path {
+            fill: $white
+          }
+        }
+        &:hover {
+          text-decoration: none;
+          span {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}

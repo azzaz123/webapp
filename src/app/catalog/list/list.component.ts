@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FinancialCard, Item, ItemBulkResponse, PaymentService } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
@@ -17,6 +17,8 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { UserStatsResponse } from '../../core/user/user-stats.interface';
+import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
+import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import 'rxjs/add/operator/pairwise';
 import 'rxjs/add/operator/filter';
 
@@ -40,6 +42,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public numberOfProducts: number;
   public isUrgent: boolean = false;
   public isRedirect: boolean = false;
+  @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -47,7 +50,7 @@ export class ListComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private paymentService: PaymentService,
               private errorService: ErrorsService,
-              private router: Router, 
+              private router: Router,
               private userService: UserService) {
   }
 
@@ -69,12 +72,27 @@ export class ListComponent implements OnInit, OnDestroy {
           this.setRedirectToTPV(false);
         }
         if (params && params.code) {
-          const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {
-            windowClass: 'bump-confirm',
+          const modals = {
+            urgent: {
+              component: UrgentConfirmationModalComponent,
+              windowClass: 'urgent-confirm',
+            },
+            bump: {
+              component: BumpConfirmationModalComponent,
+              windowClass: 'bump-confirm'
+            }
+          };
+          const modalType = localStorage.getItem('transactionType');
+          const modal = modalType ? modals[modalType] : modals.bump;
+
+          let modalRef: NgbModalRef = this.modalService.open(modal.component, {
+            windowClass: modal.windowClass,
             backdrop: 'static'
           });
+          localStorage.removeItem('transactionType');
           modalRef.componentInstance.code = params.code;
           modalRef.result.then(() => {
+            modalRef = null;
             this.router.navigate(['catalog/list']);
           }, () => {
           });
@@ -84,6 +102,7 @@ export class ListComponent implements OnInit, OnDestroy {
             windowClass: 'upload',
           });
           this.uploadModalRef.result.then((orderEvent: OrderEvent) => {
+            this.uploadModalRef = null;
             this.feature(orderEvent);
           }, () => {
           });

@@ -157,13 +157,16 @@ describe('ListComponent', () => {
   describe('ngOnInit', () => {
     it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');
+      spyOn(localStorage, 'getItem').and.returnValue('bump');
+      spyOn(localStorage, 'removeItem');
       component.ngOnInit();
       tick();
       expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
         windowClass: 'bump-confirm',
         backdrop: 'static'
       });
-      expect(router.navigate).toHaveBeenCalledWith(['catalog/list'])
+      expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
+      expect(localStorage.removeItem).toHaveBeenCalled();
     }));
     it('should reset page on router event', fakeAsync(() => {
       spyOn<any>(component, 'getItems');

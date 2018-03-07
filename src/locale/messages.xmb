@@ -32,8 +32,8 @@
   <msg id="3870006899502072841"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:15</source>Remove item from favorites</msg>
   <msg id="3870268043917301466"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:16</source>The item will be removed from favorites.</msg>
   <msg id="2159130950882492111"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source>Cancel</msg>
-  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:22</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/catalog/list/selected-items/selected-items.component.ts:27</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
-  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:23</source><source>app/catalog/list/selected-items/selected-items.component.ts:23</source>Reserve</msg>
+  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:22</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/catalog/list/selected-items/selected-items.component.ts:23</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
+  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:23</source><source>app/catalog/list/selected-items/selected-items.component.ts:19</source>Reserve</msg>
   <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source>Remove</msg>
   <msg id="8212177249756365917"><source>app/core/item/item-cart-favorite/item-cart-favorite.component.ts:11</source> Remove </msg>
   <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:21</source><source>app/chat/conversations-panel/conversation/conversation.component.ts:33</source>Messages</msg>
@@ -95,21 +95,21 @@
   <msg id="4163236016169197783"><source>app/shared/geolocation/location-box/location-box.component.ts:9</source>This is the spot where your wallapop profile is located. We will show all your products here.</msg>
   <msg id="7840802104684576719"><source>app/shared/geolocation/location-box/location-box.component.ts:16</source>Mark the location in a place where you usually are. This will help other users to find you and improve your user experience.</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
-  <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source>Congratulations</msg>
+  <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:6</source>Congratulations</msg>
   <msg id="9213119646873056135"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:10</source>Your item(s) have been featured and you can see them in the top position.</msg>
   <msg id="8982629098121976758"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:11</source>Start selling</msg>
-  <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:15</source>Something happened...</msg>
+  <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:15</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:10</source>Something happened...</msg>
   <msg id="3979232265698800722"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:16</source>Your item(s) have not been featured because something went wrong with your credit card.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Please check and try again.</msg>
   <msg id="3275068756845590930"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:17</source>Let’s go</msg>
-  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:21</source>Hmmm…</msg>
-  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:22</source>Your credit card seems suspicious. ¿Why not trying with another account?</msg>
+  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:21</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:14</source>Hmmm…</msg>
+  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:22</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:15</source>Your credit card seems suspicious. ¿Why not trying with another account?</msg>
   <msg id="833526722817345312"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:23</source>C&apos;mon</msg>
-  <msg id="6811335180251341277"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:27</source>There has been a mistake</msg>
-  <msg id="4140116217223755546"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:28</source>Your credit card has an invalid expiration date. Please check and try again.</msg>
-  <msg id="2044384665651917054"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:33</source>TPV... what?</msg>
-  <msg id="5578025610796640405"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:34</source>There has been an unexpected error in the paying system. Why not trying again later?</msg>
-  <msg id="8766840274158243690"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:39</source>Oops!</msg>
-  <msg id="2785911750257412726"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:40</source>We are trying to figure out what happened. Try again later.</msg>
+  <msg id="6811335180251341277"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:27</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:18</source>There has been a mistake</msg>
+  <msg id="4140116217223755546"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:28</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:19</source>Your credit card has an invalid expiration date. Please check and try again.</msg>
+  <msg id="2044384665651917054"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:33</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:22</source>TPV... what?</msg>
+  <msg id="5578025610796640405"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:34</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:23</source>There has been an unexpected error in the paying system. Why not trying again later?</msg>
+  <msg id="8766840274158243690"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:39</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:26</source>Oops!</msg>
+  <msg id="2785911750257412726"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:40</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:27</source>We are trying to figure out what happened. Try again later.</msg>
   <msg id="880177930328984754"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:41</source>Fine!</msg>
   <msg id="6686102860613242031"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:11</source>Use this card:</msg>
   <msg id="2005530248451232459"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:15</source>Add a new card</msg>
@@ -119,19 +119,47 @@
   <msg id="3258601590058086652"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:9</source>Want to sell ASAP?</msg>
   <msg id="4495547321385209565"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:10</source>Stand out on the wall during 7 days and be easy to find with the filter ASAP</msg>
   <msg id="4568320268241275650"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:13</source>Feature it as ASAP for <ph name="INTERPOLATION"><ex>{{productPrice}}</ex></ph>€</msg>
-  <msg id="2091018015289565203"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:15</source>Share it with your friends:</msg>
+  <msg id="2091018015289565203"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:15</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:32</source>Share it with your friends:</msg>
+  <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:4</source><source>app/catalog/list/list.component.ts:24</source><source>app/catalog/checkout/checkout.component.ts:9</source>What can features do for you?</msg>
+  <msg id="6763447295092579753"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:5,7</source>By featuring your item you will make it more visible to the restof the community thanks to its special
+                features. What will that give to you? Basically, that more people will contact you and you&apos;ll sell your
+                items quicker. Take a look at which of the following suits you best. </msg>
+  <msg id="3358820219972327972"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:11</source>Feature it in your area</msg>
+  <msg id="7811918618267943066"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:12,13</source>Be more visible to those around you. Upload your product to the top position on the wall and
+                        promote it in your area. Buyers will be able to chat with you directly from the wall.</msg>
+  <msg id="23518581647153834"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:15</source><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:25</source><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:36</source>from</msg>
+  <msg id="5159395752955167009"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:21</source>Feature it in your city</msg>
+  <msg id="7593136059683274248"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:22,23</source>Be more visible in your city. Boost your ad to the top of the wall and promote it in your city.
+                        Buyers will be able to chat with you directly from the wall.</msg>
+  <msg id="5670102462972301487"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:31</source>Feature it in the whole country</msg>
+  <msg id="3737564338592079354"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:32,34</source>The most powerful of our features. Your item won&apos;t be geolocalised but will instead be shown
+                        as highlighted throughout Spain. The ad will appear distinctly on the wall; giving it visibility
+                        not only where you live.</msg>
+  <msg id="6730295275086165248"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:43</source>Find out about more benefits</msg>
+  <msg id="7058463678072407504"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:46</source>A different appearance</msg>
+  <msg id="6289691030035518037"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:47,49</source>The featured items have a distinctive appearance and are much more visible. We will add a couple
+                        of new buttons to your ad that the other users do not have. Buyers will be able to write to you
+                        directly or save your item as a favorite.</msg>
+  <msg id="4213947433233162088"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:55</source>Special zones for your product</msg>
+  <msg id="2483251316426820393"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:56,57</source>Your featured items will appear exclusively in certain zones and will stand out from the other
+                        ads with better visibility.</msg>
+  <msg id="4563965495368336177"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:64</source><source>app/tutorial/tutorial.component.ts:31</source>Skip</msg>
+  <msg id="3885497195825665706"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:73</source><source>app/tutorial/tutorial.component.ts:42</source>Next</msg>
+  <msg id="7160029661601775341"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:77</source><source>app/tutorial/tutorial.component.ts:47</source>Ready!</msg>
+  <msg id="1388549121916575785"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:7</source>Your item has been uploaded and it&apos;s marked as urgent.</msg>
+  <msg id="5223129406687607678"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:11</source>Your item has not been marked as urgent because something went wrong with your credit card.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Please check and try again.</msg>
   <msg id="2212105134437554730"><source>app/catalog/list/list.component.ts:10</source>You are being redirect to our payment system<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
-  <msg id="5433688037539750263"><source>app/catalog/list/list.component.ts:17</source>Your products</msg>
-  <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:20</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
-  <msg id="442085080206895883"><source>app/catalog/list/list.component.ts:26</source>products</msg>
-  <msg id="776785241867401546"><source>app/catalog/list/list.component.ts:27</source>product</msg>
-  <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:32</source>Published</msg>
-  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:33</source>Sold</msg>
-  <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:34</source>Expired</msg>
-  <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:38</source>1 item selected</msg>
-  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:39</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
-  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:51</source>Upload an item to my catalog</msg>
-  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:52</source>Upload another item to my catalog</msg>
+  <msg id="5433688037539750263"><source>app/catalog/list/list.component.ts:16</source>Your products</msg>
+  <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:19</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
+  <msg id="442085080206895883"><source>app/catalog/list/list.component.ts:29</source>products</msg>
+  <msg id="776785241867401546"><source>app/catalog/list/list.component.ts:30</source>product</msg>
+  <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:35</source>Published</msg>
+  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:36</source>Sold</msg>
+  <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:37</source>Expired</msg>
+  <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:41</source>1 item selected</msg>
+  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:42</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
+  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:54</source>Upload an item to my catalog</msg>
+  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:55</source>Upload another item to my catalog</msg>
   <msg id="6622336784189066984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source><source>app/catalog/upload/upload-car/upload-car.component.ts:209</source><source>app/catalog/upload/upload-product/upload-product.component.ts:129</source>Post Ad</msg>
   <msg id="4021752662928002901"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:7</source><source>app/catalog/upload/upload-car/upload-car.component.ts:210</source><source>app/catalog/upload/upload-product/upload-product.component.ts:130</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:18</source>Update</msg>
   <msg id="2233560223291461480"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:27</source><source>app/catalog/upload/upload-car/upload-car.component.ts:151</source>Manual</msg>
@@ -184,6 +212,11 @@
   <msg id="6618892692857491514"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
   <msg id="3542042671420335679"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:6</source>No</msg>
   <msg id="4510233521290203619"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:7</source><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:8</source>Yes, leave</msg>
+  <msg id="8890553633144307762"><source>app/catalog/checkout/checkout.component.ts:3</source>Back</msg>
+  <msg id="833919813165214228"><source>app/catalog/checkout/checkout.component.ts:14</source>Feature it locally</msg>
+  <msg id="4721342773618175343"><source>app/catalog/checkout/checkout.component.ts:15</source>Feature it provincially</msg>
+  <msg id="4828515169928166764"><source>app/catalog/checkout/checkout.component.ts:23</source>Feature it your city</msg>
+  <msg id="7083003813535210826"><source>app/catalog/checkout/checkout.component.ts:31</source>Feature it nationally</msg>
   <msg id="3870527592184800997"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/catalog/list/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
@@ -199,8 +232,7 @@
   <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:23</source>Feature Product</msg>
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:44</source>Reactivate</msg>
   <msg id="4416413576346763682"><source>app/catalog/list/catalog-item/catalog-item.component.ts:48</source>Pending</msg>
-  <msg id="3448462145758383019"><source>app/catalog/list/selected-items/selected-items.component.ts:16</source>Total</msg>
-  <msg id="8743988303207163578"><source>app/catalog/list/selected-items/selected-items.component.ts:33</source>Feature Now</msg>
+  <msg id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart"><source>app/catalog/list/selected-items/selected-items.component.ts:28</source>Continue</msg>
   <msg id="6261406176927621365"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:2</source>Delete photo</msg>
   <msg id="4267028037176582017"><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:3</source>The photo will be permanently deleted. Are you sure you want to proceed?</msg>
   <msg id="5112037422043971210"><source>app/catalog/upload/drop-area/drop-area.component.ts:5</source>Drop here your files to upload as a product photo</msg>
@@ -225,6 +257,20 @@
   <msg id="6822624572232933913"><source>app/catalog/upload/category-selector/category-selector.component.ts:31</source>My services</msg>
   <msg id="4895100071976641944"><source>app/catalog/upload/category-selector/category-selector.component.ts:40</source>A property</msg>
   <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:46</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
+  <msg id="7036284206110282007"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:8</source><source>app/catalog/checkout/cart/cart.component.ts:37</source>days</msg>
+  <msg id="2595297634596426795"><source>app/catalog/checkout/cart/cart.component.ts:1</source>My features</msg>
+  <msg id="6801638153695046345"><source>app/catalog/checkout/cart/cart.component.ts:12</source>Local bump</msg>
+  <msg id="7379728362084736907"><source>app/catalog/checkout/cart/cart.component.ts:13</source>Provincial bump</msg>
+  <msg id="2789162672363314854"><source>app/catalog/checkout/cart/cart.component.ts:15</source>City bump</msg>
+  <msg id="5785357843753565591"><source>app/catalog/checkout/cart/cart.component.ts:16</source>National bump</msg>
+  <msg id="2906587845957718064"><source>app/catalog/checkout/cart/cart.component.ts:31</source>Local</msg>
+  <msg id="1186759635333538896"><source>app/catalog/checkout/cart/cart.component.ts:32</source>Provincial</msg>
+  <msg id="2314075913167237221"><source>app/catalog/checkout/cart/cart.component.ts:34</source>City</msg>
+  <msg id="7928837776892145785"><source>app/catalog/checkout/cart/cart.component.ts:35</source>National</msg>
+  <msg id="6377139538537882652"><source>app/catalog/checkout/cart/cart.component.ts:49</source>Delete list</msg>
+  <msg id="3448462145758383019"><source>app/catalog/checkout/cart/cart.component.ts:54</source>Total</msg>
+  <msg id="6581598798517073714"><source>app/catalog/checkout/cart/cart.component.ts:70</source>+ Add another credit card</msg>
+  <msg id="7274286978511770772"><source>app/catalog/checkout/cart/cart.component.ts:77</source>Continue to Checkout</msg>
   <msg id="4185227957442923918"><source>app/reviews/reviews.component.ts:13</source>Your Reviews</msg>
   <msg id="5263225898611875859"><source>app/reviews/reviews.component.ts:16</source>This is what people think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:20</source>Your average</msg>
@@ -285,7 +331,4 @@
   <msg id="4486163214005133487"><source>app/tutorial/tutorial.component.ts:18</source>View your conversations and reply via the webpage or from the app. Oh see it works well from the webpage!</msg>
   <msg id="5289897176155020957"><source>app/tutorial/tutorial.component.ts:22</source>Your favorites can be seen on the big screen which might help make up your mind.</msg>
   <msg id="8328195571736012184"><source>app/tutorial/tutorial.component.ts:26</source>See your profile reviews. Is the community leaving good feedback?</msg>
-  <msg id="4563965495368336177"><source>app/tutorial/tutorial.component.ts:31</source>Skip</msg>
-  <msg id="3885497195825665706"><source>app/tutorial/tutorial.component.ts:42</source>Next</msg>
-  <msg id="7160029661601775341"><source>app/tutorial/tutorial.component.ts:47</source>Ready!</msg>
 </messagebundle>

@@ -75,7 +75,8 @@ export class I18nService {
       passwordMinLength: 'Password length should be at least 8 characters',
       defaultErrorTitle: 'Oops!',
       defaultSuccessTitle: 'Yup!',
-      bumpError: 'Some listings have not been bumped due to an error'
+      bumpError: 'Some listings have not been bumped due to an error',
+      cantEditError: 'This item can not be modified because has a pending transaction.'
     },
     es: {
       daysMomentConfig: {
@@ -148,7 +149,8 @@ export class I18nService {
       passwordMinLength: 'La contraseña tiene que ser de almenos 8 caracteres',
       defaultErrorTitle: '¡Ups!',
       defaultSuccessTitle: '¡Bien!',
-      bumpError: 'Algunos productos no se han destacado debido a un error'
+      bumpError: 'Algunos productos no se han destacado debido a un error',
+      cantEditError: 'Este producto no se puede modificar, porque está en mitad de una transacción.'
     }
   };
 
