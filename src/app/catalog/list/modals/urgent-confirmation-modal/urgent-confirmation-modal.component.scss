@@ -37,7 +37,7 @@ $feature-button-width: 170px;
 
 .modal-body {
   text-align: center;
-  padding: 40px 70px;
+  padding: $spacing-L 70px 40px;
   p {
     font-size: $font-size;
     color: $grey-400;
@@ -47,7 +47,7 @@ $feature-button-width: 170px;
     background: url(/assets/images/urgent-background.svg);
     width: 138px;
     height: 152px;
-    margin: $spacing-S auto;
+    margin: $spacing-S auto $spacing-L;
   }
 }
 

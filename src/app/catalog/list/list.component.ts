@@ -78,13 +78,14 @@ export class ListComponent implements OnInit, OnDestroy {
           const modalType = localStorage.getItem('transactionType');
           const modal = modalType ? modals[modalType] : modals.bump;
 
-          const modalRef: NgbModalRef = this.modalService.open(modal.component, {
+          let modalRef: NgbModalRef = this.modalService.open(modal.component, {
             windowClass: modal.windowClass,
             backdrop: 'static'
           });
           localStorage.removeItem('transactionType');
           modalRef.componentInstance.code = params.code;
           modalRef.result.then(() => {
+            modalRef = null;
             this.router.navigate(['catalog/list']);
           }, () => {
           });
@@ -94,6 +95,7 @@ export class ListComponent implements OnInit, OnDestroy {
             windowClass: 'upload',
           });
           this.uploadModalRef.result.then((orderEvent: OrderEvent) => {
+            this.uploadModalRef = null;
             this.feature(orderEvent);
           }, () => {
           });
