@@ -1,8 +1,17 @@
 @import "~style/common";
 
+$vertical-padding: 10px;
+
+:host {
+  display: inline-block;
+  &[className*='btn-block'] {
+    display: block;
+  }
+}
+
 .btn {
   color: $white;
-  padding: 10px 18px;
+  padding: $vertical-padding $spacing;
   border-radius: $button-border-radius;
   transition: all 0.2s ease-in-out, padding 0s;
   &:focus, &.focus {
@@ -17,10 +26,7 @@
   &.btn-delete {
     background-color: $delete-bg;
   }
-  &.btn-feature {
-    background-color: $corporate;
-  }
-  &:not([disabled]):hover {
+  &:not([disabled]):not(.btn-primary):hover {
     opacity: .8;
   }
   &.btn-primary {
@@ -34,6 +40,9 @@
   &.loading {
     padding-top: 7px;
     padding-bottom: 4px;
+  }
+  &.btn-big {
+    padding: $vertical-padding 75px;
   }
 }
 

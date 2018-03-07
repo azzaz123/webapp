@@ -160,6 +160,7 @@ ul, li {
 }
 
 tsl-button {
+  display: block;
   /deep/ .btn {
     width: calc(100% - #{$button-margin * 2});
     margin: $button-margin;

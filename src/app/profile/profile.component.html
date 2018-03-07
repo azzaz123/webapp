@@ -109,8 +109,8 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <button type="submit" class="btn btn-primary btn-save" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!hasNotSavedChanges"
-            i18n>Save</button>
+          <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!hasNotSavedChanges"
+            i18n>Save</tsl-button>
         </div>
       </div>
     </form>
