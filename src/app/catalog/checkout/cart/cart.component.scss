@@ -159,16 +159,11 @@ ul, li {
   }
 }
 
-.btn-primary {
-  border-radius: $button-border-radius;
-  width: calc(100% - #{$button-margin * 2});
-  height: $button-height;
-  line-height: $button-height;
-  margin: $button-margin;
-  margin-top: 0;
-  padding: 0;
-  mat-icon {
-    margin-top: $spacing-XXS;
+tsl-button {
+  /deep/ .btn {
+    width: calc(100% - #{$button-margin * 2});
+    margin: $button-margin;
+    margin-top: 0;
   }
 }
 

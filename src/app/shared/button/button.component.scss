@@ -1,0 +1,42 @@
+@import "~style/common";
+
+.btn {
+  color: $white;
+  padding: 10px 18px;
+  border-radius: $button-border-radius;
+  transition: all 0.2s ease-in-out, padding 0s;
+  &:focus, &.focus {
+    box-shadow: none;
+  }
+  &:not([disabled]) {
+    cursor: pointer;
+  }
+  &.btn-reserve {
+    background-color: $reserve-bg;
+  }
+  &.btn-delete {
+    background-color: $delete-bg;
+  }
+  &.btn-feature {
+    background-color: $corporate;
+  }
+  &:not([disabled]):hover {
+    opacity: .8;
+  }
+  &.btn-primary {
+    &.disabled, &:disabled {
+      &:active {
+        background-color: $corporate;
+        border-color: $corporate;
+      }
+    }
+  }
+  &.loading {
+    padding-top: 7px;
+    padding-bottom: 4px;
+  }
+}
+
+
+
+

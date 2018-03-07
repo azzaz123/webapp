@@ -61,21 +61,6 @@ button {
   }
 }
 
-.btn {
-  &:focus, &.focus {
-    box-shadow: none;
-  }
-}
-
-.btn-primary {
-  &.disabled, &:disabled {
-    &:active {
-      background-color: $corporate;
-      border-color: $corporate;
-    }
-  }
-}
-
 #right-panel {
   .card {
     background-color: $white;

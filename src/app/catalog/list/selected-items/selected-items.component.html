@@ -13,18 +13,18 @@
   </div>
   <div class="actions" [ngClass]="itemService.selectedAction">
     <span class="address" *ngIf="itemService.selectedAction === 'feature'">Avenida Meridiana 89, 08026 Barcelona, España</span>
-    <button *ngIf="itemService.selectedAction === 'reserve'"
-            class="btn btn-reserve"
+    <tsl-button *ngIf="itemService.selectedAction === 'reserve'"
+            className="btn-reserve"
             (click)="onAction.emit()"
-            i18n>Reserve</button>
-    <button *ngIf="itemService.selectedAction === 'delete'"
-            class="btn btn-delete"
+            i18n>Reserve</tsl-button>
+    <tsl-button *ngIf="itemService.selectedAction === 'delete'"
+                className="btn-delete"
             (click)="onAction.emit()"
-            i18n>Delete</button>
-    <button *ngIf="itemService.selectedAction === 'feature'"
-            class="btn btn-feature"
+            i18n>Delete</tsl-button>
+    <tsl-button *ngIf="itemService.selectedAction === 'feature'"
+            className="btn-feature"
             [routerLink]="['/catalog/checkout']"
             tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE"
-            i18n="Continue to cart|selected-items-button">Continue</button>
+            i18n="Continue to cart|selected-items-button">Continue</tsl-button>
   </div>
 </div>
