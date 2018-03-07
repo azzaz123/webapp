@@ -1,20 +1,18 @@
 <div class="header">
-  <div class="modal-close light" (click)="activeModal.dismiss()">
+  <div class="modal-close light" (click)="activeModal.close()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
   <h1 i18n>Congratulations!</h1>
   <p i18n>Your item is now on Wallapop</p>
 </div>
 <div class="modal-body">
-
-  <p i18n>Promote it and sell it quicker</p>
-  <button class="btn-feature" (click)="activeModal.close()" tslTrackEvent="UPLOADFORM_FEATURED">
-    <mat-icon svgIcon="feature"></mat-icon>
-    <span i18n>Feature it</span>
+  <h2 i18n>Want to sell ASAP?</h2>
+  <p i18n>Stand out on the wall during 7 days and be easy to find with the filter ASAP</p>
+  <div class="urgent-background"></div>
+  <button class="btn-feature" (click)="featureUrgentItem()" tslTrackEvent="UPLOADFORM_URGENT" [params]="{category: item?.categoryId}">
+    <span i18n>Feature it as ASAP for {{productPrice}}&euro;</span>
   </button>
-
   <p i18n>Share it with your friends:</p>
-
   <div class="social-icons">
     <a (click)="facebookShare()"><mat-icon svgIcon="facebook"></mat-icon></a>
     <a (click)="twitterShare()"><mat-icon svgIcon="twitter"></mat-icon></a>

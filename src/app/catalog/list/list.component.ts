@@ -17,6 +17,7 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { UserStatsResponse } from '../../core/user/user-stats.interface';
+import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 
 @Component({
@@ -64,12 +65,27 @@ export class ListComponent implements OnInit, OnDestroy {
       });
       this.route.params.subscribe((params: any) => {
         if (params && params.code) {
-          const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {
-            windowClass: 'bump-confirm',
+          const modals = {
+            urgent: {
+              component: UrgentConfirmationModalComponent,
+              windowClass: 'urgent-confirm',
+            },
+            bump: {
+              component: BumpConfirmationModalComponent,
+              windowClass: 'bump-confirm'
+            }
+          };
+          const modalType = localStorage.getItem('transactionType');
+          const modal = modalType ? modals[modalType] : modals.bump;
+
+          let modalRef: NgbModalRef = this.modalService.open(modal.component, {
+            windowClass: modal.windowClass,
             backdrop: 'static'
           });
+          localStorage.removeItem('transactionType');
           modalRef.componentInstance.code = params.code;
           modalRef.result.then(() => {
+            modalRef = null;
             this.router.navigate(['catalog/list']);
           }, () => {
           });
@@ -78,11 +94,9 @@ export class ListComponent implements OnInit, OnDestroy {
           this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
             windowClass: 'upload',
           });
-          this.uploadModalRef.result.then(() => {
-            const newItem: Item = this.items[0];
-            this.itemService.selectedAction = 'feature';
-            newItem.selected = true;
-            this.itemService.selectItem(newItem.id);
+          this.uploadModalRef.result.then((orderEvent: OrderEvent) => {
+            this.uploadModalRef = null;
+            this.feature(orderEvent);
           }, () => {
           });
         } else if (params && params.updated) {
@@ -136,6 +150,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.end = !this.init;
       if (this.uploadModalRef) {
         this.uploadModalRef.componentInstance.item = this.items[0];
+        this.uploadModalRef.componentInstance.urgentPrice();
       }
       if (this.firstItemLoad) {
         setTimeout(() => {

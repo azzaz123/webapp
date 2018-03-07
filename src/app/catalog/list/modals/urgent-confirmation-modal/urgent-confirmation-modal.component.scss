@@ -5,8 +5,8 @@ $feature-button-width: 170px;
 .header {
   background: $corporate;
   height: 127px;
-  border-top-left-radius: $border-radius;
-  border-top-right-radius: $border-radius;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
   color: $white;
   text-align: center;
   display: flex;
@@ -31,12 +31,13 @@ $feature-button-width: 170px;
     margin-bottom: $spacing-L;
     color: $white;
     font-size: $font-size;
+    padding: 0 $spacing-L;
   }
 }
 
 .modal-body {
   text-align: center;
-  padding: 40px 70px;
+  padding: $spacing-L 70px 40px;
   p {
     font-size: $font-size;
     color: $grey-400;
@@ -46,32 +47,7 @@ $feature-button-width: 170px;
     background: url(/assets/images/urgent-background.svg);
     width: 138px;
     height: 152px;
-    margin: $spacing-S auto;
-  }
-}
-
-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-radius: $spacing;
-  transition: all .2s ease;
-  background: $grey-700;
-  height: 40px;
-  color: $white;
-  padding: 0 $spacing;
-  padding-left: $spacing-S;
-  font-size: $font-size-S;
-  border: 1px solid transparent;
-  margin: $spacing-L auto $spacing;
-  &:hover {
-    background: $corporate;
-  }
-  mat-icon {
-    width: 19px;
-    height: 21px;
-    margin-right: 9px;
+    margin: $spacing-S auto $spacing-L;
   }
 }
 

@@ -59,6 +59,7 @@ export class CartComponent implements OnInit, OnDestroy {
     const orderId: string = this.cart.getOrderId();
     this.loading = true;
     this.itemService.purchaseProducts(order, orderId).subscribe((failedProducts: string[]) => {
+      localStorage.setItem('transactionType', 'bump');
       this.track(order);
       this.buy(orderId);
     }, (error: Response) => {

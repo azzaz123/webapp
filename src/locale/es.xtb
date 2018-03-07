@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+ <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE translationbundle [
 <!ELEMENT translationbundle (translation)*>
 <!ATTLIST translationbundle lang CDATA #REQUIRED>
@@ -311,6 +311,9 @@
   <translation id="6289691030035518037">Los productos Destacados tienen una apariencia diferente. Y mucho más visible. A la ficha de tu producto se le añadirán un par de botones con los que el resto de usuarios podrán escribirte directamente o guardar tu producto como favorito. </translation>
   <translation id="4213947433233162088">Zonas especiales para tu producto</translation>
   <translation id="2483251316426820393">Tus productos Destacados aparecerán en zonas exclusivas y bien diferenciadas del muro, que te darán más visibilidad y preferencia respecto a otros productos.</translation>
+  <translation id="3258601590058086652">¿Tienes prisa para vender tu producto?</translation>
+  <translation id="4495547321385209565">Diferencia tu producto durante 7 días en el muro para que sea más fácil de encontrar mediante el filtro "Urge"</translation>
+  <translation id="4568320268241275650">Marcar como urgente por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>€</translation>
   <translation id="4532380494593950343">Aquí podrás ver y editar los datos de tu perfil</translation>
   <translation id="5433688037539750263">Tus productos</translation>
   <translation id="1953428607881051577">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
@@ -321,4 +324,7 @@
   <translation id="6306441078838263413">opiniones</translation>
   <translation id="442085080206895883">productos</translation>
   <translation id="776785241867401546">producto</translation>
+  <translation id="994157966875519838">opinión</translation>
+  <translation id="5223129406687607678">No hemos podido marcar tu producto como urgente porque hay un error con la tarjeta de crédito.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Revisa los datos o utiliza otra tarjeta y empieza a destacar.</translation>
+  <translation id="1388549121916575785">Tu producto ya se ha subido y está marcado como urgente</translation>
 </translationbundle>

@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Item, WindowRef } from 'shield';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
+import { Order, Product } from '../../../../core/item/item-response.interface';
+import { OrderEvent } from '../../selected-items/selected-product.interface';
+import { Observable } from 'rxjs/Observable';
+import { ItemService } from '../../../../core/item/item.service';
 
 @Component({
   selector: 'tsl-upload-confirmation-modal',
@@ -11,10 +15,15 @@ import { TrackingService } from '../../../../core/tracking/tracking.service';
 export class UploadConfirmationModalComponent implements OnInit {
 
   public item: Item;
+  public productPrice: string;
+  public productId: string;
+  private getUrgentProductsObservable: Observable<Product>;
+  @Output() onAction: EventEmitter<OrderEvent> = new EventEmitter();
 
   constructor(public activeModal: NgbActiveModal,
               private window: WindowRef,
-              private trackingService: TrackingService) {
+              private trackingService: TrackingService,
+              public itemService: ItemService) {
   }
 
   ngOnInit() {
@@ -35,6 +44,29 @@ export class UploadConfirmationModalComponent implements OnInit {
       'text=' + encodeURIComponent(text) +
       '&url=' + encodeURIComponent(this.item.webLink);
     this.window.nativeWindow.open(url, 'twShareWindow', 'height=269,width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0');
+  }
+
+  public featureUrgentItem(): void {
+    const order: Order[] = [{
+      item_id: this.item.id,
+      product_id: this.productId
+    }];
+    const orderEvent: OrderEvent = {
+      order: order,
+      total: +this.productPrice
+    };
+    localStorage.setItem('transactionType', 'urgent');
+    this.activeModal.close(orderEvent);
+  }
+
+  public urgentPrice(): void {
+    this.getUrgentProductsObservable = this.itemService.getUrgentProducts(this.item.id).share();
+    this.getUrgentProductsObservable.subscribe((product: Product) => {
+      this.getUrgentProductsObservable = null;
+      this.productPrice = product.durations[0].market_code;
+      this.productId = product.durations[0].id
+    });
+
   }
 
 }
