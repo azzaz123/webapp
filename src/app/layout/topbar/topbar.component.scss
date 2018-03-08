@@ -338,21 +338,21 @@
       bottom: 0;
     }
   }
-  .main-header-upload {
-    border-radius: 100px;
-    font-weight: bold;
-    font-size: $font-size-S;
-    color: $white;
-    padding-left: $spacing-XS;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    mat-icon {
+  tsl-button {
+    /deep/ button {
+      font-weight: bold;
+      font-size: $font-size-S;
+      padding-left: $spacing-XS;
+      padding-top: 7px;
+      padding-bottom: 7px;
+    }
+    /deep/ mat-icon {
       vertical-align: middle;
       margin-right: $spacing-XXS;
       @include square(26px);
     }
     &:hover {
-      mat-icon /deep/ {
+      /deep/ mat-icon {
         #fill {
           transition: all 0.2s ease-in-out;
           fill-opacity: 1;

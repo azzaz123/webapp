@@ -33,7 +33,13 @@ $vertical-padding: 10px;
     &.disabled, &:disabled {
       &:active {
         background-color: $corporate;
-        border-color: $corporate;
+        border-color: transparent;
+      }
+    }
+    &:not([disabled]) {
+      &:hover {
+        background-color: $corporate-dark;
+        border-color: transparent;
       }
     }
   }
@@ -42,7 +48,8 @@ $vertical-padding: 10px;
     padding-bottom: 4px;
   }
   &.btn-big {
-    padding: $vertical-padding 75px;
+    padding-left: 75px;
+    padding-right: 75px;
   }
   &.btn-feature {
     background: $grey-700;

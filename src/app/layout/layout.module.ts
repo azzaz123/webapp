@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TopbarComponent } from './topbar/topbar.component';
 import { MatIconModule } from '@angular/material';
 import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -14,11 +13,12 @@ import { SuggesterService } from '../core/suggester/suggester.service';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { TrackingModule } from '../core/tracking/tracking.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     RouterModule,
-    CommonModule,
+    SharedModule,
     NgbDropdownModule,
     MatIconModule,
     FormsModule,
