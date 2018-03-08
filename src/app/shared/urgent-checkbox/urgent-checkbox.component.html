@@ -1,12 +1,12 @@
-<div class="box urgent" [ngbPopover]="coachmarkUrgent" triggers="mouseenter:mouseleave">
+<div class="box urgent" *ngIf="urgentPrice" [ngbPopover]="coachmarkUrgent" triggers="mouseenter:mouseleave">
   <div class="content">
     <h2 i18n>Apply the ASAP Feature</h2>
-    <p i18n>
-      From 3.99€ mark your product as 'urgent' to differentiate yourself from the others in the wall and it will be easier
+    <p i18n *ngIf="urgentPrice">
+      For <b>{{urgentPrice | customCurrency:'EUR'}}</b> mark your product as 'urgent' to differentiate yourself from the others in the wall and it will be easier
       for you to be found thanks to the urgent filter.
     </p>
-    <div class="checkbox" (click)="selectUrgent()">
-      <button type="button" class="select" [ngClass]="{'selected': isUrgent}">
+    <div class="checkbox">
+      <button type="button" class="select" [ngClass]="{'selected': isUrgent}" (click)="selectUrgent()">
         <mat-icon svgIcon="check"></mat-icon>
       </button>
       <span i18n [ngClass]="{'selected': isUrgent}">Check as ASAP</span>

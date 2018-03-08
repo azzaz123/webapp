@@ -19,7 +19,7 @@ import { Observable } from 'rxjs/Observable';
 import {
   CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, ORDER, PRODUCT_RESPONSE,
   PURCHASES, ITEMS_DATA_v3_FAVORITES, PRODUCTS_RESPONSE, ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE, ITEMS_WITH_PRODUCTS,
-  ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE, ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE
+  ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE, ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE, ITEM_CATEGORY_ID
 } from '../../../tests/item.fixtures';
 import { ResponseOptions, Response, Headers, RequestOptions } from '@angular/http';
 import { ConversationUser, ItemsData, ItemWithProducts, Product } from './item-response.interface';
@@ -466,7 +466,7 @@ describe('ItemService', () => {
   });
 
   describe('getUrgentProducts', () => {
-    it('should call endpoint', () => {
+    it('should return the product info', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let resp: Product;
@@ -474,6 +474,19 @@ describe('ItemService', () => {
         resp = r;
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-urgent-products');
+      expect(resp).toEqual(PRODUCT_RESPONSE)
+    });
+  });
+
+  describe('getUrgentProductByCategoryId', () => {
+    it('should return the product info', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: Product;
+      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID).subscribe((r: Product) => {
+        resp = r;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-urgent-products', {categoryId: ITEM_CATEGORY_ID});
       expect(resp).toEqual(PRODUCT_RESPONSE)
     });
   });

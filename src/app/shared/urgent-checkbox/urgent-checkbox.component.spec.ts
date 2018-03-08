@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UrgentCheckboxComponent } from './urgent-checkbox.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
 
 describe('UrgentCheckboxComponent', () => {
   let component: UrgentCheckboxComponent;
@@ -8,7 +10,10 @@ describe('UrgentCheckboxComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UrgentCheckboxComponent ],
+      declarations: [ UrgentCheckboxComponent, CustomCurrencyPipe ],
+        providers: [
+          DecimalPipe
+        ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -17,7 +22,6 @@ describe('UrgentCheckboxComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UrgentCheckboxComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   describe('Select urgent should', () => {
@@ -47,4 +51,5 @@ describe('UrgentCheckboxComponent', () => {
       expect(selected).toBe(false);
     });
   });
+
 });

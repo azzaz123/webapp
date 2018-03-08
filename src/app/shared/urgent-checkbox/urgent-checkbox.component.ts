@@ -1,30 +1,22 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'tsl-urgent-checkbox',
   templateUrl: './urgent-checkbox.component.html',
   styleUrls: ['./urgent-checkbox.component.scss']
 })
-export class UrgentCheckboxComponent implements OnInit {
+export class UrgentCheckboxComponent {
 
   public isUrgent: boolean = false;
   @Output() public urgentSelected = new EventEmitter<boolean>();
-  @Input() categoryId: string;
+  @Input() categoryId: number;
+  @Input() urgentPrice: string = null;
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
   public selectUrgent(): void {
     this.isUrgent = !this.isUrgent;
     this.urgentSelected.emit(this.isUrgent);
   }
-
-  /*get urgentPrice(): void {
-    this.itemService.getUrgentProducts(itemId).subscribe((product: Product) => {
-      return product.durations[0].market_code
-    });
-  }*/
 
 }

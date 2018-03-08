@@ -103,7 +103,11 @@ export class ListComponent implements OnInit, OnDestroy {
           });
           this.uploadModalRef.result.then((orderEvent: OrderEvent) => {
             this.uploadModalRef = null;
-            this.feature(orderEvent);
+            if (orderEvent) {
+              this.isUrgent = true;
+              this.isRedirect = !this.getRedirectToTPV();
+              this.feature(orderEvent);
+            }
           }, () => {
           });
         } else if (params && params.urgent) {

@@ -409,4 +409,18 @@ describe('UploadProductComponent', () => {
     });
   });
 
+  describe('Set category', () => {
+    let categoryId: number;
+
+    it('should emit category select event', () => {
+      component.onCategorySelect.subscribe((s: number) => {
+        categoryId = s;
+      });
+
+      component.setCategory(ITEM_CATEGORY_ID);
+
+      expect(categoryId).toBe(ITEM_CATEGORY_ID);
+    });
+  });
+
 });

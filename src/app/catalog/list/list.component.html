@@ -6,9 +6,7 @@
      [infiniteScrollDisabled]="end || loading"
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
-  <div class="urgent-message" *ngIf="isUrgent && isRedirect">
-    <p class="loading" i18n>You are being redirect to our payment system<span>.</span><span>.</span><span>.</span></p>
-  </div>
+  <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
   <div class="container">
     <tsl-header>
       <div class="col-7">

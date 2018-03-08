@@ -14,6 +14,7 @@ import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.
 import { CartItem } from '../app/catalog/checkout/cart/cart-item.interface';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
+export const ITEM_CATEGORY_ID: number = 12545;
 
 export const ITEM_DATA_V3: ItemResponse = {
   'id': '0j2ylvwrpmzy',

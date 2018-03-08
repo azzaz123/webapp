@@ -23,6 +23,7 @@ export class UploadCarComponent implements OnInit {
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Input() item: Car;
+  @Input() urgentPrice: number;
   public uploadForm: FormGroup;
   public models: IOption[];
   public years: IOption[];

@@ -49,8 +49,10 @@
             <ng-template
               #optionTemplate
               let-option="option">
-              <mat-icon svgIcon="cat_{{option?.icon_id}}"></mat-icon>
-              {{option?.label}}
+              <div (click)="setCategory(option.value)">
+                <mat-icon svgIcon="cat_{{option?.icon_id}}"></mat-icon>
+                {{option?.label}}
+              </div>
             </ng-template>
           </ng-select>
           <input *ngIf="fixedCategory" disabled type="text" class="form-control" [value]="fixedCategory" />
@@ -123,7 +125,7 @@
     </ng-template>
   </div>
   <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
-  <tsl-urgent-checkbox [categoryId]="categoryId" (urgentSelected)='selectUrgent($event)'></tsl-urgent-checkbox>
+  <tsl-urgent-checkbox [categoryId]="categoryId" [urgentPrice]="urgentPrice" (urgentSelected)='selectUrgent($event)'></tsl-urgent-checkbox>
   <button type="submit" class="btn btn-primary" [disabled]="loading">
     <mat-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></mat-icon>
     <span [hidden]="loading" *ngIf="!item" i18n>Post Ad</span>

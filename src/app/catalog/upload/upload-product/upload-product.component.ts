@@ -16,7 +16,7 @@ import { Item, DeliveryInfo } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-import { CategoryOption } from '../../../core/category/category-response.interface';
+import { CategoryOption, CategoryConsumerGoodsResponse } from '../../../core/category/category-response.interface';
 import { UploadEvent } from '../upload-event.interface';
 import { CategoryService } from '../../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
@@ -32,8 +32,10 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   @Input() categoryId: string;
   @Input() item: Item;
+  @Input() urgentPrice: number;
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
+  @Output() onCategorySelect = new EventEmitter<number>();
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
@@ -271,6 +273,10 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   public selectUrgent(isUrgent: boolean): void {
     this.isUrgent = isUrgent;
+  }
+
+  public setCategory(value: number): void {
+    this.onCategorySelect.emit(value);
   }
 
 }
