@@ -158,10 +158,17 @@ describe('CartComponent', () => {
         spyOn(component.cart, 'prepareOrder').and.returnValue(CART_ORDER);
         spyOn(component.cart, 'getOrderId').and.returnValue('UUID');
         spyOn(trackingService, 'track');
+        spyOn(localStorage, 'setItem');
         eventId = null;
         component.sabadellSubmit.subscribe((id: string) => {
           eventId = id;
         });
+      });
+
+      it('should set localStorage with transaction type', () => {
+        component.checkout();
+
+        expect(localStorage.setItem).toHaveBeenCalledWith('transactionType', 'bump');
       });
 
       describe('without credit card', () => {

@@ -465,6 +465,19 @@ describe('ItemService', () => {
     });
   });
 
+  describe('getUrgentProducts', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: Product;
+      service.getUrgentProducts(ITEM_ID).subscribe((r: Product) => {
+        resp = r;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-urgent-products');
+      expect(resp).toEqual(PRODUCT_RESPONSE)
+    });
+  });
+
 });
 
 function checkItemResponse(item: Item) {

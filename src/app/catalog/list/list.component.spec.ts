@@ -45,7 +45,7 @@ describe('ListComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let errorService: ErrorsService;
-  let componentInstance: any = {};
+  let componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   const routerEvents: Subject<any> = new Subject();
@@ -157,13 +157,16 @@ describe('ListComponent', () => {
   describe('ngOnInit', () => {
     it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');
+      spyOn(localStorage, 'getItem').and.returnValue('bump');
+      spyOn(localStorage, 'removeItem');
       component.ngOnInit();
       tick();
       expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
         windowClass: 'bump-confirm',
         backdrop: 'static'
       });
-      expect(router.navigate).toHaveBeenCalledWith(['catalog/list'])
+      expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
+      expect(localStorage.removeItem).toHaveBeenCalled();
     }));
     it('should reset page on router event', fakeAsync(() => {
       spyOn<any>(component, 'getItems');
@@ -178,18 +181,18 @@ describe('ListComponent', () => {
       expect(component['getItems']).toHaveBeenCalledTimes(2);
     }));
     it('should open upload confirmation modal', fakeAsync(() => {
-      spyOn(itemService, 'selectItem');
+      spyOn(component, 'feature');
       route.params = Observable.of({
         created: true
       });
+
+      component.feature(ORDER_EVENT);
       component.ngOnInit();
       tick();
-      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, {windowClass: 'upload'});
-      expect(itemService.selectedAction).toBe('feature');
-      expect(itemService.selectItem).toHaveBeenCalledWith(component.items[0].id);
-      expect(component.items[0].selected).toBeTruthy();
-    }));
 
+      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, {windowClass: 'upload'});
+      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
+    }));
     it('should open toastr', fakeAsync(() => {
       spyOn(errorService, 'i18nSuccess');
       route.params = Observable.of({
@@ -229,13 +232,17 @@ describe('ListComponent', () => {
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
-    it('should set item to upload modal', () => {
+    it('should set item to upload modal and call urgentPrice', fakeAsync(() => {
       component['uploadModalRef'] = <any>{
         componentInstance: componentInstance
       };
+
       component.ngOnInit();
+      tick();
+
       expect(component['uploadModalRef'].componentInstance.item).toEqual(component.items[0]);
-    });
+      expect(component['uploadModalRef'].componentInstance.urgentPrice).toHaveBeenCalled();
+    }));
   });
 
   describe('filterByStatus', () => {
