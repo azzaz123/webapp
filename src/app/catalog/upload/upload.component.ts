@@ -9,15 +9,15 @@ import { Product } from '../../core/item/item-response.interface';
 })
 export class UploadComponent {
 
-  public categoryId: number;
-  public urgentPrice: string;
+  public categoryId: string;
+  public urgentPrice: string = null;
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
   constructor(private itemService: ItemService) {
   }
 
   public setCategory(categoryId: number) {
-    this.categoryId = categoryId;
+    this.categoryId = categoryId.toString();
     if (categoryId !== -1) {
       this.getUrgentPrice(categoryId);
     }

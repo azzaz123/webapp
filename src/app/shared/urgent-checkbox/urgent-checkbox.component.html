@@ -2,14 +2,14 @@
   <div class="content">
     <h2 i18n>Apply the ASAP Feature</h2>
     <p i18n *ngIf="urgentPrice">
-      For <b>{{urgentPrice | customCurrency:'EUR'}}</b> mark your product as 'urgent' to differentiate yourself from the others in the wall and it will be easier
-      for you to be found thanks to the urgent filter.
+      For only {{urgentPrice | customCurrency:'EUR'}} mark your product as "Asap" for 7 days to differentiate it in the wall and make it easier to find through the asap filter.
     </p>
     <div class="checkbox">
       <button type="button" class="select" [ngClass]="{'selected': isUrgent}" (click)="selectUrgent()">
         <mat-icon svgIcon="check"></mat-icon>
       </button>
-      <span i18n [ngClass]="{'selected': isUrgent}">Check as ASAP</span>
+      <span i18n [hidden]="isUrgent">Check as ASAP</span>
+      <span i18n *ngIf="isUrgent" [ngClass]="{'selected': isUrgent}">Checked as ASAP</span>
     </div>
   </div>
   <div class="urgent-background"></div>

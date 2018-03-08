@@ -46,11 +46,11 @@
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="124288245683167765"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:3</source>Apply the ASAP Feature</msg>
-  <msg id="2721688607494984547"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:4,7</source>
-      For <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> mark your product as &apos;urgent&apos; to differentiate yourself from the others in the wall and it will be easier
-      for you to be found thanks to the urgent filter.
+  <msg id="6583839768249288834"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:4,6</source>
+      For only <ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph> mark your product as &quot;Asap&quot; for 7 days to differentiate it in the wall and make it easier to find through the asap filter.
     </msg>
-  <msg id="1367227703192400664"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:12</source>Check as ASAP</msg>
+  <msg id="1367227703192400664"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:11</source>Check as ASAP</msg>
+  <msg id="6771710083447673223"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:12</source>Checked as ASAP</msg>
   <msg id="1002906181596709279"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:18</source>Your product will be more visible and you will sell it faster.</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:26</source>Delete conversation</msg>
   <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will delete the conversation.</msg>
