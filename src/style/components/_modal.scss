@@ -84,7 +84,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     margin-bottom: 0;
     font-size: $font-size-S;
   }
-  .btn:not(.btn-primary):not(.btn-secondary) {
+  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature) {
     color: $grey-800;
     background-color: transparent;
     outline: 0;

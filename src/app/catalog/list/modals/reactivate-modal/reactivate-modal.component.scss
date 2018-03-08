@@ -13,17 +13,6 @@
     color: $grey-600;
     margin: 0 0 $spacing;
   }
-  .btn-bump {
-    background-color: $grey-700;
-    color: $white;
-    font-size: $font-size-S;
-    padding: 10px 30px;
-    border-radius: 20px;
-    border-color: transparent;
-    &:hover {
-      background: $corporate;
-    }
-  }
   .line {
     background-color: $grey-50;
     width: 176px;

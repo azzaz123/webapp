@@ -44,6 +44,13 @@ $vertical-padding: 10px;
   &.btn-big {
     padding: $vertical-padding 75px;
   }
+  &.btn-feature {
+    background: $grey-700;
+    border-color: transparent;
+    &:hover {
+      background: $corporate;
+    }
+  }
 }
 
 

@@ -100,14 +100,11 @@ $feature-button-width: 170px;
       text-decoration: none;
     }
   }
-  button {
-    border: solid 1px rgba(207, 216, 220, 0.5);
+  button, tsl-button /deep/ .btn-feature  {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: $white;
     cursor: pointer;
-    float: left;
   }
   .price {
     width: 130px;
@@ -144,41 +141,25 @@ $feature-button-width: 170px;
     .resized & {
       display: none;
     }
+    button, tsl-button {
+      margin-left: 12px;
+      float: left;
+    }
     button {
       @include square(40px);
+      border: solid 1px rgba(207, 216, 220, 0.5);
       border-radius: 8px;
-      margin-left: 12px;
       transition: all .2s ease;
-      &:not(.btn-feature) {
-        mat-icon /deep/ {
-          svg g g, svg path {
-            fill: $grey-500;
-          }
-        }
-        &:hover, &.active {
-          mat-icon /deep/ {
-            svg g g, svg path {
-              fill: $white;
-            }
-          }
+      mat-icon /deep/ {
+        svg g g, svg path {
+          fill: $grey-500;
         }
       }
-      &.btn-feature {
-        background: $grey-700;
-        width: $feature-button-width;
-        color: $white;
-        padding: 0 $spacing;
-        padding-left: 12px;
-        font-size: $font-size-S;
-        border: 1px solid transparent;
-        border-radius: $button-border-radius;
-        &:hover {
-          background: $corporate;
-        }
-        mat-icon {
-          width: 19px;
-          height: 21px;
-          margin-right: 9px;
+      &:hover, &.active {
+        mat-icon /deep/ {
+          svg g g, svg path {
+            fill: $white;
+          }
         }
       }
       &.btn-featured {
@@ -211,6 +192,20 @@ $feature-button-width: 170px;
         &:hover {
           background: $edit-bg;
           border-color: transparent;
+        }
+      }
+    }
+    tsl-button {
+      /deep/ .btn-feature {
+        width: $feature-button-width;
+        height: 40px;
+        padding: 0 $spacing;
+        padding-left: 12px;
+        font-size: $font-size-S;
+        mat-icon {
+          width: 19px;
+          height: 21px;
+          margin-right: 9px;
         }
       }
     }
