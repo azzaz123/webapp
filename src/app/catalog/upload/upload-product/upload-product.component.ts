@@ -16,7 +16,7 @@ import { Item, DeliveryInfo } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
-import { CategoryOption, CategoryConsumerGoodsResponse } from '../../../core/category/category-response.interface';
+import { CategoryOption } from '../../../core/category/category-response.interface';
 import { UploadEvent } from '../upload-event.interface';
 import { CategoryService } from '../../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';

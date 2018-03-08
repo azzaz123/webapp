@@ -66,6 +66,7 @@ export class UploadConfirmationModalComponent implements OnInit {
       this.productPrice = product.durations[0].market_code;
       this.productId = product.durations[0].id
     });
+    
   }
 
 }
