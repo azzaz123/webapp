@@ -19,7 +19,7 @@ import { UnblockUserComponent } from './modals/unblock-user/unblock-user.compone
 import { TrackingService } from '../core/tracking/tracking.service';
 import { AdService } from '../core/ad/ad.service';
 import { USER_BASE_PATH } from 'shield';
-import { environment } from "../../environments/environment";
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'tsl-chat',
@@ -65,7 +65,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.persistencyService.getMetaInformation().subscribe(() => {
     }, () => {
       this.firstLoad = true;
-    });    
+    });
   }
 
   ngOnDestroy () {
