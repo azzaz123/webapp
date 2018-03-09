@@ -201,6 +201,18 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.Log,
     type: TYPES_IDS.Error
   };
+  public static URGENT_PURCHASE_SUCCESS: TrackingEventBase = {
+    name: '660',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Success
+  };
+  public static URGENT_PURCHASE_ERROR: TrackingEventBase = {
+    name: '661',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Error
+  };
   public static CONVERSATION_CREATE_NEW: TrackingEventBase = {
     name: '121',
     category: CATEGORY_IDS.Conversations,
