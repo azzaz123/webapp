@@ -103,7 +103,7 @@ describe('CheckoutItemComponent', () => {
     afterEach(() => {
       expect(component.selectedType).toBeUndefined();
       expect(component.selectedDuration).toBeUndefined();
-      expect(component.itemWithProducts.item.flags['bump_type']).toBeUndefined();
+      expect(component.itemWithProducts.item.flags.bump_type).toBeUndefined();
       expect(component.itemWithProducts.item.flags.bumped).toBeFalsy();
     });
   });
@@ -139,7 +139,7 @@ describe('CheckoutItemComponent', () => {
     });
 
     it('should set items flags', () => {
-      expect(component.itemWithProducts.item.flags['bump_type']).toBe(TYPE);
+      expect(component.itemWithProducts.item.flags.bump_type).toBe(TYPE);
       expect(component.itemWithProducts.item.flags.bumped).toBeTruthy();
     });
 

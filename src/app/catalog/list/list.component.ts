@@ -19,8 +19,6 @@ import { UserService } from '../../core/user/user.service';
 import { UserStatsResponse } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
-import 'rxjs/add/operator/pairwise';
-import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'tsl-list',

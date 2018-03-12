@@ -1,12 +1,10 @@
 import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UrgentConfirmationModalComponent } from './urgent-confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MockBackend, MockConnection } from '@angular/http/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { WindowRef, USER_DATA, MOCK_USER, MockTrackingService } from 'shield';
+import { WindowRef, MOCK_USER, MockTrackingService } from 'shield';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { UserService } from '../../../../core/user/user.service';
-import { Response, ResponseOptions} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 describe('UrgentConfirmationModalComponent', () => {
@@ -23,7 +21,6 @@ describe('UrgentConfirmationModalComponent', () => {
         WindowRef,
         NgbActiveModal,
         {provide: TrackingService, useClass: MockTrackingService},
-        MockBackend,
         {
           provide: UserService, useValue: {
             me() {
@@ -48,11 +45,6 @@ describe('UrgentConfirmationModalComponent', () => {
 
   describe('ngOnInit', () => {
     beforeEach(fakeAsync(() => {
-      let mockBackend = TestBed.get(MockBackend);
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
-        connection.mockRespond(new Response(res));
-      });
       spyOn(trackingService, 'track');
     }));
     it('should send event featured_purchase_success if code == 200', () => {
