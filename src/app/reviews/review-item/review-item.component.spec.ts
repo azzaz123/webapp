@@ -4,8 +4,8 @@ import { SanitizedBackgroundDirective, USER_BASE_PATH, ITEM_BASE_PATH } from 'sh
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MOCK_REVIEWS, REVIEWS_RESPONSE } from '../../../tests/review.fixtures';
 
-const WEB_SLUG_ITEM_ES = 'https://es.wallapop.com/item/';
-const WEB_SLUG_USER_ES = 'https://es.wallapop.com/user/';
+const WEB_SLUG_ITEM = 'https://www.wallapop.com/item/';
+const WEB_SLUG_USER = 'https://www.wallapop.com/user/';
 
 describe('ReviewItemComponent', () => {
   let component: ReviewItemComponent;
@@ -32,11 +32,11 @@ describe('ReviewItemComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set itemWebLink', () => {
-      expect(component.itemWebLink).toBe(WEB_SLUG_ITEM_ES + MOCK_REVIEWS[0].item.webSlug);
+      expect(component.itemWebLink).toBe(WEB_SLUG_ITEM + MOCK_REVIEWS[0].item.webSlug);
     });
 
     it('should set userWebSlug', () => {
-      expect(component.userWebSlug).toBe(WEB_SLUG_USER_ES + REVIEWS_RESPONSE[0].user.web_slug);
+      expect(component.userWebSlug).toBe(WEB_SLUG_USER + REVIEWS_RESPONSE[0].user.web_slug);
     });
   });
 });
