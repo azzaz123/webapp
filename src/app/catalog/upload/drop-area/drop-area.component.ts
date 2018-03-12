@@ -35,7 +35,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   placeholders: number[];
   options: NgUploaderOptions;
   isSafari: boolean;
-  private item: Item;
+  item: Item;
 
   private setDragOver = _.throttle((dragOver: boolean) => {
     if (!this.isSafari) {
