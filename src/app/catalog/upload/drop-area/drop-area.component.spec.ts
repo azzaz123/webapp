@@ -291,7 +291,7 @@ describe('DropAreaComponent', () => {
     }));
   });
 
-  describe('onUploadDone', () => {
+  fdescribe('onUploadDone', () => {
     describe('with response 200', () => {
       describe('first image upload', () => {
         describe('with many images', () => {
