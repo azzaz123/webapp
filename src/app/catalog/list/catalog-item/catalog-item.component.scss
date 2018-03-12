@@ -71,8 +71,27 @@ $feature-button-width: 170px;
       border-radius: $border-radius;
     }
   }
+  .selected-veil {
+    display: none;
+  }
   .resized & {
     margin-left: $checkbox-width + $spacing;
+    .selected-veil {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      cursor: pointer;
+      z-index: 1;
+      border-radius: $border-radius;
+    }
+    &:not(.selected):hover {
+      .selected-veil {
+        border: solid 1px $corporate;
+      }
+    }
   }
   &.selected {
     background-color: rgba($corporate, 0.2);
