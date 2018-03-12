@@ -58,6 +58,12 @@ $vertical-padding: 10px;
       background: $corporate;
     }
   }
+  &.btn-outline-primary {
+    color: $corporate;
+    &:hover {
+      color: $white;
+    }
+  }
 }
 
 
