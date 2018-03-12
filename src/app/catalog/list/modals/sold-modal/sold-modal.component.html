@@ -39,8 +39,7 @@
     <input type="number" class="form-control" id="price" name="price" [(ngModel)]="price" /> <span class="currency">{{item.currencyCode}}</span>
     <textarea i18n-placeholder placeholder="Leave a review..." class="form-control" [(ngModel)]="comments"></textarea>
     <div class="centered">
-      <tsl-button className="btn-primary"
-                  [disabled]="!score"
+      <tsl-button [disabled]="!score"
                   (click)="setSold()"
                   i18n>Publish</tsl-button>
     </div>
@@ -51,6 +50,6 @@
     <mat-icon svgIcon="congrats"></mat-icon>
     <h1 i18n>Thanks</h1>
     <p class="text" i18n>Your feedback is important for the<br />Wallapop community.</p>
-    <tsl-button className="btn-primary" (click)="activeModal.close()" i18n>Continue</tsl-button>
+    <tsl-button (click)="activeModal.close()" i18n>Continue</tsl-button>
   </div>
 </div>

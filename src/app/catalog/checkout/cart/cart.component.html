@@ -72,8 +72,7 @@
     </div>
   </form>
 </div>
-<tsl-button className="btn-primary"
-            [disabled]="!cart?.total || loading"
+<tsl-button [disabled]="!cart?.total || loading"
             [loading]="loading"
             (click)="checkout()"
             i18n>Continue to Checkout</tsl-button>

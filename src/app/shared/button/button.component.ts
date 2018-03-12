@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ButtonComponent {
 
-  @Input() className: string;
+  @Input() className = 'btn-primary';
   @Input() type = 'button';
   @Input() disabled: boolean;
   @Input() loading: boolean;
