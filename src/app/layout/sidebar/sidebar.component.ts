@@ -1,7 +1,6 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
-import { User, MessageService } from 'shield';
-import { environment } from '../../../environments/environment';
+import { MessageService, User } from 'shield';
 import { TutorialService } from '../../core/tutorial/tutorial.service';
 
 @Component({
@@ -12,21 +11,16 @@ import { TutorialService } from '../../core/tutorial/tutorial.service';
 export class SidebarComponent implements OnInit {
 
   public user: User;
-  public userUrl: string;
   @Input() isProducts: boolean;
 
   constructor(private userService: UserService,
               public tutorialService: TutorialService,
-              public messageService: MessageService,
-              @Inject('SUBDOMAIN') private subdomain: string) {
+              public messageService: MessageService) {
   }
 
   ngOnInit() {
     this.userService.me().subscribe((user) => {
       this.user = user;
-      if (user) {
-        this.userUrl = user.webLink.replace('http://es.wallapop.com/', environment.siteUrl.replace('es', this.subdomain));
-      }
     });
   }
 

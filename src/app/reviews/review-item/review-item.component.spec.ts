@@ -15,7 +15,9 @@ describe('ReviewItemComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ReviewItemComponent, SanitizedBackgroundDirective],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: []
+      providers: [
+        { provide: 'SUBDOMAIN', useValue: 'www'}
+      ]
     })
     .compileComponents();
   }));
