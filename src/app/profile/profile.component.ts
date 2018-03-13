@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
     this.userService.me().subscribe((user) => {
       this.user = user;
       if (user) {
-        this.userUrl = user.webLink.replace('http://es.wallapop.com/', environment.siteUrl.replace('es', this.subdomain));
+        this.userUrl = user.getUrl(this.subdomain);
         this.setUserData();
         this.detectFormChanges();
       }

@@ -7519,9 +7519,9 @@ shell-quote@^1.6.1:
     array-reduce "~0.0.0"
     jsonify "~0.0.0"
 
-"shield@git+ssh://git@github.com/Wallapop/shield.git#2.0.0":
-  version "2.0.0"
-  resolved "git+ssh://git@github.com/Wallapop/shield.git#2f4679db5302e121c82d38c88d26f6b7185d543a"
+"shield@git+ssh://git@github.com/Wallapop/shield.git#2.0.1":
+  version "2.0.1"
+  resolved "git+ssh://git@github.com/Wallapop/shield.git#7e5d15a9cbdbbc9534b7a9cec14f8933586271ce"
   dependencies:
     "@angular/animations" "^5.2.0"
     "@angular/cdk" "5.1.0"

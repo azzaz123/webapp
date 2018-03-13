@@ -21,7 +21,6 @@ export class TopbarComponent implements OnInit {
   public focus: boolean;
   public homeUrl: string;
   public model: any;
-  public userUrl: string;
   @Input() isMyZone: boolean;
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('kwsEl') kwsEl: ElementRef;
@@ -36,9 +35,6 @@ export class TopbarComponent implements OnInit {
   ngOnInit() {
     this.userService.me().subscribe((user) => {
       this.user = user;
-      if (user) {
-        this.userUrl = user.webLink.replace('http://es.wallapop.com/', this.homeUrl);
-      }
     });
   }
 

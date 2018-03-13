@@ -77,6 +77,7 @@ describe('Component: Chat', () => {
         {provide: UserService, useClass: MockUserService},
         {provide: HttpService, useValue: {}},
         {provide: ToastrService, useClass: MockedToastr},
+        {provide: 'SUBDOMAIN', useValue: 'www'},
         {
           provide: PersistencyService, useValue: {
           getMetaInformation() {
@@ -124,7 +125,7 @@ describe('Component: Chat', () => {
   });
 
   describe('onCurrentConversationChange', () => {
-    const WEB_SLUG_USER_ES = 'https://es.wallapop.com/user/';
+    const WEB_SLUG_USER = 'https://www.wallapop.com/user/';
 
     beforeEach(() => {
       spyOn(conversationService, 'sendRead');
@@ -163,8 +164,8 @@ describe('Component: Chat', () => {
 
     it('should set userWebSlug', () => {
       component.onCurrentConversationChange(conversation);
-      
-      expect(component.userWebSlug).toBe(WEB_SLUG_USER_ES + USER_WEB_SLUG);
+
+      expect(component.userWebSlug).toBe(WEB_SLUG_USER + USER_WEB_SLUG);
     });
   });
 
@@ -192,7 +193,7 @@ describe('Component: Chat', () => {
       expect(component.connectionError).toBeTruthy();
       expect(component.conversationsLoaded).toBeTruthy();
     });
-    
+
     it('should call updateBlockStatus on USER_BLOCKED', () => {
       spyOn(userService, 'updateBlockStatus');
       component.ngOnInit();
@@ -218,7 +219,7 @@ describe('Component: Chat', () => {
     it('should set firstLoad true if getMetaInformation does NOT return meta', () => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw('err'));
       component.ngOnInit();
-      
+
       expect(component.firstLoad).toBeTruthy();
     });
   });
