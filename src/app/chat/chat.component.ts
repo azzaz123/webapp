@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Conversation,
@@ -18,8 +18,6 @@ import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { AdService } from '../core/ad/ad.service';
-import { USER_BASE_PATH } from 'shield';
-import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'tsl-chat',
@@ -45,7 +43,8 @@ export class ChatComponent implements OnInit, OnDestroy {
               private eventService: EventService,
               public xmppService: XmppService,
               private persistencyService: PersistencyService,
-              private adService: AdService) {
+              private adService: AdService,
+              @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
   ngOnInit() {
@@ -81,7 +80,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.currentConversation) {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);
-      this.userWebSlug = this.currentConversation.user ? this.currentConversation.user.webLink.replace(USER_BASE_PATH, environment.siteUrl + 'user/') : null;
+      this.userWebSlug = this.currentConversation.user ? this.currentConversation.user.getUrl(this.subdomain) : null;
     }
 
     this.adService.startAdsRefresh();

@@ -6,17 +6,19 @@ import { MOCK_REVIEWS, REVIEWS_RESPONSE } from '../../../tests/review.fixtures';
 import { MOCK_MESSAGE, USER_WEB_SLUG } from 'shield';
 import { User, USER_ID } from 'shield';
 
-const WEB_SLUG_USER_ES = 'https://es.wallapop.com/user/';
+const WEB_SLUG_USER = 'https://www.wallapop.com/user/';
 
 describe('Component: Message', () => {
-  let component: MessageComponent = new MessageComponent();
+  let component: MessageComponent;
   let fixture: ComponentFixture<MessageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ MessageComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: []
+      providers: [
+        {provide: 'SUBDOMAIN', useValue: 'www'},
+      ]
     })
     .compileComponents();
   }));
@@ -31,7 +33,7 @@ describe('Component: Message', () => {
 
   describe('ngOnInit', () => {
     it('should set userWebSlug', () => {
-      expect(component.userWebSlug).toBe(WEB_SLUG_USER_ES + USER_WEB_SLUG);
+      expect(component.userWebSlug).toBe(WEB_SLUG_USER + USER_WEB_SLUG);
     });
   });
 
