@@ -1,7 +1,7 @@
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { NgUploaderOptions, UploadFile, UploadOutput, UploadStatus } from 'ngx-uploader';
 import * as _ from 'lodash';
-import { Image } from 'shield';
+import { Image, Item } from 'shield';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
@@ -35,6 +35,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   placeholders: number[];
   options: NgUploaderOptions;
   isSafari: boolean;
+  item: Item;
 
   private setDragOver = _.throttle((dragOver: boolean) => {
     if (!this.isSafari) {
@@ -176,16 +177,25 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
       if (output.file.progress.data.responseStatus === 200) {
         if (output.file.response.id) {
           this.itemId = output.file.response.id;
+          this.item = output.file.response;
           if (this.files.length > 1) {
             this.uploadService.uploadOtherImages(output.file.response.id, this.maxUploads === 8 ? '/cars' : '');
           } else {
-            this.onUploaded.emit('created');
+            if (this.item.hasOwnProperty('flags') && this.item.flags['onhold']) {
+              this.onUploaded.emit('createdOnHold');
+            } else {
+              this.onUploaded.emit('created');
+            }
           }
         } else {
           if (!this.images && _.every(this.files, (file: UploadFile) => {
               return file.progress.status === UploadStatus.Done;
             })) {
-            this.onUploaded.emit(this.images ? 'updated' : 'created');
+            if (this.item.hasOwnProperty('flags') && this.item.flags['onhold']) {
+              this.onUploaded.emit('createdOnHold');
+            } else {
+              this.onUploaded.emit(this.images ? 'updated' : 'created');
+            }
           } else {
             this.pictureUploadedOnUpdate(output);
           }
