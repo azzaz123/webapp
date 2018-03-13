@@ -9,7 +9,10 @@
 </div>
 <div id="center-panel" *ngIf="currentConversation">
   <div id="top-bar">
-    <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+    <a *ngIf="currentConversation?.user.webLink" href="{{ userWebSlug }}" target="_blank">
+        <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
+    </a>
+    <tsl-user-avatar *ngIf="!currentConversation?.user.webLink" [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
     <div class="conversation-header-user-info">
       <h5>{{currentConversation?.user.microName}}</h5>
       <tsl-stars *ngIf="currentConversation.user.scoringStars > -1" [stars]="currentConversation.user.scoringStars" [normalized]="false"></tsl-stars>

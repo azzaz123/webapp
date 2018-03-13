@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Conversation,
@@ -31,6 +31,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public conversationsTotal: number;
   public connectionError: boolean;
   public firstLoad: boolean;
+  public userWebSlug: string;
 
   constructor(private conversationService: ConversationService,
               private itemService: ItemService,
@@ -42,7 +43,8 @@ export class ChatComponent implements OnInit, OnDestroy {
               private eventService: EventService,
               public xmppService: XmppService,
               private persistencyService: PersistencyService,
-              private adService: AdService) {
+              private adService: AdService,
+              @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
   ngOnInit() {
@@ -78,6 +80,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.currentConversation) {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);
+      this.userWebSlug = this.currentConversation.user ? this.currentConversation.user.getUrl(this.subdomain) : null;
     }
 
     this.adService.startAdsRefresh();

@@ -24,7 +24,8 @@ describe('Component: Item', () => {
             return Observable.of(ITEM_COUNTERS_DATA);
           }
         }
-        }],
+        },
+        {provide: 'SUBDOMAIN', useValue: 'es'}],
       schemas: [NO_ERRORS_SCHEMA]
     });
     fixture = TestBed.createComponent(ItemComponent);
