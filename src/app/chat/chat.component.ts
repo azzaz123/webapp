@@ -18,6 +18,8 @@ import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { AdService } from '../core/ad/ad.service';
+import { USER_BASE_PATH } from 'shield';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'tsl-chat',
@@ -31,6 +33,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public conversationsTotal: number;
   public connectionError: boolean;
   public firstLoad: boolean;
+  public userWebSlug: string;
 
   constructor(private conversationService: ConversationService,
               private itemService: ItemService,
@@ -78,6 +81,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.currentConversation) {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);
+      this.userWebSlug = this.currentConversation.user ? this.currentConversation.user.webLink.replace(USER_BASE_PATH, environment.siteUrl + 'user/') : null;
     }
 
     this.adService.startAdsRefresh();
