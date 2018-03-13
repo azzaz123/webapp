@@ -4,11 +4,11 @@
   </div>
   <h1 i18n>This time, sell it!</h1>
   <p i18n>Reactivate this item for <b>{{price | customCurrency:'EUR'}}</b> and put it in the top positions.<br /> Get more visibility and sell it faster. </p>
-  <button
+  <tsl-button
     (click)="activeModal.close('bump')"
-    class="btn btn-secondary btn-bump"
+    className="btn-feature"
     tslTrackEvent="MYCATALOG_REACTIVATE_FROMMODAL" [params]="{category: item.categoryId}"
-    i18n>Reactivate + visibility </button>
+    i18n>Reactivate + visibility </tsl-button>
   <div class="line"></div>
   <a class="reactivate"
      (click)="activeModal.close('reactivate')"

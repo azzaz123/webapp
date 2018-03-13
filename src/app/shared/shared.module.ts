@@ -13,6 +13,7 @@ import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
+import { ButtonComponent } from './button/button.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { HeaderComponent } from './header/header.component';
     AdComponent,
     CustomCurrencyPipe,
     RestrictInputDirective,
-    HeaderComponent
+    HeaderComponent,
+    ButtonComponent
   ],
   declarations: [
     AdComponent,
@@ -38,7 +40,8 @@ import { HeaderComponent } from './header/header.component';
     SpinnerComponent,
     CustomCurrencyPipe,
     RestrictInputDirective,
-    HeaderComponent
+    HeaderComponent,
+    ButtonComponent
   ],
   providers: [
     DecimalPipe,

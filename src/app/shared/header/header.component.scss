@@ -1,4 +1,4 @@
-@import "../../../style/_common.scss";
+@import "~style/common";
 
 /deep/ {
     .header-title {
@@ -43,8 +43,8 @@
             text-overflow: ellipsis;
         }
         .header-numbers-bottom {
-            font-size: 14px; 
-            margin-bottom: 0;                       
+            font-size: 14px;
+            margin-bottom: 0;
         }
     }
 }

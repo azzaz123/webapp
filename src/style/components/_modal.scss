@@ -27,6 +27,27 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     top: 20px;
     z-index: 99;
     text-align: left;
+    mat-icon {
+      height: 15px;
+      line-height: 30px;
+      /deep/ path {
+        fill: $grey-700;
+      }
+    }
+    &:hover mat-icon /deep/ path {
+      fill: $grey-900;
+    }
+    .modal.bump-confirm & {
+      mat-icon /deep/ path {
+        fill: $grey-200;
+      }
+    }
+    &.light {
+      mat-icon /deep/ path {
+        fill: $white;
+        opacity: .5;
+      }
+    }
   }
   .modal-back {
     cursor: pointer;
@@ -63,7 +84,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     margin-bottom: 0;
     font-size: $font-size-S;
   }
-  .btn:not(.btn-primary):not(.btn-secondary) {
+  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature) {
     color: $grey-800;
     background-color: transparent;
     outline: 0;

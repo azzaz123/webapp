@@ -1,14 +1,12 @@
-@import "../../../../style/_common.scss";
+@import "~style/common";
 
 :host {
   display: block;
 }
 
-.btn {
+tsl-button {
   font-size: $font-size-S;
-  padding: 6px $spacing;
   margin-top: $spacing-S;
-  cursor: pointer;
 }
 
 .thanks {

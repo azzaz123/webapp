@@ -1,4 +1,4 @@
-@import "../../style/_common.scss";
+@import "~style/common";
 
 $border: solid 1px $grey-50;
 $form-control-height: 42px;
@@ -180,11 +180,9 @@ $form-control-height: 42px;
   justify-content: flex-end;
   height: 100%;
 }
-  
-.btn-save {
-  margin-right: $spacing;
+
+tsl-button {
   margin-bottom: 65px;
-  padding: 14px 50px;
   margin-top: $spacing-S;
 }
 
@@ -193,11 +191,10 @@ $form-control-height: 42px;
   background-color: transparent;
   border: solid 1px $grey-100;
   color: $grey-600;
-  margin-right: $spacing;
   font-size: $font-size-S;
   &:hover {
-      background-color: $delete-bg;
-      color: $white;
-      border: solid 1px $delete-bg;
+    background-color: $delete-bg;
+    color: $white;
+    border: solid 1px $delete-bg;
   }
 }

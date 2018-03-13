@@ -7,6 +7,7 @@ import { UserService } from '../../../core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { USER_EMAIL } from 'shield';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('EmailModalComponent', () => {
   let component: EmailModalComponent;
@@ -40,7 +41,8 @@ describe('EmailModalComponent', () => {
         }
         }
       ],
-      declarations: [EmailModalComponent]
+      declarations: [EmailModalComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

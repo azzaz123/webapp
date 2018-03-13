@@ -1,4 +1,4 @@
-@import "../../../style/_common.scss";
+@import "~style/common";
 
 .header-location {
   & {
@@ -58,6 +58,11 @@
     height: 36px;
     width: 36px;
     color: $grey-100;
+  }
+  &.active {
+    /deep/ svg g path {
+      fill: $corporate;
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-@import "../../../../style/_common.scss";
+@import "~style/common";
 
 $checkbox-width: 24px;
 $transition: all .5s ease;
@@ -35,6 +35,9 @@ $feature-button-width: 170px;
       border-color: transparent;
       mat-icon {
         display: flex;
+        /deep/ svg g g {
+          fill: $white;
+        }
       }
     }
     &:hover {
@@ -97,14 +100,14 @@ $feature-button-width: 170px;
       text-decoration: none;
     }
   }
-  button {
-    border: solid 1px rgba(207, 216, 220, 0.5);
+  button, tsl-button /deep/ .btn-feature  {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: $white;
     cursor: pointer;
-    float: left;
+  }
+  button {
+    border: solid 1px rgba(207, 216, 220, 0.5);
   }
   .price {
     width: 130px;
@@ -126,6 +129,13 @@ $feature-button-width: 170px;
       width: 19px;
       vertical-align: top;
       margin-left: 10px;
+      /deep/ svg path {
+        stroke: $grey-500;
+        &#Fill-3 {
+          stroke: none;
+          fill: $grey-500;
+        }
+      }
     }
   }
   .actions {
@@ -134,27 +144,24 @@ $feature-button-width: 170px;
     .resized & {
       display: none;
     }
+    button, tsl-button {
+      margin-left: 12px;
+      float: left;
+    }
     button {
       @include square(40px);
       border-radius: 8px;
-      margin-left: 12px;
       transition: all .2s ease;
-      &.btn-feature {
-        background: $grey-700;
-        width: $feature-button-width;
-        color: $white;
-        padding: 0 $spacing;
-        padding-left: 12px;
-        font-size: $font-size-S;
-        border: 1px solid transparent;
-        border-radius: $button-border-radius;
-        &:hover {
-          background: $corporate;
+      mat-icon /deep/ {
+        svg g g, svg path {
+          fill: $grey-500;
         }
-        mat-icon {
-          width: 19px;
-          height: 21px;
-          margin-right: 9px;
+      }
+      &:hover, &.active {
+        mat-icon /deep/ {
+          svg g g, svg path {
+            fill: $white;
+          }
         }
       }
       &.btn-featured {
@@ -190,6 +197,20 @@ $feature-button-width: 170px;
         }
       }
     }
+    tsl-button {
+      /deep/ .btn-feature {
+        width: $feature-button-width;
+        height: 40px;
+        padding: 0 $spacing;
+        padding-left: 12px;
+        font-size: $font-size-S;
+        mat-icon {
+          width: 19px;
+          height: 21px;
+          margin-right: 9px;
+        }
+      }
+    }
   }
   &.sold {
     .actions {
@@ -213,6 +234,11 @@ $feature-button-width: 170px;
     &:hover {
       background-color: $reactivate-bg;
       color: $white;
+      mat-icon /deep/ {
+        svg g g, svg path {
+          fill: $white;
+        }
+      }
     }
   }
   .btn-pending {
