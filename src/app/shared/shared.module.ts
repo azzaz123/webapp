@@ -14,6 +14,7 @@ import { RestrictInputDirective } from './restrict-input/restrict-input.directiv
 import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
 import { UrgentCheckboxComponent } from './urgent-checkbox/urgent-checkbox.component';
+import { ButtonComponent } from './button/button.component';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { UrgentCheckboxComponent } from './urgent-checkbox/urgent-checkbox.compo
     CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
+    ButtonComponent,
     UrgentCheckboxComponent
   ],
   declarations: [
@@ -41,6 +43,7 @@ import { UrgentCheckboxComponent } from './urgent-checkbox/urgent-checkbox.compo
     CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
+    ButtonComponent,
     UrgentCheckboxComponent
   ],
   providers: [

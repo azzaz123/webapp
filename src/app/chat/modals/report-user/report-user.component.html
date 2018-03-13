@@ -21,10 +21,9 @@
             class="report-listing-textarea"
             i18n-placeholder placeholder="I'm reporting this user because..."></textarea>
   <div class="centered">
-    <button type="button"
-            class="btn btn-primary"
-            [disabled]="!reportUserReasonMessage || reportUserReasonMessage.trim() === ''"
-            (click)="close();"
-            i18n>Report</button>
+    <tsl-button className="btn btn-primary"
+                [disabled]="!reportUserReasonMessage || reportUserReasonMessage.trim() === ''"
+                (click)="close();"
+                i18n>Report</tsl-button>
   </div>
 

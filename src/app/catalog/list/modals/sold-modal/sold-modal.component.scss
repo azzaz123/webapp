@@ -1,4 +1,4 @@
-@import "../../../../../style/_common.scss";
+@import "~style/common";
 
 #first-step, #second-step, #thanks {
   p.text {
@@ -71,6 +71,9 @@ h1 {
         width: 42px;
         height: 42px;
         transition: right ease .2s;
+        /deep/ svg path {
+          fill: $grey-200;
+        }
       }
       &:hover {
         text-decoration: none;
@@ -79,6 +82,9 @@ h1 {
         }
         .arrow-icon {
           right: -10px;
+          /deep/ svg path {
+            fill: $corporate;
+          }
         }
       }
     }
@@ -167,7 +173,7 @@ h1 {
     margin-bottom: 43px;
     margin-left: 30px;
   }
-  .btn {
+  tsl-button  {
     padding: 10px 41px;
     margin-top: 40px
   }

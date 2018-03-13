@@ -1,4 +1,4 @@
-@import "../../../../style/_common.scss";
+@import "~style/common";
 
 :host {
   background-color: $white;
@@ -46,31 +46,5 @@
       font-size: $font-size-XXXS;
       color: $grey-250;
     }
-  }
-}
-
-.btn {
-  color: $white;
-  padding: 10px 18px;
-  border-radius: $button-border-radius;
-  &:not([disabled]) {
-    cursor: pointer;
-  }
-  &.btn-reserve {
-    background-color: $reserve-bg;
-  }
-  &.btn-delete {
-    background-color: $delete-bg;
-  }
-  &.btn-feature {
-    background-color: $corporate;
-    width: 227px;
-    transition: none;
-  }
-  &:not([disabled]):hover {
-    opacity: .8;
-  }
-  &.loading {
-    padding: 6px 18px;
   }
 }

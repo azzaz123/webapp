@@ -1,7 +1,8 @@
-@import "../../../style/_common.scss";
+@import "~style/common";
 
 form {
   $input-height: $chat-input - $spacing;
+  $send-icon-size: 40px;
   height: $input-height;
   position: relative;
   textarea {
@@ -12,7 +13,7 @@ form {
     margin-bottom: $spacing;
     height: $input-height;
     line-height: $input-height;
-    padding: 0 0 0 $spacing-M;
+    padding: 0 #{$send-icon-size + $spacing-M} 0 $spacing-M;
     outline: none;
     resize: none;
     overflow: hidden;
@@ -37,7 +38,7 @@ form {
     top: 5px;
     border-radius: 50%;
     background: $grey-100;
-    @include square(40px);
+    @include square($send-icon-size);
     display: flex;
     justify-content: center;
     align-items: center;

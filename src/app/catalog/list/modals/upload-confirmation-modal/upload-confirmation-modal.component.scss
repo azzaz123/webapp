@@ -1,6 +1,4 @@
-@import "../../../../../style/_common.scss";
-
-$feature-button-width: 170px;
+@import "~style/common";
 
 .header {
   background: $corporate;
@@ -50,29 +48,8 @@ $feature-button-width: 170px;
   }
 }
 
-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-radius: $spacing;
-  transition: all .2s ease;
-  background: $grey-700;
-  height: 40px;
-  color: $white;
-  padding: 0 $spacing;
-  padding-left: $spacing-S;
-  font-size: $font-size-S;
-  border: 1px solid transparent;
+tsl-button {
   margin: $spacing-L auto $spacing;
-  &:hover {
-    background: $corporate;
-  }
-  mat-icon {
-    width: 19px;
-    height: 21px;
-    margin-right: 9px;
-  }
 }
 
 .social-icons {

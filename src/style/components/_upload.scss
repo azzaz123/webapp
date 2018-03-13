@@ -80,10 +80,29 @@
         line-height: $font-size-S;
         margin-top: $spacing-XXS;
       }
+      mat-icon {
+        height: 26px;
+        width: 26px;
+        /deep/ svg {
+          @include in-the-middle;
+          width: 26px;
+          height: 26px;
+          g, path {
+            fill: $grey-250;
+          }
+        }
+      }
       &.active {
         background-color: $corporate;
         span {
           color: $corporate;
+        }
+        mat-icon {
+          /deep/ {
+            svg g, svg path {
+              fill: $white;
+            }
+          }
         }
       }
       &:hover:not(.active) {
@@ -91,10 +110,13 @@
         span {
           color: $grey-700;
         }
-      }
-      mat-icon {
-        height: 26px;
-        width: 26px;
+        mat-icon {
+          /deep/ {
+            svg g, svg path {
+              fill: $grey-700;
+            }
+          }
+        }
       }
     }
     &.shipping-options {

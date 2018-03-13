@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Item, WindowRef } from 'shield';
 import { ItemService } from '../item.service';
-import { environment } from '../../../../environments/environment';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/confirmation-modal.component';
 import { TrackingService } from '../../tracking/tracking.service';
 
@@ -15,7 +14,6 @@ export class ItemCartFavoriteComponent implements OnInit {
 
   @Input() item: Item;
   @Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
-  private homeUrl: string;
 
   constructor(private itemService: ItemService,
               private modalService: NgbModal,
@@ -23,14 +21,13 @@ export class ItemCartFavoriteComponent implements OnInit {
               private trackingService: TrackingService,
               @Inject('SUBDOMAIN') private subdomain: string
   ) {
-    this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
 
   ngOnInit() {
   }
 
   goToItemDetail() {
-    const url = this.homeUrl + 'item/' + this.item.webSlug;
+    const url = this.item.getUrl(this.subdomain);
     this.windowRef.nativeWindow.open(url);
   }
 

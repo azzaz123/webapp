@@ -343,16 +343,15 @@ describe('DropAreaComponent', () => {
           });
 
           describe('car item', () => {
-            it('should set itemId and call uploadOtherImages', () => {
+            it('should set itemId, item and call uploadOtherImages', () => {
               component.files = [UPLOAD_FILE, UPLOAD_FILE];
               component.maxUploads = 8;
               spyOn(uploadService, 'uploadOtherImages');
-
               component['onUploadDone']({
                 type: 'done',
                 file: UPLOADED_FILE_FIRST
               });
-
+              expect(component['item']).toEqual(UPLOADED_FILE_FIRST.response);
               expect(component['itemId']).toBe(CAR_ID);
               expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(CAR_ID, '/cars');
             });
@@ -375,6 +374,24 @@ describe('DropAreaComponent', () => {
             expect(component['itemId']).toBe(CAR_ID);
             expect(event).toEqual( { action: 'created', response: UPLOADED_FILE_FIRST.response });
           });
+          it('should set item with hold true flag and call createOnHold event', () => {
+            let event: UploadedEvent;
+            let fileOnHold: UploadFile = UPLOADED_FILE_FIRST;
+            fileOnHold.response.flags['onhold'] = true;
+            component.files = [UPLOAD_FILE];
+
+            component.onUploaded.subscribe((r: UploadedEvent) => {
+              event = r;
+            });
+            component['onUploadDone']({
+              type: 'done',
+              file: fileOnHold
+            });
+
+            expect(component['itemId']).toBe(CAR_ID);
+            expect(component['item']).toEqual(UPLOADED_FILE_FIRST.response);
+            expect(event).toEqual({ action: 'createdOnHold', response: '' });
+          });
         });
       });
 
@@ -385,6 +402,7 @@ describe('DropAreaComponent', () => {
           component.onUploaded.subscribe((r: UploadedEvent) => {
             event = r;
           });
+          component.item = UPLOAD_FILE_DONE.response;
 
           component['onUploadDone']({
             type: 'done',

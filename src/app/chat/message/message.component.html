@@ -1,4 +1,9 @@
-<tsl-user-avatar class="message-avatar" [user]="message.user" *ngIf="showUserInfo && !message.payload" [ngClass]="{'calls-panel': callsPanel}"></tsl-user-avatar>
+<a *ngIf="message.user?.webLink && message.fromBuyer" href="{{ userWebSlug }}" target="_blank">
+  <tsl-user-avatar class="message-avatar" [user]="message.user" *ngIf="showUserInfo && !message.payload" [ngClass]="{'calls-panel': callsPanel}"></tsl-user-avatar>
+</a>
+
+<tsl-user-avatar class="message-avatar" [user]="message.user" *ngIf="showUserInfo && !message.payload && (!message.user?.webLink || !message.fromBuyer)" [ngClass]="{'calls-panel': callsPanel}"></tsl-user-avatar>
+
 <div class="message-body" *ngIf="!message.payload" [ngClass]="{'without-avatar': !showUserInfo, 'calls-panel': callsPanel}">
   <h5 class="message-name" *ngIf="showUserInfo">{{message.user.microName}}
     <small class="message-date">{{message.date | date:'shortTime'}}</small>

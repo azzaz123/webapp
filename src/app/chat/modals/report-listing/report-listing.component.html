@@ -18,9 +18,7 @@
     </div>
   </div>
 <div class="centered">
-  <button type="button"
-          class="btn btn-primary"
-          [disabled]="!selectedReportListingReason"
-          (click)="close();"
-          i18n>Report</button>
+  <tsl-button [disabled]="!selectedReportListingReason"
+              (click)="close();"
+              i18n>Report</tsl-button>
 </div>

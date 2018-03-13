@@ -1,9 +1,9 @@
-@import './_fonts-import';
-@import './_variables.scss';
-@import './_animations.scss';
-@import '../../node_modules/bootstrap/scss/bootstrap';
-@import './shared/_shared.scss';
-@import './components/_components.scss';
+@import 'fonts-import';
+@import 'variables/variables';
+@import './animations';
+@import '~bootstrap/scss/bootstrap';
+@import './mixins/mixins';
+@import './components/components';
 
 html, body {
   overflow: hidden;
@@ -58,21 +58,6 @@ button {
   cursor: pointer;
   &:focus {
     outline: none;
-  }
-}
-
-.btn {
-  &:focus, &.focus {
-    box-shadow: none;
-  }
-}
-
-.btn-primary {
-  &.disabled, &:disabled {
-    &:active {
-      background-color: $corporate;
-      border-color: $corporate;
-    }
   }
 }
 

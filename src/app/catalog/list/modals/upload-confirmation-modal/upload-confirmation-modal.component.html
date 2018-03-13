@@ -9,9 +9,10 @@
   <h2 i18n>Want to sell ASAP?</h2>
   <p i18n>Stand out on the wall during 7 days and be easy to find with the filter ASAP</p>
   <div class="urgent-background"></div>
-  <button class="btn-feature" (click)="featureUrgentItem()" tslTrackEvent="UPLOADFORM_URGENT" [params]="{category: item?.categoryId}">
-    <span i18n>Feature it as ASAP for {{productPrice}}&euro;</span>
-  </button>
+  <tsl-button className="btn-feature"
+              (click)="featureUrgentItem()"
+              tslTrackEvent="UPLOADFORM_URGENT" [params]="{category: item?.categoryId}"
+              i18n>Feature it as ASAP for {{productPrice}}&euro;</tsl-button>
   <p i18n>Share it with your friends:</p>
   <div class="social-icons">
     <a (click)="facebookShare()"><mat-icon svgIcon="facebook"></mat-icon></a>
