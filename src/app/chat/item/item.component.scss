@@ -6,6 +6,36 @@
     .card-img-top {
       width: 100%;
     }
+    a.btn-edit {
+      @include square(40px);
+      border: solid 2px rgba(207, 216, 220, 0.5);
+      border-radius: 8px;
+      transition: all .2s ease;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background-color: white;
+      padding: 1px 7px 2px;
+      mat-icon /deep/ {
+        float: left;
+        svg g g, svg path {
+          fill: $grey-500;
+        }
+      }
+      &:hover, &.active {
+        background: $edit-bg;
+        border-color: transparent;
+        mat-icon /deep/ {
+          svg g g, svg path {
+            fill: $white;
+          }
+        }
+      }
+    }
     .image-bottom {
       position: absolute;
       bottom: $spacing;
