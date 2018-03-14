@@ -11,7 +11,7 @@ export class MessagesPanelComponent implements AfterViewChecked, OnChanges, OnIn
   @Input() currentConversation: Conversation;
   @ViewChild('messagesPanel') messagesPanel: ElementRef;
   public momentConfig: any;
-  public alreadyScrolled: boolean;
+  private alreadyScrolled: boolean;
 
   constructor(i18n: I18nService, private event: EventService) {
     this.momentConfig = i18n.getTranslations('daysMomentConfig');

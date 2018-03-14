@@ -87,18 +87,22 @@ describe('Component: MessagesPanel', () => {
 
   describe('ngOnChanges', () => {
     it('should set alreadyScrolled to false when invoked', () => {
-      component.alreadyScrolled = true;
+      component['alreadyScrolled'] = false;
+
       component.ngOnChanges();
-      expect(component.alreadyScrolled).toBe(false);
+
+      expect(component['alreadyScrolled']).toBe(false);
     });
   });
 
   describe('ngOnInit', () => {
     it('should set alreadyScrolled to false when a NEW_MESSAGE event is triggered', () => {
-      component.alreadyScrolled = true;
+      component['alreadyScrolled'] = true;
+
       component.ngOnInit();
       eventService.emit(EventService.NEW_MESSAGE);
-      expect(component.alreadyScrolled).toBe(false);
+
+      expect(component['alreadyScrolled']).toBe(false);
     });
   });
 
