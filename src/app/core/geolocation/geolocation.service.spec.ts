@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { TEST_HTTP_PROVIDERS, HttpService } from 'shield';
 import { GeolocationService } from './geolocation.service';
-import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures';
+import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { ResponseOptions, Response } from '@angular/http';
 import { GeolocationResponse } from './geolocation-response.interface';
 import { Coordinate } from './address-response.interface';
-import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures';
+import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
+import { HttpService } from '../http/http.service';
 
 let service: GeolocationService;
 let http: HttpService;

@@ -4,7 +4,7 @@ import { CategoriesListComponent } from './categories-list.component';
 import { CategoryService } from '../../../core/category/category.service';
 import { Observable } from 'rxjs/Observable';
 import { TEST_HTTP_PROVIDERS } from 'shield';
-import { CATEGORY_DATA_WEB } from '../../../../tests/category.fixtures';
+import { CATEGORY_DATA_WEB } from '../../../../tests/category.fixtures.spec';
 import { EventService } from '../../../core/event/event.service';
 import { CategoryResponse } from '../../../core/category/category-response.interface';
 

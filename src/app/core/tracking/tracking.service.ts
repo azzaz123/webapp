@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpService, NavigatorService, TrackingService as TrackingServiceMaster, WindowRef } from 'shield';
 import { UUID } from 'angular2-uuid';
 import * as CryptoJS from 'crypto-js';
 import { TrackingEvent } from './tracking-event';
@@ -8,6 +7,9 @@ import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
 import { CookieService } from 'ngx-cookie/index';
+import { HttpService } from '../http/http.service';
+import { NavigatorService } from './navigator.service';
+import { WindowRef } from '../window/window.service';
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -55,7 +57,7 @@ const TYPES_IDS: any = {
 };
 
 @Injectable()
-export class TrackingService extends TrackingServiceMaster {
+export class TrackingService {
 
   public static CONVERSATION_LIST_ACTIVE_LOADED: TrackingEventBase = {
     name: '351',
@@ -436,7 +438,6 @@ export class TrackingService extends TrackingServiceMaster {
               private userService: UserService,
               private winRef: WindowRef,
               private cookieService: CookieService) {
-    super();
     this.setSessionStartTime();
     this.setSessionId(this.sessionIdCookieName);
     this.setDeviceAccessTokenId(this.deviceAccessTokenIdCookieName);

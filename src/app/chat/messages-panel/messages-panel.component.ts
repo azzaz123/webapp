@@ -1,5 +1,7 @@
 import { AfterViewChecked, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
-import { Conversation, Message, I18nService } from 'shield';
+import { Conversation } from '../../core/conversation/conversation';
+import { I18nService } from '../../core/i18n/i18n.service';
+import { Message } from '../../core/message/message';
 
 @Component({
   selector: 'tsl-messages-panel',

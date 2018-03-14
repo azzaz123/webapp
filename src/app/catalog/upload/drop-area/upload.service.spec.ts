@@ -1,10 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { UploadFile, UploadInput } from 'ngx-uploader';
 import { UploadService } from './upload.service';
-import { AccessTokenService, HttpService, ITEM_ID, TEST_HTTP_PROVIDERS } from 'shield';
+import { ITEM_ID } from 'shield';
 import { environment } from '../../../../environments/environment';
-import { CAR_ID, UPLOAD_FILE, UPLOAD_FILE_ID } from '../../../../tests/upload.fixtures';
-import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures';
+import { CAR_ID, UPLOAD_FILE, UPLOAD_FILE_ID } from '../../../../tests/upload.fixtures.spec';
+import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
+import { AccessTokenService } from '../../../core/http/access-token.service';
+import { HttpService } from '../../../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec.spec';
 
 describe('UploadService', () => {
 

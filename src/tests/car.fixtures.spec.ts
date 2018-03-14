@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { IOption } from 'ng-select';
 import { Car } from '../app/core/item/car';
-import { CAR_ID } from './upload.fixtures';
+import { CAR_ID } from './upload.fixtures.spec';
 
 export const CAR_BODY_TYPES_RESPONSE: any = [{
   'id': 'small_car',

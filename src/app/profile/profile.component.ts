@@ -1,16 +1,17 @@
 import { Component, EventEmitter, HostListener, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { environment } from '../../environments/environment';
-import { User, HttpService } from 'shield';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { UploadOutput, UploadFile, UploadInput, NgUploaderOptions } from 'ngx-uploader';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from 'ngx-uploader';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { CanComponentDeactivate } from '../shared/guards/can-component-deactivate.interface';
 import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
+import { HttpService } from '../core/http/http.service';
+import { User } from '../core/user/user';
 
 @Component({
   selector: 'tsl-profile',

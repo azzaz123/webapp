@@ -1,11 +1,13 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 
 import { CarKeysService } from './car-keys.service';
-import { HttpService, TEST_HTTP_PROVIDERS, I18nService } from 'shield';
 import { ResponseOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { IOption } from 'ng-select';
-import { CAR_BODY_TYPES, CAR_BODY_TYPES_RESPONSE } from '../../../../tests/car.fixtures';
+import { CAR_BODY_TYPES, CAR_BODY_TYPES_RESPONSE } from '../../../../tests/car.fixtures.spec';
+import { HttpService } from '../../../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec.spec';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 describe('CarKeysService', () => {
 

@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PreviewModalComponent } from './preview-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { UPLOAD_FORM_CAR_VALUES, UPLOAD_FORM_ITEM_VALUES } from '../../../../tests/item.fixtures';
+import { UPLOAD_FORM_CAR_VALUES, UPLOAD_FORM_ITEM_VALUES } from '../../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from '../upload-car/car-keys.service';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';

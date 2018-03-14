@@ -1,68 +1,254 @@
-import { TestBed } from '@angular/core/testing';
+/* tslint:disable:no-unused-variable */
 
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { UserService } from './user.service';
+import { HttpService } from '../http/http.service';
+import { MockBackend, MockConnection } from '@angular/http/testing';
+import { Response, ResponseOptions } from '@angular/http';
+import { environment } from '../../sandbox/environments/environment';
+import { TEST_HTTP_PROVIDERS } from '../../test/utils';
+import { HaversineService } from 'ng2-haversine';
+import { ITEM_LOCATION, MOCK_ITEM } from '../../test/fixtures/item.fixtures';
+import { Item } from '../item/item';
+import { Observable } from 'rxjs/Observable';
+import { I18nService } from '../i18n/i18n.service';
 import {
   AccessTokenService,
   EventService,
-  HttpService,
-  I18nService,
   Item,
   ITEM_LOCATION,
+  Location,
   LoginResponse,
   MOCK_ITEM,
   MOCK_USER,
   MOCK_USER_RESPONSE_BODY,
-  TEST_HTTP_PROVIDERS,
   User,
-  USER_ID,
-  USER_LOCATION,
-  Location,
+  USER_DATA,
   USER_EMAIL,
-  USER_DATA
+  USER_ID,
+  USER_LOCATION
 } from 'shield';
-import { HaversineService } from 'ng2-haversine';
-import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import {
   CUSTOM_REASON,
-  REASONS, SELECTED_REASON, USER_INFO_RESPONSE,
-  USER_LOCATION_COORDINATES, USERS_STATS, USERS_STATS_RESPONSE, USER_EDIT_DATA
-} from '../../../tests/user.fixtures';
+  REASONS,
+  SELECTED_REASON,
+  USER_EDIT_DATA,
+  USER_INFO_RESPONSE,
+  USER_LOCATION_COORDINATES,
+  USERS_STATS,
+  USERS_STATS_RESPONSE
+} from '../../../tests/user.fixtures.spec';
 import { UserInfoResponse } from './user-info.interface';
 import { UserStatsResponse } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
 
-describe('UserService', () => {
+describe('Service: User', () => {
 
   let service: UserService;
+  let mockBackend: MockBackend;
   let http: HttpService;
   let haversineService: HaversineService;
+  let response: any;
+  const FAKE_USER_NAME: string = 'No disponible';
   let accessTokenService: AccessTokenService;
   let event: EventService;
+
+  const DATA: any = {
+    emailAddress: 'test@test.it',
+    installationType: 'ANDROID',
+    password: 'test'
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        UserService,
+        ...TEST_HTTP_PROVIDERS,
         EventService,
+        UserService,
         I18nService,
         HaversineService,
-        AccessTokenService,
-        ...TEST_HTTP_PROVIDERS,
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         }
       ]
     });
     service = TestBed.get(UserService);
+    mockBackend = TestBed.get(MockBackend);
     http = TestBed.get(HttpService);
     haversineService = TestBed.get(HaversineService);
     accessTokenService = TestBed.get(AccessTokenService);
+    accessTokenService.storeAccessToken(null);
     event = TestBed.get(EventService);
   });
 
-  it('should be created', () => {
+  it('should create an instance', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should return the user', () => {
+    let user: User = new User('123');
+    service['_user'] = user;
+    expect(service.user).toBe(user);
+  });
+
+  describe('isLogged', () => {
+
+    it('should not be logged', () => {
+      expect(service.isLogged).toBeFalsy();
+    });
+
+    it('should be logged', () => {
+      accessTokenService.storeAccessToken('abc');
+      expect(service.isLogged).toBeTruthy();
+    });
+  });
+
+  describe('get', () => {
+    describe('without backend error', () => {
+      beforeEach(fakeAsync(() => {
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          expect(connection.request.url).toBe(environment.baseUrl + 'api/v2/users/' + USER_ID);
+          let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+          connection.mockRespond(new Response(res));
+        });
+      }));
+
+      it('should return the User object', fakeAsync(() => {
+        let user: User;
+        service.get(USER_ID).subscribe((r: User) => {
+          user = r;
+        });
+        expect(user instanceof User).toBeTruthy();
+        expect(user.id).toBe(USER_ID);
+        expect(user.microName).toBe(MICRO_NAME);
+        // expect(user.image).toEqual(IMAGE);
+        expect(user.location).toEqual(USER_LOCATION);
+        expect(user.stats).toEqual(STATS);
+        expect(user.validations).toEqual(VALIDATIONS);
+        expect(user.verificationLevel).toBe(VERIFICATION_LEVEL);
+        expect(user.scoringStars).toBe(SCORING_STARS);
+        expect(user.scoringStarts).toBe(SCORING_STARTS);
+        expect(user.responseRate).toBe(RESPONSE_RATE);
+        expect(user.online).toBe(ONLINE);
+      }));
+    });
+    describe('with backend error', () => {
+      beforeEach(fakeAsync(() => {
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          connection.mockError();
+        });
+      }));
+      it('should return a fake User object', () => {
+        let user: User;
+        service.get(USER_ID).subscribe((r: User) => {
+          user = r;
+        });
+        expect(user.id).toBe(USER_ID);
+        expect(user.microName).toBe(FAKE_USER_NAME);
+      });
+    });
+  });
+
+  describe('me', () => {
+
+    it('should retrieve and return the User object', fakeAsync(() => {
+      spyOn(http, 'get').and.callThrough();
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v2/users/me');
+        let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+        connection.mockRespond(new Response(res));
+      });
+      let user: User;
+      service.me().subscribe((r: User) => {
+        user = r;
+      });
+      expect(user instanceof User).toBeTruthy();
+      expect(user.id).toBe(USER_ID);
+      expect(user.microName).toBe(MICRO_NAME);
+      expect(user.image).toBeDefined();
+      expect(user.location).toEqual(USER_LOCATION);
+      expect(user.stats).toEqual(STATS);
+      expect(user.validations).toEqual(VALIDATIONS);
+      expect(user.verificationLevel).toBe(VERIFICATION_LEVEL);
+      expect(user.scoringStars).toBe(SCORING_STARS);
+      expect(user.scoringStarts).toBe(SCORING_STARTS);
+      expect(user.responseRate).toBe(RESPONSE_RATE);
+      expect(user.online).toBe(ONLINE);
+      expect(http.get).toHaveBeenCalled();
+    }));
+
+    it('should just return the User object if present', fakeAsync(() => {
+      let user: User;
+      spyOn(http, 'get');
+      service['_user'] = new User('123');
+      service.me().subscribe((r: User) => {
+        user = r;
+      });
+      expect(user instanceof User).toBeTruthy();
+      expect(user.id).toBe('123');
+      expect(http.get).not.toHaveBeenCalled();
+    }));
+
+    it('should call http only once', () => {
+      spyOn(http, 'get').and.callThrough();
+      service.me().subscribe();
+      service.me().subscribe();
+      expect(http.get).toHaveBeenCalledTimes(1);
+    });
+
+  });
+
+  describe('checkUserStatus', () => {
+
+    it('should emit the LOGIN event if the user is logged', fakeAsync(() => {
+      accessTokenService.storeAccessToken('abc');
+      spyOn(service['event'], 'emit');
+      service.checkUserStatus();
+      expect(service['event'].emit).toHaveBeenCalledWith(EventService.USER_LOGIN, 'abc');
+    }));
+
+    it('should not emit the LOGIN event if the user is not logged', fakeAsync(() => {
+      spyOn(service['event'], 'emit');
+      service.checkUserStatus();
+      expect(service['event'].emit).not.toHaveBeenCalled();
+    }));
+
+  });
+
+  describe('syncStatus', () => {
+
+    it('should call get and set the online value', () => {
+      let user: User = MOCK_USER;
+      let mockGet: User = MOCK_USER;
+      mockGet.online = true;
+      spyOn(service, 'get').and.returnValue(Observable.of(mockGet));
+      service.syncStatus(user);
+      expect(user.online).toBeTruthy();
+    });
+
+  });
+
+  describe('getFakeUser', () => {
+    it('should return a fake User object', () => {
+      let user: User = (service as any).getFakeUser(USER_ID);
+      expect(user.id).toBe(USER_ID);
+      expect(user.microName).toBe(FAKE_USER_NAME);
+    });
+
+  });
+
+  describe('updateBlockStatus', () => {
+    it('should set user as blocked', () => {
+      service['store'][USER_ID] = MOCK_USER;
+      service.updateBlockStatus(USER_ID, true);
+      expect(service['store'][USER_ID].blocked).toBeTruthy();
+    });
+    it('should set user as not blocked', () => {
+      service['store'][USER_ID] = MOCK_USER;
+      service.updateBlockStatus(USER_ID, false);
+      expect(service['store'][USER_ID].blocked).toBeFalsy();
+    });
   });
 
   describe('login', () => {
@@ -268,5 +454,4 @@ describe('UserService', () => {
       });
     });
   });
-
 });

@@ -13,7 +13,7 @@ import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-curre
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
-import { ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE, PRODUCT_RESPONSE } from '../../../../tests/item.fixtures';
+import { ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE, PRODUCT_RESPONSE } from '../../../../tests/item.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorsService } from '../../../core/errors/errors.service';
 

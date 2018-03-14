@@ -6,8 +6,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatIconModule } from '@angular/material';
 import { ReviewItemComponent } from './review-item/review-item.component';
 import { ReviewService } from '../core/review/review.service';
-import { UtilsModule } from 'shield';
 import { SharedModule } from '../shared/shared.module';
+import { UtilsModule } from '../utils/utils.module';
 
 @NgModule({
   imports: [

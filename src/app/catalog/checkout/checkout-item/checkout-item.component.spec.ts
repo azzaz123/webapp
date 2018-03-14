@@ -7,7 +7,7 @@ import { DecimalPipe } from '@angular/common';
 import {
   CITYBUMP_DURATIONS, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE,
   MOCK_ITEM_V3
-} from '../../../../tests/item.fixtures';
+} from '../../../../tests/item.fixtures.spec';
 import { CartService } from '../cart/cart.service';
 import { Cart } from '../cart/cart';
 import { CartChange } from '../cart/cart-item.interface';

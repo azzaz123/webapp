@@ -7,7 +7,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatIconModule } from '@angular/material';
 import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UtilsModule } from 'shield';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { MomentModule } from 'angular2-moment';
 import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -36,6 +35,7 @@ import { CartComponent } from './checkout/cart/cart.component';
 import { CartService } from './checkout/cart/cart.service';
 import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
+import { UtilsModule } from '../utils/utils.module';
 
 @NgModule({
   imports: [

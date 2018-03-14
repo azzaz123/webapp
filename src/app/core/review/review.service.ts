@@ -2,18 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ReviewResponse, ReviewsData } from './review-response.interface';
 import { Response } from '@angular/http';
-import {
-  HttpService,
-  User
-} from 'shield';
 import { Review } from './review';
 import { ReviewItem } from './review-item';
+import { HttpService } from '../http/http.service';
+import { User } from '../user/user';
 
 @Injectable()
 export class ReviewService {
 
   private API_URL_v3_USER: string = 'api/v3/users';
-  
+
   constructor(private http: HttpService) {
   }
 

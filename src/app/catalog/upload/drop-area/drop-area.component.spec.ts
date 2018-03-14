@@ -10,13 +10,13 @@ import {
   UPLOAD_FILE_NAME,
   UPLOADED_FILE_FIRST, UPLOADED_FILE_FIRST_ITEM,
   UPLOADED_FILE_OTHER
-} from '../../../../tests/upload.fixtures';
+} from '../../../../tests/upload.fixtures.spec';
 import { UploadFile, UploadStatus } from 'ngx-uploader';
 import { ItemService } from '../../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
-import { PICTURE_ID } from '../../../../tests/item.fixtures';
+import { PICTURE_ID } from '../../../../tests/item.fixtures.spec';
 import { ErrorsService } from '../../../core/errors/errors.service';
 
 describe('DropAreaComponent', () => {
@@ -312,7 +312,7 @@ describe('DropAreaComponent', () => {
               component.files = [UPLOAD_FILE, UPLOAD_FILE];
               component.maxUploads = 8;
               spyOn(uploadService, 'uploadOtherImages');
-              
+
               component['onUploadDone']({
                 type: 'done',
                 file: UPLOADED_FILE_FIRST
@@ -343,7 +343,7 @@ describe('DropAreaComponent', () => {
             let fileOnHold: UploadFile = UPLOADED_FILE_FIRST;
             fileOnHold.response.flags['onhold'] = true;
             component.files = [UPLOAD_FILE];
-            
+
             component.onUploaded.subscribe((r: string) => {
               response = r;
             });

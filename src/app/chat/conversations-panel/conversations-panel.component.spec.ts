@@ -6,19 +6,16 @@ import { ConversationsPanelComponent } from './conversations-panel.component';
 import {
   Conversation,
   createConversationsArray,
-  HttpService,
   Message,
   MOCK_CONVERSATION,
   MOCK_MESSAGE,
   MockedPersistencyService,
   MockTrackingService,
   NEW_CONVERSATION_RESPONSE,
-  NotificationService,
   PersistencyService,
   SECOND_MOCK_CONVERSATION,
-  TEST_HTTP_PROVIDERS,
   User,
-  USER_ID,
+  USER_ID
 } from 'shield';
 import { ConversationComponent } from './conversation/conversation.component';
 import { Observable } from 'rxjs/Observable';
@@ -30,6 +27,8 @@ import { UserService } from '../../core/user/user.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { HttpService } from '../../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
 
 describe('Component: ConversationsPanel', () => {
 

@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
 import { FINANCIAL_CARD, ITEM_ID, MockTrackingService, PaymentService } from 'shield';
-import { CART_ITEM_CITYBUMP, CART_ORDER, CART_ORDER_TRACK, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures';
+import { CART_ITEM_CITYBUMP, CART_ORDER, CART_ORDER_TRACK, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';

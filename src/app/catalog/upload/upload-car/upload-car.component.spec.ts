@@ -11,10 +11,10 @@ import { Router } from '@angular/router';
 import {
   CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS,
   MOCK_CAR
-} from '../../../../tests/car.fixtures';
+} from '../../../../tests/car.fixtures.spec';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures';
+import { UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 

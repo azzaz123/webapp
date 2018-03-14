@@ -1,5 +1,8 @@
 import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { Conversation, MessageService, EventService, XmppService } from 'shield';
+import { Conversation } from '../../core/conversation/conversation';
+import { MessageService } from '../../core/message/message.service';
+import { EventService } from '../../core/event/event.service';
+import { XmppService } from '../../core/xmpp/xmpp.service';
 
 @Component({
   selector: 'tsl-input',

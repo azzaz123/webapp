@@ -1,14 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-import { TEST_HTTP_PROVIDERS, HttpService, I18nService } from 'shield';
 import { CategoryService } from './category.service';
 import {
   CATEGORIES_DATA_CONSUMER_GOODS, CATEGORIES_OPTIONS,
   CATEGORY_DATA_WEB
-} from '../../../tests/category.fixtures';
+} from '../../../tests/category.fixtures.spec';
 import { CategoryResponse } from './category-response.interface';
 import { ResponseOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { IOption } from 'ng-select';
+import { HttpService } from '../http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
+import { I18nService } from '../i18n/i18n.service';
 let service: CategoryService;
 let http: HttpService;
 

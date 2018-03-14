@@ -1,8 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Message, Item, ConversationService, UserService, ReviewService, ReviewDataBuyer } from 'shield';
+import { ReviewService, ReviewDataBuyer } from 'shield';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewModalComponent } from '../review-modal/review-modal.component';
 import { ReviewModalResult } from '../review-modal/review-modal-result.interface';
+import { Message } from '../../../core/message/message';
+import { Item } from '../../../core/item/item';
+import { ConversationService } from '../../../core/conversation/conversation.service';
+import { UserService } from '../../../core/user/user.service';
 
 @Component({
   selector: 'tsl-review-button',

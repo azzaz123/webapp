@@ -21,7 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
-import { ORDER, ORDER_EVENT } from '../../../tests/item.fixtures';
+import { ORDER, ORDER_EVENT } from '../../../tests/item.fixtures.spec';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
@@ -30,7 +30,7 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures';
+import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures.spec';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -552,7 +552,7 @@ describe('ListComponent', () => {
     });
 
     describe('getNumberOfProducts', () => {
-      beforeEach(() => {        
+      beforeEach(() => {
         spyOn(component, 'getNumberOfProducts').and.callThrough();
         spyOn(userService, 'getStats').and.callThrough();
       });

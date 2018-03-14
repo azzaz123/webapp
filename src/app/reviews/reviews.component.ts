@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Review } from '../core/review/review';
 import { ReviewService } from '../core/review/review.service';
 import { UserService } from '../core/user/user.service';
-import { User } from 'shield';
 import { UserInfoResponse } from '../core/user/user-info.interface';
 import { ReviewsData } from '../core/review/review-response.interface';
 import { UserStatsResponse } from '../core/user/user-stats.interface';
+import { User } from '../core/user/user';
 
 @Component({
   selector: 'tsl-reviews',

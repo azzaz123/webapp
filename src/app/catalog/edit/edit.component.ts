@@ -1,9 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Item } from 'shield';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
+import { Item } from '../../core/item/item';
 
 @Component({
   selector: 'tsl-edit',

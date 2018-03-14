@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { SuggesterService } from './suggester.service';
 import { SuggesterResponse } from './suggester-response.interface';
-import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures';
-import { TEST_HTTP_PROVIDERS, HttpService } from 'shield';
+import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures.spec';
 import { ResponseOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
+import { HttpService } from '../http/http.service';
 
 let service: SuggesterService;
 let http: HttpService;

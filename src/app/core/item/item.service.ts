@@ -1,44 +1,248 @@
 import { Injectable } from '@angular/core';
-import { RequestOptions, Response, Headers } from '@angular/http';
+import { HttpService } from '../http/http.service';
+import { FAKE_ITEM_IMAGE_BASE_PATH, Item, ITEM_STATUSES } from './item';
+import { ResourceService } from '../resource/resource.service';
 import {
-  EventService,
-  HttpService,
-  I18nService,
-  Item,
-  ItemBulkResponse,
-  ItemService as ItemServiceMaster,
-  UserService
-} from 'shield';
-import {
-  AvailableProductsResponse,
-  CarContent,
-  ConversationUser, ItemContent, ItemResponse, ItemsData, ItemWithProducts,
-  ItemsWithAvailableProductsResponse, Order, Product, Purchase,
-  SelectedItemsAction, ProductDurations, Duration, AllowedActionResponse
+  AllowedActionResponse, AvailableProductsResponse,
+  CarContent, ConversationUser, Duration,
+  ItemBulkResponse, ItemContent,
+  ItemCounters,
+  ItemDataResponse,
+  ItemResponse, ItemsData,
+  ItemsStore, ItemsWithAvailableProductsResponse, ItemWithProducts,
+  LatestItemResponse, Order, Product, ProductDurations, Purchase, SelectedItemsAction
 } from './item-response.interface';
-import { Observable } from 'rxjs/Observable';
-import { ITEM_BAN_REASONS } from './ban-reasons';
+import { RequestOptions, Response, Headers } from '@angular/http';
 import * as _ from 'lodash';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { UUID } from 'angular2-uuid';
+import { I18nService } from '../i18n/i18n.service';
+import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
+import { EventService } from '../event/event.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/do';
+import { UserService } from '../user/user.service';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Car } from './car';
+import { ITEM_BAN_REASONS } from './ban-reasons';
+import { UUID } from 'angular2-uuid';
 
 @Injectable()
-export class ItemService extends ItemServiceMaster {
+export class ItemService extends ResourceService {
 
+  private API_URL_V1: string = 'shnm-portlet/api/v1';
   protected API_URL_V2: string = 'api/v3/items';
+  protected API_URL_V3: string = 'api/v3/items';
   private API_URL_WEB: string = 'api/v3/web/items';
   private API_URL_v3_USER: string = 'api/v3/users';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
+  private banReasons: BanReason[] = null;
+  protected items: ItemsStore = {
+    active: [],
+    sold: []
+  };
+  public selectedItems: string[] = [];
+  private localStorageKeyItems: string = '.selectedItems';
 
   constructor(http: HttpService,
-              i18n: I18nService,
-              trackingService: TrackingService,
-              eventService: EventService,
-              userService: UserService) {
-    super(http, i18n, trackingService, eventService, userService);
+              private i18n: I18nService,
+              private trackingService: TrackingService,
+              private eventService: EventService,
+              private userService: UserService) {
+    super(http);
+  }
+
+  public getFakeItem(id: string): Item {
+    let fakeItem: Item = new Item(id, 1, '1', 'No disponible');
+    fakeItem.setFakeImage(FAKE_ITEM_IMAGE_BASE_PATH);
+    return fakeItem;
+  }
+
+  public getCounters(id: string): Observable<ItemCounters> {
+    return this.http.get(this.API_URL_V2 + '/' + id + '/counters')
+    .map((r: Response) => r.json())
+    .catch(() => Observable.of({views: 0, favorites: 0}));
+  }
+
+  public getLatest(userId: string): Observable<ItemDataResponse> {
+    return this.http.get(this.API_URL_V2 + '/latest', {userId: userId})
+    .map((r: Response) => r.json())
+    .map((resp: LatestItemResponse) => {
+      return {
+        count: resp.count - 1,
+        data: resp.items[0] ? this.mapRecordData(resp.items[0]) : null
+      };
+    });
+  }
+
+  public mines(pageNumber: number, pageSize: number, sortBy: string, status: string = 'active', term?: string, cache: boolean = true): Observable<Item[]> {
+    let init: number = (pageNumber - 1) * pageSize;
+    let end: number = init + pageSize;
+    let observable: Observable<Item[]>;
+    if (this.items[status].length && cache) {
+      observable = Observable.of(this.items[status]);
+    } else {
+      observable = this.recursiveMines(0, 300, status)
+      .map((res: ItemResponse[]) => {
+        if (res.length > 0) {
+          let items: Item[] = res.map((item: ItemResponse) => this.mapRecordData(item));
+          this.items[status] = items;
+          return items;
+        }
+        return [];
+      });
+    }
+    return observable
+    .map((res: Item[]) => {
+      term = term ? term.trim().toLowerCase() : '';
+      if (term !== '') {
+        return _.filter(res, (item: Item) => {
+          return item.title.toLowerCase().indexOf(term) !== -1 || item.description.toLowerCase().indexOf(term) !== -1;
+        });
+      }
+      return res;
+    })
+    .map((res: Item[]) => {
+      let sort: string[] = sortBy.split('_');
+      let field: string = sort[0] === 'price' ? 'salePrice' : 'publishedDate';
+      let sorted: Item[] = _.sortBy(res, [field]);
+      if (sort[1] === 'desc') {
+        return _.reverse(sorted);
+      }
+      return sorted;
+    })
+    .map((res: Item[]) => {
+      return res.slice(init, end);
+    });
+  }
+
+  public setSold(id: number): Observable<any> {
+    return this.http.post(this.API_URL_V1 + '/item.json/' + id + '/sold')
+    .do(() => {
+      let index: number = _.findIndex(this.items.active, {'legacyId': id});
+      let deletedItem: Item = this.items.active.splice(index, 1)[0];
+      if (this.items.sold.length) {
+        this.items.sold.push(deletedItem);
+      }
+      this.eventService.emit(EventService.ITEM_SOLD, deletedItem);
+    });
+  }
+
+  public delete(id: number): Observable<any> {
+    return this.http.delete(this.API_URL_V1 + '/item.json/' + id)
+    .do(() => {
+      let index: number = _.findIndex(this.items.active, {'legacyId': id});
+      if (index > -1) {
+        this.items.active.splice(index, 1);
+      } else {
+        index = _.findIndex(this.items.sold, {'legacyId': id});
+        this.items.sold.splice(index, 1);
+      }
+    });
+  }
+
+  public bulkDelete(type: string): Observable<ItemBulkResponse> {
+    return this.http.put(this.API_URL_V3 + '/delete', {
+      ids: this.selectedItems
+    })
+    .map((r: Response) => r.json())
+    .do((response: ItemBulkResponse) => {
+      response.updatedIds.forEach((id: string) => {
+        let index: number = _.findIndex(this.items[type], {'id': id});
+        this.items[type].splice(index, 1);
+      });
+      this.deselectItems();
+    });
+  }
+
+  public bulkSetSold(): Observable<ItemBulkResponse> {
+    return this.http.put(this.API_URL_V3 + '/sold', {
+      ids: this.selectedItems
+    })
+    .map((r: Response) => r.json())
+    .do((response: ItemBulkResponse) => {
+      response.updatedIds.forEach((id: string) => {
+        let index: number = _.findIndex(this.items.active, {'id': id});
+        let deletedItem: Item = this.items.active.splice(index, 1)[0];
+        deletedItem.sold = true;
+        deletedItem.selected = false;
+        if (this.items.sold.length) {
+          this.items.sold.push(deletedItem);
+        }
+      });
+      this.deselectItems();
+      this.eventService.emit(EventService.ITEM_SOLD, response.updatedIds);
+    });
+  }
+
+  public reserve(id: number): Observable<any> {
+    return this.http.post(this.API_URL_V1 + '/item.json/' + id + '/reserve2');
+  }
+
+  public unreserve(id: number): Observable<any> {
+    return this.http.delete(this.API_URL_V1 + '/item.json/' + id + '/reserve2');
+  }
+
+  public deselectItems() {
+    this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_UNSELECTED, {product_ids: this.selectedItems.join(', ')});
+    this.selectedItems = [];
+    this.items.active.map((item: Item) => {
+      item.selected = false;
+    });
+    this.items.sold.map((item: Item) => {
+      item.selected = false;
+    });
+    localStorage.removeItem(this.userService.user.id + this.localStorageKeyItems);
+  }
+
+  public resetCache() {
+    this.items = {
+      active: [],
+      sold: []
+    };
+  }
+
+  private recursiveMines(init: number, offset: number, status?: string): Observable<ItemResponse[]> {
+    return this.http.get(this.API_URL_V2 + '/mines2', {
+      statuses: ITEM_STATUSES[status],
+      init: init,
+      end: init + offset
+    })
+    .map((r: Response) => r.json())
+    .flatMap((res: ItemResponse[]) => {
+      if (res.length > 0) {
+        return this.recursiveMines(init + offset, offset, status)
+        .map((res2: ItemResponse[]) => {
+          return res.concat(res2);
+        });
+      } else {
+        return Observable.of([]);
+      }
+    });
+  }
+
+  public getBanReasons(): Observable<BanReason[]> {
+    if (!this.banReasons) {
+      this.banReasons = this.i18n.getTranslations('reportListingReasons');
+    }
+    return Observable.of(this.banReasons);
+  }
+
+  public getSelectedItems(): Item[] {
+    if (!this.selectedItems.length && localStorage.getItem(this.userService.user.id + this.localStorageKeyItems)) {
+      this.selectedItems = JSON.parse(localStorage.getItem(this.userService.user.id + this.localStorageKeyItems));
+    }
+    return this.selectedItems.map((id: string) => {
+      return <Item>_.find(this.items.active, {id: id});
+    });
+  }
+
+  public storeSelectedItems() {
+    localStorage.setItem(this.userService.user.id + this.localStorageKeyItems, JSON.stringify(this.selectedItems));
   }
 
   public selectItem(id: string) {
@@ -337,8 +541,9 @@ export class ItemService extends ItemServiceMaster {
 
   public getUrgentProducts(itemId: string): Observable<Product> {
     return this.http.get(this.API_URL_WEB + '/' + itemId + '/available-urgent-products')
-      .map((r: Response) => r.json())
-      .map((response: AvailableProductsResponse) => response.products[0]);
+    .map((r: Response) => r.json())
+    .map((response: AvailableProductsResponse) => response.products[0]);
   }
-
 }
+
+

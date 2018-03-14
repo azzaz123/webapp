@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ReviewService } from './review.service';
-import { HttpService, TEST_HTTP_PROVIDERS } from 'shield';
 import { Observable } from "rxjs/Observable";
 import { ReviewsData } from "./review-response.interface";
-import { REVIEWS_RESPONSE, MOCK_REVIEWS } from "../../../tests/review.fixtures";
+import { REVIEWS_RESPONSE, MOCK_REVIEWS } from "../../../tests/review.fixtures.spec";
 import { Response, ResponseOptions, Headers } from '@angular/http';
+import { HttpService } from '../http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
 
 describe('ReviewService', () => {
 
@@ -38,7 +39,7 @@ describe('ReviewService', () => {
         resp = data;
       });
     });
-    
+
     it('should call endpoint', () => {
       expect(http.get).toHaveBeenCalledWith(API_URL_v3_USER, {init: init})
     });

@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { WindowRef, MockTrackingService, MOCK_ITEM } from 'shield';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { ItemService } from '../../../../core/item/item.service';
-import { PRODUCT_RESPONSE, ORDER_EVENT, PRODUCT_DURATION_ID } from '../../../../../tests/item.fixtures';
+import { PRODUCT_RESPONSE, ORDER_EVENT, PRODUCT_DURATION_ID } from '../../../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 
 describe('UploadConfirmationModalComponent', () => {

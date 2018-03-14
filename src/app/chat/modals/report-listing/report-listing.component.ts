@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemService, BanReason } from 'shield';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { BanReason } from '../../../core/item/ban-reason.interface';
+import { ItemService } from '../../../core/item/item.service';
 
 @Component({
   selector: 'tsl-report-listing',

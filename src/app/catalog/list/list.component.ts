@@ -1,9 +1,8 @@
 import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FinancialCard, Item, ItemBulkResponse, PaymentService } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import { ItemsData } from '../../core/item/item-response.interface';
+import { ItemBulkResponse, ItemsData } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -19,6 +18,9 @@ import { UserService } from '../../core/user/user.service';
 import { UserStatsResponse } from '../../core/user/user-stats.interface';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
+import { Item } from '../../core/item/item';
+import { PaymentService } from '../../core/payments/payment.service';
+import { FinancialCard } from '../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-list',

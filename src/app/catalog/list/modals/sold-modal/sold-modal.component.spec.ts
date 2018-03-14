@@ -7,7 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { ReviewService, MOCK_ITEM, ITEM_SALE_PRICE, ITEM_ID, MOCK_USER, USER_ID } from 'shield';
-import { CONVERSATION_USERS } from '../../../../../tests/item.fixtures';
+import { CONVERSATION_USERS } from '../../../../../tests/item.fixtures.spec';
 
 
 describe('SoldModalComponent', () => {

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { HereMapsComponent, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER, USER_MARKER } from './here-maps.component';
-import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures';
+import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 
 const ICON = {url: 'icon'};
 const MARKER = {marker: 'marker'};

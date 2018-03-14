@@ -6,9 +6,9 @@ import { UserService } from '../../core/user/user.service';
 import { TEST_HTTP_PROVIDERS, User, USER_DATA, WindowRef, MessageService } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../../core/event/event.service';
-import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
+import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures';
+import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures.spec';
 
 const MOCK_USER = new User(
   USER_DATA.id,

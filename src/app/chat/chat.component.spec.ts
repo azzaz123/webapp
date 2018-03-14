@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/te
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {
-  EventService, XmppService, MOCK_CONVERSATION, ItemService, HttpService, I18nService,
+  EventService, XmppService, MOCK_CONVERSATION, ItemService,
   ConversationService, MockTrackingService, ITEM_ID, Conversation, PersistencyService, UserService, USER_WEB_SLUG, USER_ID, User, Item, SURVEY_RESPONSES
 } from 'shield';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { AdService } from '../core/ad/ad.service';
+import { HttpService } from '../core/http/http.service';
+import { I18nService } from '../core/i18n/i18n.service';
 
 class MockConversationService {
 
