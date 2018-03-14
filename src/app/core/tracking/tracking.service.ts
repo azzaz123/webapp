@@ -41,7 +41,8 @@ const SCREENS_IDS: any = {
   ItemDetail: '115',
   UploadForm: '139',
   MyItemDetail: '114',
-  MyProfile: '112'
+  MyProfile: '112',
+  Conversation: '118'
 };
 
 const TYPES_IDS: any = {
@@ -343,6 +344,12 @@ export class TrackingService extends TrackingServiceMaster {
     name: '612',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static CHAT_EDITITEM: TrackingEventBase = {
+    name: '666',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
   public static MYITEMDETAIL_EDITITEM_SUCCESS: TrackingEventBase = {
