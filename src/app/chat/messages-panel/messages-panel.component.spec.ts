@@ -9,12 +9,16 @@ import {
   MESSAGE_MAIN,
   MOCK_MESSAGE,
   Message,
-  I18nService
+  I18nService,
+  EventService
 } from 'shield';
 
 describe('Component: MessagesPanel', () => {
   let component: MessagesPanelComponent;
   let fixture: ComponentFixture<MessagesPanelComponent>;
+  let eventService: EventService;
+
+  const EVENT_CALLBACK: Function = jasmine.createSpy('EVENT_CALLBACK');
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,12 +26,13 @@ describe('Component: MessagesPanel', () => {
         MomentModule
       ],
       declarations: [MessagesPanelComponent],
-      providers: [I18nService],
+      providers: [I18nService, EventService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(MessagesPanelComponent);
     component = fixture.componentInstance;
     component.currentConversation = MOCK_CONVERSATION();
+    eventService = TestBed.get(EventService);
   });
 
   it('should instantiate it', () => {
@@ -77,6 +82,23 @@ describe('Component: MessagesPanel', () => {
       };
       component.ngAfterViewChecked();
       expect(component.messagesPanel.nativeElement.scrollHeight).toBe(100);
+    });
+  });
+
+  describe('ngOnChanges', () => {
+    it('should set alreadyScrolled to false when invoked', () => {
+      component.alreadyScrolled = true;
+      component.ngOnChanges();
+      expect(component.alreadyScrolled).toBe(false);
+    });
+  });
+
+  describe('ngOnInit', () => {
+    it('should set alreadyScrolled to false when a NEW_MESSAGE event is triggered', () => {
+      component.alreadyScrolled = true;
+      component.ngOnInit();
+      eventService.emit(EventService.NEW_MESSAGE);
+      expect(component.alreadyScrolled).toBe(false);
     });
   });
 
