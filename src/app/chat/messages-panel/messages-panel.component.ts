@@ -1,19 +1,19 @@
-import { AfterViewChecked, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
-import { Conversation, Message, I18nService } from 'shield';
+import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Conversation, Message, I18nService, EventService } from 'shield';
 
 @Component({
   selector: 'tsl-messages-panel',
   templateUrl: './messages-panel.component.html',
   styleUrls: ['./messages-panel.component.scss']
 })
-export class MessagesPanelComponent implements AfterViewChecked, OnChanges {
+export class MessagesPanelComponent implements AfterViewChecked, OnChanges, OnInit {
 
   @Input() currentConversation: Conversation;
   @ViewChild('messagesPanel') messagesPanel: ElementRef;
   public momentConfig: any;
-  private alreadyScrolled: boolean;
+  public alreadyScrolled: boolean;
 
-  constructor(i18n: I18nService) {
+  constructor(i18n: I18nService, private event: EventService) {
     this.momentConfig = i18n.getTranslations('daysMomentConfig');
   }
 
@@ -30,6 +30,10 @@ export class MessagesPanelComponent implements AfterViewChecked, OnChanges {
 
   ngOnChanges(changes?: any) {
     this.alreadyScrolled = false;
+  }
+
+  ngOnInit() {
+    this.event.subscribe(EventService.NEW_MESSAGE, () => this.alreadyScrolled = false);
   }
 
 }
