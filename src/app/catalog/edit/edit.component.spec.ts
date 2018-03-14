@@ -1,16 +1,19 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-
 import { EditComponent } from './edit.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MOCK_ITEM } from 'shield';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
+import { PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../../tests/item.fixtures';
+import { ItemService } from '../../core/item/item.service';
+import { Observable } from 'rxjs/Observable';
 
 describe('EditComponent', () => {
   let component: EditComponent;
   let fixture: ComponentFixture<EditComponent>;
   let modalService: NgbModal;
+  let itemService: ItemService;
   const componentInstance: any = {};
 
   beforeEach(async(() => {
@@ -36,6 +39,11 @@ describe('EditComponent', () => {
             }
           }
         }
+        },
+        {
+          provide: ItemService, useValue: {
+            getUrgentProductByCategoryId() {}
+          }
         }
       ]
     })
@@ -45,13 +53,22 @@ describe('EditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    component.item = MOCK_ITEM;
     modalService = TestBed.get(NgbModal);
+    itemService = TestBed.get(ItemService);
   });
 
   describe('ngOnInit', () => {
+    beforeEach( () => {
+      spyOn(component, 'getUrgentPrice');
+    });
     it('should set item', () => {
       expect(component.item).toEqual(MOCK_ITEM);
+    });
+    it('should call getUrgentPrice', () => {
+      component.ngOnInit();
+
+      expect(component.getUrgentPrice).toHaveBeenCalled();
     });
   });
 
@@ -97,6 +114,18 @@ describe('EditComponent', () => {
       component.onFormChanged(true);
 
       expect(component['hasNotSavedChanges']).toBeTruthy();
+    });
+  });
+
+  describe('get urgent price', () => {
+    it('should set the urgent price', () => {
+      spyOn(itemService, 'getUrgentProductByCategoryId').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+
+      const categoryId = ITEM_DATA_V3.content.category_id;
+
+      component.getUrgentPrice(categoryId);
+
+      expect(itemService.getUrgentProductByCategoryId).toHaveBeenCalledWith(categoryId);
     });
   });
 

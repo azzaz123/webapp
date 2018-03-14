@@ -43,14 +43,14 @@ describe('UploadComponent', () => {
       expect(component.categoryId).toBe(CATEGORY_ID.toString());
     });
 
-    it('should call getUrgentPrice if categoryId == -1', () => {
+    it('should not call getUrgentPrice if categoryId == -1', () => {
       const CATEGORY_ID = -1;
 
       component.setCategory(CATEGORY_ID);
 
       expect(component.getUrgentPrice).not.toHaveBeenCalled();
     });
-    it('should not call getUrgentPrice if categoryId != -1', () => {
+    it('should call getUrgentPrice if categoryId != -1', () => {
       const CATEGORY_ID = 123;
 
       component.setCategory(CATEGORY_ID);
