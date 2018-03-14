@@ -36,6 +36,8 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() onCategorySelect = new EventEmitter<number>();
+  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
+
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
@@ -277,6 +279,10 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   public setCategory(value: number): void {
     this.onCategorySelect.emit(value);
+  }
+
+  public emitLocation(): void {
+    this.locationSelected.emit(this.categoryId);
   }
 
 }

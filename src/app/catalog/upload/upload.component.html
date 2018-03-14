@@ -3,13 +3,15 @@
     <tsl-category-selector (onSelect)="setCategory($event)"></tsl-category-selector>
     <tsl-upload-car *ngIf="categoryId === '100'"
                     [urgentPrice]="urgentPrice"
-                    (onValidationError)="onValidationError()">
+                    (onValidationError)="onValidationError()"
+                    (locationSelected)="getUrgentPrice('100')">
     </tsl-upload-car>
     <tsl-upload-product *ngIf="categoryId && categoryId !== '100'"
                         [categoryId]="categoryId"
                         [urgentPrice]="urgentPrice"
                         (onValidationError)="onValidationError()"
-                        (onCategorySelect)="getUrgentPrice($event)">
+                        (onCategorySelect)="getUrgentPrice($event)"
+                        (locationSelected)="getUrgentPrice(categoryId)">
     </tsl-upload-product>
   </div>
 </div>

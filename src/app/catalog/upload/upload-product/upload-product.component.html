@@ -124,7 +124,7 @@
       <div i18n>Important for shipping.</div>
     </ng-template>
   </div>
-  <tsl-location-box [form]="uploadForm" name="location"></tsl-location-box>
+  <tsl-location-box [form]="uploadForm" name="location" (locationSelected)='emitLocation()'></tsl-location-box>
   <tsl-urgent-checkbox [categoryId]="categoryId" [urgentPrice]="urgentPrice" (urgentSelected)='selectUrgent($event)'></tsl-urgent-checkbox>
   <tsl-button [type]="'submit'" className="btn-primary btn-big" [disabled]="loading" [loading]="loading">
     <span *ngIf="!item" i18n>Post Ad</span>

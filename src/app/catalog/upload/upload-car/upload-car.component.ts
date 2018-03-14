@@ -22,6 +22,7 @@ export class UploadCarComponent implements OnInit {
 
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
+  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Car;
   @Input() urgentPrice: number;
   public uploadForm: FormGroup;
@@ -299,6 +300,10 @@ export class UploadCarComponent implements OnInit {
 
   public selectUrgent(isUrgent: boolean): void {
     this.isUrgent = isUrgent;
+  }
+
+  public emitLocation(): void {
+    this.locationSelected.emit(100);
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserService } from '../../../core/user/user.service';
 import { User } from 'shield';
@@ -13,6 +13,7 @@ export class LocationBoxComponent implements OnInit {
 
   @Input() form: FormGroup;
   @Input() name: string;
+  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public user: User;
   public coordinates: Coordinate;
 
@@ -39,6 +40,10 @@ export class LocationBoxComponent implements OnInit {
     this.form.get(this.name).valueChanges.subscribe((location: Coordinate) => {
       this.coordinates = location;
     });
+  }
+  
+  public emitLocation() {
+    this.locationSelected.emit();
   }
 
 }

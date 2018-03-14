@@ -405,4 +405,18 @@ describe('UploadCarComponent', () => {
     });
   });
 
+  describe('Emit Location', () => {
+    let categoryId: number;
+
+    it('should emit location updated event', () => {
+      component.locationSelected.subscribe((s: number) => {
+        categoryId = s;
+      });
+
+      component.emitLocation();
+
+      expect(categoryId).toBe(100);
+    });
+  });
+
 });
