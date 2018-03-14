@@ -13,13 +13,7 @@
     "test.ts"
   ],
   "include": [
-    "../node_modules/shield",
     "**/*.spec.ts",
     "**/*.d.ts"
-  ],
-  "exclude": [
-    "../node_modules/shield/e2e",
-    "../node_modules/shield/**/*.spec.ts",
-    "../node_modules/shield/lib/typings.d.ts"
   ]
 }
