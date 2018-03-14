@@ -1,4 +1,4 @@
-import { Item } from '../item/item';
+import { Item } from '../core/item/item';
 
 export class ReviewItem extends Item {
 

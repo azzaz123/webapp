@@ -1,7 +1,7 @@
 import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReviewsComponent } from './reviews.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ReviewService } from '../core/review/review.service';
+import { UserReviewService } from './user-review.service';
 import { Observable } from 'rxjs/Observable';
 import { MOCK_REVIEWS } from '../../tests/review.fixtures.spec';
 import { MOCK_USER } from 'shield';
@@ -11,7 +11,7 @@ import {USER_INFO_RESPONSE, USERS_STATS, USERS_STATS_RESPONSE} from '../../tests
 describe('ReviewsComponent', () => {
   let component: ReviewsComponent;
   let fixture: ComponentFixture<ReviewsComponent>;
-  let reviewService: ReviewService;
+  let reviewService: UserReviewService;
   let userService: UserService;
   let myReviewsServiceSpy: jasmine.Spy;
 
@@ -33,7 +33,7 @@ describe('ReviewsComponent', () => {
             }
           },
           {
-            provide: ReviewService, useValue: {
+            provide: UserReviewService, useValue: {
               getPaginationReviews () {
                 return Observable.of({data: MOCK_REVIEWS, init: 2});
               }
@@ -48,7 +48,7 @@ describe('ReviewsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ReviewsComponent);
     userService = TestBed.get(UserService);
-    reviewService = TestBed.get(ReviewService);
+    reviewService = TestBed.get(UserReviewService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

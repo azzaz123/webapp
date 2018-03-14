@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Review } from '../core/review/review';
-import { ReviewService } from '../core/review/review.service';
+import { Review } from './review';
+import { UserReviewService } from './user-review.service';
 import { UserService } from '../core/user/user.service';
 import { UserInfoResponse } from '../core/user/user-info.interface';
-import { ReviewsData } from '../core/review/review-response.interface';
+import { ReviewsData } from './review-response.interface';
 import { UserStatsResponse } from '../core/user/user-stats.interface';
 import { User } from '../core/user/user';
 
@@ -22,7 +22,7 @@ export class ReviewsComponent implements OnInit {
   public userScore: number;
   public numberOfReviews: number;
 
-  constructor(private myReviewsService: ReviewService,
+  constructor(private myReviewsService: UserReviewService,
               private userService: UserService) { }
 
   ngOnInit() {

@@ -1,7 +1,7 @@
-import { Review } from '../app/core/review/review';
+import { Review } from '../app/reviews/review';
 import { User, USER_ID, MICRO_NAME, USER_WEB_SLUG } from 'shield';
-import { ReviewItem } from '../app/core/review/review-item';
-import { ReviewResponse } from '../app/core/review/review-response.interface';
+import { ReviewItem } from '../app/reviews/review-item';
+import { ReviewResponse } from '../app/reviews/review-response.interface';
 
 const REVIEW_ITEM_IMAGE = {
   'large':           'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W800',

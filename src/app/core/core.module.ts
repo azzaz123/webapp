@@ -23,6 +23,7 @@ import { WindowRef } from './window/window.service';
 import { XmppService } from './xmpp/xmpp.service';
 import { PushNotificationsModule } from 'ng-push';
 import { ToastrModule } from 'ngx-toastr';
+import { ReviewService } from './review/review.service';
 
 @NgModule({
   imports: [
@@ -64,7 +65,8 @@ export class CoreModule {
         PaymentService,
         PersistencyService,
         WindowRef,
-        XmppService
+        XmppService,
+        ReviewService
       ]
     };
   }
