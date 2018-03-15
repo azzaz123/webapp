@@ -72,9 +72,11 @@ describe('LocationBoxComponent', () => {
   describe('Emit Location', () => {
     it('should emit location updated event', () => {
       spyOn(component.locationSelected, 'emit');
+
       component.emitLocation();
 
       expect(component.locationSelected.emit).toHaveBeenCalled();
     });
   });
+  
 });

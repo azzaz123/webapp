@@ -470,9 +470,11 @@ describe('ItemService', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let resp: Product;
+
       service.getUrgentProducts(ITEM_ID).subscribe((r: Product) => {
         resp = r;
       });
+
       expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-urgent-products');
       expect(resp).toEqual(PRODUCT_RESPONSE)
     });
@@ -483,9 +485,11 @@ describe('ItemService', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let resp: Product;
+
       service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID).subscribe((r: Product) => {
         resp = r;
       });
+
       expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-urgent-products', {categoryId: ITEM_CATEGORY_ID});
       expect(resp).toEqual(PRODUCT_RESPONSE)
     });

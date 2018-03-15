@@ -17,8 +17,8 @@ describe('UploadComponent', () => {
       providers: [
         {
           provide: ItemService, useValue: {
-          getUrgentProductByCategoryId() {}
-        }
+            getUrgentProductByCategoryId() {}
+          }
         }
       ]
     })

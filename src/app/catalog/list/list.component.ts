@@ -3,7 +3,7 @@ import { FinancialCard, Item, ItemBulkResponse, PaymentService } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import {ItemsData, Order, Product} from '../../core/item/item-response.interface';
+import { ItemsData, Order, Product } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
