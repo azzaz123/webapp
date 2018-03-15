@@ -18,7 +18,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 import { PICTURE_ID } from '../../../../tests/item.fixtures';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import {UploadedEvent} from "../upload-event.interface";
+import { UploadedEvent } from '../upload-event.interface';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;
