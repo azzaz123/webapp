@@ -28,9 +28,12 @@ googletag.cmd = googletag.cmd || [];
 
 googletag.cmd.push(function () {
   googletag.defineSlot('/130868815/chat_right', [[240, 400], [120,600], [160,600], [300,250]], 'div-gpt-ad-1508490196308-0').addService(googletag.pubads());
+  var publisherId = getCookie('publisherId');
+  publisherId = publisherId ? publisherId : '-1' + Array(31).join("0");
   googletag.pubads().enableSingleRequest();
   googletag.pubads().collapseEmptyDivs();
   googletag.pubads().disableInitialLoad();
+  googletag.pubads().setPublisherProvidedId(publisherId);
   googletag.enableServices();
   var launchAdServer = function() {
     /* Perform key-value targeting for your ad server */
@@ -43,3 +46,19 @@ googletag.cmd.push(function () {
     Criteo.RequestBids(adUnits, launchAdServer, 1500);
   });
 });
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
