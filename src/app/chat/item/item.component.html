@@ -3,7 +3,7 @@
   <div class="image-overlay">
     <img class="card-img-top" src="{{item.mainImage?.urls_by_size.large.replace('http://', 'https://')}}"
          onError="this.src='/assets/images/fake-item.png'"/>
-    <a class="btn btn-edit" target='_blank' (click)='editItem($event)' [routerLink]="['/catalog/edit/', this.item.id]" tslTrackEvent="CHAT_EDITITEM"
+    <a class="btn btn-edit" target='_blank' (click)='stopPropagation($event)' [routerLink]="['/catalog/edit/', this.item.id]" tslTrackEvent="CHAT_EDITITEM"
       *ngIf="!item.sold">
       <mat-icon svgIcon="btn-edit"></mat-icon>
     </a>

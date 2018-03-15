@@ -40,7 +40,7 @@ export class ItemComponent implements OnChanges, OnDestroy {
     }
   }
 
-  editItem($event: Event) {
+  stopPropagation($event: Event) {
     $event.stopPropagation();
   }
 }
