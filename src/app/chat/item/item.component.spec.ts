@@ -62,4 +62,39 @@ describe('Component: Item', () => {
     expect(component.itemUrl).toBe('https://es.wallapop.com/item/' + ITEM_WEB_SLUG);
   });
 
+  describe('prevent', () => {
+
+    it('should call preventdefault for the event when itemUrl is "#"', () => {
+      const event = new Event('MouseEvent');
+      component.itemUrl = '#';
+      spyOn(event, 'preventDefault');
+
+      component.prevent(event);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
+
+    it('should NOT call preventdefault for the event when itemUrl is not "#"', () => {
+      const event = new Event('MouseEvent');
+      component.itemUrl = '/some-other-url';
+      spyOn(event, 'preventDefault');
+
+      component.prevent(event);
+
+      expect(event.preventDefault).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('stopPropagation', () => {
+
+    it('should call stopPropagation for the event when invoked', () => {
+      const event = new Event('MouseEvent');
+      spyOn(event, 'stopPropagation');
+
+      component.stopPropagation(event);
+
+      expect(event.stopPropagation).toHaveBeenCalled();
+    });
+  });
+
 });
