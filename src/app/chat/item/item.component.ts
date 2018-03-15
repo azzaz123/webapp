@@ -1,5 +1,4 @@
 import { Component, Inject, Input, OnChanges, OnDestroy } from '@angular/core';
-import { TrackingService } from '../../core/tracking/tracking.service';
 import { Item, ItemCounters, ItemService } from 'shield';
 
 @Component({
@@ -14,7 +13,6 @@ export class ItemComponent implements OnChanges, OnDestroy {
   private active = true;
 
   constructor(private itemService: ItemService,
-              private trackingService: TrackingService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
