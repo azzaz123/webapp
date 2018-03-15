@@ -587,6 +587,20 @@ describe('ListComponent', () => {
             });
           });
         });
+        describe('user closes modal', () => {
+          beforeEach(fakeAsync(() => {
+            spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
+            spyOn(router, 'navigate');
+            component.feature({
+              order: [ORDER],
+              total: 10
+            });
+            tick(1000);
+          }));
+          it('should redirect without code', () => {
+            expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
+          });
+        });
         afterEach(() => {
           it('should open modal', () => {
             expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});

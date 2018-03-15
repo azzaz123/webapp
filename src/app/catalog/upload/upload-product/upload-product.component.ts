@@ -229,6 +229,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     if (this.isUrgent) {
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
       uploadEvent.action = 'urgent';
+      localStorage.setItem('transactionType', 'urgent');
     }
     this.router.navigate(['/catalog/list', {[uploadEvent.action]: true, itemId: uploadEvent.response.id}]);
   }

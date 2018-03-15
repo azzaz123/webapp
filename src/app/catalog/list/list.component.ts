@@ -87,10 +87,10 @@ export class ListComponent implements OnInit, OnDestroy {
             windowClass: modal.windowClass,
             backdrop: 'static'
           });
-          localStorage.removeItem('transactionType');
           modalRef.componentInstance.code = params.code;
           modalRef.result.then(() => {
             modalRef = null;
+            localStorage.removeItem('transactionType');
             this.router.navigate(['catalog/list']);
           }, () => {
           });
@@ -272,7 +272,15 @@ export class ListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.total = total;
     this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
     modalRef.result.then((result: string) => {
-      if (result === 'new') {
+      if (result === undefined) {
+        this.isUrgent = false;
+        localStorage.removeItem('transactionType');
+        this.isRedirect = !this.getRedirectToTPV();
+        this.deselect();
+        setTimeout(() => {
+          this.router.navigate(['catalog/list']);
+        }, 1000);
+      } else if (result === 'new') {
         this.setRedirectToTPV(true);
         this.sabadellSubmit.emit(orderId);
       } else {
