@@ -20,6 +20,7 @@ import { Coordinate } from '../geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
 import { UserData } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
+import { CookieService } from 'ngx-cookie';
 
 @Injectable()
 export class UserService extends UserServiceMaster {
@@ -31,6 +32,7 @@ export class UserService extends UserServiceMaster {
               i18n: I18nService,
               haversineService: HaversineService,
               accessTokenService: AccessTokenService,
+              private cookieService: CookieService,
               @Inject('SUBDOMAIN') private subdomain: string) {
     super(http, event, i18n, haversineService, accessTokenService);
   }
@@ -48,6 +50,8 @@ export class UserService extends UserServiceMaster {
     const URL = environment.siteUrl.replace('es', this.subdomain);
     this.http.postNoBase(URL + 'rest/logout', undefined, undefined, true).subscribe((response) => {
       const redirectUrl: any = response['_body'];
+      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+      this.cookieService.remove('publisherId', cookieOptions);
       this.accessTokenService.deleteAccessToken();
       this.event.emit(EventService.USER_LOGOUT, redirectUrl);
     });
