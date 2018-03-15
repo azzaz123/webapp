@@ -341,4 +341,12 @@ export class ItemService extends ItemServiceMaster {
       .map((response: AvailableProductsResponse) => response.products[0]);
   }
 
+  public getUrgentProductByCategoryId(categoryId: number): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/available-urgent-products', {
+      categoryId: categoryId
+    })
+      .map((r: Response) => r.json())
+      .map((response: AvailableProductsResponse) => response.products[0]);
+  }
+
 }

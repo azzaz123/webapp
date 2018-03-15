@@ -125,7 +125,8 @@ describe('LocationSelectComponent', () => {
       beforeEach(fakeAsync(() => {
         spyOn(modalService, 'open').and.callThrough();
         spyOn(userService, 'updateLocation').and.callThrough();
-
+        spyOn(component.locationSelected, 'emit');
+        
         component.open(element);
         tick(LOCATION_MODAL_TIMEOUT);
       }));
@@ -158,6 +159,10 @@ describe('LocationSelectComponent', () => {
 
       it('should set user location', () => {
         expect(userService.user.location).toEqual(USER_LOCATION);
+      });
+
+      it('should emit an update location event', () => {
+        expect(component.locationSelected.emit).toHaveBeenCalled();
       });
     });
 

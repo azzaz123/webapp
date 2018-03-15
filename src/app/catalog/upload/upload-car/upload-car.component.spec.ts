@@ -175,7 +175,9 @@ describe('UploadCarComponent', () => {
   describe('getBrands', () => {
     it('should get and set brands', () => {
       spyOn(carSuggestionsService, 'getBrands').and.returnValue(Observable.of(CAR_BRANDS));
+
       component['getBrands']();
+
       expect(carSuggestionsService.getBrands).toHaveBeenCalled();
       expect(component.brands).toEqual(CAR_BRANDS);
       expect(component.uploadForm.get('brand').pristine).toBeTruthy();
@@ -185,7 +187,9 @@ describe('UploadCarComponent', () => {
   describe('getCarTypes', () => {
     it('should get and set types', () => {
       spyOn(carKeysService, 'getTypes').and.returnValue(Observable.of(CAR_BODY_TYPES));
+
       component['getCarTypes']();
+
       expect(carKeysService.getTypes).toHaveBeenCalled();
       expect(component.carTypes).toEqual(CAR_BODY_TYPES);
       expect(component.uploadForm.get('body_type').pristine).toBeTruthy();
@@ -195,7 +199,9 @@ describe('UploadCarComponent', () => {
   describe('getModels', () => {
     it('should get and set models', () => {
       spyOn(carSuggestionsService, 'getModels').and.returnValue(Observable.of(CAR_MODELS));
+
       component.getModels('Abarth');
+
       expect(carSuggestionsService.getModels).toHaveBeenCalledWith('Abarth');
       expect(component.models).toEqual(CAR_MODELS);
       expect(component.uploadForm.get('model').pristine).toBeTruthy();
@@ -216,7 +222,9 @@ describe('UploadCarComponent', () => {
     it('should get and set years', () => {
       spyOn(carSuggestionsService, 'getYears').and.returnValue(Observable.of(CAR_YEARS));
       component.uploadForm.get('brand').patchValue('Abarth');
+
       component.getYears('Spider');
+
       expect(carSuggestionsService.getYears).toHaveBeenCalledWith('Abarth', 'Spider');
       expect(component.years).toEqual(CAR_YEARS);
       expect(component.uploadForm.get('year').pristine).toBeTruthy();
@@ -236,7 +244,9 @@ describe('UploadCarComponent', () => {
       component.uploadForm.get('brand').patchValue('Abarth');
       component.uploadForm.get('model').patchValue('Spider');
       component.uploadForm.get('year').patchValue('2017');
+
       component.getVersions('2017');
+
       expect(carSuggestionsService.getVersions).toHaveBeenCalledWith('Abarth', 'Spider', '2017');
       expect(component.versions).toEqual(CAR_VERSIONS);
       expect(component.uploadForm.get('version').pristine).toBeTruthy();
@@ -251,6 +261,7 @@ describe('UploadCarComponent', () => {
     it('should has category set by default', () => {
       expect(component.uploadForm.get('category_id').value).toBe('100');
     });
+
     it('should emit uploadEvent if form is valid', () => {
       let input: any;
       component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
@@ -258,15 +269,19 @@ describe('UploadCarComponent', () => {
       component.uploadEvent.subscribe((i: any) => {
         input = i;
       });
+
       component.onSubmit();
+
       expect(input).toEqual({
         type: 'create',
         values: component.uploadForm.value
       });
       expect(component.loading).toBeTruthy();
     });
+
     it('should set dirty invalid fields', () => {
       component.onSubmit();
+
       expect(component.uploadForm.get('model').dirty).toBeTruthy();
       expect(component.uploadForm.get('brand').dirty).toBeTruthy();
       expect(component.uploadForm.get('title').dirty).toBeTruthy();
@@ -274,42 +289,65 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('sale_price').dirty).toBeTruthy();
       expect(component.uploadForm.get('location.address').dirty).toBeTruthy();
     });
+
     it('should show image error', () => {
       spyOn(errorService, 'i18nError');
+
       component.onSubmit();
+
       expect(errorService.i18nError).toHaveBeenCalledWith('missingImageError');
     });
+
     it('should not accept sale_price < 0', () => {
       component.uploadForm.get('sale_price').patchValue(-1);
+
       expect(component.uploadForm.valid).toBeFalsy();
     });
+
     it('should not accept sale_price > 999999999', () => {
       component.uploadForm.get('sale_price').patchValue(9999999999);
+
       expect(component.uploadForm.valid).toBeFalsy();
     });
+
     it('should not accept km < 0', () => {
       component.uploadForm.get('km').patchValue(-1);
+
       expect(component.uploadForm.valid).toBeFalsy();
     });
+
     it('should not accept km > 999999999', () => {
       component.uploadForm.get('km').patchValue(9999999999);
+
       expect(component.uploadForm.valid).toBeFalsy();
     });
+
     it('should not accept num_seats < 0', () => {
       component.uploadForm.get('num_seats').patchValue(-1);
+
       expect(component.uploadForm.valid).toBeFalsy();
     });
+
     it('should not accept num_seats > 99', () => {
       component.uploadForm.get('num_seats').patchValue(100);
+
       expect(component.uploadForm.valid).toBeFalsy();
     });
   });
 
   describe('onUploaded', () => {
     it('should redirect', () => {
+      const uploadedEvent = {
+        action: 'updated',
+        response: {
+          id: '1'
+        }
+      };
       spyOn(router, 'navigate');
-      component.onUploaded('updated');
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {updated: true}]);
+
+      component.onUploaded(uploadedEvent);
+
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
     });
   });
 
@@ -335,6 +373,7 @@ describe('UploadCarComponent', () => {
       component.uploadForm.patchValue(UPLOAD_FORM_CAR_VALUES);
       component.preview();
     }));
+
     it('should open modal', () => {
       expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
         windowClass: 'preview'
@@ -345,10 +384,38 @@ describe('UploadCarComponent', () => {
     });
     it('should submit form', fakeAsync(() => {
       tick();
+      
       expect(component.onSubmit).toHaveBeenCalled();
     }));
     it('should call getBodyType', () => {
       expect(componentInstance.getBodyType).toHaveBeenCalled();
+    });
+  });
+
+  describe('Select Urgent', () => {
+    it('should set as urgent when checkbox is selected', () => {
+      component.selectUrgent(true);
+
+      expect(component.isUrgent).toBeTruthy();
+    });
+    it('should set as not urgent when checkbox is unselected', () => {
+      component.selectUrgent(false);
+
+      expect(component.isUrgent).toBeFalsy();
+    });
+  });
+
+  describe('Emit Location', () => {
+    let categoryId: number;
+
+    it('should emit location updated event', () => {
+      component.locationSelected.subscribe((s: number) => {
+        categoryId = s;
+      });
+
+      component.emitLocation();
+
+      expect(categoryId).toBe(100);
     });
   });
 
