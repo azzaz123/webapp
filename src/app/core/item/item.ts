@@ -1,5 +1,5 @@
 import { Model } from '../resource/model.interface';
-import { Image, Location } from '../user/user-response.interface';
+import { Image, UserLocation } from '../user/user-response.interface';
 import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
@@ -27,7 +27,7 @@ export class Item implements Model {
               private _title?: string,
               private _description?: string,
               private _categoryId?: number,
-              private _location?: Location,
+              private _location?: UserLocation,
               private _salePrice?: number,
               private _currencyCode?: string,
               private _modifiedDate?: number,
@@ -79,7 +79,7 @@ export class Item implements Model {
     return this._categoryId;
   }
 
-  get location(): Location {
+  get location(): UserLocation {
     return this._location;
   }
 

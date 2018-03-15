@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { ItemService } from '../core/item/item.service';
-import { MOCK_ITEM } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FavoritesComponent } from './favorites.component';
 import { UserService } from '../core/user/user.service';
 import { USERS_STATS_RESPONSE } from '../../tests/user.fixtures.spec';
+import { MOCK_ITEM } from '../../tests/item.fixtures.spec';
 
 describe('FavoritesComponent', () => {
   let component: FavoritesComponent;

@@ -2,15 +2,15 @@
 
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PersistencyService } from './persistency.service';
-import { createMessagesArray, MESSAGE_MAIN, MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../test/fixtures/message.fixtures';
+import { createMessagesArray, MESSAGE_MAIN, MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { Message } from '../message/message';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
   MockedConversationsDb,
   MockedMessagesDb
-} from '../../test/fixtures/persistency.fixtures';
-import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../test/fixtures/conversation.fixtures';
+} from '../../../tests/persistency.fixtures.spec';
+import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 
 let service: PersistencyService;
 const MOCK_REV: string = 'rev';

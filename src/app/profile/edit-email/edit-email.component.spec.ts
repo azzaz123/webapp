@@ -4,7 +4,7 @@ import { EditEmailComponent } from './edit-email.component';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmailModalComponent } from './email-modal/email-modal.component';
-import { USER_EMAIL } from 'shield';
+import { USER_EMAIL } from '../../../tests/user.fixtures.spec';
 
 describe('EditEmailComponent', () => {
   let component: EditEmailComponent;

@@ -6,7 +6,7 @@ import { ResponseOptions, Response } from '@angular/http';
 import { GeolocationResponse } from './geolocation-response.interface';
 import { Coordinate } from './address-response.interface';
 import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures.spec';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { HttpService } from '../http/http.service';
 
 let service: GeolocationService;

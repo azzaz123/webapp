@@ -5,10 +5,10 @@ import { NOTIFICATION_DURATION, NotificationService } from './notification.servi
 import { Observable } from 'rxjs/Observable';
 import { TrackingService } from '../tracking/tracking.service';
 import { I18nService } from '../i18n/i18n.service';
-import { MockTrackingService } from '../../test/fixtures/tracking.fixtures';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Message } from '../message/message';
-import { MOCK_MESSAGE } from '../../test/fixtures/message.fixtures';
-import { MOCK_USER, USER_DATA } from '../../test/fixtures/user.fixtures';
+import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
+import { MOCK_USER, USER_DATA } from '../../../tests/user.fixtures.spec';
 import { PLACEHOLDER_AVATAR, User } from '../user/user';
 import { PushNotificationsService } from 'ng-push';
 

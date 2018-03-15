@@ -2,9 +2,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MessageComponent } from './message.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_REVIEWS, REVIEWS_RESPONSE } from '../../../tests/review.fixtures.spec';
-import { MOCK_MESSAGE, USER_WEB_SLUG } from 'shield';
-import { User, USER_ID } from 'shield';
+import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
+import { USER_ID, USER_WEB_SLUG } from '../../../tests/user.fixtures.spec';
+import { User } from '../../core/user/user';
 
 const WEB_SLUG_USER = 'https://www.wallapop.com/user/';
 

@@ -8,13 +8,18 @@ import { CartService } from './cart.service';
 import { Observable } from 'rxjs/Observable';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
-import { FINANCIAL_CARD, ITEM_ID, MockTrackingService, PaymentService } from 'shield';
-import { CART_ITEM_CITYBUMP, CART_ORDER, CART_ORDER_TRACK, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
+import {
+  CART_ITEM_CITYBUMP, CART_ORDER, CART_ORDER_TRACK, ITEM_ID,
+  MOCK_ITEM_V3
+} from '../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { PaymentService } from '../../../core/payments/payment.service';
+import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
 
 describe('CartComponent', () => {
   let component: CartComponent;

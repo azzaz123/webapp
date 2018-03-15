@@ -2,9 +2,14 @@
 
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { InputComponent } from './input.component';
-import { MessageService, MOCK_CONVERSATION, USER_ID, EventService, Conversation, XmppService, MOCK_USER } from 'shield';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Conversation } from '../../core/conversation/conversation';
+import { MessageService } from '../../core/message/message.service';
+import { EventService } from '../../core/event/event.service';
+import { XmppService } from '../../core/xmpp/xmpp.service';
+import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
 
 class MockMessageService {
   send(c: Conversation, t: string): void {

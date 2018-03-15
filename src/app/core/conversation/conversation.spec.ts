@@ -4,15 +4,13 @@ import { Conversation } from './conversation';
 import { User } from '../user/user';
 import { Item } from '../item/item';
 import { Message } from '../message/message';
-import { createMessagesArray } from '../../test/fixtures/message.fixtures';
 import {
-  CONVERSATION_DATE,
-  CONVERSATION_ID,
-  CONVERSATION_PHONE,
+  CONVERSATION_DATE, CONVERSATION_ID, CONVERSATION_PHONE,
   MOCK_CONVERSATION
-} from '../../test/fixtures/conversation.fixtures';
-import { USER_ID } from '../../test/fixtures/user.fixtures';
-import { ITEM_ID } from '../../test/fixtures/item.fixtures';
+} from '../../../tests/conversation.fixtures.spec';
+import { createMessagesArray } from '../../../tests/message.fixtures.spec';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
+import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 
 describe('Conversation', () => {
 

@@ -1,15 +1,4 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import {
-  createItemsArray,
-  FINANCIAL_CARD,
-  Item,
-  ITEMS_BULK_RESPONSE,
-  ITEMS_BULK_RESPONSE_FAILED,
-  MOCK_ITEM,
-  MockTrackingService,
-  PaymentService
-} from 'shield';
-
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
@@ -21,7 +10,10 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
-import { ORDER, ORDER_EVENT } from '../../../tests/item.fixtures.spec';
+import {
+  createItemsArray, ITEMS_BULK_RESPONSE, ITEMS_BULK_RESPONSE_FAILED, MOCK_ITEM, ORDER,
+  ORDER_EVENT
+} from '../../../tests/item.fixtures.spec';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
@@ -31,6 +23,10 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures.spec';
+import { PaymentService } from '../../core/payments/payment.service';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { Item } from '../../core/item/item';
+import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
 
 describe('ListComponent', () => {
   let component: ListComponent;

@@ -2,21 +2,19 @@
 
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
-import { environment } from '../../sandbox/environments/environment';
 import { EventService } from '../event/event.service';
 import { Message } from '../message/message';
-import { MOCK_USER, USER_ID } from '../../test/fixtures/user.fixtures';
+import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { PersistencyService } from '../persistency/persistency.service';
-import { CONVERSATION_ID } from '../../test/fixtures/conversation.fixtures';
-import { MockedPersistencyService } from '../../test/fixtures/persistency.fixtures';
+import { CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
+import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { XmppTimestampMessage } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
-import { MockTrackingService } from '../../test/fixtures/tracking.fixtures';
-import { ShieldConfig } from '../shield-config';
-import { User } from '../user/user';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { MessagePayload } from '../message/messages.interface';
-import { MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../test/fixtures/message.fixtures';
+import { MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
+import { environment } from '../../../environments/environment';
 
 let mamFirstIndex: string = '1899';
 let mamCount: number = 1900;
@@ -98,7 +96,7 @@ const MOCKED_SERVER_TIMESTAMP_MESSAGE: XmppTimestampMessage = {
   },
   id: 'id'
 };
-const JIDS = ['1@dock7.wallapop.com', '2@dock7.wallapop.com', '3@dock7.wallapop.com'];
+const JIDS = ['1@wallapop.com', '2@wallapop.com', '3@wallapop.com'];
 let service: XmppService;
 let eventService: EventService;
 let trackingService: TrackingService;
@@ -110,7 +108,6 @@ describe('Service: Xmpp', () => {
       providers: [
         XmppService,
         EventService,
-        ShieldConfig,
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: PersistencyService, useClass: MockedPersistencyService}]
     });
@@ -192,7 +189,7 @@ describe('Service: Xmpp', () => {
       let blockedUser: string;
       let unblockedUser: string;
       beforeEach(() => {
-        service['blockedUsers'] = ['1@dock7.wallapop.com', '2@dock7.wallapop.com'];
+        service['blockedUsers'] = ['1@wallapop.com', '2@wallapop.com'];
         eventService.subscribe(EventService.USER_BLOCKED, (userId: string) => {
           blockedUser = userId;
         });
@@ -201,21 +198,21 @@ describe('Service: Xmpp', () => {
         });
       });
       it('should emit USER_BLOCKED event if there are new users in list', () => {
-        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of([...service['blockedUsers'], '3@dock7.wallapop.com']));
+        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of([...service['blockedUsers'], '3@wallapop.com']));
         eventService.emit('iq', iq);
         expect(service['getPrivacyList']).toHaveBeenCalled();
         expect(blockedUser).toBe('3');
       });
       it('should emit USER_UNBLOCKED event if there are new users in list', () => {
-        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of(['1@dock7.wallapop.com']));
+        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of(['1@wallapop.com']));
         eventService.emit('iq', iq);
         expect(service['getPrivacyList']).toHaveBeenCalled();
         expect(unblockedUser).toBe('2');
       });
       it('should set blockedUsers with the new list', () => {
-        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of(['1@dock7.wallapop.com']));
+        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of(['1@wallapop.com']));
         eventService.emit('iq', iq);
-        expect(service['blockedUsers']).toEqual(['1@dock7.wallapop.com']);
+        expect(service['blockedUsers']).toEqual(['1@wallapop.com']);
       });
     });
 
@@ -948,7 +945,7 @@ describe('Service: Xmpp', () => {
       service['blockedUsers'] = [...JIDS];
       service.blockUser(MOCK_USER).subscribe();
       expect(service['blockedUsers'].length).toBe(4);
-      expect(service['blockedUsers'][3]).toBe(USER_ID + '@dock7.wallapop.com');
+      expect(service['blockedUsers'][3]).toBe(USER_ID + '@wallapop.com');
       expect(MOCKED_CLIENT.sendIq).toHaveBeenCalledWith({
         type: 'set',
         privacy: {
@@ -964,7 +961,7 @@ describe('Service: Xmpp', () => {
       service.blockUser(MOCK_USER).subscribe();
       tick();
       expect(service['blockedUsers'].length).toBe(1);
-      expect(service['blockedUsers'][0]).toBe(USER_ID + '@dock7.wallapop.com');
+      expect(service['blockedUsers'][0]).toBe(USER_ID + '@wallapop.com');
       expect(MOCKED_CLIENT.sendIq['calls'].allArgs()).toEqual([[{
         type: 'set',
         privacy: {
@@ -1006,7 +1003,7 @@ describe('Service: Xmpp', () => {
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
     });
     it('should remove user from blocked list and call sendIq', () => {
-      service['blockedUsers'] = [...JIDS, USER_ID + '@dock7.wallapop.com'];
+      service['blockedUsers'] = [...JIDS, USER_ID + '@wallapop.com'];
       service.unblockUser(MOCK_USER).subscribe();
       expect(service['blockedUsers'].length).toBe(3);
       expect(MOCKED_CLIENT.sendIq).toHaveBeenCalledWith({
@@ -1020,7 +1017,7 @@ describe('Service: Xmpp', () => {
       });
     });
     it('should set user.blocked', fakeAsync(() => {
-      service['blockedUsers'] = [USER_ID + '@dock7.wallapop.com'];
+      service['blockedUsers'] = [USER_ID + '@wallapop.com'];
       MOCK_USER.blocked = true;
       service.unblockUser(MOCK_USER).subscribe();
       tick();

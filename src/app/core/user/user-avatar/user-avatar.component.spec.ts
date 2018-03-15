@@ -2,7 +2,9 @@
 
 import { TestBed } from '@angular/core/testing';
 import { UserAvatarComponent } from './user-avatar.component';
-import { USER_ID, IMAGE, MICRO_NAME, User, PLACEHOLDER_AVATAR, SanitizedBackgroundDirective } from 'shield';
+import { SanitizedBackgroundDirective } from '../../../utils/sanitized-background/sanitized-background.directive';
+import { PLACEHOLDER_AVATAR, User } from '../user';
+import { IMAGE, MICRO_NAME, USER_ID } from '../../../../tests/user.fixtures.spec';
 
 describe('Component: UserAvatar', () => {
 

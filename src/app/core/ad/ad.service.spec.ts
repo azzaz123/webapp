@@ -1,13 +1,13 @@
 import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AdService } from './ad.service';
-import { MOCK_USER } from 'shield';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { HttpService } from '../http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 
 let service: AdService;
 let http: HttpService;

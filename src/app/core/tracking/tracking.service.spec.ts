@@ -2,12 +2,13 @@
 
 import { TestBed } from '@angular/core/testing';
 import { TrackingService } from './tracking.service';
-import { NavigatorService, WindowRef } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { HttpService } from '../http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { WindowRef } from '../window/window.service';
+import { NavigatorService } from './navigator.service';
 
 let service: TrackingService;
 let cookieService: CookieService;

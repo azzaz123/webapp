@@ -4,7 +4,7 @@ import { CreditCardModalComponent } from './credit-card-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FINANCIAL_CARD } from 'shield';
+import { FINANCIAL_CARD } from '../../../../../tests/payments.fixtures.spec';
 
 describe('CreditCardModalComponent', () => {
   let component: CreditCardModalComponent;

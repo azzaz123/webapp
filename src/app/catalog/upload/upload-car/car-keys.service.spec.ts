@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { IOption } from 'ng-select';
 import { CAR_BODY_TYPES, CAR_BODY_TYPES_RESPONSE } from '../../../../tests/car.fixtures.spec';
 import { HttpService } from '../../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
 
 describe('CarKeysService', () => {

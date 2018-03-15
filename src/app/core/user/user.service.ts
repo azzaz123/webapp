@@ -8,7 +8,7 @@ import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
-import { UserResponse, Location } from './user-response.interface';
+import { UserResponse, UserLocation } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -163,7 +163,7 @@ export class UserService extends ResourceService {
     .map((r: Response) => r.json())
   }
 
-  public updateLocation(coordinates: Coordinate): Observable<Location> {
+  public updateLocation(coordinates: Coordinate): Observable<UserLocation> {
     return this.http.put(this.API_URL_V3 + '/me/location', {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude

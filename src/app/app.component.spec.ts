@@ -3,22 +3,6 @@
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import {
-  DebugService,
-  ErrorsService,
-  EventService,
-  I18nService,
-  MessageService,
-  MOCK_USER,
-  MockTrackingService,
-  NotificationService,
-  TEST_HTTP_PROVIDERS,
-  USER_DATA,
-  USER_ID,
-  UserService,
-  WindowRef,
-  XmppService
-} from 'shield';
 import { ToastrModule } from 'ngx-toastr';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
@@ -35,6 +19,18 @@ import { CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { MatIconRegistry } from '@angular/material';
+import { MessageService } from './core/message/message.service';
+import { NotificationService } from './core/notification/notification.service';
+import { XmppService } from './core/xmpp/xmpp.service';
+import { EventService } from './core/event/event.service';
+import { ErrorsService } from './core/errors/errors.service';
+import { UserService } from './core/user/user.service';
+import { DebugService } from './core/debug/debug.service';
+import { MOCK_USER, USER_DATA, USER_ID } from '../tests/user.fixtures.spec';
+import { I18nService } from './core/i18n/i18n.service';
+import { MockTrackingService } from '../tests/tracking.fixtures.spec';
+import { WindowRef } from './core/window/window.service';
+import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;

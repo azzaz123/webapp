@@ -5,43 +5,31 @@ import { UserService } from './user.service';
 import { HttpService } from '../http/http.service';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { environment } from '../../sandbox/environments/environment';
-import { TEST_HTTP_PROVIDERS } from '../../test/utils';
 import { HaversineService } from 'ng2-haversine';
-import { ITEM_LOCATION, MOCK_ITEM } from '../../test/fixtures/item.fixtures';
+import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
 import { Observable } from 'rxjs/Observable';
 import { I18nService } from '../i18n/i18n.service';
 import {
-  AccessTokenService,
-  EventService,
-  Item,
-  ITEM_LOCATION,
-  Location,
-  LoginResponse,
-  MOCK_ITEM,
-  MOCK_USER,
-  MOCK_USER_RESPONSE_BODY,
-  User,
-  USER_DATA,
-  USER_EMAIL,
-  USER_ID,
-  USER_LOCATION
-} from 'shield';
-import {
-  CUSTOM_REASON,
-  REASONS,
-  SELECTED_REASON,
-  USER_EDIT_DATA,
-  USER_INFO_RESPONSE,
+  CUSTOM_REASON, MICRO_NAME, MOCK_USER, MOCK_USER_RESPONSE_BODY, ONLINE,
+  REASONS, RESPONSE_RATE, SCORING_STARS, SCORING_STARTS,
+  SELECTED_REASON, STATS, USER_DATA,
+  USER_EDIT_DATA, USER_EMAIL, USER_ID,
+  USER_INFO_RESPONSE, USER_LOCATION,
   USER_LOCATION_COORDINATES,
   USERS_STATS,
-  USERS_STATS_RESPONSE
+  USERS_STATS_RESPONSE, VALIDATIONS, VERIFICATION_LEVEL
 } from '../../../tests/user.fixtures.spec';
 import { UserInfoResponse } from './user-info.interface';
 import { UserStatsResponse } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { AccessTokenService } from '../http/access-token.service';
+import { EventService } from '../event/event.service';
+import { User } from './user';
+import { environment } from '../../../environments/environment';
+import { LoginResponse } from './login-response.interface';
+import { UserLocation } from './user-response.interface';
 
 describe('Service: User', () => {
 
@@ -108,7 +96,7 @@ describe('Service: User', () => {
     describe('without backend error', () => {
       beforeEach(fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          expect(connection.request.url).toBe(environment.baseUrl + 'api/v2/users/' + USER_ID);
+          expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/' + USER_ID);
           let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
           connection.mockRespond(new Response(res));
         });
@@ -155,7 +143,7 @@ describe('Service: User', () => {
     it('should retrieve and return the User object', fakeAsync(() => {
       spyOn(http, 'get').and.callThrough();
       mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.url).toBe(environment.baseUrl + 'api/v2/users/me');
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/me');
         let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
         connection.mockRespond(new Response(res));
       });
@@ -354,8 +342,8 @@ describe('Service: User', () => {
     it('should call endpoint and return response', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_LOCATION)});
       spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
-      let resp: Location;
-      service.updateLocation(USER_LOCATION_COORDINATES).subscribe((response: Location) => {
+      let resp: UserLocation;
+      service.updateLocation(USER_LOCATION_COORDINATES).subscribe((response: UserLocation) => {
         resp = response;
       });
       expect(http.put).toHaveBeenCalledWith('api/v3/users/me/location', {

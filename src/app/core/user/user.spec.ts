@@ -16,8 +16,8 @@ import {
   USER_WEB_SLUG,
   VALIDATIONS,
   VERIFICATION_LEVEL
-} from '../../test/fixtures/user.fixtures';
-import { MOCK_ITEM } from '../../test/fixtures/item.fixtures';
+} from '../../../tests/user.fixtures.spec';
+import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 
 describe('User', () => {
 

@@ -9,7 +9,7 @@ import { ResponseOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { IOption } from 'ng-select';
 import { HttpService } from '../http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { I18nService } from '../i18n/i18n.service';
 let service: CategoryService;
 let http: HttpService;

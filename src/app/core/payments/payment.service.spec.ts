@@ -4,9 +4,9 @@ import { Response, ResponseOptions } from '@angular/http';
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs/Observable';
 import { FinancialCard, SabadellInfoResponse } from './payment.interface';
-import { FINANCIAL_CARD, SABADELL_RESPONSE } from '../../test/fixtures/payments.fixtures';
+import { FINANCIAL_CARD, SABADELL_RESPONSE } from '../../../tests/payments.fixtures.spec';
 import { HttpService } from '../http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../test/utils';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 
 describe('PaymentService', () => {
 

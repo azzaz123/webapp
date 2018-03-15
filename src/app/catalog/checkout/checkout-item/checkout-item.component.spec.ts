@@ -5,14 +5,13 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 import {
-  CITYBUMP_DURATIONS, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE,
+  CITYBUMP_DURATIONS, ITEM_ID, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE,
   MOCK_ITEM_V3
 } from '../../../../tests/item.fixtures.spec';
 import { CartService } from '../cart/cart.service';
 import { Cart } from '../cart/cart';
 import { CartChange } from '../cart/cart-item.interface';
 import { Observable } from 'rxjs/Observable';
-import { ITEM_ID } from 'shield';
 
 describe('CheckoutItemComponent', () => {
   let component: CheckoutItemComponent;

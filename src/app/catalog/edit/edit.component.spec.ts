@@ -3,9 +3,9 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { EditComponent } from './edit.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MOCK_ITEM } from 'shield';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
+import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 
 describe('EditComponent', () => {
   let component: EditComponent;

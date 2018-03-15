@@ -2,20 +2,6 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import {
-  ITEM_CATEGORY_ID,
-  ITEM_DELIVERY_INFO,
-  Location,
-  MOCK_ITEM,
-  MOCK_USER,
-  MockTrackingService,
-  TEST_HTTP_PROVIDERS,
-  User,
-  USER_ID,
-  IMAGE,
-  Item,
-  ITEM_DATA
-} from 'shield';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -25,10 +11,17 @@ import { CATEGORIES_OPTIONS, CATEGORIES_OPTIONS_CONSUMER_GOODS } from '../../../
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { User } from '../../../core/user/user';
+import { MOCK_USER, USER_ID } from '../../../../tests/user.fixtures.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { ITEM_CATEGORY_ID, ITEM_DATA, ITEM_DELIVERY_INFO, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import { Item } from '../../../core/item/item';
+import { UserLocation } from '../../../core/user/user-response.interface';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
-export const USER_LOCATION: Location = {
+export const USER_LOCATION: UserLocation = {
   'id': 101,
   'approximated_latitude': 41.399132621722174,
   'approximated_longitude': 2.17585484411869,

@@ -2,11 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UploadConfirmationModalComponent } from './upload-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { WindowRef, MockTrackingService, MOCK_ITEM } from 'shield';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { ItemService } from '../../../../core/item/item.service';
-import { PRODUCT_RESPONSE, ORDER_EVENT, PRODUCT_DURATION_ID } from '../../../../../tests/item.fixtures.spec';
+import { PRODUCT_RESPONSE, ORDER_EVENT, PRODUCT_DURATION_ID, MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
+import { WindowRef } from '../../../../core/window/window.service';
+import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 
 describe('UploadConfirmationModalComponent', () => {
   let component: UploadConfirmationModalComponent;

@@ -8,23 +8,22 @@ import { Message } from './message';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import { createMessagesArray, MESSAGE_MAIN } from '../../test/fixtures/message.fixtures';
+import { createMessagesArray, MESSAGE_MAIN } from '../../../tests/message.fixtures.spec';
 import {
   CONVERSATION_DATE_ISO,
   CONVERSATION_ID,
   MOCK_CONVERSATION
-} from '../../test/fixtures/conversation.fixtures';
+} from '../../../tests/conversation.fixtures.spec';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_META,
   MockedPersistencyService
-} from '../../test/fixtures/persistency.fixtures';
-import { USER_ID } from '../../test/fixtures/user.fixtures';
+} from '../../../tests/persistency.fixtures.spec';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
-import { MockTrackingService } from '../../test/fixtures/tracking.fixtures';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
-import { ShieldConfig } from '../shield-config';
 
 describe('Service: Message', () => {
 
@@ -39,7 +38,6 @@ describe('Service: Message', () => {
         MessageService,
         XmppService,
         EventService,
-        ShieldConfig,
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: UserService, useValue: {user: new User(USER_ID)}}

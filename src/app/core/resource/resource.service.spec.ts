@@ -6,10 +6,10 @@ import { HttpService } from '../http/http.service';
 import { Response, ResponseOptions } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Injectable } from '@angular/core';
-import { USER_DATA, USER_ID } from '../../test/fixtures/user.fixtures';
-import { environment } from '../../sandbox/environments/environment';
-import { TEST_HTTP_PROVIDERS } from '../../test/utils';
+import { USER_DATA, USER_ID } from '../../../tests/user.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../environments/environment';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 
 class User {
   constructor(public id: string, public microName: string) {

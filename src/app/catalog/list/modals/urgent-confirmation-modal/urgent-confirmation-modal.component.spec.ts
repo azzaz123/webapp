@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UrgentConfirmationModalComponent } from './urgent-confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { WindowRef } from 'shield';
+import { WindowRef } from '../../../../core/window/window.service';
 
 describe('UrgentConfirmationModalComponent', () => {
   let component: UrgentConfirmationModalComponent;

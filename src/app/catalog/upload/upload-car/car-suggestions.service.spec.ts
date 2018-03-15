@@ -9,7 +9,7 @@ import {
 } from '../../../../tests/car.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { HttpService } from '../../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 
 describe('CarSuggestionsService', () => {
 

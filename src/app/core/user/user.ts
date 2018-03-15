@@ -1,5 +1,5 @@
 import { Model } from '../resource/model.interface';
-import { Location, UserStats, UserValidations } from './user-response.interface';
+import { UserLocation, UserStats, UserValidations } from './user-response.interface';
 import { Item } from '../item/item';
 import { environment } from '../../../environments/environment';
 
@@ -17,7 +17,7 @@ export class User implements Model {
   constructor(private _id: string,
               private _microName?: string,
               private _image?: any,
-              private _location?: Location,
+              private _location?: UserLocation,
               private _stats?: UserStats,
               private _validations?: UserValidations,
               private _verificationLevel?: number,
@@ -54,11 +54,11 @@ export class User implements Model {
     this._image = value;
   }
 
-  get location(): Location {
+  get location(): UserLocation {
     return this._location;
   }
 
-  set location(value: Location) {
+  set location(value: UserLocation) {
     this._location = value;
   }
 

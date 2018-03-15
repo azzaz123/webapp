@@ -3,7 +3,7 @@ import { ApiResponse } from '../resource/api-response.interface';
 export interface UserResponse extends ApiResponse {
   micro_name: string;
   image: Image;
-  location: Location;
+  location: UserLocation;
   stats: UserStats;
   validations: UserValidations;
   verification_level: number;
@@ -36,7 +36,7 @@ export interface Image {
   }
 }
 
-export interface Location {
+export interface UserLocation {
   id: number;
   approximated_latitude: number;
   approximated_longitude: number;

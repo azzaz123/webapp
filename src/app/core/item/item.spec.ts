@@ -20,8 +20,8 @@ import {
   ITEM_URL,
   ITEM_WEB_SLUG,
   MOCK_ITEM
-} from '../../test/fixtures/item.fixtures';
-import { USER_ID } from '../../test/fixtures/user.fixtures';
+} from '../../../tests/item.fixtures.spec';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
 
 describe('Item', () => {
 

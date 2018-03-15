@@ -3,20 +3,6 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { ConversationsPanelComponent } from './conversations-panel.component';
-import {
-  Conversation,
-  createConversationsArray,
-  Message,
-  MOCK_CONVERSATION,
-  MOCK_MESSAGE,
-  MockedPersistencyService,
-  MockTrackingService,
-  NEW_CONVERSATION_RESPONSE,
-  PersistencyService,
-  SECOND_MOCK_CONVERSATION,
-  User,
-  USER_ID
-} from 'shield';
 import { ConversationComponent } from './conversation/conversation.component';
 import { Observable } from 'rxjs/Observable';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -28,7 +14,19 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { HttpService } from '../../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { PersistencyService } from '../../core/persistency/persistency.service';
+import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
+import { User } from '../../core/user/user';
+import {
+  createConversationsArray, MOCK_CONVERSATION, NEW_CONVERSATION_RESPONSE,
+  SECOND_MOCK_CONVERSATION
+} from '../../../tests/conversation.fixtures.spec';
+import { Conversation } from '../../core/conversation/conversation';
+import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
+import { Message } from '../../core/message/message';
 
 describe('Component: ConversationsPanel', () => {
 
@@ -398,7 +396,6 @@ describe('Component: ConversationsPanel', () => {
     it('should send the tracking event for new conversation created', () => {
       const conversation = MOCK_CONVERSATION();
       spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
-      //spyOn(component, 'setCurrentConversation');
       spyOn(trackingService, 'track');
 
       (component as any).createConversationAndSetItCurrent();

@@ -7,44 +7,33 @@ import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Conversation } from './conversation';
 import { UserService } from '../user/user.service';
-import { MOCK_USER, MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../test/fixtures/user.fixtures';
 import { User } from '../user/user';
 import { ItemService } from '../item/item.service';
-import { createItemsArray, ITEM_ID, MockedItemService } from '../../test/fixtures/item.fixtures';
 import { Item } from '../item/item';
-import { TEST_HTTP_PROVIDERS } from '../../test/utils';
 import { XmppService } from '../xmpp/xmpp.service';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import {
-  CONVERSATION_DATE,
-  CONVERSATION_ID,
-  CONVERSATION_PHONE,
-  CONVERSATIONS_DATA,
-  createConversationsArray,
-  MOCK_CONVERSATION,
-  MOCK_NOT_FOUND_CONVERSATION,
-  NOT_FOUND_CONVERSATION_ID,
-  SECOND_MOCK_CONVERSATION,
-  SURVEY_RESPONSES
-} from '../../test/fixtures/conversation.fixtures';
-import {
-  createMessagesArray,
-  MESSAGE_MAIN,
-  MESSAGE_MAIN_UPDATED,
-  MOCK_MESSAGE,
-  MOCK_RANDOM_MESSAGE
-} from '../../test/fixtures/message.fixtures';
 import { Message } from '../message/message';
-import { MockedPersistencyService } from '../../test/fixtures/persistency.fixtures';
 import { EventService } from '../event/event.service';
 import * as _ from 'lodash';
 import { NotificationService } from '../notification/notification.service';
-import { MockTrackingService } from '../../test/fixtures/tracking.fixtures';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConversationTotals } from './totals.interface';
-import { ShieldConfig } from '../shield-config';
-import { Lead } from "./lead";
+import { Lead } from './lead';
+import {
+  CONVERSATION_DATE, CONVERSATION_ID, CONVERSATION_PHONE,
+  CONVERSATIONS_DATA, createConversationsArray,
+  MOCK_CONVERSATION, MOCK_NOT_FOUND_CONVERSATION, NOT_FOUND_CONVERSATION_ID, SECOND_MOCK_CONVERSATION, SURVEY_RESPONSES
+} from '../../../tests/conversation.fixtures.spec';
+import { MOCK_USER, MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
+import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
+import {
+  createMessagesArray, MESSAGE_MAIN, MESSAGE_MAIN_UPDATED, MOCK_MESSAGE,
+  MOCK_RANDOM_MESSAGE
+} from '../../../tests/message.fixtures.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 
 let service: ConversationService;
 let http: HttpService;
@@ -82,7 +71,6 @@ describe('Service: Conversation', () => {
       providers: [
         ConversationService,
         ...TEST_HTTP_PROVIDERS,
-        ShieldConfig,
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
         {provide: XmppService, useClass: MockedXmppService},
@@ -457,7 +445,7 @@ describe('Service: Conversation', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
       service.checkIfLastPage().subscribe();
-      expect(http.get).toHaveBeenCalledWith('api/v3/protool/conversations', {
+      expect(http.get).toHaveBeenCalledWith('api/v3/conversations', {
         until: 12345,
         hidden: false
       });

@@ -1,14 +1,11 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { ReviewService } from './review.service';
-import { TEST_HTTP_PROVIDERS } from '../../test/utils';
 import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
-import { CONVERSATION_ID } from '../../test/fixtures/conversation.fixtures';
-import { USER_ID } from '../../test/fixtures/user.fixtures';
-import { ReviewData } from './review.interface';
-import { REVIEW_DATA_BUYER, REVIEW_DATA_SELLER } from '../../test/fixtures/review.fixtures';
+import { REVIEW_DATA_BUYER, REVIEW_DATA_SELLER } from '../../../tests/review.fixtures.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 
 let service: ReviewService;
 let http: HttpService;

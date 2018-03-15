@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CartService } from './cart.service';
-import { CART_ITEM_CITYBUMP, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
+import { CART_ITEM_CITYBUMP, ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
-import { ITEM_ID } from 'shield';
 
 let service: CartService;
 

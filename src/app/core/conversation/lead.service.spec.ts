@@ -5,11 +5,7 @@ import { LeadService } from './lead.service';
 import { HttpService } from '../http/http.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
-import { TEST_HTTP_PROVIDERS } from '../../test/utils';
-import { MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../test/fixtures/user.fixtures';
-import { ITEM_ID, MockedItemService } from '../../test/fixtures/item.fixtures';
 import { Conversation } from './conversation';
-import { CONVERSATIONS_DATA, createConversationsArray } from '../../test/fixtures/conversation.fixtures';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Response, ResponseOptions } from '@angular/http';
@@ -19,22 +15,24 @@ import { Item } from '../item/item';
 import { ConversationResponse } from './conversation-response.interface';
 import { EventService } from '../event/event.service';
 import { Lead } from './lead';
-import { ShieldConfig } from '../shield-config';
 import { XmppService } from '../xmpp/xmpp.service';
+import { MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
+import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
+import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 
 @Injectable()
 export class MockService extends LeadService {
 
-  protected API_URL: string = 'api/v3/protool/conversations';
+  protected API_URL: string = 'api/v3/conversations';
   protected ARCHIVE_URL: string = 'api/v2/conversations';
 
   constructor(http: HttpService,
               userService: UserService,
               itemService: ItemService,
               event: EventService,
-              config: ShieldConfig,
               xmpp: XmppService) {
-    super(http, userService, itemService, event, config, xmpp);
+    super(http, userService, itemService, event, xmpp);
   }
 
   protected getLeads(since?: number, concat?: boolean, archived?: boolean): Observable<Conversation[]> {
@@ -67,7 +65,6 @@ let http: HttpService;
 let userService: UserService;
 let itemService: ItemService;
 let eventService: EventService;
-let config: ShieldConfig;
 
 describe('LeadService', () => {
   beforeEach(() => {
@@ -75,7 +72,6 @@ describe('LeadService', () => {
       providers: [
         MockService,
         EventService,
-        ShieldConfig,
         ...TEST_HTTP_PROVIDERS,
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
@@ -94,7 +90,6 @@ describe('LeadService', () => {
     itemService = TestBed.get(ItemService);
     eventService = TestBed.get(EventService);
     http = TestBed.get(HttpService);
-    config = TestBed.get(ShieldConfig);
   });
 
   it('should instantiate the service', () => {
@@ -113,43 +108,8 @@ describe('LeadService', () => {
       response2 = null;
       service.leads = [];
     });
-    describe('cacheAllConversations', () => {
-      describe('not archived', () => {
-        it('should call getAllLeads and return conversations', () => {
-          service.init().subscribe((r: Conversation[]) => {
-            response = r;
-          });
-          expect(service['getAllLeads']).toHaveBeenCalledWith(null, undefined);
-          expect(response).toEqual(CONVERSATIONS);
-        });
-        it('should stream result', () => {
-          service.stream$.subscribe((r: Conversation[]) => {
-            response = r;
-          });
-          service.init().subscribe();
-          expect(response).toEqual(CONVERSATIONS);
-        });
-      });
-      describe('archived', () => {
-        it('should call getAllLeads and return conversations', () => {
-          service.init(true).subscribe((r: Conversation[]) => {
-            response = r;
-          });
-          expect(service['getAllLeads']).toHaveBeenCalledWith(null, true);
-          expect(response).toEqual(CONVERSATIONS);
-        });
-        it('should stream result', () => {
-          service.archivedStream$.subscribe((r: Conversation[]) => {
-            response = r;
-          });
-          service.init(true).subscribe();
-          expect(response).toEqual(CONVERSATIONS);
-        });
-      });
-    });
     describe('do NOT cacheAllConversations', () => {
       beforeEach(() => {
-        config.cacheAllConversations = false;
         spyOn<any>(service, 'getLeads').and.callFake(() => {
           return Observable.of(CONVERSATIONS);
         });
@@ -278,7 +238,7 @@ describe('LeadService', () => {
             });
           });
           it('should call the http.get method with hidden false', () => {
-            expect(http.get).toHaveBeenCalledWith('api/v3/protool/conversations', {until: baseTime, hidden: false});
+            expect(http.get).toHaveBeenCalledWith('api/v3/conversations', {until: baseTime, hidden: false});
           });
           it('should return a conversations array', () => {
             expect(conversations instanceof Array).toBeTruthy();
@@ -311,7 +271,7 @@ describe('LeadService', () => {
             });
           });
           it('should call the http.get method with hidden true', () => {
-            expect(http.get).toHaveBeenCalledWith('api/v3/protool/conversations', {until: baseTime, hidden: true});
+            expect(http.get).toHaveBeenCalledWith('api/v3/conversations', {until: baseTime, hidden: true});
           });
           it('should set archived true', () => {
             expect(conversations[0].archived).toBeTruthy();
@@ -320,7 +280,7 @@ describe('LeadService', () => {
       });
       it('should call the http.get method with the since and hidden param', () => {
         service.query(12345, true).subscribe();
-        expect(http.get).toHaveBeenCalledWith('api/v3/protool/conversations', {until: 12345, hidden: true});
+        expect(http.get).toHaveBeenCalledWith('api/v3/conversations', {until: 12345, hidden: true});
       });
     });
   });

@@ -68,58 +68,6 @@ export class ItemService extends ResourceService {
     .catch(() => Observable.of({views: 0, favorites: 0}));
   }
 
-  public getLatest(userId: string): Observable<ItemDataResponse> {
-    return this.http.get(this.API_URL_V2 + '/latest', {userId: userId})
-    .map((r: Response) => r.json())
-    .map((resp: LatestItemResponse) => {
-      return {
-        count: resp.count - 1,
-        data: resp.items[0] ? this.mapRecordData(resp.items[0]) : null
-      };
-    });
-  }
-
-  public mines(pageNumber: number, pageSize: number, sortBy: string, status: string = 'active', term?: string, cache: boolean = true): Observable<Item[]> {
-    let init: number = (pageNumber - 1) * pageSize;
-    let end: number = init + pageSize;
-    let observable: Observable<Item[]>;
-    if (this.items[status].length && cache) {
-      observable = Observable.of(this.items[status]);
-    } else {
-      observable = this.recursiveMines(0, 300, status)
-      .map((res: ItemResponse[]) => {
-        if (res.length > 0) {
-          let items: Item[] = res.map((item: ItemResponse) => this.mapRecordData(item));
-          this.items[status] = items;
-          return items;
-        }
-        return [];
-      });
-    }
-    return observable
-    .map((res: Item[]) => {
-      term = term ? term.trim().toLowerCase() : '';
-      if (term !== '') {
-        return _.filter(res, (item: Item) => {
-          return item.title.toLowerCase().indexOf(term) !== -1 || item.description.toLowerCase().indexOf(term) !== -1;
-        });
-      }
-      return res;
-    })
-    .map((res: Item[]) => {
-      let sort: string[] = sortBy.split('_');
-      let field: string = sort[0] === 'price' ? 'salePrice' : 'publishedDate';
-      let sorted: Item[] = _.sortBy(res, [field]);
-      if (sort[1] === 'desc') {
-        return _.reverse(sorted);
-      }
-      return sorted;
-    })
-    .map((res: Item[]) => {
-      return res.slice(init, end);
-    });
-  }
-
   public setSold(id: number): Observable<any> {
     return this.http.post(this.API_URL_V1 + '/item.json/' + id + '/sold')
     .do(() => {

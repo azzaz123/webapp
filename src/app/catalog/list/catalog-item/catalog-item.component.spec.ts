@@ -1,5 +1,4 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Item, ITEM_ID, MOCK_ITEM, MockTrackingService } from 'shield';
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
@@ -13,9 +12,15 @@ import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-curre
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
-import { ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE, PRODUCT_RESPONSE } from '../../../../tests/item.fixtures.spec';
+import {
+  ITEM_ID,
+  MOCK_ITEM, ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE,
+  PRODUCT_RESPONSE
+} from '../../../../tests/item.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { Item } from '../../../core/item/item';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;

@@ -4,9 +4,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserReviewService } from './user-review.service';
 import { Observable } from 'rxjs/Observable';
 import { MOCK_REVIEWS } from '../../tests/review.fixtures.spec';
-import { MOCK_USER } from 'shield';
 import { UserService } from '../core/user/user.service';
-import {USER_INFO_RESPONSE, USERS_STATS, USERS_STATS_RESPONSE} from '../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_INFO_RESPONSE, USERS_STATS, USERS_STATS_RESPONSE } from '../../tests/user.fixtures.spec';
 
 describe('ReviewsComponent', () => {
   let component: ReviewsComponent;

@@ -5,7 +5,7 @@ import { ReviewsData } from './review-response.interface';
 import { REVIEWS_RESPONSE, MOCK_REVIEWS } from '../../tests/review.fixtures.spec';
 import { Response, ResponseOptions, Headers } from '@angular/http';
 import { HttpService } from '../core/http/http.service';
-import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec.spec';
+import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec';
 
 describe('UserReviewService', () => {
 

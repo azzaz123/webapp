@@ -1,8 +1,8 @@
 /* tslint:disable:no-unused-variable */
 
 import { Message } from './message';
-import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../test/fixtures/message.fixtures';
-import { MOCK_USER } from '../../test/fixtures/user.fixtures';
+import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import * as _ from 'lodash';
 
 describe('Message', () => {

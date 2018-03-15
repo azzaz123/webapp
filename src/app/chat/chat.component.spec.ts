@@ -3,10 +3,6 @@
 import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import {
-  EventService, XmppService, MOCK_CONVERSATION, ItemService,
-  ConversationService, MockTrackingService, ITEM_ID, Conversation, PersistencyService, UserService, USER_WEB_SLUG, USER_ID, User, Item, SURVEY_RESPONSES
-} from 'shield';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { ToastrService } from 'ngx-toastr';
@@ -15,6 +11,19 @@ import { TrackingService } from '../core/tracking/tracking.service';
 import { AdService } from '../core/ad/ad.service';
 import { HttpService } from '../core/http/http.service';
 import { I18nService } from '../core/i18n/i18n.service';
+import { Conversation } from '../core/conversation/conversation';
+import { EventService } from '../core/event/event.service';
+import { ConversationService } from '../core/conversation/conversation.service';
+import { UserService } from '../core/user/user.service';
+import { XmppService } from '../core/xmpp/xmpp.service';
+import { PersistencyService } from '../core/persistency/persistency.service';
+import { ItemService } from '../core/item/item.service';
+import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
+import { User } from '../core/user/user';
+import { USER_ID, USER_WEB_SLUG } from '../../tests/user.fixtures.spec';
+import { Item } from '../core/item/item';
+import { ITEM_ID } from '../../tests/item.fixtures.spec';
+import { MOCK_CONVERSATION, SURVEY_RESPONSES } from '../../tests/conversation.fixtures.spec';
 
 class MockConversationService {
 

@@ -2,8 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SabadellComponent } from './sabadell.component';
 import { Observable } from 'rxjs/Observable';
 import { ReactiveFormsModule } from '@angular/forms';
-import { PaymentService } from '../../shield/payments/payment.service';
-import { SABADELL_RESPONSE } from '../../test/fixtures/payments.fixtures';
+import { SABADELL_RESPONSE } from '../../../tests/payments.fixtures.spec';
+import { PaymentService } from '../../core/payments/payment.service';
 
 describe('SabadellComponent', () => {
   let component: SabadellComponent;
