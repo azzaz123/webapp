@@ -47,6 +47,36 @@
       }
     }
   }
+  .actions-block {
+    width: 100%;
+    padding: 0 20px;
+
+    tsl-button {
+      &:first-of-type {
+      margin-right: 10px;
+      }
+      width: calc(50% - 10px);
+    }
+    
+    /deep/
+    .btn-reserve {
+      font-size: 0.75rem;
+      padding-top: 4.5px;
+      padding-bottom: 4.5px;
+      width: 100%;
+    }
+    /deep/
+    .btn-sold {
+      font-size: 0.75rem;
+      padding-top: 4.5px;
+      padding-bottom: 4.5px;
+      width: 100%;
+      background-color: $sold-bg;
+      &:hover {
+        background-color: lighten($sold-bg, 3%);
+      }
+    }
+  }
   .card-block {
     padding: $spacing;
     .card-title {
