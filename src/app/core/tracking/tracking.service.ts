@@ -154,10 +154,22 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.ProCatalog,
     type: TYPES_IDS.Tap
   };
+  public static CHAT_PRODUCT_SOLD: TrackingEventBase = {
+    name: '664',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Tap
+  };
   public static PRODUCT_UNRESERVED: TrackingEventBase = {
     name: '383',
     category: CATEGORY_IDS.ProInventoryManagement,
     screen: SCREENS_IDS.ProCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static CHAT_PRODUCT_RESERVED: TrackingEventBase = {
+    name: '665',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
   public static PRODUCT_UN_SELECTED: TrackingEventBase = {
