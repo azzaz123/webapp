@@ -4,13 +4,16 @@
     <img class="card-img-top" src="{{item.mainImage?.urls_by_size.large.replace('http://', 'https://')}}"
          onError="this.src='/assets/images/fake-item.png'"/>
     <a class="btn btn-edit" target='_blank' (click)='stopPropagation($event)' [routerLink]="['/catalog/edit/', this.item.id]" tslTrackEvent="CHAT_EDITITEM"
-      *ngIf="!item.sold">
+    *ngIf='canEdit()'>
       <mat-icon svgIcon="btn-edit"></mat-icon>
     </a>
     <div class="image-bottom">
       <tsl-item-sold [item]="item"></tsl-item-sold>
       <tsl-item-reserved [item]="item" *ngIf="!item.sold"></tsl-item-reserved>
     </div>
+  </div>
+  <div class="actions-block" *ngIf='isItemOwner()'>
+      <tsl-button className="btn-reserve" (click)="prevent($event); toggleReserve(item, item.reserved)" i18n>Reserve</tsl-button>
   </div>
   <div class="card-block">
     <h5 class="card-title">{{item.title}}</h5>
