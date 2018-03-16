@@ -294,13 +294,20 @@ describe('UploadProductComponent', () => {
   });
 
   describe('onUploaded', () => {
+    const uploadedEvent = {
+      action: 'updated',
+      response: {
+        id: '1'
+      }
+    };
+    
     it('should emit form changed event', () => {
       let formChanged = true;
       component.onFormChanged.subscribe((value: boolean) => {
         formChanged = value;
       });
 
-      component.onUploaded('created');
+      component.onUploaded(uploadedEvent);
 
       expect(formChanged).toBeFalsy();
     });
@@ -308,9 +315,9 @@ describe('UploadProductComponent', () => {
     it('should redirect', () => {
       spyOn(router, 'navigate');
 
-      component.onUploaded('created');
+      component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {created: true}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
     });
   });
 
@@ -342,7 +349,9 @@ describe('UploadProductComponent', () => {
         latitude: USER_LOCATION.approximated_latitude,
         longitude: USER_LOCATION.approximated_longitude
       });
+
       component.preview();
+
       tick();
     }));
 
@@ -378,6 +387,42 @@ describe('UploadProductComponent', () => {
     it('should submit form', fakeAsync(() => {
       expect(component.onSubmit).toHaveBeenCalled();
     }));
+  });
+
+  describe('Select Urgent', () => {
+    it('should set as urgent when checkbox is selected', () => {
+      component.selectUrgent(true);
+
+      expect(component.isUrgent).toBeTruthy();
+    });
+    it('should set as not urgent when checkbox is unselected', () => {
+      component.selectUrgent(false);
+
+      expect(component.isUrgent).toBeFalsy();
+    });
+  });
+
+  describe('Set category', () => {
+    let categoryId: number;
+
+    it('should emit category select event', () => {
+      component.onCategorySelect.subscribe((s: number) => {
+        categoryId = s;
+      });
+
+      component.setCategory(ITEM_CATEGORY_ID);
+
+      expect(categoryId).toBe(ITEM_CATEGORY_ID);
+    });
+  });
+
+  describe('Emit Location', () => {
+    it('should emit location updated event', () => {
+      spyOn(component.locationSelected, 'emit');
+      component.emitLocation();
+
+      expect(component.locationSelected.emit).toHaveBeenCalled();
+    });
   });
 
 });

@@ -13,6 +13,7 @@ import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
+import { UrgentCheckboxComponent } from './urgent-checkbox/urgent-checkbox.component';
 import { ButtonComponent } from './button/button.component';
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ButtonComponent } from './button/button.component';
     CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
-    ButtonComponent
+    ButtonComponent,
+    UrgentCheckboxComponent
   ],
   declarations: [
     AdComponent,
@@ -41,7 +43,8 @@ import { ButtonComponent } from './button/button.component';
     CustomCurrencyPipe,
     RestrictInputDirective,
     HeaderComponent,
-    ButtonComponent
+    ButtonComponent,
+    UrgentCheckboxComponent
   ],
   providers: [
     DecimalPipe,

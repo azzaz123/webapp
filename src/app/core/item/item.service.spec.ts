@@ -9,6 +9,7 @@ import {
   ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE,
   CONVERSATION_USERS,
   createItemsArray,
+  ITEM_CATEGORY_ID,
   ITEM_COUNTERS_DATA,
   ITEM_DATA,
   ITEM_DATA_V3,
@@ -42,13 +43,13 @@ import {
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { I18nService } from '../i18n/i18n.service';
+import { UUID } from 'angular2-uuid';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { EventService } from '../event/event.service';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { UUID } from 'angular2-uuid';
 import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
 import { CAR_DATA, CAR_DATA_FORM, MOCK_CAR } from '../../../tests/car.fixtures.spec';
 import { Car } from './car';
@@ -899,14 +900,31 @@ describe('Service: Item', () => {
   });
 
   describe('getUrgentProducts', () => {
-    it('should call endpoint', () => {
+    it('should return the product info', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let resp: Product;
+
       service.getUrgentProducts(ITEM_ID).subscribe((r: Product) => {
         resp = r;
       });
+
       expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-urgent-products');
+      expect(resp).toEqual(PRODUCT_RESPONSE)
+    });
+  });
+
+  describe('getUrgentProductByCategoryId', () => {
+    it('should return the product info', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: Product;
+
+      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID).subscribe((r: Product) => {
+        resp = r;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-urgent-products', {categoryId: ITEM_CATEGORY_ID});
       expect(resp).toEqual(PRODUCT_RESPONSE)
     });
   });

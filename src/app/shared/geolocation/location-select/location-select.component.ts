@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { LocationModalComponent } from './location-modal/location-modal.component';
@@ -18,6 +18,7 @@ export class LocationSelectComponent implements OnChanges {
 
   @Input() form: FormGroup;
   @Input() name: string;
+  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   private control: AbstractControl;
   private latitudeControl: AbstractControl;
   private longitudeControl: AbstractControl;
@@ -69,6 +70,7 @@ export class LocationSelectComponent implements OnChanges {
           this.latitudeControl.setValue(result.latitude);
           this.longitudeControl.setValue(result.longitude);
           this.userService.user.location = location;
+          this.locationSelected.emit();
         });
       }, () => {
       });

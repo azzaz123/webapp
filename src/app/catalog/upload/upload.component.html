@@ -2,11 +2,16 @@
   <div class="container upload-page">
     <tsl-category-selector (onSelect)="setCategory($event)"></tsl-category-selector>
     <tsl-upload-car *ngIf="categoryId === '100'"
-                    (onValidationError)="onValidationError()">
+                    [urgentPrice]="urgentPrice"
+                    (onValidationError)="onValidationError()"
+                    (locationSelected)="getUrgentPrice(100)">
     </tsl-upload-car>
     <tsl-upload-product *ngIf="categoryId && categoryId !== '100'"
                         [categoryId]="categoryId"
-                        (onValidationError)="onValidationError()">
+                        [urgentPrice]="urgentPrice"
+                        (onValidationError)="onValidationError()"
+                        (onCategorySelect)="getUrgentPrice($event)"
+                        (locationSelected)="getUrgentPrice(categoryId)">
     </tsl-upload-product>
   </div>
 </div>

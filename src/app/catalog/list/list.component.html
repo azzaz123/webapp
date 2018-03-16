@@ -6,6 +6,7 @@
      [infiniteScrollDisabled]="end || loading"
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
+  <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
   <div class="container">
     <tsl-header>
       <div class="col-7">

@@ -45,6 +45,13 @@
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:35</source>Reviews</msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
+  <msg id="124288245683167765"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:3</source>Apply the ASAP Feature</msg>
+  <msg id="6583839768249288834"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:4,6</source>
+      For only <ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph> mark your product as &quot;Asap&quot; for 7 days to differentiate it in the wall and make it easier to find through the asap filter.
+    </msg>
+  <msg id="1367227703192400664"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:11</source>Check as ASAP</msg>
+  <msg id="6771710083447673223"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:12</source>Checked as ASAP</msg>
+  <msg id="1002906181596709279"><source>app/shared/urgent-checkbox/urgent-checkbox.component.ts:18</source>Your product will be more visible and you will sell it faster.</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:26</source>Delete conversation</msg>
   <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will delete the conversation.</msg>
   <msg id="7008439939460403347"><source>app/chat/modals/report-listing/report-listing.component.ts:2</source><source>app/chat/modals/report-listing/report-listing.component.ts:25</source><source>app/chat/modals/report-user/report-user.component.ts:2</source><source>app/chat/modals/report-user/report-user.component.ts:28</source>Report</msg>
@@ -91,18 +98,18 @@
   <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:6</source>Congratulations</msg>
   <msg id="9213119646873056135"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:10</source>Your item(s) have been featured and you can see them in the top position.</msg>
   <msg id="8982629098121976758"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:11</source>Start selling</msg>
-  <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:15</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:10</source>Something happened...</msg>
+  <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:15</source>Something happened...</msg>
   <msg id="3979232265698800722"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:16</source>Your item(s) have not been featured because something went wrong with your credit card.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Please check and try again.</msg>
   <msg id="3275068756845590930"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:17</source>Let’s go</msg>
-  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:21</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:14</source>Hmmm…</msg>
-  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:22</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:15</source>Your credit card seems suspicious. ¿Why not trying with another account?</msg>
+  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:21</source>Hmmm…</msg>
+  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:22</source>Your credit card seems suspicious. ¿Why not trying with another account?</msg>
   <msg id="833526722817345312"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:23</source>C&apos;mon</msg>
-  <msg id="6811335180251341277"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:27</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:18</source>There has been a mistake</msg>
-  <msg id="4140116217223755546"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:28</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:19</source>Your credit card has an invalid expiration date. Please check and try again.</msg>
-  <msg id="2044384665651917054"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:33</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:22</source>TPV... what?</msg>
-  <msg id="5578025610796640405"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:34</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:23</source>There has been an unexpected error in the paying system. Why not trying again later?</msg>
-  <msg id="8766840274158243690"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:39</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:26</source>Oops!</msg>
-  <msg id="2785911750257412726"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:40</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:27</source>We are trying to figure out what happened. Try again later.</msg>
+  <msg id="6811335180251341277"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:27</source>There has been a mistake</msg>
+  <msg id="4140116217223755546"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:28</source>Your credit card has an invalid expiration date. Please check and try again.</msg>
+  <msg id="2044384665651917054"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:33</source>TPV... what?</msg>
+  <msg id="5578025610796640405"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:34</source>There has been an unexpected error in the paying system. Why not trying again later?</msg>
+  <msg id="8766840274158243690"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:39</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:10</source>Oops!</msg>
+  <msg id="2785911750257412726"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:40</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:11</source>We are trying to figure out what happened. Try again later.</msg>
   <msg id="880177930328984754"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:41</source>Fine!</msg>
   <msg id="6686102860613242031"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:11</source>Use this card:</msg>
   <msg id="2005530248451232459"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:15</source>Add a new card</msg>
@@ -112,10 +119,8 @@
   <msg id="3258601590058086652"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:9</source>Want to sell ASAP?</msg>
   <msg id="4495547321385209565"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:10</source>Stand out on the wall during 7 days and be easy to find with the filter ASAP</msg>
   <msg id="4568320268241275650"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:13</source>Feature it as ASAP for <ph name="INTERPOLATION"><ex>{{productPrice}}</ex></ph>€</msg>
-  <msg id="2091018015289565203"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:15</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:32</source>Share it with your friends:</msg>
-  <msg id="1388549121916575785"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:7</source>Your item has been uploaded and it&apos;s marked as urgent.</msg>
-  <msg id="5223129406687607678"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:11</source>Your item has not been marked as urgent because something went wrong with your credit card.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Please check and try again.</msg>
-  <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:4</source><source>app/catalog/list/list.component.ts:21</source><source>app/catalog/checkout/checkout.component.ts:9</source>What can features do for you?</msg>
+  <msg id="2091018015289565203"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:15</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:16</source>Share it with your friends:</msg>
+  <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:4</source><source>app/catalog/list/list.component.ts:22</source><source>app/catalog/checkout/checkout.component.ts:9</source>What can features do for you?</msg>
   <msg id="6763447295092579753"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:5,7</source>By featuring your item you will make it more visible to the restof the community thanks to its special
                 features. What will that give to you? Basically, that more people will contact you and you&apos;ll sell your
                 items quicker. Take a look at which of the following suits you best. </msg>
@@ -141,28 +146,29 @@
   <msg id="4563965495368336177"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:64</source><source>app/tutorial/tutorial.component.ts:31</source>Skip</msg>
   <msg id="3885497195825665706"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:73</source><source>app/tutorial/tutorial.component.ts:42</source>Next</msg>
   <msg id="7160029661601775341"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:77</source><source>app/tutorial/tutorial.component.ts:47</source>Ready!</msg>
-  <msg id="5433688037539750263"><source>app/catalog/list/list.component.ts:13</source>Your products</msg>
-  <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:16</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
-  <msg id="442085080206895883"><source>app/catalog/list/list.component.ts:26</source>products</msg>
-  <msg id="776785241867401546"><source>app/catalog/list/list.component.ts:27</source>product</msg>
-  <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:32</source>Published</msg>
-  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:33</source>Sold</msg>
-  <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:34</source>Expired</msg>
-  <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:38</source>1 item selected</msg>
-  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:39</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
-  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:51</source>Upload an item to my catalog</msg>
-  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:52</source>Upload another item to my catalog</msg>
-  <msg id="6622336784189066984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source><source>app/catalog/upload/upload-car/upload-car.component.ts:208</source><source>app/catalog/upload/upload-product/upload-product.component.ts:128</source>Post Ad</msg>
-  <msg id="4021752662928002901"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:7</source><source>app/catalog/upload/upload-car/upload-car.component.ts:209</source><source>app/catalog/upload/upload-product/upload-product.component.ts:129</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:18</source>Update</msg>
+  <msg id="1388549121916575785"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:7</source>Your item has been uploaded and it&apos;s marked as urgent.</msg>
+  <msg id="5433688037539750263"><source>app/catalog/list/list.component.ts:14</source>Your products</msg>
+  <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:17</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
+  <msg id="442085080206895883"><source>app/catalog/list/list.component.ts:27</source>products</msg>
+  <msg id="776785241867401546"><source>app/catalog/list/list.component.ts:28</source>product</msg>
+  <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:33</source>Published</msg>
+  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:34</source>Sold</msg>
+  <msg id="464749780222721589"><source>app/catalog/list/list.component.ts:35</source>Expired</msg>
+  <msg id="5262427597279775777"><source>app/catalog/list/list.component.ts:39</source>1 item selected</msg>
+  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:40</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
+  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:52</source>Upload an item to my catalog</msg>
+  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:53</source>Upload another item to my catalog</msg>
+  <msg id="6622336784189066984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:6</source><source>app/catalog/upload/upload-car/upload-car.component.ts:209</source><source>app/catalog/upload/upload-product/upload-product.component.ts:131</source>Post Ad</msg>
+  <msg id="4021752662928002901"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:7</source><source>app/catalog/upload/upload-car/upload-car.component.ts:210</source><source>app/catalog/upload/upload-product/upload-product.component.ts:132</source><source>app/profile/edit-password/password-modal/password-modal.component.ts:18</source>Update</msg>
   <msg id="2233560223291461480"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:27</source><source>app/catalog/upload/upload-car/upload-car.component.ts:151</source>Manual</msg>
   <msg id="810888510148304696"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:28</source><source>app/catalog/upload/upload-car/upload-car.component.ts:156</source>Automatic</msg>
   <msg id="7493844856700299080"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:42</source><source>app/catalog/upload/upload-car/upload-car.component.ts:122</source>Petrol</msg>
   <msg id="1763954588841728713"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:43</source><source>app/catalog/upload/upload-car/upload-car.component.ts:127</source>Diesel</msg>
   <msg id="3250359485015452319"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:44</source><source>app/catalog/upload/upload-car/upload-car.component.ts:132</source>Electric</msg>
   <msg id="8258001121894230907"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:45</source><source>app/catalog/upload/upload-car/upload-car.component.ts:137</source>Other...</msg>
-  <msg id="7026441111090698984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:52</source><source>app/catalog/upload/upload-car/upload-car.component.ts:192</source><source>app/catalog/upload/upload-product/upload-product.component.ts:90</source>Firm Price</msg>
-  <msg id="8260444303636416171"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:56</source><source>app/catalog/upload/upload-product/upload-product.component.ts:95</source>Shipping available</msg>
-  <msg id="1292901362619782619"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:60</source><source>app/catalog/upload/upload-car/upload-car.component.ts:197</source><source>app/catalog/upload/upload-product/upload-product.component.ts:100</source>Accept trades</msg>
+  <msg id="7026441111090698984"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:52</source><source>app/catalog/upload/upload-car/upload-car.component.ts:192</source><source>app/catalog/upload/upload-product/upload-product.component.ts:92</source>Firm Price</msg>
+  <msg id="8260444303636416171"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:56</source><source>app/catalog/upload/upload-product/upload-product.component.ts:97</source>Shipping available</msg>
+  <msg id="1292901362619782619"><source>app/catalog/upload/preview-modal/preview-modal.component.ts:60</source><source>app/catalog/upload/upload-car/upload-car.component.ts:197</source><source>app/catalog/upload/upload-product/upload-product.component.ts:102</source>Accept trades</msg>
   <msg id="243983274320667129"><source>app/catalog/upload/upload-car/upload-car.component.ts:3</source><source>app/catalog/upload/upload-product/upload-product.component.ts:3</source>Information about your item</msg>
   <msg id="1511766279515968094"><source>app/catalog/upload/upload-car/upload-car.component.ts:7</source>Make</msg>
   <msg id="3937675945889395823"><source>app/catalog/upload/upload-car/upload-car.component.ts:8</source>E.g. Seat</msg>
@@ -192,14 +198,14 @@
   <msg id="8722082542322229824"><source>app/catalog/upload/upload-car/upload-car.component.ts:117</source>Motor</msg>
   <msg id="6234112553577946460"><source>app/catalog/upload/upload-car/upload-car.component.ts:142</source>It&apos;s important, trust us!</msg>
   <msg id="3577268427399505619"><source>app/catalog/upload/upload-car/upload-car.component.ts:146</source>Transmission</msg>
-  <msg id="4902817035128594900"><source>app/catalog/upload/upload-car/upload-car.component.ts:164</source><source>app/catalog/upload/upload-product/upload-product.component.ts:63</source>Description</msg>
+  <msg id="4902817035128594900"><source>app/catalog/upload/upload-car/upload-car.component.ts:164</source><source>app/catalog/upload/upload-product/upload-product.component.ts:65</source>Description</msg>
   <msg id="4908480064602665904"><source>app/catalog/upload/upload-car/upload-car.component.ts:166</source>Tell us more. Used or new? Yellow or red? Has it got any bumps?</msg>
   <msg id="6236574297221800719"><source>app/catalog/upload/upload-car/upload-car.component.ts:171</source>Don&apos;t leave anything out. The details are key to selling faster.</msg>
-  <msg id="8405309693308875139"><source>app/catalog/upload/upload-car/upload-car.component.ts:178</source><source>app/catalog/upload/upload-product/upload-product.component.ts:77</source>Photos</msg>
-  <msg id="7052953914167063593"><source>app/catalog/upload/upload-car/upload-car.component.ts:183</source><source>app/catalog/upload/upload-product/upload-product.component.ts:81</source>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</msg>
-  <msg id="4756709840226839708"><source>app/catalog/upload/upload-car/upload-car.component.ts:188</source><source>app/catalog/upload/upload-product/upload-product.component.ts:86</source>Extras</msg>
+  <msg id="8405309693308875139"><source>app/catalog/upload/upload-car/upload-car.component.ts:178</source><source>app/catalog/upload/upload-product/upload-product.component.ts:79</source>Photos</msg>
+  <msg id="7052953914167063593"><source>app/catalog/upload/upload-car/upload-car.component.ts:183</source><source>app/catalog/upload/upload-product/upload-product.component.ts:83</source>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</msg>
+  <msg id="4756709840226839708"><source>app/catalog/upload/upload-car/upload-car.component.ts:188</source><source>app/catalog/upload/upload-product/upload-product.component.ts:88</source>Extras</msg>
   <msg id="2224879576270143088"><source>app/catalog/upload/upload-car/upload-car.component.ts:202</source>What sellers usually ask...</msg>
-  <msg id="4138346261331244869"><source>app/catalog/upload/upload-car/upload-car.component.ts:215</source><source>app/catalog/upload/upload-product/upload-product.component.ts:135</source>How does it look?</msg>
+  <msg id="4138346261331244869"><source>app/catalog/upload/upload-car/upload-car.component.ts:216</source><source>app/catalog/upload/upload-product/upload-product.component.ts:138</source>How does it look?</msg>
   <msg id="4918814479561513634"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:2</source>Do you want to leave this page?</msg>
   <msg id="6618892692857491514"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
   <msg id="3542042671420335679"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:6</source>No</msg>
@@ -236,12 +242,12 @@
   <msg id="6649229882788371997"><source>app/catalog/upload/upload-product/upload-product.component.ts:24</source>(don&apos;t go crazy)</msg>
   <msg id="3306762056923998233"><source>app/catalog/upload/upload-product/upload-product.component.ts:30</source>Add a fair price and the category that best suits your item.</msg>
   <msg id="1806667489382256324"><source>app/catalog/upload/upload-product/upload-product.component.ts:44</source><source>app/catalog/upload/upload-product/upload-product.component.ts:45</source>Category</msg>
-  <msg id="5433438112560949935"><source>app/catalog/upload/upload-product/upload-product.component.ts:65</source>Add relevant information such as condition, model, color...</msg>
-  <msg id="7493287338252374869"><source>app/catalog/upload/upload-product/upload-product.component.ts:70</source>Every detail helps: so tell us more!</msg>
-  <msg id="2806917038528218276"><source>app/catalog/upload/upload-product/upload-product.component.ts:105</source>FAQ</msg>
-  <msg id="5972351850683239127"><source>app/catalog/upload/upload-product/upload-product.component.ts:110</source>Shipping</msg>
-  <msg id="2877776180648049476"><source>app/catalog/upload/upload-product/upload-product.component.ts:111</source>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</msg>
-  <msg id="3336512716830718777"><source>app/catalog/upload/upload-product/upload-product.component.ts:122</source>Important for shipping.</msg>
+  <msg id="5433438112560949935"><source>app/catalog/upload/upload-product/upload-product.component.ts:67</source>Add relevant information such as condition, model, color...</msg>
+  <msg id="7493287338252374869"><source>app/catalog/upload/upload-product/upload-product.component.ts:72</source>Every detail helps: so tell us more!</msg>
+  <msg id="2806917038528218276"><source>app/catalog/upload/upload-product/upload-product.component.ts:107</source>FAQ</msg>
+  <msg id="5972351850683239127"><source>app/catalog/upload/upload-product/upload-product.component.ts:112</source>Shipping</msg>
+  <msg id="2877776180648049476"><source>app/catalog/upload/upload-product/upload-product.component.ts:113</source>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</msg>
+  <msg id="3336512716830718777"><source>app/catalog/upload/upload-product/upload-product.component.ts:124</source>Important for shipping.</msg>
   <msg id="1551801042919193607"><source>app/catalog/upload/category-selector/category-selector.component.ts:2</source>What will you sell?</msg>
   <msg id="2649260508337759251"><source>app/catalog/upload/category-selector/category-selector.component.ts:3</source>Set the product type you will list</msg>
   <msg id="7926180204931135155"><source>app/catalog/upload/category-selector/category-selector.component.ts:13</source>Something I don&apos;t use anymore</msg>

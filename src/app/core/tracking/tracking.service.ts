@@ -203,6 +203,18 @@ export class TrackingService {
     screen: SCREENS_IDS.Log,
     type: TYPES_IDS.Error
   };
+  public static URGENT_PURCHASE_SUCCESS: TrackingEventBase = {
+    name: '660',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Success
+  };
+  public static URGENT_PURCHASE_ERROR: TrackingEventBase = {
+    name: '661',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Error
+  };
   public static CONVERSATION_CREATE_NEW: TrackingEventBase = {
     name: '121',
     category: CATEGORY_IDS.Conversations,
@@ -340,6 +352,12 @@ export class TrackingService {
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.UploadForm,
     type: TYPES_IDS.Success
+  };
+  public static UPLOADFORM_CHECKBOX_URGENT: TrackingEventBase = {
+    name: '639',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Tap
   };
   public static MYCATALOG_EDITITEM: TrackingEventBase = {
     name: '612',

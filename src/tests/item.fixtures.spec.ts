@@ -21,6 +21,7 @@ import { Observable } from 'rxjs/Observable';
 import { Item } from '../app/core/item/item';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
+export const ITEM_CATEGORY_ID: number = 12545;
 
 export const ITEM_ID: string = '9jd7ryx5odjk';
 export const ITEM_LEGACY_ID: number = 500002512;
@@ -28,7 +29,6 @@ export const ITEM_TITLE: string = 'The title';
 export const ITEM_TITLE2: string = 'The title2';
 export const ITEM_DESCRIPTION: string = 'The description';
 export const ITEM_DESCRIPTION2: string = 'The description2';
-export const ITEM_CATEGORY_ID: number = 12545;
 
 export const ITEM_LOCATION: UserLocation = {
   'id': 101,
