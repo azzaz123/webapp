@@ -8,7 +8,7 @@ import { Response } from '@angular/http';
 @Injectable()
 export abstract class ResourceService {
 
-  protected abstract API_URL_V2: string;
+  protected abstract API_URL: string;
   protected store: any = {};
   private observables: any = {};
 
@@ -23,7 +23,7 @@ export abstract class ResourceService {
     } else if (this.observables[id]) {
       return this.observables[id];
     } else {
-      this.observables[id] = this.http.get(this.API_URL_V2 + `/${id}`)
+      this.observables[id] = this.http.get(this.API_URL + `/${id}`)
       .map((r: Response) => r.json())
       .map((r: ApiResponse) => {
         if (r.id) {

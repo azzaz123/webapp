@@ -31,7 +31,6 @@ import {
 } from '../../../tests/item.fixtures.spec';
 import { Item, ITEM_BASE_PATH } from './item';
 import { Observable } from 'rxjs/Observable';
-import * as _ from 'lodash';
 import {
   ConversationUser,
   ItemBulkResponse,
@@ -40,7 +39,7 @@ import {
   ItemWithProducts,
   Product
 } from './item-response.interface';
-import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { I18nService } from '../i18n/i18n.service';
 import { UUID } from 'angular2-uuid';
@@ -163,88 +162,6 @@ describe('Service: Item', () => {
 
   });
 
-  describe('setSold', () => {
-
-    const ID: number = 1;
-    const TOTAL: number = 5;
-    let eventEmitted: boolean;
-
-    beforeEach(fakeAsync(() => {
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.url).toBe(environment['baseUrl'] + 'shnm-portlet/api/v1/item.json/' + ID + '/sold');
-        connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify({})})));
-      });
-      service['items']['active'] = createItemsArray(TOTAL);
-      eventService.subscribe(EventService.ITEM_SOLD, () => {
-        eventEmitted = true;
-      });
-    }));
-
-    describe('sold array with items', () => {
-      beforeEach(fakeAsync(() => {
-        service['items']['sold'] = createItemsArray(TOTAL, TOTAL);
-        service.setSold(ID).subscribe();
-      }));
-      it('should remove item from active array', () => {
-        expect(service['items']['active'].length).toBe(TOTAL - 1);
-        expect(_.find(service['items']['active'], {'legacyId': ID})).toBeFalsy();
-      });
-
-      it('should add item to sold array', () => {
-        expect(service['items']['sold'].length).toBe(TOTAL + 1);
-        expect(_.find(service['items']['sold'], {'legacyId': ID})).toBeTruthy();
-      });
-
-      it('should emit event', () => {
-        expect(eventEmitted).toBeTruthy();
-      });
-    });
-
-    describe('sold array without items', () => {
-      beforeEach(fakeAsync(() => {
-        service.setSold(ID).subscribe();
-      }));
-      it('should NOT add item to sold array', () => {
-        expect(service['items']['sold'].length).toBe(0);
-      });
-    });
-
-  });
-
-  describe('delete', () => {
-
-    const ID: number = 1;
-    const TOTAL: number = 5;
-
-    beforeEach(fakeAsync(() => {
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.url).toBe(environment['baseUrl'] + 'shnm-portlet/api/v1/item.json/' + ID);
-        expect(connection.request.method).toBe(RequestMethod.Delete);
-        connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify({})})));
-      });
-    }));
-
-    describe('item from active array', () => {
-      it('should remove item from active array', () => {
-        service['items']['active'] = createItemsArray(TOTAL);
-        service.delete(ID).subscribe();
-        expect(service['items']['active'].length).toBe(TOTAL - 1);
-        expect(_.find(service['items']['active'], {'legacyId': ID})).toBeFalsy();
-      });
-    });
-
-    describe('item from sold array', () => {
-      it('should remove item from sold array', () => {
-        service['items']['sold'] = createItemsArray(TOTAL);
-        service['items']['active'] = [];
-        service.delete(ID).subscribe();
-        expect(service['items']['sold'].length).toBe(TOTAL - 1);
-        expect(_.find(service['items']['sold'], {'legacyId': ID})).toBeFalsy();
-      });
-    });
-
-  });
-
   describe('bulk actions', () => {
 
     const TOTAL: number = 5;
@@ -348,155 +265,6 @@ describe('Service: Item', () => {
       });
     });
 
-    describe('bulkSetSold', () => {
-
-      let eventEmitted: boolean;
-
-      beforeEach(() => {
-        service['items']['active'] = createItemsArray(TOTAL);
-      });
-
-      describe('success', () => {
-        beforeEach(fakeAsync(() => {
-          mockBackend.connections.subscribe((connection: MockConnection) => {
-            expect(connection.request.url).toBe(environment['baseUrl'] + 'api/v3/items/sold');
-            expect(connection.request.method).toBe(RequestMethod.Put);
-            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(ITEMS_BULK_RESPONSE)})));
-          });
-          response = null;
-          spyOn(service, 'deselectItems');
-          eventService.subscribe(EventService.ITEM_SOLD, () => {
-            eventEmitted = true;
-          });
-        }));
-        describe('with sold items empty', () => {
-          beforeEach(() => {
-            service.bulkSetSold().subscribe((r: ItemBulkResponse) => {
-              response = r;
-            });
-          });
-          it('should remove items', () => {
-            expect(service['items']['active'].length).toBe(TOTAL - 3);
-          });
-          it('should return updated and failed ids list', () => {
-            expect(response.updatedIds).toEqual(ITEMS_BULK_UPDATED_IDS);
-            expect(response.failedIds).toEqual([]);
-          });
-          it('should call deselectItems', () => {
-            expect(service.deselectItems).toHaveBeenCalled();
-          });
-          it('should not push to sold', () => {
-            expect(service['items']['sold'].length).toBe(0);
-          });
-          it('should emit event', () => {
-            expect(eventEmitted).toBeTruthy();
-          });
-        });
-        describe('with sold items', () => {
-          beforeEach(() => {
-            service['items']['sold'] = createItemsArray(TOTAL, TOTAL);
-            service.bulkSetSold().subscribe((r: ItemBulkResponse) => {
-              response = r;
-            });
-          });
-          it('should add deleted items to sold array', () => {
-            expect(service['items']['sold'].length).toBe(TOTAL + 3);
-            expect(service['items']['sold'][TOTAL].sold).toBeTruthy();
-            expect(service['items']['sold'][TOTAL].selected).toBeFalsy();
-            expect(service['items']['sold'][TOTAL + 1].sold).toBeTruthy();
-            expect(service['items']['sold'][TOTAL + 1].selected).toBeFalsy();
-            expect(service['items']['sold'][TOTAL + 2].sold).toBeTruthy();
-            expect(service['items']['sold'][TOTAL + 2].selected).toBeFalsy();
-          });
-        });
-      });
-      describe('failed', () => {
-        beforeEach(fakeAsync(() => {
-          mockBackend.connections.subscribe((connection: MockConnection) => {
-            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(ITEMS_BULK_RESPONSE_FAILED)})));
-          });
-          response = null;
-        }));
-        it('should return updated items', () => {
-          service.bulkSetSold().subscribe((r: ItemBulkResponse) => {
-            response = r;
-          });
-          expect(response.failedIds).toEqual(ITEMS_BULK_FAILED_IDS);
-        });
-      });
-    });
-
-  });
-
-  describe('reserve', () => {
-
-    const ID: number = 1;
-
-    it('should call the reserve api', () => {
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.url).toBe(environment['baseUrl'] + 'shnm-portlet/api/v1/item.json/' + ID + '/reserve2');
-        expect(connection.request.method).toBe(RequestMethod.Post);
-      });
-      service.reserve(ID);
-    });
-
-  });
-
-  describe('unreserve', () => {
-
-    const ID: number = 1;
-
-    it('should call the reserve api', () => {
-      mockBackend.connections.subscribe((connection: MockConnection) => {
-        expect(connection.request.url).toBe(environment['baseUrl'] + 'shnm-portlet/api/v1/item.json/' + ID + '/reserve2');
-        expect(connection.request.method).toBe(RequestMethod.Delete);
-      });
-      service.unreserve(ID);
-    });
-
-  });
-
-  describe('resetCache', () => {
-    it('should reset items', () => {
-      service['items']['active'] = createItemsArray(4);
-      service['items']['sold'] = createItemsArray(4);
-      service.resetCache();
-      expect(service['items']).toEqual({
-        active: [],
-        sold: []
-      });
-    });
-  });
-
-  describe('getSelectedItems', () => {
-    const SELECTED_ITEMS: string[] = ['1', '3', '4'];
-    it('should return selected items', () => {
-      service['items']['active'] = createItemsArray(8);
-      service.selectedItems = SELECTED_ITEMS;
-      const items: Item[] = service.getSelectedItems();
-      expect(items[0]).toEqual(service['items']['active'][0]);
-      expect(items[1]).toEqual(service['items']['active'][2]);
-      expect(items[2]).toEqual(service['items']['active'][3]);
-    });
-    it('should get selected items from local storage if present', () => {
-      spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(SELECTED_ITEMS));
-      const items: Item[] = service.getSelectedItems();
-      expect(localStorage.getItem).toHaveBeenCalledWith(USER_ID + '.selectedItems');
-      expect(service.selectedItems).toEqual(SELECTED_ITEMS);
-      expect(items[0]).toEqual(service['items']['active'][0]);
-      expect(items[1]).toEqual(service['items']['active'][2]);
-      expect(items[2]).toEqual(service['items']['active'][3]);
-    });
-  });
-
-  describe('storeSelectedItems', () => {
-    const SELECTED_ITEMS: string[] = ['1', '3', '4'];
-    it('should set selected items', () => {
-      spyOn(localStorage, 'setItem');
-      service.selectedItems = SELECTED_ITEMS;
-      service.storeSelectedItems();
-      expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '.selectedItems', JSON.stringify(SELECTED_ITEMS));
-    });
   });
 
   describe('selectItem', () => {

@@ -1,18 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
-import { FAKE_ITEM_IMAGE_BASE_PATH, Item, ITEM_STATUSES } from './item';
+import { FAKE_ITEM_IMAGE_BASE_PATH, Item } from './item';
 import { ResourceService } from '../resource/resource.service';
 import {
-  AllowedActionResponse, AvailableProductsResponse,
-  CarContent, ConversationUser, Duration,
-  ItemBulkResponse, ItemContent,
+  AllowedActionResponse,
+  AvailableProductsResponse,
+  CarContent,
+  ConversationUser,
+  Duration,
+  ItemBulkResponse,
+  ItemContent,
   ItemCounters,
-  ItemDataResponse,
-  ItemResponse, ItemsData,
-  ItemsStore, ItemsWithAvailableProductsResponse, ItemWithProducts,
-  LatestItemResponse, Order, Product, ProductDurations, Purchase, SelectedItemsAction
+  ItemResponse,
+  ItemsData,
+  ItemsStore,
+  ItemsWithAvailableProductsResponse,
+  ItemWithProducts,
+  Order,
+  Product,
+  ProductDurations,
+  Purchase,
+  SelectedItemsAction
 } from './item-response.interface';
-import { RequestOptions, Response, Headers } from '@angular/http';
+import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
 import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
@@ -33,11 +43,9 @@ import { UUID } from 'angular2-uuid';
 @Injectable()
 export class ItemService extends ResourceService {
 
-  private API_URL_V1: string = 'shnm-portlet/api/v1';
-  protected API_URL_V2: string = 'api/v3/items';
-  protected API_URL_V3: string = 'api/v3/items';
-  private API_URL_WEB: string = 'api/v3/web/items';
-  private API_URL_v3_USER: string = 'api/v3/users';
+  protected API_URL = 'api/v3/items';
+  private API_URL_WEB = 'api/v3/web/items';
+  private API_URL_v3_USER = 'api/v3/users';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
@@ -46,7 +54,6 @@ export class ItemService extends ResourceService {
     sold: []
   };
   public selectedItems: string[] = [];
-  private localStorageKeyItems: string = '.selectedItems';
 
   constructor(http: HttpService,
               private i18n: I18nService,
@@ -63,38 +70,13 @@ export class ItemService extends ResourceService {
   }
 
   public getCounters(id: string): Observable<ItemCounters> {
-    return this.http.get(this.API_URL_V2 + '/' + id + '/counters')
+    return this.http.get(this.API_URL + '/' + id + '/counters')
     .map((r: Response) => r.json())
     .catch(() => Observable.of({views: 0, favorites: 0}));
   }
 
-  public setSold(id: number): Observable<any> {
-    return this.http.post(this.API_URL_V1 + '/item.json/' + id + '/sold')
-    .do(() => {
-      let index: number = _.findIndex(this.items.active, {'legacyId': id});
-      let deletedItem: Item = this.items.active.splice(index, 1)[0];
-      if (this.items.sold.length) {
-        this.items.sold.push(deletedItem);
-      }
-      this.eventService.emit(EventService.ITEM_SOLD, deletedItem);
-    });
-  }
-
-  public delete(id: number): Observable<any> {
-    return this.http.delete(this.API_URL_V1 + '/item.json/' + id)
-    .do(() => {
-      let index: number = _.findIndex(this.items.active, {'legacyId': id});
-      if (index > -1) {
-        this.items.active.splice(index, 1);
-      } else {
-        index = _.findIndex(this.items.sold, {'legacyId': id});
-        this.items.sold.splice(index, 1);
-      }
-    });
-  }
-
   public bulkDelete(type: string): Observable<ItemBulkResponse> {
-    return this.http.put(this.API_URL_V3 + '/delete', {
+    return this.http.put(this.API_URL + '/delete', {
       ids: this.selectedItems
     })
     .map((r: Response) => r.json())
@@ -107,34 +89,6 @@ export class ItemService extends ResourceService {
     });
   }
 
-  public bulkSetSold(): Observable<ItemBulkResponse> {
-    return this.http.put(this.API_URL_V3 + '/sold', {
-      ids: this.selectedItems
-    })
-    .map((r: Response) => r.json())
-    .do((response: ItemBulkResponse) => {
-      response.updatedIds.forEach((id: string) => {
-        let index: number = _.findIndex(this.items.active, {'id': id});
-        let deletedItem: Item = this.items.active.splice(index, 1)[0];
-        deletedItem.sold = true;
-        deletedItem.selected = false;
-        if (this.items.sold.length) {
-          this.items.sold.push(deletedItem);
-        }
-      });
-      this.deselectItems();
-      this.eventService.emit(EventService.ITEM_SOLD, response.updatedIds);
-    });
-  }
-
-  public reserve(id: number): Observable<any> {
-    return this.http.post(this.API_URL_V1 + '/item.json/' + id + '/reserve2');
-  }
-
-  public unreserve(id: number): Observable<any> {
-    return this.http.delete(this.API_URL_V1 + '/item.json/' + id + '/reserve2');
-  }
-
   public deselectItems() {
     this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_UNSELECTED, {product_ids: this.selectedItems.join(', ')});
     this.selectedItems = [];
@@ -144,33 +98,6 @@ export class ItemService extends ResourceService {
     this.items.sold.map((item: Item) => {
       item.selected = false;
     });
-    localStorage.removeItem(this.userService.user.id + this.localStorageKeyItems);
-  }
-
-  public resetCache() {
-    this.items = {
-      active: [],
-      sold: []
-    };
-  }
-
-  private recursiveMines(init: number, offset: number, status?: string): Observable<ItemResponse[]> {
-    return this.http.get(this.API_URL_V2 + '/mines2', {
-      statuses: ITEM_STATUSES[status],
-      init: init,
-      end: init + offset
-    })
-    .map((r: Response) => r.json())
-    .flatMap((res: ItemResponse[]) => {
-      if (res.length > 0) {
-        return this.recursiveMines(init + offset, offset, status)
-        .map((res2: ItemResponse[]) => {
-          return res.concat(res2);
-        });
-      } else {
-        return Observable.of([]);
-      }
-    });
   }
 
   public getBanReasons(): Observable<BanReason[]> {
@@ -178,19 +105,6 @@ export class ItemService extends ResourceService {
       this.banReasons = this.i18n.getTranslations('reportListingReasons');
     }
     return Observable.of(this.banReasons);
-  }
-
-  public getSelectedItems(): Item[] {
-    if (!this.selectedItems.length && localStorage.getItem(this.userService.user.id + this.localStorageKeyItems)) {
-      this.selectedItems = JSON.parse(localStorage.getItem(this.userService.user.id + this.localStorageKeyItems));
-    }
-    return this.selectedItems.map((id: string) => {
-      return <Item>_.find(this.items.active, {id: id});
-    });
-  }
-
-  public storeSelectedItems() {
-    localStorage.setItem(this.userService.user.id + this.localStorageKeyItems, JSON.stringify(this.selectedItems));
   }
 
   public selectItem(id: string) {
@@ -285,7 +199,7 @@ export class ItemService extends ResourceService {
                        comments: string,
                        reason: number,
                        conversationId: number): Observable<any> {
-    return this.http.post(this.API_URL_V3 + '/' + itemId + '/report', {
+    return this.http.post(this.API_URL + '/' + itemId + '/report', {
       comments: comments,
       reason: ITEM_BAN_REASONS[reason]
     });
@@ -356,38 +270,38 @@ export class ItemService extends ResourceService {
   }
 
   public deleteItem(id: string): Observable<any> {
-    return this.http.delete(this.API_URL_V3 + '/' + id);
+    return this.http.delete(this.API_URL + '/' + id);
   }
 
   public reserveItem(id: string, reserve: boolean): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + id + '/reserve', {
+    return this.http.put(this.API_URL + '/' + id + '/reserve', {
       reserved: reserve
     });
   }
 
   public reactivateItem(id: string): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + id + '/reactivate');
+    return this.http.put(this.API_URL + '/' + id + '/reactivate');
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + id + '/favorite', {
+    return this.http.put(this.API_URL + '/' + id + '/favorite', {
       favorited: favorited
     });
   }
 
   public bulkReserve(): Observable<ItemBulkResponse> {
-    return this.http.put(this.API_URL_V3 + '/reserve', {
+    return this.http.put(this.API_URL + '/reserve', {
       ids: this.selectedItems
     })
     .map((r: Response) => r.json());
   }
 
   public soldOutside(id: string): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + id + '/sold');
+    return this.http.put(this.API_URL + '/' + id + '/sold');
   }
 
   public getConversationUsers(id: string): Observable<ConversationUser[]> {
-    return this.http.get(this.API_URL_V3 + '/' + id + '/conversation-users')
+    return this.http.get(this.API_URL + '/' + id + '/conversation-users')
     .map((r: Response) => r.json());
   }
 
@@ -415,16 +329,16 @@ export class ItemService extends ResourceService {
 
   public update(item: any): Observable<any> {
     const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
-    return this.http.put(this.API_URL_V3 + (item.category_id === '100' ? '/cars/' : '/') + item.id, item, options)
+    return this.http.put(this.API_URL + (item.category_id === '100' ? '/cars/' : '/') + item.id, item, options)
     .map((r: Response) => r.json());
   }
 
   public deletePicture(itemId: string, pictureId: string): Observable<any> {
-    return this.http.delete(this.API_URL_V3 + '/' + itemId + '/picture/' + pictureId);
+    return this.http.delete(this.API_URL + '/' + itemId + '/picture/' + pictureId);
   }
 
   public get(id: string): Observable<Item> {
-    return this.http.get(this.API_URL_V3 + `/${id}`)
+    return this.http.get(this.API_URL + `/${id}`)
     .map((r: Response) => r.json())
     .map((r: any) => this.mapRecordData(r))
     .catch(() => {
@@ -433,7 +347,7 @@ export class ItemService extends ResourceService {
   }
 
   public updatePicturesOrder(itemId: string, picturesOrder: { [fileId: string]: number }): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + itemId + '/change-picture-order', {
+    return this.http.put(this.API_URL + '/' + itemId + '/change-picture-order', {
       pictures_order: picturesOrder
     });
   }
@@ -454,7 +368,7 @@ export class ItemService extends ResourceService {
   }
 
   private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
-    return this.http.get(this.API_URL_V3 + `/${id}/actions-allowed`)
+    return this.http.get(this.API_URL + `/${id}/actions-allowed`)
     .map((r: Response) => r.json());
   }
 

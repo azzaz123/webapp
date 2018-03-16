@@ -219,19 +219,6 @@ describe('Service: User', () => {
 
   });
 
-  describe('syncStatus', () => {
-
-    it('should call get and set the online value', () => {
-      let user: User = MOCK_USER;
-      let mockGet: User = MOCK_USER;
-      mockGet.online = true;
-      spyOn(service, 'get').and.returnValue(Observable.of(mockGet));
-      service.syncStatus(user);
-      expect(user.online).toBeTruthy();
-    });
-
-  });
-
   describe('getFakeUser', () => {
     it('should return a fake User object', () => {
       let user: User = (service as any).getFakeUser(USER_ID);

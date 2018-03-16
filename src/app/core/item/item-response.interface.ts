@@ -225,16 +225,6 @@ export interface ItemCounters {
   favorites: number;
 }
 
-export interface LatestItemResponse {
-  count: number;
-  items: ItemResponseV2[];
-}
-
-export interface ItemDataResponse {
-  count: number;
-  data: Item;
-}
-
 export interface ItemBulkResponse {
   updatedIds: string[];
   failedIds: string[];

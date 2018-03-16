@@ -18,7 +18,7 @@ class User {
 
 @Injectable()
 class UserService extends ResourceService {
-  protected API_URL_V2: string = 'api/v2/users';
+  protected API_URL: string = 'api/v2/users';
 
   constructor(http: HttpService) {
     super(http);
