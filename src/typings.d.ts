@@ -11,5 +11,7 @@ declare let appboy: any;
 declare let ga: Function;
 declare let gtag: Function;
 declare let fbq: Function;
-declare var googletag: any;
+declare let googletag: any;
+declare let Criteo: any;
+declare let apstag: any;
 declare let H: any;
