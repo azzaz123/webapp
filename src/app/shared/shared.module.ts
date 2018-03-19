@@ -14,7 +14,6 @@ import { RestrictInputDirective } from './restrict-input/restrict-input.directiv
 import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
-import { SabadellComponent } from './sabadell/sabadell.component';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsComponent } from './stars/stars.component';
 import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
@@ -39,8 +38,7 @@ import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-b
     ButtonComponent,
     SanitizedBackgroundDirective,
     StarsComponent,
-    StarsRateComponent,
-    SabadellComponent
+    StarsRateComponent
   ],
   declarations: [
     AdComponent,
@@ -52,8 +50,7 @@ import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-b
     ButtonComponent,
     SanitizedBackgroundDirective,
     StarsComponent,
-    StarsRateComponent,
-    SabadellComponent
+    StarsRateComponent
   ],
   providers: [
     DecimalPipe,

@@ -45,7 +45,7 @@ export class ItemService extends ResourceService {
 
   protected API_URL = 'api/v3/items';
   private API_URL_WEB = 'api/v3/web/items';
-  private API_URL_v3_USER = 'api/v3/users';
+  private API_URL_USER = 'api/v3/users';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
@@ -259,7 +259,7 @@ export class ItemService extends ResourceService {
   }
 
   public myFavorites(init: number): Observable<ItemsData> {
-    return this.getPaginationItems(this.API_URL_v3_USER + '/me/items/favorites', init)
+    return this.getPaginationItems(this.API_URL_USER + '/me/items/favorites', init)
     .map((itemsData: ItemsData) => {
       itemsData.data = itemsData.data.map((item: Item) => {
         item.favorited = true;
