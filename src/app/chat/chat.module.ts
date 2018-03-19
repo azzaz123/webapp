@@ -24,6 +24,8 @@ import { UnblockUserComponent } from './modals/unblock-user/unblock-user.compone
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { ReviewModalComponent } from './message/review-modal/review-modal.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
+import { ItemReservedComponent } from './item/item-reserved/item-reserved.component';
+import { ItemSoldComponent } from './item/item-sold/item-sold.component';
 
 @NgModule({
   imports: [
@@ -49,6 +51,8 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
     InputComponent,
     ConnectionAlertComponent,
     ItemComponent,
+    ItemReservedComponent,
+    ItemSoldComponent,
     ArchiveConversationComponent,
     ReportListingComponent,
     ReportUserComponent,
