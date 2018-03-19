@@ -24,7 +24,6 @@ import { UnblockUserComponent } from './modals/unblock-user/unblock-user.compone
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { ReviewModalComponent } from './message/review-modal/review-modal.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
-import { UtilsModule } from '../utils/utils.module';
 
 @NgModule({
   imports: [
@@ -39,8 +38,7 @@ import { UtilsModule } from '../utils/utils.module';
     NgbModalModule,
     CoreModule,
     SharedModule,
-    ChatRoutingModule,
-    UtilsModule
+    ChatRoutingModule
   ],
   declarations: [
     chatRoutedComponents,

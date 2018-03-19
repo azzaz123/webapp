@@ -35,7 +35,6 @@ import { CartComponent } from './checkout/cart/cart.component';
 import { CartService } from './checkout/cart/cart.service';
 import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
-import { UtilsModule } from '../utils/utils.module';
 
 @NgModule({
   imports: [
@@ -45,7 +44,6 @@ import { UtilsModule } from '../utils/utils.module';
     CatalogRoutingModule,
     MatIconModule,
     InfiniteScrollModule,
-    UtilsModule,
     MomentModule,
     NgUploaderModule,
     DndModule,

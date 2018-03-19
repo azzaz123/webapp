@@ -8,7 +8,6 @@ import { ItemReservedComponent } from './item-reserved/item-reserved.component';
 import { ItemCartFavoriteComponent } from './item-cart-favorite/item-cart-favorite.component';
 import { TrackingModule } from '../tracking/tracking.module';
 import { ItemService } from './item.service';
-import { UtilsModule } from '../../utils/utils.module';
 
 @NgModule({
   imports: [
@@ -16,7 +15,6 @@ import { UtilsModule } from '../../utils/utils.module';
     SharedModule,
     MatIconModule,
     CommonModule,
-    UtilsModule,
     TrackingModule
   ],
   exports: [

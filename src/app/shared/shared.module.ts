@@ -15,6 +15,10 @@ import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
 import { UrgentCheckboxComponent } from './urgent-checkbox/urgent-checkbox.component';
 import { ButtonComponent } from './button/button.component';
+import { SabadellComponent } from './sabadell/sabadell.component';
+import { StarsRateComponent } from './stars-rate/stars-rate.component';
+import { StarsComponent } from './stars/stars.component';
+import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
 
 @NgModule({
   imports: [
@@ -34,7 +38,11 @@ import { ButtonComponent } from './button/button.component';
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
-    UrgentCheckboxComponent
+    UrgentCheckboxComponent,
+    SanitizedBackgroundDirective,
+    StarsComponent,
+    StarsRateComponent,
+    SabadellComponent
   ],
   declarations: [
     AdComponent,
@@ -44,7 +52,11 @@ import { ButtonComponent } from './button/button.component';
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
-    UrgentCheckboxComponent
+    UrgentCheckboxComponent,
+    SanitizedBackgroundDirective,
+    StarsComponent,
+    StarsRateComponent,
+    SabadellComponent
   ],
   providers: [
     DecimalPipe,
