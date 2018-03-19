@@ -4,8 +4,8 @@ import { ItemResolverService } from './item-resolver.service';
 import { ItemService } from '../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { Item, ITEM_ID, MOCK_ITEM } from 'shield';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ITEM_ID, MOCK_ITEM } from '../../tests/item.fixtures.spec';
+import { Item } from '../core/item/item';
 
 describe('ItemResolverService', () => {
 

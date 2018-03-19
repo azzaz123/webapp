@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Item } from 'shield';
+import { Component, Input } from '@angular/core';
+import { Item } from '../item';
 
 @Component({
   selector: 'tsl-item-reserved',

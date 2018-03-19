@@ -23,8 +23,8 @@ import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { ReviewModalComponent } from './message/review-modal/review-modal.component';
-import { UtilsModule } from 'shield';
 import { UserDetailComponent } from './user-detail/user-detail.component';
+import { UtilsModule } from '../utils/utils.module';
 
 @NgModule({
   imports: [

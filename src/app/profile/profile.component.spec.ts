@@ -1,18 +1,20 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { TEST_HTTP_PROVIDERS, User, USER_DATA, HttpService, IMAGE } from 'shield';
 import { ProfileComponent } from './profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { USER_EDIT_DATA, USER_LOCATION_COORDINATES } from '../../tests/user.fixtures';
-import { UPLOAD_FILE, UPLOAD_FILE_ID } from '../../tests/upload.fixtures';
+import { USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES } from '../../tests/user.fixtures.spec';
+import { UPLOAD_FILE, UPLOAD_FILE_ID } from '../../tests/upload.fixtures.spec';
 import { UploadInput } from 'ngx-uploader';
 import { environment } from '../../environments/environment';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
+import { HttpService } from '../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec';
+import { User } from '../core/user/user';
 
 const MOCK_USER = new User(
   USER_DATA.id,

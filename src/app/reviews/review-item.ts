@@ -1,4 +1,4 @@
-import { Item } from 'shield';
+import { Item } from '../core/item/item';
 
 export class ReviewItem extends Item {
 

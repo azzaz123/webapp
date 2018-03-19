@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { WindowRef, AccessTokenService } from 'shield';
+import { AccessTokenService } from '../http/access-token.service';
+import { WindowRef } from '../window/window.service';
 
 @Injectable()
 export class LoggedGuard implements CanActivate {

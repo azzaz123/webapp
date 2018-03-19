@@ -1,7 +1,6 @@
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { NgUploaderOptions, UploadFile, UploadOutput, UploadStatus } from 'ngx-uploader';
 import * as _ from 'lodash';
-import { Image, Item } from 'shield';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UploadEvent, UploadedEvent } from '../upload-event.interface';
 import { UploadService } from './upload.service';
@@ -9,6 +8,8 @@ import { ItemService } from '../../../core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { Image } from '../../../core/user/user-response.interface';
+import { Item } from '../../../core/item/item';
 
 @Component({
   selector: 'tsl-drop-area',

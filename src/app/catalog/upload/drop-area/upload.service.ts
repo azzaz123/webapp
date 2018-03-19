@@ -1,8 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { UploadFile, UploadInput } from 'ngx-uploader';
 import { environment } from '../../../../environments/environment';
-import { HttpService } from 'shield';
 import { Headers, RequestOptions } from '@angular/http';
+import { HttpService } from '../../../core/http/http.service';
 
 @Injectable()
 export class UploadService {

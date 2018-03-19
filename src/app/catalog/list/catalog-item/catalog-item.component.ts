@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { Item } from 'shield';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
@@ -10,6 +9,7 @@ import { Order, Product } from '../../../core/item/item-response.interface';
 import { OrderEvent } from '../selected-items/selected-product.interface';
 import { DEFAULT_ERROR_MESSAGE, ErrorsService } from '../../../core/errors/errors.service';
 import { ToastrService } from 'ngx-toastr';
+import { Item } from '../../../core/item/item';
 
 @Component({
   selector: 'tsl-catalog-item',

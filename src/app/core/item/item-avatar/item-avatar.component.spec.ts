@@ -2,13 +2,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemAvatarComponent } from './item-avatar.component';
-import { SanitizedBackgroundDirective } from 'shield';
 import { MatIconModule } from '@angular/material';
-import {
-  MOCK_ITEM, ITEM_MAIN_IMAGE, USER_ID,
-  FAKE_ITEM_IMAGE_SMALL_BASE_PATH,  Item,
-  FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH
-} from 'shield';
+import { SanitizedBackgroundDirective } from '../../../utils/sanitized-background/sanitized-background.directive';
+import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, Item } from '../item';
+import { USER_ID } from '../../../../tests/user.fixtures.spec';
 
 describe('ItemAvatarComponent', () => {
   let component: ItemAvatarComponent;

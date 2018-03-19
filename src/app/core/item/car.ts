@@ -1,4 +1,6 @@
-import { Image, Item, ItemFlags, ItemSaleConditions } from 'shield';
+import { Item } from './item';
+import { ItemFlags, ItemSaleConditions } from './item-response.interface';
+import { Image } from '../user/user-response.interface';
 
 export class Car extends Item {
 

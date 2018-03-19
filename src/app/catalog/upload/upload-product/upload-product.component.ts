@@ -12,7 +12,6 @@ import {
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { Item, DeliveryInfo } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -22,6 +21,8 @@ import { CategoryService } from '../../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { Item } from '../../../core/item/item';
+import { DeliveryInfo } from '../../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-upload-product',

@@ -7,8 +7,9 @@ import { ItemService } from '../../../core/item/item.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Response } from '@angular/http';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { FinancialCard, Item, ItemBulkResponse, PaymentService } from 'shield';
 import { Router } from '@angular/router';
+import { FinancialCard } from '../../../core/payments/payment.interface';
+import { PaymentService } from '../../../core/payments/payment.service';
 
 @Component({
   selector: 'tsl-cart',

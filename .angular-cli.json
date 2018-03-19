@@ -28,7 +28,6 @@
       "scripts": [
         "../node_modules/pouchdb/dist/pouchdb.js",
         "../node_modules/stanza.io/build/stanzaio.bundle.js",
-        "../node_modules/chart.js/dist/Chart.bundle.js",
         "../node_modules/visibilityjs/lib/visibility.core.js",
         "../node_modules/appboy-web-sdk/appboy.min.js"
       ],

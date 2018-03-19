@@ -2,7 +2,7 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConnectionAlertComponent } from './connection-alert.component';
-import { EventService } from 'shield';
+import { EventService } from '../../core/event/event.service';
 
 describe('Component: ConnectionAlert', () => {
 

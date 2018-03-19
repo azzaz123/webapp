@@ -4,8 +4,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SidebarComponent } from './sidebar.component';
 import { UserService } from '../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
-import { User, USER_DATA, MOCK_USER, MessageService } from 'shield';
 import { TutorialService } from '../../core/tutorial/tutorial.service';
+import { User } from '../../core/user/user';
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MessageService } from '../../core/message/message.service';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;

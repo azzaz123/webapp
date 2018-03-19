@@ -2,10 +2,9 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { EditComponent } from './edit.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MOCK_ITEM } from 'shield';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
-import { PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../../tests/item.fixtures';
+import { MOCK_ITEM, PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../../tests/item.fixtures.spec';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 

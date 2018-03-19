@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { Message } from 'shield';
+import { Message } from '../../core/message/message';
 
 @Component({
   selector: 'tsl-message',

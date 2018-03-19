@@ -1,5 +1,7 @@
 import { Component, Inject, Input, OnChanges, OnDestroy } from '@angular/core';
-import { Item, ItemCounters, ItemService } from 'shield';
+import { Item } from '../../core/item/item';
+import { ItemService } from '../../core/item/item.service';
+import { ItemCounters } from '../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-item',

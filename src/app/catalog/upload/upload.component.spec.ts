@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UploadComponent } from './upload.component';
 import { ItemService } from '../../core/item/item.service';
-import { PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../../tests/item.fixtures';
+import { PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 
 describe('UploadComponent', () => {

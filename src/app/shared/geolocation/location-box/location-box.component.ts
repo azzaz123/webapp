@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UserService } from '../../../core/user/user.service';
-import { User } from 'shield';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { User } from '../../../core/user/user';
 
 @Component({
   selector: 'tsl-location-box',

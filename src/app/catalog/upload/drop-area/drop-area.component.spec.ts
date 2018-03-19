@@ -2,22 +2,24 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { DropAreaComponent } from './drop-area.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ITEM_ID, IMAGE } from 'shield';
 import { UploadService } from './upload.service';
 import {
   CAR_ID,
-  UPLOAD_FILE, UPLOAD_FILE_DONE, UPLOAD_FILE_ID,
+  UPLOAD_FILE,
+  UPLOAD_FILE_DONE,
   UPLOAD_FILE_NAME,
-  UPLOADED_FILE_FIRST, UPLOADED_FILE_FIRST_ITEM,
+  UPLOADED_FILE_FIRST,
+  UPLOADED_FILE_FIRST_ITEM,
   UPLOADED_FILE_OTHER
-} from '../../../../tests/upload.fixtures';
-import { UploadFile, UploadStatus } from 'ngx-uploader';
+} from '../../../../tests/upload.fixtures.spec';
+import { UploadFile } from 'ngx-uploader';
 import { ItemService } from '../../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
-import { PICTURE_ID } from '../../../../tests/item.fixtures';
+import { ITEM_ID, PICTURE_ID } from '../../../../tests/item.fixtures.spec';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { IMAGE } from '../../../../tests/user.fixtures.spec';
 import { UploadedEvent } from '../upload-event.interface';
 
 describe('DropAreaComponent', () => {
@@ -347,6 +349,7 @@ describe('DropAreaComponent', () => {
               component.files = [UPLOAD_FILE, UPLOAD_FILE];
               component.maxUploads = 8;
               spyOn(uploadService, 'uploadOtherImages');
+
               component['onUploadDone']({
                 type: 'done',
                 file: UPLOADED_FILE_FIRST

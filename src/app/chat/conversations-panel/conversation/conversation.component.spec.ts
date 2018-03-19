@@ -2,9 +2,9 @@
 
 import { ConversationComponent } from './conversation.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MOCK_CONVERSATION } from 'shield';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
+import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
 
 describe('Component: Conversation', () => {
   let component: ConversationComponent;

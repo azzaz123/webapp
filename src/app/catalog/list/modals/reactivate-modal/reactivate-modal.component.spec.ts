@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
-import { MOCK_ITEM } from 'shield';
+import { MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
 
 describe('ReactivateModalComponent', () => {
   let component: ReactivateModalComponent;

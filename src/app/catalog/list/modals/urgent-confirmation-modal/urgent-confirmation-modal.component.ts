@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Item, WindowRef } from 'shield';
+import { Item } from '../../../../core/item/item';
+import { WindowRef } from '../../../../core/window/window.service';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { UserService } from '../../../../core/user/user.service';
 

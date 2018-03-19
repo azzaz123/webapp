@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoginResponse } from 'shield';
 import { Router } from '@angular/router';
 import { UserService } from '../core/user/user.service';
+import { LoginResponse } from '../core/user/login-response.interface';
 
 const TEST_INSTALLATION_TYPE: string = 'WEB';
 

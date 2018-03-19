@@ -1,11 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MOCK_ITEM, MOCK_USER, USER_ID } from 'shield';
 
 import { ReviewModalComponent } from './review-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../core/user/user.service';
+import { MOCK_USER, USER_ID } from '../../../../tests/user.fixtures.spec';
+import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 
 describe('ReviewModalComponent', () => {
   let component: ReviewModalComponent;

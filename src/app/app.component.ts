@@ -1,17 +1,4 @@
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
-import {
-  DebugService,
-  ErrorsService,
-  EventService,
-  I18nService,
-  Message,
-  MessageService,
-  NotificationService,
-  User,
-  UserService,
-  WindowRef,
-  XmppService
-} from 'shield';
 import { DOCUMENT, DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
 import { configIcons } from './config/icons.config';
@@ -30,6 +17,17 @@ import { environment } from '../environments/environment';
 import { CookieOptions, CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
+import { EventService } from './core/event/event.service';
+import { XmppService } from './core/xmpp/xmpp.service';
+import { UserService } from './core/user/user.service';
+import { ErrorsService } from './core/errors/errors.service';
+import { NotificationService } from './core/notification/notification.service';
+import { MessageService } from './core/message/message.service';
+import { I18nService } from './core/i18n/i18n.service';
+import { WindowRef } from './core/window/window.service';
+import { User } from './core/user/user';
+import { Message } from './core/message/message';
+import { DebugService } from './core/debug/debug.service';
 
 @Component({
   selector: 'tsl-root',

@@ -2,7 +2,7 @@ import { Cart } from './cart';
 import {
   CART_ITEM_CITYBUMP, CART_ITEM_CITYBUMP2, CART_ITEM_COUNTRYBUMP, CART_ITEM_COUNTRYBUMP2,
   CART_ITEM_ZONEBUMP, CART_ORDER, ZONEBUMP_DURATIONS
-} from '../../../../tests/item.fixtures';
+} from '../../../../tests/item.fixtures.spec';
 import { CartItem } from './cart-item.interface';
 import { Order } from '../../../core/item/item-response.interface';
 import { UUID } from 'angular2-uuid';

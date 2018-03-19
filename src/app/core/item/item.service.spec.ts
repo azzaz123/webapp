@@ -1,53 +1,502 @@
-import { TestBed } from '@angular/core/testing';
-import {
-  EventService,
-  HttpService,
-  I18nService,
-  ITEM_ID,
-  TEST_HTTP_PROVIDERS,
-  UserService,
-  Item,
-  ITEM_BASE_PATH,
-  ITEMS_BULK_UPDATED_IDS,
-  ITEMS_BULK_RESPONSE,
-  MOCK_ITEM,
-  ITEM_DATA
-} from 'shield';
+/* tslint:disable:no-unused-variable */
 
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { ItemService } from './item.service';
-import { Observable } from 'rxjs/Observable';
+import { MockBackend, MockConnection } from '@angular/http/testing';
+import { Headers, RequestMethod, RequestOptions, Response, ResponseOptions } from '@angular/http';
 import {
-  CONVERSATION_USERS, ITEM_DATA_V3, ITEMS_DATA_V3, ORDER, PRODUCT_RESPONSE,
-  PURCHASES, ITEMS_DATA_v3_FAVORITES, PRODUCTS_RESPONSE, ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE, ITEMS_WITH_PRODUCTS,
-  ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE, ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE, ITEM_CATEGORY_ID
-} from '../../../tests/item.fixtures';
-import { ResponseOptions, Response, Headers, RequestOptions } from '@angular/http';
-import { ConversationUser, ItemsData, ItemWithProducts, Product } from './item-response.interface';
+  ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE,
+  ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE,
+  CONVERSATION_USERS,
+  createItemsArray,
+  ITEM_CATEGORY_ID,
+  ITEM_COUNTERS_DATA,
+  ITEM_DATA,
+  ITEM_DATA_V3,
+  ITEM_FAVORITES,
+  ITEM_ID,
+  ITEM_VIEWS,
+  ITEMS_BULK_FAILED_IDS,
+  ITEMS_BULK_RESPONSE,
+  ITEMS_BULK_RESPONSE_FAILED,
+  ITEMS_BULK_UPDATED_IDS,
+  ITEMS_DATA_V3,
+  ITEMS_DATA_v3_FAVORITES,
+  ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE,
+  ITEMS_WITH_PRODUCTS,
+  ORDER,
+  PRODUCT_RESPONSE,
+  PRODUCTS_RESPONSE,
+  PURCHASES
+} from '../../../tests/item.fixtures.spec';
+import { Item, ITEM_BASE_PATH } from './item';
+import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
+import {
+  ConversationUser,
+  ItemBulkResponse,
+  ItemCounters,
+  ItemsData,
+  ItemWithProducts,
+  Product
+} from './item-response.interface';
+import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
+import { HttpService } from '../http/http.service';
+import { I18nService } from '../i18n/i18n.service';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from '../tracking/tracking.service';
-import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures';
-import { CAR_DATA, CAR_DATA_FORM, MOCK_CAR } from '../../../tests/car.fixtures';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { EventService } from '../event/event.service';
+import { UserService } from '../user/user.service';
+import { environment } from '../../../environments/environment';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
+import { CAR_DATA, CAR_DATA_FORM, MOCK_CAR } from '../../../tests/car.fixtures.spec';
 import { Car } from './car';
 
-describe('ItemService', () => {
+describe('Service: Item', () => {
 
+  const FAKE_ITEM_TITLE: string = 'No disponible';
   let service: ItemService;
+  let mockBackend: MockBackend;
   let http: HttpService;
+  let trackingService: TrackingService;
+  let eventService: EventService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ItemService,
+        EventService,
+        {provide: TrackingService, useClass: MockTrackingService},
+        {
+          provide: UserService, useValue: {
+          user: MOCK_USER
+        }
+        },
         ...TEST_HTTP_PROVIDERS,
-        {provide: I18nService, useValue: {}},
-        {provide: TrackingService, useValue: {}},
-        {provide: EventService, useValue: {}},
-        {provide: UserService, useValue: {}},
+        ItemService,
+        I18nService
       ]
     });
     service = TestBed.get(ItemService);
+    mockBackend = TestBed.get(MockBackend);
     http = TestBed.get(HttpService);
+    trackingService = TestBed.get(TrackingService);
+    eventService = TestBed.get(EventService);
     spyOn(UUID, 'UUID').and.returnValues('1', '2');
+  });
+
+  describe('get', () => {
+    describe('without backend errors', () => {
+
+      it('should call endpoint and return response', () => {
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
+        spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+        let item: Item;
+
+        service.get(ITEM_ID).subscribe((r: Item) => {
+          item = r;
+        });
+
+        expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID);
+        checkItemResponse(item);
+      });
+
+    });
+    describe('with backend errors', () => {
+      it('should return an observable with a fake item', () => {
+        let observableResponse: Item;
+        spyOn(service, 'getCounters').and.returnValue(Observable.of({}));
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          connection.mockError();
+        });
+        service.get(ITEM_ID).subscribe((r: Item) => {
+          observableResponse = r;
+        });
+        expect(observableResponse.id).toBe(ITEM_ID);
+        expect(observableResponse.title).toBe(FAKE_ITEM_TITLE);
+      });
+    });
+
+  });
+
+  describe('getCounters', () => {
+
+    describe('with no error', () => {
+      it('should return the counters', () => {
+        let observableResponse: any;
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(ITEM_COUNTERS_DATA)})));
+        });
+        service.getCounters(ITEM_ID).subscribe((r: ItemCounters) => {
+          observableResponse = r;
+        });
+        expect(observableResponse.views).toBe(ITEM_VIEWS);
+        expect(observableResponse.favorites).toBe(ITEM_FAVORITES);
+      });
+    });
+
+    describe('receiving an error from the server', () => {
+      it('should return a fake counter object', () => {
+        let observableResponse: ItemCounters;
+        mockBackend.connections.subscribe((connection: MockConnection) => {
+          connection.mockError();
+        });
+        service.getCounters(ITEM_ID).subscribe((r: ItemCounters) => {
+          observableResponse = r;
+        });
+        expect(observableResponse.views).toBe(0);
+        expect(observableResponse.favorites).toBe(0);
+      });
+    });
+  });
+
+  describe('getFakeItem', () => {
+    it('should return a fake item', () => {
+      let item: Item = service.getFakeItem(ITEM_ID);
+      expect(item.id).toBe(ITEM_ID);
+      expect(item.title).toBe(FAKE_ITEM_TITLE);
+      expect(item.mainImage.urls_by_size.small).toBe('');
+      expect(item.mainImage.urls_by_size.medium).toBe('');
+      expect(item.mainImage.urls_by_size.large).toBe('');
+    });
+
+  });
+
+  describe('setSold', () => {
+
+    const ID: number = 1;
+    const TOTAL: number = 5;
+    let eventEmitted: boolean;
+
+    beforeEach(fakeAsync(() => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment['baseUrl'] + 'shnm-portlet/api/v1/item.json/' + ID + '/sold');
+        connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify({})})));
+      });
+      service['items']['active'] = createItemsArray(TOTAL);
+      eventService.subscribe(EventService.ITEM_SOLD, () => {
+        eventEmitted = true;
+      });
+    }));
+
+    describe('sold array with items', () => {
+      beforeEach(fakeAsync(() => {
+        service['items']['sold'] = createItemsArray(TOTAL, TOTAL);
+        service.setSold(ID).subscribe();
+      }));
+      it('should remove item from active array', () => {
+        expect(service['items']['active'].length).toBe(TOTAL - 1);
+        expect(_.find(service['items']['active'], {'legacyId': ID})).toBeFalsy();
+      });
+
+      it('should add item to sold array', () => {
+        expect(service['items']['sold'].length).toBe(TOTAL + 1);
+        expect(_.find(service['items']['sold'], {'legacyId': ID})).toBeTruthy();
+      });
+
+      it('should emit event', () => {
+        expect(eventEmitted).toBeTruthy();
+      });
+    });
+
+    describe('sold array without items', () => {
+      beforeEach(fakeAsync(() => {
+        service.setSold(ID).subscribe();
+      }));
+      it('should NOT add item to sold array', () => {
+        expect(service['items']['sold'].length).toBe(0);
+      });
+    });
+
+  });
+
+  describe('delete', () => {
+
+    const ID: number = 1;
+    const TOTAL: number = 5;
+
+    beforeEach(fakeAsync(() => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment['baseUrl'] + 'shnm-portlet/api/v1/item.json/' + ID);
+        expect(connection.request.method).toBe(RequestMethod.Delete);
+        connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify({})})));
+      });
+    }));
+
+    describe('item from active array', () => {
+      it('should remove item from active array', () => {
+        service['items']['active'] = createItemsArray(TOTAL);
+        service.delete(ID).subscribe();
+        expect(service['items']['active'].length).toBe(TOTAL - 1);
+        expect(_.find(service['items']['active'], {'legacyId': ID})).toBeFalsy();
+      });
+    });
+
+    describe('item from sold array', () => {
+      it('should remove item from sold array', () => {
+        service['items']['sold'] = createItemsArray(TOTAL);
+        service['items']['active'] = [];
+        service.delete(ID).subscribe();
+        expect(service['items']['sold'].length).toBe(TOTAL - 1);
+        expect(_.find(service['items']['sold'], {'legacyId': ID})).toBeFalsy();
+      });
+    });
+
+  });
+
+  describe('bulk actions', () => {
+
+    const TOTAL: number = 5;
+    let response: ItemBulkResponse;
+
+    describe('bulkDelete', () => {
+
+      describe('success', () => {
+        beforeEach(fakeAsync(() => {
+          mockBackend.connections.subscribe((connection: MockConnection) => {
+            expect(connection.request.url).toBe(environment['baseUrl'] + 'api/v3/items/delete');
+            expect(connection.request.method).toBe(RequestMethod.Put);
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(ITEMS_BULK_RESPONSE)})));
+          });
+          response = null;
+          spyOn(service, 'deselectItems');
+        }));
+        describe('from active array', () => {
+          beforeEach(() => {
+            service['items']['active'] = createItemsArray(TOTAL);
+            service.bulkDelete('active').subscribe((r: ItemBulkResponse) => {
+              response = r;
+            });
+          });
+          it('should remove items', () => {
+            expect(service['items']['active'].length).toBe(TOTAL - 3);
+          });
+          it('should return updated and failed ids list', () => {
+            expect(response.updatedIds).toEqual(ITEMS_BULK_UPDATED_IDS);
+            expect(response.failedIds).toEqual([]);
+          });
+          it('should call deselectItems', () => {
+            expect(service.deselectItems).toHaveBeenCalled();
+          });
+        });
+        describe('from sold array', () => {
+          beforeEach(() => {
+            service['items']['sold'] = createItemsArray(TOTAL);
+            service.bulkDelete('sold').subscribe((r: ItemBulkResponse) => {
+              response = r;
+            });
+          });
+          it('should remove items', () => {
+            expect(service['items']['sold'].length).toBe(TOTAL - 3);
+          });
+        });
+      });
+      describe('failed', () => {
+        beforeEach(fakeAsync(() => {
+          mockBackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(ITEMS_BULK_RESPONSE_FAILED)})));
+          });
+          response = null;
+        }));
+        it('should return updated items', () => {
+          service.bulkDelete('active').subscribe((r: ItemBulkResponse) => {
+            response = r;
+          });
+          expect(response.failedIds).toEqual(ITEMS_BULK_FAILED_IDS);
+        });
+      });
+    });
+
+    describe('bulkReserve', () => {
+
+      beforeEach(() => {
+        service['items']['active'] = createItemsArray(TOTAL);
+      });
+
+      describe('success', () => {
+        beforeEach(fakeAsync(() => {
+          mockBackend.connections.subscribe((connection: MockConnection) => {
+            expect(connection.request.url).toBe(environment['baseUrl'] + 'api/v3/items/reserve');
+            expect(connection.request.method).toBe(RequestMethod.Put);
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(ITEMS_BULK_RESPONSE)})));
+          });
+          response = null;
+          spyOn(service, 'deselectItems');
+          service.bulkReserve().subscribe((r: ItemBulkResponse) => {
+            response = r;
+          });
+        }));
+        it('should return updated and failed ids list', () => {
+          expect(response.updatedIds).toEqual(ITEMS_BULK_UPDATED_IDS);
+          expect(response.failedIds).toEqual([]);
+        });
+      });
+      describe('failed', () => {
+        beforeEach(fakeAsync(() => {
+          mockBackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(ITEMS_BULK_RESPONSE_FAILED)})));
+          });
+          response = null;
+        }));
+        it('should return updated items', () => {
+          service.bulkReserve().subscribe((r: ItemBulkResponse) => {
+            response = r;
+          });
+          expect(response.failedIds).toEqual(ITEMS_BULK_FAILED_IDS);
+        });
+      });
+    });
+
+    describe('bulkSetSold', () => {
+
+      let eventEmitted: boolean;
+
+      beforeEach(() => {
+        service['items']['active'] = createItemsArray(TOTAL);
+      });
+
+      describe('success', () => {
+        beforeEach(fakeAsync(() => {
+          mockBackend.connections.subscribe((connection: MockConnection) => {
+            expect(connection.request.url).toBe(environment['baseUrl'] + 'api/v3/items/sold');
+            expect(connection.request.method).toBe(RequestMethod.Put);
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(ITEMS_BULK_RESPONSE)})));
+          });
+          response = null;
+          spyOn(service, 'deselectItems');
+          eventService.subscribe(EventService.ITEM_SOLD, () => {
+            eventEmitted = true;
+          });
+        }));
+        describe('with sold items empty', () => {
+          beforeEach(() => {
+            service.bulkSetSold().subscribe((r: ItemBulkResponse) => {
+              response = r;
+            });
+          });
+          it('should remove items', () => {
+            expect(service['items']['active'].length).toBe(TOTAL - 3);
+          });
+          it('should return updated and failed ids list', () => {
+            expect(response.updatedIds).toEqual(ITEMS_BULK_UPDATED_IDS);
+            expect(response.failedIds).toEqual([]);
+          });
+          it('should call deselectItems', () => {
+            expect(service.deselectItems).toHaveBeenCalled();
+          });
+          it('should not push to sold', () => {
+            expect(service['items']['sold'].length).toBe(0);
+          });
+          it('should emit event', () => {
+            expect(eventEmitted).toBeTruthy();
+          });
+        });
+        describe('with sold items', () => {
+          beforeEach(() => {
+            service['items']['sold'] = createItemsArray(TOTAL, TOTAL);
+            service.bulkSetSold().subscribe((r: ItemBulkResponse) => {
+              response = r;
+            });
+          });
+          it('should add deleted items to sold array', () => {
+            expect(service['items']['sold'].length).toBe(TOTAL + 3);
+            expect(service['items']['sold'][TOTAL].sold).toBeTruthy();
+            expect(service['items']['sold'][TOTAL].selected).toBeFalsy();
+            expect(service['items']['sold'][TOTAL + 1].sold).toBeTruthy();
+            expect(service['items']['sold'][TOTAL + 1].selected).toBeFalsy();
+            expect(service['items']['sold'][TOTAL + 2].sold).toBeTruthy();
+            expect(service['items']['sold'][TOTAL + 2].selected).toBeFalsy();
+          });
+        });
+      });
+      describe('failed', () => {
+        beforeEach(fakeAsync(() => {
+          mockBackend.connections.subscribe((connection: MockConnection) => {
+            connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(ITEMS_BULK_RESPONSE_FAILED)})));
+          });
+          response = null;
+        }));
+        it('should return updated items', () => {
+          service.bulkSetSold().subscribe((r: ItemBulkResponse) => {
+            response = r;
+          });
+          expect(response.failedIds).toEqual(ITEMS_BULK_FAILED_IDS);
+        });
+      });
+    });
+
+  });
+
+  describe('reserve', () => {
+
+    const ID: number = 1;
+
+    it('should call the reserve api', () => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment['baseUrl'] + 'shnm-portlet/api/v1/item.json/' + ID + '/reserve2');
+        expect(connection.request.method).toBe(RequestMethod.Post);
+      });
+      service.reserve(ID);
+    });
+
+  });
+
+  describe('unreserve', () => {
+
+    const ID: number = 1;
+
+    it('should call the reserve api', () => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment['baseUrl'] + 'shnm-portlet/api/v1/item.json/' + ID + '/reserve2');
+        expect(connection.request.method).toBe(RequestMethod.Delete);
+      });
+      service.unreserve(ID);
+    });
+
+  });
+
+  describe('resetCache', () => {
+    it('should reset items', () => {
+      service['items']['active'] = createItemsArray(4);
+      service['items']['sold'] = createItemsArray(4);
+      service.resetCache();
+      expect(service['items']).toEqual({
+        active: [],
+        sold: []
+      });
+    });
+  });
+
+  describe('getSelectedItems', () => {
+    const SELECTED_ITEMS: string[] = ['1', '3', '4'];
+    it('should return selected items', () => {
+      service['items']['active'] = createItemsArray(8);
+      service.selectedItems = SELECTED_ITEMS;
+      const items: Item[] = service.getSelectedItems();
+      expect(items[0]).toEqual(service['items']['active'][0]);
+      expect(items[1]).toEqual(service['items']['active'][2]);
+      expect(items[2]).toEqual(service['items']['active'][3]);
+    });
+    it('should get selected items from local storage if present', () => {
+      spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(SELECTED_ITEMS));
+      const items: Item[] = service.getSelectedItems();
+      expect(localStorage.getItem).toHaveBeenCalledWith(USER_ID + '.selectedItems');
+      expect(service.selectedItems).toEqual(SELECTED_ITEMS);
+      expect(items[0]).toEqual(service['items']['active'][0]);
+      expect(items[1]).toEqual(service['items']['active'][2]);
+      expect(items[2]).toEqual(service['items']['active'][3]);
+    });
+  });
+
+  describe('storeSelectedItems', () => {
+    const SELECTED_ITEMS: string[] = ['1', '3', '4'];
+    it('should set selected items', () => {
+      spyOn(localStorage, 'setItem');
+      service.selectedItems = SELECTED_ITEMS;
+      service.storeSelectedItems();
+      expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '.selectedItems', JSON.stringify(SELECTED_ITEMS));
+    });
   });
 
   describe('selectItem', () => {
@@ -387,21 +836,6 @@ describe('ItemService', () => {
       service.deletePicture(ITEM_ID, UPLOAD_FILE_ID);
 
       expect(http.delete).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/picture/' + UPLOAD_FILE_ID);
-    });
-  });
-
-  describe('get', () => {
-    it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      let item: Item;
-
-      service.get(ITEM_ID).subscribe((r: Item) => {
-        item = r;
-      });
-
-      expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID);
-      checkItemResponse(item);
     });
   });
 

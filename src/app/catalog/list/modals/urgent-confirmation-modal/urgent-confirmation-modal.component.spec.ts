@@ -2,10 +2,12 @@ import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testi
 import { UrgentConfirmationModalComponent } from './urgent-confirmation-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { WindowRef, MOCK_USER, MockTrackingService } from 'shield';
+import { WindowRef } from '../../../../core/window/window.service';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { UserService } from '../../../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
+import { MOCK_USER } from '../../../../../tests/user.fixtures.spec';
+import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 
 describe('UrgentConfirmationModalComponent', () => {
   let component: UrgentConfirmationModalComponent;

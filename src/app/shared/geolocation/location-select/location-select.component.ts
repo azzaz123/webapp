@@ -5,7 +5,7 @@ import { LocationModalComponent } from './location-modal/location-modal.componen
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { UserService } from '../../../core/user/user.service';
-import { Location } from 'shield';
+import { UserLocation } from '../../../core/user/user-response.interface';
 
 export const LOCATION_MODAL_TIMEOUT = 100;
 
@@ -65,7 +65,7 @@ export class LocationSelectComponent implements OnChanges {
         modal.componentInstance.init();
       }
       modal.result.then((result: Coordinate) => {
-        this.userService.updateLocation(result).subscribe((location: Location) => {
+        this.userService.updateLocation(result).subscribe((location: UserLocation) => {
           this.control.setValue(location.title);
           this.latitudeControl.setValue(result.latitude);
           this.longitudeControl.setValue(result.longitude);

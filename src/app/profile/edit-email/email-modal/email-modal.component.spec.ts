@@ -5,9 +5,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { USER_EMAIL } from 'shield';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { USER_EMAIL } from '../../../../tests/user.fixtures.spec';
 
 describe('EmailModalComponent', () => {
   let component: EmailModalComponent;

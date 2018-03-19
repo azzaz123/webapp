@@ -1,7 +1,28 @@
-import { Review } from '../app/core/review/review';
-import { User, USER_ID, MICRO_NAME, USER_WEB_SLUG } from 'shield';
-import { ReviewItem } from '../app/core/review/review-item';
-import { ReviewResponse } from '../app/core/review/review-response.interface';
+import { Review } from '../app/reviews/review';
+import { ReviewItem } from '../app/reviews/review-item';
+import { ReviewResponse } from '../app/reviews/review-response.interface';
+
+import { CONVERSATION_ID } from './conversation.fixtures.spec';
+import { MICRO_NAME, USER_ID, USER_WEB_SLUG } from './user.fixtures.spec';
+import { ITEM_ID } from './item.fixtures.spec';
+import { User } from '../app/core/user/user';
+import { ReviewDataBuyer, ReviewDataSeller } from '../app/core/review/review.interface';
+
+export const REVIEW_DATA_BUYER: ReviewDataBuyer = {
+  conversation_id: CONVERSATION_ID,
+  to_user_id: USER_ID,
+  item_id: ITEM_ID,
+  comments: 'comment',
+  score: 80
+};
+
+export const REVIEW_DATA_SELLER: ReviewDataSeller = {
+  to_user_id: USER_ID,
+  item_id: ITEM_ID,
+  comments: 'comment',
+  score: 80,
+  price: 100
+};
 
 const REVIEW_ITEM_IMAGE = {
   'large':           'http://dock133.wallapop.com:8080/shnm-portlet/images?pictureId=168&pictureSize=W800',

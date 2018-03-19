@@ -1,5 +1,5 @@
-import { User } from 'shield';
-import { ReviewItem } from "./review-item";
+import { User } from '../core/user/user';
+import { ReviewItem } from './review-item';
 
 export class Review {
 
