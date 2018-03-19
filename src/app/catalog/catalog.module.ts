@@ -35,6 +35,7 @@ import { CartComponent } from './checkout/cart/cart.component';
 import { CartService } from './checkout/cart/cart.service';
 import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
+import { UrgentCheckboxComponent } from './upload/urgent-checkbox/urgent-checkbox.component';
 
 @NgModule({
   imports: [
@@ -83,7 +84,8 @@ import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.serv
     CheckoutItemComponent,
     CartComponent,
     BumpTutorialComponent,
-    UrgentConfirmationModalComponent
+    UrgentConfirmationModalComponent,
+    UrgentCheckboxComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
