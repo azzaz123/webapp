@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ItemService } from '../../../../core/item/item.service';
-import { ConversationUser } from '../../../../core/item/item-response.interface';
+import { ItemService } from '../../../core/item/item.service';
+import { ConversationUser } from '../../../core/item/item-response.interface';
 import { Item, ReviewDataSeller, ReviewService } from 'shield';
 
 

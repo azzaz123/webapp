@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
-import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
+import { SoldModalComponent } from '../../../shared/modals/sold-modal/sold-modal.component';
 import { MomentModule } from 'angular2-moment';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';

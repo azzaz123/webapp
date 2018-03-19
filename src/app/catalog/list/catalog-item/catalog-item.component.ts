@@ -3,7 +3,6 @@ import { Item } from 'shield';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
-import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
 import { Order, Product } from '../../../core/item/item-response.interface';

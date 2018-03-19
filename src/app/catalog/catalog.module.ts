@@ -5,7 +5,6 @@ import { CoreModule } from '../core/core.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatIconModule } from '@angular/material';
-import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UtilsModule } from 'shield';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
@@ -69,7 +68,6 @@ import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.serv
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,
-    SoldModalComponent,
     SelectedItemsComponent,
     BumpConfirmationModalComponent,
     CreditCardModalComponent,
@@ -89,7 +87,6 @@ import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.serv
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
-    SoldModalComponent,
     CreditCardModalComponent,
     UploadConfirmationModalComponent,
     PreviewModalComponent,
