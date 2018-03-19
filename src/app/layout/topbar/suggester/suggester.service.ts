@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { SuggesterResponse } from './suggester-response.interface';
-import { HttpService } from '../http/http.service';
+import { HttpService } from '../../../core/http/http.service';
 
 @Injectable()
 export class SuggesterService {
