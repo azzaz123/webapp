@@ -437,13 +437,13 @@ describe('ItemService', () => {
     });
   });
 
-  describe('canMarkAsSold', () => {
+  describe('canDoAction', () => {
     it('should call endpoint and return true', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let result: boolean;
 
-      service.canMarkAsSold(ITEM_ID).subscribe((can: boolean) => {
+      service.canDoAction('mark_sold', ITEM_ID).subscribe((can: boolean) => {
         result = can;
       });
 
@@ -456,7 +456,7 @@ describe('ItemService', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let result: boolean;
 
-      service.canMarkAsSold(ITEM_ID).subscribe((can: boolean) => {
+      service.canDoAction('mark_sold', ITEM_ID).subscribe((can: boolean) => {
         result = can;
       });
 
