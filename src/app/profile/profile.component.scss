@@ -1,7 +1,7 @@
 @import "~style/common";
 
 $border: solid 1px $grey-50;
-$form-control-height: 42px;
+$form-control-height: 50px;
 
 .box {
   background-color: $white;
@@ -12,7 +12,7 @@ $form-control-height: 42px;
     padding: $spacing-L $spacing-L + 10;
   }
   .box-section {
-    padding: $spacing-L 0;
+    padding: 0 0 $spacing-L;
     border-bottom: $border;
   }
   .box-header {
@@ -33,8 +33,6 @@ $form-control-height: 42px;
     }
   }
   .profile-pic {
-    padding: 10px 0 $spacing-L 0;
-    border-bottom: $border;
     h2 {
       font-size: $font-size;
       font-weight: normal;
@@ -61,6 +59,7 @@ $form-control-height: 42px;
       padding: $spacing-S $spacing;
       margin-left: 43px;
       cursor: pointer;
+      border-radius: $button-border-radius;
       &:hover:not(.disabled) {
         background-color: $grey-100;
       }
@@ -84,9 +83,7 @@ $form-control-height: 42px;
       color: $grey-900;
       font-size: $font-size;
       padding-right: 69px;
-      &.col-3 {
-        line-height: 20px;
-      }
+      margin: 0;
     }
     .form-control {
       height: $form-control-height;
@@ -102,6 +99,7 @@ $form-control-height: 42px;
       cursor: pointer;
       padding: 0;
       text-align: center;
+      line-height: 42px;
       [ngbButton] {
         display: none;
       }
@@ -120,7 +118,7 @@ $form-control-height: 42px;
         font-size: $font-size-S;
       }
       &.active {
-        background-color: $corporate;
+        background-color: $grey-300;
         border-color: transparent;
         box-shadow: 0 2px 6px 0 rgba(19, 193, 172, 0.2);
         mat-icon {
@@ -181,9 +179,8 @@ $form-control-height: 42px;
   height: 100%;
 }
 
-tsl-button {
-  margin-bottom: 65px;
-  margin-top: $spacing-S;
+.page-content {
+  padding-bottom: 65px;
 }
 
 .btn-logout {
@@ -192,6 +189,7 @@ tsl-button {
   border: solid 1px $grey-100;
   color: $grey-600;
   font-size: $font-size-S;
+  border-radius: $button-border-radius;
   &:hover {
     background-color: $delete-bg;
     color: $white;
