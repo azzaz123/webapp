@@ -1,18 +1,18 @@
 import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SharedModule } from '../../../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { Observable } from 'rxjs/Observable';
 import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
 import { MatIconModule } from '@angular/material';
-import { ItemService } from '../item.service';
-import { environment } from '../../../../environments/environment';
+import { ItemService } from '../../core/item/item.service';
+import { environment } from '../../../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {ConfirmationModalComponent} from '../../../shared/confirmation-modal/confirmation-modal.component';
-import { TrackingService } from '../../tracking/tracking.service';
-import { WindowRef } from '../../window/window.service';
-import { USER_ID } from '../../../../tests/user.fixtures.spec';
-import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
-import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import {ConfirmationModalComponent} from '../../shared/confirmation-modal/confirmation-modal.component';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { WindowRef } from '../../core/window/window.service';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 
 describe('ItemCartFavoriteComponent', () => {
   let component: ItemCartFavoriteComponent;

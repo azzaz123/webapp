@@ -1,4 +1,4 @@
-import { SuggesterResponse } from '../app/core/suggester/suggester-response.interface';
+import { SuggesterResponse } from '../app/layout/topbar/suggester/suggester-response.interface';
 
 export const SUGGESTER_DATA_WEB: Array<SuggesterResponse> =
   [

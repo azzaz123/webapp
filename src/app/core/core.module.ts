@@ -5,7 +5,6 @@ import { CookieModule } from 'ngx-cookie';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
 import { EventService } from './event/event.service';
-import { TrackingService } from './tracking/tracking.service';
 import { TrackingModule } from './tracking/tracking.module';
 import { I18nService } from './i18n/i18n.service';
 import { AdService } from './ad/ad.service';
@@ -42,8 +41,7 @@ import { ReviewService } from './review/review.service';
     UserModule,
     ItemModule,
     TrackingModule
-  ],
-  providers: [AdService]
+  ]
 })
 export class CoreModule {
 
@@ -53,7 +51,6 @@ export class CoreModule {
       providers: [
         LoggedGuard,
         EventService,
-        TrackingService,
         I18nService,
         ErrorsService,
         TutorialService,
@@ -66,7 +63,8 @@ export class CoreModule {
         PersistencyService,
         WindowRef,
         XmppService,
-        ReviewService
+        ReviewService,
+        AdService
       ]
     };
   }

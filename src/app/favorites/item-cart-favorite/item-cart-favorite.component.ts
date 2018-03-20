@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
-import { ItemService } from '../item.service';
+import { ItemService } from '../../core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/confirmation-modal.component';
-import { TrackingService } from '../../tracking/tracking.service';
-import { Item } from '../item';
-import { WindowRef } from '../../window/window.service';
+import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { Item } from '../../core/item/item';
+import { WindowRef } from '../../core/window/window.service';
 
 @Component({
   selector: 'tsl-item-cart-favorite',

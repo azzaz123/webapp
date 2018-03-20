@@ -35,7 +35,8 @@ import { CartComponent } from './checkout/cart/cart.component';
 import { CartService } from './checkout/cart/cart.service';
 import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
-import { UtilsModule } from '../utils/utils.module';
+import { UrgentCheckboxComponent } from './upload/urgent-checkbox/urgent-checkbox.component';
+import { SabadellComponent } from './sabadell/sabadell.component';
 
 @NgModule({
   imports: [
@@ -45,7 +46,6 @@ import { UtilsModule } from '../utils/utils.module';
     CatalogRoutingModule,
     MatIconModule,
     InfiniteScrollModule,
-    UtilsModule,
     MomentModule,
     NgUploaderModule,
     DndModule,
@@ -85,7 +85,9 @@ import { UtilsModule } from '../utils/utils.module';
     CheckoutItemComponent,
     CartComponent,
     BumpTutorialComponent,
-    UrgentConfirmationModalComponent
+    UrgentConfirmationModalComponent,
+    UrgentCheckboxComponent,
+    SabadellComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

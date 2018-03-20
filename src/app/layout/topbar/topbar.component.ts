@@ -3,7 +3,7 @@ import { UserService } from '../../core/user/user.service';
 import { environment } from '../../../environments/environment';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { CategoryResponse } from '../../core/category/category-response.interface';
-import { SuggesterResponse } from '../../core/suggester/suggester-response.interface';
+import { SuggesterResponse } from './suggester/suggester-response.interface';
 import { User } from '../../core/user/user';
 import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../core/message/message.service';

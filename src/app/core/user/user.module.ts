@@ -5,14 +5,12 @@ import { MatIconModule } from '@angular/material';
 import { ItemModule } from '../item/item.module';
 import { UserService } from './user.service';
 import { HaversineService } from 'ng2-haversine';
-import { UtilsModule } from '../../utils/utils.module';
 
 @NgModule({
   imports: [
     SharedModule,
     MatIconModule,
-    ItemModule,
-    UtilsModule
+    ItemModule
   ],
   declarations: [UserAvatarComponent ],
   exports: [UserAvatarComponent],

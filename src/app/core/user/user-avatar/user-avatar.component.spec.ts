@@ -2,7 +2,7 @@
 
 import { TestBed } from '@angular/core/testing';
 import { UserAvatarComponent } from './user-avatar.component';
-import { SanitizedBackgroundDirective } from '../../../utils/sanitized-background/sanitized-background.directive';
+import { SanitizedBackgroundDirective } from '../../../shared/sanitized-background/sanitized-background.directive';
 import { PLACEHOLDER_AVATAR, User } from '../user';
 import { IMAGE, MICRO_NAME, USER_ID } from '../../../../tests/user.fixtures.spec';
 

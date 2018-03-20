@@ -24,9 +24,7 @@ import { CookieService } from 'ngx-cookie';
 export class UserService extends ResourceService {
 
   public queryParams: any = {};
-  private API_URL_V1: string = 'shnm-portlet/api/v1/access.json/loginProfessional';
-  protected API_URL_V2: string = 'api/v3/users';
-  protected API_URL_V3: string = 'api/v3/users';
+  protected API_URL = 'api/v3/users';
   private banReasons: BanReason[] = null;
   protected _user: User;
   private meObservable: Observable<User>;
@@ -85,7 +83,7 @@ export class UserService extends ResourceService {
     } else if (this.meObservable) {
       return this.meObservable;
     }
-    this.meObservable = this.http.get(this.API_URL_V2 + '/me')
+    this.meObservable = this.http.get(this.API_URL + '/me')
     .map((r: Response) => r.json())
     .map((r: UserResponse) => this.mapRecordData(r))
     .map((user: User) => {
@@ -124,12 +122,6 @@ export class UserService extends ResourceService {
     return this.haversineService.getDistanceInKilometers(currentUserCoord, userCoord);
   }
 
-  public syncStatus(user: User) {
-    this.get(user.id, true).subscribe((updatedUser: User) => {
-      user.online = updatedUser.online;
-    });
-  }
-
   protected storeData(data: LoginResponse): LoginResponse {
     this.accessTokenService.storeAccessToken(data.token);
     this.event.emit(EventService.USER_LOGIN, data.token);
@@ -155,7 +147,7 @@ export class UserService extends ResourceService {
       reason: reason,
       conversationId: conversationId,
     };
-    return this.http.post(this.API_URL_V3 + '/me/report/user/' + userId, data);
+    return this.http.post(this.API_URL + '/me/report/user/' + userId, data);
   }
 
   public updateBlockStatus(userId: string, blocked: boolean) {
@@ -163,12 +155,12 @@ export class UserService extends ResourceService {
   }
 
   public getInfo(id: string): Observable<UserInfoResponse> {
-    return this.http.get(this.API_URL_V3 + '/' + id + '/extra-info')
+    return this.http.get(this.API_URL + '/' + id + '/extra-info')
     .map((r: Response) => r.json())
   }
 
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {
-    return this.http.put(this.API_URL_V3 + '/me/location', {
+    return this.http.put(this.API_URL + '/me/location', {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude
     })
@@ -176,7 +168,7 @@ export class UserService extends ResourceService {
   }
 
   public getStats(): Observable<UserStatsResponse> {
-    return this.http.get(this.API_URL_V3 + '/me/stats')
+    return this.http.get(this.API_URL + '/me/stats')
     .map((r: Response) => {
       return {
         ratings: this.toRatingsStats(r.json().ratings),
@@ -197,35 +189,36 @@ export class UserService extends ResourceService {
       return counterObj;
     }, {});
   }
+
   public edit(data: UserData): Observable<User> {
-    return this.http.post(this.API_URL_V3 + '/me', data)
+    return this.http.post(this.API_URL + '/me', data)
     .map((r: Response) => r.json())
     .map((r: UserResponse) => this.mapRecordData(r))
     .do((user: User) => {
       this._user = user;
-    })
+    });
   }
 
   public updateEmail(email: string): Observable<any> {
-    return this.http.post(this.API_URL_V3 + '/me/email', {
+    return this.http.post(this.API_URL + '/me/email', {
       email_address: email
     });
   }
 
   public updatePassword(oldPassword: string, newPassword: string): Observable<any> {
-    return this.http.post(this.API_URL_V3 + '/me/password', {
+    return this.http.post(this.API_URL + '/me/password', {
       old_password: oldPassword,
       new_password: newPassword
     });
   }
 
   public getUnsubscribeReasons(): Observable<UnsubscribeReason[]> {
-    return this.http.get(this.API_URL_V3 + '/me/unsubscribe/reason', {language: this.i18n.locale})
+    return this.http.get(this.API_URL + '/me/unsubscribe/reason', {language: this.i18n.locale})
     .map((r: Response) => r.json());
   }
 
   public unsubscribe(reasonId: number, otherReason: string): Observable<any> {
-    return this.http.post(this.API_URL_V3 + '/me/unsubscribe', {
+    return this.http.post(this.API_URL + '/me/unsubscribe', {
       reason_id: reasonId,
       other_reason: otherReason
     });

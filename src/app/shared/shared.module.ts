@@ -13,8 +13,10 @@ import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
-import { UrgentCheckboxComponent } from './urgent-checkbox/urgent-checkbox.component';
 import { ButtonComponent } from './button/button.component';
+import { StarsRateComponent } from './stars-rate/stars-rate.component';
+import { StarsComponent } from './stars/stars.component';
+import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
 
 @NgModule({
   imports: [
@@ -34,7 +36,9 @@ import { ButtonComponent } from './button/button.component';
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
-    UrgentCheckboxComponent
+    SanitizedBackgroundDirective,
+    StarsComponent,
+    StarsRateComponent
   ],
   declarations: [
     AdComponent,
@@ -44,7 +48,9 @@ import { ButtonComponent } from './button/button.component';
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
-    UrgentCheckboxComponent
+    SanitizedBackgroundDirective,
+    StarsComponent,
+    StarsRateComponent
   ],
   providers: [
     DecimalPipe,
