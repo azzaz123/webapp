@@ -27,7 +27,7 @@
         {{item.bumpExpiringDate | amCountdown}}
       </button>
       </span>
-      <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
+      <button class="btn-sold" [hidden]="item.sold" tslItemSold (callback)="setSold(item)" [item]="item">
         <mat-icon svgIcon="btn-sold"></mat-icon>
       </button>
       <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">

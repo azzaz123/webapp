@@ -15,6 +15,7 @@ import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
+import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
     HeaderComponent,
     ButtonComponent,
     SoldModalComponent,
+    ItemSoldDirective
   ],
   declarations: [
     AdComponent,
@@ -46,6 +48,7 @@ import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
     HeaderComponent,
     ButtonComponent,
     SoldModalComponent,
+    ItemSoldDirective
   ],
   providers: [
     DecimalPipe,

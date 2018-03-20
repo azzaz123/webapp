@@ -125,24 +125,11 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public setSold(item: Item) {
-    this.itemService.canMarkAsSold(item.id).subscribe((canMarkAsSold: boolean) => {
-      if (canMarkAsSold) {
-        const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {windowClass: 'sold'});
-        modalRef.componentInstance.item = item;
-        modalRef.result.then(() => {
-          item.sold = true;
-          this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
-          this.itemChange.emit({
-            item: item,
-            action: 'sold'
-          });
-        }, () => {
-        });
-      } else {
-        this.errorsService.i18nError('cantEditError');
-      }
+    this.trackingService.track(TrackingService.PRODUCT_SOLD, { product_id: item.id });
+    this.itemChange.emit({
+      item: item,
+      action: 'sold'
     });
-
   }
 
 }
