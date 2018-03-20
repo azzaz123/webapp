@@ -31,6 +31,27 @@ export class AdService {
   ) {
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
+    this.initGoogletagConfig();
+  }
+
+  private initKeyWordsFromCookies() {
+    this.adKeyWords.brand = this.cookieService.get('brand');
+    this.adKeyWords.content = this.cookieService.get('content');
+    this.adKeyWords.category = this.cookieService.get('category');
+    this.adKeyWords.minprice = this.cookieService.get('minprice');
+    this.adKeyWords.maxprice = this.cookieService.get('maxprice');
+  }
+
+  private initPositionKeyWords() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition( (position) => {
+        this.adKeyWords.latitude = position.coords.latitude.toString();
+        this.adKeyWords.longitude = position.coords.longitude.toString();
+      });
+    }
+  }
+
+  private initGoogletagConfig () {
     googletag.cmd.push(() => {
       this._adSlots.forEach((slot) => {
         googletag.defineSlot(slot.name, slot.sizes, slot.id).addService(googletag.pubads());
@@ -79,8 +100,7 @@ export class AdService {
           observer.complete();
         }, this._bidTimeout);
       });
-
-    }, 1000);
+    });
   }
 
   public sendAdServerRequest() {
@@ -89,23 +109,6 @@ export class AdService {
       Criteo.SetDFPKeyValueTargeting();
       googletag.pubads().refresh();
     });
-  }
-
-  private initKeyWordsFromCookies() {
-    this.adKeyWords.brand = this.cookieService.get('brand');
-    this.adKeyWords.content = this.cookieService.get('content');
-    this.adKeyWords.category = this.cookieService.get('category');
-    this.adKeyWords.minprice = this.cookieService.get('minprice');
-    this.adKeyWords.maxprice = this.cookieService.get('maxprice');
-  }
-
-  private initPositionKeyWords() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition( (position) => {
-        this.adKeyWords.latitude = position.coords.latitude.toString();
-        this.adKeyWords.longitude = position.coords.longitude.toString();
-      });
-    }
   }
 
   public startAdsRefresh(): void {
@@ -125,7 +128,7 @@ export class AdService {
     }).flatMap(() => {
       return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
     }).flatMap((refreshRate: number) => {
-      return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0)
+      return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0);
     }).subscribe(() => {
       this.refreshAdWithKeyWords();
     });
