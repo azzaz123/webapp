@@ -11,7 +11,6 @@ import { CookieService } from 'ngx-cookie';
 import { ResponseOptions, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { MockBackend, MockConnection } from '@angular/http/testing';
-import {Mock} from "protractor/built/driverProviders";
 
 let service: AdService;
 let http: HttpService;
@@ -41,8 +40,28 @@ const AdKeyWords = {
   longitude: position.coords.longitude.toString()
 };
 
+const cmd = {
+  push(callbacks) {
+    callbacks();
+  }
+}
 
-describe('AdService', () => {
+const pubads = {
+  defineSlot() {},
+  enableSingleRequest() {},
+  enableServices() {},
+  disableInitialLoad() {},
+  collapseEmptyDivs() {},
+  setPublisherProvidedId() {},
+  setTargeting () {},
+  refresh () {}
+};
+
+const defineSlot = {
+  addService() {}
+};
+
+fdescribe('AdService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -77,24 +96,42 @@ describe('AdService', () => {
     spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
       callback(position);
     });
+    spyOn(googletag, 'pubads').and.returnValue(pubads);
+    spyOn(googletag, 'defineSlot').and.returnValue(defineSlot);
+    spyOn(googletag, 'cmd').and.returnValue(cmd);
+    spyOn(pubads, 'defineSlot');
+    spyOn(pubads, 'enableSingleRequest');
+    spyOn(pubads, 'collapseEmptyDivs');
+    spyOn(pubads, 'disableInitialLoad');
+    spyOn(pubads, 'setPublisherProvidedId');
     Object.keys(cookies).forEach(key => {
       cookieService.put(key, cookies[key]);
     });
     service = TestBed.get(AdService);
   });
 
+  beforeEach(() => {
+    spyOn(pubads, 'setTargeting');
+    spyOn(pubads, 'refresh');
+  });
+
+  describe('should init google services', () => {
+    it('enableSingleRequest', () => {
+      expect(pubads.enableSingleRequest).toHaveBeenCalled();
+    });
+    it('collapseEmptyDivs', () => {
+      expect(pubads.collapseEmptyDivs).toHaveBeenCalled();
+    });
+    it('disableInitialLoad', () => {
+      expect(pubads.disableInitialLoad).toHaveBeenCalled();
+    });
+    it('setPublisherProvidedId', () => {
+      expect(pubads.setPublisherProvidedId).toHaveBeenCalled();
+    });
+  });
+
   describe ('refreshAds', () => {
     const refreshRate = 1000;
-    const pubads = {
-      setTargeting () {},
-      refresh () {}
-    };
-
-    beforeEach(() => {
-      spyOn(googletag, 'pubads').and.returnValue(pubads);
-      spyOn(pubads, 'setTargeting');
-      spyOn(pubads, 'refresh');
-    });
 
     describe('with refresh rate should', () => {
       beforeEach(() => {
