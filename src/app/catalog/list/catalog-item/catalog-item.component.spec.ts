@@ -305,7 +305,7 @@ describe('CatalogItemComponent', () => {
         item = MOCK_ITEM;
         spyOn(modalService, 'open').and.callThrough();
         spyOn(trackingService, 'track');
-        spyOn(itemService, 'canMarkAsSold').and.callThrough();
+        spyOn(itemService, 'canDoAction').and.callThrough();
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
@@ -317,7 +317,7 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should call canMarkAsSold', () => {
-        expect(itemService.canMarkAsSold).toHaveBeenCalledWith(item.id);
+        expect(itemService.canDoAction).toHaveBeenCalledWith('mark_sold', item.id);
       });
 
       it('should open modal', fakeAsync(() => {
@@ -340,14 +340,14 @@ describe('CatalogItemComponent', () => {
 
     describe('cannot mark as sold', () => {
       beforeEach(() => {
-        spyOn(itemService, 'canMarkAsSold').and.returnValue(Observable.of(false));
+        spyOn(itemService, 'canDoAction').and.returnValue(Observable.of(false));
         spyOn(errorsService, 'i18nError');
 
         component.setSold(MOCK_ITEM);
       });
 
       it('should call canMarkAsSold', () => {
-        expect(itemService.canMarkAsSold).toHaveBeenCalledWith(MOCK_ITEM.id);
+        expect(itemService.canDoAction).toHaveBeenCalledWith(MOCK_ITEM.id);
       });
 
       it('should throw error', () => {

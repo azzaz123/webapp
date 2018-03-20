@@ -306,12 +306,12 @@ export class ItemService extends ItemServiceMaster {
     .map((r: Response) => r.json());
   }
 
-  public canMarkAsSold(id: string): Observable<boolean> {
+  public canDoAction(action: string, id: string): Observable<boolean> {
     return this.getActionsAllowed(id)
     .map((actions: AllowedActionResponse[]) => {
-      const markAsSold: AllowedActionResponse = _.find(actions, {type: 'mark_sold'});
-      if (markAsSold) {
-        return markAsSold.allowed;
+      const canDo: AllowedActionResponse = _.find(actions, {type: action});
+      if (canDo) {
+        return canDo.allowed;
       }
       return false;
     });
