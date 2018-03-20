@@ -47,33 +47,30 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     this.active = false;
   }
 
-  prevent($event: Event) {
-    const el = $event.target as Element;
+  public prevent($event: Event) {
+    const el = ($event.target as Element).closest('button');
     if (this.itemUrl === '#' ||
-        el.classList.contains('btn-reserve') ||
-        el.classList.contains('btn-sold')) {
+    el.classList.contains('btn-reserve') ||
+    el.classList.contains('btn-sold')) {
       $event.preventDefault();
+      $event.stopPropagation();
     }
   }
 
-  stopPropagation($event: Event) {
-    $event.stopPropagation();
+  public canEdit() {
+    return ((this.item.owner === this.myUserId) && !this.item.sold);
   }
 
-  isItemOwner() {
-    return (this.item.owner === this.myUserId);
-  }
-
-  canEdit() {
-    return (this.isItemOwner() && !this.item.sold);
-  }
-
-  public toggleReserve(item: Item) {
-    this.itemService.reserveItem(item.id, !item.reserved).subscribe(() => {
-      item.reserved = !item.reserved;
-      if (item.reserved) {
-        this.trackingService.track(TrackingService.CHAT_PRODUCT_RESERVED, {product_id: item.id});
+  public toggleReserve() {
+    this.itemService.reserveItem(this.item.id, !this.item.reserved).subscribe(() => {
+      this.item.reserved = !this.item.reserved;
+      if (this.item.reserved) {
+        this.trackingService.track(TrackingService.CHAT_PRODUCT_RESERVED, {product_id: this.item.id});
       }
     });
+  }
+
+  public trackSoldEvent(item: Item) {
+    this.trackingService.track(TrackingService.CHAT_PRODUCT_RESERVED, {product_id: item.id});
   }
 }
