@@ -1,0 +1,26 @@
+/* REPLACE BOOTSTRAP VARIABLES */
+
+$grid-gutter-width-base: 20px;
+
+$mainColor: #13c1ac;
+
+$brand-primary: $mainColor;
+$brand-success: #5cb85c;
+$brand-info: #5bc0de;
+$brand-warning: #f0ad4e;
+$brand-danger: #d9534f;
+
+$color-grey-lighter:  #f2f2f2;
+$color-grey-light: #ddd;
+$color-grey-dark: #999;
+
+$body-bg: $mainColor;
+$link-color: $brand-primary;
+
+$border-radius: 10px;
+$button-border-radius: 20px;
+
+@import 'colors';
+@import 'spacings';
+@import 'fonts';
+@import 'layout';

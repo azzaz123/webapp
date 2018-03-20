@@ -72,8 +72,8 @@
     </div>
   </form>
 </div>
-<button class="btn btn-primary" [disabled]="!cart?.total || loading" (click)="checkout()">
-  <mat-icon svgIcon="spinner" [hidden]="!loading" class="spinner white"></mat-icon>
-  <span [hidden]="loading" i18n>Continue to Checkout</span>
-</button>
+<tsl-button [disabled]="!cart?.total || loading"
+            [loading]="loading"
+            (click)="checkout()"
+            i18n>Continue to Checkout</tsl-button>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

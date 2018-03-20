@@ -7,7 +7,6 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatIconModule } from '@angular/material';
 import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UtilsModule } from 'shield';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { MomentModule } from 'angular2-moment';
 import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -30,11 +29,14 @@ import { ItemResolverService } from './item-resolver.service';
 import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/exit-confirmation-modal.component';
 import { RemoveConfirmModalComponent } from './upload/drop-area/remove-confirm-modal/remove-confirm-modal.component';
 import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactivate-modal.component';
+import { UrgentConfirmationModalComponent } from './list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { CheckoutItemComponent } from './checkout/checkout-item/checkout-item.component';
 import { CartComponent } from './checkout/cart/cart.component';
 import { CartService } from './checkout/cart/cart.service';
 import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
+import { UrgentCheckboxComponent } from './upload/urgent-checkbox/urgent-checkbox.component';
+import { SabadellComponent } from './sabadell/sabadell.component';
 
 @NgModule({
   imports: [
@@ -44,7 +46,6 @@ import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.serv
     CatalogRoutingModule,
     MatIconModule,
     InfiniteScrollModule,
-    UtilsModule,
     MomentModule,
     NgUploaderModule,
     DndModule,
@@ -83,7 +84,10 @@ import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.serv
     ReactivateModalComponent,
     CheckoutItemComponent,
     CartComponent,
-    BumpTutorialComponent
+    BumpTutorialComponent,
+    UrgentConfirmationModalComponent,
+    UrgentCheckboxComponent,
+    SabadellComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -94,7 +98,8 @@ import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.serv
     ExitConfirmationModalComponent,
     PreviewModalComponent,
     RemoveConfirmModalComponent,
-    ReactivateModalComponent
+    ReactivateModalComponent,
+    UrgentConfirmationModalComponent
   ]
 })
 export class CatalogModule {

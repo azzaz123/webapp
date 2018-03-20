@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpService, I18nService } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { IOption } from 'ng-select';
 import { Response } from '@angular/http';
 import * as _ from 'lodash';
+import { HttpService } from '../../../core/http/http.service';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 @Injectable()
 export class CarKeysService {

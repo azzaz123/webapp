@@ -6,6 +6,7 @@ import { UserService } from '../../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('PasswordModalComponent', () => {
   let component: PasswordModalComponent;
@@ -40,7 +41,8 @@ describe('PasswordModalComponent', () => {
         }
         }
       ],
-      declarations: [ PasswordModalComponent ]
+      declarations: [ PasswordModalComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

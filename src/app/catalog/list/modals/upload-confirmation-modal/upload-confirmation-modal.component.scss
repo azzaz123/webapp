@@ -1,10 +1,8 @@
-@import "../../../../../style/_common.scss";
-
-$feature-button-width: 170px;
+@import "~style/common";
 
 .header {
-  background: $corporate url(/assets/images/upload-congrats.svg) no-repeat center 85px;
-  height: 270px;
+  background: $corporate;
+  height: 127px;
   border-top-left-radius: $border-radius;
   border-top-right-radius: $border-radius;
   color: $white;
@@ -24,12 +22,11 @@ $feature-button-width: 170px;
   h1 {
     font-size: 18px;
     font-weight: bold;
-    margin: 5px;
   }
   p {
     opacity: .8;
     margin: 0;
-    margin-bottom: 25px;
+    margin-bottom: $spacing-L;
     color: $white;
     font-size: $font-size;
   }
@@ -39,36 +36,20 @@ $feature-button-width: 170px;
   text-align: center;
   padding: 40px 70px;
   p {
-    font-size: $font-size-S;
-    color: $grey-300;
+    font-size: $font-size;
+    color: $grey-400;
     margin-top: 10px;
+  }
+  .urgent-background {
+    background: url(/assets/images/urgent-background.svg);
+    width: 138px;
+    height: 152px;
+    margin: $spacing-S auto;
   }
 }
 
-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all .2s ease;
-  background: $grey-700;
-  width: $feature-button-width;
-  height: 40px;
-  color: $white;
-  padding: 0 $spacing;
-  padding-left: 12px;
-  font-size: $font-size-S;
-  border: 1px solid transparent;
-  margin: $spacing-M auto $spacing-XL;
-  &:hover {
-    background: $corporate;
-  }
-  mat-icon {
-    width: 19px;
-    height: 21px;
-    margin-right: 9px;
-  }
+tsl-button {
+  margin: $spacing-L auto $spacing;
 }
 
 .social-icons {
@@ -87,9 +68,9 @@ button {
       @include square(18px);
     }
     &:hover {
-      background-color: #d8dbdd;
+      background-color: $color-social-background;
       mat-icon /deep/ path {
-        fill: #a3afb5;
+        fill: $color-social-fill;
       }
     }
   }

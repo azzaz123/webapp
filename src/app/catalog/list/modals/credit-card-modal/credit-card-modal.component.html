@@ -1,5 +1,5 @@
 <div class="modal-body">
-  <div class="modal-close" (click)="activeModal.dismiss()">
+  <div class="modal-close" (click)="activeModal.close()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
   <div id="credit-card">
@@ -14,6 +14,6 @@
     <label>
       <input type="radio" name="cardType" [(ngModel)]="cardType" value="new" /> <span i18n>Add a new card</span>
     </label>
-    <button class="btn btn-primary btn-block" (click)="activeModal.close(cardType)" i18n>Feature for {{total | number:'1.2-2'}} Euros</button>
+    <tsl-button className="btn-primary btn-block" (click)="activeModal.close(cardType)" i18n>Feature for {{total | number:'1.2-2'}} Euros</tsl-button>
   </form>
 </div>

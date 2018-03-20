@@ -1,5 +1,4 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Item, ITEM_ID, MOCK_ITEM, MockTrackingService } from 'shield';
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
@@ -13,8 +12,15 @@ import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-curre
 import { DecimalPipe } from '@angular/common';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
-import { ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE, PRODUCT_RESPONSE } from '../../../../tests/item.fixtures';
+import {
+  ITEM_ID,
+  MOCK_ITEM, ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE,
+  PRODUCT_RESPONSE
+} from '../../../../tests/item.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
+import { ErrorsService } from '../../../core/errors/errors.service';
+import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { Item } from '../../../core/item/item';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -22,6 +28,7 @@ describe('CatalogItemComponent', () => {
   let itemService: ItemService;
   let modalService: NgbModal;
   let trackingService: TrackingService;
+  let errorsService: ErrorsService;
   const componentInstance = {
     price: null,
     item: null
@@ -51,6 +58,9 @@ describe('CatalogItemComponent', () => {
             return Observable.of({});
           },
           getAvailableReactivationProducts() {
+          },
+          canMarkAsSold() {
+            return Observable.of(true);
           }
         }
         },
@@ -70,6 +80,12 @@ describe('CatalogItemComponent', () => {
           }
         }
         },
+        {
+          provide: ErrorsService, useValue: {
+          i18nError() {
+          }
+        }
+        },
         {provide: 'SUBDOMAIN', useValue: 'es'}
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -85,6 +101,7 @@ describe('CatalogItemComponent', () => {
     itemService = TestBed.get(ItemService);
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
+    errorsService = TestBed.get(ErrorsService);
   });
 
   it('should be created', () => {
@@ -288,35 +305,59 @@ describe('CatalogItemComponent', () => {
     let item: Item;
     let event: ItemChangeEvent;
 
-    beforeEach(fakeAsync(() => {
-      item = MOCK_ITEM;
-      spyOn(modalService, 'open').and.callThrough();
-      spyOn(trackingService, 'track');
-      component.itemChange.subscribe(($event: ItemChangeEvent) => {
-        event = $event;
+    describe('can mark as sold', () => {
+      beforeEach(fakeAsync(() => {
+        item = MOCK_ITEM;
+        spyOn(modalService, 'open').and.callThrough();
+        spyOn(trackingService, 'track');
+        spyOn(itemService, 'canMarkAsSold').and.callThrough();
+        component.itemChange.subscribe(($event: ItemChangeEvent) => {
+          event = $event;
+        });
+        component.setSold(item);
+      }));
+
+      afterEach(() => {
+        event = undefined;
       });
-      component.setSold(item);
-    }));
 
-    afterEach(() => {
-      event = undefined;
+      it('should call canMarkAsSold', () => {
+        expect(itemService.canMarkAsSold).toHaveBeenCalledWith(item.id);
+      });
+
+      it('should open modal', fakeAsync(() => {
+        tick();
+        expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, {windowClass: 'sold'});
+      }));
+
+      it('should set sold true', () => {
+        expect(item.sold).toBeTruthy();
+      });
+
+      it('should emit the updated item', () => {
+        expect(event.item).toEqual(item);
+        expect(event.action).toBe('sold');
+      });
+      it('should track the DeleteItem event', () => {
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+      });
     });
 
-    it('should open modal', fakeAsync(() => {
-      tick();
-      expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, {windowClass: 'sold'});
-    }));
+    describe('cannot mark as sold', () => {
+      beforeEach(() => {
+        spyOn(itemService, 'canMarkAsSold').and.returnValue(Observable.of(false));
+        spyOn(errorsService, 'i18nError');
 
-    it('should set sold true', () => {
-      expect(item.sold).toBeTruthy();
-    });
+        component.setSold(MOCK_ITEM);
+      });
 
-    it('should emit the updated item', () => {
-      expect(event.item).toEqual(item);
-      expect(event.action).toBe('sold');
-    });
-    it('should track the DeleteItem event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+      it('should call canMarkAsSold', () => {
+        expect(itemService.canMarkAsSold).toHaveBeenCalledWith(MOCK_ITEM.id);
+      });
+
+      it('should throw error', () => {
+        expect(errorsService.i18nError).toHaveBeenCalledWith('cantEditError');
+      });
     });
 
   });

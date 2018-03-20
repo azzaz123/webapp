@@ -1,4 +1,4 @@
-@import "../../../../style/_common.scss";
+@import "~style/common";
 
 div {
   @include square-avatar($item-avatar-size);
@@ -40,7 +40,7 @@ div {
 }
 
 $sold-width: 32px;
-.sold, .reserved, .featured {
+.sold, .reserved, .featured, .urgent {
   @include square($sold-width);
   border-radius: 50%;
   display: flex;
@@ -78,5 +78,12 @@ $sold-width: 32px;
   }
   &.countrybump {
     background-color: $country-bump;
+  }
+}
+
+.urgent {
+  background-color: $urgent;
+  mat-icon {
+    @include square(30px);
   }
 }

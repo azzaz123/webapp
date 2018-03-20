@@ -5,10 +5,10 @@ import { UserService } from '../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CUSTOM_REASON, REASONS, SELECTED_REASON } from '../../../tests/user.fixtures';
-import { AccessTokenService } from 'shield';
+import { CUSTOM_REASON, REASONS, SELECTED_REASON } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
 import { environment } from '../../../environments/environment';
+import { AccessTokenService } from '../../core/http/access-token.service';
 
 describe('UnsubscribeModalComponent', () => {
   let component: UnsubscribeModalComponent;

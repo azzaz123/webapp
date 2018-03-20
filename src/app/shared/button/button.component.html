@@ -1,0 +1,7 @@
+<button class="btn {{className}}"
+        [disabled]="disabled"
+        [class.loading]="loading"
+        [type]="type">
+  <mat-icon svgIcon="spinner" *ngIf="loading" class="spinner white"></mat-icon>
+  <ng-content *ngIf="!loading"></ng-content>
+</button>

@@ -1,22 +1,16 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import {
-  ConversationService,
-  ITEM_ID,
-  MOCK_ITEM,
-  MOCK_MESSAGE,
-  MOCK_USER,
-  REVIEW_DATA_BUYER,
-  ReviewService,
-  USER_ID,
-  UserService
-} from 'shield';
-
-
 import { ReviewButtonComponent } from './review-button.component';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ReviewModalComponent } from '../review-modal/review-modal.component';
+import { ReviewService } from '../../../core/review/review.service';
+import { MOCK_USER, USER_ID } from '../../../../tests/user.fixtures.spec';
+import { ConversationService } from '../../../core/conversation/conversation.service';
+import { ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import { UserService } from '../../../core/user/user.service';
+import { MOCK_MESSAGE } from '../../../../tests/message.fixtures.spec';
+import { REVIEW_DATA_BUYER } from '../../../../tests/review.fixtures.spec';
 
 describe('ReviewButtonComponent', () => {
   let component: ReviewButtonComponent;

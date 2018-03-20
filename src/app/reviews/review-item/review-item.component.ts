@@ -1,7 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Review } from "../../core/review/review";
-import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, ITEM_BASE_PATH, USER_BASE_PATH } from 'shield';
-import { environment } from "../../../environments/environment";
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Review } from '../review';
+import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '../../core/item/item';
 
 @Component({
   selector: 'tsl-review-item',
@@ -15,14 +14,12 @@ export class ReviewItemComponent implements OnInit {
   public itemWebLink: string;
   public userWebSlug: string;
 
-  constructor() { }
+  constructor(@Inject('SUBDOMAIN') private subdomain: string) { }
 
   ngOnInit() {
     this.fallback = FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH;
-    this.itemWebLink = this.review.item ?
-      this.review.item.webLink.replace(ITEM_BASE_PATH, environment.siteUrl + 'item/') : null;
-    this.userWebSlug = this.review.user ?
-      this.review.user.webLink.replace(USER_BASE_PATH, environment.siteUrl + 'user/') : null;
+    this.itemWebLink = this.review.item ? this.review.item.getUrl(this.subdomain) : null;
+    this.userWebSlug = this.review.user ? this.review.user.getUrl(this.subdomain) : null;
   }
 
 }

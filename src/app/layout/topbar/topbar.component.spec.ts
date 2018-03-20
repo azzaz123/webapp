@@ -3,12 +3,16 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../core/user/user.service';
-import { TEST_HTTP_PROVIDERS, User, USER_DATA, WindowRef, MessageService } from 'shield';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../../core/event/event.service';
-import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures';
+import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures';
+import { SUGGESTER_DATA_WEB } from '../../../tests/suggester.fixtures.spec';
+import { User } from '../../core/user/user';
+import { USER_DATA } from '../../../tests/user.fixtures.spec';
+import { WindowRef } from '../../core/window/window.service';
+import { MessageService } from '../../core/message/message.service';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 
 const MOCK_USER = new User(
   USER_DATA.id,

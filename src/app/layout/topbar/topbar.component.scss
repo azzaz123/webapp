@@ -1,4 +1,4 @@
-@import "../../../style/_common.scss";
+@import "~style/common";
 
 :host {
   height: $topbar-height;
@@ -175,10 +175,16 @@
     box-shadow: 0 2px 4px 0 rgba(37, 50, 56, 0.05);
     border: 1px solid $grey-100;
     border-left: 0;
+    mat-icon /deep/ svg path{
+      fill: $grey-600
+    }
     &:hover {
       background: $corporate;
       color: $white;
       border-color: $corporate;
+      mat-icon /deep/ svg path{
+        fill: $white;
+      }
     }
     &:focus {
       outline: none;
@@ -278,6 +284,13 @@
       }
     }
   }
+  .main-header-chat {
+    &.active {
+      mat-icon /deep/ svg g g {
+        fill: $corporate;
+      }
+    }
+  }
   .main-header-login-profile {
     & {
       display: none;
@@ -325,83 +338,32 @@
       bottom: 0;
     }
   }
-  .main-header-upload {
-    border-radius: 100px;
-    font-weight: bold;
-    font-size: $font-size-S;
-    color: $white;
-    padding-left: $spacing-XS;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    mat-icon {
+  tsl-button {
+    /deep/ button {
+      font-weight: bold;
+      font-size: $font-size-S;
+      padding-left: $spacing-XS;
+      padding-top: 7px;
+      padding-bottom: 7px;
+    }
+    /deep/ mat-icon {
       vertical-align: middle;
       margin-right: $spacing-XXS;
       @include square(26px);
     }
-  }
-}
-
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .main-header {
-    position: relative\9;
-    display: block\9;
-  }
-  .main-header-login {
-    height: 66px\9;
-    float: right\9;
-    margin-right: 20px\9;
-  }
-  .main-header-home, .main-header-chat {
-    height: 100%\9;
-    padding-top: 23px\9;
-    padding-bottom: 23px\9;
-  }
-  .main-header-login .profile-separator {
-    float: left\9;
-  }
-  .search-glass, .ico-categories, .ico-geo {
-    margin-top: 6px\9;
-    vertical-align: middle\9;
-  }
-  #pac-input-header {
-    height: 38px\9;
-    margin-top: 1px\9;
-    padding-left: 0\9;
-    width: 111px\9;
-  }
-  #main-search-input {
-    padding-left: 0\9;
-  }
-  .horizontal-line {
-    bottom: -3px!important\9;
-  }
-  .dropdown-main-search {
-    margin-top: 10px\9;
-    width: 60%\9;
-  }
-  .dropdown-main-search, .header-location, .input-search, #dropdown-main-search-btn, tsl-categories-list {
-    display: -ms-flexbox\9;
-    -ms-flex-pack: start\9;
-  }
-  .main-header-holder {
-    display: none\9;
-  }
-  .main-header-chat {
-    position: relative\9;
-  }
-  .main-header-chat .menu-link.active .horizontal-line {
-    position: absolute;
-    left: 0\9;
-    bottom: 0\9;
-  }
-  .main-header-login .menu-link:hover .horizontal-line {
-    position: absolute;
-    right: 13px\9;
-    bottom: 0\9;
-  }
-  .main-header-login-profile:hover .horizontal-line {
-    right: 15px\9;
-    position: absolute;
-    bottom: 0\9;
+    &:hover {
+      /deep/ mat-icon {
+        #fill {
+          transition: all 0.2s ease-in-out;
+          fill-opacity: 1;
+        }
+        #plus {
+          rect {
+            transition: all 0.2s ease-in-out;
+            fill: $corporate;
+          }
+        }
+      }
+    }
   }
 }

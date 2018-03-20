@@ -1,0 +1,71 @@
+@import "~style/common";
+
+$vertical-padding: 10px;
+
+:host {
+  display: inline-block;
+  &[className*='btn-block'] {
+    display: block;
+  }
+}
+
+.btn {
+  color: $white;
+  padding: $vertical-padding $spacing;
+  border-radius: $button-border-radius;
+  transition: all 0.2s ease-in-out, padding 0s;
+  &:focus, &.focus {
+    box-shadow: none;
+  }
+  &:not([disabled]) {
+    cursor: pointer;
+  }
+  &.btn-reserve {
+    background-color: $reserve-bg;
+  }
+  &.btn-delete {
+    background-color: $delete-bg;
+  }
+  &:not([disabled]):not(.btn-primary):hover {
+    opacity: .8;
+  }
+  &.btn-primary {
+    &.disabled, &:disabled {
+      &:active {
+        background-color: $corporate;
+        border-color: transparent;
+      }
+    }
+    &:not([disabled]) {
+      &:hover {
+        background-color: $corporate-dark;
+        border-color: transparent;
+      }
+    }
+  }
+  &.loading {
+    padding-top: 7px;
+    padding-bottom: 4px;
+  }
+  &.btn-big {
+    padding-left: 75px;
+    padding-right: 75px;
+  }
+  &.btn-feature {
+    background: $grey-700;
+    border-color: transparent;
+    &:hover {
+      background: $corporate;
+    }
+  }
+  &.btn-outline-primary {
+    color: $corporate;
+    &:hover {
+      color: $white;
+    }
+  }
+}
+
+
+
+

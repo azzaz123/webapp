@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BanReason } from 'shield';
 import { UserService } from '../../../core/user/user.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { BanReason } from '../../../core/item/ban-reason.interface';
 
 @Component({
   selector: 'tsl-report-user',

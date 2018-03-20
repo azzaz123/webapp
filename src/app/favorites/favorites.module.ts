@@ -6,6 +6,7 @@ import { MasonryModule } from 'angular2-masonry';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FavoritesRoutingModule, favoritesRoutedComponents } from './favorites.routes';
 import { SharedModule } from '../shared/shared.module';
+import { ItemCartFavoriteComponent } from './item-cart-favorite/item-cart-favorite.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule
   ],
   declarations: [
-    favoritesRoutedComponents
+    favoritesRoutedComponents,
+    ItemCartFavoriteComponent
   ]
 })
 export class FavoritesModule { }

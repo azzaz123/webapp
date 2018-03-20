@@ -8,10 +8,8 @@
   <tsl-stars-rate (onChange)="onRated($event)"></tsl-stars-rate>
   <textarea i18n-placeholder placeholder="Leave a review..." class="form-control" [(ngModel)]="comments"></textarea>
   <div class="centered">
-    <button type="button"
-            class="btn btn-primary"
-            [disabled]="!score"
-            (click)="close()"
-            i18n>Publish</button>
+    <tsl-button [disabled]="!score"
+                (click)="close()"
+                i18n>Publish</tsl-button>
   </div>
 </div>

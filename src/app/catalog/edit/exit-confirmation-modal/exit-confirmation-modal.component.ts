@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Item } from 'shield';
+import { Item } from '../../../core/item/item';
 
 @Component({
   selector: 'tsl-exit-confirmation-modal',

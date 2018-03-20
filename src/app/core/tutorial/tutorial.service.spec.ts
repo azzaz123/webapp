@@ -3,7 +3,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { TutorialService } from './tutorial.service';
 import { UserService } from '../user/user.service';
 import { Observable } from 'rxjs/Observable';
-import { MOCK_USER, USER_ID } from 'shield';
+import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 
 describe('TutorialService', () => {
 

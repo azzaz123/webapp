@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Conversation } from 'shield';
+import { Conversation } from '../../../core/conversation/conversation';
 
 @Component({
   selector: 'tsl-conversation',
