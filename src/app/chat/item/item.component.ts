@@ -47,17 +47,15 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     this.active = false;
   }
 
-  public prevent($event: Event) {
-    const el = ($event.target as Element).closest('button');
-    if (this.itemUrl === '#' ||
-    el.classList.contains('btn-reserve') ||
-    el.classList.contains('btn-sold')) {
+  public prevent($event: Event, stop?: boolean) {
+    if (this.itemUrl === '#' || stop) {
       $event.preventDefault();
       $event.stopPropagation();
     }
   }
 
   public canEdit() {
+    console.log('in actual method');
     return ((this.item.owner === this.myUserId) && !this.item.sold);
   }
 

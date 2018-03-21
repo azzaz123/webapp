@@ -13,11 +13,11 @@
     </div>
   </div>
   <div class="actions-block" *ngIf='canEdit()'>
-    <tsl-button className="btn-reserve" (click)="prevent($event); toggleReserve()">
+    <tsl-button className="btn-reserve" (click)="prevent($event, true); toggleReserve()">
       <span i18n *ngIf='!item.reserved'>Reserve</span>
       <span i18n *ngIf='item.reserved'>Unreserve</span>
     </tsl-button>
-    <tsl-button className="btn-sold" (click)="prevent($event)" tslItemSold (callback)="trackSoldEvent(item)" [item]="item" i18n>Sold</tsl-button>
+    <tsl-button className="btn-sold" (click)="prevent($event, true)" tslItemSold (callback)="trackSoldEvent(item)" [item]="item" i18n>Sold</tsl-button>
   </div>
   <div class="card-block">
     <h5 class="card-title">{{item.title}}</h5>
