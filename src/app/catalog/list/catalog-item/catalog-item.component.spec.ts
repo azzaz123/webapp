@@ -54,7 +54,7 @@ describe('CatalogItemComponent', () => {
           },
           getAvailableReactivationProducts() {
           },
-          canMarkAsSold() {
+          canDoAction() {
             return Observable.of(true);
           }
         }
@@ -294,7 +294,6 @@ describe('CatalogItemComponent', () => {
     });
   });
 
-
   describe('setSold', () => {
 
     let item: Item;
@@ -303,9 +302,7 @@ describe('CatalogItemComponent', () => {
     describe('can mark as sold', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
-        spyOn(modalService, 'open').and.callThrough();
         spyOn(trackingService, 'track');
-        spyOn(itemService, 'canDoAction').and.callThrough();
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
@@ -316,44 +313,14 @@ describe('CatalogItemComponent', () => {
         event = undefined;
       });
 
-      it('should call canMarkAsSold', () => {
-        expect(itemService.canDoAction).toHaveBeenCalledWith('mark_sold', item.id);
-      });
-
-      it('should open modal', fakeAsync(() => {
-        tick();
-        expect(modalService.open).toHaveBeenCalledWith(SoldModalComponent, {windowClass: 'sold'});
-      }));
-
-      it('should set sold true', () => {
-        expect(item.sold).toBeTruthy();
-      });
-
       it('should emit the updated item', () => {
         expect(event.item).toEqual(item);
         expect(event.action).toBe('sold');
       });
+
       it('should track the DeleteItem event', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {product_id: item.id});
       });
     });
-
-    describe('cannot mark as sold', () => {
-      beforeEach(() => {
-        spyOn(itemService, 'canDoAction').and.returnValue(Observable.of(false));
-        spyOn(errorsService, 'i18nError');
-
-        component.setSold(MOCK_ITEM);
-      });
-
-      it('should call canMarkAsSold', () => {
-        expect(itemService.canDoAction).toHaveBeenCalledWith(MOCK_ITEM.id);
-      });
-
-      it('should throw error', () => {
-        expect(errorsService.i18nError).toHaveBeenCalledWith('cantEditError');
-      });
-    });
-
   });
 });
