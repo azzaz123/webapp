@@ -23,7 +23,7 @@ export class AdService {
   private _adSlots = [
     { name: '/130868815/chat_right', id: 'div-gpt-ad-1508490196308-0', sizes: [[240, 400], [120, 600], [160, 600], [300, 250]], 'zoneid': 978109}
   ];
-  private _bidTimeout = 4000;
+  private _bidTimeout = 2000;
 
   constructor(private http: HttpService,
               private userService: UserService,
@@ -112,6 +112,7 @@ export class AdService {
   }
 
   public startAdsRefresh(): void {
+    console.log("START REFRESH")
     if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) { return ; }
     this.adsRefreshSubscription = this.userService.me().do((user: User) => {
       this.adKeyWords.gender = user.gender;
