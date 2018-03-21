@@ -144,12 +144,11 @@ fdescribe('AdService', () => {
       it('send keyWords', fakeAsync(() => {
         service.startAdsRefresh();
         tick(1);
-
         Object.keys(AdKeyWords).forEach(key => {
           expect(pubads.setTargeting).toHaveBeenCalledWith(key, AdKeyWords[key]);
         });
         discardPeriodicTasks();
-      }))
+      }));
 
       it('without being able to access navigator geolocation, gets approximate position from backend', fakeAsync(() => {
         spyOn(navigator, 'geolocation').and.returnValue(undefined);
@@ -214,10 +213,10 @@ fdescribe('AdService', () => {
       });
 
       service.startAdsRefresh();
-      tick(refreshRate)
+      tick(refreshRate);
 
       expect(pubads.refresh).toHaveBeenCalledTimes(1);
       discardPeriodicTasks();
-    }))
-  })
+    }));
+  });
 });
