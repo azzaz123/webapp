@@ -112,7 +112,6 @@ export class AdService {
   }
 
   public startAdsRefresh(): void {
-    console.log("START REFRESH")
     if (this.adsRefreshSubscription && !this.adsRefreshSubscription.closed) { return ; }
     this.adsRefreshSubscription = this.userService.me().do((user: User) => {
       this.adKeyWords.gender = user.gender;
