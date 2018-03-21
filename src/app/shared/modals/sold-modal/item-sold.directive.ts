@@ -19,7 +19,6 @@ export class ItemSoldDirective {
               private errorsService: ErrorsService) {}
 
   @HostListener('click') onClick() {
-    console.log(this.item);
     this.itemService.canDoAction('mark_sold', this.item.id).subscribe((canMarkAsSold: boolean) => {
       if (canMarkAsSold) {
         const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {
