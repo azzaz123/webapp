@@ -49,7 +49,6 @@ const cmd = {
 const pubads = {
   defineSlot() {},
   enableSingleRequest() {},
-  enableServices() {},
   disableInitialLoad() {},
   collapseEmptyDivs() {},
   setPublisherProvidedId() {},
@@ -99,6 +98,7 @@ fdescribe('AdService', () => {
     spyOn(googletag, 'pubads').and.returnValue(pubads);
     spyOn(googletag, 'defineSlot').and.returnValue(defineSlot);
     spyOn(googletag, 'cmd').and.returnValue(cmd);
+    spyOn(googletag, 'enableServices');
     spyOn(pubads, 'defineSlot');
     spyOn(pubads, 'enableSingleRequest');
     spyOn(pubads, 'collapseEmptyDivs');
@@ -127,6 +127,9 @@ fdescribe('AdService', () => {
     });
     it('setPublisherProvidedId', () => {
       expect(pubads.setPublisherProvidedId).toHaveBeenCalled();
+    });
+    it('enableServices', () => {
+      expect(googletag.enableServices).toHaveBeenCalled();
     });
   });
 
