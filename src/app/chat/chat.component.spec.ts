@@ -182,18 +182,22 @@ describe('Component: Chat', () => {
 
   it('should set the conversationsLoaded value', () => {
     component.onLoaded({
+      loaded: false,
+      total: 0
+    });
+
+    expect(component.conversationsLoaded).toBeFalsy();
+    expect(component.conversationsTotal).toBe(0);
+    expect(component.chatLoaded).toBeTruthy();
+
+    component.onLoaded({
       loaded: true,
       total: 10
     });
 
     expect(component.conversationsLoaded).toBeTruthy();
     expect(component.conversationsTotal).toBe(10);
-    component.onLoaded({
-      loaded: false,
-      total: 0
-    });
-    expect(component.conversationsLoaded).toBeFalsy();
-    expect(component.conversationsTotal).toBe(0);
+    expect(component.chatLoaded).toBeTruthy();
   });
 
   describe('ngOnInit', () => {
