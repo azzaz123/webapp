@@ -22,6 +22,14 @@ window['googletag'] = {
   },
   pubads () {
     return {
+      defineSlot() {},
+      enableSingleRequest() {},
+      enableServices() {},
+      disableInitialLoad() {},
+      collapseEmptyDivs() {},
+      setPublisherProvidedId() {},
+      setTargeting () {},
+      refresh () {}
     };
   },
   display: (slotid: string) => {}
@@ -30,13 +38,16 @@ window['gtag'] = function() {};
 window['fbq'] = function() {};
 
 window['apstag'] = {
-  fetchBids () {}
+  fetchBids ({slots, timeout}, callback) { callback(); },
+  setDisplayBids() {}
 };
 
 window['Criteo'] = {
-  events: [],
+  events: {
+    push (callback) { callback(); }
+  },
   SetLineItemRanges() {},
-  RequestBids() {},
+  RequestBids(adunit, callback, timeout) { callback(); },
   SetDFPKeyValueTargeting() {},
 };
 
