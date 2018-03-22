@@ -29,7 +29,7 @@ export abstract class LeadService {
   public archivedLeads: Lead[] = [];
   public stream$: ReplaySubject<Lead[]> = new ReplaySubject(1);
   public archivedStream$: ReplaySubject<Lead[]> = new ReplaySubject(1);
-  public firstLoad: boolean = true;
+  public firstLoad: boolean;
 
   constructor(protected http: HttpService,
               protected userService: UserService,
