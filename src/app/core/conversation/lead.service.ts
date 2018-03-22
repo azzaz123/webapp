@@ -24,7 +24,7 @@ export abstract class LeadService {
 
   protected API_URL: string;
   protected ARCHIVE_URL: string;
-  protected PAGE_SIZE: number = 30;
+  protected PAGE_SIZE = 30;
   public leads: Lead[] = [];
   public archivedLeads: Lead[] = [];
   public stream$: ReplaySubject<Lead[]> = new ReplaySubject(1);

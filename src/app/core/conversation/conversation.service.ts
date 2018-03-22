@@ -32,8 +32,8 @@ export class ConversationService extends LeadService {
 
   protected API_URL = 'api/v3/conversations';
   protected ARCHIVE_URL = 'api/v3/conversations';
-  private PHONE_MESSAGE: string = 'Mi número de teléfono es';
-  private SURVEY_MESSAGE: string = 'Ya he respondido a tus preguntas';
+  private PHONE_MESSAGE = 'Mi número de teléfono es';
+  private SURVEY_MESSAGE = 'Ya he respondido a tus preguntas';
 
   private messagesObservable: Observable<Conversation[]>;
   public ended: boolean;
@@ -208,7 +208,7 @@ export class ConversationService extends LeadService {
   }
 
   public getConversationPage(id: string, archive?: boolean): number {
-    let index: number = (archive ? this.archivedLeads : this.leads).findIndex((conversation: Conversation) => {
+    const index: number = (archive ? this.archivedLeads : this.leads).findIndex((conversation: Conversation) => {
       return conversation.id === id;
     });
     if (index === -1) {
@@ -357,7 +357,7 @@ export class ConversationService extends LeadService {
     if (!this.firstLoad) {
       this.onNewMessage(message, updateDate);
     } else {
-      let interval: any = setInterval(() => {
+      const interval: any = setInterval(() => {
         if (!this.firstLoad) {
           clearInterval(interval);
           this.onNewMessage(message, updateDate);
@@ -405,8 +405,8 @@ export class ConversationService extends LeadService {
   }
 
   private onNewMessage(message: Message, updateDate: boolean) {
-    let conversation: Conversation = (<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId);
-    let messageToUpdate: Message = conversation ? conversation.messages.find((m: Message) => m.id === message.id) : null;
+    const conversation: Conversation = (<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId);
+    const messageToUpdate: Message = conversation ? conversation.messages.find((m: Message) => m.id === message.id) : null;
     if (updateDate && messageToUpdate) {
       messageToUpdate.date = message.date;
       this.persistencyService.updateMessageDate(message);
@@ -455,7 +455,7 @@ export class ConversationService extends LeadService {
   }
 
   private bumpConversation(conversation: Conversation) {
-    let index: number = this.leads.indexOf(conversation);
+    const index: number = this.leads.indexOf(conversation);
     if (index > 0) {
       this.leads.splice(index, 1);
       this.leads.unshift(conversation);
