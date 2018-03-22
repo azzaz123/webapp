@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { SuggesterResponse } from '../../../core/suggester/suggester-response.interface';
+import { SuggesterResponse } from './suggester-response.interface';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/switchMap';
-import { SuggesterService } from '../../../core/suggester/suggester.service';
+import { SuggesterService } from './suggester.service';
 
 @Component({
   selector: 'tsl-suggester',

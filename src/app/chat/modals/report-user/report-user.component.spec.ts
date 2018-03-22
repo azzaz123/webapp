@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../core/user/user.service';
-import { BanReason } from 'shield';
+import { BanReason } from '../../../core/item/ban-reason.interface';
 
 describe('ReportUserComponent', () => {
   let component: ReportUserComponent;

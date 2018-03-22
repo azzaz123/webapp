@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { HttpService, I18nService } from 'shield';
 import { environment } from '../../../environments/environment';
 import { CategoryConsumerGoodsResponse, CategoryOption, CategoryResponse } from './category-response.interface';
 import { IOption } from 'ng-select';
+import { HttpService } from '../http/http.service';
+import { I18nService } from '../i18n/i18n.service';
 
 @Injectable()
 export class CategoryService {

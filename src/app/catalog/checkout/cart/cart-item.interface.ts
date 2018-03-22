@@ -1,6 +1,6 @@
 import { Duration } from '../../../core/item/item-response.interface';
-import { Item } from 'shield';
 import { Cart } from './cart';
+import { Item } from '../../../core/item/item';
 
 export interface CartItem {
   item: Item;

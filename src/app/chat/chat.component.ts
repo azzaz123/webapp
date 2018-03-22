@@ -1,15 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  Conversation,
-  ConversationService,
-  EventService,
-  I18nService,
-  ItemService,
-  PersistencyService,
-  UserService,
-  XmppService
-} from 'shield';
 import { ToastrService } from 'ngx-toastr';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 import { ReportListingComponent } from './modals/report-listing/report-listing.component';
@@ -18,6 +8,14 @@ import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { AdService } from '../core/ad/ad.service';
+import { Conversation } from '../core/conversation/conversation';
+import { ConversationService } from '../core/conversation/conversation.service';
+import { ItemService } from '../core/item/item.service';
+import { I18nService } from '../core/i18n/i18n.service';
+import { UserService } from '../core/user/user.service';
+import { EventService } from '../core/event/event.service';
+import { XmppService } from '../core/xmpp/xmpp.service';
+import { PersistencyService } from '../core/persistency/persistency.service';
 
 @Component({
   selector: 'tsl-chat',
@@ -31,6 +29,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public conversationsTotal: number;
   public connectionError: boolean;
   public firstLoad: boolean;
+  public userWebSlug: string;
 
   constructor(private conversationService: ConversationService,
               private itemService: ItemService,
@@ -42,7 +41,8 @@ export class ChatComponent implements OnInit, OnDestroy {
               private eventService: EventService,
               public xmppService: XmppService,
               private persistencyService: PersistencyService,
-              private adService: AdService) {
+              private adService: AdService,
+              @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
   ngOnInit() {
@@ -78,6 +78,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     if (this.currentConversation) {
       this.currentConversation.active = true;
       this.conversationService.sendRead(this.currentConversation);
+      this.userWebSlug = this.currentConversation.user ? this.currentConversation.user.getUrl(this.subdomain) : null;
     }
 
     this.adService.startAdsRefresh();

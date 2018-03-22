@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import {
-  HttpService,
-  User
-} from 'shield';
 import { environment } from '../../../environments/environment';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/zip';
@@ -13,6 +9,8 @@ import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { AdKeyWords } from './ad.interface';
 import * as moment from 'moment';
+import { HttpService } from '../http/http.service';
+import { User } from '../user/user';
 
 @Injectable()
 export class AdService {

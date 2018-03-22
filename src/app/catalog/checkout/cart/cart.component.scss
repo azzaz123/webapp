@@ -1,4 +1,4 @@
-@import "../../../../style/_common.scss";
+@import "~style/common";
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
 $title-height: 65px;
@@ -159,16 +159,12 @@ ul, li {
   }
 }
 
-.btn-primary {
-  border-radius: $button-border-radius;
-  width: calc(100% - #{$button-margin * 2});
-  height: $button-height;
-  line-height: $button-height;
-  margin: $button-margin;
-  margin-top: 0;
-  padding: 0;
-  mat-icon {
-    margin-top: $spacing-XXS;
+tsl-button {
+  display: block;
+  /deep/ .btn {
+    width: calc(100% - #{$button-margin * 2});
+    margin: $button-margin;
+    margin-top: 0;
   }
 }
 

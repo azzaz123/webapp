@@ -1,9 +1,8 @@
 import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FinancialCard, Item, ItemBulkResponse, PaymentService } from 'shield';
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import { ItemsData } from '../../core/item/item-response.interface';
+import { ItemBulkResponse, ItemsData, Order, Product } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -18,6 +17,10 @@ import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
 import { UserStatsResponse } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
+import { Item } from '../../core/item/item';
+import { PaymentService } from '../../core/payments/payment.service';
+import { FinancialCard } from '../../core/payments/payment.interface';
+import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 
 @Component({
   selector: 'tsl-list',
@@ -37,6 +40,8 @@ export class ListComponent implements OnInit, OnDestroy {
   private active: boolean = true;
   private firstItemLoad = true;
   public numberOfProducts: number;
+  public isUrgent: boolean = false;
+  public isRedirect: boolean = false;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
@@ -63,13 +68,31 @@ export class ListComponent implements OnInit, OnDestroy {
         this.getItems();
       });
       this.route.params.subscribe((params: any) => {
+        if(!params.urgent) {
+          this.setRedirectToTPV(false);
+        }
         if (params && params.code) {
-          const modalRef: NgbModalRef = this.modalService.open(BumpConfirmationModalComponent, {
-            windowClass: 'bump-confirm',
+          const modals = {
+            urgent: {
+              component: UrgentConfirmationModalComponent,
+              windowClass: 'urgent-confirm',
+            },
+            bump: {
+              component: BumpConfirmationModalComponent,
+              windowClass: 'bump-confirm'
+            }
+          };
+          const modalType = localStorage.getItem('transactionType');
+          const modal = modalType ? modals[modalType] : modals.bump;
+
+          let modalRef: NgbModalRef = this.modalService.open(modal.component, {
+            windowClass: modal.windowClass,
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
           modalRef.result.then(() => {
+            modalRef = null;
+            localStorage.removeItem('transactionType');
             this.router.navigate(['catalog/list']);
           }, () => {
           });
@@ -78,15 +101,27 @@ export class ListComponent implements OnInit, OnDestroy {
           this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
             windowClass: 'upload',
           });
-          this.uploadModalRef.result.then(() => {
-            const newItem: Item = this.items[0];
-            this.itemService.selectedAction = 'feature';
-            newItem.selected = true;
-            this.itemService.selectItem(newItem.id);
+          this.uploadModalRef.result.then((orderEvent: OrderEvent) => {
+            this.uploadModalRef = null;
+            if (orderEvent) {
+              this.isUrgent = true;
+              this.isRedirect = !this.getRedirectToTPV();
+              this.feature(orderEvent);
+            }
           }, () => {
           });
+        } else if (params && params.urgent) {
+            this.isUrgent = true;
+            this.isRedirect = !this.getRedirectToTPV();
+            if (!this.getRedirectToTPV()) {
+              setTimeout(() => {
+                this.getUrgentPrice(params.itemId);
+              }, 3000);
+            }
         } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
+        } else if (params && params.createdOnHold) {
+          this.errorService.i18nError('productCreated', ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.');
         }
       });
     });
@@ -136,6 +171,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.end = !this.init;
       if (this.uploadModalRef) {
         this.uploadModalRef.componentInstance.item = this.items[0];
+        this.uploadModalRef.componentInstance.urgentPrice();
       }
       if (this.firstItemLoad) {
         setTimeout(() => {
@@ -218,6 +254,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
           this.chooseCreditCard(orderId, orderEvent.total, financialCard);
         }, () => {
+          this.setRedirectToTPV(true);
           this.sabadellSubmit.emit(orderId);
         });
       }
@@ -237,7 +274,16 @@ export class ListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.total = total;
     this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
     modalRef.result.then((result: string) => {
-      if (result === 'new') {
+      if (result === undefined) {
+        this.isUrgent = false;
+        localStorage.removeItem('transactionType');
+        this.isRedirect = !this.getRedirectToTPV();
+        this.deselect();
+        setTimeout(() => {
+          this.router.navigate(['catalog/list']);
+        }, 1000);
+      } else if (result === 'new') {
+        this.setRedirectToTPV(true);
         this.sabadellSubmit.emit(orderId);
       } else {
         this.paymentService.pay(orderId).subscribe(() => {
@@ -262,4 +308,28 @@ export class ListComponent implements OnInit, OnDestroy {
       this.numberOfProducts = userStats.counters.publish;
     });
   }
+
+  private getUrgentPrice(itemId: string): void {
+    this.itemService.getUrgentProducts(itemId).subscribe((product: Product) => {
+      const order: Order[] = [{
+        item_id: itemId,
+        product_id: product.durations[0].id
+      }];
+      const orderEvent: OrderEvent = {
+        order: order,
+        total: +product.durations[0].market_code
+      };
+      this.feature(orderEvent);
+    });
+  }
+
+  private setRedirectToTPV(state: boolean): void {
+    localStorage.setItem('redirectToTPV', state.toString());
+    this.isRedirect = state;
+  }
+
+  private getRedirectToTPV(): boolean {
+    return localStorage.getItem('redirectToTPV') === 'true';
+  }
+
 }

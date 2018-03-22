@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpService, NavigatorService, TrackingService as TrackingServiceMaster, WindowRef } from 'shield';
 import { UUID } from 'angular2-uuid';
 import * as CryptoJS from 'crypto-js';
 import { TrackingEvent } from './tracking-event';
@@ -8,6 +7,9 @@ import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
 import { CookieService } from 'ngx-cookie/index';
+import { HttpService } from '../http/http.service';
+import { NavigatorService } from './navigator.service';
+import { WindowRef } from '../window/window.service';
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -55,7 +57,7 @@ const TYPES_IDS: any = {
 };
 
 @Injectable()
-export class TrackingService extends TrackingServiceMaster {
+export class TrackingService {
 
   public static CONVERSATION_LIST_ACTIVE_LOADED: TrackingEventBase = {
     name: '351',
@@ -201,6 +203,18 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.Log,
     type: TYPES_IDS.Error
   };
+  public static URGENT_PURCHASE_SUCCESS: TrackingEventBase = {
+    name: '660',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Success
+  };
+  public static URGENT_PURCHASE_ERROR: TrackingEventBase = {
+    name: '661',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Error
+  };
   public static CONVERSATION_CREATE_NEW: TrackingEventBase = {
     name: '121',
     category: CATEGORY_IDS.Conversations,
@@ -333,6 +347,18 @@ export class TrackingService extends TrackingServiceMaster {
     screen: SCREENS_IDS.UploadForm,
     type: TYPES_IDS.Tap
   };
+  public static UPLOADFORM_URGENT: TrackingEventBase = {
+    name: '638',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Success
+  };
+  public static UPLOADFORM_CHECKBOX_URGENT: TrackingEventBase = {
+    name: '639',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.UploadForm,
+    type: TYPES_IDS.Tap
+  };
   public static MYCATALOG_EDITITEM: TrackingEventBase = {
     name: '612',
     category: CATEGORY_IDS.Button,
@@ -430,7 +456,6 @@ export class TrackingService extends TrackingServiceMaster {
               private userService: UserService,
               private winRef: WindowRef,
               private cookieService: CookieService) {
-    super();
     this.setSessionStartTime();
     this.setSessionId(this.sessionIdCookieName);
     this.setDeviceAccessTokenId(this.deviceAccessTokenIdCookieName);

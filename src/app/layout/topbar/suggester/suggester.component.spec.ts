@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuggesterComponent } from './suggester.component';
-import { SuggesterService } from '../../../core/suggester/suggester.service';
-import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures';
+import { SuggesterService } from './suggester.service';
+import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../../../core/event/event.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

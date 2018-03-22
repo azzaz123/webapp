@@ -1,15 +1,4 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import {
-  createItemsArray,
-  FINANCIAL_CARD,
-  Item,
-  ITEMS_BULK_RESPONSE,
-  ITEMS_BULK_RESPONSE_FAILED,
-  MOCK_ITEM,
-  MockTrackingService,
-  PaymentService
-} from 'shield';
-
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
@@ -21,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
-import { ORDER, ORDER_EVENT } from '../../../tests/item.fixtures';
+import {createItemsArray, ITEMS_BULK_RESPONSE, ITEMS_BULK_RESPONSE_FAILED, MOCK_ITEM, ORDER, ORDER_EVENT , PRODUCT_RESPONSE} from '../../../tests/item.fixtures.spec';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
@@ -30,7 +19,12 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures';
+import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures.spec';
+import { PaymentService } from '../../core/payments/payment.service';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { Item } from '../../core/item/item';
+import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
+import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -45,7 +39,7 @@ describe('ListComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let errorService: ErrorsService;
-  let componentInstance: any = {};
+  let componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   const routerEvents: Subject<any> = new Subject();
@@ -71,6 +65,8 @@ describe('ListComponent', () => {
           purchaseProducts() {
           },
           selectItem() {
+          },
+          getUrgentProducts() {
           }
         }
         },
@@ -129,7 +125,8 @@ describe('ListComponent', () => {
               return Observable.of(USERS_STATS_RESPONSE);
             }
           }
-        }],
+        },
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -157,14 +154,18 @@ describe('ListComponent', () => {
   describe('ngOnInit', () => {
     it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');
+      spyOn(localStorage, 'getItem').and.returnValue('bump');
+      spyOn(localStorage, 'removeItem');
       component.ngOnInit();
       tick();
       expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
         windowClass: 'bump-confirm',
         backdrop: 'static'
       });
-      expect(router.navigate).toHaveBeenCalledWith(['catalog/list'])
+      expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
+      expect(localStorage.removeItem).toHaveBeenCalled();
     }));
+
     it('should reset page on router event', fakeAsync(() => {
       spyOn<any>(component, 'getItems');
       component['init'] = 40;
@@ -177,17 +178,22 @@ describe('ListComponent', () => {
       expect(component.end).toBeFalsy();
       expect(component['getItems']).toHaveBeenCalledTimes(2);
     }));
+
     it('should open upload confirmation modal', fakeAsync(() => {
-      spyOn(itemService, 'selectItem');
+      spyOn(component, 'feature');
+      spyOn(localStorage, 'getItem').and.returnValue('false');
       route.params = Observable.of({
         created: true
       });
+
+      component.feature(ORDER_EVENT);
       component.ngOnInit();
       tick();
+
       expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, {windowClass: 'upload'});
-      expect(itemService.selectedAction).toBe('feature');
-      expect(itemService.selectItem).toHaveBeenCalledWith(component.items[0].id);
-      expect(component.items[0].selected).toBeTruthy();
+      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
+      expect(component.isUrgent).toBe(false);
+      expect(component.isRedirect).toBe(false);
     }));
 
     it('should open toastr', fakeAsync(() => {
@@ -198,6 +204,73 @@ describe('ListComponent', () => {
       component.ngOnInit();
       tick();
       expect(errorService.i18nSuccess).toHaveBeenCalledWith('itemUpdated');
+    }));
+
+    it('should feature order', fakeAsync(() => {
+      spyOn(itemService, 'getUrgentProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+      spyOn(localStorage, 'getItem').and.returnValue('false');
+      spyOn(component, 'feature');
+      route.params = Observable.of({
+        urgent: true,
+        itemId: MOCK_ITEM.id
+      });
+
+      component.ngOnInit();
+      tick(3000);
+
+      expect(component.isUrgent).toBe(true);
+      expect(component.isRedirect).toBe(true);
+      expect(localStorage.getItem).toHaveBeenCalledWith('redirectToTPV');
+      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
+    }));
+
+    it('should set the redirect to false if it is not urgent', fakeAsync(() => {
+      spyOn(localStorage, 'setItem');
+      route.params = Observable.of({
+        urgent: false
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(component.isRedirect).toBe(false);
+      expect(localStorage.setItem).toHaveBeenCalledWith('redirectToTPV', 'false');
+    }));
+
+    it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('urgent');
+      spyOn(localStorage, 'removeItem');
+      route.params = Observable.of({
+        code: 200
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
+      expect(modalService.open).toHaveBeenCalledWith(UrgentConfirmationModalComponent, {
+        windowClass: 'urgent-confirm',
+        backdrop: 'static'
+      });
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
+    }));
+
+    it('should open the bump modal if transaction is set as bump', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('bump');
+      spyOn(localStorage, 'removeItem');
+      route.params = Observable.of({
+        code: 200
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'bump-confirm',
+        backdrop: 'static'
+      });
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
   });
 
@@ -229,13 +302,17 @@ describe('ListComponent', () => {
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
-    it('should set item to upload modal', () => {
+    it('should set item to upload modal and call urgentPrice', fakeAsync(() => {
       component['uploadModalRef'] = <any>{
         componentInstance: componentInstance
       };
+
       component.ngOnInit();
+      tick();
+
       expect(component['uploadModalRef'].componentInstance.item).toEqual(component.items[0]);
-    });
+      expect(component['uploadModalRef'].componentInstance.urgentPrice).toHaveBeenCalled();
+    }));
   });
 
   describe('filterByStatus', () => {
@@ -504,6 +581,20 @@ describe('ListComponent', () => {
             });
           });
         });
+        describe('user closes modal', () => {
+          beforeEach(fakeAsync(() => {
+            spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
+            spyOn(router, 'navigate');
+            component.feature({
+              order: [ORDER],
+              total: 10
+            });
+            tick(1000);
+          }));
+          it('should redirect without code', () => {
+            expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
+          });
+        });
         afterEach(() => {
           it('should open modal', () => {
             expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
@@ -545,7 +636,7 @@ describe('ListComponent', () => {
     });
 
     describe('getNumberOfProducts', () => {
-      beforeEach(() => {        
+      beforeEach(() => {
         spyOn(component, 'getNumberOfProducts').and.callThrough();
         spyOn(userService, 'getStats').and.callThrough();
       });

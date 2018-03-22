@@ -2,22 +2,25 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { DropAreaComponent } from './drop-area.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ITEM_ID, IMAGE } from 'shield';
 import { UploadService } from './upload.service';
 import {
   CAR_ID,
-  UPLOAD_FILE, UPLOAD_FILE_DONE, UPLOAD_FILE_ID,
+  UPLOAD_FILE,
+  UPLOAD_FILE_DONE,
   UPLOAD_FILE_NAME,
-  UPLOADED_FILE_FIRST, UPLOADED_FILE_FIRST_ITEM,
+  UPLOADED_FILE_FIRST,
+  UPLOADED_FILE_FIRST_ITEM,
   UPLOADED_FILE_OTHER
-} from '../../../../tests/upload.fixtures';
-import { UploadFile, UploadStatus } from 'ngx-uploader';
+} from '../../../../tests/upload.fixtures.spec';
+import { UploadFile } from 'ngx-uploader';
 import { ItemService } from '../../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
-import { PICTURE_ID } from '../../../../tests/item.fixtures';
+import { ITEM_ID, PICTURE_ID } from '../../../../tests/item.fixtures.spec';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { IMAGE } from '../../../../tests/user.fixtures.spec';
+import { UploadedEvent } from '../upload-event.interface';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;
@@ -97,13 +100,17 @@ describe('DropAreaComponent', () => {
   describe('ngOnInit', () => {
     it('should set 4 placehodlers', () => {
       fixture.detectChanges();
+
       expect(component.placeholders.length).toBe(4);
     });
+
     it('should set 8 placehodlers', () => {
       component.maxUploads = 8;
       fixture.detectChanges();
+
       expect(component.placeholders.length).toBe(8);
     });
+
     it('should subscribe to uploadEvent and call createItemWithFirstImage', () => {
       const VALUES = {
         test: 'test'
@@ -111,31 +118,34 @@ describe('DropAreaComponent', () => {
       component.files = [UPLOAD_FILE];
       spyOn(uploadService, 'createItemWithFirstImage');
       fixture.detectChanges();
+
       component.uploadEvent.emit({
         type: 'create',
         values: VALUES
       });
+
       expect(uploadService.createItemWithFirstImage).toHaveBeenCalledWith(VALUES, UPLOAD_FILE);
     });
 
     it('should call update if event is update and emit updated event', () => {
-      let event: string;
+      let event: UploadedEvent;
       const VALUES = {
         test: 'test'
       };
-      spyOn(itemService, 'update').and.callThrough();
-      component.onUploaded.subscribe((value: string) => {
+      const response = 'a response';
+      spyOn(itemService, 'update').and.returnValue(Observable.of(response));
+      component.onUploaded.subscribe((value: UploadedEvent) => {
         event = value;
       });
-
       fixture.detectChanges();
+
       component.uploadEvent.emit({
         type: 'update',
         values: VALUES
       });
 
       expect(itemService.update).toHaveBeenCalledWith(VALUES);
-      expect(event).toBe('updated');
+      expect(event).toEqual( { action: 'updated', response: response } );
     });
 
     it('should throw error if update has errors from server', () => {
@@ -151,8 +161,8 @@ describe('DropAreaComponent', () => {
       component.onError.subscribe((value: any) => {
         event = value;
       });
-
       fixture.detectChanges();
+
       component.uploadEvent.emit({
         type: 'update',
         values: VALUES
@@ -168,7 +178,9 @@ describe('DropAreaComponent', () => {
     it('should set propagateChange', () => {
       const FUNC: Function = () => {
       };
+
       component.registerOnChange(FUNC);
+
       expect(component.propagateChange).toBe(FUNC);
     });
   });
@@ -176,10 +188,12 @@ describe('DropAreaComponent', () => {
   describe('onUploadOutput', () => {
     it('should add file if event addedToQueue', () => {
       spyOn(component, 'propagateChange');
+
       component.onUploadOutput({
         type: 'addedToQueue',
         file: UPLOAD_FILE
       });
+
       expect(component.files[0]).toEqual(UPLOAD_FILE);
       expect(component.propagateChange).toHaveBeenCalledWith(component.files);
       component.onUploadOutput({
@@ -207,67 +221,87 @@ describe('DropAreaComponent', () => {
       let fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
       fileUploaded.progress.data.percentage = 100;
       component.files = [UPLOAD_FILE];
+
       component.onUploadOutput({
         type: 'uploading',
         file: fileUploaded
       });
+
       expect(component.files[0].progress.data.percentage).toBe(100);
     });
+
     it('should remove the file if event removed', () => {
       spyOn(component, 'propagateChange');
       component.files = [UPLOAD_FILE];
+
       component.onUploadOutput({
         type: 'removed',
         file: UPLOAD_FILE
       });
+
       expect(component.files.length).toBe(0);
       expect(component.propagateChange).toHaveBeenCalledWith(component.files);
     });
+
     it('should set dragOver if event dragOver', () => {
       component.onUploadOutput({
         type: 'dragOver'
       });
+
       expect(component.dragOver).toBeTruthy();
     });
+
     it('should set dragOver if event dragOut', () => {
       component.onUploadOutput({
         type: 'dragOut'
       });
+
       expect(component.dragOver).toBeFalsy();
     });
+
     it('should set dragOver if event drop', () => {
       component.onUploadOutput({
         type: 'drop'
       });
+
       expect(component.dragOver).toBeFalsy();
     });
+
     it('should call onUploadDone if event done', () => {
       spyOn<any>(component, 'onUploadDone');
+
       component.onUploadOutput({
         type: 'done',
         file: UPLOADED_FILE_FIRST
       });
+
       expect(component['onUploadDone']).toHaveBeenCalledWith({
         type: 'done',
         file: UPLOADED_FILE_FIRST
       });
     });
+
     it('should call errorsService if event rejected', () => {
       spyOn(errorsService, 'i18nError');
+
       component.onUploadOutput({
         type: 'rejected',
         file: UPLOAD_FILE,
         reason: 'reason'
       });
+
       expect(errorsService.i18nError).toHaveBeenCalledWith('reason', UPLOAD_FILE_NAME);
     });
+
     it('should set files if event orderUpdated', () => {
       component.onUploadOutput({
         type: 'orderUpdated',
         files: [UPLOAD_FILE, UPLOAD_FILE]
       });
+
       expect(component.files).toEqual([UPLOAD_FILE, UPLOAD_FILE]);
     });
+
     it('should set initial files if there are images and event is ready', fakeAsync(() => {
       component.images = [IMAGE, IMAGE];
       spyOn(uploadService, 'setInitialImages');
@@ -299,69 +333,103 @@ describe('DropAreaComponent', () => {
             it('should set itemId and call uploadOtherImages', () => {
               component.files = [UPLOAD_FILE, UPLOAD_FILE];
               spyOn(uploadService, 'uploadOtherImages');
+
               component['onUploadDone']({
                 type: 'done',
                 file: UPLOADED_FILE_FIRST_ITEM
               });
+
               expect(component['itemId']).toBe(ITEM_ID);
               expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(ITEM_ID, '');
             });
           });
+
           describe('car item', () => {
-            it('should set itemId and call uploadOtherImages', () => {
+            it('should set itemId, item and call uploadOtherImages', () => {
               component.files = [UPLOAD_FILE, UPLOAD_FILE];
               component.maxUploads = 8;
               spyOn(uploadService, 'uploadOtherImages');
+
               component['onUploadDone']({
                 type: 'done',
                 file: UPLOADED_FILE_FIRST
               });
+              expect(component['item']).toEqual(UPLOADED_FILE_FIRST.response);
               expect(component['itemId']).toBe(CAR_ID);
               expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(CAR_ID, '/cars');
             });
           });
         });
+
         describe('with only one image', () => {
           it('should set itemId and emit onUploaded event', () => {
-            let response: string;
+            let event: UploadedEvent;
             component.files = [UPLOAD_FILE];
-            component.onUploaded.subscribe((r: string) => {
-              response = r;
+            component.onUploaded.subscribe((r: UploadedEvent) => {
+              event = r;
             });
+
             component['onUploadDone']({
               type: 'done',
               file: UPLOADED_FILE_FIRST
             });
+
             expect(component['itemId']).toBe(CAR_ID);
-            expect(response).toEqual('created');
+            expect(event).toEqual( { action: 'created', response: UPLOADED_FILE_FIRST.response });
+          });
+          it('should set item with hold true flag and call createOnHold event', () => {
+            let event: UploadedEvent;
+            let fileOnHold: UploadFile = UPLOADED_FILE_FIRST;
+            fileOnHold.response.flags['onhold'] = true;
+            component.files = [UPLOAD_FILE];
+
+            component.onUploaded.subscribe((r: UploadedEvent) => {
+              event = r;
+            });
+            component['onUploadDone']({
+              type: 'done',
+              file: fileOnHold
+            });
+
+            expect(component['itemId']).toBe(CAR_ID);
+            expect(component['item']).toEqual(UPLOADED_FILE_FIRST.response);
+            expect(event).toEqual({ action: 'createdOnHold', response: '' });
           });
         });
       });
+
       describe('other image upload', () => {
         it('should emit onUploaded event if every file has been uploaded', () => {
-          let response: string;
+          let event: UploadedEvent;
           component.files = [UPLOAD_FILE_DONE, UPLOAD_FILE_DONE, UPLOAD_FILE_DONE];
-          component.onUploaded.subscribe((r: string) => {
-            response = r;
+          component.onUploaded.subscribe((r: UploadedEvent) => {
+            event = r;
           });
+          component.item = UPLOAD_FILE_DONE.response;
+
           component['onUploadDone']({
             type: 'done',
             file: UPLOADED_FILE_OTHER
           });
-          expect(response).toEqual('created');
+
+          expect(event).toEqual( { action: 'created', response: UPLOADED_FILE_OTHER.response });
         });
+
         it('should NOT emit onUploaded event if not every file has been uploaded', () => {
-          let response: string;
+          let response: UploadedEvent;
           component.files = [UPLOAD_FILE, UPLOAD_FILE, UPLOAD_FILE_DONE];
-          component.onUploaded.subscribe((r: string) => {
+          component.onUploaded.subscribe((r: UploadedEvent) => {
             response = r;
           });
+
           component['onUploadDone']({
             type: 'done',
             file: UPLOADED_FILE_OTHER
           });
+
           expect(response).toBeUndefined();
         });
+
         it('should update files if picture has been uploaded on edit mode', () => {
           component.images = [IMAGE, IMAGE];
           component.files = [UPLOAD_FILE_DONE, UPLOAD_FILE_DONE, UPLOAD_FILE_DONE];
@@ -379,6 +447,7 @@ describe('DropAreaComponent', () => {
         });
       });
     });
+
     describe('with error response', () => {
       it('should call i18nError', () => {
         let fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
@@ -391,23 +460,28 @@ describe('DropAreaComponent', () => {
         component.onError.subscribe(() => {
           event = true
         });
+
         component['onUploadDone']({
           type: 'done',
           file: fileUploaded
         });
+
         expect(errorsService.i18nError).toHaveBeenCalledWith('serverError', 'error');
         expect(event).toBeTruthy()
       });
+
       it('should call i18nError event if no error message', () => {
         let event: boolean;
         spyOn(errorsService, 'i18nError');
         component.onError.subscribe(() => {
           event = true;
         });
+
         component['onUploadDone']({
           type: 'done',
           file: UPLOAD_FILE
         });
+
         expect(errorsService.i18nError).toHaveBeenCalledWith('serverError');
         expect(event).toBeTruthy();
       });
@@ -417,7 +491,9 @@ describe('DropAreaComponent', () => {
   describe('remove', () => {
     it('should call removeImage', () => {
       spyOn(uploadService, 'removeImage');
+
       component.remove(UPLOAD_FILE, new Event(''));
+
       expect(uploadService.removeImage).toHaveBeenCalledWith(UPLOAD_FILE);
     });
 
@@ -441,7 +517,9 @@ describe('DropAreaComponent', () => {
     it('should call removeImage', () => {
       spyOn(uploadService, 'updateOrder');
       component.files = [UPLOAD_FILE_DONE, UPLOAD_FILE_DONE];
+
       component.updateOrder();
+
       expect(uploadService.updateOrder).toHaveBeenCalledWith(component.files);
     });
 

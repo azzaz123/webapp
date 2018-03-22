@@ -1,44 +1,110 @@
 import { Injectable } from '@angular/core';
-import { RequestOptions, Response, Headers } from '@angular/http';
+import { HttpService } from '../http/http.service';
+import { FAKE_ITEM_IMAGE_BASE_PATH, Item } from './item';
+import { ResourceService } from '../resource/resource.service';
 import {
-  EventService,
-  HttpService,
-  I18nService,
-  Item,
-  ItemBulkResponse,
-  ItemService as ItemServiceMaster,
-  UserService
-} from 'shield';
-import {
+  AllowedActionResponse,
   AvailableProductsResponse,
   CarContent,
-  ConversationUser, ItemContent, ItemResponse, ItemsData, ItemWithProducts,
-  ItemsWithAvailableProductsResponse, Order, Product, Purchase,
-  SelectedItemsAction, ProductDurations, Duration, AllowedActionResponse
+  ConversationUser,
+  Duration,
+  ItemBulkResponse,
+  ItemContent,
+  ItemCounters,
+  ItemResponse,
+  ItemsData,
+  ItemsStore,
+  ItemsWithAvailableProductsResponse,
+  ItemWithProducts,
+  Order,
+  Product,
+  ProductDurations,
+  Purchase,
+  SelectedItemsAction
 } from './item-response.interface';
-import { Observable } from 'rxjs/Observable';
-import { ITEM_BAN_REASONS } from './ban-reasons';
+import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { UUID } from 'angular2-uuid';
+import { I18nService } from '../i18n/i18n.service';
+import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
+import { EventService } from '../event/event.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/do';
+import { UserService } from '../user/user.service';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Car } from './car';
+import { ITEM_BAN_REASONS } from './ban-reasons';
+import { UUID } from 'angular2-uuid';
 
 @Injectable()
-export class ItemService extends ItemServiceMaster {
+export class ItemService extends ResourceService {
 
-  protected API_URL_V2: string = 'api/v3/items';
-  private API_URL_WEB: string = 'api/v3/web/items';
-  private API_URL_v3_USER: string = 'api/v3/users';
+  protected API_URL = 'api/v3/items';
+  private API_URL_WEB = 'api/v3/web/items';
+  private API_URL_USER = 'api/v3/users';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
+  private banReasons: BanReason[] = null;
+  protected items: ItemsStore = {
+    active: [],
+    sold: []
+  };
+  public selectedItems: string[] = [];
 
   constructor(http: HttpService,
-              i18n: I18nService,
-              trackingService: TrackingService,
-              eventService: EventService,
-              userService: UserService) {
-    super(http, i18n, trackingService, eventService, userService);
+              private i18n: I18nService,
+              private trackingService: TrackingService,
+              private eventService: EventService,
+              private userService: UserService) {
+    super(http);
+  }
+
+  public getFakeItem(id: string): Item {
+    let fakeItem: Item = new Item(id, 1, '1', 'No disponible');
+    fakeItem.setFakeImage(FAKE_ITEM_IMAGE_BASE_PATH);
+    return fakeItem;
+  }
+
+  public getCounters(id: string): Observable<ItemCounters> {
+    return this.http.get(this.API_URL + '/' + id + '/counters')
+    .map((r: Response) => r.json())
+    .catch(() => Observable.of({views: 0, favorites: 0}));
+  }
+
+  public bulkDelete(type: string): Observable<ItemBulkResponse> {
+    return this.http.put(this.API_URL + '/delete', {
+      ids: this.selectedItems
+    })
+    .map((r: Response) => r.json())
+    .do((response: ItemBulkResponse) => {
+      response.updatedIds.forEach((id: string) => {
+        let index: number = _.findIndex(this.items[type], {'id': id});
+        this.items[type].splice(index, 1);
+      });
+      this.deselectItems();
+    });
+  }
+
+  public deselectItems() {
+    this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_UNSELECTED, {product_ids: this.selectedItems.join(', ')});
+    this.selectedItems = [];
+    this.items.active.map((item: Item) => {
+      item.selected = false;
+    });
+    this.items.sold.map((item: Item) => {
+      item.selected = false;
+    });
+  }
+
+  public getBanReasons(): Observable<BanReason[]> {
+    if (!this.banReasons) {
+      this.banReasons = this.i18n.getTranslations('reportListingReasons');
+    }
+    return Observable.of(this.banReasons);
   }
 
   public selectItem(id: string) {
@@ -133,7 +199,7 @@ export class ItemService extends ItemServiceMaster {
                        comments: string,
                        reason: number,
                        conversationId: number): Observable<any> {
-    return this.http.post(this.API_URL_V3 + '/' + itemId + '/report', {
+    return this.http.post(this.API_URL + '/' + itemId + '/report', {
       comments: comments,
       reason: ITEM_BAN_REASONS[reason]
     });
@@ -193,7 +259,7 @@ export class ItemService extends ItemServiceMaster {
   }
 
   public myFavorites(init: number): Observable<ItemsData> {
-    return this.getPaginationItems(this.API_URL_v3_USER + '/me/items/favorites', init)
+    return this.getPaginationItems(this.API_URL_USER + '/me/items/favorites', init)
     .map((itemsData: ItemsData) => {
       itemsData.data = itemsData.data.map((item: Item) => {
         item.favorited = true;
@@ -204,38 +270,38 @@ export class ItemService extends ItemServiceMaster {
   }
 
   public deleteItem(id: string): Observable<any> {
-    return this.http.delete(this.API_URL_V3 + '/' + id);
+    return this.http.delete(this.API_URL + '/' + id);
   }
 
   public reserveItem(id: string, reserve: boolean): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + id + '/reserve', {
+    return this.http.put(this.API_URL + '/' + id + '/reserve', {
       reserved: reserve
     });
   }
 
   public reactivateItem(id: string): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + id + '/reactivate');
+    return this.http.put(this.API_URL + '/' + id + '/reactivate');
   }
 
   public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + id + '/favorite', {
+    return this.http.put(this.API_URL + '/' + id + '/favorite', {
       favorited: favorited
     });
   }
 
   public bulkReserve(): Observable<ItemBulkResponse> {
-    return this.http.put(this.API_URL_V3 + '/reserve', {
+    return this.http.put(this.API_URL + '/reserve', {
       ids: this.selectedItems
     })
     .map((r: Response) => r.json());
   }
 
   public soldOutside(id: string): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + id + '/sold');
+    return this.http.put(this.API_URL + '/' + id + '/sold');
   }
 
   public getConversationUsers(id: string): Observable<ConversationUser[]> {
-    return this.http.get(this.API_URL_V3 + '/' + id + '/conversation-users')
+    return this.http.get(this.API_URL + '/' + id + '/conversation-users')
     .map((r: Response) => r.json());
   }
 
@@ -263,16 +329,16 @@ export class ItemService extends ItemServiceMaster {
 
   public update(item: any): Observable<any> {
     const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
-    return this.http.put(this.API_URL_V3 + (item.category_id === '100' ? '/cars/' : '/') + item.id, item, options)
+    return this.http.put(this.API_URL + (item.category_id === '100' ? '/cars/' : '/') + item.id, item, options)
     .map((r: Response) => r.json());
   }
 
   public deletePicture(itemId: string, pictureId: string): Observable<any> {
-    return this.http.delete(this.API_URL_V3 + '/' + itemId + '/picture/' + pictureId);
+    return this.http.delete(this.API_URL + '/' + itemId + '/picture/' + pictureId);
   }
 
   public get(id: string): Observable<Item> {
-    return this.http.get(this.API_URL_V3 + `/${id}`)
+    return this.http.get(this.API_URL + `/${id}`)
     .map((r: Response) => r.json())
     .map((r: any) => this.mapRecordData(r))
     .catch(() => {
@@ -281,7 +347,7 @@ export class ItemService extends ItemServiceMaster {
   }
 
   public updatePicturesOrder(itemId: string, picturesOrder: { [fileId: string]: number }): Observable<any> {
-    return this.http.put(this.API_URL_V3 + '/' + itemId + '/change-picture-order', {
+    return this.http.put(this.API_URL + '/' + itemId + '/change-picture-order', {
       pictures_order: picturesOrder
     });
   }
@@ -302,7 +368,7 @@ export class ItemService extends ItemServiceMaster {
   }
 
   private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
-    return this.http.get(this.API_URL_V3 + `/${id}/actions-allowed`)
+    return this.http.get(this.API_URL + `/${id}/actions-allowed`)
     .map((r: Response) => r.json());
   }
 
@@ -335,4 +401,20 @@ export class ItemService extends ItemServiceMaster {
     return _.find(product.durations, {duration: duration});
   }
 
+  public getUrgentProducts(itemId: string): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/' + itemId + '/available-urgent-products')
+    .map((r: Response) => r.json())
+    .map((response: AvailableProductsResponse) => response.products[0]);
+  }
+
+  public getUrgentProductByCategoryId(categoryId: number): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/available-urgent-products', {
+      categoryId: categoryId
+    })
+      .map((r: Response) => r.json())
+      .map((response: AvailableProductsResponse) => response.products[0]);
+  }
+
 }
+
+

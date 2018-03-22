@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LocationModalComponent } from './location-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { USER_LOCATION_COORDINATES } from '../../../../../tests/user.fixtures';
+import { USER_LOCATION_COORDINATES } from '../../../../../tests/user.fixtures.spec';
 import { DEFAULT_COORDINATES, MAP_ZOOM_GENERAL, MAP_ZOOM_MARKER } from '../../here-maps/here-maps.component';
 
 describe('LocationModalComponent', () => {

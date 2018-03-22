@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+mat-icon {
+  height: 14px;
+  width: 15px;
+  margin-right: 7px;
+  display: inline-flex;
+  /deep/ #images {
+    &:not(:root:root) {
+      fill: #FFD300;
+    }
+  }
+}

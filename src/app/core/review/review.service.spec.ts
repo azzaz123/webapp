@@ -1,18 +1,16 @@
 import { TestBed } from '@angular/core/testing';
+
 import { ReviewService } from './review.service';
-import { HttpService, TEST_HTTP_PROVIDERS } from 'shield';
-import { Observable } from "rxjs/Observable";
-import { ReviewsData } from "./review-response.interface";
-import { REVIEWS_RESPONSE, MOCK_REVIEWS } from "../../../tests/review.fixtures";
-import { Response, ResponseOptions, Headers } from '@angular/http';
+import { HttpService } from '../http/http.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
+import { REVIEW_DATA_BUYER, REVIEW_DATA_SELLER } from '../../../tests/review.fixtures.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+
+let service: ReviewService;
+let http: HttpService;
 
 describe('ReviewService', () => {
-
-  let service: ReviewService;
-  let http : HttpService;
-  const API_URL_v3_USER: string = 'api/v3/users/me/reviews';
-  const init: number = 1;
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -24,27 +22,45 @@ describe('ReviewService', () => {
     http = TestBed.get(HttpService);
   });
 
-  describe('getPaginationReviews', () => {
-    let resp: ReviewsData;
+  it('should instanciate', () => {
+    expect(service).toBeTruthy();
+  });
 
-    beforeEach(() => {
-      const res: ResponseOptions = new ResponseOptions({
-        body: JSON.stringify(REVIEWS_RESPONSE),
-        headers: new Headers({'x-nextpage': 'init=1'})
+  describe('check', () => {
+    it('should call endpoint and return true', () => {
+      let bool: boolean;
+      spyOn(http, 'head').and.returnValue(Observable.of({}));
+      service.check('1').subscribe((check: boolean) => {
+        bool = check;
       });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-
-      service.getPaginationReviews(init).subscribe((data: ReviewsData) => {
-        resp = data;
+      expect(http.head).toHaveBeenCalledWith('api/v3/reviews/1');
+      expect(bool).toBeTruthy();
+    });
+    it('should return true', () => {
+      let bool: boolean;
+      spyOn(http, 'head').and.returnValue(Observable.throw(''));
+      service.check('1').subscribe((check: boolean) => {
+        bool = check;
       });
-    });
-    
-    it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith(API_URL_v3_USER, {init: init})
-    });
-
-    it('should return an array of reviews', () => {
-      expect(resp.data).toEqual(MOCK_REVIEWS);
+      expect(bool).toBeFalsy();
     });
   });
+
+  describe('createAsBuyer', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'post').and.returnValue(Observable.of({}));
+      service.createAsBuyer(REVIEW_DATA_BUYER).subscribe();
+      expect(http.post).toHaveBeenCalledWith('api/v3/reviews/buyer', REVIEW_DATA_BUYER);
+    });
+  });
+
+  describe('createAsSeller', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'post').and.returnValue(Observable.of({}));
+      service.createAsSeller(REVIEW_DATA_SELLER).subscribe();
+      expect(http.post).toHaveBeenCalledWith('api/v3/reviews/seller', REVIEW_DATA_SELLER);
+    });
+  });
+
+
 });

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService} from 'shield';
-import { TrackingService } from "../core/tracking/tracking.service";
+import { TrackingService } from '../core/tracking/tracking.service';
+import { UserService } from '../core/user/user.service';
 
 @Component({
   selector: 'tsl-catalog',

@@ -39,7 +39,11 @@
               </label>
             </div>
           </div>
-          <div class="row box-section">
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-content">
+          <div class="row">
             <div class="col-10 offset-2">
               <div class="form-group row">
                 <label for="first_name" class="col-3" i18n>First Name:</label>
@@ -82,8 +86,18 @@
                   <tsl-location-box [form]="profileForm" name="location"></tsl-location-box>
                 </div>
               </div>
+              <div class="row">
+                <div class="offset-3 col-9">
+                  <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!hasNotSavedChanges"
+                              i18n>Save</tsl-button>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-content">
           <div class="row box-section">
             <div class="col-10 offset-2">
               <div class="form-group row">
@@ -107,13 +121,6 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary btn-save" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!hasNotSavedChanges"
-            i18n>Save</button>
-        </div>
-      </div>
     </form>
-
   </div>
 </div>

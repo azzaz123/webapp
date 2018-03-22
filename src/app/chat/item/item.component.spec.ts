@@ -4,9 +4,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ItemComponent } from './item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, ITEM_WEB_SLUG, ItemService, MOCK_ITEM } from 'shield';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
+import { ItemService } from '../../core/item/item.service';
+import {
+  ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, ITEM_WEB_SLUG,
+  MOCK_ITEM
+} from '../../../tests/item.fixtures.spec';
 
 describe('Component: Item', () => {
 
@@ -24,7 +28,8 @@ describe('Component: Item', () => {
             return Observable.of(ITEM_COUNTERS_DATA);
           }
         }
-        }],
+        },
+        {provide: 'SUBDOMAIN', useValue: 'es'}],
       schemas: [NO_ERRORS_SCHEMA]
     });
     fixture = TestBed.createComponent(ItemComponent);

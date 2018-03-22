@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Message, Item, User } from 'shield';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../core/user/user.service';
 import { ReviewModalResult } from './review-modal-result.interface';
+import { Item } from '../../../core/item/item';
+import { User } from '../../../core/user/user';
 
 @Component({
   selector: 'tsl-review-modal',

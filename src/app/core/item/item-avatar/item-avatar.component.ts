@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, Item } from 'shield';
 import { environment } from '../../../../environments/environment';
+import { FAKE_ITEM_IMAGE_SMALL_BASE_PATH, FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH, Item } from '../item';
 
 @Component({
   selector: 'tsl-item-avatar',

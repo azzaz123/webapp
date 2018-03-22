@@ -1,4 +1,4 @@
-@import "../../../../style/_common.scss";
+@import "~style/common";
 
 #dropdown-main-search-btn {
   & {
@@ -61,6 +61,9 @@
           & {
             margin-right: $spacing-S;
             vertical-align: middle;
+          }
+          /deep/ svg g g {
+            fill: $grey-900;
           }
         }
         .main-search-category-ico, span {
