@@ -29,6 +29,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public conversationsTotal: number;
   public connectionError: boolean;
   public firstLoad: boolean;
+  public chatLoaded: boolean;
   public userWebSlug: string;
 
   constructor(private conversationService: ConversationService,
@@ -85,8 +86,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   public onLoaded(event: any) {
-    this.conversationsLoaded = event.loaded;
+    this.chatLoaded ? this.conversationsLoaded = true : this.conversationsLoaded = event.loaded;
     this.conversationsTotal = event.total;
+    this.chatLoaded = true;
   }
 
   public reportListingAction(): void {
