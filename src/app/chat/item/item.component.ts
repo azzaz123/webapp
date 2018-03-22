@@ -64,12 +64,12 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     this.itemService.reserveItem(this.item.id, !this.item.reserved).subscribe(() => {
       this.item.reserved = !this.item.reserved;
       if (this.item.reserved) {
-        this.trackingService.track(TrackingService.CHAT_PRODUCT_RESERVED, {product_id: this.item.id});
+        this.trackingService.track(TrackingService.CHAT_PRODUCT_RESERVED, {item_id: this.item.id});
       }
     });
   }
 
   public trackSoldEvent(item: Item) {
-    this.trackingService.track(TrackingService.CHAT_PRODUCT_RESERVED, {product_id: item.id});
+    this.trackingService.track(TrackingService.CHAT_PRODUCT_SOLD, {item_id: item.id});
   }
 }

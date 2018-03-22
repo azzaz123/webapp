@@ -202,7 +202,7 @@ describe('Component: Item', () => {
       component.toggleReserve();
 
       expect(component.item.reserved).toBe(true);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_RESERVED, {product_id: MOCK_ITEM.id});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_RESERVED, {item_id: MOCK_ITEM.id});
     });
   });
 
@@ -214,7 +214,7 @@ describe('Component: Item', () => {
 
       component.trackSoldEvent(component.item);
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_RESERVED, {product_id: component.item.id});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_SOLD, {item_id: component.item.id});
     });
   });
 
