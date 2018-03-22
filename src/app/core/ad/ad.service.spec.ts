@@ -17,12 +17,18 @@ let http: HttpService;
 let userService: UserService;
 let mockBackend: MockBackend;
 let cookieService: CookieService;
-const cookies = {
+
+const cookiesAdKeyWord = {
   brand: 'bmv',
   content: 'i3',
   category: '100',
   minprice: '1000',
   maxprice: '20000'
+};
+
+const cookies = {
+  ...cookiesAdKeyWord,
+  publisherId: '123456' + Array(31).join('0')
 };
 
 const position = {
@@ -33,7 +39,7 @@ const position = {
 };
 
 const AdKeyWords = {
-  ...cookies,
+  ...cookiesAdKeyWord,
   gender: MOCK_USER.gender,
   userId: MOCK_USER.id,
   latitude: position.coords.latitude.toString(),
@@ -83,6 +89,9 @@ fdescribe('AdService', () => {
             },
             get (key) {
               return this.cookies[key];
+            },
+            remove (key) {
+              delete this.cookies[key];
             }
           }
         }
@@ -130,6 +139,20 @@ fdescribe('AdService', () => {
     });
     it('enableServices', () => {
       expect(googletag.enableServices).toHaveBeenCalled();
+    });
+  });
+
+  describe('publiser provider id', () => {
+    it('should send publisherId of cookie', () => {
+      expect(pubads.setPublisherProvidedId).toHaveBeenCalledWith(cookies.publisherId);
+    });
+    it('should send default publisherId of cookie -1*10e30', () => {
+      const defaultPublisherId = '-1' + Array(31).join('0');
+
+      cookieService.remove('publisherId');
+      service['initGoogletagConfig']();
+
+      expect(pubads.setPublisherProvidedId).toHaveBeenCalledWith(defaultPublisherId);
     });
   });
 
