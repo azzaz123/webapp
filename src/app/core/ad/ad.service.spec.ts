@@ -66,7 +66,7 @@ const defineSlot = {
   addService() {}
 };
 
-fdescribe('AdService', () => {
+describe('AdService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -229,6 +229,56 @@ fdescribe('AdService', () => {
         tick(refreshRate);
 
         expect(pubads.refresh).toHaveBeenCalledTimes(2);
+      }));
+
+      it('should call amazon APS fetchBids', fakeAsync(() => {
+        spyOn(apstag, 'fetchBids')
+
+        service.startAdsRefresh()
+        tick(refreshRate);
+
+        expect(apstag.fetchBids).toHaveBeenCalled();
+        discardPeriodicTasks();
+      }));
+
+      it('should call amazon APS setDisplayBids', fakeAsync(() => {
+        spyOn(apstag, 'setDisplayBids')
+
+        service.startAdsRefresh()
+        tick(refreshRate);
+
+        expect(apstag.setDisplayBids).toHaveBeenCalled();
+        discardPeriodicTasks();
+      }));
+
+      it('should call Criteo SetLineItemRanges', fakeAsync(() => {
+        spyOn(Criteo, 'SetLineItemRanges')
+
+        service.startAdsRefresh()
+        tick(refreshRate);
+
+        expect(Criteo.SetLineItemRanges).toHaveBeenCalled();
+        discardPeriodicTasks();
+      }));
+
+      it('should call Criteo SetLineItemRanges', fakeAsync(() => {
+        spyOn(Criteo, 'SetLineItemRanges')
+
+        service.startAdsRefresh()
+        tick(refreshRate);
+
+        expect(Criteo.SetLineItemRanges).toHaveBeenCalled();
+        discardPeriodicTasks();
+      }));
+
+      it('should call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
+        spyOn(Criteo, 'SetDFPKeyValueTargeting')
+
+        service.startAdsRefresh()
+        tick(refreshRate);
+
+        expect(Criteo.SetDFPKeyValueTargeting).toHaveBeenCalled();
+        discardPeriodicTasks();
       }));
     });
 
