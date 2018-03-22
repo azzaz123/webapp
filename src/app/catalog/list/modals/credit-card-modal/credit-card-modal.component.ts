@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FinancialCard } from 'shield';
+import { FinancialCard } from '../../../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-credit-card-modal',

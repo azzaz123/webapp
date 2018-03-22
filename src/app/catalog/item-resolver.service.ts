@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { Item } from 'shield';
 import { ItemService } from '../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
+import { Item } from '../core/item/item';
 
 @Injectable()
 export class ItemResolverService implements Resolve<Item> {

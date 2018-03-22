@@ -22,7 +22,9 @@ export class UploadCarComponent implements OnInit {
 
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
+  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Car;
+  @Input() urgentPrice: number;
   public uploadForm: FormGroup;
   public models: IOption[];
   public years: IOption[];
@@ -36,6 +38,7 @@ export class UploadCarComponent implements OnInit {
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
+  public isUrgent: boolean = false;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -226,14 +229,19 @@ export class UploadCarComponent implements OnInit {
     }
   }
 
-  onUploaded(action: string) {
+  onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    this.router.navigate(['/catalog/list', {[action]: true}]);
+    if (this.isUrgent) {
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
+      uploadEvent.action = 'urgent';
+      localStorage.setItem('transactionType', 'urgent');
+    }
+    this.router.navigate(['/catalog/list', {[uploadEvent.action]: true, itemId: uploadEvent.response.id}]);
   }
 
   onError(response: any) {
@@ -289,6 +297,14 @@ export class UploadCarComponent implements OnInit {
       let v: number = Number(control.value);
       return v > max ? {'max': {'requiredMax': max, 'actualMax': v}} : null;
     };
+  }
+
+  public selectUrgent(isUrgent: boolean): void {
+    this.isUrgent = isUrgent;
+  }
+
+  public emitLocation(): void {
+    this.locationSelected.emit(100);
   }
 
 }

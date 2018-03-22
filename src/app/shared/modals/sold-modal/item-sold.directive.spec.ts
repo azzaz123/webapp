@@ -3,15 +3,17 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { By } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
-import { Item, MOCK_ITEM, MockTrackingService } from 'shield';
 
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { SoldModalComponent } from '../../modals/sold-modal/sold-modal.component';
 import { ItemSoldDirective } from './item-sold.directive';
 
 import createSpy = jasmine.createSpy;
+import { Item } from '../../../core/item/item';
+import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import { SoldModalComponent } from './sold-modal.component';
 
 @Component({
   template: `<button tslItemSold (callback)="setSold(item)" [item]="item"></button>`

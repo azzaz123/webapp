@@ -1,15 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  Conversation,
-  ConversationService,
-  EventService,
-  I18nService,
-  ItemService,
-  PersistencyService,
-  UserService,
-  XmppService
-} from 'shield';
 import { ToastrService } from 'ngx-toastr';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 import { ReportListingComponent } from './modals/report-listing/report-listing.component';
@@ -18,6 +8,14 @@ import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { AdService } from '../core/ad/ad.service';
+import { Conversation } from '../core/conversation/conversation';
+import { ConversationService } from '../core/conversation/conversation.service';
+import { ItemService } from '../core/item/item.service';
+import { I18nService } from '../core/i18n/i18n.service';
+import { UserService } from '../core/user/user.service';
+import { EventService } from '../core/event/event.service';
+import { XmppService } from '../core/xmpp/xmpp.service';
+import { PersistencyService } from '../core/persistency/persistency.service';
 
 @Component({
   selector: 'tsl-chat',

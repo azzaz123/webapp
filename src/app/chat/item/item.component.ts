@@ -1,8 +1,10 @@
-import { Component, Inject, Input, OnInit,  OnChanges, OnDestroy } from '@angular/core';
-import { UserService } from '../../core/user/user.service';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Item } from '../../core/item/item';
 import { ItemService } from '../../core/item/item.service';
+import { ItemCounters } from '../../core/item/item-response.interface';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { Item, ItemCounters, User } from 'shield';
+import { UserService } from '../../core/user/user.service';
+import { User } from '../../core/user/user';
 
 @Component({
   selector: 'tsl-item',

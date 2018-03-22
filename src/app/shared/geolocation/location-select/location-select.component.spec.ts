@@ -3,11 +3,10 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { LOCATION_MODAL_TIMEOUT, LocationSelectComponent } from './location-select.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures';
+import { MOCK_USER, USER_LOCATION, USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 import { CookieService } from 'ngx-cookie';
 import { UserService } from '../../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
-import { USER_LOCATION, MOCK_USER } from 'shield';
 
 describe('LocationSelectComponent', () => {
   let component: LocationSelectComponent;
@@ -125,7 +124,8 @@ describe('LocationSelectComponent', () => {
       beforeEach(fakeAsync(() => {
         spyOn(modalService, 'open').and.callThrough();
         spyOn(userService, 'updateLocation').and.callThrough();
-
+        spyOn(component.locationSelected, 'emit');
+        
         component.open(element);
         tick(LOCATION_MODAL_TIMEOUT);
       }));
@@ -158,6 +158,10 @@ describe('LocationSelectComponent', () => {
 
       it('should set user location', () => {
         expect(userService.user.location).toEqual(USER_LOCATION);
+      });
+
+      it('should emit an update location event', () => {
+        expect(component.locationSelected.emit).toHaveBeenCalled();
       });
     });
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Item } from 'shield';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Item } from '../../../../core/item/item';
 
 @Component({
   selector: 'tsl-reactivate-modal',

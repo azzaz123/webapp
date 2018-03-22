@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { User } from 'shield';
 import { UserInfoResponse } from '../../core/user/user-info.interface';
 import { UserService } from '../../core/user/user.service';
+import { User } from '../../core/user/user';
 
 @Component({
   selector: 'tsl-user-detail',

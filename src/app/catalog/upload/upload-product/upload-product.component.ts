@@ -12,7 +12,6 @@ import {
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { Item, DeliveryInfo } from 'shield';
 import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -22,6 +21,8 @@ import { CategoryService } from '../../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { Item } from '../../../core/item/item';
+import { DeliveryInfo } from '../../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-upload-product',
@@ -32,8 +33,12 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   @Input() categoryId: string;
   @Input() item: Item;
+  @Input() urgentPrice: number;
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
+  @Output() onCategorySelect = new EventEmitter<number>();
+  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
+
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
@@ -71,6 +76,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
+  public isUrgent: boolean = false;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -213,14 +219,20 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     }
   }
 
-  onUploaded(action: string) {
+  onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    this.router.navigate(['/catalog/list', {[action]: true}]);
+
+    if (this.isUrgent) {
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
+      uploadEvent.action = 'urgent';
+      localStorage.setItem('transactionType', 'urgent');
+    }
+    this.router.navigate(['/catalog/list', {[uploadEvent.action]: true, itemId: uploadEvent.response.id}]);
   }
 
   onError(response: any) {
@@ -261,6 +273,18 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       let v: number = Number(control.value);
       return v > max ? {'max': {'requiredMax': max, 'actualMax': v}} : null;
     };
+  }
+
+  public selectUrgent(isUrgent: boolean): void {
+    this.isUrgent = isUrgent;
+  }
+
+  public setCategory(value: number): void {
+    this.onCategorySelect.emit(value);
+  }
+
+  public emitLocation(): void {
+    this.locationSelected.emit(this.categoryId);
   }
 
 }

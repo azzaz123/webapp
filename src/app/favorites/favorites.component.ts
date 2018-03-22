@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemService } from '../core/item/item.service';
 import { ItemsData } from '../core/item/item-response.interface';
-import { Item } from 'shield';
 import { UserService } from '../core/user/user.service';
 import { UserStatsResponse } from '../core/user/user-stats.interface';
+import { Item } from '../core/item/item';
 
 @Component({
   selector: 'tsl-favorites',

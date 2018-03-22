@@ -7,7 +7,7 @@ import { AdComponent } from './ad/ad.component';
 import { CustomCurrencyPipe } from './custom-currency/custom-currency.pipe';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
 import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
@@ -16,6 +16,10 @@ import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
+import { StarsRateComponent } from './stars-rate/stars-rate.component';
+import { StarsComponent } from './stars/stars.component';
+import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
+import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 
 @NgModule({
   imports: [
@@ -37,7 +41,11 @@ import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
     HeaderComponent,
     ButtonComponent,
     SoldModalComponent,
-    ItemSoldDirective
+    ItemSoldDirective,
+    SanitizedBackgroundDirective,
+    StarsComponent,
+    StarsRateComponent,
+    UserAvatarComponent
   ],
   declarations: [
     AdComponent,
@@ -48,7 +56,11 @@ import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
     HeaderComponent,
     ButtonComponent,
     SoldModalComponent,
-    ItemSoldDirective
+    ItemSoldDirective,
+    SanitizedBackgroundDirective,
+    StarsComponent,
+    StarsRateComponent,
+    UserAvatarComponent
   ],
   providers: [
     DecimalPipe,

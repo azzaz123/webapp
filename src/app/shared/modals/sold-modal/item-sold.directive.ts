@@ -1,10 +1,10 @@
-import { Directive, HostListener, Input, Output, EventEmitter } from '@angular/core';
+import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
-import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { DEFAULT_ERROR_MESSAGE, ErrorsService } from '../../../core/errors/errors.service';
-import { SoldModalComponent } from '../../modals/sold-modal/sold-modal.component';
-import { Item } from 'shield';
+import { ErrorsService } from '../../../core/errors/errors.service';
+import { Item } from '../../../core/item/item';
+import { SoldModalComponent } from './sold-modal.component';
 
 @Directive({
   selector: '[tslItemSold]'

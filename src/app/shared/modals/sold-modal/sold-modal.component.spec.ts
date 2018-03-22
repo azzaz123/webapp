@@ -6,8 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
-import { ReviewService, MOCK_ITEM, ITEM_SALE_PRICE, ITEM_ID, MOCK_USER, USER_ID } from 'shield';
-import { CONVERSATION_USERS } from '../../../../tests/item.fixtures';
+import { CONVERSATION_USERS, ITEM_ID, ITEM_SALE_PRICE, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import { ReviewService } from '../../../core/review/review.service';
 
 
 describe('SoldModalComponent', () => {

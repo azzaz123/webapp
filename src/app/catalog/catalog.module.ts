@@ -6,7 +6,6 @@ import { CatalogItemComponent } from './list/catalog-item/catalog-item.component
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UtilsModule } from 'shield';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { MomentModule } from 'angular2-moment';
 import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -35,6 +34,8 @@ import { CartComponent } from './checkout/cart/cart.component';
 import { CartService } from './checkout/cart/cart.service';
 import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
+import { UrgentCheckboxComponent } from './upload/urgent-checkbox/urgent-checkbox.component';
+import { SabadellComponent } from './sabadell/sabadell.component';
 
 @NgModule({
   imports: [
@@ -44,7 +45,6 @@ import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.serv
     CatalogRoutingModule,
     MatIconModule,
     InfiniteScrollModule,
-    UtilsModule,
     MomentModule,
     NgUploaderModule,
     DndModule,
@@ -83,7 +83,9 @@ import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.serv
     CheckoutItemComponent,
     CartComponent,
     BumpTutorialComponent,
-    UrgentConfirmationModalComponent
+    UrgentConfirmationModalComponent,
+    UrgentCheckboxComponent,
+    SabadellComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

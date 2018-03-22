@@ -4,12 +4,18 @@
     <tsl-upload-car *ngIf="item.categoryId === 100"
                     [item]="item"
                     (onValidationError)="onValidationError()"
-                    (onFormChanged)="onFormChanged($event)">
+                    (onFormChanged)="onFormChanged($event)"
+                    [urgentPrice]="urgentPrice"
+                    (locationSelected)="getUrgentPrice(100)">
     </tsl-upload-car>
     <tsl-upload-product *ngIf="item.categoryId && item.categoryId !== 100"
                         [item]="item"
                         (onValidationError)="onValidationError()"
-                        (onFormChanged)="onFormChanged($event)">
+                        (onFormChanged)="onFormChanged($event)"
+                        [categoryId]="categoryId"
+                        [urgentPrice]="urgentPrice"
+                        (onCategorySelect)="getUrgentPrice($event)"
+                        (locationSelected)="getUrgentPrice(categoryId)">
     </tsl-upload-product>
   </div>
 </div>

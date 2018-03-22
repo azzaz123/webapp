@@ -3,22 +3,17 @@ import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Observable } from 'rxjs/Observable';
-import {
-  ITEM_COUNTERS_DATA,
-  ITEM_FAVORITES,
-  ITEM_VIEWS,
-  ITEM_WEB_SLUG,
-  MOCK_ITEM,
-  MOCK_USER,
-  MockTrackingService,
-} from 'shield';
-
+import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 import { ItemService } from '../../core/item/item.service';
+import {
+  ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, ITEM_WEB_SLUG,
+  MOCK_ITEM
+} from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
-import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 import { ItemComponent } from './item.component';
-
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 
 describe('Component: Item', () => {
 

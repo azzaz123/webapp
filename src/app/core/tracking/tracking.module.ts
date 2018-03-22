@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TrackingService } from './tracking.service';
 import { TrackEventDirective } from './track-event.directive';
+import { NavigatorService } from './navigator.service';
 
 @NgModule({
   imports: [],
@@ -11,7 +12,8 @@ import { TrackEventDirective } from './track-event.directive';
     TrackEventDirective
   ],
   providers: [
-    TrackingService
+    TrackingService,
+    NavigatorService
   ],
 })
 export class TrackingModule {

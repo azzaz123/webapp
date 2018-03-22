@@ -1,5 +1,5 @@
 import { animate, Component, OnInit, state, style, transition, trigger } from '@angular/core';
-import { EventService } from 'shield';
+import { EventService } from '../../core/event/event.service';
 
 @Component({
   selector: 'tsl-connection-alert',

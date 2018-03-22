@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReviewItemComponent } from './review-item.component';
-import { SanitizedBackgroundDirective, USER_BASE_PATH, ITEM_BASE_PATH } from 'shield';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_REVIEWS, REVIEWS_RESPONSE } from '../../../tests/review.fixtures';
+import { MOCK_REVIEWS, REVIEWS_RESPONSE } from '../../../tests/review.fixtures.spec';
+import { SanitizedBackgroundDirective } from '../../shared/sanitized-background/sanitized-background.directive';
 
 const WEB_SLUG_ITEM = 'https://www.wallapop.com/item/';
 const WEB_SLUG_USER = 'https://www.wallapop.com/user/';

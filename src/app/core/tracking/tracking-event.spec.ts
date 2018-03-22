@@ -1,5 +1,5 @@
 import { TrackingEvent } from './tracking-event';
-import { TRACKING_EVENT } from '../../../tests/tracking.fixtures';
+import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
 import * as _ from 'lodash';
 
 describe('TrackingEvent', () => {

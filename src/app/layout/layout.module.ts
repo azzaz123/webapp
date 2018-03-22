@@ -9,7 +9,7 @@ import { UserModule } from '../core/user/user.module';
 import { SuggesterComponent } from './topbar/suggester/suggester.component';
 import { CategoryService } from '../core/category/category.service';
 import { GeolocationService } from '../core/geolocation/geolocation.service';
-import { SuggesterService } from '../core/suggester/suggester.service';
+import { SuggesterService } from './topbar/suggester/suggester.service';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { TrackingModule } from '../core/tracking/tracking.module';

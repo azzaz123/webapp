@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { LoggedGuard } from './logged.guard';
 import { environment } from 'environments/environment';
-import { AccessTokenService, WindowRef } from 'shield';
+import { WindowRef } from '../window/window.service';
+import { AccessTokenService } from '../http/access-token.service';
 
 class MockWindow {
   public nativeWindow = {

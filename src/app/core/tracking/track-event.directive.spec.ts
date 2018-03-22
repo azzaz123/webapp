@@ -4,8 +4,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TrackingService } from './tracking.service';
-import { MockTrackingService } from 'shield';
 import { TrackEventDirective } from './track-event.directive';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 
 @Component({
   template: `<a [tslTrackEvent]="event" [params]="params"></a>`

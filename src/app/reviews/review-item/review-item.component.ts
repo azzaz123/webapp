@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { Review } from '../../core/review/review';
-import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from 'shield';
+import { Review } from '../review';
+import { FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH } from '../../core/item/item';
 
 @Component({
   selector: 'tsl-review-item',
