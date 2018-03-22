@@ -55,7 +55,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public canEdit() {
-    console.log('in actual method');
     return ((this.item.owner === this.myUserId) && !this.item.sold);
   }
 
