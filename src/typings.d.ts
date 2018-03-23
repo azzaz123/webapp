@@ -13,3 +13,4 @@ declare let gtag: Function;
 declare let fbq: Function;
 declare var googletag: any;
 declare let H: any;
+declare let Taplytics: any;
