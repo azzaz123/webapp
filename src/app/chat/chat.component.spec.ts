@@ -221,17 +221,17 @@ describe('Component: Chat', () => {
       expect(userService.updateBlockStatus).toHaveBeenCalledWith('2', false);
     });
 
-    it('should not set firstLoad if getMetaInformation return meta', () => {
+    it('should set firstLoad to false if getMetaInformation return meta', () => {
       component.ngOnInit();
 
-      expect(component.firstLoad).toBeFalsy();
+      expect(component.firstLoad).toBe(false);
     });
 
     it('should set firstLoad true if getMetaInformation does NOT return meta', () => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw('err'));
-      component.ngOnInit();
+      component.ngOnInit(); 
 
-      expect(component.firstLoad).toBeTruthy();
+      expect(component.firstLoad).toBe(true);
     });
   });
 
