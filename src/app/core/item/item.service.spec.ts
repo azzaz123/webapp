@@ -367,8 +367,9 @@ describe('Service: Item', () => {
           resp = data;
         });
         expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/published', {
-          init: 10
-        })
+          init: 10,
+          expired: true
+        });
       });
       it('should return an array of items and the init', () => {
         service.mine(0, 'published').subscribe((data: ItemsData) => {
@@ -435,8 +436,9 @@ describe('Service: Item', () => {
         resp = data;
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/favorites', {
-        init: 10
-      })
+        init: 10,
+        expired: undefined
+      });
     });
     it('should return an array of items and the init', () => {
       service.myFavorites(0).subscribe((data: ItemsData) => {
