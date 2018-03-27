@@ -43,7 +43,8 @@ const SCREENS_IDS: any = {
   ItemDetail: '115',
   UploadForm: '139',
   MyItemDetail: '114',
-  MyProfile: '112'
+  MyProfile: '112',
+  Conversation: '118'
 };
 
 const TYPES_IDS: any = {
@@ -155,10 +156,22 @@ export class TrackingService {
     screen: SCREENS_IDS.ProCatalog,
     type: TYPES_IDS.Tap
   };
+  public static CHAT_PRODUCT_SOLD: TrackingEventBase = {
+    name: '664',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Tap
+  };
   public static PRODUCT_UNRESERVED: TrackingEventBase = {
     name: '383',
     category: CATEGORY_IDS.ProInventoryManagement,
     screen: SCREENS_IDS.ProCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static CHAT_PRODUCT_RESERVED: TrackingEventBase = {
+    name: '665',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
   public static PRODUCT_UN_SELECTED: TrackingEventBase = {
@@ -363,6 +376,12 @@ export class TrackingService {
     name: '612',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static CHAT_EDITITEM: TrackingEventBase = {
+    name: '666',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
   public static MYITEMDETAIL_EDITITEM_SUCCESS: TrackingEventBase = {

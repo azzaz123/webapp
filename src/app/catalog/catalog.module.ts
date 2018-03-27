@@ -5,7 +5,6 @@ import { CoreModule } from '../core/core.module';
 import { CatalogItemComponent } from './list/catalog-item/catalog-item.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatIconModule } from '@angular/material';
-import { SoldModalComponent } from './list/modals/sold-modal/sold-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { MomentModule } from 'angular2-moment';
@@ -69,7 +68,6 @@ import { SabadellComponent } from './sabadell/sabadell.component';
   declarations: [
     catalogRoutedComponents,
     CatalogItemComponent,
-    SoldModalComponent,
     SelectedItemsComponent,
     BumpConfirmationModalComponent,
     CreditCardModalComponent,
@@ -91,7 +89,6 @@ import { SabadellComponent } from './sabadell/sabadell.component';
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
-    SoldModalComponent,
     CreditCardModalComponent,
     UploadConfirmationModalComponent,
     PreviewModalComponent,
