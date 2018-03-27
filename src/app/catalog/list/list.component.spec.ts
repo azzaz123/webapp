@@ -275,7 +275,7 @@ describe('ListComponent', () => {
   });
 
   describe('getItems', () => {
-    it('should call mines with default values and set items', () => {
+    it('should call mine with default values and set items', () => {
       expect(itemService.mine).toHaveBeenCalledWith(0, 'published');
       expect(component.items.length).toBe(2);
     });
@@ -319,12 +319,12 @@ describe('ListComponent', () => {
     beforeEach(() => {
       itemerviceSpy.calls.reset();
     });
-    it('should call mines with filtering and reset page', () => {
+    it('should call mine with filtering and reset page', () => {
       component['init'] = 20;
       component.filterByStatus('sold');
       expect(itemService.mine).toHaveBeenCalledWith(0, 'sold');
     });
-    it('should not call mines if filter is the same', () => {
+    it('should not call mine if filter is the same', () => {
       component.selectedStatus = 'sold';
       component.filterByStatus('sold');
       expect(itemService.mine).not.toHaveBeenCalled();
@@ -332,7 +332,7 @@ describe('ListComponent', () => {
   });
 
   describe('loadMore', () => {
-    it('should call mines with new page and append items', () => {
+    it('should call mine with new page and append items', () => {
       component['init'] = 20;
       component.loadMore();
       expect(itemService.mine).toHaveBeenCalledWith(20, 'published');
@@ -648,7 +648,7 @@ describe('ListComponent', () => {
         expect(component.numberOfProducts).toEqual(USERS_STATS_RESPONSE.counters.publish);
         expect(component.numberOfSoldProducts).toEqual(USERS_STATS_RESPONSE.counters.sold);
       });
-      });
+    });
 
   });
 
