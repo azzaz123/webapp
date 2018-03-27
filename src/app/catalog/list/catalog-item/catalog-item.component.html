@@ -17,33 +17,35 @@
       <mat-icon svgIcon="views"></mat-icon> {{item.views}}
       <mat-icon svgIcon="heart"></mat-icon> {{item.favorites}}
     </span>
-    <span class="actions" *ngIf="!item.flags.expired && !item.flags.pending">
-      <span [hidden]="item.sold">
-      <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate">
-        <mat-icon svgIcon="feature"></mat-icon>
-        <span i18n>Feature Product</span>
-      </tsl-button>
-      <button class="btn-featured" *ngIf="item.bumpExpiringDate">
-        {{item.bumpExpiringDate | amCountdown}}
-      </button>
+    <span class="actions" *ngIf="!item.flags.pending">
+      <span *ngIf="!item.flags.expired">
+        <span [hidden]="item.sold">
+        <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate">
+          <mat-icon svgIcon="feature"></mat-icon>
+          <span i18n>Feature Product</span>
+        </tsl-button>
+        <button class="btn-featured" *ngIf="item.bumpExpiringDate">
+          {{item.bumpExpiringDate | amCountdown}}
+        </button>
+        </span>
+        <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
+          <mat-icon svgIcon="btn-sold"></mat-icon>
+        </button>
+        <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
+          <mat-icon svgIcon="btn-reserved"></mat-icon>
+        </button>
+        <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">
+          <mat-icon svgIcon="btn-edit"></mat-icon>
+        </button>
+        <button class="btn-delete" (click)="deleteItem(item)">
+          <mat-icon svgIcon="btn-delete"></mat-icon>
+        </button>
       </span>
-      <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
-        <mat-icon svgIcon="btn-sold"></mat-icon>
-      </button>
-      <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
-        <mat-icon svgIcon="btn-reserved"></mat-icon>
-      </button>
-      <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">
-        <mat-icon svgIcon="btn-edit"></mat-icon>
-      </button>
-      <button class="btn-delete" (click)="deleteItem(item)">
-        <mat-icon svgIcon="btn-delete"></mat-icon>
+      <button class="btn-reactivate" (click)="reactivate(item)" *ngIf="item.flags.expired" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG" [params]="{category: item.categoryId}">
+        <mat-icon svgIcon="clock"></mat-icon>
+        <span i18n>Reactivate</span>
       </button>
     </span>
-    <button class="btn-reactivate" (click)="reactivate(item)" *ngIf="item.flags.expired" tslTrackEvent="MYCATALOG_REACTIVATE_FROMCATALOG" [params]="{category: item.categoryId}">
-      <mat-icon svgIcon="clock"></mat-icon>
-      <span i18n>Reactivate</span>
-    </button>
     <button class="btn-pending" *ngIf="item.flags.pending">
       <mat-icon svgIcon="spinner" class="spinner grey"></mat-icon>
       <span i18n>Pending</span>

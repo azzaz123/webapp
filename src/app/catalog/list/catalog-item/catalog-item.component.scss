@@ -215,6 +215,33 @@ $feature-button-width: 170px;
           border-color: transparent;
         }
       }
+      &.btn-reactivate {
+        z-index: 2;
+        position: relative;
+        width: $feature-button-width;
+        border-radius: $border-radius;
+        color: $grey-900;
+        text-align: center;
+        padding: 0 20px 0 40px;
+        mat-icon {
+          position: absolute;
+          left: 10px;
+        }
+        mat-icon /deep/ {
+          svg g g, svg path {
+            fill: $grey-900;
+          }
+        }
+        &:hover {
+          background-color: $reactivate-bg;
+          color: $white;
+          mat-icon /deep/ {
+            svg g g, svg path {
+              fill: $white;
+            }
+          }
+        }
+      }
     }
     tsl-button {
       /deep/ .btn-feature {
@@ -236,7 +263,7 @@ $feature-button-width: 170px;
       min-width: auto;
     }
   }
-  .btn-reactivate, .btn-pending {
+  .btn-pending {
     z-index: 2;
     position: relative;
     font-size: $font-size-S;
@@ -247,17 +274,6 @@ $feature-button-width: 170px;
     height: 40px;
     mat-icon {
       margin-right: 34px;
-    }
-  }
-  .btn-reactivate {
-    &:hover {
-      background-color: $reactivate-bg;
-      color: $white;
-      mat-icon /deep/ {
-        svg g g, svg path {
-          fill: $white;
-        }
-      }
     }
   }
   .btn-pending {
