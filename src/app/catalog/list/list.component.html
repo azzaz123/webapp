@@ -22,7 +22,10 @@
         <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
       </div>
       <div class="col-1 header-numbers">
-        <p class="header-numbers-top">{{numberOfProducts}}</p>
+        <p class="header-numbers-top">
+          <span *ngIf="selectedStatus === 'published'">{{numberOfProducts}}</span>
+          <span *ngIf="selectedStatus === 'sold'">{{numberOfSoldProducts}}</span>
+        </p>
         <p class="header-numbers-bottom">
           <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
           <span *ngIf="numberOfProducts === 1" i18n>product</span>

@@ -40,8 +40,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private active: boolean = true;
   private firstItemLoad = true;
   public numberOfProducts: number;
-  public isUrgent: boolean = false;
-  public isRedirect: boolean = false;
+  public numberOfSoldProducts: number;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
@@ -306,6 +305,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public getNumberOfProducts() {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
       this.numberOfProducts = userStats.counters.publish;
+      this.numberOfSoldProducts = userStats.counters.sold;
     });
   }
 
