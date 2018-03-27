@@ -646,8 +646,9 @@ describe('ListComponent', () => {
 
         expect(userService.getStats).toHaveBeenCalled();
         expect(component.numberOfProducts).toEqual(USERS_STATS_RESPONSE.counters.publish);
+        expect(component.numberOfSoldProducts).toEqual(USERS_STATS_RESPONSE.counters.sold);
       });
-    })
+      });
 
   });
 
