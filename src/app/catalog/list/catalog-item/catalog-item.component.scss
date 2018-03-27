@@ -222,7 +222,7 @@ $feature-button-width: 170px;
         border-radius: $border-radius;
         color: $grey-900;
         text-align: center;
-        padding: 0 20px 0 40px;
+        padding: 0 $spacing 0 $spacing*2;
         mat-icon {
           position: absolute;
           left: 10px;
