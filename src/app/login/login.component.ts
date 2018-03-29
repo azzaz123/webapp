@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../core/user/user.service';
 import { LoginResponse } from '../core/user/login-response.interface';
 
-const TEST_INSTALLATION_TYPE: string = 'WEB';
+const TEST_INSTALLATION_TYPE = 'WEB';
 
 @Component({
   selector: 'tsl-login',

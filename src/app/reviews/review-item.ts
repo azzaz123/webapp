@@ -26,7 +26,7 @@ export class ReviewItem extends Item {
       null,
       _web_link,
       null
-    )
+    );
   }
 
   get image(): ReviewImage {

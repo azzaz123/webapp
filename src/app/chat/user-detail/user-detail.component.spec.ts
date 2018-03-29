@@ -9,7 +9,7 @@ import { MOCK_USER, RESPONSE_RATE, SCORING_STARS, USER_INFO_RESPONSE } from '../
 class MockUserService {
 
   getInfo() {
-    return Observable.of(USER_INFO_RESPONSE)
+    return Observable.of(USER_INFO_RESPONSE);
   }
 }
 

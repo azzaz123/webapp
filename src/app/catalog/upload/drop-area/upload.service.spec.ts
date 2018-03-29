@@ -24,7 +24,7 @@ describe('UploadService', () => {
         {
           provide: HttpService, useValue: {
           getOptions() {
-            return {}
+            return {};
           }
         }
         }

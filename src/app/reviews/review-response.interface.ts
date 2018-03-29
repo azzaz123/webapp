@@ -30,7 +30,7 @@ export interface ReviewsData {
 interface ReviewImageResponse {
   large: string;
   medium: string;
-  original: string,
+  original: string;
   original_height: number;
   original_width: number;
   small: string;

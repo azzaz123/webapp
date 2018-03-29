@@ -83,7 +83,7 @@ describe('ProfileComponent', () => {
           open() {
             return {
               result: Promise.resolve(true)
-            }
+            };
           }
         }
         }

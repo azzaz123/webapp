@@ -9,7 +9,7 @@ export enum KEY_CODE {
   LEFT_ARROW = 37,
   ESC = 27
 }
-;
+
 
 @Component({
   selector: 'tsl-tutorial',

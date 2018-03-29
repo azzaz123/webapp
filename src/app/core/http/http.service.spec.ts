@@ -19,8 +19,8 @@ import { environment } from '../../../environments/environment';
 describe('Service: Http', () => {
 
   const TEST_BODY: any = {test: 'test', test2: 'test2'};
-  const TEST_URL: string = '/testUrl';
-  const FORM_URL_ENCODED: string = 'application/x-www-form-urlencoded';
+  const TEST_URL = '/testUrl';
+  const FORM_URL_ENCODED = 'application/x-www-form-urlencoded';
 
   let httpService: HttpService;
   let mockBackend: MockBackend;
@@ -53,7 +53,7 @@ describe('Service: Http', () => {
     it('should return a get with the prepended url',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -72,7 +72,7 @@ describe('Service: Http', () => {
     it('should return a get with the queryencoded params',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -94,7 +94,7 @@ describe('Service: Http', () => {
     it('should return a get with the queryencoded array',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -116,7 +116,7 @@ describe('Service: Http', () => {
     it('should return a get with the queryencoded object',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -142,7 +142,7 @@ describe('Service: Http', () => {
     it('should return a get without the queryencoded params if are empty',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -161,7 +161,7 @@ describe('Service: Http', () => {
     it('should return a get without the queryencoded params if some keys are undefined or null',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -169,7 +169,7 @@ describe('Service: Http', () => {
         let httpServiceUrl: string = null;
         let httpUrl: string = null;
         let undefValue: any;
-        let nullValue: any = null;
+        const nullValue: any = null;
         httpService.get(TEST_URL, {
           key: undefValue,
           test: nullValue
@@ -203,7 +203,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -223,7 +223,7 @@ describe('Service: Http', () => {
       fakeAsync(() => {
         let headers: Headers;
         accessTokenService.storeAccessToken('thetoken');
-        let bypass: string = environment['bypass'];
+        const bypass: string = environment['bypass'];
         environment['bypass'] = undefined;
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
@@ -251,7 +251,7 @@ describe('Service: Http', () => {
     it('should return a request, without being modified',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -285,7 +285,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -305,7 +305,7 @@ describe('Service: Http', () => {
     it('should return a put with the prepended url',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -341,7 +341,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -374,7 +374,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -393,7 +393,7 @@ describe('Service: Http', () => {
     it('should return a delete with the prepended url',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -429,7 +429,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -462,7 +462,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -482,7 +482,7 @@ describe('Service: Http', () => {
     it('should return a patch with the prepended url',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -518,7 +518,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -551,7 +551,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -571,7 +571,7 @@ describe('Service: Http', () => {
     it('should return a head with the prepended url',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -607,7 +607,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -640,7 +640,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -660,7 +660,7 @@ describe('Service: Http', () => {
     it('should return a options with the prepended url',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -696,7 +696,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -729,7 +729,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -749,7 +749,7 @@ describe('Service: Http', () => {
     it('should return a post with the prepended url',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -785,7 +785,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -818,7 +818,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -837,7 +837,7 @@ describe('Service: Http', () => {
     it('should return a post with the prepended url',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: JSON.stringify({}), url: connection.request.url}
           );
           connection.mockRespond(new Response(response));
@@ -872,7 +872,7 @@ describe('Service: Http', () => {
     it('should perform a post with the xx-www-form-urlencoded content-type',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: connection.request.getBody(), url: connection.request.url, headers: connection.request.headers}
           );
           connection.mockRespond(new Response(response));
@@ -885,7 +885,7 @@ describe('Service: Http', () => {
     it('should perform a post with the url encoded body',
       fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let response: ResponseOptions = new ResponseOptions(
+          const response: ResponseOptions = new ResponseOptions(
             {body: connection.request.getBody(), url: connection.request.url}
           );
           expect(connection.request.getBody()).toBe('test=test&test2=test2');
@@ -916,7 +916,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'
@@ -953,7 +953,7 @@ describe('Service: Http', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           headers = connection.request.headers;
         });
-        let options: RequestOptions = new RequestOptions({
+        const options: RequestOptions = new RequestOptions({
           headers: new Headers({
             'Accept-Language': 'es_ES',
             'DeviceID': 'postman_santi'

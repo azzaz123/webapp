@@ -9,10 +9,10 @@ import { Observable } from 'rxjs/Observable';
 import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';
 
-export const USER_ID: string = 'l1kmzn82zn3p';
-export const MICRO_NAME: string = 'String S.';
-export const ACCESS_TOKEN: string = 'bS7D7d26UordM5M0uy5o4IisuyrPz35mfxfpw7PLRqQfzouQGXGpQtyZWFRRDdRFFT5fJZ';
-export const USER_EMAIL: string = 'test@test.it';
+export const USER_ID = 'l1kmzn82zn3p';
+export const MICRO_NAME = 'String S.';
+export const ACCESS_TOKEN = 'bS7D7d26UordM5M0uy5o4IisuyrPz35mfxfpw7PLRqQfzouQGXGpQtyZWFRRDdRFFT5fJZ';
+export const USER_EMAIL = 'test@test.it';
 
 export const IMAGE: Image = {
   'id': '9jd7ryx5odjk',
@@ -62,18 +62,18 @@ export const VALIDATIONS: UserValidations = {
   'birthday': true
 };
 
-export const VERIFICATION_LEVEL: number = 1;
+export const VERIFICATION_LEVEL = 1;
 export const SCORING_STARS = 91;
-export const SCORING_STARTS: number = 0;
+export const SCORING_STARTS = 0;
 export const RESPONSE_RATE = 'less_than_one_hour';
-export const ONLINE: boolean = false;
-export const RECEIVED_REPORTS: number = 3;
-export const USER_TYPE: string = 'inactive';
-export const USER_WEB_SLUG: string = 'webslug-l1kmzn82zn3p';
-export const USER_FIRST_NAME: string = 'Daniele';
-export const USER_LAST_NAME: string = 'Ghidoli';
-export const USER_BIRTH_DATE: number = 539913600000;
-export const USER_GENDER: string = 'male';
+export const ONLINE = false;
+export const RECEIVED_REPORTS = 3;
+export const USER_TYPE = 'inactive';
+export const USER_WEB_SLUG = 'webslug-l1kmzn82zn3p';
+export const USER_FIRST_NAME = 'Daniele';
+export const USER_LAST_NAME = 'Ghidoli';
+export const USER_BIRTH_DATE = 539913600000;
+export const USER_GENDER = 'male';
 
 export const USER_DATA: UserResponse = {
   'legacy_id': 101,
@@ -117,11 +117,11 @@ export const MOCK_USER: User = new User(
   USER_DATA.online
 );
 
-export const USER_ITEM_DISTANCE: number = 10;
+export const USER_ITEM_DISTANCE = 10;
 
 export class MockedUserService {
   public get(url: string): Observable<User> {
-    let data: any = USER_DATA;
+    const data: any = USER_DATA;
     return Observable.of(new User(
       data.id,
       data.micro_name,

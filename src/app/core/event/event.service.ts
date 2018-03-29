@@ -5,19 +5,19 @@ import { Subscription } from 'rxjs/Subscription';
 @Injectable()
 export class EventService {
 
-  public static USER_LOGIN: string = 'loginEvent';
-  public static USER_LOGOUT: string = 'logoutEvent';
-  public static NEW_MESSAGE: string = 'newMessage';
-  public static MESSAGE_ADDED: string = 'messageAdded';
-  public static CONVERSATION_READ: string = 'conversationRead';
-  public static CONNECTION_ERROR: string = 'connectionError';
-  public static CONNECTION_RESTORED: string = 'connectionRestored';
-  public static CONVERSATION_ARCHIVED: string = 'conversationArchived';
-  public static CONVERSATION_UNARCHIVED: string = 'conversationUnarchived';
-  public static LEAD_ARCHIVED: string = 'leadArchived';
-  public static ITEM_SOLD: string = 'itemSold';
-  public static USER_BLOCKED: string = 'userBlocked';
-  public static USER_UNBLOCKED: string = 'userUnblocked';
+  public static USER_LOGIN = 'loginEvent';
+  public static USER_LOGOUT = 'logoutEvent';
+  public static NEW_MESSAGE = 'newMessage';
+  public static MESSAGE_ADDED = 'messageAdded';
+  public static CONVERSATION_READ = 'conversationRead';
+  public static CONNECTION_ERROR = 'connectionError';
+  public static CONNECTION_RESTORED = 'connectionRestored';
+  public static CONVERSATION_ARCHIVED = 'conversationArchived';
+  public static CONVERSATION_UNARCHIVED = 'conversationUnarchived';
+  public static LEAD_ARCHIVED = 'leadArchived';
+  public static ITEM_SOLD = 'itemSold';
+  public static USER_BLOCKED = 'userBlocked';
+  public static USER_UNBLOCKED = 'userUnblocked';
   public static FIND_CONVERSATION = 'findConversation';
   public static UPDATE_COORDINATE = 'updateCoordinate';
   public static UPDATE_CATEGORY = 'updateCategory';

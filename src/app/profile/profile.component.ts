@@ -103,7 +103,7 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
         this.hasNotSavedChanges = false;
       });
     } else {
-      for (let control in this.profileForm.controls) {
+      for (const control in this.profileForm.controls) {
         if (this.profileForm.controls.hasOwnProperty(control) && !this.profileForm.controls[control].valid) {
           this.profileForm.controls[control].markAsDirty();
         }

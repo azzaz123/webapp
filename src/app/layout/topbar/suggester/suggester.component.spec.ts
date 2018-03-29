@@ -41,12 +41,12 @@ describe('SuggesterComponent', () => {
       spyOn(suggesterService, 'getSuggestions').and.callThrough();
     });
     it('should search for suggestions from input text', () => {
-      let input = 'mesa';
+      const input = 'mesa';
       component.suggest(Observable.of(input)).subscribe();
       expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });
     it('should NOT search for suggestions from input < 3', () => {
-      let input = 'me';
+      const input = 'me';
       component.suggest(Observable.of(input)).subscribe();
       expect(suggesterService.getSuggestions).not.toHaveBeenCalled();
     });

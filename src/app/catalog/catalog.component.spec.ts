@@ -42,9 +42,9 @@ describe('CatalogComponent', () => {
 
   describe('ngOnInit', () => {
     beforeEach(fakeAsync(() => {
-      let mockBackend = TestBed.get(MockBackend);
+      const mockBackend = TestBed.get(MockBackend);
       mockBackend.connections.subscribe((connection: MockConnection) => {
-        let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
         connection.mockRespond(new Response(res));
       });
     }));

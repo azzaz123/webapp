@@ -3,10 +3,10 @@ import { Image, UserLocation } from '../user/user-response.interface';
 import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
-export const ITEM_BASE_PATH: string = 'http://es.wallapop.com/item/';
-export const FAKE_ITEM_IMAGE_BASE_PATH: string = '../../../assets/images/fake-item.png';
-export const FAKE_ITEM_IMAGE_SMALL_BASE_PATH: string = '../../../assets/images/fake-item-s.png';
-export const FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH: string = '../../../assets/images/fake-item-s-l.png';
+export const ITEM_BASE_PATH = 'http://es.wallapop.com/item/';
+export const FAKE_ITEM_IMAGE_BASE_PATH = '../../../assets/images/fake-item.png';
+export const FAKE_ITEM_IMAGE_SMALL_BASE_PATH = '../../../assets/images/fake-item-s.png';
+export const FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH = '../../../assets/images/fake-item-s-l.png';
 export const ITEM_STATUSES: any = {
   'active': 'PUBLISHED',
   'sold': ['SOLD_OUTSIDE', 'BOUGHT']
@@ -18,7 +18,7 @@ export class Item implements Model {
   private _views: number;
   private _favorites: number;
   private _favorited: boolean;
-  private _selected: boolean = false;
+  private _selected = false;
   private _bumpExpiringDate: number;
 
   constructor(private _id: string,

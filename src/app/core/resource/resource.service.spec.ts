@@ -18,7 +18,7 @@ class User {
 
 @Injectable()
 class UserService extends ResourceService {
-  protected API_URL: string = 'api/v3/users';
+  protected API_URL = 'api/v3/users';
 
   constructor(http: HttpService) {
     super(http);
@@ -58,7 +58,7 @@ describe('Service: Resource', () => {
       beforeEach(fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/' + USER_ID);
-          let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+          const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
           connection.mockRespond(new Response(res));
         });
       }));
@@ -128,7 +128,7 @@ describe('Service: Resource', () => {
 
       beforeEach(fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let res: ResponseOptions = new ResponseOptions({body: JSON.stringify({})});
+          const res: ResponseOptions = new ResponseOptions({body: JSON.stringify({})});
           connection.mockRespond(new Response(res));
         });
       }));
