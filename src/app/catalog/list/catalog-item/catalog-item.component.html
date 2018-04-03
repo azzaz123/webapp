@@ -20,13 +20,13 @@
     <span class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
         <span [hidden]="item.sold">
-        <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate">
-          <mat-icon svgIcon="feature"></mat-icon>
-          <span i18n>Feature Product</span>
-        </tsl-button>
-        <button class="btn-featured" *ngIf="item.bumpExpiringDate">
-          {{item.bumpExpiringDate | amCountdown}}
-        </button>
+          <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate">
+            <mat-icon svgIcon="feature"></mat-icon>
+            <span i18n>Feature Product</span>
+          </tsl-button>
+          <button class="btn-featured" *ngIf="item.bumpExpiringDate">
+            {{item.bumpExpiringDate | amCountdown}}
+          </button>
         </span>
         <button class="btn-sold" [hidden]="item.sold" (click)="setSold(item)">
           <mat-icon svgIcon="btn-sold"></mat-icon>
