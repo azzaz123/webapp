@@ -61,6 +61,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.userService.updateBlockStatus(userId, false);
     });
     this.persistencyService.getMetaInformation().subscribe(() => {
+      this.firstLoad = false;
     }, () => {
       this.firstLoad = true;
     });
