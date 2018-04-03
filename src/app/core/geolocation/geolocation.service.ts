@@ -8,12 +8,12 @@ import { HttpService } from '../http/http.service';
 @Injectable()
 export class GeolocationService {
 
-  private apiKey: string = 'AIzaSyCwbqhPH-_1Zyh9hAYi6GDwiyk1we41DZ4';
+  private apiKey = 'AIzaSyCwbqhPH-_1Zyh9hAYi6GDwiyk1we41DZ4';
 
   constructor(private http: HttpService) { }
 
   public search(query: string): Observable<GeolocationResponse[]> {
-    let params: any =  {
+    const params: any =  {
       query: query,
       provider: 'here'
     };
@@ -22,7 +22,7 @@ export class GeolocationService {
   }
 
   public geocode(placeId: string): Observable<Coordinate> {
-    let params: any =  {
+    const params: any =  {
       placeId: placeId,
     };
     return this.http.getNoBase(environment.siteUrl + '/maps/here/place', params)
@@ -31,7 +31,7 @@ export class GeolocationService {
         return {
           ...res,
           name: placeId
-        }
+        };
       });
   }
 

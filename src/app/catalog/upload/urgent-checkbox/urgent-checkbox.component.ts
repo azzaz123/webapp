@@ -7,7 +7,7 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 })
 export class UrgentCheckboxComponent {
 
-  public isUrgent: boolean = false;
+  public isUrgent = false;
   @Output() public urgentSelected = new EventEmitter<boolean>();
   @Input() categoryId: number;
   @Input() urgentPrice: string = null;

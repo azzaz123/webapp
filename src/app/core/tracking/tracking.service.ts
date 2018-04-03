@@ -43,7 +43,8 @@ const SCREENS_IDS: any = {
   ItemDetail: '115',
   UploadForm: '139',
   MyItemDetail: '114',
-  MyProfile: '112'
+  MyProfile: '112',
+  Conversation: '118'
 };
 
 const TYPES_IDS: any = {
@@ -155,10 +156,22 @@ export class TrackingService {
     screen: SCREENS_IDS.ProCatalog,
     type: TYPES_IDS.Tap
   };
+  public static CHAT_PRODUCT_SOLD: TrackingEventBase = {
+    name: '664',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Tap
+  };
   public static PRODUCT_UNRESERVED: TrackingEventBase = {
     name: '383',
     category: CATEGORY_IDS.ProInventoryManagement,
     screen: SCREENS_IDS.ProCatalog,
+    type: TYPES_IDS.Tap
+  };
+  public static CHAT_PRODUCT_RESERVED: TrackingEventBase = {
+    name: '665',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
   public static PRODUCT_UN_SELECTED: TrackingEventBase = {
@@ -365,6 +378,12 @@ export class TrackingService {
     screen: SCREENS_IDS.MyCatalog,
     type: TYPES_IDS.Tap
   };
+  public static CHAT_EDITITEM: TrackingEventBase = {
+    name: '666',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Tap
+  };
   public static MYITEMDETAIL_EDITITEM_SUCCESS: TrackingEventBase = {
     name: '613',
     category: CATEGORY_IDS.Button,
@@ -448,8 +467,8 @@ export class TrackingService {
   private sessionStartTime: string = null;
   private sessionId: string = null;
   private deviceAccessTokenId: string = null;
-  private sessionIdCookieName: string = 'session_id';
-  private deviceAccessTokenIdCookieName: string = 'device_access_token_id';
+  private sessionIdCookieName = 'session_id';
+  private deviceAccessTokenIdCookieName = 'device_access_token_id';
 
   constructor(private navigatorService: NavigatorService,
               private http: HttpService,
@@ -488,7 +507,7 @@ export class TrackingService {
   }
 
   private setSessionId(cookieName: string) {
-    let sessionCookie = this.cookieService.get(cookieName);
+    const sessionCookie = this.cookieService.get(cookieName);
     if (sessionCookie) {
       this.sessionId = sessionCookie;
     } else {
@@ -498,7 +517,7 @@ export class TrackingService {
   }
 
   private setDeviceAccessTokenId(cookieName: string) {
-    let deviceAccessTokenCookie = this.cookieService.get(cookieName);
+    const deviceAccessTokenCookie = this.cookieService.get(cookieName);
     if (deviceAccessTokenCookie) {
       this.deviceAccessTokenId = deviceAccessTokenCookie;
     } else {

@@ -59,9 +59,9 @@ export class HttpService extends Http {
   }
 
   public postNoBase(url: string, body?: any, authorization?: string, passCookies?: boolean): Observable<Response> {
-    let headers: Headers = new Headers();
+    const headers: Headers = new Headers();
     headers.append('Authorization', authorization);
-    let newOptions: RequestOptions = new RequestOptions({headers: headers});
+    const newOptions: RequestOptions = new RequestOptions({headers: headers});
     newOptions.withCredentials = passCookies;
     return super.post(url, body, newOptions);
   }
@@ -106,8 +106,8 @@ export class HttpService extends Http {
   }
 
   private urlEncode(obj: Object): string {
-    let urlSearchParams: URLSearchParams = new URLSearchParams();
-    for (let key in obj) {
+    const urlSearchParams: URLSearchParams = new URLSearchParams();
+    for (const key in obj) {
       /* istanbul ignore else  */
       if (obj.hasOwnProperty(key)) {
         urlSearchParams.append(key, obj[key]);
@@ -117,7 +117,7 @@ export class HttpService extends Http {
   }
 
   public getOptions(options: RequestOptionsArgs, url: string, method: string): RequestOptions {
-    let headers: Headers = new Headers();
+    const headers: Headers = new Headers();
     if (this.accessTokenService.accessToken) {
       headers.append('Authorization', 'Bearer ' + this.accessTokenService.accessToken);
       if (environment.bypass) {
@@ -141,26 +141,26 @@ export class HttpService extends Http {
   }
 
   private getSignature(url: string, method: string, timestamp: number) {
-    const separator: string = '+#+';
+    const separator = '+#+';
     const signature = ['/' + url, method, timestamp].join(separator) + separator;
     return CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(signature, CryptoJS.enc.Base64.parse(SECRET)));
   }
 
   private toQueryString(params: any) {
-    let encodedStr: string = '';
-    for (let key in params) {
+    let encodedStr = '';
+    for (const key in params) {
       /* istanbul ignore else  */
       if (params.hasOwnProperty(key)) {
         if (encodedStr && encodedStr[encodedStr.length - 1] !== '&') {
           encodedStr = encodedStr + '&';
         }
-        let value: any = params[key];
+        const value: any = params[key];
         if (value instanceof Array) {
-          for (let i: number = 0; i < value.length; i++) {
+          for (let i = 0; i < value.length; i++) {
             encodedStr = encodedStr + key + '=' + encodeURIComponent(value[i]) + '&';
           }
         } else if (typeof value === 'object') {
-          for (let innerKey in value) {
+          for (const innerKey in value) {
             if (value.hasOwnProperty(innerKey) && typeof value[innerKey] !== 'undefined') {
               encodedStr = encodedStr + key + '[' + innerKey + ']=' + encodeURIComponent(value[innerKey]) + '&';
             }

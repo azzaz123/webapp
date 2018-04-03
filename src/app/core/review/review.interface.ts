@@ -5,10 +5,10 @@ export interface ReviewData {
   score: number;
 }
 
-export interface ReviewDataBuyer extends ReviewData{
+export interface ReviewDataBuyer extends ReviewData {
   conversation_id: string;
 }
 
-export interface ReviewDataSeller extends ReviewData{
+export interface ReviewDataSeller extends ReviewData {
   price: number;
 }

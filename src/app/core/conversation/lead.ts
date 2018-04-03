@@ -7,9 +7,9 @@ export abstract class Lead {
 
   private _lastMessageRef: string;
   private _oldMessagesLoaded: boolean;
-  private _unreadMessages: number = 0;
+  private _unreadMessages = 0;
   private _active: boolean;
-  private _archived: boolean = false;
+  private _archived = false;
 
   constructor(private _id: string,
               private _legacyId: number,

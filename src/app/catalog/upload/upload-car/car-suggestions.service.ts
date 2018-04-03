@@ -8,7 +8,7 @@ import { HttpService } from '../../../core/http/http.service';
 @Injectable()
 export class CarSuggestionsService {
 
-  private API_URL: string = 'api/v3/suggesters/cars';
+  private API_URL = 'api/v3/suggesters/cars';
 
   constructor(private http: HttpService) {
   }

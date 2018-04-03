@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, HostListener, EventEmitter, Input } from '@angular/core';
 import * as _ from 'lodash';
-import { BumpTutorialService } from "./bump-tutorial.service";
+import { BumpTutorialService } from './bump-tutorial.service';
 
 export enum KEY_CODE {
   RIGHT_ARROW = 39,

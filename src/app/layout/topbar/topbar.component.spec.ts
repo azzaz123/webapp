@@ -95,7 +95,7 @@ describe('TopbarComponent', () => {
   });
 
   describe('update coordinate', () => {
-    let newCoordinates = {'latitude': 41.2, 'longitude': 2.1};
+    const newCoordinates = {'latitude': 41.2, 'longitude': 2.1};
     it('should update the user coordinates', () => {
       component.coordinates = {'latitude': 0.0, 'longitude': 0.0};
       component.onCoordinateUpdate(newCoordinates);
@@ -104,7 +104,7 @@ describe('TopbarComponent', () => {
   });
 
   describe('update keyword', () => {
-    let newKeyword = 'iphone';
+    const newKeyword = 'iphone';
     it('should update the keyword', () => {
       component.kws = 'iphone';
       component.onKeywordUpdate(newKeyword);

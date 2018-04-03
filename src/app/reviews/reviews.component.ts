@@ -15,8 +15,8 @@ import { User } from '../core/user/user';
 export class ReviewsComponent implements OnInit {
 
   public reviews: Review[] = [];
-  public loading: boolean = true;
-  private init: number = 0;
+  public loading = true;
+  private init = 0;
   public end: boolean;
   public scrollTop: number;
   public userScore: number;

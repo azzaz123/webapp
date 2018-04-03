@@ -33,7 +33,7 @@ export interface Image {
     large: string;
     medium: string;
     xlarge: string;
-  }
+  };
 }
 
 export interface UserLocation {

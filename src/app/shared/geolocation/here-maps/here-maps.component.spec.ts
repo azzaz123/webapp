@@ -12,7 +12,7 @@ const platform = {
       normal: {
         map: 'map'
       }
-    }
+    };
   }
 };
 
@@ -39,7 +39,7 @@ const map = {
 window['H'] = {
   service: {
     Platform: () => {
-      return platform
+      return platform;
     }
   },
   Map: () => {

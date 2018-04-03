@@ -38,7 +38,7 @@ export class UploadCarComponent implements OnInit {
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
-  public isUrgent: boolean = false;
+  public isUrgent = false;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -212,7 +212,7 @@ export class UploadCarComponent implements OnInit {
         values: this.uploadForm.value
       });
     } else {
-      for (let control in this.uploadForm.controls) {
+      for (const control in this.uploadForm.controls) {
         if (this.uploadForm.controls.hasOwnProperty(control) && !this.uploadForm.controls[control].valid) {
           this.uploadForm.controls[control].markAsDirty();
         }
@@ -284,7 +284,7 @@ export class UploadCarComponent implements OnInit {
       if (isPresent(Validators.required(control))) {
         return null;
       }
-      let v: number = Number(control.value);
+      const v: number = Number(control.value);
       return v < min ? {'min': {'requiredMin': min, 'actualMin': v}} : null;
     };
   }
@@ -294,7 +294,7 @@ export class UploadCarComponent implements OnInit {
       if (isPresent(Validators.required(control))) {
         return null;
       }
-      let v: number = Number(control.value);
+      const v: number = Number(control.value);
       return v > max ? {'max': {'requiredMax': max, 'actualMax': v}} : null;
     };
   }

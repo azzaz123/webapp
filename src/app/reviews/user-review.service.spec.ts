@@ -10,9 +10,9 @@ import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec';
 describe('UserReviewService', () => {
 
   let service: UserReviewService;
-  let http : HttpService;
-  const API_URL_v3_USER: string = 'api/v3/users/me/reviews';
-  const init: number = 1;
+  let http: HttpService;
+  const API_URL_v3_USER = 'api/v3/users/me/reviews';
+  const init = 1;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,7 +41,7 @@ describe('UserReviewService', () => {
     });
 
     it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith(API_URL_v3_USER, {init: init})
+      expect(http.get).toHaveBeenCalledWith(API_URL_v3_USER, {init: init});
     });
 
     it('should return an array of reviews', () => {

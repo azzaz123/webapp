@@ -39,7 +39,7 @@ describe('ListComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let errorService: ErrorsService;
-  let componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
+  const componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   const routerEvents: Subject<any> = new Subject();
@@ -341,7 +341,7 @@ describe('ListComponent', () => {
   });
 
   describe('item changed', () => {
-    const TOTAL: number = 5;
+    const TOTAL = 5;
     let item: Item;
 
     it('should remove item when deleted', () => {
@@ -400,7 +400,7 @@ describe('ListComponent', () => {
   });
 
   describe('delete', () => {
-    const TOTAL: number = 5;
+    const TOTAL = 5;
     beforeEach(() => {
       component.selectedStatus = 'active';
       component.items = createItemsArray(TOTAL);
@@ -427,7 +427,7 @@ describe('ListComponent', () => {
       });
       it('should call getNumberOfProducts', () => {
         expect(component.getNumberOfProducts).toHaveBeenCalled();
-      })
+      });
     });
     describe('failed', () => {
       beforeEach(fakeAsync(() => {

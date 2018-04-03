@@ -29,6 +29,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public conversationsTotal: number;
   public connectionError: boolean;
   public firstLoad: boolean;
+  public chatLoaded: boolean;
   public userWebSlug: string;
 
   constructor(private conversationService: ConversationService,
@@ -60,6 +61,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.userService.updateBlockStatus(userId, false);
     });
     this.persistencyService.getMetaInformation().subscribe(() => {
+      this.firstLoad = false;
     }, () => {
       this.firstLoad = true;
     });
@@ -85,8 +87,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   public onLoaded(event: any) {
-    this.conversationsLoaded = event.loaded;
+    this.conversationsLoaded = this.chatLoaded ? true : event.loaded;
     this.conversationsTotal = event.total;
+    this.chatLoaded = true;
   }
 
   public reportListingAction(): void {

@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { PLACEHOLDER_AVATAR, User } from '../user';
+import { environment } from '../../../environments/environment';
+import { PLACEHOLDER_AVATAR, User } from '../../core/user/user';
 
 @Component({
   selector: 'tsl-user-avatar',

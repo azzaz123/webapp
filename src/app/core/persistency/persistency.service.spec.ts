@@ -13,9 +13,9 @@ import {
 import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 
 let service: PersistencyService;
-const MOCK_REV: string = 'rev';
+const MOCK_REV = 'rev';
 const MOCK_SAVE_DATA: any = {last: 'asdas', start: CONVERSATION_DATE_ISO};
-const MOCK_UNREAD_MESSAGES: number = 5;
+const MOCK_UNREAD_MESSAGES = 5;
 
 describe('Service: Persistency', () => {
 
@@ -119,7 +119,7 @@ describe('Service: Persistency', () => {
     it('should save the messages with bulkDocs when an array of messages is passed', fakeAsync(() => {
       spyOn(service.messagesDb, 'bulkDocs').and.returnValue(Promise.resolve());
       spyOn<any>(service, 'buildResponse');
-      let messages: Array<Message> = createMessagesArray(2);
+      const messages: Array<Message> = createMessagesArray(2);
       let saveMessagePromise: any;
       service.saveMessages(messages).subscribe((data: any) => {
         saveMessagePromise = data;

@@ -45,7 +45,7 @@ export interface StoredMessageRow {
   key: DocumentKey;
   value: {
     rev: RevisionId;
-  }
+  };
 }
 
 export interface StoredConversation {

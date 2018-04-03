@@ -80,7 +80,7 @@ function toSelectOptions(values: any[]): IOption[] {
     value: label.toString(),
     label: label.toString()
   }));
-};
+}
 
 export const CAR_CONTENT_DATA = {
   'id': CAR_ID,

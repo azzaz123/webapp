@@ -10,7 +10,7 @@ import { User } from '../core/user/user';
 @Injectable()
 export class UserReviewService {
 
-  private API_URL_v3_USER: string = 'api/v3/users';
+  private API_URL_v3_USER = 'api/v3/users';
 
   constructor(private http: HttpService) {
   }
@@ -28,9 +28,9 @@ export class UserReviewService {
           return {
             data: data,
             init: nextInit
-          }
+          };
         }
-      )
+      );
   }
 
   private mapResponse(res: ReviewResponse[]): Review[] {
@@ -67,7 +67,7 @@ export class UserReviewService {
     return new User(
       reviewResponse.user.id,
       reviewResponse.user.micro_name,
-      reviewResponse.user.image ? {urls_by_size: reviewResponse.user.image}: null,
+      reviewResponse.user.image ? {urls_by_size: reviewResponse.user.image} : null,
       null,
       null,
       null,

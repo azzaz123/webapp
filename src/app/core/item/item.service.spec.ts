@@ -55,7 +55,7 @@ import { Car } from './car';
 
 describe('Service: Item', () => {
 
-  const FAKE_ITEM_TITLE: string = 'No disponible';
+  const FAKE_ITEM_TITLE = 'No disponible';
   let service: ItemService;
   let mockBackend: MockBackend;
   let http: HttpService;
@@ -152,7 +152,7 @@ describe('Service: Item', () => {
 
   describe('getFakeItem', () => {
     it('should return a fake item', () => {
-      let item: Item = service.getFakeItem(ITEM_ID);
+      const item: Item = service.getFakeItem(ITEM_ID);
       expect(item.id).toBe(ITEM_ID);
       expect(item.title).toBe(FAKE_ITEM_TITLE);
       expect(item.mainImage.urls_by_size.small).toBe('');
@@ -164,7 +164,7 @@ describe('Service: Item', () => {
 
   describe('bulk actions', () => {
 
-    const TOTAL: number = 5;
+    const TOTAL = 5;
     let response: ItemBulkResponse;
 
     describe('bulkDelete', () => {
@@ -282,7 +282,7 @@ describe('Service: Item', () => {
       expect(event).toEqual({
         id: '1',
         action: 'selected'
-      })
+      });
     });
   });
 
@@ -303,7 +303,7 @@ describe('Service: Item', () => {
       expect(event).toEqual({
         id: '1',
         action: 'deselected'
-      })
+      });
     });
   });
 
@@ -345,7 +345,7 @@ describe('Service: Item', () => {
           comments: 'comments',
           reason: 'people_or_animals'
         }
-      )
+      );
     });
   });
 
@@ -525,7 +525,7 @@ describe('Service: Item', () => {
         resp = r;
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID + '/conversation-users');
-      expect(resp).toEqual(CONVERSATION_USERS)
+      expect(resp).toEqual(CONVERSATION_USERS);
     });
   });
 
@@ -538,7 +538,7 @@ describe('Service: Item', () => {
         resp = r;
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-visibility-products');
-      expect(resp).toEqual(PRODUCT_RESPONSE)
+      expect(resp).toEqual(PRODUCT_RESPONSE);
     });
   });
 
@@ -551,7 +551,7 @@ describe('Service: Item', () => {
         resp = r;
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-reactivation-products');
-      expect(resp).toEqual(PRODUCT_RESPONSE)
+      expect(resp).toEqual(PRODUCT_RESPONSE);
     });
   });
 
@@ -564,7 +564,7 @@ describe('Service: Item', () => {
         resp = r;
       });
       expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER]);
-      expect(resp).toEqual(['1234'])
+      expect(resp).toEqual(['1234']);
     });
   });
 
@@ -641,13 +641,13 @@ describe('Service: Item', () => {
     });
   });
 
-  describe('canMarkAsSold', () => {
+  describe('canDoAction', () => {
     it('should call endpoint and return true', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let result: boolean;
 
-      service.canMarkAsSold(ITEM_ID).subscribe((can: boolean) => {
+      service.canDoAction('mark_sold', ITEM_ID).subscribe((can: boolean) => {
         result = can;
       });
 
@@ -660,7 +660,7 @@ describe('Service: Item', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let result: boolean;
 
-      service.canMarkAsSold(ITEM_ID).subscribe((can: boolean) => {
+      service.canDoAction('mark_sold', ITEM_ID).subscribe((can: boolean) => {
         result = can;
       });
 
@@ -680,7 +680,7 @@ describe('Service: Item', () => {
       });
 
       expect(http.get).toHaveBeenCalledWith('api/v3/web/items/' + ITEM_ID + '/available-urgent-products');
-      expect(resp).toEqual(PRODUCT_RESPONSE)
+      expect(resp).toEqual(PRODUCT_RESPONSE);
     });
   });
 
@@ -695,7 +695,7 @@ describe('Service: Item', () => {
       });
 
       expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-urgent-products', {categoryId: ITEM_CATEGORY_ID});
-      expect(resp).toEqual(PRODUCT_RESPONSE)
+      expect(resp).toEqual(PRODUCT_RESPONSE);
     });
   });
 

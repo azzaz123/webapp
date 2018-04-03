@@ -16,15 +16,15 @@ import { MessagePayload } from '../message/messages.interface';
 import { MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 
-let mamFirstIndex: string = '1899';
-let mamCount: number = 1900;
-let queryId: string = 'abcdef';
-const LAST_MESSAGE: string = 'second';
-const FIRST_MESSAGE: string = 'first';
-const MESSAGE_ID: string = 'messageId';
-const MESSAGE_BODY: string = 'body';
+let mamFirstIndex = '1899';
+let mamCount = 1900;
+let queryId = 'abcdef';
+const LAST_MESSAGE = 'second';
+const FIRST_MESSAGE = 'first';
+const MESSAGE_ID = 'messageId';
+const MESSAGE_BODY = 'body';
 const MOCK_SERVER_DATE: Date = new Date('Fri Oct 28 2016 11:50:29 GMT+0200 (CEST)');
-const MESSAGE_DATE: string = '2016-10-17T09:04:49Z';
+const MESSAGE_DATE = '2016-10-17T09:04:49Z';
 
 class MockedClient {
 
@@ -350,9 +350,9 @@ describe('Service: Xmpp', () => {
 
   describe('searchHistory', () => {
 
-    const THREAD: string = '12345';
-    let getXmlMessage: any = (id: string, ref: string, receipt?: string, payload?: MessagePayload) => {
-      let data: any = {
+    const THREAD = '12345';
+    const getXmlMessage: any = (id: string, ref: string, receipt?: string, payload?: MessagePayload) => {
+      const data: any = {
         xml: {
           name: 'message',
           children: [{
@@ -528,7 +528,7 @@ describe('Service: Xmpp', () => {
       });
       eventService.emit('stream:data', XML_MESSAGE);
       tick(2000);
-      let message: Message = response.data[0];
+      const message: Message = response.data[0];
       expect(response.data.length).toBe(1);
       expect(message instanceof Message).toBeTruthy();
       expect(message.id).toBe(MESSAGE_ID);
@@ -539,7 +539,7 @@ describe('Service: Xmpp', () => {
 
     it('should return the response with two messages in the array', fakeAsync(() => {
       let response: any;
-      const MESSAGE_ID2: string = 'message2';
+      const MESSAGE_ID2 = 'message2';
       const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
       const XML_MESSAGE2: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
       service.searchHistory().subscribe((res: any) => {
@@ -548,8 +548,8 @@ describe('Service: Xmpp', () => {
       eventService.emit('stream:data', XML_MESSAGE);
       eventService.emit('stream:data', XML_MESSAGE2);
       tick(2000);
-      let message: Message = response.data[0];
-      let message2: Message = response.data[1];
+      const message: Message = response.data[0];
+      const message2: Message = response.data[1];
       expect(response.data.length).toBe(2);
       expect(message instanceof Message).toBeTruthy();
       expect(message.id).toBe(MESSAGE_ID2);
@@ -712,7 +712,7 @@ describe('Service: Xmpp', () => {
       });
       eventService.emit('stream:data', XML_MESSAGE);
       tick(2000);
-      let message: Message = response.data[0];
+      const message: Message = response.data[0];
       expect(response.data.length).toBe(1);
       expect(message instanceof Message).toBeTruthy();
       expect(message.id).toBe(MESSAGE_ID);
@@ -737,7 +737,7 @@ describe('Service: Xmpp', () => {
 
     it('should set messages in array as read if there are their receipts', fakeAsync(() => {
       let response: any;
-      const MESSAGE_ID2: string = 'message2';
+      const MESSAGE_ID2 = 'message2';
       const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
       const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
       const XML_MESSAGE2: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
@@ -758,7 +758,7 @@ describe('Service: Xmpp', () => {
 
     it('should send received confirmation for messages without receipt', fakeAsync(() => {
       let response: any;
-      const MESSAGE_ID2: string = 'message2';
+      const MESSAGE_ID2 = 'message2';
       const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
       const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
       const XML_MESSAGE2: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
@@ -787,7 +787,7 @@ describe('Service: Xmpp', () => {
 
     it('should keep the not matched receipts in an array for further use', fakeAsync(() => {
       let response: any;
-      const MESSAGE_ID2: string = 'message2';
+      const MESSAGE_ID2 = 'message2';
       const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
       const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
       const XML_MESSAGE2_RECEIPT: any = getXmlMessage('receipt_id2', LAST_MESSAGE, MESSAGE_ID);
@@ -807,7 +807,7 @@ describe('Service: Xmpp', () => {
 
     it('should match the receipt even if it is in another batch', fakeAsync(() => {
       let response: any;
-      const MESSAGE_ID2: string = 'message2';
+      const MESSAGE_ID2 = 'message2';
       const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
       const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
       const XML_MESSAGE2_RECEIPT: any = getXmlMessage('receipt_id2', LAST_MESSAGE, MESSAGE_ID);
@@ -883,7 +883,7 @@ describe('Service: Xmpp', () => {
       spyOn<any>(service, 'onNewMessage');
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendMessage(USER_ID, CONVERSATION_ID, MESSAGE_BODY);
-      let message: any = {
+      const message: any = {
         id: queryId,
         to: service['createJid'](USER_ID),
         from: service['currentJid'],
@@ -899,7 +899,7 @@ describe('Service: Xmpp', () => {
       spyOn(trackingService, 'track');
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendMessage(USER_ID, CONVERSATION_ID, MESSAGE_BODY);
-      let message: any = {
+      const message: any = {
         id: queryId,
         to: service['createJid'](USER_ID),
         from: service['currentJid'],

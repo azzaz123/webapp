@@ -35,7 +35,7 @@ describe('EditComponent', () => {
             return {
               result: Promise.resolve(true),
               componentInstance: componentInstance
-            }
+            };
           }
         }
         },

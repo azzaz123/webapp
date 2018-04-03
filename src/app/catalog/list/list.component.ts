@@ -69,7 +69,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.getItems();
       });
       this.route.params.subscribe((params: any) => {
-        if(!params.urgent) {
+        if (!params.urgent) {
           this.setRedirectToTPV(false);
         }
         if (params && params.code) {
@@ -301,7 +301,7 @@ export class ListComponent implements OnInit, OnDestroy {
       }
     }, () => {
       this.deselect();
-    })
+    });
   }
 
   public getNumberOfProducts() {
