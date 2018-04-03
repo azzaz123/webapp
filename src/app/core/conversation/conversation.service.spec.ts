@@ -616,6 +616,7 @@ describe('Service: Conversation', () => {
         response = null;
       });
       it('should filter conversations with no messages', () => {
+        service.firstLoad = true;
         service['loadMessagesIntoConversations'](CONVERSATIONS).subscribe((r: Conversation[]) => {
           response = r;
         });
