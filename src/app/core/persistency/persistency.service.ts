@@ -45,7 +45,7 @@ export class PersistencyService {
   public getMessages(conversationId: string): Observable<StoredMessageRow[]> {
     return Observable.create((observer: Observer<StoredMessageRow[]>) => {
       this.getMessageFromLocal().then((data: AllDocsResponse<StoredMessage>) => {
-        let rows: StoredMessageRow[] = _.sortBy(_.filter(data.rows, (row: StoredMessageRow) => {
+        const rows: StoredMessageRow[] = _.sortBy(_.filter(data.rows, (row: StoredMessageRow) => {
           return row.doc.conversationId === conversationId;
         }), (row: StoredMessageRow) => {
           return row.doc.date;
@@ -85,7 +85,7 @@ export class PersistencyService {
 
   public saveMessages(messages: Array<Message> | Message): Observable<any> {
     if (Array.isArray(messages)) {
-      let messagesToSave: StoredMessage[] = messages.map((message: Message) => {
+      const messagesToSave: StoredMessage[] = messages.map((message: Message) => {
           return this.buildResponse(message);
         }
       );
@@ -155,14 +155,14 @@ export class PersistencyService {
       return Promise.reject(new Error('doc id is required'));
     }
 
-    return db.get(docId)["catch"]((err) => {
+    return db.get(docId)['catch']((err) => {
       if (err.status !== 404) {
         throw err;
       }
       return {};
     }).then((doc) => {
-      let docRev = doc._rev;
-      let newDoc = diffFun(doc);
+      const docRev = doc._rev;
+      const newDoc = diffFun(doc);
       if (!newDoc) {
         return {updated: false, rev: docRev};
       }

@@ -65,7 +65,7 @@ describe('FavoritesComponent', () => {
       component.items = [MOCK_ITEM];
       component.getItems(false);
       expect(component.items).toEqual([MOCK_ITEM, MOCK_ITEM]);
-    })
+    });
 
     it('if append argument is not defined should clear item array', () => {
       component.items = [MOCK_ITEM];
@@ -74,7 +74,7 @@ describe('FavoritesComponent', () => {
     });
 
     it('should call myFavorites with items length', () => {
-      let init = component.items.length;
+      const init = component.items.length;
       component.getItems(true);
       expect(itemService.myFavorites).toHaveBeenCalledWith(init);
     });
@@ -147,5 +147,5 @@ describe('FavoritesComponent', () => {
       expect(userService.getStats).toHaveBeenCalled();
       expect(component.numberOfFavorites).toEqual(USERS_STATS_RESPONSE.counters.favorites);
     });
-  })
+  });
 });

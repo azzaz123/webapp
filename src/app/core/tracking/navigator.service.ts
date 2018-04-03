@@ -14,7 +14,7 @@ export class NavigatorService {
   private nameOffset;
   private verOffset;
   private ix;
-  private _OSName: string = 'Unknown';
+  private _OSName = 'Unknown';
 
   constructor() {
     this.parseVersionInfo();
@@ -23,31 +23,28 @@ export class NavigatorService {
   /* Copied code just to parse navigator info */
   /* istanbul ignore next */
   private parseVersionInfo() {
-    if ((this.verOffset = this.nAgt.indexOf("Opera")) != -1) {
-      this._browserName = "Opera";
+    if ((this.verOffset = this.nAgt.indexOf('Opera')) != -1) {
+      this._browserName = 'Opera';
       this._fullVersion = this.nAgt.substring(this.verOffset + 6);
-      if ((this.verOffset = this.nAgt.indexOf("Version")) != -1)
+      if ((this.verOffset = this.nAgt.indexOf('Version')) != -1) {
         this._fullVersion = this.nAgt.substring(this.verOffset + 8);
-    }
-    else if ((this.verOffset = this.nAgt.indexOf("MSIE")) != -1) {
-      this._browserName = "Microsoft Internet Explorer";
+      }
+    } else if ((this.verOffset = this.nAgt.indexOf('MSIE')) != -1) {
+      this._browserName = 'Microsoft Internet Explorer';
       this._fullVersion = this.nAgt.substring(this.verOffset + 5);
-    }
-    else if ((this.verOffset = this.nAgt.indexOf("Chrome")) != -1) {
-      this._browserName = "Chrome";
+    } else if ((this.verOffset = this.nAgt.indexOf('Chrome')) != -1) {
+      this._browserName = 'Chrome';
       this._fullVersion = this.nAgt.substring(this.verOffset + 7);
-    }
-    else if ((this.verOffset = this.nAgt.indexOf("Safari")) != -1) {
-      this._browserName = "Safari";
+    } else if ((this.verOffset = this.nAgt.indexOf('Safari')) != -1) {
+      this._browserName = 'Safari';
       this._fullVersion = this.nAgt.substring(this.verOffset + 7);
-      if ((this.verOffset = this.nAgt.indexOf("Version")) != -1)
+      if ((this.verOffset = this.nAgt.indexOf('Version')) != -1) {
         this._fullVersion = this.nAgt.substring(this.verOffset + 8);
-    }
-    else if ((this.verOffset = this.nAgt.indexOf("Firefox")) != -1) {
-      this._browserName = "Firefox";
+      }
+    } else if ((this.verOffset = this.nAgt.indexOf('Firefox')) != -1) {
+      this._browserName = 'Firefox';
       this._fullVersion = this.nAgt.substring(this.verOffset + 8);
-    }
-    else if ((this.nameOffset = this.nAgt.lastIndexOf(' ') + 1) <
+    } else if ((this.nameOffset = this.nAgt.lastIndexOf(' ') + 1) <
       (this.verOffset = this.nAgt.lastIndexOf('/'))) {
       this._browserName = this.nAgt.substring(this.nameOffset, this.verOffset);
       this._fullVersion = this.nAgt.substring(this.verOffset + 1);
@@ -55,10 +52,12 @@ export class NavigatorService {
         this._browserName = navigator.appName;
       }
     }
-    if ((this.ix = this._fullVersion.indexOf(";")) != -1)
+    if ((this.ix = this._fullVersion.indexOf(';')) != -1) {
       this._fullVersion = this._fullVersion.substring(0, this.ix);
-    if ((this.ix = this._fullVersion.indexOf(" ")) != -1)
+    }
+    if ((this.ix = this._fullVersion.indexOf(' ')) != -1) {
       this._fullVersion = this._fullVersion.substring(0, this.ix);
+    }
 
     this.majorVersion = parseInt('' + this._fullVersion, 10);
     if (isNaN(this.majorVersion)) {
@@ -70,10 +69,10 @@ export class NavigatorService {
   /* Copied code just to parse OS name */
   /* istanbul ignore next */
   private setOperativeSystem() {
-    if (this.nVer.indexOf("Win") != -1) this._OSName = "Windows";
-    if (this.nVer.indexOf("Mac") != -1) this._OSName = "MacOS";
-    if (this.nVer.indexOf("X11") != -1) this._OSName = "UNIX";
-    if (this.nVer.indexOf("Linux") != -1) this._OSName = "Linux";
+    if (this.nVer.indexOf('Win') != -1) { this._OSName = 'Windows'; }
+    if (this.nVer.indexOf('Mac') != -1) { this._OSName = 'MacOS'; }
+    if (this.nVer.indexOf('X11') != -1) { this._OSName = 'UNIX'; }
+    if (this.nVer.indexOf('Linux') != -1) { this._OSName = 'Linux'; }
   }
 
   get browserName(): string {

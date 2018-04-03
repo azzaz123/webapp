@@ -34,7 +34,7 @@ describe('CarSuggestionsService', () => {
   describe('getBrands', () => {
     let response: IOption[];
     beforeEach(fakeAsync(() => {
-      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_BRANDS_RESPONSE)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_BRANDS_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       service.getBrands().subscribe((r: IOption[]) => {
         response = r;
@@ -51,7 +51,7 @@ describe('CarSuggestionsService', () => {
   describe('getModels', () => {
     let response: IOption[];
     beforeEach(fakeAsync(() => {
-      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_MODELS_RESPONSE)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_MODELS_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       service.getModels('Abarth').subscribe((r: IOption[]) => {
         response = r;
@@ -68,7 +68,7 @@ describe('CarSuggestionsService', () => {
   describe('getYears', () => {
     let response: IOption[];
     beforeEach(fakeAsync(() => {
-      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_YEARS_RESPONSE)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_YEARS_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       service.getYears('Abarth', 'Spider').subscribe((r: IOption[]) => {
         response = r;
@@ -85,7 +85,7 @@ describe('CarSuggestionsService', () => {
   describe('getVersions', () => {
     let response: IOption[];
     beforeEach(fakeAsync(() => {
-      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_VERSIONS_RESPONSE)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_VERSIONS_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       service.getVersions('Abarth', 'Spider', '2017').subscribe((r: IOption[]) => {
         response = r;

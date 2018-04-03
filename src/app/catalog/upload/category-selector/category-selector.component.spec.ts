@@ -33,6 +33,6 @@ describe('CategorySelectorComponent', () => {
       component.setCategory(123);
 
       expect(category).toBe('123');
-    })
+    });
   });
 });

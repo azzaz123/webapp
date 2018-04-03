@@ -12,7 +12,7 @@ const STARS_MAX_VALUE = 5;
 export class StarsComponent implements OnChanges {
 
   @Input() stars: number;
-  @Input() normalized: boolean = true;
+  @Input() normalized = true;
   public starsArray: Star[];
 
   constructor() {
@@ -21,14 +21,14 @@ export class StarsComponent implements OnChanges {
   ngOnChanges(changes?: any) {
     this.starsArray = [];
     if (this.normalized) {
-      for (let i: number = 0; i < 5; i++) {
+      for (let i = 0; i < 5; i++) {
         this.starsArray.push({
           active: i < this.stars
         });
       }
     } else {
       this.stars = this.normalize(this.stars);
-      for (let i: number = 0; i < Math.floor(this.stars); i++) {
+      for (let i = 0; i < Math.floor(this.stars); i++) {
         this.starsArray.push({
           active: true
         });
@@ -40,7 +40,7 @@ export class StarsComponent implements OnChanges {
         });
       }
       const emptyStars = 5 - this.starsArray.length;
-      for (let i: number = 0; i < emptyStars; i++) {
+      for (let i = 0; i < emptyStars; i++) {
         this.starsArray.push({
           active: false
         });

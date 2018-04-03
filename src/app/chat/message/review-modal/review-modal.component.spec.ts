@@ -70,7 +70,7 @@ describe('ReviewModalComponent', () => {
         score: 4,
         comments: 'comment',
         userId: USER_ID
-      })
+      });
     });
   });
 

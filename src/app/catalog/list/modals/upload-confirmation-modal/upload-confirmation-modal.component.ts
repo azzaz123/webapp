@@ -65,9 +65,9 @@ export class UploadConfirmationModalComponent implements OnInit {
     this.getUrgentProductsObservable.subscribe((product: Product) => {
       this.getUrgentProductsObservable = null;
       this.productPrice = product.durations[0].market_code;
-      this.productId = product.durations[0].id
+      this.productId = product.durations[0].id;
     });
-    
+
   }
 
 }

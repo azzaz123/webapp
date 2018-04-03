@@ -24,8 +24,8 @@ import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 @Injectable()
 export class MockService extends LeadService {
 
-  protected API_URL: string = 'api/v3/conversations';
-  protected ARCHIVE_URL: string = 'api/v2/conversations';
+  protected API_URL = 'api/v3/conversations';
+  protected ARCHIVE_URL = 'api/v2/conversations';
 
   constructor(http: HttpService,
               userService: UserService,
@@ -189,10 +189,10 @@ describe('LeadService', () => {
 
   describe('getLastDate', () => {
     const CONVERSATIONS: Conversation[] = createConversationsArray(4);
-    const DATE: number = 123456;
+    const DATE = 123456;
     CONVERSATIONS[3].modifiedDate = DATE;
     it('should return the last conversation date', () => {
-      let response = service['getLastDate'](CONVERSATIONS);
+      const response = service['getLastDate'](CONVERSATIONS);
       expect(response).toBe(DATE - 1);
     });
   });
@@ -201,7 +201,7 @@ describe('LeadService', () => {
     const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify(CONVERSATIONS_DATA)}));
     describe('with backend errors', () => {
       beforeEach(() => {
-        let mockBackend: MockBackend = TestBed.get(MockBackend);
+        const mockBackend: MockBackend = TestBed.get(MockBackend);
         mockBackend.connections.subscribe((connection: MockConnection) => {
           connection.mockError();
         });

@@ -16,13 +16,13 @@ import { environment } from '../../../environments/environment';
 export class XmppService {
 
   private client: XMPPClient;
-  private _connected: boolean = false;
+  private _connected = false;
   private confirmedMessages: string[] = [];
   private firstMessageDate: string;
   private currentJid: string;
   private resource: string;
   private reconnectInterval: any;
-  private _reconnecting: boolean = false;
+  private _reconnecting = false;
   private connected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
@@ -119,7 +119,7 @@ export class XmppService {
         });
       });
       let messages: Message[] = [];
-      let messagesCount: number = 0;
+      let messagesCount = 0;
       setTimeout(() => {
         if (messagesCount === 0) {
           query.then((response) => {
@@ -460,7 +460,7 @@ export class XmppService {
         jids: {
           get: function getList() {
             let result = [], items;
-            let list = this.xml.getElementsByTagName('list');
+            const list = this.xml.getElementsByTagName('list');
             if (list && list[0]) {
               items = list[0].getElementsByTagName('item');
             }
@@ -498,9 +498,9 @@ export class XmppService {
         name: types.attribute('name'),
         jids: {
           set: function set(values) {
-            let self = this;
+            const self = this;
             values.forEach(function (value, index) {
-              let item = types.createElement('jabber:iq:privacy', 'item', 'jabber:iq:privacy');
+              const item = types.createElement('jabber:iq:privacy', 'item', 'jabber:iq:privacy');
               types.setAttribute(item, 'type', 'jid');
               types.setAttribute(item, 'order', index + 1);
               types.setAttribute(item, 'action', 'deny');
@@ -540,7 +540,7 @@ export class XmppService {
     stanzas.withDefinition('set', 'http://jabber.org/protocol/rsm', function (RSM: any) {
       stanzas.extend(MAMQuery, RSM);
     });
-  };
+  }
 
   private thirdVoicePlugin(client: XMPPClient, stanzas: any) {
     const types: any = stanzas.utils;

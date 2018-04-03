@@ -28,6 +28,6 @@ describe('SuggesterService', () => {
         response = data;
       });
       expect(response).toEqual(SUGGESTER_DATA_WEB);
-    })
+    });
   });
 });

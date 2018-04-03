@@ -64,7 +64,7 @@ export class ItemService extends ResourceService {
   }
 
   public getFakeItem(id: string): Item {
-    let fakeItem: Item = new Item(id, 1, '1', 'No disponible');
+    const fakeItem: Item = new Item(id, 1, '1', 'No disponible');
     fakeItem.setFakeImage(FAKE_ITEM_IMAGE_BASE_PATH);
     return fakeItem;
   }
@@ -82,7 +82,7 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json())
     .do((response: ItemBulkResponse) => {
       response.updatedIds.forEach((id: string) => {
-        let index: number = _.findIndex(this.items[type], {'id': id});
+        const index: number = _.findIndex(this.items[type], {'id': id});
         this.items[type].splice(index, 1);
       });
       this.deselectItems();

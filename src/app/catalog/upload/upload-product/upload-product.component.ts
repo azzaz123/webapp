@@ -76,7 +76,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
-  public isUrgent: boolean = false;
+  public isUrgent = false;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -158,7 +158,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       return deliveryInfo.value.min_weight_kg === this.item.deliveryInfo.min_weight_kg &&
         deliveryInfo.value.max_weight_kg === this.item.deliveryInfo.max_weight_kg;
     }).value;
-  };
+  }
 
   ngOnChanges(changes?: any) {
     this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
@@ -202,7 +202,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         values: this.uploadForm.value
       });
     } else {
-      for (let control in this.uploadForm.controls) {
+      for (const control in this.uploadForm.controls) {
         if (this.uploadForm.controls.hasOwnProperty(control) && !this.uploadForm.controls[control].valid) {
           this.uploadForm.controls[control].markAsDirty();
         }
@@ -260,7 +260,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       if (isPresent(Validators.required(control))) {
         return null;
       }
-      let v: number = Number(control.value);
+      const v: number = Number(control.value);
       return v < min ? {'min': {'requiredMin': min, 'actualMin': v}} : null;
     };
   }
@@ -270,7 +270,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       if (isPresent(Validators.required(control))) {
         return null;
       }
-      let v: number = Number(control.value);
+      const v: number = Number(control.value);
       return v > max ? {'max': {'requiredMax': max, 'actualMax': v}} : null;
     };
   }

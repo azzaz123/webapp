@@ -125,7 +125,7 @@ describe('UploadProductComponent', () => {
           latitude: '',
           longitude: ''
         }
-      })
+      });
     });
   });
 
@@ -224,7 +224,7 @@ describe('UploadProductComponent', () => {
       fixture.detectChanges();
       tick();
       expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();
-      expect(component['focused']).toBeFalsy()
+      expect(component['focused']).toBeFalsy();
     }));
   });
 
@@ -290,7 +290,7 @@ describe('UploadProductComponent', () => {
       expect(component.uploadForm.get('delivery_info').valid).toBeTruthy();
       component.uploadForm.get('sale_conditions.shipping_allowed').patchValue(true);
       expect(component.uploadForm.get('delivery_info').valid).toBeFalsy();
-    })
+    });
   });
 
   describe('onUploaded', () => {
@@ -300,7 +300,7 @@ describe('UploadProductComponent', () => {
         id: '1'
       }
     };
-    
+
     it('should emit form changed event', () => {
       let formChanged = true;
       component.onFormChanged.subscribe((value: boolean) => {
@@ -358,7 +358,7 @@ describe('UploadProductComponent', () => {
     it('should open modal', () => {
       expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
         windowClass: 'preview'
-      })
+      });
     });
 
     it('should set itemPreview', () => {

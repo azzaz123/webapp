@@ -10,7 +10,7 @@ export class SuggesterService {
   constructor(private http: HttpService) { }
 
   public getSuggestions(query: string): Observable<SuggesterResponse[]> {
-    let params: any =  {
+    const params: any =  {
       keyword: query
     };
     return this.http.getNoBase(environment.siteUrl + 'rest/suggesters/search', params)

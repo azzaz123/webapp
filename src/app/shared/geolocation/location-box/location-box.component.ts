@@ -33,7 +33,7 @@ export class LocationBoxComponent implements OnInit {
           this.coordinates = {
             latitude: user.location.approximated_latitude,
             longitude: user.location.approximated_longitude
-          }
+          };
         });
       }
     });
@@ -41,7 +41,7 @@ export class LocationBoxComponent implements OnInit {
       this.coordinates = location;
     });
   }
-  
+
   public emitLocation() {
     this.locationSelected.emit();
   }

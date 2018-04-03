@@ -157,7 +157,7 @@ describe('Component: Chat', () => {
     });
 
     it('should set which conversation is active', () => {
-      let conversationOld: Conversation = MOCK_CONVERSATION(2);
+      const conversationOld: Conversation = MOCK_CONVERSATION(2);
       conversationOld.active = true;
       component.currentConversation = conversationOld;
 
@@ -416,6 +416,6 @@ describe('Component: Chat', () => {
     component.ngOnDestroy();
 
     expect(adService.stopAdsRefresh).toHaveBeenCalled();
-  })
+  });
 
 });

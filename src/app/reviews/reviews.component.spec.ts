@@ -137,5 +137,5 @@ describe('ReviewsComponent', () => {
       expect(userService.getStats).toHaveBeenCalled();
       expect(component.numberOfReviews).toEqual(USERS_STATS_RESPONSE.counters.reviews);
     });
-  })
+  });
 });

@@ -19,7 +19,7 @@ export class CategoriesListComponent implements OnInit {
     this.getCategories();
   }
 
-  public getCategories(){
+  public getCategories() {
     this.categoryService.getCategories().subscribe((data: Array<CategoryResponse>) => {
       this.categories = data;
     });

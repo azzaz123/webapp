@@ -57,9 +57,9 @@ export class AdService {
         this.adKeyWords.longitude = user.location.approximated_longitude.toString();
       }
     }).flatMap(() => {
-      return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
+      return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json());
     }).flatMap((refreshRate: number) => {
-      return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0)
+      return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0);
     }).subscribe(() => {
       this.refreshAdWithKeyWords();
     });
