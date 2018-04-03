@@ -14,18 +14,12 @@ let http: HttpService;
 let userService: UserService;
 let mockBackend: MockBackend;
 let cookieService: CookieService;
-
-const cookiesAdKeyWord = {
+const cookies = {
   brand: 'bmv',
   content: 'i3',
   category: '100',
   minprice: '1000',
   maxprice: '20000'
-};
-
-const cookies = {
-  ...cookiesAdKeyWord,
-  publisherId: '123456' + Array(31).join('0')
 };
 
 const position = {
@@ -36,32 +30,13 @@ const position = {
 };
 
 const AdKeyWords = {
-  ...cookiesAdKeyWord,
+  ...cookies,
   gender: MOCK_USER.gender,
   userId: MOCK_USER.id,
   latitude: position.coords.latitude.toString(),
   longitude: position.coords.longitude.toString()
 };
 
-const cmd = {
-  push(callbacks) {
-    callbacks();
-  }
-}
-
-const pubads = {
-  defineSlot() {},
-  enableSingleRequest() {},
-  disableInitialLoad() {},
-  collapseEmptyDivs() {},
-  setPublisherProvidedId() {},
-  setTargeting () {},
-  refresh () {}
-};
-
-const defineSlot = {
-  addService() {}
-};
 
 describe('AdService', () => {
   beforeEach(() => {
@@ -86,9 +61,6 @@ describe('AdService', () => {
             },
             get (key) {
               return this.cookies[key];
-            },
-            remove (key) {
-              delete this.cookies[key];
             }
           }
         }
@@ -101,60 +73,24 @@ describe('AdService', () => {
     spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
       callback(position);
     });
-    spyOn(googletag, 'pubads').and.returnValue(pubads);
-    spyOn(googletag, 'defineSlot').and.returnValue(defineSlot);
-    spyOn(googletag, 'cmd').and.returnValue(cmd);
-    spyOn(googletag, 'enableServices');
-    spyOn(pubads, 'defineSlot');
-    spyOn(pubads, 'enableSingleRequest');
-    spyOn(pubads, 'collapseEmptyDivs');
-    spyOn(pubads, 'disableInitialLoad');
-    spyOn(pubads, 'setPublisherProvidedId');
     Object.keys(cookies).forEach(key => {
       cookieService.put(key, cookies[key]);
     });
     service = TestBed.get(AdService);
   });
 
-  beforeEach(() => {
-    spyOn(pubads, 'setTargeting');
-    spyOn(pubads, 'refresh');
-  });
-
-  describe('should init google services', () => {
-    it('enableSingleRequest', () => {
-      expect(pubads.enableSingleRequest).toHaveBeenCalled();
-    });
-    it('collapseEmptyDivs', () => {
-      expect(pubads.collapseEmptyDivs).toHaveBeenCalled();
-    });
-    it('disableInitialLoad', () => {
-      expect(pubads.disableInitialLoad).toHaveBeenCalled();
-    });
-    it('setPublisherProvidedId', () => {
-      expect(pubads.setPublisherProvidedId).toHaveBeenCalled();
-    });
-    it('enableServices', () => {
-      expect(googletag.enableServices).toHaveBeenCalled();
-    });
-  });
-
-  describe('publiser provider id', () => {
-    it('should send publisherId of cookie', () => {
-      expect(pubads.setPublisherProvidedId).toHaveBeenCalledWith(cookies.publisherId);
-    });
-    it('should send default publisherId of cookie -1*10e30', () => {
-      const defaultPublisherId = '-1' + Array(31).join('0');
-
-      cookieService.remove('publisherId');
-      service['initGoogletagConfig']();
-
-      expect(pubads.setPublisherProvidedId).toHaveBeenCalledWith(defaultPublisherId);
-    });
-  });
-
   describe ('refreshAds', () => {
     const refreshRate = 1000;
+    const pubads = {
+      setTargeting () {},
+      refresh () {}
+    };
+
+    beforeEach(() => {
+      spyOn(googletag, 'pubads').and.returnValue(pubads);
+      spyOn(pubads, 'setTargeting');
+      spyOn(pubads, 'refresh');
+    });
 
     describe('with refresh rate should', () => {
       beforeEach(() => {
@@ -167,6 +103,7 @@ describe('AdService', () => {
       it('send keyWords', fakeAsync(() => {
         service.startAdsRefresh();
         tick(1);
+
         Object.keys(AdKeyWords).forEach(key => {
           expect(pubads.setTargeting).toHaveBeenCalledWith(key, AdKeyWords[key]);
         });
@@ -226,56 +163,6 @@ describe('AdService', () => {
         tick(refreshRate);
 
         expect(pubads.refresh).toHaveBeenCalledTimes(2);
-      }));
-
-      it('should call amazon APS fetchBids', fakeAsync(() => {
-        spyOn(apstag, 'fetchBids')
-
-        service.startAdsRefresh()
-        tick(refreshRate);
-
-        expect(apstag.fetchBids).toHaveBeenCalled();
-        discardPeriodicTasks();
-      }));
-
-      it('should call amazon APS setDisplayBids', fakeAsync(() => {
-        spyOn(apstag, 'setDisplayBids')
-
-        service.startAdsRefresh()
-        tick(refreshRate);
-
-        expect(apstag.setDisplayBids).toHaveBeenCalled();
-        discardPeriodicTasks();
-      }));
-
-      it('should call Criteo SetLineItemRanges', fakeAsync(() => {
-        spyOn(Criteo, 'SetLineItemRanges')
-
-        service.startAdsRefresh()
-        tick(refreshRate);
-
-        expect(Criteo.SetLineItemRanges).toHaveBeenCalled();
-        discardPeriodicTasks();
-      }));
-
-      it('should call Criteo SetLineItemRanges', fakeAsync(() => {
-        spyOn(Criteo, 'SetLineItemRanges')
-
-        service.startAdsRefresh()
-        tick(refreshRate);
-
-        expect(Criteo.SetLineItemRanges).toHaveBeenCalled();
-        discardPeriodicTasks();
-      }));
-
-      it('should call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
-        spyOn(Criteo, 'SetDFPKeyValueTargeting')
-
-        service.startAdsRefresh()
-        tick(refreshRate);
-
-        expect(Criteo.SetDFPKeyValueTargeting).toHaveBeenCalled();
-        discardPeriodicTasks();
       }));
     });
 

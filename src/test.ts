@@ -11,24 +11,9 @@ declare const require: any;
 
 window['ga'] = function() {};
 window['googletag'] = {
-  cmd: {
-    push (callback) { callback(); }
-  },
-  enableServices() {},
-  defineSlot () {
-    return {
-      addService () {}
-    };
-  },
+  cmd: [],
   pubads () {
     return {
-      defineSlot() {},
-      enableSingleRequest() {},
-      enableServices() {},
-      disableInitialLoad() {},
-      collapseEmptyDivs() {},
-      setPublisherProvidedId() {},
-      setTargeting () {},
       refresh () {}
     };
   },
@@ -36,20 +21,6 @@ window['googletag'] = {
 };
 window['gtag'] = function() {};
 window['fbq'] = function() {};
-
-window['apstag'] = {
-  fetchBids ({slots, timeout}, callback) { callback(); },
-  setDisplayBids() {}
-};
-
-window['Criteo'] = {
-  events: {
-    push (callback) { callback(); }
-  },
-  SetLineItemRanges() {},
-  RequestBids(adunit, callback, timeout) { callback(); },
-  SetDFPKeyValueTargeting() {},
-};
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
