@@ -67,6 +67,12 @@ export class UserService extends ResourceService {
     return this.accessTokenService.accessToken ? true : false;
   }
 
+  public get isProfessional(): boolean {
+    if (this.isLogged) {
+      return this._user.type === 'professional' ? true : false;
+    }
+  }
+
   public get(id: string, noCache?: boolean): Observable<User> {
     return <Observable<User>>super.get(id, noCache).catch(() => {
       return Observable.of(this.getFakeUser(id));
