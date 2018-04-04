@@ -1,7 +1,6 @@
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoggedGuard } from './user/logged.guard';
-import { ProfessionalGuard } from './user/professional.guard';
 import { CookieModule } from 'ngx-cookie';
 import { UserModule } from './user/user.module';
 import { ItemModule } from './item/item.module';
@@ -51,7 +50,6 @@ export class CoreModule {
       ngModule: CoreModule,
       providers: [
         LoggedGuard,
-        ProfessionalGuard,
         EventService,
         I18nService,
         ErrorsService,
