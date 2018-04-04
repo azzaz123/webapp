@@ -8,7 +8,7 @@ import { ConversationResponse } from '../app/core/conversation/conversation-resp
 import { SurveyResponse } from '../app/core/conversation/lead-response.interface';
 
 export const CONVERSATION_ID: string = MESSAGE_MAIN.thread;
-export const CONVERSATION_PHONE: string = '123.456.789';
+export const CONVERSATION_PHONE = '123.456.789';
 export const SURVEY_RESPONSES: SurveyResponse[] = [
   {
     'question_id': 1,
@@ -72,7 +72,7 @@ export const MOCK_CONVERSATION: Function = (id: string = CONVERSATION_ID, userId
 };
 export const SECOND_MOCK_CONVERSATION: Conversation = new Conversation('secondId', 2, CONVERSATION_DATE, false, MOCK_USER);
 export const MOCKED_CONVERSATIONS: Conversation[] = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
-export const NOT_FOUND_CONVERSATION_ID: string = 'notFound';
+export const NOT_FOUND_CONVERSATION_ID = 'notFound';
 export const MOCK_NOT_FOUND_CONVERSATION: Conversation = new Conversation(
   NOT_FOUND_CONVERSATION_ID,
   99,
@@ -81,8 +81,8 @@ export const MOCK_NOT_FOUND_CONVERSATION: Conversation = new Conversation(
   MOCK_USER);
 
 export function createConversationsArray(total: number, phone?: boolean) {
-  let conversations: Conversation[] = [];
-  for (let i: number = 1; i <= total; i++) {
+  const conversations: Conversation[] = [];
+  for (let i = 1; i <= total; i++) {
     conversations.push(MOCK_CONVERSATION(i + '', undefined, phone ? CONVERSATION_PHONE : undefined, CONVERSATION_DATE - i));
   }
   return conversations;

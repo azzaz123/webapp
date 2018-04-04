@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import createSpy = jasmine.createSpy;
 
-const EVENT_NAME: string = 'MockEventName';
+const EVENT_NAME = 'MockEventName';
 const EVENT_DATA: any = {number: 5};
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 let service: EventService;
@@ -45,7 +45,7 @@ describe('Service: Event', () => {
       expect(EVENT_CALLBACK).toHaveBeenCalledTimes(1);
     });
     it('should return a subscription', () => {
-      let subscription: Subscription = service.subscribe(EVENT_NAME, EVENT_CALLBACK);
+      const subscription: Subscription = service.subscribe(EVENT_NAME, EVENT_CALLBACK);
       expect(subscription instanceof Subscription).toBeTruthy();
     });
   });

@@ -147,7 +147,7 @@ export class UserService extends ResourceService {
                     reason: number,
                     conversationId: number): Observable<any> {
 
-    let data: any = {
+    const data: any = {
       itemId: itemId,
       comments: comments,
       reason: reason,
@@ -162,7 +162,7 @@ export class UserService extends ResourceService {
 
   public getInfo(id: string): Observable<UserInfoResponse> {
     return this.http.get(this.API_URL + '/' + id + '/extra-info')
-    .map((r: Response) => r.json())
+    .map((r: Response) => r.json());
   }
 
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {
@@ -170,7 +170,7 @@ export class UserService extends ResourceService {
       latitude: coordinates.latitude,
       longitude: coordinates.longitude
     })
-    .map((r: Response) => r.json())
+    .map((r: Response) => r.json());
   }
 
   public getStats(): Observable<UserStatsResponse> {
@@ -179,7 +179,7 @@ export class UserService extends ResourceService {
       return {
         ratings: this.toRatingsStats(r.json().ratings),
         counters: this.toCountersStats(r.json().counters)
-      }
+      };
     });
   }
 

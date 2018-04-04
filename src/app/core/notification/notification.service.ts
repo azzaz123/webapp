@@ -5,12 +5,12 @@ import { Message } from '../message/message';
 import { PLACEHOLDER_AVATAR } from '../user/user';
 import { PushNotificationsService } from 'ng-push';
 
-export const NOTIFICATION_DURATION: number = 4000;
+export const NOTIFICATION_DURATION = 4000;
 
 @Injectable()
 export class NotificationService {
 
-  private hidden: boolean = false;
+  private hidden = false;
 
   constructor(private notificationService: PushNotificationsService,
               private trackingService: TrackingService,

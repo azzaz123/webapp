@@ -40,7 +40,7 @@ export class PasswordModalComponent {
         }
       });
     } else {
-      for (let control in this.passwordForm.controls) {
+      for (const control in this.passwordForm.controls) {
         if (this.passwordForm.controls.hasOwnProperty(control) && !this.passwordForm.controls[control].valid) {
           this.passwordForm.controls[control].markAsDirty();
         }

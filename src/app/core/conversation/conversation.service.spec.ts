@@ -103,11 +103,11 @@ describe('Service: Conversation', () => {
   });
 
   describe('getLeads', () => {
-    const TOTAL: number = 4;
+    const TOTAL = 4;
     const QUERY_RESULT: Conversation[] = createConversationsArray(TOTAL);
-    const SINCE: number = 1234567;
-    const UNREAD_MESSAGES: number = 2;
-    const TOTAL_MESSAGES: number = 4;
+    const SINCE = 1234567;
+    const UNREAD_MESSAGES = 2;
+    const TOTAL_MESSAGES = 4;
     let response: Conversation[];
     describe('with results', () => {
       beforeEach(() => {
@@ -155,7 +155,7 @@ describe('Service: Conversation', () => {
           expect(service.query).toHaveBeenCalledWith(SINCE, undefined);
         });
         it('should return concatenated convesations', () => {
-          const INITIAL_TOTAL: number = 3;
+          const INITIAL_TOTAL = 3;
           service.leads = createConversationsArray(INITIAL_TOTAL);
           service.getLeads(SINCE).subscribe((r: Conversation[]) => {
             response = r;
@@ -195,7 +195,7 @@ describe('Service: Conversation', () => {
           expect(service.query).toHaveBeenCalledWith(SINCE, true);
         });
         it('should return concatenated convesations', () => {
-          const INITIAL_TOTAL: number = 3;
+          const INITIAL_TOTAL = 3;
           service.archivedLeads = createConversationsArray(INITIAL_TOTAL);
           service.getLeads(SINCE, true).subscribe((r: Conversation[]) => {
             response = r;
@@ -287,7 +287,7 @@ describe('Service: Conversation', () => {
           }]).subscribe((r: Conversation[]) => {
             response = r;
           });
-          let conversations: Conversation[] = createConversationsArray(5);
+          const conversations: Conversation[] = createConversationsArray(5);
           conversations[0]['_expectedVisit'] = true;
           conversations[2]['_expectedVisit'] = true;
           service.stream$.next(conversations);
@@ -313,7 +313,7 @@ describe('Service: Conversation', () => {
           }]).subscribe((r: Conversation[]) => {
             response = r;
           });
-          let conversations: Conversation[] = createConversationsArray(5);
+          const conversations: Conversation[] = createConversationsArray(5);
           conversations[0]['_expectedVisit'] = true;
           conversations[2]['_expectedVisit'] = true;
           service.stream$.next([...conversations, ...createConversationsArray(4, true)]);
@@ -515,12 +515,12 @@ describe('Service: Conversation', () => {
   });
 
   describe('loadUnreadMessagesNumber', () => {
-    const UNREAD_MESSAGES: number = 5;
-    const INITIAL_UNREAD_MESSAGES: number = 3;
+    const UNREAD_MESSAGES = 5;
+    const INITIAL_UNREAD_MESSAGES = 3;
     let response: Conversation;
     beforeEach(() => {
       spyOn(persistencyService, 'getUnreadMessages').and.returnValue(Observable.of({unreadMessages: UNREAD_MESSAGES}));
-      let conversation: Conversation = MOCK_CONVERSATION();
+      const conversation: Conversation = MOCK_CONVERSATION();
       messageService.totalUnreadMessages = INITIAL_UNREAD_MESSAGES;
       service['loadUnreadMessagesNumber'](conversation).subscribe((r: Conversation) => {
         response = r;
@@ -536,9 +536,9 @@ describe('Service: Conversation', () => {
   });
 
   describe('loadMessagesIntoConversations', () => {
-    const TOTAL_MESSAGES: number = 4;
-    const TOTAL_UNREAD_MESSAGES: number = 4;
-    const TOTAL_CONVERSATIONS: number = 5;
+    const TOTAL_MESSAGES = 4;
+    const TOTAL_UNREAD_MESSAGES = 4;
+    const TOTAL_CONVERSATIONS = 5;
     const CONVERSATIONS: Conversation[] = createConversationsArray(TOTAL_CONVERSATIONS);
     let response: Conversation[];
     describe('conversations with messages', () => {
@@ -862,7 +862,7 @@ describe('Service: Conversation', () => {
           expect(observableResponse[1].messages.length).toBe(2);
         }));
         it('should call addUserInfo', fakeAsync(() => {
-          let messageWithUser: Message = MOCK_MESSAGE;
+          const messageWithUser: Message = MOCK_MESSAGE;
           spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
           service.loadNotStoredMessages(initialConversations).subscribe((data: Array<Conversation>) => {
             observableResponse = data;
@@ -982,7 +982,7 @@ describe('Service: Conversation', () => {
 
   describe('handleUnreadMessage', () => {
     it('should add 1 the unreadMessages to the conversation and save it on the DB', () => {
-      let conversation: Conversation = MOCK_CONVERSATION();
+      const conversation: Conversation = MOCK_CONVERSATION();
       spyOn(persistencyService, 'saveUnreadMessages');
       messageService.totalUnreadMessages = 0;
       (service as any).handleUnreadMessage(conversation);
@@ -1090,7 +1090,7 @@ describe('Service: Conversation', () => {
     }));
 
     it('should call addUserInfo', () => {
-      let messageWithUser: Message = MOCK_MESSAGE;
+      const messageWithUser: Message = MOCK_MESSAGE;
       spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
       service.handleNewMessages(MOCK_MESSAGE, false);
       expect(messageService.addUserInfo).toHaveBeenCalledTimes(1);
@@ -1107,7 +1107,7 @@ describe('Service: Conversation', () => {
 
     it('should send browser notification', () => {
       spyOn(notificationService, 'sendBrowserNotification');
-      let messageWithUser: Message = <Message>{
+      const messageWithUser: Message = <Message>{
         ...MOCK_MESSAGE,
         fromBuyer: true
       };
@@ -1117,7 +1117,7 @@ describe('Service: Conversation', () => {
     });
     it('should NOT send browser notification if message is mine', () => {
       spyOn(notificationService, 'sendBrowserNotification');
-      let messageWithUser: Message = <Message>{
+      const messageWithUser: Message = <Message>{
         ...MOCK_MESSAGE,
         fromBuyer: false
       };
@@ -1134,7 +1134,7 @@ describe('Service: Conversation', () => {
 
       it('should request the conversation info, add the message and add to the list', () => {
         service.handleNewMessages(new Message(MESSAGE_MAIN.id, NOT_FOUND_CONVERSATION_ID, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date), false);
-        let newConversation: Conversation = <Conversation>service.leads[0];
+        const newConversation: Conversation = <Conversation>service.leads[0];
         expect(service.get).toHaveBeenCalledWith(NOT_FOUND_CONVERSATION_ID);
         expect(newConversation.id).toBe(NOT_FOUND_CONVERSATION_ID);
         expect(newConversation.modifiedDate).not.toBe(CONVERSATION_DATE);
@@ -1143,9 +1143,9 @@ describe('Service: Conversation', () => {
       });
 
       it('should call addUserInfo', () => {
-        let messageWithUser: Message = MOCK_MESSAGE;
+        const messageWithUser: Message = MOCK_MESSAGE;
         spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
-        let newMessage: Message = new Message(
+        const newMessage: Message = new Message(
           MESSAGE_MAIN.id,
           NOT_FOUND_CONVERSATION_ID,
           MESSAGE_MAIN.body,
@@ -1164,7 +1164,7 @@ describe('Service: Conversation', () => {
         spyOn(service, 'get').and.returnValue(Observable.of(MOCK_NOT_FOUND_CONVERSATION));
         service.leads = [];
         service.handleNewMessages(new Message(MESSAGE_MAIN.id, NOT_FOUND_CONVERSATION_ID, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date), false);
-        let newConversation: Conversation = <Conversation>service.leads[0];
+        const newConversation: Conversation = <Conversation>service.leads[0];
         expect(service.get).toHaveBeenCalledWith(NOT_FOUND_CONVERSATION_ID);
         expect(newConversation.id).toBe(NOT_FOUND_CONVERSATION_ID);
         expect(newConversation.modifiedDate).not.toBe(CONVERSATION_DATE);
@@ -1197,7 +1197,7 @@ describe('Service: Conversation', () => {
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED);
     });
     describe('updateConversation', () => {
-      const PHONE: string = '823748484';
+      const PHONE = '823748484';
       beforeEach(() => {
         const RESPONSE: Response = new Response(new ResponseOptions(
           {

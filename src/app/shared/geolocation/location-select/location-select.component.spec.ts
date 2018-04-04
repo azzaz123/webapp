@@ -31,7 +31,7 @@ describe('LocationSelectComponent', () => {
             return {
               componentInstance: componentInstance,
               result: Promise.resolve(USER_LOCATION_COORDINATES)
-            }
+            };
           }
         }
         },
@@ -125,7 +125,7 @@ describe('LocationSelectComponent', () => {
         spyOn(modalService, 'open').and.callThrough();
         spyOn(userService, 'updateLocation').and.callThrough();
         spyOn(component.locationSelected, 'emit');
-        
+
         component.open(element);
         tick(LOCATION_MODAL_TIMEOUT);
       }));

@@ -68,13 +68,13 @@ describe('GeolocationComponent', () => {
       spyOn(geolocationService, 'search').and.callThrough();
     });
     it('should search for locations from input text', () => {
-      let input = 'Barcelona';
+      const input = 'Barcelona';
       component.search(Observable.of(input)).subscribe();
       expect(geolocationService.search).toHaveBeenCalled();
     });
 
     it('should NOT search for locations from input < 3', () => {
-      let input = 'Ba';
+      const input = 'Ba';
       component.search(Observable.of(input)).subscribe();
       expect(geolocationService.search).not.toHaveBeenCalled();
     });

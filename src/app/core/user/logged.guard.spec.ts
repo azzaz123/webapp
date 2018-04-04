@@ -55,5 +55,5 @@ describe('LoggedGuard', (): void => {
       expect(result).toBeTruthy();
       expect(window.nativeWindow.location.href).not.toBe(environment.siteUrl + 'login');
     });
-  })
+  });
 });

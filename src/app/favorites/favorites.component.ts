@@ -13,9 +13,9 @@ import { Item } from '../core/item/item';
 export class FavoritesComponent implements OnInit {
 
   public items: Item[] = [];
-  public selectedStatus: string = 'published';
-  public loading: boolean = false;
-  public end: boolean = false;
+  public selectedStatus = 'published';
+  public loading = false;
+  public end = false;
   public numberOfFavorites: number;
 
   public masonryOptions = {

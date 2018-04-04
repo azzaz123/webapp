@@ -11,16 +11,45 @@ declare const require: any;
 
 window['ga'] = function() {};
 window['googletag'] = {
-  cmd: [],
+  cmd: {
+    push (callback) { callback(); }
+  },
+  enableServices() {},
+  defineSlot () {
+    return {
+      addService () {}
+    };
+  },
   pubads () {
     return {
+      defineSlot() {},
+      enableSingleRequest() {},
+      enableServices() {},
+      disableInitialLoad() {},
+      collapseEmptyDivs() {},
+      setPublisherProvidedId() {},
+      setTargeting () {},
       refresh () {}
-    }
+    };
   },
   display: (slotid: string) => {}
 };
 window['gtag'] = function() {};
 window['fbq'] = function() {};
+
+window['apstag'] = {
+  fetchBids ({slots, timeout}, callback) { callback(); },
+  setDisplayBids() {}
+};
+
+window['Criteo'] = {
+  events: {
+    push (callback) { callback(); }
+  },
+  SetLineItemRanges() {},
+  RequestBids(adunit, callback, timeout) { callback(); },
+  SetDFPKeyValueTargeting() {},
+};
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(

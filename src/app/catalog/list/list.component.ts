@@ -30,18 +30,18 @@ import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-m
 export class ListComponent implements OnInit, OnDestroy {
 
   public items: Item[] = [];
-  public selectedStatus: string = 'published';
-  public loading: boolean = true;
-  private init: number = 0;
+  public selectedStatus = 'published';
+  public loading = true;
+  private init = 0;
   public end: boolean;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public scrollTop: number;
   private uploadModalRef: NgbModalRef;
-  private active: boolean = true;
+  private active = true;
   private firstItemLoad = true;
   public numberOfProducts: number;
-  public isUrgent: boolean = false;
-  public isRedirect: boolean = false;
+  public isUrgent = false;
+  public isRedirect = false;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
@@ -68,7 +68,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.getItems();
       });
       this.route.params.subscribe((params: any) => {
-        if(!params.urgent) {
+        if (!params.urgent) {
           this.setRedirectToTPV(false);
         }
         if (params && params.code) {
@@ -300,7 +300,7 @@ export class ListComponent implements OnInit, OnDestroy {
       }
     }, () => {
       this.deselect();
-    })
+    });
   }
 
   public getNumberOfProducts() {

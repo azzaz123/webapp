@@ -39,7 +39,7 @@ describe('Service: User', () => {
   let http: HttpService;
   let haversineService: HaversineService;
   let response: any;
-  const FAKE_USER_NAME: string = 'No disponible';
+  const FAKE_USER_NAME = 'No disponible';
   let accessTokenService: AccessTokenService;
   let event: EventService;
   let cookieService: CookieService;
@@ -90,7 +90,7 @@ describe('Service: User', () => {
   });
 
   it('should return the user', () => {
-    let user: User = new User('123');
+    const user: User = new User('123');
     service['_user'] = user;
     expect(service.user).toBe(user);
   });
@@ -112,7 +112,7 @@ describe('Service: User', () => {
       beforeEach(fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/' + USER_ID);
-          let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+          const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
           connection.mockRespond(new Response(res));
         });
       }));
@@ -159,7 +159,7 @@ describe('Service: User', () => {
       spyOn(http, 'get').and.callThrough();
       mockBackend.connections.subscribe((connection: MockConnection) => {
         expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/me');
-        let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
         connection.mockRespond(new Response(res));
       });
       let user: User;
@@ -221,7 +221,7 @@ describe('Service: User', () => {
 
   describe('getFakeUser', () => {
     it('should return a fake User object', () => {
-      let user: User = (service as any).getFakeUser(USER_ID);
+      const user: User = (service as any).getFakeUser(USER_ID);
       expect(user.id).toBe(USER_ID);
       expect(user.microName).toBe(FAKE_USER_NAME);
     });

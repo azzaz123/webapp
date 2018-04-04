@@ -45,7 +45,7 @@ export class TrackingEvent {
       os: operativeSystemVersion,
       screenwidth: this.sessions[0].window.screen.width.toString(),
       screenheight: this.sessions[0].window.screen.height.toString(),
-      locale: _.replace(navigator.language,"-", "_"),
+      locale: _.replace(navigator.language, '-', '_'),
       deviceAccessTokenId: deviceAccessTokenId
     };
   }

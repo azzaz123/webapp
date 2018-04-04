@@ -6,7 +6,7 @@ import { ReviewDataBuyer, ReviewDataSeller } from './review.interface';
 @Injectable()
 export class ReviewService {
 
-  protected API_URL: string = 'api/v3/reviews';
+  protected API_URL = 'api/v3/reviews';
 
   constructor(private http: HttpService) {
   }

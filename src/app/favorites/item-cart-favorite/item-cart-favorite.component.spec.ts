@@ -90,7 +90,7 @@ describe('ItemCartFavoriteComponent', () => {
 
   describe('removeFavorite', () => {
     beforeEach(() => {
-      spyOn(component.onFavoriteChange, 'emit')
+      spyOn(component.onFavoriteChange, 'emit');
     });
     it('should set favorited property to false', () => {
       component.item.favorited = true;
@@ -129,5 +129,5 @@ describe('ItemCartFavoriteComponent', () => {
       tick();
       expect(component.removeFavorite).toHaveBeenCalled();
     }));
-  })
+  });
 });

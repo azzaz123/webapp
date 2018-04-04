@@ -467,8 +467,8 @@ export class TrackingService {
   private sessionStartTime: string = null;
   private sessionId: string = null;
   private deviceAccessTokenId: string = null;
-  private sessionIdCookieName: string = 'session_id';
-  private deviceAccessTokenIdCookieName: string = 'device_access_token_id';
+  private sessionIdCookieName = 'session_id';
+  private deviceAccessTokenIdCookieName = 'device_access_token_id';
 
   constructor(private navigatorService: NavigatorService,
               private http: HttpService,
@@ -507,7 +507,7 @@ export class TrackingService {
   }
 
   private setSessionId(cookieName: string) {
-    let sessionCookie = this.cookieService.get(cookieName);
+    const sessionCookie = this.cookieService.get(cookieName);
     if (sessionCookie) {
       this.sessionId = sessionCookie;
     } else {
@@ -517,7 +517,7 @@ export class TrackingService {
   }
 
   private setDeviceAccessTokenId(cookieName: string) {
-    let deviceAccessTokenCookie = this.cookieService.get(cookieName);
+    const deviceAccessTokenCookie = this.cookieService.get(cookieName);
     if (deviceAccessTokenCookie) {
       this.deviceAccessTokenId = deviceAccessTokenCookie;
     } else {

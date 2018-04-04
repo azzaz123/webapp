@@ -9,7 +9,7 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 @Injectable()
 export class CarKeysService {
 
-  private API_URL: string = 'api/v3/cars/keys';
+  private API_URL = 'api/v3/cars/keys';
   private cache: any[];
 
   constructor(private http: HttpService,
@@ -26,7 +26,7 @@ export class CarKeysService {
     return this.getTypesData()
     .map((values: any[]) => {
       return _.filter(values, {id: id})[0].text;
-    })
+    });
   }
 
   private getTypesData(): Observable<any[]> {

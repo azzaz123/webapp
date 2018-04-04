@@ -3,14 +3,14 @@ import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
 import * as _ from 'lodash';
 
 describe('TrackingEvent', () => {
-  const platform: string = 'MacOS';
-  const os: string = '5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36';
-  const screenWidth: string = '1366';
-  const screenHeight: string = '768';
-  const type: string = 'Computer';
-  const deviceAccessTokenId: string = 'a-b-c';
-  const manufacturer: string = 'Chrome';
-  const model: string = '64';
+  const platform = 'MacOS';
+  const os = '5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36';
+  const screenWidth = '1366';
+  const screenHeight = '768';
+  const type = 'Computer';
+  const deviceAccessTokenId = 'a-b-c';
+  const manufacturer = 'Chrome';
+  const model = '64';
 
   it('should create an instance', () => {
     expect(TRACKING_EVENT).toBeTruthy();
@@ -27,7 +27,7 @@ describe('TrackingEvent', () => {
         os: os,
         screenwidth: screenWidth,
         screenheight: screenHeight,
-        locale: _.replace(navigator.language,"-", "_"),
+        locale: _.replace(navigator.language, '-', '_'),
         deviceAccessTokenId: deviceAccessTokenId
       });
     });
