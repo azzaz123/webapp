@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
-import { User } from './user';
+import { User, PERMISSIONS } from './user';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../event/event.service';
 import { ResourceService } from '../resource/resource.service';
@@ -19,6 +19,7 @@ import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
 import { UserData } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -35,6 +36,7 @@ export class UserService extends ResourceService {
               protected haversineService: HaversineService,
               protected accessTokenService: AccessTokenService,
               private cookieService: CookieService,
+              private permissionService: NgxPermissionsService,
               @Inject('SUBDOMAIN') private subdomain: string) {
     super(http);
   }
@@ -59,6 +61,7 @@ export class UserService extends ResourceService {
       const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
       this.cookieService.remove('publisherId', cookieOptions);
       this.accessTokenService.deleteAccessToken();
+      this.permissionService.flushPermissions();
       this.event.emit(EventService.USER_LOGOUT, redirectUrl);
     });
   }
@@ -252,6 +255,10 @@ export class UserService extends ResourceService {
       data.gender,
       data.email
     );
+  }
+
+  public setPermission(userType: string): void {
+    this.permissionService.addPermission(PERMISSIONS[userType]);
   }
 }
 
