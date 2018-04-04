@@ -641,12 +641,25 @@ describe('ListComponent', () => {
         spyOn(userService, 'getStats').and.callThrough();
       });
 
-      it('should get the number of products', () => {
+      it('should set numberOfProducts to the numberOfPublishedProducts when published filter is selected', () => {
+        USERS_STATS_RESPONSE.counters.publish = 7;
+        component['selectedStatus'] = 'published';
+
         component.getNumberOfProducts();
+        component.filterByStatus('published');
 
         expect(userService.getStats).toHaveBeenCalled();
         expect(component.numberOfProducts).toEqual(USERS_STATS_RESPONSE.counters.publish);
-        expect(component.numberOfSoldProducts).toEqual(USERS_STATS_RESPONSE.counters.sold);
+      });
+
+      it('should set numberOfProducts to the numberOfSoldProducts when sold filter is selected', () => {
+        USERS_STATS_RESPONSE.counters.sold = 3;
+
+        component.getNumberOfProducts();
+        component.filterByStatus('sold');
+
+        expect(userService.getStats).toHaveBeenCalled();
+        expect(component.numberOfProducts).toEqual(USERS_STATS_RESPONSE.counters.sold);
       });
     });
 
