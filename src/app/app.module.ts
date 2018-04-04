@@ -18,6 +18,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { ProfileModule } from './profile/profile.module';
 import { HttpClientModule } from '@angular/common/http';
 import { TutorialModule } from './tutorial/tutorial.module';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { TutorialModule } from './tutorial/tutorial.module';
     ReviewsModule,
     FavoritesModule,
     ProfileModule,
-    TutorialModule
+    TutorialModule,
+    NgxPermissionsModule.forRoot()
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
