@@ -169,7 +169,8 @@ export const COUNTERS_RESPONSE: Counters = {
   views: 0,
   profile_favorited_received: 0,
   profile_favorited: 0,
-  reviews: 0
+  reviews: 0,
+  sold: 0
 };
 
 export const USERS_STATS_RESPONSE: UserStatsResponse = {
@@ -215,6 +216,10 @@ export const COUNTERS = [
   },
   {
     type: 'reviews',
+    value: 0
+  },
+  {
+    type: 'sold',
     value: 0
   }
 ];

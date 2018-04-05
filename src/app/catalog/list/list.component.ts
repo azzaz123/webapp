@@ -39,8 +39,10 @@ export class ListComponent implements OnInit, OnDestroy {
   private uploadModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
-  public numberOfProducts: number;
   public isUrgent = false;
+  public numberOfProducts: number;
+  private numberOfPublishedProducts: number;
+  private numberOfSoldProducts: number;
   public isRedirect = false;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
@@ -145,6 +147,12 @@ export class ListComponent implements OnInit, OnDestroy {
       this.selectedStatus = status;
       this.init = 0;
       this.getItems();
+
+    if (this.selectedStatus === 'sold') {
+      this.numberOfProducts = this.numberOfSoldProducts;
+    } else if (this.selectedStatus === 'published') {
+      this.numberOfProducts = this.numberOfPublishedProducts;
+    }
     }
   }
 
@@ -305,7 +313,9 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public getNumberOfProducts() {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
-      this.numberOfProducts = userStats.counters.publish;
+      this.numberOfPublishedProducts = userStats.counters.publish;
+      this.numberOfSoldProducts = userStats.counters.sold;
+      this.numberOfProducts = this.numberOfPublishedProducts;
     });
   }
 

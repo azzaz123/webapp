@@ -205,9 +205,10 @@ export class ItemService extends ResourceService {
     });
   }
 
-  public getPaginationItems(url: string, init): Observable<ItemsData> {
+  public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
     return this.http.get(url, {
-      init: init
+      init: init,
+      expired: status
     })
     .map((r: Response) => {
         const res: ItemResponse[] = r.json();
@@ -255,7 +256,7 @@ export class ItemService extends ResourceService {
   }
 
   public mine(init: number, status?: string): Observable<ItemsData> {
-    return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init);
+    return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init, true);
   }
 
   public myFavorites(init: number): Observable<ItemsData> {

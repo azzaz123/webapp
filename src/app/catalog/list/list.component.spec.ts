@@ -43,6 +43,10 @@ describe('ListComponent', () => {
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   const routerEvents: Subject<any> = new Subject();
+  const mockCounters = {
+    sold: 7,
+    publish: 12
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -122,7 +126,9 @@ describe('ListComponent', () => {
         {
           provide: UserService, useValue: {
             getStats() {
-              return Observable.of(USERS_STATS_RESPONSE);
+              return Observable.of({
+                counters: mockCounters
+              });
             }
           }
         },
@@ -275,7 +281,7 @@ describe('ListComponent', () => {
   });
 
   describe('getItems', () => {
-    it('should call mines with default values and set items', () => {
+    it('should call mine with default values and set items', () => {
       expect(itemService.mine).toHaveBeenCalledWith(0, 'published');
       expect(component.items.length).toBe(2);
     });
@@ -319,12 +325,12 @@ describe('ListComponent', () => {
     beforeEach(() => {
       itemerviceSpy.calls.reset();
     });
-    it('should call mines with filtering and reset page', () => {
+    it('should call mine with filtering and reset page', () => {
       component['init'] = 20;
       component.filterByStatus('sold');
       expect(itemService.mine).toHaveBeenCalledWith(0, 'sold');
     });
-    it('should not call mines if filter is the same', () => {
+    it('should not call mine if filter is the same', () => {
       component.selectedStatus = 'sold';
       component.filterByStatus('sold');
       expect(itemService.mine).not.toHaveBeenCalled();
@@ -332,7 +338,7 @@ describe('ListComponent', () => {
   });
 
   describe('loadMore', () => {
-    it('should call mines with new page and append items', () => {
+    it('should call mine with new page and append items', () => {
       component['init'] = 20;
       component.loadMore();
       expect(itemService.mine).toHaveBeenCalledWith(20, 'published');
@@ -641,11 +647,22 @@ describe('ListComponent', () => {
         spyOn(userService, 'getStats').and.callThrough();
       });
 
-      it('should get the number of products', () => {
+      it('should set numberOfProducts to the numberOfPublishedProducts when published filter is selected', () => {
+        component['selectedStatus'] = 'published';
+
         component.getNumberOfProducts();
+        component.filterByStatus('published');
 
         expect(userService.getStats).toHaveBeenCalled();
-        expect(component.numberOfProducts).toEqual(USERS_STATS_RESPONSE.counters.publish);
+        expect(component.numberOfProducts).toEqual(mockCounters.publish);
+      });
+
+      it('should set numberOfProducts to the numberOfSoldProducts when sold filter is selected', () => {
+        component.getNumberOfProducts();
+        component.filterByStatus('sold');
+
+        expect(userService.getStats).toHaveBeenCalled();
+        expect(component.numberOfProducts).toEqual(mockCounters.sold);
       });
     });
 
