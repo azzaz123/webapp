@@ -8,6 +8,10 @@ To manage node versions, it is recommended to use a version manager like [nvm](h
 
 To install the project dependencies you need to use `yarn install`.
 
+## Prepare repo
+
+Run ./prepare_repo.sh in terminal
+
 ## Environments
 
 You have the environment variables on `src/environments/environment.ts`, you can change them locally to suit your needs.
