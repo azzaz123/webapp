@@ -10,7 +10,12 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
-import {createItemsArray, ITEMS_BULK_RESPONSE, ITEMS_BULK_RESPONSE_FAILED, MOCK_ITEM, ORDER, ORDER_EVENT , PRODUCT_RESPONSE} from '../../../tests/item.fixtures.spec';
+import { createItemsArray,
+  ITEMS_BULK_RESPONSE,
+  ITEMS_BULK_RESPONSE_FAILED,
+  MOCK_ITEM,
+  ORDER, ORDER_EVENT,
+  PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
@@ -647,13 +652,31 @@ describe('ListComponent', () => {
         spyOn(userService, 'getStats').and.callThrough();
       });
 
-      it('should set numberOfProducts to the numberOfPublishedProducts when published filter is selected', () => {
-        component['selectedStatus'] = 'published';
-
+      it('should call getStats method form the userService when invoked', () => {
         component.getNumberOfProducts();
         component.filterByStatus('published');
 
         expect(userService.getStats).toHaveBeenCalled();
+      });
+
+      it('should call setNumberOfProducts method when invoked', () => {
+        component.getNumberOfProducts();
+        component.filterByStatus('published');
+
+        expect(component.getNumberOfProducts).toHaveBeenCalled();
+      });
+    });
+
+    describe('setNumberOfProducts', () => {
+      beforeEach(() => {
+        spyOn(component, 'getNumberOfProducts').and.callThrough();
+        spyOn(userService, 'getStats').and.callThrough();
+      });
+
+      it('should set numberOfProducts to the numberOfPublishedProducts when published filter is selected', () => {
+        component.getNumberOfProducts();
+        component.filterByStatus('published');
+
         expect(component.numberOfProducts).toEqual(mockCounters.publish);
       });
 
@@ -661,7 +684,6 @@ describe('ListComponent', () => {
         component.getNumberOfProducts();
         component.filterByStatus('sold');
 
-        expect(userService.getStats).toHaveBeenCalled();
         expect(component.numberOfProducts).toEqual(mockCounters.sold);
       });
     });
