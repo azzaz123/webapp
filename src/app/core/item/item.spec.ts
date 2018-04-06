@@ -67,7 +67,7 @@ describe('Item', () => {
     expect(item.sold).toBeTruthy();
     item.flags.sold = false;
     expect(item.sold).toBeFalsy();
-    let item2: Item = new Item('1', 1, USER_ID);
+    const item2: Item = new Item('1', 1, USER_ID);
     expect(item2.sold).toBeFalsy();
   });
 
@@ -83,7 +83,7 @@ describe('Item', () => {
     expect(item.reserved).toBeTruthy();
     item.flags.reserved = false;
     expect(item.reserved).toBeFalsy();
-    let item2: Item = new Item('1', 1, USER_ID);
+    const item2: Item = new Item('1', 1, USER_ID);
     expect(item2.reserved).toBeFalsy();
   });
 

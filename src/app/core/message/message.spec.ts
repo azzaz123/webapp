@@ -26,7 +26,7 @@ describe('Message', () => {
   });
   describe('get user', () => {
     it('should retrieve the message user', () => {
-      let message: Message = _.clone(MOCK_MESSAGE);
+      const message: Message = _.clone(MOCK_MESSAGE);
       message.user = MOCK_USER;
       expect(message.user).toEqual(MOCK_USER);
     });

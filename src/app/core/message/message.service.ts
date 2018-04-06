@@ -15,7 +15,7 @@ import 'rxjs/add/operator/first';
 export class MessageService {
 
   public totalUnreadMessages$: Subject<number> = new Subject<number>();
-  private _totalUnreadMessages: number = 0;
+  private _totalUnreadMessages = 0;
   public newMessageEvent: Subscription;
 
   constructor(private xmpp: XmppService,
@@ -82,9 +82,9 @@ export class MessageService {
   }
 
   public addUserInfo(conversation: Conversation, message: Message): Message {
-    let seller: User = this.userService.user;
-    let buyer: User = conversation.user;
-    let userId: string = message.from.split('@')[0];
+    const seller: User = this.userService.user;
+    const buyer: User = conversation.user;
+    const userId: string = message.from.split('@')[0];
     message.user = (userId === seller.id) ? seller : buyer;
     message.fromBuyer = userId === buyer.id;
     return message;
@@ -114,7 +114,7 @@ export class MessageService {
     return this.xmpp.searchHistory(conversationId, lastMessageRef, start)
     .flatMap((res: MessagesDataRecursive) => {
       messages = start ? messages.concat(res.data) : res.data.concat(messages);
-      let limit: boolean = total > -1 ? messages.length < total : true;
+      const limit: boolean = total > -1 ? messages.length < total : true;
       if (!res.meta.end && limit) {
         lastMessageRef = start ? res.meta.last : res.meta.first;
         return this.recursiveQuery(conversationId, lastMessageRef, total, messages, start);

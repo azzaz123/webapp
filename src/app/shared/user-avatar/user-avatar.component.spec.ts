@@ -2,9 +2,9 @@
 
 import { TestBed } from '@angular/core/testing';
 import { UserAvatarComponent } from './user-avatar.component';
-import { SanitizedBackgroundDirective } from '../../../shared/sanitized-background/sanitized-background.directive';
-import { PLACEHOLDER_AVATAR, User } from '../user';
-import { IMAGE, MICRO_NAME, USER_ID } from '../../../../tests/user.fixtures.spec';
+import { SanitizedBackgroundDirective } from '../sanitized-background/sanitized-background.directive';
+import { PLACEHOLDER_AVATAR, User } from '../../core/user/user';
+import { IMAGE, MICRO_NAME, USER_ID } from '../../../tests/user.fixtures.spec';
 
 describe('Component: UserAvatar', () => {
 
@@ -23,14 +23,17 @@ describe('Component: UserAvatar', () => {
 
   describe('with user image', () => {
 
+    const IMAGE_URL = 'https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320';
+
     beforeEach(() => {
+      IMAGE.urls_by_size.medium = IMAGE_URL;
       component.user = new User(USER_ID, MICRO_NAME, IMAGE);
     });
 
     it('should use the medium image as avatar', () => {
       component.ngOnChanges();
 
-      expect(component['avatar']).toBe('https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002512&pictureSize=W320');
+      expect(component['avatar']).toBe(IMAGE_URL);
     });
 
     it('should update imageUrl', () => {

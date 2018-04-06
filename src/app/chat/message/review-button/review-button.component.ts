@@ -39,7 +39,7 @@ export class ReviewButtonComponent implements OnInit {
         } else {
           this.showButton = true;
         }
-      })
+      });
     } else {
       this.showButton = false;
     }

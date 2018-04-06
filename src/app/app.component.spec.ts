@@ -173,7 +173,7 @@ describe('App', () => {
   });
 
   it('should create the app', async(() => {
-    let app: AppComponent = fixture.debugElement.componentInstance;
+    const app: AppComponent = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   }));
 
@@ -199,9 +199,9 @@ describe('App', () => {
     describe('success case', () => {
 
       beforeEach(fakeAsync(() => {
-        let mockBackend: MockBackend = TestBed.get(MockBackend);
+        const mockBackend: MockBackend = TestBed.get(MockBackend);
         mockBackend.connections.subscribe((connection: MockConnection) => {
-          let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+          const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
           connection.mockRespond(new Response(res));
         });
         spyOn(conversationService, 'init').and.returnValue(Observable.of({}));
@@ -369,6 +369,6 @@ describe('App', () => {
       component['setTitle']();
 
       expect(component.hideSidebar).toBeTruthy();
-    })
+    });
   });
 });

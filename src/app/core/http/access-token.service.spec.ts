@@ -104,7 +104,7 @@ describe('AccessTokenService', () => {
       spyOn(cookieService, 'get');
       service['_accessToken'] = aToken;
 
-      const token = service.accessToken
+      const token = service.accessToken;
 
       expect(token).toBe(aToken);
       expect(cookieService.get).not.toHaveBeenCalled();

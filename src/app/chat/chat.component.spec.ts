@@ -157,7 +157,7 @@ describe('Component: Chat', () => {
     });
 
     it('should set which conversation is active', () => {
-      let conversationOld: Conversation = MOCK_CONVERSATION(2);
+      const conversationOld: Conversation = MOCK_CONVERSATION(2);
       conversationOld.active = true;
       component.currentConversation = conversationOld;
 
@@ -182,18 +182,22 @@ describe('Component: Chat', () => {
 
   it('should set the conversationsLoaded value', () => {
     component.onLoaded({
+      loaded: false,
+      total: 0
+    });
+
+    expect(component.conversationsLoaded).toBe(false);
+    expect(component.conversationsTotal).toBe(0);
+    expect(component.chatLoaded).toBe(true);
+
+    component.onLoaded({
       loaded: true,
       total: 10
     });
 
-    expect(component.conversationsLoaded).toBeTruthy();
+    expect(component.conversationsLoaded).toBe(true);
     expect(component.conversationsTotal).toBe(10);
-    component.onLoaded({
-      loaded: false,
-      total: 0
-    });
-    expect(component.conversationsLoaded).toBeFalsy();
-    expect(component.conversationsTotal).toBe(0);
+    expect(component.chatLoaded).toBe(true);
   });
 
   describe('ngOnInit', () => {
@@ -221,17 +225,17 @@ describe('Component: Chat', () => {
       expect(userService.updateBlockStatus).toHaveBeenCalledWith('2', false);
     });
 
-    it('should not set firstLoad if getMetaInformation return meta', () => {
+    it('should set firstLoad to false if getMetaInformation return meta', () => {
       component.ngOnInit();
 
-      expect(component.firstLoad).toBeFalsy();
+      expect(component.firstLoad).toBe(false);
     });
 
     it('should set firstLoad true if getMetaInformation does NOT return meta', () => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw('err'));
-      component.ngOnInit();
+      component.ngOnInit(); 
 
-      expect(component.firstLoad).toBeTruthy();
+      expect(component.firstLoad).toBe(true);
     });
   });
 
@@ -412,6 +416,6 @@ describe('Component: Chat', () => {
     component.ngOnDestroy();
 
     expect(adService.stopAdsRefresh).toHaveBeenCalled();
-  })
+  });
 
 });

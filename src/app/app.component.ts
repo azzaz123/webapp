@@ -101,12 +101,12 @@ export class AppComponent implements OnInit {
   }
 
   private updateSessionCookie() {
-    let uuid: string = UUID.UUID();
+    const uuid: string = UUID.UUID();
     this.setCookie('app_session_id', uuid, 900000);
   }
 
   private setCookie(name: string, token: string, expiration: number) {
-    let expirationDate: Date = new Date();
+    const expirationDate: Date = new Date();
     expirationDate.setTime(expirationDate.getTime() + expiration);
     const options: CookieOptions = {
       path: '/',

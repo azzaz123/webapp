@@ -15,7 +15,7 @@ window['googletag'] = {
   pubads () {
     return {
       refresh () {}
-    }
+    };
   },
   display: (slotid: string) => {}
 };

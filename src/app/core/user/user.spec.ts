@@ -26,7 +26,7 @@ describe('User', () => {
   });
 
   it('should set the user data through the constructor', () => {
-    let user: User = new User(
+    const user: User = new User(
       USER_ID,
       MICRO_NAME,
       IMAGE,
@@ -58,17 +58,17 @@ describe('User', () => {
     expect(user.webLink).toBe(USER_BASE_PATH + USER_WEB_SLUG);
   });
   it('should set item distance', (() => {
-    let user: User = new User(USER_ID);
+    const user: User = new User(USER_ID);
     user.itemDistance = 1;
     expect(user.itemDistance).toBe(1);
   }));
   it('should set selling item', (() => {
-    let user: User = new User(USER_ID);
+    const user: User = new User(USER_ID);
     user.sellingItem = MOCK_ITEM;
     expect(user.sellingItem).toBe(MOCK_ITEM);
   }));
   it('should set items count', (() => {
-    let user: User = new User(USER_ID);
+    const user: User = new User(USER_ID);
     user.itemsCount = 3;
     expect(user.itemsCount).toBe(3);
   }));

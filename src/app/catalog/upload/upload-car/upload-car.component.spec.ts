@@ -32,7 +32,7 @@ describe('UploadCarComponent', () => {
   let router: Router;
   let modalService: NgbModal;
   let trackingService: TrackingService;
-  let componentInstance: any = {
+  const componentInstance: any = {
     getBodyType: jasmine.createSpy('getBodyType')
   };
 
@@ -380,14 +380,14 @@ describe('UploadCarComponent', () => {
     it('should open modal', () => {
       expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
         windowClass: 'preview'
-      })
+      });
     });
     it('should set itemPreview', () => {
       expect(componentInstance.itemPreview).toEqual(UPLOAD_FORM_CAR_VALUES);
     });
     it('should submit form', fakeAsync(() => {
       tick();
-      
+
       expect(component.onSubmit).toHaveBeenCalled();
     }));
     it('should call getBodyType', () => {

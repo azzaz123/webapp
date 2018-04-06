@@ -78,5 +78,5 @@ describe('LocationBoxComponent', () => {
       expect(component.locationSelected.emit).toHaveBeenCalled();
     });
   });
-  
+
 });

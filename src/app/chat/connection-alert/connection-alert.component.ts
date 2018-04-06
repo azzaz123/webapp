@@ -13,7 +13,7 @@ import { EventService } from '../../core/event/event.service';
     ])
   ]
 })
-export class ConnectionAlertComponent implements OnInit{
+export class ConnectionAlertComponent implements OnInit {
 
   public connected = true;
   public hide = true;

@@ -75,7 +75,7 @@ describe('ReportListingComponent', () => {
       expect(activeModal.close).toHaveBeenCalledWith({
         message: 'message',
         reason: 1
-      })
+      });
     });
   });
 });

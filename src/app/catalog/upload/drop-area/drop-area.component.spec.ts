@@ -76,7 +76,7 @@ describe('DropAreaComponent', () => {
           open() {
             return {
               result: Promise.resolve()
-            }
+            };
           }
         }
         }
@@ -218,7 +218,7 @@ describe('DropAreaComponent', () => {
     });
 
     it('should update file if event uploading', () => {
-      let fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
+      const fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
       fileUploaded.progress.data.percentage = 100;
       component.files = [UPLOAD_FILE];
 
@@ -379,7 +379,7 @@ describe('DropAreaComponent', () => {
           });
           it('should set item with hold true flag and call createOnHold event', () => {
             let event: UploadedEvent;
-            let fileOnHold: UploadFile = UPLOADED_FILE_FIRST;
+            const fileOnHold: UploadFile = UPLOADED_FILE_FIRST;
             fileOnHold.response.flags['onhold'] = true;
             component.files = [UPLOAD_FILE];
 
@@ -450,7 +450,7 @@ describe('DropAreaComponent', () => {
 
     describe('with error response', () => {
       it('should call i18nError', () => {
-        let fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
+        const fileUploaded: UploadFile = <UploadFile>{...UPLOAD_FILE};
         let event: boolean;
         fileUploaded.progress.data.responseStatus = 400;
         fileUploaded.response = {
@@ -458,7 +458,7 @@ describe('DropAreaComponent', () => {
         };
         spyOn(errorsService, 'i18nError');
         component.onError.subscribe(() => {
-          event = true
+          event = true;
         });
 
         component['onUploadDone']({
@@ -467,7 +467,7 @@ describe('DropAreaComponent', () => {
         });
 
         expect(errorsService.i18nError).toHaveBeenCalledWith('serverError', 'error');
-        expect(event).toBeTruthy()
+        expect(event).toBeTruthy();
       });
 
       it('should call i18nError event if no error message', () => {

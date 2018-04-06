@@ -48,7 +48,7 @@ describe('AdService', () => {
           provide: UserService,
           useValue: {
             me() {
-              return Observable.of(MOCK_USER)
+              return Observable.of(MOCK_USER);
             }
           }
         },
@@ -108,7 +108,7 @@ describe('AdService', () => {
           expect(pubads.setTargeting).toHaveBeenCalledWith(key, AdKeyWords[key]);
         });
         discardPeriodicTasks();
-      }))
+      }));
 
       it('without being able to access navigator geolocation, gets approximate position from backend', fakeAsync(() => {
         spyOn(navigator, 'geolocation').and.returnValue(undefined);
@@ -173,10 +173,10 @@ describe('AdService', () => {
       });
 
       service.startAdsRefresh();
-      tick(refreshRate)
+      tick(refreshRate);
 
       expect(pubads.refresh).toHaveBeenCalledTimes(1);
       discardPeriodicTasks();
-    }))
-  })
+    }));
+  });
 });

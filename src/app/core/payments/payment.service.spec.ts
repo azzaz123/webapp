@@ -41,7 +41,7 @@ describe('PaymentService', () => {
   describe('getFinancialCard', () => {
     let response: FinancialCard;
     it('should call endpoint', () => {
-      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(FINANCIAL_CARD)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(FINANCIAL_CARD)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       service.getFinancialCard().subscribe((r: FinancialCard) => {
         response = r;
@@ -54,7 +54,7 @@ describe('PaymentService', () => {
   describe('getSabadellInfo', () => {
     let response: SabadellInfoResponse;
     it('should call endpoint', () => {
-      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(SABADELL_RESPONSE)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(SABADELL_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       service.getSabadellInfo('1').subscribe((r: SabadellInfoResponse) => {
         response = r;

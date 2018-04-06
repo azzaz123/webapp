@@ -32,7 +32,7 @@ export class SuggesterComponent implements OnInit {
         this.suggesterService.getSuggestions(term)
           .catch(() => {
             return Observable.of([]);
-          }));
+          }))
 
   public formatter = (x: any) => x.suggestion;
 

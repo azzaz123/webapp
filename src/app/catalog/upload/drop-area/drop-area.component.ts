@@ -45,7 +45,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   }, 100);
 
   propagateChange = (_: any) => {
-  };
+  }
 
   constructor(private errorsService: ErrorsService,
               public uploadService: UploadService,
@@ -113,7 +113,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
           }
         },
         response: image
-      }
+      };
     });
   }
 

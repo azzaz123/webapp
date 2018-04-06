@@ -15,7 +15,7 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { UserStatsResponse } from '../../core/user/user-stats.interface';
+import { UserStatsResponse, Counters } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -30,18 +30,20 @@ import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-m
 export class ListComponent implements OnInit, OnDestroy {
 
   public items: Item[] = [];
-  public selectedStatus: string = 'published';
-  public loading: boolean = true;
-  private init: number = 0;
+  public selectedStatus = 'published';
+  public loading = true;
+  private init = 0;
   public end: boolean;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public scrollTop: number;
   private uploadModalRef: NgbModalRef;
-  private active: boolean = true;
+  private active = true;
   private firstItemLoad = true;
+  public isUrgent = false;
   public numberOfProducts: number;
-  public isUrgent: boolean = false;
-  public isRedirect: boolean = false;
+  public isRedirect = false;
+  private counters: Counters;
+
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
@@ -68,7 +70,7 @@ export class ListComponent implements OnInit, OnDestroy {
         this.getItems();
       });
       this.route.params.subscribe((params: any) => {
-        if(!params.urgent) {
+        if (!params.urgent) {
           this.setRedirectToTPV(false);
         }
         if (params && params.code) {
@@ -145,6 +147,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.selectedStatus = status;
       this.init = 0;
       this.getItems();
+      this.getNumberOfProducts();
     }
   }
 
@@ -300,13 +303,22 @@ export class ListComponent implements OnInit, OnDestroy {
       }
     }, () => {
       this.deselect();
-    })
+    });
   }
 
   public getNumberOfProducts() {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
-      this.numberOfProducts = userStats.counters.publish;
+      this.counters = userStats.counters;
+      this.setNumberOfProducts();
     });
+  }
+
+  private setNumberOfProducts() {
+    if (this.selectedStatus === 'sold') {
+      this.numberOfProducts = this.counters.sold;
+    } else if (this.selectedStatus === 'published') {
+      this.numberOfProducts = this.counters.publish;
+    }
   }
 
   private getUrgentPrice(itemId: string): void {

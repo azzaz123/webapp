@@ -333,7 +333,7 @@ describe('Service: Message', () => {
 
     it('should call the send message', () => {
       spyOn(xmpp, 'sendMessage');
-      let conversation: Conversation = MOCK_CONVERSATION();
+      const conversation: Conversation = MOCK_CONVERSATION();
       service.send(conversation, 'text');
       expect(xmpp.sendMessage).toHaveBeenCalledWith(USER_ID, CONVERSATION_ID, 'text');
     });
@@ -350,7 +350,7 @@ describe('Service: Message', () => {
     });
 
     it('should call the query method using the provide information of the db', () => {
-      let messagesArray: Array<Message> = createMessagesArray(5);
+      const messagesArray: Array<Message> = createMessagesArray(5);
       spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
       let observableResponse: any;
       service.getNotSavedMessages().subscribe();
@@ -359,7 +359,7 @@ describe('Service: Message', () => {
     });
 
     it('should save the new meta information if the query returns messages', () => {
-      let messagesArray: Array<Message> = createMessagesArray(5);
+      const messagesArray: Array<Message> = createMessagesArray(5);
       spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
       spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
       service.getNotSavedMessages().subscribe();
@@ -379,7 +379,7 @@ describe('Service: Message', () => {
 
   describe('addUserInfo', () => {
 
-    const BUYER_ID: string = 'buyerId';
+    const BUYER_ID = 'buyerId';
     let conversation: Conversation;
 
     beforeEach(() => {
@@ -387,7 +387,7 @@ describe('Service: Message', () => {
     });
 
     it('should add buyer user to message', () => {
-      let message: Message = new Message(
+      const message: Message = new Message(
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
@@ -416,7 +416,7 @@ describe('Service: Message', () => {
 
     it('should add user object to each message', () => {
       let messages: Message[] = createMessagesArray(4);
-      let conversation: Conversation = MOCK_CONVERSATION();
+      const conversation: Conversation = MOCK_CONVERSATION();
       messages = service.addUserInfoToArray(conversation, messages);
       messages.forEach((message: Message) => {
         expect(message.user).toBeDefined();
@@ -429,7 +429,7 @@ describe('Service: Message', () => {
 
     it('should notify changes when totalUnreadMessages change', () => {
       let changedValue: number;
-      const VALUE: number = 100;
+      const VALUE = 100;
       service.totalUnreadMessages$.subscribe((totalUnreadMessages: number) => {
         changedValue = totalUnreadMessages;
       });

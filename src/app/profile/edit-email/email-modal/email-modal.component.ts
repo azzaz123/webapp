@@ -33,7 +33,7 @@ export class EmailModalComponent {
         this.errorsService.i18nError('serverError');
       });
     } else {
-      for (let control in this.emailForm.controls) {
+      for (const control in this.emailForm.controls) {
         if (this.emailForm.controls.hasOwnProperty(control) && !this.emailForm.controls[control].valid) {
           this.emailForm.controls[control].markAsDirty();
         }

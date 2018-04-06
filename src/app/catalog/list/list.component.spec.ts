@@ -10,7 +10,12 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
-import {createItemsArray, ITEMS_BULK_RESPONSE, ITEMS_BULK_RESPONSE_FAILED, MOCK_ITEM, ORDER, ORDER_EVENT , PRODUCT_RESPONSE} from '../../../tests/item.fixtures.spec';
+import { createItemsArray,
+  ITEMS_BULK_RESPONSE,
+  ITEMS_BULK_RESPONSE_FAILED,
+  MOCK_ITEM,
+  ORDER, ORDER_EVENT,
+  PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
@@ -39,10 +44,14 @@ describe('ListComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let errorService: ErrorsService;
-  let componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
+  const componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   const routerEvents: Subject<any> = new Subject();
+  const mockCounters = {
+    sold: 7,
+    publish: 12
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -122,7 +131,9 @@ describe('ListComponent', () => {
         {
           provide: UserService, useValue: {
             getStats() {
-              return Observable.of(USERS_STATS_RESPONSE);
+              return Observable.of({
+                counters: mockCounters
+              });
             }
           }
         },
@@ -275,7 +286,7 @@ describe('ListComponent', () => {
   });
 
   describe('getItems', () => {
-    it('should call mines with default values and set items', () => {
+    it('should call mine with default values and set items', () => {
       expect(itemService.mine).toHaveBeenCalledWith(0, 'published');
       expect(component.items.length).toBe(2);
     });
@@ -319,12 +330,12 @@ describe('ListComponent', () => {
     beforeEach(() => {
       itemerviceSpy.calls.reset();
     });
-    it('should call mines with filtering and reset page', () => {
+    it('should call mine with filtering and reset page', () => {
       component['init'] = 20;
       component.filterByStatus('sold');
       expect(itemService.mine).toHaveBeenCalledWith(0, 'sold');
     });
-    it('should not call mines if filter is the same', () => {
+    it('should not call mine if filter is the same', () => {
       component.selectedStatus = 'sold';
       component.filterByStatus('sold');
       expect(itemService.mine).not.toHaveBeenCalled();
@@ -332,7 +343,7 @@ describe('ListComponent', () => {
   });
 
   describe('loadMore', () => {
-    it('should call mines with new page and append items', () => {
+    it('should call mine with new page and append items', () => {
       component['init'] = 20;
       component.loadMore();
       expect(itemService.mine).toHaveBeenCalledWith(20, 'published');
@@ -341,7 +352,7 @@ describe('ListComponent', () => {
   });
 
   describe('item changed', () => {
-    const TOTAL: number = 5;
+    const TOTAL = 5;
     let item: Item;
 
     it('should remove item when deleted', () => {
@@ -400,7 +411,7 @@ describe('ListComponent', () => {
   });
 
   describe('delete', () => {
-    const TOTAL: number = 5;
+    const TOTAL = 5;
     beforeEach(() => {
       component.selectedStatus = 'active';
       component.items = createItemsArray(TOTAL);
@@ -427,7 +438,7 @@ describe('ListComponent', () => {
       });
       it('should call getNumberOfProducts', () => {
         expect(component.getNumberOfProducts).toHaveBeenCalled();
-      })
+      });
     });
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
@@ -641,13 +652,41 @@ describe('ListComponent', () => {
         spyOn(userService, 'getStats').and.callThrough();
       });
 
-      it('should get the number of products', () => {
+      it('should call getStats method form the userService when invoked', () => {
         component.getNumberOfProducts();
+        component.filterByStatus('published');
 
         expect(userService.getStats).toHaveBeenCalled();
-        expect(component.numberOfProducts).toEqual(USERS_STATS_RESPONSE.counters.publish);
       });
-    })
+
+      it('should call setNumberOfProducts method when invoked', () => {
+        component.getNumberOfProducts();
+        component.filterByStatus('published');
+
+        expect(component.getNumberOfProducts).toHaveBeenCalled();
+      });
+    });
+
+    describe('setNumberOfProducts', () => {
+      beforeEach(() => {
+        spyOn(component, 'getNumberOfProducts').and.callThrough();
+        spyOn(userService, 'getStats').and.callThrough();
+      });
+
+      it('should set numberOfProducts to the numberOfPublishedProducts when published filter is selected', () => {
+        component.getNumberOfProducts();
+        component.filterByStatus('published');
+
+        expect(component.numberOfProducts).toEqual(mockCounters.publish);
+      });
+
+      it('should set numberOfProducts to the numberOfSoldProducts when sold filter is selected', () => {
+        component.getNumberOfProducts();
+        component.filterByStatus('sold');
+
+        expect(component.numberOfProducts).toEqual(mockCounters.sold);
+      });
+    });
 
   });
 

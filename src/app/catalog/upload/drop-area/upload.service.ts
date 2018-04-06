@@ -7,7 +7,7 @@ import { HttpService } from '../../../core/http/http.service';
 @Injectable()
 export class UploadService {
 
-  private API_URL: string = 'api/v3/items';
+  private API_URL = 'api/v3/items';
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
 
   constructor(private http: HttpService) {

@@ -22,7 +22,9 @@
         <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
       </div>
       <div class="col-1 header-numbers">
-        <p class="header-numbers-top">{{numberOfProducts}}</p>
+        <p class="header-numbers-top">
+          <span>{{numberOfProducts}}</span>
+        </p>
         <p class="header-numbers-bottom">
           <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
           <span *ngIf="numberOfProducts === 1" i18n>product</span>
@@ -32,7 +34,6 @@
     <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
-      <a (click)="filterByStatus('expired')" [ngClass]="{active: selectedStatus === 'expired'}" class="nav-link" i18n>Expired</a>
     </nav>
     <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0" [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
       <ng-container [ngPlural]="itemService.selectedItems.length">

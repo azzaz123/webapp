@@ -7,16 +7,19 @@ import { AdComponent } from './ad/ad.component';
 import { CustomCurrencyPipe } from './custom-currency/custom-currency.pipe';
 import { ConfirmationModalComponent } from './confirmation-modal/confirmation-modal.component';
 import { CardModule } from './card/card.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeolocationModule } from './geolocation/geolocation.module';
 import { ExitConfirmGuard } from './guards/exit-confirm.guard';
 import { RestrictInputDirective } from './restrict-input/restrict-input.directive';
 import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
+import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
+import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsComponent } from './stars/stars.component';
 import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
+import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 
 @NgModule({
   imports: [
@@ -25,6 +28,7 @@ import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-b
     MatIconModule,
     NgbModule.forRoot(),
     ReactiveFormsModule,
+    FormsModule,
     GeolocationModule
   ],
   exports: [
@@ -36,9 +40,12 @@ import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-b
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
+    SoldModalComponent,
+    ItemSoldDirective,
     SanitizedBackgroundDirective,
     StarsComponent,
-    StarsRateComponent
+    StarsRateComponent,
+    UserAvatarComponent
   ],
   declarations: [
     AdComponent,
@@ -48,9 +55,12 @@ import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-b
     RestrictInputDirective,
     HeaderComponent,
     ButtonComponent,
+    SoldModalComponent,
+    ItemSoldDirective,
     SanitizedBackgroundDirective,
     StarsComponent,
-    StarsRateComponent
+    StarsRateComponent,
+    UserAvatarComponent
   ],
   providers: [
     DecimalPipe,
@@ -58,7 +68,8 @@ import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-b
     TutorialGuard
   ],
   entryComponents: [
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    SoldModalComponent
   ]
 })
 export class SharedModule { }

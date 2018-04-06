@@ -1,6 +1,7 @@
 import {async, ComponentFixture, TestBed, fakeAsync, tick} from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SharedModule } from '../../shared/shared.module';
+import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { ItemCartFavoriteComponent } from './item-cart-favorite.component';
 import { MatIconModule } from '@angular/material';
@@ -35,9 +36,10 @@ describe('ItemCartFavoriteComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule, MatIconModule],
-      declarations: [ ItemCartFavoriteComponent ],
+      imports: [ MatIconModule ],
+      declarations: [ ItemCartFavoriteComponent, CustomCurrencyPipe ],
       providers: [
+        DecimalPipe,
         { provide: WindowRef, useValue: {
             nativeWindow: {
               open: () => {}
@@ -83,12 +85,12 @@ describe('ItemCartFavoriteComponent', () => {
       const MOCK_ITEM_URL: string = environment.siteUrl.replace('es', subdomain) + 'item/' + MOCK_ITEM.webSlug;
       component.goToItemDetail();
       expect(windowRef.nativeWindow.open).toHaveBeenCalledWith(MOCK_ITEM_URL);
-    })
+    });
   });
 
   describe('removeFavorite', () => {
     beforeEach(() => {
-      spyOn(component.onFavoriteChange, 'emit')
+      spyOn(component.onFavoriteChange, 'emit');
     });
     it('should set favorited property to false', () => {
       component.item.favorited = true;
@@ -127,5 +129,5 @@ describe('ItemCartFavoriteComponent', () => {
       tick();
       expect(component.removeFavorite).toHaveBeenCalled();
     }));
-  })
+  });
 });

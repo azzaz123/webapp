@@ -7,7 +7,7 @@ import { HttpService } from '../http/http.service';
 @Injectable()
 export class PaymentService {
 
-  private API_URL: string = 'api/v3/payments';
+  private API_URL = 'api/v3/payments';
 
   constructor(private http: HttpService) {
   }

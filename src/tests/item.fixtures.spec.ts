@@ -29,14 +29,14 @@ import { Observable } from 'rxjs/Observable';
 import { Item } from '../app/core/item/item';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
-export const ITEM_CATEGORY_ID: number = 12545;
+export const ITEM_CATEGORY_ID = 12545;
 
-export const ITEM_ID: string = '9jd7ryx5odjk';
-export const ITEM_LEGACY_ID: number = 500002512;
-export const ITEM_TITLE: string = 'The title';
-export const ITEM_TITLE2: string = 'The title2';
-export const ITEM_DESCRIPTION: string = 'The description';
-export const ITEM_DESCRIPTION2: string = 'The description2';
+export const ITEM_ID = '9jd7ryx5odjk';
+export const ITEM_LEGACY_ID = 500002512;
+export const ITEM_TITLE = 'The title';
+export const ITEM_TITLE2 = 'The title2';
+export const ITEM_DESCRIPTION = 'The description';
+export const ITEM_DESCRIPTION2 = 'The description2';
 
 export const ITEM_LOCATION: UserLocation = {
   'id': 101,
@@ -47,14 +47,14 @@ export const ITEM_LOCATION: UserLocation = {
   'approxRadius': 0
 };
 
-export const ITEM_SALE_PRICE: number = 123.45;
-export const ITEM_SALE_PRICE2: number = 1230;
-export const ITEM_CURRENCY_CODE: string = 'EUR';
-export const ITEM_MODIFIED_DATE: number = 1474554861894;
-export const ITEM_URL: string = 'http://dock9.wallapop.com/i/500002512?_pid=wi&_uid=500002512';
-export const ITEM_WEB_SLUG: string = 'webslug-9jd7ryx5odjk';
-export const ITEM_PUBLISHED_DATE: number = 1473784861894;
-export const ITEM_PUBLISHED_DATE2: number = 1473784861898;
+export const ITEM_SALE_PRICE = 123.45;
+export const ITEM_SALE_PRICE2 = 1230;
+export const ITEM_CURRENCY_CODE = 'EUR';
+export const ITEM_MODIFIED_DATE = 1474554861894;
+export const ITEM_URL = 'http://dock9.wallapop.com/i/500002512?_pid=wi&_uid=500002512';
+export const ITEM_WEB_SLUG = 'webslug-9jd7ryx5odjk';
+export const ITEM_PUBLISHED_DATE = 1473784861894;
+export const ITEM_PUBLISHED_DATE2 = 1473784861898;
 export const ITEM_DELIVERY_INFO: DeliveryInfo = {
   min_weight_kg: 5.1,
   max_weight_kg: 10
@@ -145,15 +145,15 @@ export const ITEM_DATA: ItemResponseV2 = {
   'delivery_info': ITEM_DELIVERY_INFO
 };
 
-export const ITEM_VIEWS: number = 123;
-export const ITEM_FAVORITES: number = 456;
+export const ITEM_VIEWS = 123;
+export const ITEM_FAVORITES = 456;
 
 export const ITEM_COUNTERS_DATA: ItemCounters = {
   'views': ITEM_VIEWS,
   'favorites': ITEM_FAVORITES
 };
 
-export const LATEST_ITEM_COUNT: number = 3;
+export const LATEST_ITEM_COUNT = 3;
 
 export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.id,
@@ -178,14 +178,14 @@ export const MOCK_ITEM: Item = new Item(
 );
 
 export function getMockItem(id: string, legacyId: number) {
-  let item: Item = _.clone(MOCK_ITEM);
+  const item: Item = _.clone(MOCK_ITEM);
   item.id = id;
   item.legacyId = legacyId;
   return item;
 }
 
 export function createItemsArray(total: number, starting: number = 1) {
-  let items: Item[] = [];
+  const items: Item[] = [];
   for (let i: number = starting; i < total + starting; i++) {
     items.push(getMockItem(i.toString(), i));
   }
@@ -206,7 +206,7 @@ export const ITEMS_BULK_RESPONSE_FAILED: ItemBulkResponse = {
 
 export class MockedItemService {
   public get(url: string): Observable<Item> {
-    let data: any = ITEM_DATA;
+    const data: any = ITEM_DATA;
     return Observable.of(new Item(
       data.id,
       data.legacyId,

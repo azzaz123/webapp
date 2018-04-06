@@ -4,10 +4,10 @@ import { SoldModalComponent } from './sold-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ItemService } from '../../../../core/item/item.service';
+import { ItemService } from '../../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
-import { CONVERSATION_USERS, ITEM_ID, ITEM_SALE_PRICE, MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
-import { ReviewService } from '../../../../core/review/review.service';
+import { CONVERSATION_USERS, ITEM_ID, ITEM_SALE_PRICE, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import { ReviewService } from '../../../core/review/review.service';
 
 
 describe('SoldModalComponent', () => {

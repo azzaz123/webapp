@@ -23,8 +23,8 @@ export const MESSAGE_MAIN_UPDATED: any = {
 };
 
 export function createMessagesArray(total: number) {
-  let messages: Message[] = [];
-  for (let i: number = 1; i <= total; i++) {
+  const messages: Message[] = [];
+  for (let i = 1; i <= total; i++) {
     messages.push(new Message(`${MESSAGE_MAIN.id}${i}`,
       MESSAGE_MAIN.thread,
       MESSAGE_MAIN.body,

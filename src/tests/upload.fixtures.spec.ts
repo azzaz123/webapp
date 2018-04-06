@@ -3,9 +3,9 @@ import { IMAGE } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
 
 
-export const UPLOAD_FILE_NAME: string = 'file.jpg';
+export const UPLOAD_FILE_NAME = 'file.jpg';
 export const UPLOAD_FILE_DATE: Date = new Date();
-export const UPLOAD_FILE_ID: string = '123';
+export const UPLOAD_FILE_ID = '123';
 
 export const UPLOAD_FILE: UploadFile = {
   fileIndex: 0,
@@ -48,7 +48,7 @@ export const UPLOAD_FILE_DONE: UploadFile = {
   response: IMAGE
 };
 
-export const CAR_ID: string = 'xzo81pgg4469';
+export const CAR_ID = 'xzo81pgg4469';
 
 export const UPLOADED_RESPONSE = {
   'id': CAR_ID,

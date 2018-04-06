@@ -23,7 +23,7 @@ describe('EditEmailComponent', () => {
           open() {
             return {
               componentInstance: componentInstance
-            }
+            };
           }
         }
         }

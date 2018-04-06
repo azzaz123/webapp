@@ -2,7 +2,6 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemChangeEvent } from './item-change.interface';
-import { SoldModalComponent } from '../modals/sold-modal/sold-modal.component';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-modal.component';
 import { Order, Product } from '../../../core/item/item-response.interface';
@@ -126,24 +125,11 @@ export class CatalogItemComponent implements OnInit {
   }
 
   public setSold(item: Item) {
-    this.itemService.canMarkAsSold(item.id).subscribe((canMarkAsSold: boolean) => {
-      if (canMarkAsSold) {
-        const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {windowClass: 'sold'});
-        modalRef.componentInstance.item = item;
-        modalRef.result.then(() => {
-          item.sold = true;
-          this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
-          this.itemChange.emit({
-            item: item,
-            action: 'sold'
-          });
-        }, () => {
-        });
-      } else {
-        this.errorsService.i18nError('cantEditError');
-      }
+    this.trackingService.track(TrackingService.PRODUCT_SOLD, { product_id: item.id });
+    this.itemChange.emit({
+      item: item,
+      action: 'sold'
     });
-
   }
 
 }

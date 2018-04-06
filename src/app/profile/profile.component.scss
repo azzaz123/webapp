@@ -1,8 +1,6 @@
 @import "~style/common";
 
 $border: solid 1px $grey-50;
-$form-control-height: 50px;
-
 .box {
   background-color: $white;
   border-radius: $border-radius;
@@ -79,14 +77,11 @@ $form-control-height: 50px;
     }
     label {
       text-align: right;
-      line-height: $form-control-height;
+      line-height: 27px;
       color: $grey-900;
       font-size: $font-size;
       padding-right: 69px;
       margin: 0;
-    }
-    .form-control {
-      height: $form-control-height;
     }
     .btn-group {
       width: 100%;
@@ -120,7 +115,7 @@ $form-control-height: 50px;
       &.active {
         background-color: $grey-300;
         border-color: transparent;
-        box-shadow: 0 2px 6px 0 rgba(19, 193, 172, 0.2);
+        box-shadow: 0 2px 6px 0 rgba($grey-300, 0.2);
         mat-icon {
           /deep/ path {
             fill: $white;

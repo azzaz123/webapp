@@ -65,8 +65,8 @@ describe('Conversation', () => {
   });
 
   it('should set messages', () => {
-    let messages: Message[] = createMessagesArray(4);
-    let conv: Conversation = new Conversation(
+    const messages: Message[] = createMessagesArray(4);
+    const conv: Conversation = new Conversation(
       CONVERSATION_ID,
       1,
       CONVERSATION_DATE,

@@ -41,7 +41,7 @@ export class GeolocationComponent implements OnInit, OnChanges {
         this.geolocationService.search(term)
           .catch(() => {
             return Observable.of([]);
-          }));
+          }))
 
   public formatter = (x: any) => x.description;
 

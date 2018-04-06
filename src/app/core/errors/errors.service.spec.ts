@@ -33,7 +33,7 @@ let toasts: ToastrService;
 let service: ErrorsService;
 let i18n: I18nService;
 
-const ERROR_MESSAGE: string = 'Usuario o contraseña incorrectos';
+const ERROR_MESSAGE = 'Usuario o contraseña incorrectos';
 const ERROR_DATA: any = {'code': 1, 'type': 'error', 'message': ERROR_MESSAGE};
 
 describe('Service: Errors', () => {
@@ -73,25 +73,25 @@ describe('Service: Errors', () => {
 
   describe('show', () => {
     it('should call the toastr.error method if there are errors in array', () => {
-      let res: Response = createResponse([{message: ERROR_MESSAGE}]);
+      const res: Response = createResponse([{message: ERROR_MESSAGE}]);
       service.show(res);
       expect(toasts.error).toHaveBeenCalledWith(ERROR_MESSAGE, 'Oops!');
     });
 
     it('should call the toastr.error method if there are errors', () => {
-      let res: Response = createResponse(ERROR_DATA);
+      const res: Response = createResponse(ERROR_DATA);
       service.show(res);
       expect(toasts.error).toHaveBeenCalledWith(ERROR_MESSAGE, 'Oops!');
     });
 
     it('should call the toastr.error with default message method if no error message', () => {
-      let res: Response = createResponse({type: 'error'});
+      const res: Response = createResponse({type: 'error'});
       service.show(res);
       expect(toasts.error).toHaveBeenCalledWith(DEFAULT_ERROR_MESSAGE, 'Oops!');
     });
 
     it('should redirect to login if asked to', () => {
-      let res: Response = createResponse(ERROR_DATA);
+      const res: Response = createResponse(ERROR_DATA);
       const location: Location = TestBed.get(Location);
       service.show(res, true);
       location.subscribe((loc) => {
@@ -130,6 +130,6 @@ describe('Service: Errors', () => {
 });
 
 function createResponse(data: any): Response {
-  let resOptions: ResponseOptions = new ResponseOptions({body: JSON.stringify(data)});
+  const resOptions: ResponseOptions = new ResponseOptions({body: JSON.stringify(data)});
   return new Response(resOptions);
 }
