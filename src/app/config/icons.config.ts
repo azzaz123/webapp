@@ -168,4 +168,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('remove', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/remove.svg'));
   matIconRegistry.addSvgIcon('card', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/card.svg'));
   matIconRegistry.addSvgIcon('urgent', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/urgent.svg'));
+  matIconRegistry.addSvgIcon('process-all', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/process-all.svg'));
+
 }

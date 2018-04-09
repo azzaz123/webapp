@@ -89,12 +89,19 @@ export class ConversationService extends LeadService {
     });
   }
 
+  public loadMoreArchived(): Observable<any> {
+    return this.getLeads(this.getLastDate(this.archivedLeads), true)
+      .map(() => {
+        this.archivedStream$.next(this.archivedLeads);
+      });
+  }
+
   public getPage(page: number, archive?: boolean, filters?: Filter[], pageSize: number = this.PAGE_SIZE): Observable<Conversation[]> {
     const init: number = (page - 1) * pageSize;
     const end: number = init + pageSize;
     return (archive ? this.archivedStream$ : this.stream$).asObservable()
     .flatMap((conversations: Conversation[]) => {
-      return this.checkIfLastPage()
+      return this.checkIfLastPage(archive)
       .map(() => {
         if (filters) {
           return this.filter(conversations, filters);
@@ -149,10 +156,10 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public checkIfLastPage(): Observable<any> {
-    const lastDate: number = this.getLastDate(this.leads);
+  public checkIfLastPage(archive?: boolean): Observable<any> {
+    const lastDate: number = archive ? this.getLastDate(this.archivedLeads) : this.getLastDate(this.leads);
     if (lastDate) {
-      return this.http.get(this.API_URL, {until: lastDate, hidden: false})
+      return this.http.get(this.API_URL, {until: lastDate, hidden: archive})
       .map((res: Response) => res.json())
       .map((res: ConversationResponse[]) => {
         if (res.length === 0) {

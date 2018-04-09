@@ -1,14 +1,15 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import * as _ from 'lodash';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { EventService } from '../../core/event/event.service';
-import { ConversationService } from '../../core/conversation/conversation.service';
-import { UserService } from '../../core/user/user.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { Conversation } from '../../core/conversation/conversation';
-import { Message } from '../../core/message/message';
-import { NewConversationResponse } from '../../core/conversation/conversation-response.interface';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
+import * as _ from "lodash";
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs/Subscription";
+import { EventService } from "../../core/event/event.service";
+import { ConversationService } from "../../core/conversation/conversation.service";
+import { UserService } from "../../core/user/user.service";
+import { TrackingService } from "../../core/tracking/tracking.service";
+import { Conversation } from "../../core/conversation/conversation";
+import { Message } from "../../core/message/message";
+import { NewConversationResponse } from "../../core/conversation/conversation-response.interface";
+import { Observable } from "rxjs/Observable";
 
 @Component({
   selector: 'tsl-conversations-panel',
@@ -23,12 +24,14 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private conversation: Conversation;
   public conversations: Array<Conversation> = [];
+  public archive: boolean = false;
   private _loading = false;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
   public page = 1;
   private active = true;
   private newConversationItemId: string;
+  private archiveLoaded: boolean;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
@@ -66,7 +69,13 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   public loadMore() {
     this.page++;
     this.loading = true;
-    this.conversationService.loadMore().subscribe(() => {
+    let observable: Observable<any>;
+    if (this.archive) {
+      observable = this.conversationService.loadMoreArchived();
+    } else {
+      observable = this.conversationService.loadMore();
+    }
+    observable.subscribe(() => {
       this.getConversations();
     });
   }
@@ -75,12 +84,12 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (this.conversationsSubscription) {
       this.conversationsSubscription.unsubscribe();
     }
-    this.conversationsSubscription = this.conversationService.getPage(this.page).takeWhile(() => {
+    this.conversationsSubscription = this.conversationService.getPage(this.page, this.archive).takeWhile(() => {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
       this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
       if (!this.currentConversationSet) {
-        this.route.queryParams.subscribe((params) => {
+        this.route.queryParams.subscribe((params: any) => {
           this.newConversationItemId = params.itemId;
           if (params.itemId) {
             this.conversationService.getByItemId(this.newConversationItemId).subscribe((convResponse: NewConversationResponse) => {
@@ -145,8 +154,10 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.conversationService.addLead(newConversationWithMessages);
         this.setCurrentConversation(newConversationWithMessages);
         this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW,
-          { user_id: newConversationWithMessages.user.id, item_id: newConversationWithMessages.item.id,
-            thread_id: newConversationWithMessages.id });
+          {
+            user_id: newConversationWithMessages.user.id, item_id: newConversationWithMessages.item.id,
+            thread_id: newConversationWithMessages.id
+          });
       });
     });
   }
@@ -171,6 +182,22 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   public setCurrentConversation(conversation: Conversation) {
     this.currentConversation.emit(conversation);
     this.conversation = conversation;
+  }
+
+  public filterByArchived(archive: boolean) {
+    this.archive = archive;
+    this.page = 1;
+    this.loading = true;
+    this.setCurrentConversation(null);
+    if (!this.archiveLoaded) {
+      this.conversationService.loadMoreArchived().subscribe(() => {
+        this.archiveLoaded = true;
+        this.getConversations();
+      });
+    } else {
+      this.getConversations();
+    }
+
   }
 
 }
