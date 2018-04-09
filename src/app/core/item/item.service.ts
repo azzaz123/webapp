@@ -213,7 +213,11 @@ export class ItemService extends ResourceService {
     .map((r: Response) => {
         const res: ItemResponse[] = r.json();
         const nextPage: string = r.headers.get('x-nextpage');
-        const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
+        const params = _.chain(nextPage).split('&')
+          .map(_.partial(_.split, _, '=', 2))
+          .fromPairs()
+          .value();
+        const nextInit: number = nextPage ? +params.init : null;
         let data: Item[] = [];
         if (res.length > 0) {
           data = res.map((i: ItemResponse) => {
