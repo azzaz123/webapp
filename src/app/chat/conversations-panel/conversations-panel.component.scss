@@ -15,7 +15,6 @@ h2 {
   height: calc(100vh - #{$topbar-height} - #{$title-height} - #{$filters-nav-height});
   overflow-y: auto;
   overflow-x: hidden;
-  border-right: 1px solid $grey-100;
   width: 100%;
 }
 
