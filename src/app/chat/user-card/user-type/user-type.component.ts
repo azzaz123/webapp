@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { User } from 'shield';
+import { User } from '../../../core/user/user';
 
 @Component({
   selector: 'tsl-user-type',

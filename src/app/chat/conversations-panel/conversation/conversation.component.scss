@@ -126,6 +126,12 @@ $menu-width-and-spacing: 10px;
     .user-name {
       color: $grey-900;
     }
+    &.has-phone {
+      $phone-icon-size: 10px;
+      .user-name {
+        width: calc(100% - #{$phone-icon-size});
+      }
+    }
   }
   .message-row {
     line-height: $font-size-S;

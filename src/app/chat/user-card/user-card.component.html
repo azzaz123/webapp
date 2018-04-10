@@ -2,12 +2,12 @@
   <div class="card-block">
     <tsl-user-avatar [user]="user" size="60"></tsl-user-avatar>
     <h1 class="card-title">{{user.microName}}</h1>
-    <tsl-stars *ngIf="user.scoringStars > -1" [stars]="user.scoringStars"></tsl-stars>
+    <tsl-stars *ngIf="user.scoringStars > -1" [stars]="user.scoringStars" [normalized]="false"></tsl-stars>
   </div>
 </a>
-<section class="card user-detail" [ngClass]="{'linked' : user.sellingItem, 'calls-panel': callsPanel}">
+<section class="card user-detail" [ngClass]="{'linked' : user.sellingItem}">
   <ul class="list-group list-group-flush">
-    <li class="list-group-item" *ngIf="phone && !callsPanel">
+    <li class="list-group-item" *ngIf="phone">
       <mat-icon svgIcon="call-shared"></mat-icon>
       {{phone}}
     </li>
@@ -32,7 +32,7 @@
   </ul>
 </section>
 <a class="card" href="{{user?.sellingItem.webLink}}" tslTrackEvent="CONVERSATION_SELLING_CAR_VIEWED" [params]="{item_id: user.sellingItem.id}"
-   target="_blank" *ngIf="user.sellingItem && !callsPanel">
+   target="_blank" *ngIf="user.sellingItem">
   <div class="card-block">
     <tsl-item-avatar [item]="user?.sellingItem" fallbackLight="true"></tsl-item-avatar>
     <div class="item-details-wrap">
