@@ -3,9 +3,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserCardComponent } from './user-card.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ItemService } from '../../item/item.service';
-import { LATEST_ITEM_COUNT, MOCK_ITEM, MOCK_USER, USER_ID } from 'shield';
 import { Observable } from 'rxjs/Observable';
+import { ItemService } from '../../core/item/item.service';
+import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
+import { LATEST_ITEM_COUNT, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 
 describe('Component: UserCard', () => {
 
