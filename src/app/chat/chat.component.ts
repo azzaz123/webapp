@@ -31,6 +31,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public firstLoad: boolean;
   public chatLoaded: boolean;
   public userWebSlug: string;
+  public isProfessional: boolean = true;
 
   constructor(private conversationService: ConversationService,
               private itemService: ItemService,
