@@ -156,7 +156,7 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public checkIfLastPage(archive?: boolean): Observable<any> {
+  public checkIfLastPage(archive: boolean = false): Observable<any> {
     const lastDate: number = archive ? this.getLastDate(this.archivedLeads) : this.getLastDate(this.leads);
     if (lastDate) {
       return this.http.get(this.API_URL, {until: lastDate, hidden: archive})

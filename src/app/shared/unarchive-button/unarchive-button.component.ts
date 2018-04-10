@@ -8,16 +8,11 @@ import { ConversationService } from '../../core/conversation/conversation.servic
   templateUrl: './unarchive-button.component.html',
   styleUrls: ['./unarchive-button.component.scss']
 })
-export class UnarchiveButtonComponent implements OnDestroy {
+export class UnarchiveButtonComponent {
 
   @Input() lead: Lead;
-  private active: boolean = true;
 
   constructor(private conversationService: ConversationService) {
-  }
-
-  ngOnDestroy() {
-    this.active = false;
   }
 
   unarchive(event: Event) {
