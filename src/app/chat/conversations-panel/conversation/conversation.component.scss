@@ -19,8 +19,29 @@ $menu-width-and-spacing: 10px;
   &.active {
     background-color: rgba($grey-100, .4);
   }
+  tsl-unarchive-button {
+    @include hide();
+    position: absolute;
+    top: 43px;
+    right: 0;
+  }
   &:hover {
     background-color: rgba($grey-100, .2);
+    tsl-archive-button, tsl-unarchive-button {
+      @include show();
+    }
+    .badge-pill {
+      display: none;
+    }
+    .message-row, .user-name-row-left {
+      max-width: calc(100% - #{$check-width-and-spacing});
+    }
+    &.archive {
+      overflow: visible;
+      .message-row, .user-name-row-left {
+        max-width: calc(100% - #{$menu-width-and-spacing});
+      }
+    }
   }
 
   & /deep/ tsl-item-avatar div {

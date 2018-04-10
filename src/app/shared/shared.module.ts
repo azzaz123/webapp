@@ -21,6 +21,9 @@ import { StarsComponent } from "./stars/stars.component";
 import { SanitizedBackgroundDirective } from "./sanitized-background/sanitized-background.directive";
 import { UserAvatarComponent } from "./user-avatar/user-avatar.component";
 import { ProcessAllButtonComponent } from "./process-all-button/process-all-button.component";
+import { ArchivableComponent } from "./archivable/archivable.component";
+import { ArchiveButtonComponent } from "./archive-button/archive-button.component";
+import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.component';
 
 @NgModule({
   imports: [
@@ -47,7 +50,10 @@ import { ProcessAllButtonComponent } from "./process-all-button/process-all-butt
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
-    ProcessAllButtonComponent
+    ProcessAllButtonComponent,
+    ArchivableComponent,
+    ArchiveButtonComponent,
+    UnarchiveButtonComponent
   ],
   declarations: [
     AdComponent,
@@ -63,7 +69,10 @@ import { ProcessAllButtonComponent } from "./process-all-button/process-all-butt
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
-    ProcessAllButtonComponent
+    ProcessAllButtonComponent,
+    ArchivableComponent,
+    ArchiveButtonComponent,
+    UnarchiveButtonComponent
   ],
   providers: [
     DecimalPipe,

@@ -1,0 +1,37 @@
+@import "~style/common";
+
+:host {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 43px;
+  right: $spacing-S;
+}
+
+.check-corporate {
+  @include square(30px);
+  border: 3px solid $grey-200;
+  border-radius: 50%;
+  padding: 0;
+  transition: none;
+  transform: none;
+  background-color: $grey-200;
+  line-height: 0;
+  cursor: pointer;
+  mat-icon {
+    height: 10px;
+    width: 19px;
+    /deep/ g g {
+      fill: $grey-500;
+    }
+  }
+  &:hover {
+    background-color: $corporate;
+    border-color: $corporate;
+    mat-icon {
+      /deep/ g g {
+        fill: $white;
+      }
+    }
+  }
+}
