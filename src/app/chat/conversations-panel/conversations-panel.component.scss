@@ -12,10 +12,13 @@ h2 {
 
 .scroll-panel {
   display: block;
-  height: calc(100vh - #{$topbar-height} - #{$title-height} - #{$filters-nav-height});
+  height: calc(100vh - #{$topbar-height});
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
+  &.professional {
+    height: calc(100vh - #{$topbar-height} - #{$title-height} - #{$filters-nav-height});
+  }
 }
 
 .nav.filters-nav {

@@ -1,15 +1,17 @@
-<h2 i18n>Messages</h2>
-<tsl-process-all-button type="conversations"
-                        [hidden]="!conversations.length || archive"
-                        ngbTooltip="Mark everything as Processed" i18n-ngbTooltip placement="left">
-  <mat-icon svgIcon="process-all"></mat-icon>
-</tsl-process-all-button>
-<div class="nav filters-nav">
-  <a (click)="filterByArchived(false)" [ngClass]="{active: !archive}"><span i18n>Pending</span></a>
-  <a (click)="filterByArchived(true)" [ngClass]="{active: archive}"><span i18n>Processed</span></a>
+<div *ngIf="isProfessional">
+  <h2 i18n>Messages</h2>
+  <tsl-process-all-button type="conversations"
+                          [hidden]="!conversations.length || archive"
+                          ngbTooltip="Mark everything as Processed" i18n-ngbTooltip placement="left">
+    <mat-icon svgIcon="process-all"></mat-icon>
+  </tsl-process-all-button>
+  <div class="nav filters-nav">
+    <a (click)="filterByArchived(false)" [ngClass]="{active: !archive}"><span i18n>Pending</span></a>
+    <a (click)="filterByArchived(true)" [ngClass]="{active: archive}"><span i18n>Processed</span></a>
+  </div>
+  <div class="separator"></div>
 </div>
-<div class="separator"></div>
-<div class="scroll-panel" #scrollPanel>
+<div class="scroll-panel" #scrollPanel [ngClass]="{professional: isProfessional}">
   <tsl-conversation *ngFor="let conversation of conversations" [conversation]="conversation"
                     [ngClass]="{'active': conversation?.active}"
                     [hidden]="conversation.messages.length === 0 && conversation.item.owner === userService.user.id"

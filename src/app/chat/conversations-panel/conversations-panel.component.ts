@@ -32,6 +32,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private active = true;
   private newConversationItemId: string;
   private archiveLoaded: boolean;
+  public isProfessional: boolean = true;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
