@@ -125,6 +125,7 @@ export class AppComponent implements OnInit {
         (user: User) => {
           this.xmppService.connect(user.id, accessToken);
           this.conversationService.init().subscribe();
+          this.userService.setPermission(user.type);
           appboy.changeUser(user.id);
           appboy.openSession();
           if (!this.cookieService.get('app_session_id')) {

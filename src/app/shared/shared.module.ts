@@ -20,6 +20,7 @@ import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsComponent } from './stars/stars.component';
 import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     SanitizedBackgroundDirective,
     StarsComponent,
     StarsRateComponent,
-    UserAvatarComponent
+    UserAvatarComponent,
+    NgxPermissionsModule
   ],
   declarations: [
     AdComponent,
