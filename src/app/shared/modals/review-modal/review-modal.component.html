@@ -1,0 +1,25 @@
+<div class="modal-body center-heading">
+  <div class="modal-back" (click)="selectedUser = null" *ngIf="reviewer === 'seller'">
+    <mat-icon svgIcon="back-arrow"></mat-icon>
+  </div>
+  <div class="modal-close" (click)="activeModal.dismiss()">
+    <mat-icon svgIcon="cross"></mat-icon>
+  </div>
+  <h2 i18n>Rate your experience with <strong>{{userName}}</strong></h2>
+  <p i18n>Click on the stars to leave your review. The more stars, the better your experience.</p>
+  <tsl-stars-rate (onChange)="onRated($event)"></tsl-stars-rate>
+  <div *ngIf="isSeller">
+    <p class="text" i18n>I sold this for:</p>
+    <input type="number" class="form-control" id="price" name="price" [(ngModel)]="price" /> <span class="currency">{{item.currencyCode}}</span>
+  </div> 
+  <div>
+    <span class="chars-counter">{{reviewCommentLength}}/150</span>
+    <textarea i18n-placeholder placeholder="Leave a review..." class="form-control" [(ngModel)]="comments"
+              (keyup)="countChars($event)" maxlength="150"></textarea>
+  </div>
+  <div class="centered">
+    <tsl-button [disabled]="!score"
+                (click)="sumbitReview()"
+                i18n>Publish</tsl-button>
+  </div>
+</div>

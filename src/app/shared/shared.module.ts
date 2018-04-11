@@ -15,6 +15,7 @@ import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
+import { ReviewModalComponent } from './modals/review-modal/review-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsComponent } from './stars/stars.component';
@@ -45,7 +46,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     SanitizedBackgroundDirective,
     StarsComponent,
     StarsRateComponent,
-    UserAvatarComponent
+    UserAvatarComponent,
+    ReviewModalComponent
   ],
   declarations: [
     AdComponent,
@@ -60,7 +62,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     SanitizedBackgroundDirective,
     StarsComponent,
     StarsRateComponent,
-    UserAvatarComponent
+    UserAvatarComponent,
+    ReviewModalComponent
   ],
   providers: [
     DecimalPipe,
@@ -69,7 +72,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
   ],
   entryComponents: [
     ConfirmationModalComponent,
-    SoldModalComponent
+    SoldModalComponent,
+    ReviewModalComponent
   ]
 })
 export class SharedModule { }
