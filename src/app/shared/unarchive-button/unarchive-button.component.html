@@ -1,5 +1,5 @@
 <div ngbDropdown placement="bottom-right">
-  <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle (click)="$event.stopPropagation(); myDrop.open();"></mat-icon>
+  <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle (click)="$event.stopPropagation()"></mat-icon>
   <div ngbDropdownMenu>
     <button class="dropdown-item" (click)="unarchive($event)" i18n>Mark as Pending</button>
   </div>

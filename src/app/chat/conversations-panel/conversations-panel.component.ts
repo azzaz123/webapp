@@ -59,9 +59,17 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.getConversations();
-    this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, () => this.setCurrentConversation(null));
+    this.eventService.subscribe(EventService.LEAD_ARCHIVED, () => this.setCurrentConversation(null));
     this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
     this.eventService.subscribe(EventService.FIND_CONVERSATION, (conversation: NewConversationResponse) => this.findConversation(conversation));
+    this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, () => {
+      if (this.archive) {
+        this.archive = false;
+        this.page = 1;
+        this.setCurrentConversation(null)
+        this.getConversations();
+      }
+    });
   }
 
   ngOnDestroy() {
