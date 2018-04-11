@@ -7,7 +7,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { CONVERSATION_USERS, ITEM_ID, ITEM_SALE_PRICE, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
-import { ReviewService } from '../../../core/review/review.service';
 
 
 describe('SoldModalComponent', () => {
@@ -15,7 +14,6 @@ describe('SoldModalComponent', () => {
   let fixture: ComponentFixture<SoldModalComponent>;
   let itemService: ItemService;
   let activeModal: NgbActiveModal;
-  let reviewService: ReviewService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -29,13 +27,6 @@ describe('SoldModalComponent', () => {
           },
           soldOutside() {
             return Observable.of({});
-          }
-        }
-        },
-        {
-          provide: ReviewService, useValue: {
-          createAsSeller() {
-            return Observable.of([]);
           }
         }
         }
@@ -52,7 +43,6 @@ describe('SoldModalComponent', () => {
     component.item = MOCK_ITEM;
     itemService = TestBed.get(ItemService);
     activeModal = TestBed.get(NgbActiveModal);
-    reviewService = TestBed.get(ReviewService);
     spyOn(itemService, 'getConversationUsers').and.callThrough();
     fixture.detectChanges();
   });
@@ -76,14 +66,7 @@ describe('SoldModalComponent', () => {
   describe('chooseUser', () => {
     it('should set selectedUser', () => {
       component.chooseUser(CONVERSATION_USERS[0]);
-      expect(component.selectedUser).toEqual(CONVERSATION_USERS[0]);
-    });
-  });
-
-  describe('onRated', () => {
-    it('should set score', () => {
-      component.onRated(4);
-      expect(component.score).toBe(4);
+      expect(component.buyer).toEqual(CONVERSATION_USERS[0]);
     });
   });
 
@@ -97,26 +80,6 @@ describe('SoldModalComponent', () => {
       spyOn(activeModal, 'close');
       component.setSoldOutside();
       expect(activeModal.close).toHaveBeenCalled();
-    });
-  });
-
-  describe('setSold', () => {
-    it('should call createAsSeller and set thanks true', () => {
-      spyOn(reviewService, 'createAsSeller').and.callThrough();
-      component.selectedUser = CONVERSATION_USERS[0];
-      component.item = MOCK_ITEM;
-      component.comments = 'comments';
-      component.score = 4;
-      component.price = 100;
-      component.setSold();
-      expect(reviewService.createAsSeller).toHaveBeenCalledWith({
-        to_user_id: '1',
-        item_id: ITEM_ID,
-        comments: 'comments',
-        score: 4 * 20,
-        price: 100
-      });
-      expect(component.thanks).toBeTruthy();
     });
   });
 
