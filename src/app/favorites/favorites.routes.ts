@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FavoritesComponent } from './favorites.component';
 import { LoggedGuard } from '../core/user/logged.guard';
-import { PERMISSIONS } from '../core/user/user';
 
 const routes: Routes = [
   {

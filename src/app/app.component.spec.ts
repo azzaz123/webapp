@@ -232,6 +232,15 @@ describe('App', () => {
         expect(conversationService.init).toHaveBeenCalledTimes(1);
       });
 
+      it('should call userService setpermission method', () => {
+        spyOn(userService, 'setPermission').and.callThrough();
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(userService.setPermission).toHaveBeenCalledWith(USER_DATA.type);
+      });
+
       it('should send open_app event if cookie does not exist', () => {
         spyOn(trackingService, 'track');
         spyOn(cookieService, 'get').and.returnValue(null);
