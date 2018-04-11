@@ -1,4 +1,4 @@
-<div *ngIf="isProfessional">
+<div *ngxPermissionsOnly="['isProfessional']">
   <h2 i18n>Messages</h2>
   <tsl-process-all-button type="conversations"
                           [hidden]="!conversations.length || archive"

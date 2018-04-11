@@ -32,7 +32,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private active = true;
   private newConversationItemId: string;
   private archiveLoaded: boolean;
-  public isProfessional: boolean = true;
+  public isProfessional: boolean;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
@@ -40,6 +40,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
               private trackingService: TrackingService,
               public userService: UserService,
               private elRef: ElementRef) {
+    this.userService.isProfessional().subscribe((value: boolean) => {
+      this.isProfessional = value;
+    });
   }
 
   set loading(value: boolean) {

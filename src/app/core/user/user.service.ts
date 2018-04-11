@@ -254,6 +254,13 @@ export class UserService extends ResourceService {
   public setPermission(userType: string): void {
     this.permissionService.addPermission(PERMISSIONS[userType]);
   }
+
+  public isProfessional(): Observable<boolean> {
+    return this.me()
+      .flatMap(() => {
+        return Observable.fromPromise(this.permissionService.hasPermission(PERMISSIONS.professional));
+      });
+  }
 }
 
 

@@ -2,6 +2,7 @@ import { Component, HostBinding, HostListener, Input } from '@angular/core';
 import { Conversation } from '../../../core/conversation/conversation';
 import { Remove } from '../../../shared/archivable/animations';
 import { ConversationService } from '../../../core/conversation/conversation.service';
+import { UserService } from '../../../core/user/user.service';
 
 @Component({
   selector: 'tsl-conversation',
@@ -26,7 +27,11 @@ export class ConversationComponent {
     sameElse: 'D MMM'
   };
 
-  constructor(private conversationService: ConversationService) {
+  constructor(private conversationService: ConversationService,
+              private userService: UserService) {
+    this.userService.isProfessional().subscribe((value: boolean) => {
+      this.isProfessional = value;
+    });
   }
 
   ngOnChanges(changes?: any) {

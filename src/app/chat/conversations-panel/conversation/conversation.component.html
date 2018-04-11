@@ -40,7 +40,7 @@
       </p>
     </div>
   </div>
-  <div *ngIf="isProfessional">
+  <div *ngxPermissionsOnly="['isProfessional']">
     <tsl-archive-button [lead]="conversation" [hidden]="conversation.archived" (click)="archived = true"></tsl-archive-button>
     <tsl-unarchive-button [lead]="conversation" [hidden]="!conversation.archived"></tsl-unarchive-button>
   </div>
