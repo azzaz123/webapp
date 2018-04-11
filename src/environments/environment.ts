@@ -6,12 +6,11 @@
 export const environment: any = {
   production: false,
   name: 'local',
-  baseUrl: 'http://dock123.corp.wallapop.com:8080/',
-  xmppDomain: 'dock123.wallapop.com',
-  wsUrl: 'ws://dock123.corp.wallapop.com:5281/ws-xmpp',
-  siteUrl: 'http://es.dev.wallapop.com:8080/',
-  bypass: 'p3-9p0dJk2cHp3-4RsW0',
+  baseUrl: 'https://apigw.dock133.wallapop.com/',
+  xmppDomain: 'dock133.wallapop.com',
+  wsUrl: 'wss://dock133.wallapop.com:5282/ws-xmpp',
+  siteUrl: 'https://es.dock133.wallapop.com/',
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
-  cookieSuffix: 'Local',
+  cookieSuffix: 'dock133',
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents'
 };
