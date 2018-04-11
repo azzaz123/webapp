@@ -4,8 +4,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ConversationUser } from '../../../core/item/item-response.interface';
 import { Item } from '../../../core/item/item';
-import { ReviewService } from '../../../core/review/review.service';
-import { ReviewDataSeller } from '../../../core/review/review.interface';
 
 @Component({
   selector: 'tsl-sold-modal',
@@ -21,8 +19,7 @@ export class SoldModalComponent implements OnInit {
   public thanks: boolean;
 
   constructor(public activeModal: NgbActiveModal,
-              private itemService: ItemService,
-              private reviewService: ReviewService) {
+              private itemService: ItemService) {
   }
 
   ngOnInit() {
