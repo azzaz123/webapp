@@ -80,7 +80,8 @@ describe('App', () => {
             return Observable.of(MOCK_USER);
           },
           logout() {
-          }
+          },
+          setPermission() {}
         }
         },
         HaversineService,
