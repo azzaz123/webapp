@@ -16,7 +16,7 @@ export class SoldModalComponent implements OnInit {
   public conversationUsers: ConversationUser[] = [];
   public buyer: ConversationUser;
   public price: number;
-  public thanks: boolean;
+  public thanks = false;
 
   constructor(public activeModal: NgbActiveModal,
               private itemService: ItemService) {
