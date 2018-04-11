@@ -83,4 +83,12 @@ describe('SoldModalComponent', () => {
     });
   });
 
+  describe('onFinishedReview', () => {
+    it('should set thanks to true when invoked', () => {
+      component.onFinishedReview();
+
+      expect(component.thanks).toBe(true);
+    });
+  });
+
 });
