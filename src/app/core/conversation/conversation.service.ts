@@ -30,7 +30,7 @@ import 'rxjs/add/observable/forkJoin';
 @Injectable()
 export class ConversationService extends LeadService {
 
-  protected API_URL = 'api/v3/conversations';
+  protected API_URL = 'api/v3/protool/conversations';
   protected ARCHIVE_URL = 'api/v3/conversations';
   private PHONE_MESSAGE = 'Mi número de teléfono es';
   private SURVEY_MESSAGE = 'Ya he respondido a tus preguntas';
