@@ -124,8 +124,12 @@ export class AppComponent implements OnInit {
       this.userService.me().subscribe(
         (user: User) => {
           this.xmppService.connect(user.id, accessToken);
-          this.conversationService.init().subscribe();
           this.userService.setPermission(user.type);
+          this.conversationService.init().subscribe(() => {
+            if (user.type === 'professional') {
+              this.conversationService.init(true).subscribe();
+            }
+          });
           appboy.changeUser(user.id);
           appboy.openSession();
           if (!this.cookieService.get('app_session_id')) {

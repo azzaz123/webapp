@@ -31,7 +31,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   public page = 1;
   private active = true;
   private newConversationItemId: string;
-  private archiveLoaded: boolean;
   public isProfessional: boolean;
 
   constructor(public conversationService: ConversationService,
@@ -114,6 +113,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.conversations = [];
         this.loading = false;
       }
+      this.conversationService.checkIfLastPage().subscribe();
     });
   }
 
@@ -193,15 +193,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.page = 1;
     this.loading = true;
     this.setCurrentConversation(null);
-    if (!this.archiveLoaded) {
-      this.conversationService.loadMoreArchived().subscribe(() => {
-        this.archiveLoaded = true;
-        this.getConversations();
-      });
-    } else {
-      this.getConversations();
-    }
-
+    this.getConversations();
   }
 
 }

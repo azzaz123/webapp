@@ -100,9 +100,7 @@ export class ConversationService extends LeadService {
     const init: number = (page - 1) * pageSize;
     const end: number = init + pageSize;
     return (archive ? this.archivedStream$ : this.stream$).asObservable()
-    .flatMap((conversations: Conversation[]) => {
-      return this.checkIfLastPage(archive)
-      .map(() => {
+      .map((conversations: Conversation[]) => {
         if (filters) {
           return this.filter(conversations, filters);
         }
@@ -114,7 +112,6 @@ export class ConversationService extends LeadService {
       .map((sortedConversations: Conversation[]) => {
         return sortedConversations.slice(0, end);
       });
-    });
   }
 
   private filter(conversations: Conversation[], filters: Filter[]): Conversation[] {
