@@ -27,6 +27,8 @@ import {
 import { Conversation } from '../../core/conversation/conversation';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { Message } from '../../core/message/message';
+import { NgxPermissionsModule } from 'ngx-permissions';
+
 
 describe('Component: ConversationsPanel', () => {
 
@@ -43,7 +45,9 @@ describe('Component: ConversationsPanel', () => {
     TestBed.configureTestingModule({
       imports: [
         MomentModule,
-        RouterTestingModule
+        RouterTestingModule,
+        NgxPermissionsModule,
+        NgxPermissionsModule.forRoot()
       ],
       declarations: [ConversationsPanelComponent, ConversationComponent],
       providers: [
@@ -73,12 +77,18 @@ describe('Component: ConversationsPanel', () => {
           addLead() {
           },
           sendRead() {
+          },
+          checkIfLastPage() {
+            return Observable.of({});
           }
         }
         },
         EventService,
         {provide: UserService, useValue: {
-          queryParams: {}
+          queryParams: {},
+          isProfessional() {
+            return Observable.of(true)
+          }
         }},
         {
           provide: ElementRef, useValue: {
@@ -309,7 +319,7 @@ describe('Component: ConversationsPanel', () => {
     it('should call setCurrentConversation', () => {
       spyOn(component, 'setCurrentConversation');
       component.ngOnInit();
-      eventService.emit(EventService.CONVERSATION_ARCHIVED, MOCK_CONVERSATION());
+      eventService.emit(EventService.LEAD_ARCHIVED, MOCK_CONVERSATION());
       expect(component.setCurrentConversation).toHaveBeenCalled();
     });
   });

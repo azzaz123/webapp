@@ -445,7 +445,7 @@ describe('Service: Conversation', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
       service.checkIfLastPage().subscribe();
-      expect(http.get).toHaveBeenCalledWith('api/v3/conversations', {
+      expect(http.get).toHaveBeenCalledWith('api/v3/protool/conversations', {
         until: 12345,
         hidden: false
       });

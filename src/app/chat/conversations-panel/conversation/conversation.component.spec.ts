@@ -7,6 +7,10 @@ import { MomentModule } from 'angular2-moment';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ConversationService } from '../../../core/conversation/conversation.service';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
+import { NgxPermissionsModule } from 'ngx-permissions';
+import { UserService } from '../../../core/user/user.service';
+import { Observable } from 'rxjs/Observable';
+
 
 describe('Component: Conversation', () => {
   let component: ConversationComponent;
@@ -17,12 +21,21 @@ describe('Component: Conversation', () => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
-        MomentModule
+        MomentModule,
+        NgxPermissionsModule,
+        NgxPermissionsModule.forRoot()
       ],
       providers: [
         {
           provide: ConversationService, useValue: {
           stream() {
+          }
+        }
+        },
+        {
+          provide: UserService, useValue: {
+          isProfessional() {
+            return Observable.of(true);
           }
         }
         }
