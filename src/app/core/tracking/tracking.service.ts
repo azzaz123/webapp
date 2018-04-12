@@ -499,6 +499,12 @@ export class TrackingService {
       this.sessionStartTime,
       event);
     newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId, this.navigatorService.browserName, this.navigatorService.fullVersion);
+    if (this.userService.user.type === 'professional') {
+      if (!attributes) {
+        attributes = {};
+      }
+      attributes.professional = true;
+    }
     if (attributes) {
       newEvent.setAttributes(attributes);
     }
