@@ -98,7 +98,11 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.conversationsSubscription = this.conversationService.getPage(this.page, this.archive).takeWhile(() => {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
-      this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
+      if (this.archive) {
+        this.trackingService.track(TrackingService.CONVERSATION_LIST_PROCESSED_LOADED);
+      } else {
+        this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
+      }
       if (!this.currentConversationSet) {
         this.route.queryParams.subscribe((params: any) => {
           this.newConversationItemId = params.itemId;

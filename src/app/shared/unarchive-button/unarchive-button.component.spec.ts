@@ -7,6 +7,8 @@ import { Observable } from 'rxjs/Observable';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { CONVERSATION_ID, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Lead } from '../../core/conversation/lead';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { TrackingService } from '../../core/tracking/tracking.service';
 
 describe('UnarchiveButtonComponent', () => {
   let component: UnarchiveButtonComponent;
@@ -19,6 +21,7 @@ describe('UnarchiveButtonComponent', () => {
         NgbModule.forRoot()
       ],
       providers: [
+        {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ConversationService, useValue: {
           unarchive() {

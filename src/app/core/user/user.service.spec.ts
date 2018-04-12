@@ -480,7 +480,7 @@ describe('Service: User', () => {
     });
   });
 
-  fdescribe('isProfessional', () => {
+  describe('isProfessional', () => {
     let val: boolean;
 
     beforeEach(() => {
