@@ -73,7 +73,7 @@ describe('AdService', () => {
           provide: UserService,
           useValue: {
             me() {
-              return Observable.of(MOCK_USER);
+              return Observable.of(MOCK_USER)
             }
           }
         },
@@ -229,9 +229,9 @@ describe('AdService', () => {
       }));
 
       it('should call amazon APS fetchBids', fakeAsync(() => {
-        spyOn(apstag, 'fetchBids')
+        spyOn(apstag, 'fetchBids');
 
-        service.startAdsRefresh()
+        service.startAdsRefresh();
         tick(refreshRate);
 
         expect(apstag.fetchBids).toHaveBeenCalled();
@@ -239,9 +239,9 @@ describe('AdService', () => {
       }));
 
       it('should call amazon APS setDisplayBids', fakeAsync(() => {
-        spyOn(apstag, 'setDisplayBids')
+        spyOn(apstag, 'setDisplayBids');
 
-        service.startAdsRefresh()
+        service.startAdsRefresh();
         tick(refreshRate);
 
         expect(apstag.setDisplayBids).toHaveBeenCalled();
@@ -249,9 +249,9 @@ describe('AdService', () => {
       }));
 
       it('should call Criteo SetLineItemRanges', fakeAsync(() => {
-        spyOn(Criteo, 'SetLineItemRanges')
+        spyOn(Criteo, 'SetLineItemRanges');
 
-        service.startAdsRefresh()
+        service.startAdsRefresh();
         tick(refreshRate);
 
         expect(Criteo.SetLineItemRanges).toHaveBeenCalled();
@@ -259,9 +259,9 @@ describe('AdService', () => {
       }));
 
       it('should call Criteo SetLineItemRanges', fakeAsync(() => {
-        spyOn(Criteo, 'SetLineItemRanges')
+        spyOn(Criteo, 'SetLineItemRanges');
 
-        service.startAdsRefresh()
+        service.startAdsRefresh();
         tick(refreshRate);
 
         expect(Criteo.SetLineItemRanges).toHaveBeenCalled();
@@ -269,9 +269,9 @@ describe('AdService', () => {
       }));
 
       it('should call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
-        spyOn(Criteo, 'SetDFPKeyValueTargeting')
+        spyOn(Criteo, 'SetDFPKeyValueTargeting');
 
-        service.startAdsRefresh()
+        service.startAdsRefresh();
         tick(refreshRate);
 
         expect(Criteo.SetDFPKeyValueTargeting).toHaveBeenCalled();

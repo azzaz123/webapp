@@ -15,7 +15,7 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { UserStatsResponse } from '../../core/user/user-stats.interface';
+import { UserStatsResponse, Counters } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -39,9 +39,11 @@ export class ListComponent implements OnInit, OnDestroy {
   private uploadModalRef: NgbModalRef;
   private active = true;
   private firstItemLoad = true;
-  public numberOfProducts: number;
   public isUrgent = false;
+  public numberOfProducts: number;
   public isRedirect = false;
+  private counters: Counters;
+
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
@@ -145,6 +147,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.selectedStatus = status;
       this.init = 0;
       this.getItems();
+      this.getNumberOfProducts();
     }
   }
 
@@ -305,8 +308,17 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public getNumberOfProducts() {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
-      this.numberOfProducts = userStats.counters.publish;
+      this.counters = userStats.counters;
+      this.setNumberOfProducts();
     });
+  }
+
+  private setNumberOfProducts() {
+    if (this.selectedStatus === 'sold') {
+      this.numberOfProducts = this.counters.sold;
+    } else if (this.selectedStatus === 'published') {
+      this.numberOfProducts = this.counters.publish;
+    }
   }
 
   private getUrgentPrice(itemId: string): void {

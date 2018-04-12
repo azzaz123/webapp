@@ -205,14 +205,19 @@ export class ItemService extends ResourceService {
     });
   }
 
-  public getPaginationItems(url: string, init): Observable<ItemsData> {
+  public getPaginationItems(url: string, init, status?): Observable<ItemsData> {
     return this.http.get(url, {
-      init: init
+      init: init,
+      expired: status
     })
     .map((r: Response) => {
         const res: ItemResponse[] = r.json();
         const nextPage: string = r.headers.get('x-nextpage');
-        const nextInit: number = nextPage ? +nextPage.replace('init=', '') : null;
+        const params = _.chain(nextPage).split('&')
+          .map(_.partial(_.split, _, '=', 2))
+          .fromPairs()
+          .value();
+        const nextInit: number = nextPage ? +params.init : null;
         let data: Item[] = [];
         if (res.length > 0) {
           data = res.map((i: ItemResponse) => {
@@ -255,7 +260,7 @@ export class ItemService extends ResourceService {
   }
 
   public mine(init: number, status?: string): Observable<ItemsData> {
-    return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init);
+    return this.getPaginationItems(this.API_URL_WEB + '/mine/' + status, init, true);
   }
 
   public myFavorites(init: number): Observable<ItemsData> {

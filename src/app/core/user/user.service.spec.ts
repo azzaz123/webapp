@@ -26,11 +26,12 @@ import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { AccessTokenService } from '../http/access-token.service';
 import { EventService } from '../event/event.service';
-import { User } from './user';
+import { User, PERMISSIONS } from './user';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from './login-response.interface';
 import { UserLocation } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 describe('Service: User', () => {
 
@@ -43,6 +44,7 @@ describe('Service: User', () => {
   let accessTokenService: AccessTokenService;
   let event: EventService;
   let cookieService: CookieService;
+  let permissionService: NgxPermissionsService;
 
   const DATA: any = {
     emailAddress: 'test@test.it',
@@ -72,6 +74,13 @@ describe('Service: User', () => {
               delete this.cookies[key];
             }
           }
+        },
+        {
+          provide: NgxPermissionsService,
+          useValue: {
+            addPermission() {},
+            flushPermissions() {}
+          }
         }
       ]
     });
@@ -83,6 +92,7 @@ describe('Service: User', () => {
     accessTokenService.storeAccessToken(null);
     event = TestBed.get(EventService);
     cookieService = TestBed.get(CookieService);
+    permissionService = TestBed.get(NgxPermissionsService);
   });
 
   it('should create an instance', () => {
@@ -271,26 +281,35 @@ describe('Service: User', () => {
 
     beforeEach(() => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of(new Response(res)));
+      spyOn(permissionService, 'flushPermissions').and.returnValue({});
       spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
+
       event.subscribe(EventService.USER_LOGOUT, (param) => {
         redirectUrl = param;
       });
       cookieService.put('publisherId', 'someId');
+      
       service.logout();
     });
 
     it('should call endpoint', () => {
       expect(http.postNoBase).toHaveBeenCalledWith('https://www.wallapop.com/rest/logout', undefined, undefined, true);
     });
+
     it('should call deleteAccessToken', () => {
       expect(accessTokenService.deleteAccessToken).toHaveBeenCalled();
     });
+
     it('should call event passing redirect url', () => {
       expect(redirectUrl).toBe('redirect_url');
     });
 
     it('should remove publisherId from cookie', () => {
       expect(cookieService['publisherId']).not.toBeDefined();
+    });
+
+    it('should call flush permissions', () => {
+      expect(permissionService.flushPermissions).toHaveBeenCalled();
     });
   });
 
@@ -447,6 +466,16 @@ describe('Service: User', () => {
         reason_id: SELECTED_REASON,
         other_reason: CUSTOM_REASON
       });
+    });
+  });
+
+  describe('setPermission', () => {
+    it('should call addPermission', () => {
+      spyOn(permissionService, 'addPermission').and.returnValue({});
+
+      service.setPermission('normal');
+
+      expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
     });
   });
 });

@@ -367,7 +367,8 @@ describe('Service: Item', () => {
           resp = data;
         });
         expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/published', {
-          init: 10
+          init: 10,
+          expired: true
         });
       });
       it('should return an array of items and the init', () => {
@@ -435,7 +436,8 @@ describe('Service: Item', () => {
         resp = data;
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/favorites', {
-        init: 10
+        init: 10,
+        expired: undefined
       });
     });
     it('should return an array of items and the init', () => {

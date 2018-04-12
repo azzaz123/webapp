@@ -2,20 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FavoritesComponent } from './favorites.component';
 import { LoggedGuard } from '../core/user/logged.guard';
-import { NgxPermissionsGuard } from 'ngx-permissions';
-import { PERMISSIONS } from '../core/user/user';
 
 const routes: Routes = [
   {
     path: 'favorites',
     component: FavoritesComponent,
-    canActivate: [LoggedGuard, NgxPermissionsGuard],
+    canActivate: [LoggedGuard],
     data: {
-      isMyZone: true,
-      permissions: {
-        only: PERMISSIONS.normal,
-        redirectTo: '/chat'
-      }
+      isMyZone: true
     }
   }
 ];

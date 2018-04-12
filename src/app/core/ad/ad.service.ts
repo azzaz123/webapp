@@ -87,7 +87,7 @@ export class AdService {
 
   public requestBidCriteo() {
     const adUnits = {
-        placements: this._adSlots.map((slot) => {
+      placements: this._adSlots.map((slot) => {
         return { slotid: slot.id, zoneid: slot.zoneid};
       })
     };
@@ -124,7 +124,7 @@ export class AdService {
         this.adKeyWords.longitude = user.location.approximated_longitude.toString();
       }
     }).flatMap(() => {
-      return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json());
+      return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
     }).flatMap((refreshRate: number) => {
       return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0);
     }).subscribe(() => {
