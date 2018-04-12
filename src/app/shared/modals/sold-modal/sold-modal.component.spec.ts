@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SoldModalComponent } from './sold-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -55,9 +54,11 @@ describe('SoldModalComponent', () => {
     it('should set price', () => {
       expect(component.price).toBe(ITEM_SALE_PRICE);
     });
+
     it('should call getConversationUsers', () => {
       expect(itemService.getConversationUsers).toHaveBeenCalledWith(ITEM_ID);
     });
+
     it('should set conversationUsers', () => {
       expect(component.conversationUsers).toEqual(CONVERSATION_USERS);
     });
@@ -66,6 +67,7 @@ describe('SoldModalComponent', () => {
   describe('chooseUser', () => {
     it('should set selectedUser', () => {
       component.chooseUser(CONVERSATION_USERS[0]);
+
       expect(component.buyer).toEqual(CONVERSATION_USERS[0]);
     });
   });
@@ -73,12 +75,17 @@ describe('SoldModalComponent', () => {
   describe('setSoldOutside', () => {
     it('should call soldOutside and close dialog', () => {
       spyOn(itemService, 'soldOutside').and.callThrough();
+
       component.setSoldOutside();
+
       expect(itemService.soldOutside).toHaveBeenCalledWith(ITEM_ID);
     });
+
     it('should close dialog', () => {
       spyOn(activeModal, 'close');
+
       component.setSoldOutside();
+
       expect(activeModal.close).toHaveBeenCalled();
     });
   });

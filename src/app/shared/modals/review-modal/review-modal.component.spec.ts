@@ -71,14 +71,10 @@ describe('ReviewModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('ngOnInit', () => {
     it('should get and set the seller when isSeller is false', () => {
-      component.isSeller = false;
       spyOn(userService, 'get').and.callThrough();
+      component.isSeller = false;
 
       component.ngOnInit();
 
@@ -105,8 +101,8 @@ describe('ReviewModalComponent', () => {
     });
 
     it('should set the userName when isSeller is false', () => {
-      component.isSeller = false;
       spyOn(userService, 'get').and.callThrough();
+      component.isSeller = false;
 
       component.ngOnInit();
 
@@ -117,6 +113,7 @@ describe('ReviewModalComponent', () => {
   describe('onRated', () => {
     it('should set score', () => {
       component.onRated(4);
+
       expect(component.score).toBe(4);
     });
   });
@@ -153,6 +150,7 @@ describe('ReviewModalComponent', () => {
       component.score = 4;
       component.price = 100;
     });
+
     it('should call createAsSeller when isSeller is true', () => {
       spyOn(reviewService, 'createAsSeller').and.callThrough();
       component.isSeller = true;
@@ -181,8 +179,8 @@ describe('ReviewModalComponent', () => {
     });
 
     it('should call close when isSeller is false', () => {
-      component.isSeller = false;
       spyOn(activeModal, 'close');
+      component.isSeller = false;
 
       component.sumbitReview();
 
@@ -191,7 +189,6 @@ describe('ReviewModalComponent', () => {
         comments: 'comments',
         userId: USER_ID
       });
-
     });
   });
 });
