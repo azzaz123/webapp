@@ -117,6 +117,21 @@ export const MOCK_USER: User = new User(
   USER_DATA.online
 );
 
+export const MOCK_USER_PRO: User = new User(
+  USER_DATA.id,
+  USER_DATA.micro_name,
+  USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  'professional'
+);
+
 export const USER_ITEM_DISTANCE = 10;
 
 export class MockedUserService {

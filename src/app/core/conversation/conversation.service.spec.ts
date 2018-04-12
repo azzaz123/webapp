@@ -238,6 +238,26 @@ describe('Service: Conversation', () => {
     });
   });
 
+  describe('loadMoreArchived', () => {
+    let response: Lead[];
+    const LEADS: Lead[] = createConversationsArray(4);
+    beforeEach(() => {
+      spyOn<any>(service, 'getLastDate').and.returnValue(1234);
+      spyOn(service, 'getLeads').and.returnValue(Observable.of({}));
+      service.archivedStream$.subscribe((leads: Lead[]) => {
+        response = leads;
+      });
+      service['archivedLeads'] = LEADS;
+      service.loadMoreArchived().subscribe();
+    });
+    it('should call getLeads', () => {
+      expect(service['getLeads']).toHaveBeenCalledWith(1234, true);
+    });
+    it('should emit stream', () => {
+      expect(response).toEqual(LEADS);
+    });
+  });
+
   describe('getPage', () => {
     let response: Conversation[];
     beforeEach(() => {

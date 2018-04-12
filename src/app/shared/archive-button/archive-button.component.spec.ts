@@ -40,23 +40,24 @@ describe('ArchiveButtonComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('archive', () => {
     let called: boolean;
+
     beforeEach(() => {
       spyOn(conversationService, 'archive').and.callThrough();
       component.click.subscribe(() => {
         called = true;
       });
     });
+
     it('should call conversationService.archive if lead is Conversation', () => {
       component.lead = MOCK_CONVERSATION();
+
       component.archive(new Event(''));
+
       expect(conversationService.archive).toHaveBeenCalledWith(CONVERSATION_ID);
     });
+
     it('should emit click event', () => {
       expect(called).toBeTruthy();
     });

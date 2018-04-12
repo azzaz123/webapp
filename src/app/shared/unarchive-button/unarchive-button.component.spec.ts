@@ -5,6 +5,8 @@ import { UnarchiveButtonComponent } from './unarchive-button.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
 import { ConversationService } from '../../core/conversation/conversation.service';
+import { CONVERSATION_ID, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { Lead } from '../../core/conversation/lead';
 
 describe('UnarchiveButtonComponent', () => {
   let component: UnarchiveButtonComponent;
@@ -38,13 +40,14 @@ describe('UnarchiveButtonComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('unarchive', () => {
-    beforeEach(() => {
+    it('should call unarchive', () => {
       spyOn(conversationService, 'unarchive').and.callThrough();
+      component.lead = <Lead>MOCK_CONVERSATION();
+
+      component.unarchive(new Event('click'));
+
+      expect(conversationService.unarchive).toHaveBeenCalledWith(CONVERSATION_ID)
     });
   });
 });

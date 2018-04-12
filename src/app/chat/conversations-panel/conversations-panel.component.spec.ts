@@ -60,6 +60,9 @@ describe('Component: ConversationsPanel', () => {
           loadMore() {
             return Observable.of([]);
           },
+          loadMoreArchived() {
+            return Observable.of([]);
+          },
           getPage() {
             return Observable.of([]);
           },
@@ -169,6 +172,11 @@ describe('Component: ConversationsPanel', () => {
         expect(component['setCurrentConversationFromQueryParams']).not.toHaveBeenCalled();
       });
     });
+    it('should call checkIfLastPage', () => {
+      spyOn(conversationService, 'checkIfLastPage').and.callThrough();
+      component['getConversations']();
+      expect(conversationService.checkIfLastPage).toHaveBeenCalled();
+    });
   });
 
   describe('scrollToActive', () => {
@@ -210,7 +218,8 @@ describe('Component: ConversationsPanel', () => {
     beforeEach(() => {
       component['page'] = 1;
       spyOn<any>(component, 'getConversations');
-      spyOn(conversationService, 'loadMore').and.returnValue(Observable.of({}));
+      spyOn(conversationService, 'loadMore').and.callThrough();
+      spyOn(conversationService, 'loadMoreArchived').and.callThrough();
       component.loadMore();
     });
     it('should increment page', () => {
@@ -221,6 +230,11 @@ describe('Component: ConversationsPanel', () => {
     });
     it('should call getConversations', () => {
       expect(component['getConversations']).toHaveBeenCalled();
+    });
+    it('should call loadMoreArchived if archive', () => {
+      component.archive = true;
+      component.loadMore();
+      expect(conversationService.loadMoreArchived).toHaveBeenCalled();
     });
   });
 
@@ -305,6 +319,7 @@ describe('Component: ConversationsPanel', () => {
   describe('ngOnInit', () => {
     beforeEach(() => {
       spyOn<any>(component, 'getConversations');
+      spyOn(component, 'setCurrentConversation');
     });
     it('should call getConversations', () => {
       component.ngOnInit();
@@ -317,9 +332,18 @@ describe('Component: ConversationsPanel', () => {
       expect(component['sendRead']).toHaveBeenCalledWith(MOCK_MESSAGE);
     });
     it('should call setCurrentConversation', () => {
-      spyOn(component, 'setCurrentConversation');
       component.ngOnInit();
       eventService.emit(EventService.LEAD_ARCHIVED, MOCK_CONVERSATION());
+      expect(component.setCurrentConversation).toHaveBeenCalled();
+    });
+    it('should reload new conversations if conversation is unarchived', () => {
+      component.archive = true;
+      component['page'] = 10;
+      component.ngOnInit();
+      eventService.emit(EventService.CONVERSATION_UNARCHIVED);
+      expect(component.archive).toBeFalsy();
+      expect(component['page']).toBe(1);
+      expect(component['getConversations']).toHaveBeenCalledTimes(2);
       expect(component.setCurrentConversation).toHaveBeenCalled();
     });
   });
@@ -412,6 +436,26 @@ describe('Component: ConversationsPanel', () => {
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
         { user_id: conversation.user.id, item_id: conversation.item.id, thread_id: conversation.id });
+    });
+  });
+
+  describe('filterByArchived', () => {
+    beforeEach(() => {
+      spyOn(trackingService, 'track');
+      spyOn<any>(component, 'getConversations');
+      component['page'] = 10;
+    });
+    it('should set archive true', () => {
+      component.filterByArchived(true);
+      expect(component.archive).toBeTruthy();
+      expect(component['page']).toBe(1);
+      expect(component['getConversations']).toHaveBeenCalled();
+    });
+    it('should set archive false', () => {
+      component.filterByArchived(false);
+      expect(component.archive).toBeFalsy();
+      expect(component['page']).toBe(1);
+      expect(component['getConversations']).toHaveBeenCalled();
     });
   });
 

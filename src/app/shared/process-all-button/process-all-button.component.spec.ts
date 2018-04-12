@@ -56,14 +56,19 @@ describe('ProcessAllButtonComponent', () => {
       spyOn(modal, 'open').and.callThrough();
       spyOn(conversationService, 'archiveAll').and.callThrough();
     });
+
     it('should open modal', () => {
       component.open('modal');
+
       expect(modal.open).toHaveBeenCalledWith('modal');
     });
+
     it('should call conversationService.archiveAll if type conversations', fakeAsync(() => {
       component.type = 'conversations';
+
       component.open('modal');
       tick();
+      
       expect(conversationService.archiveAll).toHaveBeenCalled();
     }));
   });
