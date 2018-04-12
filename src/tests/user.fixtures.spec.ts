@@ -72,7 +72,7 @@ export const USER_TYPE = 'inactive';
 export const USER_WEB_SLUG = 'webslug-l1kmzn82zn3p';
 export const USER_FIRST_NAME = 'Daniele';
 export const USER_LAST_NAME = 'Ghidoli';
-export const USER_BIRTH_DATE = 539913600000;
+export const USER_BIRTH_DATE = 1523560844000;
 export const USER_GENDER = 'male';
 
 export const USER_DATA: UserResponse = {
