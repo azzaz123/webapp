@@ -93,6 +93,14 @@ export class CartComponent implements OnInit, OnDestroy {
     ga('send', 'event', 'Item', 'bump-cart');
     gtag('event', 'conversion', {'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM'});
     fbq('track', '176083133152402', {});
+    twq('track', 'Purchase', {
+      value: this.cart.total,
+      currency: 'EUR',
+      num_items: '1',
+      content_ids: ['sku-1234', 'sku-5678', 'sku-ABC'],
+      content_type: 'product',
+      content_name: 'Purchase bumps'
+    });
   }
 
   private getCard() {
