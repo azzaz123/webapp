@@ -225,13 +225,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
-      twq('track', 'Purchase', {
-        value: '0',
-        currency: 'EUR',
-        num_items: '0',
-        content_type: 'product',
-        content_name: 'Upload product from form'
-      });
     }
 
     if (this.isUrgent) {
