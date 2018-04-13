@@ -1,11 +1,34 @@
 @import "~style/common";
 
+$title-height: 64px;
+$filters-nav-height: 38px;
+
+h2 {
+  margin: $spacing;
+  font-weight: bold;
+  font-size: $font-size-LL;
+  letter-spacing: $letter-spacing;
+}
+
 .scroll-panel {
   display: block;
   height: calc(100vh - #{$topbar-height});
   overflow-y: auto;
   overflow-x: hidden;
-  border-right: 1px solid $grey-100;
+  width: 100%;
+  &.professional {
+    height: calc(100vh - #{$topbar-height} - #{$title-height} - #{$filters-nav-height});
+  }
+}
+
+.nav.filters-nav {
+  margin-left: $spacing;
+}
+
+tsl-process-all-button {
+  float: right;
+  margin-top: 10px;
+  margin-right: $spacing-S;
 }
 
 #loader {

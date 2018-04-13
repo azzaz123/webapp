@@ -20,6 +20,10 @@ import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsComponent } from './stars/stars.component';
 import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
+import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
+import { ArchivableComponent } from './archivable/archivable.component';
+import { ArchiveButtonComponent } from './archive-button/archive-button.component';
+import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
@@ -47,6 +51,10 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    ProcessAllButtonComponent,
+    ArchivableComponent,
+    ArchiveButtonComponent,
+    UnarchiveButtonComponent,
     NgxPermissionsModule
   ],
   declarations: [
@@ -62,7 +70,11 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     SanitizedBackgroundDirective,
     StarsComponent,
     StarsRateComponent,
-    UserAvatarComponent
+    UserAvatarComponent,
+    ProcessAllButtonComponent,
+    ArchivableComponent,
+    ArchiveButtonComponent,
+    UnarchiveButtonComponent
   ],
   providers: [
     DecimalPipe,

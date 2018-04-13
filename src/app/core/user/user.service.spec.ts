@@ -79,7 +79,8 @@ describe('Service: User', () => {
           provide: NgxPermissionsService,
           useValue: {
             addPermission() {},
-            flushPermissions() {}
+            flushPermissions() {},
+            hasPermission() {}
           }
         }
       ]
@@ -288,7 +289,7 @@ describe('Service: User', () => {
         redirectUrl = param;
       });
       cookieService.put('publisherId', 'someId');
-      
+
       service.logout();
     });
 
@@ -476,6 +477,31 @@ describe('Service: User', () => {
       service.setPermission('normal');
 
       expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
+    });
+  });
+
+  describe('isProfessional', () => {
+    let val: boolean;
+
+    beforeEach(() => {
+      spyOn(service, 'me').and.returnValue(Observable.of({}));
+      spyOn(permissionService, 'hasPermission').and.returnValue(Promise.resolve(true));
+
+      service.isProfessional().subscribe((v) => {
+        val = v;
+      })
+    });
+
+    it('should call me', () => {
+      expect(service.me).toHaveBeenCalled();
+    });
+
+    it('should call hasPermission', () => {
+      expect(permissionService.hasPermission).toHaveBeenCalledWith(PERMISSIONS.professional)
+    });
+
+    it('should return true', () => {
+      expect(val).toBe(true);
     });
   });
 });

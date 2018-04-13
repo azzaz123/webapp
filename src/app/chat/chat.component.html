@@ -4,6 +4,7 @@
                            (loaded)="onLoaded($event)"></tsl-conversations-panel>
 </div>
 <div id="right-panel" *ngIf="currentConversation">
+  <tsl-user *ngxPermissionsOnly="['isProfessional']" [user]="currentConversation.user" [phone]="currentConversation.phone"></tsl-user>
   <tsl-item [item]="currentConversation.item" [user]="currentConversation.user"></tsl-item>
   <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
 </div>

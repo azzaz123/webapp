@@ -26,11 +26,12 @@ import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
 import { DebugService } from './core/debug/debug.service';
-import { MOCK_USER, USER_DATA, USER_ID } from '../tests/user.fixtures.spec';
+import { MOCK_USER, MOCK_USER_PRO, USER_DATA, USER_ID } from '../tests/user.fixtures.spec';
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
+import { User } from './core/user/user';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -230,6 +231,14 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(conversationService.init).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call conversationService.init twice if user is professional', () => {
+        spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER_PRO));
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(conversationService.init).toHaveBeenCalledTimes(2);
       });
 
       it('should call userService setpermission method', () => {
