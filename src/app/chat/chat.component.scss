@@ -31,6 +31,10 @@
       color: $grey-700;
     }
 
+    .user-avatar {
+      display: inline-flex;
+    }
+
     tsl-user-avatar {
       margin-right: $spacing-S;
     }

@@ -25,8 +25,8 @@
                       i18n>{{user.receivedReports // i18n(ph="TOTAL_NUMBER")}} spam/scam reports</ng-container>
       </span>
     </li>
-    <li class="list-group-item" *ngIf="user.type">
-      <mat-icon svgIcon="user"></mat-icon>
+    <li class="list-group-item" *ngIf="user.responseRate">
+      <tsl-user-response-rate [user]="user"></tsl-user-response-rate>
     </li>
   </ul>
 </section>
