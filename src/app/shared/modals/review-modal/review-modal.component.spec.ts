@@ -99,15 +99,6 @@ describe('ReviewModalComponent', () => {
 
       expect(component.userName).toEqual(CONVERSATION_USERS[0].micro_name);
     });
-
-    it('should set the userName when isSeller is false', () => {
-      spyOn(userService, 'get').and.callThrough();
-      component.isSeller = false;
-
-      component.ngOnInit();
-
-      expect(component.userName).toEqual(MOCK_USER.microName);
-    });
   });
 
   describe('onRated', () => {
