@@ -64,11 +64,15 @@ export class AdService {
     });
   }
 
-  public fetchHeaderBids() {
-    Observable.merge(this.requestBidAps(), this.requestBidCriteo())
-      .subscribe(null, null, () => {
-        this.sendAdServerRequest();
-      });
+  public fetchHeaderBids(allowSegmentation: boolean = false) {
+    if (allowSegmentation) {
+      Observable.merge(this.requestBidAps(), this.requestBidCriteo())
+        .subscribe(null, null, () => {
+          this.sendAdServerRequest(allowSegmentation);
+        });
+    } else {
+      this.sendAdServerRequest(allowSegmentation);
+    }
   }
 
   public requestBidAps() {
@@ -101,10 +105,12 @@ export class AdService {
     });
   }
 
-  public sendAdServerRequest() {
+  public sendAdServerRequest(allowSegmentation: boolean = false) {
     googletag.cmd.push(() => {
-      apstag.setDisplayBids();
-      Criteo.SetDFPKeyValueTargeting();
+      if (allowSegmentation) {
+        apstag.setDisplayBids();
+        Criteo.SetDFPKeyValueTargeting();
+      }
       googletag.pubads().refresh();
     });
   }
