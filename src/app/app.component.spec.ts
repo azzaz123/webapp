@@ -82,7 +82,10 @@ describe('App', () => {
           },
           logout() {
           },
-          setPermission() {}
+          setPermission() {},
+          isProfessional() {
+            return Observable.of(false)
+          }
         }
         },
         HaversineService,
@@ -234,7 +237,7 @@ describe('App', () => {
       });
 
       it('should call conversationService.init twice if user is professional', () => {
-        spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER_PRO));
+        spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 

@@ -54,29 +54,35 @@ describe('Component: Conversation', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('ngOnChanges', () => {
     it('should set archive', () => {
       component.conversation.archived = true;
+
       component.ngOnChanges();
+
       expect(component.archive).toBeTruthy();
     });
   });
 
   describe('onAnimationDone', () => {
+
     beforeEach(() => {
       spyOn(conversationService, 'stream');
     });
+
     it('should call conversationService.stream', () => {
       component.archived = true;
+
       component.onAnimationDone(new Event(''));
+
       expect(conversationService.stream).toHaveBeenCalled();
     });
+
     it('should do nothing if not archive', () => {
       component.archived = false;
+
+      component.onAnimationDone(new Event(''));
+
       expect(conversationService.stream).not.toHaveBeenCalled();
     });
   });
