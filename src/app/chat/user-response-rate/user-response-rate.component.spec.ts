@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserResponseRateComponent } from './user-response-rate.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 
 describe('UserResponseRateComponent', () => {
   let component: UserResponseRateComponent;
@@ -8,7 +10,8 @@ describe('UserResponseRateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserResponseRateComponent ]
+      declarations: [ UserResponseRateComponent ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -16,6 +19,7 @@ describe('UserResponseRateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UserResponseRateComponent);
     component = fixture.componentInstance;
+    component.user = MOCK_USER;
     fixture.detectChanges();
   });
 
