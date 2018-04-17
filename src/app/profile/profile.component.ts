@@ -1,16 +1,13 @@
-import { Component, EventEmitter, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
-import { environment } from '../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from 'ngx-uploader';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { CanComponentDeactivate } from '../shared/guards/can-component-deactivate.interface';
 import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
-import { HttpService } from '../core/http/http.service';
 import { User } from '../core/user/user';
 
 @Component({
@@ -23,16 +20,13 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   public user: User;
   public userUrl: string;
   public profileForm: FormGroup;
-  file: UploadFile;
-  uploadInput: EventEmitter<UploadInput> = new EventEmitter();
-  options: NgUploaderOptions;
   public hasNotSavedChanges: boolean;
   private oldFormValue: any;
 
   constructor(private userService: UserService,
     private fb: FormBuilder,
     private errorsService: ErrorsService,
-    private http: HttpService,
+
     private modalService: NgbModal,
     @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
@@ -49,11 +43,6 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit() {
-    this.options = {
-      allowedExtensions: ['jpg', 'jpeg'],
-      maxUploads: 1,
-      maxSize: 3145728 // 3 MB
-    };
     this.userService.me().subscribe((user) => {
       this.user = user;
       if (user) {
@@ -122,57 +111,8 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
     this.profileForm.get('gender').patchValue(this.user.gender.toUpperCase().substr(0, 1));
   }
 
-  public onUploadOutput(output: UploadOutput): void {
-    switch (output.type) {
-      case 'addedToQueue':
-        this.file = output.file;
-        this.uploadPicture();
-        break;
-      case 'uploading':
-        this.file = output.file;
-        break;
-      case 'done':
-        this.removeFromQueue(output);
-        this.onUploadDone(output);
-        break;
-      case 'rejected':
-        this.errorsService.i18nError(output.reason, output.file.name);
-        this.file = null;
-        break;
-    }
-  }
-
   public openUnsubscribeModal() {
     this.modalService.open(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
-  }
-
-  private uploadPicture() {
-    const url = 'api/v3/users/me/image';
-    const uploadinput: UploadInput = {
-      type: 'uploadFile',
-      url: environment.baseUrl + url,
-      method: 'POST',
-      fieldName: 'image',
-      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
-      file: this.file
-    };
-    this.uploadInput.emit(uploadinput);
-  }
-
-  private onUploadDone(output: UploadOutput) {
-    if (output.file.progress.data.responseStatus === 204) {
-      this.userService.user.image.urls_by_size.medium = output.file.preview;
-    } else {
-      this.errorsService.i18nError('serverError', output.file.response.message ? output.file.response.message : '');
-    }
-  }
-
-  private removeFromQueue(output) {
-    this.uploadInput.emit({
-      type: 'remove',
-      id: output.file.id
-    });
-    this.file = null;
   }
 
   public logout($event: any) {

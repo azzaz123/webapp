@@ -12,6 +12,7 @@ import { EmailModalComponent } from './edit-email/email-modal/email-modal.compon
 import { EditPasswordComponent } from './edit-password/edit-password.component';
 import { PasswordModalComponent } from './edit-password/password-modal/password-modal.component';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
+import { PictureUploadComponent } from './picture-upload/picture-upload.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
     EmailModalComponent,
     EditPasswordComponent,
     PasswordModalComponent,
-    UnsubscribeModalComponent
+    UnsubscribeModalComponent,
+    PictureUploadComponent
   ],
   entryComponents: [
     EmailModalComponent,
