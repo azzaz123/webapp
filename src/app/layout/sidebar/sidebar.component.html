@@ -1,36 +1,80 @@
-<a class="sidebar-section profile-item" [routerLink]="['/profile']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_PROFILE" [ngClass]="{active: tutorialService.step === 1}">
-  <div class="sidebar-section-circle">
-    <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" *ngIf="user" [imageUrl]="user?.image?.urls_by_size.medium">
-    </tsl-user-avatar>
-  </div>
-  <h2 i18n>Profile</h2>
-</a>
+<div *ngxPermissionsOnly="['isNormal']">
+  <a class="sidebar-section profile-item" [routerLink]="['/profile']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_PROFILE"
+    [ngClass]="{active: tutorialService.step === 1}">
+    <div class="sidebar-section-circle">
+      <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" *ngIf="user" [imageUrl]="user?.image?.urls_by_size.medium">
+      </tsl-user-avatar>
+    </div>
+    <h2 i18n>Profile</h2>
+  </a>
 
-<a class="sidebar-section" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_MENU_CATALOG" [class.active]="isProducts" [ngClass]="{active: tutorialService.step === 2}">
-  <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_catalog"></mat-icon>
-  </div>
-  <h2 i18n>Products</h2>
-</a>
+  <a class="sidebar-section" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_MENU_CATALOG" [class.active]="isProducts"
+    [ngClass]="{active: tutorialService.step === 2}">
+    <div class="sidebar-section-circle">
+      <mat-icon svgIcon="navigation_catalog"></mat-icon>
+    </div>
+    <h2 i18n>Products</h2>
+  </a>
 
-<a class="sidebar-section" [routerLink]="['/chat']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CHAT" [ngClass]="{active: tutorialService.step === 3}">
-  <div class="chat-notification-pending" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
-  <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_messages"></mat-icon>
-  </div>
-  <h2 i18n>Messages</h2>
-</a>
+  <a class="sidebar-section" [routerLink]="['/chat']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CHAT" [ngClass]="{active: tutorialService.step === 3}">
+    <div class="chat-notification-pending" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
+    <div class="sidebar-section-circle">
+      <mat-icon svgIcon="navigation_messages"></mat-icon>
+    </div>
+    <h2 i18n>Messages</h2>
+  </a>
 
-<a class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_FAVOURITES" [ngClass]="{active: tutorialService.step === 4}">
-  <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_favorites"></mat-icon>
-  </div>
-  <h2 i18n>Favorites</h2>
-</a>
+  <a class="sidebar-section" [routerLink]="['/favorites']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_FAVOURITES"
+    [ngClass]="{active: tutorialService.step === 4}">
+    <div class="sidebar-section-circle">
+      <mat-icon svgIcon="navigation_favorites"></mat-icon>
+    </div>
+    <h2 i18n>Favorites</h2>
+  </a>
 
-<a class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_REVIEWS" [ngClass]="{active: tutorialService.step === 5}">
-  <div class="sidebar-section-circle">
-    <mat-icon svgIcon="navigation_reviews"></mat-icon>
-  </div>
-  <h2 i18n>Reviews</h2>
-</a>
+  <a class="sidebar-section" [routerLink]="['/reviews']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_REVIEWS" [ngClass]="{active: tutorialService.step === 5}">
+    <div class="sidebar-section-circle">
+      <mat-icon svgIcon="navigation_reviews"></mat-icon>
+    </div>
+    <h2 i18n>Reviews</h2>
+  </a>
+</div>
+
+<div *ngxPermissionsOnly="['isProfessional']">
+  <a class="sidebar-section profile-item" [routerLink]="['/pro/profile']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_PROFILE">
+    <div class="sidebar-section-circle">
+      <tsl-user-avatar class="topbar-avatar" [size]="50" [user]="user" *ngIf="user" [imageUrl]="user?.image?.urls_by_size.medium">
+      </tsl-user-avatar>
+    </div>
+    <h2 i18n>Profile</h2>
+  </a>
+
+  <a class="sidebar-section" [routerLink]="['/pro/dashboard']" tslTrackEvent="MYZONE_MENU_DASHBOARD" [class.active]="isDashboard">
+    <div class="sidebar-section-circle">
+      <mat-icon svgIcon="navigation_dashboard"></mat-icon>
+    </div>
+    <h2>Dashboard</h2>
+  </a>
+
+  <a class="sidebar-section" [routerLink]="['/pro/catalog/list']" tslTrackEvent="MYZONE_MENU_CATALOG" [class.active]="isProducts">
+    <div class="sidebar-section-circle">
+      <mat-icon svgIcon="navigation_catalog"></mat-icon>
+    </div>
+    <h2 i18n>Catalog</h2>
+  </a>
+
+  <a class="sidebar-section" [routerLink]="['/chat']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CHAT">
+    <div class="chat-notification-pending" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
+    <div class="sidebar-section-circle">
+      <mat-icon svgIcon="navigation_messages"></mat-icon>
+    </div>
+    <h2 i18n>Messages</h2>
+  </a>
+
+  <a class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CALLS">
+    <div class="sidebar-section-circle">
+      <mat-icon svgIcon="navigation_phones"></mat-icon>
+    </div>
+    <h2 i18n>Phones</h2>
+  </a>
+</div>
