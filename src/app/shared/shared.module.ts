@@ -15,6 +15,7 @@ import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
+import { ReviewModalComponent } from './modals/review-modal/review-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsComponent } from './stars/stars.component';
@@ -55,6 +56,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     ArchivableComponent,
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
+    ReviewModalComponent,
     NgxPermissionsModule
   ],
   declarations: [
@@ -74,7 +76,9 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     ProcessAllButtonComponent,
     ArchivableComponent,
     ArchiveButtonComponent,
-    UnarchiveButtonComponent
+    UnarchiveButtonComponent,
+    UserAvatarComponent,
+    ReviewModalComponent
   ],
   providers: [
     DecimalPipe,
@@ -83,7 +87,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
   ],
   entryComponents: [
     ConfirmationModalComponent,
-    SoldModalComponent
+    SoldModalComponent,
+    ReviewModalComponent
   ]
 })
 export class SharedModule { }

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ReviewModalComponent } from '../review-modal/review-modal.component';
-import { ReviewModalResult } from '../review-modal/review-modal-result.interface';
+import { ReviewModalComponent } from '../../../shared/modals/review-modal/review-modal.component';
+import { ReviewModalResult } from '../../../shared/modals/review-modal/review-modal-result.interface';
 import { Message } from '../../../core/message/message';
 import { Item } from '../../../core/item/item';
 import { ConversationService } from '../../../core/conversation/conversation.service';

@@ -225,6 +225,14 @@ input::-webkit-calendar-picker-indicator{
   display: none;
 }
 
+.chars-counter {
+  font-size: $font-size-XS;
+  color: $grey-200;
+  float: right;
+  margin-top: $spacing-XXS;
+  margin-bottom: $spacing-XS;
+}
+
 .custom-radio {
   cursor: pointer;
   input {
