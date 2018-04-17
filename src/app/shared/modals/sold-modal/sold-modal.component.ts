@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ConversationUser } from '../../../core/item/item-response.interface';
 import { Item } from '../../../core/item/item';
-import { ReviewService } from '../../../core/review/review.service';
-import { ReviewDataSeller } from '../../../core/review/review.interface';
-
 
 @Component({
   selector: 'tsl-sold-modal',
@@ -16,15 +14,12 @@ export class SoldModalComponent implements OnInit {
 
   public item: Item;
   public conversationUsers: ConversationUser[] = [];
-  public selectedUser: ConversationUser;
-  public score: number;
-  public comments: string;
+  public buyer: ConversationUser;
   public price: number;
-  public thanks: boolean;
+  public thanks = false;
 
   constructor(public activeModal: NgbActiveModal,
-              private itemService: ItemService,
-              private reviewService: ReviewService) {
+              private itemService: ItemService) {
   }
 
   ngOnInit() {
@@ -34,27 +29,15 @@ export class SoldModalComponent implements OnInit {
     });
   }
 
-  public chooseUser(user: ConversationUser) {
-    this.selectedUser = user;
+  public onFinishedReview() {
+    this.thanks = true;
   }
 
-  public onRated(score: number) {
-    this.score = score;
+  public chooseUser(user: ConversationUser) {
+    this.buyer = user;
   }
 
   public setSoldOutside() {
     this.itemService.soldOutside(this.item.id).subscribe(() => this.activeModal.close());
   }
-
-  public setSold() {
-    const data: ReviewDataSeller = {
-      to_user_id: this.selectedUser.id,
-      item_id: this.item.id,
-      comments: this.comments,
-      score: this.score * 20,
-      price: this.price
-    };
-    this.reviewService.createAsSeller(data).subscribe(() => this.thanks = true);
-  }
-
 }

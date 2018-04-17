@@ -22,7 +22,6 @@ import { ReportUserComponent } from './modals/report-user/report-user.component'
 import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
-import { ReviewModalComponent } from './message/review-modal/review-modal.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ItemReservedComponent } from './item/item-reserved/item-reserved.component';
 import { ItemSoldComponent } from './item/item-sold/item-sold.component';
@@ -61,7 +60,6 @@ import { UserResponseRateComponent } from './user-response-rate/user-response-ra
     BlockUserComponent,
     UnblockUserComponent,
     ReviewButtonComponent,
-    ReviewModalComponent,
     UserDetailComponent,
     UserCardComponent,
     UserResponseRateComponent
@@ -71,8 +69,7 @@ import { UserResponseRateComponent } from './user-response-rate/user-response-ra
     ReportListingComponent,
     ReportUserComponent,
     BlockUserComponent,
-    UnblockUserComponent,
-    ReviewModalComponent
+    UnblockUserComponent
   ]
 })
 export class ChatModule {
