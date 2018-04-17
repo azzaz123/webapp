@@ -4,9 +4,7 @@
     <h1 class="card-title">{{user.microName}}</h1>
     <tsl-stars *ngIf="user.scoringStars > -1" [stars]="user.scoringStars" [normalized]="false"></tsl-stars>
   </div>
-</a>
-<section class="card user-detail" [ngClass]="{'linked' : user.sellingItem}">
-  <ul class="list-group list-group-flush">
+  <ul class="card-block list-group list-group-flush">
     <li class="list-group-item" *ngIf="phone">
       <mat-icon svgIcon="call-shared"></mat-icon>
       {{phone}}
@@ -19,17 +17,17 @@
     <li class="list-group-item" *ngIf="user.receivedReports > -1">
       <mat-icon svgIcon="reports"></mat-icon>
       <span [ngSwitch]="user.receivedReports">
-        <ng-container *ngSwitchCase="0" i18n>No spam/scam reports</ng-container>
-        <ng-container *ngSwitchCase="1" i18n>One spam/scam report</ng-container>
-        <ng-container *ngSwitchDefault
-                      i18n>{{user.receivedReports // i18n(ph="TOTAL_NUMBER")}} spam/scam reports</ng-container>
-      </span>
+      <ng-container *ngSwitchCase="0" i18n>No spam/scam reports</ng-container>
+      <ng-container *ngSwitchCase="1" i18n>One spam/scam report</ng-container>
+      <ng-container *ngSwitchDefault
+                    i18n>{{user.receivedReports // i18n(ph="TOTAL_NUMBER")}} spam/scam reports</ng-container>
+    </span>
     </li>
     <li class="list-group-item" *ngIf="user.responseRate">
       <tsl-user-response-rate [user]="user"></tsl-user-response-rate>
     </li>
   </ul>
-</section>
+</a>
 <a class="card" href="{{user?.sellingItem.webLink}}" tslTrackEvent="CONVERSATION_SELLING_CAR_VIEWED" [params]="{item_id: user.sellingItem.id}"
    target="_blank" *ngIf="user.sellingItem">
   <div class="card-block">

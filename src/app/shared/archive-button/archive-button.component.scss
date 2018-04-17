@@ -10,19 +10,19 @@
 
 .check-corporate {
   @include square(30px);
-  border: 3px solid $grey-200;
+  border: 3px solid $grey-100;
   border-radius: 50%;
   padding: 0;
   transition: none;
   transform: none;
-  background-color: $grey-200;
+  background-color: $grey-100;
   line-height: 0;
   cursor: pointer;
   mat-icon {
     height: 10px;
     width: 19px;
     /deep/ g g {
-      fill: $grey-500;
+      fill: $grey-250;
     }
   }
   &:hover {

@@ -27,6 +27,17 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    &.professional {
+      height: 103px;
+      tsl-user-avatar {
+        display: none;
+      }
+      h5 {
+        margin-top: -25px;
+      }
+    }
+
     span {
       color: $grey-700;
     }

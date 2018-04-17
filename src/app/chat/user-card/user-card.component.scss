@@ -5,6 +5,7 @@
 }
 
 .card {
+  color: $grey-900;
   &.calls-panel {
     padding: 0;
     margin: 0;
@@ -32,6 +33,7 @@
   }
   .list-group-flush {
     padding: $spacing 0;
+    border-top: 1px solid $grey-50;
     .list-group-item {
       border: 0;
       font-size: $font-size-S;

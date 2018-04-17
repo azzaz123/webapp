@@ -8,6 +8,14 @@ h2 {
   font-weight: bold;
   font-size: $font-size-LL;
   letter-spacing: $letter-spacing;
+  .badge {
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+}
+
+.header {
+  border-bottom: 1px solid $grey-50;
 }
 
 .scroll-panel {

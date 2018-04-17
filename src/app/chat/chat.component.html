@@ -9,7 +9,7 @@
   <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
 </div>
 <div id="center-panel" *ngIf="currentConversation">
-  <div id="top-bar">
+  <div id="top-bar" [ngClass]="{professional: isProfessional}">
     <a *ngIf="currentConversation?.user.webLink" href="{{ userWebSlug }}" target="_blank" class="user-avatar">
         <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
     </a>

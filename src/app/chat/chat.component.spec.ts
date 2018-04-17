@@ -47,6 +47,10 @@ class MockUserService {
 
   public updateBlockStatus() {
   }
+
+  public isProfessional() {
+    return Observable.of(true);
+  }
 }
 
 class MockItemService {
