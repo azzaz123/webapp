@@ -1,15 +1,15 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES } from '../../tests/user.fixtures.spec';
+import { USER_DATA } from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
-import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
 import { User } from '../core/user/user';
+import { ProfileFormComponent } from './profile-form/profile-form.component';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -54,9 +54,6 @@ describe('ProfileComponent', () => {
           user: MOCK_USER,
           me() {
             return Observable.of(MOCK_USER);
-          },
-          edit() {
-            return Observable.of({});
           }
         }
         },
@@ -81,7 +78,7 @@ describe('ProfileComponent', () => {
         }
         }
       ],
-      declarations: [ProfileComponent],
+      declarations: [ProfileComponent, ProfileFormComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -94,6 +91,7 @@ describe('ProfileComponent', () => {
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
     spyOn(userService, 'me').and.callThrough();
+    component.formComponent = TestBed.createComponent(ProfileFormComponent).componentInstance;
     fixture.detectChanges();
   });
 
@@ -117,93 +115,25 @@ describe('ProfileComponent', () => {
       expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
     });
-
-    it('should detect changed if form values changes', () => {
-      component.ngOnInit();
-
-      component.profileForm.get('first_name').patchValue('new first_name');
-      fixture.detectChanges();
-
-      expect(component['hasNotSavedChanges']).toBeTruthy();
-    });
   });
 
   describe('canExit', () => {
-    it('should return true if there are no unsaved changes', () => {
-      const result = component.canExit();
+    it('should call canExit', () => {
+      spyOn(component.formComponent, 'canExit');
 
-      expect(result).toBeTruthy();
+      component.canExit();
+
+      expect(component.formComponent.canExit).toHaveBeenCalled();
     });
-
-    it('should open modal if there are unsaved changes', fakeAsync(() => {
-      let notSavedChanges: boolean;
-      component['hasNotSavedChanges'] = true;
-      spyOn(modalService, 'open').and.callThrough();
-
-      (<Promise<boolean>>component.canExit()).then((value: boolean) => {
-        notSavedChanges = value;
-      });
-      tick();
-
-      expect(modalService.open).toHaveBeenCalledWith(ExitConfirmationModalComponent, {
-        backdrop: 'static'
-      });
-      expect(notSavedChanges).toBeTruthy();
-    }));
   });
 
   describe('onSubmit', () => {
+    it('should call onSubmit', () => {
+      spyOn(component.formComponent, 'onSubmit');
 
-    describe('valid form', () => {
+      component.onSubmit();
 
-      beforeEach(() => {
-        spyOn(userService, 'edit').and.callThrough();
-        spyOn(errorsService, 'i18nSuccess');
-        component.profileForm.patchValue(USER_EDIT_DATA);
-        component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
-        component.profileForm.get('location.latitude').patchValue(USER_LOCATION_COORDINATES.latitude);
-        component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
-        component['hasNotSavedChanges'] = true;
-
-        component.onSubmit();
-      });
-
-      it('should call edit', () => {
-        expect(userService.edit).toHaveBeenCalledWith(USER_EDIT_DATA);
-      });
-
-      it('should call i18nSuccess', () => {
-        expect(errorsService.i18nSuccess).toHaveBeenCalledWith('userEdited');
-      });
-
-      it('should set hasNotSavedChanges to false', () => {
-        expect(component['hasNotSavedChanges']).toBeFalsy();
-      });
-    });
-
-    describe('invalid form', () => {
-
-      beforeEach(() => {
-        spyOn(errorsService, 'i18nError');
-        component.profileForm.get('first_name').patchValue('');
-        component.profileForm.get('last_name').patchValue('');
-        component.profileForm.get('birth_date').patchValue('');
-        component.profileForm.get('gender').patchValue('');
-
-        component.onSubmit();
-      });
-
-      it('should set dirty invalid fields', () => {
-        expect(component.profileForm.get('first_name').dirty).toBeTruthy();
-        expect(component.profileForm.get('last_name').dirty).toBeTruthy();
-        expect(component.profileForm.get('birth_date').dirty).toBeTruthy();
-        expect(component.profileForm.get('gender').dirty).toBeTruthy();
-        expect(component.profileForm.get('location.address').dirty).toBeTruthy();
-      });
-
-      it('should call i18nError if form is invalid', () => {
-        expect(errorsService.i18nError).toHaveBeenCalledWith('formErrors');
-      });
+      expect(component.formComponent.onSubmit).toHaveBeenCalled();
     });
   });
 

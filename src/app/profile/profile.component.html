@@ -19,61 +19,63 @@
         </div>
       </tsl-header>
       <tsl-picture-upload [user]="user"></tsl-picture-upload>
-      <div class="box">
-        <div class="box-content">
-          <div class="row">
-            <div class="col-10 offset-2">
-              <div class="form-group row">
-                <label for="first_name" class="col-3" i18n>First Name:</label>
-                <div class="col-5">
-                  <input type="text" class="form-control" id="first_name" formControlName="first_name" tslRestrictInput maxlength="50" />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="last_name" class="col-3" i18n>Last Name:</label>
-                <div class="col-5">
-                  <input type="text" class="form-control" id="last_name" formControlName="last_name" tslRestrictInput maxlength="50" />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="birth_date" class="col-3" i18n>Date of birth:</label>
-                <div class="col-5">
-                  <input type="date" class="form-control" id="birth_date" formControlName="birth_date" />
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-3" i18n>Gender:</label>
-                <div class="col-5">
-                  <div ngbRadioGroup name="radioBasic" formControlName="gender">
-                    <label ngbButtonLabel class="btn select">
-                      <input ngbButton type="radio" value="M">
-                      <mat-icon svgIcon="male"></mat-icon>
-                      <div i18n>Male</div>
-                    </label>
-                    <label ngbButtonLabel class="btn select">
-                      <input ngbButton type="radio" value="F">
-                      <mat-icon svgIcon="female"></mat-icon>
-                      <div i18n>Female</div>
-                    </label>
+      <tsl-profile-form [profileForm]="profileForm">
+        <div class="box">
+          <div class="box-content">
+            <div class="row">
+              <div class="col-10 offset-2">
+                <div class="form-group row">
+                  <label for="first_name" class="col-3" i18n>First Name:</label>
+                  <div class="col-5">
+                    <input type="text" class="form-control" id="first_name" formControlName="first_name" tslRestrictInput maxlength="50" />
                   </div>
                 </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-3" i18n>Product location:</label>
-                <div class="col-9">
-                  <tsl-location-box [form]="profileForm" name="location"></tsl-location-box>
+                <div class="form-group row">
+                  <label for="last_name" class="col-3" i18n>Last Name:</label>
+                  <div class="col-5">
+                    <input type="text" class="form-control" id="last_name" formControlName="last_name" tslRestrictInput maxlength="50" />
+                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="offset-3 col-9">
-                  <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!hasNotSavedChanges"
-                              i18n>Save</tsl-button>
+                <div class="form-group row">
+                  <label for="birth_date" class="col-3" i18n>Date of birth:</label>
+                  <div class="col-5">
+                    <input type="date" class="form-control" id="birth_date" formControlName="birth_date" />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-3" i18n>Gender:</label>
+                  <div class="col-5">
+                    <div ngbRadioGroup name="radioBasic" formControlName="gender">
+                      <label ngbButtonLabel class="btn select">
+                        <input ngbButton type="radio" value="M">
+                        <mat-icon svgIcon="male"></mat-icon>
+                        <div i18n>Male</div>
+                      </label>
+                      <label ngbButtonLabel class="btn select">
+                        <input ngbButton type="radio" value="F">
+                        <mat-icon svgIcon="female"></mat-icon>
+                        <div i18n>Female</div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-3" i18n>Product location:</label>
+                  <div class="col-9">
+                    <tsl-location-box [form]="profileForm" name="location"></tsl-location-box>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="offset-3 col-9">
+                    <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!formComponent.hasNotSavedChanges"
+                                i18n>Save</tsl-button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </tsl-profile-form>
       <div class="box">
         <div class="box-content">
           <div class="row box-section">

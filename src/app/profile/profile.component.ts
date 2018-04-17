@@ -1,14 +1,12 @@
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import * as _ from 'lodash';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
-import { ErrorsService } from '../core/errors/errors.service';
 import { CanComponentDeactivate } from '../shared/guards/can-component-deactivate.interface';
-import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
 import { User } from '../core/user/user';
+import { ProfileFormComponent } from './profile-form/profile-form.component';
 
 @Component({
   selector: 'tsl-profile',
@@ -20,13 +18,10 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   public user: User;
   public userUrl: string;
   public profileForm: FormGroup;
-  public hasNotSavedChanges: boolean;
-  private oldFormValue: any;
+  @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
   constructor(private userService: UserService,
     private fb: FormBuilder,
-    private errorsService: ErrorsService,
-
     private modalService: NgbModal,
     @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
@@ -48,67 +43,25 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       if (user) {
         this.userUrl = user.getUrl(this.subdomain);
         this.setUserData();
-        this.detectFormChanges();
-      }
-    });
-  }
-
-  private detectFormChanges() {
-    this.profileForm.valueChanges.subscribe((value) => {
-      const oldProfileData = _.omit(this.oldFormValue, ['location']);
-      const newProfileData = _.omit(value, ['location']);
-      if (!this.oldFormValue) {
-        this.oldFormValue = value;
-      } else {
-        if (!_.isEqual(oldProfileData, newProfileData)) {
-          this.hasNotSavedChanges = true;
-        }
-        this.oldFormValue = value;
       }
     });
   }
 
   public canExit() {
-    if (!this.hasNotSavedChanges) {
-      return true;
-    }
-    return this.modalService.open(ExitConfirmationModalComponent, {
-      backdrop: 'static'
-    }).result;
-  }
-
-  @HostListener('window:beforeunload')
-  handleBeforeUnload() {
-    if (this.hasNotSavedChanges) {
-      return confirm();
-    }
+    return this.formComponent.canExit();
   }
 
   public onSubmit() {
-    if (this.profileForm.valid) {
-      delete this.profileForm.value.location;
-      this.userService.edit(this.profileForm.value).subscribe(() => {
-        this.errorsService.i18nSuccess('userEdited');
-        this.hasNotSavedChanges = false;
-      });
-    } else {
-      for (const control in this.profileForm.controls) {
-        if (this.profileForm.controls.hasOwnProperty(control) && !this.profileForm.controls[control].valid) {
-          this.profileForm.controls[control].markAsDirty();
-        }
-      }
-      if (!this.profileForm.get('location.address').valid) {
-        this.profileForm.get('location.address').markAsDirty();
-      }
-      this.errorsService.i18nError('formErrors');
-    }
+    return this.formComponent.onSubmit();
   }
 
   private setUserData() {
-    this.profileForm.get('first_name').patchValue(this.user.firstName);
-    this.profileForm.get('last_name').patchValue(this.user.lastName);
-    this.profileForm.get('birth_date').patchValue(moment(this.user.birthDate).format('YYYY-MM-DD'));
-    this.profileForm.get('gender').patchValue(this.user.gender.toUpperCase().substr(0, 1));
+    this.profileForm.patchValue({
+      first_name: this.user.firstName,
+      last_name: this.user.lastName,
+      birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
+      gender: this.user.gender.toUpperCase().substr(0, 1)
+    });
   }
 
   public openUnsubscribeModal() {
