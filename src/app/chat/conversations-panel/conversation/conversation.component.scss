@@ -113,7 +113,7 @@ $menu-width-and-spacing: 10px;
       vertical-align: middle;
     }
     mat-icon {
-      height: $phone-icon-adjusted-size;
+      @include square($phone-icon-adjusted-size);
     }
     .badge-pill {
       background-color: $warn;
