@@ -34,7 +34,21 @@ const routes: Routes = [
           isProducts: true,
           permissions: {
             only: PERMISSIONS.normal,
-            redirectTo: '/pro/catalog/list'
+            redirectTo: {
+              isNormal: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
+                if (route.params.code) {
+                  return {
+                    navigationCommands: ['/pro/catalog/list', { code: route.params.code }]
+                  };
+                } else if (route.params.urgent) {
+                  return {
+                    navigationCommands: ['/pro/catalog/list', { urgent: route.params.urgent, itemId: route.params.itemId }]
+                  };
+                } else {
+                  return '/pro/catalog/list';
+                }
+              }
+            }
           }
         }
       },
@@ -106,7 +120,21 @@ const routes: Routes = [
               isProducts: true,
               permissions: {
                 only: PERMISSIONS.professional,
-                redirectTo: '/catalog/list'
+                redirectTo: {
+                  isProfessional: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
+                    if (route.params.code) {
+                      return {
+                        navigationCommands: ['/catalog/list', { code: route.params.code }]
+                      };
+                    } else if (route.params.urgent) {
+                      return {
+                        navigationCommands: ['/catalog/list', { urgent: route.params.urgent, itemId: route.params.itemId }]
+                      };
+                    } else {
+                      return '/catalog/list';
+                    }
+                  }
+                }
               }
             }
           },
