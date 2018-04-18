@@ -257,7 +257,7 @@ export class UserService extends ResourceService {
     this.permissionService.addPermission(PERMISSIONS[userType]);
   }
 
-  public updatePrivacyPermissions(data: PrivacyPermissionRequestData) {
+  public updatePrivacyPermission(data: PrivacyPermissionRequestData) {
     return this.http.post(this.API_URL_PRIVACY, data)
       .map((r: Response) => r.json());
   }
