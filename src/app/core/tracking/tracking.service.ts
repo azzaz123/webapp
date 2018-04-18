@@ -462,6 +462,18 @@ export class TrackingService {
     screen: SCREENS_IDS.MyCatalog,
     type: TYPES_IDS.Tap
   };
+  public static MYZONE_MENU_CALLS: TrackingEventBase = {
+    name: '686',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYZONE_MENU_DASHBOARD: TrackingEventBase = {
+    name: '687',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
