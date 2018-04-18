@@ -172,7 +172,7 @@ export abstract class LeadService {
     if (!until) {
       until = new Date().getTime();
     }
-    return this.http.put(`${this.ARCHIVE_URL}/hide`, {until: until})
+    return this.http.put(`${this.ARCHIVE_URL}/hide?until=${until}`)
     .map(() => this.onArchiveAll());
   }
 
