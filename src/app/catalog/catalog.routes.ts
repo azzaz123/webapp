@@ -22,6 +22,11 @@ const routes: Routes = [
     canActivateChild: [NgxPermissionsGuard],
     children: [
       {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'list'
+      },
+      {
         path: 'list',
         component: ListComponent,
         data: {
@@ -88,6 +93,11 @@ const routes: Routes = [
         component: CatalogComponent,
         canActivateChild: [NgxPermissionsGuard],
         children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'list'
+          },
           {
             path: 'list',
             component: ListComponent,
