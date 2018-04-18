@@ -29,10 +29,6 @@ fdescribe('SwitchComponent', () => {
     fixture.destroy();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('when checked value is', () => {
     it('false, input element should not be checked', fakeAsync(() => {
       component.checked = false;
@@ -40,7 +36,7 @@ fdescribe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector('input[type=checkbox]') as any;
+      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
       expect(element.checked).toBeFalsy();
     }));
 
@@ -50,7 +46,7 @@ fdescribe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector('input[type=checkbox]') as any;
+      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
       expect(element.checked).toBeTruthy();
     }));
   });
@@ -62,7 +58,7 @@ fdescribe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector('input[type=checkbox]') as any;
+      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
       expect(element.disabled).toBeFalsy();
     }));
 
@@ -72,8 +68,18 @@ fdescribe('SwitchComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const element = el.querySelector('input[type=checkbox]') as any;
+      const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
       expect(element.disabled).toBeTruthy();
     }));
+  });
+
+  it('when switch is change should emit onchange action', () => {
+    let inputValue: boolean;
+    component.onChange.subscribe( value => inputValue = value);
+
+    const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
+    element.click();
+
+    expect(inputValue).toBeTruthy();
   });
 });

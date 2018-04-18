@@ -9,7 +9,7 @@ export class SwitchComponent implements OnInit {
 
   @Input() checked = false;
   @Input() disabled = false;
-  @Output() change: EventEmitter<any> = new EventEmitter();
+  @Output() onChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -17,7 +17,7 @@ export class SwitchComponent implements OnInit {
   }
 
   switchOnChange($event) {
-    this.change.emit($event);
+    this.onChange.emit($event.target.checked);
   }
 
 }
