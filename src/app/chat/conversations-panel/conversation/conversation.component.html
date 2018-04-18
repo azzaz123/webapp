@@ -27,7 +27,7 @@
         <span [hidden]="conversation.unreadMessages == 0 || conversation.active" class="badge badge-primary badge-pill">
           {{conversation.unreadMessages}}
         </span>
-        <mat-icon svgIcon="blocked" *ngIf="conversation.user.blocked"></mat-icon>
+        <mat-icon svgIcon="blocked" class="blocked" *ngIf="conversation.user.blocked"></mat-icon>
       </div>
 
     </div>

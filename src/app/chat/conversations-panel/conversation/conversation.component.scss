@@ -19,11 +19,11 @@ $menu-width-and-spacing: 10px;
   &.active {
     background-color: rgba($grey-100, .4);
   }
-  tsl-unarchive-button {
+  tsl-archive-button, tsl-unarchive-button {
     @include hide();
     position: absolute;
     top: 43px;
-    right: 0;
+    right: $spacing-S;
   }
   &:hover {
     background-color: rgba($grey-100, .2);
@@ -33,7 +33,7 @@ $menu-width-and-spacing: 10px;
       tsl-archive-button, tsl-unarchive-button {
         @include show();
       }
-      .badge-pill {
+      .badge-pill, .blocked {
         display: none;
       }
       .message-row, .user-name-row-left {
