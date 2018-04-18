@@ -421,11 +421,11 @@ describe('LeadService', () => {
     });
     it('should call http.put with current time', () => {
       service.archiveAll().subscribe();
-      expect(http.put).toHaveBeenCalledWith('api/v2/conversations/hide?until=' + baseTime);
+      expect(http.put).toHaveBeenCalledWith('api/v2/conversations/hide', {until: baseTime});
     });
     it('should call http.put with passed time', () => {
       service.archiveAll(12345).subscribe();
-      expect(http.put).toHaveBeenCalledWith('api/v2/conversations/hide?until=12345');
+      expect(http.put).toHaveBeenCalledWith('api/v2/conversations/hide', {until: 12345});
     });
     it('should call onArchiveAll', () => {
       service.archiveAll().subscribe();
