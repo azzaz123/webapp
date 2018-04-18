@@ -1,5 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Component, Input } from '@angular/core';
 import { Lead } from '../../core/conversation/lead';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
