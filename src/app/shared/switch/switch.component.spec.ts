@@ -76,14 +76,4 @@ fdescribe('SwitchComponent', () => {
       expect(element.disabled).toBeTruthy();
     }));
   });
-
-  it('false, input element should be enable', fakeAsync(() => {
-    spyOn(component.change, 'emit');
-
-    const element = el.querySelector('input[type=checkbox]') as any;
-    element.click();
-    fixture.detectChanges();
-
-    expect(component.change.emit).toHaveBeenCalled();
-  }));
 });
