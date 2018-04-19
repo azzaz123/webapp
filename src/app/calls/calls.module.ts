@@ -7,6 +7,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../shared/shared.module';
 import { CallsComponent } from './calls.component';
 import { CallsRoutingModule, callsRoutedComponents } from './calls.routes';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CallItemComponent } from './call-item/call-item.component';
 
 @NgModule({
   imports: [
@@ -16,8 +18,9 @@ import { CallsRoutingModule, callsRoutedComponents } from './calls.routes';
     MatIconModule,
     NgbTooltipModule,
     SharedModule,
-    CallsRoutingModule
+    CallsRoutingModule,
+    InfiniteScrollModule
   ],
-  declarations: [CallsComponent, callsRoutedComponents]
+  declarations: [CallsComponent, callsRoutedComponents, CallItemComponent]
 })
 export class CallsModule { }

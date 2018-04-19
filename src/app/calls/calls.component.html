@@ -1,3 +1,71 @@
-<p>
-  calls works!
-</p>
+<div class="page-content"
+     infinite-scroll
+     [infiniteScrollDistance]="5"
+     [infiniteScrollThrottle]="100"
+     [scrollWindow]="false"
+     [infiniteScrollDisabled]="!calls.length"
+     (scrolled)="loadMore()">
+  <div class="container">
+    <div class="row">
+      <h2 i18n>Phones</h2>
+      <div class="col-md-12">
+        <div class="list-group">
+          <div class="list-group-item">
+            <tsl-process-all-button type="calls" [hidden]="!calls.length || archive" i18n>Process all</tsl-process-all-button>
+            <nav class="nav filters-nav">
+              <a (click)="filterByArchived(false)" [ngClass]="{active: !archive}" class="nav-link" i18n>Pending</a>
+              <a (click)="filterByArchived(true)" [ngClass]="{active: archive}" class="nav-link" i18n>Processed</a>
+            </nav>
+            <div class="separator"></div>
+            <div id="filter">
+              <a [routerLink]="['/calls']" class="filtered" *ngIf="status === 'SHARED'" i18n>Shared phones</a>
+              <a [routerLink]="['/calls']" class="filtered" *ngIf="status === 'ANSWERED,MISSED'" i18n>Phone calls</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div [hidden]="!calls.length || loading">
+      <div class="row calls-header">
+        <div class="col-md-3">
+          <h3 i18n>Username</h3>
+        </div>
+        <div class="col-md-3">
+          <h3 i18n>Product name</h3>
+        </div>
+        <div class="col-md-2">
+          <h3 i18n>Phone</h3>
+        </div>
+        <div class="col-md-2">
+          <h3 i18n>Date</h3>
+        </div>
+        <div class="col-md-1">
+          <h3 i18n>Duration</h3>
+        </div>
+        <div class="col-md-1  text-right" >
+          <h3 i18n [hidden]="archive">Process</h3>
+          <h3 i18n [hidden]="!archive">Pending</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="separator calls-header-separator"></div>
+        </div>
+      </div>
+      <div class="row calls-items">
+        <div class="col-md-12">
+          <tsl-call-item *ngFor="let call of calls" [call]="call"
+                         class="list-group-item"></tsl-call-item>
+        </div>
+      </div>
+    </div>
+    <div [hidden]="calls.length || loading" class="empty-state-phones">
+      <p i18n>You have no phone calls yet</p>
+      <mat-icon svgIcon="empty-phones"></mat-icon>
+    </div>
+    <div class="row">
+      <tsl-spinner [hidden]="!loading"></tsl-spinner>
+    </div>
+  </div>
+</div>
+
