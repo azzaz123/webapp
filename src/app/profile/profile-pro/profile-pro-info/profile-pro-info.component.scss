@@ -1,5 +1,7 @@
 @import "~style/common";
 
+$right-gutter: 35px;
+
 .box {
   .box-header {
     h1 {
@@ -25,7 +27,7 @@
       line-height: 27px;
       color: $grey-900;
       font-size: $font-size;
-      padding-right: 69px;
+      padding-right: $right-gutter;
       margin: 0;
     }
     .btn-group {
@@ -106,3 +108,16 @@
 #opening_hours {
   min-height: 70px;
 }
+
+.switch {
+  text-align: right;
+  padding-right: $right-gutter;
+  margin-bottom: $spacing;
+}
+
+.notifications {
+  .box-content {
+    padding-bottom: $spacing-L - $spacing;
+  }
+}
+
