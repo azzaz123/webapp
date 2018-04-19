@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { SwitchComponent } from './switch.component';
 
-fdescribe('SwitchComponent', () => {
+describe('SwitchComponent', () => {
   let component: SwitchComponent;
   let fixture: ComponentFixture<SwitchComponent>;
   let de: DebugElement;
