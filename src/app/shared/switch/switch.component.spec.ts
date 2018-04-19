@@ -29,8 +29,9 @@ fdescribe('SwitchComponent', () => {
     fixture.destroy();
   });
 
-  describe('when checked value is', () => {
-    it('false, input element should not be checked', fakeAsync(() => {
+  describe('input element', () => {
+
+    it('should not be checked when component checked property is false', fakeAsync(() => {
       component.checked = false;
 
       fixture.detectChanges();
@@ -40,7 +41,7 @@ fdescribe('SwitchComponent', () => {
       expect(element.checked).toBeFalsy();
     }));
 
-    it('true, input element should be checked', fakeAsync(() => {
+    it('should be checked when component checked property is true', fakeAsync(() => {
       component.checked = true;
 
       fixture.detectChanges();
@@ -49,10 +50,8 @@ fdescribe('SwitchComponent', () => {
       const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
       expect(element.checked).toBeTruthy();
     }));
-  });
 
-  describe('when disabled value is', () => {
-    it('false, input element should be enable', fakeAsync(() => {
+    it('should be enable when component disabled property is false', fakeAsync(() => {
       component.disabled = false;
 
       fixture.detectChanges();
@@ -62,7 +61,7 @@ fdescribe('SwitchComponent', () => {
       expect(element.disabled).toBeFalsy();
     }));
 
-    it('true, input element should be disable', fakeAsync(() => {
+    it('should be disable when component disabled property is true', fakeAsync(() => {
       component.disabled = true;
 
       fixture.detectChanges();
@@ -73,7 +72,7 @@ fdescribe('SwitchComponent', () => {
     }));
   });
 
-  it('when switch is change should emit onchange action', () => {
+  it('should emit onChange action, when switch is changed', () => {
     let inputValue: boolean;
     component.onChange.subscribe( value => inputValue = value);
 
