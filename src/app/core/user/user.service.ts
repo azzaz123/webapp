@@ -9,7 +9,6 @@ import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
 import { UserResponse, UserLocation } from './user-response.interface';
-import { UserPrivacyPermissions, PrivacyPermission, PrivacyPermissionRequestData } from './user-privacy-permission.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -27,7 +26,6 @@ export class UserService extends ResourceService {
 
   public queryParams: any = {};
   protected API_URL = 'api/v3/users';
-  protected API_URL_PRIVACY = 'api/v3/privacy';
   private banReasons: BanReason[] = null;
   protected _user: User;
   private meObservable: Observable<User>;
@@ -255,16 +253,6 @@ export class UserService extends ResourceService {
 
   public setPermission(userType: string): void {
     this.permissionService.addPermission(PERMISSIONS[userType]);
-  }
-
-  public updatePrivacyPermission(data: PrivacyPermissionRequestData) {
-    return this.http.post(this.API_URL_PRIVACY, data)
-      .map((r: Response) => r.json());
-  }
-
-  public getPrivacyPermissions() {
-    return this.http.get(this.API_URL_PRIVACY)
-      .map((r: Response) => r.json());
   }
 }
 
