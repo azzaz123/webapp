@@ -75,7 +75,9 @@ const routes: Routes = [
             only: PERMISSIONS.normal,
             redirectTo: {
               isNormal: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-                return '/pro/catalog/edit/' + route.params.id;
+                return {
+                  navigationCommands: ['/pro/catalog/edit/', route.params.id]
+                };
               }
             }
           }
@@ -157,7 +159,9 @@ const routes: Routes = [
                 only: PERMISSIONS.professional,
                 redirectTo: {
                   isProfessional: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-                    return '/catalog/edit/' + route.params.id;
+                    return {
+                      navigationCommands: ['/catalog/edit/', route.params.id]
+                    };
                   }
                 }
               }
