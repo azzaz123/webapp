@@ -14,6 +14,8 @@ import { PasswordModalComponent } from './edit-password/password-modal/password-
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { PictureUploadComponent } from './picture-upload/picture-upload.component';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
+import { ProfileProComponent } from './profile-pro/profile-pro.component';
+import { ProfileProInfoComponent } from './profile-pro/profile-pro-info/profile-pro-info.component';
 
 @NgModule({
   imports: [
@@ -35,7 +37,9 @@ import { ProfileFormComponent } from './profile-form/profile-form.component';
     PasswordModalComponent,
     UnsubscribeModalComponent,
     PictureUploadComponent,
-    ProfileFormComponent
+    ProfileFormComponent,
+    ProfileProComponent,
+    ProfileProInfoComponent
   ],
   entryComponents: [
     EmailModalComponent,

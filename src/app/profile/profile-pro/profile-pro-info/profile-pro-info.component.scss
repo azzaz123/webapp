@@ -1,0 +1,108 @@
+@import "~style/common";
+
+.box {
+  .box-header {
+    h1 {
+      font-weight: bold;
+      color: $grey-700;
+      font-size: $font-size-LL;
+      letter-spacing: 0.6px;
+    }
+    .public-profile {
+      font-size: $font-size-S;
+    }
+    .btn-primary {
+      float: right;
+      padding: 10px 30px;
+    }
+  }
+  .form-group {
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+    label {
+      text-align: right;
+      line-height: 27px;
+      color: $grey-900;
+      font-size: $font-size;
+      padding-right: 69px;
+      margin: 0;
+    }
+    .btn-group {
+      width: 100%;
+    }
+    .select {
+      height: 100px;
+      width: calc(50% - #{$spacing / 2});
+      border-radius: $border-radius;
+      border: solid 2px $grey-50;
+      cursor: pointer;
+      padding: 0;
+      text-align: center;
+      line-height: 42px;
+      [ngbButton] {
+        display: none;
+      }
+      &:first-of-type {
+        margin-right: 15px;
+      }
+      mat-icon {
+        @include square(42px);
+        margin-top: 25px;
+        /deep/ path {
+          transition: fill 0.2s ease-in-out;
+        }
+      }
+      div {
+        margin-top: -22px;
+        font-size: $font-size-S;
+      }
+      &.active {
+        background-color: $grey-300;
+        border-color: transparent;
+        box-shadow: 0 2px 6px 0 rgba($grey-300, 0.2);
+        mat-icon {
+          /deep/ path {
+            fill: $white;
+          }
+        }
+        div {
+          font-weight: bold;
+          color: $white;
+        }
+      }
+      &:hover:not(.active) {
+        border-color: $grey-300;
+        mat-icon {
+          /deep/ path {
+            fill: $grey-300;
+          }
+        }
+      }
+    }
+    tsl-location-box {
+      /deep/ .main-box {
+        h2 {
+          display: none;
+        }
+        p {
+          font-size: $font-size-S;
+        }
+        .form-group .form-control {
+          width: calc(100% - 13px);
+        }
+        tsl-here-maps {
+          margin-right: 13px;
+        }
+      }
+    }
+  }
+}
+
+#description {
+  min-height: 90px;
+}
+
+#opening_hours {
+  min-height: 70px;
+}
