@@ -7,6 +7,8 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../core/user/user.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProfileFormComponent } from '../../profile-form/profile-form.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 describe('ProfileProInfoComponent', () => {
   let component: ProfileProInfoComponent;
@@ -26,6 +28,23 @@ describe('ProfileProInfoComponent', () => {
           }
         }
         },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              result: Promise.resolve(true)
+            };
+          }
+        }
+        },
+        {
+          provide: ErrorsService, useValue: {
+          i18nError() {
+          },
+          i18nSuccess() {
+          }
+        }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
