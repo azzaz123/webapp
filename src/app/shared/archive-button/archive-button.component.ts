@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
-import { Observable } from "rxjs/Observable";
-import { Lead } from "../../core/conversation/lead";
-import { ConversationService } from "../../core/conversation/conversation.service";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Lead } from '../../core/conversation/lead';
+import { ConversationService } from '../../core/conversation/conversation.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 
 @Component({

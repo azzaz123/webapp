@@ -188,6 +188,7 @@ export class ConversationService extends LeadService {
     });
     this.leads = this.bulkArchive(this.leads);
     this.stream();
+    this.stream(true);
   }
 
   private loadUnreadMessagesNumber(conversation: Conversation): Observable<Conversation> {

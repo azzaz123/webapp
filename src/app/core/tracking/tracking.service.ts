@@ -471,13 +471,13 @@ export class TrackingService {
     type: TYPES_IDS.Tap
   };
   public static CONVERSATION_LIST_ALL_PROCESSED: TrackingEventBase = {
-    name: '678',
+    name: '677',
     category: CATEGORY_IDS.Conversation,
     screen: SCREENS_IDS.Messages,
     type: TYPES_IDS.Tap
   };
   public static CONVERSATION_MARK_PENDING: TrackingEventBase = {
-    name: '677',
+    name: '678',
     category: CATEGORY_IDS.Conversation,
     screen: SCREENS_IDS.Messages,
     type: TYPES_IDS.Tap

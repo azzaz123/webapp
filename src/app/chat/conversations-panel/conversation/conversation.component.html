@@ -16,7 +16,7 @@
       <div class="user-name-row-left">
         <p class="user-name">
           <span *ngIf="conversation.phone">
-            <mat-icon svgIcon="call-shared"></mat-icon>
+            <mat-icon svgIcon="call-received"></mat-icon>
           </span>
           <span>
             {{conversation.user.microName}}
@@ -27,7 +27,7 @@
         <span [hidden]="conversation.unreadMessages == 0 || conversation.active" class="badge badge-primary badge-pill">
           {{conversation.unreadMessages}}
         </span>
-        <mat-icon svgIcon="blocked" *ngIf="conversation.user.blocked"></mat-icon>
+        <mat-icon svgIcon="blocked" class="blocked" *ngIf="conversation.user.blocked"></mat-icon>
       </div>
 
     </div>

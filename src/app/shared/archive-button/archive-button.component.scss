@@ -1,13 +1,5 @@
 @import "~style/common";
 
-:host {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  top: 43px;
-  right: $spacing-S;
-}
-
 .check-corporate {
   @include square(30px);
   border: 3px solid $grey-100;

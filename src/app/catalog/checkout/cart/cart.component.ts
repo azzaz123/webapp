@@ -89,10 +89,19 @@ export class CartComponent implements OnInit, OnDestroy {
 
   private track(order: Order[]) {
     const result = order.map(purchase => ({item_id: purchase.item_id, bump_type: purchase.product_id}));
+    const itemsIds = Object.keys(order).map(key => order[key].item_id);
     this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {selected_products: result});
     ga('send', 'event', 'Item', 'bump-cart');
     gtag('event', 'conversion', {'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM'});
     fbq('track', '176083133152402', {});
+    twq('track', 'Purchase', {
+      value: this.cart.total,
+      currency: 'EUR',
+      num_items: order.length,
+      content_ids: itemsIds,
+      content_type: 'product',
+      content_name: 'Bumps purchase'
+    });
   }
 
   private getCard() {

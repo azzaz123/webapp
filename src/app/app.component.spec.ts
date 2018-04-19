@@ -238,6 +238,7 @@ describe('App', () => {
 
       it('should call conversationService.init twice if user is professional', () => {
         spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+        
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 

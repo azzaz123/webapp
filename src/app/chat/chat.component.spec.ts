@@ -216,6 +216,7 @@ describe('Component: Chat', () => {
 
     it('should call updateBlockStatus on USER_BLOCKED', () => {
       spyOn(userService, 'updateBlockStatus');
+
       component.ngOnInit();
       eventService.emit(EventService.USER_BLOCKED, '1');
 
@@ -224,6 +225,7 @@ describe('Component: Chat', () => {
 
     it('should call updateBlockStatus on USER_UNBLOCKED', () => {
       spyOn(userService, 'updateBlockStatus');
+
       component.ngOnInit();
       eventService.emit(EventService.USER_UNBLOCKED, '2');
 
@@ -238,6 +240,7 @@ describe('Component: Chat', () => {
 
     it('should set firstLoad true if getMetaInformation does NOT return meta', () => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw('err'));
+
       component.ngOnInit();
 
       expect(component.firstLoad).toBe(true);

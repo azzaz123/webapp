@@ -70,7 +70,7 @@ describe('Component: Conversation', () => {
       spyOn(conversationService, 'stream');
     });
 
-    it('should call conversationService.stream', () => {
+    it('should call conversationService.stream when archived is true', () => {
       component.archived = true;
 
       component.onAnimationDone(new Event(''));
@@ -78,7 +78,7 @@ describe('Component: Conversation', () => {
       expect(conversationService.stream).toHaveBeenCalled();
     });
 
-    it('should do nothing if not archive', () => {
+    it('should do nothing when archive is false', () => {
       component.archived = false;
 
       component.onAnimationDone(new Event(''));
