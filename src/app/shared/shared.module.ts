@@ -22,6 +22,7 @@ import { StarsComponent } from './stars/stars.component';
 import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { SwitchComponent } from './switch/switch.component';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule
   ],
@@ -65,6 +67,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    SwitchComponent,
     ReviewModalComponent
   ],
   providers: [
