@@ -11,7 +11,7 @@ import {
 @Injectable()
 export class PrivacyService {
 
-  protected API_URL = 'api/v3/privacy';
+  private API_URL = 'api/v3/privacy';
   private _privacyPermissions: PrivacyPermissions;
 
   constructor(
@@ -28,7 +28,7 @@ export class PrivacyService {
       .map((r: Response) => r.json());
   }
 
-  getPrivacyPermissionState(permissionName: string, version: string) {
+  public getPrivacyPermissionState(permissionName: string, version: string) {
     if (!this._privacyPermissions ||
       !this._privacyPermissions[permissionName] ||
       !this._privacyPermissions[permissionName].length) {
