@@ -15,6 +15,7 @@ import { TutorialGuard } from './guards/tutorial.guard';
 import { HeaderComponent } from './header/header.component';
 import { ButtonComponent } from './button/button.component';
 import { SoldModalComponent } from './modals/sold-modal/sold-modal.component';
+import { ReviewModalComponent } from './modals/review-modal/review-modal.component';
 import { ItemSoldDirective } from './modals/sold-modal/item-sold.directive';
 import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsComponent } from './stars/stars.component';
@@ -49,6 +50,7 @@ import { SwitchComponent } from './switch/switch.component';
     StarsRateComponent,
     UserAvatarComponent,
     SwitchComponent,
+    ReviewModalComponent,
     NgxPermissionsModule
   ],
   declarations: [
@@ -66,6 +68,7 @@ import { SwitchComponent } from './switch/switch.component';
     StarsRateComponent,
     UserAvatarComponent,
     SwitchComponent
+    ReviewModalComponent
   ],
   providers: [
     DecimalPipe,
@@ -74,7 +77,8 @@ import { SwitchComponent } from './switch/switch.component';
   ],
   entryComponents: [
     ConfirmationModalComponent,
-    SoldModalComponent
+    SoldModalComponent,
+    ReviewModalComponent
   ]
 })
 export class SharedModule { }
