@@ -67,7 +67,7 @@ import { SwitchComponent } from './switch/switch.component';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
-    SwitchComponent
+    SwitchComponent,
     ReviewModalComponent
   ],
   providers: [
