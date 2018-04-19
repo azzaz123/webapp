@@ -13,6 +13,7 @@ import { TutorialGuard } from '../shared/guards/tutorial.guard';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
+import * as _ from 'lodash';
 
 const routes: Routes = [
   {
@@ -36,16 +37,12 @@ const routes: Routes = [
             only: PERMISSIONS.normal,
             redirectTo: {
               isNormal: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-                if (route.params.code) {
-                  return {
-                    navigationCommands: ['/pro/catalog/list', { code: route.params.code }]
-                  };
-                } else if (route.params.urgent) {
-                  return {
-                    navigationCommands: ['/pro/catalog/list', { urgent: route.params.urgent, itemId: route.params.itemId }]
-                  };
-                } else {
+                if (_.isEmpty(route.params)) {
                   return '/pro/catalog/list';
+                } else {
+                  return {
+                    navigationCommands: ['/pro/catalog/list', route.params]
+                  };
                 }
               }
             }
@@ -78,7 +75,9 @@ const routes: Routes = [
             only: PERMISSIONS.normal,
             redirectTo: {
               isNormal: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-                return '/pro/catalog/edit/' + route.params.id;
+                return {
+                  navigationCommands: ['/pro/catalog/edit/', route.params.id]
+                };
               }
             }
           }
@@ -122,16 +121,12 @@ const routes: Routes = [
                 only: PERMISSIONS.professional,
                 redirectTo: {
                   isProfessional: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-                    if (route.params.code) {
-                      return {
-                        navigationCommands: ['/catalog/list', { code: route.params.code }]
-                      };
-                    } else if (route.params.urgent) {
-                      return {
-                        navigationCommands: ['/catalog/list', { urgent: route.params.urgent, itemId: route.params.itemId }]
-                      };
-                    } else {
+                    if (_.isEmpty(route.params)) {
                       return '/catalog/list';
+                    } else {
+                      return {
+                        navigationCommands: ['/catalog/list', route.params]
+                      };
                     }
                   }
                 }
@@ -164,7 +159,9 @@ const routes: Routes = [
                 only: PERMISSIONS.professional,
                 redirectTo: {
                   isProfessional: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-                    return '/catalog/edit/' + route.params.id;
+                    return {
+                      navigationCommands: ['/catalog/edit/', route.params.id]
+                    };
                   }
                 }
               }
