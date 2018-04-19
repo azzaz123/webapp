@@ -488,6 +488,24 @@ export class TrackingService {
     screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
+  public static CALLS_LIST_ALL_PROCESSED: TrackingEventBase = {
+    name: '688',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static CALLS_PROCESSED: TrackingEventBase = {
+    name: '689',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static CALLS_MARK_PENDING: TrackingEventBase = {
+    name: '690',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
