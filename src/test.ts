@@ -36,6 +36,7 @@ window['googletag'] = {
 };
 window['gtag'] = function() {};
 window['fbq'] = function() {};
+window['twq'] = function() {};
 
 window['apstag'] = {
   fetchBids ({slots, timeout}, callback) { callback(); },
