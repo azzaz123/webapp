@@ -3,8 +3,8 @@ import { Response, ResponseOptions } from '@angular/http';
 
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs/Observable';
-import { FinancialCard, SabadellInfoResponse } from './payment.interface';
-import { FINANCIAL_CARD, SABADELL_RESPONSE } from '../../../tests/payments.fixtures.spec';
+import { BillingInfoResponse, FinancialCard, SabadellInfoResponse } from './payment.interface';
+import { BILLING_INFO_RESPONSE, FINANCIAL_CARD, SABADELL_RESPONSE } from '../../../tests/payments.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 
@@ -61,6 +61,31 @@ describe('PaymentService', () => {
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/payments/c2b/sabadell/tpv/params', {orderId: '1'});
       expect(response).toEqual(SABADELL_RESPONSE);
+    });
+  });
+
+  describe('getBillingInfo', () => {
+    let response: BillingInfoResponse;
+    it('should call endpoint', () => {
+      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(BILLING_INFO_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      service.getBillingInfo().subscribe((r: BillingInfoResponse) => {
+        response = r;
+      });
+      expect(http.get).toHaveBeenCalledWith('api/v3/payments/billing-info/me');
+      expect(response).toEqual(BILLING_INFO_RESPONSE);
+    });
+  });
+
+  describe('updateBillingInfo', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put');
+      service.updateBillingInfo({
+        data: 'test'
+      });
+      expect(http.put).toHaveBeenCalledWith('api/v3/payments/billing-info', {
+        data: 'test'
+      });
     });
   });
 });

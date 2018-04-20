@@ -48,9 +48,10 @@ export class ProfileProBillingComponent implements OnInit {
       this.paymentService.updateBillingInfo(this.billingForm.value).subscribe(() => {
         this.errorsService.i18nSuccess('userEdited');
       }, (response: any) => {
-        this.errorsService.i18nError('formErrors');
+        this.errorsService.show(response);
       });
     } else {
+      this.errorsService.i18nError('formErrors');
       for (let control in this.billingForm.controls) {
         if (this.billingForm.controls.hasOwnProperty(control) && !this.billingForm.controls[control].valid) {
           this.billingForm.controls[control].markAsDirty();
