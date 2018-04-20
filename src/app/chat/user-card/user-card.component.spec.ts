@@ -6,8 +6,13 @@ import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ItemService } from '../../core/item/item.service';
 import {
-  MOCK_USER, RESPONSE_RATE, SCORING_STARS, USER_ID,
-  USER_INFO_RESPONSE
+  MOCK_USER,
+  RESPONSE_RATE,
+  SCORING_STARS,
+  USER_ID,
+  USER_INFO_RESPONSE,
+  USER_REPORTS_RECEIVED,
+  USERS_STATS_RESPONSE
 } from '../../../tests/user.fixtures.spec';
 import { LATEST_ITEM_COUNT, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
@@ -33,9 +38,12 @@ describe('Component: UserCard', () => {
           provide: UserService, useValue: {
           getInfo() {
             return Observable.of(USER_INFO_RESPONSE);
+          },
+          getUserStats() {
+            return Observable.of(USERS_STATS_RESPONSE);
           }
         }
-        }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -54,6 +62,7 @@ describe('Component: UserCard', () => {
 
     beforeEach(() => {
       spyOn(userService, 'getInfo').and.callThrough();
+      spyOn(userService, 'getUserStats').and.callThrough();
     });
 
     it('should get the latest selling item', () => {
@@ -106,6 +115,28 @@ describe('Component: UserCard', () => {
       component.ngOnChanges({});
 
       expect(userService.getInfo).not.toHaveBeenCalled();
+    });
+
+    it('should call getUserStats and set user receivedReports', () => {
+      component.user.receivedReports = undefined;
+
+      component.ngOnChanges({
+        user: new SimpleChange(null, MOCK_USER, false)
+      });
+
+      expect(userService.getUserStats).toHaveBeenCalledWith(MOCK_USER.id);
+      expect(component.user.receivedReports).toBe(USER_REPORTS_RECEIVED);
+    });
+
+    it('should not call getUserStats when user has receivedReports property', () => {
+      component.user.receivedReports = 10;
+
+      component.ngOnChanges({
+        user: new SimpleChange( component.user, MOCK_USER, false)
+      });
+
+      expect(userService.getUserStats).not.toHaveBeenCalled();
+      expect(component.user.receivedReports).toBe(10);
     });
   });
 });

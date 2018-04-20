@@ -176,6 +176,8 @@ export const RATINGS_RESPONSE: Ratings = {
   reviews: 0
 };
 
+export const USER_REPORTS_RECEIVED = 5;
+
 export const COUNTERS_RESPONSE: Counters = {
   publish: 0,
   buys: 0,
@@ -185,7 +187,8 @@ export const COUNTERS_RESPONSE: Counters = {
   profile_favorited_received: 0,
   profile_favorited: 0,
   reviews: 0,
-  sold: 0
+  sold: 0,
+  reports_received: USER_REPORTS_RECEIVED
 };
 
 export const USERS_STATS_RESPONSE: UserStatsResponse = {
@@ -236,6 +239,10 @@ export const COUNTERS = [
   {
     type: 'sold',
     value: 0
+  },
+  {
+    type: 'reports_received',
+    value: USER_REPORTS_RECEIVED
   }
 ];
 
