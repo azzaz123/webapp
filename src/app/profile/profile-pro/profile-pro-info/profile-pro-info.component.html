@@ -1,4 +1,4 @@
-<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="profileForm" (submit)="onSubmit()">
   <tsl-picture-upload [user]="user"></tsl-picture-upload>
   <tsl-profile-form [profileForm]="profileForm">
     <div class="box">

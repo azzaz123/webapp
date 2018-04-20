@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
-import { FinancialCard, SabadellInfoResponse } from './payment.interface';
+import { BillingInfoResponse, FinancialCard, SabadellInfoResponse } from './payment.interface';
 import { HttpService } from '../http/http.service';
 
 @Injectable()
@@ -28,6 +28,15 @@ export class PaymentService {
     return this.http.post(this.API_URL + '/c2b/sabadell/tpv/pay', {
       order_id: orderId
     });
+  }
+
+  public getBillingInfo(): Observable<BillingInfoResponse> {
+    return this.http.get(this.API_URL + '/billing-info/me')
+      .map((r: Response) => r.json());
+  }
+
+  public updateBillingInfo(data: any): Observable<any> {
+    return this.http.put(this.API_URL + '/billing-info', data);
   }
 
 }
