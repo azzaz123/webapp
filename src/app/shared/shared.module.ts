@@ -26,6 +26,8 @@ import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
 import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { MessageComponent } from './message/message.component';
+import { ReviewButtonComponent } from './message/review-button/review-button.component';
 
 @NgModule({
   imports: [
@@ -57,7 +59,9 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
     ReviewModalComponent,
-    NgxPermissionsModule
+    NgxPermissionsModule,
+    MessageComponent,
+    ReviewButtonComponent
   ],
   declarations: [
     AdComponent,
@@ -78,7 +82,9 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
     UserAvatarComponent,
-    ReviewModalComponent
+    ReviewModalComponent,
+    MessageComponent,
+    ReviewButtonComponent
   ],
   providers: [
     DecimalPipe,

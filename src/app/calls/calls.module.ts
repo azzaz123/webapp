@@ -9,6 +9,8 @@ import { CallsComponent } from './calls.component';
 import { CallsRoutingModule, callsRoutedComponents } from './calls.routes';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CallItemComponent } from './call-item/call-item.component';
+import { CallStatusLabelPipe } from '../core/conversation/call-status-label.pipe';
+import { UserCardCallsComponent } from './user-card-calls/user-card-calls.component';
 
 @NgModule({
   imports: [
@@ -21,6 +23,13 @@ import { CallItemComponent } from './call-item/call-item.component';
     CallsRoutingModule,
     InfiniteScrollModule
   ],
-  declarations: [CallsComponent, callsRoutedComponents, CallItemComponent]
+  exports: [CallStatusLabelPipe],
+  declarations: [
+    CallsComponent,
+    callsRoutedComponents,
+    CallItemComponent,
+    CallStatusLabelPipe,
+    UserCardCallsComponent
+  ]
 })
 export class CallsModule { }

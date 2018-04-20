@@ -32,7 +32,7 @@
       <h3 i18n>User rating</h3>
       <tsl-stars *ngIf="call.user.scoringStars > -1" [stars]="call.user.scoringStars"></tsl-stars>
       <div class="separator"></div>
-      <tsl-user [user]="call.user" [phone]="call.phone" [callsPanel]="true"></tsl-user>
+      <tsl-user-card-calls [user]="call.user"></tsl-user-card-calls>
     </a>
     <div class="call-expanded-questions">
       <ul class="list-group list-group-flush">
@@ -60,7 +60,7 @@
       </div>
       <a [routerLink]="['/chat']"
          [hidden]="!messages.length"
-         tslTrack="PHONE_LEAD_VIEWED_CONVERSATION"
+         tslTrackEvent="PHONE_LEAD_VIEWED_CONVERSATION"
          [params]="{lead_id: call.id}"
          [queryParams]="{c: call.id, archive: call.archived ? true : false}" i18n>View all messages</a>
     </div>

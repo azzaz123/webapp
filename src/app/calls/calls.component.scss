@@ -1,0 +1,52 @@
+@import "~style/common";
+#filter {
+  margin-top: $spacing;
+}
+.row > h2 {
+  font-weight: bold;
+  font-size: $font-size-LL;
+  padding-left: 10px;
+  letter-spacing: $letter-spacing;
+  margin-bottom: $spacing;
+}
+.calls-header {
+  margin-top: $spacing-L;
+  h3 {
+    color: $grey-400;
+    text-transform: uppercase;
+    font-size: $font-size-XS;
+    font-weight: bold;
+  }
+  .col-md-1:last-child {
+    text-align: right;
+  }
+}
+.list-group-item {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  .nav-link {
+    padding: 0;
+  }
+}
+tsl-call-item {
+  border-bottom: 1px solid $grey-900;
+}
+tsl-process-all-button {
+  float: right;
+  margin-top: 10px;
+}
+.empty-state-phones {
+  p {
+    font-size: $font-size-L;
+    margin-top: $spacing-XL;
+    margin-bottom: $spacing-L;
+    text-align: center;
+    color: $grey-100;
+  }
+  md-icon {
+    width: 100%;
+    height: auto;
+  }
+}
