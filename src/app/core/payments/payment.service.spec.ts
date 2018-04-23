@@ -66,12 +66,15 @@ describe('PaymentService', () => {
 
   describe('getBillingInfo', () => {
     let response: BillingInfoResponse;
+
     it('should call endpoint', () => {
       let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(BILLING_INFO_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+
       service.getBillingInfo().subscribe((r: BillingInfoResponse) => {
         response = r;
       });
+
       expect(http.get).toHaveBeenCalledWith('api/v3/payments/billing-info/me');
       expect(response).toEqual(BILLING_INFO_RESPONSE);
     });
@@ -80,9 +83,11 @@ describe('PaymentService', () => {
   describe('updateBillingInfo', () => {
     it('should call endpoint', () => {
       spyOn(http, 'put');
+
       service.updateBillingInfo({
         data: 'test'
       });
+
       expect(http.put).toHaveBeenCalledWith('api/v3/payments/billing-info', {
         data: 'test'
       });
