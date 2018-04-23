@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
+import { User } from '../../core/user/user';
 
 @Component({
   selector: 'tsl-profile-pro',
@@ -14,7 +15,7 @@ export class ProfileProComponent implements OnInit {
               @Inject('SUBDOMAIN') private subdomain: string) { }
 
   ngOnInit() {
-    this.userService.me().subscribe((user) => {
+    this.userService.me().subscribe((user: User) => {
       if (user) {
         this.userUrl = user.getUrl(this.subdomain);
       }

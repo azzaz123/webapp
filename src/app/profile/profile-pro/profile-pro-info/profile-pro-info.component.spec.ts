@@ -11,7 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { SwitchComponent } from '../../../shared/switch/switch.component';
 
-fdescribe('ProfileProInfoComponent', () => {
+describe('ProfileProInfoComponent', () => {
   let component: ProfileProInfoComponent;
   let fixture: ComponentFixture<ProfileProInfoComponent>;
   let userService: UserService;

@@ -114,7 +114,10 @@ export const MOCK_USER: User = new User(
   USER_DATA.scoring_stars,
   USER_DATA.scoring_starts,
   USER_DATA.response_rate,
-  USER_DATA.online
+  USER_DATA.online,
+  USER_DATA.type,
+  0,
+  USER_DATA.web_slug
 );
 
 export const USER_ITEM_DISTANCE = 10;
