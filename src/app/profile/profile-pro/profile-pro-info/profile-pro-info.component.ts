@@ -15,7 +15,6 @@ export class ProfileProInfoComponent implements OnInit {
 
   public profileForm: FormGroup;
   public notificationsForm: FormGroup;
-  public user: User;
   private userInfo: UserProInfo;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
@@ -24,7 +23,7 @@ export class ProfileProInfoComponent implements OnInit {
               private fb: FormBuilder,
               private errorsService: ErrorsService) {
     this.profileForm = fb.group({
-      first_name: ['', [Validators.required]],
+      first_name: '',
       last_name: '',
       phone_number: '',
       description: '',
@@ -44,12 +43,9 @@ export class ProfileProInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.me().subscribe((user) => {
-      this.user = user;
-      this.userService.getProInfo().subscribe((userInfo: UserProInfo) => {
-        this.userInfo = userInfo;
-        this.setUserData();
-      })
+    this.userService.getProInfo().subscribe((userInfo: UserProInfo) => {
+      this.userInfo = userInfo;
+      this.setUserData();
     });
     this.notificationsForm.valueChanges.subscribe((a) => {
       this.userService.updateProInfo(this.notificationsForm.value).subscribe(() => {
@@ -59,14 +55,14 @@ export class ProfileProInfoComponent implements OnInit {
   }
 
   private setUserData() {
-    this.profileForm.patchValue({
-      first_name: this.user.firstName,
-      last_name: this.user.lastName,
-      phone_number: this.userInfo ? this.userInfo.phone_number : '',
-      description: this.userInfo ? this.userInfo.description : '',
-      opening_hours: this.userInfo ? this.userInfo.opening_hours : ''
-    });
     if (this.userInfo) {
+      this.profileForm.patchValue({
+        first_name: this.userInfo.first_name,
+        last_name: this.userInfo.last_name,
+        phone_number: this.userInfo.phone_number,
+        description: this.userInfo.description,
+        opening_hours: this.userInfo.opening_hours
+      });
       this.notificationsForm.patchValue({
         new_chat_notification: this.userInfo.new_chat_notification,
         only_chat_phone_notification: this.userInfo.only_chat_phone_notification,
@@ -88,11 +84,6 @@ export class ProfileProInfoComponent implements OnInit {
         this.formComponent.hasNotSavedChanges = false;
       });
     } else {
-      for (const control in this.profileForm.controls) {
-        if (this.profileForm.controls.hasOwnProperty(control) && !this.profileForm.controls[control].valid) {
-          this.profileForm.controls[control].markAsDirty();
-        }
-      }
       if (!this.profileForm.get('location.address').valid) {
         this.profileForm.get('location.address').markAsDirty();
       }

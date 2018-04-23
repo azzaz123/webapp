@@ -1,4 +1,4 @@
-import { UserInfoResponse } from '../app/core/user/user-info.interface';
+import { UserInfoResponse, UserProInfo } from '../app/core/user/user-info.interface';
 import { Coordinate } from '../app/core/geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from '../app/core/user/user-stats.interface';
 import { UserData } from '../app/core/user/user-data.interface';
@@ -234,6 +234,18 @@ export const USER_EDIT_DATA: UserData = {
   last_name: USER_DATA.last_name,
   birth_date: '1987-02-10T00:00:00.000Z',
   gender: 'M'
+};
+
+export const USER_PRO_INFO_RESPONSE: UserProInfo = {
+  first_name: 'firstName',
+  last_name: 'lastName',
+  description: 'description',
+  opening_hours: 'opening_hours',
+  phone_number: 'phone_number',
+  new_chat_notification: true,
+  only_chat_phone_notification: true,
+  consent_third_parties_use_data: true,
+  news_notification: true
 };
 
 export const REASONS: UnsubscribeReason[] = [{
