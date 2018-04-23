@@ -6,9 +6,10 @@ import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 
-xdescribe('ProfileProComponent', () => {
+describe('ProfileProComponent', () => {
   let component: ProfileProComponent;
   let fixture: ComponentFixture<ProfileProComponent>;
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,9 +19,14 @@ xdescribe('ProfileProComponent', () => {
           provide: UserService, useValue: {
           me() {
             return Observable.of(MOCK_USER);
+          },
+          logout() {
           }
         }
         },
+        {
+          provide: 'SUBDOMAIN', useValue: 'www'
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -30,10 +36,37 @@ xdescribe('ProfileProComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileProComponent);
     component = fixture.componentInstance;
+    userService = TestBed.get(UserService);
+    spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+
+    it('should call userService.me', () => {
+      expect(userService.me).toHaveBeenCalled();
+    });
+
+    it('should set userUrl', () => {
+      expect(component.userUrl).toBe('https://www.wallapop.com/user/webslug-l1kmzn82zn3p');
+    });
+  });
+
+  describe('logout', () => {
+    const preventDefault = jasmine.createSpy('preventDefault');
+    const event = {preventDefault: preventDefault};
+
+    beforeEach(() => {
+      spyOn(userService, 'logout');
+      component.logout(event);
+    });
+
+    it('should prevent event', () => {
+      expect(preventDefault).toHaveBeenCalled();
+    });
+
+    it('should logout', () => {
+      expect(userService.logout).toHaveBeenCalled();
+    });
   });
 });
