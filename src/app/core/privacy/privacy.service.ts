@@ -22,20 +22,23 @@ export class PrivacyService {
 
   public updatePrivacy(data: PrivacyRequestData) {
     return this.http.post(this.API_URL, data)
-      .map((r: Response) => r.json());
+      .map((r: Response) => r.json())
+      .map((privacyList: PrivacyList) => this._mapPivacyList(privacyList));
   }
 
   public getPrivacyList() {
     return this.http.get(this.API_URL)
       .map((r: Response) => r.json())
-      .map((privacyList: PrivacyList) => {
-        this._privacyList = privacyList;
+      .map((privacyList: PrivacyList) => this._mapPivacyList(privacyList));
+  }
 
-        const segmentationStatus = this.getPrivacyState('gdpr_display', '0');
-        this.allowSegmentation$.next(segmentationStatus === PRIVACY_STATUS.allow ? true : false);
+  private _mapPivacyList(privacyList: PrivacyList) {
+    this._privacyList = privacyList;
 
-        return privacyList;
-      });
+    const segmentationStatus = this.getPrivacyState('gdpr_display', '0');
+    this.allowSegmentation$.next(segmentationStatus === PRIVACY_STATUS.allow ? true : false);
+
+    return privacyList;
   }
 
   public getPrivacyState(permissionName: string, version: string): string {
