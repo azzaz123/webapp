@@ -24,6 +24,7 @@ const routes: Routes = [
       }
     }
   },
+  { path: 'pro/profile', pathMatch: 'full', redirectTo: 'pro/profile/info' },
   {
     path: 'pro',
     canActivate: [LoggedGuard],
