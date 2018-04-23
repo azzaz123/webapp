@@ -16,13 +16,13 @@ export const SABADELL_RESPONSE: SabadellInfoResponse = {
 export const BILLING_INFO_RESPONSE: BillingInfoResponse = {
   cif: 'cif',
   city: 'city',
-  company_name: 'company_name',
+  company_name: 'company',
   country: 'country',
-  email: 'email',
-  id: 'id',
+  email: 'email@email.com',
   name: 'name',
-  phone: 'phone',
-  postal_code: 'postal_code',
+  phone: '666666666',
+  postal_code: '12345',
   street: 'street',
-  surname: 'surname'
+  surname: 'surname',
+  id: '123'
 };

@@ -37,6 +37,8 @@ describe('ProfileProBillingComponent', () => {
           show() {
           },
           i18nSuccess() {
+          },
+          i18nError() {
           }
         }
         }
@@ -75,19 +77,7 @@ describe('ProfileProBillingComponent', () => {
   describe('onSubmit', () => {
     describe('form valid', () => {
       beforeEach(() => {
-        component.billingForm.patchValue({
-          cif: 'cif',
-          city: 'city',
-          company_name: 'company',
-          country: 'country',
-          email: 'email@email.com',
-          name: 'name',
-          phone: '666666666',
-          postal_code: '12345',
-          street: 'street',
-          surname: 'surname',
-          id: '123'
-        });
+        component.billingForm.patchValue(BILLING_INFO_RESPONSE);
       });
 
       it('should update billing info', () => {
@@ -124,8 +114,8 @@ describe('ProfileProBillingComponent', () => {
 
         component.onSubmit();
 
-        expect(component.billingForm.get('city').dirty).toBeTruthy();
-        expect(component.billingForm.get('country').dirty).toBeTruthy();
+        expect(component.billingForm.get('city').dirty).toBe(true);
+        expect(component.billingForm.get('country').dirty).toBe(true);
       });
     });
   });
