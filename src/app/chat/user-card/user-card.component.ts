@@ -4,6 +4,7 @@ import { ItemService } from '../../core/item/item.service';
 import { ItemDataResponse } from '../../core/item/item-response.interface';
 import { UserService } from '../../core/user/user.service';
 import { UserInfoResponse } from '../../core/user/user-info.interface';
+import { UserStatsResponse } from '../../core/user/user-stats.interface';
 
 @Component({
   selector: 'tsl-user',
@@ -31,6 +32,11 @@ export class UserCardComponent implements OnChanges {
         this.userService.getInfo(this.user.id).subscribe((info: UserInfoResponse) => {
           this.user.scoringStars = info.scoring_stars;
           this.user.responseRate = info.response_rate;
+        });
+      }
+      if (this.user.receivedReports === undefined) {
+        this.userService.getUserStats(this.user.id).subscribe((info: UserStatsResponse) => {
+          this.user.receivedReports = info.counters.reports_received;
         });
       }
     }

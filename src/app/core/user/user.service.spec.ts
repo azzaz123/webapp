@@ -396,6 +396,21 @@ describe('Service: User', () => {
     });
   });
 
+  describe('getUserStats', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USERS_STATS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+
+      let resp: UserStatsResponse;
+      service.getUserStats(USER_ID).subscribe((response: UserStatsResponse) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/stats');
+      expect(resp).toEqual(USERS_STATS_RESPONSE);
+    });
+  });
+
   describe('edit', () => {
     it('should call endpoint, return user and set it', () => {
       const res: ResponseOptions = new ResponseOptions({body: USER_DATA});
