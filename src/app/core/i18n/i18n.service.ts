@@ -76,7 +76,8 @@ export class I18nService {
       defaultErrorTitle: 'Oops!',
       defaultSuccessTitle: 'Yup!',
       bumpError: 'Some listings have not been bumped due to an error',
-      cantEditError: 'This item can not be modified because has a pending transaction.'
+      cantEditError: 'This item can not be modified because has a pending transaction.',
+      settingsEdited: 'Your setting has been updated'
     },
     es: {
       daysMomentConfig: {
@@ -150,7 +151,8 @@ export class I18nService {
       defaultErrorTitle: '¡Ups!',
       defaultSuccessTitle: '¡Bien!',
       bumpError: 'Algunos productos no se han destacado debido a un error',
-      cantEditError: 'Este producto no se puede modificar, porque está en mitad de una transacción.'
+      cantEditError: 'Este producto no se puede modificar, porque está en mitad de una transacción.',
+      settingsEdited: 'Se ha actualizado tu configuración'
     }
   };
 

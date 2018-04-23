@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileFormComponent } from '../../profile-form/profile-form.component';
 import { UserService } from '../../../core/user/user.service';
 import { User } from '../../../core/user/user';
+import { UserProInfo } from '../../../core/user/user-info.interface';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-profile-pro-info',
@@ -12,16 +14,19 @@ import { User } from '../../../core/user/user';
 export class ProfileProInfoComponent implements OnInit {
 
   public profileForm: FormGroup;
+  public notificationsForm: FormGroup;
   public user: User;
+  private userInfo: UserProInfo;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
 
   constructor(private userService: UserService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private errorsService: ErrorsService) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
       last_name: '',
-      telephone: '',
+      phone_number: '',
       description: '',
       opening_hours: '',
       location: this.fb.group({
@@ -30,22 +35,45 @@ export class ProfileProInfoComponent implements OnInit {
         longitude: ['', [Validators.required]],
       })
     });
+    this.notificationsForm = fb.group({
+      new_chat_notification: false,
+      only_chat_phone_notification: false,
+      consent_third_parties_use_data: false,
+      news_notification: false
+    });
   }
 
   ngOnInit() {
     this.userService.me().subscribe((user) => {
       this.user = user;
-      if (user) {
+      this.userService.getProInfo().subscribe((userInfo: UserProInfo) => {
+        this.userInfo = userInfo;
         this.setUserData();
-      }
+      })
+    });
+    this.notificationsForm.valueChanges.subscribe((a) => {
+      this.userService.updateProInfo(this.notificationsForm.value).subscribe(() => {
+        this.errorsService.i18nSuccess('settingsEdited');
+      });
     });
   }
 
   private setUserData() {
     this.profileForm.patchValue({
       first_name: this.user.firstName,
-      last_name: this.user.lastName
+      last_name: this.user.lastName,
+      phone_number: this.userInfo ? this.userInfo.phone_number : '',
+      description: this.userInfo ? this.userInfo.description : '',
+      opening_hours: this.userInfo ? this.userInfo.opening_hours : ''
     });
+    if (this.userInfo) {
+      this.notificationsForm.patchValue({
+        new_chat_notification: this.userInfo.new_chat_notification,
+        only_chat_phone_notification: this.userInfo.only_chat_phone_notification,
+        consent_third_parties_use_data: this.userInfo.consent_third_parties_use_data,
+        news_notification: this.userInfo.news_notification
+      });
+    }
   }
 
   public canExit() {
@@ -53,7 +81,23 @@ export class ProfileProInfoComponent implements OnInit {
   }
 
   public onSubmit() {
-    return this.formComponent.onSubmit();
+    if (this.profileForm.valid) {
+      delete this.profileForm.value.location;
+      this.userService.updateProInfo(this.profileForm.value).subscribe(() => {
+        this.errorsService.i18nSuccess('userEdited');
+        this.formComponent.hasNotSavedChanges = false;
+      });
+    } else {
+      for (const control in this.profileForm.controls) {
+        if (this.profileForm.controls.hasOwnProperty(control) && !this.profileForm.controls[control].valid) {
+          this.profileForm.controls[control].markAsDirty();
+        }
+      }
+      if (!this.profileForm.get('location.address').valid) {
+        this.profileForm.get('location.address').markAsDirty();
+      }
+      this.errorsService.i18nError('formErrors');
+    }
   }
 
 }
