@@ -14,9 +14,6 @@ import { PasswordModalComponent } from './edit-password/password-modal/password-
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { PictureUploadComponent } from './picture-upload/picture-upload.component';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
-import { ProfileProComponent } from './profile-pro/profile-pro.component';
-import { ProfileProInfoComponent } from './profile-pro/profile-pro-info/profile-pro-info.component';
-import { ProfileProBillingComponent } from './profile-pro/profile-pro-billing/profile-pro-billing.component';
 
 @NgModule({
   imports: [
