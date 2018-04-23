@@ -24,7 +24,7 @@
               <a (click)="filterByArchived(true)" [ngClass]="{active: archive}" class="nav-link" i18n>Processed</a>
             </nav>
         </div>
-        <div class="col-2">
+        <div class="col-2 text-right">
           <tsl-process-all-button type="calls" [hidden]="!calls.length || archive" i18n>Process all</tsl-process-all-button>
         </div>
       </div>
@@ -58,8 +58,7 @@
       </div>
       <div class="row calls-items">
         <div class="col-md-12">
-          <tsl-call-item *ngFor="let call of calls" [call]="call"
-                         class="list-group-item"></tsl-call-item>
+          <tsl-call-item *ngFor="let call of calls" [call]="call"></tsl-call-item>
         </div>
       </div>
     </div>

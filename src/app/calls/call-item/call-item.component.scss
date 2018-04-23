@@ -1,0 +1,215 @@
+@import "~style/common";
+
+$avatar-size: 50px;
+$view-more-height: 49px;
+$expanded-height: 240px;
+$expanded-vertical-padding: 30px;
+$expanded-horizontal-padding: 25px;
+:host {
+  cursor: pointer;
+  user-select: none;
+  border-radius: 0;
+  &:not(.archive) {
+    overflow: hidden;
+  }
+}
+
+.call-expanded {
+  cursor: auto;
+}
+
+.col-md-1:last-of-type {
+  text-align: right;
+  padding-right: 0;
+  tsl-archive-button {
+    position: relative;
+    margin-right: 10px;
+  }
+}
+
+span {
+  font-size: $font-size-S;
+}
+
+[class^='col-md'] {
+  line-height: 50px;
+  & * {
+    vertical-align: middle;
+  }
+}
+
+.call {
+  width: 100%;
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .row:not(.call-expanded) {
+    padding: $spacing-XS 0;
+    &:hover {
+      background-color: $grey-50;
+    }
+  }
+  &.active .col-user-name {
+    md-icon {
+      transform: rotate(0);
+
+    }
+  }
+}
+
+.col-user-name {
+  @include text-truncate;
+  span {
+    margin-left: $spacing-S;
+    max-width: calc(100% - #{$avatar-size} - #{$spacing});
+  }
+  md-icon {
+    width: 10px;
+    height: $avatar-size;
+  }
+}
+
+tsl-user-avatar {
+  margin-left: $spacing-XS;
+}
+
+.col-item-title {
+  @include text-truncate;
+}
+
+.col-phone {
+  .icon {
+    margin-right: $spacing-S;
+  }
+  /* I want to die (╯°□°）╯︵ ┻━┻ */
+  .call-received {
+    height: 19px;
+    vertical-align: sub;
+  }
+  .call-shared {
+    height: 18px;
+    vertical-align: sub;
+  }
+  .call-missed {
+    height: 11px;
+    vertical-align: baseline;
+  }
+}
+
+.call-expanded {
+  margin-top: $spacing;
+  margin-bottom: $spacing;
+  .call-expanded-user-info,
+  .call-expanded-questions,
+  .call-expanded-messages {
+    float: left;
+    height: $expanded-height;
+    border-radius: $border-radius;
+    background-color: $grey-900;
+    padding: $expanded-vertical-padding $expanded-horizontal-padding;
+    overflow: auto;
+  }
+  .messages-container {
+    max-height: $expanded-height - $expanded-vertical-padding - $view-more-height;
+    overflow: auto;
+  }
+  .call-expanded-user-info {
+    width: calc(25% - #{$spacing});
+    margin-right: $spacing;
+    overflow: hidden;
+    &:hover, &:focus, &:active {
+      text-decoration: none;
+    }
+    .card {
+      background: transparent;
+      padding: 0;
+      margin: 0;
+    }
+    h3 {
+      font-size: $font-size-XS;
+      color: $white;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: $letter-spacing;
+    }
+    .separator {
+      background-color: $grey-950;
+      margin-top: $spacing;
+      margin-bottom: $spacing;
+      margin-left: -25px;
+      width: calc(100% + 50px);
+    }
+  }
+  .call-expanded-questions {
+    position: relative;
+    width: calc(35% - #{$spacing});
+    margin-right: $spacing;
+    h3 {
+      font-size: $font-size-S;
+      color: $grey-300;
+    }
+    p {
+      font-size: $font-size-S;
+    }
+    .list-group-item {
+      padding: 0;
+    }
+    .empty-state-container {
+      @include in-the-middle;
+      text-align: center;
+      md-icon {
+        margin-bottom: $spacing;
+        width: 60px;
+        height: auto;
+      }
+      p {
+        color: $grey-400;
+      }
+    }
+  }
+  .call-expanded-messages {
+    $button-height: 48px;
+    position: relative;
+    width: 40%;
+    a {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      color: $corporate;
+      line-height: $button-height;
+      height: $button-height;
+      border-top: 1px solid $grey-950;
+      text-transform: uppercase;
+      text-align: center;
+      font-size: $font-size-XS;
+      font-weight: bold;
+      &:hover {
+        text-decoration: none;
+        background: rgba($grey-950, .1);
+      }
+    }
+    .empty-state-container {
+      @include in-the-middle;
+      text-align: center;
+      md-icon {
+        margin-bottom: $spacing;
+        width: 60px;
+        height: auto;
+      }
+      p {
+        color: $grey-400;
+        font-size: $font-size-S;
+      }
+    }
+  }
+}
+
+tsl-archive-button {
+  visibility: visible;
+  opacity: 1;
+  top: auto;
+  right: auto;
+}
+
