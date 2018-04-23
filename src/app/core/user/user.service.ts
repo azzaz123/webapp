@@ -13,10 +13,10 @@ import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
-import { UserInfoResponse } from './user-info.interface';
+import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
-import { UserData } from './user-data.interface';
+import { UserData, UserProData } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
@@ -160,6 +160,15 @@ export class UserService extends ResourceService {
   public getInfo(id: string): Observable<UserInfoResponse> {
     return this.http.get(this.API_URL + '/' + id + '/extra-info')
     .map((r: Response) => r.json());
+  }
+
+  public getProInfo(): Observable<UserProInfo> {
+    return this.http.get(this.API_URL + '/protool/extra-info')
+      .map((r: Response) => r.json());
+  }
+
+  public updateProInfo(data: UserProData): Observable<any> {
+    return this.http.post(this.API_URL + '/protool/extra-info', data);
   }
 
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {

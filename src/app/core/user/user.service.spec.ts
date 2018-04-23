@@ -16,11 +16,11 @@ import {
   SELECTED_REASON, STATS, USER_DATA,
   USER_EDIT_DATA, USER_EMAIL, USER_ID,
   USER_INFO_RESPONSE, USER_LOCATION,
-  USER_LOCATION_COORDINATES,
+  USER_LOCATION_COORDINATES, USER_PRO_INFO_RESPONSE,
   USERS_STATS,
   USERS_STATS_RESPONSE, VALIDATIONS, VERIFICATION_LEVEL
 } from '../../../tests/user.fixtures.spec';
-import { UserInfoResponse } from './user-info.interface';
+import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { UserStatsResponse } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
@@ -288,7 +288,7 @@ describe('Service: User', () => {
         redirectUrl = param;
       });
       cookieService.put('publisherId', 'someId');
-      
+
       service.logout();
     });
 
@@ -361,6 +361,31 @@ describe('Service: User', () => {
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/extra-info');
       expect(resp).toEqual(USER_INFO_RESPONSE);
+    });
+  });
+
+  describe('getProInfo', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_PRO_INFO_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: UserProInfo;
+
+      service.getProInfo().subscribe((response: UserProInfo) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/protool/extra-info');
+      expect(resp).toEqual(USER_PRO_INFO_RESPONSE);
+    });
+  });
+
+  describe('updateProInfo', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'post').and.callThrough();
+
+      service.updateProInfo(USER_PRO_INFO_RESPONSE).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/protool/extra-info', USER_PRO_INFO_RESPONSE);
     });
   });
 
