@@ -28,23 +28,8 @@
     </div>
   </div>
   <div class="row call-expanded" *ngIf="open">
-    <a href="{{call.user.webLink}}" target="_blank" class="call-expanded-user-info">
-      <h3 i18n>User rating</h3>
-      <tsl-stars *ngIf="call.user.scoringStars > -1" [stars]="call.user.scoringStars"></tsl-stars>
-      <div class="separator"></div>
+    <div class="call-expanded-user-info">
       <tsl-user-card-calls [user]="call.user"></tsl-user-card-calls>
-    </a>
-    <div class="call-expanded-questions">
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item" *ngFor="let survey of call.surveyResponses">
-          <h3>{{survey.question}}</h3>
-          <p>{{survey.answer.answer}}</p>
-        </li>
-      </ul>
-      <div class="empty-state-container" [hidden]="call.surveyResponses.length">
-        <mat-icon svgIcon="empty-questions" class="questions-empty-state"></mat-icon>
-        <p i18n>This user has not answered the questionnaire</p>
-      </div>
     </div>
     <div class="call-expanded-messages">
       <div class="messages-container">

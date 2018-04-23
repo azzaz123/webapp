@@ -1,12 +1,14 @@
-<a class="card user-info" href="{{user.webLink}}" target="_blank" tslTrackEvent="USER_PROFILE_VIEWED" [params]="{user_id: user.id}">
-  <div class="card-block">
-    <tsl-stars *ngIf="user.scoringStars > -1" [stars]="user.scoringStars" [normalized]="false"></tsl-stars>
+<a class="user-info-calls" href="{{user.webLink}}" target="_blank" tslTrackEvent="USER_PROFILE_VIEWED" [params]="{user_id: user.id}">
+  <div class="user-info-rating-block">
+    <h3 i18n>User rating</h3>
+    <tsl-stars *ngIf="user.scoringStars > -1" [stars]="user.scoringStars"></tsl-stars>
   </div>
-  <ul class="card-block list-group list-group-flush">
-    <li class="list-group-item" *ngIf="phone">
-      <mat-icon svgIcon="call-received"></mat-icon>
-      {{phone}}
-    </li>
+
+  <ul class="user-info-extra">
+
+  </ul>
+
+  <!-- <ul class="card-block list-group list-group-flush">
     <li class="list-group-item">
       <mat-icon svgIcon="location"></mat-icon>
       <span [hidden]="!user.itemDistance" i18n="The distance between the user and the item">{{user.itemDistance | number:'1.0-1' // i18n(ph="DISTANCE")}}km from you</span>
@@ -21,18 +23,5 @@
                     i18n>{{user.receivedReports // i18n(ph="TOTAL_NUMBER")}} spam/scam reports</ng-container>
     </span>
     </li>
-  </ul>
-</a>
-<a class="card" href="{{user?.sellingItem.webLink}}" tslTrackEvent="CONVERSATION_SELLING_CAR_VIEWED" [params]="{item_id: user.sellingItem.id}"
-   target="_blank" *ngIf="user.sellingItem">
-  <div class="card-block">
-    <tsl-item-avatar class="pull-left" [item]="user?.sellingItem" fallbackLight="true"></tsl-item-avatar>
-    <div class="item-details-wrap">
-      <div class="item-details">
-        <span class="selling-label" i18n>Selling</span>
-        <span *ngIf="user.itemsCount > 0" class="items-count" i18n>+{{user.itemsCount // i18n(ph="ITEMS_COUNT")}} More</span>
-        <h2>{{user.sellingItem.title}}</h2>
-      </div>
-    </div>
-  </div>
+  </ul> -->
 </a>

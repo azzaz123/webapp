@@ -18,7 +18,7 @@ $expanded-horizontal-padding: 25px;
   cursor: auto;
 }
 
-.col-md-1:last-of-type {
+.col-1:last-of-type {
   text-align: right;
   padding-right: 0;
   tsl-archive-button {
@@ -31,7 +31,7 @@ span {
   font-size: $font-size-S;
 }
 
-[class^='col-md'] {
+[class^='col-'] {
   line-height: 50px;
   & * {
     vertical-align: middle;
@@ -39,6 +39,7 @@ span {
 }
 
 .call {
+  border-top: 1px solid $grey-50;
   width: 100%;
   .row {
     margin-left: 0;
@@ -50,10 +51,11 @@ span {
       background-color: $grey-50;
     }
   }
-  &.active .col-user-name {
-    md-icon {
-      transform: rotate(0);
-
+  &.active {
+    .col-user-name {
+      mat-icon {
+        transform: rotate(0);
+      }
     }
   }
 }
@@ -64,9 +66,10 @@ span {
     margin-left: $spacing-S;
     max-width: calc(100% - #{$avatar-size} - #{$spacing});
   }
-  md-icon {
+  mat-icon {
     width: 10px;
     height: $avatar-size;
+    transform: rotate(-90deg);
   }
 }
 
@@ -82,7 +85,6 @@ tsl-user-avatar {
   .icon {
     margin-right: $spacing-S;
   }
-  /* I want to die (╯°□°）╯︵ ┻━┻ */
   .call-received {
     height: 19px;
     vertical-align: sub;
@@ -98,15 +100,12 @@ tsl-user-avatar {
 }
 
 .call-expanded {
-  margin-top: $spacing;
-  margin-bottom: $spacing;
+  padding: $spacing $spacing * 2;
   .call-expanded-user-info,
-  .call-expanded-questions,
   .call-expanded-messages {
-    float: left;
     height: $expanded-height;
     border-radius: $border-radius;
-    background-color: $grey-900;
+    background-color: transparentize($grey-50, 0.5);
     padding: $expanded-vertical-padding $expanded-horizontal-padding;
     overflow: auto;
   }
@@ -115,60 +114,12 @@ tsl-user-avatar {
     overflow: auto;
   }
   .call-expanded-user-info {
-    width: calc(25% - #{$spacing});
+    flex-grow: 1;
     margin-right: $spacing;
     overflow: hidden;
-    &:hover, &:focus, &:active {
-      text-decoration: none;
-    }
-    .card {
-      background: transparent;
-      padding: 0;
-      margin: 0;
-    }
-    h3 {
-      font-size: $font-size-XS;
-      color: $white;
-      text-transform: uppercase;
-      font-weight: bold;
-      letter-spacing: $letter-spacing;
-    }
-    .separator {
-      background-color: $grey-950;
-      margin-top: $spacing;
-      margin-bottom: $spacing;
-      margin-left: -25px;
-      width: calc(100% + 50px);
-    }
-  }
-  .call-expanded-questions {
-    position: relative;
-    width: calc(35% - #{$spacing});
-    margin-right: $spacing;
-    h3 {
-      font-size: $font-size-S;
-      color: $grey-300;
-    }
-    p {
-      font-size: $font-size-S;
-    }
-    .list-group-item {
-      padding: 0;
-    }
-    .empty-state-container {
-      @include in-the-middle;
-      text-align: center;
-      md-icon {
-        margin-bottom: $spacing;
-        width: 60px;
-        height: auto;
-      }
-      p {
-        color: $grey-400;
-      }
-    }
   }
   .call-expanded-messages {
+    flex-grow: 2;
     $button-height: 48px;
     position: relative;
     width: 40%;
@@ -180,20 +131,20 @@ tsl-user-avatar {
       color: $corporate;
       line-height: $button-height;
       height: $button-height;
-      border-top: 1px solid $grey-950;
+      border-top: 1px solid $grey-50;
       text-transform: uppercase;
       text-align: center;
       font-size: $font-size-XS;
       font-weight: bold;
       &:hover {
         text-decoration: none;
-        background: rgba($grey-950, .1);
+        background: rgba($grey-50, .1);
       }
     }
     .empty-state-container {
       @include in-the-middle;
       text-align: center;
-      md-icon {
+      mat-icon {
         margin-bottom: $spacing;
         width: 60px;
         height: auto;
