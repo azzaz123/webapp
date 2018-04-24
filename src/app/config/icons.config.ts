@@ -172,5 +172,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('call-shared', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-shared.svg'));
   matIconRegistry.addSvgIcon('call-received', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-received.svg'));
   matIconRegistry.addSvgIcon('arrow-back', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-back.svg'));
+  matIconRegistry.addSvgIcon('car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/car.svg'));
 
 }

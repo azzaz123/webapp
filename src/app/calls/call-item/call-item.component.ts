@@ -85,11 +85,10 @@ export class CallItemComponent implements OnChanges, OnDestroy {
   }
 
   @HostListener('@remove.done') onAnimationDone($event: Event) {
+    console.log('listener', this.call, this.archived);
     if (this.archived) {
       if (this.call instanceof Call) {
         this.callService.stream();
-      } else {
-        this.conversationService.stream();
       }
     }
   }

@@ -9,12 +9,15 @@
       <span>{{call.item.title}}</span>
     </div>
     <div class="col-2 col-phone">
-      <span [ngSwitch]="call.callStatus" placement="top" [ngbTooltip]="call.callStatus | callStatusLabel" class="icon" container="body">
+      <span [ngSwitch]="call.callStatus" class="icon">
         <mat-icon *ngSwitchCase="'ANSWERED'" class="call-received" svgIcon="call-received"></mat-icon>
         <mat-icon *ngSwitchCase="'MISSED'" class="call-missed" svgIcon="call-missed" class="call-missed"></mat-icon>
         <mat-icon *ngSwitchDefault class="call-shared" svgIcon="call-shared"></mat-icon>
       </span>
-      <span>{{call.phone}}</span>
+      <div>
+        <span>{{call.phone}}</span>
+        <p>{{call.callStatus | callStatusLabel}}</p>
+      </div>
     </div>
     <div class="col-2">
       <span>{{call.modifiedDate | amCalendar:momentConfig}}</span>

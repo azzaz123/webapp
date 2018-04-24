@@ -82,6 +82,7 @@ tsl-user-avatar {
 }
 
 .col-phone {
+  display: flex;
   .icon {
     margin-right: $spacing-S;
   }
@@ -96,6 +97,12 @@ tsl-user-avatar {
   .call-missed {
     height: 11px;
     vertical-align: baseline;
+  }
+  p {
+    margin: -10px 0 0 0;
+    line-height: 0;
+    font-size: $font-size-XS;
+    color: $grey-250;
   }
 }
 
@@ -116,6 +123,7 @@ tsl-user-avatar {
   .call-expanded-user-info {
     flex-grow: 1;
     margin-right: $spacing;
+    padding-bottom: 0;
     overflow: hidden;
   }
   .call-expanded-messages {

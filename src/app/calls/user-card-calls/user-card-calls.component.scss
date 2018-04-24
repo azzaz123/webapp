@@ -2,11 +2,8 @@
 
 :host {
   display: block;
-  a {
-    &:hover, &:focus, &:active {
-      text-decoration: none;
-    }
-  }
+  position: relative;
+  height: 100%;
 }
 
 .user-info-calls {
@@ -26,6 +23,40 @@
   .user-info-extra {
     margin-top: $spacing;
     border-top: 1px solid $grey-50;
-    padding: 0;
+    padding: 5px 0 0 0;
+    .list-group-item {
+      border: 0;
+      background-color: transparent;
+      padding: 0.45rem 0;
+      font-size: $font-size-S;
+      color: $grey-900;
+      mat-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 23px;
+      }
+      a {
+        &:hover, &:active {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  .user-info-link {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #13C1AC;
+    line-height: 48px;
+    height: 48px;
+    border-top: 1px solid #ECEFF1;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    &:hover, &:active {
+      text-decoration: none;
+    }
   }
 }

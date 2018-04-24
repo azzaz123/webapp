@@ -54,7 +54,7 @@ export class I18nService {
       messages: 'Messages',
       shared: 'Shared Phone',
       missed: 'Missed Call',
-      answered: 'Received Call',
+      answered: 'Call',
       chats: 'Chats',
       sold: 'Sold',
       views: 'Views',
