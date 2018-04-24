@@ -26,6 +26,7 @@ import { ArchivableComponent } from './archivable/archivable.component';
 import { ArchiveButtonComponent } from './archive-button/archive-button.component';
 import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { SwitchComponent } from './switch/switch.component';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     ArchivableComponent,
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
+    SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule
   ],
@@ -78,6 +80,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
     UserAvatarComponent,
+    SwitchComponent,
     ReviewModalComponent
   ],
   providers: [

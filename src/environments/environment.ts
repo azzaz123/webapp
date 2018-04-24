@@ -5,6 +5,7 @@
 
 export const environment: any = {
   production: false,
+  profeatures: true,
   name: 'local',
   baseUrl: 'https://apigw.dock133.wallapop.com/',
   xmppDomain: 'dock133.wallapop.com',
