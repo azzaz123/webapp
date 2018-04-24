@@ -35,6 +35,9 @@ describe('ProfileProInfoComponent', () => {
           },
           updateProInfo() {
             return Observable.of({});
+          },
+          updateProInfoNotifications() {
+            return Observable.of({});
           }
         }
         },
@@ -113,14 +116,6 @@ describe('ProfileProInfoComponent', () => {
       });
     });
 
-    it('should call updateProInfo when notificationsForm changes', () => {
-      spyOn(userService, 'updateProInfo').and.callThrough();
-      component.notificationsForm.controls['new_chat_notification'].patchValue(false);
-
-      fixture.detectChanges();
-
-      expect(userService.updateProInfo).toHaveBeenCalledWith(component.notificationsForm.value);
-    });
   });
 
   describe('canExit', () => {
@@ -182,6 +177,20 @@ describe('ProfileProInfoComponent', () => {
       it('should call i18nError if form is invalid', () => {
         expect(errorsService.i18nError).toHaveBeenCalledWith('formErrors');
       });
+    });
+  });
+
+  describe('onNotificationChange', () => {
+    it('should call updateProInfoNotifications', () => {
+      spyOn(userService, 'updateProInfoNotifications').and.callThrough();
+      spyOn(errorsService, 'i18nSuccess');
+
+      component.onNotificationChange('new_chat_notification', true);
+
+      expect(userService.updateProInfoNotifications).toHaveBeenCalledWith({
+        new_chat_notification: true
+      });
+      expect(errorsService.i18nSuccess).toHaveBeenCalledWith('settingsEdited');
     });
   });
 });

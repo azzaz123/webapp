@@ -1,7 +1,7 @@
 import { UserInfoResponse, UserProInfo } from '../app/core/user/user-info.interface';
 import { Coordinate } from '../app/core/geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from '../app/core/user/user-stats.interface';
-import { UserData } from '../app/core/user/user-data.interface';
+import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
 
 import { Image, UserLocation, UserResponse, UserStats, UserValidations } from '../app/core/user/user-response.interface';
@@ -261,16 +261,24 @@ export const USER_EDIT_DATA: UserData = {
   gender: 'M'
 };
 
-export const USER_PRO_INFO_RESPONSE: UserProInfo = {
+export const USER_PRO_DATA: UserProData = {
   first_name: 'firstName',
   last_name: 'lastName',
   description: 'description',
   opening_hours: 'opening_hours',
-  phone_number: 'phone_number',
+  phone_number: 'phone_number'
+};
+
+export const USER_PRO_INFO_NOTIFICATIONS: UserProDataNotifications = {
   new_chat_notification: true,
   only_chat_phone_notification: true,
   consent_third_parties_use_data: true,
   news_notification: true
+};
+
+export const USER_PRO_INFO_RESPONSE: UserProInfo = <UserProInfo>{
+  ...USER_PRO_DATA,
+  ...USER_PRO_INFO_NOTIFICATIONS
 };
 
 export const REASONS: UnsubscribeReason[] = [{

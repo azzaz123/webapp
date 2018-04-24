@@ -16,7 +16,7 @@ import {
   SELECTED_REASON, STATS, USER_DATA,
   USER_EDIT_DATA, USER_EMAIL, USER_ID,
   USER_INFO_RESPONSE, USER_LOCATION,
-  USER_LOCATION_COORDINATES, USER_PRO_INFO_RESPONSE,
+  USER_LOCATION_COORDINATES, USER_PRO_DATA, USER_PRO_INFO_NOTIFICATIONS, USER_PRO_INFO_RESPONSE,
   USERS_STATS,
   USERS_STATS_RESPONSE, VALIDATIONS, VERIFICATION_LEVEL
 } from '../../../tests/user.fixtures.spec';
@@ -375,7 +375,7 @@ describe('Service: User', () => {
         resp = response;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/protool/extra-info');
+      expect(http.get).toHaveBeenCalledWith('api/v3/protool/extraInfo');
       expect(resp).toEqual(USER_PRO_INFO_RESPONSE);
     });
   });
@@ -384,9 +384,19 @@ describe('Service: User', () => {
     it('should call endpoint', () => {
       spyOn(http, 'post').and.callThrough();
 
-      service.updateProInfo(USER_PRO_INFO_RESPONSE).subscribe();
+      service.updateProInfo(USER_PRO_DATA).subscribe();
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/protool/extra-info', USER_PRO_INFO_RESPONSE);
+      expect(http.post).toHaveBeenCalledWith('api/v3/protool/extraInfo', USER_PRO_DATA);
+    });
+  });
+
+  describe('updateProInfoNotifications', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'post').and.callThrough();
+
+      service.updateProInfoNotifications(USER_PRO_INFO_NOTIFICATIONS).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/protool/extraInfo/notifications', USER_PRO_INFO_NOTIFICATIONS);
     });
   });
 
