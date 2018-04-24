@@ -12,6 +12,8 @@ import { CanComponentDeactivate } from '../shared/guards/can-component-deactivat
 import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
 import { HttpService } from '../core/http/http.service';
 import { User } from '../core/user/user';
+import { PrivacyRequestData } from '../core/privacy/privacy';
+import { PrivacyService } from '../core/privacy/privacy.service';
 
 @Component({
   selector: 'tsl-profile',
@@ -27,6 +29,7 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
   options: NgUploaderOptions;
   public hasNotSavedChanges: boolean;
+  public allowSegmentation: boolean;
   private oldFormValue: any;
 
   constructor(private userService: UserService,
@@ -34,6 +37,7 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
     private errorsService: ErrorsService,
     private http: HttpService,
     private modalService: NgbModal,
+    private privacyService: PrivacyService,
     @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
@@ -61,6 +65,9 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
         this.setUserData();
         this.detectFormChanges();
       }
+    });
+    this.privacyService.allowSegmentation$.subscribe((value: boolean) => {
+      this.allowSegmentation = value;
     });
   }
 
@@ -173,6 +180,11 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       id: output.file.id
     });
     this.file = null;
+  }
+
+  public switchAllowSegmentation (value: boolean) {
+    this.privacyService.updatePrivacy(new PrivacyRequestData('gdpr_display', '0', value))
+      .subscribe();
   }
 
   public logout($event: any) {

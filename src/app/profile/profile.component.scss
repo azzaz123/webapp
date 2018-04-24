@@ -75,7 +75,7 @@ $border: solid 1px $grey-50;
     &:last-of-type {
       margin-bottom: 0;
     }
-    label {
+    > label, > div:first-child {
       text-align: right;
       line-height: 27px;
       color: $grey-900;
