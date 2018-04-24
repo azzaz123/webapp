@@ -76,19 +76,27 @@
       <div class="row">
         <div class="col-10 offset-2">
           <div class="row">
-            <label class="col-3 switch"><tsl-switch formControlName="new_chat_notification"></tsl-switch></label>
+            <label class="col-3 switch">
+              <tsl-switch formControlName="new_chat_notification" (onChange)="onNotificationChange('new_chat_notification', $event)"></tsl-switch>
+            </label>
             <div class="col-9" i18n>Notify me when I receive new chats</div>
           </div>
           <div class="row">
-            <label class="col-3 switch"><tsl-switch formControlName="only_chat_phone_notification"></tsl-switch></label>
+            <label class="col-3 switch">
+              <tsl-switch formControlName="only_chat_phone_notification" (onChange)="onNotificationChange('only_chat_phone_notification', $event)"></tsl-switch>
+            </label>
             <div class="col-9" i18n>I want to receive only chats with telephone number</div>
           </div>
           <div class="row">
-            <label class="col-3 switch"><tsl-switch formControlName="consent_third_parties_use_data"></tsl-switch></label>
+            <label class="col-3 switch">
+              <tsl-switch formControlName="consent_third_parties_use_data" (onChange)="onNotificationChange('consent_third_parties_use_data', $event)"></tsl-switch>
+            </label>
             <div class="col-9" i18n>I consent third parties to use my data</div>
           </div>
           <div class="row">
-            <label class="col-3 switch"><tsl-switch formControlName="news_notification"></tsl-switch></label>
+            <label class="col-3 switch">
+              <tsl-switch formControlName="news_notification" (onChange)="onNotificationChange('news_notification', $event)"></tsl-switch>
+            </label>
             <div class="col-9" i18n>Notify me with amazing news & promotions</div>
           </div>
         </div>

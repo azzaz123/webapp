@@ -16,7 +16,7 @@ import { environment } from '../../../environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
-import { UserData, UserProData } from './user-data.interface';
+import { UserData, UserProData, UserProDataNotifications } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
@@ -26,6 +26,7 @@ export class UserService extends ResourceService {
 
   public queryParams: any = {};
   protected API_URL = 'api/v3/users';
+  protected API_URL_PROTOOL = 'api/v3/protool';
   private banReasons: BanReason[] = null;
   protected _user: User;
   private meObservable: Observable<User>;
@@ -163,12 +164,16 @@ export class UserService extends ResourceService {
   }
 
   public getProInfo(): Observable<UserProInfo> {
-    return this.http.get(this.API_URL + '/protool/extra-info')
+    return this.http.get(this.API_URL_PROTOOL + '/extraInfo')
       .map((r: Response) => r.json());
   }
 
   public updateProInfo(data: UserProData): Observable<any> {
-    return this.http.post(this.API_URL + '/protool/extra-info', data);
+    return this.http.post(this.API_URL_PROTOOL + '/extraInfo', data);
+  }
+
+  public updateProInfoNotifications(data: UserProDataNotifications): Observable<any> {
+    return this.http.post(this.API_URL_PROTOOL + '/extraInfo/notifications', data);
   }
 
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {

@@ -51,11 +51,6 @@ export class ProfileProInfoComponent implements OnInit {
       this.userInfo = userInfo;
       this.setUserData();
     });
-    this.notificationsForm.valueChanges.subscribe(() => {
-      this.userService.updateProInfo(this.notificationsForm.value).subscribe(() => {
-        this.errorsService.i18nSuccess('settingsEdited');
-      });
-    });
   }
 
   private setUserData() {
@@ -74,6 +69,7 @@ export class ProfileProInfoComponent implements OnInit {
         news_notification: this.userInfo.news_notification
       });
     }
+    this.formComponent.hasNotSavedChanges = false;
   }
 
   public canExit() {
@@ -93,6 +89,14 @@ export class ProfileProInfoComponent implements OnInit {
       }
       this.errorsService.i18nError('formErrors');
     }
+  }
+
+  public onNotificationChange(fieldName: string, value: boolean) {
+    this.userService.updateProInfoNotifications({
+      [fieldName]: value
+    }).subscribe(() => {
+      this.errorsService.i18nSuccess('settingsEdited');
+    });
   }
 
 }
