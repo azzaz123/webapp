@@ -243,24 +243,32 @@ export class XmppService {
         this.connected = true;
       });
     });
-    this.client.on('connected', () => {
-      if (this._reconnecting) {
-        this.connected = true;
-        this._reconnecting = false;
-      }
+
+    this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
+      this.client.connect();
     });
-    this.client.on('disconnected', (connection: any) => {
-      this.connected = false;
-      if (!connection.closing) {
-        this._reconnecting = true;
-        this.tryToReconnect();
-        this.eventService.emit(EventService.CONNECTION_ERROR);
-      }
-    });
+    // this.client.on('connected', () => {
+    //   console.log('connect');
+    //   if (this._reconnecting) {
+    //     this.connected = true;
+    //     this._reconnecting = false;
+    //   }
+    // });
+    // this.client.on('disconnected', (connection: any) => {
+    //   this.connected = false;
+    //   console.log('disconnect', connection);
+    //   if (!connection.closing) {
+    //     console.log('connection.closing');
+    //     this._reconnecting = true;
+    //     this.tryToReconnect();
+    //     this.eventService.emit(EventService.CONNECTION_ERROR);
+    //   }
+    // });
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
   }
 
   private tryToReconnect() {
+    console.log('try');
     if (!this.reconnectInterval) {
       this.reconnectInterval = setInterval(() => {
         if (this.connected) {

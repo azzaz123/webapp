@@ -44,6 +44,8 @@ export class AppComponent implements OnInit {
   private previousUrl: string;
   private currentUrl: string;
   private previousSlug: string;
+  private _reconnecting = false;
+  private reconnectInterval: any;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -78,6 +80,7 @@ export class AppComponent implements OnInit {
     this.setTitle();
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
+    this.subscribeConnectionStatus();
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
@@ -119,6 +122,39 @@ export class AppComponent implements OnInit {
 
   private trackAppOpen() {
       this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
+  }
+
+  private tryToReconnect() {
+    console.log('try');
+    if (!this.reconnectInterval) {
+      this.reconnectInterval = setInterval(() => {
+        if (this.xmppService.connected) {
+          this.event.emit(EventService.CONNECTION_RESTORED);
+          clearInterval(this.reconnectInterval);
+        } else {
+          this.event.emit(EventService.CONNECTION_ERROR);
+        }
+      }, 1000);
+    }
+  }
+
+  private subscribeConnectionStatus() {
+    this.connectionService.checkConnection();
+    this.event.subscribe(EventService.CONNECTION_RESTORED, () => {
+      if (this._reconnecting) {
+        this.xmppService.connected = true;
+        this._reconnecting = false;
+      }
+    });
+
+
+    this.event.subscribe(EventService.CONNECTION_ERROR, () => {
+      console.log('disconnected');
+      this.xmppService.connected = false;
+      this._reconnecting = true;
+      this.tryToReconnect();
+    });
+
   }
 
   private subscribeEventUserLogin() {
