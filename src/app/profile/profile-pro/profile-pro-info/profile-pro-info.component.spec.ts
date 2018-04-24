@@ -73,6 +73,14 @@ describe('ProfileProInfoComponent', () => {
   });
 
   describe('ngOninit', () => {
+    it('should call userService.me', () => {
+      expect(userService.me).toHaveBeenCalled();
+    });
+
+    it('should set the user', () => {
+      expect(component.user).toBe(MOCK_USER);
+    });
+
     it('should call userService.getProInfo', () => {
       expect(userService.getProInfo).toHaveBeenCalled();
     });
