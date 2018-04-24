@@ -16,7 +16,7 @@ import {
   SELECTED_REASON, STATS, USER_DATA,
   USER_EDIT_DATA, USER_EMAIL, USER_ID,
   USER_INFO_RESPONSE, USER_LOCATION,
-  USER_LOCATION_COORDINATES, USER_PRO_INFO_RESPONSE,
+  USER_LOCATION_COORDINATES, USER_PRO_DATA, USER_PRO_INFO_NOTIFICATIONS, USER_PRO_INFO_RESPONSE,
   USERS_STATS,
   USERS_STATS_RESPONSE, VALIDATIONS, VERIFICATION_LEVEL
 } from '../../../tests/user.fixtures.spec';
@@ -79,7 +79,8 @@ describe('Service: User', () => {
           provide: NgxPermissionsService,
           useValue: {
             addPermission() {},
-            flushPermissions() {}
+            flushPermissions() {},
+            hasPermission() {}
           }
         }
       ]
@@ -374,7 +375,7 @@ describe('Service: User', () => {
         resp = response;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/users/protool/extra-info');
+      expect(http.get).toHaveBeenCalledWith('api/v3/protool/extraInfo');
       expect(resp).toEqual(USER_PRO_INFO_RESPONSE);
     });
   });
@@ -383,9 +384,19 @@ describe('Service: User', () => {
     it('should call endpoint', () => {
       spyOn(http, 'post').and.callThrough();
 
-      service.updateProInfo(USER_PRO_INFO_RESPONSE).subscribe();
+      service.updateProInfo(USER_PRO_DATA).subscribe();
 
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/protool/extra-info', USER_PRO_INFO_RESPONSE);
+      expect(http.post).toHaveBeenCalledWith('api/v3/protool/extraInfo', USER_PRO_DATA);
+    });
+  });
+
+  describe('updateProInfoNotifications', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'post').and.callThrough();
+
+      service.updateProInfoNotifications(USER_PRO_INFO_NOTIFICATIONS).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/protool/extraInfo/notifications', USER_PRO_INFO_NOTIFICATIONS);
     });
   });
 
@@ -416,6 +427,21 @@ describe('Service: User', () => {
       });
 
       expect(http.get).toHaveBeenCalledWith('api/v3/users/me/stats');
+      expect(resp).toEqual(USERS_STATS_RESPONSE);
+    });
+  });
+
+  describe('getUserStats', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USERS_STATS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+
+      let resp: UserStatsResponse;
+      service.getUserStats(USER_ID).subscribe((response: UserStatsResponse) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/stats');
       expect(resp).toEqual(USERS_STATS_RESPONSE);
     });
   });
@@ -501,6 +527,31 @@ describe('Service: User', () => {
       service.setPermission('normal');
 
       expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
+    });
+  });
+
+  describe('isProfessional', () => {
+    let val: boolean;
+
+    beforeEach(() => {
+      spyOn(service, 'me').and.returnValue(Observable.of({}));
+      spyOn(permissionService, 'hasPermission').and.returnValue(Promise.resolve(true));
+
+      service.isProfessional().subscribe((v) => {
+        val = v;
+      })
+    });
+
+    it('should call me', () => {
+      expect(service.me).toHaveBeenCalled();
+    });
+
+    it('should call hasPermission', () => {
+      expect(permissionService.hasPermission).toHaveBeenCalledWith(PERMISSIONS.professional)
+    });
+
+    it('should return true', () => {
+      expect(val).toBe(true);
     });
   });
 });

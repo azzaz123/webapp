@@ -4,18 +4,21 @@
                            (loaded)="onLoaded($event)"></tsl-conversations-panel>
 </div>
 <div id="right-panel" *ngIf="currentConversation">
+  <tsl-user *ngxPermissionsOnly="['isProfessional']" [user]="currentConversation.user" [phone]="currentConversation.phone"></tsl-user>
   <tsl-item [item]="currentConversation.item" [user]="currentConversation.user"></tsl-item>
   <tsl-ad slotid="div-gpt-ad-1508490196308-0"></tsl-ad>
 </div>
 <div id="center-panel" *ngIf="currentConversation">
-  <div id="top-bar">
-    <a *ngIf="currentConversation?.user.webLink" href="{{ userWebSlug }}" target="_blank">
+  <div id="top-bar" [ngClass]="{professional: isProfessional}">
+    <a *ngIf="currentConversation?.user.webLink" href="{{ userWebSlug }}" target="_blank" class="user-avatar">
         <tsl-user-avatar [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
     </a>
     <tsl-user-avatar *ngIf="!currentConversation?.user.webLink" [user]="this.currentConversation.user" size="40"></tsl-user-avatar>
     <div class="conversation-header-user-info">
       <h5>{{currentConversation?.user.microName}}</h5>
-      <tsl-stars *ngIf="currentConversation.user.scoringStars > -1" [stars]="currentConversation.user.scoringStars" [normalized]="false"></tsl-stars>
+      <div *ngxPermissionsOnly="['isNormal']">
+        <tsl-stars *ngIf="currentConversation.user.scoringStars > -1" [stars]="currentConversation.user.scoringStars" [normalized]="false"></tsl-stars>
+      </div>
     </div>
     <div ngbDropdown placement="bottom-right" class="conversation-header-menu">
       <mat-icon class="menu-icon" svgIcon="menu" ngbDropdownToggle></mat-icon>
@@ -29,7 +32,7 @@
     </div>
   </div>
 
-  <div class="user-detail-wrapper">
+  <div class="user-detail-wrapper" *ngxPermissionsOnly="['isNormal']">
     <tsl-user-detail [user]="currentConversation.user"></tsl-user-detail>
   </div>
 

@@ -16,6 +16,7 @@ export class ProfileProInfoComponent implements OnInit {
   public profileForm: FormGroup;
   public notificationsForm: FormGroup;
   private userInfo: UserProInfo;
+  public user: User;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
 
@@ -43,14 +44,12 @@ export class ProfileProInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userService.me().subscribe((user: User) => {
+      this.user = user;
+    });
     this.userService.getProInfo().subscribe((userInfo: UserProInfo) => {
       this.userInfo = userInfo;
       this.setUserData();
-    });
-    this.notificationsForm.valueChanges.subscribe((a) => {
-      this.userService.updateProInfo(this.notificationsForm.value).subscribe(() => {
-        this.errorsService.i18nSuccess('settingsEdited');
-      });
     });
   }
 
@@ -70,6 +69,7 @@ export class ProfileProInfoComponent implements OnInit {
         news_notification: this.userInfo.news_notification
       });
     }
+    this.formComponent.hasNotSavedChanges = false;
   }
 
   public canExit() {
@@ -89,6 +89,14 @@ export class ProfileProInfoComponent implements OnInit {
       }
       this.errorsService.i18nError('formErrors');
     }
+  }
+
+  public onNotificationChange(fieldName: string, value: boolean) {
+    this.userService.updateProInfoNotifications({
+      [fieldName]: value
+    }).subscribe(() => {
+      this.errorsService.i18nSuccess('settingsEdited');
+    });
   }
 
 }

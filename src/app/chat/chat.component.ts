@@ -31,6 +31,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public firstLoad: boolean;
   public chatLoaded: boolean;
   public userWebSlug: string;
+  public isProfessional: boolean;
 
   constructor(private conversationService: ConversationService,
               private itemService: ItemService,
@@ -44,6 +45,9 @@ export class ChatComponent implements OnInit, OnDestroy {
               private persistencyService: PersistencyService,
               private adService: AdService,
               @Inject('SUBDOMAIN') private subdomain: string) {
+    this.userService.isProfessional().subscribe((value: boolean) => {
+      this.isProfessional = value;
+    });
   }
 
   ngOnInit() {
