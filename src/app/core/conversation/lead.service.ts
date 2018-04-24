@@ -79,10 +79,7 @@ export abstract class LeadService {
       until = new Date().getTime();
     }
     return this.xmpp.isConnected()
-    .flatMap((connected: boolean) => {
-      if (!connected) {
-        return Observable.throw('');
-      }
+    .flatMap(() => {
       return this.http.get(this.API_URL, {until: until, hidden: archived})
       .map((res: Response) => res.json())
       .flatMap((res: LeadResponse[]) => {
