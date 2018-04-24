@@ -28,7 +28,8 @@ const CATEGORY_IDS: any = {
   Menu: '41',
   ItemDetail: '103',
   UploadForm: '114',
-  Reactivate: '60'
+  Reactivate: '60',
+  BottomBar: '78'
 };
 
 const SCREENS_IDS: any = {
@@ -498,6 +499,12 @@ export class TrackingService {
     name: '687',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_SELLING_CAR_VIEWED: TrackingEventBase = {
+    name: '691',
+    category: CATEGORY_IDS.BottomBar,
+    screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
 
