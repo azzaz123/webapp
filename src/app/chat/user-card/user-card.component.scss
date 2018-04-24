@@ -1,0 +1,89 @@
+@import "~style/common";
+
+:host {
+  display: block;
+}
+
+.card {
+  color: $grey-900;
+  &.calls-panel {
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    .list-group-flush .list-group-item {
+      padding: 0 0 $spacing 0;
+    }
+    .list-group {
+      padding: 0;
+    }
+  }
+  .card-block {
+    text-align: center;
+    tsl-user-avatar {
+      margin-bottom: $spacing-XS;
+    }
+    .card-title {
+      margin-bottom: $spacing-XS;
+      line-height: 16px;
+      margin-top: -6px;
+    }
+    tsl-stars {
+      margin-bottom: -7px;
+    }
+  }
+  .list-group-flush {
+    padding: $spacing 0;
+    border-top: 1px solid $grey-50;
+    .list-group-item {
+      border: 0;
+      font-size: $font-size-S;
+      padding: 0 $spacing $spacing-S $spacing;
+      display: flex;
+      background: transparent;
+      &:last-child {
+        padding-bottom: 0;
+      }
+      mat-icon {
+        height: 16px;
+        width: 16px;
+        margin-right: $spacing-S;
+        margin-top: 1px;
+      }
+    }
+  }
+  .item-details-wrap {
+    display: flex;
+    flex-direction: row;
+    height: $item-avatar-size;
+    text-align: left;
+    overflow: hidden;
+    .item-details {
+      color: $grey-700;
+      line-height: 20px;
+      margin-bottom: 0;
+      align-self: center;
+      .selling-label {
+        color: $grey-300;
+        font-weight: bold;
+        font-size: $font-size-XS;
+        text-transform: uppercase;
+        margin-right: $spacing-XXS;
+      }
+      h2 {
+        font-size: $font-size-S;
+        line-height: 1.57;
+        max-height: 40px;
+        overflow: hidden;
+      }
+      .items-count {
+        font-size: $font-size-XS;
+        color: $corporate;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+tsl-user-response-rate {
+  text-align: left;
+}

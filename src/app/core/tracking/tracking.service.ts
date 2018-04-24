@@ -24,10 +24,12 @@ const CATEGORY_IDS: any = {
   MyProfile: '48',
   Purchase: '53',
   Conversations: '7',
+  Conversation: '76',
   Menu: '41',
   ItemDetail: '103',
   UploadForm: '114',
-  Reactivate: '60'
+  Reactivate: '60',
+  BottomBar: '78'
 };
 
 const SCREENS_IDS: any = {
@@ -44,7 +46,8 @@ const SCREENS_IDS: any = {
   UploadForm: '139',
   MyItemDetail: '114',
   MyProfile: '112',
-  Conversation: '118'
+  Conversation: '118',
+  Messages: '117'
 };
 
 const TYPES_IDS: any = {
@@ -462,6 +465,30 @@ export class TrackingService {
     screen: SCREENS_IDS.MyCatalog,
     type: TYPES_IDS.Tap
   };
+  public static CONVERSATION_PROCESSED: TrackingEventBase = {
+    name: '676',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Messages,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_LIST_ALL_PROCESSED: TrackingEventBase = {
+    name: '677',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Messages,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_MARK_PENDING: TrackingEventBase = {
+    name: '678',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Messages,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_LIST_PROCESSED_LOADED: TrackingEventBase = {
+    name: '679',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Tap
+  };
   public static MYZONE_MENU_CALLS: TrackingEventBase = {
     name: '686',
     category: CATEGORY_IDS.Button,
@@ -472,6 +499,12 @@ export class TrackingService {
     name: '687',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_SELLING_CAR_VIEWED: TrackingEventBase = {
+    name: '691',
+    category: CATEGORY_IDS.BottomBar,
+    screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
 

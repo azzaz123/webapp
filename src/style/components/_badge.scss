@@ -1,0 +1,9 @@
+.badge {
+  &.badge-pro {
+    background-color: $color-urgent;
+    text-transform: uppercase;
+    font-size: $font-size-S;
+    line-height: 11px;
+    padding: 4px 7px;
+  }
+}

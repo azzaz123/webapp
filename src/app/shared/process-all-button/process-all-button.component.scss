@@ -1,0 +1,15 @@
+@import "~style/common";
+
+:host {
+  a {
+    font-weight: bold;
+    font-size: $font-size-XS;
+    color: $corporate;
+    text-transform: uppercase;
+    cursor: pointer;
+    &:hover {
+      opacity: .8;
+      color: $corporate;
+    }
+  }
+}

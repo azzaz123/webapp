@@ -180,6 +180,16 @@ export class UserService extends ResourceService {
     });
   }
 
+  public getUserStats(userId: string): Observable<UserStatsResponse> {
+    return this.http.get(this.API_URL + '/' + userId + '/stats')
+      .map((r: Response) => {
+        return {
+          ratings: this.toRatingsStats(r.json().ratings),
+          counters: this.toCountersStats(r.json().counters)
+        };
+      });
+  }
+
   public toRatingsStats(ratings): Ratings {
     return ratings.reduce(({}, rating) => {
       return { reviews: rating.value };
@@ -257,6 +267,13 @@ export class UserService extends ResourceService {
     } else {
       this.permissionService.addPermission(PERMISSIONS['normal']);
     }
+  }
+
+  public isProfessional(): Observable<boolean> {
+    return this.me()
+      .flatMap(() => {
+        return Observable.fromPromise(this.permissionService.hasPermission(PERMISSIONS.professional));
+      });
   }
 }
 
