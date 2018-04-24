@@ -24,6 +24,7 @@ import { USER_ID, USER_WEB_SLUG } from '../../tests/user.fixtures.spec';
 import { Item } from '../core/item/item';
 import { ITEM_ID } from '../../tests/item.fixtures.spec';
 import { MOCK_CONVERSATION, SURVEY_RESPONSES } from '../../tests/conversation.fixtures.spec';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 class MockConversationService {
 
@@ -45,6 +46,10 @@ class MockUserService {
   }
 
   public updateBlockStatus() {
+  }
+
+  public isProfessional() {
+    return Observable.of(true);
   }
 }
 
@@ -79,7 +84,7 @@ describe('Component: Chat', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ChatComponent],
-      imports: [NgbModule.forRoot(), FormsModule],
+      imports: [NgbModule.forRoot(), FormsModule, NgxPermissionsModule],
       providers: [
         ChatComponent,
         {provide: ConversationService, useClass: MockConversationService},
@@ -211,6 +216,7 @@ describe('Component: Chat', () => {
 
     it('should call updateBlockStatus on USER_BLOCKED', () => {
       spyOn(userService, 'updateBlockStatus');
+
       component.ngOnInit();
       eventService.emit(EventService.USER_BLOCKED, '1');
 
@@ -219,6 +225,7 @@ describe('Component: Chat', () => {
 
     it('should call updateBlockStatus on USER_UNBLOCKED', () => {
       spyOn(userService, 'updateBlockStatus');
+
       component.ngOnInit();
       eventService.emit(EventService.USER_UNBLOCKED, '2');
 
@@ -233,7 +240,8 @@ describe('Component: Chat', () => {
 
     it('should set firstLoad true if getMetaInformation does NOT return meta', () => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw('err'));
-      component.ngOnInit(); 
+
+      component.ngOnInit();
 
       expect(component.firstLoad).toBe(true);
     });

@@ -10,6 +10,7 @@ import { CookieService } from 'ngx-cookie/index';
 import { HttpService } from '../http/http.service';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
+import { Observable } from 'rxjs/Observable';
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -24,10 +25,12 @@ const CATEGORY_IDS: any = {
   MyProfile: '48',
   Purchase: '53',
   Conversations: '7',
+  Conversation: '76',
   Menu: '41',
   ItemDetail: '103',
   UploadForm: '114',
-  Reactivate: '60'
+  Reactivate: '60',
+  BottomBar: '78'
 };
 
 const SCREENS_IDS: any = {
@@ -44,7 +47,8 @@ const SCREENS_IDS: any = {
   UploadForm: '139',
   MyItemDetail: '114',
   MyProfile: '112',
-  Conversation: '118'
+  Conversation: '118',
+  Messages: '117'
 };
 
 const TYPES_IDS: any = {
@@ -462,6 +466,30 @@ export class TrackingService {
     screen: SCREENS_IDS.MyCatalog,
     type: TYPES_IDS.Tap
   };
+  public static CONVERSATION_PROCESSED: TrackingEventBase = {
+    name: '676',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Messages,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_LIST_ALL_PROCESSED: TrackingEventBase = {
+    name: '677',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Messages,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_MARK_PENDING: TrackingEventBase = {
+    name: '678',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Messages,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_LIST_PROCESSED_LOADED: TrackingEventBase = {
+    name: '679',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Tap
+  };
   public static MYZONE_MENU_CALLS: TrackingEventBase = {
     name: '686',
     category: CATEGORY_IDS.Button,
@@ -472,6 +500,12 @@ export class TrackingService {
     name: '687',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_SELLING_CAR_VIEWED: TrackingEventBase = {
+    name: '691',
+    category: CATEGORY_IDS.BottomBar,
+    screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
 
@@ -493,29 +527,40 @@ export class TrackingService {
   }
 
   track(event: TrackingEventBase, attributes?: any) {
-    const newEvent: TrackingEvent = this.createNewEvent(event, attributes);
-    delete newEvent['sessions'][0]['window'];
-    const stringifiedEvent: string = JSON.stringify(newEvent);
-    const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
-    this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body).subscribe();
+    this.createNewEvent(event, attributes)
+      .flatMap((newEvent: TrackingEvent) => {
+        delete newEvent['sessions'][0]['window'];
+        const stringifiedEvent: string = JSON.stringify(newEvent);
+        const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
+        return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body);
+      }).subscribe();
   }
 
   private setSessionStartTime() {
     this.sessionStartTime = getTimestamp();
   }
 
-  private createNewEvent(event: TrackingEventBase, attributes?: any) {
+  private createNewEvent(event: TrackingEventBase, attributes?: any): Observable<TrackingEvent> {
     const newEvent: TrackingEvent = new TrackingEvent(
       this.winRef.nativeWindow,
       this.userService.user.id,
       this.sessionStartTime,
       event);
-    newEvent.setDeviceInfo( this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId, this.navigatorService.browserName, this.navigatorService.fullVersion);
-    if (attributes) {
-      newEvent.setAttributes(attributes);
-    }
-    newEvent.setSessionId(this.sessionId);
-    return newEvent;
+    newEvent.setDeviceInfo(this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId, this.navigatorService.browserName, this.navigatorService.fullVersion);
+    return this.userService.isProfessional()
+      .map((isProfessional: boolean) => {
+        if (isProfessional) {
+          if (!attributes) {
+            attributes = {};
+          }
+          attributes.professional = true;
+        }
+        if (attributes) {
+          newEvent.setAttributes(attributes);
+        }
+        newEvent.setSessionId(this.sessionId);
+        return newEvent;
+      });
   }
 
   private setSessionId(cookieName: string) {
@@ -541,7 +586,7 @@ export class TrackingService {
   private setCookie(value: string, expiration: number, cookieName: string) {
     const expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + expiration);
-    const cookieOptions = { expires: expirationDate, domain: '.wallapop.com' };
+    const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
 
     this.cookieService.put(cookieName, value, cookieOptions);
   }

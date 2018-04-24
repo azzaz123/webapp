@@ -1,5 +1,6 @@
 export const environment: any = {
   production: false,
+  profeatures: true,
   name: 'docker',
   baseUrl: 'https://apigw.dockXXX.wallapop.com/',
   xmppDomain: 'dockXXX.wallapop.com',
