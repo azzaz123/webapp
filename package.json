@@ -8,7 +8,7 @@
     "builddev": "ng build --env=dev --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "builddocker": "ng build --env=docker --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "builddocker-en": "ng build --env=docker --aot --no-progress",
-    "buildbeta": "ng build --env=beta --output-hashing all --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
+    "buildbeta": "ng build --prod --env=beta --output-hashing all --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "buildbeta-en": "ng build --env=beta --output-hashing all --aot --no-progress",
     "buildprod": "ng build --prod --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "buildprod-en": "ng build --prod --aot --no-progress",
