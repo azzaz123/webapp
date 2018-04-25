@@ -2,7 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileProInfoComponent } from './profile-pro-info.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_USER, USER_LOCATION_COORDINATES, USER_PRO_INFO_RESPONSE } from '../../../../tests/user.fixtures.spec';
+import {
+  MOCK_FULL_USER,
+  USER_LOCATION_COORDINATES,
+  USER_PRO_INFO_RESPONSE
+} from '../../../../tests/user.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../../core/user/user.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,6 +14,8 @@ import { ProfileFormComponent } from '../../profile-form/profile-form.component'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { SwitchComponent } from '../../../shared/switch/switch.component';
+
+const USER_BIRTH_DATE = '2018-04-12';
 
 describe('ProfileProInfoComponent', () => {
   let component: ProfileProInfoComponent;
@@ -28,7 +34,7 @@ describe('ProfileProInfoComponent', () => {
         {
           provide: UserService, useValue: {
           me() {
-            return Observable.of(MOCK_USER);
+            return Observable.of(MOCK_FULL_USER);
           },
           getProInfo() {
             return Observable.of(USER_PRO_INFO_RESPONSE);
@@ -37,6 +43,9 @@ describe('ProfileProInfoComponent', () => {
             return Observable.of({});
           },
           updateProInfoNotifications() {
+            return Observable.of({});
+          },
+          edit() {
             return Observable.of({});
           }
         }
@@ -81,7 +90,7 @@ describe('ProfileProInfoComponent', () => {
     });
 
     it('should set the user', () => {
-      expect(component.user).toBe(MOCK_USER);
+      expect(component.user).toBe(MOCK_FULL_USER);
     });
 
     it('should call userService.getProInfo', () => {
@@ -94,8 +103,8 @@ describe('ProfileProInfoComponent', () => {
 
     it('should set profile form data', () => {
       expect(component.profileForm.value).toEqual({
-        first_name: USER_PRO_INFO_RESPONSE.first_name,
-        last_name: USER_PRO_INFO_RESPONSE.last_name,
+        first_name: MOCK_FULL_USER.firstName,
+        last_name: MOCK_FULL_USER.lastName,
         phone_number: USER_PRO_INFO_RESPONSE.phone_number,
         description: USER_PRO_INFO_RESPONSE.description,
         opening_hours: USER_PRO_INFO_RESPONSE.opening_hours,
@@ -134,6 +143,7 @@ describe('ProfileProInfoComponent', () => {
 
       beforeEach(() => {
         spyOn(userService, 'updateProInfo').and.callThrough();
+        spyOn(userService, 'edit').and.callThrough();
         spyOn(errorsService, 'i18nSuccess');
         component.profileForm.patchValue(USER_PRO_INFO_RESPONSE);
         component.profileForm.get('location.address').patchValue(USER_LOCATION_COORDINATES.name);
@@ -144,13 +154,22 @@ describe('ProfileProInfoComponent', () => {
         component.onSubmit();
       });
 
-      it('should call edit', () => {
+      it('should call updateProInfo', () => {
         expect(userService.updateProInfo).toHaveBeenCalledWith({
-          first_name: USER_PRO_INFO_RESPONSE.first_name,
-          last_name: USER_PRO_INFO_RESPONSE.last_name,
+          first_name: MOCK_FULL_USER.firstName,
+          last_name: MOCK_FULL_USER.lastName,
           phone_number: USER_PRO_INFO_RESPONSE.phone_number,
           description: USER_PRO_INFO_RESPONSE.description,
           opening_hours: USER_PRO_INFO_RESPONSE.opening_hours
+        });
+      });
+
+      it('should call edit', () => {
+        expect(userService.edit).toHaveBeenCalledWith({
+          first_name: MOCK_FULL_USER.firstName,
+          last_name: MOCK_FULL_USER.lastName,
+          birth_date: USER_BIRTH_DATE,
+          gender: MOCK_FULL_USER.gender
         });
       });
 
