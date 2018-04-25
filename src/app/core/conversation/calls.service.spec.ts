@@ -26,7 +26,7 @@ let userService: UserService;
 let itemService: ItemService;
 let conversationService: ConversationService;
 
-fdescribe('CallService', () => {
+describe('CallsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -226,7 +226,7 @@ fdescribe('CallService', () => {
           result = r;
         });
         const WITH_SHARED_STATUS = 3;
-        const MIXED_CALLS: Call[] = [...createCallsArray(6), ...createConversationsArray(WITH_SHARED_STATUS)];
+        const MIXED_CALLS: any[] = [...createCallsArray(6), ...createConversationsArray(WITH_SHARED_STATUS)];
         service.stream$.next(MIXED_CALLS);
         conversationService.stream$.next([]);
         expect(result.length).toBe(WITH_SHARED_STATUS);
@@ -237,7 +237,7 @@ fdescribe('CallService', () => {
         });
         const WITH_ANSWERED_STATUS = 3;
         const WITH_MISSED_STATUS = 4;
-        const MIXED_CALLS: Call[] = [
+        const MIXED_CALLS: any[] = [
           ...createConversationsArray(6),
           ...createCallsArray(WITH_ANSWERED_STATUS, 'ANSWERED'),
           ...createCallsArray(WITH_MISSED_STATUS, 'MISSED')
@@ -311,7 +311,7 @@ fdescribe('CallService', () => {
 
   describe('mapRecordData', () => {
     it('should return a Call object', () => {
-      const response: Call[] = service['mapRecordData'](CALLS_DATA[0]);
+      const response: Call = service['mapRecordData'](CALLS_DATA[0]);
       expect(response instanceof Call).toBeTruthy();
     });
   });
@@ -333,7 +333,7 @@ fdescribe('CallService', () => {
     const CONVERSATIONS: Conversation[] = createConversationsArray(4);
     const RETURNED_CONVERSATIONS: Conversation[] = createConversationsArray(2);
     beforeEach(() => {
-      spyOn(service, 'bulkArchive').and.returnValue(RETURNED_CONVERSATIONS);
+      spyOn<any>(service, 'bulkArchive').and.returnValue(RETURNED_CONVERSATIONS);
       spyOn(service, 'stream');
       spyOn(conversationService, 'stream');
       spyOn(conversationService, 'archiveWithPhones');
