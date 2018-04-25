@@ -46,7 +46,8 @@ const SCREENS_IDS: any = {
   MyItemDetail: '114',
   MyProfile: '112',
   Conversation: '118',
-  Messages: '117'
+  Messages: '117',
+  ProPhoneManager: '94'
 };
 
 const TYPES_IDS: any = {
@@ -504,6 +505,36 @@ export class TrackingService {
     name: '690',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_OPENED: TrackingEventBase = {
+    name: '396',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_LIST_PROCESSED_LOADED: TrackingEventBase = {
+    name: '399',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_LIST_ACTIVE_LOADED: TrackingEventBase = {
+    name: '392',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_VIEWED_CONVERSATION: TrackingEventBase = {
+    name: '395',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_LIST_ALL_PROCESSED: TrackingEventBase = {
+    name: '401',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
     type: TYPES_IDS.Tap
   };
 

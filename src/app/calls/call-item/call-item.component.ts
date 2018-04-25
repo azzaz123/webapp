@@ -18,8 +18,8 @@ import { ConversationService } from '../../core/conversation/conversation.servic
 export class CallItemComponent implements OnChanges, OnDestroy {
 
   @Input() call: Call;
-  @HostBinding('@remove') archived: false;
 
+  @HostBinding('class.archived') @HostBinding('@remove') archived = false;
   @HostBinding('class.archive') get archive(): boolean {
     return this.call.archived;
   }
@@ -78,18 +78,15 @@ export class CallItemComponent implements OnChanges, OnDestroy {
 
   changeExpandedState() {
     if (!this.open) {
-      // this.trackingService.track(TrackingService.PHONE_LEAD_OPENED, {lead_id: this.call.id});
+      this.trackingService.track(TrackingService.PHONE_LEAD_OPENED, {lead_id: this.call.id});
       this.eventService.emit(EventService.CLOSE_EXPANDED_CALLS);
     }
     this.open = !this.open;
   }
 
   @HostListener('@remove.done') onAnimationDone($event: Event) {
-    console.log('listener', this.call, this.archived);
     if (this.archived) {
-      if (this.call instanceof Call) {
         this.callService.stream();
-      }
     }
   }
 }

@@ -58,20 +58,16 @@ export class CallsService extends LeadService {
     const end: number = init + pageSize;
     return this.getConversationsWithPhone(archive)
     .flatMap((conversations: Lead[]) => {
-      console.log('hey', conversations, archive, this.stream$.asObservable());
       return (archive ? this.archivedStream$ : this.stream$).asObservable()
       .map((calls: Lead[]) => {
-        console.log('getpage1', calls);
         return conversations.concat(calls);
       });
     })
     .map((calls: Lead[]) => {
-      console.log('calls', status);
       if (status) {
         const statuses: string[] = status.split(',');
         let bool: boolean;
         return calls.filter((call: Lead) => {
-          console.log('calls', call);
           bool = false;
           statuses.forEach((callStatus: string) => {
             if (callStatus === 'SHARED') {

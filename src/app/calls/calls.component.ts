@@ -45,16 +45,19 @@ export class CallsComponent implements OnInit, OnDestroy {
   }
 
   public getCalls() {
-    console.log('hola', this.page, this.archive, this.status);
     if (this.callsSubscription) {
       this.callsSubscription.unsubscribe();
     }
     this.callsSubscription = this.callService.getPage(this.page, this.archive, this.status).takeWhile(() => {
       return this.active;
     }).subscribe((calls: Call[]) => {
-      console.log('getCalls', calls);
       this.calls = calls;
       this.loading = false;
+      if (this.archive) {
+        this.trackingService.track(TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED);
+      } else {
+        this.trackingService.track(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
+      }
     });
   }
 
