@@ -4,8 +4,6 @@ export interface UserInfoResponse {
 }
 
 export interface UserProInfo {
-  first_name: string;
-  last_name: string;
   description: string;
   opening_hours: string;
   phone_number: string;

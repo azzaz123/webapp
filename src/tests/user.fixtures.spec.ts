@@ -120,6 +120,27 @@ export const MOCK_USER: User = new User(
   USER_DATA.web_slug
 );
 
+export const MOCK_FULL_USER = new User(
+  USER_DATA.id,
+  USER_DATA.micro_name,
+  USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  USER_DATA.received_reports,
+  USER_DATA.web_slug,
+  USER_DATA.first_name,
+  USER_DATA.last_name,
+  USER_DATA.birth_date,
+  USER_DATA.gender
+);
+
 export const MOCK_USER_PRO: User = new User(
   USER_DATA.id,
   USER_DATA.micro_name,
@@ -262,8 +283,6 @@ export const USER_EDIT_DATA: UserData = {
 };
 
 export const USER_PRO_DATA: UserProData = {
-  first_name: 'firstName',
-  last_name: 'lastName',
   description: 'description',
   opening_hours: 'opening_hours',
   phone_number: 'phone_number'
