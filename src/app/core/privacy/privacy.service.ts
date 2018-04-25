@@ -50,7 +50,7 @@ export class PrivacyService {
       for (const key in this._privacyList[permissionName]) {
         if (this._privacyList[permissionName].hasOwnProperty(key)) {
           const permission: PrivacyVersionItem = this._privacyList[permissionName][key];
-          if (permission && permission.version === version) {
+          if (permission && permission.version === version && permission.modified_date) {
             return permission.allow ? PRIVACY_STATUS.allow : PRIVACY_STATUS.disallow;
           }
         }

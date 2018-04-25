@@ -16,6 +16,7 @@ export class PrivacyRequestData {
 export interface PrivacyVersionItem {
   version: string;
   allow: boolean;
+  modified_date?: string;
 }
 
 export interface PrivacyList {
