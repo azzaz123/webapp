@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PaymentService } from '../../../core/payments/payment.service';
+import { PacksModel } from '../../../core/payments/payment.model';
 
 @Component({
   selector: 'tsl-profile-pro-subscription',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileProSubscriptionComponent implements OnInit {
 
-  constructor() { }
+  public packs: PacksModel;
+  public email = 'ventas.motor@wallapop.com';
+
+  constructor(private paymentsService: PaymentService) { }
 
   ngOnInit() {
+    this.paymentsService.getPacks().subscribe((packs: PacksModel) => {
+      this.packs = packs;
+    });
   }
 
 }

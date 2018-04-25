@@ -1,0 +1,111 @@
+@import "~style/common";
+
+.box-content {
+  padding: $spacing-L 100px;
+}
+
+.packs {
+  display: flex;
+}
+
+h2 {
+  font-size: $font-size-L;
+  font-weight: bold;
+}
+
+.description {
+  font-size: $font-size-S;
+  line-height: 1.29;
+  color: $grey-250;
+  margin-right: 80px;
+}
+
+.pack {
+  padding: $spacing $spacing-L;
+  border: solid 2px $grey-50;
+  border-radius: $border-radius;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: normal;
+  flex:1;
+  margin: $spacing / 2;
+  width: 180px;
+  .quantity-container {
+    position: relative;
+    .quantity {
+      $height: 86px;
+      background-color: $grey-50;
+      border-radius: 50%;
+      @include square($height);
+      line-height: $height;
+      font-weight: bold;
+      font-size: 42px;
+      color: $grey-500;
+    }
+    .quantity-time {
+      font-size: $font-size-XS;
+      color: $grey-250;
+      position: absolute;
+      top: 20px;
+      right: -30px;
+    }
+  }
+  .type {
+    font-size: $font-size;
+    color: $grey-250;
+    text-transform: uppercase;
+    margin-top: $spacing;
+  }
+  .price {
+    font-size: $font-size;
+    color: $grey-500;
+    font-weight: bold;
+    flex-grow: 1;
+  }
+  .discount {
+    font-size: $font-size-S;
+    margin-bottom: $spacing;
+  }
+  .btn {
+    background-color: $grey-50;
+    color: $grey-500;
+    border-radius: $button-border-radius;
+  }
+}
+
+.city-bumps, .country-bumps {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.city-bumps {
+  h2 {
+    color: $corporate;
+  }
+  .discount {
+    color: $corporate;
+  }
+  .btn {
+    &:hover {
+      background-color: $corporate;
+      color: $white;
+    }
+  }
+}
+
+.country-bumps {
+  h2 {
+    color: $country-bump;
+  }
+  .discount {
+    color: $country-bump;
+  }
+  .btn {
+    &:hover {
+      background-color: $country-bump;
+      color: $white;
+    }
+  }
+}
