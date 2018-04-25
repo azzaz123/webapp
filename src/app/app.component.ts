@@ -124,8 +124,24 @@ export class AppComponent implements OnInit {
       this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
   }
 
+  private subscribeConnectionStatus() {
+    this.connectionService.checkConnection();
+
+    this.event.subscribe(EventService.CONNECTION_RESTORED, () => {
+      if (this._reconnecting) {
+        this.xmppService.connected = true;
+        this._reconnecting = false;
+      }
+    });
+
+    this.event.subscribe(EventService.CONNECTION_ERROR, () => {
+      this.xmppService.connected = false;
+      this._reconnecting = true;
+      this.tryToReconnect();
+    });
+  }
+
   private tryToReconnect() {
-    console.log('try');
     if (!this.reconnectInterval) {
       this.reconnectInterval = setInterval(() => {
         if (this.xmppService.connected) {
@@ -136,25 +152,6 @@ export class AppComponent implements OnInit {
         }
       }, 1000);
     }
-  }
-
-  private subscribeConnectionStatus() {
-    this.connectionService.checkConnection();
-    this.event.subscribe(EventService.CONNECTION_RESTORED, () => {
-      if (this._reconnecting) {
-        this.xmppService.connected = true;
-        this._reconnecting = false;
-      }
-    });
-
-
-    this.event.subscribe(EventService.CONNECTION_ERROR, () => {
-      console.log('disconnected');
-      this.xmppService.connected = false;
-      this._reconnecting = true;
-      this.tryToReconnect();
-    });
-
   }
 
   private subscribeEventUserLogin() {
