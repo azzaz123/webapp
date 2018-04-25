@@ -5,34 +5,13 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { USER_DATA } from '../../tests/user.fixtures.spec';
+import { MOCK_FULL_USER, USER_DATA } from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { User } from '../core/user/user';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
 
-const MOCK_USER = new User(
-  USER_DATA.id,
-  USER_DATA.micro_name,
-  USER_DATA.image,
-  USER_DATA.location,
-  USER_DATA.stats,
-  USER_DATA.validations,
-  USER_DATA.verification_level,
-  USER_DATA.scoring_stars,
-  USER_DATA.scoring_starts,
-  USER_DATA.response_rate,
-  USER_DATA.online,
-  USER_DATA.type,
-  USER_DATA.received_reports,
-  USER_DATA.web_slug,
-  USER_DATA.first_name,
-  USER_DATA.last_name,
-  USER_DATA.birth_date,
-  USER_DATA.gender
-);
-
-const USER_BIRTH_DATE = '1987-02-10';
+const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
 
 describe('ProfileComponent', () => {
@@ -51,9 +30,9 @@ describe('ProfileComponent', () => {
       providers: [
         {
           provide: UserService, useValue: {
-          user: MOCK_USER,
+          user: MOCK_FULL_USER,
           me() {
-            return Observable.of(MOCK_USER);
+            return Observable.of(MOCK_FULL_USER);
           }
         }
         },
@@ -102,7 +81,7 @@ describe('ProfileComponent', () => {
     });
 
     it('should set the private user variable with the content of the user', () => {
-      expect(component.user).toBe(MOCK_USER);
+      expect(component.user).toBe(MOCK_FULL_USER);
     });
 
     it('should set userUrl', () => {

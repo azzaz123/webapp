@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+
 @Component({
   selector: 'tsl-switch',
   templateUrl: './switch.component.html',
@@ -15,18 +16,20 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class SwitchComponent implements ControlValueAccessor {
 
-  @Input() checked = false;
   @Input() disabled = false;
+  @Output() onChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  checked = false;
 
   private _model: boolean = false;
 
-  private onChange: any = () => {};
+  private onModelChange: any = () => {};
   private onTouched: any = () => {};
 
   constructor() { }
 
   switchOnChange($event) {
     this.model = $event.target.checked;
+    this.onChange.emit(this.model);
   }
 
   public get model(): boolean {
@@ -35,12 +38,13 @@ export class SwitchComponent implements ControlValueAccessor {
 
   public set model(val: boolean) {
     this._model = val;
-    this.onChange(val);
+    this.onModelChange(val);
     this.onTouched();
+    this.checked = val;
   }
 
   public registerOnChange(fn: Function): void {
-    this.onChange = fn;
+    this.onModelChange = fn;
   }
 
   public writeValue(value: boolean): void {

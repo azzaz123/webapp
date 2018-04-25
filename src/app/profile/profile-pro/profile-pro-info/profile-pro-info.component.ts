@@ -5,6 +5,7 @@ import { UserService } from '../../../core/user/user.service';
 import { User } from '../../../core/user/user';
 import { UserProInfo } from '../../../core/user/user-info.interface';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'tsl-profile-pro-info',
@@ -16,6 +17,7 @@ export class ProfileProInfoComponent implements OnInit {
   public profileForm: FormGroup;
   public notificationsForm: FormGroup;
   private userInfo: UserProInfo;
+  public user: User;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
 
@@ -43,22 +45,20 @@ export class ProfileProInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userService.me().subscribe((user: User) => {
+      this.user = user;
+    });
     this.userService.getProInfo().subscribe((userInfo: UserProInfo) => {
       this.userInfo = userInfo;
       this.setUserData();
-    });
-    this.notificationsForm.valueChanges.subscribe((a) => {
-      this.userService.updateProInfo(this.notificationsForm.value).subscribe(() => {
-        this.errorsService.i18nSuccess('settingsEdited');
-      });
     });
   }
 
   private setUserData() {
     if (this.userInfo) {
       this.profileForm.patchValue({
-        first_name: this.userInfo.first_name,
-        last_name: this.userInfo.last_name,
+        first_name: this.user.firstName,
+        last_name: this.user.lastName,
         phone_number: this.userInfo.phone_number,
         description: this.userInfo.description,
         opening_hours: this.userInfo.opening_hours
@@ -70,6 +70,7 @@ export class ProfileProInfoComponent implements OnInit {
         news_notification: this.userInfo.news_notification
       });
     }
+    this.formComponent.hasNotSavedChanges = false;
   }
 
   public canExit() {
@@ -80,8 +81,15 @@ export class ProfileProInfoComponent implements OnInit {
     if (this.profileForm.valid) {
       delete this.profileForm.value.location;
       this.userService.updateProInfo(this.profileForm.value).subscribe(() => {
-        this.errorsService.i18nSuccess('userEdited');
-        this.formComponent.hasNotSavedChanges = false;
+        this.userService.edit({
+          first_name: this.profileForm.value.first_name,
+          last_name: this.profileForm.value.last_name,
+          birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
+          gender: this.user.gender
+        }).subscribe(() => {
+          this.errorsService.i18nSuccess('userEdited');
+          this.formComponent.hasNotSavedChanges = false;
+        });
       });
     } else {
       if (!this.profileForm.get('location.address').valid) {
@@ -89,6 +97,14 @@ export class ProfileProInfoComponent implements OnInit {
       }
       this.errorsService.i18nError('formErrors');
     }
+  }
+
+  public onNotificationChange(fieldName: string, value: boolean) {
+    this.userService.updateProInfoNotifications({
+      [fieldName]: value
+    }).subscribe(() => {
+      this.errorsService.i18nSuccess('settingsEdited');
+    });
   }
 
 }

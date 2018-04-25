@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit() {
-    this.userService.me().subscribe((user) => {
+    this.userService.me().subscribe((user: User) => {
       this.user = user;
       if (user) {
         this.userUrl = user.getUrl(this.subdomain);

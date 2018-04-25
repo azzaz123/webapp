@@ -44,6 +44,9 @@ describe('Service: Tracking', () => {
           provide: UserService, useValue: {
           user: {
             id: 'userId'
+          },
+          isProfessional() {
+            return Observable.of(false);
           }
         }
         },
