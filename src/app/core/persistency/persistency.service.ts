@@ -62,9 +62,6 @@ export class PersistencyService {
   }
 
   private getMessageFromLocal(): Promise<AllDocsResponse<StoredMessage>> {
-    if (this.storedMessages && this.storedMessages.total_rows > 0) {
-      return Promise.resolve(this.storedMessages);
-    }
     return this.messagesDb.allDocs({include_docs: true}).then((data: AllDocsResponse<StoredMessage>) => {
       this.storedMessages = data;
       return data;
