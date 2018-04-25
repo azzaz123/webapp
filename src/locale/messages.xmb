@@ -342,10 +342,7 @@
   <msg id="2595624684026123810"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:18</source>Telephone:</msg>
   <msg id="6996799422725544865"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:24</source>Description:</msg>
   <msg id="138907429214820806"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:30</source>Opening Hours:</msg>
-  <msg id="3358930735921285751"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:80</source>Notify me when I receive new chats</msg>
-  <msg id="8409650257575743049"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:84</source>I want to receive only chats with telephone number</msg>
-  <msg id="872325555016392097"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:88</source>I consent third parties to use my data</msg>
-  <msg id="8284002512611368539"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:92</source>Notify me with amazing news &amp; promotions</msg>
+  <msg id="872325555016392097"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:100</source>I consent third parties to use my data</msg>
   <msg id="8775411328776279097"><source>app/tutorial/tutorial.component.ts:5</source>Introducing our new webpage!</msg>
   <msg id="6002580040961562985"><source>app/tutorial/tutorial.component.ts:6</source>You&apos;re in the zone to access all of the features of the app.</msg>
   <msg id="2137505802700728396"><source>app/tutorial/tutorial.component.ts:10</source>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</msg>
