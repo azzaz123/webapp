@@ -23,16 +23,16 @@ export class PrivacyService {
   public updatePrivacy(data: PrivacyRequestData) {
     return this.http.post(this.API_URL, data)
       .map((r: Response) => r.json())
-      .map((privacyList: PrivacyList) => this._mapPivacyList(privacyList));
+      .map((privacyList: PrivacyList) => this._mapPrivacyList(privacyList));
   }
 
   public getPrivacyList() {
     return this.http.get(this.API_URL)
       .map((r: Response) => r.json())
-      .map((privacyList: PrivacyList) => this._mapPivacyList(privacyList));
+      .map((privacyList: PrivacyList) => this._mapPrivacyList(privacyList));
   }
 
-  private _mapPivacyList(privacyList: PrivacyList) {
+  private _mapPrivacyList(privacyList: PrivacyList) {
     this._privacyList = privacyList;
 
     const segmentationStatus = this.getPrivacyState('gdpr_display', '0');
