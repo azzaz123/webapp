@@ -89,8 +89,6 @@ import { CatalogProItemComponent } from './catalog-pro/catalog-pro-list/catalog-
     UrgentConfirmationModalComponent,
     UrgentCheckboxComponent,
     SabadellComponent,
-    CatalogProComponent,
-    CatalogProListComponent,
     CatalogProItemComponent
   ],
   entryComponents: [

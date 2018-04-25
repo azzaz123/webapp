@@ -139,7 +139,7 @@ $feature-button-width: 170px;
   .title {
     @include text-truncate();
   }
-  .published, .updated {
+  .published, .updated, .sold {
     & {
       font-size: $font-size-S;
       display: flex;
@@ -152,6 +152,9 @@ $feature-button-width: 170px;
     .date {
       color: $grey-250;
     }
+  }
+  .sold {
+    flex-basis: 24em;
   }
   .visibility {
     display: flex;
@@ -239,7 +242,7 @@ $feature-button-width: 170px;
       }
     }
   }
-  &.sold {
+  &.itemSold {
     .actions {
       min-width: auto;
     }

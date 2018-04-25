@@ -253,7 +253,7 @@ export class UserService extends ResourceService {
 
   public setPermission(userType: string): void {
     if (environment.profeatures) {
-      this.permissionService.addPermission(PERMISSIONS['professional']);
+      this.permissionService.addPermission(PERMISSIONS[userType]);
     } else {
       this.permissionService.addPermission(PERMISSIONS['normal']);
     }

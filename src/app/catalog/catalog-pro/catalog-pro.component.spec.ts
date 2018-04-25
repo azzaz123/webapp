@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogProComponent } from './catalog-pro.component';
 
 describe('CatalogProComponent', () => {
@@ -8,7 +8,8 @@ describe('CatalogProComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CatalogProComponent ]
+      declarations: [ CatalogProComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
   }));
