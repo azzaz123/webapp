@@ -1,14 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileProSubscriptionComponent } from './profile-pro-subscription.component';
+import { PaymentService } from '../../../core/payments/payment.service';
+import { Observable } from 'rxjs/Observable';
+import { createPacksModelFixture } from '../../../../tests/payments.fixtures.spec';
+import { PacksModel } from '../../../core/payments/payment.model';
 
 describe('ProfileProSubscriptionComponent', () => {
   let component: ProfileProSubscriptionComponent;
   let fixture: ComponentFixture<ProfileProSubscriptionComponent>;
+  let paymentsService: PaymentService;
+  const packsModel: PacksModel = createPacksModelFixture();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProfileProSubscriptionComponent ]
+      declarations: [ ProfileProSubscriptionComponent ],
+      providers: [
+        {
+          provide: PaymentService, useValue: {
+          getPacks() {
+            return Observable.of(packsModel)
+          }
+        }
+        }
+      ]
     })
     .compileComponents();
   }));
@@ -16,10 +31,15 @@ describe('ProfileProSubscriptionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileProSubscriptionComponent);
     component = fixture.componentInstance;
+    paymentsService = TestBed.get(PaymentService);
+    spyOn(paymentsService, 'getPacks').and.callThrough();
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+    it('should call getPacks and set packs', () => {
+      expect(paymentsService.getPacks).toHaveBeenCalled();
+      expect(component.packs).toEqual(packsModel);
+    });
   });
 });

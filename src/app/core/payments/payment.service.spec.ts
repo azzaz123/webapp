@@ -3,8 +3,11 @@ import { Response, ResponseOptions } from '@angular/http';
 
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs/Observable';
-import { BillingInfoResponse, FinancialCard, SabadellInfoResponse } from './payment.interface';
-import { BILLING_INFO_RESPONSE, FINANCIAL_CARD, SABADELL_RESPONSE } from '../../../tests/payments.fixtures.spec';
+import { BillingInfoResponse, FinancialCard, Packs, SabadellInfoResponse } from './payment.interface';
+import {
+  BILLING_INFO_RESPONSE, BUMPS_PRODUCT_RESPONSE, createPacksModelFixture, FINANCIAL_CARD, PACK_RESPONSE,
+  SABADELL_RESPONSE
+} from '../../../tests/payments.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 
@@ -91,6 +94,29 @@ describe('PaymentService', () => {
       expect(http.put).toHaveBeenCalledWith('api/v3/payments/billing-info', {
         data: 'test'
       });
+    });
+  });
+
+  describe('getPacks', () => {
+    let response: Packs;
+
+    beforeEach(fakeAsync(() => {
+      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PACK_RESPONSE)});
+      let res2: ResponseOptions = new ResponseOptions({body: JSON.stringify(BUMPS_PRODUCT_RESPONSE)});
+      spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
+
+      service.getPacks().subscribe((r: Packs) => {
+        response = r;
+      });
+    }));
+
+    it('should call endpoint', () => {
+      expect(http.get).toHaveBeenCalledWith('api/v3/payments/packs');
+      expect(http.get).toHaveBeenCalledWith('api/v3/payments/products');
+    });
+
+    it('should return packs', () => {
+      expect(response).toEqual(createPacksModelFixture());
     });
   });
 });
