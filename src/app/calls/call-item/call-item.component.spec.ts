@@ -72,15 +72,13 @@ describe('CallItemComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('ngOnChanges', () => {
     it('should set messages', () => {
       component.call = MOCK_CALL();
       component.call.messages = createMessagesArray(10);
+
       component.ngOnChanges();
+
       expect(component.messages.length).toBe(4);
     });
     it('should call changeExpandedState if there is the permalink', () => {
@@ -89,7 +87,9 @@ describe('CallItemComponent', () => {
       });
       spyOn(component, 'changeExpandedState');
       component.call = MOCK_CALL();
+
       component.ngOnChanges();
+
       expect(component.changeExpandedState).toHaveBeenCalled();
     });
     it('should call NOT changeExpandedState if the call is not found', () => {
@@ -98,7 +98,9 @@ describe('CallItemComponent', () => {
       });
       spyOn(component, 'changeExpandedState');
       component.call = MOCK_CALL();
+
       component.ngOnChanges();
+
       expect(component.changeExpandedState).not.toHaveBeenCalled();
     });
   });
@@ -109,13 +111,17 @@ describe('CallItemComponent', () => {
     it('should emit an event to close other calls if the current is not active and track', () => {
       spyOn(trackingService, 'track');
       component.open = false;
+
       component.changeExpandedState();
+
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CLOSE_EXPANDED_CALLS);
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_OPENED, {lead_id: component.call.id});
     });
     it('should not emit the event if the open call is the active', () => {
       component.open = true;
+
       component.changeExpandedState();
+
       expect(eventService.emit).not.toHaveBeenCalled();
     });
   });
@@ -126,12 +132,16 @@ describe('CallItemComponent', () => {
     it('should call callService.stream if lead is Call', () => {
       component.archived = true;
       component.call = MOCK_CALL();
+
       component.onAnimationDone(new Event(''));
+
       expect(callService.stream).toHaveBeenCalled();
     });
     it('should do nothing if not archive', () => {
       component.archived = false;
+
       component.onAnimationDone(new Event(''));
+      
       expect(callService.stream).not.toHaveBeenCalled();
     });
   });
