@@ -16,7 +16,7 @@ class TestComponent {
 let component: TestComponent;
 let fixture: ComponentFixture<TestComponent>;
 
-fdescribe('CallStatusLabelPipe', () => {
+describe('CallStatusLabelPipe', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
