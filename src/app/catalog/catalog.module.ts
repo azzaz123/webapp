@@ -36,6 +36,9 @@ import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.co
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
 import { UrgentCheckboxComponent } from './upload/urgent-checkbox/urgent-checkbox.component';
 import { SabadellComponent } from './sabadell/sabadell.component';
+import { CatalogProComponent } from './catalog-pro/catalog-pro.component';
+import { CatalogProListComponent } from './catalog-pro/catalog-pro-list/catalog-pro-list.component';
+import { CatalogProItemComponent } from './catalog-pro/catalog-pro-list/catalog-pro-item/catalog-pro-item.component';
 
 @NgModule({
   imports: [
@@ -85,7 +88,10 @@ import { SabadellComponent } from './sabadell/sabadell.component';
     BumpTutorialComponent,
     UrgentConfirmationModalComponent,
     UrgentCheckboxComponent,
-    SabadellComponent
+    SabadellComponent,
+    CatalogProComponent,
+    CatalogProListComponent,
+    CatalogProItemComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

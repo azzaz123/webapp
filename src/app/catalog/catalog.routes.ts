@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes, ActivatedRouteSnapshot } from '@angular/router';
 
 import { ListComponent } from './list/list.component';
+import { CatalogProListComponent } from '../catalog/catalog-pro/catalog-pro-list/catalog-pro-list.component'
 import { LoggedGuard } from '../core/user/logged.guard';
 import { CatalogComponent } from './catalog.component';
+import { CatalogProComponent } from '../catalog/catalog-pro/catalog-pro.component';
 import { UploadCarComponent } from './upload/upload-car/upload-car.component';
 import { UploadComponent } from './upload/upload.component';
 import { EditComponent } from './edit/edit.component';
@@ -18,7 +20,6 @@ import * as _ from 'lodash';
 const routes: Routes = [
   {
     path: 'catalog',
-    component: CatalogComponent,
     canActivate: [LoggedGuard, TutorialGuard],
     canActivateChild: [NgxPermissionsGuard],
     children: [
@@ -103,7 +104,6 @@ const routes: Routes = [
     children: [
       {
         path: 'catalog',
-        component: CatalogComponent,
         canActivateChild: [NgxPermissionsGuard],
         children: [
           {
@@ -113,7 +113,7 @@ const routes: Routes = [
           },
           {
             path: 'list',
-            component: ListComponent,
+            component: CatalogProListComponent,
             data: {
               isMyZone: true,
               isProducts: true,
@@ -198,5 +198,7 @@ export const catalogRoutedComponents = [
   UploadComponent,
   UploadCarComponent,
   EditComponent,
-  CheckoutComponent
+  CheckoutComponent,
+  CatalogProComponent,
+  CatalogProListComponent
 ];

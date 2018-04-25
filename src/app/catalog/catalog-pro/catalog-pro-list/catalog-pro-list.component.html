@@ -1,0 +1,23 @@
+<div class="page-content"
+     infiniteScroll
+     [infiniteScrollDistance]="5"
+     [infiniteScrollThrottle]="100"
+     [scrollWindow]="false"
+     [infiniteScrollDisabled]="end || loading"
+     (scrolled)="loadMore()"
+     [scrollTop]="scrollTop">
+  <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
+  <div class="container">
+    <div class="row items">
+      <a class="add-item col-md-12"
+         [routerLink]="['/catalog/upload']"
+         *ngIf="(!loading || (loading && items.length)) && selectedStatus === 'published'">
+      </a>
+      <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
+        <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
+      </div>
+      <tsl-catalog-pro-item *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" class="col-md-12"></tsl-catalog-pro-item>
+      <tsl-spinner [hidden]="!loading"></tsl-spinner>
+    </div>
+  </div>
+</div>
