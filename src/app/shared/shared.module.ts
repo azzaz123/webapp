@@ -28,6 +28,7 @@ import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.co
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { MessageComponent } from './message/message.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
+import { SwitchComponent } from './switch/switch.component';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { ReviewButtonComponent } from './message/review-button/review-button.com
     ArchivableComponent,
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
+    SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
     MessageComponent,
@@ -84,7 +86,8 @@ import { ReviewButtonComponent } from './message/review-button/review-button.com
     UserAvatarComponent,
     ReviewModalComponent,
     MessageComponent,
-    ReviewButtonComponent
+    ReviewButtonComponent,
+    SwitchComponent
   ],
   providers: [
     DecimalPipe,

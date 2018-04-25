@@ -4,16 +4,41 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoggedGuard } from '../core/user/logged.guard';
 import { ProfileComponent } from './profile.component';
 import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
+import { NgxPermissionsGuard } from 'ngx-permissions';
+import { PERMISSIONS } from '../core/user/user';
 
 const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [LoggedGuard],
+    canActivate: [LoggedGuard, NgxPermissionsGuard],
     canDeactivate: [ExitConfirmGuard],
     data: {
-      isMyZone: true
+      isMyZone: true,
+      permissions: {
+        only: PERMISSIONS.normal,
+        redirectTo: '/pro/profile'
+      }
     }
+  },
+  {
+    path: 'pro',
+    canActivate: [LoggedGuard],
+    children: [
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        canActivate: [NgxPermissionsGuard],
+        canDeactivate: [ExitConfirmGuard],
+        data: {
+          isMyZone: true,
+          permissions: {
+            only: PERMISSIONS.professional,
+            redirectTo: '/profile'
+          }
+        }
+      },
+    ]
   }
 ];
 
