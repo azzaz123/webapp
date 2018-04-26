@@ -46,6 +46,7 @@ let trackingService: TrackingService;
 let window: any;
 let conversationService: ConversationService;
 let cookieService: CookieService;
+let connectionService: ConnectionService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
@@ -176,6 +177,7 @@ describe('App', () => {
     window = TestBed.get(WindowRef).nativeWindow;
     conversationService = TestBed.get(ConversationService);
     cookieService = TestBed.get(CookieService);
+    connectionService = TestBed.get(ConnectionService);
     spyOn(notificationService, 'init');
   });
 
@@ -279,6 +281,16 @@ describe('App', () => {
 
         expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
         expect(component.updateSessionCookie).not.toHaveBeenCalled();
+      });
+
+      describe('subscribeConnectionService', () => {
+        it('should call connectionService.checkConnection when initalising', () => {
+          spyOn(connectionService, 'checkConnection');
+
+          component.ngOnInit();
+
+          expect(connectionService.checkConnection).toHaveBeenCalled();
+        });
       });
 
     });
