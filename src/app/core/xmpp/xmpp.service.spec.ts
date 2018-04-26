@@ -751,8 +751,8 @@ describe('Service: Xmpp', () => {
       eventService.emit('stream:data', XML_MESSAGE2_RECEIPT);
       tick(2000);
       expect(response.data.length).toBe(2);
-      expect(response.data[0].read).toBeTruthy();
-      expect(response.data[1].read).toBeTruthy();
+      expect(response.data[0].read).toBe(true);
+      expect(response.data[1].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(0);
     }));
 
@@ -780,8 +780,8 @@ describe('Service: Xmpp', () => {
         }
       });
       expect(response.data.length).toBe(2);
-      expect(response.data[0].read).toBeTruthy();
-      expect(response.data[1].read).toBeTruthy();
+      expect(response.data[0].read).toBe(true);
+      expect(response.data[1].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(0);
     }));
 
@@ -800,7 +800,7 @@ describe('Service: Xmpp', () => {
       tick(2000);
       expect(MOCKED_CLIENT.sendMessage).not.toHaveBeenCalled();
       expect(response.data.length).toBe(1);
-      expect(response.data[0].read).toBeTruthy();
+      expect(response.data[0].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(1);
       expect(service['confirmedMessages'][0]).toBe(MESSAGE_ID);
     }));
@@ -827,7 +827,7 @@ describe('Service: Xmpp', () => {
       tick(2000);
       expect(MOCKED_CLIENT.sendMessage).not.toHaveBeenCalled();
       expect(response.data.length).toBe(1);
-      expect(response.data[0].read).toBeTruthy();
+      expect(response.data[0].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(0);
     }));
 
@@ -848,17 +848,17 @@ describe('Service: Xmpp', () => {
       });
       service['connected$'].next(true);
       tick();
-      expect(connected).toBeTruthy();
+      expect(connected).toBe(true);
       connected = false;
       service.isConnected().subscribe((value: boolean) => {
         connected = value;
       });
-      expect(connected).toBeTruthy();
+      expect(connected).toBe(true);
       service['connected'] = true;
       service.isConnected().subscribe((value: boolean) => {
         connected = value;
       });
-      expect(connected).toBeTruthy();
+      expect(connected).toBe(true);
     }));
 
     it('should say when is NOT connected', fakeAsync(() => {
@@ -867,12 +867,12 @@ describe('Service: Xmpp', () => {
       });
       service['connected$'].next(false);
       tick();
-      expect(connected).toBeFalsy();
+      expect(connected).toBe(false);
       service['connected'] = false;
       service.isConnected().subscribe((value: boolean) => {
         connected = value;
       });
-      expect(connected).toBeFalsy();
+      expect(connected).toBe(false);
     }));
 
   });
@@ -931,7 +931,7 @@ describe('Service: Xmpp', () => {
       service['_connected'] = true;
       service.disconnect();
       expect(MOCKED_CLIENT.disconnect).toHaveBeenCalled();
-      expect(service['_connected']).toBeFalsy();
+      expect(service['_connected']).toBe(false);
     });
 
   });
@@ -984,7 +984,7 @@ describe('Service: Xmpp', () => {
       MOCK_USER.blocked = false;
       service.blockUser(MOCK_USER).subscribe();
       tick();
-      expect(MOCK_USER.blocked).toBeTruthy();
+      expect(MOCK_USER.blocked).toBe(true);
     }));
     it('should emit USER_BLOCKED event', fakeAsync(() => {
       let eventEmitted: boolean;
@@ -994,7 +994,7 @@ describe('Service: Xmpp', () => {
       });
       service.blockUser(MOCK_USER).subscribe();
       tick();
-      expect(eventEmitted).toBeTruthy();
+      expect(eventEmitted).toBe(true);
     }));
   });
 
@@ -1021,7 +1021,7 @@ describe('Service: Xmpp', () => {
       MOCK_USER.blocked = true;
       service.unblockUser(MOCK_USER).subscribe();
       tick();
-      expect(MOCK_USER.blocked).toBeFalsy();
+      expect(MOCK_USER.blocked).toBe(false);
     }));
     it('should emit USER_UNBLOCKED event', fakeAsync(() => {
       let eventEmitted: boolean;
@@ -1031,18 +1031,18 @@ describe('Service: Xmpp', () => {
       });
       service.unblockUser(MOCK_USER).subscribe();
       tick();
-      expect(eventEmitted).toBeTruthy();
+      expect(eventEmitted).toBe(true);
     }));
   });
 
   describe('isBlocked', () => {
     it('should return true if user is in the blockedList', () => {
       service['blockedUsers'] = JIDS;
-      expect(service.isBlocked('2')).toBeTruthy();
+      expect(service.isBlocked('2')).toBe(true);
     });
     it('should return false if user is NOT in the blockedList', () => {
       service['blockedUsers'] = JIDS;
-      expect(service.isBlocked('5')).toBeFalsy();
+      expect(service.isBlocked('5')).toBe(false);
     });
   });
 
