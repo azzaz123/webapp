@@ -175,4 +175,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('call-received', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-received.svg'));
   matIconRegistry.addSvgIcon('arrow-back', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-back.svg'));
   matIconRegistry.addSvgIcon('car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/car.svg'));
+  matIconRegistry.addSvgIcon('empty-state-phones', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/empty-state-phones.svg'));
 }

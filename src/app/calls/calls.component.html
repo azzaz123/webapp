@@ -62,9 +62,9 @@
         </div>
       </div>
     </div>
-    <div [hidden]="calls.length || loading" class="empty-state-phones">
-      <p i18n>You have no phone calls yet</p>
-      <mat-icon svgIcon="empty-phones"></mat-icon>
+    <div class="empty-state-phones" [hidden]="calls.length || loading">
+      <mat-icon svgIcon="empty-state-phones" class="image"></mat-icon>
+      <div class="message" i18n>You have no phone calls yet</div>
     </div>
     <div class="row loading-center">
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
