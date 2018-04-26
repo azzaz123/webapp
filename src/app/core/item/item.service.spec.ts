@@ -694,7 +694,7 @@ describe('Service: Item', () => {
         resp = r;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-urgent-products', {categoryId: ITEM_CATEGORY_ID});
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-urgent-products', {categoryId: ITEM_CATEGORY_ID.toString()});
       expect(resp).toEqual(PRODUCT_RESPONSE);
     });
   });
