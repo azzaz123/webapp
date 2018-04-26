@@ -163,6 +163,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('bump-city', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-city.svg'));
   matIconRegistry.addSvgIcon('bump-country', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-country.svg'));
   matIconRegistry.addSvgIcon('bump-zone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-zone.svg'));
+  matIconRegistry.addSvgIcon('bump-city-small', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-city-small.svg'));
+  matIconRegistry.addSvgIcon('bump-country-small', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-country-small.svg'));
   matIconRegistry.addSvgIcon('wing-citybump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-city.svg'));
   matIconRegistry.addSvgIcon('wing-countrybump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-country.svg'));
   matIconRegistry.addSvgIcon('wing-zonebump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-zone.svg'));
