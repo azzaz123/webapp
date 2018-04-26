@@ -14,7 +14,7 @@
          *ngIf="(!loading || (loading && items.length)) && selectedStatus === 'published'">
       </a>
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
-        <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
+        <mat-icon svgIcon="pro-items-empty-state" class="image"></mat-icon>
       </div>
       <tsl-catalog-pro-item *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" class="col-md-12"></tsl-catalog-pro-item>
       <tsl-spinner [hidden]="!loading"></tsl-spinner>

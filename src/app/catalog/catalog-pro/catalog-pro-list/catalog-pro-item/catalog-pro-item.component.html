@@ -11,17 +11,23 @@
       <div class="price">{{item.salePrice | customCurrency:item.currencyCode}}</div>
       <div class="title">{{item.title}}</div>
     </a>
-    <div class="published" [hidden]="item.sold">
+    <div class="published" [hidden]="item.sold || item.bumpExpiringDate">
       <div i18n>Published</div>
       <div class="date">{{item.publishedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
-    <div class="updated" [hidden]="item.sold">
+    <div class="updated" [hidden]="item.sold || item.bumpExpiringDate">
       <div i18n>Updated</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
     <div class="sold" *ngIf="item.sold">
       <div i18n>Sold</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
+    </div>
+    <div class="bumped" *ngIf="item.bumpExpiringDate">
+      <div class={{item.flags.bump_type}}>{{item.flags.bump_type}}</div>
+      <div class="date">{{item.bumpExpiringDate | amCountdown}}
+        <span class="cancel-bump {{item.flags.bump_type}}" (click)="cancelFeature(item)" i18n>Cancel</span>
+      </div>
     </div>
     <div class="visibility">
       <div class="counters">
@@ -35,11 +41,6 @@
     </div>
     <div class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
-        <span [hidden]="item.sold">
-          <button class="btn-featured" *ngIf="item.bumpExpiringDate">
-            {{item.bumpExpiringDate | amCountdown}}
-          </button>
-        </span>
         <button class="btn-sold" [hidden]="item.sold" tslItemSold (callback)="setSold(item)" [item]="item">
           <mat-icon svgIcon="btn-sold"></mat-icon>
         </button>

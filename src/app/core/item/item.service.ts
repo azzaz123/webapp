@@ -46,6 +46,7 @@ export class ItemService extends ResourceService {
   protected API_URL = 'api/v3/items';
   private API_URL_WEB = 'api/v3/web/items';
   private API_URL_USER = 'api/v3/users';
+  private API_URL_PRO = 'api/v3/protool';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
@@ -419,6 +420,14 @@ export class ItemService extends ResourceService {
       .map((r: Response) => r.json())
       .map((response: AvailableProductsResponse) => response.products[0]);
   }
+
+  public cancelFeature(item: Item): Observable<any> {
+    return this.http.put(this.API_URL + '/purchases/cancelItemPurchase', { itemIds: item.id });
+  }
+
+  /*public minesPro(init: number, status?: string): Observable<ItemsData> {
+    return this.getPaginationItems(this.API_URL_PRO + '/mines/' + status, init, true);
+  }*/
 
 }
 

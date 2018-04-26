@@ -139,7 +139,7 @@ $feature-button-width: 170px;
   .title {
     @include text-truncate();
   }
-  .published, .updated, .sold {
+  .published, .updated, .sold, .bumped {
     & {
       font-size: $font-size-S;
       display: flex;
@@ -153,8 +153,23 @@ $feature-button-width: 170px;
       color: $grey-250;
     }
   }
-  .sold {
+  .sold, .bumped {
     flex-basis: 24em;
+  }
+  .bumped {
+    .cancel-bump {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+  .zonebump{
+    color: $zone-bump;
+  }
+  .countrybump {
+    color: $country-bump;
+  }
+  .citybump {
+    color: $city-bump;
   }
   .visibility {
     display: flex;

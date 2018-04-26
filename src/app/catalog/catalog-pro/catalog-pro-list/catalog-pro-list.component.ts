@@ -76,5 +76,4 @@ export class CatalogProListComponent implements OnInit {
     });
   }
 
-
 }

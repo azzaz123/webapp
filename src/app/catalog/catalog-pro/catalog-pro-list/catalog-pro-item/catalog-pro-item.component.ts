@@ -41,4 +41,8 @@ export class CatalogProItemComponent implements OnInit {
     });
   }
 
+  public cancelFeature(item: Item): void {
+    this.itemService.cancelFeature(item);
+  }
+
 }

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogProItemComponent } from './catalog-pro-item.component';
 import { ItemService } from '../../../../core/item/item.service';
@@ -9,9 +9,11 @@ import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec
 import { DecimalPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorsService } from '../../../../core/errors/errors.service';
-import { MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
+import { MOCK_ITEM, ITEM_ID } from '../../../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { MomentModule } from 'angular2-moment';
+import { ItemChangeEvent } from '../../../list/catalog-item/item-change.interface';
+import { Item } from '../../../../core/item/item';
 
 describe('CatalogProItemComponent', () => {
   let component: CatalogProItemComponent;
@@ -95,7 +97,52 @@ describe('CatalogProItemComponent', () => {
     errorsService = TestBed.get(ErrorsService);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('select', () => {
+    it('should set selected true and call selectItem', () => {
+      const item: Item = MOCK_ITEM;
+      item.selected = false;
+      spyOn(itemService, 'selectItem');
+      component.select(item);
+      expect(item.selected).toBeTruthy();
+      expect(itemService.selectItem).toHaveBeenCalledWith(ITEM_ID);
+    });
+    it('should set selected false and call deselectItem', () => {
+      const item: Item = MOCK_ITEM;
+      item.selected = true;
+      spyOn(itemService, 'deselectItem');
+      component.select(item);
+      expect(item.selected).toBeFalsy();
+      expect(itemService.deselectItem).toHaveBeenCalledWith(ITEM_ID);
+    });
+  });
+
+  describe('setSold', () => {
+
+    let item: Item;
+    let event: ItemChangeEvent;
+
+    describe('can mark as sold', () => {
+      beforeEach(fakeAsync(() => {
+        item = MOCK_ITEM;
+        spyOn(trackingService, 'track');
+        component.itemChange.subscribe(($event: ItemChangeEvent) => {
+          event = $event;
+        });
+        component.setSold(item);
+      }));
+
+      afterEach(() => {
+        event = undefined;
+      });
+
+      it('should emit the updated item', () => {
+        expect(event.item).toEqual(item);
+        expect(event.action).toBe('sold');
+      });
+
+      it('should track the DeleteItem event', () => {
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+      });
+    });
   });
 });

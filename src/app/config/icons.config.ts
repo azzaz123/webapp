@@ -104,6 +104,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('commons-congrats', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/commons-congrats.svg'));
   matIconRegistry.addSvgIcon('congrats', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/congrats.svg'));
   matIconRegistry.addSvgIcon('items-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/items-empty-state.svg'));
+  matIconRegistry.addSvgIcon('pro-items-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/pro-items-empty-state.svg'));
   matIconRegistry.addSvgIcon('feature', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/feature.svg'));
   matIconRegistry.addSvgIcon('shipping-available', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/shipping-available.svg'));
   matIconRegistry.addSvgIcon('firm-price', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/firm-price.svg'));
