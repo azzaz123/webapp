@@ -421,7 +421,7 @@ export class ItemService extends ResourceService {
   }
 
   public getLatest(userId: string): Observable<ItemDataResponse> {
-    return this.http.get(this.API_URL + '/latest', {userId: userId})
+    return this.http.get(this.API_URL + '/latest-cars', {userId: userId})
       .map((r: Response) => r.json())
       .map((resp: LatestItemResponse) => {
         return {
