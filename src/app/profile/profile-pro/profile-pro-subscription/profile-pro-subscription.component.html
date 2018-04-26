@@ -6,7 +6,8 @@
         <p class="description" i18n>The city plan allows you to promote your cars in your city and appear in the top positions of the wall of the website and the app. Your product card will have a different style and you will appear in the promoted area throughout your city. To subscribe to a city plan, contact</p>
       </div>
       <div class="packs">
-        <div class="pack" *ngFor="let bump of packs?.getBumps()" [ngClass]="{'no-discount': !bump.discount}">
+        <div class="pack" *ngFor="let bump of packs?.getBumps()"
+             [ngClass]="{'no-discount': !bump.discount, 'selected': perks?.subscription.bump.total === bump.quantity}">
           <div class="quantity-container">
             <div class="quantity">{{bump.quantity}}</div>
             <div class="quantity-time">x24h</div>
@@ -15,6 +16,7 @@
           <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
           <div class="discount" [hidden]="!bump.discount" i18n>Save {{bump.discount}}%</div>
           <a href="mailto:{{email}}" class="btn btn-block">Subscribe</a>
+          <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.bump.expireDate | date}}</div>
         </div>
       </div>
     </div>
@@ -24,7 +26,8 @@
         <p class="description" i18n>The country plan allows you to promote your cars countrywide and appear in the top positions of the wall of the web and the app. The product card will have a different style and you will appear in the promoted area throughout the country. To subscribe to a country plan, contact</p>
       </div>
       <div class="packs">
-        <div class="pack" *ngFor="let bump of packs?.getNationalPacks()" [ngClass]="{'no-discount': !bump.discount}">
+        <div class="pack" *ngFor="let bump of packs?.getNationalPacks()"
+             [ngClass]="{'no-discount': !bump.discount, 'selected': perks?.subscription.national.total === bump.quantity}">
           <div class="quantity-container">
             <div class="quantity">{{bump.quantity}}</div>
             <div class="quantity-time">x24h</div>
@@ -33,6 +36,7 @@
           <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
           <div class="discount" [hidden]="!bump.discount" i18n>Save {{bump.discount}}%</div>
           <a href="mailto:{{email}}" class="btn btn-block">Subscribe</a>
+          <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.national.expireDate | date}}</div>
         </div>
       </div>
     </div>

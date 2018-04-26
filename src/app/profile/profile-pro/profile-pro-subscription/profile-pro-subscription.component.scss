@@ -79,6 +79,19 @@ h2 {
     color: $grey-500;
     border-radius: $button-border-radius;
   }
+  .expire {
+    display: none;
+    font-size: $font-size-S;
+    font-weight: bold;
+  }
+  &.selected {
+    .btn {
+      display: none;
+    }
+    .expire {
+      display: block;
+    }
+  }
 }
 
 .city-bumps, .country-bumps {
@@ -102,6 +115,18 @@ h2 {
       color: $white;
     }
   }
+  .pack.selected {
+    border-color: $corporate;
+    .quantity-container {
+      .quantity {
+        background-color: $corporate;
+        color: $white;
+      }
+    }
+  }
+  .expire {
+    color: $corporate;
+  }
 }
 
 .country-bumps {
@@ -119,5 +144,17 @@ h2 {
       background-color: $country-bump;
       color: $white;
     }
+  }
+  .pack.selected {
+    border-color: $country-bump;
+    .quantity-container {
+      .quantity {
+        background-color: $country-bump;
+        color: $white;
+      }
+    }
+  }
+  .expire {
+    color: $country-bump;
   }
 }

@@ -61,14 +61,17 @@ export class PerksModel implements Perks {
   subscription = {
     bump: {
       total: 0,
-      quantity: 0
+      quantity: 0,
+      expireDate: 0
     },
     national: {
       total: 0,
-      quantity: 0
+      quantity: 0,
+      expireDate: 0
     },
     listing: {
-      quantity: 0
+      quantity: 0,
+      expireDate: 0
     }
   };
   extra = {
@@ -88,6 +91,7 @@ export class PerksModel implements Perks {
   setBumpSubscription(bumpPerk: PerkResponse) {
     this.subscription.bump.quantity = bumpPerk.quantity;
     this.subscription.bump.total = bumpPerk.total;
+    this.subscription.bump.expireDate = bumpPerk.expire_date;
   }
   setBumpExtra(bumpPerk: PerkResponse) {
     this.extra.bump.quantity = bumpPerk.quantity;
@@ -95,11 +99,13 @@ export class PerksModel implements Perks {
   setNationalSubscription(nationalPerk: PerkResponse) {
     this.subscription.national.quantity = nationalPerk.quantity;
     this.subscription.national.total = nationalPerk.total;
+    this.subscription.national.expireDate = nationalPerk.expire_date;
   }
   setNationalExtra(nationalPerk: PerkResponse) {
     this.extra.national.quantity = nationalPerk.quantity;
   }
   setListingSubscription(listingPerk: PerkResponse) {
     this.subscription.listing.quantity = listingPerk.quantity;
+    this.subscription.listing.expireDate = listingPerk.expire_date;
   }
 }

@@ -5,12 +5,12 @@ import {
   BillingInfoResponse,
   FinancialCard,
   Pack,
-  PackResponse, ProductResponse,
+  PackResponse, PerkResponse, ProductResponse,
   Products,
   SabadellInfoResponse
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
-import { PacksModel } from './payment.model';
+import { PacksModel, PerksModel } from './payment.model';
 import * as _ from 'lodash';
 import { SUBSCRIPTION_PACKS } from '../../../tests/payments.fixtures.spec';
 
@@ -25,6 +25,7 @@ export class PaymentService {
 
   private API_URL = 'api/v3/payments';
   private products: Products;
+  private perksModel: PerksModel;
 
   constructor(private http: HttpService) {
   }
@@ -98,6 +99,46 @@ export class PaymentService {
             return response;
           });
       });
+  }
+
+  public getPerks(cache: boolean = true): Observable<PerksModel> {
+    if (cache && this.perksModel) {
+      return Observable.of(this.perksModel);
+    }
+    let response = new PerksModel();
+
+    return this.http.get(this.API_URL + '/perks/me')
+      .map((r: Response) => r.json())
+      .flatMap((perks: PerkResponse[]) => {
+        return this.getProducts()
+          .map((products: Products) => {
+            perks.forEach((perk: PerkResponse) => {
+              if (products[perk.product_id] != null) {
+                let name: string = products[perk.product_id].name;
+                if (name === 'NATIONAL_BUMP') {
+                  if (perk.subscription_id !== null) {
+                    response.setNationalSubscription(perk);
+                  } else {
+                    response.setNationalExtra(perk);
+                  }
+                } else if (name === 'BUMP') {
+                  if (perk.subscription_id !== null) {
+                    response.setBumpSubscription(perk);
+                  } else {
+                    response.setBumpExtra(perk);
+                  }
+                } else if (name === 'LISTINGS') {
+                  if (perk.subscription_id !== null) {
+                    response.setListingSubscription(perk);
+                  }
+                }
+              }
+            });
+            this.perksModel = response;
+            return response;
+          });
+      })
+      .catch(() => Observable.of(response));
   }
 
   private getProducts(): Observable<Products> {
