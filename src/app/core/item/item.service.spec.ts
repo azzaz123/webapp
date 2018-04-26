@@ -690,7 +690,7 @@ describe('Service: Item', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let resp: Product;
 
-      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID).subscribe((r: Product) => {
+      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID.toString()).subscribe((r: Product) => {
         resp = r;
       });
 
