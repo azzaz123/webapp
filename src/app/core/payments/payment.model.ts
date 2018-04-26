@@ -31,8 +31,10 @@ export class PacksModel implements Packs  {
     this.listings.push(pack);
   }
 
-  getListings() {
-    return this.listings;
+  getListings(currentTotal: number) {
+    return this.listings.filter((listing) => {
+      return listing.quantity >= currentTotal;
+    }).slice(0, 3);
   }
 }
 

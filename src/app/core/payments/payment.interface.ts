@@ -26,17 +26,17 @@ export interface Perk {
   bump: {
     total?: number,
     quantity: number,
-    expireDate: number
+    expireDate?: number
   };
   national: {
     total?: number,
     quantity: number,
-    expireDate: number
+    expireDate?: number
   };
   listing?: {
     total?: number,
     quantity: number,
-    expireDate: number
+    expireDate?: number
   };
 }
 

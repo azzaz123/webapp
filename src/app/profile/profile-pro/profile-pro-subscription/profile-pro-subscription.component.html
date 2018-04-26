@@ -1,5 +1,34 @@
 <div class="box">
   <div class="box-content">
+    <div class="row listings">
+      <div class="col">
+        <h2 i18n>
+          <span *ngIf="perks?.subscription.listing.quantity" i18n>Current plan: Plan {{perks?.subscription.listing.quantity}}</span>
+          <span *ngIf="!perks?.subscription.listing.quantity" i18n>You are not yet subscribed to any plan.</span>
+        </h2>
+        <p class="description" i18n>Each plan allows you to have up to a maximum number of cars published in the wallapop app and website.</p>
+      </div>
+      <div class="packs">
+        <div class="pack" *ngFor="let bump of packs?.getListings(perks?.subscription.listing.quantity)"
+             [ngClass]="{'selected': perks?.subscription.listing.quantity === bump.quantity}">
+          <div class="name">Plan {{bump.quantity}}</div>
+          <div class="desc" i18n>Publish a maximum of {{bump.quantity}} cars per month</div>
+          <a href="mailto:{{email}}" class="btn btn-block">Subscribe</a>
+          <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.listing.expireDate | date}}</div>
+        </div>
+        <div class="pack" *ngIf="packs?.getListings(perks?.subscription.listing.quantity).length === 1">
+          <div class="name" i18n>Personal Plan</div>
+          <div class="desc" i18n>We can work out the best plan for you</div>
+          <a href="mailto:{{email}}" class="btn btn-block">Subscribe</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="box">
+  <div class="box-content">
     <div class="row city-bumps">
       <div class="col">
         <h2 i18n><mat-icon svgIcon="bump-city-small"></mat-icon> City visibility</h2>

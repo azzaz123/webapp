@@ -6,6 +6,8 @@
 
 .packs {
   display: flex;
+  width: 600px;
+  justify-content: center;
 }
 
 h2 {
@@ -23,6 +25,9 @@ h2 {
   font-size: $font-size-S;
   line-height: 1.29;
   color: $grey-250;
+}
+
+h2, .description {
   margin-right: 80px;
 }
 
@@ -37,7 +42,7 @@ h2 {
   line-height: normal;
   flex:1;
   margin: $spacing / 2;
-  width: 180px;
+  max-width: 186px;
   .quantity-container {
     position: relative;
     .quantity {
@@ -85,6 +90,7 @@ h2 {
     font-weight: bold;
   }
   &.selected {
+    border-width: 3px;
     .btn {
       display: none;
     }
@@ -94,7 +100,7 @@ h2 {
   }
 }
 
-.city-bumps, .country-bumps {
+.city-bumps, .country-bumps, .listings {
   justify-content: space-between;
   align-items: center;
 }
@@ -156,5 +162,41 @@ h2 {
   }
   .expire {
     color: $country-bump;
+  }
+}
+
+.listings {
+  h2 {
+    color: $color-urgent;
+  }
+  .name {
+    font-weight: bold;
+    font-size: $font-size-M;
+    color: $grey-900;
+    padding-bottom: $spacing-S;
+    margin-bottom: $spacing-S;
+    border-bottom: 2px solid $grey-50;
+    width: 100%;
+  }
+  .desc {
+    font-size: $font-size-S;
+    color: $grey-500;
+    margin-bottom: $spacing-L;
+    flex-grow: 1;
+  }
+  .pack.selected {
+    border-color: $color-urgent;
+    .name {
+      border-color: rgba($color-urgent, .1);
+    }
+  }
+  .btn {
+    &:hover {
+      background-color: $color-urgent;
+      color: $white;
+    }
+  }
+  .expire {
+    color: $color-urgent;
   }
 }
