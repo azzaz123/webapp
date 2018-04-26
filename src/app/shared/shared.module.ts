@@ -21,7 +21,12 @@ import { StarsRateComponent } from './stars-rate/stars-rate.component';
 import { StarsComponent } from './stars/stars.component';
 import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-background.directive';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
+import { ProcessAllButtonComponent } from './process-all-button/process-all-button.component';
+import { ArchivableComponent } from './archivable/archivable.component';
+import { ArchiveButtonComponent } from './archive-button/archive-button.component';
+import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { SwitchComponent } from './switch/switch.component';
 
 @NgModule({
   imports: [
@@ -48,6 +53,11 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    ProcessAllButtonComponent,
+    ArchivableComponent,
+    ArchiveButtonComponent,
+    UnarchiveButtonComponent,
+    SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule
   ],
@@ -65,6 +75,12 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     StarsComponent,
     StarsRateComponent,
     UserAvatarComponent,
+    ProcessAllButtonComponent,
+    ArchivableComponent,
+    ArchiveButtonComponent,
+    UnarchiveButtonComponent,
+    UserAvatarComponent,
+    SwitchComponent,
     ReviewModalComponent
   ],
   providers: [
