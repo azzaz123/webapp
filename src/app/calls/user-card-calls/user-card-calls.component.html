@@ -21,7 +21,7 @@
     </li>
     <li class="list-group-item" *ngIf="user.sellingItem">
       <mat-icon svgIcon="car"></mat-icon>
-      <a i18n href="{{user?.sellingItem.webLink}}" target="_blank">This guy is selling a car!</a>
+      <a i18n href="{{user?.sellingItem.webLink}}" target="_blank">This user is selling a car</a>
     </li>
   </ul>
   <a class="user-info-link" href="{{user.webLink}}" target="_blank" tslTrackEvent="USER_PROFILE_VIEWED" [params]="{user_id: user.id}" i18n>View profile</a>
