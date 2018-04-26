@@ -31,6 +31,7 @@ import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
+import { ConnectionService } from './core/connection/connection.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -62,6 +63,11 @@ describe('App', () => {
       providers: [
         EventService,
         {provide: DebugService, useValue: {}},
+        {
+          provide: ConnectionService, useValue: {
+          checkConnection() {}
+          }
+        },
         {
           provide: XmppService, useValue: {
           connect() {
