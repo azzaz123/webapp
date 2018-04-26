@@ -12,7 +12,13 @@ import {
 import { HttpService } from '../http/http.service';
 import { PacksModel } from './payment.model';
 import * as _ from 'lodash';
+import { SUBSCRIPTION_PACKS } from '../../../tests/payments.fixtures.spec';
 
+export const PACKS_TYPES = {
+  'BUMP': 'bumps',
+  'NATIONAL_BUMP': 'nationals',
+  'LISTINGS': 'listings'
+};
 
 @Injectable()
 export class PaymentService {
@@ -25,14 +31,14 @@ export class PaymentService {
 
   public getFinancialCard(): Observable<FinancialCard> {
     return this.http.get(this.API_URL + '/c2b/financial-card')
-    .map((r: Response) => r.json());
+      .map((r: Response) => r.json());
   }
 
   public getSabadellInfo(orderId: string): Observable<SabadellInfoResponse> {
     return this.http.get(this.API_URL + '/c2b/sabadell/tpv/params', {
       orderId: orderId
     })
-    .map((r: Response) => r.json());
+      .map((r: Response) => r.json());
   }
 
   public pay(orderId: string): Observable<any> {
@@ -50,11 +56,11 @@ export class PaymentService {
     return this.http.put(this.API_URL + '/billing-info', data);
   }
 
-  public getPacks(): Observable<PacksModel> {
+  public getSubscriptionPacks(): Observable<PacksModel> {
     let response = new PacksModel();
 
-    return this.http.get(this.API_URL + '/packs')
-      .map((r: Response) => r.json())
+    return Observable.of(SUBSCRIPTION_PACKS) //this.http.get(this.API_URL + '/packs')
+    //.map((r: Response) => r.json())
       .flatMap((packs: PackResponse[]) => {
         let sortedPacks = this.sortPacksByQuantity(packs);
         return this.getProducts()
@@ -69,10 +75,9 @@ export class PaymentService {
             });
             sortedPacks.forEach((pack: PackResponse) => {
               let benefitsId: string = Object.keys(pack.benefits)[0];
-              let name: string = products[benefitsId].name === 'BUMP' ? 'bumps' : (products[benefitsId].name === 'NATIONAL_BUMP') ?
-                'nationals' : '';
+              let name: string = PACKS_TYPES[products[benefitsId].name];
               let baseQuantity = mins[benefitsId];
-              let responsePrice: number =  response[name][0] == null ? +pack.price : response[name][0].price;
+              let responsePrice: number = response[name][0] == null ? +pack.price : response[name][0].price;
               let basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;
               let formattedPack: Pack = {
                 id: pack.id,
@@ -86,6 +91,8 @@ export class PaymentService {
                 response.addNationalPack(formattedPack);
               } else if (products[benefitsId].name === 'BUMP') {
                 response.addBump(formattedPack);
+              } else if (products[benefitsId].name === 'LISTINGS') {
+                response.addListing(formattedPack);
               }
             });
             return response;
@@ -112,7 +119,7 @@ export class PaymentService {
   }
 
   private sortPacksByQuantity(packs: PackResponse[]): PackResponse[] {
-    let sortedPacks = packs.sort(function(a, b) {
+    let sortedPacks = packs.sort(function (a, b) {
       let quantityA: any = _.values(a.benefits)[0];
       let quantityB: any = _.values(b.benefits)[0];
       return quantityA - quantityB;

@@ -3,10 +3,12 @@ import { CartPacks, Pack, Packs, PerkResponse, Perks } from './payment.interface
 export class PacksModel implements Packs  {
   bumps: Pack[];
   nationals: Pack[];
+  listings: Pack[];
 
   constructor() {
     this.nationals = [];
     this.bumps = [];
+    this.listings = [];
   }
 
   addNationalPack(pack: Pack) {
@@ -23,6 +25,14 @@ export class PacksModel implements Packs  {
 
   getBumps() {
     return this.bumps;
+  }
+
+  addListing(pack: Pack) {
+    this.listings.push(pack);
+  }
+
+  getListings() {
+    return this.listings;
   }
 }
 

@@ -32,13 +32,13 @@ describe('ProfileProSubscriptionComponent', () => {
     fixture = TestBed.createComponent(ProfileProSubscriptionComponent);
     component = fixture.componentInstance;
     paymentsService = TestBed.get(PaymentService);
-    spyOn(paymentsService, 'getPacks').and.callThrough();
+    spyOn(paymentsService, 'getSubscriptionPacks').and.callThrough();
     fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
-    it('should call getPacks and set packs', () => {
-      expect(paymentsService.getPacks).toHaveBeenCalled();
+    it('should call getSubscriptionPacks and set packs', () => {
+      expect(paymentsService.getSubscriptionPacks).toHaveBeenCalled();
       expect(component.packs).toEqual(packsModel);
     });
   });

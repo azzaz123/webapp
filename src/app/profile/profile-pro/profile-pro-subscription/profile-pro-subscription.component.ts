@@ -15,7 +15,7 @@ export class ProfileProSubscriptionComponent implements OnInit {
   constructor(private paymentsService: PaymentService) { }
 
   ngOnInit() {
-    this.paymentsService.getPacks().subscribe((packs: PacksModel) => {
+    this.paymentsService.getSubscriptionPacks().subscribe((packs: PacksModel) => {
       this.packs = packs;
     });
   }

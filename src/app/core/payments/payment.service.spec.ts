@@ -97,7 +97,7 @@ describe('PaymentService', () => {
     });
   });
 
-  describe('getPacks', () => {
+  describe('getSubscriptionPacks', () => {
     let response: Packs;
 
     beforeEach(fakeAsync(() => {
@@ -105,7 +105,7 @@ describe('PaymentService', () => {
       let res2: ResponseOptions = new ResponseOptions({body: JSON.stringify(BUMPS_PRODUCT_RESPONSE)});
       spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
 
-      service.getPacks().subscribe((r: Packs) => {
+      service.getSubscriptionPacks().subscribe((r: Packs) => {
         response = r;
       });
     }));
