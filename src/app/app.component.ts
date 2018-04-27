@@ -45,7 +45,6 @@ export class AppComponent implements OnInit {
   private currentUrl: string;
   private previousSlug: string;
   private _reconnecting = false;
-  private reconnectInterval: any;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -129,29 +128,16 @@ export class AppComponent implements OnInit {
 
     this.event.subscribe(EventService.CONNECTION_RESTORED, () => {
       if (this._reconnecting) {
-        this.xmppService.connected = true;
+        this.connectionService.connected = true;
         this._reconnecting = false;
       }
     });
 
     this.event.subscribe(EventService.CONNECTION_ERROR, () => {
-      this.xmppService.connected = false;
+      this.connectionService.connected = false;
       this._reconnecting = true;
-      this.tryToReconnect();
+      this.connectionService.tryToReconnect();
     });
-  }
-
-  private tryToReconnect() {
-    if (!this.reconnectInterval) {
-      this.reconnectInterval = setInterval(() => {
-        if (this.xmppService.connected) {
-          this.event.emit(EventService.CONNECTION_RESTORED);
-          clearInterval(this.reconnectInterval);
-        } else {
-          this.event.emit(EventService.CONNECTION_ERROR);
-        }
-      }, 1000);
-    }
   }
 
   private subscribeEventUserLogin() {

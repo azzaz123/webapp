@@ -11,6 +11,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
+import { ConnectionService } from '../connection/connection.service';
 
 @Injectable()
 export class XmppService {
@@ -29,7 +30,8 @@ export class XmppService {
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
-              private trackingService: TrackingService) {
+              private trackingService: TrackingService,
+              private connectionService: ConnectionService) {
   }
 
   public connect(userId: string, accessToken: string): void {
@@ -41,7 +43,7 @@ export class XmppService {
   }
 
   public disconnect() {
-    if (this.connected) {
+    if (this.connected && this.connectionService.connected) {
       this.client.disconnect();
       this.connected = false;
     }
