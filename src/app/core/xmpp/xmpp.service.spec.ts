@@ -941,7 +941,6 @@ describe('Service: Xmpp', () => {
       spyOn(MOCKED_CLIENT, 'disconnect');
       service.connect('abc', 'def');
       service['_connected'] = true;
-      connectionService.connected = true;
       service.disconnect();
       expect(MOCKED_CLIENT.disconnect).toHaveBeenCalled();
       expect(service['_connected']).toBe(false);

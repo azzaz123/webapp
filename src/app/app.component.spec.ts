@@ -66,9 +66,8 @@ describe('App', () => {
         {provide: DebugService, useValue: {}},
         {
           provide: ConnectionService, useValue: {
-          checkConnection() {},
-          tryToReconnect() {}
-          },
+          checkConnection() {}
+        }
         },
         {
           provide: XmppService, useValue: {
@@ -241,6 +240,14 @@ describe('App', () => {
         expect(conversationService.init).toHaveBeenCalledTimes(1);
       });
 
+      it('should call checkConnection when the component initialises', () => {
+        spyOn(connectionService, 'checkConnection');
+
+        component.ngOnInit();
+
+        expect(connectionService.checkConnection).toHaveBeenCalled();
+      });
+
       it('should call userService setpermission method', () => {
         spyOn(userService, 'setPermission').and.callThrough();
 
@@ -282,37 +289,6 @@ describe('App', () => {
 
         expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
         expect(component.updateSessionCookie).not.toHaveBeenCalled();
-      });
-
-      describe('subscribeConnectionService', () => {
-        it('should call connectionService.checkConnection when initalising', () => {
-          spyOn(connectionService, 'checkConnection');
-
-          component.ngOnInit();
-
-          expect(connectionService.checkConnection).toHaveBeenCalled();
-        });
-
-        it('should handle the CONNECTION_ERROR event', () => {
-          spyOn(connectionService, 'tryToReconnect');
-
-          component.ngOnInit();
-          eventService.emit(EventService.CONNECTION_ERROR);
-
-          expect(connectionService.connected).toBe(false);
-          expect(component._reconnecting).toBe(true);
-          expect(connectionService.tryToReconnect).toHaveBeenCalled();
-        });
-
-        it('should handle the CONNECTION_RESTORED event', () => {
-          component._reconnecting = true;
-
-          component.ngOnInit();
-          eventService.emit(EventService.CONNECTION_RESTORED);
-
-          expect(connectionService.connected).toBe(true);
-          expect(component._reconnecting).toBe(false);
-        });
       });
     });
 

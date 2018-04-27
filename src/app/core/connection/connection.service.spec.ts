@@ -17,28 +17,27 @@ describe('ConnectionService', () => {
     eventService = TestBed.get(EventService);
   });
 
-  describe('tryToReconnect', () => {
-    it('should emit a CONNECTION_RESTORED event when connected is true', fakeAsync(() => {
-      spyOn(eventService, 'emit');
-      service['reconnectInterval'] = null;
-      service.connected = true;
 
-      service.tryToReconnect();
+   describe('checkConnection', () => {
+    it('should set connected to false when a CONNECTION_ERROR event is detected', fakeAsync(() => {
+      service['connected'] = true;
+
+      service.checkConnection();
+      eventService.emit(EventService.CONNECTION_ERROR);
       tick(1000);
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONNECTION_RESTORED);
+      expect(service['connected']).toBe(false);
       discardPeriodicTasks();
     }));
 
-    it('should emit a CONNECTION_ERROR event when connected is false', fakeAsync(() => {
-      spyOn(eventService, 'emit');
-      service['reconnectInterval'] = null;
-      service.connected = false;
+    it('should set connected to true when a CONNECTION_RESTORED event is detected', fakeAsync(() => {
+      service['connected'] = false;
 
-      service.tryToReconnect();
+      service.checkConnection();
+      eventService.emit(EventService.CONNECTION_RESTORED);
       tick(1000);
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONNECTION_ERROR);
+      expect(service['connected']).toBe(true);
       discardPeriodicTasks();
     }));
   });

@@ -43,7 +43,7 @@ export class XmppService {
   }
 
   public disconnect() {
-    if (this.connected && this.connectionService.connected) {
+    if (this.connected) {
       this.client.disconnect();
       this.connected = false;
     }

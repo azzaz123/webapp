@@ -9,9 +9,11 @@ export class ConnectionService {
     private eventService: EventService) { }
     private reconnectInterval: any;
     private event: EventService;
-    public connected = true;
+    private connected = true;
 
     public checkConnection() {
+      this.handleConnectionChanges();
+
       this.winRef.nativeWindow.addEventListener('offline', () => {
         this.eventService.emit(EventService.CONNECTION_ERROR);
       });
@@ -20,14 +22,22 @@ export class ConnectionService {
       });
     }
 
-    public tryToReconnect() {
+    private handleConnectionChanges() {
+      this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
+        this.connected = false;
+        this.tryToReconnect();
+      });
+
+      this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
+        this.connected = true;
+      });
+    }
+
+    private tryToReconnect() {
       if (!this.reconnectInterval) {
         this.reconnectInterval = setInterval(() => {
           if (this.connected) {
-            this.eventService.emit(EventService.CONNECTION_RESTORED);
             clearInterval(this.reconnectInterval);
-          } else {
-            this.eventService.emit(EventService.CONNECTION_ERROR);
           }
         }, 1000);
       }

@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
     this.setTitle();
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
-    this.subscribeConnectionStatus();
+    this.connectionService.checkConnection();
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
@@ -121,23 +121,6 @@ export class AppComponent implements OnInit {
 
   private trackAppOpen() {
       this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
-  }
-
-  private subscribeConnectionStatus() {
-    this.connectionService.checkConnection();
-
-    this.event.subscribe(EventService.CONNECTION_RESTORED, () => {
-      if (this._reconnecting) {
-        this.connectionService.connected = true;
-        this._reconnecting = false;
-      }
-    });
-
-    this.event.subscribe(EventService.CONNECTION_ERROR, () => {
-      this.connectionService.connected = false;
-      this._reconnecting = true;
-      this.connectionService.tryToReconnect();
-    });
   }
 
   private subscribeEventUserLogin() {
