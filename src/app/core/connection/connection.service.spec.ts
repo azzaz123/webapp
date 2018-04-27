@@ -17,10 +17,6 @@ describe('ConnectionService', () => {
     eventService = TestBed.get(EventService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('tryToReconnect', () => {
     it('should emit a CONNECTION_RESTORED event when connected is true', fakeAsync(() => {
       spyOn(eventService, 'emit');
