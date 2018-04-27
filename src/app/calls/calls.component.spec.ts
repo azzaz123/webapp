@@ -52,19 +52,25 @@ describe('CallsComponent', () => {
   describe('ngOnInit', () => {
     beforeEach(() => {
       spyOn(component, 'getCalls');
+
       component.ngOnInit();
     });
+
     it('should set loading to true', () => {
       expect(component.loading).toBeTruthy();
     });
+
     it('should call getCalls', () => {
       expect(component['getCalls']).toHaveBeenCalled();
     });
+
     it('should set status', () => {
       route.queryParams = Observable.of({
         status: 'test'
       });
+      
       component.ngOnInit();
+
       expect(component.status).toBe('test');
     });
   });
@@ -73,11 +79,14 @@ describe('CallsComponent', () => {
     beforeEach(() => {
       spyOn(component, 'getCalls');
       component['page'] = 1;
+      
       component.loadMore();
     });
+    
     it('should increment page', () => {
       expect(component['page']).toBe(2);
     });
+
     it('should call getCalls', () => {
       expect(component['getCalls']).toHaveBeenCalled();
     });
@@ -86,54 +95,67 @@ describe('CallsComponent', () => {
   describe('getCalls', () => {
     describe('starting with no calls', () => {
       const CALLS: Call[] = createCallsArray(4);
+      
       beforeEach(() => {
         spyOn(callService, 'getPage').and.returnValue(Observable.of(CALLS));
         component['page'] = 1;
       });
+      
       describe('no archive', () => {
         beforeEach(() => {
           component.status = 'SHARED';
           spyOn(trackingService, 'track');
+          
           component['getCalls']();
         });
+
         it('should call getPage', () => {
           expect(callService.getPage).toHaveBeenCalledWith(1, false, 'SHARED');
         });
+
         it('should replace calls', () => {
           expect(component.calls).toEqual(CALLS);
         });
+
         it('should set loading to false', () => {
           expect(component.loading).toBeFalsy();
         });
+
         it('should track the PoneLeadListActiveLoaded', () => {
           expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_ACTIVE_LOADED);
         });
       });
+
       describe('archive', () => {
         beforeEach(() => {
           component.archive = true;
           spyOn(trackingService, 'track');
+          
           component['getCalls']();
         });
+
         it('should call getPage', () => {
           expect(callService.getPage).toHaveBeenCalledWith(1, true, undefined);
         });
+
         it('should replace calls', () => {
           expect(component.calls).toEqual(CALLS);
         });
+
         it('should set loading to false', () => {
           expect(component.loading).toBeFalsy();
         });
+
         it('should track the PoneLeadListProcessedLoaded', () => {
           expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PHONE_LEAD_LIST_PROCESSED_LOADED);
         });
       });
     });
+
     describe('if a subscription already exists', () => {
       it('should unsubscribe', () => {
         const SUBSCRIPTION: any = {
-          unsubscribe() {
-          }
+          unsubscribe() {}
         };
         spyOn(callService, 'getPage').and.returnValue({
           takeWhile() {
@@ -144,9 +166,11 @@ describe('CallsComponent', () => {
             };
           }
         });
+        
         component.getCalls();
         spyOn(SUBSCRIPTION, 'unsubscribe');
         component.getCalls();
+
         expect(component['callsSubscription'].unsubscribe).toHaveBeenCalled();
       });
     });
@@ -158,18 +182,21 @@ describe('CallsComponent', () => {
       spyOn(trackingService, 'track');
       component['page'] = 10;
     });
+
     it('should set archive true', () => {
       component.filterByArchived(true);
+      
       expect(component.archive).toBeTruthy();
       expect(component['page']).toBe(1);
       expect(component['getCalls']).toHaveBeenCalled();
     });
+
     it('should set archive false', () => {
       component.filterByArchived(false);
+      
       expect(component.archive).toBeFalsy();
       expect(component['page']).toBe(1);
       expect(component['getCalls']).toHaveBeenCalled();
     });
   });
-
 });

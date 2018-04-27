@@ -9,7 +9,7 @@ import { USER_INFO_RESPONSE, USERS_STATS_RESPONSE,
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 
-fdescribe('UserCardCallsComponent', () => {
+describe('UserCardCallsComponent', () => {
   let component: UserCardCallsComponent;
   let fixture: ComponentFixture<UserCardCallsComponent>;
   let itemService: ItemService;

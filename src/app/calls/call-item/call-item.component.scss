@@ -19,11 +19,10 @@ $expanded-horizontal-padding: 25px;
 }
 
 .col-1:last-of-type {
-  text-align: right;
+  text-align: center;
   padding-right: 0;
   tsl-archive-button, tsl-unarchive-button {
     position: relative;
-    margin-right: 10px;
   }
 }
 
