@@ -66,6 +66,8 @@ describe('Component: UserCard', () => {
     });
 
     it('should get the latest selling item', () => {
+      component.user.sellingItem = undefined;
+
       component.ngOnChanges({
         user: new SimpleChange(null, MOCK_USER, false)
       });
