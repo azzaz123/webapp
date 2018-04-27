@@ -1,7 +1,7 @@
 <div class="user-info-calls">
   <div class="user-info-rating-block">
     <h3 i18n>User rating</h3>
-    <tsl-stars *ngIf="user.scoringStars > -1" [stars]="user.scoringStars"></tsl-stars>
+    <tsl-stars *ngIf="user.scoringStars > -1" [stars]="user.scoringStars" [normalized]="false"></tsl-stars>
   </div>
 
   <ul class="user-info-extra list-group list-group-flush">
