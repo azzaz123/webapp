@@ -24,6 +24,7 @@ import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
+import { ConnectionService } from '../connection/connection.service';
 
 describe('Service: Message', () => {
 
@@ -39,6 +40,7 @@ describe('Service: Message', () => {
         XmppService,
         EventService,
         {provide: TrackingService, useClass: MockTrackingService},
+        {provide: ConnectionService, useValue: {}},
         {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: UserService, useValue: {user: new User(USER_ID)}}
       ]

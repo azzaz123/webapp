@@ -66,8 +66,9 @@ describe('App', () => {
         {provide: DebugService, useValue: {}},
         {
           provide: ConnectionService, useValue: {
-          checkConnection() {}
-          }
+          checkConnection() {},
+          tryToReconnect() {}
+          },
         },
         {
           provide: XmppService, useValue: {
@@ -291,8 +292,28 @@ describe('App', () => {
 
           expect(connectionService.checkConnection).toHaveBeenCalled();
         });
-      });
 
+        it('should handle the CONNECTION_ERROR event', () => {
+          spyOn(connectionService, 'tryToReconnect');
+
+          component.ngOnInit();
+          eventService.emit(EventService.CONNECTION_ERROR);
+
+          expect(connectionService.connected).toBe(false);
+          expect(component._reconnecting).toBe(true);
+          expect(connectionService.tryToReconnect).toHaveBeenCalled();
+        });
+
+        it('should handle the CONNECTION_RESTORED event', () => {
+          component._reconnecting = true;
+
+          component.ngOnInit();
+          eventService.emit(EventService.CONNECTION_RESTORED);
+
+          expect(connectionService.connected).toBe(true);
+          expect(component._reconnecting).toBe(false);
+        });
+      });
     });
 
     it('should logout the user and show the error if token is expired', fakeAsync(() => {

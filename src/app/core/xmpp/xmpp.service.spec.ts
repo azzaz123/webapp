@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { MessagePayload } from '../message/messages.interface';
 import { MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
+import { ConnectionService } from '../connection/connection.service';
 
 let mamFirstIndex = '1899';
 let mamCount = 1900;
@@ -101,6 +102,7 @@ let service: XmppService;
 let eventService: EventService;
 let trackingService: TrackingService;
 let sendIqSpy: jasmine.Spy;
+let connectionService: ConnectionService;
 
 describe('Service: Xmpp', () => {
   beforeEach(() => {
@@ -109,11 +111,15 @@ describe('Service: Xmpp', () => {
         XmppService,
         EventService,
         {provide: TrackingService, useClass: MockTrackingService},
-        {provide: PersistencyService, useClass: MockedPersistencyService}]
+        {provide: PersistencyService, useClass: MockedPersistencyService},
+        {provide: ConnectionService, useValue: {
+          connected: null
+        }}]
     });
     service = TestBed.get(XmppService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
+    connectionService = TestBed.get(ConnectionService);
     spyOn(XMPP, 'createClient').and.returnValue(MOCKED_CLIENT);
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
@@ -334,6 +340,12 @@ describe('Service: Xmpp', () => {
       expect(msg.message).toEqual('body');
       expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.full);
     }));
+
+    it('should call client.connect when a CONNECTION_ERROR event is emitted', () => {
+      eventService.emit(EventService.CONNECTION_ERROR);
+
+      expect(MOCKED_CLIENT.connect).toHaveBeenCalled();
+    });
   });
 
   it('should send the read message', () => {
@@ -929,6 +941,7 @@ describe('Service: Xmpp', () => {
       spyOn(MOCKED_CLIENT, 'disconnect');
       service.connect('abc', 'def');
       service['_connected'] = true;
+      connectionService.connected = true;
       service.disconnect();
       expect(MOCKED_CLIENT.disconnect).toHaveBeenCalled();
       expect(service['_connected']).toBe(false);
