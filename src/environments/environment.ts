@@ -7,11 +7,11 @@ export const environment: any = {
   production: false,
   profeatures: true,
   name: 'local',
-  baseUrl: 'https://apigw.dock119.wallapop.com/',
-  xmppDomain: 'dock119.wallapop.com',
-  wsUrl: 'wss://dock119.wallapop.com:5282/ws-xmpp',
-  siteUrl: 'https://es.dock119.wallapop.com/',
+  baseUrl: 'https://apigw.dock129.wallapop.com/',
+  xmppDomain: 'dock129.wallapop.com',
+  wsUrl: 'wss://dock129.wallapop.com:5282/ws-xmpp',
+  siteUrl: 'https://es.dock129.wallapop.com/',
   appboy: '516bd193-25b2-48b9-b79d-f8516f104d2f',
-  cookieSuffix: 'dock119',
+  cookieSuffix: 'dock129',
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents'
 };

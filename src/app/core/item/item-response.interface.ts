@@ -28,6 +28,27 @@ export interface ItemResponse {
   type: string;
 }
 
+export interface ItemProResponse {
+  id: string;
+  legacy_id: number;
+  title: string;
+  description: string;
+  owner: string;
+  category_id: number;
+  location: UserLocation;
+  sale_price: number;
+  currency_code: string;
+  modified_date: number;
+  url: string;
+  flags: ItemFlags;
+  actions_allowed: ItemActions;
+  sale_conditions: ItemSaleConditions;
+  main_image: Image;
+  images: Image[];
+  web_slug: string;
+  published_date: number;
+}
+
 export interface ItemContent {
   category_id?: number;
   currency_code?: string;
@@ -233,6 +254,7 @@ export interface ItemBulkResponse {
 export interface ItemsStore {
   active: Item[];
   sold: Item[];
+  pending: Item[];
 }
 
 export interface DeliveryInfo {

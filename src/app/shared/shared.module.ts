@@ -23,6 +23,8 @@ import { SanitizedBackgroundDirective } from './sanitized-background/sanitized-b
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SwitchComponent } from './switch/switch.component';
+import { SearchInputComponent } from './search-input/search-input.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -32,7 +34,8 @@ import { SwitchComponent } from './switch/switch.component';
     NgbModule.forRoot(),
     ReactiveFormsModule,
     FormsModule,
-    GeolocationModule
+    GeolocationModule,
+    NgbDropdownModule
   ],
   exports: [
     CardModule,
@@ -51,7 +54,8 @@ import { SwitchComponent } from './switch/switch.component';
     UserAvatarComponent,
     SwitchComponent,
     ReviewModalComponent,
-    NgxPermissionsModule
+    NgxPermissionsModule,
+    SearchInputComponent
   ],
   declarations: [
     AdComponent,
@@ -68,7 +72,8 @@ import { SwitchComponent } from './switch/switch.component';
     StarsRateComponent,
     UserAvatarComponent,
     SwitchComponent,
-    ReviewModalComponent
+    ReviewModalComponent,
+    SearchInputComponent
   ],
   providers: [
     DecimalPipe,

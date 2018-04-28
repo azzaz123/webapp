@@ -4,10 +4,14 @@
      [infiniteScrollThrottle]="100"
      [scrollWindow]="false"
      [infiniteScrollDisabled]="end || loading"
-     (scrolled)="loadMore()"
-     [scrollTop]="scrollTop">
+     (scrolled)="loadMore()">
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
   <div class="container">
+    <h2 i18n>Catalog</h2>
+    <div id="top-buttons">
+      <button class="btn-upload" [routerLink]="['/catalog/upload']" i18n>Upload</button>
+    </div>
+    <tsl-search-input (term)="search($event)"></tsl-search-input>
     <div class="row items">
       <a class="add-item col-md-12"
          [routerLink]="['/catalog/upload']"

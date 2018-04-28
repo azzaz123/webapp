@@ -132,11 +132,23 @@ export class TrackingService {
     screen: SCREENS_IDS.ProCatalog,
     type: TYPES_IDS.Tap
   };
+  public static PRODUCT_LIST_FILTERED_BY_TEXT: TrackingEventBase = {
+    name: '372',
+    category: CATEGORY_IDS['ProInventoryManagement']
+  };
+  public static PRODUCT_LIST_ORDERED_BY: TrackingEventBase = {
+    name: '374',
+    category: CATEGORY_IDS['ProInventoryManagement']
+  };
   public static PRODUCT_LIST_SOLD_VIEWED: TrackingEventBase = {
     name: '375',
     category: CATEGORY_IDS.ProInventoryManagement,
     screen: SCREENS_IDS.ProCatalog,
     type: TYPES_IDS.Tap
+  };
+  public static PRODUCT_LIST_BULK_SOLD: TrackingEventBase = {
+    name: '370',
+    category: CATEGORY_IDS['ProInventoryManagement']
   };
   public static PRODUCT_REPPORTED: TrackingEventBase = {
     name: '379',
