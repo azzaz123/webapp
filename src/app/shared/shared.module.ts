@@ -25,6 +25,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { SwitchComponent } from './switch/switch.component';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { SelectComponent } from './select/select.component';
 
 @NgModule({
   imports: [
@@ -55,7 +56,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
-    SearchInputComponent
+    SearchInputComponent,
+    SelectComponent
   ],
   declarations: [
     AdComponent,
@@ -73,7 +75,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     UserAvatarComponent,
     SwitchComponent,
     ReviewModalComponent,
-    SearchInputComponent
+    SearchInputComponent,
+    SelectComponent
   ],
   providers: [
     DecimalPipe,

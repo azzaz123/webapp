@@ -25,6 +25,7 @@ export class CatalogProListComponent implements OnInit {
   public loading = true;
   public end: boolean;
   public isUrgent = false;
+  public isRedirect = false;
   public orderBy: any[];
   public selectedStatus: string = 'active';
   public sortBy: string = 'date_desc';
@@ -46,6 +47,16 @@ export class CatalogProListComponent implements OnInit {
               private errorService: ErrorsService) { }
 
   ngOnInit() {
+    this.getCounters();
+    let sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
+    this.orderBy = [];
+    sorting.forEach((sort) => {
+      this.orderBy.push({
+        value: sort,
+        label: this.i18n.getTranslations(sort)
+      });
+    });
+
     this.getItems();
 
     this.eventService.subscribe('itemChangeStatus', (items) => {
@@ -54,6 +65,7 @@ export class CatalogProListComponent implements OnInit {
         this.items.splice(index, 1);
       });
     });
+    this.isRedirect = !this.getRedirectToTPV();
   }
 
   private getItems(append?: boolean, openVisibility?: boolean) {
@@ -193,6 +205,10 @@ export class CatalogProListComponent implements OnInit {
         }
       });
     });
+  }
+
+  private getRedirectToTPV(): boolean {
+    return localStorage.getItem('redirectToTPV') === 'true';
   }
 
 }

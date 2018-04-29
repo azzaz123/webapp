@@ -119,3 +119,23 @@ tsl-selected-items {
   margin-bottom: $spacing;
   margin-top: -$spacing-L;
 }
+
+tsl-search-input {
+  vertical-align: bottom;
+  margin-right: $spacing;
+}
+
+tsl-search-input, .nav, #total-selected {
+  margin-bottom: $spacing-M;
+  height: 38px;
+}
+
+tsl-select {
+  font-size: $font-size-XS;
+  font-weight: bold;
+  color: $grey-300;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  height: 38px;
+  line-height: 36px;
+}

@@ -1,0 +1,26 @@
+@import "~style/common";
+
+mat-icon {
+  height: 35px;
+  vertical-align: middle;
+  width: 10px;
+  margin-left: 3px;
+}
+.dropdown {
+  color: $corporate;
+  &.open .dropdown-toggle {
+    color: $corporate;
+  }
+  .dropdown-menu {
+    margin: 0;
+  }
+  .dropdown-toggle {
+    @include default-transition(color);
+    a {
+      color: $corporate;
+    }
+  }
+}
+.dropdown .dropdown-menu {
+  margin: 0;
+}
