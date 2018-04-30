@@ -8,15 +8,14 @@
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
   <div class="container">
     <h2 i18n>Catalog</h2>
-    <div id="top-buttons">
-      <button class="btn-upload" [routerLink]="['/catalog/upload']" i18n>Upload</button>
-    </div>
     <tsl-search-input (term)="search($event)"></tsl-search-input>
     <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
       <a (click)="filterByStatus('active')" [ngClass]="{active: selectedStatus === 'active'}" class="nav-link" i18n>Active
         <span *ngIf="counters && subscriptionPlan > 0">({{counters.publish}}/{{subscriptionPlan}})</span> </a>
       <a (click)="filterByStatus('pending')" [ngClass]="{active: selectedStatus === 'pending'}" class="nav-link" i18n>Inactive
         <span *ngIf="counters">({{counters.onHold}})</span> </a>
+      <a (click)="filterByStatus('bumped')" [ngClass]="{active: selectedStatus === 'bumped'}" class="nav-link" i18n>Bumped
+        <span *ngIf="counters">({{counters.sells}})</span></a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n>Sold
         <span *ngIf="counters">({{counters.sells}})</span></a>
     </nav>
