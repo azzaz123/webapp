@@ -1,7 +1,5 @@
 @import "~style/common";
 
-$offset: 3px;
-
 .back {
   color: $grey-900;
   z-index: 1000;
@@ -19,19 +17,25 @@ $offset: 3px;
   }
 }
 
+.bumps-table {
+  z-index: 4;
+  position: relative;
+  margin-bottom: 65px;
+}
+
 .table-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   .header-first-section {
-    width: 60%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 60%;
   }
   .bump-types {
     display: flex; 
-    width: 50%;   
+    width: 50%;
   }
   .info {
     font-size: $font-size-S;
@@ -45,30 +49,29 @@ $offset: 3px;
     }
   }
   .type {
-    $border-radius: 20px;
-    margin-bottom: -$offset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: -3px;
     align-self: flex-end;
-    border-top-right-radius: $border-radius;
-    border-top-left-radius: $border-radius;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
     box-shadow: 3px 6px 10px 0 rgba(0, 0, 0, 0.2);
     border: solid 1px $grey-50;
     border-bottom: 0;
     color: $white;
     font-weight: bold;
     text-align: center;
-    display: flex;
-    align-items: center;
     padding: $spacing-M;
     font-size: $font-size-S;
-    justify-content: center;
-    flex-direction: column;
     line-height: 17px;
-    &.zone {
+    &.city {
       background-image: linear-gradient(206deg, #2be2d6, #2be2d6, #2ae1d5, #2ae0d4 1%, $zone-bump);
       z-index: 3;  
       width: 50%;
     }
-    &.city {
+    &.country {
       background-image: linear-gradient(208deg, #8fd6ff, #56acff);
       z-index: 2;
       width: 50%;
@@ -83,19 +86,36 @@ $offset: 3px;
   }
 }
 
-.price-table {
+.checkout-calendar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
   z-index: 4;
-  position: relative;
-  margin-bottom: 65px;
+  .checkout-calendar-overlay {
+    background-color: rgba(37, 50, 56, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }  
 }
 
-.cart {
-  width: 280px;
-  padding: 0 10px;
-}
-
-ngb-datepicker {
+:host /deep/ ngb-datepicker {
   background-color: $white;
+  z-index: 1;
+  .ngb-dp-weekday {
+    font-weight: bold;
+    font-style: normal;
+    color: $grey-500;
+  }
 }
 
 .custom-day {
@@ -104,17 +124,22 @@ ngb-datepicker {
   display: inline-block;
   height: 2rem;
   width: 2rem;
-}
-
-.custom-day.focused {
-  background-color: #e6e6e6;
-}
-
-.custom-day.range, .custom-day:hover {
-  background-color: rgb(2, 117, 216);
-  color: white;
-}
-
-.custom-day.faded {
-  background-color: rgba(2, 117, 216, 0.5);
+  &.focused {
+    background-color: #e6e6e6;
+  }  
+  &.disabled {
+    color: $grey-250;
+    &:hover {
+      color: $grey-250;
+      background-color: transparent;
+      cursor: not-allowed; 
+    }
+  }
+  &.range, &:hover {
+    background-color: rgb(2, 117, 216);
+    color: white;
+  }
+  &.faded {
+    background-color: rgba(2, 117, 216, 0.5);
+  }
 }

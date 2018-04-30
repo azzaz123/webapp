@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ItemWithProducts } from '../../../../core/item/item-response.interface';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
@@ -11,8 +11,8 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 export class CheckoutProItemComponent implements OnInit {
 
   @Input() itemWithProducts: ItemWithProducts;
-  @Input() fromDate: NgbDateStruct;
-  @Input() toDate: NgbDateStruct;
+  @Output() dateFocus: EventEmitter<ItemWithProducts> = new EventEmitter();
+
   countryBumpSelected: boolean;
   cityBumpSelected: boolean;
 
@@ -22,13 +22,24 @@ export class CheckoutProItemComponent implements OnInit {
   ngOnInit() {
   }
 
+  onDateFocus() {
+    this.dateFocus.emit(this.itemWithProducts);
+  }
+
+  resetItem() {
+    this.cityBumpSelected = false;
+    this.countryBumpSelected = false;
+    delete this.itemWithProducts.fromDate;
+    delete this.itemWithProducts.toDate;
+  }
+
   selectBump(type: string) {
     if (type === 'city') {
       this.cityBumpSelected = true;
       this.countryBumpSelected = false;
     } else if (type === 'country') {
-      this.cityBumpSelected = false;
       this.countryBumpSelected = true;
+      this.cityBumpSelected = false;
     }
   }
 }

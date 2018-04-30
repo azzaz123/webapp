@@ -1,6 +1,7 @@
 import { ApiResponse } from '../resource/api-response.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
 import { Item } from './item';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 export interface ItemResponseV2 extends ApiResponse {
   title: string;
@@ -177,6 +178,8 @@ export interface ProductDurations {
 export interface ItemWithProducts {
   item: Item;
   products: ProductDurations;
+  fromDate?: NgbDateStruct;
+  toDate?: NgbDateStruct;
 }
 
 export interface AllowedActionResponse {

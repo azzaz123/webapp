@@ -46,8 +46,14 @@
     font-weight: bold;
   }
   .title {
+    margin: 0;
     font-size: 14px;
     color: $grey-250;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    max-height: 41px;
+    -webkit-box-orient: vertical
   }
   .btn-bumps {
     display: flex;
@@ -64,7 +70,7 @@
         width: 29px;
       }
       &:hover, &.selected {
-        background-color: #13c1ac;
+        background-color: $corporate;
       }
     }
     &.country {
@@ -72,7 +78,7 @@
         width: 37px;
       }
       &:hover, &.selected {
-        background-color: #56acff;
+        background-color: $country-bump;
       }
     }
   }
@@ -86,13 +92,20 @@
     height: 32px;
     border-radius: 5px;
     font-size: 14px;
-    &.ng-untouched {
-      color: $grey-100;
+    &.city {
+      &:hover, &:focus {
+        border-color: $corporate;
+      }
+    }
+    &.country {
+      &:hover, &:focus {
+        border-color: $country-bump;
+      }
     }
   }
   .item-separator {
     width: 1px;
     height: 61px;
-    background-color: #eceff1;
+    background-color: $grey-50;
   }
 }

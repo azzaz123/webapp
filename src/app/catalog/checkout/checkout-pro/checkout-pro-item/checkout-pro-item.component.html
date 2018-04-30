@@ -4,7 +4,7 @@
       <tsl-item-avatar [item]="itemWithProducts.item" size="big" fallbackLight="true" title="{{itemWithProducts.item.title}}"></tsl-item-avatar>
       <div>
         <div class="price">{{itemWithProducts.item.salePrice | customCurrency:itemWithProducts.item.currencyCode}}</div>
-        <div class="title">{{itemWithProducts.item.title}}</div>
+        <p class="title">{{itemWithProducts.item.title}}</p>
       </div>
     </div>
     <div class="item-actions">
@@ -20,13 +20,17 @@
   <div class="item-second-section">
     <div>
       <span class="label-date">Start date</span>
-      <input class="form-control input-date" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="fromDate" ngbDatepicker #d="ngbDatepicker">
+      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="itemWithProducts.fromDate"
+        [disabled]="!countryBumpSelected && !cityBumpSelected" [ngClass]="{'country': countryBumpSelected, 'city': cityBumpSelected }"
+        ngbDatepicker>
     </div>
     <div>
       <span class="label-date">End date</span>
-      <input class="form-control input-date" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="toDate" ngbDatepicker #d="ngbDatepicker">
+      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="itemWithProducts.toDate"
+        [disabled]="!countryBumpSelected && !cityBumpSelected" [ngClass]="{'country': countryBumpSelected, 'city': cityBumpSelected }"
+        ngbDatepicker>
     </div>
-    <div class="item-reset"></div>
+    <div class="item-reset" (click)="resetItem()"></div>
   </div>
   <form class="durations border-l">
     <div ngbRadioGroup name="duration" [(ngModel)]="duration">
