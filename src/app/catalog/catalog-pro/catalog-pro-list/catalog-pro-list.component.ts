@@ -3,7 +3,7 @@ import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ItemsData, ItemBulkResponse } from '../../../core/item/item-response.interface';
+import { ItemBulkResponse } from '../../../core/item/item-response.interface';
 import { EventService } from '../../../core/event/event.service';
 import { ItemChangeEvent } from '../../list/catalog-item/item-change.interface';
 import * as _ from 'lodash';
@@ -12,6 +12,7 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { UserService } from '../../../core/user/user.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { UserStatsResponse, Counters } from '../../../core/user/user-stats.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -44,7 +45,8 @@ export class CatalogProListComponent implements OnInit {
               private toastr: ToastrService,
               private i18n: I18nService,
               private userService: UserService,
-              private errorService: ErrorsService) { }
+              private errorService: ErrorsService,
+              private router: Router) { }
 
   ngOnInit() {
     this.getCounters();

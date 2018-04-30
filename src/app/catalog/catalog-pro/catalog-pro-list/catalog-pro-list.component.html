@@ -9,18 +9,37 @@
   <div class="container">
     <h2 i18n>Catalog</h2>
     <tsl-search-input (term)="search($event)"></tsl-search-input>
-    <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
+    <nav class="nav filters-nav">
       <a (click)="filterByStatus('active')" [ngClass]="{active: selectedStatus === 'active'}" class="nav-link" i18n>Active
-        <span *ngIf="counters && subscriptionPlan > 0">({{counters.publish}}/{{subscriptionPlan}})</span> </a>
+        <span *ngIf="counters">({{counters.publish}}/{{subscriptionPlan}})</span> </a>
       <a (click)="filterByStatus('pending')" [ngClass]="{active: selectedStatus === 'pending'}" class="nav-link" i18n>Inactive
         <span *ngIf="counters">({{counters.onHold}})</span> </a>
-      <a (click)="filterByStatus('bumped')" [ngClass]="{active: selectedStatus === 'bumped'}" class="nav-link" i18n>Bumped
-        <span *ngIf="counters">({{counters.sells}})</span></a>
+      <a (click)="filterByStatus('featured')" [ngClass]="{active: selectedStatus === 'featured'}" class="nav-link" i18n>Bumped
+        <span *ngIf="counters">({{counters.featured}})</span></a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n>Sold
         <span *ngIf="counters">({{counters.sells}})</span></a>
     </nav>
-    <tsl-select [items]="orderBy" (valueChanges)="sort($event)" [value]="sortBy" class="float-right"
-                [hidden]="itemService.selectedItems.length"></tsl-select>
+    <tsl-select [items]="orderBy" (valueChanges)="sort($event)" [value]="sortBy" class="float-right"></tsl-select>
+    <div id="top-buttons">
+      <div class="bulk-actions" [ngClass]="{disabled: !itemService.selectedItems.length}">
+        <button class="btn-delete dark" (click)="deactivate(deactivateItemsModal)" *ngIf="selectedStatus === 'active'"
+                [disabled]="!itemService.selectedItems.length" i18n>Deactivate</button>
+        <button class="btn-activate" (click)="activate(activateItemsModal)" *ngIf="selectedStatus === 'pending'"
+                [disabled]="!itemService.selectedItems.length" i18n>Activate</button>
+        <button class="btn-sold" (click)="setSold(soldItemsModal)" [disabled]="!itemService.selectedItems.length"
+                [hidden]="selectedStatus === 'sold' || selectedStatus === 'pending'" i18n>Sold</button>
+        <button class="btn-reserve" (click)="reserve(reserveItemsModal)" [disabled]="!itemService.selectedItems.length"
+                [hidden]="selectedStatus === 'sold' || selectedStatus === 'pending'" i18n>Reserve</button>
+        <button class="btn-delete dark" (click)="delete(deleteItemsModal)" [disabled]="!itemService.selectedItems.length" i18n>
+          <mat-icon svgIcon="delete"></mat-icon>
+          Delete
+        </button>
+        <tsl-button className="btn-feature" [disabled]="!itemService.selectedItems.length"
+                    [hidden]="selectedStatus === 'sold' || selectedStatus === 'pending'" i18n="call to action|button">
+          Feature</tsl-button>
+      </div>
+      <tsl-button className="btn-primary" [routerLink]="['/catalog/upload']" i18n>Upload</tsl-button>
+    </div>
     <div class="row items">
       <a class="add-item col-md-12"
          [routerLink]="['/catalog/upload']"
@@ -29,8 +48,65 @@
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
         <mat-icon svgIcon="pro-items-empty-state" class="image"></mat-icon>
       </div>
-      <tsl-catalog-pro-item *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" class="col-md-12"></tsl-catalog-pro-item>
+      <tsl-catalog-pro-item *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" class="col-md-12">
+
+      </tsl-catalog-pro-item>
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </div>
 </div>
+
+<ng-template ngbModalContainer #deleteItemsModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Delete items</h2>
+    <p i18n>The selected items will be permanently deleted.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Delete</button>
+  </div>
+</ng-template>
+
+<ng-template ngbModalContainer #reserveItemsModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Reserve items</h2>
+    <p i18n>The selected items will be reserved.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Reserve</button>
+  </div>
+</ng-template>
+
+<ng-template ngbModalContainer #soldItemsModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Sold items</h2>
+    <p i18n>The selected items will be set al sold.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Sold</button>
+  </div>
+</ng-template>
+
+<ng-template ngbModalContainer #deactivateItemsModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Deactivate items</h2>
+    <p i18n>The selected items will be set all pending.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Deactivate</button>
+  </div>
+</ng-template>
+
+<ng-template ngbModalContainer #activateItemsModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Activate items</h2>
+    <p i18n>The selected items will be set all active.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Activate</button>
+  </div>
+</ng-template>

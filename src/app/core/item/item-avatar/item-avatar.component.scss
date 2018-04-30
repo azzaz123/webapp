@@ -14,6 +14,9 @@ div {
   &.big {
     @include square-avatar($item-avatar-size-big);
   }
+  &.bigger {
+    @include square-avatar($item-avatar-size-bigger);
+  }
   &.full {
     width: 100%;
     padding-top: 100%;

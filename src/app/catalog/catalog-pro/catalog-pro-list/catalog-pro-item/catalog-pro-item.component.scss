@@ -22,7 +22,7 @@ $feature-button-width: 170px;
     align-items: center;
     justify-content: center;
     margin-right: $spacing;
-    margin-top: $spacing-L;
+    margin-top: 42px;
     cursor: pointer;
     mat-icon {
       display: none;
@@ -49,7 +49,7 @@ $feature-button-width: 170px;
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $grey-50;
-  margin-bottom: $spacing-XS;
+  margin-bottom: $spacing;
   margin-left: $spacing-L;
   display: flex;
   align-items: center;

@@ -7,17 +7,19 @@
   color: $grey-300;
 }
 div {
-  width: 22px;
+  width: 38px;
   overflow: hidden;
   border-bottom: 2px solid transparent;
   transition: all .2s ease;
   position: relative;
   mat-icon {
-    height: 21px;
+    height: 40px;
+    width: 40px;
     position: absolute;
-    top: 7px;
-    left: 0;
+    top: 0;
+    left: -7px;
     pointer-events: none;
+    color: $grey-300;
   }
   input {
     height: 36px;
