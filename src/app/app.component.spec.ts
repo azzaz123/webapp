@@ -52,7 +52,7 @@ let privacyService: PrivacyService;
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
 
-fdescribe('App', () => {
+describe('App', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
