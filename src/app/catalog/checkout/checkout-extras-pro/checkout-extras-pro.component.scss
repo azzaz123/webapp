@@ -1,0 +1,21 @@
+@import "~style/common";
+
+$offset: 7px;
+
+.back {
+  color: $grey-900;
+  position: absolute;
+  z-index: 1000;
+  mat-icon {
+    vertical-align: middle;
+    margin-right: $spacing;
+    width: 27px;
+    height: 17px;
+  }
+  &:hover {
+    text-decoration: none;
+    &, mat-icon {
+      opacity: .8;
+    }
+  }
+}
