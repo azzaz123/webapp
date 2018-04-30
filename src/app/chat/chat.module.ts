@@ -25,6 +25,8 @@ import { ReviewButtonComponent } from './message/review-button/review-button.com
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ItemReservedComponent } from './item/item-reserved/item-reserved.component';
 import { ItemSoldComponent } from './item/item-sold/item-sold.component';
+import { UserCardComponent } from './user-card/user-card.component';
+import { UserResponseRateComponent } from './user-response-rate/user-response-rate.component';
 
 @NgModule({
   imports: [
@@ -58,7 +60,9 @@ import { ItemSoldComponent } from './item/item-sold/item-sold.component';
     BlockUserComponent,
     UnblockUserComponent,
     ReviewButtonComponent,
-    UserDetailComponent
+    UserDetailComponent,
+    UserCardComponent,
+    UserResponseRateComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,

@@ -333,4 +333,18 @@
   <translation id="124288245683167765">¡Márcalo como urgente!</translation>
   <translation id="1388549121916575785">Tu producto ya se ha subido y está marcado como urgente</translation>
   <translation id="6771710083447673223">Marcado como urgente</translation>
+  <translation id="6146618115870222180">Tus Mensajes</translation>
+  <translation id="8848709900682152607">Marcar todo como Procesado</translation>
+  <translation id="4749295647449765550">Procesado</translation>
+  <translation id="1798778629973365531">Sin denuncias</translation>
+  <translation id="5717387697033354741">Una denuncia</translation>
+  <translation id="4681042121098831040"><ph name="TOTAL_NUMBER"><ex>TOTAL_NUMBER</ex></ph> denuncias</translation>
+  <translation id="2020278898288143668">En venta</translation>
+  <translation id="4636699111573030980">+<ph name="ITEMS_COUNT"><ex>ITEMS_COUNT</ex></ph> más</translation>
+  <translation id="8753092784115704500">Procesar todo</translation>
+  <translation id="4965764680155209445">Se marcarán todos los elementos en la página como Procesados.</translation>
+  <translation id="7252908727899212022">Marcar como Pendiente</translation>
+  <translation id="6570363013146073520">Panel</translation>
+  <translation id="5762151072276461448">Llamadas</translation>
+  <translation id="4588618843305891254">Catálogo</translation>
 </translationbundle>
