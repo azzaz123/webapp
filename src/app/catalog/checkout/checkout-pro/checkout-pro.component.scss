@@ -108,13 +108,32 @@
   }  
 }
 
-:host /deep/ ngb-datepicker {
+.datepicker-wrapper {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: solid 1px $grey-50;
+  padding: $spacing-L;
   background-color: $white;
   z-index: 1;
+}
+
+.datepicker-btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+  border-top: solid 1px $grey-50;
+  padding-top: $spacing;
+}
+
+:host /deep/ ngb-datepicker {
+  border: 0;
+  .ngb-dp-weekdays {
+    border: 0;
+  }
   .ngb-dp-weekday {
     font-weight: bold;
     font-style: normal;
-    color: $grey-500;
+    color: $grey-500;    
   }
 }
 
@@ -124,6 +143,7 @@
   display: inline-block;
   height: 2rem;
   width: 2rem;
+  font-size: $font-size-S;
   &.focused {
     background-color: #e6e6e6;
   }  
