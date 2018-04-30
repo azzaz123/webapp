@@ -492,9 +492,9 @@ export class TrackingService {
     type: TYPES_IDS.Tap
   };
   public static CALLS_MARK_PENDING: TrackingEventBase = {
-    name: '690',
-    category: CATEGORY_IDS.Button,
-    screen: SCREENS_IDS.MyZone,
+    name: '393',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
     type: TYPES_IDS.Tap
   };
   public static PHONE_LEAD_OPENED: TrackingEventBase = {
@@ -510,19 +510,13 @@ export class TrackingService {
     type: TYPES_IDS.Tap
   };
   public static PHONE_LEAD_LIST_ACTIVE_LOADED: TrackingEventBase = {
-    name: '392',
-    category: CATEGORY_IDS.ProPhoneManagement,
-    screen: SCREENS_IDS.ProPhoneManager,
+    name: '690',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
   };
   public static PHONE_LEAD_VIEWED_CONVERSATION: TrackingEventBase = {
     name: '395',
-    category: CATEGORY_IDS.ProPhoneManagement,
-    screen: SCREENS_IDS.ProPhoneManager,
-    type: TYPES_IDS.Tap
-  };
-  public static PHONE_LEAD_LIST_ALL_PROCESSED: TrackingEventBase = {
-    name: '401',
     category: CATEGORY_IDS.ProPhoneManagement,
     screen: SCREENS_IDS.ProPhoneManager,
     type: TYPES_IDS.Tap
@@ -533,7 +527,7 @@ export class TrackingService {
     screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
-  public static CALLS_LIST_ALL_PROCESSED: TrackingEventBase = {
+  public static PHONE_LEAD_LIST_ALL_PROCESSED: TrackingEventBase = {
     name: '688',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZone,
