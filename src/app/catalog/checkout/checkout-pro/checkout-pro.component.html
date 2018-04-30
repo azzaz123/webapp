@@ -1,0 +1,58 @@
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <a class="back" [routerLink]="['/catalog/list']">
+          <mat-icon svgIcon="back-arrow"></mat-icon>
+          <span i18n>Back</span>
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-9">
+        <div class="table-header">
+          <div class="header-first-section">
+            <div class="info">
+              <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
+            </div>
+            <div class="bump-types">
+              <div class="type zone">
+                <div i18n>City</div>
+              </div>
+              <div class="type city">
+                <div i18n>Country</div>
+              </div>
+            </div>
+          </div>
+          <div class="type planning">
+            <div i18n>Planning</div>
+          </div>
+        </div>
+        <div class="price-table">
+          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts" [itemWithProducts]="item"></tsl-checkout-pro-item>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="cart">
+          <tsl-cart [provincialBump]="provincialBump"></tsl-cart>
+        </div>
+      </div>
+    </div>
+    <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
+  </div>
+
+  <!-- <ngb-datepicker #dp (select)="onDateSelection($event)" [dayTemplate]="t"></ngb-datepicker>
+
+  <ng-template #t let-date="date" let-focused="focused">
+    <span class="custom-day" [class.focused]="focused" [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
+      [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+      {{ date.day }}
+    </span>
+  </ng-template>
+
+  <hr>
+
+  <pre>From: {{ fromDate | json }} </pre>
+  <pre>To: {{ toDate | json }} </pre> -->
+
+</div>

@@ -13,6 +13,7 @@ import { TutorialGuard } from '../shared/guards/tutorial.guard';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
+import { CheckoutProComponent } from './checkout/checkout-pro/checkout-pro.component';
 import * as _ from 'lodash';
 
 const routes: Routes = [
@@ -169,7 +170,7 @@ const routes: Routes = [
           },
           {
             path: 'checkout',
-            component: CheckoutComponent,
+            component: CheckoutProComponent,
             data: {
               isMyZone: true,
               isProducts: true,

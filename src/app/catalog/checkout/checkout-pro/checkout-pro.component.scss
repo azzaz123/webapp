@@ -1,0 +1,120 @@
+@import "~style/common";
+
+$offset: 3px;
+
+.back {
+  color: $grey-900;
+  z-index: 1000;
+  mat-icon {
+    vertical-align: middle;
+    margin-right: $spacing;
+    width: 27px;
+    height: 17px;
+  }
+  &:hover {
+    text-decoration: none;
+    &, mat-icon {
+      opacity: .8;
+    }
+  }
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .header-first-section {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .bump-types {
+    display: flex; 
+    width: 50%;   
+  }
+  .info {
+    font-size: $font-size-S;
+    a {
+      text-decoration: underline;
+      cursor: pointer;
+      color: $corporate;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+  .type {
+    $border-radius: 20px;
+    margin-bottom: -$offset;
+    align-self: flex-end;
+    border-top-right-radius: $border-radius;
+    border-top-left-radius: $border-radius;
+    box-shadow: 3px 6px 10px 0 rgba(0, 0, 0, 0.2);
+    border: solid 1px $grey-50;
+    border-bottom: 0;
+    color: $white;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    padding: $spacing-M;
+    font-size: $font-size-S;
+    justify-content: center;
+    flex-direction: column;
+    line-height: 17px;
+    &.zone {
+      background-image: linear-gradient(206deg, #2be2d6, #2be2d6, #2ae1d5, #2ae0d4 1%, $zone-bump);
+      z-index: 3;  
+      width: 50%;
+    }
+    &.city {
+      background-image: linear-gradient(208deg, #8fd6ff, #56acff);
+      z-index: 2;
+      width: 50%;
+    }
+    &.planning {
+      background-color: $white;
+      color: $grey-900;
+      box-shadow: none;
+      z-index: 1;
+      width: 40%;
+    }
+  }
+}
+
+.price-table {
+  z-index: 4;
+  position: relative;
+  margin-bottom: 65px;
+}
+
+.cart {
+  width: 280px;
+  padding: 0 10px;
+}
+
+ngb-datepicker {
+  background-color: $white;
+}
+
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+
+.custom-day.focused {
+  background-color: #e6e6e6;
+}
+
+.custom-day.range, .custom-day:hover {
+  background-color: rgb(2, 117, 216);
+  color: white;
+}
+
+.custom-day.faded {
+  background-color: rgba(2, 117, 216, 0.5);
+}

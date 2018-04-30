@@ -1,0 +1,45 @@
+<div class="item">
+  <div class="item-first-section">
+    <div class="item-info">
+      <tsl-item-avatar [item]="itemWithProducts.item" size="big" fallbackLight="true" title="{{itemWithProducts.item.title}}"></tsl-item-avatar>
+      <div>
+        <div class="price">{{itemWithProducts.item.salePrice | customCurrency:itemWithProducts.item.currencyCode}}</div>
+        <div class="title">{{itemWithProducts.item.title}}</div>
+      </div>
+    </div>
+    <div class="item-actions">
+      <div class="btn-bumps city" [ngClass]="{selected: cityBumpSelected}" (click)="selectBump('city')">
+        <mat-icon svgIcon="bump-city"></mat-icon>
+      </div>
+      <div class="btn-bumps country" [ngClass]="{selected: countryBumpSelected}" (click)="selectBump('country')">
+        <mat-icon svgIcon="bump-country"></mat-icon>
+      </div>
+    </div>
+  </div>
+  <div class="item-separator"></div>
+  <div class="item-second-section">
+    <div>
+      <span class="label-date">Start date</span>
+      <input class="form-control input-date" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="fromDate" ngbDatepicker #d="ngbDatepicker">
+    </div>
+    <div>
+      <span class="label-date">End date</span>
+      <input class="form-control input-date" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="toDate" ngbDatepicker #d="ngbDatepicker">
+    </div>
+    <div class="item-reset"></div>
+  </div>
+  <form class="durations border-l">
+    <div ngbRadioGroup name="duration" [(ngModel)]="duration">
+      <label ngbButtonLabel class="custom-radio" *ngFor="let duration of durations">
+        <input ngbButton type="radio" [value]="duration">
+        <mat-icon svgIcon="radio-button"></mat-icon> {{duration / 24}}
+        <span i18n>days</span>
+      </label>
+    </div>
+  </form>
+  <div *ngFor="let type of types" class="price border-l" [ngClass]="type" [hidden]="!itemWithProducts.products[duration][type]">
+    <button class="btn btn-price" (click)="select(type)" [ngClass]="{selected: type === selectedType && duration === selectedDuration}">
+      {{itemWithProducts.products[duration][type]?.market_code | customCurrency}}
+    </button>
+  </div>
+</div>
