@@ -110,6 +110,7 @@ export class AdService {
       if (allowSegmentation) {
         apstag.setDisplayBids();
         Criteo.SetDFPKeyValueTargeting();
+        googletag.pubads().setTargeting('allowSegmentation', allowSegmentation);
       }
       googletag.pubads().refresh();
     });
