@@ -15,6 +15,8 @@ import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmatio
 import { HttpService } from '../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec';
 import { User } from '../core/user/user';
+import { PrivacyService } from '../core/privacy/privacy.service';
+import { MOCK_PRIVACY_ALLOW, PrivacyRequestData } from '../core/privacy/privacy';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -47,6 +49,7 @@ describe('ProfileComponent', () => {
   let errorsService: ErrorsService;
   let http: HttpService;
   let modalService: NgbModal;
+  let privacyService: PrivacyService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -86,7 +89,8 @@ describe('ProfileComponent', () => {
             };
           }
         }
-        }
+        },
+        PrivacyService
       ],
       declarations: [ProfileComponent],
       schemas: [NO_ERRORS_SCHEMA]
@@ -101,6 +105,7 @@ describe('ProfileComponent', () => {
     errorsService = TestBed.get(ErrorsService);
     http = TestBed.get(HttpService);
     modalService = TestBed.get(NgbModal);
+    privacyService = TestBed.get(PrivacyService);
     spyOn(userService, 'me').and.callThrough();
     fixture.detectChanges();
   });
@@ -133,6 +138,30 @@ describe('ProfileComponent', () => {
       fixture.detectChanges();
 
       expect(component['hasNotSavedChanges']).toBeTruthy();
+    });
+
+    it('should subscribe privacyService allowSegmentation$', () => {
+      spyOn(privacyService.allowSegmentation$, 'subscribe');
+
+      component.ngOnInit();
+
+      expect(privacyService.allowSegmentation$.subscribe).toHaveBeenCalled();
+    });
+
+    it('should change allowSegmentation value to false when allowSegmentation$ trigger false value', () => {
+      privacyService.allowSegmentation$.next(false);
+
+      component.ngOnInit();
+
+      expect(component.allowSegmentation).toBeFalsy();
+    });
+
+    it('should change allowSegmentation value to true when allowSegmentation$ trigger true value', () => {
+      privacyService.allowSegmentation$.next(true);
+
+      component.ngOnInit();
+
+      expect(component.allowSegmentation).toBeTruthy();
     });
   });
 
@@ -305,6 +334,16 @@ describe('ProfileComponent', () => {
       component.openUnsubscribeModal();
 
       expect(modalService.open).toHaveBeenCalledWith(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
+    });
+  });
+
+  describe('switchAllowSegmentation', () => {
+    it('should call updatePrivacy with PrivacyRequestData', () => {
+      spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
+
+      component.switchAllowSegmentation(false);
+
+      expect(privacyService.updatePrivacy).toHaveBeenCalledWith(new PrivacyRequestData('gdpr_display', '0', false));
     });
   });
 });
