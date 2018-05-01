@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CatalogProItemComponent } from './catalog-pro-item.component';
+import { CatalogCardComponent } from './catalog-card.component.ts';
 import { ItemService } from '../../../../core/item/item.service';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -15,9 +15,9 @@ import { MomentModule } from 'angular2-moment';
 import { ItemChangeEvent } from '../../../list/catalog-item/item-change.interface';
 import { Item } from '../../../../core/item/item';
 
-describe('CatalogProItemComponent', () => {
-  let component: CatalogProItemComponent;
-  let fixture: ComponentFixture<CatalogProItemComponent>;
+describe('CatalogCardComponent', () => {
+  let component: CatalogCardComponent;
+  let fixture: ComponentFixture<CatalogCardComponent>;
   let itemService: ItemService;
   let modalService: NgbModal;
   let trackingService: TrackingService;
@@ -29,7 +29,7 @@ describe('CatalogProItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CatalogProItemComponent, CustomCurrencyPipe ],
+      declarations: [ CatalogCardComponent, CustomCurrencyPipe ],
       imports: [ MomentModule ],
       providers: [
         DecimalPipe,
@@ -87,7 +87,7 @@ describe('CatalogProItemComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CatalogProItemComponent);
+    fixture = TestBed.createComponent(CatalogCardComponent);
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
     fixture.detectChanges();

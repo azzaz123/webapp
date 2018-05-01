@@ -1,16 +1,16 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
-import { Item } from '../../../../core/item/item';
-import { ItemChangeEvent } from '../../../list/catalog-item/item-change.interface';
+import { Item } from '../../core/item/item';
+import { ItemChangeEvent } from '../../catalog/list/catalog-item/item-change.interface';
 import { ToastrService } from 'ngx-toastr';
-import { TrackingService } from '../../../../core/tracking/tracking.service';
-import { ItemService } from '../../../../core/item/item.service';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { ItemService } from '../../core/item/item.service';
 
 @Component({
-  selector: 'tsl-catalog-pro-item',
-  templateUrl: './catalog-pro-item.component.html',
-  styleUrls: ['./catalog-pro-item.component.scss']
+  selector: 'tsl-catalog-card',
+  templateUrl: './catalog-card.component.html',
+  styleUrls: ['./catalog-card.component.scss']
 })
-export class CatalogProItemComponent implements OnInit {
+export class CatalogCardComponent implements OnInit {
 
   @Input() item: Item;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
