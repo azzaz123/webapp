@@ -113,7 +113,7 @@ describe('PictureUploadComponent', () => {
       expect(userService.user.image.urls_by_size.medium).toBe(UPLOAD_FILE.preview);
     });
 
-    it('should shoew error if event is done and status not 204', () => {
+    it('should show error if event is done and status not 204', () => {
       spyOn(errorsService, 'i18nError');
       const file = {...UPLOAD_FILE};
       const ERROR = 'error';

@@ -178,7 +178,7 @@ describe('ProfileProInfoComponent', () => {
       });
 
       it('should set hasNotSavedChanges to false', () => {
-        expect(component.formComponent.hasNotSavedChanges).toBeFalsy();
+        expect(component.formComponent.hasNotSavedChanges).toBe(false);
       });
     });
 
@@ -190,7 +190,7 @@ describe('ProfileProInfoComponent', () => {
       });
 
       it('should set dirty invalid field', () => {
-        expect(component.profileForm.get('location.address').dirty).toBeTruthy();
+        expect(component.profileForm.get('location.address').dirty).toBe(true);
       });
 
       it('should call i18nError if form is invalid', () => {

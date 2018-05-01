@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileProComponent } from './profile-pro.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_URL } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 
@@ -48,7 +48,7 @@ describe('ProfileProComponent', () => {
     });
 
     it('should set userUrl', () => {
-      expect(component.userUrl).toBe('https://www.wallapop.com/user/webslug-l1kmzn82zn3p');
+      expect(component.userUrl).toBe(USER_URL);
     });
   });
 
