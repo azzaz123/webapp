@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MOCK_FULL_USER, USER_DATA } from '../../tests/user.fixtures.spec';
+import { MOCK_FULL_USER, USER_DATA, USER_URL } from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { User } from '../core/user/user';
@@ -85,7 +85,7 @@ describe('ProfileComponent', () => {
     });
 
     it('should set userUrl', () => {
-      expect(component.userUrl).toBe('https://www.wallapop.com/user/webslug-l1kmzn82zn3p');
+      expect(component.userUrl).toBe(USER_URL);
     });
 
     it('should set profileForm with user data', () => {
