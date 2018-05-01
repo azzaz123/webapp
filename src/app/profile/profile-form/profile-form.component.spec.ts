@@ -82,7 +82,7 @@ describe('ProfileFormComponent', () => {
       component.profileForm.get('first_name').patchValue('new first_name');
       fixture.detectChanges();
 
-      expect(component['hasNotSavedChanges']).toBeTruthy();
+      expect(component['hasNotSavedChanges']).toBe(true);
     });
   });
 
@@ -135,7 +135,7 @@ describe('ProfileFormComponent', () => {
       });
 
       it('should set hasNotSavedChanges to false', () => {
-        expect(component['hasNotSavedChanges']).toBeFalsy();
+        expect(component['hasNotSavedChanges']).toBe(false);
       });
     });
 
