@@ -10,7 +10,7 @@ import { PacksModel, PerksModel } from '../../../core/payments/payment.model';
 export class ProfileProSubscriptionComponent implements OnInit {
 
   public packs: PacksModel;
-  public perks: PerksModel
+  public perks: PerksModel;
   public email = 'ventas.motor@wallapop.com';
 
   constructor(private paymentsService: PaymentService) { }
@@ -21,7 +21,6 @@ export class ProfileProSubscriptionComponent implements OnInit {
     });
     this.paymentsService.getPerks().subscribe((perks: PerksModel) => {
       this.perks = perks;
-      console.log(perks);
     });
   }
 

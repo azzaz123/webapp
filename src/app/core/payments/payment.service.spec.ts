@@ -3,13 +3,15 @@ import { Response, ResponseOptions } from '@angular/http';
 
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs/Observable';
-import { BillingInfoResponse, FinancialCard, Packs, SabadellInfoResponse } from './payment.interface';
+import { BillingInfoResponse, FinancialCard, Packs, Perks, SabadellInfoResponse } from './payment.interface';
 import {
-  BILLING_INFO_RESPONSE, BUMPS_PRODUCT_RESPONSE, createPacksModelFixture, FINANCIAL_CARD, PACK_RESPONSE,
+  BILLING_INFO_RESPONSE, BUMPS_PRODUCT_RESPONSE, createPacksModelFixture, FINANCIAL_CARD, PACK_RESPONSE, PERK_RESPONSE,
   SABADELL_RESPONSE
 } from '../../../tests/payments.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { PerksModel } from './payment.model';
+import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
 
 describe('PaymentService', () => {
 
@@ -111,12 +113,63 @@ describe('PaymentService', () => {
     }));
 
     it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/payments/packs');
+      expect(http.get).toHaveBeenCalledWith('api/v3/payments/subscription/packs');
       expect(http.get).toHaveBeenCalledWith('api/v3/payments/products');
     });
 
     it('should return packs', () => {
       expect(response).toEqual(createPacksModelFixture());
+    });
+  });
+
+  describe('getPerks', () => {
+    let response: Perks;
+    let returnPerksModel = new PerksModel();
+
+    beforeEach(fakeAsync(() => {
+      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PERK_RESPONSE)});
+      let res2: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCT_RESPONSE)});
+      spyOn(http, 'get').and.returnValues(
+        Observable.of(new Response(res)),
+        Observable.of(new Response(res2)),
+        Observable.of(new Response(res)),
+        Observable.of(new Response(res2))
+      );
+
+      service.getPerks().subscribe((r: Perks) => {
+        response = r;
+      });
+    }));
+
+    it('should call endpoint', () => {
+      expect(http.get).toHaveBeenCalledWith('api/v3/payments/perks/me');
+      expect(http.get).toHaveBeenCalledWith('api/v3/payments/products');
+    });
+
+    it('should return perks', () => {
+      expect(response).toEqual(returnPerksModel);
+    });
+
+    it('should not call endpoint the second time', () => {
+      http.get['calls'].reset();
+
+      service.getPerks().subscribe((r: Perks) => {
+        response = r;
+      });
+
+      expect(response).toEqual(returnPerksModel);
+      expect(http.get).not.toHaveBeenCalled();
+    });
+
+    it('should call endpoint the second time if cache false', () => {
+      http.get['calls'].reset();
+
+      service.getPerks(false).subscribe((r: Perks) => {
+        response = r;
+      });
+
+      expect(response).toEqual(returnPerksModel);
+      expect(http.get).toHaveBeenCalled();
     });
   });
 });
