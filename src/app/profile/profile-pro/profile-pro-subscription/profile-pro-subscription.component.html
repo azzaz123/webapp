@@ -31,7 +31,11 @@
   <div class="box-content">
     <div class="row city-bumps">
       <div class="col">
-        <h2 i18n><mat-icon svgIcon="bump-city-small"></mat-icon> City visibility</h2>
+        <h2>
+          <mat-icon svgIcon="bump-city-small"></mat-icon>
+          <span [hidden]="perks?.subscription.bump.total > 0" i18n>City visibility</span>
+          <span [hidden]="perks?.subscription.bump.total === 0" i18n>City {{perks?.subscription.bump.total}} plan</span>
+        </h2>
         <p class="description" i18n>The city plan allows you to promote your cars in your city and appear in the top positions of the wall of the website and the app. Your product card will have a different style and you will appear in the promoted area throughout your city. To subscribe to a city plan, contact</p>
       </div>
       <div class="packs">
@@ -51,7 +55,11 @@
     </div>
     <div class="row country-bumps">
       <div class="col">
-        <h2 i18n><mat-icon svgIcon="bump-country-small"></mat-icon> Country visibility</h2>
+        <h2>
+          <mat-icon svgIcon="bump-country-small"></mat-icon>
+          <span [hidden]="perks?.subscription.national.total > 0" i18n>Country visibility</span>
+          <span [hidden]="perks?.subscription.national.total === 0" i18n>Country {{perks?.subscription.national.total}} plan</span>
+        </h2>
         <p class="description" i18n>The country plan allows you to promote your cars countrywide and appear in the top positions of the wall of the web and the app. The product card will have a different style and you will appear in the promoted area throughout the country. To subscribe to a country plan, contact</p>
       </div>
       <div class="packs">
