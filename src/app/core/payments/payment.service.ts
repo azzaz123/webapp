@@ -5,14 +5,15 @@ import {
   BillingInfoResponse,
   FinancialCard,
   Pack,
-  PackResponse, PerkResponse, ProductResponse,
+  PackResponse,
+  PerkResponse,
+  ProductResponse,
   Products,
   SabadellInfoResponse
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
 import { PacksModel, PerksModel } from './payment.model';
 import * as _ from 'lodash';
-import { SUBSCRIPTION_PACKS } from '../../../tests/payments.fixtures.spec';
 
 export const PACKS_TYPES = {
   'BUMP': 'bumps',
@@ -60,8 +61,8 @@ export class PaymentService {
   public getSubscriptionPacks(): Observable<PacksModel> {
     let response = new PacksModel();
 
-    return Observable.of(SUBSCRIPTION_PACKS) //this.http.get(this.API_URL + '/packs')
-    //.map((r: Response) => r.json())
+    return this.http.get(this.API_URL + '/subscription/packs')
+    .map((r: Response) => r.json())
       .flatMap((packs: PackResponse[]) => {
         let sortedPacks = this.sortPacksByQuantity(packs);
         return this.getProducts()
