@@ -246,7 +246,7 @@ export class XmppService {
       });
     });
 
-    this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
+    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.client.connect();
     });
 
