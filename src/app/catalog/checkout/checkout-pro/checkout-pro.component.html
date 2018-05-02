@@ -29,12 +29,12 @@
           </div>
         </div>
         <div class="bumps-table">
-          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts" [itemWithProducts]="item" (dateFocus)="onDateFocus($event)"></tsl-checkout-pro-item>
+          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts" [cartProItem]="item" (dateFocus)="onDateFocus($event)"></tsl-checkout-pro-item>
         </div>
       </div>
       <div class="col-md-3">
         <div class="cart">
-          <tsl-cart [provincialBump]="provincialBump"></tsl-cart>
+          <tsl-cart-pro></tsl-cart-pro>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
       </ng-template>
       <div class="datepicker-btn-wrapper">
         <button class="datepicker-btn cancel" (click)="calendarHidden = true">Cancelar</button>
-        <button class="datepicker-btn apply" (click)="calendarHidden = true">Aplicar</button>
+        <button class="datepicker-btn apply" (click)="addToCart()">Aplicar</button>
       </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ItemWithProducts } from '../../../../core/item/item-response.interface';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { CartProItem } from '../cart-pro/cart-pro-item.interface';
 
 @Component({
   selector: 'tsl-checkout-pro-item',
@@ -10,11 +11,8 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 export class CheckoutProItemComponent implements OnInit {
 
-  @Input() itemWithProducts: ItemWithProducts;
-  @Output() dateFocus: EventEmitter<ItemWithProducts> = new EventEmitter();
-
-  countryBumpSelected: boolean;
-  cityBumpSelected: boolean;
+  @Input() cartProItem: CartProItem;
+  @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
 
   constructor() {
   }
@@ -23,23 +21,16 @@ export class CheckoutProItemComponent implements OnInit {
   }
 
   onDateFocus() {
-    this.dateFocus.emit(this.itemWithProducts);
+    this.dateFocus.emit(this.cartProItem);
   }
 
   resetItem() {
-    this.cityBumpSelected = false;
-    this.countryBumpSelected = false;
-    delete this.itemWithProducts.fromDate;
-    delete this.itemWithProducts.toDate;
+    delete this.cartProItem.fromDate;
+    delete this.cartProItem.toDate;
+    delete this.cartProItem.bumpType;
   }
 
-  selectBump(type: string) {
-    if (type === 'city') {
-      this.cityBumpSelected = !this.cityBumpSelected;
-      this.countryBumpSelected = false;
-    } else if (type === 'country') {
-      this.countryBumpSelected = !this.countryBumpSelected;
-      this.cityBumpSelected = false;
-    }
+  selectBump(type: String) {
+    this.cartProItem.bumpType === type ? delete this.cartProItem.bumpType : this.cartProItem.bumpType = type;
   }
 }

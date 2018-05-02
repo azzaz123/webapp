@@ -3,6 +3,8 @@ import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
 import { Router } from '@angular/router';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { CartProService } from './cart-pro/cart-pro.service';
+import { CartProItem } from './cart-pro/cart-pro-item.interface';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
   one && two && two.year === one.year && two.month === one.month && two.day === one.day;
@@ -22,7 +24,7 @@ const after = (one: NgbDateStruct, two: NgbDateStruct) =>
 export class CheckoutProComponent implements OnInit {
 
   itemsWithProducts: ItemWithProducts[];
-  itemSelected: ItemWithProducts;
+  itemSelected: CartProItem;
   hoveredDate: NgbDateStruct;
   fromDate: NgbDateStruct;
   toDate: NgbDateStruct;
@@ -33,7 +35,7 @@ export class CheckoutProComponent implements OnInit {
   isFrom: any;
   isTo: any;
 
-  constructor(private itemService: ItemService, private router: Router, private calendar: NgbCalendar) {
+  constructor(private itemService: ItemService, private router: Router, private calendar: NgbCalendar, private cartProService: CartProService) {
     this.minDate = { year: calendar.getToday().year, month: calendar.getToday().month, day: calendar.getToday().day };
   }
 
@@ -48,7 +50,7 @@ export class CheckoutProComponent implements OnInit {
       });
   }
 
-  onDateFocus(item: ItemWithProducts) {
+  onDateFocus(item: CartProItem) {
     this.itemSelected = item;
     this.isHovered = date =>
       this.itemSelected.fromDate && !this.itemSelected.toDate && this.hoveredDate && after(date, this.itemSelected.fromDate) && before(date, this.hoveredDate);
@@ -70,5 +72,10 @@ export class CheckoutProComponent implements OnInit {
       this.itemSelected.toDate = null;
       this.itemSelected.fromDate = date;
     }
+  }
+
+  addToCart() {
+    this.cartProService.add(this.itemSelected);
+    this.calendarHidden = true;
   }
 }

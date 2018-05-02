@@ -38,6 +38,8 @@ import { UrgentCheckboxComponent } from './upload/urgent-checkbox/urgent-checkbo
 import { SabadellComponent } from './sabadell/sabadell.component';
 import { CheckoutProComponent } from './checkout/checkout-pro/checkout-pro.component';
 import { CheckoutProItemComponent } from './checkout/checkout-pro/checkout-pro-item/checkout-pro-item.component';
+import { CartProComponent } from './checkout/checkout-pro/cart-pro/cart-pro.component';
+import { CartProService } from './checkout/checkout-pro/cart-pro/cart-pro.service';
 
 @NgModule({
   imports: [
@@ -66,6 +68,7 @@ import { CheckoutProItemComponent } from './checkout/checkout-pro/checkout-pro-i
     UploadService,
     ItemResolverService,
     CartService,
+    CartProService,
     BumpTutorialService
   ],
   declarations: [
@@ -90,7 +93,8 @@ import { CheckoutProItemComponent } from './checkout/checkout-pro/checkout-pro-i
     UrgentCheckboxComponent,
     SabadellComponent,
     CheckoutProComponent,
-    CheckoutProItemComponent
+    CheckoutProItemComponent,
+    CartProComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

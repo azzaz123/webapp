@@ -1,0 +1,23 @@
+@import "~style/common";
+
+:host {
+    background: $white;
+    border-radius: $border-radius;
+    border: solid 1px $grey-50;
+    display: block;
+    width: 280px;
+    position: fixed;
+    padding: 0 $spacing-XS;
+}
+
+.cart-pro-title {
+    font-size: $font-size-S;
+    color: $grey-900;
+    font-weight: bold;
+    margin: $spacing 0;
+}
+
+.scheduled-wrapper {
+    width: 100%;
+    background-color: $grey-50;
+}
