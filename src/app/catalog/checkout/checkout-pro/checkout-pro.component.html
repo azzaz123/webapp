@@ -47,10 +47,10 @@
       <ng-template #t let-date="date" let-focused="focused" let-disabled="disabled">
         <span class="custom-day" [class.focused]="focused" [class.disabled]="disabled" [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
           [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
-          {{ date.day }}
+          {{date.day}}
         </span>
       </ng-template>
-      <div class="datepicker-btn-wrapper">        
+      <div class="datepicker-btn-wrapper">
         <button class="datepicker-btn" (click)="calendarHidden = true">Cancelar</button>
         <button class="datepicker-btn" (click)="calendarHidden = true">Aplicar</button>
       </div>

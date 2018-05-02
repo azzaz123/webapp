@@ -35,10 +35,10 @@ export class CheckoutProItemComponent implements OnInit {
 
   selectBump(type: string) {
     if (type === 'city') {
-      this.cityBumpSelected = true;
+      this.cityBumpSelected = !this.cityBumpSelected;
       this.countryBumpSelected = false;
     } else if (type === 'country') {
-      this.countryBumpSelected = true;
+      this.countryBumpSelected = !this.countryBumpSelected;
       this.cityBumpSelected = false;
     }
   }

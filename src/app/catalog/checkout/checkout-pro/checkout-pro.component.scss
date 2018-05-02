@@ -135,6 +135,23 @@
     font-style: normal;
     color: $grey-500;    
   }
+  .ngb-dp-navigation-chevron {
+    width: 5px;
+    background-size: contain;
+    height: 10px;
+    float: left;
+    background-repeat: no-repeat;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjExIj48cGF0aCBmaWxsPSIjOTBBNEFFIiBkPSJNNC43OCAxLjgxMmMuMzMtLjQ2Mi4yODMtMS4xNTctLjEwNi0xLjU1LS4zOS0uMzk0LS45NzQtLjMzNy0xLjMwNS4xMjZMLjIyIDQuNzg4YTEuMjYxIDEuMjYxIDAgMCAwIDAgMS40MjRsMy4xNDkgNC40Yy4zMy40NjMuOTE1LjUyIDEuMzA1LjEyNi4zOS0uMzkzLjQzNy0xLjA4OC4xMDYtMS41NUwyLjE0IDUuNWwyLjY0LTMuNjg4eiIvPjwvc3ZnPg==);
+    outline: none;
+    &:before {
+      display: none;
+    }
+  }
+  .right {
+    .ngb-dp-navigation-chevron {
+      transform: rotate(180deg);
+    }
+  }
 }
 
 .custom-day {
