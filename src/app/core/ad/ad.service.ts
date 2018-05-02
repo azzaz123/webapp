@@ -11,6 +11,7 @@ import { AdKeyWords } from './ad.interface';
 import * as moment from 'moment';
 import { HttpService } from '../http/http.service';
 import { User } from '../user/user';
+import { PrivacyService } from '../privacy/privacy.service';
 
 @Injectable()
 export class AdService {
@@ -25,7 +26,8 @@ export class AdService {
 
   constructor(private http: HttpService,
               private userService: UserService,
-              private cookieService: CookieService
+              private cookieService: CookieService,
+              private privacyService: PrivacyService
   ) {
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
@@ -110,7 +112,6 @@ export class AdService {
       if (allowSegmentation) {
         apstag.setDisplayBids();
         Criteo.SetDFPKeyValueTargeting();
-        googletag.pubads().setTargeting('allowSegmentation', allowSegmentation);
       }
       googletag.pubads().refresh();
     });
@@ -134,16 +135,19 @@ export class AdService {
       return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
     }).flatMap((refreshRate: number) => {
       return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0);
-    }).subscribe(() => {
-      this.refreshAdWithKeyWords();
+    }).flatMap(() => {
+      return this.privacyService.allowSegmentation$;
+    }).subscribe((allowSegmentation: boolean) => {
+      this.refreshAdWithKeyWords(allowSegmentation);
     });
   }
 
-  private refreshAdWithKeyWords(): void {
+  private refreshAdWithKeyWords(allowSegmentation: boolean): void {
     Object.keys(this.adKeyWords).forEach((key) => {
       googletag.pubads().setTargeting(key, this.adKeyWords[key]);
     });
-    this.fetchHeaderBids();
+    googletag.pubads().setTargeting('allowSegmentation', allowSegmentation ? 'true' : 'false');
+    this.fetchHeaderBids(allowSegmentation);
   }
 
   public stopAdsRefresh(): void {
