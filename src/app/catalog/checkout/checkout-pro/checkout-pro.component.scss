@@ -113,7 +113,7 @@
   flex-direction: column;
   border-radius: 10px;
   border: solid 1px $grey-50;
-  padding: $spacing-L;
+  padding: $spacing $spacing-L;
   background-color: $white;
   z-index: 1;
 }
@@ -123,17 +123,36 @@
   justify-content: space-between;
   border-top: solid 1px $grey-50;
   padding-top: $spacing;
+  margin-top: $spacing;
+  .datepicker-btn {
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 0;
+    font-size: 14px;
+    &.cancel {
+      color: $grey-250;
+    }
+    &.apply {
+      font-weight: bold;
+      color: $corporate;
+    }
+  }
 }
 
 :host /deep/ ngb-datepicker {
   border: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   .ngb-dp-weekdays {
     border: 0;
   }
   .ngb-dp-weekday {
     font-weight: bold;
     font-style: normal;
-    color: $grey-500;    
+    color: $grey-500;
+    margin: $spacing-S 0;
   }
   .ngb-dp-navigation-chevron {
     width: 5px;
@@ -150,6 +169,13 @@
   .right {
     .ngb-dp-navigation-chevron {
       transform: rotate(180deg);
+    }
+  }
+  .ngb-dp-navigation-select {
+    > select {
+      border: 0;
+      width: 70px;
+      font-weight: bold;
     }
   }
 }

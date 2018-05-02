@@ -21,16 +21,16 @@
     <div>
       <span class="label-date">Start date</span>
       <input class="form-control input-date" (focus)="onDateFocus()" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="itemWithProducts.fromDate"
-        [disabled]="!countryBumpSelected && !cityBumpSelected" [ngClass]="{'country': countryBumpSelected, 'city': cityBumpSelected }"
+        [disabled]="!countryBumpSelected && !cityBumpSelected" [ngClass]="{'country': countryBumpSelected, 'city': cityBumpSelected}"
         ngbDatepicker>
     </div>
     <div>
       <span class="label-date">End date</span>
       <input class="form-control input-date" (focus)="onDateFocus()" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="itemWithProducts.toDate"
-        [disabled]="!countryBumpSelected && !cityBumpSelected" [ngClass]="{'country': countryBumpSelected, 'city': cityBumpSelected }"
+        [disabled]="!countryBumpSelected && !cityBumpSelected" [ngClass]="{'country': countryBumpSelected, 'city': cityBumpSelected}"
         ngbDatepicker>
     </div>
-    <div class="item-reset" (click)="resetItem()"></div>
+    <div class="item-reset" (click)="(!countryBumpSelected && !cityBumpSelected) || resetItem()" [ngClass]="{'disabled': !countryBumpSelected && !cityBumpSelected}"></div>
   </div>
   <form class="durations border-l">
     <div ngbRadioGroup name="duration" [(ngModel)]="duration">
