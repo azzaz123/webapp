@@ -8,13 +8,14 @@ import {
   PRIVACY_STATUS
 } from './privacy';
 import {Subject} from 'rxjs/Subject';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class PrivacyService {
 
   private API_URL = 'api/v3/privacy';
   private _privacyList: PrivacyList;
-  public allowSegmentation$: Subject<boolean> = new Subject<boolean>()
+  public allowSegmentation$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   constructor(
     private http: HttpService
