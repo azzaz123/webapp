@@ -8,10 +8,10 @@
       </div>
     </div>
     <div class="item-actions">
-      <div class="btn-bumps city" [ngClass]="{selected: this.cartProItem.bumpType === 'city'}" (click)="selectBump('city')">
+      <div class="btn-bumps city" [ngClass]="{selected: this.cartProItem.bumpType === 'citybump'}" (click)="selectBump('citybump')">
         <mat-icon svgIcon="bump-city"></mat-icon>
       </div>
-      <div class="btn-bumps country" [ngClass]="{selected: this.cartProItem.bumpType === 'country'}" (click)="selectBump('country')">
+      <div class="btn-bumps country" [ngClass]="{selected: this.cartProItem.bumpType === 'countrybump'}" (click)="selectBump('countrybump')">
         <mat-icon svgIcon="bump-country"></mat-icon>
       </div>
     </div>
@@ -21,13 +21,13 @@
     <div>
       <span class="label-date">Start date</span>
       <input class="form-control input-date" (focus)="onDateFocus()" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="cartProItem.fromDate"
-        [disabled]="!this.cartProItem.bumpType" [ngClass]="{'country': this.cartProItem.bumpType === 'country', 'city': this.cartProItem.bumpType === 'city'}"
+        [disabled]="!this.cartProItem.bumpType" [ngClass]="{'country': this.cartProItem.bumpType === 'countrybump', 'city': this.cartProItem.bumpType === 'citybump'}"
         ngbDatepicker>
     </div>
     <div>
       <span class="label-date">End date</span>
       <input class="form-control input-date" (focus)="onDateFocus()" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="cartProItem.toDate"
-        [disabled]="!this.cartProItem.bumpType" [ngClass]="{'country': this.cartProItem.bumpType === 'country', 'city': this.cartProItem.bumpType === 'city'}"
+        [disabled]="!this.cartProItem.bumpType" [ngClass]="{'country': this.cartProItem.bumpType === 'countrybump', 'city': this.cartProItem.bumpType === 'citybump'}"
         ngbDatepicker>
     </div>
     <div class="item-reset" (click)="resetItem()" [ngClass]="{'disabled': !this.cartProItem.bumpType}"></div>
