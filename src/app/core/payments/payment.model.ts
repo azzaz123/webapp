@@ -36,6 +36,16 @@ export class PacksModel implements Packs  {
       return listing.quantity >= currentTotal;
     }).slice(0, 3);
   }
+
+  addCustomListingPack(quantity: number) {
+    this.listings.unshift({
+      id: '1',
+      quantity: quantity,
+      price: 1,
+      currency: 'EUR',
+      discount: 0
+    });
+  }
 }
 
 export class CartPacksModel implements CartPacks {
