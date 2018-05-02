@@ -40,7 +40,7 @@
     </div>
     <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
   </div>
-  <div class="checkout-calendar" [hidden]="calendarHidden">
+  <div class="checkout-calendar" *ngIf="!calendarHidden">
     <div class="checkout-calendar-overlay" (click)="calendarHidden = true"></div>
     <div class="datepicker-wrapper">
       <ngb-datepicker #dp (select)="onDateSelection($event)" [dayTemplate]="t" [minDate]="minDate"></ngb-datepicker>

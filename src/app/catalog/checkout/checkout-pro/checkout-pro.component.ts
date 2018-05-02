@@ -28,11 +28,10 @@ export class CheckoutProComponent implements OnInit {
   toDate: NgbDateStruct;
   minDate: NgbDateStruct;
   calendarHidden = true;
-
-  isHovered = date => this.itemSelected.fromDate && !this.itemSelected.toDate && this.hoveredDate && after(date, this.itemSelected.fromDate) && before(date, this.hoveredDate);
-  isInside = date => after(date, this.itemSelected.fromDate) && before(date, this.itemSelected.toDate);
-  isFrom = date => equals(date, this.itemSelected.fromDate);
-  isTo = date => equals(date, this.itemSelected.toDate);
+  isHovered: any;
+  isInside: any;
+  isFrom: any;
+  isTo: any;
 
   constructor(private itemService: ItemService, private router: Router, private calendar: NgbCalendar) {
     this.minDate = { year: calendar.getToday().year, month: calendar.getToday().month, day: calendar.getToday().day };
@@ -51,6 +50,14 @@ export class CheckoutProComponent implements OnInit {
 
   onDateFocus(item: ItemWithProducts) {
     this.itemSelected = item;
+    this.isHovered = date =>
+      this.itemSelected.fromDate && !this.itemSelected.toDate && this.hoveredDate && after(date, this.itemSelected.fromDate) && before(date, this.hoveredDate);
+    this.isInside = date =>
+      after(date, this.itemSelected.fromDate) && before(date, this.itemSelected.toDate);
+    this.isFrom = date =>
+      equals(date, this.itemSelected.fromDate);
+    this.isTo = date =>
+      equals(date, this.itemSelected.toDate);
     this.calendarHidden = false;
   }
 
