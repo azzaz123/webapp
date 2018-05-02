@@ -21,7 +21,7 @@
           <div class="pack" *ngIf="packs?.getListings(perks?.subscription.listing.quantity).length <= 2">
             <div class="name" i18n>Personal Plan</div>
             <div class="desc" i18n>We can work out the best plan for you</div>
-            <a href="mailto:{{email}}" class="btn btn-block">Subscribe</a>
+            <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@
             <div class="type" i18n>Featured</div>
             <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
             <div class="discount" [hidden]="!bump.discount" i18n>Save {{bump.discount}}%</div>
-            <a href="mailto:{{email}}" class="btn btn-block">Subscribe</a>
+            <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
             <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.bump.expireDate | date}}</div>
           </div>
         </div>
@@ -74,7 +74,7 @@
             <div class="type" i18n>Featured</div>
             <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
             <div class="discount" [hidden]="!bump.discount" i18n>Save {{bump.discount}}%</div>
-            <a href="mailto:{{email}}" class="btn btn-block">Subscribe</a>
+            <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
             <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.national.expireDate | date}}</div>
           </div>
         </div>
