@@ -23,7 +23,7 @@ import {
   ITEMS_DATA_V3,
   ITEMS_DATA_v3_FAVORITES,
   ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE,
-  ITEMS_WITH_PRODUCTS,
+  ITEMS_WITH_PRODUCTS, LATEST_ITEM_COUNT, LATEST_ITEM_DATA, LATEST_ITEM_DATA_EMPTY, MOCK_ITEM_V3,
   ORDER,
   PRODUCT_RESPONSE,
   PRODUCTS_RESPONSE,
@@ -34,12 +34,12 @@ import { Observable } from 'rxjs/Observable';
 import {
   ConversationUser,
   ItemBulkResponse,
-  ItemCounters,
+  ItemCounters, ItemDataResponse,
   ItemsData,
   ItemWithProducts,
   Product
 } from './item-response.interface';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { I18nService } from '../i18n/i18n.service';
 import { UUID } from 'angular2-uuid';
@@ -690,12 +690,37 @@ describe('Service: Item', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let resp: Product;
 
-      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID).subscribe((r: Product) => {
+      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID.toString()).subscribe((r: Product) => {
         resp = r;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-urgent-products', {categoryId: ITEM_CATEGORY_ID});
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-urgent-products', {categoryId: ITEM_CATEGORY_ID.toString()});
       expect(resp).toEqual(PRODUCT_RESPONSE);
+    });
+  });
+
+  describe('getLatest', () => {
+    it('should return the latest item', () => {
+      let observableResponse: ItemDataResponse;
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(LATEST_ITEM_DATA)})));
+      });
+      service.getLatest(USER_ID).subscribe((r: ItemDataResponse) => {
+        observableResponse = r;
+      });
+      expect(observableResponse.count).toBe(LATEST_ITEM_COUNT - 1);
+      expect(observableResponse.data).toEqual(MOCK_ITEM_V3);
+    });
+    it('should return null item', () => {
+      let observableResponse: ItemDataResponse;
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(LATEST_ITEM_DATA_EMPTY)})));
+      });
+      service.getLatest(USER_ID).subscribe((r: ItemDataResponse) => {
+        observableResponse = r;
+      });
+      expect(observableResponse.count).toBe(LATEST_ITEM_COUNT - 1);
+      expect(observableResponse.data).toEqual(null);
     });
   });
 

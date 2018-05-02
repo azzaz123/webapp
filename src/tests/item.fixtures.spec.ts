@@ -14,7 +14,7 @@ import {
   ItemSaleConditions,
   ItemsWithAvailableProductsResponse,
   ItemUploadForm,
-  ItemWithProducts,
+  ItemWithProducts, LatestItemResponse,
   Order,
   Product,
   ProductDurations,
@@ -152,8 +152,6 @@ export const ITEM_COUNTERS_DATA: ItemCounters = {
   'views': ITEM_VIEWS,
   'favorites': ITEM_FAVORITES
 };
-
-export const LATEST_ITEM_COUNT = 3;
 
 export const MOCK_ITEM: Item = new Item(
   ITEM_DATA.id,
@@ -402,6 +400,18 @@ export const ITEMS_DATA_V3 = [{
     'favorites': 0
   }
 }];
+
+export const LATEST_ITEM_COUNT = 3;
+
+export const LATEST_ITEM_DATA: LatestItemResponse = {
+  count: LATEST_ITEM_COUNT,
+  items: [ITEMS_DATA_V3[0]]
+};
+
+export const LATEST_ITEM_DATA_EMPTY: LatestItemResponse = {
+  count: LATEST_ITEM_COUNT,
+  items: []
+};
 
 export const MOCK_ITEM_V3: Item = new Item(
   ITEMS_DATA_V3[0].content.id,

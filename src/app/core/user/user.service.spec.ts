@@ -79,7 +79,8 @@ describe('Service: User', () => {
           provide: NgxPermissionsService,
           useValue: {
             addPermission() {},
-            flushPermissions() {}
+            flushPermissions() {},
+            hasPermission() {}
           }
         }
       ]
@@ -288,7 +289,7 @@ describe('Service: User', () => {
         redirectUrl = param;
       });
       cookieService.put('publisherId', 'someId');
-      
+
       service.logout();
     });
 
@@ -395,6 +396,21 @@ describe('Service: User', () => {
     });
   });
 
+  describe('getUserStats', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USERS_STATS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+
+      let resp: UserStatsResponse;
+      service.getUserStats(USER_ID).subscribe((response: UserStatsResponse) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/stats');
+      expect(resp).toEqual(USERS_STATS_RESPONSE);
+    });
+  });
+
   describe('edit', () => {
     it('should call endpoint, return user and set it', () => {
       const res: ResponseOptions = new ResponseOptions({body: USER_DATA});
@@ -476,6 +492,31 @@ describe('Service: User', () => {
       service.setPermission('normal');
 
       expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
+    });
+  });
+
+  describe('isProfessional', () => {
+    let val: boolean;
+
+    beforeEach(() => {
+      spyOn(service, 'me').and.returnValue(Observable.of({}));
+      spyOn(permissionService, 'hasPermission').and.returnValue(Promise.resolve(true));
+
+      service.isProfessional().subscribe((v) => {
+        val = v;
+      })
+    });
+
+    it('should call me', () => {
+      expect(service.me).toHaveBeenCalled();
+    });
+
+    it('should call hasPermission', () => {
+      expect(permissionService.hasPermission).toHaveBeenCalledWith(PERMISSIONS.professional)
+    });
+
+    it('should return true', () => {
+      expect(val).toBe(true);
     });
   });
 });
