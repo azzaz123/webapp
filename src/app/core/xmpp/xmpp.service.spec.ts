@@ -15,7 +15,6 @@ import { Observable } from 'rxjs/Observable';
 import { MessagePayload } from '../message/messages.interface';
 import { MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import { ConnectionService } from '../connection/connection.service';
 
 let mamFirstIndex = '1899';
 let mamCount = 1900;
@@ -102,7 +101,6 @@ let service: XmppService;
 let eventService: EventService;
 let trackingService: TrackingService;
 let sendIqSpy: jasmine.Spy;
-let connectionService: ConnectionService;
 
 describe('Service: Xmpp', () => {
   beforeEach(() => {
@@ -111,15 +109,11 @@ describe('Service: Xmpp', () => {
         XmppService,
         EventService,
         {provide: TrackingService, useClass: MockTrackingService},
-        {provide: PersistencyService, useClass: MockedPersistencyService},
-        {provide: ConnectionService, useValue: {
-          connected: null
-        }}]
+        {provide: PersistencyService, useClass: MockedPersistencyService}]
     });
     service = TestBed.get(XmppService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
-    connectionService = TestBed.get(ConnectionService);
     spyOn(XMPP, 'createClient').and.returnValue(MOCKED_CLIENT);
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
@@ -658,7 +652,7 @@ describe('Service: Xmpp', () => {
 
       eventService.emit('stream:data', XML_MESSAGE);
       tick(2000);
-      
+
       expect(response.meta.end).toBe(true);
     }));
 
@@ -675,7 +669,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('stream:data', XML_MESSAGE);
       eventService.emit('stream:data', XML_MESSAGE);
       tick(2000);
-      
+
       expect(response.meta.end).toBe(false);
     }));
 
@@ -692,7 +686,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('stream:data', XML_MESSAGE);
       eventService.emit('stream:data', XML_MESSAGE);
       tick(2000);
-      
+
       expect(response.meta.end).toBe(true);
     }));
 
@@ -707,7 +701,7 @@ describe('Service: Xmpp', () => {
 
       eventService.emit('stream:data', XML_MESSAGE);
       tick(2000);
-      
+
       expect(response.meta.end).toBe(true);
     }));
 
@@ -720,7 +714,7 @@ describe('Service: Xmpp', () => {
 
       eventService.emit('stream:data', XML_MESSAGE);
       tick(2000);
-      
+
       expect(response.meta.first).toBe(FIRST_MESSAGE);
       expect(response.meta.last).toBe(LAST_MESSAGE);
     }));
@@ -734,7 +728,7 @@ describe('Service: Xmpp', () => {
 
       eventService.emit('stream:data', {xml: 'test'});
       tick(2000);
-      
+
       expect(response.data.length).toBe(0);
     }));
 
@@ -802,7 +796,7 @@ describe('Service: Xmpp', () => {
       service.searchHistory().subscribe((res: any) => {
         response = res;
       });
-      
+
       eventService.emit('stream:data', XML_MESSAGE);
       tick(2000);
 
