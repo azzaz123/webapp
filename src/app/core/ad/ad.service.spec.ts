@@ -67,7 +67,7 @@ const defineSlot = {
 
 let geolocationSpy;
 
-fdescribe('AdService', () => {
+describe('AdService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
