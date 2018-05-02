@@ -45,7 +45,7 @@
     <div class="datepicker-wrapper">
       <ngb-datepicker #dp (select)="onDateSelection($event)" [dayTemplate]="t" [minDate]="minDate"></ngb-datepicker>
       <ng-template #t let-date="date" let-focused="focused" let-disabled="disabled">
-        <span class="custom-day" [class.focused]="focused" [class.disabled]="disabled" [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
+        <span class="custom-day" [ngClass]="{'city-day': itemSelected?.bumpType === 'citybump', 'country-day': itemSelected?.bumpType === 'countrybump'}" [class.focused]="focused" [class.disabled]="disabled" [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
           [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
           {{date.day}}
         </span>

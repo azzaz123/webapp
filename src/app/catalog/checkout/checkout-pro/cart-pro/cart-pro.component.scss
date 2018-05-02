@@ -1,29 +1,38 @@
 @import "~style/common";
 
 :host {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background: $white;
     border-radius: $border-radius;
     border: solid 1px $grey-50;
-    display: block;
     width: 280px;
+    height: calc(100vh - 130px);
     position: fixed;
-    padding: 0 $spacing-XS;
-    min-height: 500px;
+    padding: 0 $spacing-XS;    
 }
 
 .cart-pro-title {
     font-size: $font-size-S;
     color: $grey-900;
     font-weight: bold;
-    margin: $spacing 0;
+    margin: $spacing $spacing-XS $spacing-S $spacing-XS;
+}
+
+.cart-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .items-list {    
     font-size: $font-size-XS;
     list-style: none;
-    padding: $spacing-XS;
+    padding: 0;
     margin: 0;
     .cart-box {
+        margin-top: $spacing-S;
         border-radius: 5px;
         background-color: $white;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -35,6 +44,7 @@
     }
     .type-total {
         padding: 10px;
+        margin: 0;
         cursor: pointer;
         .wing-icon {
             width: 51px;
@@ -57,6 +67,9 @@
         padding: $spacing-XS;
         border-radius: 5px;
         margin-bottom: $spacing-S;
+        ul {
+            padding-left: $spacing-S;
+        }
     }
     .price {
         color: $grey-500;
@@ -98,9 +111,33 @@
     }
 }
 
+.cart-balance {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $grey-900;
+    font-weight: bold;
+    .cart-balance-title {
+        font-size: $font-size-XS;
+        text-transform: uppercase;
+    }
+    .cart-balance-number {
+        font-size: $font-size-XL;
+    }
+}
+
 .cart-separator {
     width: 100%;
     height: 1px;
     background-color: $grey-50;
     margin: $spacing-S 0;
 }
+
+tsl-button {
+    display: block;
+    /deep/ .btn {
+      width: 100%;
+      margin-top: 0;
+      margin-bottom: $spacing-S;
+    }
+  }

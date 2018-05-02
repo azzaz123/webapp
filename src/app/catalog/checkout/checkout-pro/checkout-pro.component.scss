@@ -181,9 +181,10 @@
 }
 
 .custom-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 0.185rem 0.25rem;
-  display: inline-block;
   height: 2rem;
   width: 2rem;
   font-size: $font-size-S;
@@ -199,10 +200,21 @@
     }
   }
   &.range, &:hover {
-    background-color: rgb(2, 117, 216);
     color: white;
+    &.city-day {
+      background-color: $zone-bump;
+    }
+    &.country-day {
+      background-color: $country-bump;
+    }
   }
   &.faded {
-    background-color: rgba(2, 117, 216, 0.5);
+    color: white;
+    &.city-day {
+      background-color: rgba($zone-bump, 0.6);
+    }
+    &.country-day {
+      background-color: rgba($country-bump, 0.6);
+    }
   }
 }
