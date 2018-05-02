@@ -14,8 +14,7 @@ export interface SabadellInfoResponse {
 }
 
 export interface Packs {
-  cityBumps: Pack[];
-  nationalBumps: Pack[];
+  [key: string]: Pack[];
 }
 
 export interface PackResponse {

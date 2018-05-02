@@ -6,7 +6,8 @@ export class Pack implements Model {
   constructor(private _id,
               private _quantity,
               private _price,
-              private _currency) {}
+              private _currency,
+              private _name) {}
 
   get id(): string {
     return this._id;
@@ -46,6 +47,14 @@ export class Pack implements Model {
 
   set discount(value: number) {
     this._discount = value;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  set name(value: string) {
+    this._name = value;
   }
 
   public calculateDiscount(packPrice: string, quantity: number, basePrice: number): void {

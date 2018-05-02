@@ -64,7 +64,8 @@ export class PaymentService {
             pack.id,
             pack.benefits[benefitsId],
             +pack.price,
-            pack.currency
+            pack.currency,
+            name
           );
           formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
 
