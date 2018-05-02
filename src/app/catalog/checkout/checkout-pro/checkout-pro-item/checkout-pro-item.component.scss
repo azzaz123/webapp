@@ -42,6 +42,7 @@
       opacity: 0.5;
     }
     &.disabled {
+      cursor: not-allowed;
       opacity: 0.3;
     }
   }
@@ -95,6 +96,10 @@
     height: 32px;
     border-radius: 5px;
     font-size: 14px;
+    &.ng-valid {
+      color: $grey-500;
+      font-weight: bold;
+    }
     &.city {
       &:hover, &:focus {
         border-color: $corporate;
@@ -103,6 +108,13 @@
     &.country {
       &:hover, &:focus {
         border-color: $country-bump;
+      }
+    }
+    &:disabled {
+      background-color: $white;
+      border-color: $grey-50;  
+      &::placeholder {
+        color: $grey-50;
       }
     }
   }

@@ -39,13 +39,11 @@
   }
   .info {
     font-size: $font-size-S;
-    a {
-      text-decoration: underline;
-      cursor: pointer;
-      color: $corporate;
-      &:hover {
-        text-decoration: none;
-      }
+    text-decoration: underline;
+    cursor: pointer;
+    color: $corporate;
+    &:hover {
+      text-decoration: none;
     }
   }
   .type {
@@ -98,7 +96,7 @@
   height: 100%;
   z-index: 4;
   .checkout-calendar-overlay {
-    background-color: rgba(37, 50, 56, 0.5);
+    background-color: rgba($grey-900, 0.5);
     position: absolute;
     top: 0;
     left: 0;
@@ -135,6 +133,12 @@
     &.apply {
       font-weight: bold;
       color: $corporate;
+    }
+    &.city-btn {
+      color: $zone-bump;
+    }
+    &.country-btn {
+      color: $country-bump;
     }
   }
 }

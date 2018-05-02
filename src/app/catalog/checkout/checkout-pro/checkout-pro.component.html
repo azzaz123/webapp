@@ -12,9 +12,7 @@
       <div class="col-md-9">
         <div class="table-header">
           <div class="header-first-section">
-            <div class="info">
-              <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
-            </div>
+            <a class="info" (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
             <div class="bump-types">
               <div class="type city">
                 <div i18n>City</div>
@@ -33,9 +31,7 @@
         </div>
       </div>
       <div class="col-md-3">
-        <div class="cart">
-          <tsl-cart-pro></tsl-cart-pro>
-        </div>
+        <tsl-cart-pro></tsl-cart-pro>
       </div>
     </div>
     <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
@@ -45,14 +41,16 @@
     <div class="datepicker-wrapper">
       <ngb-datepicker #dp (select)="onDateSelection($event)" [dayTemplate]="t" [minDate]="minDate"></ngb-datepicker>
       <ng-template #t let-date="date" let-focused="focused" let-disabled="disabled">
-        <span class="custom-day" [ngClass]="{'city-day': itemSelected?.bumpType === 'citybump', 'country-day': itemSelected?.bumpType === 'countrybump'}" [class.focused]="focused" [class.disabled]="disabled" [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
+        <span class="custom-day" [ngClass]="{'city-day': itemSelected?.bumpType === 'citybump', 'country-day': itemSelected?.bumpType === 'countrybump'}"
+          [class.focused]="focused" [class.disabled]="disabled" [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
           [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
           {{date.day}}
         </span>
       </ng-template>
       <div class="datepicker-btn-wrapper">
         <button class="datepicker-btn cancel" (click)="calendarHidden = true">Cancelar</button>
-        <button class="datepicker-btn apply" (click)="addToCart()">Aplicar</button>
+        <button class="datepicker-btn apply" [ngClass]="{'city-btn': itemSelected?.bumpType === 'citybump', 'country-btn': itemSelected?.bumpType === 'countrybump'}"
+          (click)="addToCart()">Aplicar</button>
       </div>
     </div>
   </div>

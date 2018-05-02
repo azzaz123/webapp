@@ -4,13 +4,15 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
     background: $white;
     border-radius: $border-radius;
     border: solid 1px $grey-50;
     width: 280px;
     height: calc(100vh - 130px);
     position: fixed;
-    padding: 0 $spacing-XS;    
+    padding: 0 $spacing-XS;
+    overflow: hidden;
 }
 
 .cart-pro-title {
@@ -18,6 +20,11 @@
     color: $grey-900;
     font-weight: bold;
     margin: $spacing $spacing-XS $spacing-S $spacing-XS;
+}
+
+.cart-content {
+    overflow: scroll;
+    padding-bottom: 80px;
 }
 
 .cart-wrapper {
@@ -32,15 +39,22 @@
     padding: 0;
     margin: 0;
     .cart-box {
+        overflow: hidden;
         margin-top: $spacing-S;
         border-radius: 5px;
         background-color: $white;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         border: solid 0.5px $grey-100;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
         user-select: none;
+    }
+    .cart-description {
+        white-space: nowrap;
+        max-width: 50%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .type-total {
         padding: 10px;
@@ -89,8 +103,7 @@
     }
     .close-icon {
         @include square(16px);
-        margin-bottom: $spacing-XS;
-        margin-right: $spacing-XS;
+        margin: $spacing $spacing-XS $spacing-XS 0;
         cursor: pointer;
     }
     .cart-item {
@@ -133,11 +146,17 @@
     margin: $spacing-S 0;
 }
 
-tsl-button {
-    display: block;
-    /deep/ .btn {
-      width: 100%;
-      margin-top: 0;
-      margin-bottom: $spacing-S;
+.btn-wrapper { 
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: $spacing;
+    background-color: $white;
+    tsl-button {
+        display: block;
+        /deep/ .btn {
+            width: 100%;
+        }
     }
-  }
+}
