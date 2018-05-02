@@ -1,0 +1,81 @@
+<div class="bulk-actions" [ngClass]="{disabled: !itemService.selectedItems.length}">
+  <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0"
+     [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
+    <ng-container [ngPlural]="itemService.selectedItems.length">
+      <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
+      <ng-template ngPluralCase="other"><ng-container i18n>
+        {{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container>
+      </ng-template>
+    </ng-container>
+  </a>
+  <button class="btn-delete dark" (click)="deactivate(deactivateItemsModal)" *ngIf="selectedStatus === 'active'"
+          [disabled]="!itemService.selectedItems.length" i18n>Deactivate</button>
+  <button class="btn-activate" (click)="activate(activateItemsModal)" *ngIf="selectedStatus === 'pending'"
+          [disabled]="!itemService.selectedItems.length" i18n>Activate</button>
+  <button class="btn-sold" (click)="setSold(soldItemsModal)" [disabled]="!itemService.selectedItems.length"
+          [hidden]="selectedStatus === 'sold' || selectedStatus === 'pending'" i18n>Sold</button>
+  <button class="btn-reserve" (click)="reserve(reserveItemsModal)" [disabled]="!itemService.selectedItems.length"
+          [hidden]="selectedStatus === 'sold' || selectedStatus === 'pending'" i18n>Reserve</button>
+  <button class="btn-delete dark" (click)="delete(deleteItemsModal)" [disabled]="!itemService.selectedItems.length" i18n>
+    <mat-icon svgIcon="delete"></mat-icon>
+    Delete
+  </button>
+  <tsl-button className="btn-feature" [disabled]="!itemService.selectedItems.length"
+              [hidden]="selectedStatus === 'sold' || selectedStatus === 'pending'" i18n="call to action|button">
+    Feature</tsl-button>
+</div>
+
+<ng-template ngbModalContainer #deleteItemsModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Delete items</h2>
+    <p i18n>The selected items will be permanently deleted.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Delete</button>
+  </div>
+</ng-template>
+
+<ng-template ngbModalContainer #reserveItemsModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Reserve items</h2>
+    <p i18n>The selected items will be reserved.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Reserve</button>
+  </div>
+</ng-template>
+
+<ng-template ngbModalContainer #soldItemsModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Sold items</h2>
+    <p i18n>The selected items will be set al sold.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Sold</button>
+  </div>
+</ng-template>
+
+<ng-template ngbModalContainer #deactivateItemsModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Deactivate items</h2>
+    <p i18n>The selected items will be set all pending.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Deactivate</button>
+  </div>
+</ng-template>
+
+<ng-template ngbModalContainer #activateItemsModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Activate items</h2>
+    <p i18n>The selected items will be set all active.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Activate</button>
+  </div>
+</ng-template>

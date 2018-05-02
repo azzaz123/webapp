@@ -70,7 +70,7 @@ export class CatalogProListComponent implements OnInit {
     this.isRedirect = !this.getRedirectToTPV();
   }
 
-  private getItems(append?: boolean, openVisibility?: boolean) {
+  public getItems(append?: boolean, openVisibility?: boolean) {
     this.loading = true;
     if (!append) {
       this.items = [];
@@ -158,7 +158,7 @@ export class CatalogProListComponent implements OnInit {
     this.subscriptionPlan = plan;
   }
 
-  public setSold(soldItemsModal: any) {
+  /*public setSold(soldItemsModal: any) {
     this.modalService.open(soldItemsModal).result.then(() => {
       this.itemService.bulkSetSold().takeWhile(() => {
         return this.active;
@@ -207,7 +207,7 @@ export class CatalogProListComponent implements OnInit {
         }
       });
     });
-  }
+  }*/
 
   private getRedirectToTPV(): boolean {
     return localStorage.getItem('redirectToTPV') === 'true';

@@ -15,7 +15,7 @@ $height: 40px;
       }
     }
     &:hover {
-      $hover-color: #0f9989;
+      $hover-color: $zone-bump-dark;
       text-decoration: none;
       svg {
         .dashed-border {
@@ -31,11 +31,6 @@ $height: 40px;
 
 tsl-spinner {
   width: 100%;
-}
-
-.nav {
-  margin-bottom: 10px;
-  margin-top: -6px;
 }
 
 .info {
@@ -62,8 +57,18 @@ tsl-spinner {
 }
 
 #total-selected {
+  $height: 42px;
+  height: $height;
+  line-height: $height;
+  border-radius: $border-radius;
+  background: $white;
+  color: $grey-900;
+  font-size: $font-size-S;
+  display: inline-block;
   padding: 0 $spacing;
   cursor: pointer;
+  background-color: rgba($corporate, 0.2);
+  border: solid 1px $corporate;
   &:after {
     display: inline-block;
     content: ' ';
@@ -78,22 +83,6 @@ tsl-spinner {
   &.show {
     animation: fadeInFromNone 0.5s ease-in-out;
   }
-  &:hover {
-    background: rgba($white, .7);
-  }
-}
-
-#total-selected {
-  border: solid 1px $grey-100;
-  padding: 0 $spacing;
-  border-radius: $border-radius;
-  background: $white;
-  color: $grey-900;
-  font-size: $font-size-S;
-  height: $height;
-  line-height: $height;
-  display: inline-block;
-  margin-bottom: 2px;
 }
 
 tsl-selected-items {
@@ -108,6 +97,9 @@ tsl-selected-items {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  .upload {
+    font-weight: bold;
+  }
 }
 
 #catalog-empty-state {
@@ -131,7 +123,7 @@ tsl-search-input {
   margin-right: $spacing;
 }
 
-tsl-search-input, .nav, #total-selected {
+tsl-search-input, .nav {
   margin-bottom: $spacing-M;
   height: 38px;
 }
@@ -144,78 +136,4 @@ tsl-select {
   letter-spacing: 0.5px;
   height: 38px;
   line-height: 36px;
-}
-
-.bulk-actions {
-  align-self: center;
-  &.disabled {
-    button {
-      cursor: auto;
-      background-color: $grey-50;
-      &.btn-bump, &.btn-sold, &.btn-reserve, &.btn-delete {
-        &:hover {
-          background-color: $grey-50;
-          border: solid 1px rgba($grey-100, 0.5);
-          color: $grey-300;
-        }
-      }
-    }
-  }
-  button {
-    $height: 42px;
-    height: $height;
-    line-height: $height;
-    padding: 0 $spacing;
-    cursor: pointer;
-    border-radius: $border-radius;
-    background: $white;
-    color: $grey-300;
-    font-size: $font-size-S;
-    border: solid 1px rgba($grey-100, 0.5);
-    &.btn-bump {
-      &:hover {
-        background: $corporate;
-        border-color: transparent;
-        color: $white;
-      }
-    }
-    &.btn-sold {
-      &:hover {
-        background: $sold-bg;
-        border-color: transparent;
-        color: $white;
-      }
-    }
-    &.btn-reserve {
-      &:hover {
-        background: $reserve-bg;
-        border-color: transparent;
-        color: $white;
-      }
-    }
-    &.btn-delete {
-      padding: 0 ($spacing / 2);
-      mat-icon {
-        height: 16px;
-        width: 14px;
-        vertical-align: sub;
-      }
-      &:hover {
-        background: $delete-bg;
-        border-color: transparent;
-        color: $white;
-      }
-    }
-    &.btn-activate {
-      &:hover {
-        background: $corporate;
-        border-color: transparent;
-      }
-    }
-  }
-  &.show {
-    button {
-      animation: fadeInFromNone 0.5s ease-in-out;
-    }
-  }
 }

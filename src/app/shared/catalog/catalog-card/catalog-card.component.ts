@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
-import { Item } from '../../core/item/item';
-import { ItemChangeEvent } from '../../catalog/list/catalog-item/item-change.interface';
+import { Item } from '../../../core/item/item';
+import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { ToastrService } from 'ngx-toastr';
-import { TrackingService } from '../../core/tracking/tracking.service';
-import { ItemService } from '../../core/item/item.service';
+import { TrackingService } from '../../../core/tracking/tracking.service';
+import { ItemService } from '../../../core/item/item.service';
 
 @Component({
   selector: 'tsl-catalog-card',
