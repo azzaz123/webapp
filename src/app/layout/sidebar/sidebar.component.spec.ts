@@ -8,6 +8,7 @@ import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MessageService } from '../../core/message/message.service';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -17,6 +18,9 @@ describe('SidebarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SidebarComponent],
+      imports: [
+        NgxPermissionsModule.forRoot()
+      ],
       providers: [
         TutorialService,
         {

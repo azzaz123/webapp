@@ -96,6 +96,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('navigation_favorites', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_favorites.svg'));
   matIconRegistry.addSvgIcon('navigation_logout', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_logout.svg'));
   matIconRegistry.addSvgIcon('navigation_reviews', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_reviews.svg'));
+  matIconRegistry.addSvgIcon('navigation_dashboard', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_dashboard.svg'));
+  matIconRegistry.addSvgIcon('navigation_phones', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_phones.svg'));
   matIconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/delete.svg'));
   matIconRegistry.addSvgIcon('clock', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/clock.svg'));
   matIconRegistry.addSvgIcon('back-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/back-arrow.svg'));
@@ -167,5 +169,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('wing', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing.svg'));
   matIconRegistry.addSvgIcon('remove', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/remove.svg'));
   matIconRegistry.addSvgIcon('card', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/card.svg'));
-  matIconRegistry.addSvgIcon('urgent', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/urgent.svg'));
+  matIconRegistry.addSvgIcon('urgent', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/urgent.svg'));matIconRegistry.addSvgIcon('process-all', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/process-all.svg'));
+  matIconRegistry.addSvgIcon('call-shared', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-shared.svg'));
+  matIconRegistry.addSvgIcon('call-received', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-received.svg'));
+  matIconRegistry.addSvgIcon('arrow-back', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-back.svg'));
 }

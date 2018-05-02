@@ -37,7 +37,7 @@ const MOCK_USER = new User(
   USER_DATA.gender
 );
 
-const USER_BIRTH_DATE = '1987-02-10';
+const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
 
 describe('ProfileComponent', () => {

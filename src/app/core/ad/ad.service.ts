@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { merge } from 'rxjs/observable/merge';
 import { environment } from '../../../environments/environment';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/zip';
-import 'rxjs/add/observable/merge';
 import { Subscription } from 'rxjs/Subscription';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
@@ -66,7 +66,7 @@ export class AdService {
 
   public fetchHeaderBids(allowSegmentation: boolean = false) {
     if (allowSegmentation) {
-      Observable.merge(this.requestBidAps(), this.requestBidCriteo())
+      merge(this.requestBidAps(), this.requestBidCriteo())
         .subscribe(null, null, () => {
           this.sendAdServerRequest(allowSegmentation);
         });

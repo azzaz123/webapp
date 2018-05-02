@@ -26,7 +26,7 @@ import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
 import { DebugService } from './core/debug/debug.service';
-import { MOCK_USER, USER_DATA, USER_ID } from '../tests/user.fixtures.spec';
+import { MOCK_USER, MOCK_USER_PRO, USER_DATA, USER_ID } from '../tests/user.fixtures.spec';
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
@@ -84,7 +84,10 @@ describe('App', () => {
           },
           logout() {
           },
-          setPermission() {}
+          setPermission() {},
+          isProfessional() {
+            return Observable.of(false)
+          }
         }
         },
         HaversineService,
@@ -235,6 +238,15 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(conversationService.init).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call conversationService.init twice if user is professional', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(conversationService.init).toHaveBeenCalledTimes(2);
       });
 
       it('should call userService setpermission method', () => {
