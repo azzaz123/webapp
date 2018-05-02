@@ -314,8 +314,8 @@ export class ConversationService extends LeadService {
         if (response.data.length) {
           let conversation: Conversation;
           response.data.forEach((message: Message) => {
-            conversation = conversations.filter((conversation: Conversation): boolean => {
-              return (conversation.id === message.conversationId);
+            conversation = conversations.filter((filteredConversation: Conversation): boolean => {
+              return (filteredConversation.id === message.conversationId);
             })[0];
             if (conversation) {
               if (!this.findMessage(conversation.messages, message)) {
@@ -326,12 +326,12 @@ export class ConversationService extends LeadService {
                 }
               }
             } else {
-              this.get(message.conversationId).subscribe((conversation: Conversation) => {
-                message = this.messageService.addUserInfo(conversation, message);
-                this.addMessage(conversation, message);
-                conversations.unshift(conversation);
+              this.get(message.conversationId).subscribe((subscribedConversation: Conversation) => {
+                message = this.messageService.addUserInfo(subscribedConversation, message);
+                this.addMessage(subscribedConversation, message);
+                conversations.unshift(subscribedConversation);
                 if (message.fromBuyer) {
-                  this.handleUnreadMessage(conversation);
+                  this.handleUnreadMessage(subscribedConversation);
                 }
               });
             }

@@ -243,34 +243,12 @@ export class XmppService {
         this.connected = true;
       });
     });
-    this.client.on('connected', () => {
-      if (this._reconnecting) {
-        this.connected = true;
-        this._reconnecting = false;
-      }
-    });
-    this.client.on('disconnected', (connection: any) => {
-      this.connected = false;
-      if (!connection.closing) {
-        this._reconnecting = true;
-        this.tryToReconnect();
-        this.eventService.emit(EventService.CONNECTION_ERROR);
-      }
-    });
-    this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
-  }
 
-  private tryToReconnect() {
-    if (!this.reconnectInterval) {
-      this.reconnectInterval = setInterval(() => {
-        if (this.connected) {
-          this.eventService.emit(EventService.CONNECTION_RESTORED);
-          clearInterval(this.reconnectInterval);
-        } else {
-          this.client.connect();
-        }
-      }, 5000);
-    }
+    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
+      this.client.connect();
+    });
+
+    this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
   }
 
   private onNewMessage(message: XmppBodyMessage) {

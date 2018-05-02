@@ -28,6 +28,7 @@ import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
 import { Message } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
+import { ConnectionService } from './core/connection/connection.service';
 
 @Component({
   selector: 'tsl-root',
@@ -43,6 +44,7 @@ export class AppComponent implements OnInit {
   private previousUrl: string;
   private currentUrl: string;
   private previousSlug: string;
+  private _reconnecting = false;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -62,7 +64,8 @@ export class AppComponent implements OnInit {
               private debugService: DebugService,
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private connectionService: ConnectionService) {
     this.config();
   }
 
@@ -76,6 +79,7 @@ export class AppComponent implements OnInit {
     this.setTitle();
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
+    this.connectionService.checkConnection();
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
