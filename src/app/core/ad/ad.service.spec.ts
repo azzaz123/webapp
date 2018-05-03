@@ -65,8 +65,6 @@ const defineSlot = {
   addService() {}
 };
 
-let geolocationSpy;
-
 describe('AdService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -104,7 +102,7 @@ describe('AdService', () => {
     mockBackend = TestBed.get(MockBackend);
     cookieService = TestBed.get(CookieService);
     privacyService = TestBed.get(PrivacyService);
-    geolocationSpy = spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
+    spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
       callback(position);
     });
     spyOn(googletag, 'pubads').and.returnValue(pubads);
