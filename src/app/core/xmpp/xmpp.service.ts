@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, HostListener } from '@angular/core';
 import { Message } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
@@ -16,14 +16,12 @@ import { environment } from '../../../environments/environment';
 export class XmppService {
 
   private client: XMPPClient;
-  private _connected = false;
+  private _clientConnected = false;
   private confirmedMessages: string[] = [];
   private firstMessageDate: string;
   private currentJid: string;
   private resource: string;
-  private reconnectInterval: any;
-  private _reconnecting = false;
-  private connected$: ReplaySubject<boolean> = new ReplaySubject(1);
+  private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
 
@@ -41,9 +39,9 @@ export class XmppService {
   }
 
   public disconnect() {
-    if (this.connected) {
+    if (this.clientConnected) {
       this.client.disconnect();
-      this.connected = false;
+      this.clientConnected = false;
     }
   }
 
@@ -59,8 +57,8 @@ export class XmppService {
       },
       body: body
     };
-    this.client.sendMessage(message);
     this.onNewMessage(_.clone(message));
+    this.client.sendMessage(message);
     this.trackingService.track(TrackingService.MESSAGE_SENT, {conversation_id: message.thread});
   }
 
@@ -174,16 +172,16 @@ export class XmppService {
   }
 
   public isConnected(): Observable<boolean> {
-    return this.connected$.asObservable();
+    return this.clientConnected$.asObservable();
   }
 
-  get connected(): boolean {
-    return this._connected;
+  get clientConnected(): boolean {
+    return this._clientConnected;
   }
 
-  set connected(value: boolean) {
-    this._connected = value;
-    this.connected$.next(value);
+  set clientConnected(value: boolean) {
+    this._clientConnected = value;
+    this.clientConnected$.next(value);
   }
 
   public debug() {
@@ -235,17 +233,35 @@ export class XmppService {
       this.onNewMessage(message);
     });
     this.client.on('session:started', () => {
+      console.log('session started');
       this.client.sendPresence();
       this.client.enableCarbons();
       this.setDefaultPrivacyList().subscribe();
       this.getPrivacyList().subscribe((jids: string[]) => {
         this.blockedUsers = jids;
-        this.connected = true;
+        this.clientConnected = true;
       });
     });
 
+    this.client.on('disconnected', (connection: any) => {
+      console.log('client disconnected');
+      this.clientConnected = false;
+    });
+
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      this.client.connect();
+      console.log('connection restored');
+      if (!this.clientConnected) {
+        this.client.connect();
+        this.clientConnected = true;
+      }
+    });
+
+    this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
+      console.log('connection dropped');
+      // if (!this.clientConnected) {
+      //   this.client.connect();
+      //   this.clientConnected = true;
+      // }
     });
 
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));

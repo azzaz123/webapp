@@ -912,48 +912,48 @@ describe('Service: Xmpp', () => {
 
   describe('isConnected', () => {
 
-    let connected: boolean;
+    let clientConnected: boolean;
 
     beforeEach(() => {
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      connected = false;
+      clientConnected = false;
     });
 
-    it('should say when is connected', fakeAsync(() => {
+    it('should say when is clientConnected', fakeAsync(() => {
       service.isConnected().subscribe((value: boolean) => {
-        connected = value;
+        clientConnected = value;
       });
 
-      service['connected$'].next(true);
+      service['clientConnected$'].next(true);
       tick();
 
-      expect(connected).toBe(true);
-      connected = false;
+      expect(clientConnected).toBe(true);
+      clientConnected = false;
       service.isConnected().subscribe((value: boolean) => {
-        connected = value;
+        clientConnected = value;
       });
-      expect(connected).toBe(true);
-      service['connected'] = true;
+      expect(clientConnected).toBe(true);
+      service['clientConnected'] = true;
       service.isConnected().subscribe((value: boolean) => {
-        connected = value;
+        clientConnected = value;
       });
-      expect(connected).toBe(true);
+      expect(clientConnected).toBe(true);
     }));
 
-    it('should say when is NOT connected', fakeAsync(() => {
+    it('should say when is NOT clientConnected', fakeAsync(() => {
       service.isConnected().subscribe((value: boolean) => {
-        connected = value;
+        clientConnected = value;
       });
 
-      service['connected$'].next(false);
+      service['clientConnected$'].next(false);
       tick();
 
-      expect(connected).toBe(false);
-      service['connected'] = false;
+      expect(clientConnected).toBe(false);
+      service['clientConnected'] = false;
       service.isConnected().subscribe((value: boolean) => {
-        connected = value;
+        clientConnected = value;
       });
-      expect(connected).toBe(false);
+      expect(clientConnected).toBe(false);
     }));
 
   });
@@ -1015,12 +1015,12 @@ describe('Service: Xmpp', () => {
     it('should disconnect', () => {
       spyOn(MOCKED_CLIENT, 'disconnect');
       service.connect('abc', 'def');
-      service['_connected'] = true;
+      service['_clientConnected'] = true;
 
       service.disconnect();
 
       expect(MOCKED_CLIENT.disconnect).toHaveBeenCalled();
-      expect(service['_connected']).toBe(false);
+      expect(service['_clientConnected']).toBe(false);
     });
 
   });
