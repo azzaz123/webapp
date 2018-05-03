@@ -4,7 +4,7 @@ import { ItemService } from '../../../core/item/item.service';
 import { Router } from '@angular/router';
 import { CartProService } from './cart-pro/cart-pro.service';
 import { CartProItem } from './cart-pro/cart-pro-item.interface';
-import { CalendarDates } from './range-datepicker/calendar-dates';
+import { CalendarDates } from './range-datepicker/calendar-dates.interface';
 
 @Component({
   selector: 'tsl-checkout-pro',
