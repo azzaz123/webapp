@@ -6,6 +6,8 @@ export interface CartProItem {
     item: Item;
     fromDate?: NgbDateStruct;
     toDate?: NgbDateStruct;
+    formattedFromDate?: string;
+    formattedToDate?: string;
     bumpType: string;
 }
 export interface CartProChange {
