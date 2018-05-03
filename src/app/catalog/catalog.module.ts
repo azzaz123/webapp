@@ -41,7 +41,6 @@ import { CheckoutProItemComponent } from './checkout/checkout-pro/checkout-pro-i
 import { CartProComponent } from './checkout/checkout-pro/cart-pro/cart-pro.component';
 import { CartProService } from './checkout/checkout-pro/cart-pro/cart-pro.service';
 import { RangeDatepickerComponent } from './checkout/checkout-pro/range-datepicker/range-datepicker.component';
-import { DatepickerComponent } from './checkout/checkout-pro/range-datepicker/datepicker-i18n';
 
 @NgModule({
   imports: [
@@ -97,8 +96,7 @@ import { DatepickerComponent } from './checkout/checkout-pro/range-datepicker/da
     CheckoutProComponent,
     CheckoutProItemComponent,
     CartProComponent,
-    RangeDatepickerComponent,
-    DatepickerComponent
+    RangeDatepickerComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
