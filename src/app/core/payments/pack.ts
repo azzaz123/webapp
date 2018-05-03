@@ -1,5 +1,9 @@
 import { Model } from '../resource/model.interface';
 
+export const PACKNAMES = {
+  'BUMP': 'cityBumps',
+  'NATIONAL_BUMP': 'nationalBumps'
+};
 export class Pack implements Model {
   private _discount: number;
 

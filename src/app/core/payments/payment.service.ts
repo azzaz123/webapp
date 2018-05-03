@@ -4,7 +4,7 @@ import { Response } from '@angular/http';
 import { FinancialCard, SabadellInfoResponse, Packs, ProductResponse, Products, PackResponse } from './payment.interface';
 import { HttpService } from '../http/http.service';
 import * as _ from 'lodash';
-import { Pack } from './pack';
+import { Pack, PACKNAMES } from './pack';
 
 @Injectable()
 export class PaymentService {
@@ -55,8 +55,7 @@ export class PaymentService {
         });
         sortedPacks.forEach((pack: PackResponse) => {
           const benefitsId: string = Object.keys(pack.benefits)[0];
-          const name: string = products[benefitsId].name === 'BUMP' ? 'cityBumps' : (products[benefitsId].name === 'NATIONAL_BUMP') ?
-            'nationalBumps' : '';
+          const name: string = PACKNAMES[products[benefitsId].name] ? PACKNAMES[products[benefitsId].name] : '';
           const baseQuantity = mins[benefitsId];
           const responsePrice: number =  packsResponse[name][0] == null ? +pack.price : packsResponse[name][0].price;
           const basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;

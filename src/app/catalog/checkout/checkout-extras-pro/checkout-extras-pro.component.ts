@@ -3,6 +3,7 @@ import { PaymentService } from '../../../core/payments/payment.service';
 import { Pack } from '../../../core/payments/pack';
 import { Packs } from '../../../core/payments/payment.interface';
 import * as _ from 'lodash';
+import { isArray } from 'util';
 
 @Component({
   selector: 'tsl-checkout-extras-pro',
@@ -10,26 +11,32 @@ import * as _ from 'lodash';
   styleUrls: ['./checkout-extras-pro.component.scss']
 })
 export class CheckoutExtrasProComponent implements OnInit {
-  packs: any = {};
+  packs: Array<any> = [];
 
   constructor(private paymentService: PaymentService) { }
 
   ngOnInit() {
     this.paymentService.getPacks().subscribe((packs: Packs) => {
       this.preparePacks(packs);
-      console.log('packs', packs);
     });
   }
 
   private preparePacks(packs: Packs): void {
+    let packObj = null;
     _.map(packs, (PacksList: Pack[]) => {
       PacksList.map((pack: Pack) => {
-        if (!this.packs[pack.quantity]) {
-          this.packs[pack.quantity] = [];
+        const quantityExists = this.packs.find((packFinder: Pack) => pack.quantity === packFinder.quantity);
+        if (quantityExists) {
+          packObj = quantityExists;
+        } else {
+          packObj = { quantity: pack.quantity, packs: [] };
+          this.packs.push(packObj);
         }
-        this.packs[pack.quantity].push(pack);
+        packObj.packs.push(pack);
       });
     });
+
+    this.packs = _.orderBy(this.packs, 'quantity');
     console.log('preparePacks', this.packs);
   }
 }

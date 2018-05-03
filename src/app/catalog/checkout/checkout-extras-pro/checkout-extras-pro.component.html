@@ -1,7 +1,7 @@
 <div class="page-content">
   <div class="container">
     <a class="back" [routerLink]="['/pro/catalog/list']"><mat-icon svgIcon="back-arrow"></mat-icon> <span i18n>Back</span></a>
-    <div class="row" [hidden]="!packs">
+    <div class="row" *ngIf="packs">
         <div class="col-xl col-lg-8">
           <div class="table-header">
             <div class="info">
@@ -25,9 +25,9 @@
               </div>
             </div>
           </div>
-          <!-- <div class="price-table">
-            <tsl-checkout-item *ngFor="let item of itemsWithProducts" [itemWithProducts]="item"></tsl-checkout-item>
-          </div> -->
+          <div class="price-table">
+            <tsl-checkout-extras-pro-item *ngFor="let pack of packs" [pack]="pack"></tsl-checkout-extras-pro-item>
+          </div>
         </div>
         <div class="cart">
           <tsl-cart [provincialBump]="provincialBump"></tsl-cart>
