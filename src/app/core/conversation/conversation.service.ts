@@ -53,6 +53,11 @@ export class ConversationService extends LeadService {
   }
 
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
+    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => {
+      console.log('CLIENT_DISCONNECTED detected');
+      this.resetCache();
+      // this.persistencyService.resetCache();
+    });
     return this.query(since, archived)
     .flatMap((conversations: Conversation[]) => {
       if (conversations && conversations.length > 0) {

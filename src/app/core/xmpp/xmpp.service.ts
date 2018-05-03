@@ -243,14 +243,16 @@ export class XmppService {
       });
     });
 
-    this.client.on('disconnected', (connection: any) => {
+    this.client.on('disconnected', () => {
       console.log('client disconnected');
       this.clientConnected = false;
+      this.eventService.emit(EventService.CLIENT_DISCONNECTED);
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       console.log('connection restored');
       if (!this.clientConnected) {
+        console.log('about to reconnect client');
         this.client.connect();
         this.clientConnected = true;
       }
@@ -258,10 +260,6 @@ export class XmppService {
 
     this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
       console.log('connection dropped');
-      // if (!this.clientConnected) {
-      //   this.client.connect();
-      //   this.clientConnected = true;
-      // }
     });
 
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
