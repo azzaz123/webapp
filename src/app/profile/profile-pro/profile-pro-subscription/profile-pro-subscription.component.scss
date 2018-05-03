@@ -59,7 +59,7 @@ h2, .description {
       font-size: $font-size-XS;
       color: $grey-250;
       position: absolute;
-      top: 20px;
+      top: $spacing;
       right: -30px;
     }
   }
@@ -198,5 +198,15 @@ h2, .description {
   }
   .expire {
     color: $color-urgent;
+  }
+}
+
+.open-visibility {
+  font-weight: bold;
+  color: $grey-500;
+  font-size: $font-size-S;
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
   }
 }

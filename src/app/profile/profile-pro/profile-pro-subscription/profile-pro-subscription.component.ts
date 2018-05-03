@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { PacksModel, PerksModel } from '../../../core/payments/payment.model';
 import { Pack } from '../../../core/payments/payment.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { VisibilityProductsModalComponent } from './visibility-products-modal/visibility-products-modal.component';
 
 @Component({
   selector: 'tsl-profile-pro-subscription',
@@ -15,7 +17,8 @@ export class ProfileProSubscriptionComponent implements OnInit {
   public email = 'ventas.motor@wallapop.com';
   public loading = true;
 
-  constructor(private paymentsService: PaymentService) {
+  constructor(private paymentsService: PaymentService,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -30,6 +33,10 @@ export class ProfileProSubscriptionComponent implements OnInit {
         this.loading = false;
       });
     });
+  }
+
+  public openVisibilityProductsModal() {
+    this.modalService.open(VisibilityProductsModalComponent, {windowClass: 'visibility-products'});
   }
 
 }
