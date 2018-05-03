@@ -30,6 +30,6 @@
         [disabled]="!this.cartProItem.bumpType" [ngClass]="{'country': this.cartProItem.bumpType === 'countrybump', 'city': this.cartProItem.bumpType === 'citybump'}"
         ngbDatepicker>
     </div>
-    <div class="item-reset" (click)="resetItem()" [ngClass]="{'disabled': !this.cartProItem.bumpType}"></div>
+    <div class="item-reset" (click)="removeItem()" [ngClass]="{'disabled': !this.cartProItem.bumpType}"></div>
   </div>
 </div>
