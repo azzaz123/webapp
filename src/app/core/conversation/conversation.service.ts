@@ -37,6 +37,7 @@ export class ConversationService extends LeadService {
 
   private messagesObservable: Observable<Conversation[]>;
   public ended: boolean;
+  public firstLoad: boolean;
 
   constructor(http: HttpService,
               userService: UserService,
@@ -52,7 +53,6 @@ export class ConversationService extends LeadService {
   }
 
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
-    this.handlePageReload();
     return this.query(since, archived)
     .flatMap((conversations: Conversation[]) => {
       if (conversations && conversations.length > 0) {
@@ -342,13 +342,6 @@ export class ConversationService extends LeadService {
       });
     });
   }
-
-  private handlePageReload() {
-    window.onload = () => {
-      this.firstLoad = true;
-    };
-  }
-
 
   protected mapRecordData(data: ConversationResponse): Conversation {
     return new Conversation(
