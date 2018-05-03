@@ -49,5 +49,4 @@ export class CheckoutProComponent implements OnInit {
   hideCalendar() {
     this.calendarHidden = true;
   }
-
 }

@@ -60,9 +60,11 @@ export class RangeDatepickerComponent implements OnInit {
   onApply() {
     this.selectedDates = {
       fromDate: this.fromDate,
-      toDate: this.toDate
+      formattedFromDate: new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day).toLocaleDateString(),
+      toDate: this.toDate,
+      formattedToDate: new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day).toLocaleDateString(),
     };
+    console.log(this.selectedDates);
     this.applyCalendar.emit(this.selectedDates);
   }
-
 }

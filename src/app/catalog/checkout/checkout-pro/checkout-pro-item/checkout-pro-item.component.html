@@ -20,13 +20,13 @@
   <div class="item-second-section">
     <div>
       <span class="label-date">Start date</span>
-      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="cartProItem.fromDate"
+      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" name="dp" [(ngModel)]="cartProItem.formattedFromDate"
         [disabled]="!this.cartProItem.bumpType" [ngClass]="{'country': this.cartProItem.bumpType === 'countrybump', 'city': this.cartProItem.bumpType === 'citybump'}"
         ngbDatepicker>
     </div>
     <div>
       <span class="label-date">End date</span>
-      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="cartProItem.toDate"
+      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" name="dp" [(ngModel)]="cartProItem.formattedToDate"
         [disabled]="!this.cartProItem.bumpType" [ngClass]="{'country': this.cartProItem.bumpType === 'countrybump', 'city': this.cartProItem.bumpType === 'citybump'}"
         ngbDatepicker>
     </div>
