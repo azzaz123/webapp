@@ -230,7 +230,7 @@ $feature-button-width: 170px;
         font-weight: bold;
       }
       &.btn-sold {
-        &:hover {
+        &:hover, &.active {
           background: $sold-bg;
           border-color: transparent;
         }
@@ -238,6 +238,12 @@ $feature-button-width: 170px;
       &.btn-edit {
         &:hover {
           background: $edit-bg;
+          border-color: transparent;
+        }
+      }
+      &.btn-reserve {
+        &:hover, &.active {
+          background: $reserve-bg;
           border-color: transparent;
         }
       }

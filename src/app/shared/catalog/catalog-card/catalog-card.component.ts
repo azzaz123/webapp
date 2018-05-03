@@ -4,6 +4,7 @@ import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.
 import { ToastrService } from 'ngx-toastr';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ItemService } from '../../../core/item/item.service';
+import { OrderEvent } from '../../../catalog/list/selected-items/selected-product.interface';
 
 @Component({
   selector: 'tsl-catalog-card',
@@ -14,6 +15,7 @@ export class CatalogCardComponent implements OnInit {
 
   @Input() item: Item;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
+  @Output() onAction: EventEmitter<OrderEvent> = new EventEmitter();
   public link: string;
 
   constructor(public itemService: ItemService,
@@ -39,6 +41,21 @@ export class CatalogCardComponent implements OnInit {
       item: item,
       action: 'sold'
     });
+  }
+
+  public reserve(item: Item) {
+    if (!item.reserved) {
+      this.itemService.selectedAction = 'reserve';
+      this.itemService.reserveItem(item.id, true).subscribe(() => {
+        item.reserved = true;
+        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_id: item.id});
+      });
+    } else {
+      this.itemService.reserveItem(item.id, false).subscribe(() => {
+        item.reserved = false;
+        this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
+      });
+    }
   }
 
   public cancelFeature(item: Item): void {

@@ -31,37 +31,7 @@ export class CatalogItemActionsComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  public setSold(soldItemsModal: any) {
-    this.modalService.open(soldItemsModal).result.then(() => {
-      this.itemService.bulkSetSold().takeWhile(() => {
-        return this.active;
-      }).subscribe((response: ItemBulkResponse) => {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_SOLD, {product_ids: response.updatedIds.join(', ')});
-        response.updatedIds.forEach((id: string) => {
-          const index: number = _.findIndex(this.items, {'id': id});
-          this.items.splice(index, 1);
-        });
-        if (response.failedIds.length) {
-          this.toastr.error(this.i18n.getTranslations('bulkSoldError'));
-        }
-      });
-    });
-  }
-
-  public reserve(reserveItemsModal: any) {
-    this.modalService.open(reserveItemsModal).result.then(() => {
-      this.itemService.bulkReserve().takeWhile(() => {
-        return this.active;
-      }).subscribe((response: ItemBulkResponse) => {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: response.updatedIds.join(', ')});
-        if (response.failedIds.length) {
-          this.toastr.error(this.i18n.getTranslations('bulkReserveError'));
-        }
-      });
-    });
-  }
-
+  
   public deactivate(deactivateItemsModal: any) {
     this.modalService.open(deactivateItemsModal).result.then(() => {
       this.itemService.bulkSetDeactivate().takeWhile(() => {
@@ -81,6 +51,28 @@ export class CatalogItemActionsComponent implements OnInit {
         }
       });
     });
+  }
+
+  public delete(deleteItemsModal: any) {
+    this.modalService.open(deleteItemsModal).result.then(() => {
+      this.itemService.bulkDelete(this.selectedStatus).takeWhile(() => {
+        return this.active;
+      }).subscribe((response: ItemBulkResponse) => {
+        this.getCounters.emit();
+        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: response.updatedIds.join(', ')});
+        response.updatedIds.forEach((id: string) => {
+          let index: number = _.findIndex(this.items, {'id': id});
+          this.items.splice(index, 1);
+        });
+        if (response.failedIds.length) {
+          this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
+        }
+      });
+    });
+  }
+
+  public deselect() {
+    this.itemService.deselectItems();
   }
 
 }

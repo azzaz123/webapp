@@ -41,8 +41,11 @@
     </div>
     <div class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
-        <button class="btn-sold" [hidden]="item.sold" tslItemSold (callback)="setSold(item)" [item]="item">
+        <button class="btn-sold" [hidden]="item.sold" tslItemSold (callback)="setSold(item)" [item]="item" *ngIf="!item.flags.onhold">
           <mat-icon svgIcon="btn-sold"></mat-icon>
+        </button>
+        <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.onhold">
+          <mat-icon svgIcon="btn-reserved"></mat-icon>
         </button>
         <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">
           <mat-icon svgIcon="btn-edit"></mat-icon>

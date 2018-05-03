@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -13,6 +13,12 @@ import { UserService } from '../../../core/user/user.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { UserStatsResponse, Counters } from '../../../core/user/user-stats.interface';
 import { Router } from '@angular/router';
+import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/confirmation-modal.component';
+import { OrderEvent } from '../../list/selected-items/selected-product.interface';
+import { UUID } from 'angular2-uuid';
+import { FinancialCard } from '../../../core/payments/payment.interface';
+import { CreditCardModalComponent } from '../../list/modals/credit-card-modal/credit-card-modal.component';
+import { PaymentService } from '../../../core/payments/payment.service';
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -28,15 +34,17 @@ export class CatalogProListComponent implements OnInit {
   public isUrgent = false;
   public isRedirect = false;
   public orderBy: any[];
-  public selectedStatus: string = 'active';
-  public sortBy: string = 'date_desc';
+  public selectedStatus = 'active';
+  public sortBy = 'date_desc';
   public counters: Counters;
   public subscriptionPlan: number;
   private term: string;
-  private page: number = 1;
-  private pageSize: number = 20;
-  private active: boolean = true;
-  private cache: boolean = true;
+  private page = 1;
+  private pageSize = 20;
+  public active = true;
+  private cache = true;
+  public numberOfProducts: number;
+  public sabadellSubmit: EventEmitter<string> = new EventEmitter();
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -46,7 +54,8 @@ export class CatalogProListComponent implements OnInit {
               private i18n: I18nService,
               private userService: UserService,
               private errorService: ErrorsService,
-              private router: Router) { }
+              private router: Router,
+              private paymentService: PaymentService) { }
 
   ngOnInit() {
     this.getCounters();
@@ -95,6 +104,16 @@ export class CatalogProListComponent implements OnInit {
     this.active = false;
   }
 
+  public onAction($event?: any) {
+    if (this.itemService.selectedAction === 'delete') {
+      this.delete();
+    } else if (this.itemService.selectedAction === 'reserve') {
+      this.reserve();
+    } else if (this.itemService.selectedAction === 'feature') {
+      this.feature($event);
+    }
+  }
+
   public search(term: string) {
     this.term = term;
     this.page = 1;
@@ -130,22 +149,107 @@ export class CatalogProListComponent implements OnInit {
     this.itemService.deselectItems();
   }
 
-  public delete(deleteItemsModal: any) {
-    this.modalService.open(deleteItemsModal).result.then(() => {
-      this.itemService.bulkDelete(this.selectedStatus).takeWhile(() => {
-        return this.active;
-      }).subscribe((response: ItemBulkResponse) => {
-        this.getCounters();
+  public delete() {
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.type = 1;
+    modalRef.result.then(() => {
+      this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {
         this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: response.updatedIds.join(', ')});
         response.updatedIds.forEach((id: string) => {
-          let index: number = _.findIndex(this.items, {'id': id});
+          const index: number = _.findIndex(this.items, {'id': id});
           this.items.splice(index, 1);
         });
         if (response.failedIds.length) {
-          this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
+          this.errorService.i18nError('bulkDeleteError');
+        } else {
+          this.getNumberOfProducts();
         }
       });
+    }, () => {
     });
+  }
+
+  public reserve() {
+    this.itemService.bulkReserve().subscribe((response: ItemBulkResponse) => {
+      this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: response.updatedIds.join(', ')});
+      response.updatedIds.forEach((id: string) => {
+        const index: number = _.findIndex(this.items, {'id': id});
+        if (this.items[index]) {
+          this.items[index].reserved = true;
+        }
+      });
+      if (response.failedIds.length) {
+        this.errorService.i18nError('bulkReserveError');
+      }
+    });
+  }
+
+  public feature(orderEvent: OrderEvent) {
+    const orderId: string = UUID.UUID();
+    this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe((failedProducts: string[]) => {
+      if (failedProducts && failedProducts.length) {
+        this.errorService.i18nError('bumpError');
+      } else {
+        this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
+          this.chooseCreditCard(orderId, orderEvent.total, financialCard);
+        }, () => {
+          this.setRedirectToTPV(true);
+          this.sabadellSubmit.emit(orderId);
+        });
+      }
+    }, () => {
+      this.deselect();
+    });
+  }
+
+  private chooseCreditCard(orderId: string, total: number, financialCard: FinancialCard) {
+    const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, {windowClass: 'credit-card'});
+    modalRef.componentInstance.financialCard = financialCard;
+    modalRef.componentInstance.total = total;
+    this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
+    modalRef.result.then((result: string) => {
+      if (result === undefined) {
+        this.isUrgent = false;
+        localStorage.removeItem('transactionType');
+        this.isRedirect = !this.getRedirectToTPV();
+        this.deselect();
+        setTimeout(() => {
+          this.router.navigate(['catalog/list']);
+        }, 1000);
+      } else if (result === 'new') {
+        this.setRedirectToTPV(true);
+        this.sabadellSubmit.emit(orderId);
+      } else {
+        this.paymentService.pay(orderId).subscribe(() => {
+          this.deselect();
+          setTimeout(() => {
+            this.router.navigate(['catalog/list', {code: 200}]);
+          }, 1000);
+        }, () => {
+          this.deselect();
+          setTimeout(() => {
+            this.router.navigate(['catalog/list', {code: -1}]);
+          }, 1000);
+        });
+      }
+    }, () => {
+      this.deselect();
+    });
+  }
+
+  public getNumberOfProducts() {
+    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+      this.counters = userStats.counters;
+      this.setNumberOfProducts();
+    });
+  }
+
+  private setNumberOfProducts() {
+    if (this.selectedStatus === 'sold') {
+      this.numberOfProducts = this.counters.sold;
+    } else if (this.selectedStatus === 'published') {
+      this.numberOfProducts = this.counters.publish;
+    }
   }
 
   public getCounters() {
@@ -158,56 +262,10 @@ export class CatalogProListComponent implements OnInit {
     this.subscriptionPlan = plan;
   }
 
-  /*public setSold(soldItemsModal: any) {
-    this.modalService.open(soldItemsModal).result.then(() => {
-      this.itemService.bulkSetSold().takeWhile(() => {
-        return this.active;
-      }).subscribe((response: ItemBulkResponse) => {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_SOLD, {product_ids: response.updatedIds.join(', ')});
-        response.updatedIds.forEach((id: string) => {
-          const index: number = _.findIndex(this.items, {'id': id});
-          this.items.splice(index, 1);
-        });
-        if (response.failedIds.length) {
-          this.toastr.error(this.i18n.getTranslations('bulkSoldError'));
-        }
-      });
-    });
+  private setRedirectToTPV(state: boolean): void {
+    localStorage.setItem('redirectToTPV', state.toString());
+    this.isRedirect = state;
   }
-
-  public reserve(reserveItemsModal: any) {
-    this.modalService.open(reserveItemsModal).result.then(() => {
-      this.itemService.bulkReserve().takeWhile(() => {
-        return this.active;
-      }).subscribe((response: ItemBulkResponse) => {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: response.updatedIds.join(', ')});
-        if (response.failedIds.length) {
-          this.toastr.error(this.i18n.getTranslations('bulkReserveError'));
-        }
-      });
-    });
-  }
-
-  public deactivate(deactivateItemsModal: any) {
-    this.modalService.open(deactivateItemsModal).result.then(() => {
-      this.itemService.bulkSetDeactivate().takeWhile(() => {
-        return this.active;
-      }).subscribe(() => this.getCounters());
-    });
-  }
-
-  public activate(activateItemsModal: any) {
-    this.modalService.open(activateItemsModal).result.then(() => {
-      this.itemService.bulkSetActivate().takeWhile(() => {
-        return this.active;
-      }).subscribe((resp: any) => {
-        this.getCounters();
-        if (resp.status === 406) {
-          this.errorService.show(resp);
-        }
-      });
-    });
-  }*/
 
   private getRedirectToTPV(): boolean {
     return localStorage.getItem('redirectToTPV') === 'true';

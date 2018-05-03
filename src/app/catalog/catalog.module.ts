@@ -39,6 +39,7 @@ import { SabadellComponent } from './sabadell/sabadell.component';
 import { CatalogCardComponent } from '../shared/catalog/catalog-card/catalog-card.component';
 import { CatalogItemActionsComponent } from '../shared/catalog/catalog-item-actions/catalog-item-actions.component';
 import { CatalogStatusNavbarComponent } from '../shared/catalog/catalog-status-navbar/catalog-status-navbar.component';
+import { PlanDataComponent } from './catalog-pro/catalog-pro-list/plan-data/plan-data.component';
 
 @NgModule({
   imports: [
@@ -91,7 +92,8 @@ import { CatalogStatusNavbarComponent } from '../shared/catalog/catalog-status-n
     SabadellComponent,
     CatalogCardComponent,
     CatalogItemActionsComponent,
-    CatalogStatusNavbarComponent
+    CatalogStatusNavbarComponent,
+    PlanDataComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

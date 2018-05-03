@@ -8,6 +8,7 @@
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
   <div class="container">
     <h2 i18n>Catalog</h2>
+    <tsl-plan-data></tsl-plan-data>
     <tsl-search-input (term)="search($event)"></tsl-search-input>
     <tsl-catalog-status-navbar (filterByStatus)="filterByStatus($event)" [selectedStatus]="selectedStatus"
                                [counters]="counters"></tsl-catalog-status-navbar>
@@ -25,7 +26,8 @@
       <div id="catalog-empty-state" *ngIf="!items.length && !loading">
         <mat-icon svgIcon="pro-items-empty-state" class="image"></mat-icon>
       </div>
-      <tsl-catalog-card *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" class="col-md-12">
+      <tsl-catalog-card *ngFor="let item of items" class="col-md-12" [item]="item" (onAction)="onAction($event)"
+                        (itemChange)="itemChanged($event)">
       </tsl-catalog-card>
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
