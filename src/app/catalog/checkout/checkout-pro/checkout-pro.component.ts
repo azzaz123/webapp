@@ -2,20 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
 import { Router } from '@angular/router';
-import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { CartProService } from './cart-pro/cart-pro.service';
 import { CartProItem } from './cart-pro/cart-pro-item.interface';
+import { CalendarDates } from './range-datepicker/calendar-dates';
 
-const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
-  one && two && two.year === one.year && two.month === one.month && two.day === one.day;
-
-const before = (one: NgbDateStruct, two: NgbDateStruct) =>
-  !one || !two ? false : one.year === two.year ? one.month === two.month ? one.day === two.day
-    ? false : one.day < two.day : one.month < two.month : one.year < two.year;
-
-const after = (one: NgbDateStruct, two: NgbDateStruct) =>
-  !one || !two ? false : one.year === two.year ? one.month === two.month ? one.day === two.day
-    ? false : one.day > two.day : one.month > two.month : one.year > two.year;
 @Component({
   selector: 'tsl-checkout-pro',
   templateUrl: './checkout-pro.component.html',
@@ -25,19 +15,9 @@ export class CheckoutProComponent implements OnInit {
 
   itemsWithProducts: ItemWithProducts[];
   itemSelected: CartProItem;
-  hoveredDate: NgbDateStruct;
-  fromDate: NgbDateStruct;
-  toDate: NgbDateStruct;
-  minDate: NgbDateStruct;
   calendarHidden = true;
-  isHovered: any;
-  isInside: any;
-  isFrom: any;
-  isTo: any;
 
-  constructor(private itemService: ItemService, private router: Router, private calendar: NgbCalendar, private cartProService: CartProService) {
-    this.minDate = { year: calendar.getToday().year, month: calendar.getToday().month, day: calendar.getToday().day };
-  }
+  constructor(private itemService: ItemService, private router: Router, private cartProService: CartProService) { }
 
   ngOnInit() {
     if (!this.itemService.selectedItems.length) {
@@ -52,30 +32,22 @@ export class CheckoutProComponent implements OnInit {
 
   onDateFocus(item: CartProItem) {
     this.itemSelected = item;
-    this.isHovered = date =>
-      this.itemSelected.fromDate && !this.itemSelected.toDate && this.hoveredDate && after(date, this.itemSelected.fromDate) && before(date, this.hoveredDate);
-    this.isInside = date =>
-      after(date, this.itemSelected.fromDate) && before(date, this.itemSelected.toDate);
-    this.isFrom = date =>
-      equals(date, this.itemSelected.fromDate);
-    this.isTo = date =>
-      equals(date, this.itemSelected.toDate);
     this.calendarHidden = false;
   }
 
-  onDateSelection(date: NgbDateStruct) {
-    if (!this.itemSelected.fromDate && !this.itemSelected.toDate) {
-      this.itemSelected.fromDate = date;
-    } else if (this.itemSelected.fromDate && !this.itemSelected.toDate && after(date, this.itemSelected.fromDate)) {
-      this.itemSelected.toDate = date;
-    } else {
-      this.itemSelected.toDate = null;
-      this.itemSelected.fromDate = date;
-    }
+  onApplyCalendar(calendar: CalendarDates) {
+    this.itemSelected.fromDate = calendar.fromDate;
+    this.itemSelected.toDate = calendar.toDate;
+    this.hideCalendar();
   }
 
   addToCart() {
     this.cartProService.add(this.itemSelected);
+    this.hideCalendar();
+  }
+
+  hideCalendar() {
     this.calendarHidden = true;
   }
+
 }
