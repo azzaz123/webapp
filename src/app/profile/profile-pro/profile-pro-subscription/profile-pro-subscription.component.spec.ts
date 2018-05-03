@@ -6,11 +6,14 @@ import { Observable } from 'rxjs/Observable';
 import { createPacksModelFixture, PACK_RESPONSE } from '../../../../tests/payments.fixtures.spec';
 import { PacksModel, PerksModel } from '../../../core/payments/payment.model';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { VisibilityProductsModalComponent } from './visibility-products-modal/visibility-products-modal.component';
 
 describe('ProfileProSubscriptionComponent', () => {
   let component: ProfileProSubscriptionComponent;
   let fixture: ComponentFixture<ProfileProSubscriptionComponent>;
   let paymentsService: PaymentService;
+  let modalService: NgbModal;
   const packsModel: PacksModel = createPacksModelFixture();
   const perksModel: PerksModel = new PerksModel();
 
@@ -27,7 +30,12 @@ describe('ProfileProSubscriptionComponent', () => {
             return Observable.of(packsModel)
           }
         }
+        },
+        {
+          provide: NgbModal, useValue: {
+          open() {}
         }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -38,6 +46,7 @@ describe('ProfileProSubscriptionComponent', () => {
     fixture = TestBed.createComponent(ProfileProSubscriptionComponent);
     component = fixture.componentInstance;
     paymentsService = TestBed.get(PaymentService);
+    modalService = TestBed.get(NgbModal);
     spyOn(paymentsService, 'getSubscriptionPacks').and.callThrough();
     spyOn(paymentsService, 'getPerks').and.callThrough();
     fixture.detectChanges();
@@ -52,6 +61,16 @@ describe('ProfileProSubscriptionComponent', () => {
     it('should call getPerks and set perks', () => {
       expect(paymentsService.getPerks).toHaveBeenCalled();
       expect(component.perks).toEqual(perksModel);
+    });
+  });
+
+  describe('openVisibilityProductsModal', () => {
+    it('should open modal', () => {
+      spyOn(modalService, 'open');
+
+      component.openVisibilityProductsModal();
+
+      expect(modalService.open).toHaveBeenCalledWith(VisibilityProductsModalComponent, {windowClass: 'visibility-products'});
     });
   });
 });
