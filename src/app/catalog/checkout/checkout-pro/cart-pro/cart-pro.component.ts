@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartPro, BUMP_PRO_TYPES } from './cart-pro';
 import { CartProService } from './cart-pro.service';
-import { CartProChange } from './cart-pro-item.interface';
+import { CartProChange, CartProItem } from './cart-pro-item.interface';
 
 @Component({
   selector: 'tsl-cart-pro',
@@ -19,8 +19,11 @@ export class CartProComponent implements OnInit {
   ngOnInit() {
     this.cartProService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartProChange) => {
       this.cart = cartChange.cart;
-      console.log('here', this.cart);
     });
+  }
+
+  remove(cartItem: CartProItem) {
+    this.cartProService.remove(cartItem.item.id, cartItem.bumpType);
   }
 
 }

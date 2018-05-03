@@ -26,4 +26,14 @@ export class CartProService {
     });
   }
 
+  remove(itemId: string, type: string) {
+    this.cart.removeCartItem(itemId, type);
+    this.cartSource.next({
+      action: 'remove',
+      cart: this.cart,
+      itemId: itemId,
+      type: type
+    });
+  }
+
 }
