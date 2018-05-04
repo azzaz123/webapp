@@ -337,6 +337,12 @@
   <msg id="8499614752066309224"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:50</source>City:</msg>
   <msg id="4863373404095396982"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:56</source>Country:</msg>
   <msg id="5125950009267587196"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:62</source>CIF Number:</msg>
+  <msg id="2303735769987845467"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:5</source>Visibility products</msg>
+  <msg id="5130627671872052700"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:8</source>Feature on your city</msg>
+  <msg id="1768872655561111284"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:9</source>Get on first position</msg>
+  <msg id="994112968931678611"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:12</source>Feature on your country</msg>
+  <msg id="6008122510223331138"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:13</source>You will appear on nice positions of your country</msg>
+  <msg id="7413249870341285211"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:17</source>Contact us for more info</msg>
   <msg id="6883076399412251073"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:8</source>Current plan: Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.listing.quantity}}</ex></ph></msg>
   <msg id="2732498404411727211"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:9</source>You are not yet subscribed to any plan.</msg>
   <msg id="7532148292247615475"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:11</source>Each plan allows you to have up to a maximum number of cars published in the wallapop app and website.</msg>
@@ -353,6 +359,7 @@
   <msg id="2126069250654725782"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:62</source>Country visibility</msg>
   <msg id="251613711454912353"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:63</source>Country <ph name="INTERPOLATION"><ex>{{perks?.subscription.national.total}}</ex></ph> plan</msg>
   <msg id="4265815599752241407"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:65</source>The country plan allows you to promote your cars countrywide and appear in the top positions of the wall of the web and the app. The product card will have a different style and you will appear in the promoted area throughout the country. To subscribe to a country plan, contact</msg>
+  <msg id="5868024112393513368"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:86</source>Why should I buy visibility?</msg>
   <msg id="4284869171317534738"><source>app/profile/edit-email/email-modal/email-modal.component.ts:2</source>New email?</msg>
   <msg id="4200745758819613954"><source>app/profile/edit-email/email-modal/email-modal.component.ts:3</source>You can update it now</msg>
   <msg id="6357315990612654699"><source>app/profile/edit-email/email-modal/email-modal.component.ts:7</source>Current email</msg>

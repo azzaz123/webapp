@@ -50,18 +50,9 @@ h2 {
   background: url(/assets/images/visibility-country.svg) no-repeat top center;
 }
 
-.autorenew {
-  margin-top: $spacing-L;
-  mat-icon {
-    @include square(50px);
-    vertical-align: middle;
-    margin-right: $spacing-S;
-  }
-}
-
 .btn {
   border-radius: $button-border-radius;
   font-weight: bold;
-  margin-top: $font-size-S;
+  margin-top: $spacing-L;
   padding: 10px 30px;
 }
