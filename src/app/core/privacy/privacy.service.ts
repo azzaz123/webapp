@@ -7,7 +7,6 @@ import {
   PrivacyVersionItem,
   PRIVACY_STATUS
 } from './privacy';
-import {Subject} from 'rxjs/Subject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
