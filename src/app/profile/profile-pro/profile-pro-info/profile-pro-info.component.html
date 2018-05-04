@@ -5,7 +5,7 @@
       <div class="box-content">
         <div class="row">
           <div class="col-10 offset-2">
-            <div class="form-group row">
+            <div class="form-group row align-items-center">
               <label for="first_name" class="col-3" i18n>Name:</label>
               <div class="col-5">
                 <input type="text" class="form-control" id="first_name" formControlName="first_name" tslRestrictInput maxlength="50" />
@@ -14,7 +14,7 @@
                 <input type="text" class="form-control" id="last_name" formControlName="last_name" tslRestrictInput maxlength="50" />
               </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row align-items-center">
               <label for="phone_number" class="col-3" i18n>Telephone:</label>
               <div class="col-5">
                 <input type="text" class="form-control" id="phone_number" formControlName="phone_number" />
@@ -53,13 +53,13 @@
     <div class="box-content">
       <div class="row">
         <div class="col-10 offset-2">
-          <div class="form-group row">
+          <div class="form-group row align-items-center">
             <label class="col-3" i18n>Email:</label>
             <div class="col-5">
               <tsl-edit-email [email]="user?.email"></tsl-edit-email>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row align-items-center">
             <label class="col-3" i18n>Password:</label>
             <div class="col-5">
               <tsl-edit-password></tsl-edit-password>
@@ -93,11 +93,11 @@
             </label>
             <div class="col-9" i18n>Notify me with amazing news & promotions</div>
           </div>-->
-          <div class="row">
+          <div class="row align-items-center">
             <label class="col-3 switch">
               <tsl-switch formControlName="consent_third_parties_use_data" (onChange)="onNotificationChange('consent_third_parties_use_data', $event)"></tsl-switch>
             </label>
-            <div class="col-9" i18n>I consent third parties to use my data</div>
+            <div class="col-9">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta  con empresas con las que colaboramos información recabada durante la sesión.</div>
           </div>
         </div>
       </div>
