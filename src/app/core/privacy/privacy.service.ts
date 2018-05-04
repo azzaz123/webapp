@@ -32,7 +32,7 @@ export class PrivacyService {
       .map((privacyList: PrivacyList) => this._mapPrivacyList(privacyList));
   }
 
-  private _mapPrivacyList(privacyList: PrivacyList) {
+  private _mapPrivacyList(privacyList: PrivacyList): PrivacyList {
     this._privacyList = privacyList;
 
     const segmentationStatus = this.getPrivacyState('gdpr_display', '0');
