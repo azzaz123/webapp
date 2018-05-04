@@ -328,7 +328,6 @@
   <msg id="2595624684026123810"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:18</source>Telephone:</msg>
   <msg id="6996799422725544865"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:24</source>Description:</msg>
   <msg id="138907429214820806"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:30</source>Opening Hours:</msg>
-  <msg id="872325555016392097"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:100</source>I consent third parties to use my data</msg>
   <msg id="5359061492766571193"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:20</source>Company Name:</msg>
   <msg id="6744115081020952615"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:26</source>Billing email:</msg>
   <msg id="6075176027649032651"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:32</source>Billing phone:</msg>
