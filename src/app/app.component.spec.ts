@@ -292,7 +292,7 @@ describe('App', () => {
         expect(component.updateSessionCookie).not.toHaveBeenCalled();
       });
 
-      it('should not call getPrivacyList method', () => {
+      it('should call getPrivacyList method', () => {
         spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
 
         component.ngOnInit();
