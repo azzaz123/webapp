@@ -153,7 +153,7 @@ describe('ProfileComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.allowSegmentation).toBeFalsy();
+      expect(component.allowSegmentation).toBe(false);
     });
 
     it('should change allowSegmentation value to true when allowSegmentation$ trigger true value', () => {
@@ -161,7 +161,7 @@ describe('ProfileComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.allowSegmentation).toBeTruthy();
+      expect(component.allowSegmentation).toBe(true);
     });
   });
 
