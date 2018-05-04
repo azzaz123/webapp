@@ -15,9 +15,11 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/empty';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import { XmppService } from '../xmpp/xmpp.service';
+import { ConnectionService } from '../connection/connection.service';
 
 @Injectable()
 export abstract class LeadService {
@@ -35,7 +37,8 @@ export abstract class LeadService {
               protected userService: UserService,
               protected itemService: ItemService,
               protected event: EventService,
-              protected xmpp: XmppService) {
+              protected xmpp: XmppService,
+              protected connectionService: ConnectionService) {
   }
 
   public init(archived?: boolean): Observable<Lead[]> {
@@ -80,6 +83,7 @@ export abstract class LeadService {
     }
     return this.xmpp.isConnected()
     .flatMap(() => {
+      if (this.connectionService.isConnected)  {
       return this.http.get(this.API_URL, {until: until, hidden: archived})
       .map((res: Response) => res.json())
       .flatMap((res: LeadResponse[]) => {
@@ -102,6 +106,9 @@ export abstract class LeadService {
       .catch((a) => {
         return Observable.of(null);
       });
+      } else {
+        return Observable.empty<Lead[]>();
+      }
     });
   }
 

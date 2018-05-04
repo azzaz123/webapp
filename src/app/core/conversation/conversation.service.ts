@@ -3,6 +3,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpService } from '../http/http.service';
 import { Conversation } from './conversation';
+import { ConnectionService } from '../connection/connection.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { XmppService } from '../xmpp/xmpp.service';
@@ -26,6 +27,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/empty';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -44,12 +46,13 @@ export class ConversationService extends LeadService {
               itemService: ItemService,
               event: EventService,
               xmpp: XmppService,
+              connectionService: ConnectionService,
               private persistencyService: PersistencyService,
               protected messageService: MessageService,
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,
               private zone: NgZone) {
-    super(http, userService, itemService, event, xmpp);
+    super(http, userService, itemService, event, xmpp, connectionService);
   }
 
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
@@ -296,7 +299,7 @@ export class ConversationService extends LeadService {
   private recursiveLoadMessages(conversations: Conversation[], index: number = 0): Observable<Conversation[]> {
     return this.xmpp.isConnected()
     .flatMap(() => {
-      if (conversations && conversations[index]) {
+        if (conversations && conversations[index] && this.connectionService.isConnected) {
         return this.messageService.getMessages(conversations[index])
         .flatMap((res: MessagesData) => {
           conversations[index].messages = res.data;
@@ -308,7 +311,7 @@ export class ConversationService extends LeadService {
           return Observable.of(conversations);
         });
       } else {
-        return Observable.of(null);
+          return Observable.empty<Conversation[]>();
       }
     });
   }
