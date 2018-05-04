@@ -288,7 +288,7 @@ describe('AdService', () => {
           privacyService.allowSegmentation$.next(false);
         });
 
-        it('should send keyWords allowSegmentation with true value', fakeAsync(() => {
+        it('should send keyWords allowSegmentation with false value', fakeAsync(() => {
           service.startAdsRefresh();
           tick(refreshRate);
 
@@ -296,7 +296,7 @@ describe('AdService', () => {
           discardPeriodicTasks();
         }));
 
-        it('should call amazon APS fetchBids', fakeAsync(() => {
+        it('should not call amazon APS fetchBids', fakeAsync(() => {
           spyOn(apstag, 'fetchBids');
 
           service.startAdsRefresh();
@@ -306,7 +306,7 @@ describe('AdService', () => {
           discardPeriodicTasks();
         }));
 
-        it('should call amazon APS setDisplayBids', fakeAsync(() => {
+        it('should not call amazon APS setDisplayBids', fakeAsync(() => {
           spyOn(apstag, 'setDisplayBids');
 
           service.startAdsRefresh();
@@ -316,7 +316,7 @@ describe('AdService', () => {
           discardPeriodicTasks();
         }));
         //
-        it('should call Criteo SetLineItemRanges', fakeAsync(() => {
+        it('should not call Criteo SetLineItemRanges', fakeAsync(() => {
           spyOn(Criteo, 'SetLineItemRanges');
 
           service.startAdsRefresh();
@@ -326,7 +326,7 @@ describe('AdService', () => {
           discardPeriodicTasks();
         }));
 
-        it('should call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
+        it('should not call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
           spyOn(Criteo, 'SetDFPKeyValueTargeting');
 
           service.startAdsRefresh();
