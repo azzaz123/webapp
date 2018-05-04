@@ -1,13 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { UploadInput } from 'ngx-uploader';
+import { UploadFile, UploadInput } from 'ngx-uploader';
 import { PictureUploadComponent } from './picture-upload.component';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { HttpService } from '../../core/http/http.service';
-import { UPLOAD_FILE, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
+import { UPLOAD_FILE, UPLOAD_FILE_ID, UPLOAD_FILE_NAME } from '../../../tests/upload.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -115,7 +114,7 @@ describe('PictureUploadComponent', () => {
 
     it('should show error if event is done and status not 204', () => {
       spyOn(errorsService, 'i18nError');
-      const file = {...UPLOAD_FILE};
+      const file = <UploadFile>{...UPLOAD_FILE};
       const ERROR = 'error';
       file.progress.data.responseStatus = 0;
       file.response = {
@@ -128,6 +127,19 @@ describe('PictureUploadComponent', () => {
       });
 
       expect(errorsService.i18nError).toHaveBeenCalledWith('serverError', ERROR);
+    });
+
+    it('should throw error if event is rejected', () => {
+      spyOn(errorsService, 'i18nError');
+      const ERROR = 'error';
+
+      component.onUploadOutput({
+        type: 'rejected',
+        file: UPLOAD_FILE,
+        reason: ERROR
+      });
+
+      expect(errorsService.i18nError).toHaveBeenCalledWith(ERROR, UPLOAD_FILE_NAME);
     });
 
   });

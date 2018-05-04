@@ -13,12 +13,6 @@ $right-gutter: 35px;
 .switch {
   text-align: right;
   padding-right: $right-gutter;
-  margin-bottom: $spacing;
-}
-
-.notifications {
-  .box-content {
-    padding-bottom: $spacing-L - $spacing;
-  }
+  margin: 0;
 }
 
