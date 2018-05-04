@@ -97,7 +97,7 @@ describe('PrivacyService', () => {
         });
         service.getPrivacyList().subscribe();
 
-        expect(allowSegmentation).toBeTruthy();
+        expect(allowSegmentation).toBe(true);
       }));
     });
 
@@ -118,7 +118,7 @@ describe('PrivacyService', () => {
         });
         service.getPrivacyList().subscribe();
 
-        expect(allowSegmentation).toBeFalsy();
+        expect(allowSegmentation).toBe(false);
       }));
     });
 
@@ -139,7 +139,7 @@ describe('PrivacyService', () => {
         });
         service.getPrivacyList().subscribe();
 
-        expect(allowSegmentation).toBeFalsy();
+        expect(allowSegmentation).toBe(false);
       }));
     });
   });
@@ -175,7 +175,7 @@ describe('PrivacyService', () => {
 
     it('should be unknow permission status of gdpr_display version 0', () => {
       let status: string;
-      mockBackend.connections.subscribe((connection: MockConnection) => {
+      mockBackend.connections.subscribe((connection:  MockConnection) => {
         expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
         const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW)});
         connection.mockRespond(new Response(res));
