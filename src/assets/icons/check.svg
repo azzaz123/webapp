@@ -1,1 +1,12 @@
-<svg width="16" height="12" viewBox="0 0 16 12" xmlns="http://www.w3.org/2000/svg"><path d="M14.293.293L5 9.586 1.707 6.293A.999.999 0 1 0 .293 7.707l4 4a.997.997 0 0 0 1.414 0l10-10A.999.999 0 1 0 14.293.293" fill="#13C1AC" fill-rule="evenodd"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="12px" viewBox="0 0 16 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Fill 1</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Final-Designs" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Chat---Third-Voice-+-Complete" transform="translate(-677.000000, -778.000000)" fill="#13C1AC">
+            <path d="M691.29325,778.29325 L682.00025,787.58625 L678.70725,784.29325 C678.31625,783.90225 677.68425,783.90225 677.29325,784.29325 C676.90225,784.68425 676.90225,785.31625 677.29325,785.70725 L681.29325,789.70725 C681.48825,789.90225 681.74425,790.00025 682.00025,790.00025 C682.25625,790.00025 682.51225,789.90225 682.70725,789.70725 L692.70725,779.70725 C693.09825,779.31625 693.09825,778.68425 692.70725,778.29325 C692.31625,777.90225 691.68425,777.90225 691.29325,778.29325" id="Fill-1"></path>
+        </g>
+    </g>
+</svg>
