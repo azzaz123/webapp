@@ -1,22 +1,27 @@
 import { Injectable } from '@angular/core';
-import { CartChange, CartItem } from './cart-item.interface';
+import { CartChange, CartItem, CartProItem } from './cart-item.interface';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Cart } from './cart';
+import { CartPro } from './cart-pro';
+import { CartBase } from './cart-base';
 
 @Injectable()
 export class CartService {
 
   private cartSource: Subject<CartChange> = new Subject();
-  private cart: Cart;
+  private cart: CartBase;
   public cart$: Observable<CartChange>;
 
   constructor() {
     this.cart$ = this.cartSource.asObservable();
-    this.cart = new Cart();
   }
 
-  add(cartItem: CartItem, type: string) {
+  createInstance(cart: CartBase) {
+    this.cart = cart;
+  }
+
+  add(cartItem: CartItem | CartProItem, type: string) {
     this.cart.add(cartItem, type);
     this.cartSource.next({
       action: 'add',
@@ -43,5 +48,4 @@ export class CartService {
       cart: this.cart
     });
   }
-
 }
