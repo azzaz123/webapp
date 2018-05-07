@@ -33,7 +33,7 @@ export abstract class CartBase {
 
   abstract clean();
 
-  public abstract prepareOrder(): Order[];
+  abstract prepareOrder();
 
   public getOrderId() {
     return UUID.UUID();

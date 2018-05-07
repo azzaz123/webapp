@@ -28,4 +28,8 @@ export class CartProComponent implements OnInit {
     this.cartService.remove(cartItem.item.id, cartItem.bumpType);
   }
 
+  applyBumps() {
+    const order = this.cart.prepareOrder();
+    console.log(order);
+  }
 }
