@@ -66,6 +66,7 @@ export class MessageService {
   }
 
   public getNotSavedMessages(): Observable<MessagesData> {
+    if (this.connectionService.isConnected) {
     return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
       return this.query(null, resp.data.last, -1, resp.data.start).do((newMessages: MessagesData) => {
         if (newMessages.data.length) {
@@ -75,6 +76,7 @@ export class MessageService {
         }
       });
     });
+  }
   }
 
   public addUserInfoToArray(conversation: Conversation, messages: Message[]): Message[] {
