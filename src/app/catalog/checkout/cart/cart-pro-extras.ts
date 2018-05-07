@@ -7,8 +7,6 @@ export class CartProExtras extends CartBase {
 
   add(cartProExtrasPack: CartProExtrasPack, type: string) {
     console.log('add', this, type);
-
-    this.removeCartItemFromAnyBump(cartProExtrasPack.pack.id);
     this[type].cartItems.push(cartProExtrasPack);
     this.calculateTotals();
   }
@@ -41,5 +39,11 @@ export class CartProExtras extends CartBase {
     return ordersArray;
   }
 
-  private calculateTotals() {}
+  private calculateTotals() {
+    this.total = 0;
+    BUMP_TYPES.forEach((type: string) => {
+      this[type].total = _.sumBy(this[type].cartItems, (c: CartProExtrasPack) => +c.pack.price);
+      this.total += this[type].total;
+    });
+  }
 }

@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { CartService } from '../../cart/cart.service';
+import { CartProExtras } from '../../cart/cart-pro-extras';
+import { CartChange } from '../../cart/cart-item.interface';
+import { CartBase, BUMP_TYPES } from '../../cart/cart-base';
+import { PaymentService } from '../../../../core/payments/payment.service';
+import { FinancialCard } from '../../../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
@@ -7,9 +13,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CartExtrasProComponent implements OnInit {
 
-  constructor() { }
+  public cart: CartBase;
+  public financialCard: FinancialCard;
+  public types: string[] = BUMP_TYPES;
+  private active = true;
 
-  ngOnInit() {
+  constructor(private cartService: CartService,
+              private paymentService: PaymentService) {
+    this.cartService.createInstance(new CartProExtras());
   }
 
+  ngOnInit() {
+    this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
+      this.cart = cartChange.cart;
+      console.log('cartextraspro', this.cart);
+    });
+    this.getCard();
+  }
+
+  private getCard() {
+    this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
+      this.financialCard = financialCard;
+    });
+  }
 }

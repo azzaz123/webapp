@@ -1,3 +1,71 @@
-<p>
-  cart-extras-pro works!
-</p>
+<h1 i18n>Your shopping list</h1>
+<div class="cart-wrapper" [ngClass]="{'has-financial-card': financialCard}">
+  <div class="scroll-panel">
+    <ul *ngIf="cart" class="items-list">
+      <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
+        <div class="type-total cart-box" [ngClass]="{collapsed: cart[type].collapsed}"
+             (click)="cart[type].collapsed = !cart[type].collapsed">
+          <mat-icon class="wing-icon" svgIcon="wing-{{type}}"></mat-icon>
+          <div class="type">
+            <span [ngSwitch]="type">
+              <ng-container *ngSwitchCase="'citybump'" i18n>City bump</ng-container>
+              <ng-container *ngSwitchCase="'countrybump'" i18n>National bump</ng-container>
+            </span>
+            <strong>x {{cart[type].cartItems.length}}</strong><br />
+            <span class="price">{{cart[type].total | customCurrency}}</span>
+          </div>
+          <mat-icon class="arrow-icon" svgIcon="arrow-right"></mat-icon>
+        </div>
+        <ul [hidden]="cart[type].collapsed">
+          <li *ngFor="let cartItem of cart[type].cartItems" class="cart-item">
+            <mat-icon svgIcon="remove" class="close-icon" (click)="remove(cartItem, type)"></mat-icon>
+            <div class="cart-box">
+              <div class="quantity">{{cartItem.pack.quantity}}</div>
+              <div class="type">
+                <span [ngSwitch]="type">
+                  <ng-container *ngSwitchCase="'citybump'" i18n>City</ng-container>
+                  <ng-container *ngSwitchCase="'countrybump'" i18n>National</ng-container>
+                </span>
+                x {{cartItem.pack.quantity}}<span i18n>days</span>
+              </div>
+              <div class="price">{{cartItem.pack.price | customCurrency:cartItem.pack.currency}}</div>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div class="clean-cart" [hidden]="!cart?.total">
+    <a (click)="clean()">
+      <mat-icon svgIcon="delete"></mat-icon>
+      <span i18n>Empty list</span>
+    </a>
+  </div>
+</div>
+<div class="total">
+  <span class="pull-left" i18n>Total</span>
+  <span class="pull-right price">{{cart?.total | customCurrency}}</span>
+</div>
+<div class="select-card" *ngIf="financialCard">
+  <form>
+    <div ngbRadioGroup name="cardType" [(ngModel)]="cardType">
+      <label ngbButtonLabel class="custom-radio">
+        <input ngbButton type="radio" value="old">
+        <mat-icon svgIcon="radio-button"></mat-icon>
+        <mat-icon svgIcon="card" class="card-icon"></mat-icon>
+        <div class="number">{{financialCard?.number}}</div>
+        <div class="date">{{financialCard?.expire_date | date:'MM/yy'}}</div>
+      </label>
+      <label ngbButtonLabel class="custom-radio new-card">
+        <input ngbButton type="radio" value="new">
+        <mat-icon svgIcon="radio-button"></mat-icon>
+        <span i18n>+ Add another credit card</span>
+      </label>
+    </div>
+  </form>
+</div>
+<tsl-button [disabled]="!cart?.total || loading"
+            [loading]="loading"
+            (click)="checkout()"
+            i18n>Continue to Checkout</tsl-button>
+<tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

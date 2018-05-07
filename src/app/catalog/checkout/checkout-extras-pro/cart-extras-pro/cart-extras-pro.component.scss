@@ -1,0 +1,220 @@
+@import "~style/common";
+
+$cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
+$title-height: 65px;
+$total-height: 80px;
+$button-height: 42px;
+$button-margin: $spacing - $spacing-XS;
+$button-space: $button-height + $spacing;
+$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $button-space});
+$clear-cart-height: 38px;
+$card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
+
+:host {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $grey-50;
+  display: block;
+  height: $cart-height;
+  width: 280px;
+  position: fixed;
+  padding: 0 $spacing-XS;
+}
+
+h1 {
+  height: $title-height;
+  line-height: $title-height;
+  font-size: $font-size;
+  text-align: center;
+  margin: 0;
+  background: url(/assets/icons/cart.svg) no-repeat 10px center;
+}
+
+.cart-wrapper {
+  height: $scroll-panel-height;
+  background-color: rgba($grey-50, 0.3);
+  border-radius: 5px;
+  position: relative;
+  &.has-financial-card {
+    height: calc(#{$scroll-panel-height} - #{$card-select-height});
+  }
+}
+
+.scroll-panel {
+  overflow: auto;
+  padding: $spacing-XS;
+  height: calc(#{$scroll-panel-height} - #{$clear-cart-height});
+  .has-financial-card & {
+    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height});
+  }
+}
+
+.total {
+  height: $total-height;
+  line-height: $total-height;
+  font-size: $font-size-XS;
+  font-weight: bold;
+  padding: 0 $spacing-XS;
+  text-transform: uppercase;
+  .price {
+    font-size: $font-size-XL;
+  }
+}
+
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.items-list {
+  font-size: $font-size-XS;
+  .cart-box {
+    border-radius: 5px;
+    background-color: $white;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: solid 0.5px $grey-100;
+    margin-bottom: $spacing-XS;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    height: $spacing-L + 4;
+  }
+  .type-total {
+    padding: 10px;
+    cursor: pointer;
+    .wing-icon {
+      width: 51px;
+      height: 30px;
+      margin-right: $spacing-XS;
+    }
+    .arrow-icon {
+      transform: rotate(-90deg) scale(.8);
+      width: 9px;
+      height: 13px;
+    }
+    &.collapsed {
+      .arrow-icon {
+        transform: rotate(90deg) scale(.8);
+      }
+    }
+  }
+  .price {
+    color: $grey-500;
+    font-weight: bold;
+  }
+  .citybump {
+    color: $city-bump;
+  }
+  .countrybump {
+    color: $country-bump;
+  }
+  .type {
+    flex: 1;
+  }
+  .close-icon {
+    @include square(16px);
+    margin-bottom: $spacing-XS;
+    margin-right: $spacing-XS;
+    cursor: pointer;
+  }
+  .cart-item {
+    display: flex;
+    align-items: center;
+    .cart-box {
+      padding: $spacing-XXXS;
+      flex: 1;
+      .quantity {
+        font-size: $font-size;
+        font-weight: bold;
+        color: $grey-500;
+        background-color: $grey-50;
+        border-radius: 4px;
+        min-width: $spacing-L;
+        text-align: center;
+        height: $spacing-L;
+      }
+    }
+    .price {
+      margin-right: $spacing-XS;
+    }
+  }
+}
+
+.clean-cart {
+  position: absolute;
+  bottom: 0;
+  font-size: $font-size-S;
+  margin: $spacing-XS;
+  padding: $spacing-XS $spacing-XS 0;
+  border-top: 1px solid $grey-50;
+  width: calc(100% - #{$spacing-XS * 2});
+  a {
+    color: $grey-500;
+    cursor: pointer;
+    mat-icon {
+      width: 13px;
+      height: 15px;
+      margin-right: $spacing-XS;
+      vertical-align: sub;
+    }
+  }
+}
+
+tsl-button {
+  display: block;
+  /deep/ .btn {
+    width: calc(100% - #{$button-margin * 2});
+    margin: $button-margin;
+    margin-top: 0;
+  }
+}
+
+.select-card {
+  margin-bottom: $spacing-S;
+  .btn {
+    width: 100%;
+    border-radius: $border-radius;
+    border: 1px solid rgba($grey-50, .5);
+    display: flex;
+    font-size: $font-size-XS;
+    align-items: center;
+    padding: $spacing-S;
+    height: 50px;
+    color: $grey-250;
+    &.active {
+      border-color: $corporate;
+      color: $grey-900;
+    }
+    .card-icon {
+      flex: 0 0 34px;
+      /deep/ svg {
+        rect, path {
+          transition: $transition-base;
+        }
+      }
+    }
+    .number {
+      flex: 1;
+    }
+    .date {
+      color: $grey-250;
+    }
+    &.new-card {
+      font-size: $font-size;
+    }
+    &:not(.active) {
+      .card-icon {
+        /deep/ svg {
+          rect {
+            fill: $grey-50;
+          }
+          path {
+            fill: $grey-100;
+          }
+        }
+      }
+    }
+  }
+}
