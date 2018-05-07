@@ -598,6 +598,13 @@ export class ItemService extends ResourceService {
       });
   }
 
+  public cancelAutorenew(itemId: string): Observable<any> {
+    return this.http.put(this.API_URL_PROTOOL + '/autorenew/update', {
+      item_id: itemId,
+      autorenew: false
+    });
+  }
+
 }
 
 

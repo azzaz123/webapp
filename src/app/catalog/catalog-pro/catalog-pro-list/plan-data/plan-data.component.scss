@@ -1,5 +1,11 @@
 @import "~style/common";
 
+:host {
+  margin-bottom: 2%;
+  float: left;
+  width: 100%;
+}
+
 .plan {
   display: flex;
   flex-direction: row;
@@ -34,7 +40,6 @@
 .numbers {
   display: flex;
   flex-direction: row;
-
   justify-content: space-around;
   .col-number {
     display: flex;
@@ -52,9 +57,18 @@
   }
 }
 
+.number, .text {
+  float: left;
+  width: 100%;
+}
+
 .number {
   font-size: 26px;
   font-weight: bold;
+}
+
+.text {
+  margin-top: -11px;
 }
 
 .gold {
@@ -83,4 +97,10 @@
   width: 3px;
   height: 49px;
   background-color: $grey-50;
+}
+
+.no-plan {
+  line-height: 14px;
+  margin-top: 12px;
+  width: 35%;
 }

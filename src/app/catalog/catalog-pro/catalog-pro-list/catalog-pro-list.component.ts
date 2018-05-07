@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -37,7 +37,6 @@ export class CatalogProListComponent implements OnInit {
   public selectedStatus = 'active';
   public sortBy = 'date_desc';
   public counters: Counters;
-  public subscriptionPlan: number;
   private term: string;
   private page = 1;
   private pageSize = 20;
@@ -45,6 +44,7 @@ export class CatalogProListComponent implements OnInit {
   private cache = true;
   public numberOfProducts: number;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
+  public subscriptionPlan: number;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -104,16 +104,6 @@ export class CatalogProListComponent implements OnInit {
     this.active = false;
   }
 
-  public onAction($event?: any) {
-    if (this.itemService.selectedAction === 'delete') {
-      this.delete();
-    } else if (this.itemService.selectedAction === 'reserve') {
-      this.reserve();
-    } else if (this.itemService.selectedAction === 'feature') {
-      this.feature($event);
-    }
-  }
-
   public search(term: string) {
     this.term = term;
     this.page = 1;
@@ -166,21 +156,6 @@ export class CatalogProListComponent implements OnInit {
         }
       });
     }, () => {
-    });
-  }
-
-  public reserve() {
-    this.itemService.bulkReserve().subscribe((response: ItemBulkResponse) => {
-      this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: response.updatedIds.join(', ')});
-      response.updatedIds.forEach((id: string) => {
-        const index: number = _.findIndex(this.items, {'id': id});
-        if (this.items[index]) {
-          this.items[index].reserved = true;
-        }
-      });
-      if (response.failedIds.length) {
-        this.errorService.i18nError('bulkReserveError');
-      }
     });
   }
 
@@ -258,10 +233,6 @@ export class CatalogProListComponent implements OnInit {
     });
   }
 
-  public getSubscriptionPlan(plan: number) {
-    this.subscriptionPlan = plan;
-  }
-
   private setRedirectToTPV(state: boolean): void {
     localStorage.setItem('redirectToTPV', state.toString());
     this.isRedirect = state;
@@ -269,6 +240,10 @@ export class CatalogProListComponent implements OnInit {
 
   private getRedirectToTPV(): boolean {
     return localStorage.getItem('redirectToTPV') === 'true';
+  }
+
+  public getSubscriptionPlan(plan: number) {
+    this.subscriptionPlan = plan;
   }
 
 }

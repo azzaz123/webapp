@@ -11,11 +11,11 @@
       <div class="price">{{item.salePrice | customCurrency:item.currencyCode}}</div>
       <div class="title">{{item.title}}</div>
     </a>
-    <div class="published" [hidden]="item.sold || item.bumpExpiringDate">
+    <div class="published" [hidden]="item.sold || item.flags.bumped">
       <div i18n>Published</div>
       <div class="date">{{item.publishedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
-    <div class="updated" [hidden]="item.sold || item.bumpExpiringDate">
+    <div class="updated" [hidden]="item.sold || item.flags.bumped">
       <div i18n>Updated</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
@@ -23,10 +23,10 @@
       <div i18n>Sold</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
-    <div class="bumped" *ngIf="item.bumpExpiringDate">
+    <div class="bumped" *ngIf="item.flags.bumped">
       <div class={{item.flags.bump_type}}>{{item.flags.bump_type}}</div>
       <div class="date">{{item.bumpExpiringDate | amCountdown}}
-        <span class="cancel-bump {{item.flags.bump_type}}" (click)="cancelFeature(item)" i18n>Cancel</span>
+        <span class="cancel-bump {{item.flags.bump_type}}" (click)="cancelAutorenew(item)" i18n>Cancel</span>
       </div>
     </div>
     <div class="visibility">
@@ -37,6 +37,10 @@
       <div class="counters">
         <mat-icon svgIcon="heart"></mat-icon>
         <span>{{item.favorites}}</span>
+      </div>
+      <div class="counters">
+        <mat-icon svgIcon="messages"></mat-icon>
+        <span>{{item.views}}</span>
       </div>
     </div>
     <div class="actions" *ngIf="!item.flags.pending">

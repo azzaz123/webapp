@@ -68,6 +68,7 @@ tsl-selected-items {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 1%;
   .upload {
     font-weight: bold;
   }
@@ -95,7 +96,7 @@ tsl-search-input {
 }
 
 tsl-search-input, .nav {
-  margin-bottom: $spacing-M;
+  margin-bottom: 10px;
   height: 38px;
 }
 

@@ -17,4 +17,5 @@ export interface Counters {
   profile_favorited: number;
   reviews: number;
   sold: number;
+  onHold: number;
 }

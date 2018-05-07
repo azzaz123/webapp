@@ -10,6 +10,7 @@ export class CatalogStatusNavbarComponent implements OnInit {
 
   @Input() selectedStatus: string;
   @Input() counters: Counters;
+  @Input() subscriptionPlan: number;
   @Output() public filterByStatus: EventEmitter<any> = new EventEmitter();
   private page: number;
 
