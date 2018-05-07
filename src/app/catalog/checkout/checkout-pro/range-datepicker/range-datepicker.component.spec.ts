@@ -3,7 +3,7 @@ import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { RangeDatepickerComponent } from './range-datepicker.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-fdescribe('RangeDatepickerComponent', () => {
+describe('RangeDatepickerComponent', () => {
   let component: RangeDatepickerComponent;
   let fixture: ComponentFixture<RangeDatepickerComponent>;
 
