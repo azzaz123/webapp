@@ -1,20 +1,27 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Pack } from '../../../../core/payments/pack';
 import { CartService } from '../../cart/cart.service';
-import { CartItem } from '../../cart/cart-item.interface';
+import { CartProExtras } from '../../cart/cart-pro-extras';
+import { CartProExtrasPack } from '../../cart/cart-item.interface';
 
 @Component({
   selector: 'tsl-checkout-extras-pro-item',
   templateUrl: './checkout-extras-pro-item.component.html',
   styleUrls: ['./checkout-extras-pro-item.component.scss']
 })
-export class CheckoutExtrasProItemComponent implements OnInit {
+export class CheckoutExtrasProItemComponent {
 
   @Input() pack: Pack;
 
-  constructor(cartService: CartService) { }
+  constructor(private cartService: CartService) {
+    this.cartService.createInstance(new CartProExtras());
+  }
 
-  ngOnInit() {
-    console.log('hwllo', this.pack);
+  select(pack: Pack) {
+    console.log('select', pack);
+    const cartProExtrasPack: CartProExtrasPack = {
+      pack: pack
+    };
+    this.cartService.addProExtras(cartProExtrasPack, pack.name.toLowerCase());
   }
 }

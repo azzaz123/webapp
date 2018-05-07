@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CartChange, CartItem, CartProItem } from './cart-item.interface';
+import { CartChange, CartItem, CartProItem, CartProExtrasPack } from './cart-item.interface';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Cart } from './cart';
@@ -46,6 +46,26 @@ export class CartService {
     this.cartSource.next({
       action: 'clean',
       cart: this.cart
+    });
+  }
+
+  addProExtras(cartPack: CartProExtrasPack, type: string) {
+    this.cart.add(cartPack, type);
+    this.cartSource.next({
+      action: 'add',
+      cart: this.cart,
+      packId: cartPack.pack.id,
+      type: type
+    });
+  }
+
+  removeProExtras(packId: string, type: string) {
+    this.cart.removeCartItem(packId, type);
+    this.cartSource.next({
+      action: 'remove',
+      cart: this.cart,
+      packId: packId,
+      type: type
     });
   }
 }

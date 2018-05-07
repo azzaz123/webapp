@@ -3,6 +3,7 @@ import { Cart } from './cart';
 import { Item } from '../../../core/item/item';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { CartBase } from './cart-base';
+import { Pack } from '../../../core/payments/pack';
 
 export interface CartItem {
   item: Item;
@@ -18,6 +19,10 @@ export interface CartProItem {
   bumpType: string;
 }
 
+export interface CartProExtrasPack {
+  pack: Pack;
+}
+
 export interface BumpGroup {
   total: number;
   cartItems: CartItem[];
@@ -28,5 +33,7 @@ export interface CartChange {
   action: 'add' | 'remove' | 'clean';
   cart: CartBase;
   itemId?: string;
+  packId?: string;
   type?: string;
 }
+

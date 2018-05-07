@@ -137,6 +137,10 @@ export interface OrderPro {
   national: boolean;
 }
 
+export interface OrderProExtras {
+  pack_id: string;
+}
+
 export interface ItemUploadForm {
   category_id: string;
   images: any[];

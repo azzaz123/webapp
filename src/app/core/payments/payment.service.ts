@@ -35,8 +35,8 @@ export class PaymentService {
 
   public getPacks(): Observable<Packs> {
     const packsResponse: Packs = {
-      cityBumps: [],
-      nationalBumps: []
+      cityBump: [],
+      countryBump: []
     };
 
     return this.http.get(this.API_URL + '/packs')
@@ -69,9 +69,9 @@ export class PaymentService {
           formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
 
           if (products[benefitsId].name === 'NATIONAL_BUMP') {
-            packsResponse.nationalBumps.push(formattedPack);
+            packsResponse.countryBump.push(formattedPack);
           } else if (products[benefitsId].name === 'BUMP') {
-            packsResponse.cityBumps.push(formattedPack);
+            packsResponse.cityBump.push(formattedPack);
           }
         });
         return packsResponse;

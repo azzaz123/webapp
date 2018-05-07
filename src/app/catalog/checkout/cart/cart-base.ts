@@ -1,4 +1,4 @@
-import { BumpGroup, CartItem, CartProItem } from './cart-item.interface';
+import { BumpGroup, CartItem, CartProItem, CartProExtrasPack } from './cart-item.interface';
 import { CartPro } from './cart-pro';
 import { Cart } from './cart';
 import { Order } from '../../../core/item/item-response.interface';
@@ -27,7 +27,7 @@ export abstract class CartBase {
     collapsed: true
   };
 
-  abstract add(cartItem: CartItem | CartProItem, type: string);
+  abstract add(cartItem: CartItem | CartProItem | CartProExtrasPack, type: string);
 
   abstract removeCartItem(type: string, itemId?: string);
 
