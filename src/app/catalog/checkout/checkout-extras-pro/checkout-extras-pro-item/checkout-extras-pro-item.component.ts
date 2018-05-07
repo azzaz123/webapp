@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Pack } from '../../../../core/payments/pack';
+import { CartService } from '../../cart/cart.service';
+import { CartItem } from '../../cart/cart-item.interface';
 
 @Component({
   selector: 'tsl-checkout-extras-pro-item',
@@ -10,10 +12,9 @@ export class CheckoutExtrasProItemComponent implements OnInit {
 
   @Input() pack: Pack;
 
-  constructor() { }
+  constructor(cartService: CartService) { }
 
   ngOnInit() {
     console.log('hwllo', this.pack);
   }
-
 }
