@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CartPro, BUMP_PRO_TYPES } from './cart-pro';
-import { CartProService } from './cart-pro.service';
-import { CartProChange, CartProItem } from './cart-pro-item.interface';
+import { CartChange, CartProItem } from '../../cart/cart-item.interface';
+import { CartService } from '../../cart/cart.service';
+import { BUMP_TYPES, CartBase } from '../../cart/cart-base';
+import { CartPro } from '../../cart/cart-pro';
 
 @Component({
   selector: 'tsl-cart-pro',
@@ -10,20 +11,21 @@ import { CartProChange, CartProItem } from './cart-pro-item.interface';
 })
 export class CartProComponent implements OnInit {
 
-  public cart: CartPro;
-  private active = true;
-  public types: string[] = BUMP_PRO_TYPES;
+  public cart: CartBase;
+  public types: string[] = BUMP_TYPES;
 
-  constructor(private cartProService: CartProService) { }
-
-  ngOnInit() {
-    this.cartProService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartProChange) => {
+  constructor(private cartService: CartService) {
+    this.cartService.createInstance(new CartPro());
+    this.cartService.cart$.subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
     });
   }
 
+  ngOnInit() {
+  }
+
   remove(cartItem: CartProItem) {
-    this.cartProService.remove(cartItem.item.id, cartItem.bumpType);
+    this.cartService.remove(cartItem.item.id, cartItem.bumpType);
   }
 
 }

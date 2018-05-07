@@ -39,7 +39,6 @@ import { SabadellComponent } from './sabadell/sabadell.component';
 import { CheckoutProComponent } from './checkout/checkout-pro/checkout-pro.component';
 import { CheckoutProItemComponent } from './checkout/checkout-pro/checkout-pro-item/checkout-pro-item.component';
 import { CartProComponent } from './checkout/checkout-pro/cart-pro/cart-pro.component';
-import { CartProService } from './checkout/checkout-pro/cart-pro/cart-pro.service';
 import { RangeDatepickerComponent } from './checkout/checkout-pro/range-datepicker/range-datepicker.component';
 
 @NgModule({
@@ -69,7 +68,6 @@ import { RangeDatepickerComponent } from './checkout/checkout-pro/range-datepick
     UploadService,
     ItemResolverService,
     CartService,
-    CartProService,
     BumpTutorialService
   ],
   declarations: [

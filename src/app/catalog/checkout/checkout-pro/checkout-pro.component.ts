@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
 import { Router } from '@angular/router';
-import { CartProService } from './cart-pro/cart-pro.service';
-import { CartProItem } from './cart-pro/cart-pro-item.interface';
 import { CalendarDates } from './range-datepicker/calendar-dates.interface';
+import { CartProItem } from '../cart/cart-item.interface';
+import { CartService } from '../cart/cart.service';
+import { CartPro } from '../cart/cart-pro';
 
 @Component({
   selector: 'tsl-checkout-pro',
@@ -17,7 +18,9 @@ export class CheckoutProComponent implements OnInit {
   itemSelected: CartProItem;
   calendarHidden = true;
 
-  constructor(private itemService: ItemService, private router: Router, private cartProService: CartProService) { }
+  constructor(private itemService: ItemService, private router: Router, private cartService: CartService) {
+    this.cartService.createInstance(new CartPro());
+  }
 
   ngOnInit() {
     if (!this.itemService.selectedItems.length) {
@@ -44,7 +47,7 @@ export class CheckoutProComponent implements OnInit {
   }
 
   addToCart() {
-    this.cartProService.add(this.itemSelected);
+    this.cartService.add(this.itemSelected, this.itemSelected.bumpType);
     this.hideCalendar();
   }
 

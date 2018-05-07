@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ItemWithProducts } from '../../../../core/item/item-response.interface';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-import { CartProItem, CartProChange } from '../cart-pro/cart-pro-item.interface';
-import { CartProService } from '../cart-pro/cart-pro.service';
 import * as moment from 'moment';
+import { CartChange, CartProItem } from '../../cart/cart-item.interface';
+import { CartService } from '../../cart/cart.service';
+import { CartPro } from '../../cart/cart-pro';
 
 @Component({
   selector: 'tsl-checkout-pro-item',
@@ -16,12 +17,12 @@ export class CheckoutProItemComponent implements OnInit {
   @Input() cartProItem: CartProItem;
   @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
 
-  constructor(private calendar: NgbCalendar, private cartProService: CartProService) {
-    this.cartProService.cart$.subscribe((cartProChange: CartProChange) => {
-      this.onRemoveOrClean(cartProChange);
+  constructor(private calendar: NgbCalendar, private cartService: CartService) {
+    this.cartService.createInstance(new CartPro());
+    this.cartService.cart$.subscribe((cartChange: CartChange) => {
+      this.onRemoveOrClean(cartChange);
     });
   }
-
   ngOnInit() {
   }
 
@@ -35,10 +36,10 @@ export class CheckoutProItemComponent implements OnInit {
       this.cartProItem.formattedToDate = moment(new Date()).add(1, 'days').format('DD/MM/YYYY');
     }
     this.cartProItem.bumpType === type ? this.removeItem() : this.cartProItem.bumpType = type;
-    this.cartProService.add(this.cartProItem);
+    this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
   }
 
-  onRemoveOrClean(cartProChange: CartProChange) {
+  onRemoveOrClean(cartProChange: CartChange) {
     if (cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id || cartProChange.action === 'clean') {
       delete this.cartProItem.fromDate;
       delete this.cartProItem.toDate;
@@ -49,6 +50,6 @@ export class CheckoutProItemComponent implements OnInit {
   }
 
   removeItem() {
-    this.cartProService.remove(this.cartProItem.item.id, this.cartProItem.bumpType);
+    this.cartService.remove(this.cartProItem.item.id, this.cartProItem.bumpType);
   }
 }

@@ -1,10 +1,21 @@
 import { Duration } from '../../../core/item/item-response.interface';
 import { Cart } from './cart';
 import { Item } from '../../../core/item/item';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { CartBase } from './cart-base';
 
 export interface CartItem {
   item: Item;
   duration: Duration;
+}
+
+export interface CartProItem {
+  item: Item;
+  fromDate?: NgbDateStruct;
+  toDate?: NgbDateStruct;
+  formattedFromDate?: string;
+  formattedToDate?: string;
+  bumpType: string;
 }
 
 export interface BumpGroup {
@@ -15,7 +26,7 @@ export interface BumpGroup {
 
 export interface CartChange {
   action: 'add' | 'remove' | 'clean';
-  cart: Cart;
+  cart: CartBase;
   itemId?: string;
   type?: string;
 }
