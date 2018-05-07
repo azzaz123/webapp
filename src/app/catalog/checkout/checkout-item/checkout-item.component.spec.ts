@@ -35,17 +35,20 @@ describe('CheckoutItemComponent', () => {
         DecimalPipe,
         {
           provide: CartService, useValue: {
-          add() {
-          },
-          remove() {
-          },
-          cart$: Observable.of(CART_CHANGE)
-        }
+            createInstance() {
+              return new Cart();
+            },
+            add() {
+            },
+            remove() {
+            },
+            cart$: Observable.of(CART_CHANGE)
+          }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
