@@ -57,6 +57,7 @@ export class RangeDatepickerComponent implements OnInit {
   hoveredDate: NgbDateStruct;
   minDate: NgbDateStruct;
   selectedDates: CalendarDates;
+  numberOfDays = 0;
   model;
 
   @Input() bumpType: string;
@@ -86,6 +87,7 @@ export class RangeDatepickerComponent implements OnInit {
       this.toDate = null;
       this.fromDate = date;
     }
+    this.calculateDateDiff();
   }
 
   onCancel() {
@@ -97,8 +99,17 @@ export class RangeDatepickerComponent implements OnInit {
       fromDate: this.fromDate,
       formattedFromDate: new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day).toLocaleDateString(),
       toDate: this.toDate,
-      formattedToDate: new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day).toLocaleDateString(),
+      formattedToDate: new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day).toLocaleDateString()
     };
     this.applyCalendar.emit(this.selectedDates);
+  }
+
+  calculateDateDiff() {
+    if (this.fromDate && this.toDate) {
+      const dateFrom = new Date(this.fromDate.year, this.fromDate.month, this.fromDate.day);
+      const dateTo = new Date(this.toDate.year, this.toDate.month, this.toDate.day);
+      const timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
+      this.numberOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    }
   }
 }

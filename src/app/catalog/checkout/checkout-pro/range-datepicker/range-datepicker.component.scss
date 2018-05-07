@@ -4,8 +4,7 @@
     display: flex;
     justify-content: space-between;
     border-top: solid 1px $grey-50;
-    padding-top: $spacing;
-    margin-top: $spacing;
+    padding-top: $spacing;    
     .datepicker-btn {
       -webkit-appearance: none;
       background-color: transparent;
@@ -27,7 +26,7 @@
     }
   }
   
-  :host /deep/ ngb-datepicker {
+  :host /deep/ ngb-datepicker {    
     border: 0;
     display: flex;
     flex-direction: column;
@@ -67,6 +66,21 @@
       }
     }
   }
+
+  .selected-text {
+    font-size: $font-size-S;
+    margin: $spacing 0;
+    &.city-text {
+      color: $zone-bump;
+    }
+    &.country-text {
+      color: $country-bump;
+    }
+    .bold {
+      display: inline-block;
+      font-weight: bold;
+    }
+  }
   
   .custom-day {
     display: flex;
@@ -75,7 +89,7 @@
     text-align: center;
     height: 2rem;
     width: 2rem;
-    font-size: $font-size-S;
+    font-size: $font-size-XS;
     &.focused {
       background-color: #e6e6e6;
     }  
