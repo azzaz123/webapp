@@ -35,8 +35,12 @@ export class CheckoutProItemComponent implements OnInit {
       this.cartProItem.formattedFromDate = moment(new Date()).format('DD/MM/YYYY');
       this.cartProItem.formattedToDate = moment(new Date()).add(1, 'days').format('DD/MM/YYYY');
     }
-    this.cartProItem.bumpType === type ? this.removeItem() : this.cartProItem.bumpType = type;
-    this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
+    if (this.cartProItem.bumpType === type) {
+      this.removeItem();
+    } else {
+      this.cartProItem.bumpType = type;
+      this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
+    }
   }
 
   onRemoveOrClean(cartProChange: CartChange) {
