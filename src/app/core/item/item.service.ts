@@ -433,7 +433,7 @@ export class ItemService extends ResourceService {
   }
 
   public bumpProProducts(orderParams: OrderPro[], orderId: string): Observable<string[]> {
-    return this.http.post('/api/v3/protool/purchaseItems', orderParams)
+    return this.http.post('api/v3/protool/purchaseItems', orderParams)
     .map((r: Response) => r.json());
   }
 
