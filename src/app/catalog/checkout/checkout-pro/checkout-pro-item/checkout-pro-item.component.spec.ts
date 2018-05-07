@@ -11,7 +11,7 @@ import { ITEM_ID } from '../../../../../tests/item.fixtures.spec';
 import { CartChange } from '../../cart/cart-item.interface';
 import { DecimalPipe } from '@angular/common';
 
-fdescribe('CheckoutProItemComponent', () => {
+describe('CheckoutProItemComponent', () => {
   let component: CheckoutProItemComponent;
   let fixture: ComponentFixture<CheckoutProItemComponent>;
 
