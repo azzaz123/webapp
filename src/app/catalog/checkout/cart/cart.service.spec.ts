@@ -4,25 +4,48 @@ import { CartService } from './cart.service';
 import { CART_ITEM_CITYBUMP, ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
+import { CartBase } from './cart-base';
+import { CartPro } from './cart-pro';
 
 let service: CartService;
+let cartChange: CartChange;
+const TYPE = 'citybump';
 
-describe('CartService', () => {
+fdescribe('CartService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CartService]
     });
     service = TestBed.get(CartService);
+    service.cart$.subscribe((c: CartChange) => {
+      cartChange = c;
+    });
+  });
+
+  describe('createInstance', () => {
+
+    it('should create an instance of Cart', () => {
+      const cart: CartBase = new Cart();
+
+      service.createInstance(new Cart());
+
+      expect(cart instanceof Cart).toBeTruthy();
+    });
+
+    it('should create an instance of CartPro', () => {
+      const cart: CartBase = new CartPro();
+
+      service.createInstance(new CartPro());
+
+      expect(cart instanceof CartPro).toBeTruthy();
+    });
   });
 
   describe('add', () => {
 
     it('should call add and emit CartChange event', () => {
-      let cartChange: CartChange;
-      const TYPE = 'citybump';
-      service.cart$.subscribe((c: CartChange) => {
-        cartChange = c;
-      });
+      service.createInstance(new Cart());
+
       spyOn<any>(service['cart'], 'add');
 
       service.add(CART_ITEM_CITYBUMP, TYPE);
@@ -33,16 +56,27 @@ describe('CartService', () => {
       expect(cartChange.action).toBe('add');
       expect(service['cart'].add).toHaveBeenCalledWith(CART_ITEM_CITYBUMP, TYPE);
     });
+
+    it('should call add and emit CartChange event CartPro', () => {
+      service.createInstance(new CartPro());
+
+      spyOn<any>(service['cart'], 'add');
+
+      service.add(CART_ITEM_CITYBUMP, TYPE);
+
+      expect(cartChange.cart instanceof CartPro).toBeTruthy();
+      expect(cartChange.itemId).toBe(MOCK_ITEM_V3.id);
+      expect(cartChange.type).toBe(TYPE);
+      expect(cartChange.action).toBe('add');
+      expect(service['cart'].add).toHaveBeenCalledWith(CART_ITEM_CITYBUMP, TYPE);
+    });
   });
 
   describe('remove', () => {
 
     it('should call removeCartItem and emit CartChange event', () => {
-      let cartChange: CartChange;
-      const TYPE = 'citybump';
-      service.cart$.subscribe((c: CartChange) => {
-        cartChange = c;
-      });
+      service.createInstance(new Cart());
+
       spyOn<any>(service['cart'], 'removeCartItem');
 
       service.remove(ITEM_ID, TYPE);
@@ -53,20 +87,44 @@ describe('CartService', () => {
       expect(cartChange.action).toBe('remove');
       expect(service['cart'].removeCartItem).toHaveBeenCalledWith(ITEM_ID, TYPE);
     });
+
+    it('should call removeCartItem and emit CartChange event', () => {
+      service.createInstance(new CartPro());
+
+      spyOn<any>(service['cart'], 'removeCartItem');
+
+      service.remove(ITEM_ID, TYPE);
+
+      expect(cartChange.cart instanceof CartPro).toBeTruthy();
+      expect(cartChange.itemId).toBe(ITEM_ID);
+      expect(cartChange.type).toBe(TYPE);
+      expect(cartChange.action).toBe('remove');
+      expect(service['cart'].removeCartItem).toHaveBeenCalledWith(ITEM_ID, TYPE);
+    });
   });
 
   describe('clean', () => {
 
     it('should call clean and emit CartChange event', () => {
-      let cartChange: CartChange;
-      service.cart$.subscribe((c: CartChange) => {
-        cartChange = c;
-      });
+      service.createInstance(new Cart());
+
       spyOn<any>(service['cart'], 'clean');
 
       service.clean();
 
       expect(cartChange.cart instanceof Cart).toBeTruthy();
+      expect(cartChange.action).toBe('clean');
+      expect(service['cart'].clean).toHaveBeenCalled();
+    });
+
+    it('should call clean and emit CartChange event', () => {
+      service.createInstance(new CartPro());
+
+      spyOn<any>(service['cart'], 'clean');
+
+      service.clean();
+
+      expect(cartChange.cart instanceof CartPro).toBeTruthy();
       expect(cartChange.action).toBe('clean');
       expect(service['cart'].clean).toHaveBeenCalled();
     });
