@@ -26,7 +26,12 @@ export class CartPro extends CartBase {
     this.calculateTotals();
   }
 
-  private calculateTotals() {
+  calculateTotals() {
+    this.total = 0;
+    BUMP_TYPES.forEach((type: string) => {
+      this[type].total = _.sumBy(this[type].cartItems);
+      this.total += this[type].total;
+    });
   }
 
   prepareOrder() {
@@ -38,8 +43,8 @@ export class CartPro extends CartBase {
           start_date: this.prepareDate(cartProItem.formattedFromDate),
           end_date: this.prepareDate(cartProItem.formattedToDate),
           autorenew: false,
-          bump: true,
-          national: true
+          bump: !this.prepareBumpType(cartProItem.bumpType),
+          national: this.prepareBumpType(cartProItem.bumpType)
         };
       });
       ordersArray.push(...orders);
@@ -52,4 +57,9 @@ export class CartPro extends CartBase {
     const dateObject: number = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]).getTime();
     return dateObject;
   }
+
+  prepareBumpType(bumpType: string): boolean {
+    return bumpType === 'countrybump' ? true : false;
+  }
+
 }
