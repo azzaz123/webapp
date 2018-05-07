@@ -40,15 +40,17 @@
   <msg id="2286494898080570401"><source>app/shared/modals/sold-modal/sold-modal.component.ts:33</source>Thanks</msg>
   <msg id="2928844379959000123"><source>app/shared/modals/sold-modal/sold-modal.component.ts:34</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
   <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.ts:35</source>Continue</msg>
-  <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.ts:7</source><source>app/shared/process-all-button/process-all-button.component.ts:12</source>Process all</msg>
+  <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.ts:7</source><source>app/shared/process-all-button/process-all-button.component.ts:12</source><source>app/calls/calls.component.ts:28</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.ts:8</source>This will process all the elements in this page.</msg>
   <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.ts:11</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source>Cancel</msg>
-  <msg id="4749295647449765550"><source>app/shared/archivable/archivable.component.ts:6</source><source>app/chat/conversations-panel/conversations-panel.component.ts:10</source>Processed</msg>
+  <msg id="4749295647449765550"><source>app/shared/archivable/archivable.component.ts:6</source><source>app/chat/conversations-panel/conversations-panel.component.ts:10</source><source>app/calls/calls.component.ts:24</source>Processed</msg>
   <msg id="5847549463396300276"><source>app/shared/modals/review-modal/review-modal.component.ts:8</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{userName}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="4650730844441578299"><source>app/shared/modals/review-modal/review-modal.component.ts:9</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
   <msg id="3113301792677314615"><source>app/shared/modals/review-modal/review-modal.component.ts:12</source>I sold this for:</msg>
   <msg id="8149407802234183277"><source>app/shared/modals/review-modal/review-modal.component.ts:17</source>Leave a review...</msg>
   <msg id="7430416142942514215"><source>app/shared/modals/review-modal/review-modal.component.ts:23</source>Publish</msg>
+  <msg id="7992914064106893139"><source>app/shared/message/review-button/review-button.component.ts:1</source>Review now</msg>
+  <msg id="2506703378559967461"><source>app/shared/message/review-button/review-button.component.ts:4</source>Thanks for rating</msg>
   <msg id="7579940623714391431"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:2</source><source>app/chat/chat.component.ts:26</source>Delete conversation</msg>
   <msg id="5762515103229902547"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:3</source>This will delete the conversation.</msg>
   <msg id="7022070615528435141"><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:22</source><source>app/catalog/list/selected-items/selected-items.component.ts:23</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
@@ -72,7 +74,7 @@
   <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:38</source>Meeting</msg>
   <msg id="6146618115870222180"><source>app/chat/conversations-panel/conversations-panel.component.ts:2</source>Your Messages</msg>
   <msg id="8848709900682152607"><source>app/chat/conversations-panel/conversations-panel.component.ts:5</source>Mark everything as Processed</msg>
-  <msg id="4416413576346763682"><source>app/chat/conversations-panel/conversations-panel.component.ts:9</source><source>app/catalog/list/catalog-item/catalog-item.component.ts:51</source>Pending</msg>
+  <msg id="4416413576346763682"><source>app/chat/conversations-panel/conversations-panel.component.ts:9</source><source>app/catalog/list/catalog-item/catalog-item.component.ts:51</source><source>app/calls/calls.component.ts:23</source><source>app/calls/calls.component.ts:51</source>Pending</msg>
   <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:25</source>Load more</msg>
   <msg id="4896863464728200563"><source>app/chat/input/input.component.ts:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.ts:2</source>Waiting for network...</msg>
@@ -81,13 +83,11 @@
   <msg id="8016649850785953911"><source>app/chat/item/item.component.ts:18</source>Unreserve</msg>
   <msg id="4338022632676445411"><source>app/chat/item/item.component.ts:20</source><source>app/chat/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
-  <msg id="7992914064106893139"><source>app/chat/message/review-button/review-button.component.ts:1</source>Review now</msg>
-  <msg id="2506703378559967461"><source>app/chat/message/review-button/review-button.component.ts:4</source>Thanks for rating</msg>
-  <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/chat/user-detail/user-detail.component.ts:6</source><source>app/chat/user-card/user-card.component.ts:14</source><ph name="DISTANCE"><ex>{{user.itemDistance | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you</msg>
-  <msg id="9119757647796405986"><source>app/chat/user-detail/user-detail.component.ts:7</source><source>app/chat/user-card/user-card.component.ts:15</source>No location</msg>
-  <msg id="1798778629973365531"><source>app/chat/user-card/user-card.component.ts:20</source>No spam/scam reports</msg>
-  <msg id="5717387697033354741"><source>app/chat/user-card/user-card.component.ts:21</source>One spam/scam report</msg>
-  <msg id="4681042121098831040"><source>app/chat/user-card/user-card.component.ts:23</source><ph name="TOTAL_NUMBER"><ex>{{user.receivedReports // i18n(ph=&quot;TOTAL_NUMBER&quot;)}}</ex></ph> spam/scam reports</msg>
+  <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/chat/user-detail/user-detail.component.ts:6</source><source>app/chat/user-card/user-card.component.ts:14</source><source>app/calls/user-card-calls/user-card-calls.component.ts:10</source><ph name="DISTANCE"><ex>{{user.itemDistance | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you</msg>
+  <msg id="9119757647796405986"><source>app/chat/user-detail/user-detail.component.ts:7</source><source>app/chat/user-card/user-card.component.ts:15</source><source>app/calls/user-card-calls/user-card-calls.component.ts:11</source>No location</msg>
+  <msg id="1798778629973365531"><source>app/chat/user-card/user-card.component.ts:20</source><source>app/calls/user-card-calls/user-card-calls.component.ts:16</source>No spam/scam reports</msg>
+  <msg id="5717387697033354741"><source>app/chat/user-card/user-card.component.ts:21</source><source>app/calls/user-card-calls/user-card-calls.component.ts:17</source>One spam/scam report</msg>
+  <msg id="4681042121098831040"><source>app/chat/user-card/user-card.component.ts:23</source><source>app/calls/user-card-calls/user-card-calls.component.ts:19</source><ph name="TOTAL_NUMBER"><ex>{{user.receivedReports // i18n(ph=&quot;TOTAL_NUMBER&quot;)}}</ex></ph> spam/scam reports</msg>
   <msg id="2020278898288143668"><source>app/chat/user-card/user-card.component.ts:37</source>Selling</msg>
   <msg id="4636699111573030980"><source>app/chat/user-card/user-card.component.ts:38</source>+<ph name="ITEMS_COUNT"><ex>{{user.itemsCount // i18n(ph=&quot;ITEMS_COUNT&quot;)}}</ex></ph> More</msg>
   <msg id="1166265010439249641"><source>app/chat/user-response-rate/user-response-rate.component.ts:3</source>Typically responds within an hour</msg>
@@ -341,4 +341,18 @@
   <msg id="4486163214005133487"><source>app/tutorial/tutorial.component.ts:18</source>View your conversations and reply via the webpage or from the app. Oh see it works well from the webpage!</msg>
   <msg id="5289897176155020957"><source>app/tutorial/tutorial.component.ts:22</source>Your favorites can be seen on the big screen which might help make up your mind.</msg>
   <msg id="8328195571736012184"><source>app/tutorial/tutorial.component.ts:26</source>See your profile reviews. Is the community leaving good feedback?</msg>
+  <msg id="4662529977781351630"><source>app/calls/calls.component.ts:12</source>Calls</msg>
+  <msg id="4812531333997465"><source>app/calls/calls.component.ts:15</source>Here you can manage and see the information related with your calls</msg>
+  <msg id="8953033926734869941"><source>app/calls/calls.component.ts:35</source>Name</msg>
+  <msg id="1601325288134771573"><source>app/calls/calls.component.ts:38</source>Car</msg>
+  <msg id="3262236020277300799"><source>app/calls/calls.component.ts:41</source>Phone</msg>
+  <msg id="3973931101896534797"><source>app/calls/calls.component.ts:44</source>Date</msg>
+  <msg id="7410432243549869948"><source>app/calls/calls.component.ts:47</source>Duration</msg>
+  <msg id="467152698327190533"><source>app/calls/calls.component.ts:50</source>Process</msg>
+  <msg id="1101605949675282361"><source>app/calls/calls.component.ts:67</source>You have no phone calls yet</msg>
+  <msg id="2020807334375818266"><source>app/calls/call-item/call-item.component.ts:46</source>You have no conversations with this user</msg>
+  <msg id="3806530088285207761"><source>app/calls/call-item/call-item.component.ts:53</source>View all messages</msg>
+  <msg id="6314007099242784066"><source>app/calls/user-card-calls/user-card-calls.component.ts:3</source>User rating</msg>
+  <msg id="3386449481449927569"><source>app/calls/user-card-calls/user-card-calls.component.ts:24</source>This user is selling a car</msg>
+  <msg id="6901142032077238858"><source>app/calls/user-card-calls/user-card-calls.component.ts:27</source>View profile</msg>
 </messagebundle>

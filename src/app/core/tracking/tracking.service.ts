@@ -48,7 +48,8 @@ const SCREENS_IDS: any = {
   MyItemDetail: '114',
   MyProfile: '112',
   Conversation: '118',
-  Messages: '117'
+  Messages: '117',
+  ProPhoneManager: '94'
 };
 
 const TYPES_IDS: any = {
@@ -490,8 +491,56 @@ export class TrackingService {
     screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
+  public static CALLS_MARK_PENDING: TrackingEventBase = {
+    name: '393',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_OPENED: TrackingEventBase = {
+    name: '396',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_LIST_PROCESSED_LOADED: TrackingEventBase = {
+    name: '399',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_LIST_ACTIVE_LOADED: TrackingEventBase = {
+    name: '690',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_VIEWED_CONVERSATION: TrackingEventBase = {
+    name: '395',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_SELLING_CAR_VIEWED: TrackingEventBase = {
+    name: '691',
+    category: CATEGORY_IDS.BottomBar,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_LIST_ALL_PROCESSED: TrackingEventBase = {
+    name: '688',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
   public static MYZONE_MENU_CALLS: TrackingEventBase = {
     name: '686',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static CALLS_PROCESSED: TrackingEventBase = {
+    name: '689',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
@@ -500,12 +549,6 @@ export class TrackingService {
     name: '687',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZone,
-    type: TYPES_IDS.Tap
-  };
-  public static CONVERSATION_SELLING_CAR_VIEWED: TrackingEventBase = {
-    name: '691',
-    category: CATEGORY_IDS.BottomBar,
-    screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
 
@@ -546,7 +589,10 @@ export class TrackingService {
       this.userService.user.id,
       this.sessionStartTime,
       event);
-    newEvent.setDeviceInfo(this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId, this.navigatorService.browserName, this.navigatorService.fullVersion);
+    newEvent.setDeviceInfo(
+      this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId,
+      this.navigatorService.browserName, this.navigatorService.fullVersion
+    );
     return this.userService.isProfessional()
       .map((isProfessional: boolean) => {
         if (isProfessional) {
