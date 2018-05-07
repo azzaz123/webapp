@@ -17,8 +17,8 @@
           <mat-icon class="arrow-icon" svgIcon="arrow-right"></mat-icon>
         </div>
         <ul [hidden]="cart[type].collapsed">
-          <li *ngFor="let cartItem of cart[type].cartItems" class="cart-item">
-            <mat-icon svgIcon="remove" class="close-icon" (click)="remove(cartItem, type)"></mat-icon>
+          <li *ngFor="let cartItem of cart[type].cartItems; let i = index" class="cart-item">
+            <mat-icon svgIcon="remove" class="close-icon" (click)="remove(cartItem.pack, i)"></mat-icon>
             <div class="cart-box">
               <div class="quantity">{{cartItem.pack.quantity}}</div>
               <div class="type">

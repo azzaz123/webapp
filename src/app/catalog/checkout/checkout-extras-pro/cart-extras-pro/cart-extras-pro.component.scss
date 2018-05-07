@@ -105,7 +105,7 @@ ul, li {
     font-weight: bold;
   }
   .citybump {
-    color: $city-bump;
+    color: $zone-bump;
   }
   .countrybump {
     color: $country-bump;
@@ -134,6 +134,10 @@ ul, li {
         min-width: $spacing-L;
         text-align: center;
         height: $spacing-L;
+        margin-right: $spacing-XS;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .price {

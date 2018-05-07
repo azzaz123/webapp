@@ -59,8 +59,8 @@ export class CartService {
     });
   }
 
-  removeProExtras(packId: string, type: string) {
-    this.cart.removeCartItem(packId, type);
+  removeProExtras(packId: string, type: string, index: number) {
+    this.cart.removeCartItem(type, packId, index);
     this.cartSource.next({
       action: 'remove',
       cart: this.cart,

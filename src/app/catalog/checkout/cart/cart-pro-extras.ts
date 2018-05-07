@@ -11,8 +11,7 @@ export class CartProExtras extends CartBase {
     this.calculateTotals();
   }
 
-  removeCartItem(packId: string, type: string) {
-    const index = _.findIndex(this[type].cartItems, (c: CartProExtrasPack) => c.pack.id === packId);
+  removeCartItem(type: string, packId: string, index: number) {
     if (index !== -1) {
       this[type].cartItems.splice(index, 1);
       this.calculateTotals();

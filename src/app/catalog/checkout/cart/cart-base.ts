@@ -29,7 +29,7 @@ export abstract class CartBase {
 
   abstract add(cartItem: CartItem | CartProItem | CartProExtrasPack, type: string);
 
-  abstract removeCartItem(type: string, itemId?: string);
+  abstract removeCartItem(type: string, itemId?: string, index?: number);
 
   abstract clean();
 

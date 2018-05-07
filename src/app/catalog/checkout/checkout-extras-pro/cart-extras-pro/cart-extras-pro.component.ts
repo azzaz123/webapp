@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CartService } from '../../cart/cart.service';
 import { CartProExtras } from '../../cart/cart-pro-extras';
 import { CartChange } from '../../cart/cart-item.interface';
 import { CartBase, BUMP_TYPES } from '../../cart/cart-base';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { FinancialCard } from '../../../../core/payments/payment.interface';
+import { Pack } from '../../../../core/payments/pack';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
   templateUrl: './cart-extras-pro.component.html',
   styleUrls: ['./cart-extras-pro.component.scss']
 })
-export class CartExtrasProComponent implements OnInit {
+export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   public cart: CartBase;
   public financialCard: FinancialCard;
@@ -29,6 +30,20 @@ export class CartExtrasProComponent implements OnInit {
       console.log('cartextraspro', this.cart);
     });
     this.getCard();
+  }
+
+  ngOnDestroy() {
+    this.active = false;
+    this.cartService.clean();
+  }
+
+  remove(pack: Pack, index: number) {
+    console.log('remove', pack, index);
+    this.cartService.removeProExtras(pack.id, pack.name.toLowerCase(), index);
+  }
+
+  clean() {
+    this.cartService.clean();
   }
 
   private getCard() {
