@@ -4,6 +4,7 @@ import {
 } from '../app/core/payments/payment.interface';
 import { PurchasingItem, Purchase, AutorenewItem } from '../app/core/payments/purchase.interface';
 import { PerksModel } from '../app/core/payments/payment.model';
+import { getMockItem } from './item.fixtures.spec';
 
 export const FINANCIAL_CARD: FinancialCard = {
   expire_date: 61598188800000,
@@ -25,7 +26,8 @@ export const PURCHASES_RESPONSE: Purchase[] = [{
   'highlight': true,
   'national': true,
   'bump': false,
-  'autorenew': false
+  'autorenew': false,
+  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
 }, {
   'item_id': '2',
   'expiration_date': 1496215651120,
@@ -33,7 +35,8 @@ export const PURCHASES_RESPONSE: Purchase[] = [{
   'highlight': false,
   'national': false,
   'bump': true,
-  'autorenew': true
+  'autorenew': true,
+  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
 }, {
   'item_id': '3',
   'expiration_date': 1495870049678,
@@ -41,7 +44,8 @@ export const PURCHASES_RESPONSE: Purchase[] = [{
   'highlight': true,
   'national': true,
   'bump': false,
-  'autorenew': true
+  'autorenew': true,
+  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
 }];
 
 export const PURCHASES: Purchase[] = <Purchase[]>[{
@@ -105,6 +109,9 @@ export const NATIONAL_BUMP_ID: string = '50ebcb0f-7fa5-4c02-be60-e2dbca80fe66';
 export const BUMP_ID: string = 'dc29027d-274d-4c0c-bdb6-155130db000d';
 export const LISTINGS_ID: string = '799a7381-0eae-4a47-a03b-b412ea0f7a2e';
 export const SUBSCRIPTION_ID: string = '1';
+export const BUMP_QUANTITY: number = 0;
+export const NATIONAL_QUANTITY: number = 0;
+export const LISTINGS_QUANTITY: number = 0;
 
 export const PRODUCT_RESPONSE: ProductResponse[] = [{
   id: NATIONAL_BUMP_ID,

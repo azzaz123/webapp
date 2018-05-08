@@ -7,6 +7,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/others.svg'));
   matIconRegistry.addSvgIcon('phone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/phone.svg'));
   matIconRegistry.addSvgIcon('messages-icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/messages-icon.svg'));
+  matIconRegistry.addSvgIcon('ico-message', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/ico-message.svg'));
   matIconRegistry.addSvgIcon('call-missed', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-missed.svg'));
   matIconRegistry.addSvgIcon('call-received', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-received.svg'));
   matIconRegistry.addSvgIcon('call-shared', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-shared.svg'));

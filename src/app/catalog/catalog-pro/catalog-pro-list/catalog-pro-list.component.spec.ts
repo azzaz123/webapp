@@ -2,15 +2,23 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogProListComponent } from './catalog-pro-list.component';
 import { ItemService } from '../../../core/item/item.service';
-import { MOCK_ITEM, ITEMS_BULK_RESPONSE_FAILED, ITEMS_BULK_RESPONSE } from '../../../../tests/item.fixtures.spec';
+import { MOCK_ITEM, ITEMS_BULK_RESPONSE_FAILED, ITEMS_BULK_RESPONSE, createItemsArray } from '../../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { USERS_STATS_RESPONSE } from '../../../../tests/user.fixtures.spec';
+import * as _ from 'lodash';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../../../core/user/user.service';
+import { EventService } from '../../../core/event/event.service';
+import { ErrorsService } from '../../../core/errors/errors.service';
+import { Router } from '@angular/router';
+import { PaymentService } from '../../../core/payments/payment.service';
+import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
 
-describe('CatalogProListComponent', () => {
+fdescribe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
   let fixture: ComponentFixture<CatalogProListComponent>;
   let itemService: ItemService;
@@ -19,12 +27,16 @@ describe('CatalogProListComponent', () => {
   const componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
   let trackingServiceSpy: jasmine.Spy;
   let itemServiceSpy: jasmine.Spy;
+  let toastr: ToastrService;
+  let userService: UserService;
+  let eventService: EventService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CatalogProListComponent ],
       providers: [
         I18nService,
+        EventService,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
@@ -47,7 +59,46 @@ describe('CatalogProListComponent', () => {
             };
           }
         }
+        },
+        {
+          provide: ToastrService, useValue: {
+          error() {
+          }
         }
+        },
+        {
+          provide: UserService, useValue: {
+          getStats() {
+            return Observable.of(USERS_STATS_RESPONSE);
+          },
+          me() {
+            return Observable.of({});
+          }
+        }
+        },
+        {
+          provide: ErrorsService, useValue: {
+          show() {
+            return Observable.of({});
+          }
+        }
+        },
+        {
+          provide: Router, useValue: {
+          navigate() {
+          }
+        }
+        },
+        {
+          provide: PaymentService, useValue: {
+            getFinancialCard() {
+              return Observable.of(FINANCIAL_CARD);
+            },
+            pay() {
+              return Observable.of({});
+            }
+        }
+        },
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -182,13 +233,9 @@ describe('CatalogProListComponent', () => {
       beforeEach(fakeAsync(() => {
         spyOn(itemService, 'bulkDelete').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
         
-        component.delete(modal);
+        component.delete();
         tick();
       }));
-      it('should call modal and bulkDelete', () => {
-        expect(modalService.open).toHaveBeenCalledWith(modal);
-        expect(itemService.bulkDelete).toHaveBeenCalledWith('active');
-      });
       it('should remove deleted items', () => {
         expect(component.items.length).toBe(TOTAL - 3);
         expect(_.find(component.items, {'id': '1'})).toBeFalsy();
@@ -203,45 +250,11 @@ describe('CatalogProListComponent', () => {
       beforeEach(fakeAsync(() => {
         spyOn(itemService, 'bulkDelete').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE_FAILED));
         
-        component.delete(modal);
+        component.delete();
         tick();
       }));
       it('should open error toastr', () => {
         expect(toastr.error).toHaveBeenCalledWith('Some listings have not been deleted due to an error');
-      });
-    });
-  });
-
-  describe('reserve', () => {
-    const TOTAL: number = 5;
-    it('should call the ProductListBulkReserved tracking event', fakeAsync(() => {
-      spyOn(itemService, 'bulkReserve').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
-      
-      component.reserve(modal);
-      tick();
-      
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: '1, 3, 5'});
-    }));
-    describe('success', () => {
-      beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkReserve').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
-        
-        component.reserve(modal);
-        tick();
-      }));
-      it('should call modal and bulkReserve', () => {
-        expect(toastr.error).not.toHaveBeenCalled();
-      });
-    });
-    describe('failed', () => {
-      beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkReserve').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE_FAILED));
-        
-        component.reserve(modal);
-        tick();
-      }));
-      it('should open error toastr', () => {
-        expect(toastr.error).toHaveBeenCalledWith('Some listings have not been reserved due to an error');
       });
     });
   });

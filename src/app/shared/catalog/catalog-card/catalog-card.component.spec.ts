@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CatalogCardComponent } from './catalog-card.component.ts';
+import { CatalogCardComponent } from './catalog-card.component';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,9 +14,6 @@ import { Observable } from 'rxjs/Observable';
 import { MomentModule } from 'angular2-moment';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
-import { TrackingService } from '../../../core/tracking/tracking.service';
-import { ErrorsService } from '../../../core/errors/errors.service';
-import { ItemService } from '../../../core/item/item.service';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;

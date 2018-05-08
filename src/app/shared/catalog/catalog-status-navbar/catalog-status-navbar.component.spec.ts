@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CatalogStatusNavbarComponent } from './catalog-status-navbar.component';
 
@@ -37,11 +37,7 @@ describe('CatalogStatusNavbarComponent', () => {
     it('should set the new status selected', () => {
       expect(component.selectedStatus).toBe('active');
     });
-
-    it('should set the page to 1', () => {
-      expect(component.page).toBe(1);
-    });
-
+    
     it('should emit an event', () => {
       expect(component.filterByStatus.emit).toHaveBeenCalledWith('active');
     });

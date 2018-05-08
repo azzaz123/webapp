@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CatalogItemActionsComponent } from './catalog-item-actions.component.ts';
+import { CatalogItemActionsComponent } from './catalog-item-actions.component';
 
 describe('CatalogItemActionsComponent', () => {
   let component: CatalogItemActionsComponent;

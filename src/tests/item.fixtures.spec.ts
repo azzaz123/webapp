@@ -145,6 +145,27 @@ export const ITEM_DATA: ItemResponseV2 = {
   'delivery_info': ITEM_DELIVERY_INFO
 };
 
+export const ITEM_DATA2: ItemResponseV2 = {
+  'id': ITEM_ID,
+  'legacy_id': 500002512,
+  'title': ITEM_TITLE2,
+  'description': ITEM_DESCRIPTION2,
+  'owner': USER_ID,
+  'category_id': ITEM_CATEGORY_ID,
+  'location': ITEM_LOCATION,
+  'sale_price': ITEM_SALE_PRICE2,
+  'currency_code': ITEM_CURRENCY_CODE,
+  'modified_date': ITEM_MODIFIED_DATE,
+  'url': ITEM_URL,
+  'flags': ITEM_FLAGS,
+  'actions_allowed': ITEM_ACTIONS_ALLOWED,
+  'sale_conditions': ITEM_SALE_CONDITIONS,
+  'main_image': ITEM_MAIN_IMAGE,
+  'images': ITEM_IMAGES,
+  'web_slug': ITEM_WEB_SLUG,
+  'published_date': ITEM_PUBLISHED_DATE2
+};
+
 export const ITEM_VIEWS = 123;
 export const ITEM_FAVORITES = 456;
 

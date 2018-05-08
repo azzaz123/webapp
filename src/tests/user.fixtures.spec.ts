@@ -170,7 +170,8 @@ export const COUNTERS_RESPONSE: Counters = {
   profile_favorited_received: 0,
   profile_favorited: 0,
   reviews: 0,
-  sold: 0
+  sold: 0,
+  onHold: 0
 };
 
 export const USERS_STATS_RESPONSE: UserStatsResponse = {

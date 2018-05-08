@@ -35,7 +35,7 @@ export class CatalogCardComponent implements OnInit {
   }
 
   public setSold(item: Item) {
-    this.trackingService.track(TrackingService.PRODUCT_SOLD, { product_id: item.id });
+    this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
     this.itemChange.emit({
       item: item,
       action: 'sold'

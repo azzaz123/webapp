@@ -2,8 +2,8 @@ import { fakeAsync, TestBed } from '@angular/core/testing';
 
 import { PurchaseService } from './purchase.service';
 import { ItemService } from '../item/item.service';
-import { getMockItem } from 'shield';
-import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { getMockItem } from '../../../tests/item.fixtures.spec';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { AUTORENEW_DATA, PURCHASES_RESPONSE, PURCHASING_ITEMS } from '../../../tests/payments.fixtures.spec';

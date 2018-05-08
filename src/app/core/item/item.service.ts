@@ -57,6 +57,7 @@ export class ItemService extends ResourceService {
   private API_URL_WEB = 'api/v3/web/items';
   private API_URL_USER = 'api/v3/users';
   private API_URL_PROTOOL = 'api/v3/protool';
+  private API_URL_V1: string = 'shnm-portlet/api/v1';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
@@ -578,23 +579,15 @@ export class ItemService extends ResourceService {
       });
   }
 
-  public bulkSetSold(): Observable<ItemBulkResponse> {
-    return this.http.put(this.API_URL + '/sold', {
-        ids: this.selectedItems
-      })
-      .map((r: Response) => r.json())
-      .do((response: ItemBulkResponse) => {
-        response.updatedIds.forEach((id: string) => {
-          let index: number = _.findIndex(this.items.active, {'id': id});
-          let deletedItem: Item = this.items.active.splice(index, 1)[0];
-          deletedItem.sold = true;
-          deletedItem.selected = false;
-          if (this.items.sold.length) {
-            this.items.sold.push(deletedItem);
-          }
-        });
-        this.deselectItems();
-        this.eventService.emit(EventService.ITEM_SOLD, response.updatedIds);
+  public setSold(id: number): Observable<any> {
+    return this.http.post(this.API_URL_V1 + '/item.json/' + id + '/sold')
+      .do(() => {
+        let index: number = _.findIndex(this.items.active, {'legacyId': id});
+        let deletedItem: Item = this.items.active.splice(index, 1)[0];
+        if (this.items.sold.length) {
+          this.items.sold.push(deletedItem);
+        }
+        this.eventService.emit(EventService.ITEM_SOLD, deletedItem);
       });
   }
 
