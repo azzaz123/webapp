@@ -424,7 +424,7 @@ export class ConversationService extends LeadService {
             this.event.emit(EventService.MESSAGE_ADDED, message);
             this.leads = this.bumpConversation(conversation);
             if (message.fromBuyer) {
-              this.notificationService.sendBrowserNotification(message);
+              this.notificationService.sendBrowserNotification(message, conversation.item.id);
             }
             this.stream$.next(this.leads);
           }
@@ -480,7 +480,7 @@ export class ConversationService extends LeadService {
     message = this.messageService.addUserInfo(conversation, message);
     this.addMessage(conversation, message);
     this.leads.unshift(conversation);
-    this.notificationService.sendBrowserNotification(message);
+    this.notificationService.sendBrowserNotification(message, conversation.item.id);
     this.stream$.next(this.leads);
   }
 

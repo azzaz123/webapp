@@ -78,7 +78,7 @@ export class TrackingService {
     type: TYPES_IDS.Message
   };
   public static MESSAGE_NOTIFIED: TrackingEventBase = {
-    name: '353',
+    name: '437',
     category: CATEGORY_IDS.ProNotifications,
     screen: SCREENS_IDS.ProChat,
     type: TYPES_IDS.Tap
