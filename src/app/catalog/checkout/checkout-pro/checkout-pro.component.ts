@@ -43,7 +43,8 @@ export class CheckoutProComponent implements OnInit {
     this.itemSelected.toDate = calendar.toDate;
     this.itemSelected.formattedFromDate = calendar.formattedFromDate;
     this.itemSelected.formattedToDate = calendar.formattedToDate;
-    this.hideCalendar();
+    this.itemSelected.numberOfDays = calendar.numberOfDays;
+    this.addToCart();
   }
 
   addToCart() {

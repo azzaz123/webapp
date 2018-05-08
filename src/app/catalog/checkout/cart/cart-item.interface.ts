@@ -15,6 +15,7 @@ export interface CartProItem {
   toDate?: NgbDateStruct;
   formattedFromDate?: string;
   formattedToDate?: string;
+  numberOfDays?: number;
   bumpType: string;
 }
 

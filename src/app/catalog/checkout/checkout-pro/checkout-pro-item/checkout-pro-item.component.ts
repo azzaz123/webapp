@@ -34,6 +34,7 @@ export class CheckoutProItemComponent implements OnInit {
     if (!this.cartProItem.formattedFromDate && !this.cartProItem.formattedToDate) {
       this.cartProItem.formattedFromDate = moment(new Date()).format('DD/MM/YYYY');
       this.cartProItem.formattedToDate = moment(new Date()).add(1, 'days').format('DD/MM/YYYY');
+      this.cartProItem.numberOfDays = 1;
     }
     if (this.cartProItem.bumpType === type) {
       this.removeItem();

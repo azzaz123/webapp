@@ -99,7 +99,8 @@ export class RangeDatepickerComponent implements OnInit {
       fromDate: this.fromDate,
       formattedFromDate: new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day).toLocaleDateString(),
       toDate: this.toDate,
-      formattedToDate: new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day).toLocaleDateString()
+      formattedToDate: new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day).toLocaleDateString(),
+      numberOfDays: this.numberOfDays
     };
     this.applyCalendar.emit(this.selectedDates);
   }

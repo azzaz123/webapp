@@ -13,6 +13,7 @@
               </ng-container>
             </span>
             <span i18n class="planned-label" [hidden]="cart[type].cartItems.length">Anything planned yet</span>
+            <span i18n class="planned-label" [hidden]="!cart[type].cartItems.length">{{cart[type].total}}<span i18n> planned</span></span>
           </div>
           <mat-icon class="arrow-icon" svgIcon="arrow-right" [hidden]="!cart[type].cartItems.length"></mat-icon>
         </div>
@@ -22,6 +23,7 @@
             <div class="cart-box">
               <tsl-item-avatar [item]="cartItem.item" size="small" fallbackLight="true"></tsl-item-avatar>
               <span class="cart-description">{{cartItem.item.title}}</span>
+              <span class="cart-days">x{{cartItem.numberOfDays}}</span>
             </div>
           </li>
         </ul>

@@ -29,7 +29,7 @@ export class CartPro extends CartBase {
   calculateTotals() {
     this.total = 0;
     BUMP_TYPES.forEach((type: string) => {
-      this[type].total = _.sumBy(this[type].cartItems);
+      this[type].total = _.sumBy(this[type].cartItems, (c: CartProItem) => +c.numberOfDays);
       this.total += this[type].total;
     });
   }
