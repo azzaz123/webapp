@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartChange, CartProItem } from '../../cart/cart-item.interface';
 import { CartService } from '../../cart/cart.service';
-import { BUMP_TYPES, CartBase } from '../../cart/cart-base';
+import { CartBase, BUMP_PRO_TYPES } from '../../cart/cart-base';
 import { CartPro } from '../../cart/cart-pro';
 import { OrderPro } from '../../../../core/item/item-response.interface';
 import { ItemService } from '../../../../core/item/item.service';
@@ -16,8 +16,8 @@ import { Router } from '@angular/router';
 })
 export class CartProComponent implements OnInit {
 
-  public cart: CartBase;
-  public types: string[] = BUMP_TYPES;
+  public cart: CartBase = new CartPro();
+  public types: string[] = BUMP_PRO_TYPES;
 
   constructor(private cartService: CartService, private itemService: ItemService, private errorService: ErrorsService, private router: Router) {
     this.cartService.createInstance(new CartPro());

@@ -96,7 +96,13 @@
         color: $country-bump;
     }
     .type {
+        display: flex;        
+        flex-direction: column;
         flex: 1;
+    }
+    .planned-label {
+        font-weight: bold;
+        color: $grey-500;
     }
     .close-icon {
         @include square(16px);

@@ -2,7 +2,7 @@
   <h1 class="cart-pro-title" i18n>Resumen de tus destacados</h1>
   <div>
     <ul *ngIf="cart" class="items-list">
-      <li *ngFor="let type of types" class="type-wrapper" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
+      <li *ngFor="let type of types" class="type-wrapper" [ngClass]="type">
         <div class="type-total cart-box" [ngClass]="{collapsed: cart[type].collapsed}" (click)="cart[type].collapsed = !cart[type].collapsed">
           <mat-icon class="wing-icon" svgIcon="wing-{{type}}"></mat-icon>
           <div class="type">
@@ -12,8 +12,9 @@
                 <span i18n>Country bump</span>
               </ng-container>
             </span>
+            <span i18n class="planned-label" [hidden]="cart[type].cartItems.length">Anything planned yet</span>
           </div>
-          <mat-icon class="arrow-icon" svgIcon="arrow-right"></mat-icon>
+          <mat-icon class="arrow-icon" svgIcon="arrow-right" [hidden]="!cart[type].cartItems.length"></mat-icon>
         </div>
         <ul [hidden]="cart[type].collapsed">
           <li *ngFor="let cartItem of cart[type].cartItems" class="cart-item">
@@ -26,7 +27,13 @@
         </ul>
         <div class="cart-separator"></div>
         <div class="cart-balance">
-          <span class="cart-balance-title">Saldo ciudad</span>
+          <span class="cart-balance-title" [ngSwitch]="type">
+            Balance
+            <ng-container *ngSwitchCase="'citybump'" i18n>city</ng-container>
+            <ng-container *ngSwitchCase="'countrybump'">
+              <span i18n>country</span>
+            </ng-container>
+          </span>
           <span class="cart-balance-number">30</span>
         </div>
       </li>
