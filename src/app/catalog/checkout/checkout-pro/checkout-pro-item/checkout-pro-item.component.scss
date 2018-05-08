@@ -124,6 +124,7 @@
     &:disabled {
       background-color: $white;
       border-color: $grey-50;  
+      color: $grey-50;
       &::placeholder {
         color: $grey-50;
       }

@@ -3,6 +3,7 @@ import { Cart } from './cart';
 import { Item } from '../../../core/item/item';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { CartBase } from './cart-base';
+import { SelectedDates } from '../checkout-pro/range-datepicker/selected-dates.interface';
 
 export interface CartItem {
   item: Item;
@@ -11,12 +12,8 @@ export interface CartItem {
 
 export interface CartProItem {
   item: Item;
-  fromDate?: NgbDateStruct;
-  toDate?: NgbDateStruct;
-  formattedFromDate?: string;
-  formattedToDate?: string;
-  numberOfDays?: number;
   bumpType: string;
+  selectedDates: SelectedDates;
 }
 
 export interface BumpGroup {

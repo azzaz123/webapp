@@ -29,7 +29,7 @@ export class CartPro extends CartBase {
   calculateTotals() {
     this.total = 0;
     BUMP_TYPES.forEach((type: string) => {
-      this[type].total = _.sumBy(this[type].cartItems, (c: CartProItem) => +c.numberOfDays);
+      this[type].total = _.sumBy(this[type].cartItems, (c: CartProItem) => +c.selectedDates.numberOfDays);
       this.total += this[type].total;
     });
   }
@@ -40,8 +40,8 @@ export class CartPro extends CartBase {
       const orders: OrderPro[] = this[type].cartItems.map((cartProItem: CartProItem) => {
         return {
           item_id: cartProItem.item.id,
-          start_date: this.prepareDate(cartProItem.formattedFromDate),
-          end_date: this.prepareDate(cartProItem.formattedToDate),
+          start_date: this.prepareDate(cartProItem.selectedDates.formattedFromDate),
+          end_date: this.prepareDate(cartProItem.selectedDates.formattedToDate),
           autorenew: false,
           bump: !this.prepareBumpType(cartProItem.bumpType),
           national: this.prepareBumpType(cartProItem.bumpType)

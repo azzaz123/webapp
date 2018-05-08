@@ -39,11 +39,11 @@ export class CheckoutProComponent implements OnInit {
   }
 
   onApplyCalendar(calendar: CalendarDates) {
-    this.itemSelected.fromDate = calendar.fromDate;
-    this.itemSelected.toDate = calendar.toDate;
-    this.itemSelected.formattedFromDate = calendar.formattedFromDate;
-    this.itemSelected.formattedToDate = calendar.formattedToDate;
-    this.itemSelected.numberOfDays = calendar.numberOfDays;
+    this.itemSelected.selectedDates.fromDate = calendar.fromDate;
+    this.itemSelected.selectedDates.toDate = calendar.toDate;
+    this.itemSelected.selectedDates.formattedFromDate = calendar.formattedFromDate;
+    this.itemSelected.selectedDates.formattedToDate = calendar.formattedToDate;
+    this.itemSelected.selectedDates.numberOfDays = calendar.numberOfDays;
     this.addToCart();
   }
 
