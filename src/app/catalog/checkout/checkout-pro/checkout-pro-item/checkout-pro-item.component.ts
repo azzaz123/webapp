@@ -18,12 +18,12 @@ export class CheckoutProItemComponent implements OnInit {
   @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
 
   constructor(private calendar: NgbCalendar, private cartService: CartService) {
-    this.cartService.createInstance(new CartPro());
     this.cartService.cart$.subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
     });
   }
   ngOnInit() {
+    this.cartService.createInstance(new CartPro());
   }
 
   onDateFocus() {
