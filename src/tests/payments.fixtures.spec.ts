@@ -14,6 +14,8 @@ export const SABADELL_RESPONSE: SabadellInfoResponse = {
   target_url: 'https://sis-t.redsys.es:25443/sis/realizarPago'
 };
 
+export const PACK_ID = '6b8ae6e1-0a71-412c-b1be-637ba654b91b';
+
 export function createPacksFixture(): Packs {
   const PACKS: Packs = {
     cityBump: [],

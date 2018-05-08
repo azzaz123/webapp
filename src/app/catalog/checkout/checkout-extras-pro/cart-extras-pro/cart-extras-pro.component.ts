@@ -20,14 +20,12 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   private active = true;
 
   constructor(private cartService: CartService,
-              private paymentService: PaymentService) {
-    this.cartService.createInstance(new CartProExtras());
-  }
+              private paymentService: PaymentService) { }
 
   ngOnInit() {
+    this.cartService.createInstance(new CartProExtras());
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
-      console.log('cartextraspro', this.cart);
     });
     this.getCard();
   }
@@ -38,7 +36,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   }
 
   remove(pack: Pack, index: number) {
-    console.log('remove', pack, index);
     this.cartService.removeProExtras(pack.id, pack.name.toLowerCase(), index);
   }
 
