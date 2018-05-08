@@ -37,6 +37,5 @@ export class CheckoutExtrasProComponent implements OnInit {
     });
 
     this.packs = _.orderBy(this.packs, 'quantity');
-    console.log('preparePacks', this.packs);
   }
 }
