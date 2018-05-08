@@ -48,10 +48,10 @@ export class XmppService {
     }
   }
 
-  public sendMessage(userId: string, conversation: Conversation, body: string) {
+  public sendMessage(conversation: Conversation, body: string) {
     const message: XmppBodyMessage = {
       id: this.client.nextId(),
-      to: this.createJid(userId),
+      to: this.createJid(conversation.user.id),
       from: this.currentJid,
       thread: conversation.id,
       type: 'chat',
@@ -62,12 +62,16 @@ export class XmppService {
     };
     this.client.sendMessage(message);
     this.onNewMessage(_.clone(message));
-    this.trackingService.track(TrackingService.MESSAGE_SENT, {conversation_id: message.thread});
+    this.trackingService.track(TrackingService.MESSAGE_SENT, {
+      thread_id: message.thread,
+      to_user_id: conversation.user.id,
+      message_id: message.id
+    });
     if (!conversation.messages.length) {
       this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
         to_user_id: conversation.user.id,
         item_id: conversation.item.id,
-        thread_id: conversation.id,
+        thread_id: message.thread,
         message_id: message.id });
     }
   }
