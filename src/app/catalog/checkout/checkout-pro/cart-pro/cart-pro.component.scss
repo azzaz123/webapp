@@ -89,11 +89,8 @@
         color: $grey-500;
         font-weight: bold;
     }
-    .zonebump {
-        color: $zone-bump;
-    }
     .citybump {
-        color: $city-bump;
+        color: $zone-bump;
     }
     .countrybump {
         color: $country-bump;

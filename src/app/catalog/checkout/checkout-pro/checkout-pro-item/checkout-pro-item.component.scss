@@ -69,20 +69,31 @@
     background-color: $grey-50;
     transition: background-color 0.2s ease-in-out;
     cursor: pointer;
+    mat-icon {
+      transition: fill 0.2s ease-in-out;
+      height: 17px;
+    }
     &.city {
-      mat-icon {
-        width: 29px;
-      }
       &:hover, &.selected {
         background-color: $corporate;
+        mat-icon {
+          /deep/ svg path {
+            fill: $white;
+          }        
+        }
       }
     }
     &.country {
       mat-icon {
-        width: 37px;
+        width: 32px;
       }
       &:hover, &.selected {
         background-color: $country-bump;
+        mat-icon {
+          /deep/ svg path {
+            fill: $white;
+          }        
+        }
       }
     }
   }

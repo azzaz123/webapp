@@ -47,6 +47,7 @@ export class ItemService extends ResourceService {
   protected API_URL = 'api/v3/items';
   private API_URL_WEB = 'api/v3/web/items';
   private API_URL_USER = 'api/v3/users';
+  private API_URL_PROTOOL = 'api/v3/protool';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
@@ -432,8 +433,8 @@ export class ItemService extends ResourceService {
       });
   }
 
-  public bumpProProducts(orderParams: OrderPro[], orderId: string): Observable<string[]> {
-    return this.http.post('api/v3/protool/purchaseItems', orderParams)
+  public bumpProItems(orderParams: OrderPro[], orderId: string): Observable<string[]> {
+    return this.http.post(this.API_URL_PROTOOL + '/purchaseItems', orderParams)
     .map((r: Response) => r.json());
   }
 

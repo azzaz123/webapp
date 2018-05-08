@@ -6,6 +6,8 @@ import { CartPro } from '../../cart/cart-pro';
 import { OrderPro } from '../../../../core/item/item-response.interface';
 import { ItemService } from '../../../../core/item/item.service';
 import { UUID } from 'angular2-uuid';
+import { ErrorsService } from '../../../../core/errors/errors.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsl-cart-pro',
@@ -17,7 +19,7 @@ export class CartProComponent implements OnInit {
   public cart: CartBase;
   public types: string[] = BUMP_TYPES;
 
-  constructor(private cartService: CartService, private itemService: ItemService) {
+  constructor(private cartService: CartService, private itemService: ItemService, private errorService: ErrorsService, private router: Router) {
     this.cartService.createInstance(new CartPro());
     this.cartService.cart$.subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
@@ -34,9 +36,12 @@ export class CartProComponent implements OnInit {
   applyBumps() {
     const order: OrderPro[] = this.cart.prepareOrder();
     const orderId: string = this.cart.getOrderId();
-    console.log('order', order, orderId);
-    this.itemService.bumpProProducts(order, orderId).subscribe((failedProducts: string[]) => {
-      console.log(failedProducts);
+    this.itemService.bumpProItems(order, orderId).subscribe((failedProducts: string[]) => {
+      if (failedProducts && failedProducts.length) {
+        this.errorService.i18nError('bumpError');
+      } else {
+        this.router.navigate(['/pro/catalog/list']);
+      }
     }, (error: Response) => {
 
     });
