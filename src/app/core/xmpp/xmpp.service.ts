@@ -11,6 +11,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
+import { Conversation } from '../conversation/conversation';
 
 @Injectable()
 export class XmppService {
@@ -47,12 +48,12 @@ export class XmppService {
     }
   }
 
-  public sendMessage(userId: string, conversationId: string, body: string) {
+  public sendMessage(userId: string, conversation: Conversation, body: string) {
     const message: XmppBodyMessage = {
       id: this.client.nextId(),
       to: this.createJid(userId),
       from: this.currentJid,
-      thread: conversationId,
+      thread: conversation.id,
       type: 'chat',
       request: {
         xmlns: 'urn:xmpp:receipts',
@@ -62,6 +63,13 @@ export class XmppService {
     this.client.sendMessage(message);
     this.onNewMessage(_.clone(message));
     this.trackingService.track(TrackingService.MESSAGE_SENT, {conversation_id: message.thread});
+    if (!conversation.messages.length) {
+      this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
+        to_user_id: conversation.user.id,
+        item_id: conversation.item.id,
+        thread_id: conversation.id,
+        message_id: message.id });
+    }
   }
 
   public sendConversationStatus(userId: string, conversationId: string) {
