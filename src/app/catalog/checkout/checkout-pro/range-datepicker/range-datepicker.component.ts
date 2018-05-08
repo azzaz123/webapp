@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, Injectable } from '@angular/core';
 import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarDates } from './calendar-dates.interface';
 import { I18nService } from '../../../../core/i18n/i18n.service';
+import { SelectedDates } from './selected-dates.interface';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
   one && two && two.year === one.year && two.month === one.month && two.day === one.day;
@@ -56,7 +56,7 @@ export class RangeDatepickerComponent implements OnInit {
 
   hoveredDate: NgbDateStruct;
   minDate: NgbDateStruct;
-  selectedDates: CalendarDates;
+  selectedDates: SelectedDates;
   numberOfDays = 0;
   model;
 
@@ -64,7 +64,7 @@ export class RangeDatepickerComponent implements OnInit {
   @Input() fromDate: NgbDateStruct;
   @Input() toDate: NgbDateStruct;
   @Output() closeCalendar: EventEmitter<any> = new EventEmitter();
-  @Output() applyCalendar: EventEmitter<CalendarDates> = new EventEmitter();
+  @Output() applyCalendar: EventEmitter<SelectedDates> = new EventEmitter();
 
   isHovered = date => this.fromDate && !this.toDate && this.hoveredDate && after(date, this.fromDate) && before(date, this.hoveredDate);
   isInside = date => after(date, this.fromDate) && before(date, this.toDate);
@@ -83,11 +83,11 @@ export class RangeDatepickerComponent implements OnInit {
       this.fromDate = date;
     } else if (this.fromDate && !this.toDate && after(date, this.fromDate)) {
       this.toDate = date;
+      this.calculateDateDiff();
     } else {
       this.toDate = null;
       this.fromDate = date;
     }
-    this.calculateDateDiff();
   }
 
   onCancel() {
@@ -106,11 +106,9 @@ export class RangeDatepickerComponent implements OnInit {
   }
 
   calculateDateDiff() {
-    if (this.fromDate && this.toDate) {
-      const dateFrom = new Date(this.fromDate.year, this.fromDate.month, this.fromDate.day);
-      const dateTo = new Date(this.toDate.year, this.toDate.month, this.toDate.day);
-      const timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
-      this.numberOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    }
+    const dateFrom = new Date(this.fromDate.year, this.fromDate.month, this.fromDate.day);
+    const dateTo = new Date(this.toDate.year, this.toDate.month, this.toDate.day);
+    const timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
+    this.numberOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   }
 }
