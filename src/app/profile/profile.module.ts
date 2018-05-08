@@ -16,6 +16,7 @@ import { PictureUploadComponent } from './picture-upload/picture-upload.componen
 import { ProfileFormComponent } from './profile-form/profile-form.component';
 import { ProfileProComponent } from './profile-pro/profile-pro.component';
 import { ProfileProInfoComponent } from './profile-pro/profile-pro-info/profile-pro-info.component';
+import { ProfileProBillingComponent } from './profile-pro/profile-pro-billing/profile-pro-billing.component';
 
 @NgModule({
   imports: [
@@ -37,9 +38,7 @@ import { ProfileProInfoComponent } from './profile-pro/profile-pro-info/profile-
     PasswordModalComponent,
     UnsubscribeModalComponent,
     PictureUploadComponent,
-    ProfileFormComponent,
-    ProfileProComponent,
-    ProfileProInfoComponent
+    ProfileFormComponent
   ],
   entryComponents: [
     EmailModalComponent,
