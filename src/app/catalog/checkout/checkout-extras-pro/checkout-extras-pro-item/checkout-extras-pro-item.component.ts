@@ -9,16 +9,17 @@ import { CartProExtrasPack } from '../../cart/cart-item.interface';
   templateUrl: './checkout-extras-pro-item.component.html',
   styleUrls: ['./checkout-extras-pro-item.component.scss']
 })
-export class CheckoutExtrasProItemComponent {
+export class CheckoutExtrasProItemComponent implements OnInit {
 
-  @Input() pack: Pack;
+  @Input() pack: any;
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService) { }
+
+  ngOnInit() {
     this.cartService.createInstance(new CartProExtras());
   }
 
   select(pack: Pack) {
-    console.log('select', pack);
     const cartProExtrasPack: CartProExtrasPack = {
       pack: pack
     };

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { createPacksFixture, PREPARED_PACKS } from '../../../../tests/payments.fixtures.spec';
 
 
-fdescribe('CheckoutExtrasProComponent', () => {
+describe('CheckoutExtrasProComponent', () => {
   let component: CheckoutExtrasProComponent;
   let fixture: ComponentFixture<CheckoutExtrasProComponent>;
   let paymentService: PaymentService;
