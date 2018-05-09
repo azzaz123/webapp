@@ -13,6 +13,7 @@ import { ErrorsService } from '../../../../core/errors/errors.service';
 import { Router } from '@angular/router';
 import { MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
 import { OrderPro } from '../../../../core/item/item-response.interface';
+import { MOCK_PROITEM } from '../../../../../tests/pro-item.fixtures.spec';
 
 describe('CartProComponent', () => {
   let component: CartProComponent;
@@ -23,10 +24,6 @@ describe('CartProComponent', () => {
   let router: Router;
 
   const CART = new CartPro();
-  const MOCK_PROITEM: CartProItem = {
-    item: MOCK_ITEM_V3,
-    selectedDates: MOCK_SELECTED_DATES
-  };
   const CART_CHANGE: CartChange = {
     action: 'add',
     cart: CART,

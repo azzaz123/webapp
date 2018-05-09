@@ -12,6 +12,7 @@ import { DecimalPipe } from '@angular/common';
 import { CartPro } from '../../cart/cart-pro';
 import * as moment from 'moment';
 import { MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
+import { MOCK_PROITEM } from '../../../../../tests/pro-item.fixtures.spec';
 
 describe('CheckoutProItemComponent', () => {
   let component: CheckoutProItemComponent;
@@ -21,10 +22,6 @@ describe('CheckoutProItemComponent', () => {
   const CART = new CartPro();
   const TYPE = 'citybump';
   const TYPE2 = 'countrybump';
-  const MOCK_PROITEM: CartProItem = {
-    item: MOCK_ITEM_V3,
-    selectedDates: MOCK_SELECTED_DATES
-  };
   const CART_CHANGE: CartChange = {
     action: 'add',
     cart: CART,

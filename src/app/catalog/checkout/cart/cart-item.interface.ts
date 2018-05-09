@@ -16,7 +16,7 @@ export interface CartProItem {
 
 export interface BumpGroup {
   total: number;
-  cartItems: CartItem[];
+  cartItems: CartItem[] | CartProItem[];
   collapsed: boolean;
 }
 

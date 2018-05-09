@@ -52,9 +52,9 @@ export class CartPro extends CartBase {
     return ordersArray;
   }
 
-  prepareDate(date): number {
-    const dateParts: number = date.split('/');
-    const dateObject: number = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]).getTime();
+  prepareDate(date: string): number {
+    const dateParts: string[] = date.split('/');
+    const dateObject: number = new Date(Number(dateParts[2]), Number(dateParts[1]) - 1, Number(dateParts[0])).getTime();
     return dateObject;
   }
 
