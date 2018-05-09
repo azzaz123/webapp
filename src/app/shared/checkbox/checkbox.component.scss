@@ -1,0 +1,54 @@
+@import "../../../style/common";
+
+
+$checkbox-width: 24px;
+$transition: all .5s ease;
+$feature-button-width: 170px;
+
+:host {
+  .checkbox {
+    transition: $transition;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    .resized & {
+      width: $checkbox-width;
+      opacity: 1;
+    }
+    span {
+      color: $grey-500;
+      &.selected {
+        color: $corporate;
+      }
+    }
+    button {
+      @include square($checkbox-width);
+      border: 2px solid $grey-100;
+      border-radius: 6px;
+      padding: 0;
+      background: transparent;
+      margin-right: $spacing-S;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      mat-icon {
+        display: none;
+        height: 9px;
+        width: 12px;
+      }
+      &.selected {
+        background: $corporate;
+        border-color: transparent;
+        mat-icon {
+          display: flex;
+          /deep/ path {
+            fill: $white;
+          }
+        }
+      }
+      &:hover {
+        border-color: $corporate;
+      }
+    }
+  }
+}
