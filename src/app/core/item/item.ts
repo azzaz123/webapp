@@ -17,6 +17,7 @@ export class Item implements Model {
   private _webLink: string;
   private _views: number;
   private _favorites: number;
+  private _conversations: number;
   private _favorited: boolean;
   private _selected = false;
   private _bumpExpiringDate: number;
@@ -137,6 +138,14 @@ export class Item implements Model {
 
   set favorites(value: number) {
     this._favorites = value;
+  }
+
+  get conversations(): number {
+    return this._conversations;
+  }
+
+  set conversations(value: number) {
+    this._conversations = value;
   }
 
   get favorited(): boolean {

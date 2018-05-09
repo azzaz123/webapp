@@ -6,7 +6,9 @@
   </div>
   <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected, pending: item.flags.pending, itemSold: item.sold}">
     <div class="selected-veil" (click)="select(item)"></div>
-    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="image"><tsl-item-avatar [item]="item" size="bigger" fallbackLight="true"></tsl-item-avatar></a>
+    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="image">
+      <tsl-item-avatar [item]="item" size="bigger" fallbackLight="true"></tsl-item-avatar>
+    </a>
     <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="info">
       <div class="price">{{item.salePrice | customCurrency:item.currencyCode}}</div>
       <div class="title">{{item.title}}</div>
@@ -26,7 +28,9 @@
     <div class="bumped" *ngIf="item.flags.bumped">
       <div class={{item.flags.bump_type}}>{{item.flags.bump_type}}</div>
       <div class="date">{{item.bumpExpiringDate | amCountdown}}
-        <span class="cancel-bump {{item.flags.bump_type}}" (click)="cancelAutorenew(item)" i18n>Cancel</span>
+        <span class="cancel-bump {{item.flags.bump_type}}" (click)="cancelAutorenew(item)" *ngIf="item.autorenew_purchase"
+              i18n>Cancel
+        </span>
       </div>
     </div>
     <div class="visibility">
@@ -51,7 +55,8 @@
         <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.onhold">
           <mat-icon svgIcon="btn-reserved"></mat-icon>
         </button>
-        <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">
+        <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM"
+                [params]="{category: item.categoryId}" *ngIf="!item.sold">
           <mat-icon svgIcon="btn-edit"></mat-icon>
         </button>
       </span>

@@ -20,7 +20,7 @@ import {
   Product,
   ProductDurations,
   Purchase,
-  SelectedItemsAction, ItemProResponse
+  SelectedItemsAction, ItemProResponse, ItemProContent
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
@@ -145,27 +145,10 @@ export class ItemService extends ResourceService {
     return this.mapItem(content);
   }
 
-  protected mapRecordDataPro(data: ItemProResponse): Item {
-    return new Item(
-      data.id,
-      data.legacy_id,
-      data.owner,
-      data.title,
-      data.description,
-      data.category_id,
-      data.location,
-      data.sale_price,
-      data.currency_code,
-      data.modified_date,
-      data.url,
-      data.flags,
-      data.actions_allowed,
-      data.sale_conditions,
-      data.main_image,
-      data.images,
-      data.web_slug,
-      data.published_date
-    );
+  protected mapRecordDataPro(response: ItemProResponse): Item {
+    const data: ItemProResponse = <ItemProResponse>response;
+    const content: ItemProContent = data.content;
+    return this.mapItemPro(content);
   }
 
   private mapCar(content: CarContent): Car {
@@ -228,6 +211,42 @@ export class ItemService extends ResourceService {
       content.web_slug,
       content.modified_date,
       content.delivery_info
+    );
+  }
+
+  private mapItemPro(content: ItemProContent): Item {
+    return new Item(
+      content.id,
+      null,
+      content.seller_id,
+      content.title,
+      content.description,
+      content.category_id,
+      null,
+      content.price,
+      content.currency,
+      content.modified_date,
+      null,
+      content.flags,
+      null,
+      null,
+      {
+        id: UUID.UUID(),
+        original_width: content.image ? content.image.original_width : null,
+        original_height: content.image ? content.image.original_height : null,
+        average_hex_color: '',
+        urls_by_size:  {
+          original: content.image.original,
+          small: content.image.small,
+          large: content.image.large,
+          medium: content.image.medium,
+          xlarge: content.image.original
+        }
+      },
+      content.image[0],
+      content.web_slug,
+      content.publish_date,
+      null
     );
   }
 
@@ -470,9 +489,16 @@ export class ItemService extends ResourceService {
       observable = this.recursiveMines(0, 300, status)
         .map((res: ItemProResponse[]) => {
           if (res.length > 0) {
-            let items: Item[] = res.map((item: ItemProResponse) => this.mapRecordDataPro(item));
+            let items: Item[] = res.map((i: ItemProResponse) => {
+              const item: Item = this.mapRecordDataPro(i);
+              item.views = i.content.views;
+              item.favorites = i.content.favorites;
+              item.conversations = i.content.conversations;
+              return item;
+            });
             this.items[status] = items;
             return items;
+
           }
           return [];
         });
@@ -505,7 +531,8 @@ export class ItemService extends ResourceService {
     return this.http.get(this.API_URL_PROTOOL + '/mines', {
         status: ITEM_STATUSES[status],
         init: init,
-        end: init + offset
+        end: init + offset,
+        newVersion: true
       })
       .map((r: Response) => r.json())
       .flatMap((res: ItemProResponse[]) => {

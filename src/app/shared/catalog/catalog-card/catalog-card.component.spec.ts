@@ -15,7 +15,7 @@ import { MomentModule } from 'angular2-moment';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
 
-describe('CatalogCardComponent', () => {
+fdescribe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
   let fixture: ComponentFixture<CatalogCardComponent>;
   let itemService: ItemService;
@@ -45,6 +45,9 @@ describe('CatalogCardComponent', () => {
             return Observable.of({});
           },
           setSold() {
+            return Observable.of({});
+          },
+          cancelAutorenew() {
             return Observable.of({});
           }
         }
@@ -144,17 +147,17 @@ describe('CatalogCardComponent', () => {
 
     describe('not reserved', () => {
       beforeEach(fakeAsync(() => {
+        spyOn(itemService, 'reserveItem').and.callThrough();
         item = MOCK_ITEM;
-        spyOn(component, 'select');
+        item.reserved = false;
         component.reserve(item);
       }));
 
-      it('should set selectedAction', () => {
-        expect(itemService.selectedAction).toBe('reserve');
+      it('should call reserve with false', () => {
+        expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, true);
+        expect(item.reserved).toBe(true);
       });
-      it('should call select', () => {
-        expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
-      });
+
       it('should track the ProductUnReserved event', () => {
         component.reserve(item);
         //expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_RESERVED, {product_id: item.id});
@@ -169,14 +172,29 @@ describe('CatalogCardComponent', () => {
         item.reserved = true;
         component.reserve(item);
       });
+
       it('should call reserve with false', () => {
         expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, false);
-        expect(item.reserved).toBeFalsy();
+        expect(item.reserved).toBe(false);
       });
+
       it('should track the ProductUnReserved event', () => {
         component.reserve(item);
         //expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
       });
     });
   });
+
+  describe('cancel Autorenew', () => {
+    beforeEach(() => {
+      spyOn(itemService, 'cancelAutorenew').and.callThrough();
+      component.cancelAutorenew(MOCK_ITEM);
+    });
+
+    it('should set selected true and call selectItem', () => {
+
+      expect(itemService.cancelAutorenew).toHaveBeenCalledWith(MOCK_ITEM.id);
+    });
+  });
+
 });

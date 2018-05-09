@@ -122,6 +122,7 @@ export class CatalogProListComponent implements OnInit {
     this.selectedStatus = status;
     this.page = 1;
     this.getItems();
+    this.getNumberOfProducts();
   }
 
   public loadMore() {
@@ -137,26 +138,6 @@ export class CatalogProListComponent implements OnInit {
 
   public deselect() {
     this.itemService.deselectItems();
-  }
-
-  public delete() {
-    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
-    modalRef.componentInstance.type = 1;
-    modalRef.result.then(() => {
-      this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: response.updatedIds.join(', ')});
-        response.updatedIds.forEach((id: string) => {
-          const index: number = _.findIndex(this.items, {'id': id});
-          this.items.splice(index, 1);
-        });
-        if (response.failedIds.length) {
-          this.errorService.i18nError('bulkDeleteError');
-        } else {
-          this.getNumberOfProducts();
-        }
-      });
-    }, () => {
-    });
   }
 
   public feature(orderEvent: OrderEvent) {

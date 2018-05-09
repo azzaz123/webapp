@@ -59,7 +59,7 @@ export class CatalogItemActionsComponent implements OnInit {
         return this.active;
       }).subscribe((response: ItemBulkResponse) => {
         this.getCounters.emit();
-        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: response.updatedIds.join(', ')});
+        //this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: response.updatedIds.join(', ')});
         response.updatedIds.forEach((id: string) => {
           let index: number = _.findIndex(this.items, {'id': id});
           this.items.splice(index, 1);

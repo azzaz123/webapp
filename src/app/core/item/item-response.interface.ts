@@ -28,27 +28,6 @@ export interface ItemResponse {
   type: string;
 }
 
-export interface ItemProResponse {
-  id: string;
-  legacy_id: number;
-  title: string;
-  description: string;
-  owner: string;
-  category_id: number;
-  location: UserLocation;
-  sale_price: number;
-  currency_code: string;
-  modified_date: number;
-  url: string;
-  flags: ItemFlags;
-  actions_allowed: ItemActions;
-  sale_conditions: ItemSaleConditions;
-  main_image: Image;
-  images: Image[];
-  web_slug: string;
-  published_date: number;
-}
-
 export interface ItemContent {
   category_id?: number;
   currency_code?: string;
@@ -77,6 +56,17 @@ export interface ItemContent {
   favorites?: number;
   views?: number;
   delivery_info?: DeliveryInfo;
+}
+
+export interface ItemProResponse {
+  content: ItemProContent;
+  id: string;
+  type: string;
+}
+
+export interface ItemProContent extends ItemContent {
+  conversations: number
+  publish_date: number;
 }
 
 export interface CarContent extends ItemContent {
@@ -220,6 +210,7 @@ export interface ItemFlags {
   highlighted?: boolean;
   urgent?: boolean;
   bump_type?: string;
+  onhold?: boolean
 }
 
 export interface ItemActions {
