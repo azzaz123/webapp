@@ -60,6 +60,11 @@
             width: 51px;
             height: 30px;
             margin-right: $spacing-XS;
+            &.citybump {
+                /deep/ svg g {
+                    fill: $zone-bump;
+                }
+            }
         }
         .arrow-icon {
             transform: rotate(-90deg) scale(.8);
