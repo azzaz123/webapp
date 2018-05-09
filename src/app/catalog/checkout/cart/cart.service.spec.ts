@@ -83,7 +83,7 @@ describe('CartService', () => {
     });
 
     it('should create an instance of CartPro', () => {
-      expect(cart instanceof CartPro).toBeTruthy();
+      expect(cart instanceof CartPro).toBe(true);
     });
 
     describe('add', () => {
@@ -92,7 +92,7 @@ describe('CartService', () => {
 
         service.add(CART_ITEM_CITYBUMP, TYPE);
 
-        expect(cartChange.cart instanceof CartPro).toBeTruthy();
+        expect(cartChange.cart instanceof CartPro).toBe(true);
         expect(cartChange.itemId).toBe(MOCK_ITEM_V3.id);
         expect(cartChange.type).toBe(TYPE);
         expect(cartChange.action).toBe('add');

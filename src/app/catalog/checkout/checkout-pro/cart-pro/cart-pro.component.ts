@@ -19,13 +19,13 @@ export class CartProComponent implements OnInit {
   public types: string[] = BUMP_PRO_TYPES;
 
   constructor(private cartService: CartService, private itemService: ItemService, private errorService: ErrorsService, private router: Router) {
-    this.cartService.createInstance(new CartPro());
     this.cartService.cart$.subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
     });
   }
 
   ngOnInit() {
+    this.cartService.createInstance(new CartPro());
   }
 
   remove(cartItem: CartProItem) {
@@ -34,8 +34,7 @@ export class CartProComponent implements OnInit {
 
   applyBumps() {
     const order: OrderPro[] = this.cart.prepareOrder();
-    const orderId: string = this.cart.getOrderId();
-    this.itemService.bumpProItems(order, orderId).subscribe((failedProducts: string[]) => {
+    this.itemService.bumpProItems(order).subscribe((failedProducts: string[]) => {
       if (failedProducts && failedProducts.length) {
         this.errorService.i18nError('bumpError');
       } else {

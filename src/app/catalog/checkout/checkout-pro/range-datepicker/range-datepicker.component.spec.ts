@@ -4,7 +4,7 @@ import { RangeDatepickerComponent } from './range-datepicker.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MOCK_DATE, MOCK_DATE2, MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
 
-fdescribe('RangeDatepickerComponent', () => {
+describe('RangeDatepickerComponent', () => {
   let component: RangeDatepickerComponent;
   let fixture: ComponentFixture<RangeDatepickerComponent>;
 

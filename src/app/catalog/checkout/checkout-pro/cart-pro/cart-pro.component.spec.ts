@@ -6,15 +6,27 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CartService } from '../../cart/cart.service';
 import { Observable } from 'rxjs/Observable';
 import { CartPro } from '../../cart/cart-pro';
-import { CartChange } from '../../cart/cart-item.interface';
-import { ITEM_ID } from '../../../../../tests/item.fixtures.spec';
+import { CartChange, CartProItem } from '../../cart/cart-item.interface';
+import { ITEM_ID, MOCK_ITEM_V3 } from '../../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../../core/item/item.service';
+import { ErrorsService } from '../../../../core/errors/errors.service';
+import { Router } from '@angular/router';
+import { MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
+import { OrderPro } from '../../../../core/item/item-response.interface';
 
 describe('CartProComponent', () => {
   let component: CartProComponent;
   let fixture: ComponentFixture<CartProComponent>;
+  let cartService: CartService;
+  let errorService: ErrorsService;
+  let itemService: ItemService;
+  let router: Router;
 
   const CART = new CartPro();
+  const MOCK_PROITEM: CartProItem = {
+    item: MOCK_ITEM_V3,
+    selectedDates: MOCK_SELECTED_DATES
+  };
   const CART_CHANGE: CartChange = {
     action: 'add',
     cart: CART,
@@ -33,21 +45,31 @@ describe('CartProComponent', () => {
             cart$: Observable.of(CART_CHANGE),
             remove() {
             },
-            clean() {
-            },
             createInstance() {
             },
           }
         },
         {
           provide: ItemService, useValue: {
-            purchaseProducts() {
+            bumpProItems() {
               return Observable.of({});
             },
             deselectItems() {
             }
           }
         },
+        {
+          provide: ErrorsService, useValue: {
+            i18nError() {
+            }
+          }
+        },
+        {
+          provide: Router, useValue: {
+            navigate() {
+            }
+          }
+        }
       ]
     })
       .compileComponents();
@@ -57,9 +79,87 @@ describe('CartProComponent', () => {
     fixture = TestBed.createComponent(CartProComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    cartService = TestBed.get(CartService);
+    itemService = TestBed.get(ItemService);
+    errorService = TestBed.get(ErrorsService);
+    router = TestBed.get(Router);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+    it('should call createInstance cartService method', () => {
+      spyOn(cartService, 'createInstance').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(cartService.createInstance).toHaveBeenCalledWith(new CartPro());
+    });
   });
+
+  describe('remove', () => {
+    it('should call remove', () => {
+      const TYPE = 'citybump';
+      spyOn(cartService, 'remove');
+
+      component.remove(MOCK_PROITEM);
+
+      expect(cartService.remove).toHaveBeenCalledWith(MOCK_PROITEM.item.id, MOCK_PROITEM.bumpType);
+    });
+  });
+
+  describe('applyBumps', () => {
+    it('should prepare the order', () => {
+      spyOn(itemService, 'bumpProItems').and.returnValue(Observable.of([]));
+      const order: OrderPro[] = component.cart.prepareOrder();
+
+      component.applyBumps();
+
+      expect(itemService.bumpProItems).toHaveBeenCalledWith(order);
+    });
+
+    describe('success', () => {
+      it('should navigate to pro list if operation succeed', () => {
+        spyOn(itemService, 'bumpProItems').and.returnValue(Observable.of([]));
+        spyOn(errorService, 'i18nError');
+        spyOn(router, 'navigate');
+
+        component.applyBumps();
+
+        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list']);
+        expect(errorService.i18nError).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('error', () => {
+      beforeEach(() => {
+        spyOn(errorService, 'i18nError');
+        spyOn(router, 'navigate');
+      });
+
+      it('should thrown bumpError if failedProducts', () => {
+        const failedProducts: string = MOCK_PROITEM.item.id;
+        spyOn(itemService, 'bumpProItems').and.returnValue(Observable.of(failedProducts));
+
+        component.applyBumps();
+
+        expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
+        expect(router.navigate).not.toHaveBeenCalled();
+      });
+
+      it('should thrown bumpError if operation not succeed and text have value', () => {
+        spyOn(itemService, 'bumpProItems').and.returnValue(Observable.throw({
+          text() {
+            return '';
+          }
+        }));
+
+        component.applyBumps();
+
+        expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
+        expect(router.navigate).not.toHaveBeenCalled();
+      });
+
+    });
+
+  });
+
 });
