@@ -1,4 +1,4 @@
-import { CartItem, BumpGroup } from './cart-item.interface';
+import { CartItem } from './cart-item.interface';
 import * as _ from 'lodash';
 import { Order } from '../../../core/item/item-response.interface';
 import { UUID } from 'angular2-uuid';

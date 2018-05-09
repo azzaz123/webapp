@@ -1,7 +1,7 @@
 import { CartBase, BUMP_TYPES } from './cart-base';
 import { CartProItem } from './cart-item.interface';
 import * as _ from 'lodash';
-import { Order, OrderPro } from '../../../core/item/item-response.interface';
+import { OrderPro } from '../../../core/item/item-response.interface';
 
 export class CartPro extends CartBase {
 

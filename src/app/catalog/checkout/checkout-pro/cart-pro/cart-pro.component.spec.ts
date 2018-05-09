@@ -31,13 +31,12 @@ describe('CartProComponent', () => {
         {
           provide: CartService, useValue: {
             cart$: Observable.of(CART_CHANGE),
-            createInstance() {
-              return new CartPro();
-            },
             remove() {
             },
             clean() {
-            }
+            },
+            createInstance() {
+            },
           }
         },
         {

@@ -73,7 +73,7 @@
       transition: fill 0.2s ease-in-out;
       height: 17px;
     }
-    &.city {
+    &.citybump {
       &:hover, &.selected {
         background-color: $corporate;
         mat-icon {
@@ -83,7 +83,7 @@
         }
       }
     }
-    &.country {
+    &.countrybump {
       mat-icon {
         width: 32px;
       }
@@ -111,12 +111,12 @@
       color: $grey-500;
       font-weight: bold;
     }
-    &.city {
+    &.citybump {
       &:hover, &:focus {
         border-color: $corporate;
       }
     }
-    &.country {
+    &.countrybump {
       &:hover, &:focus {
         border-color: $country-bump;
       }

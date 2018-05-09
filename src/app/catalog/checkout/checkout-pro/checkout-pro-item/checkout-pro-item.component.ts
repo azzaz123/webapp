@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ItemWithProducts } from '../../../../core/item/item-response.interface';
-import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { CartChange, CartProItem } from '../../cart/cart-item.interface';
 import { CartService } from '../../cart/cart.service';
@@ -17,7 +15,7 @@ export class CheckoutProItemComponent implements OnInit {
   @Input() cartProItem: CartProItem;
   @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
 
-  constructor(private calendar: NgbCalendar, private cartService: CartService) {
+  constructor(private cartService: CartService) {
     this.cartService.cart$.subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
     });

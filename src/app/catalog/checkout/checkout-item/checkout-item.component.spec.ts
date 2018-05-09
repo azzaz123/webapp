@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
@@ -36,7 +35,6 @@ describe('CheckoutItemComponent', () => {
         {
           provide: CartService, useValue: {
             createInstance() {
-              return new Cart();
             },
             add() {
             },

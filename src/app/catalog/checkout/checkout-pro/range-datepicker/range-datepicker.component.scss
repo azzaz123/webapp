@@ -9,7 +9,7 @@
       -webkit-appearance: none;
       background-color: transparent;
       border: 0;
-      font-size: 14px;
+      font-size: $font-size-S;
       &.cancel {
         color: $grey-250;
       }
@@ -17,16 +17,16 @@
         font-weight: bold;
         color: $corporate;
       }
-      &.city-btn {
+      &.citybump {
         color: $zone-bump;
       }
-      &.country-btn {
+      &.countrybump {
         color: $country-bump;
       }
     }
   }
   
-  :host /deep/ ngb-datepicker {    
+  :host /deep/ ngb-datepicker {
     border: 0;
     display: flex;
     flex-direction: column;
@@ -70,10 +70,10 @@
   .selected-text {
     font-size: $font-size-S;
     margin: $spacing 0;
-    &.city-text {
+    &.citybump {
       color: $zone-bump;
     }
-    &.country-text {
+    &.countrybump {
       color: $country-bump;
     }
     .bold {
@@ -89,10 +89,16 @@
     text-align: center;
     height: 2rem;
     width: 2rem;
-    font-size: $font-size-XS;
-    &.focused {
-      background-color: #e6e6e6;
-    }  
+    font-size: $font-size-XS; 
+    &.range, &:hover {
+      color: white;
+      &.citybump {
+        background-color: $zone-bump;
+      }
+      &.countrybump {
+        background-color: $country-bump;
+      }
+    }
     &.disabled {
       color: $grey-250;
       &:hover {
@@ -101,21 +107,12 @@
         cursor: not-allowed; 
       }
     }
-    &.range, &:hover {
-      color: white;
-      &.city-day {
-        background-color: $zone-bump;
-      }
-      &.country-day {
-        background-color: $country-bump;
-      }
-    }
     &.faded {
       color: white;
-      &.city-day {
+      &.citybump {
         background-color: rgba($zone-bump, 0.6);
       }
-      &.country-day {
+      &.countrybump {
         background-color: rgba($country-bump, 0.6);
       }
     }

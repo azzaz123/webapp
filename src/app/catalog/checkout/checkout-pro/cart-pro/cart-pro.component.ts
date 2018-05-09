@@ -5,7 +5,6 @@ import { CartBase, BUMP_PRO_TYPES } from '../../cart/cart-base';
 import { CartPro } from '../../cart/cart-pro';
 import { OrderPro } from '../../../../core/item/item-response.interface';
 import { ItemService } from '../../../../core/item/item.service';
-import { UUID } from 'angular2-uuid';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { Router } from '@angular/router';
 
@@ -42,8 +41,13 @@ export class CartProComponent implements OnInit {
       } else {
         this.router.navigate(['/pro/catalog/list']);
       }
-    }, (error: Response) => {
-
+    }, (error) => {
+      if (error.text()) {
+        this.errorService.show(error);
+      } else {
+        this.errorService.i18nError('bumpError');
+      }
     });
   }
+
 }

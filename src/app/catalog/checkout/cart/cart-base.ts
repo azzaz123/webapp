@@ -1,7 +1,4 @@
 import { BumpGroup, CartItem, CartProItem } from './cart-item.interface';
-import { CartPro } from './cart-pro';
-import { Cart } from './cart';
-import { Order } from '../../../core/item/item-response.interface';
 import { UUID } from 'angular2-uuid';
 
 export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];

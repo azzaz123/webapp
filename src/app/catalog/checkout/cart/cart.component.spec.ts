@@ -52,7 +52,6 @@ describe('CartComponent', () => {
           provide: CartService, useValue: {
             cart$: Observable.of(CART_CHANGE),
             createInstance() {
-              return new Cart();
             },
             remove() {
             },

@@ -5,9 +5,8 @@
   z-index: 1000;
   mat-icon {
     vertical-align: middle;
-    margin-right: $spacing;
-    width: 27px;
-    height: 17px;
+    margin-right: $spacing-S;
+    width: 17px;
   }
   &:hover {
     text-decoration: none;
@@ -55,7 +54,7 @@
     align-self: flex-end;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
-    box-shadow: 3px 6px 10px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 6px 10px 0 rgba($black, 0.2);
     border: solid 1px $grey-50;
     border-bottom: 0;
     color: $white;

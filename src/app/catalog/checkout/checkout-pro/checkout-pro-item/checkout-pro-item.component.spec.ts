@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CheckoutProItemComponent } from './checkout-pro-item.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
