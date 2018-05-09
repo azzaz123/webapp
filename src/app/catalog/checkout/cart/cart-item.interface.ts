@@ -12,7 +12,7 @@ export interface CartItem {
 
 export interface CartProItem {
   item: Item;
-  bumpType: string;
+  bumpType?: string;
   selectedDates: SelectedDates;
 }
 

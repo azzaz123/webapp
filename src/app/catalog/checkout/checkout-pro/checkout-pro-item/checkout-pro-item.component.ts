@@ -24,6 +24,10 @@ export class CheckoutProItemComponent implements OnInit {
   }
   ngOnInit() {
     this.cartService.createInstance(new CartPro());
+    this.initItem();
+  }
+
+  initItem() {
     this.cartProItem.selectedDates = {
       formattedFromDate: moment(new Date()).format('DD/MM/YYYY'),
       formattedToDate: moment(new Date()).add(1, 'days').format('DD/MM/YYYY'),
@@ -46,11 +50,8 @@ export class CheckoutProItemComponent implements OnInit {
 
   onRemoveOrClean(cartProChange: CartChange) {
     if (cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id || cartProChange.action === 'clean') {
-      delete this.cartProItem.selectedDates.fromDate;
-      delete this.cartProItem.selectedDates.toDate;
-      delete this.cartProItem.selectedDates.formattedFromDate;
-      delete this.cartProItem.selectedDates.formattedToDate;
       delete this.cartProItem.bumpType;
+      this.initItem();
     }
   }
 
