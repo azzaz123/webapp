@@ -57,7 +57,7 @@ export class RangeDatepickerComponent implements OnInit {
   hoveredDate: NgbDateStruct;
   minDate: NgbDateStruct;
   selectedDates: SelectedDates;
-  numberOfDays = 0;
+  numberOfDays;
   model;
 
   @Input() bumpType: string;
@@ -76,6 +76,11 @@ export class RangeDatepickerComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.fromDate && this.toDate) {
+      this.calculateDateDiff();
+    } else {
+      this.numberOfDays = 0;
+    }
   }
 
   onDateSelection(date: NgbDateStruct) {

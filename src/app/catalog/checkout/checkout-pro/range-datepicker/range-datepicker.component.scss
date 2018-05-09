@@ -23,6 +23,10 @@
       &.countrybump {
         color: $country-bump;
       }
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;        
+      }
     }
   }
   

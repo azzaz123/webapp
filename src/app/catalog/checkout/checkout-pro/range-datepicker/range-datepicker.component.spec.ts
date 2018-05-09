@@ -3,9 +3,8 @@ import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { RangeDatepickerComponent } from './range-datepicker.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MOCK_DATE, MOCK_DATE2, MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
-import { SelectedDates } from './selected-dates.interface';
 
-describe('RangeDatepickerComponent', () => {
+fdescribe('RangeDatepickerComponent', () => {
   let component: RangeDatepickerComponent;
   let fixture: ComponentFixture<RangeDatepickerComponent>;
 
@@ -28,6 +27,29 @@ describe('RangeDatepickerComponent', () => {
     fixture = TestBed.createComponent(RangeDatepickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  describe('ngOnInit', () => {
+    beforeEach(() => {
+      spyOn(component, 'calculateDateDiff');
+    });
+
+    it('should set numberOfDays if init and end dates are selected', () => {
+      component.fromDate = MOCK_DATE;
+      component.toDate = MOCK_DATE2;
+      component.ngOnInit();
+
+      expect(component.calculateDateDiff).toHaveBeenCalled();
+    });
+
+    it('should set numberOfDays to 0 if no dates selected', () => {
+      component.ngOnInit();
+
+      expect(component.calculateDateDiff).not.toHaveBeenCalled();
+      expect(component.fromDate).toBeUndefined();
+      expect(component.toDate).toBeUndefined();
+      expect(component.numberOfDays).toBe(0);
+    });
   });
 
   describe('onDateSelection', () => {

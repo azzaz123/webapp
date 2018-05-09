@@ -1,8 +1,7 @@
 <ngb-datepicker #dp (select)="onDateSelection($event)" [dayTemplate]="t" [minDate]="minDate" [(ngModel)]="model"></ngb-datepicker>
 <ng-template #t let-date="date" let-focused="focused" let-disabled="disabled">
-  <span class="custom-day" [ngClass]="bumpType" [class.focused]="focused"
-    [class.disabled]="disabled" [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)" [class.faded]="isHovered(date) || isInside(date)"
-    (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+  <span class="custom-day" [ngClass]="bumpType" [class.focused]="focused" [class.disabled]="disabled" [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
+    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
     {{date.day}}
   </span>
 </ng-template>
@@ -18,6 +17,5 @@
 </div>
 <div class="datepicker-btn-wrapper">
   <button class="datepicker-btn cancel" (click)="onCancel()">Cancel</button>
-  <button class="datepicker-btn apply" [ngClass]="bumpType"
-    (click)="onApply()">Apply</button>
+  <button class="datepicker-btn apply" [ngClass]="bumpType" (click)="onApply()" [disabled]="numberOfDays === 0">Apply</button>
 </div>
