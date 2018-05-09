@@ -12,7 +12,6 @@ export class CheckboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
   }
 
   switchCheckbox() {
