@@ -52,7 +52,17 @@ describe('CheckboxComponent', () => {
     }));
   });
 
-  it('should emit onChange action, when switch is changed', () => {
+  it('should emit checkedChange action, when checkbox is changed', () => {
+    let inputValue: boolean;
+    component.checkedChange.subscribe( value => inputValue = value);
+
+    const element = el.querySelector('button') as HTMLInputElement;
+    element.click();
+
+    expect(inputValue).toBeTruthy();
+  });
+
+  it('should emit onChange action, when checkbox is changed', () => {
     let inputValue: boolean;
     component.onChange.subscribe( value => inputValue = value);
 
