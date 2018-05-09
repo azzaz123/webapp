@@ -4,7 +4,7 @@ import { DebugElement } from '@angular/core';
 import { CheckboxComponent } from './checkbox.component';
 import { MatIconModule } from '@angular/material';
 
-fdescribe('CheckboxComponent', () => {
+describe('CheckboxComponent', () => {
   let component: CheckboxComponent;
   let fixture: ComponentFixture<CheckboxComponent>;
   let de: DebugElement;
