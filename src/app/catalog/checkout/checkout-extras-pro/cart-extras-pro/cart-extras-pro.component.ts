@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { CartService } from '../../cart/cart.service';
 import { CartProExtras } from '../../cart/cart-pro-extras';
 import { CartChange } from '../../cart/cart-item.interface';
@@ -17,7 +17,10 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   public cart: CartBase;
   public financialCard: FinancialCard;
   public types: string[] = BUMP_TYPES;
+  public loading: boolean;
+  public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   private active = true;
+
 
   constructor(private cartService: CartService,
               private paymentService: PaymentService) { }
@@ -42,6 +45,8 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   clean() {
     this.cartService.clean();
   }
+
+  checkout() {}
 
   private getCard() {
     this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {

@@ -1,4 +1,4 @@
-<h1 i18n>Your shopping list</h1>
+<h1 i18n>Extra features</h1>
 <div class="cart-wrapper" [ngClass]="{'has-financial-card': financialCard}">
   <div class="scroll-panel">
     <ul *ngIf="cart" class="items-list">
@@ -9,7 +9,7 @@
           <div class="type">
             <span [ngSwitch]="type">
               <ng-container *ngSwitchCase="'citybump'" i18n>City bump</ng-container>
-              <ng-container *ngSwitchCase="'countrybump'" i18n>National bump</ng-container>
+              <ng-container *ngSwitchCase="'countrybump'" i18n>Country bump</ng-container>
             </span>
             <strong>x {{cart[type].cartItems.length}}</strong><br />
             <span class="price">{{cart[type].total | customCurrency}}</span>
@@ -24,9 +24,9 @@
               <div class="type">
                 <span [ngSwitch]="type">
                   <ng-container *ngSwitchCase="'citybump'" i18n>City</ng-container>
-                  <ng-container *ngSwitchCase="'countrybump'" i18n>National</ng-container>
+                  <ng-container *ngSwitchCase="'countrybump'" i18n>Country</ng-container>
                 </span>
-                x {{cartItem.pack.quantity}}<span i18n>days</span>
+                x {{cartItem.pack.quantity}} <span i18n>days</span>
               </div>
               <div class="price">{{cartItem.pack.price | customCurrency:cartItem.pack.currency}}</div>
             </div>
@@ -38,7 +38,7 @@
   <div class="clean-cart" [hidden]="!cart?.total">
     <a (click)="clean()">
       <mat-icon svgIcon="delete"></mat-icon>
-      <span i18n>Empty list</span>
+      <span i18n>Delete list</span>
     </a>
   </div>
 </div>
