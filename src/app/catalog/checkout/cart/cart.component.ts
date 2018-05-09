@@ -29,18 +29,18 @@ export class CartComponent implements OnInit, OnDestroy {
   public loading: boolean;
 
   constructor(private cartService: CartService,
-              private itemService: ItemService,
-              private errorService: ErrorsService,
-              private trackingService: TrackingService,
-              private paymentService: PaymentService,
-              private router: Router) {
-                this.cartService.createInstance(new Cart());
+    private itemService: ItemService,
+    private errorService: ErrorsService,
+    private trackingService: TrackingService,
+    private paymentService: PaymentService,
+    private router: Router) {
+      this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
+        this.cart = cartChange.cart;
+      });
   }
 
   ngOnInit() {
-    this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
-      this.cart = cartChange.cart;
-    });
+    this.cartService.createInstance(new Cart());
     this.getCard();
   }
 
@@ -82,19 +82,19 @@ export class CartComponent implements OnInit, OnDestroy {
       this.paymentService.pay(orderId).subscribe(() => {
         this.itemService.deselectItems();
         this.itemService.selectedAction = null;
-        this.router.navigate(['catalog/list', {code: 200}]);
+        this.router.navigate(['catalog/list', { code: 200 }]);
       }, () => {
-        this.router.navigate(['catalog/list', {code: -1}]);
+        this.router.navigate(['catalog/list', { code: -1 }]);
       });
     }
   }
 
   private track(order: Order[]) {
-    const result = order.map(purchase => ({item_id: purchase.item_id, bump_type: purchase.product_id}));
+    const result = order.map(purchase => ({ item_id: purchase.item_id, bump_type: purchase.product_id }));
     const itemsIds = Object.keys(order).map(key => order[key].item_id);
-    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {selected_products: result});
+    this.trackingService.track(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, { selected_products: result });
     ga('send', 'event', 'Item', 'bump-cart');
-    gtag('event', 'conversion', {'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM'});
+    gtag('event', 'conversion', { 'send_to': 'AW-829909973/oGcOCL7803sQ1dfdiwM' });
     fbq('track', '176083133152402', {});
     twq('track', 'Purchase', {
       value: this.cart.total,

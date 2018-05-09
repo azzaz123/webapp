@@ -67,7 +67,6 @@ describe('CartPro', () => {
       const dateParts: string[] = date.split('/');
       const dateObject: number = new Date(Number(date[2]), Number(date[1]) - 1, Number(date[0])).getTime();
       let result: number;
-
       spyOn(cart, 'prepareDate').and.callThrough();
 
       result = cart.prepareDate(MOCK_PROITEM.selectedDates.formattedFromDate);
