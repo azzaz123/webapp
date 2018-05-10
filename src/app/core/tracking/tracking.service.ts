@@ -54,12 +54,14 @@ const SCREENS_IDS: any = {
 
 const TYPES_IDS: any = {
   Tap: '6',
+  Click: '16',
   Message: '14',
   ActionServer: '3',
   Success: '8',
   Display: '7',
   Error: '9',
-  Button: '5'
+  Button: '5',
+  PushNotification: '15'
 };
 
 @Injectable()
@@ -71,23 +73,59 @@ export class TrackingService {
     screen: SCREENS_IDS.ProChat,
     type: TYPES_IDS.Tap
   };
-  public static CONVERSATION_READ: TrackingEventBase = {
+  public static MESSAGES_READ: TrackingEventBase = {
     name: '441',
-    category: CATEGORY_IDS.ProConversations,
+    category: CATEGORY_IDS.Conversations,
     screen: SCREENS_IDS.Log,
     type: TYPES_IDS.Message
   };
-  public static MESSAGE_NOTIFIED: TrackingEventBase = {
-    name: '437',
-    category: CATEGORY_IDS.ProNotifications,
-    screen: SCREENS_IDS.ProChat,
-    type: TYPES_IDS.Tap
+  public static MESSAGE_RECEIVED: TrackingEventBase = {
+    name: '442',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Log,
+    type: TYPES_IDS.Message
   };
   public static MESSAGE_SENT: TrackingEventBase = {
+    name: '443',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Log,
+    type: TYPES_IDS.Message
+  };
+  public static MESSAGE_RECEIVED_ACK: TrackingEventBase = {
+    name: '436',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Log,
+    type: TYPES_IDS.Message
+  };
+  public static NOTIFICATION_RECEIVED: TrackingEventBase = {
+    name: '437',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Log,
+    type: TYPES_IDS.PushNotification
+  };
+  public static NOTIFICATION_READ: TrackingEventBase = {
+    name: '438',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Log,
+    type: TYPES_IDS.Click
+  };
+  public static MESSAGE_READ_ACK: TrackingEventBase = {
+    name: '439',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Log,
+    type: TYPES_IDS.Message
+  };
+  public static SEND_BUTTON: TrackingEventBase = {
     name: '76',
-    category: CATEGORY_IDS.ProConversations,
+    category: CATEGORY_IDS.Conversations,
     screen: SCREENS_IDS.Log,
     type: TYPES_IDS.ActionServer
+  };
+  public static MESSAGE_SENT_ACK: TrackingEventBase = {
+    name: '440',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Log,
+    type: TYPES_IDS.Message
   };
   public static MY_PROFILE_LOGGED_IN: TrackingEventBase = {
     name: '355',

@@ -109,7 +109,7 @@ describe('Service: Notification', () => {
         spyOn(trackingService, 'track');
         service.sendBrowserNotification(MOCK_MESSAGE);
         tick(NOTIFICATION_DURATION + 1000);
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_NOTIFIED,
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.NOTIFICATION_RECEIVED,
           {conversation_id: MOCK_MESSAGE.conversationId});
       }));
     });
