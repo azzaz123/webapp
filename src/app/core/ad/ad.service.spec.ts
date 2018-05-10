@@ -8,12 +8,14 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { PrivacyService } from '../privacy/privacy.service';
 
 let service: AdService;
 let http: HttpService;
 let userService: UserService;
 let mockBackend: MockBackend;
 let cookieService: CookieService;
+let privacyService: PrivacyService;
 
 const cookiesAdKeyWord = {
   brand: 'bmv',
@@ -47,7 +49,7 @@ const cmd = {
   push(callbacks) {
     callbacks();
   }
-}
+};
 
 const pubads = {
   defineSlot() {},
@@ -91,13 +93,15 @@ describe('AdService', () => {
               delete this.cookies[key];
             }
           }
-        }
+        },
+        PrivacyService
       ],
     });
     http = TestBed.get(HttpService);
     userService = TestBed.get(UserService);
     mockBackend = TestBed.get(MockBackend);
     cookieService = TestBed.get(CookieService);
+    privacyService = TestBed.get(PrivacyService);
     spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
       callback(position);
     });
@@ -110,15 +114,12 @@ describe('AdService', () => {
     spyOn(pubads, 'collapseEmptyDivs');
     spyOn(pubads, 'disableInitialLoad');
     spyOn(pubads, 'setPublisherProvidedId');
+    spyOn(pubads, 'setTargeting');
+    spyOn(pubads, 'refresh');
     Object.keys(cookies).forEach(key => {
       cookieService.put(key, cookies[key]);
     });
     service = TestBed.get(AdService);
-  });
-
-  beforeEach(() => {
-    spyOn(pubads, 'setTargeting');
-    spyOn(pubads, 'refresh');
   });
 
   describe('should init google services', () => {
@@ -156,7 +157,7 @@ describe('AdService', () => {
   describe ('refreshAds', () => {
     const refreshRate = 1000;
 
-    describe('with refresh rate should', () => {
+    describe('with refresh rate, ', () => {
       beforeEach(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           const res: ResponseOptions = new ResponseOptions({body: refreshRate});
@@ -164,7 +165,7 @@ describe('AdService', () => {
         });
       });
 
-      it('send keyWords', fakeAsync(() => {
+      it('should send keyWords', fakeAsync(() => {
         service.startAdsRefresh();
         tick(1);
         Object.keys(AdKeyWords).forEach(key => {
@@ -173,7 +174,7 @@ describe('AdService', () => {
         discardPeriodicTasks();
       }));
 
-      it('without being able to access navigator geolocation, gets approximate position from backend', fakeAsync(() => {
+      it('should without being able to access navigator geolocation, gets approximate position from backend', fakeAsync(() => {
         spyOn(navigator, 'geolocation').and.returnValue(undefined);
         service.adKeyWords.latitude = null;
         service.adKeyWords.longitude = null;
@@ -186,7 +187,7 @@ describe('AdService', () => {
         discardPeriodicTasks();
       }));
 
-      it('refresh ads with its rate', fakeAsync(() => {
+      it('should refresh ads with its rate', fakeAsync(() => {
         const timesToBeRefreshed = 2;
 
         service.startAdsRefresh();
@@ -196,7 +197,7 @@ describe('AdService', () => {
         discardPeriodicTasks();
       }));
 
-      it('only have one refresh interval subscription', fakeAsync(() => {
+      it('should only have one refresh interval subscription', fakeAsync(() => {
         service.startAdsRefresh();
         tick(refreshRate);
         service.startAdsRefresh();
@@ -206,7 +207,7 @@ describe('AdService', () => {
         discardPeriodicTasks();
       }));
 
-      it('stop refresh interval', fakeAsync(() => {
+      it('should stop refresh interval', fakeAsync(() => {
         service.startAdsRefresh();
         tick(refreshRate);
 
@@ -216,7 +217,7 @@ describe('AdService', () => {
         expect(pubads.refresh).toHaveBeenCalledTimes(2);
       }));
 
-      it('handle multiple stops', fakeAsync(() => {
+      it('should handle multiple stops', fakeAsync(() => {
         service.startAdsRefresh();
         tick(refreshRate);
 
@@ -228,55 +229,113 @@ describe('AdService', () => {
         expect(pubads.refresh).toHaveBeenCalledTimes(2);
       }));
 
-      it('should call amazon APS fetchBids', fakeAsync(() => {
-        spyOn(apstag, 'fetchBids');
+      describe('when allowSegmentation is true', () => {
+        beforeEach(() => {
+          privacyService.allowSegmentation$.next(true);
+        });
 
-        service.startAdsRefresh();
-        tick(refreshRate);
+        it('should send keyWords allowSegmentation with true value', fakeAsync(() => {
+          service.startAdsRefresh();
+          tick(refreshRate);
 
-        expect(apstag.fetchBids).toHaveBeenCalled();
-        discardPeriodicTasks();
-      }));
+          expect(pubads.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'true');
+          discardPeriodicTasks();
+        }));
 
-      it('should call amazon APS setDisplayBids', fakeAsync(() => {
-        spyOn(apstag, 'setDisplayBids');
+        it('should call amazon APS fetchBids', fakeAsync(() => {
+          spyOn(apstag, 'fetchBids');
 
-        service.startAdsRefresh();
-        tick(refreshRate);
+          service.startAdsRefresh();
+          tick(refreshRate);
 
-        expect(apstag.setDisplayBids).toHaveBeenCalled();
-        discardPeriodicTasks();
-      }));
+          expect(apstag.fetchBids).toHaveBeenCalled();
+          discardPeriodicTasks();
+        }));
 
-      it('should call Criteo SetLineItemRanges', fakeAsync(() => {
-        spyOn(Criteo, 'SetLineItemRanges');
+        it('should call amazon APS setDisplayBids', fakeAsync(() => {
+          spyOn(apstag, 'setDisplayBids');
 
-        service.startAdsRefresh();
-        tick(refreshRate);
+          service.startAdsRefresh();
+          tick(refreshRate);
 
-        expect(Criteo.SetLineItemRanges).toHaveBeenCalled();
-        discardPeriodicTasks();
-      }));
+          expect(apstag.setDisplayBids).toHaveBeenCalled();
+          discardPeriodicTasks();
+        }));
 
-      it('should call Criteo SetLineItemRanges', fakeAsync(() => {
-        spyOn(Criteo, 'SetLineItemRanges');
+        it('should call Criteo SetLineItemRanges', fakeAsync(() => {
+          spyOn(Criteo, 'SetLineItemRanges');
 
-        service.startAdsRefresh();
-        tick(refreshRate);
+          service.startAdsRefresh();
+          tick(refreshRate);
 
-        expect(Criteo.SetLineItemRanges).toHaveBeenCalled();
-        discardPeriodicTasks();
-      }));
+          expect(Criteo.SetLineItemRanges).toHaveBeenCalled();
+          discardPeriodicTasks();
+        }));
 
-      it('should call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
-        spyOn(Criteo, 'SetDFPKeyValueTargeting');
+        it('should call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
+          spyOn(Criteo, 'SetDFPKeyValueTargeting');
 
-        service.startAdsRefresh();
-        tick(refreshRate);
+          service.startAdsRefresh();
+          tick(refreshRate);
 
-        expect(Criteo.SetDFPKeyValueTargeting).toHaveBeenCalled();
-        discardPeriodicTasks();
-      }));
+          expect(Criteo.SetDFPKeyValueTargeting).toHaveBeenCalled();
+          discardPeriodicTasks();
+        }));
+      });
+
+      describe('when allowSegmentation is false', () => {
+        beforeEach(() => {
+          privacyService.allowSegmentation$.next(false);
+        });
+
+        it('should send keyWords allowSegmentation with false value', fakeAsync(() => {
+          service.startAdsRefresh();
+          tick(refreshRate);
+
+          expect(pubads.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'false');
+          discardPeriodicTasks();
+        }));
+
+        it('should not call amazon APS fetchBids', fakeAsync(() => {
+          spyOn(apstag, 'fetchBids');
+
+          service.startAdsRefresh();
+          tick(refreshRate);
+
+          expect(apstag.fetchBids).not.toHaveBeenCalled();
+          discardPeriodicTasks();
+        }));
+
+        it('should not call amazon APS setDisplayBids', fakeAsync(() => {
+          spyOn(apstag, 'setDisplayBids');
+
+          service.startAdsRefresh();
+          tick(refreshRate);
+
+          expect(apstag.setDisplayBids).not.toHaveBeenCalled();
+          discardPeriodicTasks();
+        }));
+        //
+        it('should not call Criteo SetLineItemRanges', fakeAsync(() => {
+          spyOn(Criteo, 'SetLineItemRanges');
+
+          service.startAdsRefresh();
+          tick(refreshRate);
+
+          expect(Criteo.SetLineItemRanges).not.toHaveBeenCalled();
+          discardPeriodicTasks();
+        }));
+
+        it('should not call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
+          spyOn(Criteo, 'SetDFPKeyValueTargeting');
+
+          service.startAdsRefresh();
+          tick(refreshRate);
+
+          expect(Criteo.SetDFPKeyValueTargeting).not.toHaveBeenCalled();
+          discardPeriodicTasks();
+        }));
+      });
     });
 
     it('without refresh rate, should not refresh', fakeAsync(() => {

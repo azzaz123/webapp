@@ -31,7 +31,8 @@ import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
-import { User } from './core/user/user';
+import { PrivacyService } from './core/privacy/privacy.service';
+import { MOCK_PRIVACY_ALLOW } from './core/privacy/privacy';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -46,6 +47,7 @@ let trackingService: TrackingService;
 let window: any;
 let conversationService: ConversationService;
 let cookieService: CookieService;
+let privacyService: PrivacyService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
@@ -155,6 +157,7 @@ describe('App', () => {
             }
           }
         },
+        PrivacyService,
         ...
           TEST_HTTP_PROVIDERS
       ],
@@ -174,6 +177,7 @@ describe('App', () => {
     window = TestBed.get(WindowRef).nativeWindow;
     conversationService = TestBed.get(ConversationService);
     cookieService = TestBed.get(CookieService);
+    privacyService = TestBed.get(PrivacyService);
     spyOn(notificationService, 'init');
   });
 
@@ -238,7 +242,7 @@ describe('App', () => {
 
       it('should call conversationService.init twice if user is professional', () => {
         spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
-        
+
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
@@ -286,6 +290,14 @@ describe('App', () => {
 
         expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
         expect(component.updateSessionCookie).not.toHaveBeenCalled();
+      });
+
+      it('should call getPrivacyList method', () => {
+        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
+
+        component.ngOnInit();
+
+        expect(privacyService.getPrivacyList).toHaveBeenCalled();
       });
 
     });

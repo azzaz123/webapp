@@ -28,6 +28,7 @@ import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
 import { Message } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
+import { PrivacyService } from './core/privacy/privacy.service';
 
 @Component({
   selector: 'tsl-root',
@@ -62,7 +63,8 @@ export class AppComponent implements OnInit {
               private debugService: DebugService,
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
-              private cookieService: CookieService) {
+              private cookieService: CookieService,
+              private privacyService: PrivacyService) {
     this.config();
   }
 
@@ -79,6 +81,7 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
+    this.privacyService.getPrivacyList().subscribe();
   }
 
   private updateUrlAndSendAnalytics() {
