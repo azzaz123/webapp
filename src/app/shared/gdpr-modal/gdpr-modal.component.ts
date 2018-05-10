@@ -10,9 +10,9 @@ import { environment } from '../../../environments/environment';
 })
 export class GdprModalComponent implements OnInit {
 
-  private allowSegmentaation = false;
-  private acceptPrivacy = false;
-  private gdprText = '';
+  public allowSegmentation = false;
+  public acceptPrivacy = false;
+  public gdprText = '';
 
   constructor(
     public activeModal: NgbActiveModal,
