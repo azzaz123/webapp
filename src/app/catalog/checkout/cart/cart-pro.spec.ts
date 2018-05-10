@@ -22,6 +22,8 @@ describe('CartPro', () => {
     it('should add cartItems to array', () => {
       expect(cart.citybump.cartItems[0]).toEqual(MOCK_PROITEM);
       expect(cart.countrybump.cartItems[0]).toEqual(MOCK_PROITEM2);
+      expect(cart.citybump.cartItems.length).toBe(1);
+      expect(cart.countrybump.cartItems.length).toBe(1);
     });
 
     it('should calculate totals', () => {
@@ -30,11 +32,19 @@ describe('CartPro', () => {
       expect(cart.total).toBe(cart.citybump.total + cart.countrybump.total);
     });
 
+    it('should calculate totals if there is more than one item with same bump', () => {
+      cart.add(MOCK_PROITEM2, 'citybump');
+
+      expect(cart.citybump.total).toBe(+MOCK_PROITEM.selectedDates.numberOfDays + MOCK_PROITEM2.selectedDates.numberOfDays);
+      expect(cart.total).toBe(cart.citybump.total + cart.countrybump.total);
+    });
+
     it('should move item from country to city', () => {
       cart.add(MOCK_PROITEM2, 'citybump');
 
       expect(cart.citybump.cartItems[1]).toEqual(MOCK_PROITEM2);
       expect(cart.citybump.cartItems.length).toBe(2);
+      expect(cart.countrybump.cartItems.length).toBe(0);
     });
   });
 
