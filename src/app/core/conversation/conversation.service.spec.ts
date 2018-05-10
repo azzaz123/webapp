@@ -744,7 +744,7 @@ describe('Service: Conversation', () => {
       conversation.unreadMessages = 2;
       spyOn(trackingService, 'track');
       service.sendRead(conversation);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_READ,
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGES_READ,
         {conversation_id: conversation.id});
     });
 

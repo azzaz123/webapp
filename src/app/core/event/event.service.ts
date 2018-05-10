@@ -9,7 +9,8 @@ export class EventService {
   public static USER_LOGOUT = 'logoutEvent';
   public static NEW_MESSAGE = 'newMessage';
   public static MESSAGE_ADDED = 'messageAdded';
-  public static CONVERSATION_READ = 'conversationRead';
+  public static MESSAGES_READ = 'conversationRead';
+  public static MESSAGE_READ_ACK = 'messageReadAck';
   public static CONNECTION_ERROR = 'connectionError';
   public static CONNECTION_RESTORED = 'connectionRestored';
   public static CONVERSATION_ARCHIVED = 'conversationArchived';

@@ -241,6 +241,11 @@ export class XmppService {
     this.client.on('message', (message: XmppBodyMessage) => {
       this.onNewMessage(message);
     });
+    this.client.on('message:sent', (message: XmppBodyMessage) => {
+      if (message.read) {
+        this.eventService.emit(EventService.MESSAGE_READ_ACK);
+      }
+    });
     this.client.on('session:started', () => {
       this.client.sendPresence();
       this.client.enableCarbons();

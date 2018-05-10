@@ -26,6 +26,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -36,6 +37,7 @@ export class ConversationService extends LeadService {
   private SURVEY_MESSAGE = 'Ya he respondido a tus preguntas';
 
   private messagesObservable: Observable<Conversation[]>;
+  private readSubscription: ISubscription;
   public ended: boolean;
 
   constructor(http: HttpService,
@@ -256,13 +258,27 @@ export class ConversationService extends LeadService {
     .map((data: ConversationResponse ) => this.mapRecordData(data));
   }
 
+  private sendReadAck(message: Message, itemId: string, toUserId: string, conversationId: string) {
+    this.trackingService.track(TrackingService.MESSAGE_READ_ACK, {
+      thread_id: conversationId,
+      to_user_id: toUserId,
+      message_id: message.id,
+      item_id: itemId
+    });
+  }
+
   public sendRead(conversation: Conversation) {
     if (conversation.unreadMessages > 0) {
+      const unreadMessages = conversation.messages.slice(-conversation.unreadMessages);
+      this.readSubscription = this.event.subscribe(EventService.MESSAGE_READ_ACK, () => {
+        unreadMessages.forEach((message) => {
+          this.sendReadAck(message, conversation.item.id, conversation.user.id, conversation.id);
+        });
+      });
       this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);
       this.messageService.totalUnreadMessages -= conversation.unreadMessages;
       conversation.unreadMessages = 0;
-      this.event.emit(EventService.CONVERSATION_READ, conversation);
-      this.trackingService.track(TrackingService.CONVERSATION_READ, {conversation_id: conversation.id});
+      this.readSubscription.unsubscribe();
       this.persistencyService.saveUnreadMessages(conversation.id, 0);
     }
   }
