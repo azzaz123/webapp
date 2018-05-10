@@ -242,6 +242,9 @@ export class XmppService {
       this.onNewMessage(message);
     });
     this.client.on('message:sent', (message: XmppBodyMessage) => {
+      if (message.receipt) {
+        this.eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
+      }
       if (message.read) {
         this.eventService.emit(EventService.MESSAGE_READ_ACK);
       }

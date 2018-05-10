@@ -20,13 +20,13 @@ import { Filters } from './conversation-filters';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConversationTotals } from './totals.interface';
 import { Item } from '../item/item';
+import { ISubscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
-import { ISubscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -38,6 +38,7 @@ export class ConversationService extends LeadService {
 
   private messagesObservable: Observable<Conversation[]>;
   private readSubscription: ISubscription;
+  private receivedSubscription: ISubscription;
   public ended: boolean;
 
   constructor(http: HttpService,
@@ -432,6 +433,16 @@ export class ConversationService extends LeadService {
       messageToUpdate.date = message.date;
       this.persistencyService.updateMessageDate(message);
     } else if (message.message) {
+      this.receivedSubscription = this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
+        const conv = conversation;
+        this.trackingService.track(TrackingService.MESSAGE_RECEIVED_ACK, {
+          thread_id: message.conversationId,
+          to_user_id: conv.user.id,
+          message_id: message.id,
+          item_id: conv.item.id
+        });
+        this.receivedSubscription.unsubscribe();
+      });
       this.persistencyService.saveMessages(message);
       if (conversation) {
         this.updateConversation(message, conversation).subscribe(() => {
