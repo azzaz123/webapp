@@ -27,7 +27,9 @@ const CATEGORY_IDS: any = {
   Menu: '41',
   ItemDetail: '103',
   UploadForm: '114',
-  Reactivate: '60'
+  Reactivate: '60',
+  Link: '122',
+  Bump: '123'
 };
 
 const SCREENS_IDS: any = {
@@ -44,7 +46,8 @@ const SCREENS_IDS: any = {
   UploadForm: '139',
   MyItemDetail: '114',
   MyProfile: '112',
-  Conversation: '118'
+  Conversation: '118',
+  MyZonePro: '158'
 };
 
 const TYPES_IDS: any = {
@@ -485,6 +488,60 @@ export class TrackingService {
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_PURCHASE_EXTRAS: TrackingEventBase = {
+    name: '703',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_UPLOAD: TrackingEventBase = {
+    name: '704',
+    category: CATEGORY_IDS.UploadForm,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_MANAGE_SUBSCRIPTION: TrackingEventBase = {
+    name: '705',
+    category: CATEGORY_IDS.Link,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_FEATURE: TrackingEventBase = {
+    name: '706',
+    category: CATEGORY_IDS.Bump,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_DEACTIVATE: TrackingEventBase = {
+    name: '707',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_MODAL_DEACTIVATE: TrackingEventBase = {
+    name: '708',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_EDIT_CARD: TrackingEventBase = {
+    name: '709',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static PRO_FEATURED_PURCHASE_SUCCESS: TrackingEventBase = {
+    name: '700',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Success
+  };
+  public static PRO_FEATURED_PURCHASE_ERROR: TrackingEventBase = {
+    name: '701',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Error
   };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';

@@ -47,13 +47,10 @@ export class CatalogCardComponent implements OnInit {
       this.itemService.selectedAction = 'reserve';
       this.itemService.reserveItem(item.id, true).subscribe(() => {
         item.reserved = true;
-        //this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_id: item.id});
       });
     } else {
-      //Call reserve with false or unreserve??
       this.itemService.reserveItem(item.id, false).subscribe(() => {
         item.reserved = false;
-        //this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
       });
     }
   }

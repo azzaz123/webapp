@@ -35,6 +35,7 @@ export class CatalogItemActionsComponent implements OnInit {
   public deactivate(deactivateItemsModal: any) {
     this.modalService.open(deactivateItemsModal).result.then(() => {
       this.itemService.bulkSetDeactivate().takeWhile(() => {
+        this.trackingService.track(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
         return this.active;
       }).subscribe(() => this.getCounters.emit());
     });
@@ -59,7 +60,6 @@ export class CatalogItemActionsComponent implements OnInit {
         return this.active;
       }).subscribe((response: ItemBulkResponse) => {
         this.getCounters.emit();
-        //this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: response.updatedIds.join(', ')});
         response.updatedIds.forEach((id: string) => {
           let index: number = _.findIndex(this.items, {'id': id});
           this.items.splice(index, 1);

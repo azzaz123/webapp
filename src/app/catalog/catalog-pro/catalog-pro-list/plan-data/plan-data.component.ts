@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { Purchase } from '../../../../core/item/item-response.interface';
+import { Purchase, AutorenewPurchase } from '../../../../core/item/item-response.interface';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { PurchasesModel } from '../../../../core/payments/purchase.model';
 import { Perks } from '../../../../core/payments/payment.interface';
@@ -16,6 +16,8 @@ export class PlanDataComponent implements OnInit {
 
   @Output() subscriptionPlan: EventEmitter<number> = new EventEmitter<number>();
   @Input() counters: Counters;
+  @Input() plannedCityPurchase: number;
+  @Input() plannedCountryPurchase: number;
   public purchases: PurchasesModel = new PurchasesModel();
   public perks: Perks;
   public loading: boolean = true;

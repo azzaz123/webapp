@@ -40,6 +40,8 @@ import { CatalogCardComponent } from '../shared/catalog/catalog-card/catalog-car
 import { CatalogItemActionsComponent } from '../shared/catalog/catalog-item-actions/catalog-item-actions.component';
 import { CatalogStatusNavbarComponent } from '../shared/catalog/catalog-status-navbar/catalog-status-navbar.component';
 import { PlanDataComponent } from './catalog-pro/catalog-pro-list/plan-data/plan-data.component';
+import { ProBumpConfirmationModalComponent } from './catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
+import { ProUrgentConfirmationModalComponent } from './catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -93,7 +95,9 @@ import { PlanDataComponent } from './catalog-pro/catalog-pro-list/plan-data/plan
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
-    PlanDataComponent
+    PlanDataComponent,
+    ProBumpConfirmationModalComponent,
+    ProUrgentConfirmationModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -104,7 +108,9 @@ import { PlanDataComponent } from './catalog-pro/catalog-pro-list/plan-data/plan
     PreviewModalComponent,
     RemoveConfirmModalComponent,
     ReactivateModalComponent,
-    UrgentConfirmationModalComponent
+    UrgentConfirmationModalComponent,
+    ProBumpConfirmationModalComponent,
+    ProUrgentConfirmationModalComponent
   ]
 })
 export class CatalogModule {

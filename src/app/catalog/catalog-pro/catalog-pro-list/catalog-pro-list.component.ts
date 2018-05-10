@@ -45,6 +45,8 @@ export class CatalogProListComponent implements OnInit {
   public numberOfProducts: number;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public subscriptionPlan: number;
+  public plannedCityPurchase: number;
+  public plannedCountryPurchase: number;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -97,6 +99,8 @@ export class CatalogProListComponent implements OnInit {
       this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {page_number: this.page});
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
+      this.plannedCityPurchase = this.itemService.plannedCityPurchase;
+      this.plannedCountryPurchase = this.itemService.plannedCountryPurchase;
     });
   }
 

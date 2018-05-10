@@ -1,6 +1,6 @@
 import { Model } from '../resource/model.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
-import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo } from './item-response.interface';
+import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
 export const ITEM_BASE_PATH = 'http://es.wallapop.com/item/';
@@ -11,6 +11,10 @@ export const ITEM_STATUSES: any = {
   'active': 'PUBLISHED',
   'sold': ['SOLD_OUTSIDE', 'BOUGHT']
 };
+export const BUMP_TYPES: any = {
+  'countrybump': 'Country bump',
+  'citybump': 'City bump'
+};
 
 export class Item implements Model {
 
@@ -18,6 +22,7 @@ export class Item implements Model {
   private _views: number;
   private _favorites: number;
   private _conversations: number;
+  private _autorenewPurchase: AutorenewPurchase;
   private _favorited: boolean;
   private _selected = false;
   private _bumpExpiringDate: number;
@@ -148,6 +153,14 @@ export class Item implements Model {
     this._conversations = value;
   }
 
+  get autorenewPurchase(): AutorenewPurchase {
+    return this._autorenewPurchase;
+  }
+
+  set autorenewPurchase(value: AutorenewPurchase) {
+    this._autorenewPurchase = value;
+  }
+
   get favorited(): boolean {
     return this._favorited;
   }
@@ -183,6 +196,10 @@ export class Item implements Model {
 
   get sold(): boolean {
     return this._flags ? this._flags.sold : false;
+  }
+
+  get bumpName(): string {
+    return BUMP_TYPES[this._flags.bump_type];
   }
 
   set reserved(value: boolean) {

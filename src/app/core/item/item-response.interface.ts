@@ -65,8 +65,15 @@ export interface ItemProResponse {
 }
 
 export interface ItemProContent extends ItemContent {
-  conversations: number
+  conversations: number;
   publish_date: number;
+  autorenew_purchase: AutorenewPurchase;
+}
+
+export interface AutorenewPurchase {
+  bump_type: string;
+  start_date: number;
+  end_date: number;
 }
 
 export interface CarContent extends ItemContent {

@@ -26,12 +26,9 @@
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
     <div class="bumped" *ngIf="item.flags.bumped">
-      <div class={{item.flags.bump_type}}>{{item.flags.bump_type}}</div>
-      <div class="date">{{item.bumpExpiringDate | amCountdown}}
-        <span class="cancel-bump {{item.flags.bump_type}}" (click)="cancelAutorenew(item)" *ngIf="item.autorenew_purchase"
-              i18n>Cancel
-        </span>
-      </div>
+      <div class={{item.flags.bump_type}} i18n>{{item.bumpName}}</div>
+      <div class="date" i18n>{{item.bumpExpiringDate | amCountdown}} remaining</div>
+      <span class="cancel-bump {{item.flags.bump_type}}" (click)="cancelAutorenew(item)" *ngIf="item.autorenew_purchase" i18n>Cancel</span>
     </div>
     <div class="visibility">
       <div class="counters">
@@ -55,7 +52,7 @@
         <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.onhold">
           <mat-icon svgIcon="btn-reserved"></mat-icon>
         </button>
-        <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM"
+        <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_PRO_EDIT_CARD"
                 [params]="{category: item.categoryId}" *ngIf="!item.sold">
           <mat-icon svgIcon="btn-edit"></mat-icon>
         </button>

@@ -27,7 +27,9 @@ describe('CatalogStatusNavbarComponent', () => {
       component.filterByStatus.subscribe(($event: any) => {
         event = $event;
       });
+      spyOn(component.filterByStatus, 'emit');
       component.selectStatus(status);
+
     }));
 
     afterEach(() => {
@@ -35,11 +37,11 @@ describe('CatalogStatusNavbarComponent', () => {
     });
 
     it('should set the new status selected', () => {
-      expect(component.selectedStatus).toBe('active');
+      expect(component.selectedStatus).toBe(status);
     });
     
     it('should emit an event', () => {
-      expect(component.filterByStatus.emit).toHaveBeenCalledWith('active');
+      expect(component.filterByStatus.emit).toHaveBeenCalledWith(status);
     });
 
   });

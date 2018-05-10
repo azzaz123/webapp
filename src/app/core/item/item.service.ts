@@ -67,6 +67,8 @@ export class ItemService extends ResourceService {
     sold: []
   };
   public selectedItems: string[] = [];
+  public plannedCityPurchase = 0;
+  public plannedCountryPurchase = 0;
 
   constructor(http: HttpService,
               private i18n: I18nService,
@@ -494,6 +496,10 @@ export class ItemService extends ResourceService {
               item.views = i.content.views;
               item.favorites = i.content.favorites;
               item.conversations = i.content.conversations;
+              item.autorenewPurchase = i.content.autorenew_purchase ? i.content.autorenew_purchase : null;
+              if (item.autorenewPurchase) {
+                this.setPlannedPurchase(item);
+              }
               return item;
             });
             this.items[status] = items;
@@ -547,6 +553,17 @@ export class ItemService extends ResourceService {
       });
   }
 
+  private setPlannedPurchase(item: Item): void {
+    switch (item.autorenewPurchase.bump_type) {
+      case 'countrybump':
+        this.plannedCountryPurchase++;
+        break;
+      case 'citybump':
+        this.plannedCityPurchase++;
+        break;
+    }
+  }
+  
   public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {
     const index: number = _.findIndex(this.items.active, {id: id});
     if (index !== -1) {

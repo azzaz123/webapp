@@ -8,7 +8,12 @@
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
   <div class="container">
     <h2 i18n>Catalog</h2>
-    <tsl-plan-data [counters]="counters" (subscriptionPlan)="getSubscriptionPlan($event)"></tsl-plan-data>
+    <div class="intro">Big packages with all your items and stuff <div class="border"></div>
+      <span><a href="" tslTrackEvent="MYCATALOG_PRO_MANAGE_SUBSCRIPTION" class="corporate">Manage my subscription</a></span>
+    </div>
+    <tsl-plan-data [counters]="counters" [plannedCityPurchase]="itemService.plannedCityPurchase"
+                   [plannedCountryPurchase]="itemService.plannedCountryPurchase" (subscriptionPlan)="getSubscriptionPlan($event)">
+    </tsl-plan-data>
     <tsl-search-input (term)="search($event)"></tsl-search-input>
     <tsl-catalog-status-navbar (filterByStatus)="filterByStatus($event)" [selectedStatus]="selectedStatus"
                                [counters]="counters" [subscriptionPlan]="subscriptionPlan"></tsl-catalog-status-navbar>
@@ -16,7 +21,8 @@
     <div id="top-buttons">
       <tsl-catalog-item-actions (getCounters)="getCounters()" [active]="active" [items]="items"
                                 [selectedStatus]="selectedStatus"></tsl-catalog-item-actions>
-      <tsl-button className="btn-primary" [routerLink]="['/catalog/upload']" i18n>List a product</tsl-button>
+      <tsl-button className="btn-primary" [routerLink]="['/catalog/upload']" tslTrackEvent="MYCATALOG_PRO_UPLOAD"
+                  i18n>List a product</tsl-button>
     </div>
     <div class="row items">
       <a class="add-item col-md-12"

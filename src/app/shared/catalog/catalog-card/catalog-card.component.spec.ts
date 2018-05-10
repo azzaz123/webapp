@@ -15,7 +15,7 @@ import { MomentModule } from 'angular2-moment';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
 
-fdescribe('CatalogCardComponent', () => {
+describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
   let fixture: ComponentFixture<CatalogCardComponent>;
   let itemService: ItemService;
@@ -97,16 +97,21 @@ fdescribe('CatalogCardComponent', () => {
       const item: Item = MOCK_ITEM;
       item.selected = false;
       spyOn(itemService, 'selectItem');
+
       component.select(item);
-      expect(item.selected).toBeTruthy();
+
+      expect(item.selected).toBe(true);
       expect(itemService.selectItem).toHaveBeenCalledWith(ITEM_ID);
     });
+
     it('should set selected false and call deselectItem', () => {
       const item: Item = MOCK_ITEM;
       item.selected = true;
       spyOn(itemService, 'deselectItem');
+
       component.select(item);
-      expect(item.selected).toBeFalsy();
+
+      expect(item.selected).toBe(false);
       expect(itemService.deselectItem).toHaveBeenCalledWith(ITEM_ID);
     });
   });
@@ -160,6 +165,7 @@ fdescribe('CatalogCardComponent', () => {
 
       it('should track the ProductUnReserved event', () => {
         component.reserve(item);
+
         //expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_RESERVED, {product_id: item.id});
       });
     });
@@ -180,6 +186,7 @@ fdescribe('CatalogCardComponent', () => {
 
       it('should track the ProductUnReserved event', () => {
         component.reserve(item);
+
         //expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
       });
     });

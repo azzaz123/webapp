@@ -59,6 +59,7 @@ $height: 40px;
         height: 16px;
         width: 14px;
         vertical-align: sub;
+        margin-right: $spacing-XS;
       }
       &:hover {
         background: $delete-bg;

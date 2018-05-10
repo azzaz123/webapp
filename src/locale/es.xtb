@@ -336,4 +336,45 @@
   <translation id="6570363013146073520">Panel</translation>
   <translation id="5762151072276461448">Llamadas</translation>
   <translation id="4588618843305891254">Catálogo</translation>
+  <translation id="5847549463396300276">Valora tu experiencia con <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
+  <translation id="7251596190905542711">Busca productos</translation>
+  <translation id="7239750919884229270">Actualizado</translation>
+  <translation id="6140925356015461504"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="708449889891136724"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
+  <translation id="6923676368903866016"><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Delete</translation>
+  <translation id="5322473252816589112">Desactivar</translation>
+  <translation id="4759723562137600498">Activar</translation>
+  <translation id="13886945388572438">Destácalo</translation>
+  <translation id="5943346117221479516">Desactivar productos</translation>
+  <translation id="1888437309536533541">Los productos seleccionados serán marcados como pendientes</translation>
+  <translation id="2299499307204911989">Activar productos</translation>
+  <translation id="3437651521808081039">Los productos seleccionados serán marcados como activos.</translation>
+  <translation id="5462141440964261451">Activo
+      <ph name="START_TAG_SPAN_1"><ex>START_TAG_SPAN_1</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>/<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="8071836626857993456">Inactivo
+      <ph name="START_TAG_SPAN"><ex>START_TAG_SPAN</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="8758145473521943704">Destacado
+    <ph name="START_TAG_SPAN"><ex>START_TAG_SPAN</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="243941754532373935">Vendido
+      <ph name="START_TAG_SPAN"><ex>START_TAG_SPAN</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="3576739165178660027">tu plan</translation>
+  <translation id="8756155295186418998">Plan Profesional</translation>
+  <translation id="4154831356233082418">Disponible</translation>
+  <translation id="1859131936150262113">Inactivo</translation>
+  <translation id="7697915584663780042">visibilidad</translation>
+  <translation id="5439433189125089418">Plan Ciudad</translation>
+  <translation id="3955868613858648955">Disponible</translation>
+  <translation id="6211554071012062130">Plan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="2882470259260755892"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
+  <translation id="8488915425381344887">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
+  <translation id="5092371717305178267">Plan País</translation>
+  <translation id="4772127996106888369">No tienes un Plan País</translation>
+  <translation id="1466012768716286509">Apúntate</translation>
+  <translation id="766927465251603474">Plan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="6463509780873643723"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
+  <translation id="9054202731560341408">En uso</translation>
+  <translation id="1725562452483752433">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
+  <translation id="4065372059698851857"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> disponibles</translation>
+  <translation id="3286725018134496844">Ya tienes tus destacados extras disponibles para que los puedas utilizar.</translation>
+  <translation id="7542752854018206709">Tu compra no se ha podido realizar porque algo ha ido mal con la tarjeta. Comprueba y prueba otra vez. </translation>
 </translationbundle>

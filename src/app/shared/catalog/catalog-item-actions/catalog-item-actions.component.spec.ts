@@ -15,7 +15,7 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 
-fdescribe('CatalogItemActionsComponent', () => {
+describe('CatalogItemActionsComponent', () => {
   let component: CatalogItemActionsComponent;
   let fixture: ComponentFixture<CatalogItemActionsComponent>;
   let itemService: ItemService;
@@ -45,6 +45,7 @@ fdescribe('CatalogItemActionsComponent', () => {
           provide: NgbModal, useValue: {
             open() {
               return {
+                componentInstance: {},
                 result: Promise.resolve()
               };
             }
@@ -76,7 +77,6 @@ fdescribe('CatalogItemActionsComponent', () => {
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
-    fixture.detectChanges();
     spyOn(modalService, 'open').and.callThrough();
     spyOn(toastr, 'error');
   });
@@ -96,6 +96,7 @@ fdescribe('CatalogItemActionsComponent', () => {
     beforeEach(() => {
       component.selectedStatus = 'active';
       component.items = createItemsArray(TOTAL);
+      component.active = true;
     });
 
     describe('success', () => {
