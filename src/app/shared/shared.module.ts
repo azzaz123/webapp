@@ -27,6 +27,8 @@ import { ArchiveButtonComponent } from './archive-button/archive-button.componen
 import { UnarchiveButtonComponent } from './unarchive-button/unarchive-button.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { SwitchComponent } from './switch/switch.component';
+import { GdprModalComponent } from './gdpr-modal/gdpr-modal.component';
+import { CheckboxComponent } from './checkbox/checkbox.component';
 
 @NgModule({
   imports: [
@@ -59,7 +61,8 @@ import { SwitchComponent } from './switch/switch.component';
     UnarchiveButtonComponent,
     SwitchComponent,
     ReviewModalComponent,
-    NgxPermissionsModule
+    NgxPermissionsModule,
+    GdprModalComponent
   ],
   declarations: [
     AdComponent,
@@ -81,7 +84,9 @@ import { SwitchComponent } from './switch/switch.component';
     UnarchiveButtonComponent,
     UserAvatarComponent,
     SwitchComponent,
-    ReviewModalComponent
+    ReviewModalComponent,
+    GdprModalComponent,
+    CheckboxComponent
   ],
   providers: [
     DecimalPipe,
@@ -91,7 +96,8 @@ import { SwitchComponent } from './switch/switch.component';
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,
-    ReviewModalComponent
+    ReviewModalComponent,
+    GdprModalComponent
   ]
 })
 export class SharedModule { }
