@@ -2,7 +2,7 @@
   <div class="container">
     <a class="back" [routerLink]="['/pro/catalog/list']"><mat-icon svgIcon="back-arrow"></mat-icon> <span i18n>Back</span></a>
     <div class="row" *ngIf="packs">
-        <div class="col-xl col-lg-8">
+        <div class="col-xl col-lg-8" *ngIf="!billingInfoFormEnabled">
           <div class="table-header">
             <div class="info">
               <mat-icon svgIcon="feature"></mat-icon>
@@ -29,8 +29,11 @@
             <tsl-checkout-extras-pro-item *ngFor="let pack of packs" [pack]="pack"></tsl-checkout-extras-pro-item>
           </div>
         </div>
+        <div class="col-xl col-lg-8" *ngIf="billingInfoFormEnabled">
+          billingInfo
+        </div>
         <div class="cart">
-          <tsl-cart-extras-pro></tsl-cart-extras-pro>
+          <tsl-cart-extras-pro (billingInfoNeeds)="onBillingInfoNeeds($event)"></tsl-cart-extras-pro>
         </div>
       </div>
       <tsl-spinner [firstLoad]="false" [hidden]="packs"></tsl-spinner>

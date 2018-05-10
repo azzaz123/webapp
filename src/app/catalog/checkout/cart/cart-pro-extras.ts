@@ -1,7 +1,7 @@
 import { CartBase, BUMP_TYPES } from './cart-base';
 import { CartProExtrasPack } from './cart-item.interface';
 import * as _ from 'lodash';
-import { OrderProExtras } from '../../../core/item/item-response.interface';
+import { OrderProExtras } from '../../../core/payments/payment.interface';
 
 export class CartProExtras extends CartBase {
 
@@ -26,16 +26,17 @@ export class CartProExtras extends CartBase {
   }
 
   prepareOrder() {
-    const ordersArray: OrderProExtras[] = [];
+    const ordersArray: Array<string> = [];
     BUMP_TYPES.forEach((type: string) => {
-      const orders: OrderProExtras[] = this[type].cartItems.map((cartProExtrasPack: CartProExtrasPack) => {
-        return {
-          pack_id: cartProExtrasPack.pack.id
-        };
+      const orders: Array<string> = this[type].cartItems.map((cartProExtrasPack: CartProExtrasPack) => {
+        return cartProExtrasPack.pack.id;
       });
       ordersArray.push(...orders);
     });
-    return ordersArray;
+    return {
+      id: this.getOrderId(),
+      packs: ordersArray
+    };
   }
 
   private calculateTotals() {

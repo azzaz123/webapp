@@ -1,11 +1,14 @@
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { CartService } from '../../cart/cart.service';
 import { CartProExtras } from '../../cart/cart-pro-extras';
 import { CartChange } from '../../cart/cart-item.interface';
 import { CartBase, BUMP_TYPES } from '../../cart/cart-base';
 import { PaymentService } from '../../../../core/payments/payment.service';
-import { FinancialCard } from '../../../../core/payments/payment.interface';
+import { FinancialCard, BillingInfoResponse, OrderProExtras } from '../../../../core/payments/payment.interface';
 import { Pack } from '../../../../core/payments/pack';
+import { ErrorsService } from '../../../../core/errors/errors.service';
+import { Response } from '@angular/http';
+import { TrackingService } from '../../../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
@@ -19,11 +22,15 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   public types: string[] = BUMP_TYPES;
   public loading: boolean;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
+  public cardType = 'old';
   private active = true;
+  @Output() billingInfoNeeds: EventEmitter<boolean> = new EventEmitter();
 
 
   constructor(private cartService: CartService,
-              private paymentService: PaymentService) { }
+              private paymentService: PaymentService,
+              private errorService: ErrorsService,
+              private trackingService: TrackingService) { }
 
   ngOnInit() {
     this.cartService.createInstance(new CartProExtras());
@@ -46,7 +53,34 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     this.cartService.clean();
   }
 
-  checkout() {}
+  checkout() {
+    this.loading = true;
+    this.paymentService.getBillingInfo().subscribe((info: BillingInfoResponse) => {
+      const order: OrderProExtras = this.cart.prepareOrder();
+      console.log('checkout', order);
+      this.paymentService.orderExtrasProPack(order).subscribe(() => {
+        this.track(order);
+        this.buy(order.orderId);
+      }, (error: Response) => {
+        this.loading = false;
+        if (error.text()) {
+          this.errorService.show(error);
+        } else {
+          this.errorService.i18nError('bumpError');
+        }
+      });
+    }, () => {
+      this.billingInfoNeeds.emit(true);
+    });
+  }
+
+  private buy(orderId: string) {
+    console.log('order', orderId);
+  }
+
+  private track(order: OrderProExtras) {
+    this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {selected_packs: order.packs});
+  }
 
   private getCard() {
     this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {

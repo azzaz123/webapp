@@ -12,6 +12,7 @@ import { isArray } from 'util';
 })
 export class CheckoutExtrasProComponent implements OnInit {
   packs: Array<any> = [];
+  billingInfoFormEnabled = false;
 
   constructor(private paymentService: PaymentService) { }
 
@@ -19,6 +20,11 @@ export class CheckoutExtrasProComponent implements OnInit {
     this.paymentService.getPacks().subscribe((packs: Packs) => {
       this.preparePacks(packs);
     });
+  }
+
+  public onBillingInfoNeeds(billingInfoNeeds: boolean) {
+    console.log('hey', billingInfoNeeds);
+    this.billingInfoFormEnabled = billingInfoNeeds;
   }
 
   private preparePacks(packs: Packs): void {

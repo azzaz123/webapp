@@ -34,3 +34,22 @@ export interface ProductResponse {
 export interface Products {
   [key: string]: ProductResponse;
 }
+
+export interface OrderProExtras {
+  packs: Array<string>;
+  orderId: string;
+}
+
+export interface BillingInfoResponse {
+  cif: string;
+  city: string;
+  company_name: string;
+  country: string;
+  email: string;
+  id: string;
+  name: string;
+  phone: string;
+  postal_code: string;
+  street: string;
+  surname: string;
+}

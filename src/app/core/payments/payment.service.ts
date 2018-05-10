@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
-import { FinancialCard, SabadellInfoResponse, Packs, ProductResponse, Products, PackResponse } from './payment.interface';
+import { FinancialCard, SabadellInfoResponse, Packs,
+  ProductResponse, Products, PackResponse, BillingInfoResponse, OrderProExtras } from './payment.interface';
 import { HttpService } from '../http/http.service';
 import * as _ from 'lodash';
 import { Pack, PACKNAMES } from './pack';
@@ -24,6 +25,11 @@ export class PaymentService {
     return this.http.get(this.API_URL + '/c2b/sabadell/tpv/params', {
       orderId: orderId
     })
+    .map((r: Response) => r.json());
+  }
+
+  public getBillingInfo(): Observable<BillingInfoResponse> {
+    return this.http.get(this.API_URL + '/billing-info/me')
     .map((r: Response) => r.json());
   }
 
@@ -77,6 +83,10 @@ export class PaymentService {
         return packsResponse;
       });
     });
+  }
+
+  public orderExtrasProPack(order: OrderProExtras): Observable<any> {
+    return this.http.post(this.API_URL + '/c2b/pack-order/create', order);
   }
 
   private sortPacksByQuantity(packs: PackResponse[]): PackResponse[] {

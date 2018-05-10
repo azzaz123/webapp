@@ -508,6 +508,12 @@ export class TrackingService {
     screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
+  public static PRO_PURCHASE_CHECKOUTPROEXTRACART: TrackingEventBase = {
+    name: '699',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
