@@ -11,8 +11,9 @@ import { ITEM_ID, MOCK_ITEM_V3 } from '../../../../../tests/item.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { CartPro } from '../../cart/cart-pro';
 import * as moment from 'moment';
-import { MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
+import { MOCK_SELECTED_DATES, MOCK_DATE2, MOCK_DATE3 } from '../../../../../tests/calendar.fixtures.spec';
 import { MOCK_PROITEM } from '../../../../../tests/pro-item.fixtures.spec';
+import { CalendarDates } from '../range-datepicker/calendar-dates';
 
 describe('CheckoutProItemComponent', () => {
   let component: CheckoutProItemComponent;
@@ -45,6 +46,15 @@ describe('CheckoutProItemComponent', () => {
             remove() {
             },
             cart$: Observable.of(CART_CHANGE)
+          },
+        }, {
+          provide: NgbCalendar, useValue: {
+            getToday() {
+              return MOCK_DATE2;
+            },
+            getNext() {
+              return MOCK_DATE3;
+            }
           }
         }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -58,29 +68,22 @@ describe('CheckoutProItemComponent', () => {
     component.cartProItem = MOCK_PROITEM;
     fixture.detectChanges();
     cartService = TestBed.get(CartService);
+    component.cartProItem.selectedDates = new CalendarDates(MOCK_DATE2, MOCK_DATE3);
   });
 
   describe('ngOnInit', () => {
     it('should call createInstance cartService method', () => {
       spyOn(cartService, 'createInstance').and.callThrough();
-      spyOn(component, 'initItem').and.callThrough();
 
       component.ngOnInit();
 
       expect(cartService.createInstance).toHaveBeenCalledWith(new CartPro());
-      expect(component.initItem).toHaveBeenCalled();
     });
-  });
 
-  describe('initItem', () => {
-    it('should initialize default item dates', () => {
-      spyOn(component, 'initItem').and.callThrough();
+    it('should call create instance of CalendarDates', () => {
+      component.ngOnInit();
 
-      component.initItem();
-
-      expect(component.cartProItem.selectedDates.formattedFromDate).toBe(moment(new Date()).format('DD/MM/YYYY'));
-      expect(component.cartProItem.selectedDates.formattedToDate).toBe(moment(new Date()).add(1, 'days').format('DD/MM/YYYY'));
-      expect(component.cartProItem.selectedDates.numberOfDays).toBe(1);
+      expect(component.cartProItem.selectedDates instanceof CalendarDates).toBe(true);
     });
   });
 
@@ -124,10 +127,6 @@ describe('CheckoutProItemComponent', () => {
 
   describe('onRemoveOrClean', () => {
 
-    beforeEach(() => {
-      spyOn(component, 'initItem').and.callThrough();
-    });
-
     it('should reset flags, selected type and duration if action remove', () => {
       const cartChange: CartChange = {
         action: 'remove',
@@ -151,10 +150,9 @@ describe('CheckoutProItemComponent', () => {
 
     afterEach(() => {
       expect(component.cartProItem.bumpType).toBeUndefined();
-      expect(component.cartProItem.selectedDates.formattedFromDate).toBe(moment(new Date()).format('DD/MM/YYYY'));
-      expect(component.cartProItem.selectedDates.formattedToDate).toBe(moment(new Date()).add(1, 'days').format('DD/MM/YYYY'));
+      expect(component.cartProItem.selectedDates.fromDate).toBe(MOCK_DATE2);
+      expect(component.cartProItem.selectedDates.toDate).toBe(MOCK_DATE3);
       expect(component.cartProItem.selectedDates.numberOfDays).toBe(1);
-      expect(component.initItem).toHaveBeenCalled();
     });
   });
 

@@ -4,9 +4,7 @@ export class CalendarDates {
     constructor(
         private _fromDate?: NgbDateStruct,
         private _toDate?: NgbDateStruct,
-        private _formattedFromDate?: string,
-        private _formattedToDate?: string,
-        private _numberOfDays?: number) { }
+    ) { }
 
     get fromDate(): NgbDateStruct {
         return this._fromDate;
@@ -28,24 +26,13 @@ export class CalendarDates {
         return new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day).toLocaleDateString();
     }
 
-    set formattedFromDate(value: string) {
-        this._formattedFromDate = value;
-    }
 
     get formattedToDate() {
         return new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day).toLocaleDateString();
     }
 
-    set formattedToDate(value: string) {
-        this._formattedToDate = value;
-    }
-
     get numberOfDays() {
         return this.calculateDateDiff();
-    }
-
-    set numberOfDays(value: number) {
-        this._numberOfDays = value;
     }
 
     calculateDateDiff() {

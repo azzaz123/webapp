@@ -5,6 +5,7 @@ import { CartService } from '../../cart/cart.service';
 import { CartPro } from '../../cart/cart-pro';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date';
+import { CalendarDates } from '../range-datepicker/calendar-dates';
 
 @Component({
   selector: 'tsl-checkout-pro-item',
@@ -22,29 +23,12 @@ export class CheckoutProItemComponent implements OnInit {
       this.onRemoveOrClean(cartChange);
     });
   }
-  ngOnInit() {
-    this.cartService.createInstance(new CartPro());
-    this.initItem();
-  }
 
-  initItem() {
+  ngOnInit() {
     const todayDate = this.calendar.getToday();
     const tomorrowDate = this.calendar.getNext(todayDate);
-    this.cartProItem.selectedDates = {
-      fromDate: {
-        year: todayDate.year,
-        month: todayDate.month,
-        day: todayDate.day
-      },
-      formattedFromDate: new Date(todayDate.year, todayDate.month - 1, todayDate.day).toLocaleDateString(),
-      toDate: {
-        year: tomorrowDate.year,
-        month: tomorrowDate.month,
-        day: tomorrowDate.day
-      },
-      formattedToDate: new Date(tomorrowDate.year, tomorrowDate.month - 1, tomorrowDate.day).toLocaleDateString(),
-      numberOfDays: 1
-    };
+    this.cartService.createInstance(new CartPro());
+    this.cartProItem.selectedDates = new CalendarDates(todayDate, tomorrowDate);
   }
 
   onDateFocus() {
@@ -54,7 +38,6 @@ export class CheckoutProItemComponent implements OnInit {
   onRemoveOrClean(cartProChange: CartChange) {
     if (cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id || cartProChange.action === 'clean') {
       delete this.cartProItem.bumpType;
-      this.initItem();
     }
   }
 

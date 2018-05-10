@@ -7,8 +7,5 @@ export const MOCK_DATE3 = { year: 2018, month: 5, day: 25 };
 
 export const MOCK_SELECTED_DATES: CalendarDates = new CalendarDates(
     MOCK_DATE,
-    MOCK_DATE2,
-    new Date(MOCK_DATE.year, MOCK_DATE.month - 1, MOCK_DATE.day).toLocaleDateString(),
-    new Date(MOCK_DATE.year, MOCK_DATE.month - 1, MOCK_DATE.day).toLocaleDateString(),
-    16
+    MOCK_DATE2
 );
