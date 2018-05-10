@@ -29,40 +29,13 @@ describe('RangeDatepickerComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('ngOnInit', () => {
-    beforeEach(() => {
-      spyOn(component, 'calculateDateDiff');
-    });
-
-    it('should set numberOfDays if init and end dates are selected', () => {
-      component.fromDate = MOCK_DATE;
-      component.toDate = MOCK_DATE2;
-      component.ngOnInit();
-
-      expect(component.calculateDateDiff).toHaveBeenCalled();
-    });
-
-    it('should set numberOfDays to 0 if no dates selected', () => {
-      component.ngOnInit();
-
-      expect(component.calculateDateDiff).not.toHaveBeenCalled();
-      expect(component.fromDate).toBeUndefined();
-      expect(component.toDate).toBeUndefined();
-      expect(component.numberOfDays).toBe(0);
-    });
-  });
-
   describe('onDateSelection', () => {
-    beforeEach(() => {
-      spyOn(component, 'calculateDateDiff');
-    });
 
     it('should set init date if any date is selected', () => {
       component.onDateSelection(MOCK_DATE);
 
       expect(component.fromDate).toBe(MOCK_DATE);
       expect(component.toDate).toBeUndefined();
-      expect(component.calculateDateDiff).not.toHaveBeenCalled();
     });
 
     it('should set init date if end date is before init date', () => {
@@ -70,7 +43,6 @@ describe('RangeDatepickerComponent', () => {
       component.onDateSelection(MOCK_DATE);
 
       expect(component.fromDate).toBe(MOCK_DATE);
-      expect(component.calculateDateDiff).not.toHaveBeenCalled();
     });
 
     it('should set end date and calculate date diff if init date is before end date', () => {
@@ -80,7 +52,13 @@ describe('RangeDatepickerComponent', () => {
       expect(component.fromDate).toBeDefined();
       expect(component.fromDate).toBe(MOCK_DATE);
       expect(component.toDate).toBe(MOCK_DATE2);
-      expect(component.calculateDateDiff).toHaveBeenCalled();
+    });
+
+    it('should calculate the number of days between init and end date', () => {
+      component.onDateSelection(MOCK_DATE);
+      component.onDateSelection(MOCK_DATE2);
+
+      expect(component.numberOfDays).toBe(MOCK_SELECTED_DATES.numberOfDays);
     });
   });
 
@@ -91,16 +69,6 @@ describe('RangeDatepickerComponent', () => {
       component.onCancel();
 
       expect(component.closeCalendar.emit).toHaveBeenCalled();
-    });
-  });
-
-  describe('calculateDateDiff', () => {
-    it('should calculate the number of days between init and end date', () => {
-      component.onDateSelection(MOCK_DATE);
-      component.onDateSelection(MOCK_DATE2);
-      component.calculateDateDiff();
-
-      expect(component.numberOfDays).toBe(MOCK_SELECTED_DATES.numberOfDays);
     });
   });
 

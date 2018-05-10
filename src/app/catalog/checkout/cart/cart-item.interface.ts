@@ -1,7 +1,7 @@
 import { Duration } from '../../../core/item/item-response.interface';
 import { Item } from '../../../core/item/item';
 import { CartBase } from './cart-base';
-import { CalendarDates } from '../checkout-pro/range-datepicker/calendar-dates.interface';
+import { CalendarDates } from '../checkout-pro/range-datepicker/calendar-dates';
 
 export interface CartItem {
   item: Item;
