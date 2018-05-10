@@ -62,11 +62,6 @@ export class XmppService {
     };
     this.client.sendMessage(message);
     this.onNewMessage(_.clone(message));
-    this.trackingService.track(TrackingService.MESSAGE_SENT, {
-      thread_id: message.thread,
-      to_user_id: conversation.user.id,
-      message_id: message.id
-    });
     if (!conversation.messages.length) {
       this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
         to_user_id: conversation.user.id,
