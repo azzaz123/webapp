@@ -12,6 +12,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class XmppService {
@@ -27,6 +28,7 @@ export class XmppService {
   private connected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
+  private sentAckSubscription: ISubscription;
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
@@ -60,6 +62,21 @@ export class XmppService {
       },
       body: body
     };
+    this.trackingService.track(TrackingService.MESSAGE_SENT, {
+      thread_id: message.thread,
+      message_id: message.id,
+      to_user_id: conversation.user.id,
+      item_id: conversation.item.id
+    });
+    this.sentAckSubscription = this.eventService.subscribe(EventService.MESSAGE_SENT_ACK, () => {
+      this.trackingService.track(TrackingService.MESSAGE_SENT_ACK, {
+        thread_id: message.thread,
+        message_id: message.id,
+        to_user_id: conversation.user.id,
+        item_id: conversation.item.id
+      });
+      this.sentAckSubscription.unsubscribe();
+    });
     this.client.sendMessage(message);
     this.onNewMessage(_.clone(message));
     if (!conversation.messages.length) {
@@ -247,6 +264,9 @@ export class XmppService {
       }
       if (message.read) {
         this.eventService.emit(EventService.MESSAGE_READ_ACK);
+      }
+      if (message.body) {
+        this.eventService.emit(EventService.MESSAGE_SENT_ACK);
       }
     });
     this.client.on('session:started', () => {

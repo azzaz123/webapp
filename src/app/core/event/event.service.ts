@@ -11,6 +11,7 @@ export class EventService {
   public static MESSAGE_ADDED = 'messageAdded';
   public static MESSAGES_READ = 'conversationRead';
   public static MESSAGE_READ_ACK = 'messageReadAck';
+  public static MESSAGE_SENT_ACK = 'messageSentAck';
   public static MESSAGE_RECEIVED_ACK = 'messageReceivedAck';
   public static CONNECTION_ERROR = 'connectionError';
   public static CONNECTION_RESTORED = 'connectionRestored';
