@@ -7,6 +7,7 @@ import { OrderPro } from '../../../../core/item/item-response.interface';
 import { ItemService } from '../../../../core/item/item.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { Router } from '@angular/router';
+import { TrackingService } from '../../../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-cart-pro',
@@ -18,7 +19,7 @@ export class CartProComponent implements OnInit {
   public cart: CartBase = new CartPro();
   public types: string[] = BUMP_PRO_TYPES;
 
-  constructor(private cartService: CartService, private itemService: ItemService, private errorService: ErrorsService, private router: Router) {
+  constructor(private cartService: CartService, private itemService: ItemService, private errorService: ErrorsService, private router: Router, private trackingService: TrackingService,) {
     this.cartService.cart$.subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
     });
@@ -38,7 +39,9 @@ export class CartProComponent implements OnInit {
       if (failedProducts && failedProducts.length) {
         this.errorService.i18nError('bumpError');
       } else {
-        this.router.navigate(['/pro/catalog/list']);
+        this.itemService.deselectItems();
+        this.trackingService.track(TrackingService.BUMP_PRO_APPLY, { selected_products: order });
+        this.router.navigate(['/pro/catalog/list', { code: 200 }]);
       }
     }, (error) => {
       if (error.text()) {

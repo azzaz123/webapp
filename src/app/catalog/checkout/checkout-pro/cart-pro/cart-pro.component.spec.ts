@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 import { MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
 import { OrderPro } from '../../../../core/item/item-response.interface';
 import { MOCK_PROITEM } from '../../../../../tests/pro-item.fixtures.spec';
+import { TrackingService } from '../../../../core/tracking/tracking.service';
+import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 
 describe('CartProComponent', () => {
   let component: CartProComponent;
@@ -22,6 +24,7 @@ describe('CartProComponent', () => {
   let errorService: ErrorsService;
   let itemService: ItemService;
   let router: Router;
+  let trackingService: TrackingService;
 
   const CART = new CartPro();
   const CART_CHANGE: CartChange = {
@@ -37,6 +40,9 @@ describe('CartProComponent', () => {
       declarations: [CartProComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
+        {
+          provide: TrackingService, useClass: MockTrackingService
+        },
         {
           provide: CartService, useValue: {
             cart$: Observable.of(CART_CHANGE),
@@ -80,6 +86,7 @@ describe('CartProComponent', () => {
     itemService = TestBed.get(ItemService);
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
+    trackingService = TestBed.get(TrackingService);
   });
 
   describe('ngOnInit', () => {
@@ -114,14 +121,29 @@ describe('CartProComponent', () => {
     });
 
     describe('success', () => {
-      it('should navigate to pro list if operation succeed', () => {
+      beforeEach(() => {
         spyOn(itemService, 'bumpProItems').and.returnValue(Observable.of([]));
+        spyOn(itemService, 'deselectItems').and.callThrough();
         spyOn(errorService, 'i18nError');
         spyOn(router, 'navigate');
-
+        spyOn(trackingService, 'track');
         component.applyBumps();
+      });
 
-        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list']);
+      it('should deselect items', () => {
+        expect(itemService.deselectItems).toHaveBeenCalled();
+      });
+
+      it('should track', () => {
+        const order: OrderPro[] = component.cart.prepareOrder();
+
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.BUMP_PRO_APPLY, {
+          selected_products: order
+        });
+      });
+
+      it('should navigate to pro list', () => {
+        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 200 }]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
     });

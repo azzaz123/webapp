@@ -49,7 +49,8 @@ const SCREENS_IDS: any = {
   MyProfile: '112',
   Conversation: '118',
   Messages: '117',
-  ProPhoneManager: '94'
+  ProPhoneManager: '94',
+  MyZonePro: '158'
 };
 
 const TYPES_IDS: any = {
@@ -549,6 +550,12 @@ export class TrackingService {
     name: '687',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static BUMP_PRO_APPLY: TrackingEventBase = {
+    name: '710',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZonePro,
     type: TYPES_IDS.Tap
   };
 
