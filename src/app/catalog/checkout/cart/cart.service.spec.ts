@@ -31,7 +31,7 @@ describe('CartService', () => {
     });
 
     it('should create an instance of Cart', () => {
-      expect(cart instanceof Cart).toBeTruthy();
+      expect(cart instanceof Cart).toBe(true);
     });
 
     describe('add', () => {
@@ -40,7 +40,7 @@ describe('CartService', () => {
 
         service.add(CART_ITEM_CITYBUMP, TYPE);
 
-        expect(cartChange.cart instanceof Cart).toBeTruthy();
+        expect(cartChange.cart instanceof Cart).toBe(true);
         expect(cartChange.itemId).toBe(MOCK_ITEM_V3.id);
         expect(cartChange.type).toBe(TYPE);
         expect(cartChange.action).toBe('add');
@@ -54,7 +54,7 @@ describe('CartService', () => {
 
         service.remove(ITEM_ID, TYPE);
 
-        expect(cartChange.cart instanceof Cart).toBeTruthy();
+        expect(cartChange.cart instanceof Cart).toBe(true);
         expect(cartChange.itemId).toBe(ITEM_ID);
         expect(cartChange.type).toBe(TYPE);
         expect(cartChange.action).toBe('remove');
@@ -68,7 +68,7 @@ describe('CartService', () => {
 
         service.clean();
 
-        expect(cartChange.cart instanceof Cart).toBeTruthy();
+        expect(cartChange.cart instanceof Cart).toBe(true);
         expect(cartChange.action).toBe('clean');
         expect(service['cart'].clean).toHaveBeenCalled();
       });
