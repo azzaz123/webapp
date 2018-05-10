@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
 import { Router } from '@angular/router';
-import { CalendarDates } from './range-datepicker/calendar-dates.interface';
 import { CartProItem } from '../cart/cart-item.interface';
 import { CartService } from '../cart/cart.service';
 import { CartPro } from '../cart/cart-pro';
+import { CalendarDates } from './range-datepicker/calendar-dates';
 
 @Component({
   selector: 'tsl-checkout-pro',
