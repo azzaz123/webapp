@@ -40,6 +40,14 @@ describe('GdprModalComponent', () => {
     fixture.detectChanges();
   });
 
+  it('ngOnInit', () => {
+    spyOn(component, 'getGDPRText')
+
+    component.ngOnInit();
+
+    expect(component.getGDPRText).toHaveBeenCalled();
+  });
+
   describe('getGDPRText', () => {
     beforeEach(() => {
       spyOn(http, 'getNoBase').and.callThrough();
@@ -48,7 +56,7 @@ describe('GdprModalComponent', () => {
     it('should get spanish text by default ', () => {
       const url = environment.siteUrl + 'rest/gdpr/popup/es';
 
-      component.ngOnInit();
+      component.getGDPRText();
 
       expect(http.getNoBase).toHaveBeenCalledWith(url);
     });
@@ -57,7 +65,7 @@ describe('GdprModalComponent', () => {
       const url = environment.siteUrl + 'rest/gdpr/popup/gb';
       spyOn(component, 'getSubdomain').and.returnValue('web-en');
 
-      component.ngOnInit();
+      component.getGDPRText();
 
       expect(http.getNoBase).toHaveBeenCalledWith(url);
     });
