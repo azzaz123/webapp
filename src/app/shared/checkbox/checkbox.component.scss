@@ -20,6 +20,7 @@ $feature-button-width: 170px;
       &.selected {
         color: $corporate;
       }
+      text-align: left;
     }
     button {
       @include square($checkbox-width);
@@ -31,6 +32,7 @@ $feature-button-width: 170px;
       cursor: pointer;
       display: flex;
       justify-content: center;
+      flex: none;
       mat-icon {
         display: none;
         height: 9px;
