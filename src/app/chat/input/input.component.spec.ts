@@ -54,24 +54,32 @@ describe('Component: Input', () => {
   describe('ngOnInit', () => {
     it('should disable input when CONNECTION_ERROR', () => {
       component.ngOnInit();
+
       eventService.emit(EventService.CONNECTION_ERROR);
+      
       expect(component.disable).toBe(true);
     });
     it('should disable input when CONNECTION_RESTORED', () => {
       component.ngOnInit();
+      
       eventService.emit(EventService.CONNECTION_RESTORED);
+      
       expect(component.disable).toBe(false);
     });
     it('should disable input when USER_BLOCKED', () => {
       component.currentConversation = MOCK_CONVERSATION();
+      
       component.ngOnInit();
       eventService.emit(EventService.USER_BLOCKED, USER_ID);
+      
       expect(component.disable).toBe(true);
     });
     it('should disable input when USER_UNBLOCKED', () => {
       component.currentConversation = MOCK_CONVERSATION();
+      
       component.ngOnInit();
       eventService.emit(EventService.USER_UNBLOCKED, USER_ID);
+      
       expect(component.disable).toBe(false);
     });
   });
@@ -91,7 +99,9 @@ describe('Component: Input', () => {
 
     it('should call the send method if texts is present', () => {
       textarea.value = TEXT;
+      
       component.sendMessage(textarea, EVENT);
+      
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
@@ -99,7 +109,9 @@ describe('Component: Input', () => {
 
     it('should call the send method if texts is present with spaces', () => {
       textarea.value = '   ' + TEXT + ' ';
+      
       component.sendMessage(textarea, EVENT);
+      
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
@@ -107,7 +119,9 @@ describe('Component: Input', () => {
 
     it('should NOT call the send method if texts is empty', () => {
       textarea.value = '';
+      
       component.sendMessage(textarea, EVENT);
+      
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(textarea.value).toBe('');
@@ -115,7 +129,9 @@ describe('Component: Input', () => {
 
     it('should NOT call the send method if texts is just spaces', () => {
       textarea.value = '   ';
+
       component.sendMessage(textarea, EVENT);
+
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(textarea.value).toBe('');
@@ -124,7 +140,9 @@ describe('Component: Input', () => {
     it('should NOT call the send method if disabled', () => {
       textarea.value = TEXT;
       component.disable = true;
+
       component.sendMessage(textarea, EVENT);
+
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
     });
@@ -147,25 +165,31 @@ describe('Component: Input', () => {
     it('should focus the message area', fakeAsync(() => {
       component.ngOnChanges();
       tick(500);
+
       expect(component.messageArea.nativeElement.focus).toHaveBeenCalled();
     }));
 
     it('should not do anything if there is no message to read', () => {
       component.messageArea = undefined;
+
       component.ngOnChanges();
     });
 
     it('should disable input if user is blocked', () => {
       component.currentConversation = MOCK_CONVERSATION();
       component.currentConversation.user.blocked = true;
+
       component.ngOnChanges();
+
       expect(component.disable).toBe(true);
     });
 
     it('should disable input if the browser is disconnected', () => {
       component.currentConversation = MOCK_CONVERSATION();
       connectionService.isConnected = false;
+
       component.ngOnChanges();
+
       expect(component.disable).toBe(true);
     });
 
@@ -173,14 +197,18 @@ describe('Component: Input', () => {
       component.disable = true;
       component.currentConversation = MOCK_CONVERSATION();
       component.currentConversation.user.blocked = false;
+
       component.ngOnChanges();
+
       expect(component.disable).toBe(false);
     });
 
     it('should enable input if the browser is connected', () => {
       component.currentConversation = MOCK_CONVERSATION();
       connectionService.isConnected = true;
+
       component.ngOnChanges();
+
       expect(component.disable).toBe(false);
     });
 
