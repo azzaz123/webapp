@@ -12,6 +12,7 @@ export class GdprModalComponent implements OnInit {
 
   private allowSegmentaation = false;
   private acceptPrivacy = false;
+  private gdprText = '';
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -24,11 +25,10 @@ export class GdprModalComponent implements OnInit {
 
   getGDPRText() {
     this.http.getNoBase(environment.siteUrl + 'rest/gdpr/popup/' + this.getCurrentLanguage())
-      .map(function () {
-        console.log(arguments);
-        return arguments;
-      })
-      .subscribe();
+      .map((res) => res.text())
+      .subscribe((gdprText) => {
+        this.gdprText = gdprText;
+      });
   }
 
   private getCurrentLanguage() {
