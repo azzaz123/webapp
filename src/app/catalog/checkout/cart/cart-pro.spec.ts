@@ -74,11 +74,12 @@ describe('CartPro', () => {
   describe('prepareDate', () => {
     it('should transform start and end date to milliseconds', () => {
       let result: number;
+      const dates = MOCK_PROITEM.selectedDates.fromDate;
       spyOn(cart, 'prepareDate').and.callThrough();
 
-      result = cart.prepareDate(MOCK_PROITEM.selectedDates.fromDate);
+      result = cart.prepareDate(dates);
 
-      expect(result).toBe(CART_ORDER_PRO[0].start_date);
+      expect(result).toBe(new Date(dates.year, dates.month - 1, dates.day).getTime());
     });
   });
 
