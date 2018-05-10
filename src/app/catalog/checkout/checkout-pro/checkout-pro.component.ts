@@ -19,12 +19,12 @@ export class CheckoutProComponent implements OnInit {
   calendarHidden = true;
 
   constructor(private itemService: ItemService, private router: Router, private cartService: CartService) {
-    this.cartService.createInstance(new CartPro());
   }
 
   ngOnInit() {
+    this.cartService.createInstance(new CartPro());
     if (!this.itemService.selectedItems.length) {
-      this.router.navigate(['catalog/list']);
+      this.router.navigate(['pro/catalog/list']);
       return;
     }
     this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems)
@@ -35,24 +35,20 @@ export class CheckoutProComponent implements OnInit {
 
   onDateFocus(item: CartProItem) {
     this.itemSelected = item;
-    this.calendarHidden = false;
+    this.toggleCalendar();
   }
 
-  onApplyCalendar(calendar: CalendarDates) {
-    this.itemSelected.selectedDates.fromDate = calendar.fromDate;
-    this.itemSelected.selectedDates.toDate = calendar.toDate;
-    this.itemSelected.selectedDates.formattedFromDate = calendar.formattedFromDate;
-    this.itemSelected.selectedDates.formattedToDate = calendar.formattedToDate;
-    this.itemSelected.selectedDates.numberOfDays = calendar.numberOfDays;
+  onApplyCalendar(datesFromCalendar: CalendarDates) {
+    this.itemSelected.selectedDates = datesFromCalendar;
     this.addToCart();
   }
 
   addToCart() {
     this.cartService.add(this.itemSelected, this.itemSelected.bumpType);
-    this.hideCalendar();
+    this.toggleCalendar();
   }
 
-  hideCalendar() {
-    this.calendarHidden = true;
+  toggleCalendar() {
+    this.calendarHidden = !this.calendarHidden;
   }
 }

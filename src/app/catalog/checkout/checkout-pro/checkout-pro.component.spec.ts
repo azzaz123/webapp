@@ -7,20 +7,19 @@ import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { CartService } from '../cart/cart.service';
 import { CartPro } from '../cart/cart-pro';
-import { CartChange } from '../cart/cart-item.interface';
+import { MOCK_PROITEM } from '../../../../tests/pro-item.fixtures.spec';
+import { MOCK_SELECTED_DATES } from '../../../../tests/calendar.fixtures.spec';
 
 describe('CheckoutProComponent', () => {
   let component: CheckoutProComponent;
   let fixture: ComponentFixture<CheckoutProComponent>;
+  let cartService: CartService;
+  let itemService: ItemService;
+  let router: Router;
+  let spyCall;
 
   const SELECTED_ITEMS = ['1', '2', '3'];
   const CART = new CartPro();
-  const CART_CHANGE: CartChange = {
-    action: 'add',
-    cart: CART,
-    itemId: ITEM_ID,
-    type: 'citybump'
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,13 +42,9 @@ describe('CheckoutProComponent', () => {
         {
           provide: CartService, useValue: {
             createInstance() {
-              return new CartPro();
             },
             add() {
-            },
-            remove() {
-            },
-            cart$: Observable.of(CART_CHANGE)
+            }
           }
         }
       ],
@@ -61,10 +56,107 @@ describe('CheckoutProComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutProComponent);
     component = fixture.componentInstance;
+    cartService = TestBed.get(CartService);
+    itemService = TestBed.get(ItemService);
+    router = TestBed.get(Router);
+    spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+    it('should call createInstance cartService method', () => {
+      spyOn(cartService, 'createInstance').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(cartService.createInstance).toHaveBeenCalledWith(new CartPro());
+    });
+
+    it('should call getItemsWithAvailableProducts and set it', () => {
+      expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(SELECTED_ITEMS);
+      expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
+    });
+
+    it('should redirect to catalog if no item selected', () => {
+      spyOn(router, 'navigate');
+      itemService.selectedItems = [];
+
+      component.ngOnInit();
+
+      expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list']);
+    });
+  });
+
+  describe('onDateFocus', () => {
+    it('should call createInstance cartService method', () => {
+      spyOn(cartService, 'createInstance').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(cartService.createInstance).toHaveBeenCalledWith(new CartPro());
+    });
+
+    it('should call getItemsWithAvailableProducts and set it', () => {
+      expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(SELECTED_ITEMS);
+      expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
+    });
+
+    it('should redirect to catalog if no item selected', () => {
+      component.onDateFocus(MOCK_PROITEM);
+
+      expect(component.itemSelected).toBe(MOCK_PROITEM);
+      expect(component.calendarHidden).toBe(false);
+    });
+  });
+
+  describe('onApplyCalendar', () => {
+    beforeEach(() => {
+      component.onDateFocus(MOCK_PROITEM);
+      component.onApplyCalendar(MOCK_SELECTED_DATES);
+    });
+
+    it('should set selected dates', () => {
+      expect(component.itemSelected.selectedDates).toBe(MOCK_SELECTED_DATES);
+    });
+
+    it('should call addToCart', () => {
+      spyOn(component, 'addToCart');
+
+      component.addToCart();
+
+      expect(component.addToCart).toHaveBeenCalled();
+    });
+  });
+
+  describe('addToCart', () => {
+    beforeEach(() => {
+      component.onDateFocus(MOCK_PROITEM);
+      component.onApplyCalendar(MOCK_SELECTED_DATES);
+      spyOn(cartService, 'add');
+      component.addToCart();
+    });
+
+    it('should call cartService add', () => {
+      expect(cartService.add).toHaveBeenCalledWith(MOCK_PROITEM, MOCK_PROITEM.bumpType);
+    });
+  });
+
+  describe('toggleCalendar', () => {
+    it('should hide calendar if opened', () => {
+      component.calendarHidden = false;
+
+      component.toggleCalendar();
+
+      expect(component.calendarHidden).toBe(true);
+    });
+
+    it('should hide calendar if opened', () => {
+      component.calendarHidden = true;
+
+      component.toggleCalendar();
+
+      expect(component.calendarHidden).toBe(false);
+    });
+
   });
 });

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, Injectable } from '@angular/core';
 import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../../../core/i18n/i18n.service';
-import { SelectedDates } from './selected-dates.interface';
+import { CalendarDates } from './calendar-dates.interface';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
   one && two && two.year === one.year && two.month === one.month && two.day === one.day;
@@ -56,7 +56,7 @@ export class RangeDatepickerComponent implements OnInit {
 
   hoveredDate: NgbDateStruct;
   minDate: NgbDateStruct;
-  selectedDates: SelectedDates;
+  selectedDates: CalendarDates;
   numberOfDays;
   model;
 
@@ -64,7 +64,7 @@ export class RangeDatepickerComponent implements OnInit {
   @Input() fromDate: NgbDateStruct;
   @Input() toDate: NgbDateStruct;
   @Output() closeCalendar: EventEmitter<any> = new EventEmitter();
-  @Output() applyCalendar: EventEmitter<SelectedDates> = new EventEmitter();
+  @Output() applyCalendar: EventEmitter<CalendarDates> = new EventEmitter();
 
   isHovered = date => this.fromDate && !this.toDate && this.hoveredDate && after(date, this.fromDate) && before(date, this.hoveredDate);
   isInside = date => after(date, this.fromDate) && before(date, this.toDate);

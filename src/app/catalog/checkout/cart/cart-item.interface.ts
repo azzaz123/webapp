@@ -1,7 +1,7 @@
 import { Duration } from '../../../core/item/item-response.interface';
 import { Item } from '../../../core/item/item';
 import { CartBase } from './cart-base';
-import { SelectedDates } from '../checkout-pro/range-datepicker/selected-dates.interface';
+import { CalendarDates } from '../checkout-pro/range-datepicker/calendar-dates.interface';
 
 export interface CartItem {
   item: Item;
@@ -10,7 +10,7 @@ export interface CartItem {
 
 export interface CartProItem {
   item: Item;
-  selectedDates: SelectedDates;
+  selectedDates: CalendarDates;
   bumpType?: string;
 }
 
