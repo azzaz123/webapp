@@ -4,7 +4,7 @@ import { CartBase } from './cart-base';
 import { OrderPro } from '../../../core/item/item-response.interface';
 import { MOCK_SELECTED_DATES, MOCK_DATE } from '../../../../tests/calendar.fixtures.spec';
 
-fdescribe('CartPro', () => {
+describe('CartPro', () => {
 
   let cart: CartPro;
 
@@ -73,13 +73,10 @@ fdescribe('CartPro', () => {
 
   describe('prepareDate', () => {
     it('should transform start and end date to milliseconds', () => {
-      const date = MOCK_PROITEM.selectedDates.formattedFromDate;
       let result: number;
       spyOn(cart, 'prepareDate').and.callThrough();
 
-      console.log(MOCK_PROITEM.selectedDates.formattedFromDate);
-
-      result = cart.prepareDate(MOCK_PROITEM.selectedDates.formattedFromDate);
+      result = cart.prepareDate(MOCK_PROITEM.selectedDates.fromDate);
 
       expect(result).toBe(CART_ORDER_PRO[0].start_date);
     });

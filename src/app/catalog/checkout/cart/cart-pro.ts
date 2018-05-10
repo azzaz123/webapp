@@ -2,6 +2,7 @@ import { CartBase, BUMP_TYPES } from './cart-base';
 import { CartProItem } from './cart-item.interface';
 import * as _ from 'lodash';
 import { OrderPro } from '../../../core/item/item-response.interface';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 export class CartPro extends CartBase {
 
@@ -40,8 +41,8 @@ export class CartPro extends CartBase {
       const orders: OrderPro[] = this[type].cartItems.map((cartProItem: CartProItem) => {
         return {
           item_id: cartProItem.item.id,
-          start_date: this.prepareDate(cartProItem.selectedDates.formattedFromDate),
-          end_date: this.prepareDate(cartProItem.selectedDates.formattedToDate),
+          start_date: this.prepareDate(cartProItem.selectedDates.fromDate),
+          end_date: this.prepareDate(cartProItem.selectedDates.toDate),
           autorenew: false,
           bump: !this.prepareBumpType(cartProItem.bumpType),
           national: this.prepareBumpType(cartProItem.bumpType)
@@ -52,9 +53,8 @@ export class CartPro extends CartBase {
     return ordersArray;
   }
 
-  prepareDate(date: string): number {
-    const dateParts: string[] = date.split('/');
-    const dateObject: number = new Date(Number(dateParts[2]), Number(dateParts[1]) - 1, Number(dateParts[0])).getTime();
+  prepareDate(date: NgbDateStruct): number {
+    const dateObject: number = new Date(date.year, date.month - 1, date.day).getTime();
     return dateObject;
   }
 

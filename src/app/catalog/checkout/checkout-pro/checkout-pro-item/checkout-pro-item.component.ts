@@ -3,6 +3,8 @@ import * as moment from 'moment';
 import { CartChange, CartProItem } from '../../cart/cart-item.interface';
 import { CartService } from '../../cart/cart.service';
 import { CartPro } from '../../cart/cart-pro';
+import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date';
 
 @Component({
   selector: 'tsl-checkout-pro-item',
@@ -15,7 +17,7 @@ export class CheckoutProItemComponent implements OnInit {
   @Input() cartProItem: CartProItem;
   @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService, private calendar: NgbCalendar) {
     this.cartService.cart$.subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
     });
@@ -26,9 +28,21 @@ export class CheckoutProItemComponent implements OnInit {
   }
 
   initItem() {
+    const todayDate = this.calendar.getToday();
+    const tomorrowDate = this.calendar.getNext(todayDate);
     this.cartProItem.selectedDates = {
-      formattedFromDate: moment(new Date()).format('DD/MM/YYYY'),
-      formattedToDate: moment(new Date()).add(1, 'days').format('DD/MM/YYYY'),
+      fromDate: {
+        year: todayDate.year,
+        month: todayDate.month,
+        day: todayDate.day
+      },
+      formattedFromDate: new Date(todayDate.year, todayDate.month - 1, todayDate.day).toLocaleDateString(),
+      toDate: {
+        year: tomorrowDate.year,
+        month: tomorrowDate.month,
+        day: tomorrowDate.day
+      },
+      formattedToDate: new Date(tomorrowDate.year, tomorrowDate.month - 1, tomorrowDate.day).toLocaleDateString(),
       numberOfDays: 1
     };
   }
@@ -37,19 +51,19 @@ export class CheckoutProItemComponent implements OnInit {
     this.dateFocus.emit(this.cartProItem);
   }
 
+  onRemoveOrClean(cartProChange: CartChange) {
+    if (cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id || cartProChange.action === 'clean') {
+      delete this.cartProItem.bumpType;
+      this.initItem();
+    }
+  }
+
   selectBump(type: string) {
     if (this.cartProItem.bumpType === type) {
       this.removeItem();
     } else {
       this.cartProItem.bumpType = type;
       this.cartService.add(this.cartProItem, this.cartProItem.bumpType);
-    }
-  }
-
-  onRemoveOrClean(cartProChange: CartChange) {
-    if (cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id || cartProChange.action === 'clean') {
-      delete this.cartProItem.bumpType;
-      this.initItem();
     }
   }
 

@@ -79,7 +79,7 @@ export class RangeDatepickerComponent implements OnInit {
     if (this.fromDate && this.toDate) {
       this.calculateDateDiff();
     } else {
-      this.numberOfDays = 0;
+      this.numberOfDays = 1;
     }
   }
 
@@ -111,8 +111,8 @@ export class RangeDatepickerComponent implements OnInit {
   }
 
   calculateDateDiff() {
-    const dateFrom = new Date(this.fromDate.year, this.fromDate.month, this.fromDate.day);
-    const dateTo = new Date(this.toDate.year, this.toDate.month, this.toDate.day);
+    const dateFrom = new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day);
+    const dateTo = new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day);
     const timeDiff = Math.abs(dateTo.getTime() - dateFrom.getTime());
     this.numberOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   }
