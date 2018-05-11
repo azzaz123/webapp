@@ -376,9 +376,9 @@ describe('Service: Item', () => {
         expect(http.get).toHaveBeenCalledWith('api/v3/web/items/mine/purchases');
       });
       it('should set purchased data to featured items', () => {
-        expect(resp.data[0].bumpExpiringDate).toBe(1510221655715);
+        expect(resp.data[0].bumpExpiringDate).toBe(1495696668000);
         expect(resp.data[0].flags.highlighted).toBeTruthy();
-        expect(resp.data[2].bumpExpiringDate).toBe(1509874085135);
+        expect(resp.data[2].bumpExpiringDate).toBe(1495696668000);
         expect(resp.data[2].flags.bumped).toBeTruthy();
       });
     });
@@ -665,6 +665,7 @@ describe('Service: Item', () => {
     describe('with data', () => {
       beforeEach(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
+          console.log('URL ', connection.request.url);
           if (connection.request.url.indexOf('init=0&end=300') !== -1) {
             connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify([ITEM_DATA, ITEM_DATA2])})));
           } else if (connection.request.url.indexOf('init=300&end=600') !== -1) {

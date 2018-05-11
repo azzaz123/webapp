@@ -60,7 +60,6 @@ describe('PlanDataComponent', () => {
     purchaseService = TestBed.get(PurchaseService);
     modalService = TestBed.get(NgbModal);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
