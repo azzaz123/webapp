@@ -16,7 +16,8 @@
   </tsl-checkbox>
   <tsl-button
     [disabled]="!acceptPrivacy"
-    className="btn btn-primary" i18n>
+    className="btn btn-primary" i18n
+    (click)="setGRPRPermission()">
     I accept
   </tsl-button>
 </div>

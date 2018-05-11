@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpService } from '../../core/http/http.service';
 import { environment } from '../../../environments/environment';
+import { PrivacyService } from '../../core/privacy/privacy.service';
+import { PrivacyRequestData } from '../../core/privacy/privacy';
 
 @Component({
   selector: 'tsl-gdpr-modal',
@@ -16,7 +18,8 @@ export class GdprModalComponent implements OnInit {
 
   constructor(
     public activeModal: NgbActiveModal,
-    public http: HttpService
+    public http: HttpService,
+    public privacyService: PrivacyService
   ) { }
 
   ngOnInit() {
@@ -29,6 +32,15 @@ export class GdprModalComponent implements OnInit {
       .subscribe((gdprText) => {
         this.gdprText = gdprText;
       });
+  }
+
+  setGRPRPermission() {
+    this.privacyService.updatePrivacy({
+      ...new PrivacyRequestData('gdpr_display', '0', this.allowSegmentation),
+      ...new PrivacyRequestData('privacy_policy', '0', this.acceptPrivacy),
+    }).subscribe(null, null, () => {
+      this.activeModal.close();
+    });
   }
 
   private getCurrentLanguage() {
