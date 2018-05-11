@@ -24,10 +24,10 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
   @Input() itemWithProducts: ItemWithProducts;
 
   constructor(private cartService: CartService) {
-    this.cartService.createInstance(new Cart());
   }
 
   ngOnInit() {
+    this.cartService.createInstance(new Cart());
     this.durations = _.keys(this.itemWithProducts.products);
     this.duration = this.durations[1];
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {

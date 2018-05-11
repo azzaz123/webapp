@@ -31,7 +31,7 @@ describe('CartService', () => {
       expect(cartChange.cart instanceof Cart).toBeTruthy();
     });
 
-    it('should call add and emit CartChange event if instance of Cart', () => {
+    it('should call add and emit CartChange event if instance of CartPro', () => {
       service.createInstance(new CartPro());
       spyOn<any>(service['cart'], 'add');
 
@@ -49,7 +49,7 @@ describe('CartService', () => {
   });
 
   describe('remove', () => {
-    it('should call removeCartItem and emit CartChange event', () => {
+    it('should call removeCartItem and emit CartChange event if instance of Cart', () => {
       service.createInstance(new Cart());
       spyOn<any>(service['cart'], 'removeCartItem');
 
@@ -58,7 +58,7 @@ describe('CartService', () => {
       expect(cartChange.cart instanceof Cart).toBeTruthy();
     });
 
-    it('should call removeCartItem and emit CartChange event', () => {
+    it('should call removeCartItem and emit CartChange event if instance of CartPro', () => {
       service.createInstance(new CartPro());
       spyOn<any>(service['cart'], 'removeCartItem');
 
@@ -76,7 +76,7 @@ describe('CartService', () => {
   });
 
   describe('clean', () => {
-    it('should call clean and emit CartChange event', () => {
+    it('should call clean and emit CartChange event if instance of Cart', () => {
       service.createInstance(new Cart());
       spyOn<any>(service['cart'], 'clean');
 
@@ -85,7 +85,7 @@ describe('CartService', () => {
       expect(cartChange.cart instanceof Cart).toBeTruthy();
     });
 
-    it('should call clean and emit CartChange event', () => {
+    it('should call clean and emit CartChange event if instance of CartPro', () => {
       service.createInstance(new CartPro());
       spyOn<any>(service['cart'], 'clean');
 

@@ -58,6 +58,17 @@ describe('CheckoutItemComponent', () => {
   });
 
   describe('ngOnInit', () => {
+
+    describe('ngOnInit', () => {
+      it('should call createInstance cartService method', () => {
+        spyOn(cartService, 'createInstance').and.callThrough();
+
+        component.ngOnInit();
+
+        expect(cartService.createInstance).toHaveBeenCalledWith(new Cart());
+      });
+    });
+
     it('should set durations and default duration', () => {
       expect(component.durations).toEqual(['24', '72', '168']);
       expect(component.duration).toEqual('72');
