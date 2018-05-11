@@ -26,7 +26,6 @@ export class CalendarDates {
         return new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day).toLocaleDateString();
     }
 
-
     get formattedToDate() {
         return new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day).toLocaleDateString();
     }

@@ -8,14 +8,14 @@
 <div class="selected-text" [ngClass]="bumpType">
   <span i18n>You have selected </span>
   <div class="bold">
-    <span>{{numberOfDays}}</span>
+    <span>{{selectedDates.numberOfDays}}</span>
     <span i18n *ngIf="bumpType === 'citybump'">city</span>
     <span i18n *ngIf="bumpType === 'countrybump'">country</span>
-    <span i18n *ngIf="numberOfDays === 1">bump</span>
-    <span i18n *ngIf="numberOfDays > 1 || numberOfDays === 0">bumps</span>
+    <span i18n *ngIf="selectedDates.numberOfDays === 1">bump</span>
+    <span i18n *ngIf="selectedDates.numberOfDays > 1 || selectedDates.numberOfDays === 0">bumps</span>
   </div>
 </div>
 <div class="datepicker-btn-wrapper">
   <button class="datepicker-btn cancel" (click)="onCancel()">Cancel</button>
-  <button class="datepicker-btn apply" [ngClass]="bumpType" (click)="onApply()" [disabled]="!fromDate || !toDate">Apply</button>
+  <button class="datepicker-btn apply" [ngClass]="bumpType" (click)="onApply()" [disabled]="!selectedDates.fromDate || !selectedDates.toDate">Apply</button>
 </div>

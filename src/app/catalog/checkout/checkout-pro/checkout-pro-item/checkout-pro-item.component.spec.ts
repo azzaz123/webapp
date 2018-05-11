@@ -19,6 +19,7 @@ describe('CheckoutProItemComponent', () => {
   let component: CheckoutProItemComponent;
   let fixture: ComponentFixture<CheckoutProItemComponent>;
   let cartService: CartService;
+  let calendar: NgbCalendar;
 
   const CART = new CartPro();
   const TYPE = 'citybump';
@@ -68,7 +69,7 @@ describe('CheckoutProItemComponent', () => {
     component.cartProItem = MOCK_PROITEM;
     fixture.detectChanges();
     cartService = TestBed.get(CartService);
-    component.cartProItem.selectedDates = new CalendarDates(MOCK_DATE2, MOCK_DATE3);
+    calendar = TestBed.get(NgbCalendar);
   });
 
   describe('ngOnInit', () => {
@@ -80,10 +81,14 @@ describe('CheckoutProItemComponent', () => {
       expect(cartService.createInstance).toHaveBeenCalledWith(new CartPro());
     });
 
-    it('should call create instance of CalendarDates', () => {
+    it('should call create instance of CalendarDates with today and tomorrow dates', () => {
+      component.todayDate = calendar.getToday();
+      component.tomorrowDate = calendar.getNext(component.todayDate);
       component.ngOnInit();
 
       expect(component.cartProItem.selectedDates instanceof CalendarDates).toBe(true);
+      expect(component.cartProItem.selectedDates.fromDate).toBe(component.todayDate);
+      expect(component.cartProItem.selectedDates.toDate).toBe(component.tomorrowDate);
     });
   });
 

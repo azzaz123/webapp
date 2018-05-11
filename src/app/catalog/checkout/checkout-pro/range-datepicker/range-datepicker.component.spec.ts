@@ -4,7 +4,7 @@ import { RangeDatepickerComponent } from './range-datepicker.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MOCK_DATE, MOCK_DATE2, MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
 
-describe('RangeDatepickerComponent', () => {
+fdescribe('RangeDatepickerComponent', () => {
   let component: RangeDatepickerComponent;
   let fixture: ComponentFixture<RangeDatepickerComponent>;
 
@@ -26,6 +26,7 @@ describe('RangeDatepickerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RangeDatepickerComponent);
     component = fixture.componentInstance;
+    component.selectedDates = MOCK_SELECTED_DATES;
     fixture.detectChanges();
   });
 
@@ -34,31 +35,30 @@ describe('RangeDatepickerComponent', () => {
     it('should set init date if any date is selected', () => {
       component.onDateSelection(MOCK_DATE);
 
-      expect(component.fromDate).toBe(MOCK_DATE);
-      expect(component.toDate).toBeUndefined();
+      expect(component.selectedDates.fromDate).toBe(MOCK_DATE);
     });
 
     it('should set init date if end date is before init date', () => {
       component.onDateSelection(MOCK_DATE2);
       component.onDateSelection(MOCK_DATE);
 
-      expect(component.fromDate).toBe(MOCK_DATE);
+      expect(component.selectedDates.fromDate).toBe(MOCK_DATE);
     });
 
     it('should set end date and calculate date diff if init date is before end date', () => {
       component.onDateSelection(MOCK_DATE);
       component.onDateSelection(MOCK_DATE2);
 
-      expect(component.fromDate).toBeDefined();
-      expect(component.fromDate).toBe(MOCK_DATE);
-      expect(component.toDate).toBe(MOCK_DATE2);
+      expect(component.selectedDates.fromDate).toBeDefined();
+      expect(component.selectedDates.fromDate).toBe(MOCK_DATE);
+      expect(component.selectedDates.toDate).toBe(MOCK_DATE2);
     });
 
     it('should calculate the number of days between init and end date', () => {
       component.onDateSelection(MOCK_DATE);
       component.onDateSelection(MOCK_DATE2);
 
-      expect(component.numberOfDays).toBe(MOCK_SELECTED_DATES.numberOfDays);
+      expect(component.selectedDates.numberOfDays).toBe(MOCK_SELECTED_DATES.numberOfDays);
     });
   });
 

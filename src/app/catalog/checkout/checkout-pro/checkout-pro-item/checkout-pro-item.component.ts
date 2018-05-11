@@ -15,6 +15,9 @@ import { CalendarDates } from '../range-datepicker/calendar-dates';
 
 export class CheckoutProItemComponent implements OnInit {
 
+  todayDate: NgbDate;
+  tomorrowDate: NgbDate;
+  
   @Input() cartProItem: CartProItem;
   @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
 
@@ -22,13 +25,13 @@ export class CheckoutProItemComponent implements OnInit {
     this.cartService.cart$.subscribe((cartChange: CartChange) => {
       this.onRemoveOrClean(cartChange);
     });
+    this.todayDate = calendar.getToday();
+    this.tomorrowDate = calendar.getNext(this.todayDate);
   }
 
   ngOnInit() {
-    const todayDate = this.calendar.getToday();
-    const tomorrowDate = this.calendar.getNext(todayDate);
     this.cartService.createInstance(new CartPro());
-    this.cartProItem.selectedDates = new CalendarDates(todayDate, tomorrowDate);
+    this.cartProItem.selectedDates = new CalendarDates(this.todayDate, this.tomorrowDate);
   }
 
   onDateFocus() {
@@ -38,6 +41,8 @@ export class CheckoutProItemComponent implements OnInit {
   onRemoveOrClean(cartProChange: CartChange) {
     if (cartProChange.action === 'remove' && cartProChange.itemId === this.cartProItem.item.id || cartProChange.action === 'clean') {
       delete this.cartProItem.bumpType;
+      this.cartProItem.selectedDates.fromDate = this.todayDate;
+      this.cartProItem.selectedDates.toDate = this.tomorrowDate;
     }
   }
 

@@ -56,40 +56,39 @@ export class RangeDatepickerComponent implements OnInit {
 
   hoveredDate: NgbDateStruct;
   minDate: NgbDateStruct;
-  selectedDates: CalendarDates;
-  numberOfDays = 1;
+  startDate: NgbDateStruct;
+  endDate: NgbDateStruct;
   model;
 
   @Input() bumpType: string;
-  @Input() fromDate: NgbDateStruct;
-  @Input() toDate: NgbDateStruct;
+  @Input()  selectedDates: CalendarDates;
   @Output() closeCalendar: EventEmitter<any> = new EventEmitter();
   @Output() applyCalendar: EventEmitter<CalendarDates> = new EventEmitter();
 
-  isHovered = date => this.fromDate && !this.toDate && this.hoveredDate && after(date, this.fromDate) && before(date, this.hoveredDate);
-  isInside = date => after(date, this.fromDate) && before(date, this.toDate);
-  isFrom = date => equals(date, this.fromDate);
-  isTo = date => equals(date, this.toDate);
+  isHovered = date => this.startDate && !this.endDate && this.hoveredDate && after(date, this.startDate) && before(date, this.hoveredDate);
+  isInside = date => after(date, this.startDate) && before(date, this.endDate);
+  isFrom = date => equals(date, this.startDate);
+  isTo = date => equals(date, this.endDate);
 
   constructor(private calendar: NgbCalendar) {
     this.minDate = { year: calendar.getToday().year, month: calendar.getToday().month, day: calendar.getToday().day };
   }
 
   ngOnInit() {
-    this.selectedDates = new CalendarDates();
+    this.startDate = this.selectedDates.fromDate;
+    this.endDate = this.selectedDates.toDate;
   }
 
   onDateSelection(date: NgbDateStruct) {
-    if (!this.fromDate && !this.toDate) {
-      this.fromDate = date;
-    } else if (this.fromDate && !this.toDate && after(date, this.fromDate)) {
-      this.toDate = date;
-      this.selectedDates.fromDate = this.fromDate;
-      this.selectedDates.toDate = this.toDate;
-      this.numberOfDays = this.selectedDates.numberOfDays;
+    if (!this.startDate && !this.endDate) {
+      this.startDate = date;
+    } else if (this.startDate && !this.endDate && after(date, this.startDate)) {
+      this.endDate = date;
+      this.selectedDates.fromDate = this.startDate;
+      this.selectedDates.toDate = this.endDate;
     } else {
-      this.toDate = null;
-      this.fromDate = date;
+      this.endDate = null;
+      this.startDate = date;
     }
   }
 
