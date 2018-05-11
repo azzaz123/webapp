@@ -5,7 +5,7 @@ export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];
 export const BUMP_PRO_TYPES = ['citybump', 'countrybump'];
 
 export abstract class CartBase {
-  total: number;
+  total: number = 0;
 
   zonebump: BumpGroup = {
     total: 0,

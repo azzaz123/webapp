@@ -19,7 +19,12 @@ export class CartProComponent implements OnInit {
   public cart: CartBase = new CartPro();
   public types: string[] = BUMP_PRO_TYPES;
 
-  constructor(private cartService: CartService, private itemService: ItemService, private errorService: ErrorsService, private router: Router, private trackingService: TrackingService,) {
+  constructor(
+    private cartService: CartService,
+    private itemService: ItemService,
+    private errorService: ErrorsService,
+    private router: Router,
+    private trackingService: TrackingService) {
     this.cartService.cart$.subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
     });
@@ -31,6 +36,10 @@ export class CartProComponent implements OnInit {
 
   remove(cartItem: CartProItem) {
     this.cartService.remove(cartItem.item.id, cartItem.bumpType);
+  }
+
+  clean() {
+    this.cartService.clean();
   }
 
   applyBumps() {

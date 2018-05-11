@@ -17,5 +17,5 @@
 </div>
 <div class="datepicker-btn-wrapper">
   <button class="datepicker-btn cancel" (click)="onCancel()">Cancel</button>
-  <button class="datepicker-btn apply" [ngClass]="bumpType" (click)="onApply()" [disabled]="!selectedDates.fromDate || !selectedDates.toDate">Apply</button>
+  <button class="datepicker-btn apply" [ngClass]="bumpType" (click)="onApply()" [disabled]="!startDate || !endDate">Apply</button>
 </div>

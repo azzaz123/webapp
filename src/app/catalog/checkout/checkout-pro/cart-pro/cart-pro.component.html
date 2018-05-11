@@ -1,5 +1,8 @@
 <div class="cart-content">
-  <h1 class="cart-pro-title" i18n>Featured summary</h1>
+  <div class="cart-header">
+    <h1 class="cart-pro-title" i18n>Featured summary</h1>
+    <a class="btn-clear" (click)="clean()" [ngClass]="{disabled: cart.total === 0}">Cancel all</a>
+  </div>
   <ul *ngIf="cart" class="items-list">
     <li *ngFor="let type of types" class="type-wrapper" [ngClass]="type">
       <div class="type-total cart-box" [ngClass]="{collapsed: cart[type].collapsed}" (click)="cart[type].collapsed = !cart[type].collapsed">
@@ -37,11 +40,11 @@
             <span i18n>country</span>
           </ng-container>
         </span>
-        <span class="cart-balance-number">30</span>
+        <span class="cart-balance-number">{{30 - cart[type].total}}</span>
       </div>
     </li>
   </ul>
 </div>
 <div class="btn-wrapper">
-  <tsl-button (click)="applyBumps()" i18n>Apply bumps</tsl-button>
+  <tsl-button (click)="applyBumps()" [disabled]="cart.total === 0" i18n>Apply bumps</tsl-button>
 </div>

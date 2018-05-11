@@ -17,7 +17,7 @@ export class CheckoutProItemComponent implements OnInit {
 
   todayDate: NgbDate;
   tomorrowDate: NgbDate;
-  
+
   @Input() cartProItem: CartProItem;
   @Output() dateFocus: EventEmitter<CartProItem> = new EventEmitter();
 

@@ -18,12 +18,27 @@
     font-size: $font-size-S;
     color: $grey-900;
     font-weight: bold;
-    margin: $spacing $spacing-XS $spacing-S $spacing-XS;
+    margin: 0;
 }
 
 .cart-content {
     overflow: scroll;
     padding-bottom: $spacing * 4;
+    .cart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: $spacing $spacing-XS $spacing-S $spacing-XS;
+        .btn-clear {
+            cursor: pointer;
+            font-size: $font-size-XXS;
+            color: $grey-500;
+            &.disabled {
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+        }
+    }
 }
 
 .items-list {

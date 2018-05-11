@@ -46,10 +46,12 @@ describe('CartProComponent', () => {
         {
           provide: CartService, useValue: {
             cart$: Observable.of(CART_CHANGE),
-            remove() {
-            },
             createInstance() {
             },
+            remove() {
+            },
+            clean() {
+            }
           }
         },
         {
@@ -101,12 +103,21 @@ describe('CartProComponent', () => {
 
   describe('remove', () => {
     it('should call remove', () => {
-      const TYPE = 'citybump';
       spyOn(cartService, 'remove');
 
       component.remove(MOCK_PROITEM);
 
       expect(cartService.remove).toHaveBeenCalledWith(MOCK_PROITEM.item.id, MOCK_PROITEM.bumpType);
+    });
+  });
+
+  describe('clean', () => {
+    it('should call clean', () => {
+      spyOn(cartService, 'clean');
+
+      component.clean();
+
+      expect(cartService.clean).toHaveBeenCalled();
     });
   });
 
