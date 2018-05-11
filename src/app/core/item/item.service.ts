@@ -10,12 +10,12 @@ import {
   Duration,
   ItemBulkResponse,
   ItemContent,
-  ItemCounters,
+  ItemCounters, ItemDataResponse,
   ItemResponse,
   ItemsData,
   ItemsStore,
   ItemsWithAvailableProductsResponse,
-  ItemWithProducts,
+  ItemWithProducts, LatestItemResponse,
   Order,
   Product,
   ProductDurations,
@@ -469,7 +469,7 @@ export class ItemService extends ResourceService {
     .map((response: AvailableProductsResponse) => response.products[0]);
   }
 
-  public getUrgentProductByCategoryId(categoryId: number): Observable<Product> {
+  public getUrgentProductByCategoryId(categoryId: string): Observable<Product> {
     return this.http.get(this.API_URL_WEB + '/available-urgent-products', {
       categoryId: categoryId
     })
@@ -504,7 +504,6 @@ export class ItemService extends ResourceService {
             });
             this.items[status] = items;
             return items;
-
           }
           return [];
         });
@@ -640,6 +639,17 @@ export class ItemService extends ResourceService {
       item_id: itemId,
       autorenew: false
     });
+  }
+
+  public getLatest(userId: string): Observable<ItemDataResponse> {
+    return this.http.get(this.API_URL + '/latest-cars', {userId: userId})
+      .map((r: Response) => r.json())
+      .map((resp: LatestItemResponse) => {
+        return {
+          count: resp.count - 1,
+          data: resp.items[0] ? this.mapRecordData(resp.items[0]) : null
+        };
+      });
   }
 
 }

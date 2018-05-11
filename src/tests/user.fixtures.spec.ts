@@ -72,7 +72,7 @@ export const USER_TYPE = 'inactive';
 export const USER_WEB_SLUG = 'webslug-l1kmzn82zn3p';
 export const USER_FIRST_NAME = 'Daniele';
 export const USER_LAST_NAME = 'Ghidoli';
-export const USER_BIRTH_DATE = 539913600000;
+export const USER_BIRTH_DATE = 1523560844000;
 export const USER_GENDER = 'male';
 
 export const USER_DATA: UserResponse = {
@@ -115,6 +115,21 @@ export const MOCK_USER: User = new User(
   USER_DATA.scoring_starts,
   USER_DATA.response_rate,
   USER_DATA.online
+);
+
+export const MOCK_USER_PRO: User = new User(
+  USER_DATA.id,
+  USER_DATA.micro_name,
+  USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  'professional'
 );
 
 export const USER_ITEM_DISTANCE = 10;
@@ -161,6 +176,8 @@ export const RATINGS_RESPONSE: Ratings = {
   reviews: 0
 };
 
+export const USER_REPORTS_RECEIVED = 5;
+
 export const COUNTERS_RESPONSE: Counters = {
   publish: 0,
   buys: 0,
@@ -171,6 +188,7 @@ export const COUNTERS_RESPONSE: Counters = {
   profile_favorited: 0,
   reviews: 0,
   sold: 0,
+  reports_received: USER_REPORTS_RECEIVED,
   onHold: 0
 };
 
@@ -221,6 +239,14 @@ export const COUNTERS = [
   },
   {
     type: 'sold',
+    value: 0
+  },
+  {
+    type: 'reports_received',
+    value: USER_REPORTS_RECEIVED
+  },
+  {
+    type: 'onHold',
     value: 0
   }
 ];

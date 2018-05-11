@@ -259,3 +259,13 @@ export interface DeliveryInfo {
   max_weight_kg: number;
   min_weight_kg: number;
 }
+
+export interface ItemDataResponse {
+  count: number;
+  data: Item;
+}
+
+export interface LatestItemResponse {
+  count: number;
+  items: ItemResponse[];
+}

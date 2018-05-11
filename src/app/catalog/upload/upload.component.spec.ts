@@ -38,7 +38,7 @@ describe('UploadComponent', () => {
     it('should set categoryId', () => {
       const CATEGORY_ID = 123;
 
-      component.setCategory(CATEGORY_ID);
+      component.setCategory(CATEGORY_ID.toString());
 
       expect(component.categoryId).toBe(CATEGORY_ID.toString());
     });
@@ -46,16 +46,16 @@ describe('UploadComponent', () => {
     it('should not call getUrgentPrice if categoryId == -1', () => {
       const CATEGORY_ID = -1;
 
-      component.setCategory(CATEGORY_ID);
+      component.setCategory(CATEGORY_ID.toString());
 
       expect(component.getUrgentPrice).not.toHaveBeenCalled();
     });
     it('should call getUrgentPrice if categoryId != -1', () => {
       const CATEGORY_ID = 123;
 
-      component.setCategory(CATEGORY_ID);
+      component.setCategory(CATEGORY_ID.toString());
 
-      expect(component.getUrgentPrice).toHaveBeenCalledWith(CATEGORY_ID);
+      expect(component.getUrgentPrice).toHaveBeenCalledWith(CATEGORY_ID.toString());
     });
   });
 
@@ -77,9 +77,9 @@ describe('UploadComponent', () => {
 
       const categoryId = ITEM_DATA_V3.content.category_id;
 
-      component.getUrgentPrice(categoryId );
+      component.getUrgentPrice(categoryId.toString());
 
-      expect(itemService.getUrgentProductByCategoryId).toHaveBeenCalledWith(categoryId);
+      expect(itemService.getUrgentProductByCategoryId).toHaveBeenCalledWith(categoryId.toString());
       expect(component.urgentPrice).toEqual(PRODUCT_RESPONSE.durations[0].market_code);
     });
   });

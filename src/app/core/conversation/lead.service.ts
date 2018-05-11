@@ -145,6 +145,8 @@ export abstract class LeadService {
         deletedLead.archived = true;
         this.onArchive(deletedLead);
         this.archivedLeads.push(deletedLead);
+        this.stream(true);
+        this.stream();
         this.event.emit(EventService.LEAD_ARCHIVED, deletedLead);
         return deletedLead;
       }
@@ -160,6 +162,8 @@ export abstract class LeadService {
         lead.archived = false;
         this.leads.push(lead);
         this.stream(true);
+        this.stream();
+        this.event.emit(EventService.CONVERSATION_UNARCHIVED);
         return lead;
       }
     });
