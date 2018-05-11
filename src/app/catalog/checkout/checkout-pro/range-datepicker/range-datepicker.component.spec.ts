@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { RangeDatepickerComponent } from './range-datepicker.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MOCK_DATE, MOCK_DATE2, MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
+import { MOCK_DATE, MOCK_DATE2, MOCK_SELECTED_DATES, MOCK_DATE3 } from '../../../../../tests/calendar.fixtures.spec';
 
 describe('RangeDatepickerComponent', () => {
   let component: RangeDatepickerComponent;
@@ -35,23 +35,23 @@ describe('RangeDatepickerComponent', () => {
     it('should set init date if any date is selected', () => {
       component.onDateSelection(MOCK_DATE);
 
-      expect(component.selectedDates.fromDate).toBe(MOCK_DATE);
+      expect(component.startDate).toBe(MOCK_DATE);
     });
 
-    it('should set init date if end date is before init date', () => {
-      component.onDateSelection(MOCK_DATE2);
-      component.onDateSelection(MOCK_DATE);
-
-      expect(component.selectedDates.fromDate).toBe(MOCK_DATE);
-    });
-
-    it('should set end date and calculate date diff if init date is before end date', () => {
+    it('should set end date if end date is after init date', () => {
       component.onDateSelection(MOCK_DATE);
       component.onDateSelection(MOCK_DATE2);
 
-      expect(component.selectedDates.fromDate).toBeDefined();
-      expect(component.selectedDates.fromDate).toBe(MOCK_DATE);
-      expect(component.selectedDates.toDate).toBe(MOCK_DATE2);
+      expect(component.startDate).toBe(MOCK_DATE);
+      expect(component.endDate).toBe(MOCK_DATE2);
+    });
+
+    it('should set only init date if end date is before init date', () => {
+      component.onDateSelection(MOCK_DATE2);
+      component.onDateSelection(MOCK_DATE);
+
+      expect(component.startDate).toBe(MOCK_DATE);
+      expect(component.endDate).toBeNull();
     });
 
     it('should calculate the number of days between init and end date', () => {
@@ -64,10 +64,14 @@ describe('RangeDatepickerComponent', () => {
 
   describe('onCancel', () => {
     it('should emit closeCalendar event on click cancel', () => {
+      component.onDateSelection(MOCK_DATE2);
+      component.onDateSelection(MOCK_DATE3);
       spyOn(component.closeCalendar, 'emit');
 
       component.onCancel();
 
+      expect(component.selectedDates.fromDate).toBe(MOCK_DATE);
+      expect(component.selectedDates.toDate).toBe(MOCK_DATE2);
       expect(component.closeCalendar.emit).toHaveBeenCalled();
     });
   });
@@ -80,6 +84,8 @@ describe('RangeDatepickerComponent', () => {
       component.onDateSelection(MOCK_DATE2);
       component.onApply();
 
+      expect(component.startDate).toBe(MOCK_DATE);
+      expect(component.endDate).toBe(MOCK_DATE2);
       expect(component.selectedDates.fromDate).toBe(MOCK_DATE);
       expect(component.selectedDates.toDate).toBe(MOCK_DATE2);
       expect(component.applyCalendar.emit).toHaveBeenCalledWith(component.selectedDates);

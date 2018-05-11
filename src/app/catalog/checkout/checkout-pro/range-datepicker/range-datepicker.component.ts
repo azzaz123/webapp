@@ -58,6 +58,8 @@ export class RangeDatepickerComponent implements OnInit {
   minDate: NgbDateStruct;
   startDate: NgbDateStruct;
   endDate: NgbDateStruct;
+  todayDay: NgbDateStruct;
+  tomorrowDay: NgbDateStruct;
   model;
 
   @Input() bumpType: string;
@@ -75,6 +77,8 @@ export class RangeDatepickerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.todayDay = this.selectedDates.fromDate;
+    this.tomorrowDay = this.selectedDates.toDate;
     this.startDate = this.selectedDates.fromDate;
     this.endDate = this.selectedDates.toDate;
   }
@@ -93,6 +97,8 @@ export class RangeDatepickerComponent implements OnInit {
   }
 
   onCancel() {
+    this.selectedDates.fromDate = this.todayDay;
+    this.selectedDates.toDate = this.tomorrowDay;
     this.closeCalendar.emit();
   }
 
