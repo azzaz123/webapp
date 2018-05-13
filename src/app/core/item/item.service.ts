@@ -225,7 +225,7 @@ export class ItemService extends ResourceService {
       content.description,
       content.category_id,
       null,
-      content.price,
+      content.sale_price,
       content.currency,
       content.modified_date,
       null,
@@ -234,18 +234,18 @@ export class ItemService extends ResourceService {
       null,
       {
         id: UUID.UUID(),
-        original_width: content.image ? content.image.original_width : null,
-        original_height: content.image ? content.image.original_height : null,
+        original_width: content.images[0] ? content.images[0].original_width : null,
+        original_height: content.images[0] ? content.images[0].original_height : null,
         average_hex_color: '',
         urls_by_size:  {
-          original: content.image.original,
-          small: content.image.small,
-          large: content.image.large,
-          medium: content.image.medium,
-          xlarge: content.image.original
+          original: content.images[0].urls_by_size.original,
+          small: content.images[0].urls_by_size.small,
+          large: content.images[0].urls_by_size.large,
+          medium: content.images[0].urls_by_size.medium,
+          xlarge: content.images[0].urls_by_size.xlarge
         }
       },
-      content.image[0],
+      content.images,
       content.web_slug,
       content.publish_date,
       null

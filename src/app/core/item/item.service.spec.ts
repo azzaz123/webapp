@@ -28,7 +28,7 @@ import {
   PRODUCT_RESPONSE,
   PRODUCTS_RESPONSE,
   PURCHASES, ITEM_PUBLISHED_DATE2, ITEM_PUBLISHED_DATE, ITEM_SALE_PRICE, ITEM_SALE_PRICE2, MOCK_ITEM, ITEM_DATA_V4,
-  ITEM_DATA_V5
+  ITEM_DATA_V5, ITEM_DATA3
 } from '../../../tests/item.fixtures.spec';
 import { Item, ITEM_BASE_PATH } from './item';
 import { Observable } from 'rxjs/Observable';
@@ -688,11 +688,9 @@ describe('Service: Item', () => {
           expect(connection.request.url).toContain('/mines');
         });
         spyOn(http, 'get').and.callThrough();
-        spyOn(service, 'mapRecordDataPro').and.returnValue(ITEM_DATA);
       });
       it('should return 3 pages recursively', () => {
         let observableResponse: Item[];
-        
         service.mines(1, 10, 'date_desc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
@@ -708,22 +706,9 @@ describe('Service: Item', () => {
         });
         
         expect(http.get).toHaveBeenCalledTimes(3);
-        
-        http.get['calls'].reset();
-        service.mines(1, 10, 'date_desc').subscribe((r: Item[]) => {
-          observableResponse2 = r;
-        });
-        
-        expect(http.get).toHaveBeenCalledTimes(0);
-        expect(observableResponse).toEqual(observableResponse2);
       });
       it('should NOT return cached results the second time', () => {
         service.mines(1, 10, 'date_desc').subscribe();
-        
-        expect(http.get).toHaveBeenCalledTimes(3);
-        
-        http.get['calls'].reset();
-        service.mines(1, 10, 'date_desc', undefined, undefined, false).subscribe();
         
         expect(http.get).toHaveBeenCalledTimes(3);
       });
@@ -777,29 +762,29 @@ describe('Service: Item', () => {
           observableResponse = r;
         });
 
-        expect(observableResponse[0].published_date).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[1].published_date).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[2].published_date).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[3].published_date).toBe(ITEM_PUBLISHED_DATE);
+        expect(observableResponse[0].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+        expect(observableResponse[1].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+        expect(observableResponse[2].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+        expect(observableResponse[3].publishedDate).toBe(ITEM_PUBLISHED_DATE);
         
         observableResponse = undefined;
         service.mines(1, 10, 'date_asc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        expect(observableResponse[0].published_date).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[1].published_date).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[2].published_date).toBe(ITEM_PUBLISHED_DATE);
-        expect(observableResponse[3].published_date).toBe(ITEM_PUBLISHED_DATE);
+        expect(observableResponse[0].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+        expect(observableResponse[1].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+        expect(observableResponse[2].publishedDate).toBe(ITEM_PUBLISHED_DATE);
+        expect(observableResponse[3].publishedDate).toBe(ITEM_PUBLISHED_DATE);
         
         observableResponse = undefined;
         service.mines(1, 10, 'price_asc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
         
-        expect(observableResponse[0].sale_price).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[1].sale_price).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[2].sale_price).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[3].sale_price).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[2].salePrice).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[3].salePrice).toBe(ITEM_SALE_PRICE);
         
         observableResponse = undefined;
         
@@ -807,26 +792,26 @@ describe('Service: Item', () => {
           observableResponse = r;
         });
         
-        expect(observableResponse[0].sale_price).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[1].sale_price).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[2].sale_price).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[3].sale_price).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[2].salePrice).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[3].salePrice).toBe(ITEM_SALE_PRICE);
       });
       it('should paginate', () => {
         let observableResponse: Item[];
         service.mines(1, 2, 'date_desc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        expect(observableResponse[0].sale_price).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[1].sale_price).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
         
         observableResponse = undefined;
         service.mines(2, 2, 'date_desc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
         
-        expect(observableResponse[0].sale_price).toBe(ITEM_SALE_PRICE);
-        expect(observableResponse[1].sale_price).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
+        expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
         
         observableResponse = undefined;
         service.mines(1, 4, 'date_desc').subscribe((r: Item[]) => {
