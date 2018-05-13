@@ -23,10 +23,10 @@ import { Lead } from './lead';
 import {
   CONVERSATION_DATE, CONVERSATION_ID, CONVERSATION_PHONE,
   CONVERSATIONS_DATA, createConversationsArray,
-  MOCK_CONVERSATION, MOCK_NOT_FOUND_CONVERSATION, NOT_FOUND_CONVERSATION_ID, SECOND_MOCK_CONVERSATION, SURVEY_RESPONSES
+  MOCK_CONVERSATION, MOCK_NOT_FOUND_CONVERSATION, NOT_FOUND_CONVERSATION_ID, SECOND_MOCK_CONVERSATION, SURVEY_RESPONSES, MOCKED_CONVERSATIONS
 } from '../../../tests/conversation.fixtures.spec';
 import { MOCK_USER, MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
-import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
+import { ITEM_ID, MockedItemService, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import {
@@ -134,7 +134,7 @@ describe('Service: Conversation', () => {
           it('should return conversations with unreadMessages and messages', () => {
             expect(response.length).toEqual(TOTAL);
             response.forEach((conversation: Conversation) => {
-              expect(conversation instanceof Conversation).toBeTruthy();
+              expect(conversation instanceof Conversation).toBe(true);
               expect(conversation.unreadMessages).toBe(UNREAD_MESSAGES);
               expect(conversation.messages.length).toBe(TOTAL_MESSAGES);
             });
@@ -143,7 +143,7 @@ describe('Service: Conversation', () => {
             expect(service.leads).toEqual(QUERY_RESULT);
           });
           it('should set firstLoad to false', () => {
-            expect(service.firstLoad).toBeFalsy();
+            expect(service.firstLoad).toBe(false);
           });
           it('should call other functions', () => {
             expect(service['loadUnreadMessagesNumber']).toHaveBeenCalledTimes(TOTAL);
@@ -174,7 +174,7 @@ describe('Service: Conversation', () => {
           it('should return conversations with unreadMessages and messages', () => {
             expect(response.length).toEqual(TOTAL);
             response.forEach((conversation: Conversation) => {
-              expect(conversation instanceof Conversation).toBeTruthy();
+              expect(conversation instanceof Conversation).toBe(true);
               expect(conversation.unreadMessages).toBe(UNREAD_MESSAGES);
               expect(conversation.messages.length).toBe(TOTAL_MESSAGES);
             });
@@ -183,7 +183,7 @@ describe('Service: Conversation', () => {
             expect(service.archivedLeads).toEqual(QUERY_RESULT);
           });
           it('should set firstLoad to false', () => {
-            expect(service.firstLoad).toBeFalsy();
+            expect(service.firstLoad).toBe(false);
           });
           it('should call other functions', () => {
             expect(service['loadUnreadMessagesNumber']).toHaveBeenCalledTimes(TOTAL);
@@ -213,7 +213,7 @@ describe('Service: Conversation', () => {
           response = r;
         });
         expect(response.length).toBe(0);
-        expect(service.ended).toBeTruthy();
+        expect(service.ended).toBe(true);
       });
     });
   });
@@ -476,7 +476,7 @@ describe('Service: Conversation', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
       service.checkIfLastPage().subscribe();
-      expect(service.ended).toBeTruthy();
+      expect(service.ended).toBe(true);
     });
     it('should do not call endpoint', () => {
       spyOn(http, 'get');
@@ -547,7 +547,7 @@ describe('Service: Conversation', () => {
       });
     });
     it('should return conversation with unreadMessages', () => {
-      expect(response instanceof Conversation).toBeTruthy();
+      expect(response instanceof Conversation).toBe(true);
       expect(response.unreadMessages).toBe(UNREAD_MESSAGES);
     });
     it('should update totalUnreadMessages', () => {
@@ -586,7 +586,7 @@ describe('Service: Conversation', () => {
         it('should return conversations with old messages and new messages', () => {
           expect(response.length).toBe(TOTAL_CONVERSATIONS);
           response.forEach((conversation: Conversation) => {
-            expect(conversation instanceof Conversation).toBeTruthy();
+            expect(conversation instanceof Conversation).toBe(true);
             expect(conversation.messages.length).toBe(TOTAL_MESSAGES + TOTAL_UNREAD_MESSAGES);
           });
         });
@@ -605,7 +605,7 @@ describe('Service: Conversation', () => {
         it('should return conversations with old messages', () => {
           expect(response.length).toBe(TOTAL_CONVERSATIONS);
           response.forEach((conversation: Conversation) => {
-            expect(conversation instanceof Conversation).toBeTruthy();
+            expect(conversation instanceof Conversation).toBe(true);
             expect(conversation.messages.length).toBe(TOTAL_MESSAGES);
           });
         });
@@ -710,10 +710,10 @@ describe('Service: Conversation', () => {
       service.get(MOCKED_CONVERSATION_DATA.id).subscribe((response) => {
         mappedResponse = response;
       });
-      expect(mappedResponse.item instanceof Item).toBeTruthy();
-      expect(mappedResponse.user instanceof User).toBeTruthy();
+      expect(mappedResponse.item instanceof Item).toBe(true);
+      expect(mappedResponse.user instanceof User).toBe(true);
       expect(mappedResponse.user.itemDistance).toBe(USER_ITEM_DISTANCE);
-      expect(mappedResponse.user.blocked).toBeTruthy();
+      expect(mappedResponse.user.blocked).toBe(true);
     });
     it('should return an empty array if no data', () => {
       spyOn(http, 'get').and.returnValues(Observable.of(EMPTY_RESPONSE));
@@ -721,7 +721,7 @@ describe('Service: Conversation', () => {
       service.query().subscribe((res: Conversation[]) => {
         conversations = res;
       });
-      expect(conversations instanceof Array).toBeTruthy();
+      expect(conversations instanceof Array).toBe(true);
       expect(conversations.length).toBe(0);
     });
   });
@@ -732,20 +732,36 @@ describe('Service: Conversation', () => {
 
     beforeEach(() => {
       spyOn(xmpp, 'sendConversationStatus');
+      spyOn(trackingService, 'track');
       conversation = MOCK_CONVERSATION();
+    });
+
+    it('should track MESSAGE_READ_ACK for each unread message', () => {
+      conversation.messages = [MOCK_MESSAGE, MOCK_MESSAGE, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE];
+      conversation.unreadMessages = 2;
+
+      service.sendRead(conversation);
+      eventService.emit(EventService.MESSAGE_READ_ACK);
+
+      expect(trackingService.track).toHaveBeenCalledTimes(2);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_READ_ACK, {
+        thread_id: conversation.id,
+        from_user_id: conversation.user.id,
+        message_id: MOCK_MESSAGE.id,
+        item_id: conversation.item.id
+      });
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_READ_ACK, {
+        thread_id: conversation.id,
+        from_user_id: conversation.user.id,
+        message_id: MOCK_RANDOM_MESSAGE.id,
+        item_id: conversation.item.id
+      });
     });
 
     it('should call the SendConversationStatus if unreadMessages is > 0', () => {
       conversation.unreadMessages = 2;
       service.sendRead(conversation);
       expect(xmpp.sendConversationStatus).toHaveBeenCalledWith(USER_ID, CONVERSATION_ID);
-    });
-    it('should track the ConversationRead event', () => {
-      conversation.unreadMessages = 2;
-      spyOn(trackingService, 'track');
-      service.sendRead(conversation);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGES_READ,
-        {conversation_id: conversation.id});
     });
 
     it('should set unreadMessages to 0', () => {
@@ -845,7 +861,7 @@ describe('Service: Conversation', () => {
 
   describe('loadNotStoredMessages', () => {
     let initialConversations: Array<Conversation>;
-    const MOCK_UNSAVED_CONVERSATION: Conversation = new Conversation('c', 3, CONVERSATION_DATE, false, MOCK_USER);
+    const MOCK_UNSAVED_CONVERSATION: Conversation = new Conversation('c', 3, CONVERSATION_DATE, false, MOCK_USER, MOCK_ITEM);
     beforeEach(() => {
       initialConversations = [
         new Conversation('a', 1, CONVERSATION_DATE, false, MOCK_USER),
@@ -1014,13 +1030,10 @@ describe('Service: Conversation', () => {
 
   describe('new messages', () => {
 
-    let componentAsAny: any;
-
     beforeEach(() => {
       service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
       expect(service.leads[0].messages.length).toEqual(0);
       service.firstLoad = false;
-      spyOn(eventService, 'emit');
     });
 
     afterEach(() => {
@@ -1032,21 +1045,49 @@ describe('Service: Conversation', () => {
     });
 
     describe('conversation present', () => {
-
-      beforeEach(() => {
-        service.handleNewMessages(MOCK_MESSAGE, false);
-      });
-
       it('should add a message to the right conversation', () => {
+        service.handleNewMessages(MOCK_MESSAGE, false);
+
         expect(service.leads[0].id).toEqual(MESSAGE_MAIN.thread);
         expect(service.leads[0].messages.length).toEqual(1);
         expect(service.leads[0].messages[0].conversationId).toEqual(MESSAGE_MAIN.thread);
         expect(service.leads[0].messages[0].message).toEqual(MESSAGE_MAIN.body);
-        expect(service.leads[0].messages[0] instanceof Message).toBeTruthy();
+        expect(service.leads[0].messages[0] instanceof Message).toBe(true);
         expect(service.leads[1].messages.length).toEqual(0);
       });
 
+      it('should track MESSAGE_RECEIVED_ACK when a new message is received', () => {
+        spyOn(trackingService, 'track');
+        const message = new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN_UPDATED.date);
+        message.user = MOCK_USER;
+
+        service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
+        (service as any).onNewMessage(message, true);
+        eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
+
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_RECEIVED_ACK, {
+          thread_id: MESSAGE_MAIN.thread,
+          from_user_id: USER_ID,
+          message_id: MESSAGE_MAIN.id,
+          item_id: ITEM_ID
+        });
+      });
+
+      it('should NOT track MESSAGE_RECEIVED_ACK when the recepit has already been sent', () => {
+        spyOn(trackingService, 'track');
+        const message = new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN_UPDATED.date);
+        service['receiptSent'] = true;
+
+        service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
+        (service as any).onNewMessage(message, true);
+        eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
+
+        expect(trackingService.track).not.toHaveBeenCalled();
+      });
       it('should emit MESSAGE_ADDED event', () => {
+        spyOn(eventService, 'emit');
+        service.handleNewMessages(MOCK_MESSAGE, false);
+
         expect(eventService.emit).toHaveBeenCalled();
         expect(eventService.emit['calls'].argsFor(0)[0]).toEqual(EventService.MESSAGE_ADDED);
       });
@@ -1057,10 +1098,13 @@ describe('Service: Conversation', () => {
       });
 
       it('should add the messages with different IDs', () => {
+        service.handleNewMessages(MOCK_MESSAGE, false);
         service.handleNewMessages(MOCK_RANDOM_MESSAGE, false);
+
         expect(service.leads[0].messages.length).toEqual(2);
         expect(service.leads[0].messages[1].id).toEqual(MOCK_RANDOM_MESSAGE.id);
       });
+
       it('should call the on new message with updateDate set to true if it is an update message', () => {
         spyOn<any>(service, 'onNewMessage');
         service.handleNewMessages(MOCK_RANDOM_MESSAGE, true);
@@ -1068,6 +1112,9 @@ describe('Service: Conversation', () => {
       });
 
       describe('unread messages', () => {
+        beforeEach(() => {
+          service.handleNewMessages(MOCK_MESSAGE, false);
+        });
 
         it('should increment unreadMessages and totalUnreadMessages by 1', () => {
           expect(service.leads[0].unreadMessages).toBe(1);
@@ -1092,7 +1139,6 @@ describe('Service: Conversation', () => {
           expect(service.leads[0].unreadMessages).toBe(1);
           expect(messageService.totalUnreadMessages).toBe(1);
         });
-
       });
 
     });
@@ -1120,7 +1166,9 @@ describe('Service: Conversation', () => {
     it('should bump the conversation to the top if it is not already on the top', () => {
       expect(service.leads[0].id).toBe(CONVERSATION_ID);
       expect(service.leads[1].id).toBe(SECOND_MOCK_CONVERSATION.id);
-      service.handleNewMessages(new Message(MESSAGE_MAIN.id, SECOND_MOCK_CONVERSATION.id, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date), false);
+      service.handleNewMessages(
+        new Message(MESSAGE_MAIN.id, SECOND_MOCK_CONVERSATION.id, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date),
+        false);
       expect(service.leads[0].id).toBe(SECOND_MOCK_CONVERSATION.id);
       expect(service.leads[1].id).toBe(CONVERSATION_ID);
     });
@@ -1129,16 +1177,19 @@ describe('Service: Conversation', () => {
       spyOn(notificationService, 'sendBrowserNotification');
       const messageWithUser: Message = <Message>{
         ...MOCK_MESSAGE,
+        user: MOCK_USER,
         fromBuyer: true
       };
       spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
       service.handleNewMessages(MOCK_MESSAGE, false);
-      expect(notificationService.sendBrowserNotification).toHaveBeenCalledWith(messageWithUser);
+      expect(notificationService.sendBrowserNotification).toHaveBeenCalledWith(messageWithUser, ITEM_ID);
     });
+
     it('should NOT send browser notification if message is mine', () => {
       spyOn(notificationService, 'sendBrowserNotification');
       const messageWithUser: Message = <Message>{
         ...MOCK_MESSAGE,
+        user: MOCK_USER,
         fromBuyer: false
       };
       spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
@@ -1153,8 +1204,13 @@ describe('Service: Conversation', () => {
       });
 
       it('should request the conversation info, add the message and add to the list', () => {
-        service.handleNewMessages(new Message(MESSAGE_MAIN.id, NOT_FOUND_CONVERSATION_ID, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date), false);
+        service.handleNewMessages(
+          new Message(MESSAGE_MAIN.id, NOT_FOUND_CONVERSATION_ID, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date),
+          false);
+        eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
+
         const newConversation: Conversation = <Conversation>service.leads[0];
+
         expect(service.get).toHaveBeenCalledWith(NOT_FOUND_CONVERSATION_ID);
         expect(newConversation.id).toBe(NOT_FOUND_CONVERSATION_ID);
         expect(newConversation.modifiedDate).not.toBe(CONVERSATION_DATE);
@@ -1164,6 +1220,7 @@ describe('Service: Conversation', () => {
 
       it('should call addUserInfo', () => {
         const messageWithUser: Message = MOCK_MESSAGE;
+        messageWithUser.user = MOCK_USER;
         spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
         const newMessage: Message = new Message(
           MESSAGE_MAIN.id,
@@ -1171,7 +1228,10 @@ describe('Service: Conversation', () => {
           MESSAGE_MAIN.body,
           MESSAGE_MAIN.from,
           MESSAGE_MAIN.date);
+
         service.handleNewMessages(newMessage, false);
+        eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
+
         expect(messageService.addUserInfo).toHaveBeenCalledTimes(1);
         expect(messageService.addUserInfo).toHaveBeenCalledWith(MOCK_NOT_FOUND_CONVERSATION, newMessage);
         expect(service.leads[0].messages[0]).toEqual(messageWithUser);
@@ -1183,8 +1243,13 @@ describe('Service: Conversation', () => {
       it('should request the conversation info, add the message and add to the list', () => {
         spyOn(service, 'get').and.returnValue(Observable.of(MOCK_NOT_FOUND_CONVERSATION));
         service.leads = [];
-        service.handleNewMessages(new Message(MESSAGE_MAIN.id, NOT_FOUND_CONVERSATION_ID, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date), false);
+        service.handleNewMessages(
+          new Message(MESSAGE_MAIN.id, NOT_FOUND_CONVERSATION_ID, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date),
+          false);
+        eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
+
         const newConversation: Conversation = <Conversation>service.leads[0];
+
         expect(service.get).toHaveBeenCalledWith(NOT_FOUND_CONVERSATION_ID);
         expect(newConversation.id).toBe(NOT_FOUND_CONVERSATION_ID);
         expect(newConversation.modifiedDate).not.toBe(CONVERSATION_DATE);
@@ -1193,20 +1258,27 @@ describe('Service: Conversation', () => {
       });
     });
   });
+
   describe('onNewMessage', () => {
     it('should update the message date if the parameter is set', () => {
       service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
       (service as any).onNewMessage(MOCK_MESSAGE, false);
-      (service as any).onNewMessage(new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN_UPDATED.date), true);
+      (service as any).onNewMessage(
+        new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN_UPDATED.date),
+        true);
       expect(service.leads[0].messages[0].date).toBe(MESSAGE_MAIN_UPDATED.date);
     });
+
     it('should not save the message if there is no text, no update date && messageToUpdate', () => {
       service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
       spyOn<any>(service, 'requestConversationInfo');
-      (service as any).onNewMessage(new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, null, MESSAGE_MAIN.from, MESSAGE_MAIN_UPDATED.date), true);
+      (service as any).onNewMessage(
+        new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, null, MESSAGE_MAIN.from, MESSAGE_MAIN_UPDATED.date),
+        true);
       expect(service.leads[0].messages.length).toBe(0);
       expect(service['requestConversationInfo']).not.toHaveBeenCalled();
     });
+
     it('should move conversation from archived to new ones if it was archived', () => {
       service.leads = [];
       service['archivedLeads'] = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
@@ -1216,6 +1288,7 @@ describe('Service: Conversation', () => {
       expect(service.leads[0].messages[0]).toEqual(MOCK_MESSAGE);
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_UNARCHIVED);
     });
+
     describe('updateConversation', () => {
       const PHONE = '823748484';
       beforeEach(() => {
@@ -1258,7 +1331,7 @@ describe('Service: Conversation', () => {
     it('should return item', () => {
       service.leads = createConversationsArray(4);
       const item: Item = service.getItemFromConvId('2');
-      expect(item instanceof Item).toBeTruthy();
+      expect(item instanceof Item).toBe(true);
       expect(item.id).toBe(ITEM_ID);
     });
   });
