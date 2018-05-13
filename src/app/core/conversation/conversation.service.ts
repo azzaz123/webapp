@@ -38,7 +38,7 @@ export class ConversationService extends LeadService {
 
   private messagesObservable: Observable<Conversation[]>;
   private readSubscription: ISubscription;
-  private receivedSubscription: ISubscription;
+  private receiptSent = false;
   public ended: boolean;
 
   constructor(http: HttpService,
@@ -170,7 +170,6 @@ export class ConversationService extends LeadService {
     return Observable.of({});
   }
 
-
   public archiveWithPhones() {
     const archivedConversations: Conversation[] = _.remove(<Conversation[]>this.leads, (conversation: Conversation) => {
       return conversation.phone !== undefined;
@@ -238,6 +237,14 @@ export class ConversationService extends LeadService {
       if (message.fromBuyer) {
         this.handleUnreadMessage(conversation);
       }
+      if (this.receiptSent) {
+        this.receiptSent = false;
+      } else if (conversation.user.id === message.user.id) {
+        this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
+          this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED_ACK);
+          this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
+        });
+      }
       return true;
     }
   }
@@ -259,11 +266,11 @@ export class ConversationService extends LeadService {
     .map((data: ConversationResponse ) => this.mapRecordData(data));
   }
 
-  private sendReadAck(message: Message, itemId: string, toUserId: string, conversationId: string) {
-    this.trackingService.track(TrackingService.MESSAGE_READ_ACK, {
+  private sendAck(messageId: string, itemId: string, toUserId: string, conversationId: string, trackingEvent: any) {
+    this.trackingService.track(trackingEvent, {
       thread_id: conversationId,
-      to_user_id: toUserId,
-      message_id: message.id,
+      from_user_id: toUserId,
+      message_id: messageId,
       item_id: itemId
     });
   }
@@ -273,13 +280,13 @@ export class ConversationService extends LeadService {
       const unreadMessages = conversation.messages.slice(-conversation.unreadMessages);
       this.readSubscription = this.event.subscribe(EventService.MESSAGE_READ_ACK, () => {
         unreadMessages.forEach((message) => {
-          this.sendReadAck(message, conversation.item.id, conversation.user.id, conversation.id);
+          this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_READ_ACK);
         });
+        this.readSubscription.unsubscribe();
       });
       this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);
       this.messageService.totalUnreadMessages -= conversation.unreadMessages;
       conversation.unreadMessages = 0;
-      this.readSubscription.unsubscribe();
       this.persistencyService.saveUnreadMessages(conversation.id, 0);
     }
   }
@@ -359,8 +366,6 @@ export class ConversationService extends LeadService {
     });
   }
 
-
-
   protected mapRecordData(data: ConversationResponse): Conversation {
     return new Conversation(
       data.conversation_id,
@@ -433,16 +438,6 @@ export class ConversationService extends LeadService {
       messageToUpdate.date = message.date;
       this.persistencyService.updateMessageDate(message);
     } else if (message.message) {
-      this.receivedSubscription = this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
-        const conv = conversation;
-        this.trackingService.track(TrackingService.MESSAGE_RECEIVED_ACK, {
-          thread_id: message.conversationId,
-          to_user_id: conv.user.id,
-          message_id: message.id,
-          item_id: conv.item.id
-        });
-        this.receivedSubscription.unsubscribe();
-      });
       this.persistencyService.saveMessages(message);
       if (conversation) {
         this.updateConversation(message, conversation).subscribe(() => {
@@ -464,7 +459,11 @@ export class ConversationService extends LeadService {
           this.addConversation(unarchivedConversation, message);
           this.event.emit(EventService.CONVERSATION_UNARCHIVED);
         } else {
-          this.requestConversationInfo(message);
+          this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
+            this.requestConversationInfo(message);
+            this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
+            this.receiptSent = true;
+          });
         }
       }
     }
@@ -504,6 +503,7 @@ export class ConversationService extends LeadService {
   }
 
   private addConversation(conversation: Conversation, message: Message) {
+    this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED_ACK);
     message = this.messageService.addUserInfo(conversation, message);
     this.addMessage(conversation, message);
     this.leads.unshift(conversation);
