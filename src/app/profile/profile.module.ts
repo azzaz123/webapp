@@ -12,6 +12,11 @@ import { EmailModalComponent } from './edit-email/email-modal/email-modal.compon
 import { EditPasswordComponent } from './edit-password/edit-password.component';
 import { PasswordModalComponent } from './edit-password/password-modal/password-modal.component';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
+import { PictureUploadComponent } from './picture-upload/picture-upload.component';
+import { ProfileFormComponent } from './profile-form/profile-form.component';
+import { ProfileProComponent } from './profile-pro/profile-pro.component';
+import { ProfileProInfoComponent } from './profile-pro/profile-pro-info/profile-pro-info.component';
+import { ProfileProBillingComponent } from './profile-pro/profile-pro-billing/profile-pro-billing.component';
 
 @NgModule({
   imports: [
@@ -31,7 +36,9 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
     EmailModalComponent,
     EditPasswordComponent,
     PasswordModalComponent,
-    UnsubscribeModalComponent
+    UnsubscribeModalComponent,
+    PictureUploadComponent,
+    ProfileFormComponent
   ],
   entryComponents: [
     EmailModalComponent,
