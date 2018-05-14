@@ -9,6 +9,7 @@ import { Pack } from '../../../../core/payments/pack';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { Response } from '@angular/http';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tsl-cart-extras-pro',
@@ -30,7 +31,8 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   constructor(private cartService: CartService,
               private paymentService: PaymentService,
               private errorService: ErrorsService,
-              private trackingService: TrackingService) { }
+              private trackingService: TrackingService,
+              private router: Router) { }
 
   ngOnInit() {
     this.cartService.createInstance(new CartProExtras());
@@ -60,7 +62,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
       console.log('checkout', order);
       this.paymentService.orderExtrasProPack(order).subscribe(() => {
         this.track(order);
-        this.buy(order.orderId);
+        this.buy(order.id);
       }, (error: Response) => {
         this.loading = false;
         if (error.text()) {
@@ -75,7 +77,15 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   }
 
   private buy(orderId: string) {
-    console.log('order', orderId);
+    if (!this.financialCard || this.financialCard && this.cardType === 'new') {
+      this.sabadellSubmit.emit(orderId);
+    } else {
+      this.paymentService.pay(orderId).subscribe(() => {
+        this.router.navigate(['pro/catalog/list', {code: 200}]);
+      }, () => {
+        this.router.navigate(['pro/catalog/list', {code: -1}]);
+      });
+    }
   }
 
   private track(order: OrderProExtras) {

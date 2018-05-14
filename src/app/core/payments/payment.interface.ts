@@ -37,7 +37,7 @@ export interface Products {
 
 export interface OrderProExtras {
   packs: Array<string>;
-  orderId: string;
+  id: string;
 }
 
 export interface BillingInfoResponse {
