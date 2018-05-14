@@ -23,7 +23,7 @@
 }
 
 .cart-content {
-    overflow: scroll;
+    overflow: auto;
     padding: $spacing-2M * 2 0 $spacing * 4 0;
     .cart-header {
         position: absolute;
