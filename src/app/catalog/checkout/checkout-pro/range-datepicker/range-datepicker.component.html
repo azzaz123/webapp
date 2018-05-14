@@ -1,4 +1,4 @@
-<ngb-datepicker #dp (select)="onDateSelection($event)" [dayTemplate]="t" [minDate]="minDate" [(ngModel)]="model"></ngb-datepicker>
+<ngb-datepicker #dp (select)="onDateSelection($event)" [navigation]="arrows" [dayTemplate]="t" [minDate]="minDate" [(ngModel)]="model"></ngb-datepicker>
 <ng-template #t let-date="date" let-focused="focused" let-disabled="disabled">
   <span class="custom-day" class="{{bumpType}}" [ngClass]="{start: isFrom(date), end:isTo(date)}" [class.focused]="focused" [class.disabled]="disabled"
     [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)" [class.faded]="isHovered(date) || isInside(date)"

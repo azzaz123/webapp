@@ -60,16 +60,14 @@
         display: none;
       }
     }
+    .ngb-dp-month-name {
+      font-size: $font-size;
+      font-weight: bold;
+      margin: 0 $spacing-M;
+    }
     .right {
       .ngb-dp-navigation-chevron {
         transform: rotate(180deg);
-      }
-    }
-    .ngb-dp-navigation-select {
-      > select {
-        border: 0;
-        width: 70px;
-        font-weight: bold;
       }
     }
   }
