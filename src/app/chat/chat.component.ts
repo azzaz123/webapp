@@ -69,9 +69,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     }, () => {
       this.firstLoad = true;
     });
-    // this fixes missing messages that are sent after the client has been connected and  a page reload happens
     this.conversationService.firstLoad = true;
-  }
+    }
 
   ngOnDestroy () {
     this.adService.stopAdsRefresh();

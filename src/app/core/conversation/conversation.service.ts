@@ -286,11 +286,13 @@ export class ConversationService extends LeadService {
     if (this.messagesObservable) {
       return this.messagesObservable;
     }
+    if (this.connectionService.isConnected) {
     this.messagesObservable = this.recursiveLoadMessages(conversations)
     .share()
     .do(() => {
       this.messagesObservable = null;
     });
+    }
     return this.messagesObservable;
   }
 
