@@ -49,7 +49,8 @@ const SCREENS_IDS: any = {
   MyProfile: '112',
   Conversation: '118',
   Messages: '117',
-  ProPhoneManager: '94'
+  ProPhoneManager: '94',
+  Chat: '27'
 };
 
 const TYPES_IDS: any = {
@@ -76,55 +77,55 @@ export class TrackingService {
   public static MESSAGES_READ: TrackingEventBase = {
     name: '441',
     category: CATEGORY_IDS.Conversations,
-    screen: SCREENS_IDS.Log,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Message
   };
   public static MESSAGE_RECEIVED: TrackingEventBase = {
     name: '442',
     category: CATEGORY_IDS.Conversations,
-    screen: SCREENS_IDS.Log,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Message
   };
   public static MESSAGE_SENT: TrackingEventBase = {
     name: '443',
     category: CATEGORY_IDS.Conversations,
-    screen: SCREENS_IDS.Log,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Message
   };
   public static MESSAGE_RECEIVED_ACK: TrackingEventBase = {
     name: '436',
     category: CATEGORY_IDS.Conversations,
-    screen: SCREENS_IDS.Log,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Message
   };
   public static NOTIFICATION_RECEIVED: TrackingEventBase = {
     name: '437',
     category: CATEGORY_IDS.Conversation,
-    screen: SCREENS_IDS.Log,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.PushNotification
   };
   public static NOTIFICATION_READ: TrackingEventBase = {
     name: '438',
     category: CATEGORY_IDS.Conversation,
-    screen: SCREENS_IDS.Log,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Click
   };
   public static MESSAGE_READ_ACK: TrackingEventBase = {
     name: '439',
     category: CATEGORY_IDS.Conversation,
-    screen: SCREENS_IDS.Log,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Message
   };
   public static SEND_BUTTON: TrackingEventBase = {
     name: '76',
     category: CATEGORY_IDS.Conversations,
-    screen: SCREENS_IDS.Log,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.ActionServer
   };
   public static MESSAGE_SENT_ACK: TrackingEventBase = {
     name: '440',
     category: CATEGORY_IDS.Conversations,
-    screen: SCREENS_IDS.Log,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Message
   };
   public static MY_PROFILE_LOGGED_IN: TrackingEventBase = {
@@ -274,7 +275,7 @@ export class TrackingService {
   public static CONVERSATION_CREATE_NEW: TrackingEventBase = {
     name: '121',
     category: CATEGORY_IDS.Conversations,
-    screen: SCREENS_IDS.ItemDetail,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.ActionServer
   };
   public static FEATURED_PURCHASE_FINAL: TrackingEventBase = {
