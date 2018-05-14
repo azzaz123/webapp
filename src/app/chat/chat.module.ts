@@ -14,14 +14,12 @@ import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { ItemModule } from '../core/item/item.module';
 import { UserModule } from '../core/user/user.module';
-import { MessageComponent } from './message/message.component';
 import { ConversationComponent } from './conversations-panel/conversation/conversation.component';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 import { ReportListingComponent } from './modals/report-listing/report-listing.component';
 import { ReportUserComponent } from './modals/report-user/report-user.component';
 import { BlockUserComponent } from './modals/block-user/block-user.component';
 import { UnblockUserComponent } from './modals/unblock-user/unblock-user.component';
-import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { ItemReservedComponent } from './item/item-reserved/item-reserved.component';
 import { ItemSoldComponent } from './item/item-sold/item-sold.component';
@@ -45,7 +43,6 @@ import { UserResponseRateComponent } from './user-response-rate/user-response-ra
   ],
   declarations: [
     chatRoutedComponents,
-    MessageComponent,
     ConversationComponent,
     ConversationsPanelComponent,
     MessagesPanelComponent,
@@ -59,7 +56,6 @@ import { UserResponseRateComponent } from './user-response-rate/user-response-ra
     ReportUserComponent,
     BlockUserComponent,
     UnblockUserComponent,
-    ReviewButtonComponent,
     UserDetailComponent,
     UserCardComponent,
     UserResponseRateComponent

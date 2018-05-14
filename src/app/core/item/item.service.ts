@@ -412,7 +412,7 @@ export class ItemService extends ResourceService {
     .map((response: AvailableProductsResponse) => response.products[0]);
   }
 
-  public getUrgentProductByCategoryId(categoryId: number): Observable<Product> {
+  public getUrgentProductByCategoryId(categoryId: string): Observable<Product> {
     return this.http.get(this.API_URL_WEB + '/available-urgent-products', {
       categoryId: categoryId
     })
@@ -421,7 +421,7 @@ export class ItemService extends ResourceService {
   }
 
   public getLatest(userId: string): Observable<ItemDataResponse> {
-    return this.http.get(this.API_URL + '/latest', {userId: userId})
+    return this.http.get(this.API_URL + '/latest-cars', {userId: userId})
       .map((r: Response) => r.json())
       .map((resp: LatestItemResponse) => {
         return {

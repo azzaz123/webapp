@@ -32,6 +32,8 @@ import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
 import { User } from './core/user/user';
+import { CallsService } from './core/conversation/calls.service';
+import { and } from '@angular/router/src/utils/collection';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -45,6 +47,7 @@ let titleService: Title;
 let trackingService: TrackingService;
 let window: any;
 let conversationService: ConversationService;
+let callsService: CallsService;
 let cookieService: CookieService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
@@ -84,7 +87,7 @@ describe('App', () => {
           },
           setPermission() {},
           isProfessional() {
-            return Observable.of(false)
+            return Observable.of(false);
           }
         }
         },
@@ -132,6 +135,13 @@ describe('App', () => {
         }
         },
         {
+          provide: CallsService, useValue: {
+            init() {
+              return Observable.of();
+            }
+          }
+        },
+        {
           provide: Router, useValue: {
           events: Observable.of(new NavigationEnd(1, 'test', 'test'))
         }
@@ -173,6 +183,7 @@ describe('App', () => {
     trackingService = TestBed.get(TrackingService);
     window = TestBed.get(WindowRef).nativeWindow;
     conversationService = TestBed.get(ConversationService);
+    callsService = TestBed.get(CallsService);
     cookieService = TestBed.get(CookieService);
     spyOn(notificationService, 'init');
   });
@@ -210,6 +221,7 @@ describe('App', () => {
           connection.mockRespond(new Response(res));
         });
         spyOn(conversationService, 'init').and.returnValue(Observable.of({}));
+        spyOn(callsService, 'init').and.returnValue(Observable.of({}));
       }));
 
       it('should call the eventService.subscribe passing the login event', () => {
@@ -243,6 +255,15 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(conversationService.init).toHaveBeenCalledTimes(2);
+      });
+
+      it('should call callsService.init twice if user is professional', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(callsService.init).toHaveBeenCalledTimes(2);
       });
 
       it('should call userService setpermission method', () => {

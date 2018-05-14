@@ -122,9 +122,9 @@ describe('EditComponent', () => {
 
       const categoryId = ITEM_DATA_V3.content.category_id;
 
-      component.getUrgentPrice(categoryId);
+      component.getUrgentPrice(categoryId.toString());
 
-      expect(itemService.getUrgentProductByCategoryId).toHaveBeenCalledWith(categoryId);
+      expect(itemService.getUrgentProductByCategoryId).toHaveBeenCalledWith(categoryId.toString());
     });
   });
 

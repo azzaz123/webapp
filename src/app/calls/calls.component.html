@@ -1,0 +1,74 @@
+<div class="page-content"
+     infinite-scroll
+     [infiniteScrollDistance]="5"
+     [infiniteScrollThrottle]="100"
+     [scrollWindow]="false"
+     [infiniteScrollDisabled]="!calls.length"
+     (scrolled)="loadMore()">
+  <div class="container">
+    <tsl-header>
+      <div class="col-12">
+        <div class="header-row">
+          <h1 class="header-title"><span i18n>Calls</span> <span class="badge badge-pro">Pro</span></h1>
+        </div>
+        <div class="header-row header-row--margin">
+          <h4 class="header-subtitle" i18n>Here you can manage and see the information related with your calls</h4>
+        </div>
+      </div>
+    </tsl-header>
+    <div class="col-12">
+      <div class="row">
+        <div class="col-10">
+            <nav class="nav filters-nav">
+              <a (click)="filterByArchived(false)" [ngClass]="{active: !archive}" class="nav-link" i18n>Pending</a>
+              <a (click)="filterByArchived(true)" [ngClass]="{active: archive}" class="nav-link" i18n>Processed</a>
+            </nav>
+        </div>
+        <div class="col-2 text-right">
+          <tsl-process-all-button type="calls" [hidden]="!calls.length || archive" i18n>Process all</tsl-process-all-button>
+        </div>
+      </div>
+    </div>
+    <div class="calls-block" [hidden]="!calls.length || loading">
+      <div class="row calls-header">
+        <div class="col-md-3">
+          <h3 i18n>Name</h3>
+        </div>
+        <div class="col-md-3">
+          <h3 i18n>Car</h3>
+        </div>
+        <div class="col-md-2">
+          <h3 i18n>Phone</h3>
+        </div>
+        <div class="col-md-2">
+          <h3 i18n>Date</h3>
+        </div>
+        <div class="col-md-1">
+          <h3 i18n>Duration</h3>
+        </div>
+        <div class="col-md-1  text-right" >
+          <h3 i18n [hidden]="archive">Process</h3>
+          <h3 i18n [hidden]="!archive">Pending</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="separator calls-header-separator"></div>
+        </div>
+      </div>
+      <div class="row calls-items">
+        <div class="col-md-12">
+          <tsl-call-item *ngFor="let call of calls" [call]="call"></tsl-call-item>
+        </div>
+      </div>
+    </div>
+    <div class="empty-state-phones" [hidden]="calls.length || loading">
+      <mat-icon svgIcon="empty-state-phones" class="image"></mat-icon>
+      <div class="message" i18n>You have no phone calls yet</div>
+    </div>
+    <div class="row loading-center">
+      <tsl-spinner [hidden]="!loading"></tsl-spinner>
+    </div>
+  </div>
+</div>
+
