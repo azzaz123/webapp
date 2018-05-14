@@ -8,6 +8,7 @@ import { PacksModel, PerksModel } from '../../../core/payments/payment.model';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VisibilityProductsModalComponent } from './visibility-products-modal/visibility-products-modal.component';
+import { SubscriptionIconPipe } from './subscription-icon.pipe';
 
 describe('ProfileProSubscriptionComponent', () => {
   let component: ProfileProSubscriptionComponent;
@@ -19,7 +20,7 @@ describe('ProfileProSubscriptionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProfileProSubscriptionComponent ],
+      declarations: [ ProfileProSubscriptionComponent, SubscriptionIconPipe ],
       providers: [
         {
           provide: PaymentService, useValue: {

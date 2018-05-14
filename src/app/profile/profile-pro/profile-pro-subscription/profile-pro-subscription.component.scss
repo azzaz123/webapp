@@ -48,6 +48,12 @@ h2, .description {
   flex:1;
   margin: $spacing / 2;
   max-width: 186px;
+  mat-icon {
+    height: 46px;
+    width: 94px;
+    margin-bottom: $spacing-2M;
+    margin-top: $spacing;
+  }
   .quantity-container {
     position: relative;
     .quantity {

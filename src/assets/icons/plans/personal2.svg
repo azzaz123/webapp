@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="91px" height="44px" viewBox="0 0 91 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 8 Copy 6</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="68" height="33"></rect>
+        <circle id="path-3" cx="5" cy="12" r="5"></circle>
+    </defs>
+    <g id="PROTOOL" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="plans" transform="translate(-1406.000000, -191.000000)">
+            <g id="Group" transform="translate(105.000000, 115.000000)">
+                <g id="Group-8-Copy-6" transform="translate(1302.000000, 77.000000)">
+                    <path d="M7.08201139,40 C7.02762338,39.173691 7,38.3400714 7,37.5 C7,16.7893219 23.7893219,0 44.5,0 C65.2106781,0 82,16.7893219 82,37.5 C82,38.3400714 81.9723766,39.173691 81.9179886,40 L7.08201139,40 Z" id="Combined-Shape" stroke="#CFD8DC" stroke-width="2" fill-opacity="0.5" fill="#ECEFF1"></path>
+                    <path d="M7.08201139,40 C7.02762338,39.173691 7,38.3400714 7,37.5 C7,16.7893219 23.7893219,0 44.5,0 C65.2106781,0 82,16.7893219 82,37.5 C82,38.3400714 81.9723766,39.173691 81.9179886,40 L7.08201139,40 Z" id="Combined-Shape" stroke="#CFD8DC" stroke-width="2" fill-opacity="0.5" fill="#ECEFF1"></path>
+                    <g id="Group-2" transform="translate(7.000000, 0.000000)" stroke="#CFD8DC" stroke-linecap="round">
+                        <path d="M37.5,0.5 L37.5,39.9588393" id="Line-4"></path>
+                        <path d="M6.5,17.5 L37.5,39.9588393" id="Line-4"></path>
+                        <g id="Group-3" transform="translate(56.000000, 20.000000) scale(-1, 1) translate(-56.000000, -20.000000) translate(37.000000, 0.000000)">
+                            <path d="M6.5,17.5 L37.5,39.9588393" id="Line-4"></path>
+                            <path d="M3.5,22.5 L37.5,39.9588393" id="Line-4"></path>
+                            <path d="M1.5,28.5 L37.5,39.9588393" id="Line-4"></path>
+                            <path d="M0.5,34.5 L37.5,39.9588393" id="Line-4"></path>
+                            <path d="M9.5,12.5 L37.5,39.9588393" id="Line-4"></path>
+                            <path d="M14.5,8.5 L37.5,39.9588393" id="Line-4"></path>
+                            <path d="M19.5,4.5 L37.5,39.9588393" id="Line-4"></path>
+                            <path d="M25.5,2.5 L37.5,39.9588393" id="Line-4"></path>
+                            <path d="M31.5,0.5 L37.5,39.9588393" id="Line-4"></path>
+                        </g>
+                        <path d="M3.5,22.5 L37.5,39.9588393" id="Line-4"></path>
+                        <path d="M1.5,28.5 L37.5,39.9588393" id="Line-4"></path>
+                        <path d="M0.5,34.5 L37.5,39.9588393" id="Line-4"></path>
+                        <path d="M9.5,12.5 L37.5,39.9588393" id="Line-4"></path>
+                        <path d="M14.5,8.5 L37.5,39.9588393" id="Line-4"></path>
+                        <path d="M19.5,4.5 L37.5,39.9588393" id="Line-4"></path>
+                        <path d="M25.5,2.5 L37.5,39.9588393" id="Line-4"></path>
+                        <path d="M31.5,0.5 L37.5,39.9588393" id="Line-4"></path>
+                    </g>
+                    <path d="M0.404545455,40 L88.6288511,40" id="Line" stroke="#CFD8DC" stroke-width="2" stroke-linecap="round"></path>
+                    <g id="Mask" transform="translate(10.000000, 6.000000)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <g></g>
+                        <g mask="url(#mask-2)" fill="#FFFFFF">
+                            <g transform="translate(3.000000, 0.000000)">
+                                <circle cx="31.5" cy="31.5" r="31.5"></circle>
+                            </g>
+                        </g>
+                    </g>
+                    <g id="puntero" transform="translate(55.116596, 37.606964) rotate(18.000000) translate(-55.116596, -37.606964) translate(40.616596, 29.106964)">
+                        <rect id="Rectangle" stroke="#CFD8DC" stroke-width="2" fill="#ECEFF1" transform="translate(15.505773, 7.322529) rotate(66.000000) translate(-15.505773, -7.322529) " x="13.5057728" y="-6.1774714" width="4" height="27" rx="2"></rect>
+                        <g id="Oval-2">
+                            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-3"></use>
+                            <circle stroke="#CFD8DC" stroke-width="2" cx="5" cy="12" r="4"></circle>
+                        </g>
+                        <circle id="Oval-2" fill="#ECEFF1" cx="5" cy="12" r="1.19842657"></circle>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

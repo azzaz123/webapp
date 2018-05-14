@@ -15,6 +15,7 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
 import { PictureUploadComponent } from './picture-upload/picture-upload.component';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
 import { VisibilityProductsModalComponent } from './profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component';
+import { SubscriptionIconPipe } from './profile-pro/profile-pro-subscription/subscription-icon.pipe';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { VisibilityProductsModalComponent } from './profile-pro/profile-pro-subs
     UnsubscribeModalComponent,
     PictureUploadComponent,
     ProfileFormComponent,
-    VisibilityProductsModalComponent
+    VisibilityProductsModalComponent,
+    SubscriptionIconPipe
   ],
   entryComponents: [
     EmailModalComponent,
