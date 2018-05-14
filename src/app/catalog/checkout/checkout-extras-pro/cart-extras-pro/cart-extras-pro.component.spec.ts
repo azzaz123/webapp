@@ -10,12 +10,19 @@ import { PACK_ID, FINANCIAL_CARD, PREPARED_PACKS } from '../../../../../tests/pa
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
+import { Router } from '@angular/router';
+import { TrackingService } from '../../../../core/tracking/tracking.service';
+import { ErrorsService } from '../../../../core/errors/errors.service';
+import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 
-describe('CartExtrasProComponent', () => {
+fdescribe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
   let fixture: ComponentFixture<CartExtrasProComponent>;
   let cartService: CartService;
   let paymentService: PaymentService;
+  let errorsService: ErrorsService;
+  let router: Router;
+  let trackingService: TrackingService;
 
   const CART_PRO_EXTRAS = new CartProExtras();
   const CART_CHANGE: CartChange = {
@@ -40,7 +47,30 @@ describe('CartExtrasProComponent', () => {
         },
         {
           provide: PaymentService, useValue: {
-            getFinancialCard() { }
+            getBillingInfo() {
+              return Observable.of({});
+            },
+            getFinancialCard() { },
+            pay() {
+              return Observable.of('');
+            },
+            orderExtrasProPack() {
+              return Observable.of({});
+            }
+          },
+        },
+        {
+          provide: TrackingService, useClass: MockTrackingService
+        },
+        {
+          provide: ErrorsService, useValue: {
+            i18nError() { },
+            show() { }
+          }
+        },
+        {
+          provide: Router, useValue: {
+            navigate() { }
           }
         }
       ],
@@ -54,6 +84,9 @@ describe('CartExtrasProComponent', () => {
     component = fixture.componentInstance;
     cartService = TestBed.get(CartService);
     paymentService = TestBed.get(PaymentService);
+    errorsService = TestBed.get(ErrorsService);
+    router = TestBed.get(Router);
+    trackingService = TestBed.get(TrackingService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     fixture.detectChanges();
   });
@@ -113,6 +146,18 @@ describe('CartExtrasProComponent', () => {
       component.clean();
 
       expect(cartService.clean).toHaveBeenCalled();
+    });
+  });
+
+  describe('checkout', () => {
+    describe('already has billing info', () => {
+      it('should call paymentService getBillingInfo method', () => {
+        spyOn(paymentService, 'getBillingInfo').and.callThrough();
+
+        component.checkout();
+
+        expect(paymentService.getBillingInfo).toHaveBeenCalled();
+      });
     });
   });
 });
