@@ -36,8 +36,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    .ngb-dp-day {
+      width: 2.5rem;
+    }
     .ngb-dp-arrow-btn {
       box-shadow: none;
+      &:disabled {
+        opacity: 0.4;
+      }
     }
     .ngb-dp-weekdays {
       border: 0;
@@ -47,6 +53,8 @@
       font-style: normal;
       color: $grey-500;
       margin: $spacing-S 0;
+      width: 2.5rem;
+      text-transform: lowercase;
     }
     .ngb-dp-navigation-chevron {
       width: 5px;
@@ -93,10 +101,11 @@
     justify-content: center;
     text-align: center;
     height: 2rem;
-    width: 2rem;
+    width: 100%;
     font-size: $font-size-XS;
     &.range, &:hover {
       color: white;
+      font-weight: bold;
       &.citybump {
         background-color: $zone-bump;
       }
@@ -123,10 +132,10 @@
     &.faded {
       color: white;
       &.citybump {
-        background-color: rgba($zone-bump, 0.6);
+        background-color: rgba($zone-bump, 0.7);
       }
       &.countrybump {
-        background-color: rgba($country-bump, 0.6);
+        background-color: rgba($country-bump, 0.7);
       }
     }
   }

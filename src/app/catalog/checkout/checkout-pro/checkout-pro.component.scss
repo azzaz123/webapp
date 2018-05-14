@@ -106,12 +106,8 @@
 }
 
 .datepicker-wrapper {
-  display: flex;
-  flex-direction: column;
   border-radius: 10px;
-  border: solid 1px $grey-50;
   padding: $spacing $spacing-L;
   background-color: $white;
   z-index: 1;
-  min-width: 360px;
 }
