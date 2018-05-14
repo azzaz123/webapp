@@ -1,4 +1,4 @@
-import { FinancialCard, SabadellInfoResponse, Packs, PackResponse, ProductResponse } from '../app/core/payments/payment.interface';
+import { FinancialCard, SabadellInfoResponse, Packs, PackResponse, ProductResponse, OrderProExtras } from '../app/core/payments/payment.interface';
 import { Pack } from '../app/core/payments/pack';
 
 export const FINANCIAL_CARD: FinancialCard = {
@@ -137,3 +137,8 @@ export const PREPARED_PACKS: Array<any> = [
     packs: [(this.createPacksFixture()).cityBump[2], (this.createPacksFixture()).countryBump[2]]
   }
 ];
+
+export const ORDER_CART_EXTRAS_PRO: OrderProExtras = {
+  id: 'UUID',
+  packs: ['1', '5']
+};

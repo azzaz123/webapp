@@ -6,7 +6,7 @@ import { PaymentService } from '../../../../core/payments/payment.service';
 import { Observable } from 'rxjs/Observable';
 import { CartProExtras } from '../../cart/cart-pro-extras';
 import { CartChange } from '../../cart/cart-item.interface';
-import { PACK_ID, FINANCIAL_CARD, PREPARED_PACKS } from '../../../../../tests/payments.fixtures.spec';
+import { PACK_ID, FINANCIAL_CARD, PREPARED_PACKS, ORDER_CART_EXTRAS_PRO } from '../../../../../tests/payments.fixtures.spec';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
@@ -15,7 +15,7 @@ import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 
-fdescribe('CartExtrasProComponent', () => {
+describe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
   let fixture: ComponentFixture<CartExtrasProComponent>;
   let cartService: CartService;
@@ -150,14 +150,116 @@ fdescribe('CartExtrasProComponent', () => {
   });
 
   describe('checkout', () => {
-    describe('already has billing info', () => {
-      it('should call paymentService getBillingInfo method', () => {
-        spyOn(paymentService, 'getBillingInfo').and.callThrough();
+    let eventId: string;
+    it('should call paymentService getBillingInfo method', () => {
+      spyOn(paymentService, 'getBillingInfo').and.callThrough();
 
+      component.checkout();
+
+      expect(paymentService.getBillingInfo).toHaveBeenCalled();
+    });
+
+    describe('already has billing info', () => {
+      beforeEach(() => {
+        spyOn(paymentService, 'orderExtrasProPack').and.callThrough();
+        spyOn(component.cart, 'prepareOrder').and.returnValue(ORDER_CART_EXTRAS_PRO);
+        eventId = null;
+        component.sabadellSubmit.subscribe((id: string) => {
+          eventId = id;
+        });
+      });
+
+      it('should call paymentService orderExtrasProPack method to create a pack order', () => {
         component.checkout();
 
-        expect(paymentService.getBillingInfo).toHaveBeenCalled();
+        expect(paymentService.orderExtrasProPack).toHaveBeenCalledWith(ORDER_CART_EXTRAS_PRO);
       });
+
+      describe('if paymentService OrderExtrasProPack is successful', () => {
+        beforeEach(() => {
+          spyOn(trackingService, 'track');
+
+          component.checkout();
+        });
+
+        it('should call track', () => {
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {
+            selected_packs: ORDER_CART_EXTRAS_PRO.packs
+          });
+        });
+
+        describe('buy method', () => {
+          describe('should call sabadellSubmit emit', () => {
+            it('if there is not financial card', () => {
+              component.financialCard = null;
+
+              component.checkout();
+
+              expect(eventId).toBe('UUID');
+            });
+
+            it('if the cardtype is new', () => {
+              component.cardType = 'new';
+
+              component.checkout();
+
+              expect(eventId).toBe('UUID');
+            });
+          });
+
+          describe('should call paymentService pay method', () => {
+            it('if there is a financial card and cartype is old', () => {
+              spyOn(paymentService, 'pay').and.callThrough();
+
+              component.checkout();
+
+              expect(paymentService.pay).toHaveBeenCalledWith(ORDER_CART_EXTRAS_PRO.id);
+            });
+
+            it('should navigate to catalog with code 200 if the payment was ok', () => {
+              spyOn(paymentService, 'pay').and.callThrough();
+              spyOn(router, 'navigate').and.callThrough();
+
+              component.checkout();
+
+              expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { code: 200 }]);
+            });
+
+            it('should navigate to catalog with code -1 if the payment was ko', () => {
+              spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
+              spyOn(router, 'navigate').and.callThrough();
+
+              component.checkout();
+
+              expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { code: -1 }]);
+            });
+          });
+        });
+      });
+
+      describe('error', () => {
+        it('should call toastr', () => {
+          paymentService.orderExtrasProPack = jasmine.createSpy().and.returnValue(Observable.throw({
+            text() {
+              return '';
+            }
+          }));
+          spyOn(errorsService, 'i18nError');
+
+          component.checkout();
+
+          expect(errorsService.i18nError).toHaveBeenCalledWith('bumpError');
+        });
+      });
+    });
+
+    it('no billing info', () => {
+      spyOn(paymentService, 'getBillingInfo').and.returnValue(Observable.throw({}));
+      spyOn(component.billingInfoNeeds, 'emit').and.callThrough();
+
+      component.checkout();
+
+      expect(component.billingInfoNeeds.emit).toHaveBeenCalledWith(true);
     });
   });
 });

@@ -59,7 +59,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.paymentService.getBillingInfo().subscribe((info: BillingInfoResponse) => {
       const order: OrderProExtras = this.cart.prepareOrder();
-      console.log('checkout', order);
       this.paymentService.orderExtrasProPack(order).subscribe(() => {
         this.track(order);
         this.buy(order.id);
