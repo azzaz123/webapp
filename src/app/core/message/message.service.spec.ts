@@ -32,6 +32,7 @@ describe('Service: Message', () => {
   let service: MessageService;
   let persistencyService: PersistencyService;
   let userService: UserService;
+  let connectionService: ConnectionService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -49,6 +50,7 @@ describe('Service: Message', () => {
     service = TestBed.get(MessageService);
     persistencyService = TestBed.get(PersistencyService);
     userService = TestBed.get(UserService);
+    connectionService = TestBed.get(ConnectionService);
   });
 
   it('should instanciate', () => {
@@ -346,35 +348,50 @@ describe('Service: Message', () => {
     beforeEach(() => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of(MOCK_DB_META));
     });
-    it('should get the meta information from the database', () => {
-      service.getNotSavedMessages();
-      expect(persistencyService.getMetaInformation).toHaveBeenCalled();
+    describe('with connection', () => {
+      beforeEach(() => {
+        connectionService.isConnected = true;
+      });
+
+      it('should get the meta information from the database', () => {
+        service.getNotSavedMessages();
+        expect(persistencyService.getMetaInformation).toHaveBeenCalled();
+      });
+
+      it('should call the query method using the provide information of the db', () => {
+        const messagesArray: Array<Message> = createMessagesArray(5);
+        spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
+        service.getNotSavedMessages().subscribe();
+        expect(service.query).toHaveBeenCalledWith(null, MOCK_DB_META.data.last, -1, MOCK_DB_META.data.start);
+
+      });
+
+      it('should save the new meta information if the query returns messages', () => {
+        const messagesArray: Array<Message> = createMessagesArray(5);
+        spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
+        spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
+        service.getNotSavedMessages().subscribe();
+        expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith(
+          {last: MOCK_DB_META.data.last, start: messagesArray[messagesArray.length - 1].date.toISOString()}
+        );
+      });
+
+      it('should NOT save the new meta information if the query does not return messages', () => {
+        spyOn(service, 'query').and.returnValue(Observable.of({data: [], meta: MOCK_DB_META.data}));
+        spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
+        service.getNotSavedMessages().subscribe();
+        expect(persistencyService.saveMetaInformation).not.toHaveBeenCalled();
+      });
     });
 
-    it('should call the query method using the provide information of the db', () => {
-      const messagesArray: Array<Message> = createMessagesArray(5);
-      spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
-      let observableResponse: any;
-      service.getNotSavedMessages().subscribe();
-      expect(service.query).toHaveBeenCalledWith(null, MOCK_DB_META.data.last, -1, MOCK_DB_META.data.start);
+    describe('without connection', () => {
+      it('should NOT call getMetaInformation when there is no connection', () => {
+        connectionService.isConnected = false;
 
-    });
+        service.getNotSavedMessages();
 
-    it('should save the new meta information if the query returns messages', () => {
-      const messagesArray: Array<Message> = createMessagesArray(5);
-      spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
-      spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
-      service.getNotSavedMessages().subscribe();
-      expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith(
-        {last: MOCK_DB_META.data.last, start: messagesArray[messagesArray.length - 1].date.toISOString()}
-      );
-    });
-
-    it('should NOT save the new meta information if the query does not return messages', () => {
-      spyOn(service, 'query').and.returnValue(Observable.of({data: [], meta: MOCK_DB_META.data}));
-      spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
-      service.getNotSavedMessages().subscribe();
-      expect(persistencyService.saveMetaInformation).not.toHaveBeenCalled();
+        expect(persistencyService.getMetaInformation).not.toHaveBeenCalled();
+      });
     });
 
   });

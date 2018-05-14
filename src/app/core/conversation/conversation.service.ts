@@ -27,7 +27,6 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/observable/empty';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -287,11 +286,11 @@ export class ConversationService extends LeadService {
       return this.messagesObservable;
     }
     if (this.connectionService.isConnected) {
-    this.messagesObservable = this.recursiveLoadMessages(conversations)
-    .share()
-    .do(() => {
-      this.messagesObservable = null;
-    });
+      this.messagesObservable = this.recursiveLoadMessages(conversations)
+      .share()
+      .do(() => {
+        this.messagesObservable = null;
+      });
     }
     return this.messagesObservable;
   }
@@ -311,7 +310,7 @@ export class ConversationService extends LeadService {
           return Observable.of(conversations);
         });
       } else {
-          return Observable.empty<Conversation[]>();
+          return Observable.of(null);
       }
     });
   }
@@ -319,7 +318,7 @@ export class ConversationService extends LeadService {
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
     return this.xmpp.isConnected()
     .flatMap(() => {
-        if (this.connectionService.isConnected) {
+      if (this.connectionService.isConnected) {
       return this.messageService.getNotSavedMessages().map((response: MessagesData) => {
         if (response.data.length) {
           let conversation: Conversation;
@@ -350,7 +349,7 @@ export class ConversationService extends LeadService {
         return conversations;
       });
       } else {
-        return Observable.empty<Conversation[]>();
+        return Observable.of(null);
       }
     });
   }
