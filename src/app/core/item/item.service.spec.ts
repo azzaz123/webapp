@@ -690,11 +690,11 @@ describe('Service: Item', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       let resp: Product;
 
-      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID).subscribe((r: Product) => {
+      service.getUrgentProductByCategoryId(ITEM_CATEGORY_ID.toString()).subscribe((r: Product) => {
         resp = r;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-urgent-products', {categoryId: ITEM_CATEGORY_ID});
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-urgent-products', {categoryId: ITEM_CATEGORY_ID.toString()});
       expect(resp).toEqual(PRODUCT_RESPONSE);
     });
   });

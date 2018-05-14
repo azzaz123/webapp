@@ -7,7 +7,7 @@ export class I18nService {
     en: {
       daysMomentConfig: {
         lastDay: '[Yesterday]',
-        sameDay: 'HH:mm',
+        sameDay: '[Today] - HH:mm',
         nextDay: '[Tomorrow]',
         lastWeek: 'dddd',
         nextWeek: 'dddd',
@@ -54,7 +54,7 @@ export class I18nService {
       messages: 'Messages',
       shared: 'Shared Phone',
       missed: 'Missed Call',
-      answered: 'Received Call',
+      answered: 'Call',
       chats: 'Chats',
       sold: 'Sold',
       views: 'Views',
@@ -82,7 +82,7 @@ export class I18nService {
     es: {
       daysMomentConfig: {
         lastDay: '[Ayer]',
-        sameDay: 'HH:mm',
+        sameDay: '[Hoy] - HH:mm',
         nextDay: '[Mañana]',
         lastWeek: 'dddd',
         nextWeek: 'dddd',
