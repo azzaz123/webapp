@@ -93,7 +93,7 @@
     text-align: center;
     height: 2rem;
     width: 2rem;
-    font-size: $font-size-XS; 
+    font-size: $font-size-XS;
     &.range, &:hover {
       color: white;
       &.citybump {
@@ -102,6 +102,14 @@
       &.countrybump {
         background-color: $country-bump;
       }
+    }
+    &.start {
+      border-top-left-radius: $spacing;
+      border-bottom-left-radius: $spacing;
+    }
+    &.end {
+      border-top-right-radius: $spacing;
+      border-bottom-right-radius: $spacing;
     }
     &.disabled {
       color: $grey-250;
