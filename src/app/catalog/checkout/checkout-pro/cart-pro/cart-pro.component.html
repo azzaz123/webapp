@@ -1,6 +1,7 @@
 <div class="cart-content">
   <div class="cart-header">
     <h1 class="cart-pro-title" i18n>Featured summary</h1>
+    <mat-icon class="cancel-icon" [ngClass]="{disabled: cart.total === 0}" (click)="clean()" svgIcon="delete"></mat-icon>
   </div>
   <ul *ngIf="cart" class="items-list">
     <li *ngFor="let type of types" class="type-wrapper" [ngClass]="type">

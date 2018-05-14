@@ -28,6 +28,6 @@
       <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.selectedDates.formattedToDate"
         [disabled]="!cartProItem.bumpType" [ngClass]="cartProItem.bumpType">
     </div>
-    <div class="item-reset" (click)="!cartProItem.bumpType || removeItem()" [ngClass]="{'disabled': !cartProItem.bumpType}"></div>
+    <button class="item-reset" (click)="removeItem()" [disabled]="!cartProItem.bumpType"></button>
   </div>
 </div>

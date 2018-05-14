@@ -22,9 +22,19 @@
     margin: 0;
 }
 
+.cancel-icon {
+    cursor: pointer;
+    width: 12px;
+    margin-right: $spacing-XS;    
+    &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}
+
 .cart-content {
     overflow: auto;
-    padding: $spacing-2M * 2 0 $spacing * 4 0;
+    padding: 58px 0 $spacing * 4 0;
     .cart-header {
         position: absolute;
         top: 0;
