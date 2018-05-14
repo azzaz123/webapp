@@ -194,7 +194,7 @@ export const ITEM_DATA3: ItemProResponse = {
     'conversations':      0,
     'publish_date':       ITEM_PUBLISHED_DATE2,
     'seller_id': '1',
-    'autorenew_purchase': {
+    'purchases': {
       'bump_type': 'city_bump',
       'start_date': ITEM_PUBLISHED_DATE,
       'end_date': ITEM_PUBLISHED_DATE2
@@ -329,6 +329,7 @@ export const ITEM_DATA_V4: ItemProResponse = {
     'seller_id': 'l1kmzn82zn3p',
     'flags': {'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false},
     'sale_price': 123.45,
+    'price': 123.45,
     'currency_code': 'EUR',
     'modified_date': 1473784861894,
     'publish_date': 1473784861894,
@@ -346,11 +347,20 @@ export const ITEM_DATA_V4: ItemProResponse = {
         'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320'
       }
     }],
+    'image': {
+      'original': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'small': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'large': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'medium': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'original_height': 100,
+      'original_width': 62
+    },
     'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
     'web_slug': 'raton-134690716',
     'views': 0,
     'conversations': 0,
-    'autorenew_purchase': {
+    'purchases': {
       'bump_type': 'city_bump',
       'start_date': 1500545785245,
       'end_date': 1500545785249
@@ -369,6 +379,7 @@ export const ITEM_DATA_V5: ItemProResponse = {
     'seller_id': 'l1kmzn82zn3p',
     'flags': {'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false},
     'sale_price': 123.45,
+    'price': 123.45,
     'currency_code': 'EUR',
     'modified_date': 1473784861894,
     'publish_date': 1473784861894,
@@ -386,11 +397,20 @@ export const ITEM_DATA_V5: ItemProResponse = {
         'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320'
       }
     }],
+    'image': {
+      'original': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'small': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'large': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'medium': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'original_height': 100,
+      'original_width': 62
+    },
     'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
     'web_slug': 'raton-134690716',
     'views': 0,
     'conversations': 0,
-    'autorenew_purchase': {
+    'purchases': {
       'bump_type': 'city_bump',
       'start_date': 1500545785245,
       'end_date': 1500545785249

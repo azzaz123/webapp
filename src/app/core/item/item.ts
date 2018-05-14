@@ -22,7 +22,7 @@ export class Item implements Model {
   private _views: number;
   private _favorites: number;
   private _conversations: number;
-  private _autorenewPurchase: AutorenewPurchase;
+  private _purchases: AutorenewPurchase;
   private _favorited: boolean;
   private _selected = false;
   private _bumpExpiringDate: number;
@@ -153,12 +153,12 @@ export class Item implements Model {
     this._conversations = value;
   }
 
-  get autorenewPurchase(): AutorenewPurchase {
-    return this._autorenewPurchase;
+  get purchases(): AutorenewPurchase {
+    return this._purchases;
   }
 
-  set autorenewPurchase(value: AutorenewPurchase) {
-    this._autorenewPurchase = value;
+  set purchases(value: AutorenewPurchase) {
+    this._purchases = value;
   }
 
   get favorited(): boolean {
@@ -199,7 +199,7 @@ export class Item implements Model {
   }
 
   get bumpName(): string {
-    return BUMP_TYPES[this._flags.bump_type];
+    return BUMP_TYPES[this._purchases.bump_type];
   }
 
   set reserved(value: boolean) {

@@ -67,7 +67,7 @@ export interface ItemProResponse {
 export interface ItemProContent extends ItemContent {
   conversations: number;
   publish_date: number;
-  autorenew_purchase: AutorenewPurchase;
+  purchases: AutorenewPurchase;
 }
 
 export interface AutorenewPurchase {

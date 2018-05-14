@@ -4,7 +4,7 @@ import { CatalogProListComponent } from './catalog-pro-list.component';
 import { ItemService } from '../../../core/item/item.service';
 import {
   MOCK_ITEM, ITEMS_BULK_RESPONSE_FAILED, ITEMS_BULK_RESPONSE, createItemsArray,
-  ORDER
+  ORDER, PRODUCT_RESPONSE, ORDER_EVENT
 } from '../../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
@@ -17,12 +17,14 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../core/user/user.service';
 import { EventService } from '../../../core/event/event.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute,NavigationEnd } from '@angular/router';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from '../../list/modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
+import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
+import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 
 describe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
@@ -36,8 +38,10 @@ describe('CatalogProListComponent', () => {
   let toastr: ToastrService;
   let userService: UserService;
   let eventService: EventService;
+  let errorService: ErrorsService;
   let paymentService: PaymentService;
   let router: Router;
+  let route: ActivatedRoute;
   let modalSpy: jasmine.Spy;
   const routerEvents: Subject<any> = new Subject();
   const mockCounters = {
@@ -65,6 +69,8 @@ describe('CatalogProListComponent', () => {
             },
             purchaseProducts() {
             },
+            getUrgentProducts() {
+            }
           }
         },
         {
@@ -80,6 +86,12 @@ describe('CatalogProListComponent', () => {
         {
           provide: ToastrService, useValue: {
             error() {
+            },
+            show() {
+            },
+            i18nError() {
+            },
+            i18nSuccess() {
             }
           }
         },
@@ -116,6 +128,13 @@ describe('CatalogProListComponent', () => {
             }
         }
         },
+        {
+          provide: ActivatedRoute, useValue: {
+            params: Observable.of({
+              code: 200
+            })
+          }
+        },
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -130,11 +149,106 @@ describe('CatalogProListComponent', () => {
     modalService = TestBed.get(NgbModal);
     userService = TestBed.get(UserService);
     router = TestBed.get(Router);
+    route = TestBed.get(ActivatedRoute);
     paymentService = TestBed.get(PaymentService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
     fixture.detectChanges();
+  });
+
+  describe('ngOnInit', () => {
+    it('should open bump confirmation modal', fakeAsync(() => {
+      spyOn(router, 'navigate');
+      spyOn(localStorage, 'getItem').and.returnValue('bump');
+      spyOn(localStorage, 'removeItem');
+      component.ngOnInit();
+      tick();
+      expect(modalService.open).toHaveBeenCalledWith(ProBumpConfirmationModalComponent, {
+        windowClass: 'bump-confirm',
+        backdrop: 'static'
+      });
+      expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list']);
+      expect(localStorage.removeItem).toHaveBeenCalled();
+    }));
+
+    it('should reset page on router event', fakeAsync(() => {
+      spyOn<any>(component, 'getItems');
+      component['init'] = 40;
+      component.end = true;
+      component.ngOnInit();
+      tick();
+      routerEvents.next(new NavigationEnd(1, 'url', 'url2'));
+      expect(component.end).toBe(false);
+      expect(component['getItems']).toHaveBeenCalledTimes(2);
+    }));
+
+    it('should feature order', fakeAsync(() => {
+      spyOn(itemService, 'getUrgentProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+      spyOn(localStorage, 'getItem').and.returnValue('false');
+      spyOn(component, 'feature');
+      route.params = Observable.of({
+        urgent: true,
+        itemId: MOCK_ITEM.id
+      });
+
+      component.ngOnInit();
+      tick(3000);
+
+      expect(component.isUrgent).toBe(true);
+      expect(component.isRedirect).toBe(true);
+      expect(localStorage.getItem).toHaveBeenCalledWith('redirectToTPV');
+      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
+    }));
+
+    it('should set the redirect to false if it is not urgent', fakeAsync(() => {
+      spyOn(localStorage, 'setItem');
+      route.params = Observable.of({
+        urgent: false
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(component.isRedirect).toBe(false);
+      expect(localStorage.setItem).toHaveBeenCalledWith('redirectToTPV', 'false');
+    }));
+
+    it('should open the urgent modal if transaction is set as urgent', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('urgent');
+      spyOn(localStorage, 'removeItem');
+      route.params = Observable.of({
+        code: 200
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
+      expect(modalService.open).toHaveBeenCalledWith(ProUrgentConfirmationModalComponent, {
+        windowClass: 'urgent-confirm',
+        backdrop: 'static'
+      });
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
+    }));
+
+    it('should open the bump modal if transaction is set as bump', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('bump');
+      spyOn(localStorage, 'removeItem');
+      route.params = Observable.of({
+        code: 200
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
+      expect(modalService.open).toHaveBeenCalledWith(ProBumpConfirmationModalComponent, {
+        windowClass: 'bump-confirm',
+        backdrop: 'static'
+      });
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
+    }));
   });
 
   describe('getItems', () => {

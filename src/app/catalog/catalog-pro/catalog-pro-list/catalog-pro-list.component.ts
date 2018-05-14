@@ -1,9 +1,8 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ItemBulkResponse } from '../../../core/item/item-response.interface';
 import { EventService } from '../../../core/event/event.service';
 import { ItemChangeEvent } from '../../list/catalog-item/item-change.interface';
 import * as _ from 'lodash';
@@ -12,13 +11,15 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { UserService } from '../../../core/user/user.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { UserStatsResponse, Counters } from '../../../core/user/user-stats.interface';
-import { Router } from '@angular/router';
-import { ConfirmationModalComponent } from '../../../shared/confirmation-modal/confirmation-modal.component';
 import { OrderEvent } from '../../list/selected-items/selected-product.interface';
 import { UUID } from 'angular2-uuid';
 import { FinancialCard } from '../../../core/payments/payment.interface';
 import { CreditCardModalComponent } from '../../list/modals/credit-card-modal/credit-card-modal.component';
 import { PaymentService } from '../../../core/payments/payment.service';
+import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
+import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
+import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
+import { Order, Product } from '../../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -28,7 +29,6 @@ import { PaymentService } from '../../../core/payments/payment.service';
 export class CatalogProListComponent implements OnInit {
 
   public items: Item[] = [];
-  public scrollTop: number;
   public loading = true;
   public end: boolean;
   public isUrgent = false;
@@ -57,6 +57,7 @@ export class CatalogProListComponent implements OnInit {
               private userService: UserService,
               private errorService: ErrorsService,
               private router: Router,
+              private route: ActivatedRoute,
               private paymentService: PaymentService) { }
 
   ngOnInit() {
@@ -72,13 +73,63 @@ export class CatalogProListComponent implements OnInit {
 
     this.getItems();
 
-    this.eventService.subscribe('itemChangeStatus', (items) => {
-      items.forEach((id: string) => {
-        let index: number = _.findIndex(this.items, {'id': id});
-        this.items.splice(index, 1);
+    setTimeout(() => {
+      this.router.events.takeWhile(() => this.active).subscribe((evt) => {
+        if (!(evt instanceof NavigationEnd)) {
+          return;
+        }
+        this.end = false;
+        this.getItems();
+
+        this.eventService.subscribe('itemChangeStatus', (items) => {
+          items.forEach((id: string) => {
+            let index: number = _.findIndex(this.items, {'id': id});
+            this.items.splice(index, 1);
+          });
+        });
+        this.isRedirect = !this.getRedirectToTPV();
+      });
+      this.route.params.subscribe((params: any) => {
+        if (!params.urgent) {
+          this.setRedirectToTPV(false);
+        }
+        if (params && params.code) {
+          const modals = {
+            urgent: {
+              component: ProUrgentConfirmationModalComponent,
+              windowClass: 'urgent-confirm',
+            },
+            bump: {
+              component: ProBumpConfirmationModalComponent,
+              windowClass: 'bump-confirm'
+            }
+          };
+          const modalType = localStorage.getItem('transactionType');
+          const modal = modalType ? modals[modalType] : modals.bump;
+
+          let modalRef: NgbModalRef = this.modalService.open(modal.component, {
+            windowClass: modal.windowClass,
+            backdrop: 'static'
+          });
+          modalRef.componentInstance.code = params.code;
+          modalRef.result.then(() => {
+            modalRef = null;
+            localStorage.removeItem('transactionType');
+            this.router.navigate(['pro/catalog/list']);
+          }, () => {
+          });
+        }
+        if (params && params.urgent) {
+          this.isUrgent = true;
+          this.isRedirect = !this.getRedirectToTPV();
+          if (!this.getRedirectToTPV()) {
+            setTimeout(() => {
+              this.getUrgentPrice(params.itemId);
+            }, 3000);
+          }
+        }
       });
     });
-    this.isRedirect = !this.getRedirectToTPV();
   }
 
   public getItems(append?: boolean, openVisibility?: boolean) {
@@ -225,6 +276,20 @@ export class CatalogProListComponent implements OnInit {
 
   private getRedirectToTPV(): boolean {
     return localStorage.getItem('redirectToTPV') === 'true';
+  }
+
+  private getUrgentPrice(itemId: string): void {
+    this.itemService.getUrgentProducts(itemId).subscribe((product: Product) => {
+      const order: Order[] = [{
+        item_id: itemId,
+        product_id: product.durations[0].id
+      }];
+      const orderEvent: OrderEvent = {
+        order: order,
+        total: +product.durations[0].market_code
+      };
+      this.feature(orderEvent);
+    });
   }
 
   public getSubscriptionPlan(plan: number) {

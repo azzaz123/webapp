@@ -225,7 +225,7 @@ export class ItemService extends ResourceService {
       content.description,
       content.category_id,
       null,
-      content.sale_price,
+      content.price,
       content.currency,
       content.modified_date,
       null,
@@ -234,15 +234,15 @@ export class ItemService extends ResourceService {
       null,
       {
         id: UUID.UUID(),
-        original_width: content.images[0] ? content.images[0].original_width : null,
-        original_height: content.images[0] ? content.images[0].original_height : null,
+        original_width: content.image ? content.image.original_width : null,
+        original_height: content.image ? content.image.original_height : null,
         average_hex_color: '',
         urls_by_size:  {
-          original: content.images[0].urls_by_size.original,
-          small: content.images[0].urls_by_size.small,
-          large: content.images[0].urls_by_size.large,
-          medium: content.images[0].urls_by_size.medium,
-          xlarge: content.images[0].urls_by_size.xlarge
+          original: content.image.original,
+          small: content.image.small,
+          large: content.image.large,
+          medium: content.image.medium,
+          xlarge: content.image.xlarge
         }
       },
       content.images,
@@ -496,8 +496,8 @@ export class ItemService extends ResourceService {
               item.views = i.content.views;
               item.favorites = i.content.favorites;
               item.conversations = i.content.conversations;
-              item.autorenewPurchase = i.content.autorenew_purchase ? i.content.autorenew_purchase : null;
-              if (item.autorenewPurchase) {
+              item.purchases = i.content.purchases ? i.content.purchases : null;
+              if (item.purchases) {
                 this.setPlannedPurchase(item);
               }
               return item;
@@ -553,7 +553,7 @@ export class ItemService extends ResourceService {
   }
 
   private setPlannedPurchase(item: Item): void {
-    switch (item.autorenewPurchase.bump_type) {
+    switch (item.purchases.bump_type) {
       case 'countrybump':
         this.plannedCountryPurchase++;
         break;

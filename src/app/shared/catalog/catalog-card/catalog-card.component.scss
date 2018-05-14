@@ -166,6 +166,9 @@ $feature-button-width: 170px;
         color: $corporate;
       }
     }
+    .type {
+      font-weight: bold;
+    }
   }
   .zonebump{
     color: $zone-bump;
@@ -174,7 +177,7 @@ $feature-button-width: 170px;
     color: $country-bump;
   }
   .citybump {
-    color: $city-bump;
+    color: $zone-bump;
   }
   .visibility {
     display: flex;

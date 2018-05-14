@@ -133,4 +133,5 @@ describe('CatalogItemActionsComponent', () => {
       });
     });
   });
+
 });

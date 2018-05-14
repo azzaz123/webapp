@@ -14,7 +14,7 @@
       <div class="title">{{item.title}}</div>
     </a>
     <div class="published" [hidden]="item.sold || item.flags.bumped">
-      <div i18n>Published</div>
+      <div i18n>Publish Date</div>
       <div class="date">{{item.publishedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
     <div class="updated" [hidden]="item.sold || item.flags.bumped">
@@ -26,9 +26,12 @@
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
     <div class="bumped" *ngIf="item.flags.bumped">
-      <div class={{item.flags.bump_type}} i18n>{{item.bumpName}}</div>
-      <div class="date" i18n>{{item.bumpExpiringDate | amCountdown}} remaining</div>
-      <span class="cancel-bump {{item.flags.bump_type}}" (click)="cancelAutorenew(item)" *ngIf="item.autorenew_purchase" i18n>Cancel</span>
+      <div class="type {{item.purchases.bump_type}}" i18n>{{item.bumpName}}</div>
+      <div class="date">
+        <span i18n>{{item.purchases.expiration_date | amCountdown}} remaining</span>
+        <span class="cancel-bump {{item.purchases.bump_type}}" (click)="cancelAutorenew(item)"
+              *ngIf="item.purchases.scheduled_bump_type" i18n>Cancel</span>
+      </div>
     </div>
     <div class="visibility">
       <div class="counters">

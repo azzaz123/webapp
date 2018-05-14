@@ -909,9 +909,6 @@ describe('Service: Item', () => {
           });
           it('should remove items', () => {
             expect(service['items']['active'].length).toBe(TOTAL - 3);
-            /*expect(service['items']['active']).not.toContain('1');
-            expect(service['items']['active']).not.toContain('3');
-            expect(service['items']['active']).not.toContain('5');*/
           });
           it('should return updated and failed ids list', () => {
             expect(response.updatedIds).toEqual(ITEMS_BULK_UPDATED_IDS);
@@ -930,9 +927,6 @@ describe('Service: Item', () => {
           });
           it('should remove items', () => {
             expect(service['items']['sold'].length).toBe(TOTAL - 3);
-            /*expect(service['items']['sold']).not.toContain('1');
-            expect(service['items']['sold']).not.toContain('3');
-            expect(service['items']['sold']).not.toContain('5');*/
           });
         });
       });

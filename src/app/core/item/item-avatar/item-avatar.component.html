@@ -9,7 +9,8 @@
   <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured">
     <mat-icon svgIcon="reserved"></mat-icon>
   </span>
-  <span class="featured" *ngIf="item?.featured && !item?.urgent && !item?.sold" [ngClass]="item?.flags.bump_type">
+  <span class="featured" *ngIf="item?.featured && !item?.urgent && !item?.sold"
+        [ngClass]="item?.flags?.bump_type || item?.purchases?.bump_type">
     <mat-icon svgIcon="wing"></mat-icon>
   </span>
   <span class="urgent" *ngIf="item?.urgent && !item?.sold">

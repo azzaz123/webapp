@@ -398,7 +398,11 @@
   <translation id="6463509780873643723"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
   <translation id="9054202731560341408">En uso</translation>
   <translation id="1725562452483752433">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
-  <translation id="4065372059698851857"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> disponibles</translation>
+  <translation id="4065372059698851857">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="3286725018134496844">Ya tienes tus destacados extras disponibles para que los puedas utilizar.</translation>
   <translation id="7542752854018206709">Tu compra no se ha podido realizar porque algo ha ido mal con la tarjeta. Comprueba y prueba otra vez. </translation>
+  <translation id="7392255340123577556">No tienes un Plan de Ciudad</translation>
+  <translation id="1839186591621749773">Publicado</translation>
+  <translation id="6850144876798655647">Paquetes con todos tus items</translation>
+  <translation id="2246851749264196483">Gestionar mi suscripción</translation>
 </translationbundle>
