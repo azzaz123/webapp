@@ -9,6 +9,7 @@
             <span *ngIf="!perks?.subscription.listing.quantity" i18n>You are not yet subscribed to any plan.</span>
           </h2>
           <p class="description" i18n>Each plan allows you to have up to a maximum number of cars published in the wallapop app and website.</p>
+          <p class="contact" i18n>Contact us on 674 726 372 to upgrade your plan</p>
         </div>
         <div class="packs">
           <div class="pack" *ngFor="let bump of packs?.getListings(perks?.subscription.listing.quantity)"
@@ -39,6 +40,7 @@
             <span [hidden]="perks?.subscription.bump.total === 0" i18n>City {{perks?.subscription.bump.total}} plan</span>
           </h2>
           <p class="description" i18n>The city plan allows you to promote your cars in your city and appear in the top positions of the wall of the website and the app. Your product card will have a different style and you will appear in the promoted area throughout your city. To subscribe to a city plan, contact</p>
+          <p class="contact" i18n>Contact us on 674 726 372 to upgrade your plan</p>
         </div>
         <div class="packs">
           <div class="pack" *ngFor="let bump of packs?.getBumps()"
@@ -63,6 +65,7 @@
             <span [hidden]="perks?.subscription.national.total === 0" i18n>Country {{perks?.subscription.national.total}} plan</span>
           </h2>
           <p class="description" i18n>The country plan allows you to promote your cars countrywide and appear in the top positions of the wall of the web and the app. The product card will have a different style and you will appear in the promoted area throughout the country. To subscribe to a country plan, contact</p>
+          <p class="contact" i18n>Contact us on 674 726 372 to upgrade your plan</p>
         </div>
         <div class="packs">
           <div class="pack" *ngFor="let bump of packs?.getNationalPacks()"

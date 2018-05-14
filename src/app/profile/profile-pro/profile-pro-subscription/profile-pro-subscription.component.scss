@@ -21,10 +21,15 @@ h2 {
   }
 }
 
-.description {
+.description, .contact {
   font-size: $font-size-S;
   line-height: 1.29;
   color: $grey-250;
+}
+
+.contact {
+  font-weight: bold;
+  color: $grey-500;
 }
 
 h2, .description {
