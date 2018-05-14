@@ -1,7 +1,6 @@
 <div class="cart-content">
   <div class="cart-header">
     <h1 class="cart-pro-title" i18n>Featured summary</h1>
-    <a class="btn-clear" (click)="clean()" [ngClass]="{disabled: cart.total === 0}">Cancel all</a>
   </div>
   <ul *ngIf="cart" class="items-list">
     <li *ngFor="let type of types" class="type-wrapper" [ngClass]="type">
@@ -9,13 +8,13 @@
         <mat-icon class="wing-icon" [ngClass]="type" svgIcon="wing-{{type}}"></mat-icon>
         <div class="type">
           <span [ngSwitch]="type">
-            <ng-container *ngSwitchCase="'citybump'" i18n>City bump</ng-container>
+            <ng-container *ngSwitchCase="'citybump'" i18n>City planned</ng-container>
             <ng-container *ngSwitchCase="'countrybump'">
-              <span i18n>Country bump</span>
+              <span i18n>Country planned</span>
             </ng-container>
           </span>
-          <span i18n class="planned-label" [hidden]="cart[type].cartItems.length">Anything planned yet</span>
-          <span i18n class="planned-label" [hidden]="!cart[type].cartItems.length">{{cart[type].total}}
+          <span class="planned-label" [hidden]="cart[type].cartItems.length" i18n>Anything planned yet</span>
+          <span class="planned-label" [hidden]="!cart[type].cartItems.length">{{cart[type].total}}
             <span i18n> planned</span>
           </span>
         </div>
@@ -34,7 +33,7 @@
       <div class="cart-separator"></div>
       <div class="cart-balance">
         <span class="cart-balance-title" [ngSwitch]="type">
-          Balance
+          <span i18n>Balance</span>
           <ng-container *ngSwitchCase="'citybump'" i18n>city</ng-container>
           <ng-container *ngSwitchCase="'countrybump'">
             <span i18n>country</span>

@@ -19,12 +19,12 @@
   <div class="item-separator"></div>
   <div class="item-second-section">
     <div>
-      <span class="label-date">Start date</span>
+      <span class="label-date" i18n>Start date</span>
       <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.selectedDates.formattedFromDate"
         [disabled]="!cartProItem.bumpType" [ngClass]="cartProItem.bumpType">
     </div>
     <div>
-      <span class="label-date">End date</span>
+      <span class="label-date" i18n>End date</span>
       <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.selectedDates.formattedToDate"
         [disabled]="!cartProItem.bumpType" [ngClass]="cartProItem.bumpType">
     </div>
