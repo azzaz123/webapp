@@ -36,6 +36,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    .ngb-dp-arrow-btn {
+      box-shadow: none;
+    }
     .ngb-dp-weekdays {
       border: 0;
     }
