@@ -5,8 +5,8 @@
         <div class="col-xl col-lg-8" *ngIf="!billingInfoFormEnabled">
           <div class="table-header">
             <div class="info">
-              <mat-icon svgIcon="feature"></mat-icon>
-              <a i18n>What are the extras?</a>
+              <mat-icon [hidden]="true" svgIcon="feature"></mat-icon>
+              <a i18n [hidden]="true">What are the extras?</a>
             </div>
             <div class="type city" [hidden]="provincialBump">
               <div>
