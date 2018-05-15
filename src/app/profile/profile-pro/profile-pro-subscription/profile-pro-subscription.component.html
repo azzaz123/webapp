@@ -20,7 +20,7 @@
             <a href="mailto:{{email}}" class="btn btn-block">Subscribe</a>
             <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.listing.expireDate | date}}</div>
           </div>
-          <div class="pack" *ngIf="packs?.getListings(perks?.subscription.listing.quantity).length <= 2">
+          <div class="pack personal" *ngIf="packs?.getListings(perks?.subscription.listing.quantity).length <= 2">
             <mat-icon svgIcon="plan-personal-plus"></mat-icon>
             <div class="name" i18n>Personal Plan</div>
             <div class="desc" i18n>We can work out the best plan for you</div>
