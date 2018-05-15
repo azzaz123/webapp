@@ -115,9 +115,9 @@
   <msg id="8982629098121976758"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:11</source>Start selling</msg>
   <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:15</source>Something happened...</msg>
   <msg id="3979232265698800722"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:16</source>Your item(s) have not been featured because something went wrong with your credit card.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Please check and try again.</msg>
-  <msg id="3275068756845590930"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:17</source>Let???s go</msg>
-  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:21</source>Hmmm???</msg>
-  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:22</source>Your credit card seems suspicious. ??Why not trying with another account?</msg>
+  <msg id="3275068756845590930"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:17</source>Let’s go</msg>
+  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:21</source>Hmmm…</msg>
+  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:22</source>Your credit card seems suspicious. ¿Why not trying with another account?</msg>
   <msg id="833526722817345312"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:23</source>C&apos;mon</msg>
   <msg id="6811335180251341277"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:27</source>There has been a mistake</msg>
   <msg id="4140116217223755546"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:28</source>Your credit card has an invalid expiration date. Please check and try again.</msg>
@@ -132,7 +132,7 @@
   <msg id="868815663264397508"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:6</source>Your item is now on Wallapop</msg>
   <msg id="3258601590058086652"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:9</source>Want to sell ASAP?</msg>
   <msg id="4495547321385209565"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:10</source>Stand out on the wall during 7 days and be easy to find with the filter ASAP</msg>
-  <msg id="4568320268241275650"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:15</source>Feature it as ASAP for <ph name="INTERPOLATION"><ex>{{productPrice}}</ex></ph>???</msg>
+  <msg id="4568320268241275650"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:15</source>Feature it as ASAP for <ph name="INTERPOLATION"><ex>{{productPrice}}</ex></ph>€</msg>
   <msg id="2091018015289565203"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:16</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:16</source>Share it with your friends:</msg>
   <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:4</source><source>app/catalog/list/list.component.ts:22</source><source>app/catalog/checkout/checkout.component.ts:9</source>What can features do for you?</msg>
   <msg id="6763447295092579753"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:5,7</source>By featuring your item you will make it more visible to the restof the community thanks to its special
@@ -204,7 +204,7 @@
   <msg id="4486490403948802296"><source>app/catalog/upload/upload-car/upload-car.component.ts:84</source>Add a number</msg>
   <msg id="988756868045673037"><source>app/catalog/upload/upload-car/upload-car.component.ts:89</source>Can all your family fit in there or just the dog?</msg>
   <msg id="2068484566855301885"><source>app/catalog/upload/upload-car/upload-car.component.ts:97</source>Type of car</msg>
-  <msg id="980829858200282983"><source>app/catalog/upload/upload-car/upload-car.component.ts:98</source>Small, coup??, sedan, family, van...</msg>
+  <msg id="980829858200282983"><source>app/catalog/upload/upload-car/upload-car.component.ts:98</source>Small, coupé, sedan, family, van...</msg>
   <msg id="3817917717199474011"><source>app/catalog/upload/upload-car/upload-car.component.ts:104</source>Is it for getting around at the weekend or for everyday use?</msg>
   <msg id="5430617499425264578"><source>app/catalog/upload/upload-car/upload-car.component.ts:110</source>Kilometers</msg>
   <msg id="1955180263634698200"><source>app/catalog/upload/upload-car/upload-car.component.ts:111</source>Exact kilometers</msg>
@@ -323,7 +323,9 @@
   <msg id="6631334172623029500"><source>app/profile/profile.component.ts:104</source>Email:</msg>
   <msg id="6865009229971482891"><source>app/profile/profile.component.ts:110</source>Password:</msg>
   <msg id="2322688793988378029"><source>app/profile/profile.component.ts:119</source>Close account</msg>
-  <msg id="1476922037725665227"><source>app/profile/profile.component.ts:132,134</source> In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.</msg>
+  <msg id="1476922037725665227"><source>app/profile/profile.component.ts:132,134</source>
+                  In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.
+                </msg>
   <msg id="4284869171317534738"><source>app/profile/edit-email/email-modal/email-modal.component.ts:2</source>New email?</msg>
   <msg id="4200745758819613954"><source>app/profile/edit-email/email-modal/email-modal.component.ts:3</source>You can update it now</msg>
   <msg id="6357315990612654699"><source>app/profile/edit-email/email-modal/email-modal.component.ts:7</source>Current email</msg>
