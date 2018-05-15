@@ -83,6 +83,7 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
+    this.conversationService.firstLoad = true;
   }
 
   private updateUrlAndSendAnalytics() {

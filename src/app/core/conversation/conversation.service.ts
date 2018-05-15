@@ -38,7 +38,6 @@ export class ConversationService extends LeadService {
 
   private messagesObservable: Observable<Conversation[]>;
   public ended: boolean;
-  public firstLoad: boolean;
 
   constructor(http: HttpService,
               userService: UserService,

@@ -69,7 +69,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     }, () => {
       this.firstLoad = true;
     });
-    this.conversationService.firstLoad = true;
     }
 
   ngOnDestroy () {

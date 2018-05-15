@@ -233,7 +233,6 @@ export class XmppService {
       this.onNewMessage(message);
     });
     this.client.on('session:started', () => {
-      console.log('session started');
       this.client.sendPresence();
       this.client.enableCarbons();
       this.setDefaultPrivacyList().subscribe();
@@ -244,22 +243,15 @@ export class XmppService {
     });
 
     this.client.on('disconnected', () => {
-      console.log('client disconnected');
       this.clientConnected = false;
       this.eventService.emit(EventService.CLIENT_DISCONNECTED);
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      console.log('connection restored');
       if (!this.clientConnected) {
-        console.log('about to reconnect client');
         this.client.connect();
         this.clientConnected = true;
       }
-    });
-
-    this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
-      console.log('connection dropped');
     });
 
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
