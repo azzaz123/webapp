@@ -34,7 +34,7 @@
 
 .cart-content {
     overflow: auto;
-    padding: 58px 0 $spacing * 4 0;
+    padding: $spacing-2M * 2 0 $spacing * 4 0;
     .cart-header {
         position: absolute;
         top: 0;
@@ -44,7 +44,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: $spacing $spacing-M $spacing-S $spacing-M;
+        padding: $spacing-M - 2px $spacing-M 0 $spacing-M;
         background-color: $white;
         z-index: 1;
         .btn-clear {
