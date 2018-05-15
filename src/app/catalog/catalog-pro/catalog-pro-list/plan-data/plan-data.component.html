@@ -23,14 +23,14 @@
     <div class="row-visibility">
       <div class="numbers">
         <div class="col-number city" *ngIf="true">
-          <span class="number">{{perks?.subscription.bump.quantity}}</span><span i18n>City Plan</span>
+          <span class="number">{{perks?.subscription.bump.total}}</span><span i18n>City Plan</span>
         </div>
         <div class="no-plan" [hidden]="true">
           <span i18n>You don't have a City Plan.</span><a href="#" i18n>Sign Up</a>
         </div>
         <div class="border"></div>
         <div>
-          <span class="number">{{perks?.subscription.bump.total + perks?.extra.bump.quantity}}</span>
+          <span class="number">{{perks?.subscription.bump.quantity - purchases?.bumpItems?.length}}</span>
           <span class="text grey" i18n>Available</span>
           <div class="extras">
             <span class="city" i18n>{{perks?.subscription.bump.total}} plan</span>
@@ -49,14 +49,14 @@
       <div class="border-full"></div>
       <div class="numbers">
         <div class="country" *ngIf="true">
-          <span class="number">{{perks?.subscription.national.quantity}}</span><span class="text" i18n>Country Plan</span>
+          <span class="number">{{perks?.subscription.national.total}}</span><span class="text" i18n>Country Plan</span>
         </div>
         <div class="no-plan" [hidden]="true">
           <span i18n>You don't have a Country Plan</span><a href="#" i18n>Sign Up</a>
         </div>
         <div class="border"></div>
         <div>
-          <span class="number">{{perks?.subscription.national.total + perks?.extra.national.quantity}}</span>
+          <span class="number">{{perks?.subscription.national.quantity - purchases?.nationalBumpItems?.length}}</span>
           <span class="text grey" i18n>Available</span>
           <div class="extras">
             <span class="country" i18n>{{perks?.subscription.national.total}} plan</span>

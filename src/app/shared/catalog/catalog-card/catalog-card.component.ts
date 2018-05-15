@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
-import { ToastrService } from 'ngx-toastr';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ItemService } from '../../../core/item/item.service';
-import { OrderEvent } from '../../../catalog/list/selected-items/selected-product.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorsService } from '../../../core/errors/errors.service';
 
 @Component({
   selector: 'tsl-catalog-card',
@@ -18,7 +18,9 @@ export class CatalogCardComponent implements OnInit {
   public link: string;
 
   constructor(public itemService: ItemService,
-              private trackingService: TrackingService) { }
+              private trackingService: TrackingService,
+              private modalService: NgbModal,
+              private errorService: ErrorsService) { }
 
   ngOnInit() {
   }
@@ -55,8 +57,14 @@ export class CatalogCardComponent implements OnInit {
     }
   }
 
-  public cancelAutorenew(item: Item): void {
-    this.itemService.cancelAutorenew(item.id).subscribe();
+  public cancelAutorenew(item: Item, cancelAutorenewModal: any) {
+    this.modalService.open(cancelAutorenewModal).result.then(() => {
+      this.itemService.cancelAutorenew(item.id).subscribe((resp: any) => {
+        if (resp.status !== 200) {
+          this.errorService.show(resp);
+        }
+      });
+    });
   }
 
 }

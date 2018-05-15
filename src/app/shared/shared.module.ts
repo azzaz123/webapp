@@ -32,6 +32,8 @@ import { SwitchComponent } from './switch/switch.component';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
+import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
+import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
 
 @NgModule({
   imports: [
@@ -96,6 +98,8 @@ import { SelectComponent } from './select/select.component';
     SwitchComponent,
     SelectComponent,
     SearchInputComponent,
+    TooManyItemsModalComponent,
+    AlreadyFeaturedModalComponent
   ],
   providers: [
     DecimalPipe,
@@ -105,7 +109,9 @@ import { SelectComponent } from './select/select.component';
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,
-    ReviewModalComponent
+    ReviewModalComponent,
+    TooManyItemsModalComponent,
+    AlreadyFeaturedModalComponent
   ]
 })
 export class SharedModule { }

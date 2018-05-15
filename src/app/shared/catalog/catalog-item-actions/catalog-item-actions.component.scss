@@ -32,27 +32,6 @@ $height: 40px;
     color: $grey-300;
     font-size: $font-size-S;
     border: solid 1px rgba($grey-100, 0.5);
-    &.btn-bump {
-      &:hover {
-        background: $corporate;
-        border-color: transparent;
-        color: $white;
-      }
-    }
-    &.btn-sold {
-      &:hover {
-        background: $sold-bg;
-        border-color: transparent;
-        color: $white;
-      }
-    }
-    &.btn-reserve {
-      &:hover {
-        background: $reserve-bg;
-        border-color: transparent;
-        color: $white;
-      }
-    }
     &.btn-delete {
       padding: 0 ($spacing / 2);
       mat-icon {
@@ -74,11 +53,19 @@ $height: 40px;
       }
     }
   }
+
+  tsl-button /deep/ .btn-feat  {
+    &:disabled {
+      cursor: default;
+    }
+  }
+
   &.show {
     button {
       animation: fadeInFromNone 0.5s ease-in-out;
     }
   }
+
   #total-selected {
     $height: 42px;
     height: $height;

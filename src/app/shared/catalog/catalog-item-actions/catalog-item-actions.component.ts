@@ -5,9 +5,11 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ItemBulkResponse } from '../../../core/item/item-response.interface';
 import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Item } from '../../../core/item/item';
 import * as _ from 'lodash';
+import { TooManyItemsModalComponent } from '../modals/too-many-items-modal/too-many-items-modal.component';
+import { AlreadyFeaturedModalComponent } from '../modals/already-featured-modal/already-featured-modal.component';
 
 @Component({
   selector:    'tsl-catalog-item-actions',
@@ -48,7 +50,11 @@ export class CatalogItemActionsComponent implements OnInit {
       }).subscribe((resp: any) => {
         this.getCounters.emit();
         if (resp.status === 406) {
-          this.errorService.show(resp);
+          const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
+            windowClass: 'bump'
+          });
+          modalRef.result.then(() => {}, () => {
+          });
         }
       });
     });
@@ -73,6 +79,17 @@ export class CatalogItemActionsComponent implements OnInit {
 
   public deselect() {
     this.itemService.deselectItems();
+  }
+
+  public feature() {
+    let modalRef: NgbModalRef = this.modalService.open(AlreadyFeaturedModalComponent, {
+      windowClass: 'bump',
+    });
+    modalRef.result.then(() => {
+      modalRef = null;
+      this.router.navigate(['pro/catalog/checkout']);
+    }, () => {
+    });
   }
 
 }

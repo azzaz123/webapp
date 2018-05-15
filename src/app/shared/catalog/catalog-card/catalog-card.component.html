@@ -29,7 +29,7 @@
       <div class="type {{item.purchases.bump_type}}" i18n>{{item.bumpName}}</div>
       <div class="date">
         <span i18n>{{item.purchases.expiration_date | amCountdown}} remaining</span>
-        <span class="cancel-bump {{item.purchases.bump_type}}" (click)="cancelAutorenew(item)"
+        <span class="cancel-bump {{item.purchases.bump_type}}" (click)="cancelAutorenew(item, cancelAutorenewModal)"
               *ngIf="item.purchases.scheduled_bump_type" i18n>Cancel</span>
       </div>
     </div>
@@ -67,3 +67,14 @@
     </button>
   </div>
 </div>
+
+<ng-template ngbModalContainer #cancelAutorenewModal let-c="close" let-d="dismiss">
+  <div class="modal-body">
+    <h2 i18n>Cancel Autorenew</h2>
+    <p i18n>Do you really want to cancel the autorenew for this item?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" i18n (click)="d()">No</button>
+    <button type="button" class="btn btn-warn" i18n (click)="c()">Yes</button>
+  </div>
+</ng-template>

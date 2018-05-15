@@ -17,7 +17,7 @@
   <button class="btn-activate" (click)="activate(activateItemsModal)" *ngIf="selectedStatus === 'pending'"
           [disabled]="!itemService.selectedItems.length" i18n>Activate</button>
   <tsl-button [hidden]="selectedStatus === 'sold' || selectedStatus === 'pending'" [disabled]="!itemService.selectedItems.length"
-              className="btn-primary btn-big" [routerLink]="['/catalog/checkout']" tslTrackEvent="MYCATALOG_PRO_FEATURE"
+              className="btn-primary btn-big btn-feat" [routerLink]="['/catalog/checkout']" tslTrackEvent="MYCATALOG_PRO_FEATURE"
               i18n="Continue to cart|selected-items-button">Feature</tsl-button>
 </div>
 
