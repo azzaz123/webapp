@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, Injectable } from '@angular/core';
-import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { CalendarDates } from './calendar-dates';
 
@@ -72,7 +72,8 @@ export class RangeDatepickerComponent implements OnInit {
   isFrom = date => equals(date, this.startDate);
   isTo = date => equals(date, this.endDate);
 
-  constructor(private calendar: NgbCalendar) {
+  constructor(private calendar: NgbCalendar, config: NgbDatepickerConfig) {
+    config.outsideDays = 'hidden';
     this.minDate = { year: calendar.getToday().year, month: calendar.getToday().month, day: calendar.getToday().day };
   }
 
