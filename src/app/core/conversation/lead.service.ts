@@ -146,6 +146,7 @@ export abstract class LeadService {
         this.onArchive(deletedLead);
         this.archivedLeads.push(deletedLead);
         this.stream(true);
+        this.stream();
         this.event.emit(EventService.LEAD_ARCHIVED, deletedLead);
         return deletedLead;
       }

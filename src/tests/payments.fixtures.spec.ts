@@ -1,4 +1,6 @@
-import { FinancialCard, SabadellInfoResponse, Packs, PackResponse, ProductResponse, OrderProExtras } from '../app/core/payments/payment.interface';
+import {
+  BillingInfoResponse, FinancialCard, SabadellInfoResponse, Packs, PackResponse, ProductResponse, OrderProExtras 
+} from '../app/core/payments/payment.interface';
 import { Pack } from '../app/core/payments/pack';
 
 export const FINANCIAL_CARD: FinancialCard = {
@@ -141,4 +143,18 @@ export const PREPARED_PACKS: Array<any> = [
 export const ORDER_CART_EXTRAS_PRO: OrderProExtras = {
   id: 'UUID',
   packs: ['1', '5']
+};
+
+export const BILLING_INFO_RESPONSE: BillingInfoResponse = {
+  cif: 'cif',
+  city: 'city',
+  company_name: 'company',
+  country: 'country',
+  email: 'email@email.com',
+  name: 'name',
+  phone: '666666666',
+  postal_code: '12345',
+  street: 'street',
+  surname: 'surname',
+  id: '123'
 };

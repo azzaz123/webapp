@@ -33,6 +33,10 @@ export class PaymentService {
     .map((r: Response) => r.json());
   }
 
+  public updateBillingInfo(data: any): Observable<any> {
+    return this.http.put(this.API_URL + '/billing-info', data);
+  }
+
   public pay(orderId: string): Observable<any> {
     return this.http.post(this.API_URL + '/c2b/sabadell/tpv/pay', {
       order_id: orderId

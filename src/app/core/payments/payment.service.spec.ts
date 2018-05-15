@@ -1,10 +1,11 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
-
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs/Observable';
-import { FinancialCard, SabadellInfoResponse, Packs } from './payment.interface';
-import { FINANCIAL_CARD, SABADELL_RESPONSE, PACK_RESPONSE, createPacksFixture, PRODUCTS_RESPONSE_PACKS } from '../../../tests/payments.fixtures.spec';
+import { BillingInfoResponse, FinancialCard, SabadellInfoResponse, Packs } from './payment.interface';
+import {
+  BILLING_INFO_RESPONSE, FINANCIAL_CARD, SABADELL_RESPONSE, PACK_RESPONSE, createPacksFixture, PRODUCTS_RESPONSE_PACKS
+} from '../../../tests/payments.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { PACKNAMES } from './pack';
@@ -83,6 +84,36 @@ describe('PaymentService', () => {
 
     it('should return packs', () => {
       expect(response).toEqual(createPacksFixture());
+    });
+  });
+
+  describe('getBillingInfo', () => {
+    let response: BillingInfoResponse;
+
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(BILLING_INFO_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+
+      service.getBillingInfo().subscribe((r: BillingInfoResponse) => {
+        response = r;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/payments/billing-info/me');
+      expect(response).toEqual(BILLING_INFO_RESPONSE);
+    });
+  });
+
+  describe('updateBillingInfo', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put');
+
+      service.updateBillingInfo({
+        data: 'test'
+      });
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/payments/billing-info', {
+        data: 'test'
+      });
     });
   });
 });

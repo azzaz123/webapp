@@ -1,172 +1,18 @@
 @import "~style/common";
 
-$border: solid 1px $grey-50;
-.box {
-  background-color: $white;
-  border-radius: $border-radius;
-  border: $border;
-  margin-bottom: $spacing;
-  .box-content {
-    padding: $spacing-L $spacing-L + 10;
-  }
-  .box-section {
-    padding: 0 0 $spacing-L;
-    border-bottom: $border;
-  }
-  .box-header {
-    border-bottom: $border;
-    padding-top: 0;
-    h1 {
-      font-weight: bold;
-      color: $grey-700;
-      font-size: $font-size-LL;
-      letter-spacing: 0.6px;
-    }
-    .public-profile {
-      font-size: $font-size-S;
-    }
-    .btn-primary {
-      float: right;
-      padding: 10px 30px;
-    }
-  }
-  .profile-pic {
-    h2 {
-      font-size: $font-size;
-      font-weight: normal;
-      color: $grey-900;
-    }
-    p {
-      font-size: $font-size-S;
-      line-height: 1.29;
-      color: $grey-300;
-      margin-bottom: 0;
-    }
-    .col-4 {
-      display: flex;
-      align-items: center;
-    }
-    tsl-user-avatar {
-      margin-right: $spacing;
-    }
-    .btn-upload {
-      background-color: $grey-50;
-      border: solid 1px $grey-100;
-      color: $grey-600;
-      font-size: $font-size-S;
-      padding: $spacing-S $spacing;
-      margin-left: 43px;
-      cursor: pointer;
-      border-radius: $button-border-radius;
-      &:hover:not(.disabled) {
-        background-color: $grey-100;
-      }
-      input {
-        display: none;
-      }
-      .spinner {
-        @include square(15px);
-        margin-right: $spacing-XS;
-        vertical-align: bottom;
-      }
-    }
-  }
-  .form-group {
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-    label {
-      text-align: right;
-      line-height: 27px;
-      color: $grey-900;
-      font-size: $font-size;
-      padding-right: 69px;
-      margin: 0;
-    }
-    .btn-group {
-      width: 100%;
-    }
-    .select {
-      height: 100px;
-      width: calc(50% - #{$spacing / 2});
-      border-radius: $border-radius;
-      border: solid 2px $grey-50;
-      cursor: pointer;
-      padding: 0;
-      text-align: center;
-      line-height: 42px;
-      [ngbButton] {
-        display: none;
-      }
-      &:first-of-type {
-        margin-right: 15px;
-      }
-      mat-icon {
-        @include square(42px);
-        margin-top: 25px;
-        /deep/ path {
-          transition: fill 0.2s ease-in-out;
-        }
-      }
-      div {
-        margin-top: -22px;
-        font-size: $font-size-S;
-      }
-      &.active {
-        background-color: $grey-300;
-        border-color: transparent;
-        box-shadow: 0 2px 6px 0 rgba($grey-300, 0.2);
-        mat-icon {
-          /deep/ path {
-            fill: $white;
-          }
-        }
-        div {
-          font-weight: bold;
-          color: $white;
-        }
-      }
-      &:hover:not(.active) {
-        border-color: $grey-300;
-        mat-icon {
-          /deep/ path {
-            fill: $grey-300;
-          }
-        }
-      }
-    }
-    tsl-location-box {
-      /deep/ .box {
-        h2 {
-          display: none;
-        }
-        p {
-          font-size: $font-size-S;
-        }
-        .form-group .form-control {
-          width: calc(100% - 13px);
-        }
-        tsl-here-maps {
-          margin-right: 13px;
-        }
-      }
-    }
-  }
-  .unsubscribe-section {
-    padding-top: $spacing-L;
-    text-align: center;
-    a {
-      text-decoration: underline;
-      color: $grey-100;
-      font-size: $font-size-S;
-      cursor: pointer;
-      &:hover {
-        text-decoration: none;
-      }
+.unsubscribe-section {
+  padding-top: $spacing-L;
+  text-align: center;
+  a {
+    text-decoration: underline;
+    color: $grey-100;
+    font-size: $font-size-S;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
     }
   }
 }
-
 .btn-wrapper {
   display: flex;
   align-items: flex-end;

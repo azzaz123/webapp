@@ -22,6 +22,7 @@ export class EventService {
   public static UPDATE_COORDINATE = 'updateCoordinate';
   public static UPDATE_CATEGORY = 'updateCategory';
   public static UPDATE_SEARCH = 'updateSearch';
+  public static CLOSE_EXPANDED_CALLS = 'closeExpandedCalls';
 
   private subjects: any = {};
 

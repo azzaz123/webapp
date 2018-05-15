@@ -7,7 +7,7 @@ export class I18nService {
     en: {
       daysMomentConfig: {
         lastDay: '[Yesterday]',
-        sameDay: 'HH:mm',
+        sameDay: '[Today] - HH:mm',
         nextDay: '[Tomorrow]',
         lastWeek: 'dddd',
         nextWeek: 'dddd',
@@ -54,7 +54,7 @@ export class I18nService {
       messages: 'Messages',
       shared: 'Shared Phone',
       missed: 'Missed Call',
-      answered: 'Received Call',
+      answered: 'Call',
       chats: 'Chats',
       sold: 'Sold',
       views: 'Views',
@@ -76,12 +76,13 @@ export class I18nService {
       defaultErrorTitle: 'Oops!',
       defaultSuccessTitle: 'Yup!',
       bumpError: 'Some listings have not been bumped due to an error',
-      cantEditError: 'This item can not be modified because has a pending transaction.'
+      cantEditError: 'This item can not be modified because has a pending transaction.',
+      settingsEdited: 'Your setting has been updated'
     },
     es: {
       daysMomentConfig: {
         lastDay: '[Ayer]',
-        sameDay: 'HH:mm',
+        sameDay: '[Hoy] - HH:mm',
         nextDay: '[Mañana]',
         lastWeek: 'dddd',
         nextWeek: 'dddd',
@@ -150,7 +151,8 @@ export class I18nService {
       defaultErrorTitle: '¡Ups!',
       defaultSuccessTitle: '¡Bien!',
       bumpError: 'Algunos productos no se han destacado debido a un error',
-      cantEditError: 'Este producto no se puede modificar, porque está en mitad de una transacción.'
+      cantEditError: 'Este producto no se puede modificar, porque está en mitad de una transacción.',
+      settingsEdited: 'Se ha actualizado tu configuración'
     }
   };
 
