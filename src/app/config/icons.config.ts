@@ -163,6 +163,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('bump-city', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-city.svg'));
   matIconRegistry.addSvgIcon('bump-country', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-country.svg'));
   matIconRegistry.addSvgIcon('bump-zone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-zone.svg'));
+  matIconRegistry.addSvgIcon('bump-city-small', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-city-small.svg'));
+  matIconRegistry.addSvgIcon('bump-country-small', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-country-small.svg'));
   matIconRegistry.addSvgIcon('wing-citybump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-city.svg'));
   matIconRegistry.addSvgIcon('wing-countrybump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-country.svg'));
   matIconRegistry.addSvgIcon('wing-zonebump', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wing-zone.svg'));
@@ -178,4 +180,23 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('empty-state-phones', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/empty-state-phones.svg'));
   matIconRegistry.addSvgIcon('bump-country-pro', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-country-pro.svg'));
   matIconRegistry.addSvgIcon('bump-city-pro', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-city-pro.svg'));
+  matIconRegistry.addSvgIcon('plan-10', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan10.svg'));
+  matIconRegistry.addSvgIcon('plan-10-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan10_selected.svg'));
+  matIconRegistry.addSvgIcon('plan-20', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan20.svg'));
+  matIconRegistry.addSvgIcon('plan-20-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan20_selected.svg'));
+  matIconRegistry.addSvgIcon('plan-30', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan30.svg'));
+  matIconRegistry.addSvgIcon('plan-30-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan30_selected.svg'));
+  matIconRegistry.addSvgIcon('plan-50', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan50.svg'));
+  matIconRegistry.addSvgIcon('plan-50-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan50_selected.svg'));
+  matIconRegistry.addSvgIcon('plan-75', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan75.svg'));
+  matIconRegistry.addSvgIcon('plan-75-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan75_selected.svg'));
+  matIconRegistry.addSvgIcon('plan-100', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan100.svg'));
+  matIconRegistry.addSvgIcon('plan-100-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan100_selected.svg'));
+  matIconRegistry.addSvgIcon('plan-150', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan150.svg'));
+  matIconRegistry.addSvgIcon('plan-150-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan150_selected.svg'));
+  matIconRegistry.addSvgIcon('plan-200', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan200.svg'));
+  matIconRegistry.addSvgIcon('plan-200-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan200_selected.svg'));
+  matIconRegistry.addSvgIcon('plan-personal', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/personal1.svg'));
+  matIconRegistry.addSvgIcon('plan-personal-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/personal1_selected.svg'));
+  matIconRegistry.addSvgIcon('plan-personal-plus', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/personal2.svg'));
 }
