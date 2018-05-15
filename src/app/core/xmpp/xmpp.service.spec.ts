@@ -318,6 +318,30 @@ describe('Service: Xmpp', () => {
       expect(msg.payload.text).toEqual('text');
     }));
 
+    it('should emit a CLIENT_DISCONNECTED event when the Xmpp client is disconnected', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+
+      eventService.emit('disconnected');
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CLIENT_DISCONNECTED);
+    });
+
+    it('should reconnect the client if it is disconnected when a CONNECTION_RESTORED event is triggered', () => {
+      service.clientConnected = false;
+
+      eventService.emit(EventService.CONNECTION_RESTORED);
+
+      expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not reconnect the client if it is already connecetd when a CONNECTION_RESTORED event is triggered', () => {
+      service.clientConnected = true;
+
+      eventService.emit(EventService.CONNECTION_RESTORED);
+
+      expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(1);
+    });
+
     it('should send the message receipt when there is a new message', () => {
       spyOn<any>(service, 'sendMessageDeliveryReceipt');
 
@@ -328,6 +352,7 @@ describe('Service: Xmpp', () => {
         MOCKED_SERVER_MESSAGE.id,
         MOCKED_SERVER_MESSAGE.thread);
     });
+
     it('should not call the message receipt if the new message is from the current user', () => {
       spyOn<any>(service, 'sendMessageDeliveryReceipt');
       service['currentJid'] = MOCKED_SERVER_MESSAGE.from;
