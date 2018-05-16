@@ -362,6 +362,33 @@
   <translation id="8499614752066309224">Ciudad:</translation>
   <translation id="4863373404095396982">País:</translation>
   <translation id="5125950009267587196">CIF:</translation>
+  <translation id="6883076399412251073">Plan actual: Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.listing.quantity}}</ex></ph></translation>
+  <translation id="2732498404411727211">Aún no estas suscrito a ningún plan.</translation>
+  <translation id="7532148292247615475">Cada plan te permite tener publicados hasta un número máximo de coches en la app y web de wallapop.</translation>
+  <translation id="777899500223419407">Publicar hasta <ph name="INTERPOLATION"><ex>{{bump.quantity}}</ex></ph> coches cada mes.</translation>
+  <translation id="4332428159510983797">Caduca el</translation>
+  <translation id="7154496186015922312">Plan personalizado</translation>
+  <translation id="2016810884599586784">Contáctanos para que te hagamos un plan a medida</translation>
+  <translation id="5736913742704520146">Destacado ciudad</translation>
+  <translation id="1387231030668423981">Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.bump.total}}</ex></ph> ciudad</translation>
+  <translation id="1906307008278702045">El plan de ciudad te permite destacar tus coches en tu ciudad y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en toda tu ciudad.</translation>
+  <translation id="8986611533240831380">Para suscribirte a un plan de ciudad contacta con 674 726 372</translation>
+  <translation id="6427098227437270446">Para cambiar tu plan de ciudad contacta con 674 726 372</translation>
+  <translation id="6703947649972852818">Destacado</translation>
+  <translation id="5540010184241331088">Ahorra un <ph name="INTERPOLATION"><ex>{{bump.discount}}</ex></ph>%</translation>
+  <translation id="2126069250654725782">Destacado país</translation>
+  <translation id="251613711454912353">Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.national.total}}</ex></ph> país</translation>
+  <translation id="7589031160907418094">El plan de país te permite destacar tus coches a nivel nacional y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en todo el país.</translation>
+  <translation id="2336946299666449576">Para suscribirte a un plan de país contacta con 674 726 372</translation>
+  <translation id="4472212851057229290">Para cambiar tu plan de país contacta con 674 726 372</translation>
+  <translation id="1144407473317535723">Solicitar</translation>
+  <translation id="5868024112393513368">Cuéntame más sobre las opciones de visibilidad</translation>
+  <translation id="2303735769987845467">Productos de visibilidad</translation>
+  <translation id="5130627671872052700">Destácalo en tu ciudad</translation>
+  <translation id="1768872655561111284">Aparece en las primeras posiciones en el muro. Tu producto tendrá un diseño diferente en el muro. Aparecerás en la zona de destacados en toda tu ciudad.</translation>
+  <translation id="994112968931678611">Destácalo en tu país</translation>
+  <translation id="6008122510223331138">Aparecerás en la zona de destacados en todo el país. Tu producto tendrá un diseño diferente en el muro. Aparece en las primeras posiciones en el muro</translation>
+  <translation id="7413249870341285211">Contacta con nosotros para más información</translation>
   <translation id="4662529977781351630">Llamadas</translation>
   <translation id="4812531333997465">Aquí verás y podras gestionar las llamadas recibidas, las perdidas y los teléfonos que te han compartido</translation>
   <translation id="8953033926734869941">Nombre</translation>
@@ -376,4 +403,5 @@
   <translation id="6314007099242784066">Puntuación de usuario</translation>
   <translation id="3386449481449927569">Tiene un coche en venta</translation>
   <translation id="6901142032077238858">Ver perfil</translation>
+  <translation id="5491649508975206315">Para cambiar tu plan llámanos al 674 726 372</translation>
 </translationbundle>
