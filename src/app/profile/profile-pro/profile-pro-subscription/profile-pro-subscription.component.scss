@@ -51,7 +51,7 @@ h2, .description {
   mat-icon {
     height: 46px;
     width: 94px;
-    margin-bottom: $spacing-2M;
+    margin-bottom: $spacing-M;
     margin-top: $spacing;
   }
   .quantity-container {
@@ -63,8 +63,9 @@ h2, .description {
       @include square($height);
       line-height: $height;
       font-weight: bold;
-      font-size: 42px;
+      font-size: $font-size-XL;
       color: $grey-500;
+      letter-spacing: -1.5px;
     }
     .quantity-time {
       font-size: $font-size-XS;
@@ -188,6 +189,7 @@ h2, .description {
     margin-bottom: $spacing-S;
     border-bottom: 2px solid $grey-50;
     width: 100%;
+    margin-top: $spacing-2M;
   }
   .desc {
     font-size: $font-size-S;
@@ -199,6 +201,11 @@ h2, .description {
     border-color: $color-urgent;
     .name {
       border-color: rgba($color-urgent, .1);
+    }
+  }
+  .pack.personal {
+    .name {
+      margin-top: 0;
     }
   }
   .btn {
