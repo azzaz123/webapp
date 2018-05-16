@@ -21,7 +21,7 @@ import { PerksModel } from '../../../../core/payments/payment.model';
 import { ScheduledStatus } from '../../../../core/payments/payment.interface';
 import { BUMP_PRO_TYPES } from '../../cart/cart-base';
 
-fdescribe('CartProComponent', () => {
+describe('CartProComponent', () => {
   let component: CartProComponent;
   let fixture: ComponentFixture<CartProComponent>;
   let cartService: CartService;
