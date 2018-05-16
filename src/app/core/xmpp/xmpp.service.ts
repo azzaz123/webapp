@@ -62,6 +62,13 @@ export class XmppService {
       },
       body: body
     };
+    if (!conversation.messages.length) {
+      this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
+        to_user_id: conversation.user.id,
+        item_id: conversation.item.id,
+        thread_id: message.thread,
+        message_id: message.id });
+    }
     this.trackingService.track(TrackingService.MESSAGE_SENT, {
       thread_id: message.thread,
       message_id: message.id,
@@ -79,14 +86,7 @@ export class XmppService {
     });
     this.client.sendMessage(message);
     this.onNewMessage(_.clone(message));
-    if (!conversation.messages.length) {
-      this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
-        to_user_id: conversation.user.id,
-        item_id: conversation.item.id,
-        thread_id: message.thread,
-        message_id: message.id });
     }
-  }
 
   public sendConversationStatus(userId: string, conversationId: string) {
     this.client.sendMessage({
