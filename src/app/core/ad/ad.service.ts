@@ -107,7 +107,7 @@ export class AdService {
     });
   }
 
-  public sendAdServerRequest(allowSegmentation: boolean = false) {
+  public sendAdServerRequest(allowSegmentation = false) {
     googletag.cmd.push(() => {
       if (allowSegmentation) {
         apstag.setDisplayBids();
