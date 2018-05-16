@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostBinding, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { environment } from '../../../environments/environment';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
@@ -26,6 +26,7 @@ export class TopbarComponent implements OnInit {
   @Input() isMyZone: boolean;
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('kwsEl') kwsEl: ElementRef;
+  public isProfessional: boolean;
 
   constructor(public userService: UserService,
               private windowRef: WindowRef,
@@ -37,6 +38,10 @@ export class TopbarComponent implements OnInit {
   ngOnInit() {
     this.userService.me().subscribe((user) => {
       this.user = user;
+    });
+    this.userService.isProfessional().subscribe((value: boolean) => {
+      this.isProfessional = value;
+      console.log(this.isProfessional);
     });
   }
 

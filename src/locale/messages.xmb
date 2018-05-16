@@ -23,7 +23,8 @@
 <messagebundle>
   <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:31</source><source>app/chat/conversations-panel/conversation/conversation.component.ts:37</source>Messages</msg>
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.ts:31</source>My Zone</msg>
-  <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.ts:36</source>List a product</msg>
+  <msg id="3983509092263971640"><source>app/layout/topbar/topbar.component.ts:32</source>My Pro Zone</msg>
+  <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.ts:37</source>List a product</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:7</source><source>app/profile/profile-pro/profile-pro.component.ts:21</source>Profile</msg>
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.ts:14</source>Dashboard</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:22</source>Products</msg>
@@ -328,7 +329,6 @@
   <msg id="2595624684026123810"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:18</source>Telephone:</msg>
   <msg id="6996799422725544865"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:24</source>Description:</msg>
   <msg id="138907429214820806"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:30</source>Opening Hours:</msg>
-  <msg id="872325555016392097"><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:100</source>I consent third parties to use my data</msg>
   <msg id="5359061492766571193"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:20</source>Company Name:</msg>
   <msg id="6744115081020952615"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:26</source>Billing email:</msg>
   <msg id="6075176027649032651"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:32</source>Billing phone:</msg>
