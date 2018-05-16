@@ -43,7 +43,6 @@ export class CartProComponent implements OnInit {
       this.perks = perks;
       this.paymentsService.getStatus().subscribe((status: ScheduledStatus) => {
         this.status = status;
-        console.log(this.perks, this.status);
       });
     });
   }
