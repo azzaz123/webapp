@@ -20,7 +20,7 @@ export class RestrictInputDirective {
     }
   }
 
-  @HostListener('document:paste', ['$event']) onPaste($event) {
+  @HostListener('paste', ['$event']) onPaste($event) {
     $event.preventDefault();
   }
 

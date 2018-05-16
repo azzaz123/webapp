@@ -6,6 +6,9 @@ import { ProfileComponent } from './profile.component';
 import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
+import { ProfileProInfoComponent } from './profile-pro/profile-pro-info/profile-pro-info.component';
+import { ProfileProComponent } from './profile-pro/profile-pro.component';
+import { ProfileProBillingComponent } from './profile-pro/profile-pro-billing/profile-pro-billing.component';
 
 const routes: Routes = [
   {
@@ -21,22 +24,34 @@ const routes: Routes = [
       }
     }
   },
+  { path: 'pro/profile', pathMatch: 'full', redirectTo: 'pro/profile/info' },
   {
     path: 'pro',
     canActivate: [LoggedGuard],
     children: [
       {
         path: 'profile',
-        component: ProfileComponent,
+        component: ProfileProComponent,
         canActivate: [NgxPermissionsGuard],
-        canDeactivate: [ExitConfirmGuard],
         data: {
           isMyZone: true,
           permissions: {
             only: PERMISSIONS.professional,
             redirectTo: '/profile'
           }
-        }
+        },
+        children: [
+          {
+            path: 'info',
+            component: ProfileProInfoComponent,
+            canDeactivate: [ExitConfirmGuard]
+          },
+          {
+            path: 'billing',
+            component: ProfileProBillingComponent,
+            canDeactivate: [ExitConfirmGuard]
+          }
+        ]
       },
     ]
   }
@@ -49,4 +64,9 @@ const routes: Routes = [
 export class ProfileRoutingModule {
 }
 
-export const profileRoutedComponents = [ProfileComponent];
+export const profileRoutedComponents = [
+  ProfileComponent,
+  ProfileProComponent,
+  ProfileProInfoComponent,
+  ProfileProBillingComponent
+];

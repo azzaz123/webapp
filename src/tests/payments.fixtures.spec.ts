@@ -1,4 +1,4 @@
-import { FinancialCard, SabadellInfoResponse } from '../app/core/payments/payment.interface';
+import { BillingInfoResponse, FinancialCard, SabadellInfoResponse } from '../app/core/payments/payment.interface';
 
 export const FINANCIAL_CARD: FinancialCard = {
   expire_date: 61598188800000,
@@ -11,4 +11,18 @@ export const SABADELL_RESPONSE: SabadellInfoResponse = {
   signature: '/XvjPsRtYubYTmKLCGkpA6XxOXj/rJ3sdGZl0+gz3lw=',
   signature_version: 'HMAC_SHA256_V1',
   target_url: 'https://sis-t.redsys.es:25443/sis/realizarPago'
+};
+
+export const BILLING_INFO_RESPONSE: BillingInfoResponse = {
+  cif: 'cif',
+  city: 'city',
+  company_name: 'company',
+  country: 'country',
+  email: 'email@email.com',
+  name: 'name',
+  phone: '666666666',
+  postal_code: '12345',
+  street: 'street',
+  surname: 'surname',
+  id: '123'
 };

@@ -1,18 +1,5 @@
 @import "~style/common";
 
-.unsubscribe-section {
-  padding-top: $spacing-L;
-  text-align: center;
-  a {
-    text-decoration: underline;
-    color: $grey-100;
-    font-size: $font-size-S;
-    cursor: pointer;
-    &:hover {
-      text-decoration: none;
-    }
-  }
-}
 .btn-wrapper {
   display: flex;
   align-items: flex-end;
@@ -36,4 +23,8 @@
     color: $white;
     border: solid 1px $delete-bg;
   }
+}
+
+nav {
+  margin-bottom: $spacing;
 }
