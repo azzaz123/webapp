@@ -16,8 +16,12 @@ import { OrderPro } from '../../../../core/item/item-response.interface';
 import { MOCK_PROITEM } from '../../../../../tests/pro-item.fixtures.spec';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
+import { PaymentService } from '../../../../core/payments/payment.service';
+import { PerksModel } from '../../../../core/payments/payment.model';
+import { ScheduledStatus } from '../../../../core/payments/payment.interface';
+import { BUMP_PRO_TYPES } from '../../cart/cart-base';
 
-describe('CartProComponent', () => {
+fdescribe('CartProComponent', () => {
   let component: CartProComponent;
   let fixture: ComponentFixture<CartProComponent>;
   let cartService: CartService;
@@ -25,6 +29,8 @@ describe('CartProComponent', () => {
   let itemService: ItemService;
   let router: Router;
   let trackingService: TrackingService;
+  let paymentsService: PaymentService;
+  const perksModel: PerksModel = new PerksModel();
 
   const CART = new CartPro();
   const CART_CHANGE: CartChange = {
@@ -34,12 +40,28 @@ describe('CartProComponent', () => {
     type: 'citybump'
   };
 
+  const MOCK_STATUS: ScheduledStatus = {
+    active: true,
+    autorenew_alert: 0,
+    autorenew_scheduled: { citybump: 16, countrybump: 21 }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
       declarations: [CartProComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
+        {
+          provide: PaymentService, useValue: {
+            getPerks() {
+              return Observable.of(perksModel);
+            },
+            getStatus() {
+              return Observable.of(MOCK_STATUS);
+            }
+          }
+        },
         {
           provide: TrackingService, useClass: MockTrackingService
         },
@@ -83,12 +105,13 @@ describe('CartProComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CartProComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     cartService = TestBed.get(CartService);
     itemService = TestBed.get(ItemService);
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
     trackingService = TestBed.get(TrackingService);
+    paymentsService = TestBed.get(PaymentService);
+    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
@@ -98,6 +121,24 @@ describe('CartProComponent', () => {
       component.ngOnInit();
 
       expect(cartService.createInstance).toHaveBeenCalledWith(new CartPro());
+    });
+
+    it('should get quantity of bumps', () => {
+      spyOn(paymentsService, 'getPerks').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(paymentsService.getPerks).toHaveBeenCalled();
+      expect(component.perks).toEqual(perksModel);
+    });
+
+    it('should get quantity of bumps scheduled', () => {
+      spyOn(paymentsService, 'getStatus').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(paymentsService.getStatus).toHaveBeenCalled();
+      expect(component.status).toEqual(MOCK_STATUS);
     });
   });
 
@@ -118,6 +159,22 @@ describe('CartProComponent', () => {
       component.clean();
 
       expect(cartService.clean).toHaveBeenCalled();
+    });
+  });
+
+  describe('getBalance', () => {
+    it('should return balance for city cart', () => {
+      const bumpsQuantity = 0;
+      component.getBalance(BUMP_PRO_TYPES[0]);
+
+      expect(bumpsQuantity).toBe(component.perks.getBumpCounter());
+    });
+
+    it('should return balance for country cart', () => {
+      const bumpsQuantity = 0;
+      component.getBalance(BUMP_PRO_TYPES[0]);
+
+      expect(bumpsQuantity).toBe(component.perks.getNationalBumpCounter());
     });
   });
 

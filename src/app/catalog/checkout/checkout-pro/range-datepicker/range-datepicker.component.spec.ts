@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { RangeDatepickerComponent } from './range-datepicker.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MOCK_DATE, MOCK_DATE2, MOCK_SELECTED_DATES, MOCK_DATE3 } from '../../../../../tests/calendar.fixtures.spec';
@@ -11,13 +11,15 @@ describe('RangeDatepickerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RangeDatepickerComponent],
-      providers: [{
-        provide: NgbCalendar, useValue: {
-          getToday() {
-            return MOCK_DATE;
+      providers: [
+        NgbDatepickerConfig,
+        {
+          provide: NgbCalendar, useValue: {
+            getToday() {
+              return MOCK_DATE;
+            }
           }
-        }
-      }],
+        }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
