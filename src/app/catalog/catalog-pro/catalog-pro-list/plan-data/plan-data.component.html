@@ -8,7 +8,7 @@
       <div class="border"></div>
       <div class="col-number">
         <span class="number">
-          <span [hidden]="perks?.subscription.listing.quantity - counters?.publish < 0">
+          <span *ngIf="perks?.subscription.listing.quantity - counters?.publish > 0">
           {{perks?.subscription.listing.quantity - counters?.publish}}</span>
           <span *ngIf="perks?.subscription.listing.quantity - counters?.publish <= 0">0</span>
         </span>

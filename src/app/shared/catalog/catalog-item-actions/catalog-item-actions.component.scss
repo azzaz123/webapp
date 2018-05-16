@@ -51,6 +51,10 @@ $height: 40px;
         background: $corporate;
         border-color: transparent;
       }
+      &:disabled {
+        background: $grey-50;
+        border-color: $grey-100;
+      }
     }
   }
 

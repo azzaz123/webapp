@@ -64,7 +64,8 @@ export class ItemService extends ResourceService {
   protected items: ItemsStore = {
     active: [],
     pending: [],
-    sold: []
+    sold: [],
+    featured: []
   };
   public selectedItems: string[] = [];
   public plannedCityPurchase = 0;
@@ -483,23 +484,26 @@ export class ItemService extends ResourceService {
   public mines(pageNumber: number, pageSize: number, sortBy: string, status: string = 'active', term?: string, cache: boolean = true): Observable<Item[]> {
     let init: number = (pageNumber - 1) * pageSize;
     let end: number = init + pageSize;
+    let endStatus: string = status === 'featured' ? 'active' : status;
     let observable: Observable<Item[]>;
     if (this.items[status].length && cache) {
       observable = Observable.of(this.items[status]);
     } else {
-      observable = this.recursiveMines(0, 300, status)
+      observable = this.recursiveMines(0, 300, endStatus)
         .map((res: ItemProResponse[]) => {
           if (res.length > 0) {
-            let items: Item[] = res.map((i: ItemProResponse) => {
-              const item: Item = this.mapRecordDataPro(i);
-              item.views = i.content.views;
-              item.favorites = i.content.favorites;
-              item.conversations = i.content.conversations;
-              item.purchases = i.content.purchases ? i.content.purchases : null;
-              if (item.purchases) {
-                this.setPlannedPurchase(item);
-              }
-              return item;
+            let items: Item[] = res
+              .filter(res => (res.content.purchases && status === 'featured') || status !== 'featured')
+              .map((i: ItemProResponse) => {
+                const item: Item = this.mapRecordDataPro(i);
+                item.views = i.content.views;
+                item.favorites = i.content.favorites;
+                item.conversations = i.content.conversations;
+                item.purchases = i.content.purchases ? i.content.purchases : null;
+                if (item.purchases) {
+                  this.setPlannedPurchase(item);
+                }
+                return item;
             });
             this.items[status] = items;
             return items;

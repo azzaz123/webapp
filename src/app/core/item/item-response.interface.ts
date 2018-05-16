@@ -253,6 +253,7 @@ export interface ItemsStore {
   active: Item[];
   sold: Item[];
   pending: Item[];
+  featured?: Item[];
 }
 
 export interface DeliveryInfo {
