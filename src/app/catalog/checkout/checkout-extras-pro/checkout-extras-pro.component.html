@@ -1,6 +1,7 @@
 <div class="page-content">
   <div class="container">
-    <a class="back" [routerLink]="['/pro/catalog/list']"><mat-icon svgIcon="back-arrow"></mat-icon> <span i18n>Back</span></a>
+    <a class="back" *ngIf="!billingInfoFormEnabled" [routerLink]="['/pro/catalog/list']"><mat-icon svgIcon="back-arrow"></mat-icon> <span i18n>Back</span></a>
+    <a class="back" *ngIf="billingInfoFormEnabled" (click)="billingInfoFormEnabled = false"><mat-icon svgIcon="back-arrow"></mat-icon> <span i18n>Back</span></a>
     <div class="row" *ngIf="packs">
         <div class="col-xl col-lg-8" *ngIf="!billingInfoFormEnabled">
           <div class="table-header">
@@ -33,7 +34,7 @@
           <tsl-billing-info (billingInfoFormChange)="onBillingInfoChange($event)"></tsl-billing-info>
         </div>
         <div class="cart">
-          <tsl-cart-extras-pro (billingInfoNeeds)="onBillingInfoNeeds($event)" [billingInfoForm]="billingInfoForm"></tsl-cart-extras-pro>
+          <tsl-cart-extras-pro (billingInfoNeeds)="onBillingInfoNeeds($event)" [billingInfoFormEnabled]="billingInfoFormEnabled" [billingInfoForm]="billingInfoForm"></tsl-cart-extras-pro>
         </div>
       </div>
       <tsl-spinner [firstLoad]="false" [hidden]="packs"></tsl-spinner>

@@ -65,12 +65,12 @@
   </form>
 </div>
 <tsl-button [disabled]="!cart?.total || loading"
-            *ngIf="!saveBillingInfo"
+            *ngIf="!billingInfoFormEnabled"
             [loading]="loading"
             (click)="checkout()"
             i18n>Continue to Checkout</tsl-button>
 <tsl-button [disabled]="!cart?.total || loading || !billingInfoForm?.valid"
-            *ngIf="saveBillingInfo"
+            *ngIf="billingInfoFormEnabled"
             [loading]="loading"
             (click)="saveAndCheckout()"
             i18n>Continue to Checkout</tsl-button>

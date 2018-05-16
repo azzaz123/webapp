@@ -6,7 +6,8 @@ import { PaymentService } from '../../../../core/payments/payment.service';
 import { Observable } from 'rxjs/Observable';
 import { CartProExtras } from '../../cart/cart-pro-extras';
 import { CartChange } from '../../cart/cart-item.interface';
-import { PACK_ID, FINANCIAL_CARD, PREPARED_PACKS, ORDER_CART_EXTRAS_PRO } from '../../../../../tests/payments.fixtures.spec';
+import { PACK_ID, FINANCIAL_CARD,
+  PREPARED_PACKS, ORDER_CART_EXTRAS_PRO, BILLING_INFO_RESPONSE } from '../../../../../tests/payments.fixtures.spec';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
+import { FormGroup, FormControl } from '@angular/forms';
 
 describe('CartExtrasProComponent', () => {
   let component: CartExtrasProComponent;
@@ -56,6 +58,9 @@ describe('CartExtrasProComponent', () => {
             },
             orderExtrasProPack() {
               return Observable.of({});
+            },
+            updateBillingInfo() {
+              return Observable.of({});
             }
           },
         },
@@ -82,6 +87,19 @@ describe('CartExtrasProComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CartExtrasProComponent);
     component = fixture.componentInstance;
+    component.billingInfoForm = new FormGroup({
+      cif: new FormControl(),
+      city: new FormControl(),
+      company_name: new FormControl(),
+      country: new FormControl(),
+      email: new FormControl(),
+      name: new FormControl(),
+      phone: new FormControl(),
+      postal_code: new FormControl(),
+      street: new FormControl(),
+      surname: new FormControl(),
+      id: new FormControl()
+    });
     cartService = TestBed.get(CartService);
     paymentService = TestBed.get(PaymentService);
     errorsService = TestBed.get(ErrorsService);
@@ -253,13 +271,40 @@ describe('CartExtrasProComponent', () => {
       });
     });
 
-    it('no billing info', () => {
-      spyOn(paymentService, 'getBillingInfo').and.returnValue(Observable.throw({}));
-      spyOn(component.billingInfoNeeds, 'emit').and.callThrough();
+    describe('no billing info', () => {
+      it('should emit a event', () => {
+        spyOn(paymentService, 'getBillingInfo').and.returnValue(Observable.throw({}));
+        spyOn(component.billingInfoNeeds, 'emit').and.callThrough();
 
-      component.checkout();
+        component.checkout();
 
-      expect(component.billingInfoNeeds.emit).toHaveBeenCalledWith(true);
+        expect(component.billingInfoNeeds.emit).toHaveBeenCalledWith(true);
+      });
+
+      describe('saveAndCheckout', () => {
+        describe('form valid', () => {
+          beforeEach(() => {
+            component.billingInfoForm.setValue(BILLING_INFO_RESPONSE);
+          });
+
+          it('should update billing info', () => {
+            spyOn(paymentService, 'updateBillingInfo').and.callThrough();
+
+            component.saveAndCheckout();
+
+            expect(paymentService.updateBillingInfo).toHaveBeenCalledWith(component.billingInfoForm.value);
+          });
+
+          it('should show error if call fails', () => {
+            spyOn(errorsService, 'show');
+            spyOn(paymentService, 'updateBillingInfo').and.returnValue(Observable.throw('error'));
+
+            component.saveAndCheckout();
+
+            expect(errorsService.show).toHaveBeenCalledWith('error');
+          });
+        });
+      });
     });
   });
 });
