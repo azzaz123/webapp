@@ -6,7 +6,7 @@ import { EventService } from '../event/event.service';
 import { Message } from '../message/message';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { PersistencyService } from '../persistency/persistency.service';
-import { CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATION_ID, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { XmppTimestampMessage } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
@@ -309,6 +309,7 @@ describe('Service: Xmpp', () => {
         MOCKED_SERVER_MESSAGE.id,
         MOCKED_SERVER_MESSAGE.thread);
     });
+
     it('should not call the message receipt if the new message is from the current user', () => {
       spyOn<any>(service, 'sendMessageDeliveryReceipt');
       service['currentJid'] = MOCKED_SERVER_MESSAGE.from;
@@ -334,17 +335,55 @@ describe('Service: Xmpp', () => {
       expect(msg.message).toEqual('body');
       expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.full);
     }));
-  });
 
-  it('should send the read message', () => {
-    service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-    service.sendConversationStatus(USER_ID, MESSAGE_ID);
-    expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
-      to: USER_ID + '@' + environment['xmppDomain'],
-      read: {
-        xmlns: 'wallapop:thread:status'
-      },
-      thread: MESSAGE_ID
+    it('should send the read message', () => {
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      service.sendConversationStatus(USER_ID, MESSAGE_ID);
+      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
+        to: USER_ID + '@' + environment['xmppDomain'],
+        read: {
+          xmlns: 'wallapop:thread:status'
+        },
+        thread: MESSAGE_ID
+      });
+    });
+
+    it('should emit the messageReceivedAck event when a message with received receipt is sent', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+      const msg = {
+        received: {
+          xmlns: 'urn:xmpp:receipts',
+          id: MESSAGE_ID
+        }
+      };
+
+      eventService.emit('message:sent', msg);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_RECEIVED_ACK);
+    });
+
+    it('should emit the messageReadAck event when a message with read receipt is sent', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+      const msg = {
+        read: {
+          id: MESSAGE_ID
+        }
+      };
+
+      eventService.emit('message:sent', msg);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_READ_ACK);
+    });
+
+    it('should emit the messageSentAck event when a message with body is sent', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+      const msg = {
+        body: 'some content'
+      };
+
+      eventService.emit('message:sent', msg);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT_ACK);
     });
   });
 
@@ -530,7 +569,7 @@ describe('Service: Xmpp', () => {
       tick(2000);
       const message: Message = response.data[0];
       expect(response.data.length).toBe(1);
-      expect(message instanceof Message).toBeTruthy();
+      expect(message instanceof Message).toBe(true);
       expect(message.id).toBe(MESSAGE_ID);
       expect(message.conversationId).toBe(THREAD);
       expect(message.message).toBe(MESSAGE_BODY);
@@ -551,9 +590,9 @@ describe('Service: Xmpp', () => {
       const message: Message = response.data[0];
       const message2: Message = response.data[1];
       expect(response.data.length).toBe(2);
-      expect(message instanceof Message).toBeTruthy();
+      expect(message instanceof Message).toBe(true);
       expect(message.id).toBe(MESSAGE_ID2);
-      expect(message2 instanceof Message).toBeTruthy();
+      expect(message2 instanceof Message).toBe(true);
       expect(message2.id).toBe(MESSAGE_ID);
     }));
 
@@ -714,7 +753,7 @@ describe('Service: Xmpp', () => {
       tick(2000);
       const message: Message = response.data[0];
       expect(response.data.length).toBe(1);
-      expect(message instanceof Message).toBeTruthy();
+      expect(message instanceof Message).toBe(true);
       expect(message.id).toBe(MESSAGE_ID);
       expect(message.conversationId).toBe(THREAD);
       expect(message.message).toBe(MESSAGE_BODY);
@@ -751,8 +790,8 @@ describe('Service: Xmpp', () => {
       eventService.emit('stream:data', XML_MESSAGE2_RECEIPT);
       tick(2000);
       expect(response.data.length).toBe(2);
-      expect(response.data[0].read).toBeTruthy();
-      expect(response.data[1].read).toBeTruthy();
+      expect(response.data[0].read).toBe(true);
+      expect(response.data[1].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(0);
     }));
 
@@ -780,8 +819,8 @@ describe('Service: Xmpp', () => {
         }
       });
       expect(response.data.length).toBe(2);
-      expect(response.data[0].read).toBeTruthy();
-      expect(response.data[1].read).toBeTruthy();
+      expect(response.data[0].read).toBe(true);
+      expect(response.data[1].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(0);
     }));
 
@@ -800,7 +839,7 @@ describe('Service: Xmpp', () => {
       tick(2000);
       expect(MOCKED_CLIENT.sendMessage).not.toHaveBeenCalled();
       expect(response.data.length).toBe(1);
-      expect(response.data[0].read).toBeTruthy();
+      expect(response.data[0].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(1);
       expect(service['confirmedMessages'][0]).toBe(MESSAGE_ID);
     }));
@@ -827,7 +866,7 @@ describe('Service: Xmpp', () => {
       tick(2000);
       expect(MOCKED_CLIENT.sendMessage).not.toHaveBeenCalled();
       expect(response.data.length).toBe(1);
-      expect(response.data[0].read).toBeTruthy();
+      expect(response.data[0].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(0);
     }));
 
@@ -848,17 +887,17 @@ describe('Service: Xmpp', () => {
       });
       service['connected$'].next(true);
       tick();
-      expect(connected).toBeTruthy();
+      expect(connected).toBe(true);
       connected = false;
       service.isConnected().subscribe((value: boolean) => {
         connected = value;
       });
-      expect(connected).toBeTruthy();
+      expect(connected).toBe(true);
       service['connected'] = true;
       service.isConnected().subscribe((value: boolean) => {
         connected = value;
       });
-      expect(connected).toBeTruthy();
+      expect(connected).toBe(true);
     }));
 
     it('should say when is NOT connected', fakeAsync(() => {
@@ -867,12 +906,12 @@ describe('Service: Xmpp', () => {
       });
       service['connected$'].next(false);
       tick();
-      expect(connected).toBeFalsy();
+      expect(connected).toBe(false);
       service['connected'] = false;
       service.isConnected().subscribe((value: boolean) => {
         connected = value;
       });
-      expect(connected).toBeFalsy();
+      expect(connected).toBe(false);
     }));
 
   });
@@ -882,7 +921,7 @@ describe('Service: Xmpp', () => {
     it('should send a new message', () => {
       spyOn<any>(service, 'onNewMessage');
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      service.sendMessage(USER_ID, CONVERSATION_ID, MESSAGE_BODY);
+      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
       const message: any = {
         id: queryId,
         to: service['createJid'](USER_ID),
@@ -895,10 +934,12 @@ describe('Service: Xmpp', () => {
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(message);
       expect(service['onNewMessage']).toHaveBeenCalledWith(message);
     });
+
     it('should track the MessageSent event', () => {
       spyOn(trackingService, 'track');
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      service.sendMessage(USER_ID, CONVERSATION_ID, MESSAGE_BODY);
+
+      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
       const message: any = {
         id: queryId,
         to: service['createJid'](USER_ID),
@@ -908,8 +949,37 @@ describe('Service: Xmpp', () => {
         request: {xmlns: 'urn:xmpp:receipts'},
         body: MESSAGE_BODY
       };
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT, {conversation_id: message.thread});
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT,
+        { thread_id: message.thread,
+          message_id: message.id,
+          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
+          item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
+
+    it('should track the MessageSentAck event', () => {
+      spyOn(trackingService, 'track');
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      const msg = {
+        id: queryId,
+        to: service['createJid'](USER_ID),
+        from: service['currentJid'],
+        thread: CONVERSATION_ID,
+        received: {
+          id: 'someId'
+        }
+      };
+
+      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+      eventService.emit(EventService.MESSAGE_SENT_ACK);
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT_ACK,
+        { thread_id: msg.thread,
+          message_id: msg.id,
+          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
+          item_id: MOCKED_CONVERSATIONS[0].item.id });
+    });
+
     it('should send a new message with the true updateDate parameter', () => {
       spyOn<any>(service, 'onNewMessage').and.callThrough();
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
@@ -931,7 +1001,7 @@ describe('Service: Xmpp', () => {
       service['_connected'] = true;
       service.disconnect();
       expect(MOCKED_CLIENT.disconnect).toHaveBeenCalled();
-      expect(service['_connected']).toBeFalsy();
+      expect(service['_connected']).toBe(false);
     });
 
   });
@@ -984,7 +1054,7 @@ describe('Service: Xmpp', () => {
       MOCK_USER.blocked = false;
       service.blockUser(MOCK_USER).subscribe();
       tick();
-      expect(MOCK_USER.blocked).toBeTruthy();
+      expect(MOCK_USER.blocked).toBe(true);
     }));
     it('should emit USER_BLOCKED event', fakeAsync(() => {
       let eventEmitted: boolean;
@@ -994,7 +1064,7 @@ describe('Service: Xmpp', () => {
       });
       service.blockUser(MOCK_USER).subscribe();
       tick();
-      expect(eventEmitted).toBeTruthy();
+      expect(eventEmitted).toBe(true);
     }));
   });
 
@@ -1021,7 +1091,7 @@ describe('Service: Xmpp', () => {
       MOCK_USER.blocked = true;
       service.unblockUser(MOCK_USER).subscribe();
       tick();
-      expect(MOCK_USER.blocked).toBeFalsy();
+      expect(MOCK_USER.blocked).toBe(false);
     }));
     it('should emit USER_UNBLOCKED event', fakeAsync(() => {
       let eventEmitted: boolean;
@@ -1031,20 +1101,19 @@ describe('Service: Xmpp', () => {
       });
       service.unblockUser(MOCK_USER).subscribe();
       tick();
-      expect(eventEmitted).toBeTruthy();
+      expect(eventEmitted).toBe(true);
     }));
   });
 
   describe('isBlocked', () => {
     it('should return true if user is in the blockedList', () => {
       service['blockedUsers'] = JIDS;
-      expect(service.isBlocked('2')).toBeTruthy();
+      expect(service.isBlocked('2')).toBe(true);
     });
     it('should return false if user is NOT in the blockedList', () => {
       service['blockedUsers'] = JIDS;
-      expect(service.isBlocked('5')).toBeFalsy();
+      expect(service.isBlocked('5')).toBe(false);
     });
   });
-
 
 });
