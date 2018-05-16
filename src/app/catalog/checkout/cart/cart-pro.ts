@@ -44,8 +44,8 @@ export class CartPro extends CartBase {
           start_date: this.prepareDate(cartProItem.selectedDates.fromDate),
           end_date: this.prepareDate(cartProItem.selectedDates.toDate),
           autorenew: false,
-          bump: !this.prepareBumpType(cartProItem.bumpType),
-          national: this.prepareBumpType(cartProItem.bumpType)
+          bump: !this.isCountryBump(cartProItem.bumpType),
+          national: this.isCountryBump(cartProItem.bumpType)
         };
       });
       ordersArray.push(...orders);
@@ -58,7 +58,7 @@ export class CartPro extends CartBase {
     return dateObject;
   }
 
-  prepareBumpType(bumpType: string): boolean {
+  isCountryBump(bumpType: string): boolean {
     return bumpType === 'countrybump' ? true : false;
   }
 

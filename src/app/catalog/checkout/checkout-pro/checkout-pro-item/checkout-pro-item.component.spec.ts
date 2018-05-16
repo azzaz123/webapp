@@ -84,6 +84,7 @@ describe('CheckoutProItemComponent', () => {
     it('should call create instance of CalendarDates with today and tomorrow dates', () => {
       component.todayDate = calendar.getToday();
       component.tomorrowDate = calendar.getNext(component.todayDate);
+
       component.ngOnInit();
 
       expect(component.cartProItem.selectedDates instanceof CalendarDates).toBe(true);

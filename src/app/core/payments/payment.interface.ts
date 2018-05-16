@@ -1,7 +1,6 @@
 export interface ProductResponse {
   id: string;
-  name: 'BOOST' | 'HIGHLIGHT' | 'BUMP' | 'LISTINGS' | 'CALL_TRACKING' | 'MULTI_PUBLICATOR' | 'LEAD_QUALIFICATION' | 'MULTI_ACCOUNT' |
-  'NATIONAL_BUMP' | 'BUMP';
+  name: 'BOOST' | 'HIGHLIGHT' | 'BUMP' | 'LISTINGS' | 'CALL_TRACKING' | 'MULTI_PUBLICATOR' | 'LEAD_QUALIFICATION' | 'MULTI_ACCOUNT' | 'NATIONAL_BUMP' | 'BUMP';
 }
 
 export interface Products {

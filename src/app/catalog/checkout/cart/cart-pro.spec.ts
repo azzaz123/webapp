@@ -83,19 +83,19 @@ describe('CartPro', () => {
     });
   });
 
-  describe('prepareBumpType', () => {
+  describe('isCountryBump', () => {
     beforeEach(() => {
-      spyOn(cart, 'prepareBumpType').and.callThrough();
+      spyOn(cart, 'isCountryBump').and.callThrough();
     });
 
     it('should return true if bumpType is countrybump', () => {
-      const result = cart.prepareBumpType('countrybump');
+      const result = cart.isCountryBump('countrybump');
 
       expect(result).toBe(true);
     });
 
     it('should return false if bumpType is citybump', () => {
-      const result = cart.prepareBumpType('citybump');
+      const result = cart.isCountryBump('citybump');
 
       expect(result).toBe(false);
     });

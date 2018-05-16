@@ -37,7 +37,7 @@ describe('CartService', () => {
 
       service.add(CART_ITEM_CITYBUMP, TYPE);
 
-      expect(cartChange.cart instanceof CartPro).toBeTruthy();
+      expect(cartChange.cart instanceof CartPro).toBe(true);
     });
 
     afterEach(() => {
@@ -55,7 +55,7 @@ describe('CartService', () => {
 
       service.remove(ITEM_ID, TYPE);
 
-      expect(cartChange.cart instanceof Cart).toBeTruthy();
+      expect(cartChange.cart instanceof Cart).toBe(true);
     });
 
     it('should call removeCartItem and emit CartChange event if instance of CartPro', () => {
@@ -64,7 +64,7 @@ describe('CartService', () => {
 
       service.remove(ITEM_ID, TYPE);
 
-      expect(cartChange.cart instanceof CartPro).toBeTruthy();
+      expect(cartChange.cart instanceof CartPro).toBe(true);
     });
 
     afterEach(() => {
@@ -82,7 +82,7 @@ describe('CartService', () => {
 
       service.clean();
 
-      expect(cartChange.cart instanceof Cart).toBeTruthy();
+      expect(cartChange.cart instanceof Cart).toBe(true);
     });
 
     it('should call clean and emit CartChange event if instance of CartPro', () => {
@@ -91,7 +91,7 @@ describe('CartService', () => {
 
       service.clean();
 
-      expect(cartChange.cart instanceof CartPro).toBeTruthy();
+      expect(cartChange.cart instanceof CartPro).toBe(true);
     });
 
     afterEach(() => {
