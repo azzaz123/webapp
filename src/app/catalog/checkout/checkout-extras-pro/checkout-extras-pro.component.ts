@@ -29,7 +29,6 @@ export class CheckoutExtrasProComponent implements OnInit {
   }
 
   public onBillingInfoNeeds(billingInfoNeeds: boolean) {
-    console.log('hey', billingInfoNeeds);
     this.billingInfoFormEnabled = billingInfoNeeds;
   }
 
