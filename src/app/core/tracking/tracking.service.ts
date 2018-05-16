@@ -100,19 +100,19 @@ export class TrackingService {
   };
   public static NOTIFICATION_RECEIVED: TrackingEventBase = {
     name: '437',
-    category: CATEGORY_IDS.Conversation,
+    category: CATEGORY_IDS.Conversations,
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.PushNotification
   };
   public static NOTIFICATION_READ: TrackingEventBase = {
     name: '438',
-    category: CATEGORY_IDS.Conversation,
+    category: CATEGORY_IDS.Conversations,
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Click
   };
   public static MESSAGE_READ_ACK: TrackingEventBase = {
     name: '439',
-    category: CATEGORY_IDS.Conversation,
+    category: CATEGORY_IDS.Conversations,
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Message
   };
