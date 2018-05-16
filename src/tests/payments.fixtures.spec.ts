@@ -1,5 +1,5 @@
 import {
-  BillingInfoResponse, FinancialCard, SabadellInfoResponse, Packs, PackResponse, ProductResponse, OrderProExtras 
+  BillingInfoResponse, FinancialCard, SabadellInfoResponse, Packs, PackResponse, ProductResponse, OrderProExtras
 } from '../app/core/payments/payment.interface';
 import { Pack } from '../app/core/payments/pack';
 

@@ -1,0 +1,20 @@
+@import "~style/common";
+
+$offset: 7px;
+
+:host {
+    margin-top: 45px;
+    display: block;
+    background-color: $white;
+    border-radius: $border-radius;
+    padding: $spacing-L 53px;
+}
+
+h1 {
+    font-size: $font-size-S;
+    height: 100%;
+    color: $corporate;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 0;
+}

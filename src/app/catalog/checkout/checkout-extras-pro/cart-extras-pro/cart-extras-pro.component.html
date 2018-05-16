@@ -65,7 +65,13 @@
   </form>
 </div>
 <tsl-button [disabled]="!cart?.total || loading"
+            *ngIf="!saveBillingInfo"
             [loading]="loading"
             (click)="checkout()"
+            i18n>Continue to Checkout</tsl-button>
+<tsl-button [disabled]="!cart?.total || loading"
+            *ngIf="saveBillingInfo"
+            [loading]="loading"
+            (click)="saveAndCheckout()"
             i18n>Continue to Checkout</tsl-button>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

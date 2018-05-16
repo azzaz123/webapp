@@ -24,6 +24,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   public loading: boolean;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public cardType = 'old';
+  public saveBillingInfo = false;
   private active = true;
   @Output() billingInfoNeeds: EventEmitter<boolean> = new EventEmitter();
 
@@ -72,7 +73,14 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
       });
     }, () => {
       this.billingInfoNeeds.emit(true);
+      this.saveBillingInfo = true;
+      this.loading = false;
     });
+  }
+
+  saveAndCheckout() {
+    this.loading = true;
+    console.log('hola');
   }
 
   private buy(orderId: string) {
