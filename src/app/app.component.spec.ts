@@ -32,7 +32,7 @@ import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
 import { PrivacyService } from './core/privacy/privacy.service';
-import { MOCK_PRIVACY_ALLOW } from './core/privacy/privacy';
+import { MOCK_PRIVACY_ALLOW } from './core/privacy/privacy.fixtures';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;

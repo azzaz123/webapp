@@ -5,12 +5,15 @@ import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { PrivacyService } from './privacy.service';
 import {
+  PrivacyList,
+  PrivacyStatus,
+  PRIVACY_STATUS
+} from './privacy';
+import {
   MOCK_PRIVACY_ALLOW,
   MOCK_PRIVACY_DISALLOW,
-  MOCK_PRIVACY_UNKNOW, PRIVACY_STATUS,
-  PrivacyList,
-  PrivacyStatus
-} from './privacy';
+  MOCK_PRIVACY_UNKNOW
+} from './privacy.fixtures';
 import { environment } from '../../../environments/environment';
 
 let http: HttpService;

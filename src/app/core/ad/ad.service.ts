@@ -66,7 +66,7 @@ export class AdService {
     });
   }
 
-  public fetchHeaderBids(allowSegmentation: boolean = false) {
+  public fetchHeaderBids(allowSegmentation = false) {
     if (allowSegmentation) {
       merge(this.requestBidAps(), this.requestBidCriteo())
         .subscribe(null, null, () => {
