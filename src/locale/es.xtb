@@ -405,4 +405,22 @@
   <translation id="1839186591621749773">Publicado</translation>
   <translation id="6850144876798655647">Paquetes con todos tus items</translation>
   <translation id="2246851749264196483">Gestionar mi suscripción</translation>
+  <translation id="7122356013178226936">Estas intentando destacar coches que ya tienes planificados</translation>
+  <translation id="4011333478005344361">Destacar los productos disponibles</translation>
+  <translation id="4701510938988860546">Volver atrás para cancelar bumps</translation>
+  <translation id="2571738502834365520">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="3339663802248788155">Comprar extras</translation>
+  <translation id="8940063789367894785">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> más items<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="382039398019874632"><ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Subir ahora<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="1613688231558042205">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> más items<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="6659060125810978706"><ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Activar coches<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="6587076436244065924">Queda <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="5272763997595694217">Cancelar Autorenovados</translation>
+  <translation id="291347435854981703">Seguro que quieres cancelar el autorenovado para este producto?</translation>
+  <translation id="2807800733729323332">Sí</translation>
+  <translation id="7803839229714588038">Mensaje de error</translation>
+  <translation id="5890828542504757249">Por favor deselecciona algunos productos, llama al 902 902 902 o</translation>
+  <translation id="6127871861896654127"> contacta con nosotros</translation>
+  <translation id="5849506438355710291">para administrar tu plan.</translation>
+  <translation id="7851668152562197014">Estás intentando activar más coches de los que te permite tu plan.</translation>
 </translationbundle>

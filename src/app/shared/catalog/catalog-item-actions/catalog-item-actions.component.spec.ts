@@ -4,8 +4,8 @@ import { ItemService } from '../../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
-  MOCK_ITEM, createItemsArray, ITEMS_BULK_RESPONSE,
-  ITEMS_BULK_RESPONSE_FAILED
+  createItemsArray, ITEMS_BULK_RESPONSE,
+  ITEMS_BULK_RESPONSE_FAILED, ITEMS_BULK_UPDATED_IDS
 } from '../../../../tests/item.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,6 +14,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { Router } from '@angular/router';
 
 describe('CatalogItemActionsComponent', () => {
   let component: CatalogItemActionsComponent;
@@ -23,6 +24,7 @@ describe('CatalogItemActionsComponent', () => {
   let modalService: NgbModal;
   let toastr: ToastrService;
   let trackingService: TrackingService;
+  let router: Router;
   const modal: any = {modal: true};
 
   beforeEach(async(() => {
@@ -59,9 +61,15 @@ describe('CatalogItemActionsComponent', () => {
         },
         {
           provide: ErrorsService, useValue: {
-          i18nError() {
+            i18nError() {
+            }
           }
-        }
+        },
+        {
+          provide: Router, useValue: {
+            navigate() {
+            }
+          }
         },
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
@@ -77,6 +85,7 @@ describe('CatalogItemActionsComponent', () => {
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
+    router = TestBed.get(Router);
     spyOn(modalService, 'open').and.callThrough();
     spyOn(toastr, 'error');
   });
@@ -131,6 +140,19 @@ describe('CatalogItemActionsComponent', () => {
       it('should open error toastr', () => {
         expect(toastr.error).toHaveBeenCalledWith('Some listings have not been deleted due to an error');
       });
+    });
+  });
+
+  describe('feature', () => {
+    it('should redirect to the checkout if no featured items are selected', () => {
+      spyOn(router, 'navigate');
+      component.items = createItemsArray(3);
+      component.itemService.selectedItems = ITEMS_BULK_UPDATED_IDS;
+
+      component.feature();
+
+      expect(modalService.open).not.toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/checkout']);
     });
   });
 

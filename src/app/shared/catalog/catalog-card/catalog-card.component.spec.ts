@@ -22,6 +22,7 @@ describe('CatalogCardComponent', () => {
   let modalService: NgbModal;
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
+  const modal: any = {modal: true};
   const componentInstance = {
     price: null,
     item: null
@@ -162,12 +163,6 @@ describe('CatalogCardComponent', () => {
         expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, true);
         expect(item.reserved).toBe(true);
       });
-
-      it('should track the ProductUnReserved event', () => {
-        component.reserve(item);
-
-        //expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_RESERVED, {product_id: item.id});
-      });
     });
 
     describe('already reserved', () => {
@@ -183,23 +178,19 @@ describe('CatalogCardComponent', () => {
         expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, false);
         expect(item.reserved).toBe(false);
       });
-
-      it('should track the ProductUnReserved event', () => {
-        component.reserve(item);
-
-        //expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
-      });
     });
   });
 
   describe('cancel Autorenew', () => {
-    beforeEach(() => {
-      spyOn(itemService, 'cancelAutorenew').and.callThrough();
-      component.cancelAutorenew(MOCK_ITEM);
-    });
+    beforeEach(fakeAsync(() => {
+      spyOn(itemService, 'cancelAutorenew').and.returnValue(Observable.of({'status': 200}));
+      spyOn(modalService, 'open').and.callThrough();
+      component.cancelAutorenew(MOCK_ITEM, modal);
+      tick();
+    }));
 
     it('should set selected true and call selectItem', () => {
-
+      expect(modalService.open).toHaveBeenCalledWith(modal);
       expect(itemService.cancelAutorenew).toHaveBeenCalledWith(MOCK_ITEM.id);
     });
   });

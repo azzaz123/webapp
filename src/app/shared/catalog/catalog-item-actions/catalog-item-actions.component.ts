@@ -1,15 +1,16 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { ErrorsService } from '../../../core/errors/errors.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ItemBulkResponse } from '../../../core/item/item-response.interface';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Item } from '../../../core/item/item';
+
 import * as _ from 'lodash';
 import { TooManyItemsModalComponent } from '../modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from '../modals/already-featured-modal/already-featured-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector:    'tsl-catalog-item-actions',
@@ -28,7 +29,7 @@ export class CatalogItemActionsComponent implements OnInit {
               private modalService: NgbModal,
               private toastr: ToastrService,
               private i18n: I18nService,
-              private errorService: ErrorsService) {
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -77,19 +78,34 @@ export class CatalogItemActionsComponent implements OnInit {
     });
   }
 
-  public deselect() {
+  public deselect(): void {
     this.itemService.deselectItems();
   }
 
-  public feature() {
-    let modalRef: NgbModalRef = this.modalService.open(AlreadyFeaturedModalComponent, {
-      windowClass: 'bump',
-    });
-    modalRef.result.then(() => {
-      modalRef = null;
+  public feature(): void {
+    if (!this.itemIsBumped()) {
       this.router.navigate(['pro/catalog/checkout']);
-    }, () => {
+    } else {
+      let modalRef: NgbModalRef = this.modalService.open(AlreadyFeaturedModalComponent, {
+        windowClass: 'bump',
+      });
+      modalRef.result.then(() => {
+        modalRef = null;
+        this.router.navigate(['pro/catalog/checkout']);
+      }, () => {
+      });
+    }
+  }
+
+  private itemIsBumped(): boolean {
+    let isBumped = false;
+    this.itemService.selectedItems.forEach((id: string) => {
+      let selectedItem: Item = _.find(this.items, {'id': id});
+      if (selectedItem && selectedItem.purchases) {
+        isBumped = true;
+      }
     });
+    return isBumped;
   }
 
 }
