@@ -6,7 +6,6 @@ import { OrderProExtras } from '../../../core/payments/payment.interface';
 export class CartProExtras extends CartBase {
 
   add(cartProExtrasPack: CartProExtrasPack, type: string) {
-    console.log('add', this, type);
     this[type].cartItems.push(cartProExtrasPack);
     this.calculateTotals();
   }

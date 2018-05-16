@@ -1,7 +1,5 @@
 @import "~style/common";
 
-$offset: 7px;
-
 :host {
     margin-top: 45px;
     display: block;
@@ -17,4 +15,17 @@ h1 {
     text-transform: uppercase;
     font-weight: bold;
     padding: 0;
+}
+
+form {
+    margin-top: $spacing-L;
+    .form-group {
+        padding: 0 10px;
+        label {
+            color: $grey-900;
+        }
+        input {
+            border-radius: $border-radius;
+        }
+    }
 }

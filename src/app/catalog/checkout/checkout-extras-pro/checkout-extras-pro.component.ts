@@ -4,6 +4,7 @@ import { Pack } from '../../../core/payments/pack';
 import { Packs } from '../../../core/payments/payment.interface';
 import * as _ from 'lodash';
 import { isArray } from 'util';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'tsl-checkout-extras-pro',
@@ -13,6 +14,7 @@ import { isArray } from 'util';
 export class CheckoutExtrasProComponent implements OnInit {
   packs: Array<any> = [];
   billingInfoFormEnabled = false;
+  billingInfoForm: FormGroup;
 
   constructor(private paymentService: PaymentService) { }
 
@@ -20,6 +22,10 @@ export class CheckoutExtrasProComponent implements OnInit {
     this.paymentService.getPacks().subscribe((packs: Packs) => {
       this.preparePacks(packs);
     });
+  }
+
+  public onBillingInfoChange(billingInfoForm: FormGroup) {
+    this.billingInfoForm = billingInfoForm;
   }
 
   public onBillingInfoNeeds(billingInfoNeeds: boolean) {

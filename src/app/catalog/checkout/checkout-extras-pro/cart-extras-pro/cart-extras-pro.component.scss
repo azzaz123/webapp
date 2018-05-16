@@ -107,10 +107,8 @@ ul, li {
   .citybump {
     color: $zone-bump;
     .wing-icon {
-      mat-icon {
-        /deep/ path {
-          fill: $zone-bump;
-        }
+      /deep/ path {
+        fill: $zone-bump;
       }
     }
   }

@@ -69,7 +69,7 @@
             [loading]="loading"
             (click)="checkout()"
             i18n>Continue to Checkout</tsl-button>
-<tsl-button [disabled]="!cart?.total || loading"
+<tsl-button [disabled]="!cart?.total || loading || !billingInfoForm?.valid"
             *ngIf="saveBillingInfo"
             [loading]="loading"
             (click)="saveAndCheckout()"

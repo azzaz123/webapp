@@ -30,10 +30,10 @@
           </div>
         </div>
         <div class="col-xl col-lg-8" *ngIf="billingInfoFormEnabled">
-          <tsl-billing-info></tsl-billing-info>
+          <tsl-billing-info (billingInfoFormChange)="onBillingInfoChange($event)"></tsl-billing-info>
         </div>
         <div class="cart">
-          <tsl-cart-extras-pro (billingInfoNeeds)="onBillingInfoNeeds($event)"></tsl-cart-extras-pro>
+          <tsl-cart-extras-pro (billingInfoNeeds)="onBillingInfoNeeds($event)" [billingInfoForm]="billingInfoForm"></tsl-cart-extras-pro>
         </div>
       </div>
       <tsl-spinner [firstLoad]="false" [hidden]="packs"></tsl-spinner>
