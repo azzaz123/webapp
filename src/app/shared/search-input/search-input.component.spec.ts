@@ -29,6 +29,7 @@ describe('SearchInputComponent', () => {
     });
     component.search(TEXT);
     tick(400);
+
     expect(term).toBe(TEXT);
   }));
 
@@ -36,6 +37,7 @@ describe('SearchInputComponent', () => {
     component.active = true;
     document.dispatchEvent(new Event('click'));
     tick();
+
     expect(component.active).toBeFalsy();
   }));
 
@@ -43,6 +45,7 @@ describe('SearchInputComponent', () => {
     component.active = true;
     fixture.nativeElement.dispatchEvent(new Event('click'));
     tick();
+
     expect(component.active).toBeTruthy();
   }));
 
@@ -55,6 +58,7 @@ describe('SearchInputComponent', () => {
     };
     fixture.nativeElement.dispatchEvent(new Event('click'));
     tick();
+
     expect(component.active).toBeTruthy();
   }));
 });

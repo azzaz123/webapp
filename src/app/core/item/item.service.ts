@@ -73,8 +73,7 @@ export class ItemService extends ResourceService {
   constructor(http: HttpService,
               private i18n: I18nService,
               private trackingService: TrackingService,
-              private eventService: EventService,
-              private userService: UserService) {
+              private eventService: EventService) {
     super(http);
   }
 

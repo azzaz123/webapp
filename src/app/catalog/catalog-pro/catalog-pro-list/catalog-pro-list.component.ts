@@ -52,7 +52,6 @@ export class CatalogProListComponent implements OnInit {
               private trackingService: TrackingService,
               private modalService: NgbModal,
               private eventService: EventService,
-              private toastr: ToastrService,
               private i18n: I18nService,
               private userService: UserService,
               private errorService: ErrorsService,

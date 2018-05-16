@@ -36,12 +36,15 @@ describe('SelectComponent', () => {
 
   it('should set the default selected', () => {
     component.ngOnChanges();
+
     expect(component.selected).toBe(ITEM);
   });
 
   it('should set the selected value', () => {
     component.value = VALUE;
+
     component.ngOnChanges();
+
     expect(component.selected).toBe(ITEM);
   });
 
@@ -50,8 +53,10 @@ describe('SelectComponent', () => {
     component.value$.subscribe((v: string) => {
       value = v;
     });
+
     component.selectItem(ITEM);
     tick();
+
     expect(value).toBe(ITEM.value);
     expect(component.selected).toBe(ITEM);
   }));

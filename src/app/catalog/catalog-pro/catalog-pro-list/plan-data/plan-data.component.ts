@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { Purchase, AutorenewPurchase } from '../../../../core/item/item-response.interface';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { PurchasesModel } from '../../../../core/payments/purchase.model';
 import { Perks } from '../../../../core/payments/payment.interface';

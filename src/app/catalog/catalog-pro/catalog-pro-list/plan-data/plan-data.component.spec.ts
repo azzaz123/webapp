@@ -77,7 +77,6 @@ describe('PlanDataComponent', () => {
 
     it('should call query and set purchases', () => {
       expect(purchaseService.query).toHaveBeenCalled();
-      //expect(component.purchases).toEqual(PURCHASES);
     });
     it('should set loading false', () => {
       expect(component.loading).toBeFalsy();
