@@ -41,7 +41,6 @@ export class TopbarComponent implements OnInit {
     });
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
-      console.log(this.isProfessional);
     });
   }
 
