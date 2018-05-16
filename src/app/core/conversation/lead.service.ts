@@ -80,9 +80,7 @@ export abstract class LeadService {
     if (!until) {
       until = new Date().getTime();
     }
-    return this.xmpp.isConnected()
-    .flatMap(() => {
-      if (this.connectionService.isConnected)  {
+    if (this.connectionService.isConnected) {
       return this.http.get(this.API_URL, {until: until, hidden: archived})
       .map((res: Response) => res.json())
       .flatMap((res: LeadResponse[]) => {
@@ -105,10 +103,9 @@ export abstract class LeadService {
       .catch((a) => {
         return Observable.of(null);
       });
-      } else {
-        return Observable.of(null);
-      }
-    });
+    } else {
+      return Observable.of(null);
+    }
   }
 
   protected getUser(conversation: LeadResponse): Observable<LeadResponse> {
@@ -133,6 +130,7 @@ export abstract class LeadService {
   }
 
   public resetCache() {
+    console.log('resetting cache');
     this.leads = [];
     this.archivedLeads = [];
     this.stream$ = new ReplaySubject(1);

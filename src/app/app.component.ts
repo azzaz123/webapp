@@ -44,7 +44,6 @@ export class AppComponent implements OnInit {
   private previousUrl: string;
   private currentUrl: string;
   private previousSlug: string;
-  private _reconnecting = false;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -74,6 +73,7 @@ export class AppComponent implements OnInit {
     this.subscribeEventUserLogout();
     this.subscribeUnreadMessages();
     this.subscribeEventNewMessage();
+    this.subscribeEventClientDisconnect();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
@@ -179,6 +179,10 @@ export class AppComponent implements OnInit {
 
   private subscribeEventNewMessage() {
     this.event.subscribe(EventService.NEW_MESSAGE, (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate));
+  }
+
+  private subscribeEventClientDisconnect() {
+    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => this.conversationService.resetCache());
   }
 
   private setTitle() {
