@@ -1,7 +1,7 @@
 export interface ProductResponse {
   id: string;
   name: 'BOOST' | 'HIGHLIGHT' | 'BUMP' | 'LISTINGS' | 'CALL_TRACKING' | 'MULTI_PUBLICATOR' | 'LEAD_QUALIFICATION' | 'MULTI_ACCOUNT' |
-    'NATIONAL_BUMP' | 'BUMP';
+  'NATIONAL_BUMP' | 'BUMP';
 }
 
 export interface Products {
@@ -97,4 +97,15 @@ export interface SabadellInfoResponse {
   signature: string;
   signature_version: string;
   target_url: string;
+}
+
+export interface ScheduledStatus {
+  active: boolean;
+  autorenew_alert: number;
+  autorenew_scheduled: ScheduledBumps;
+}
+
+export interface ScheduledBumps {
+  citybump: number;
+  countrybump: number;
 }

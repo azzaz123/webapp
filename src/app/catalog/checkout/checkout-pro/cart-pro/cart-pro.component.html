@@ -40,7 +40,10 @@
             <span i18n>country</span>
           </ng-container>
         </span>
-        <span class="cart-balance-number">{{30 - cart[type].total}}</span>
+        <span class="cart-balance-number" [ngSwitch]="type" *ngIf="status">
+          <ng-container *ngSwitchCase="'citybump'">{{getBalance('citybump')}}</ng-container>
+          <ng-container *ngSwitchCase="'countrybump'">{{getBalance('countrybump')}}</ng-container>
+        </span>
       </div>
     </li>
   </ul>

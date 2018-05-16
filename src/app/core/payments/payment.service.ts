@@ -9,7 +9,8 @@ import {
   PerkResponse,
   ProductResponse,
   Products,
-  SabadellInfoResponse
+  SabadellInfoResponse,
+  ScheduledStatus
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
 import { PacksModel, PerksModel } from './payment.model';
@@ -167,6 +168,11 @@ export class PaymentService {
       return quantityA - quantityB;
     });
     return sortedPacks;
+  }
+
+  public getStatus(): Observable<ScheduledStatus> {
+    return this.http.get('api/v3/protool/status')
+      .map((r: Response) => r.json());
   }
 
 }
