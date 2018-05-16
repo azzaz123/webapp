@@ -4,6 +4,7 @@ import { UploadComponent } from './upload.component';
 import { ItemService } from '../../core/item/item.service';
 import { PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -12,6 +13,7 @@ describe('UploadComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [NgxPermissionsModule.forRoot()],
       declarations: [UploadComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [

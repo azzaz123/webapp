@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { Product } from '../../core/item/item-response.interface';
+import { NgxPermissionsService } from 'ngx-permissions';
 
 @Component({
   selector: 'tsl-upload',
@@ -13,7 +14,10 @@ export class UploadComponent {
   public urgentPrice: string = null;
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
 
-  constructor(private itemService: ItemService) {
+  constructor(private itemService: ItemService, private permissionsService: NgxPermissionsService) {
+    if (permissionsService.getPermission('isProfessional')) {
+      this.setCategory('100');
+    }
   }
 
   public setCategory(categoryId: string) {
@@ -29,7 +33,7 @@ export class UploadComponent {
 
   public getUrgentPrice(categoryId: string): void {
     this.itemService.getUrgentProductByCategoryId(categoryId).subscribe((product: Product) => {
-      this.urgentPrice =  product.durations[0].market_code;
+      this.urgentPrice = product.durations[0].market_code;
     });
   }
 
