@@ -121,86 +121,35 @@ describe('DashboardComponent', () => {
   });
 
   describe('getTotals', () => {
-    describe('with conversations and archive', () => {
 
-      beforeEach(() => {
-        spyOn(callService, 'getTotals').and.returnValue(Observable.of({
-          calls: 6,
-          archived: 9
-        }));
-        spyOn(conversationService, 'getTotals').and.returnValue(Observable.of({
-          phonesShared: 2,
-          meetings: 3,
-          messages: 4,
-          conversations: 5,
-          archivedPhonesShared: 6,
-          archivedMeetings: 7,
-          archivedMessages: 8
-        }));
+    beforeEach(() => {
+      spyOn(callService, 'getTotals').and.returnValue(Observable.of({
+        calls: 6,
+        archived: 9
+      }));
+      spyOn(conversationService, 'getTotals').and.returnValue(Observable.of({
+        phonesShared: 2,
+        meetings: 3,
+        messages: 4,
+        conversations: 5,
+        archivedPhonesShared: 6,
+        archivedMeetings: 7,
+        archivedMessages: 8
+      }));
 
-        component['getTotals']();
-      });
-
-      it('should set phonesTotal', () => {
-        expect(component.phonesTotal).toBe(6 + 2);
-      });
-
-      it('should set messagesTotal', () => {
-        expect(component.messagesTotal).toBe(5 - 2);
-      });
-
-      it('should set completed to false', () => {
-        expect(component.completed).toBeFalsy();
-      });
+      component['getTotals']();
     });
 
-    describe('without conversations and with archive', () => {
-      beforeEach(() => {
-        spyOn(callService, 'getTotals').and.returnValue(Observable.of({
-          calls: 0,
-          archived: 9
-        }));
-        spyOn(conversationService, 'getTotals').and.returnValue(Observable.of({
-          phonesShared: 0,
-          meetings: 0,
-          messages: 0,
-          conversations: 0,
-          archivedPhonesShared: 6,
-          archivedMeetings: 7,
-          archivedMessages: 8
-        }));
-
-        component['getTotals']();
-      });
-
-      it('should set completed to true', () => {
-        expect(component.completed).toBeTruthy();
-      });
+    it('should set phonesTotal', () => {
+      expect(component.phonesTotal).toBe(6 + 2);
     });
 
-    describe('without conversations and without archive', () => {
-      beforeEach(() => {
-        spyOn(callService, 'getTotals').and.returnValue(Observable.of({
-          calls: 0,
-          archived: 0
-        }));
-        spyOn(conversationService, 'getTotals').and.returnValue(Observable.of({
-          phonesShared: 0,
-          meetings: 0,
-          messages: 0,
-          conversations: 0,
-          archivedPhonesShared: 0,
-          archivedMeetings: 0,
-          archivedMessages: 0
-        }));
+    it('should set messagesTotal', () => {
+      expect(component.messagesTotal).toBe(5 - 2);
+    });
 
-        component['getTotals']();
-      });
-
-      it('should set completed to false', () => {
-        expect(component.completed).toBeFalsy();
-      });
-
+    it('should set completed to false', () => {
+      expect(component.completed).toBeFalsy();
     });
   });
 

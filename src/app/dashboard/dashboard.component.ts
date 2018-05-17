@@ -72,8 +72,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }).subscribe((conversationsTotals: ConversationTotals) => {
         this.phonesTotal = callsTotals.calls + conversationsTotals.phonesShared;
         this.messagesTotal = conversationsTotals.conversations - conversationsTotals.phonesShared;
-        this.completed = (conversationsTotals.phonesShared + callsTotals.calls + conversationsTotals.meetings + conversationsTotals.messages) === 0 &&
-          (conversationsTotals.archivedPhonesShared + callsTotals.archived + conversationsTotals.archivedMeetings + conversationsTotals.archivedMessages) > 0;
+        this.completed = (conversationsTotals.phonesShared + callsTotals.calls + conversationsTotals.meetings + conversationsTotals.messages) === 0;
       });
     });
   }
