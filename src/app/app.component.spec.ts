@@ -32,7 +32,9 @@ import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
 import { PrivacyService } from './core/privacy/privacy.service';
-import { MOCK_PRIVACY_ALLOW } from './core/privacy/privacy';
+import { MOCK_PRIVACY_ALLOW, MOCK_PRIVACY_UNKNOW } from './core/privacy/privacy';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -48,11 +50,12 @@ let window: any;
 let conversationService: ConversationService;
 let cookieService: CookieService;
 let privacyService: PrivacyService;
+let modalService: NgbModal;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
 
-describe('App', () => {
+fdescribe('App', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -64,6 +67,16 @@ describe('App', () => {
       ],
       providers: [
         EventService,
+        {
+          provide: NgbModal, useValue: {
+            open() {
+              return {
+                result: Promise.resolve(true),
+                componentInstance: {}
+              };
+            }
+          }
+        },
         {provide: DebugService, useValue: {}},
         {
           provide: XmppService, useValue: {
@@ -178,6 +191,7 @@ describe('App', () => {
     conversationService = TestBed.get(ConversationService);
     cookieService = TestBed.get(CookieService);
     privacyService = TestBed.get(PrivacyService);
+    modalService = TestBed.get(NgbModal);
     spyOn(notificationService, 'init');
   });
 
@@ -298,6 +312,24 @@ describe('App', () => {
         component.ngOnInit();
 
         expect(privacyService.getPrivacyList).toHaveBeenCalled();
+      });
+
+      it('should open modal gdpr when privacy permission is unknow', () => {
+        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW));
+        spyOn(modalService, 'open');
+
+        component.ngOnInit();
+
+        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent);
+      });
+
+      it('should not open modal gdpr when privacy permission is allow', () => {
+        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
+        spyOn(modalService, 'open');
+
+        component.ngOnInit();
+
+        expect(modalService.open).not.toHaveBeenCalledWith();
       });
 
     });
