@@ -77,7 +77,6 @@ describe('PaymentService', () => {
       spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
       service.getPacks().subscribe((r: Packs) => {
         response = r;
-        console.log(r);
       });
     }));
 
