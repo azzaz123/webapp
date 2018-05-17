@@ -26,6 +26,7 @@ export const PACKS_TYPES = {
 export class PaymentService {
 
   private API_URL = 'api/v3/payments';
+  private API_URL_PROTOOL = 'api/v3/protool';
   private products: Products;
   private perksModel: PerksModel;
 
@@ -171,7 +172,7 @@ export class PaymentService {
   }
 
   public getStatus(): Observable<ScheduledStatus> {
-    return this.http.get('api/v3/protool/status')
+    return this.http.get(this.API_URL_PROTOOL + '/status')
       .map((r: Response) => r.json());
   }
 

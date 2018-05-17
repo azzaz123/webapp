@@ -56,13 +56,18 @@ export class CartProComponent implements OnInit {
   }
 
   getBalance(type: string) {
-    let bumpsQuantity: number;
-    if (type === 'citybump') {
-      bumpsQuantity = this.perks.getBumpCounter();
-    } else if (type === 'countrybump') {
-      bumpsQuantity = this.perks.getNationalBumpCounter();
+    if (this.status.autorenew_scheduled[type]) {
+      let bumpsQuantity: number;
+      if (type === 'citybump') {
+        bumpsQuantity = this.perks.getBumpCounter();
+      } else if (type === 'countrybump') {
+        bumpsQuantity = this.perks.getNationalBumpCounter();
+      }
+      return (bumpsQuantity - this.status.autorenew_scheduled[type]) - this.cart[type].total;
+    } else {
+      return 0;
     }
-    return (bumpsQuantity - this.status.autorenew_scheduled[type]) - this.cart[type].total;
+
   }
 
   applyBumps() {
