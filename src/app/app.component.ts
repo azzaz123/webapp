@@ -29,6 +29,9 @@ import { User } from './core/user/user';
 import { Message } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
 import { PrivacyService } from './core/privacy/privacy.service';
+import { PRIVACY_STATUS } from './core/privacy/privacy';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
 
 @Component({
   selector: 'tsl-root',
@@ -64,7 +67,8 @@ export class AppComponent implements OnInit {
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
-              private privacyService: PrivacyService) {
+              private privacyService: PrivacyService,
+              private modalService: NgbModal) {
     this.config();
   }
 
@@ -81,7 +85,11 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
-    this.privacyService.getPrivacyList().subscribe();
+    this.privacyService.getPrivacyList().subscribe(() => {
+      if (this.privacyService.getPrivacyState('privacy_policy', '0') === PRIVACY_STATUS.unknown) {
+        this.modalService.open(GdprModalComponent);
+      }
+    });
   }
 
   private updateUrlAndSendAnalytics() {
