@@ -1,0 +1,99 @@
+<tsl-spinner [firstLoad]="false" *ngIf="loading"></tsl-spinner>
+<div *ngIf="!loading">
+  <div class="box">
+    <div class="box-content">
+      <div class="row listings">
+        <div class="col">
+          <h2>
+            <span *ngIf="perks?.subscription.listing.quantity" i18n>Current plan: Plan {{perks?.subscription.listing.quantity}}</span>
+            <span *ngIf="!perks?.subscription.listing.quantity" i18n>You are not yet subscribed to any plan.</span>
+          </h2>
+          <p class="description" i18n>Each plan allows you to have up to a maximum number of cars published in the wallapop app and website.</p>
+          <p class="contact" i18n>Contact us on 674 726 372 to upgrade your plan</p>
+        </div>
+        <div class="packs">
+          <div class="pack" *ngFor="let bump of getListings(perks?.subscription.listing.quantity)"
+               [ngClass]="{'selected': perks?.subscription.listing.quantity === bump.quantity}">
+            <mat-icon [svgIcon]="bump | subscriptionIcon:(perks?.subscription.listing.quantity === bump.quantity)"></mat-icon>
+            <div class="name">Plan {{bump.quantity}}</div>
+            <div class="desc" i18n>Publish a maximum of {{bump.quantity}} cars per month</div>
+            <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
+            <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.listing.expireDate | date}}</div>
+          </div>
+          <div class="pack personal" *ngIf="getListings(perks?.subscription.listing.quantity).length <= 2">
+            <mat-icon svgIcon="plan-personal-plus"></mat-icon>
+            <div class="name" i18n>Personal Plan</div>
+            <div class="desc" i18n>We can work out the best plan for you</div>
+            <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="box">
+    <div class="box-content">
+      <div class="row city-bumps">
+        <div class="col">
+          <h2>
+            <mat-icon svgIcon="bump-city-small"></mat-icon>
+            <span [hidden]="perks?.subscription.bump.total > 0" i18n>City visibility</span>
+            <span [hidden]="perks?.subscription.bump.total === 0" i18n>City {{perks?.subscription.bump.total}} plan</span>
+          </h2>
+          <p class="description">
+            <span i18n>The city plan allows you to promote your cars in your city and appear in the top positions of the wall of the website and the app. Your product card will have a different style and you will appear in the promoted area throughout your city.</span><br />
+            <span [hidden]="perks?.subscription.bump.total > 0" i18n>To subscribe to a city plan, contact 674 726 372</span>
+            <span [hidden]="perks?.subscription.bump.total === 0" i18n>To change your city plan, contact 674 726 372</span>
+          </p>
+        </div>
+        <div class="packs">
+          <div class="pack" *ngFor="let bump of packs?.cityBump"
+               [ngClass]="{'no-discount': !bump.discount, 'selected': perks?.subscription.bump.total === bump.quantity}">
+            <div class="quantity-container">
+              <div class="quantity">{{bump.quantity}}</div>
+              <div class="quantity-time">x24h</div>
+            </div>
+            <div class="type" i18n>Featured</div>
+            <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
+            <div class="discount" [hidden]="!bump.discount" i18n>Save {{bump.discount}}%</div>
+            <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
+            <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.bump.expireDate | date}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="row country-bumps">
+        <div class="col">
+          <h2>
+            <mat-icon svgIcon="bump-country-small"></mat-icon>
+            <span [hidden]="perks?.subscription.national.total > 0" i18n>Country visibility</span>
+            <span [hidden]="perks?.subscription.national.total === 0" i18n>Country {{perks?.subscription.national.total}} plan</span>
+          </h2>
+          <p class="description">
+            <span i18n>The country plan allows you to promote your cars countrywide and appear in the top positions of the wall of the web and the app. The product card will have a different style and you will appear in the promoted area throughout the country.</span><br />
+            <span [hidden]="perks?.subscription.national.total > 0" i18n>To subscribe to a country plan, contact 674 726 372</span>
+            <span [hidden]="perks?.subscription.national.total === 0" i18n>To change your country plan, contact 674 726 372</span>
+          </p>
+        </div>
+        <div class="packs">
+          <div class="pack" *ngFor="let bump of packs?.countryBump"
+               [ngClass]="{'no-discount': !bump.discount, 'selected': perks?.subscription.national.total === bump.quantity}">
+            <div class="quantity-container">
+              <div class="quantity">{{bump.quantity}}</div>
+              <div class="quantity-time">x24h</div>
+            </div>
+            <div class="type" i18n>Featured</div>
+            <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
+            <div class="discount" [hidden]="!bump.discount" i18n>Save {{bump.discount}}%</div>
+            <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
+            <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.national.expireDate | date}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-center">
+    <a href="" i18n (click)="openVisibilityProductsModal(); $event.preventDefault()" class="open-visibility">Why should I buy visibility?</a>
+  </p>
+</div>

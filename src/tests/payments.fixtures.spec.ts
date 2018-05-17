@@ -1,5 +1,5 @@
 import {
-  BillingInfoResponse, FinancialCard, SabadellInfoResponse, Packs, PackResponse, ProductResponse, OrderProExtras
+  BillingInfoResponse, FinancialCard, SabadellInfoResponse, Packs, PackResponse, ProductResponse, OrderProExtras, PerkResponse
 } from '../app/core/payments/payment.interface';
 import { Pack } from '../app/core/payments/pack';
 
@@ -21,11 +21,16 @@ export const NATIONAL_BUMP_ID = '50ebcb0f-7fa5-4c02-be60-e2dbca80fe66';
 export const BUMP_ID = 'dc29027d-274d-4c0c-bdb6-155130db000d';
 export const LISTINGS_ID = '799a7381-0eae-4a47-a03b-b412ea0f7a2e';
 export const SUBSCRIPTION_ID = '1';
+export const BUMP_QUANTITY = 0;
+export const NATIONAL_QUANTITY = 0;
+export const LISTINGS_QUANTITY = 0;
+
 
 export function createPacksFixture(): Packs {
   const PACKS: Packs = {
     cityBump: [],
-    countryBump: []
+    countryBump: [],
+    listings: []
   };
   const packCityBump = new Pack(
     '1',
@@ -158,3 +163,51 @@ export const BILLING_INFO_RESPONSE: BillingInfoResponse = {
   surname: 'surname',
   id: '123'
 };
+
+export const BUMPS_PRODUCT_RESPONSE: ProductResponse[] = [{
+  id: NATIONAL_BUMP_ID,
+  name: 'NATIONAL_BUMP'
+}, {
+  id: BUMP_ID,
+  name: 'BUMP'
+}, {
+  id: LISTINGS_ID,
+  name: 'LISTINGS'
+}];
+
+export const PERK_RESPONSE: PerkResponse[] = [{
+  expire_date: 21342344,
+  perk_id: '123',
+  product_id: NATIONAL_BUMP_ID,
+  quantity: NATIONAL_QUANTITY,
+  subscription_id: SUBSCRIPTION_ID,
+  total: 0
+}, {
+  expire_date: 21342344,
+  perk_id: '1234',
+  product_id: BUMP_ID,
+  quantity: BUMP_QUANTITY,
+  subscription_id: SUBSCRIPTION_ID,
+  total: 0
+}, {
+  expire_date: 21342344,
+  perk_id: '1234',
+  product_id: LISTINGS_ID,
+  quantity: LISTINGS_QUANTITY,
+  subscription_id: SUBSCRIPTION_ID,
+  total: 0
+}, {
+  expire_date: 21342344,
+  perk_id: '123',
+  product_id: NATIONAL_BUMP_ID,
+  quantity: NATIONAL_QUANTITY,
+  subscription_id: null,
+  total: 0
+}, {
+  expire_date: 21342344,
+  perk_id: '1234',
+  product_id: BUMP_ID,
+  quantity: BUMP_QUANTITY,
+  subscription_id: null,
+  total: 0
+}];

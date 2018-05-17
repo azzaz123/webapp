@@ -9,6 +9,7 @@ import { PERMISSIONS } from '../core/user/user';
 import { ProfileProInfoComponent } from './profile-pro/profile-pro-info/profile-pro-info.component';
 import { ProfileProComponent } from './profile-pro/profile-pro.component';
 import { ProfileProBillingComponent } from './profile-pro/profile-pro-billing/profile-pro-billing.component';
+import { ProfileProSubscriptionComponent } from './profile-pro/profile-pro-subscription/profile-pro-subscription.component';
 
 const routes: Routes = [
   {
@@ -50,6 +51,10 @@ const routes: Routes = [
             path: 'billing',
             component: ProfileProBillingComponent,
             canDeactivate: [ExitConfirmGuard]
+          },
+          {
+            path: 'subscription',
+            component: ProfileProSubscriptionComponent
           }
         ]
       },
@@ -68,5 +73,6 @@ export const profileRoutedComponents = [
   ProfileComponent,
   ProfileProComponent,
   ProfileProInfoComponent,
-  ProfileProBillingComponent
+  ProfileProBillingComponent,
+  ProfileProSubscriptionComponent
 ];

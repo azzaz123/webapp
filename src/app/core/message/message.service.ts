@@ -91,7 +91,7 @@ export class MessageService {
   }
 
   public send(conversation: Conversation, message: string) {
-    this.xmpp.sendMessage(conversation.user.id, conversation.id, message);
+    this.xmpp.sendMessage(conversation, message);
   }
 
   public query(conversationId: string, lastMessageRef: string, total: number = -1,

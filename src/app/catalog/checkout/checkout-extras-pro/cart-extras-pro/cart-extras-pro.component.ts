@@ -79,13 +79,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
         this.errorsService.show(response);
         this.loading = false;
       });
-    } else {
-      this.errorsService.i18nError('formErrors');
-      for (const control in this.billingInfoForm.controls) {
-        if (this.billingInfoForm.controls.hasOwnProperty(control) && !this.billingInfoForm.controls[control].valid) {
-          this.billingInfoForm.controls[control].markAsDirty();
-        }
-      }
     }
   }
 

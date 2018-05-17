@@ -1,8 +1,9 @@
 import { Model } from '../resource/model.interface';
 
-export const PACKNAMES = {
+export const PACKS_TYPES = {
   'BUMP': 'cityBump',
-  'NATIONAL_BUMP': 'countryBump'
+  'NATIONAL_BUMP': 'countryBump',
+  'LISTINGS': 'listings'
 };
 export class Pack implements Model {
   private _discount: number;
