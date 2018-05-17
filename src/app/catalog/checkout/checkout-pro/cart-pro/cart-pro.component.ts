@@ -23,6 +23,7 @@ export class CartProComponent implements OnInit {
   public types: string[] = BUMP_PRO_TYPES;
   public perks: PerksModel;
   public status: ScheduledStatus;
+  public balance = { citybump: 0, countrybump: 0 };
 
   constructor(
     private cartService: CartService,
@@ -30,19 +31,22 @@ export class CartProComponent implements OnInit {
     private errorService: ErrorsService,
     private router: Router,
     private trackingService: TrackingService,
-    private paymentsService: PaymentService) {
-    this.cartService.cart$.subscribe((cartChange: CartChange) => {
-      this.cart = cartChange.cart;
-    });
-  }
+    private paymentsService: PaymentService) { }
 
   ngOnInit() {
     this.cartService.createInstance(new CartPro());
 
-    this.paymentsService.getPerks().subscribe((perks: PerksModel) => {
+    this.cartService.cart$.subscribe((cartChange: CartChange) => {
+      this.cart = cartChange.cart;
+      this.calculateBalance();
+    });
+
+    this.paymentsService.getPerks(false).subscribe((perks: PerksModel) => {
       this.perks = perks;
       this.paymentsService.getStatus().subscribe((status: ScheduledStatus) => {
         this.status = status;
+        console.log(this.status, JSON.stringify(this.perks));
+        this.calculateBalance();
       });
     });
   }
@@ -55,19 +59,17 @@ export class CartProComponent implements OnInit {
     this.cartService.clean();
   }
 
-  getBalance(type: string) {
-    if (this.status.autorenew_scheduled[type]) {
-      let bumpsQuantity: number;
-      if (type === 'citybump') {
-        bumpsQuantity = this.perks.getBumpCounter();
-      } else if (type === 'countrybump') {
-        bumpsQuantity = this.perks.getNationalBumpCounter();
-      }
-      return (bumpsQuantity - this.status.autorenew_scheduled[type]) - this.cart[type].total;
+  calculateBalance() {
+    if (this.status.autorenew_scheduled.citybump) {
+      this.balance['citybump'] = (this.perks.getBumpCounter() - this.status.autorenew_scheduled.citybump) - this.cart['citybump'].total;
     } else {
-      return 0;
+      this.balance['citybump'] = this.perks.getBumpCounter() - this.cart['citybump'].total;
     }
-
+    if (this.status.autorenew_scheduled.countrybump) {
+      this.balance['countrybump'] = (this.perks.getNationalBumpCounter() - this.status.autorenew_scheduled.countrybump) - this.cart['countrybump'].total;
+    } else {
+      this.balance['countrybump'] = this.perks.getNationalBumpCounter() - this.cart['countrybump'].total;
+    }
   }
 
   applyBumps() {

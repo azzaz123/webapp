@@ -18,7 +18,7 @@ import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { PerksModel } from '../../../../core/payments/payment.model';
-import { ScheduledStatus } from '../../../../core/payments/payment.interface';
+import { ScheduledStatus, Perks } from '../../../../core/payments/payment.interface';
 import { BUMP_PRO_TYPES } from '../../cart/cart-base';
 
 describe('CartProComponent', () => {
@@ -105,6 +105,8 @@ describe('CartProComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CartProComponent);
     component = fixture.componentInstance;
+    component.status = MOCK_STATUS;
+    component.perks = perksModel;
     cartService = TestBed.get(CartService);
     itemService = TestBed.get(ItemService);
     errorService = TestBed.get(ErrorsService);
@@ -162,19 +164,17 @@ describe('CartProComponent', () => {
     });
   });
 
-  describe('getBalance', () => {
+  describe('calculateBalance', () => {
     it('should return balance for city cart', () => {
-      const bumpsQuantity = 0;
-      component.getBalance(BUMP_PRO_TYPES[0]);
+      component.calculateBalance();
 
-      expect(bumpsQuantity).toBe(component.perks.getBumpCounter());
+      expect(component.balance['citybump']).toBe(-16);
     });
 
     it('should return balance for country cart', () => {
-      const bumpsQuantity = 0;
-      component.getBalance(BUMP_PRO_TYPES[0]);
+      component.calculateBalance();
 
-      expect(bumpsQuantity).toBe(component.perks.getNationalBumpCounter());
+      expect(component.balance['countrybump']).toBe(-21);
     });
   });
 

@@ -42,8 +42,7 @@
         </span>
         <div class="cart-balance-number" [ngSwitch]="type" *ngIf="status">
           <ng-container *ngSwitchCase="type">
-            <span *ngIf="getBalance(type) > 0">{{getBalance(type)}}</span>
-            <span *ngIf="getBalance(type) <= 0">0</span>
+            <span>{{balance[type]}}</span>
           </ng-container>
         </div>
       </div>
