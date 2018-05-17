@@ -1,0 +1,120 @@
+@import "~style/common";
+
+$stats-sidebar-width: 400px;
+$container-spacing: 50px;
+.container {
+  position: static;
+  padding-top: $spacing-L;
+  overflow: auto;
+  width: calc(100% - #{$sidebar-width} - #{$stats-sidebar-width} - (2 * #{$container-spacing}));
+  padding-left: $sidebar-width;
+  padding-right: $stats-sidebar-width;
+  box-sizing: content-box;
+  max-width: 960px;
+  height: 100vh;
+}
+
+h2 {
+  font-size: $font-size-XXL;
+  font-weight: bold;
+}
+
+.list-group-item {
+  padding-left: 0;
+  padding-bottom: $spacing;
+  padding-right: 0;
+}
+
+.nav.filters-nav {
+  font-weight: normal;
+  font-size: $font-size-L;
+  text-transform: none;
+}
+
+$sidebar-title: 64px;
+.stats-sidebar {
+  h2 {
+    font-size: 18px;
+    margin-bottom: $spacing;
+  }
+  h2, h3 {
+    padding: 0 18px;
+  }
+  height: 100vh;
+  background-color: $grey-900;
+  width: $stats-sidebar-width;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: $spacing 0;
+  .stats-sidebar-container {
+    position: relative;
+    border-bottom: 1px solid #202c30;
+    .check-corporate {
+      position: absolute;
+      bottom: $spacing;
+      right: $spacing;
+    }
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+  .scroll-panel {
+    overflow-y: auto;
+    height: calc(100vh - #{$sidebar-title});
+    position: relative;
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+    }
+  }
+  h3 {
+    font-size: $spacing-S;
+    font-weight: bold;
+    margin-bottom: $spacing;
+    color: $grey-200;
+    margin-top: $spacing;
+    margin-bottom: $spacing-S;
+    text-transform: uppercase;
+    padding-right: $spacing-S;
+    a {
+      float: right;
+      color: $corporate;
+      font-size: $font-size-XS;
+      text-decoration: none;
+      text-transform: uppercase;
+      &:hover {
+        opacity: .8;
+      }
+    }
+  }
+}
+.stats-sidebar-empty-state {
+  display: block;
+  width: 400px;
+  height: auto;
+  margin: $spacing-L 0;
+}
+
+.stats-sidebar-completed {
+  height: calc(100vh - #{$sidebar-title});
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  text-align: center;
+  md-icon {
+    width: 144px;
+    height: 212px;
+    margin-bottom: $spacing-XL;
+  }
+  h2 {
+    margin-bottom: $spacing-XS;
+  }
+  p {
+    padding: 0 $spacing-XL;
+    color: $grey-200;
+  }
+}

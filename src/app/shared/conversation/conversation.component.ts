@@ -1,8 +1,8 @@
 import { Component, HostBinding, HostListener, Input } from '@angular/core';
-import { Conversation } from '../../../core/conversation/conversation';
-import { Remove } from '../../../shared/archivable/animations';
-import { ConversationService } from '../../../core/conversation/conversation.service';
-import { UserService } from '../../../core/user/user.service';
+import { Remove } from '../archivable/animations';
+import { Conversation } from '../../core/conversation/conversation';
+import { ConversationService } from '../../core/conversation/conversation.service';
+import { UserService } from '../../core/user/user.service';
 
 @Component({
   selector: 'tsl-conversation',

@@ -29,6 +29,9 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { MessageComponent } from './message/message.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { SwitchComponent } from './switch/switch.component';
+import { ConversationComponent } from './conversation/conversation.component';
+import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
+import { MomentModule } from 'angular2-moment';
 
 @NgModule({
   imports: [
@@ -38,7 +41,9 @@ import { SwitchComponent } from './switch/switch.component';
     NgbModule.forRoot(),
     ReactiveFormsModule,
     FormsModule,
-    GeolocationModule
+    GeolocationModule,
+    MomentModule,
+    NgxPermissionsModule
   ],
   exports: [
     CardModule,
@@ -63,7 +68,9 @@ import { SwitchComponent } from './switch/switch.component';
     ReviewModalComponent,
     NgxPermissionsModule,
     MessageComponent,
-    ReviewButtonComponent
+    ReviewButtonComponent,
+    ConversationComponent,
+    ItemAvatarComponent
   ],
   declarations: [
     AdComponent,
@@ -87,7 +94,9 @@ import { SwitchComponent } from './switch/switch.component';
     ReviewModalComponent,
     MessageComponent,
     ReviewButtonComponent,
-    SwitchComponent
+    SwitchComponent,
+    ConversationComponent,
+    ItemAvatarComponent
   ],
   providers: [
     DecimalPipe,
