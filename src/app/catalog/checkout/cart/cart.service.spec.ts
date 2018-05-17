@@ -134,7 +134,7 @@ describe('CartService', () => {
     const cart: CartBase = new CartProExtras();
 
     beforeEach(() => {
-      service.createInstance(new CartProExtras);
+      service.createInstance(new CartProExtras());
     });
 
     it('should create an instance of CartProExtra', () => {

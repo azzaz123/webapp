@@ -69,7 +69,7 @@ describe('PaymentService', () => {
     });
   });
 
-  fdescribe('getPacks', () => {
+  describe('getPacks', () => {
     let response: Packs;
     beforeEach(fakeAsync(() => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PACK_RESPONSE)});

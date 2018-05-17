@@ -26,7 +26,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public cardType = 'old';
   private active = true;
-  @Output() billingInfoNeeds: EventEmitter<boolean> = new EventEmitter();
+  @Output() billingInfoMissing: EventEmitter<boolean> = new EventEmitter();
   @Input() billingInfoForm: FormGroup;
   @Input() billingInfoFormEnabled: boolean;
 
@@ -64,7 +64,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     this.paymentService.getBillingInfo().subscribe(() => {
       this.processCheckout();
     }, () => {
-      this.billingInfoNeeds.emit(true);
+      this.billingInfoMissing.emit(true);
       this.loading = false;
     });
   }

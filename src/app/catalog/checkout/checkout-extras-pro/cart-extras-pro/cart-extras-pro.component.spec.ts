@@ -274,11 +274,11 @@ describe('CartExtrasProComponent', () => {
     describe('no billing info', () => {
       it('should emit a event', () => {
         spyOn(paymentService, 'getBillingInfo').and.returnValue(Observable.throw({}));
-        spyOn(component.billingInfoNeeds, 'emit').and.callThrough();
+        spyOn(component.billingInfoMissing, 'emit').and.callThrough();
 
         component.checkout();
 
-        expect(component.billingInfoNeeds.emit).toHaveBeenCalledWith(true);
+        expect(component.billingInfoMissing.emit).toHaveBeenCalledWith(true);
       });
 
       describe('saveAndCheckout', () => {

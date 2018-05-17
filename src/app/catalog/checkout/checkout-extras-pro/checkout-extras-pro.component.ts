@@ -28,8 +28,8 @@ export class CheckoutExtrasProComponent implements OnInit {
     this.billingInfoForm = billingInfoForm;
   }
 
-  public onBillingInfoNeeds(billingInfoNeeds: boolean) {
-    this.billingInfoFormEnabled = billingInfoNeeds;
+  public onBillingInfoMissing(billingInfoMissing: boolean) {
+    this.billingInfoFormEnabled = billingInfoMissing;
   }
 
   private preparePacks(packs: Packs): void {

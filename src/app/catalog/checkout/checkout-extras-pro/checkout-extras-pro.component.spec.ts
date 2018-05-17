@@ -42,7 +42,7 @@ describe('CheckoutExtrasProComponent', () => {
       component.ngOnInit();
     });
 
-    it('should call paymentsService getPacks method and return packs array', () => {
+    it('should call paymentsService getPacks method', () => {
       expect(paymentService.getPacks).toHaveBeenCalled();
     });
 
