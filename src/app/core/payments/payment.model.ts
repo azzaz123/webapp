@@ -1,52 +1,5 @@
-import { CartPacks, Pack, Packs, PerkResponse, Perks } from './payment.interface';
-
-export class PacksModel implements Packs  {
-  bumps: Pack[];
-  nationals: Pack[];
-  listings: Pack[];
-
-  constructor() {
-    this.nationals = [];
-    this.bumps = [];
-    this.listings = [];
-  }
-
-  addNationalPack(pack: Pack) {
-    this.nationals.push(pack);
-  }
-
-  getNationalPacks(): Pack[] {
-    return this.nationals;
-  }
-
-  addBump(pack: Pack) {
-    this.bumps.push(pack);
-  }
-
-  getBumps() {
-    return this.bumps;
-  }
-
-  addListing(pack: Pack) {
-    this.listings.push(pack);
-  }
-
-  getListings(currentTotal: number) {
-    return this.listings.filter((listing) => {
-      return listing.quantity >= currentTotal;
-    }).slice(0, 3);
-  }
-
-  addCustomListingPack(quantity: number) {
-    this.listings.unshift({
-      id: '1',
-      quantity: quantity,
-      price: 1,
-      currency: 'EUR',
-      discount: 0
-    });
-  }
-}
+import { CartPacks, Packs, PerkResponse, Perks } from './payment.interface';
+import { Pack } from './pack';
 
 export class CartPacksModel implements CartPacks {
   nationals: Pack;

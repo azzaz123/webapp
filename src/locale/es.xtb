@@ -231,7 +231,7 @@
   <translation id="2595297634596426795">Mis destacados</translation>
   <translation id="6801638153695046345">Destacado de Barrio</translation>
   <translation id="7379728362084736907">Destacado de Provincia</translation>
-  <translation id="2789162672363314854">Destacado de Ciudad</translation>
+  <translation id="2789162672363314854">Destacado ciudad</translation>
   <translation id="5785357843753565591">Destacado de País</translation>
   <translation id="2906587845957718064">Barrio</translation>
   <translation id="1186759635333538896">Provincia</translation>
@@ -354,6 +354,15 @@
   <translation id="6570363013146073520">Panel</translation>
   <translation id="5762151072276461448">Llamadas</translation>
   <translation id="4588618843305891254">Catálogo</translation>
+  <translation id="2157586494270826789">¿Qué son los extras?</translation>
+  <translation id="9078334813317415148">Destacados ciudad</translation>
+  <translation id="308057973020043316">Destacados país</translation>
+  <translation id="1427434561610422238">Ahorra un <ph name="INTERPOLATION"><ex>{{ pack.discount }}</ex></ph>% </translation>
+  <translation id="3249513483374643425">Añadir</translation>
+  <translation id="516176798986294299">País</translation>
+  <translation id="4669498559280449685">Destacado país</translation>
+  <translation id="379883361840792630">Destacados extras</translation>
+  <translation id="7570446684738490913">Destacados extras de 24 horas</translation>
   <translation id="4558593963938972556">Aquí podrás ver y editar los datos de tu perfil</translation>
   <translation id="690637757793763587">Facturación</translation>
   <translation id="7830707034534607415">Suscripción</translation>

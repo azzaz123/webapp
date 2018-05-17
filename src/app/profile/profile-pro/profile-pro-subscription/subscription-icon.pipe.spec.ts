@@ -1,23 +1,23 @@
 import { SubscriptionIconPipe } from './subscription-icon.pipe';
-import { Pack } from '../../../core/payments/payment.interface';
+import { Pack } from '../../../core/payments/pack';
 
 describe('SubscriptionIconPipe', () => {
 
   let pipe: SubscriptionIconPipe;
-  const PACK: Pack = {
-    id: 'id',
-    quantity: 100,
-    price: 100,
-    currency: 'EUR',
-    discount: 10
-  };
-  const PERSONAL_PACK: Pack = {
-    id: 'id',
-    quantity: 300,
-    price: 100,
-    currency: 'EUR',
-    discount: 10
-  };
+  const PACK: Pack = new Pack(
+    'id',
+    100,
+    100,
+    'EUR',
+    'citybump'
+  );
+  const PERSONAL_PACK: Pack = new Pack(
+    'id',
+    300,
+    100,
+    'EUR',
+    'citybump'
+  );
 
   beforeEach(() => {
     pipe = new SubscriptionIconPipe();

@@ -2,30 +2,9 @@ import { CartItem, BumpGroup } from './cart-item.interface';
 import * as _ from 'lodash';
 import { Order } from '../../../core/item/item-response.interface';
 import { UUID } from 'angular2-uuid';
+import { CartBase, BUMP_TYPES } from './cart-base';
 
-export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];
-
-export class Cart {
-
-  total: number;
-
-  zonebump: BumpGroup = {
-    total: 0,
-    cartItems: [],
-    collapsed: true
-  };
-
-  citybump: BumpGroup = {
-    total: 0,
-    cartItems: [],
-    collapsed: true
-  };
-
-  countrybump: BumpGroup = {
-    total: 0,
-    cartItems: [],
-    collapsed: true
-  };
+export class Cart extends CartBase {
 
   add(cartItem: CartItem, type: string) {
     this.removeCartItemFromAnyBump(cartItem.item.id);
@@ -64,12 +43,6 @@ export class Cart {
 
   getOrderId() {
     return UUID.UUID();
-  }
-
-  private removeCartItemFromAnyBump(itemId: string) {
-    BUMP_TYPES.forEach((type: string) => {
-      this.removeCartItem(itemId, type);
-    });
   }
 
   private calculateTotals() {

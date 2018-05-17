@@ -1,0 +1,108 @@
+@import "~style/common";
+
+.datepicker-btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+    border-top: solid 1px $grey-50;
+    padding-top: $spacing;
+    margin-top: $spacing;
+    .datepicker-btn {
+      -webkit-appearance: none;
+      background-color: transparent;
+      border: 0;
+      font-size: 14px;
+      &.cancel {
+        color: $grey-250;
+      }
+      &.apply {
+        font-weight: bold;
+        color: $corporate;
+      }
+      &.city-btn {
+        color: $zone-bump;
+      }
+      &.country-btn {
+        color: $country-bump;
+      }
+    }
+  }
+  
+  :host /deep/ ngb-datepicker {
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .ngb-dp-weekdays {
+      border: 0;
+    }
+    .ngb-dp-weekday {
+      font-weight: bold;
+      font-style: normal;
+      color: $grey-500;
+      margin: $spacing-S 0;
+    }
+    .ngb-dp-navigation-chevron {
+      width: 5px;
+      background-size: contain;
+      height: 10px;
+      float: left;
+      background-repeat: no-repeat;
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjExIj48cGF0aCBmaWxsPSIjOTBBNEFFIiBkPSJNNC43OCAxLjgxMmMuMzMtLjQ2Mi4yODMtMS4xNTctLjEwNi0xLjU1LS4zOS0uMzk0LS45NzQtLjMzNy0xLjMwNS4xMjZMLjIyIDQuNzg4YTEuMjYxIDEuMjYxIDAgMCAwIDAgMS40MjRsMy4xNDkgNC40Yy4zMy40NjMuOTE1LjUyIDEuMzA1LjEyNi4zOS0uMzkzLjQzNy0xLjA4OC4xMDYtMS41NUwyLjE0IDUuNWwyLjY0LTMuNjg4eiIvPjwvc3ZnPg==);
+      outline: none;
+      &:before {
+        display: none;
+      }
+    }
+    .right {
+      .ngb-dp-navigation-chevron {
+        transform: rotate(180deg);
+      }
+    }
+    .ngb-dp-navigation-select {
+      > select {
+        border: 0;
+        width: 70px;
+        font-weight: bold;
+      }
+    }
+  }
+  
+  .custom-day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 2rem;
+    width: 2rem;
+    font-size: $font-size-S;
+    &.focused {
+      background-color: #e6e6e6;
+    }  
+    &.disabled {
+      color: $grey-250;
+      &:hover {
+        color: $grey-250;
+        background-color: transparent;
+        cursor: not-allowed; 
+      }
+    }
+    &.range, &:hover {
+      color: white;
+      &.city-day {
+        background-color: $zone-bump;
+      }
+      &.country-day {
+        background-color: $country-bump;
+      }
+    }
+    &.faded {
+      color: white;
+      &.city-day {
+        background-color: rgba($zone-bump, 0.6);
+      }
+      &.country-day {
+        background-color: rgba($country-bump, 0.6);
+      }
+    }
+  }
