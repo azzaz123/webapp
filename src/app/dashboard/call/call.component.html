@@ -30,14 +30,6 @@
         </span>
         {{call.phone}}
       </p>
-      <p *ngIf="call.messages.length">
-        <mat-icon svgIcon="messages-icon" placement="top" ngbTooltip="Messages" i18n-ngbTooltip></mat-icon>
-        {{call.messages[(call.messages.length-1)]?.message}}
-      </p>
-      <p *ngIf="call.surveyResponses.length">
-        <mat-icon svgIcon="questions-icon" placement="top" ngbTooltip="Questions" i18n-ngbTooltip></mat-icon>
-        <span i18n>Answered the questions</span>
-      </p>
     </div>
   </div>
   <tsl-archive-button [lead]="call" (click)="archived = true"></tsl-archive-button>

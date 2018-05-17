@@ -21,7 +21,7 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <messagebundle>
-  <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:31</source><source>app/chat/conversations-panel/conversation/conversation.component.ts:37</source>Messages</msg>
+  <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:31</source><source>app/dashboard/dashboard.component.ts:22</source>Messages</msg>
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.ts:31</source>My Zone</msg>
   <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.ts:36</source>List a product</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:7</source><source>app/profile/profile-pro/profile-pro.component.ts:21</source>Profile</msg>
@@ -30,10 +30,10 @@
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:23</source>Catalog</msg>
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:39</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:46</source>Reviews</msg>
-  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:53</source>Phones</msg>
+  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:53</source><source>app/dashboard/dashboard.component.ts:31</source>Phones</msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
-  <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.ts:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source>Congratulations!</msg>
+  <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.ts:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source><source>app/dashboard/dashboard.component.ts:44</source>Congratulations!</msg>
   <msg id="3870527592184800997"><source>app/shared/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="2882903364152951366"><source>app/shared/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/shared/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
@@ -71,10 +71,9 @@
   <msg id="3325766019344626759"><source>app/chat/chat.component.ts:48</source>There are no messages</msg>
   <msg id="6334569300046707546"><source>app/chat/chat.component.ts:49,50</source>Service not available at the moment.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>
         Try again later.</msg>
-  <msg id="1064116145041965896"><source>app/chat/conversations-panel/conversation/conversation.component.ts:38</source>Meeting</msg>
   <msg id="6146618115870222180"><source>app/chat/conversations-panel/conversations-panel.component.ts:2</source>Your Messages</msg>
   <msg id="8848709900682152607"><source>app/chat/conversations-panel/conversations-panel.component.ts:5</source>Mark everything as Processed</msg>
-  <msg id="4416413576346763682"><source>app/chat/conversations-panel/conversations-panel.component.ts:9</source><source>app/catalog/list/catalog-item/catalog-item.component.ts:51</source><source>app/calls/calls.component.ts:23</source><source>app/calls/calls.component.ts:51</source>Pending</msg>
+  <msg id="4416413576346763682"><source>app/chat/conversations-panel/conversations-panel.component.ts:9</source><source>app/catalog/list/catalog-item/catalog-item.component.ts:51</source><source>app/calls/calls.component.ts:23</source><source>app/calls/calls.component.ts:51</source><source>app/dashboard/dashboard.component.ts:15</source>Pending</msg>
   <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:25</source>Load more</msg>
   <msg id="4896863464728200563"><source>app/chat/input/input.component.ts:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.ts:2</source>Waiting for network...</msg>
@@ -399,4 +398,8 @@
   <msg id="6314007099242784066"><source>app/calls/user-card-calls/user-card-calls.component.ts:3</source>User rating</msg>
   <msg id="3386449481449927569"><source>app/calls/user-card-calls/user-card-calls.component.ts:24</source>This user is selling a car</msg>
   <msg id="6901142032077238858"><source>app/calls/user-card-calls/user-card-calls.component.ts:27</source>View profile</msg>
+  <msg id="7368172072093620772"><source>app/dashboard/dashboard.component.ts:5</source>Your stats</msg>
+  <msg id="8942703401001898134"><source>app/dashboard/dashboard.component.ts:8</source>Some little info about this section</msg>
+  <msg id="2734780694152757859"><source>app/dashboard/dashboard.component.ts:23</source><source>app/dashboard/dashboard.component.ts:32</source>View all</msg>
+  <msg id="8778531687214591857"><source>app/dashboard/dashboard.component.ts:45</source>You have processed all the pending leads. Good job!</msg>
 </messagebundle>
