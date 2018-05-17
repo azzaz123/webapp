@@ -35,7 +35,6 @@ const routes: Routes = [
         component: ProfileProComponent,
         canActivate: [NgxPermissionsGuard],
         data: {
-          isMyZone: true,
           permissions: {
             only: PERMISSIONS.professional,
             redirectTo: '/profile'
@@ -45,16 +44,25 @@ const routes: Routes = [
           {
             path: 'info',
             component: ProfileProInfoComponent,
-            canDeactivate: [ExitConfirmGuard]
+            canDeactivate: [ExitConfirmGuard],
+            data: {
+              isMyZone: true
+            }
           },
           {
             path: 'billing',
             component: ProfileProBillingComponent,
-            canDeactivate: [ExitConfirmGuard]
+            canDeactivate: [ExitConfirmGuard],
+            data: {
+              isMyZone: true
+            }
           },
           {
             path: 'subscription',
-            component: ProfileProSubscriptionComponent
+            component: ProfileProSubscriptionComponent,
+            data: {
+              isMyZone: true
+            }
           }
         ]
       },
