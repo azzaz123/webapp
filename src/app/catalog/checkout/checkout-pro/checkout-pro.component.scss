@@ -82,32 +82,3 @@
     }
   }
 }
-
-.checkout-calendar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 4;
-  .checkout-calendar-overlay {
-    background-color: rgba($grey-900, 0.5);
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-  }  
-}
-
-.datepicker-wrapper {
-  border-radius: 10px;
-  padding: $spacing $spacing-L;
-  background-color: $white;
-  z-index: 1;
-}

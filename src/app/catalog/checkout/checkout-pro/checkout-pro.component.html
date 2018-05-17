@@ -36,10 +36,6 @@
     </div>
     <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
   </div>
-  <div class="checkout-calendar" *ngIf="!calendarHidden" [@fadeInOut]>
-    <div class="checkout-calendar-overlay" (click)="calendarHidden = true"></div>
-    <div class="datepicker-wrapper">
-        <tsl-range-datepicker (applyCalendar)="onApplyCalendar($event)" (closeCalendar)="calendarHidden = true" [bumpType]="itemSelected?.bumpType" [selectedDates]="itemSelected?.selectedDates"></tsl-range-datepicker>
-    </div>
-  </div>
+  <tsl-range-datepicker *ngIf="!calendarHidden" (applyCalendar)="onApplyCalendar($event)" (closeCalendar)="calendarHidden = true"
+    [bumpType]="itemSelected?.bumpType" [selectedDates]="itemSelected?.selectedDates"></tsl-range-datepicker>
 </div>
