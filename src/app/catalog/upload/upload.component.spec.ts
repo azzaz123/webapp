@@ -5,11 +5,13 @@ import { ItemService } from '../../core/item/item.service';
 import { PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { UserService } from '../../core/user/user.service';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
   let fixture: ComponentFixture<UploadComponent>;
   let itemService: ItemService;
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -19,7 +21,14 @@ describe('UploadComponent', () => {
       providers: [
         {
           provide: ItemService, useValue: {
-            getUrgentProductByCategoryId() {}
+            getUrgentProductByCategoryId() { }
+          }
+        },
+        {
+          provide: UserService, useValue: {
+            isProfessional() {
+              return Observable.of(false);
+            }
           }
         }
       ]
@@ -30,11 +39,34 @@ describe('UploadComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UploadComponent);
     itemService = TestBed.get(ItemService);
+    userService = TestBed.get(UserService);
     component = fixture.componentInstance;
   });
 
+  describe('ngOnInit', () => {
+    beforeEach(() => {
+      spyOn(component, 'setCategory');
+    });
+
+    it('should set category cars if user is professional', () => {
+      spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+
+      component.ngOnInit();
+
+      expect(component.setCategory).toHaveBeenCalledWith('100');
+    });
+
+    it('should not set any category if user is not professional', () => {
+      spyOn(userService, 'isProfessional').and.returnValue(Observable.of(false));
+
+      component.ngOnInit();
+
+      expect(component.setCategory).not.toHaveBeenCalled();
+    });
+  });
+
   describe('setCategory', () => {
-    beforeEach( () => {
+    beforeEach(() => {
       spyOn(component, 'getUrgentPrice');
     });
     it('should set categoryId', () => {
