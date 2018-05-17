@@ -22,13 +22,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public conversations: Conversation[] = [];
   public calls: Lead[] = [];
   public loading: boolean = true;
-  public chartType: string = 'month';
-  public hiddenFilters: boolean = false;
   public archivedLead: Lead;
   private active: boolean = true;
 
-  constructor(private i18n: I18nService,
-              private callService: CallsService,
+  constructor(private callService: CallsService,
               private trackingService: TrackingService,
               private conversationService: ConversationService,
               private eventService: EventService,) {
@@ -79,10 +76,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
           (conversationsTotals.archivedPhonesShared + callsTotals.archived + conversationsTotals.archivedMeetings + conversationsTotals.archivedMessages) > 0;
       });
     });
-  }
-
-  public hideFiltersNav() {
-    this.hiddenFilters = true;
   }
 
   public trackPhoneLeadOpened() {

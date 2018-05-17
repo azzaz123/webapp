@@ -1,6 +1,6 @@
 @import "~style/common";
 
-$stats-sidebar-width: 400px;
+$stats-sidebar-width: 340px;
 $container-spacing: 50px;
 .container {
   position: static;
@@ -12,6 +12,7 @@ $container-spacing: 50px;
   box-sizing: content-box;
   max-width: 960px;
   height: 100vh;
+  background-color: $grey-50;
 }
 
 h2 {
@@ -40,28 +41,27 @@ $sidebar-title: 64px;
   h2, h3 {
     padding: 0 18px;
   }
-  height: 100vh;
-  background-color: $grey-900;
+  height: calc(100vh - #{$topbar-height});
+  background-color: $white;
   width: $stats-sidebar-width;
   position: absolute;
-  top: 0;
+  top: $topbar-height;
   right: 0;
   padding: $spacing 0;
   .stats-sidebar-container {
     position: relative;
-    border-bottom: 1px solid #202c30;
     .check-corporate {
       position: absolute;
       bottom: $spacing;
       right: $spacing;
     }
-    &:last-of-type {
-      border-bottom: none;
+    &.calls-container {
+      border-top: 1px solid $grey-50;
     }
   }
   .scroll-panel {
     overflow-y: auto;
-    height: calc(100vh - #{$sidebar-title});
+    height: calc(100vh - #{$sidebar-title} - #{$topbar-height});
     position: relative;
     .spinner {
       position: absolute;
@@ -73,8 +73,7 @@ $sidebar-title: 64px;
   h3 {
     font-size: $spacing-S;
     font-weight: bold;
-    margin-bottom: $spacing;
-    color: $grey-200;
+    color: $grey-300;
     margin-top: $spacing;
     margin-bottom: $spacing-S;
     text-transform: uppercase;
@@ -88,6 +87,11 @@ $sidebar-title: 64px;
       &:hover {
         opacity: .8;
       }
+    }
+  }
+  .calls-container {
+    h3 {
+      margin-bottom: $spacing;
     }
   }
 }

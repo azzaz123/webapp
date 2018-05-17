@@ -13,7 +13,6 @@ import { UserService } from '../../core/user/user.service';
 export class ConversationComponent {
 
   @Input() conversation: Conversation;
-  @Input() dashboard: boolean;
   @HostBinding('class.archive') archive: boolean = false;
   @HostBinding('class.archived') @HostBinding('@remove') archived: boolean = false;
   @HostBinding('class.professional') public isProfessional: boolean;
