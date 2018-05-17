@@ -1,15 +1,15 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
-import * as _ from "lodash";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs/Subscription";
-import { EventService } from "../../core/event/event.service";
-import { ConversationService } from "../../core/conversation/conversation.service";
-import { UserService } from "../../core/user/user.service";
-import { TrackingService } from "../../core/tracking/tracking.service";
-import { Conversation } from "../../core/conversation/conversation";
-import { Message } from "../../core/message/message";
-import { NewConversationResponse } from "../../core/conversation/conversation-response.interface";
-import { Observable } from "rxjs/Observable";
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import * as _ from 'lodash';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { EventService } from '../../core/event/event.service';
+import { ConversationService } from '../../core/conversation/conversation.service';
+import { UserService } from '../../core/user/user.service';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { Conversation } from '../../core/conversation/conversation';
+import { Message } from '../../core/message/message';
+import { NewConversationResponse } from '../../core/conversation/conversation-response.interface';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'tsl-conversations-panel',
@@ -24,7 +24,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private conversation: Conversation;
   public conversations: Array<Conversation> = [];
-  public archive: boolean = false;
+  public archive = false;
   private _loading = false;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
@@ -66,7 +66,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       if (this.archive) {
         this.archive = false;
         this.page = 1;
-        this.setCurrentConversation(null)
+        this.setCurrentConversation(null);
         this.getConversations();
       }
     });
@@ -169,11 +169,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       this.conversationService.getSingleConversationMessages(newConversation).subscribe((newConversationWithMessages: Conversation) => {
         this.conversationService.addLead(newConversationWithMessages);
         this.setCurrentConversation(newConversationWithMessages);
-        this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW,
-          {
-            user_id: newConversationWithMessages.user.id, item_id: newConversationWithMessages.item.id,
-            thread_id: newConversationWithMessages.id
-          });
       });
     });
   }

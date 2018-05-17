@@ -7,6 +7,7 @@ import { ItemModule } from '../item/item.module';
 import { MomentModule } from 'angular2-moment';
 import { MatIconModule } from '@angular/material';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { CallsService } from './calls.service';
 
 @NgModule({
   imports: [
@@ -21,8 +22,10 @@ import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstr
   ],
   providers: [
     ConversationService,
-    MessageService
-  ]
+    MessageService,
+    CallsService
+  ],
+  declarations: []
 })
 export class ConversationModule {
 }

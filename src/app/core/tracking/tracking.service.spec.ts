@@ -82,14 +82,14 @@ describe('Service: Tracking', () => {
   describe('track', () => {
     it('should call createNewEvent with passing the given arguments', () => {
       spyOn<any>(service, 'createNewEvent').and.callThrough();
-      service.track(TrackingService.MESSAGE_NOTIFIED, {conversation_id: 'conversation'});
-      expect((service as any).createNewEvent).toHaveBeenCalledWith(TrackingService.MESSAGE_NOTIFIED,
+      service.track(TrackingService.NOTIFICATION_RECEIVED, {conversation_id: 'conversation'});
+      expect((service as any).createNewEvent).toHaveBeenCalledWith(TrackingService.NOTIFICATION_RECEIVED,
         {conversation_id: 'conversation'});
     });
     it('should do a post to clickstream', () => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
       spyOn<any>(service, 'createNewEvent').and.callThrough();
-      service.track(TrackingService.MESSAGE_NOTIFIED, {conversation_id: 'conversation'});
+      service.track(TrackingService.NOTIFICATION_RECEIVED, {conversation_id: 'conversation'});
       expect(http.postNoBase['calls'].argsFor(0)[0]).toBe('https://collector.wallapop.com/clickstream.json/sendEvents');
     });
   });

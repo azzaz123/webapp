@@ -29,6 +29,7 @@ import { User } from './core/user/user';
 import { Message } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
 import { ConnectionService } from './core/connection/connection.service';
+import { CallsService } from './core/conversation/calls.service';
 
 @Component({
   selector: 'tsl-root',
@@ -64,9 +65,10 @@ export class AppComponent implements OnInit {
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
-              private connectionService: ConnectionService) {
-    this.config();
-  }
+              private connectionService: ConnectionService,
+              private callService: CallsService) {
+                this.config();
+              }
 
   ngOnInit() {
     this.subscribeEventUserLogin();
@@ -133,7 +135,11 @@ export class AppComponent implements OnInit {
           this.conversationService.init().subscribe(() => {
             this.userService.isProfessional().subscribe((isProfessional: boolean) => {
               if (isProfessional) {
-                this.conversationService.init(true).subscribe();
+                this.callService.init().subscribe(() => {
+                  this.conversationService.init(true).subscribe(() => {
+                    this.callService.init(true).subscribe();
+                  });
+                });
               }
             });
           });

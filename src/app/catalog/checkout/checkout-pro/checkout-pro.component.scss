@@ -1,0 +1,117 @@
+@import "~style/common";
+
+.back {
+  color: $grey-900;
+  z-index: 1000;
+  mat-icon {
+    vertical-align: middle;
+    margin-right: $spacing;
+    width: 27px;
+    height: 17px;
+  }
+  &:hover {
+    text-decoration: none;
+    &, mat-icon {
+      opacity: .8;
+    }
+  }
+}
+
+.bumps-table {
+  z-index: 4;
+  position: relative;
+  margin-bottom: 65px;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .header-first-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
+  }
+  .bump-types {
+    display: flex; 
+    width: 50%;
+  }
+  .info {
+    font-size: $font-size-S;
+    text-decoration: underline;
+    cursor: pointer;
+    color: $corporate;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  .type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: -3px;
+    align-self: flex-end;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    box-shadow: 3px 6px 10px 0 rgba(0, 0, 0, 0.2);
+    border: solid 1px $grey-50;
+    border-bottom: 0;
+    color: $white;
+    font-weight: bold;
+    text-align: center;
+    padding: $spacing-M;
+    font-size: $font-size-S;
+    line-height: 17px;
+    &.city {
+      background-image: linear-gradient(206deg, #2be2d6, #2be2d6, #2ae1d5, #2ae0d4 1%, $zone-bump);
+      z-index: 3;  
+      width: 50%;
+    }
+    &.country {
+      background-image: linear-gradient(208deg, #8fd6ff, #56acff);
+      z-index: 2;
+      width: 50%;
+    }
+    &.planning {
+      background-color: $white;
+      color: $grey-900;
+      box-shadow: none;
+      z-index: 1;
+      width: 40%;
+    }
+  }
+}
+
+.checkout-calendar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  .checkout-calendar-overlay {
+    background-color: rgba($grey-900, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }  
+}
+
+.datepicker-wrapper {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: solid 1px $grey-50;
+  padding: $spacing $spacing-L;
+  background-color: $white;
+  z-index: 1;
+}
