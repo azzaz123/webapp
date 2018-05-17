@@ -25,7 +25,6 @@
         <tsl-conversation [conversation]="conversation"
                           [routerLink]="['/chat']" [queryParams]="{c: conversation.id}"
                           *ngFor="let conversation of conversations" [hidden]="!conversations.length"></tsl-conversation>
-        <mat-icon svgIcon="empty_dashboard_messages" class="stats-sidebar-empty-state" [hidden]="conversations.length"></mat-icon>
       </div>
       <div class="stats-sidebar-container calls-container" [hidden]="loading || (!calls.length && conversations.length)">
         <h3>
