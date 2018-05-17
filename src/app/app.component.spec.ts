@@ -135,7 +135,8 @@ describe('App', () => {
             return Observable.of();
           },
           handleNewMessages() {
-          }
+          },
+          resetCache() {}
         }
         },
         {
@@ -303,6 +304,16 @@ describe('App', () => {
         expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
         expect(component.updateSessionCookie).not.toHaveBeenCalled();
       });
+
+      it('should call the resetCache method in conversationService when a CLIENT_DISCONNECTED event is triggered', () => {
+        spyOn(conversationService, 'resetCache');
+
+        component.ngOnInit();
+        eventService.emit(EventService.CLIENT_DISCONNECTED);
+
+        expect(conversationService.resetCache).toHaveBeenCalledTimes(1);
+      });
+
     });
 
     it('should logout the user and show the error if token is expired', fakeAsync(() => {

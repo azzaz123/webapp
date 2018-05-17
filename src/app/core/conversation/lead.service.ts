@@ -130,7 +130,6 @@ export abstract class LeadService {
   }
 
   public resetCache() {
-    console.log('resetting cache');
     this.leads = [];
     this.archivedLeads = [];
     this.stream$ = new ReplaySubject(1);
