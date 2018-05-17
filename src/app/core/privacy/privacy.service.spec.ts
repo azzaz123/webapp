@@ -13,7 +13,7 @@ import {
   MOCK_PRIVACY_ALLOW,
   MOCK_PRIVACY_DISALLOW,
   MOCK_PRIVACY_UNKNOW
-} from './privacy.fixtures';
+} from './privacy.fixtures.spec';
 import { environment } from '../../../environments/environment';
 
 let http: HttpService;
