@@ -388,13 +388,13 @@
   <translation id="7697915584663780042">visibilidad</translation>
   <translation id="5439433189125089418">Plan Ciudad</translation>
   <translation id="3955868613858648955">Disponible</translation>
-  <translation id="6211554071012062130">Plan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="6211554071012062130"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Plan</translation>
   <translation id="2882470259260755892"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
   <translation id="8488915425381344887">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
   <translation id="5092371717305178267">Plan País</translation>
   <translation id="4772127996106888369">No tienes un Plan País</translation>
   <translation id="1466012768716286509">Apúntate</translation>
-  <translation id="766927465251603474">Plan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="766927465251603474"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Plan</translation>
   <translation id="6463509780873643723"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
   <translation id="9054202731560341408">En uso</translation>
   <translation id="1725562452483752433">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
@@ -410,9 +410,9 @@
   <translation id="4701510938988860546">Volver atrás para cancelar bumps</translation>
   <translation id="2571738502834365520">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="3339663802248788155">Comprar extras</translation>
-  <translation id="8940063789367894785">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> más items<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="8940063789367894785">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>item(s)<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="382039398019874632"><ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Subir ahora<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
-  <translation id="1613688231558042205">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> más items<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="1613688231558042205">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>item(s)<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="6659060125810978706"><ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Activar coches<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
   <translation id="6587076436244065924">Queda <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="5272763997595694217">Cancelar Autorenovados</translation>

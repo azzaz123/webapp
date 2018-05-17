@@ -4,20 +4,20 @@
       <mat-icon svgIcon="check"></mat-icon>
     </button>
   </div>
-  <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected, pending: item.flags.pending, itemSold: item.sold}">
+  <div class="item" [ngClass]="{expired: item.flags.expired, selected: item.selected, pending: item.flags.pending, onhold: item.flags.onhold, itemSold: item.sold}">
     <div class="selected-veil" (click)="select(item)"></div>
-    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="image">
+    <a href="{{item.webLink}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="image">
       <tsl-item-avatar [item]="item" size="bigger" fallbackLight="true"></tsl-item-avatar>
     </a>
-    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="info">
+    <a href="{{item.webLink}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="info">
       <div class="price">{{item.salePrice | customCurrency:item.currencyCode}}</div>
       <div class="title">{{item.title}}</div>
     </a>
-    <div class="published" [hidden]="item.sold || item.flags.bumped">
+    <div class="published" [hidden]="item.sold || item.flags.bumped && !item.flags.onhold">
       <div i18n>Publish Date</div>
       <div class="date">{{item.publishedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
-    <div class="updated" [hidden]="item.sold || item.flags.bumped">
+    <div class="updated" [hidden]="item.sold || item.flags.bumped && !item.flags.onhold">
       <div i18n>Updated</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
@@ -25,7 +25,7 @@
       <div i18n>Sold</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
-    <div class="bumped" *ngIf="item.flags.bumped">
+    <div class="bumped" *ngIf="item.flags.bumped && !item.flags.onhold">
       <div class="type {{item.purchases.bump_type}}" i18n>{{item.bumpName}}</div>
       <div class="date">
         <span i18n>{{item.purchases.expiration_date | amCountdown}} remaining</span>
@@ -44,7 +44,7 @@
       </div>
       <div class="counters">
         <mat-icon svgIcon="ico-message"></mat-icon>
-        <span>{{item.views}}</span>
+        <span>{{item.conversations}}</span>
       </div>
     </div>
     <div class="actions" *ngIf="!item.flags.pending">
@@ -56,7 +56,7 @@
           <mat-icon svgIcon="btn-reserved"></mat-icon>
         </button>
         <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_PRO_EDIT_CARD"
-                [params]="{category: item.categoryId}" *ngIf="!item.sold">
+                [params]="{category: item.categoryId}" *ngIf="!item.sold && !item.flags.onhold">
           <mat-icon svgIcon="btn-edit"></mat-icon>
         </button>
       </span>

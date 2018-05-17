@@ -20,6 +20,7 @@ import { NavigationEnd, Router, ActivatedRoute } from '@angular/router';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { Order, Product } from '../../../core/item/item-response.interface';
+import { UploadConfirmationModalComponent } from '../../list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -47,6 +48,7 @@ export class CatalogProListComponent implements OnInit {
   public subscriptionPlan: number;
   public plannedCityPurchase: number;
   public plannedCountryPurchase: number;
+  private uploadModalRef: NgbModalRef;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -61,6 +63,7 @@ export class CatalogProListComponent implements OnInit {
 
   ngOnInit() {
     this.getCounters();
+    this.getItems();
     let sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
     this.orderBy = [];
     sorting.forEach((sort) => {
@@ -70,7 +73,12 @@ export class CatalogProListComponent implements OnInit {
       });
     });
 
-    this.getItems();
+    this.eventService.subscribe('itemChangeStatus', (items) => {
+      items.forEach((id: string) => {
+        let index: number = _.findIndex(this.items, {'id': id});
+        this.items.splice(index, 1);
+      });
+    });
 
     setTimeout(() => {
       this.router.events.takeWhile(() => this.active).subscribe((evt) => {
@@ -79,14 +87,6 @@ export class CatalogProListComponent implements OnInit {
         }
         this.end = false;
         this.getItems();
-
-        this.eventService.subscribe('itemChangeStatus', (items) => {
-          items.forEach((id: string) => {
-            let index: number = _.findIndex(this.items, {'id': id});
-            this.items.splice(index, 1);
-          });
-        });
-        this.isRedirect = !this.getRedirectToTPV();
       });
       this.route.params.subscribe((params: any) => {
         if (!params.urgent) {
@@ -118,7 +118,20 @@ export class CatalogProListComponent implements OnInit {
           }, () => {
           });
         }
-        if (params && params.urgent) {
+        if (params && params.created) {
+          this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
+            windowClass: 'upload',
+          });
+          this.uploadModalRef.result.then((orderEvent: OrderEvent) => {
+            this.uploadModalRef = null;
+            if (orderEvent) {
+              this.isUrgent = true;
+              this.isRedirect = !this.getRedirectToTPV();
+              this.feature(orderEvent);
+            }
+          }, () => {
+          });
+        } else if (params && params.urgent) {
           this.isUrgent = true;
           this.isRedirect = !this.getRedirectToTPV();
           if (!this.getRedirectToTPV()) {
@@ -126,6 +139,12 @@ export class CatalogProListComponent implements OnInit {
               this.getUrgentPrice(params.itemId);
             }, 3000);
           }
+        } else if (params && params.updated) {
+          this.cache = false;
+          this.getItems();
+          this.errorService.i18nSuccess('itemUpdated');
+        } else if (params && params.createdOnHold) {
+          this.errorService.i18nError('productCreated', ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.');
         }
       });
     });
@@ -174,6 +193,7 @@ export class CatalogProListComponent implements OnInit {
 
   public filterByStatus(status: string) {
     this.selectedStatus = status;
+    this.itemService.deselectItems();
     this.page = 1;
     this.getItems();
     this.getNumberOfProducts();

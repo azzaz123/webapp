@@ -523,7 +523,7 @@ export class ItemService extends ResourceService {
       })
       .map((res: Item[]) => {
         let sort: string[] = sortBy.split('_');
-        let field: string = sort[0] === 'price' ? 'salePrice' : 'publishedDate';
+        let field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
         let sorted: Item[] = _.sortBy(res, [field]);
         if (sort[1] === 'desc') {
           return _.reverse(sorted);

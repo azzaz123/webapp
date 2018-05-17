@@ -59,7 +59,7 @@ $feature-button-width: 170px;
     transform: translateY(-2px);
     box-shadow: 0 2px 10px 0 rgba(37,50,56,.1);
   }
-  &.expired, &.pending {
+  &.expired, &.pending, &.onhold {
     &::after {
       content: '';
       position: absolute;
@@ -68,7 +68,7 @@ $feature-button-width: 170px;
       bottom: 0;
       left: 0;
       background-color: $white;
-      opacity: .6;
+      opacity: .5;
       z-index: 1;
       border-radius: $border-radius;
     }

@@ -35,11 +35,11 @@
          [routerLink]="['/catalog/upload']"
          *ngIf="(!loading || (loading && items.length)) && selectedStatus === 'published'">
       </a>
-      <div id="catalog-empty-state" *ngIf="!items.length && !loading || subscriptionPlan - counters?.publish > 0">
+      <div id="catalog-empty-state" *ngIf="!items.length && !loading || subscriptionPlan - counters?.publish > 0 && selectedStatus === 'active'">
         <mat-icon svgIcon="pro-items-empty-state" class="image"></mat-icon>
         <div class="empty-text" *ngIf="subscriptionPlan - counters?.publish > 0 && counters?.onHold <= 0 && selectedStatus === 'active'">
           <span i18n>You can publish <b>{{subscriptionPlan - counters.publish}} more cars</b> with your current plan.</span>
-          <span i18n><a href="/catalog/upload">Upload now</a></span>
+          <span i18n><a href="pro/catalog/upload">Upload now</a></span>
         </div>
         <div class="empty-text" *ngIf="subscriptionPlan - counters?.publish > 0 && counters?.onHold > 0 && selectedStatus === 'active'">
           <span i18n>You can publish <b>{{subscriptionPlan - counters?.publish}} more cars</b> with your current plan.</span>
