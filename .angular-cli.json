@@ -11,11 +11,7 @@
         "assets",
         "favicon.ico",
         "manifest.json",
-        "service-worker.js",
-        "doubleclick",
-        "eyeblaster",
-        "flashtalking",
-        "ftlocal"
+        "service-worker.js"
       ],
       "index": "index.html",
       "main": "main.ts",

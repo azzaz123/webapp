@@ -26,7 +26,6 @@ export class TopbarComponent implements OnInit {
   @Input() isMyZone: boolean;
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('kwsEl') kwsEl: ElementRef;
-  public isProfessional: boolean;
 
   constructor(public userService: UserService,
               private windowRef: WindowRef,
@@ -38,9 +37,6 @@ export class TopbarComponent implements OnInit {
   ngOnInit() {
     this.userService.me().subscribe((user) => {
       this.user = user;
-    });
-    this.userService.isProfessional().subscribe((value: boolean) => {
-      this.isProfessional = value;
     });
   }
 

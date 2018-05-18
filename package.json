@@ -16,8 +16,7 @@
     "serve": "ng serve --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
     "test": "ng test --single-run --no-progress --reporters spec --browsers ChromeHeadless",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

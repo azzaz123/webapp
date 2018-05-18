@@ -1,1 +1,14 @@
-<svg width="7" height="12" viewBox="0 0 7 12" xmlns="http://www.w3.org/2000/svg"><g id="Profile_section" fill="none" fill-rule="evenodd"><g id="Webapp---Profile-" transform="translate(-952 -1067)" fill-rule="nonzero" fill="#90A4AE"><g id="Group-9" transform="translate(952 1067)"><path d="M7.151 8.33a1 1 0 0 0 1.296-1.524l-4-3.4a1 1 0 0 0-1.296 0l-4 3.4A1 1 0 0 0 .447 8.33l3.352-2.85 3.352 2.85z" id="Page-1" transform="rotate(90 3.799 5.868)"/></g></g></g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="7px" height="12px" viewBox="0 0 7 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>ic_arrow</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Profile_section" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Webapp---Profile-" transform="translate(-952.000000, -1067.000000)" fill-rule="nonzero" fill="#90A4AE">
+            <g id="Group-9" transform="translate(952.000000, 1067.000000)">
+                <path d="M7.15140165,8.33033748 C7.57220912,8.68802382 8.20330304,8.63685404 8.56098939,8.21604658 C8.91867573,7.79523911 8.86750596,7.16414519 8.44669849,6.80645884 L4.44669849,3.40645884 C4.07326997,3.0890446 3.52483017,3.0890446 3.15140165,3.40645884 L-0.848598349,6.80645884 C-1.26940581,7.16414519 -1.32057559,7.79523911 -0.962889247,8.21604658 C-0.605202901,8.63685404 0.0258910256,8.68802382 0.446698491,8.33033748 L3.79905007,5.48083863 L7.15140165,8.33033748 Z" id="Page-1" transform="translate(3.799050, 5.868408) rotate(-270.000000) translate(-3.799050, -5.868408) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

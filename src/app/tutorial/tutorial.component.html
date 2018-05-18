@@ -1,60 +1,29 @@
 <div id="main-veil">
   <div id="content-veil">
 
-    <div *ngxPermissionsOnly="['isNormal']">
-      <div class="step-0" *ngIf="tutorialService.step === 0" [@fade]>
-        <h1 i18n>Introducing our new webpage!</h1>
-        <p i18n>You're in the zone to access all of the features of the app.</p>
-      </div>
-
-      <div class="step step-1" *ngIf="tutorialService.step === 1" [@fade]>
-        <p i18n>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</p>
-      </div>
-
-      <div class="step step-2" *ngIf="tutorialService.step === 2" [@fade]>
-        <p i18n>From here you can view your items, you can choose to upload more or edit and feature the items you have for sale.</p>
-      </div>
-
-      <div class="step step-3" *ngIf="tutorialService.step === 3" [@fade]>
-        <p i18n>View your conversations and reply via the webpage or from the app. Oh see it works well from the webpage!</p>
-      </div>
-
-      <div class="step step-4" *ngIf="tutorialService.step === 4" [@fade]>
-        <p i18n>Your favorites can be seen on the big screen which might help make up your mind.</p>
-      </div>
-
-      <div class="step step-5" *ngIf="tutorialService.step === 5" [@fade]>
-        <p i18n>See your profile reviews. Is the community leaving good feedback?</p>
-      </div>
+    <div class="step-0" *ngIf="tutorialService.step === 0" [@fade]>
+      <h1 i18n>Introducing our new webpage!</h1>
+      <p i18n>You're in the zone to access all of the features of the app.</p>
     </div>
 
-    <div *ngxPermissionsOnly="['isProfessional']">
+    <div class="step step-1" *ngIf="tutorialService.step === 1" [@fade]>
+      <p i18n>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</p>
+    </div>
 
-      <div class="step-0" *ngIf="tutorialService.step === 0" [@fade]>
-        <h1 i18n>Introducing our new webpage pro!</h1>
-        <p i18n>You're in the pro zone to access all of the features of the app and protool.</p>
-      </div>
+    <div class="step step-2" *ngIf="tutorialService.step === 2" [@fade]>
+      <p i18n>From here you can view your items, you can choose to upload more or edit and feature the items you have for sale.</p>
+    </div>
 
-      <div class="step step-1-pro" *ngIf="tutorialService.step === 1" [@fade]>
-        <p i18n>From here you can view and edit your profile, billing info and check your listing car plan and your visibility plan. Also you can set your location and the location of your items, change your photo and password and edit your email address.</p>
-      </div>
+    <div class="step step-3" *ngIf="tutorialService.step === 3" [@fade]>
+      <p i18n>View your conversations and reply via the webpage or from the app. Oh see it works well from the webpage!</p>
+    </div>
 
-      <div class="step step-2-pro" *ngIf="tutorialService.step === 2" [@fade]>
-        <p i18n>Here you can see statistics related with visualizations, chats and calls received from your items. Also you can see the impact when you have featured cars in the metrics.</p>
-      </div>
+    <div class="step step-4" *ngIf="tutorialService.step === 4" [@fade]>
+      <p i18n>Your favorites can be seen on the big screen which might help make up your mind.</p>
+    </div>
 
-      <div class="step step-3-pro" *ngIf="tutorialService.step === 3" [@fade]>
-        <p i18n>From here you can view your items, you can choose to upload more, active your items or edit and feature the items you have for sale.</p>
-      </div>
-
-      <div class="step step-4-pro" *ngIf="tutorialService.step === 4" [@fade]>
-        <p i18n>View your conversations and reply via the webpage or from the app. Oh see it works well from the webpage!</p>
-      </div>
-
-      <div class="step step-5-pro" *ngIf="tutorialService.step === 5" [@fade]>
-        <p i18n>Here you can manage and see the information related with your calls.</p>
-      </div>
-
+    <div class="step step-5" *ngIf="tutorialService.step === 5" [@fade]>
+      <p i18n>See your profile reviews. Is the community leaving good feedback?</p>
     </div>
 
     <a [routerLink]="['/catalog/list']" id="close" tslTrackEvent="MYZONE_CLOSETUTORIAL">

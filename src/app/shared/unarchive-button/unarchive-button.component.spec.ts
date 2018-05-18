@@ -9,15 +9,11 @@ import { CONVERSATION_ID, MOCK_CONVERSATION } from '../../../tests/conversation.
 import { Lead } from '../../core/conversation/lead';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { CallsService } from '../../core/conversation/calls.service';
-import { MOCK_CALL, CALL_ID } from '../../../tests/call.fixtures';
 
 describe('UnarchiveButtonComponent', () => {
   let component: UnarchiveButtonComponent;
   let fixture: ComponentFixture<UnarchiveButtonComponent>;
   let conversationService: ConversationService;
-  let callsService: CallsService;
-  let trackingService: TrackingService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -32,13 +28,6 @@ describe('UnarchiveButtonComponent', () => {
             return Observable.of({});
           }
         }
-        },
-        {
-          provide: CallsService, useValue: {
-            unarchive() {
-              return Observable.of({});
-            }
-          }
         }
       ],
       declarations: [ UnarchiveButtonComponent ],
@@ -51,34 +40,17 @@ describe('UnarchiveButtonComponent', () => {
     fixture = TestBed.createComponent(UnarchiveButtonComponent);
     component = fixture.componentInstance;
     conversationService = TestBed.get(ConversationService);
-    callsService = TestBed.get(CallsService);
-    trackingService = TestBed.get(TrackingService);
     fixture.detectChanges();
   });
 
   describe('unarchive', () => {
-    beforeEach(() => {
-      spyOn(trackingService, 'track').and.callThrough();
-    });
-
-    it('should call unarchive conversation if the lead is conversation and send a conversation mark pending track', () => {
+    it('should call unarchive', () => {
       spyOn(conversationService, 'unarchive').and.callThrough();
       component.lead = <Lead>MOCK_CONVERSATION();
 
       component.unarchive(new Event('click'));
 
-      expect(conversationService.unarchive).toHaveBeenCalledWith(CONVERSATION_ID);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_MARK_PENDING);
-    });
-
-    it('should call unarchive call if the lead is call and send a call mark pending track', () => {
-      spyOn(callsService, 'unarchive').and.callThrough();
-      component.lead = <Lead>MOCK_CALL();
-
-      component.unarchive(new Event('click'));
-
-      expect(callsService.unarchive).toHaveBeenCalledWith(CALL_ID);
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CALLS_MARK_PENDING);
+      expect(conversationService.unarchive).toHaveBeenCalledWith(CONVERSATION_ID)
     });
   });
 });

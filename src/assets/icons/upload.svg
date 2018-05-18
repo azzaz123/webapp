@@ -1,1 +1,21 @@
-<svg width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><g id="Symbols" fill="none" fill-rule="evenodd"><g id="btn_upload_eng" transform="translate(-8 -8)" fill="#FFF"><g id="btn_upload"><g id="icn_plus_fill" transform="translate(8 8)"><path d="M13 1C6.373 1 1 6.373 1 13s5.373 12 12 12 12-5.373 12-12S19.627 1 13 1zm0-1c7.18 0 13 5.82 13 13s-5.82 13-13 13S0 20.18 0 13 5.82 0 13 0z" id="stroke" fill-rule="nonzero" opacity=".5"/><rect id="fill" fill-opacity="0" width="26" height="26" rx="13"/><g id="plus" transform="translate(7 7)"><rect id="Rectangle-50" x="5" width="2" height="12" rx="1"/><rect id="Rectangle-2" y="5" width="12" height="2" rx="1"/></g></g></g></g></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icn_plus_fill</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="btn_upload_eng" transform="translate(-8.000000, -8.000000)" fill="#FFFFFF">
+            <g id="btn_upload">
+                <g id="icn_plus_fill" transform="translate(8.000000, 8.000000)">
+                    <path d="M13,1 C6.372583,1 1,6.372583 1,13 C1,19.627417 6.372583,25 13,25 C19.627417,25 25,19.627417 25,13 C25,6.372583 19.627417,1 13,1 Z M13,0 C20.1797017,-1.31888981e-15 26,5.82029825 26,13 C26,20.1797017 20.1797017,26 13,26 C5.82029825,26 8.79259876e-16,20.1797017 0,13 C-8.79259876e-16,5.82029825 5.82029825,1.31888981e-15 13,0 Z" id="stroke" fill-rule="nonzero" opacity="0.5"></path>
+                    <rect id="fill" fill-opacity="0" x="0" y="0" width="26" height="26" rx="13"></rect>
+                    <g id="plus" transform="translate(7.000000, 7.000000)">
+                        <rect id="Rectangle-50" x="5" y="0" width="2" height="12" rx="1"></rect>
+                        <rect id="Rectangle-2" x="0" y="5" width="12" height="2" rx="1"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

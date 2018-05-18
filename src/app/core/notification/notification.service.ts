@@ -24,18 +24,13 @@ export class NotificationService {
     });
   }
 
-  public sendBrowserNotification(message: Message, itemId: string) {
+  public sendBrowserNotification(message: Message) {
     if (this.hidden) {
       this.notificationService.create(this.i18n.getTranslations('newMessageNotification') + message.user.microName, {
         body: message.message,
         icon: message.user.image ? message.user.image.urls_by_size.medium : PLACEHOLDER_AVATAR
       }).subscribe((event: any) => {
-        this.trackingService.track(TrackingService.NOTIFICATION_RECEIVED, {
-          thread_id: message.conversationId,
-          from_user_id: message.user.id,
-          item_id: itemId,
-          message_id: message.id
-        });
+        this.trackingService.track(TrackingService.MESSAGE_NOTIFIED, {conversation_id: message.conversationId});
         setTimeout(() => {
           event.notification.close();
         }, NOTIFICATION_DURATION);

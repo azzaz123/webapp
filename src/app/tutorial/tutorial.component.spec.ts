@@ -5,7 +5,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TutorialService } from '../core/tutorial/tutorial.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
-import { NgxPermissionsModule } from 'ngx-permissions';
 
 describe('TutorialComponent', () => {
   let component: TutorialComponent;
@@ -15,7 +14,7 @@ describe('TutorialComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NgxPermissionsModule.forRoot()],
+      imports: [NoopAnimationsModule],
       declarations: [TutorialComponent],
       providers: [
         {

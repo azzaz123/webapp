@@ -17,7 +17,7 @@ import { DndModule } from 'ng2-dnd';
 import { SelectModule } from 'ng-select';
 import { CarSuggestionsService } from './upload/upload-car/car-suggestions.service';
 import { CarKeysService } from './upload/upload-car/car-keys.service';
-import { NgbButtonsModule, NgbCarouselModule, NgbDropdownModule, NgbPopoverModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbCarouselModule, NgbDropdownModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { ElasticModule } from 'ng-elastic';
 import { UploadConfirmationModalComponent } from './list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { PreviewModalComponent } from './upload/preview-modal/preview-modal.component';
@@ -36,14 +36,6 @@ import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.co
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
 import { UrgentCheckboxComponent } from './upload/urgent-checkbox/urgent-checkbox.component';
 import { SabadellComponent } from './sabadell/sabadell.component';
-import { CheckoutExtrasProComponent } from './checkout/checkout-extras-pro/checkout-extras-pro.component';
-import { CheckoutExtrasProItemComponent } from './checkout/checkout-extras-pro/checkout-extras-pro-item/checkout-extras-pro-item.component';
-import { CheckoutProComponent } from './checkout/checkout-pro/checkout-pro.component';
-import { CheckoutProItemComponent } from './checkout/checkout-pro/checkout-pro-item/checkout-pro-item.component';
-import { CartProComponent } from './checkout/checkout-pro/cart-pro/cart-pro.component';
-import { RangeDatepickerComponent } from './checkout/checkout-pro/range-datepicker/range-datepicker.component';
-import { CartExtrasProComponent } from './checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component';
-import { BillingInfoComponent } from './checkout/checkout-extras-pro/billing-info/billing-info.component';
 
 @NgModule({
   imports: [
@@ -63,8 +55,7 @@ import { BillingInfoComponent } from './checkout/checkout-extras-pro/billing-inf
     NgbDropdownModule,
     NgbPopoverModule,
     NgbCarouselModule,
-    GeolocationModule,
-    NgbDatepickerModule
+    GeolocationModule
   ],
   providers: [
     CarSuggestionsService,
@@ -94,15 +85,7 @@ import { BillingInfoComponent } from './checkout/checkout-extras-pro/billing-inf
     BumpTutorialComponent,
     UrgentConfirmationModalComponent,
     UrgentCheckboxComponent,
-    SabadellComponent,
-    CheckoutExtrasProComponent,
-    CheckoutExtrasProItemComponent,
-    CheckoutProComponent,
-    CheckoutProItemComponent,
-    CartProComponent,
-    RangeDatepickerComponent,
-    CartExtrasProComponent,
-    BillingInfoComponent
+    SabadellComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

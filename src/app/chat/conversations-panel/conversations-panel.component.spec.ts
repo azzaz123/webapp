@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConversationService } from '../../core/conversation/conversation.service';
-import { EventService } from '../../core/event/event.service';
+import { EventService } from 'app/core/event/event.service';
 import { UserService } from '../../core/user/user.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TrackingService } from '../../core/tracking/tracking.service';
@@ -90,7 +90,7 @@ describe('Component: ConversationsPanel', () => {
         {provide: UserService, useValue: {
           queryParams: {},
           isProfessional() {
-            return Observable.of(true);
+            return Observable.of(true)
           }
         }},
         {
@@ -328,7 +328,7 @@ describe('Component: ConversationsPanel', () => {
       });
       component['conversations'] = createConversationsArray(3);
       component.loading = false;
-      expect(ret.loaded).toBe(true);
+      expect(ret.loaded).toBeTruthy();
       expect(ret.total).toBe(3);
     });
 
@@ -338,7 +338,7 @@ describe('Component: ConversationsPanel', () => {
         ret = event;
       });
       component.loading = true;
-      expect(ret.loaded).toBe(false);
+      expect(ret.loaded).toBeFalsy();
       expect(ret.total).toBe(0);
     });
 
@@ -390,7 +390,7 @@ describe('Component: ConversationsPanel', () => {
 
       eventService.emit(EventService.CONVERSATION_UNARCHIVED);
 
-      expect(component.archive).toBe(false);
+      expect(component.archive).toBeFalsy();
       expect(component['page']).toBe(1);
       expect(component['getConversations']).toHaveBeenCalledTimes(2);
       expect(component.setCurrentConversation).toHaveBeenCalled();
@@ -497,6 +497,17 @@ describe('Component: ConversationsPanel', () => {
       expect(conversationService.addLead).toHaveBeenCalledWith(convWithMessages);
       expect(component.setCurrentConversation).toHaveBeenCalledWith(convWithMessages);
     });
+
+    it('should send the tracking event for new conversation created', () => {
+      const conversation = MOCK_CONVERSATION();
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      spyOn(trackingService, 'track');
+
+      (component as any).createConversationAndSetItCurrent();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
+        { user_id: conversation.user.id, item_id: conversation.item.id, thread_id: conversation.id });
+    });
   });
 
   describe('filterByArchived', () => {
@@ -509,7 +520,7 @@ describe('Component: ConversationsPanel', () => {
     it('should set archive true', () => {
       component.filterByArchived(true);
 
-      expect(component.archive).toBe(true);
+      expect(component.archive).toBeTruthy();
       expect(component['page']).toBe(1);
       expect(component['getConversations']).toHaveBeenCalled();
     });
@@ -517,7 +528,7 @@ describe('Component: ConversationsPanel', () => {
     it('should set archive false', () => {
       component.filterByArchived(false);
 
-      expect(component.archive).toBe(false);
+      expect(component.archive).toBeFalsy();
       expect(component['page']).toBe(1);
       expect(component['getConversations']).toHaveBeenCalled();
     });

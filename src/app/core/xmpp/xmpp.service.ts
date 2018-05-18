@@ -11,8 +11,6 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
-import { Conversation } from '../conversation/conversation';
-import { ISubscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class XmppService {
@@ -26,7 +24,6 @@ export class XmppService {
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
-  private sentAckSubscription: ISubscription;
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
@@ -48,45 +45,22 @@ export class XmppService {
     }
   }
 
-  public sendMessage(conversation: Conversation, body: string) {
+  public sendMessage(userId: string, conversationId: string, body: string) {
     const message: XmppBodyMessage = {
       id: this.client.nextId(),
-      to: this.createJid(conversation.user.id),
+      to: this.createJid(userId),
       from: this.currentJid,
-      thread: conversation.id,
+      thread: conversationId,
       type: 'chat',
       request: {
         xmlns: 'urn:xmpp:receipts',
       },
       body: body
     };
-
-    if (!conversation.messages.length) {
-      this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
-        to_user_id: conversation.user.id,
-        item_id: conversation.item.id,
-        thread_id: message.thread,
-        message_id: message.id });
-    }
-    this.trackingService.track(TrackingService.MESSAGE_SENT, {
-      thread_id: message.thread,
-      message_id: message.id,
-      to_user_id: conversation.user.id,
-      item_id: conversation.item.id
-    });
-    this.sentAckSubscription = this.eventService.subscribe(EventService.MESSAGE_SENT_ACK, () => {
-      this.trackingService.track(TrackingService.MESSAGE_SENT_ACK, {
-        thread_id: message.thread,
-        message_id: message.id,
-        to_user_id: conversation.user.id,
-        item_id: conversation.item.id
-      });
-      this.sentAckSubscription.unsubscribe();
-    });
-    this.client.sendMessage(message);
     this.onNewMessage(_.clone(message));
+    this.client.sendMessage(message);
+    this.trackingService.track(TrackingService.MESSAGE_SENT, {conversation_id: message.thread});
   }
-
 
   public sendConversationStatus(userId: string, conversationId: string) {
     this.client.sendMessage({
@@ -257,17 +231,6 @@ export class XmppService {
     });
     this.client.on('message', (message: XmppBodyMessage) => {
       this.onNewMessage(message);
-    });
-    this.client.on('message:sent', (message: XmppBodyMessage) => {
-      if (message.received) {
-        this.eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
-      }
-      if (message.read) {
-        this.eventService.emit(EventService.MESSAGE_READ_ACK);
-      }
-      if (message.body) {
-        this.eventService.emit(EventService.MESSAGE_SENT_ACK);
-      }
     });
     this.client.on('session:started', () => {
       this.client.sendPresence();

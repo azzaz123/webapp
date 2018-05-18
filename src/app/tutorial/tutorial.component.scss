@@ -99,27 +99,21 @@
   position: absolute;
   left: 67px;
   width: 770px;
-  &.step-1, &.step-1-pro {
+  &.step-1 {
     top: $spacing;
   }
-  &.step-2, &.step-2-pro {
+  &.step-2 {
     top: 110px;
   }
   &.step-3 {
     top: 205px;
     width: 820px;
   }
-  &.step-3-pro {
-    top: 225px;
-  }
-  &.step-4, &.step-4-pro {
+  &.step-4 {
     top: 305px;
   }
   &.step-5 {
     top: 405px;
-  }
-  &.step-5-pro {
-    top: 420px;
   }
 }
 

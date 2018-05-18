@@ -367,19 +367,3 @@
     }
   }
 }
-
-
-.main-header-login {
-  &.professional {
-    .main-header-my-zone {
-      &.active {
-        .horizontal-line {
-          border-color: $color-urgent;
-        }
-        span {
-          color: $color-urgent;
-        }
-      }
-    }
-  }
-}

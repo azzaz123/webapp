@@ -1,6 +1,6 @@
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { MOCK_USER, USER_ID } from './user.fixtures.spec';
-import { ITEM_ID, ITEM_LEGACY_ID, MOCK_ITEM } from './item.fixtures.spec';
+import { ITEM_ID, ITEM_LEGACY_ID } from './item.fixtures.spec';
 import { Conversation } from '../app/core/conversation/conversation';
 import { User } from '../app/core/user/user';
 import { Item } from '../app/core/item/item';
@@ -70,7 +70,7 @@ export const CONVERSATION_DATE_ISO: string = new Date().toISOString();
 export const MOCK_CONVERSATION: Function = (id: string = CONVERSATION_ID, userId: string = USER_ID, phone?: string, date: number = CONVERSATION_DATE): Conversation => {
   return new Conversation(id, 1, date, false, new User(userId), new Item(ITEM_ID, ITEM_LEGACY_ID, USER_ID), [], phone, SURVEY_RESPONSES);
 };
-export const SECOND_MOCK_CONVERSATION: Conversation = new Conversation('secondId', 2, CONVERSATION_DATE, false, MOCK_USER, MOCK_ITEM);
+export const SECOND_MOCK_CONVERSATION: Conversation = new Conversation('secondId', 2, CONVERSATION_DATE, false, MOCK_USER);
 export const MOCKED_CONVERSATIONS: Conversation[] = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
 export const NOT_FOUND_CONVERSATION_ID = 'notFound';
 export const MOCK_NOT_FOUND_CONVERSATION: Conversation = new Conversation(
@@ -78,8 +78,7 @@ export const MOCK_NOT_FOUND_CONVERSATION: Conversation = new Conversation(
   99,
   CONVERSATION_DATE,
   false,
-  MOCK_USER,
-  MOCK_ITEM);
+  MOCK_USER);
 
 export function createConversationsArray(total: number, phone?: boolean) {
   const conversations: Conversation[] = [];

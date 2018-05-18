@@ -50,52 +50,49 @@ describe('CartComponent', () => {
         },
         {
           provide: CartService, useValue: {
-            cart$: Observable.of(CART_CHANGE),
-            createInstance() {
-              return new Cart();
-            },
-            remove() {
-            },
-            clean() {
-            }
+          cart$: Observable.of(CART_CHANGE),
+          remove() {
+          },
+          clean() {
           }
+        }
         },
         {
           provide: ItemService, useValue: {
-            purchaseProducts() {
-              return Observable.of({});
-            },
-            deselectItems() {
-            }
+          purchaseProducts() {
+            return Observable.of({});
+          },
+          deselectItems() {
           }
+        }
         },
         {
           provide: ErrorsService, useValue: {
-            i18nError() {
-            },
-            show() {
-            }
+          i18nError() {
+          },
+          show() {
           }
+        }
         },
         {
           provide: PaymentService, useValue: {
-            getFinancialCard() {
-            },
-            pay() {
-              return Observable.of('');
-            }
+          getFinancialCard() {
+          },
+          pay() {
+            return Observable.of('');
           }
+        }
         },
         {
           provide: Router, useValue: {
-            navigate() {
-            }
+          navigate() {
           }
+        }
         }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
@@ -216,7 +213,7 @@ describe('CartComponent', () => {
             });
 
             it('should redirect to code 200', () => {
-              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: 200 }]);
+              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
             });
 
             it('should call deselectItems', () => {
@@ -233,7 +230,7 @@ describe('CartComponent', () => {
             });
 
             it('should redirect to code -1', () => {
-              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: -1 }]);
+              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
             });
           });
 

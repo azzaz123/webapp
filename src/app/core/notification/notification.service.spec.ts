@@ -11,7 +11,6 @@ import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { MOCK_USER, USER_DATA } from '../../../tests/user.fixtures.spec';
 import { PLACEHOLDER_AVATAR, User } from '../user/user';
 import { PushNotificationsService } from 'ng-push';
-import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 
 let service: NotificationService;
 let notification: PushNotificationsService;
@@ -48,7 +47,7 @@ describe('Service: Notification', () => {
       spyOn(Visibility, 'hidden').and.returnValue(true);
       service.init();
       expect(Visibility.change).toHaveBeenCalled();
-      expect(service['hidden']).toBe(true);
+      expect(service['hidden']).toBeTruthy();
     });
 
     it('should call requestPermission', () => {
@@ -82,7 +81,7 @@ describe('Service: Notification', () => {
       });
 
       it('should create a notification if browser is hidden', () => {
-        service.sendBrowserNotification(MOCK_MESSAGE, MOCK_ITEM.id);
+        service.sendBrowserNotification(MOCK_MESSAGE);
         expect(notification.create).toHaveBeenCalledWith('New message from ' + message.user.microName, {
           body: message.message,
           icon: message.user.image.urls_by_size.medium
@@ -94,7 +93,7 @@ describe('Service: Notification', () => {
           USER_DATA.id,
           USER_DATA.micro_name
         );
-        service.sendBrowserNotification(message, MOCK_ITEM.id);
+        service.sendBrowserNotification(message);
         expect(notification.create).toHaveBeenCalledWith('New message from ' + USER_DATA.micro_name, {
           body: message.message,
           icon: PLACEHOLDER_AVATAR
@@ -102,19 +101,16 @@ describe('Service: Notification', () => {
       });
 
       it('should close the notification after creating', fakeAsync(() => {
-        service.sendBrowserNotification(MOCK_MESSAGE, MOCK_ITEM.id);
+        service.sendBrowserNotification(MOCK_MESSAGE);
         tick(NOTIFICATION_DURATION + 1000);
         expect(MOCKED_NOTIFICATION.notification.close).toHaveBeenCalled();
       }));
       it('should track the MessageNotified event', fakeAsync(() => {
         spyOn(trackingService, 'track');
-        service.sendBrowserNotification(MOCK_MESSAGE, MOCK_ITEM.id);
+        service.sendBrowserNotification(MOCK_MESSAGE);
         tick(NOTIFICATION_DURATION + 1000);
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.NOTIFICATION_RECEIVED,
-          { thread_id: MOCK_MESSAGE.conversationId,
-            from_user_id: MOCK_MESSAGE.user.id,
-            item_id: MOCK_ITEM.id,
-            message_id: MOCK_MESSAGE.id });
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_NOTIFIED,
+          {conversation_id: MOCK_MESSAGE.conversationId});
       }));
     });
 
@@ -122,7 +118,7 @@ describe('Service: Notification', () => {
 
       it('should not create a notification if browser is visible', () => {
         service['hidden'] = false;
-        service.sendBrowserNotification(MOCK_MESSAGE, MOCK_ITEM.id);
+        service.sendBrowserNotification(MOCK_MESSAGE);
         expect(notification.create).not.toHaveBeenCalled();
       });
 

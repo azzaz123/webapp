@@ -19,7 +19,7 @@
     </button>
   </div>
 </div>
-<div class="main-header-login" [class.professional]="isProfessional">
+<div class="main-header-login">
   <a class="main-header-chat menu-link" [routerLink]="['/chat']" [routerLinkActive]="['active']">
     <div class="news-badge" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
     <mat-icon svgIcon="messages" class="topbar-icon"></mat-icon>
@@ -28,8 +28,7 @@
   </a>
   <a class="main-header-my-zone menu-link" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_LERDI_BEHAVIOR" [class.active]="isMyZone">
     <tsl-user-avatar class="topbar-avatar" [size]="32" [user]="user" *ngIf="user" [imageUrl]="user?.image?.urls_by_size.medium"></tsl-user-avatar>
-    <span *ngxPermissionsOnly="['isNormal']" i18n>My Zone</span>
-    <span *ngxPermissionsOnly="['isProfessional']" i18n>My Pro Zone</span>
+    <span i18n>My Zone</span>
     <div class="horizontal-line"></div>
   </a>
   <tsl-button [routerLink]="['/catalog/upload']" tslTrackEvent="MYZONE_UPLOAD">
