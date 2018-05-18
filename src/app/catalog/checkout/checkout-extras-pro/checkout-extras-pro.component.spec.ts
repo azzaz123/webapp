@@ -7,7 +7,7 @@ import { createPacksFixture, PREPARED_PACKS } from '../../../../tests/payments.f
 import { FormGroup, FormControl } from '@angular/forms';
 
 
-fdescribe('CheckoutExtrasProComponent', () => {
+describe('CheckoutExtrasProComponent', () => {
   let component: CheckoutExtrasProComponent;
   let fixture: ComponentFixture<CheckoutExtrasProComponent>;
   let paymentService: PaymentService;
