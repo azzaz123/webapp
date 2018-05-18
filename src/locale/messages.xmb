@@ -43,7 +43,7 @@
   <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.ts:35</source>Continue</msg>
   <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.ts:7</source><source>app/shared/process-all-button/process-all-button.component.ts:12</source><source>app/calls/calls.component.ts:28</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.ts:8</source>This will process all the elements in this page.</msg>
-  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.ts:11</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source><source>app/catalog/checkout/checkout-pro/range-datepicker/range-datepicker.component.ts:19</source>Cancel</msg>
+  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.ts:11</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source><source>app/catalog/checkout/checkout-pro/range-datepicker/range-datepicker.component.ts:23</source>Cancel</msg>
   <msg id="4749295647449765550"><source>app/shared/archivable/archivable.component.ts:6</source><source>app/chat/conversations-panel/conversations-panel.component.ts:10</source><source>app/calls/calls.component.ts:24</source>Processed</msg>
   <msg id="5847549463396300276"><source>app/shared/modals/review-modal/review-modal.component.ts:8</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{userName}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="4650730844441578299"><source>app/shared/modals/review-modal/review-modal.component.ts:9</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
@@ -135,7 +135,7 @@
   <msg id="4495547321385209565"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:10</source>Stand out on the wall during 7 days and be easy to find with the filter ASAP</msg>
   <msg id="4568320268241275650"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:15</source>Feature it as ASAP for <ph name="INTERPOLATION"><ex>{{productPrice}}</ex></ph>€</msg>
   <msg id="2091018015289565203"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:16</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:16</source>Share it with your friends:</msg>
-  <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:4</source><source>app/catalog/list/list.component.ts:22</source><source>app/catalog/checkout/checkout.component.ts:9</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:15</source>What can features do for you?</msg>
+  <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:4</source><source>app/catalog/list/list.component.ts:22</source><source>app/catalog/checkout/checkout.component.ts:9</source>What can features do for you?</msg>
   <msg id="6763447295092579753"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:5,7</source>By featuring your item you will make it more visible to the restof the community thanks to its special
                 features. What will that give to you? Basically, that more people will contact you and you&apos;ll sell your
                 items quicker. Take a look at which of the following suits you best. </msg>
@@ -224,7 +224,7 @@
   <msg id="6618892692857491514"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
   <msg id="3542042671420335679"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:6</source>No</msg>
   <msg id="4510233521290203619"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:7</source><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:8</source>Yes, leave</msg>
-  <msg id="8890553633144307762"><source>app/catalog/checkout/checkout.component.ts:3</source><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:3</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:7</source>Back</msg>
+  <msg id="8890553633144307762"><source>app/catalog/checkout/checkout.component.ts:3</source><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:3</source><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:4</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:7</source>Back</msg>
   <msg id="833919813165214228"><source>app/catalog/checkout/checkout.component.ts:14</source>Feature it locally</msg>
   <msg id="4721342773618175343"><source>app/catalog/checkout/checkout.component.ts:15</source>Feature it provincially</msg>
   <msg id="4828515169928166764"><source>app/catalog/checkout/checkout.component.ts:23</source>Feature it your city</msg>
@@ -264,16 +264,16 @@
   <msg id="2595297634596426795"><source>app/catalog/checkout/cart/cart.component.ts:1</source>My features</msg>
   <msg id="6801638153695046345"><source>app/catalog/checkout/cart/cart.component.ts:12</source>Local bump</msg>
   <msg id="7379728362084736907"><source>app/catalog/checkout/cart/cart.component.ts:13</source>Provincial bump</msg>
-  <msg id="2789162672363314854"><source>app/catalog/checkout/cart/cart.component.ts:15</source><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:10</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:11</source>City bump</msg>
-  <msg id="5785357843753565591"><source>app/catalog/checkout/cart/cart.component.ts:16</source>National bump</msg>
+  <msg id="2789162672363314854"><source>app/catalog/checkout/cart/cart.component.ts:15</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:11</source>City bump</msg>
+  <msg id="4669498559280449685"><source>app/catalog/checkout/cart/cart.component.ts:16</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:12</source>Country bump</msg>
   <msg id="2906587845957718064"><source>app/catalog/checkout/cart/cart.component.ts:31</source>Local</msg>
   <msg id="1186759635333538896"><source>app/catalog/checkout/cart/cart.component.ts:32</source>Provincial</msg>
-  <msg id="2314075913167237221"><source>app/catalog/checkout/cart/cart.component.ts:34</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:18</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:26</source>City</msg>
-  <msg id="7928837776892145785"><source>app/catalog/checkout/cart/cart.component.ts:35</source>National</msg>
+  <msg id="2314075913167237221"><source>app/catalog/checkout/cart/cart.component.ts:34</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:18</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:26</source><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:60</source>City</msg>
+  <msg id="516176798986294299"><source>app/catalog/checkout/cart/cart.component.ts:35</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:21</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:27</source><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:66</source>Country</msg>
   <msg id="6377139538537882652"><source>app/catalog/checkout/cart/cart.component.ts:49</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:41</source>Delete list</msg>
   <msg id="3448462145758383019"><source>app/catalog/checkout/cart/cart.component.ts:54</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:46</source>Total</msg>
   <msg id="6581598798517073714"><source>app/catalog/checkout/cart/cart.component.ts:70</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:62</source>+ Add another credit card</msg>
-  <msg id="7274286978511770772"><source>app/catalog/checkout/cart/cart.component.ts:78</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:70</source>Continue to Checkout</msg>
+  <msg id="7274286978511770772"><source>app/catalog/checkout/cart/cart.component.ts:78</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:71</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:76</source>Continue to Checkout</msg>
   <msg id="124288245683167765"><source>app/catalog/upload/urgent-checkbox/urgent-checkbox.component.ts:3</source>Apply the ASAP Feature</msg>
   <msg id="6583839768249288834"><source>app/catalog/upload/urgent-checkbox/urgent-checkbox.component.ts:4,6</source>
       For only <ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph> mark your product as &quot;Asap&quot; for 7 days to differentiate it in the wall and make it easier to find through the asap filter.
@@ -281,18 +281,40 @@
   <msg id="1367227703192400664"><source>app/catalog/upload/urgent-checkbox/urgent-checkbox.component.ts:11</source>Check as ASAP</msg>
   <msg id="6771710083447673223"><source>app/catalog/upload/urgent-checkbox/urgent-checkbox.component.ts:12</source>Checked as ASAP</msg>
   <msg id="1002906181596709279"><source>app/catalog/upload/urgent-checkbox/urgent-checkbox.component.ts:18</source>Your product will be more visible and you will sell it faster.</msg>
-  <msg id="2157586494270826789"><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:9</source>What are the extras?</msg>
-  <msg id="9078334813317415148"><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:16</source>City feauture</msg>
-  <msg id="308057973020043316"><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:24</source>Country feature</msg>
+  <msg id="2157586494270826789"><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:10</source>What are the extras?</msg>
+  <msg id="9078334813317415148"><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:17</source>City feauture</msg>
+  <msg id="308057973020043316"><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:25</source>Country feature</msg>
   <msg id="7570446684738490913"><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro-item/checkout-extras-pro-item.component.ts:4</source>Extra featured 24 hours</msg>
   <msg id="1427434561610422238"><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro-item/checkout-extras-pro-item.component.ts:10</source>Save <ph name="INTERPOLATION"><ex>{{ pack.discount }}</ex></ph>% </msg>
   <msg id="3249513483374643425"><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro-item/checkout-extras-pro-item.component.ts:13</source>Add</msg>
-  <msg id="516176798986294299"><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:21</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:27</source>Country</msg>
   <msg id="6668584344316209309"><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:26</source>Planning</msg>
-  <msg id="5902650689714365570"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:2</source>Resumen de tus destacados</msg>
-  <msg id="4669498559280449685"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:12</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:12</source>Country bump</msg>
-  <msg id="573052668269424754"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:37</source>Aplicar destacados</msg>
+  <msg id="888341446683346521"><source>app/catalog/checkout/checkout-pro/checkout-pro-item/checkout-pro-item.component.ts:22</source>Start date</msg>
+  <msg id="126074860850048964"><source>app/catalog/checkout/checkout-pro/checkout-pro-item/checkout-pro-item.component.ts:27</source>End date</msg>
+  <msg id="3133191810308229654"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:3</source>Featured summary</msg>
+  <msg id="44001008918173539"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:12</source>City planned</msg>
+  <msg id="8307062044109434285"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:14</source>Country planned</msg>
+  <msg id="1270706063203110386"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:17</source>Anything planned yet</msg>
+  <msg id="7608224812897171071"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:19</source> planned</msg>
+  <msg id="6888797559367695264"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:37</source>Balance</msg>
+  <msg id="9139280231181462"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:38</source>city</msg>
+  <msg id="3598887185953670111"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:40</source>country</msg>
+  <msg id="9157216793820090491"><source>app/catalog/checkout/checkout-pro/cart-pro/cart-pro.component.ts:53</source>Apply bumps</msg>
+  <msg id="2920017199919975554"><source>app/catalog/checkout/checkout-pro/range-datepicker/range-datepicker.component.ts:13</source>You have selected </msg>
+  <msg id="1355570958947358343"><source>app/catalog/checkout/checkout-pro/range-datepicker/range-datepicker.component.ts:16</source>city bump</msg>
+  <msg id="8847634013548993288"><source>app/catalog/checkout/checkout-pro/range-datepicker/range-datepicker.component.ts:17</source>country bump</msg>
+  <msg id="6299971173481067869"><source>app/catalog/checkout/checkout-pro/range-datepicker/range-datepicker.component.ts:18</source>city bumps</msg>
+  <msg id="4849465581526004216"><source>app/catalog/checkout/checkout-pro/range-datepicker/range-datepicker.component.ts:19</source>country bumps</msg>
+  <msg id="4391289919356861627"><source>app/catalog/checkout/checkout-pro/range-datepicker/range-datepicker.component.ts:24</source>Apply</msg>
   <msg id="379883361840792630"><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:1</source>Extra features</msg>
+  <msg id="8108541630841000132"><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:1</source>Billing Info</msg>
+  <msg id="6028371114637047813"><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:6</source>First Name</msg>
+  <msg id="4407559560004943843"><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:12</source>Last Name</msg>
+  <msg id="6765071518635771784"><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:18</source>Company Name</msg>
+  <msg id="9005249750227479148"><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:26</source>Billing email</msg>
+  <msg id="643007923046147044"><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:32</source>Billing phone</msg>
+  <msg id="6539741229179513116"><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:40</source>Billing address</msg>
+  <msg id="3164629351326127839"><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:46</source>CIF Number</msg>
+  <msg id="7450324673386885301"><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:54</source>Postal code</msg>
   <msg id="4185227957442923918"><source>app/reviews/reviews.component.ts:13</source>Your Reviews</msg>
   <msg id="5263225898611875859"><source>app/reviews/reviews.component.ts:16</source>This is what people think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:20</source>Your average</msg>

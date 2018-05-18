@@ -236,7 +236,6 @@
   <translation id="2906587845957718064">Barrio</translation>
   <translation id="1186759635333538896">Provincia</translation>
   <translation id="2314075913167237221">Ciudad</translation>
-  <translation id="7928837776892145785">País</translation>
   <translation id="6377139538537882652">Eliminar lista</translation>
   <translation id="3448462145758383019">Total</translation>
   <translation id="6581598798517073714">+ Añadir otra tarjeta</translation>
@@ -359,7 +358,6 @@
   <translation id="308057973020043316">Destacados país</translation>
   <translation id="1427434561610422238">Ahorra un <ph name="INTERPOLATION"><ex>{{ pack.discount }}</ex></ph>% </translation>
   <translation id="3249513483374643425">Añadir</translation>
-  <translation id="516176798986294299">País</translation>
   <translation id="4669498559280449685">Destacado país</translation>
   <translation id="379883361840792630">Destacados extras</translation>
   <translation id="7570446684738490913">Destacados extras de 24 horas</translation>
@@ -443,4 +441,13 @@
   <translation id="4849465581526004216">destacados de país</translation>
   <translation id="8847634013548993288">destacado de país</translation>
   <translation id="5491649508975206315">Para cambiar tu plan llámanos al 674 726 372</translation>
+  <translation id="8108541630841000132">Información de facturación</translation>
+  <translation id="6028371114637047813">Nombre</translation>
+  <translation id="4407559560004943843">Apellidos</translation>
+  <translation id="6765071518635771784">Nombre de la empresa</translation>
+  <translation id="9005249750227479148">Email de facturación</translation>
+  <translation id="643007923046147044">Teléfono de facturación</translation>
+  <translation id="6539741229179513116">Dirección de facturación</translation>
+  <translation id="3164629351326127839">CIF</translation>
+  <translation id="7450324673386885301">Código Postal</translation>
 </translationbundle>
