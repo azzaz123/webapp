@@ -53,6 +53,18 @@ tsl-button /deep/ .btn-logout  {
   }
 }
 
+tsl-button /deep/ .simple  {
+  background-color: transparent;
+  color: $corporate;
+  font-size: $font-size;
+  font-weight: bold;
+  text-decoration: underline;
+  &:hover {
+    background-color: transparent;
+    color: $corporate-dark;
+  }
+}
+
 tsl-spinner {
   width: 100%;
 }

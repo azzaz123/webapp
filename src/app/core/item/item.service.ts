@@ -113,6 +113,12 @@ export class ItemService extends ResourceService {
     this.items.sold.map((item: Item) => {
       item.selected = false;
     });
+    this.items.pending.map((item: Item) => {
+      item.selected = false;
+    });
+    this.items.featured.map((item: Item) => {
+      item.selected = false;
+    });
   }
 
   public getBanReasons(): Observable<BanReason[]> {
@@ -486,6 +492,7 @@ export class ItemService extends ResourceService {
     let end: number = init + pageSize;
     let endStatus: string = status === 'featured' ? 'active' : status;
     let observable: Observable<Item[]>;
+
     if (this.items[status].length && cache) {
       observable = Observable.of(this.items[status]);
     } else {
@@ -500,7 +507,7 @@ export class ItemService extends ResourceService {
                 item.favorites = i.content.favorites;
                 item.conversations = i.content.conversations;
                 item.purchases = i.content.purchases ? i.content.purchases : null;
-                if (item.purchases) {
+                if (item.purchases && item.purchases.scheduled_bump_type) {
                   this.setPlannedPurchase(item);
                 }
                 return item;
@@ -556,7 +563,7 @@ export class ItemService extends ResourceService {
   }
 
   private setPlannedPurchase(item: Item): void {
-    switch (item.purchases.bump_type) {
+    switch (item.purchases.scheduled_bump_type) {
       case 'countrybump':
         this.plannedCountryPurchase++;
         break;

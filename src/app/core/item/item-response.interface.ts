@@ -72,8 +72,10 @@ export interface ItemProContent extends ItemContent {
 
 export interface AutorenewPurchase {
   bump_type: string;
-  start_date: number;
-  end_date: number;
+  expiration_date: number;
+  scheduled_bump_type?: string;
+  scheduled_end_date?: number;
+  scheduled_start_date?: number;
 }
 
 export interface CarContent extends ItemContent {

@@ -195,9 +195,11 @@ export const ITEM_DATA3: ItemProResponse = {
     'publish_date':       ITEM_PUBLISHED_DATE2,
     'seller_id': '1',
     'purchases': {
-      'bump_type': 'city_bump',
-      'start_date': ITEM_PUBLISHED_DATE,
-      'end_date': ITEM_PUBLISHED_DATE2
+      'bump_type': 'citybump',
+      'expiration_date': 1526375664070,
+      'scheduled_bump_type': 'citybump',
+      'scheduled_end_date': 1526515200000,
+      'scheduled_start_date': 1526256000000
     }
   },
   'id': ITEM_ID,
@@ -361,9 +363,11 @@ export const ITEM_DATA_V4: ItemProResponse = {
     'views': 0,
     'conversations': 0,
     'purchases': {
-      'bump_type': 'city_bump',
-      'start_date': 1500545785245,
-      'end_date': 1500545785249
+      'bump_type': 'citybump',
+      'expiration_date': 1526375664070,
+      'scheduled_bump_type': 'citybump',
+      'scheduled_end_date': 1526515200000,
+      'scheduled_start_date': 1526256000000
     }
   }
 };
@@ -411,9 +415,11 @@ export const ITEM_DATA_V5: ItemProResponse = {
     'views': 0,
     'conversations': 0,
     'purchases': {
-      'bump_type': 'city_bump',
-      'start_date': 1500545785245,
-      'end_date': 1500545785249
+      'bump_type': 'citybump',
+      'expiration_date': 1526375664070,
+      'scheduled_bump_type': 'citybump',
+      'scheduled_end_date': 1526515200000,
+      'scheduled_start_date': 1526256000000
     }
   }
 };

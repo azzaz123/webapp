@@ -12,11 +12,12 @@
     <mat-icon svgIcon="delete"></mat-icon>
     <span i18n>Delete</span>
   </button>
-  <button class="btn-delete dark" (click)="deactivate(deactivateItemsModal)" *ngIf="selectedStatus === 'active'"
+  <button class="btn-delete dark" (click)="deactivate(deactivateItemsModal)" *ngIf="selectedStatus === 'active'
+  || selectedStatus === 'featured'"
           [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
   <button class="btn-activate" (click)="activate(activateItemsModal)" *ngIf="selectedStatus === 'pending'"
           [disabled]="!itemService.selectedItems.length" i18n>Activate</button>
-  <tsl-button [hidden]="selectedStatus === 'sold' || selectedStatus === 'pending'" [disabled]="!itemService.selectedItems.length"
+  <tsl-button [hidden]="selectedStatus !== 'active'" [disabled]="!itemService.selectedItems.length"
               className="btn-primary btn-big btn-feat" (click)="feature()" tslTrackEvent="MYCATALOG_PRO_FEATURE"
               i18n="Continue to cart|selected-items-button">Feature</tsl-button>
 </div>

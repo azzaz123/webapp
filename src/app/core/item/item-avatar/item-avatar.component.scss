@@ -82,6 +82,9 @@ $sold-width: 32px;
   &.countrybump {
     background-color: $country-bump;
   }
+  &.planned {
+    background-color: $grey-100;
+  }
 }
 
 .urgent {

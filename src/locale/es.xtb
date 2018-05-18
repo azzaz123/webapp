@@ -346,7 +346,7 @@
   <translation id="7252908727899212022">Marcar como Pendiente</translation>
   <translation id="6570363013146073520">Panel</translation>
   <translation id="5762151072276461448">Llamadas</translation>
-  <translation id="4588618843305891254">Catálogo</translation>
+  <translation id="4588618843305891254">Tu Catálogo</translation>
   <translation id="4662529977781351630">Llamadas</translation>
   <translation id="4812531333997465">Aquí verás y podras gestionar las llamadas recibidas, las perdidas y los teléfonos que te han compartido</translation>
   <translation id="8953033926734869941">Nombre</translation>
@@ -373,21 +373,13 @@
   <translation id="1888437309536533541">Los productos seleccionados serán marcados como pendientes</translation>
   <translation id="2299499307204911989">Activar productos</translation>
   <translation id="3437651521808081039">Los productos seleccionados serán marcados como activos.</translation>
-  <translation id="5462141440964261451">Activo
-      <ph name="START_TAG_SPAN_1"><ex>START_TAG_SPAN_1</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>/<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="8071836626857993456">Inactivo
-      <ph name="START_TAG_SPAN"><ex>START_TAG_SPAN</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="8758145473521943704">Destacado
-    <ph name="START_TAG_SPAN"><ex>START_TAG_SPAN</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="243941754532373935">Vendido
-      <ph name="START_TAG_SPAN"><ex>START_TAG_SPAN</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="3576739165178660027">tu plan</translation>
   <translation id="8756155295186418998">Plan Profesional</translation>
-  <translation id="4154831356233082418">Disponible</translation>
-  <translation id="1859131936150262113">Inactivo</translation>
+  <translation id="4154831356233082418">Disponibles</translation>
+  <translation id="1859131936150262113">Inactivos</translation>
   <translation id="7697915584663780042">visibilidad</translation>
   <translation id="5439433189125089418">Plan Ciudad</translation>
-  <translation id="3955868613858648955">Disponible</translation>
+  <translation id="3955868613858648955">Disponibles</translation>
   <translation id="6211554071012062130"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Plan</translation>
   <translation id="2882470259260755892"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
   <translation id="8488915425381344887">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
@@ -403,24 +395,28 @@
   <translation id="7542752854018206709">Tu compra no se ha podido realizar porque algo ha ido mal con la tarjeta. Comprueba y prueba otra vez. </translation>
   <translation id="7392255340123577556">No tienes un Plan de Ciudad</translation>
   <translation id="1839186591621749773">Publicado</translation>
-  <translation id="6850144876798655647">Paquetes con todos tus items</translation>
+  <translation id="6850144876798655647">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
   <translation id="2246851749264196483">Gestionar mi suscripción</translation>
   <translation id="7122356013178226936">Estas intentando destacar coches que ya tienes planificados</translation>
   <translation id="4011333478005344361">Destacar los productos disponibles</translation>
   <translation id="4701510938988860546">Volver atrás para cancelar bumps</translation>
   <translation id="2571738502834365520">Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="3339663802248788155">Comprar extras</translation>
-  <translation id="8940063789367894785">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>item(s)<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="8940063789367894785">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> item(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="382039398019874632"><ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Subir ahora<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
-  <translation id="1613688231558042205">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>item(s)<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="1613688231558042205">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> item(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="6659060125810978706"><ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Activar coches<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
   <translation id="6587076436244065924">Queda <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="5272763997595694217">Cancelar Autorenovados</translation>
   <translation id="291347435854981703">Seguro que quieres cancelar el autorenovado para este producto?</translation>
   <translation id="2807800733729323332">Sí</translation>
   <translation id="7803839229714588038">Mensaje de error</translation>
-  <translation id="5890828542504757249">Por favor deselecciona algunos productos, llama al 902 902 902 o</translation>
   <translation id="6127871861896654127"> contacta con nosotros</translation>
   <translation id="5849506438355710291">para administrar tu plan.</translation>
   <translation id="7851668152562197014">Estás intentando activar más coches de los que te permite tu plan.</translation>
+  <translation id="8898651038129346696">Por favor deselecciona algunos productos, llama al o</translation>
+  <translation id="8497824097226681583">Inactivos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="8771233863417316687">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="4403347238652124439">Vendidos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="8142970589678873547">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
 </translationbundle>

@@ -26,6 +26,7 @@ export class Item implements Model {
   private _favorited: boolean;
   private _selected = false;
   private _bumpExpiringDate: number;
+  private _bumpLast24h: boolean;
 
   constructor(private _id: string,
               private _legacyId: number,
@@ -224,6 +225,10 @@ export class Item implements Model {
 
   set bumpExpiringDate(value: number) {
     this._bumpExpiringDate = value;
+  }
+
+  get bumpLast24h() {
+    return this._bumpExpiringDate - Date.now() < 86400;
   }
 
   get webSlug(): string {

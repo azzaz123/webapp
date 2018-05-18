@@ -19,4 +19,5 @@ export interface Counters {
   sold: number;
   reports_received: number;
   onHold: number;
+  featured?: number;
 }
