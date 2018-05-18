@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '../core/event/event.service';
 import { Conversation } from '../core/conversation/conversation';
 import { Lead } from '../core/conversation/lead';
-import { I18nService } from '../core/i18n/i18n.service';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { ConversationService } from '../core/conversation/conversation.service';
 import { Filters } from '../core/conversation/conversation-filters';
@@ -18,17 +17,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   public phonesTotal: number;
   public messagesTotal: number;
-  public completed: boolean = false;
+  public completed = false;
   public conversations: Conversation[] = [];
   public calls: Lead[] = [];
-  public loading: boolean = true;
+  public loading = true;
   public archivedLead: Lead;
-  private active: boolean = true;
+  private active = true;
 
   constructor(private callService: CallsService,
               private trackingService: TrackingService,
               private conversationService: ConversationService,
-              private eventService: EventService,) {
+              private eventService: EventService) {
   }
 
   ngOnInit() {
