@@ -1,8 +1,6 @@
 import { CartPro } from './cart-pro';
-import { MOCK_PROITEM, MOCK_PROITEM2, CART_ORDER_PRO } from '../../../../tests/pro-item.fixtures.spec';
+import { MOCK_PROITEM, MOCK_PROITEM2 } from '../../../../tests/pro-item.fixtures.spec';
 import { CartBase } from './cart-base';
-import { OrderPro } from '../../../core/item/item-response.interface';
-import { MOCK_SELECTED_DATES, MOCK_DATE } from '../../../../tests/calendar.fixtures.spec';
 
 describe('CartPro', () => {
 
@@ -15,7 +13,7 @@ describe('CartPro', () => {
   });
 
   it('should create an instance of CartPro', () => {
-    expect(new CartPro() instanceof CartBase).toBe(true);
+    expect(cart instanceof CartPro).toBe(true);
   });
 
   describe('add', () => {

@@ -6,23 +6,11 @@ import { CartProItem } from '../cart/cart-item.interface';
 import { CartService } from '../cart/cart.service';
 import { CartPro } from '../cart/cart-pro';
 import { CalendarDates } from './range-datepicker/calendar-dates';
-import { style, state, animate, transition, trigger } from '@angular/core';
 
 @Component({
   selector: 'tsl-checkout-pro',
   templateUrl: './checkout-pro.component.html',
-  styleUrls: ['./checkout-pro.component.scss'],
-  animations: [
-    trigger('fadeInOut', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(100, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate(100, style({ opacity: 0 }))
-      ])
-    ])
-  ]
+  styleUrls: ['./checkout-pro.component.scss']
 })
 export class CheckoutProComponent implements OnInit {
 

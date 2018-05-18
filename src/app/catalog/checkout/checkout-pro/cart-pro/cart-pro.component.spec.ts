@@ -6,20 +6,18 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CartService } from '../../cart/cart.service';
 import { Observable } from 'rxjs/Observable';
 import { CartPro } from '../../cart/cart-pro';
-import { CartChange, CartProItem } from '../../cart/cart-item.interface';
-import { ITEM_ID, MOCK_ITEM_V3 } from '../../../../../tests/item.fixtures.spec';
+import { CartChange } from '../../cart/cart-item.interface';
+import { ITEM_ID } from '../../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../../core/item/item.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
 import { Router } from '@angular/router';
-import { MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
 import { OrderPro } from '../../../../core/item/item-response.interface';
 import { MOCK_PROITEM } from '../../../../../tests/pro-item.fixtures.spec';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { PerksModel } from '../../../../core/payments/payment.model';
-import { ScheduledStatus, Perks } from '../../../../core/payments/payment.interface';
-import { BUMP_PRO_TYPES } from '../../cart/cart-base';
+import { ScheduledStatus } from '../../../../core/payments/payment.interface';
 
 describe('CartProComponent', () => {
   let component: CartProComponent;

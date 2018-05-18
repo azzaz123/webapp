@@ -1,4 +1,4 @@
-<div class="datepicker-content">
+<div class="datepicker-content" [@fadeInOut]>
   <div class="datepicker-overlay" (click)="onCancel()"></div>
   <div class="datepicker-wrapper">
     <ngb-datepicker #dp (select)="onDateSelection($event)" [navigation]="'none'" [dayTemplate]="t" [minDate]="minDate" [(ngModel)]="model"></ngb-datepicker>

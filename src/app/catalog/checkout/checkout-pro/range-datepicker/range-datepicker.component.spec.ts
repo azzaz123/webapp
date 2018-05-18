@@ -3,6 +3,7 @@ import { NgbCalendar, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { RangeDatepickerComponent } from './range-datepicker.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MOCK_DATE, MOCK_DATE2, MOCK_SELECTED_DATES, MOCK_DATE3 } from '../../../../../tests/calendar.fixtures.spec';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('RangeDatepickerComponent', () => {
   let component: RangeDatepickerComponent;
@@ -10,6 +11,7 @@ describe('RangeDatepickerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [BrowserAnimationsModule],
       declarations: [RangeDatepickerComponent],
       providers: [
         NgbDatepickerConfig,

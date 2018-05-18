@@ -2,6 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output, Injectable } from '@ang
 import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { CalendarDates } from './calendar-dates';
+import { style, animate, transition, trigger } from '@angular/core';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
   one && two && two.year === one.year && two.month === one.month && two.day === one.day;
@@ -49,7 +50,18 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
   selector: 'tsl-range-datepicker',
   templateUrl: './range-datepicker.component.html',
   styleUrls: ['./range-datepicker.component.scss'],
-  providers: [I18nService, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }]
+  providers: [I18nService, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(150, style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate(150, style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 
 export class RangeDatepickerComponent implements OnInit {
@@ -63,7 +75,7 @@ export class RangeDatepickerComponent implements OnInit {
   model;
 
   @Input() bumpType: string;
-  @Input()  selectedDates: CalendarDates;
+  @Input() selectedDates: CalendarDates;
   @Output() closeCalendar: EventEmitter<any> = new EventEmitter();
   @Output() applyCalendar: EventEmitter<CalendarDates> = new EventEmitter();
 

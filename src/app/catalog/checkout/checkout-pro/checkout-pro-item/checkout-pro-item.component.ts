@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import * as moment from 'moment';
 import { CartChange, CartProItem } from '../../cart/cart-item.interface';
 import { CartService } from '../../cart/cart.service';
 import { CartPro } from '../../cart/cart-pro';

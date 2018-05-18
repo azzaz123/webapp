@@ -1,4 +1,3 @@
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarDates } from '../app/catalog/checkout/checkout-pro/range-datepicker/calendar-dates';
 
 export const MOCK_DATE = { year: 2018, month: 5, day: 8 };
