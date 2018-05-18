@@ -567,6 +567,12 @@ export class TrackingService {
     screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
+  public static PRO_PURCHASE_CHECKOUTPROEXTRACART: TrackingEventBase = {
+    name: '699',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
   public static PHONE_LEAD_LIST_ALL_PROCESSED: TrackingEventBase = {
     name: '688',
     category: CATEGORY_IDS.Button,

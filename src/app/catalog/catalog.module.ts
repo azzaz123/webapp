@@ -36,10 +36,14 @@ import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.co
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
 import { UrgentCheckboxComponent } from './upload/urgent-checkbox/urgent-checkbox.component';
 import { SabadellComponent } from './sabadell/sabadell.component';
+import { CheckoutExtrasProComponent } from './checkout/checkout-extras-pro/checkout-extras-pro.component';
+import { CheckoutExtrasProItemComponent } from './checkout/checkout-extras-pro/checkout-extras-pro-item/checkout-extras-pro-item.component';
 import { CheckoutProComponent } from './checkout/checkout-pro/checkout-pro.component';
 import { CheckoutProItemComponent } from './checkout/checkout-pro/checkout-pro-item/checkout-pro-item.component';
 import { CartProComponent } from './checkout/checkout-pro/cart-pro/cart-pro.component';
 import { RangeDatepickerComponent } from './checkout/checkout-pro/range-datepicker/range-datepicker.component';
+import { CartExtrasProComponent } from './checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component';
+import { BillingInfoComponent } from './checkout/checkout-extras-pro/billing-info/billing-info.component';
 
 @NgModule({
   imports: [
@@ -91,10 +95,14 @@ import { RangeDatepickerComponent } from './checkout/checkout-pro/range-datepick
     UrgentConfirmationModalComponent,
     UrgentCheckboxComponent,
     SabadellComponent,
+    CheckoutExtrasProComponent,
+    CheckoutExtrasProItemComponent,
     CheckoutProComponent,
     CheckoutProItemComponent,
     CartProComponent,
-    RangeDatepickerComponent
+    RangeDatepickerComponent,
+    CartExtrasProComponent,
+    BillingInfoComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

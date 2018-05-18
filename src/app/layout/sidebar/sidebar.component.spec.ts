@@ -29,6 +29,9 @@ describe('SidebarComponent', () => {
           },
           me(): Observable<User> {
             return Observable.of(MOCK_USER);
+          },
+          isProfessional() {
+            return Observable.of(true);
           }
         },
         },
@@ -57,6 +60,15 @@ describe('SidebarComponent', () => {
     });
     it('should set the private user variable with the content of the user', () => {
       expect(component.user).toBe(MOCK_USER);
+    });
+
+    it('should call isProfessional and set the attribute', () => {
+      spyOn(userService, 'isProfessional').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.isProfessional).toHaveBeenCalled();
+      expect(component.isProfessional).toBe(true);
     });
   });
 

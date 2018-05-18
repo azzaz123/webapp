@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Pack } from '../../../core/payments/payment.interface';
+import { Pack } from '../../../core/payments/pack';
 
 @Pipe({
   name: 'subscriptionIcon'

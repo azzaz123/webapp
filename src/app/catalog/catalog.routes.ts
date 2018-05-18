@@ -15,6 +15,7 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
 import { CheckoutProComponent } from './checkout/checkout-pro/checkout-pro.component';
 import * as _ from 'lodash';
+import { CheckoutExtrasProComponent } from './checkout/checkout-extras-pro/checkout-extras-pro.component';
 
 const routes: Routes = [
   {
@@ -180,6 +181,18 @@ const routes: Routes = [
               }
             }
           },
+          {
+            path: 'checkout-extras',
+            component: CheckoutExtrasProComponent,
+            data: {
+              isMyZone: true,
+              isProducts: true,
+              permissions: {
+                only: PERMISSIONS.professional,
+                redirectTo: '/catalog/list'
+              }
+            }
+          }
         ]
       },
     ]

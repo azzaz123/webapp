@@ -1,12 +1,4 @@
-export interface ProductResponse {
-  id: string;
-  name: 'BOOST' | 'HIGHLIGHT' | 'BUMP' | 'LISTINGS' | 'CALL_TRACKING' | 'MULTI_PUBLICATOR' | 'LEAD_QUALIFICATION' | 'MULTI_ACCOUNT' | 'NATIONAL_BUMP' | 'BUMP';
-}
-
-export interface Products {
-  [key: string]: ProductResponse;
-}
-
+import { Pack } from './pack';
 export interface PerkResponse {
   expire_date: number;
   perk_id: string;
@@ -39,6 +31,15 @@ export interface Perk {
   };
 }
 
+export interface CartPacks {
+  bumps: Pack;
+  nationals: Pack;
+}
+
+export interface Packs {
+  [key: string]: Pack[];
+}
+
 export interface PackResponse {
   id: string;
   benefits: {
@@ -48,22 +49,18 @@ export interface PackResponse {
   currency: string;
 }
 
-export interface Pack {
+export interface ProductResponse {
   id: string;
-  quantity: number;
-  price: number;
-  currency: string;
-  discount: number;
+  name: 'NATIONAL_BUMP' | 'BUMP' | 'LISTINGS';
 }
 
-export interface Packs {
-  bumps: Pack[];
-  nationals: Pack[];
+export interface Products {
+  [key: string]: ProductResponse;
 }
 
-export interface CartPacks {
-  bumps: Pack;
-  nationals: Pack;
+export interface OrderProExtras {
+  packs: Array<string>;
+  id: string;
 }
 
 export interface BillingInfoResponse {

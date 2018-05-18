@@ -1,4 +1,4 @@
-import { BumpGroup, CartItem, CartProItem } from './cart-item.interface';
+import { BumpGroup, CartItem, CartProItem, CartProExtrasPack } from './cart-item.interface';
 import { UUID } from 'angular2-uuid';
 
 export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];
@@ -25,9 +25,9 @@ export abstract class CartBase {
     collapsed: true
   };
 
-  abstract add(cartItem: CartItem | CartProItem, type: string);
+  abstract add(cartItem: CartItem | CartProItem | CartProExtrasPack, type: string);
 
-  abstract removeCartItem(type: string, itemId?: string);
+  abstract removeCartItem(type: string, itemId?: string, index?: number);
 
   abstract clean();
 
