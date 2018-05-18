@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from './cart.service';
-import { BUMP_TYPES, Cart } from './cart';
+import { Cart } from './cart';
 import { CartChange, CartItem } from './cart-item.interface';
 import { Order } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
@@ -10,6 +10,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { FinancialCard } from '../../../core/payments/payment.interface';
 import { PaymentService } from '../../../core/payments/payment.service';
+import { BUMP_TYPES, CartBase } from './cart-base';
 
 @Component({
   selector: 'tsl-cart',
@@ -20,7 +21,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   @Input() provincialBump: boolean;
   private active = true;
-  public cart: Cart;
+  public cart: CartBase;
   public types: string[] = BUMP_TYPES;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public financialCard: FinancialCard;
@@ -33,6 +34,7 @@ export class CartComponent implements OnInit, OnDestroy {
               private trackingService: TrackingService,
               private paymentService: PaymentService,
               private router: Router) {
+                this.cartService.createInstance(new Cart());
   }
 
   ngOnInit() {

@@ -20,7 +20,8 @@ import {
   Product,
   ProductDurations,
   Purchase,
-  SelectedItemsAction
+  SelectedItemsAction,
+  OrderPro
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
@@ -429,6 +430,11 @@ export class ItemService extends ResourceService {
           data: resp.items[0] ? this.mapRecordData(resp.items[0]) : null
         };
       });
+  }
+
+  public bumpProProducts(orderParams: OrderPro[], orderId: string): Observable<string[]> {
+    return this.http.post('/api/v3/protool/purchaseItems', orderParams)
+    .map((r: Response) => r.json());
   }
 
 }

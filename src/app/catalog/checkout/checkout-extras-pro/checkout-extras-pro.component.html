@@ -1,0 +1,42 @@
+<div class="page-content">
+  <div class="container">
+    <a class="back" *ngIf="!billingInfoFormEnabled" [routerLink]="['/pro/catalog/list']"><mat-icon svgIcon="back-arrow"></mat-icon> <span i18n>Back</span></a>
+    <a class="back" *ngIf="billingInfoFormEnabled" (click)="billingInfoFormEnabled = false"><mat-icon svgIcon="back-arrow"></mat-icon> <span i18n>Back</span></a>
+    <div class="row" *ngIf="packs">
+        <div class="col-xl col-lg-8" *ngIf="!billingInfoFormEnabled">
+          <div class="table-header">
+            <div class="info">
+              <mat-icon [hidden]="true" svgIcon="feature"></mat-icon>
+              <a i18n [hidden]="true">What are the extras?</a>
+            </div>
+            <div class="type city" [hidden]="provincialBump">
+              <div>
+                <div>
+                  <mat-icon svgIcon="bump-city"></mat-icon>
+                </div>
+                <div i18n>City feauture</div>
+              </div>
+            </div>
+            <div class="type country">
+              <div>
+                <div>
+                  <mat-icon svgIcon="bump-country"></mat-icon>
+                </div>
+                <div i18n>Country feature</div>
+              </div>
+            </div>
+          </div>
+          <div class="price-table">
+            <tsl-checkout-extras-pro-item *ngFor="let pack of packs" [pack]="pack"></tsl-checkout-extras-pro-item>
+          </div>
+        </div>
+        <div class="col-xl col-lg-8" *ngIf="billingInfoFormEnabled">
+          <tsl-billing-info (billingInfoFormChange)="onBillingInfoChange($event)"></tsl-billing-info>
+        </div>
+        <div class="cart">
+          <tsl-cart-extras-pro (billingInfoMissing)="onBillingInfoMissing($event)" [billingInfoFormEnabled]="billingInfoFormEnabled" [billingInfoForm]="billingInfoForm"></tsl-cart-extras-pro>
+        </div>
+      </div>
+      <tsl-spinner [firstLoad]="false" [hidden]="packs"></tsl-spinner>
+  </div>
+</div>

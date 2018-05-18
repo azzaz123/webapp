@@ -3,19 +3,20 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileProSubscriptionComponent } from './profile-pro-subscription.component';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { Observable } from 'rxjs/Observable';
-import { createPacksModelFixture, PACK_RESPONSE } from '../../../../tests/payments.fixtures.spec';
-import { PacksModel, PerksModel } from '../../../core/payments/payment.model';
+import { PACK_RESPONSE, createPacksFixture } from '../../../../tests/payments.fixtures.spec';
+import { PerksModel } from '../../../core/payments/payment.model';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { VisibilityProductsModalComponent } from './visibility-products-modal/visibility-products-modal.component';
 import { SubscriptionIconPipe } from './subscription-icon.pipe';
+import { Packs } from '../../../core/payments/payment.interface';
 
 describe('ProfileProSubscriptionComponent', () => {
   let component: ProfileProSubscriptionComponent;
   let fixture: ComponentFixture<ProfileProSubscriptionComponent>;
   let paymentsService: PaymentService;
   let modalService: NgbModal;
-  const packsModel: PacksModel = createPacksModelFixture();
+  const packs: Packs = createPacksFixture();
   const perksModel: PerksModel = new PerksModel();
 
   beforeEach(async(() => {
@@ -25,10 +26,10 @@ describe('ProfileProSubscriptionComponent', () => {
         {
           provide: PaymentService, useValue: {
           getPerks() {
-            return Observable.of(perksModel)
+            return Observable.of(perksModel);
           },
           getSubscriptionPacks() {
-            return Observable.of(packsModel)
+            return Observable.of(packs);
           }
         }
         },
@@ -56,7 +57,7 @@ describe('ProfileProSubscriptionComponent', () => {
   describe('ngOnInit', () => {
     it('should call getSubscriptionPacks and set packs', () => {
       expect(paymentsService.getSubscriptionPacks).toHaveBeenCalled();
-      expect(component.packs).toEqual(packsModel);
+      expect(component.packs).toEqual(packs);
     });
 
     it('should call getPerks and set perks', () => {

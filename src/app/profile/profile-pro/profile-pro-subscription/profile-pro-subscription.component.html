@@ -12,7 +12,7 @@
           <p class="contact" i18n>Contact us on 674 726 372 to upgrade your plan</p>
         </div>
         <div class="packs">
-          <div class="pack" *ngFor="let bump of packs?.getListings(perks?.subscription.listing.quantity)"
+          <div class="pack" *ngFor="let bump of getListings(perks?.subscription.listing.quantity)"
                [ngClass]="{'selected': perks?.subscription.listing.quantity === bump.quantity}">
             <mat-icon [svgIcon]="bump | subscriptionIcon:(perks?.subscription.listing.quantity === bump.quantity)"></mat-icon>
             <div class="name">Plan {{bump.quantity}}</div>
@@ -20,7 +20,7 @@
             <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
             <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.listing.expireDate | date}}</div>
           </div>
-          <div class="pack personal" *ngIf="packs?.getListings(perks?.subscription.listing.quantity).length <= 2">
+          <div class="pack personal" *ngIf="getListings(perks?.subscription.listing.quantity).length <= 2">
             <mat-icon svgIcon="plan-personal-plus"></mat-icon>
             <div class="name" i18n>Personal Plan</div>
             <div class="desc" i18n>We can work out the best plan for you</div>
@@ -48,7 +48,7 @@
           </p>
         </div>
         <div class="packs">
-          <div class="pack" *ngFor="let bump of packs?.getBumps()"
+          <div class="pack" *ngFor="let bump of packs?.cityBump"
                [ngClass]="{'no-discount': !bump.discount, 'selected': perks?.subscription.bump.total === bump.quantity}">
             <div class="quantity-container">
               <div class="quantity">{{bump.quantity}}</div>
@@ -76,7 +76,7 @@
           </p>
         </div>
         <div class="packs">
-          <div class="pack" *ngFor="let bump of packs?.getNationalPacks()"
+          <div class="pack" *ngFor="let bump of packs?.countryBump"
                [ngClass]="{'no-discount': !bump.discount, 'selected': perks?.subscription.national.total === bump.quantity}">
             <div class="quantity-container">
               <div class="quantity">{{bump.quantity}}</div>

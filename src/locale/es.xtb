@@ -73,6 +73,7 @@
   <translation id="4085930761302974863">Favoritos</translation>
   <translation id="3797778920049399855">Cerrar sesión</translation>
   <translation id="4053902008669548465">Mi zona</translation>
+  <translation id="3983509092263971640">Mi zona pro</translation>
   <translation id="4359291232904891489">Marca la localización</translation>
   <translation id="5371960677736303052">¿Dónde?</translation>
   <translation id="958176169457402389">Tus productos se verán en:</translation>
@@ -230,7 +231,7 @@
   <translation id="2595297634596426795">Mis destacados</translation>
   <translation id="6801638153695046345">Destacado de Barrio</translation>
   <translation id="7379728362084736907">Destacado de Provincia</translation>
-  <translation id="2789162672363314854">Destacado de Ciudad</translation>
+  <translation id="2789162672363314854">Destacado ciudad</translation>
   <translation id="5785357843753565591">Destacado de País</translation>
   <translation id="2906587845957718064">Barrio</translation>
   <translation id="1186759635333538896">Provincia</translation>
@@ -281,6 +282,12 @@
   <translation id="4486163214005133487">Accede aquí a todas tus conversaciones. Y contesta a tus mensajes desde donde prefieras, sea ordenador o móvil. Por cierto, verás lo bien que funciona desde la web.</translation>
   <translation id="5289897176155020957">Mira en pantalla grande tus productos favoritos de la app. ¿Quizá aquí te acabes de decidir?</translation>
   <translation id="8328195571736012184">Mira en este punto las valoraciones de tu perfil. ¿Eres una persona de confianza para la comunidad?</translation>
+  <translation id="1747851890616342359">¡Te presentamos nuestra nueva web pro!</translation>
+  <translation id="7965763213079559522">Esta es 'Tu Zona Pro'. Desde aquí podrás utilizar todas las funcionalidades que ya tenías en la app de wallapop y en la protool.</translation>
+  <translation id="5339303196793781359">Aquí puedes ver y editar los datos de tu perfil, información de facturación y ver tu plan de coches y de visibilidad. Podrás marcar tu ubicación (y la de todos tus productos), cambiar tu foto, modificar la contraseña o el email...</translation>
+  <translation id="157339153102985723">Aquí podrás ver estadísticas de visualizaciones de tus productos, número de chats y llamas recibidas. Además podrás ver que impacto tienen los destacados en tus métricas.</translation>
+  <translation id="9086693090800324810">En este punto tendrás acceso a todos tus productos. Además, podrás subir nuevos, editarlos, activarlos o destacarlos.</translation>
+  <translation id="5119878065843230741">Aquí verás y podras gestionar las llamadas recibidas, las perdidas y los teléfonos que te han compartido.</translation>
   <translation id="4563965495368336177">Saltar explicación</translation>
   <translation id="3885497195825665706">Siguiente</translation>
   <translation id="7160029661601775341">¡Listo!</translation>
@@ -347,6 +354,15 @@
   <translation id="6570363013146073520">Panel</translation>
   <translation id="5762151072276461448">Llamadas</translation>
   <translation id="4588618843305891254">Catálogo</translation>
+  <translation id="2157586494270826789">¿Qué son los extras?</translation>
+  <translation id="9078334813317415148">Destacados ciudad</translation>
+  <translation id="308057973020043316">Destacados país</translation>
+  <translation id="1427434561610422238">Ahorra un <ph name="INTERPOLATION"><ex>{{ pack.discount }}</ex></ph>% </translation>
+  <translation id="3249513483374643425">Añadir</translation>
+  <translation id="516176798986294299">País</translation>
+  <translation id="4669498559280449685">Destacado país</translation>
+  <translation id="379883361840792630">Destacados extras</translation>
+  <translation id="7570446684738490913">Destacados extras de 24 horas</translation>
   <translation id="4558593963938972556">Aquí podrás ver y editar los datos de tu perfil</translation>
   <translation id="690637757793763587">Facturación</translation>
   <translation id="7830707034534607415">Suscripción</translation>

@@ -1,0 +1,116 @@
+@import "~style/common";
+
+.item {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $grey-50;
+  margin-bottom: 8px;
+  padding: $spacing-XS 0 $spacing-XS $spacing-M;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .info {
+    position: relative;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 0 1 41%;
+    &:after {
+      content: '';
+      height: 100%;
+      width: 1px;
+      background-color: $grey-50;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    .quantity {
+      $height: 70px;
+      background-color: transparentize($grey-50, 0.35);
+      border-radius: 50%;
+      @include square($height);
+      line-height: $height;
+      font-weight: bold;
+      font-size: $font-size-XL;
+      color: $grey-500;
+      text-align: center;
+    }
+    .title {
+      padding-left: $spacing-S;
+      flex: 1;
+    }
+  }
+  .packs-section {
+    display: flex;
+    flex-grow: 1;
+    height: 70px;
+    .pack {
+      position: relative;
+      display: flex;
+      align-self: stretch;
+      align-items: center;
+      flex: 0 0 50%;
+      justify-content: center;
+      .price {
+        min-width: 35%;
+        text-align: center;
+      }
+      p {
+        margin-bottom: 0;
+        font-size: $font-size;
+        font-weight: bold;
+      }
+      .discount {
+        margin-bottom: -$spacing-1M;
+        color: $zone-bump;
+        font-size: $font-size-XS;
+        font-weight: normal;
+      }
+      .action {
+        margin-left: $spacing-M;
+        min-width: $spacing * 5;
+        .btn-price {
+          background-color: $grey-50;
+          border-radius: $button-border-radius;
+          font-size: $font-size;
+          text-align: center;
+          width: 100%;
+        }
+      }
+    }
+    .pack-countryBump {
+      margin-left: auto;
+      .discount {
+        color: $country-bump;
+      }
+      .action {
+        .btn-price {
+          &:hover {
+            color: $white;
+            background-color: $country-bump;
+          }
+        }
+      }
+    }
+    .pack-cityBump {
+      .action {
+        .btn-price {
+          &:hover {
+            color: $white;
+            background-color: $zone-bump;
+          }
+        }
+      }
+      &:after {
+        content: '';
+        height: 100%;
+        width: 1px;
+        background-color: $grey-50;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+  }
+}
