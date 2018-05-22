@@ -48,7 +48,7 @@ export class CheckoutProComponent implements OnInit {
     this.toggleCalendar();
   }
 
-  toggleCalendar() {
+  private toggleCalendar() {
     this.calendarHidden = !this.calendarHidden;
   }
 }

@@ -107,6 +107,12 @@ describe('CheckoutProComponent', () => {
       expect(component.itemSelected).toBe(MOCK_PROITEM);
       expect(component.calendarHidden).toBe(false);
     });
+
+    it('should open calendar', () => {
+      component.onDateFocus(MOCK_PROITEM);
+
+      expect(component.calendarHidden).toBe(false);
+    });
   });
 
   describe('onApplyCalendar', () => {
@@ -133,30 +139,16 @@ describe('CheckoutProComponent', () => {
       component.onDateFocus(MOCK_PROITEM);
       component.onApplyCalendar(MOCK_SELECTED_DATES);
       spyOn(cartService, 'add');
-      component.addToCart();
     });
 
     it('should call cartService add', () => {
+      component.addToCart();
       expect(cartService.add).toHaveBeenCalledWith(MOCK_PROITEM, MOCK_PROITEM.bumpType);
     });
-  });
 
-  describe('toggleCalendar', () => {
-    it('should hide calendar if opened', () => {
-      component.calendarHidden = false;
-
-      component.toggleCalendar();
-
+    it('should hide calendar', () => {
       expect(component.calendarHidden).toBe(true);
     });
-
-    it('should hide calendar if opened', () => {
-      component.calendarHidden = true;
-
-      component.toggleCalendar();
-
-      expect(component.calendarHidden).toBe(false);
-    });
-
   });
+
 });

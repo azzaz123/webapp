@@ -34,6 +34,25 @@ describe('RangeDatepickerComponent', () => {
     fixture.detectChanges();
   });
 
+  describe('ngOnInit', () => {
+
+    it('should set today date and tomorrow date', () => {
+      component.ngOnInit();
+
+      expect(component.todayDay).toBe(MOCK_DATE);
+      expect(component.tomorrowDay).toBe(MOCK_DATE2);
+    });
+
+    it('should set calendar start and end dates', () => {
+      component.ngOnInit();
+
+      expect(component.startDate).toBe(MOCK_DATE);
+      expect(component.startDate).toBe(component.todayDay);
+      expect(component.endDate).toBe(MOCK_DATE2);
+      expect(component.endDate).toBe(component.tomorrowDay);
+    });
+  });
+
   describe('onDateSelection', () => {
 
     it('should set init date if any date is selected', () => {

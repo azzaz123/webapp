@@ -21,7 +21,7 @@
     height: 100%;
   }  
   .datepicker-wrapper {
-    border-radius: 10px;
+    border-radius: $border-radius;
     padding: $spacing $spacing-L;
     background-color: $white;
     z-index: 1;

@@ -58,7 +58,7 @@ export class CartProComponent implements OnInit {
     this.cartService.clean();
   }
 
-  calculateBalance() {
+  private calculateBalance() {
     if (this.status.autorenew_scheduled.citybump) {
       this.balance['citybump'] = (this.perks.getBumpCounter() - this.status.autorenew_scheduled.citybump) - this.cart['citybump'].total;
     } else {

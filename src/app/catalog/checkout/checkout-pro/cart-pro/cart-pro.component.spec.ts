@@ -140,6 +140,18 @@ describe('CartProComponent', () => {
       expect(paymentsService.getStatus).toHaveBeenCalled();
       expect(component.status).toEqual(MOCK_STATUS);
     });
+
+    it('should calculate balance for city cart', () => {
+      component.ngOnInit();
+
+      expect(component.balance['citybump']).toBe(-16);
+    });
+
+    it('should calculate balance for country cart', () => {
+      component.ngOnInit();
+
+      expect(component.balance['countrybump']).toBe(-21);
+    });
   });
 
   describe('remove', () => {
@@ -162,19 +174,6 @@ describe('CartProComponent', () => {
     });
   });
 
-  describe('calculateBalance', () => {
-    it('should return balance for city cart', () => {
-      component.calculateBalance();
-
-      expect(component.balance['citybump']).toBe(-16);
-    });
-
-    it('should return balance for country cart', () => {
-      component.calculateBalance();
-
-      expect(component.balance['countrybump']).toBe(-21);
-    });
-  });
 
   describe('applyBumps', () => {
     it('should prepare the order', () => {
@@ -242,9 +241,6 @@ describe('CartProComponent', () => {
         expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
         expect(router.navigate).not.toHaveBeenCalled();
       });
-
     });
-
   });
-
 });
