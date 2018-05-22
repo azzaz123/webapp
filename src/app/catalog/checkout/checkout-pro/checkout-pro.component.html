@@ -1,18 +1,14 @@
 <div class="page-content">
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
-        <a class="back" [routerLink]="['/pro/catalog/list']">
-          <mat-icon svgIcon="back-arrow"></mat-icon>
-          <span i18n>Back</span>
-        </a>
-      </div>
-    </div>
-    <div class="row">
       <div class="col-md-9">
         <div class="table-header">
+          <a class="back" [routerLink]="['/pro/catalog/list']">
+            <mat-icon svgIcon="back-arrow"></mat-icon>
+            <span i18n>Back</span>
+          </a>
           <div class="header-first-section">
-            <a class="info" i18n>What can features do for you?</a>
+            <a class="info"></a>
             <div class="bump-types">
               <div class="type city">
                 <div i18n>City</div>
@@ -36,10 +32,6 @@
     </div>
     <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
   </div>
-  <div class="checkout-calendar" *ngIf="!calendarHidden">
-    <div class="checkout-calendar-overlay" (click)="calendarHidden = true"></div>
-    <div class="datepicker-wrapper">
-        <tsl-range-datepicker (applyCalendar)="onApplyCalendar($event)" (closeCalendar)="calendarHidden = true" [bumpType]="itemSelected?.bumpType" [fromDate]="itemSelected?.fromDate" [toDate]="itemSelected?.toDate"></tsl-range-datepicker>
-    </div>
-  </div>
+  <tsl-range-datepicker *ngIf="!calendarHidden" (applyCalendar)="onApplyCalendar($event)" (closeCalendar)="calendarHidden = true"
+    [bumpType]="itemSelected?.bumpType" [selectedDates]="itemSelected?.selectedDates"></tsl-range-datepicker>
 </div>

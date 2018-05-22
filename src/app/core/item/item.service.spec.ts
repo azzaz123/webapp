@@ -52,6 +52,7 @@ import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
 import { CAR_DATA, CAR_DATA_FORM, MOCK_CAR } from '../../../tests/car.fixtures.spec';
 import { Car } from './car';
+import { CART_ORDER_PRO } from '../../../tests/pro-item.fixtures.spec';
 
 describe('Service: Item', () => {
 
@@ -721,6 +722,22 @@ describe('Service: Item', () => {
       });
       expect(observableResponse.count).toBe(LATEST_ITEM_COUNT - 1);
       expect(observableResponse.data).toEqual(null);
+    });
+  });
+
+  describe('bumpProItems', () => {
+    it('should call endpoint', () => {
+      let resp: string[];
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(['1234'])});
+      const API_URL_PROTOOL = 'api/v3/protool';
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+
+      service.bumpProItems(CART_ORDER_PRO).subscribe((r: string[]) => {
+        resp = r;
+      });
+
+      expect(http.post).toHaveBeenCalledWith(API_URL_PROTOOL + '/purchaseItems', CART_ORDER_PRO);
+      expect(resp).toEqual(['1234']);
     });
   });
 

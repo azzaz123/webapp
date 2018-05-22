@@ -1,7 +1,8 @@
 import { CartBase, BUMP_TYPES } from './cart-base';
 import { CartProItem } from './cart-item.interface';
 import * as _ from 'lodash';
-import { Order, OrderPro } from '../../../core/item/item-response.interface';
+import { OrderPro } from '../../../core/item/item-response.interface';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 export class CartPro extends CartBase {
 
@@ -29,7 +30,7 @@ export class CartPro extends CartBase {
   calculateTotals() {
     this.total = 0;
     BUMP_TYPES.forEach((type: string) => {
-      this[type].total = _.sumBy(this[type].cartItems);
+      this[type].total = _.sumBy(this[type].cartItems, (c: CartProItem) => +c.selectedDates.numberOfDays);
       this.total += this[type].total;
     });
   }
@@ -40,11 +41,11 @@ export class CartPro extends CartBase {
       const orders: OrderPro[] = this[type].cartItems.map((cartProItem: CartProItem) => {
         return {
           item_id: cartProItem.item.id,
-          start_date: this.prepareDate(cartProItem.formattedFromDate),
-          end_date: this.prepareDate(cartProItem.formattedToDate),
+          start_date: this.prepareDate(cartProItem.selectedDates.fromDate),
+          end_date: this.prepareDate(cartProItem.selectedDates.toDate),
           autorenew: false,
-          bump: !this.prepareBumpType(cartProItem.bumpType),
-          national: this.prepareBumpType(cartProItem.bumpType)
+          bump: !this.isCountryBump(cartProItem.bumpType),
+          national: this.isCountryBump(cartProItem.bumpType)
         };
       });
       ordersArray.push(...orders);
@@ -52,13 +53,12 @@ export class CartPro extends CartBase {
     return ordersArray;
   }
 
-  prepareDate(date): number {
-    const dateParts: number = date.split('/');
-    const dateObject: number = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]).getTime();
+  prepareDate(date: NgbDateStruct): number {
+    const dateObject: number = new Date(date.year, date.month - 1, date.day).getTime();
     return dateObject;
   }
 
-  prepareBumpType(bumpType: string): boolean {
+  isCountryBump(bumpType: string): boolean {
     return bumpType === 'countrybump' ? true : false;
   }
 

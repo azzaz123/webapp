@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output, Injectable } from '@angular/core';
-import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarDates } from './calendar-dates.interface';
+import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../../../core/i18n/i18n.service';
+import { CalendarDates } from './calendar-dates';
+import { style, animate, transition, trigger } from '@angular/core';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
   one && two && two.year === one.year && two.month === one.month && two.day === one.day;
@@ -49,56 +50,73 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
   selector: 'tsl-range-datepicker',
   templateUrl: './range-datepicker.component.html',
   styleUrls: ['./range-datepicker.component.scss'],
-  providers: [I18nService, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }]
+  providers: [I18nService, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(150, style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate(150, style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
 
 export class RangeDatepickerComponent implements OnInit {
 
   hoveredDate: NgbDateStruct;
   minDate: NgbDateStruct;
-  selectedDates: CalendarDates;
+  startDate: NgbDateStruct;
+  endDate: NgbDateStruct;
+  todayDay: NgbDateStruct;
+  tomorrowDay: NgbDateStruct;
   model;
 
   @Input() bumpType: string;
-  @Input() fromDate: NgbDateStruct;
-  @Input() toDate: NgbDateStruct;
+  @Input() selectedDates: CalendarDates;
   @Output() closeCalendar: EventEmitter<any> = new EventEmitter();
   @Output() applyCalendar: EventEmitter<CalendarDates> = new EventEmitter();
 
-  isHovered = date => this.fromDate && !this.toDate && this.hoveredDate && after(date, this.fromDate) && before(date, this.hoveredDate);
-  isInside = date => after(date, this.fromDate) && before(date, this.toDate);
-  isFrom = date => equals(date, this.fromDate);
-  isTo = date => equals(date, this.toDate);
+  isHovered = date => this.startDate && !this.endDate && this.hoveredDate && after(date, this.startDate) && before(date, this.hoveredDate);
+  isInside = date => after(date, this.startDate) && before(date, this.endDate);
+  isFrom = date => equals(date, this.startDate);
+  isTo = date => equals(date, this.endDate);
 
-  constructor(private calendar: NgbCalendar) {
+  constructor(private calendar: NgbCalendar, config: NgbDatepickerConfig) {
+    config.outsideDays = 'hidden';
     this.minDate = { year: calendar.getToday().year, month: calendar.getToday().month, day: calendar.getToday().day };
   }
 
   ngOnInit() {
+    this.todayDay = this.selectedDates.fromDate;
+    this.tomorrowDay = this.selectedDates.toDate;
+    this.startDate = this.selectedDates.fromDate;
+    this.endDate = this.selectedDates.toDate;
   }
 
   onDateSelection(date: NgbDateStruct) {
-    if (!this.fromDate && !this.toDate) {
-      this.fromDate = date;
-    } else if (this.fromDate && !this.toDate && after(date, this.fromDate)) {
-      this.toDate = date;
+    if (!this.startDate && !this.endDate) {
+      this.startDate = date;
+    } else if (this.startDate && !this.endDate && after(date, this.startDate)) {
+      this.endDate = date;
+      this.selectedDates.fromDate = this.startDate;
+      this.selectedDates.toDate = this.endDate;
     } else {
-      this.toDate = null;
-      this.fromDate = date;
+      this.endDate = null;
+      this.startDate = date;
     }
   }
 
   onCancel() {
+    this.selectedDates.fromDate = this.todayDay;
+    this.selectedDates.toDate = this.tomorrowDay;
     this.closeCalendar.emit();
   }
 
   onApply() {
-    this.selectedDates = {
-      fromDate: this.fromDate,
-      formattedFromDate: new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day).toLocaleDateString(),
-      toDate: this.toDate,
-      formattedToDate: new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day).toLocaleDateString(),
-    };
     this.applyCalendar.emit(this.selectedDates);
   }
+
 }

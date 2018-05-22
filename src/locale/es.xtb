@@ -236,7 +236,6 @@
   <translation id="2906587845957718064">Barrio</translation>
   <translation id="1186759635333538896">Provincia</translation>
   <translation id="2314075913167237221">Ciudad</translation>
-  <translation id="7928837776892145785">País</translation>
   <translation id="6377139538537882652">Eliminar lista</translation>
   <translation id="3448462145758383019">Total</translation>
   <translation id="6581598798517073714">+ Añadir otra tarjeta</translation>
@@ -359,7 +358,6 @@
   <translation id="308057973020043316">Destacados país</translation>
   <translation id="1427434561610422238">Ahorra un <ph name="INTERPOLATION"><ex>{{ pack.discount }}</ex></ph>% </translation>
   <translation id="3249513483374643425">Añadir</translation>
-  <translation id="516176798986294299">País</translation>
   <translation id="4669498559280449685">Destacado país</translation>
   <translation id="379883361840792630">Destacados extras</translation>
   <translation id="7570446684738490913">Destacados extras de 24 horas</translation>
@@ -419,5 +417,37 @@
   <translation id="6314007099242784066">Puntuación de usuario</translation>
   <translation id="3386449481449927569">Tiene un coche en venta</translation>
   <translation id="6901142032077238858">Ver perfil</translation>
+  <translation id="516176798986294299">País</translation>
+  <translation id="6668584344316209309">Planificación</translation>
+  <translation id="3133191810308229654">Resumen de tus destacados</translation>
+  <translation id="4414648729691064163">Cancelar todos</translation>
+  <translation id="1270706063203110386">No has planificado aún</translation>
+  <translation id="city">ciudad</translation>
+  <translation id="3598887185953670111">país</translation>
+  <translation id="9157216793820090491">Aplicar destacados</translation>
+  <translation id="2920017199919975554">Has seleccionado</translation>
+  <translation id="4380053465886000543">destacado</translation>
+  <translation id="5043856462494495753">destacados</translation>
+  <translation id="888341446683346521">Fecha de inicio</translation>
+  <translation id="126074860850048964">Fecha de fin</translation>
+  <translation id="4391289919356861627">Aplicar</translation>
+  <translation id="6888797559367695264">Saldo</translation>
+  <translation id="44001008918173539">Planificados de Ciudad</translation>
+  <translation id="8307062044109434285">Planificados de País</translation>
+  <translation id="9139280231181462">ciudad</translation>
+  <translation id="7608224812897171071"> planificados</translation>
+  <translation id="1355570958947358343">destacado de ciudad</translation>
+  <translation id="6299971173481067869">destacados de ciudad</translation>
+  <translation id="4849465581526004216">destacados de país</translation>
+  <translation id="8847634013548993288">destacado de país</translation>
   <translation id="5491649508975206315">Para cambiar tu plan llámanos al 674 726 372</translation>
+  <translation id="8108541630841000132">Información de facturación</translation>
+  <translation id="6028371114637047813">Nombre</translation>
+  <translation id="4407559560004943843">Apellidos</translation>
+  <translation id="6765071518635771784">Nombre de la empresa</translation>
+  <translation id="9005249750227479148">Email de facturación</translation>
+  <translation id="643007923046147044">Teléfono de facturación</translation>
+  <translation id="6539741229179513116">Dirección de facturación</translation>
+  <translation id="3164629351326127839">CIF</translation>
+  <translation id="7450324673386885301">Código Postal</translation>
 </translationbundle>

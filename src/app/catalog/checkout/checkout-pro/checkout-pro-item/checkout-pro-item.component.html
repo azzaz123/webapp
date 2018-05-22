@@ -1,4 +1,4 @@
-<div class="item">
+<div class="item" *ngIf="cartProItem">
   <div class="item-first-section">
     <div class="item-info">
       <tsl-item-avatar [item]="cartProItem.item" size="big" fallbackLight="true" title="{{cartProItem.item.title}}"></tsl-item-avatar>
@@ -8,26 +8,26 @@
       </div>
     </div>
     <div class="item-actions">
-      <div class="btn-bumps city" [ngClass]="{selected: this.cartProItem.bumpType === 'citybump'}" (click)="selectBump('citybump')">
-        <mat-icon svgIcon="bump-city"></mat-icon>
+      <div class="btn-bumps citybump" [ngClass]="{selected: cartProItem.bumpType === 'citybump'}" (click)="selectBump('citybump')">
+        <mat-icon svgIcon="bump-city-pro"></mat-icon>
       </div>
-      <div class="btn-bumps country" [ngClass]="{selected: this.cartProItem.bumpType === 'countrybump'}" (click)="selectBump('countrybump')">
-        <mat-icon svgIcon="bump-country"></mat-icon>
+      <div class="btn-bumps countrybump" [ngClass]="{selected: cartProItem.bumpType === 'countrybump'}" (click)="selectBump('countrybump')">
+        <mat-icon svgIcon="bump-country-pro"></mat-icon>
       </div>
     </div>
   </div>
   <div class="item-separator"></div>
   <div class="item-second-section">
     <div>
-      <span class="label-date">Start date</span>
-      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.formattedFromDate"
-        [disabled]="!this.cartProItem.bumpType" [ngClass]="{'country': this.cartProItem.bumpType === 'countrybump', 'city': this.cartProItem.bumpType === 'citybump'}">
+      <span class="label-date" i18n>Start date</span>
+      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.selectedDates.formattedFromDate"
+        [disabled]="!cartProItem.bumpType" [ngClass]="cartProItem.bumpType">
     </div>
     <div>
-      <span class="label-date">End date</span>
-      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.formattedToDate"
-        [disabled]="!this.cartProItem.bumpType" [ngClass]="{'country': this.cartProItem.bumpType === 'countrybump', 'city': this.cartProItem.bumpType === 'citybump'}">
+      <span class="label-date" i18n>End date</span>
+      <input class="form-control input-date" (focus)="onDateFocus()" placeholder="dd/mm/yyyy" [(ngModel)]="cartProItem.selectedDates.formattedToDate"
+        [disabled]="!cartProItem.bumpType" [ngClass]="cartProItem.bumpType">
     </div>
-    <div class="item-reset" (click)="removeItem()" [ngClass]="{'disabled': !this.cartProItem.bumpType}"></div>
+    <button class="item-reset" (click)="removeItem()" [disabled]="!cartProItem.bumpType"></button>
   </div>
 </div>

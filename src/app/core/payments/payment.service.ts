@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
-import { FinancialCard, SabadellInfoResponse, Packs,
-  ProductResponse, Products, PackResponse, BillingInfoResponse, OrderProExtras, PerkResponse } from './payment.interface';
+import {
+  FinancialCard, SabadellInfoResponse, Packs,
+  ProductResponse, Products, PackResponse, BillingInfoResponse, OrderProExtras, PerkResponse, ScheduledStatus
+} from './payment.interface';
 import { HttpService } from '../http/http.service';
 import * as _ from 'lodash';
 import { Pack, PACKS_TYPES } from './pack';
@@ -12,6 +14,7 @@ import { PerksModel } from './payment.model';
 export class PaymentService {
 
   private API_URL = 'api/v3/payments';
+  private API_URL_PROTOOL = 'api/v3/protool';
   private products: Products;
   private perksModel: PerksModel;
   constructor(private http: HttpService) {
@@ -31,7 +34,7 @@ export class PaymentService {
 
   public getBillingInfo(): Observable<BillingInfoResponse> {
     return this.http.get(this.API_URL + '/billing-info/me')
-    .map((r: Response) => r.json());
+      .map((r: Response) => r.json());
   }
 
   public updateBillingInfo(data: any): Observable<any> {
@@ -52,43 +55,43 @@ export class PaymentService {
     };
 
     return this.http.get(this.API_URL + '/packs')
-    .map((r: Response) => r.json())
-    .flatMap((packs: PackResponse[]) => {
-      const sortedPacks = this.sortPacksByQuantity(packs);
-      return this.getProducts()
-      .map((products: Products) => {
-        const values = _.groupBy(sortedPacks, (pack) => {
-          return Object.keys(pack.benefits)[0];
-        });
-        const mins = _.mapValues(values, (packsArray) => {
-          return _.min(packsArray.map((pack) => {
-            return _.values(pack.benefits)[0];
-          }));
-        });
-        sortedPacks.forEach((pack: PackResponse) => {
-          const benefitsId: string = Object.keys(pack.benefits)[0];
-          const name: string = PACKS_TYPES[products[benefitsId].name] ? PACKS_TYPES[products[benefitsId].name] : '';
-          const baseQuantity = mins[benefitsId];
-          const responsePrice: number =  packsResponse[name][0] == null ? +pack.price : packsResponse[name][0].price;
-          const basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;
-          const formattedPack: Pack = new Pack(
-            pack.id,
-            pack.benefits[benefitsId],
-            +pack.price,
-            pack.currency,
-            name
-          );
-          formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
+      .map((r: Response) => r.json())
+      .flatMap((packs: PackResponse[]) => {
+        const sortedPacks = this.sortPacksByQuantity(packs);
+        return this.getProducts()
+          .map((products: Products) => {
+            const values = _.groupBy(sortedPacks, (pack) => {
+              return Object.keys(pack.benefits)[0];
+            });
+            const mins = _.mapValues(values, (packsArray) => {
+              return _.min(packsArray.map((pack) => {
+                return _.values(pack.benefits)[0];
+              }));
+            });
+            sortedPacks.forEach((pack: PackResponse) => {
+              const benefitsId: string = Object.keys(pack.benefits)[0];
+              const name: string = PACKS_TYPES[products[benefitsId].name] ? PACKS_TYPES[products[benefitsId].name] : '';
+              const baseQuantity = mins[benefitsId];
+              const responsePrice: number = packsResponse[name][0] == null ? +pack.price : packsResponse[name][0].price;
+              const basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;
+              const formattedPack: Pack = new Pack(
+                pack.id,
+                pack.benefits[benefitsId],
+                +pack.price,
+                pack.currency,
+                name
+              );
+              formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
 
-          if (products[benefitsId].name === 'NATIONAL_BUMP') {
-            packsResponse.countryBump.push(formattedPack);
-          } else if (products[benefitsId].name === 'BUMP') {
-            packsResponse.cityBump.push(formattedPack);
-          }
-        });
-        return packsResponse;
+              if (products[benefitsId].name === 'NATIONAL_BUMP') {
+                packsResponse.countryBump.push(formattedPack);
+              } else if (products[benefitsId].name === 'BUMP') {
+                packsResponse.cityBump.push(formattedPack);
+              }
+            });
+            return packsResponse;
+          });
       });
-    });
   }
 
   public getSubscriptionPacks(): Observable<Packs> {
@@ -99,45 +102,45 @@ export class PaymentService {
     };
 
     return this.http.get(this.API_URL + '/subscription/packs')
-    .map((r: Response) => r.json())
-    .flatMap((packs: PackResponse[]) => {
-      const sortedPacks = this.sortPacksByQuantity(packs);
-      return this.getProducts()
-        .map((products: Products) => {
-          const values = _.groupBy(sortedPacks, (pack) => {
-            return Object.keys(pack.benefits)[0];
-          });
-          const mins = _.mapValues(values, (packsArray) => {
-            return _.min(packsArray.map((pack) => {
-              return _.values(pack.benefits)[0];
-            }));
-          });
-          sortedPacks.forEach((pack: PackResponse) => {
-            const benefitsId: string = Object.keys(pack.benefits)[0];
-            const name: string = PACKS_TYPES[products[benefitsId].name] ? PACKS_TYPES[products[benefitsId].name] : '';
-            const baseQuantity = mins[benefitsId];
-            const responsePrice: number = packsResponse[name][0] == null ? +pack.price : packsResponse[name][0].price;
-            const basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;
-            const formattedPack: Pack = new Pack(
-              pack.id,
-              pack.benefits[benefitsId],
-              +pack.price,
-              pack.currency,
-              name
-            );
-            formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
+      .map((r: Response) => r.json())
+      .flatMap((packs: PackResponse[]) => {
+        const sortedPacks = this.sortPacksByQuantity(packs);
+        return this.getProducts()
+          .map((products: Products) => {
+            const values = _.groupBy(sortedPacks, (pack) => {
+              return Object.keys(pack.benefits)[0];
+            });
+            const mins = _.mapValues(values, (packsArray) => {
+              return _.min(packsArray.map((pack) => {
+                return _.values(pack.benefits)[0];
+              }));
+            });
+            sortedPacks.forEach((pack: PackResponse) => {
+              const benefitsId: string = Object.keys(pack.benefits)[0];
+              const name: string = PACKS_TYPES[products[benefitsId].name] ? PACKS_TYPES[products[benefitsId].name] : '';
+              const baseQuantity = mins[benefitsId];
+              const responsePrice: number = packsResponse[name][0] == null ? +pack.price : packsResponse[name][0].price;
+              const basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;
+              const formattedPack: Pack = new Pack(
+                pack.id,
+                pack.benefits[benefitsId],
+                +pack.price,
+                pack.currency,
+                name
+              );
+              formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
 
-            if (products[benefitsId].name === 'NATIONAL_BUMP') {
-              packsResponse.countryBump.push(formattedPack);
-            } else if (products[benefitsId].name === 'BUMP') {
-              packsResponse.cityBump.push(formattedPack);
-            } else if (products[benefitsId].name === 'LISTINGS') {
-              packsResponse.listings.push(formattedPack);
-            }
+              if (products[benefitsId].name === 'NATIONAL_BUMP') {
+                packsResponse.countryBump.push(formattedPack);
+              } else if (products[benefitsId].name === 'BUMP') {
+                packsResponse.cityBump.push(formattedPack);
+              } else if (products[benefitsId].name === 'LISTINGS') {
+                packsResponse.listings.push(formattedPack);
+              }
+            });
+            return packsResponse;
           });
-          return packsResponse;
-        });
-    });
+      });
   }
 
   public orderExtrasProPack(order: OrderProExtras): Observable<any> {
@@ -198,11 +201,17 @@ export class PaymentService {
       return Observable.of(this.products);
     }
     return this.http.get(this.API_URL + '/products')
-    .map((r: Response) => r.json())
-    .map((products: ProductResponse[]) => {
-      this.products = _.keyBy(products, 'id');
-      return this.products;
-    });
+      .map((r: Response) => r.json())
+      .map((products: ProductResponse[]) => {
+        this.products = _.keyBy(products, 'id');
+        return this.products;
+      });
   }
+
+  public getStatus(): Observable<ScheduledStatus> {
+    return this.http.get(this.API_URL_PROTOOL + '/status')
+      .map((r: Response) => r.json());
+  }
+
 }
 

@@ -52,7 +52,6 @@ describe('CartComponent', () => {
           provide: CartService, useValue: {
             cart$: Observable.of(CART_CHANGE),
             createInstance() {
-              return new Cart();
             },
             remove() {
             },
@@ -112,6 +111,13 @@ describe('CartComponent', () => {
   });
 
   describe('ngOnInit', () => {
+    it('should call createInstance cartService method', () => {
+      spyOn(cartService, 'createInstance').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(cartService.createInstance).toHaveBeenCalledWith(new Cart());
+    });
     it('should set cart', () => {
       expect(component.cart).toEqual(CART);
     });

@@ -1,15 +1,15 @@
 @import "~style/common";
 
 :host {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: relative;
     background: $white;
     border-radius: $border-radius;
     border: solid 1px $grey-50;
     width: 280px;
-    height: calc(100vh - 130px);
+    height: calc(100vh - 150px);
     position: fixed;
     padding: 0 $spacing-XS;
     overflow: hidden;
@@ -19,21 +19,47 @@
     font-size: $font-size-S;
     color: $grey-900;
     font-weight: bold;
-    margin: $spacing $spacing-XS $spacing-S $spacing-XS;
+    margin: 0;
+}
+
+.cancel-icon {
+    cursor: pointer;
+    width: 12px;
+    margin-right: $spacing-XS;    
+    &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
 }
 
 .cart-content {
-    overflow: scroll;
-    padding-bottom: 80px;
+    overflow: auto;
+    padding: $spacing-2M * 2 0 $spacing * 4 0;
+    .cart-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $spacing-M - 2px $spacing-M 0 $spacing-M;
+        background-color: $white;
+        z-index: 1;
+        .btn-clear {
+            cursor: pointer;
+            font-size: $font-size-XXS;
+            color: $grey-500;
+            &.disabled {
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+        }
+    }
 }
 
-.cart-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.items-list {    
+.items-list {
     font-size: $font-size-XS;
     list-style: none;
     padding: 0;
@@ -43,7 +69,7 @@
         margin-top: $spacing-S;
         border-radius: 5px;
         background-color: $white;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 2px 0 rgba($black, 0.05);
         border: solid 0.5px $grey-100;
         display: flex;
         justify-content: flex-start;
@@ -52,9 +78,12 @@
     }
     .cart-description {
         white-space: nowrap;
-        max-width: 50%;
+        width: 60%;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .cart-days {
+        font-weight: bold;
     }
     .type-total {
         padding: 10px;
@@ -64,11 +93,17 @@
             width: 51px;
             height: 30px;
             margin-right: $spacing-XS;
+            &.citybump {
+                /deep/ svg g {
+                    fill: $zone-bump;
+                }
+            }
         }
         .arrow-icon {
             transform: rotate(-90deg) scale(.8);
             width: 9px;
             height: 13px;
+            transition: transform 150ms ease-in;
         }
         &.collapsed {
             .arrow-icon {
@@ -89,17 +124,20 @@
         color: $grey-500;
         font-weight: bold;
     }
-    .zonebump {
-        color: $zone-bump;
-    }
     .citybump {
-        color: $city-bump;
+        color: $zone-bump;
     }
     .countrybump {
         color: $country-bump;
     }
     .type {
+        display: flex;        
+        flex-direction: column;
         flex: 1;
+    }
+    .planned-label {
+        font-weight: bold;
+        color: $grey-500;
     }
     .close-icon {
         @include square(16px);

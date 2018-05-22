@@ -1,13 +1,11 @@
 import { BumpGroup, CartItem, CartProItem, CartProExtrasPack } from './cart-item.interface';
-import { CartPro } from './cart-pro';
-import { Cart } from './cart';
-import { Order } from '../../../core/item/item-response.interface';
 import { UUID } from 'angular2-uuid';
 
 export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];
+export const BUMP_PRO_TYPES = ['citybump', 'countrybump'];
 
 export abstract class CartBase {
-  total: number;
+  total = 0;
 
   zonebump: BumpGroup = {
     total: 0,

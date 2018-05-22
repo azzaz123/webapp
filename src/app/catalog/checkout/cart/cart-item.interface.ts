@@ -1,8 +1,7 @@
 import { Duration } from '../../../core/item/item-response.interface';
-import { Cart } from './cart';
 import { Item } from '../../../core/item/item';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { CartBase } from './cart-base';
+import { CalendarDates } from '../checkout-pro/range-datepicker/calendar-dates';
 import { Pack } from '../../../core/payments/pack';
 
 export interface CartItem {
@@ -12,11 +11,8 @@ export interface CartItem {
 
 export interface CartProItem {
   item: Item;
-  fromDate?: NgbDateStruct;
-  toDate?: NgbDateStruct;
-  formattedFromDate?: string;
-  formattedToDate?: string;
-  bumpType: string;
+  selectedDates: CalendarDates;
+  bumpType?: string;
 }
 
 export interface CartProExtrasPack {
@@ -25,7 +21,7 @@ export interface CartProExtrasPack {
 
 export interface BumpGroup {
   total: number;
-  cartItems: CartItem[] | CartProExtrasPack[];
+  cartItems: CartItem[] | CartProItem[] | CartProExtrasPack[];
   collapsed: boolean;
 }
 

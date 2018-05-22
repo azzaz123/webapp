@@ -1,5 +1,4 @@
 import { Pack } from './pack';
-
 export interface PerkResponse {
   expire_date: number;
   perk_id: string;
@@ -94,4 +93,15 @@ export interface SabadellInfoResponse {
   signature: string;
   signature_version: string;
   target_url: string;
+}
+
+export interface ScheduledStatus {
+  active: boolean;
+  autorenew_alert: number;
+  autorenew_scheduled: ScheduledBumps;
+}
+
+export interface ScheduledBumps {
+  citybump: number;
+  countrybump: number;
 }

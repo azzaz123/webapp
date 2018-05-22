@@ -33,15 +33,16 @@
     justify-content: space-around;
   }
   .item-reset {
-    cursor: pointer;
     width: 9px;
     height: 9px;
     margin-top: $spacing-2M;
     background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOSIgaGVpZ2h0PSI5IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik01LjU2IDQuNWwzLjIyLTMuMjJBLjc1Ljc1IDAgMSAwIDcuNzIuMjJMNC41IDMuNDQgMS4yOC4yMkEuNzUuNzUgMCAxIDAgLjIyIDEuMjhMMy40NCA0LjUuMjIgNy43MmEuNzUuNzUgMCAxIDAgMS4wNiAxLjA2TDQuNSA1LjU2bDMuMjIgMy4yMmEuNzQ4Ljc0OCAwIDAgMCAxLjA2IDAgLjc1Ljc1IDAgMCAwIDAtMS4wNkw1LjU2IDQuNXoiIGZpbGw9IiM2MDdEOEIiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==);
+    background-repeat: no-repeat;
+    border: 0;
     &:hover {
       opacity: 0.5;
     }
-    &.disabled {
+    &:disabled {
       cursor: not-allowed;
       opacity: 0.3;
     }
@@ -51,7 +52,7 @@
   }
   .title {
     margin: 0;
-    font-size: 14px;
+    font-size: $font-size-S;
     color: $grey-250;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -69,25 +70,36 @@
     background-color: $grey-50;
     transition: background-color 0.2s ease-in-out;
     cursor: pointer;
-    &.city {
-      mat-icon {
-        width: 29px;
-      }
+    mat-icon {
+      transition: fill 0.2s ease-in-out;
+      height: 17px;
+    }
+    &.citybump {
       &:hover, &.selected {
         background-color: $corporate;
+        mat-icon {
+          /deep/ svg path {
+            fill: $white;
+          }        
+        }
       }
     }
-    &.country {
+    &.countrybump {
       mat-icon {
-        width: 37px;
+        width: 32px;
       }
       &:hover, &.selected {
         background-color: $country-bump;
+        mat-icon {
+          /deep/ svg path {
+            fill: $white;
+          }        
+        }
       }
     }
   }
   .label-date {
-    font-size: 12px;
+    font-size: $font-size-XS;
     color: $grey-250;
   }
   .input-date {
@@ -95,17 +107,17 @@
     width: 120px;
     height: 32px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: $font-size-S;
     &.ng-valid {
       color: $grey-500;
       font-weight: bold;
     }
-    &.city {
+    &.citybump {
       &:hover, &:focus {
         border-color: $corporate;
       }
     }
-    &.country {
+    &.countrybump {
       &:hover, &:focus {
         border-color: $country-bump;
       }
@@ -113,6 +125,7 @@
     &:disabled {
       background-color: $white;
       border-color: $grey-50;  
+      color: $grey-50;
       &::placeholder {
         color: $grey-50;
       }

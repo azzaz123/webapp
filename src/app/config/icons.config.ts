@@ -178,6 +178,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('arrow-back', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-back.svg'));
   matIconRegistry.addSvgIcon('car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/car.svg'));
   matIconRegistry.addSvgIcon('empty-state-phones', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/empty-state-phones.svg'));
+  matIconRegistry.addSvgIcon('bump-country-pro', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-country-pro.svg'));
+  matIconRegistry.addSvgIcon('bump-city-pro', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-city-pro.svg'));
   matIconRegistry.addSvgIcon('plan-10', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan10.svg'));
   matIconRegistry.addSvgIcon('plan-10-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan10_selected.svg'));
   matIconRegistry.addSvgIcon('plan-20', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan20.svg'));

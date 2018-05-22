@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
 import { Router } from '@angular/router';
-import { CalendarDates } from './range-datepicker/calendar-dates.interface';
 import { CartProItem } from '../cart/cart-item.interface';
 import { CartService } from '../cart/cart.service';
 import { CartPro } from '../cart/cart-pro';
+import { CalendarDates } from './range-datepicker/calendar-dates';
 
 @Component({
   selector: 'tsl-checkout-pro',
@@ -19,12 +19,12 @@ export class CheckoutProComponent implements OnInit {
   calendarHidden = true;
 
   constructor(private itemService: ItemService, private router: Router, private cartService: CartService) {
-    this.cartService.createInstance(new CartPro());
   }
 
   ngOnInit() {
+    this.cartService.createInstance(new CartPro());
     if (!this.itemService.selectedItems.length) {
-      this.router.navigate(['catalog/list']);
+      this.router.navigate(['pro/catalog/list']);
       return;
     }
     this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems)
@@ -35,23 +35,20 @@ export class CheckoutProComponent implements OnInit {
 
   onDateFocus(item: CartProItem) {
     this.itemSelected = item;
-    this.calendarHidden = false;
+    this.toggleCalendar();
   }
 
-  onApplyCalendar(calendar: CalendarDates) {
-    this.itemSelected.fromDate = calendar.fromDate;
-    this.itemSelected.toDate = calendar.toDate;
-    this.itemSelected.formattedFromDate = calendar.formattedFromDate;
-    this.itemSelected.formattedToDate = calendar.formattedToDate;
-    this.hideCalendar();
+  onApplyCalendar(datesFromCalendar: CalendarDates) {
+    this.itemSelected.selectedDates = datesFromCalendar;
+    this.addToCart();
   }
 
   addToCart() {
     this.cartService.add(this.itemSelected, this.itemSelected.bumpType);
-    this.hideCalendar();
+    this.toggleCalendar();
   }
 
-  hideCalendar() {
-    this.calendarHidden = true;
+  private toggleCalendar() {
+    this.calendarHidden = !this.calendarHidden;
   }
 }
