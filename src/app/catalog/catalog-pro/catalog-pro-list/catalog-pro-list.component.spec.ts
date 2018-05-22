@@ -2,17 +2,13 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogProListComponent } from './catalog-pro-list.component';
 import { ItemService } from '../../../core/item/item.service';
-import {
-  MOCK_ITEM, ITEMS_BULK_RESPONSE_FAILED, ITEMS_BULK_RESPONSE, createItemsArray,
-  ORDER, PRODUCT_RESPONSE, ORDER_EVENT
-} from '../../../../tests/item.fixtures.spec';
+import { MOCK_ITEM, ORDER, PRODUCT_RESPONSE, ORDER_EVENT } from '../../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { USERS_STATS_RESPONSE } from '../../../../tests/user.fixtures.spec';
-import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../core/user/user.service';
 import { EventService } from '../../../core/event/event.service';
@@ -35,10 +31,7 @@ describe('CatalogProListComponent', () => {
   const componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
   let trackingServiceSpy: jasmine.Spy;
   let itemServiceSpy: jasmine.Spy;
-  let toastr: ToastrService;
   let userService: UserService;
-  let eventService: EventService;
-  let errorService: ErrorsService;
   let paymentService: PaymentService;
   let router: Router;
   let route: ActivatedRoute;
