@@ -9,13 +9,13 @@ export interface VisibilityFlags {
 export interface Purchase {
   item_id: string;
   expiration_date: number;
-  boost?: boolean;
-  highlight?: boolean;
   autorenew: boolean;
-  item?: Item;
   bump: boolean;
   national: boolean;
   visibility_flags: VisibilityFlags;
+  highlight?: boolean;
+  item?: Item;
+  boost?: boolean;
 }
 
 export interface Purchases {
@@ -30,11 +30,11 @@ export interface AutorenewItem {
 
 export interface PurchasingItem {
   item_id: string;
-  boost?: boolean;
-  highlight?: boolean;
   autorenew: boolean;
   bump: boolean;
   national: boolean;
+  boost?: boolean;
+  highlight?: boolean;
 }
 
 export interface StatusResponse {

@@ -37,15 +37,14 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
-import { UserService } from '../user/user.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Car } from './car';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
 
-export const PUBLISHED_ID: number = 0;
-export const ONHOLD_ID: number = 90;
-export const SOLD_OUTSIDE: number = 30;
+export const PUBLISHED_ID = 0;
+export const ONHOLD_ID = 90;
+export const SOLD_OUTSIDE = 30;
 
 export const ITEM_STATUSES: any = {
   'active': PUBLISHED_ID,
@@ -60,7 +59,7 @@ export class ItemService extends ResourceService {
   private API_URL_WEB = 'api/v3/web/items';
   private API_URL_USER = 'api/v3/users';
   private API_URL_PROTOOL = 'api/v3/protool';
-  private API_URL_V1: string = 'shnm-portlet/api/v1';
+  private API_URL_V1 = 'shnm-portlet/api/v1';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
@@ -648,10 +647,10 @@ export class ItemService extends ResourceService {
   }
 
   public cancelAutorenew(itemId: string): Observable<any> {
-    return this.http.put(this.API_URL_PROTOOL + '/autorenew/update', {
+    return this.http.put(this.API_URL_PROTOOL + '/autorenew/update', [{
       item_id: itemId,
       autorenew: false
-    });
+    }]);
   }
 
   public getLatest(userId: string): Observable<ItemDataResponse> {

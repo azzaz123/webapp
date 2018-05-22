@@ -13,11 +13,11 @@
       <div class="price">{{item.salePrice | customCurrency:item.currencyCode}}</div>
       <div class="title">{{item.title}}</div>
     </a>
-    <div class="published" [hidden]="item.sold || item.flags.bumped && !item.flags.onhold">
+    <div class="published" [hidden]="item.sold || item.purchases && !item.flags.onhold">
       <div i18n>Publish Date</div>
       <div class="date">{{item.publishedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
-    <div class="updated" [hidden]="item.sold || item.flags.bumped && !item.flags.onhold">
+    <div class="updated" [hidden]="item.sold || item.purchases && !item.flags.onhold">
       <div i18n>Updated</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
@@ -25,12 +25,19 @@
       <div i18n>Sold</div>
       <div class="date">{{item.modifiedDate | date:'dd/MM/yyyy HH:mm'}}</div>
     </div>
-    <div class="bumped" *ngIf="item.flags.bumped && !item.flags.onhold">
-      <div class="type {{item.purchases.bump_type}}" i18n>{{item.bumpName}}</div>
+    <div class="bumped" *ngIf="item.purchases && !item.flags.onhold">
+      <div class="type {{item.purchases.bump_type || item.purchases.scheduled_bump_type}}" i18n>{{item.bumpName}}</div>
       <div class="date">
-        <span i18n>{{item.purchases.expiration_date | amCountdown}} remaining</span>
-        <span class="cancel-bump {{item.purchases.bump_type}}" (click)="cancelAutorenew(item, cancelAutorenewModal)"
-              *ngIf="item.bumpExpiringDate && !item.bumpLast24h" i18n>Cancel</span>
+        <span i18n *ngIf="item.purchases.scheduled_bump_type && !item.plannedStartsToday">
+          From {{item.purchases.scheduled_start_date | date:'dd/MM/yy'}} to {{item.purchases.scheduled_end_date | date:'dd/MM/yy'}}
+        </span>
+        <span i18n *ngIf="!item.purchases.scheduled_bump_type || item.plannedStartsToday">
+          {{item.purchases.expiration_date || item.purchases.scheduled_end_date | amCountdown}} remaining
+        </span>
+        <span class="cancel-bump {{item.purchases.bump_type || item.purchases.scheduled_bump_type}}"
+              (click)="cancelAutorenew(item, cancelAutorenewModal)"
+              *ngIf="item.purchases.expiration_date || item.purchases.scheduled_end_date && !item.bumpLast24h" i18n>
+          Cancel</span>
       </div>
     </div>
     <div class="visibility">

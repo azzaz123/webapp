@@ -10,7 +10,7 @@ h2 {
 
 .items {
   margin-top: $spacing;
-  margin-bottom: 120px;
+  margin-bottom: $spacing-XL * 2;
   .add-item {
     width: 100%;
     svg {
@@ -129,7 +129,7 @@ tsl-selected-items {
     width: 100%;
     margin-right: auto;
     text-align: center;
-    margin-top: 40px;
+    margin-top: $spacing * 2;
     .link {
       color: $corporate;
       text-decoration: underline;

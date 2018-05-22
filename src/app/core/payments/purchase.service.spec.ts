@@ -36,10 +36,6 @@ describe('PurchaseService', () => {
     itemService = TestBed.get(ItemService);
   });
 
-  it('should exist', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('query', () => {
     let response: Purchases;
     beforeEach(fakeAsync(() => {

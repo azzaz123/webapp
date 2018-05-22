@@ -42,10 +42,6 @@ describe('BumpConfirmationModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
-
   describe('ngOnInit', () => {
     beforeEach(fakeAsync(() => {
       const mockBackend = TestBed.get(MockBackend);

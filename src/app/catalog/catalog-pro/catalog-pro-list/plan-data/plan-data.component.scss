@@ -21,7 +21,7 @@
 
 .car, .visibility {
   background: $white;
-  border-radius: 10px;
+  border-radius: $border-radius;
   border: solid 1px $grey-50;
   display: flex;
   flex-direction: column;
@@ -29,7 +29,7 @@
 }
 
 .car {
-  margin-right: 20px;
+  margin-right: $spacing;
   width: 30%;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .number {
-  font-size: 26px;
+  font-size: $font-size-3L;
   font-weight: bold;
 }
 
@@ -101,7 +101,7 @@
 
 .no-plan {
   line-height: 14px;
-  margin-top: 12px;
+  margin-top: $spacing-S;
   width: 35%;
 }
 

@@ -62,12 +62,12 @@ describe('PlanDataComponent', () => {
     component = fixture.componentInstance;
   });
 
-  describe('ngOnInit', () => {
+  describe('ngChanges', () => {
     beforeEach(() => {
       component.loading = true;
       spyOn(paymentService, 'getPerks').and.returnValue(Observable.of(createPerksModelFixture()));
       spyOn(purchaseService, 'query').and.returnValue(Observable.of(PURCHASES));
-      component.ngOnInit();
+      component.ngOnChanges();
     });
 
     it('should call getPerks and set quantities', () => {

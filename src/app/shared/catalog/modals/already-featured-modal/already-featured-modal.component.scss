@@ -38,7 +38,7 @@ h1 {
 }
 tsl-button {
   width: 100%;
-  margin-bottom: 12px;
+  margin-bottom: $spacing-S;
 }
 a {
   &:not([href]) {

@@ -45,8 +45,6 @@ export class CatalogProListComponent implements OnInit {
   public numberOfProducts: number;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public subscriptionPlan: number;
-  public plannedCityPurchase: number;
-  public plannedCountryPurchase: number;
   private uploadModalRef: NgbModalRef;
 
   constructor(public itemService: ItemService,
@@ -167,8 +165,6 @@ export class CatalogProListComponent implements OnInit {
       this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {page_number: this.page});
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
-      this.plannedCityPurchase = this.itemService.plannedCityPurchase;
-      this.plannedCountryPurchase = this.itemService.plannedCountryPurchase;
     });
   }
 
@@ -207,6 +203,14 @@ export class CatalogProListComponent implements OnInit {
     let index: number = _.findIndex(this.items, {'_id': $event.item.id});
     this.items.splice(index, 1);
     this.getCounters();
+  }
+
+  public bumpCancelled($event: ItemChangeEvent) {
+    let index: number = _.findIndex(this.items, {'_id': $event.item.id});
+    this.items[index].purchases = null;
+    this.cache = false;
+    this.getCounters();
+    //this.getItems();
   }
 
   public deselect() {

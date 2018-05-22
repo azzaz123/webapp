@@ -15,6 +15,7 @@ export class CatalogCardComponent implements OnInit {
 
   @Input() item: Item;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
+  @Output() bumpCancel: EventEmitter<any> = new EventEmitter<any>();
   public link: string;
 
   constructor(public itemService: ItemService,
@@ -60,8 +61,12 @@ export class CatalogCardComponent implements OnInit {
   public cancelAutorenew(item: Item, cancelAutorenewModal: any) {
     this.modalService.open(cancelAutorenewModal).result.then(() => {
       this.itemService.cancelAutorenew(item.id).subscribe((resp: any) => {
-        if (resp.status !== 200) {
+        if (resp.status >= 500) {
           this.errorService.show(resp);
+        } else {
+          this.bumpCancel.emit({
+            item: item
+          });
         }
       });
     });

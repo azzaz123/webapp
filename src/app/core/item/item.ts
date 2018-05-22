@@ -27,6 +27,7 @@ export class Item implements Model {
   private _selected = false;
   private _bumpExpiringDate: number;
   private _bumpLast24h: boolean;
+  private _plannedStartsToday: boolean;
 
   constructor(private _id: string,
               private _legacyId: number,
@@ -200,7 +201,7 @@ export class Item implements Model {
   }
 
   get bumpName(): string {
-    return BUMP_TYPES[this._purchases.bump_type];
+    return BUMP_TYPES[this._purchases.bump_type || this._purchases.scheduled_bump_type];
   }
 
   set reserved(value: boolean) {
@@ -229,6 +230,10 @@ export class Item implements Model {
 
   get bumpLast24h() {
     return this._bumpExpiringDate - Date.now() < 86400;
+  }
+
+  get plannedStartsToday() {
+    return this._purchases && (this._purchases.scheduled_start_date - Date.now() < 86400);
   }
 
   get webSlug(): string {

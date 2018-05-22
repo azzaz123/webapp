@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Item } from '../../../../../core/item/item';
 import { WindowRef } from '../../../../../core/window/window.service';
+import { I18nService } from '../../../../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-pro-urgent-confirmation-modal',
@@ -14,7 +15,8 @@ export class ProUrgentConfirmationModalComponent {
   public code: string;
 
   constructor(public activeModal: NgbActiveModal,
-              private window: WindowRef) { }
+              private window: WindowRef,
+              private i18n: I18nService) { }
 
   public facebookShare() {
     const url = 'https://www.facebook.com/dialog/share?app_id=258778180928082&display=popup&href=' + encodeURIComponent(this.item.webLink);
@@ -22,7 +24,7 @@ export class ProUrgentConfirmationModalComponent {
   }
 
   public twitterShare() {
-    const text = 'Mira que acabo de encontrar en @Wallapop:';
+    const text = this.i18n.getTranslations('twitterShare');
     const url = 'https://twitter.com/intent/tweet?' +
       'text=' + encodeURIComponent(text) +
       '&url=' + encodeURIComponent(this.item.webLink);

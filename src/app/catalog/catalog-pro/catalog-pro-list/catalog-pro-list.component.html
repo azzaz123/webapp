@@ -18,8 +18,7 @@
       <tsl-button className="btn btn-logout" [routerLink]="['/pro/catalog/checkout-extras']" tslTrackEvent="MYCATALOG_PRO_PURCHASE_EXTRAS"
                   i18n>Purchase extras</tsl-button>
     </div>
-    <tsl-plan-data [counters]="counters" [plannedCityPurchase]="itemService.plannedCityPurchase"
-                   [plannedCountryPurchase]="itemService.plannedCountryPurchase" (subscriptionPlan)="getSubscriptionPlan($event)">
+    <tsl-plan-data [counters]="counters" (subscriptionPlan)="getSubscriptionPlan($event)">
     </tsl-plan-data>
     <tsl-search-input (term)="search($event)"></tsl-search-input>
     <tsl-catalog-status-navbar (filterByStatus)="filterByStatus($event)" [selectedStatus]="selectedStatus"
@@ -44,10 +43,10 @@
         </div>
         <div class="empty-text" *ngIf="subscriptionPlan - counters?.publish > 0 && counters?.onHold > 0 && selectedStatus === 'active'">
           <span i18n>You can publish <b>{{subscriptionPlan - counters?.publish}} more cars</b> with your current plan.</span>
-          <span i18n><a class="link" (click)="filterByStatus('pending')">Activate cars</a></span>
+          <span><a class="link" (click)="filterByStatus('pending')" i18n>Activate cars</a></span>
         </div>
       </div>
-      <tsl-catalog-card *ngFor="let item of items" class="col-md-12" [item]="item" (itemChange)="itemChanged($event)">
+      <tsl-catalog-card *ngFor="let item of items" class="col-md-12" [item]="item" (bumpCancel)="bumpCancelled($event)" (itemChange)="itemChanged($event)">
       </tsl-catalog-card>
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>

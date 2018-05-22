@@ -138,7 +138,7 @@ $feature-button-width: 170px;
   }
   .price {
     font-weight: bold;
-    font-size: 18px;
+    font-size: $font-size-M;
     @include text-truncate();
   }
   .title {
@@ -166,7 +166,7 @@ $feature-button-width: 170px;
       text-decoration: underline;
       cursor: pointer;
       &:hover {
-        color: $corporate;
+        text-decoration: none;
       }
     }
     .type {
@@ -208,12 +208,12 @@ $feature-button-width: 170px;
     }
   }
   .actions {
-    margin-right: 24px;
+    margin-right: $spacing-2M;
     .resized & {
       display: none;
     }
     button, tsl-button {
-      margin-left: 12px;
+      margin-left: $spacing-S;
       float: left;
     }
     button {
@@ -262,9 +262,9 @@ $feature-button-width: 170px;
     tsl-button {
       /deep/ .btn-feature {
         width: $feature-button-width;
-        height: 40px;
+        height: $spacing * 2;
         padding: 0 $spacing;
-        padding-left: 12px;
+        padding-left: $spacing-S;
         font-size: $font-size-S;
         mat-icon {
           width: 19px;
@@ -283,15 +283,15 @@ $feature-button-width: 170px;
     z-index: 2;
     position: relative;
     font-size: $font-size-S;
-    padding-right: 64px;
-    margin-right: 24px;
+    padding-right: $spacing-L * 2;
+    margin-right: $spacing-2M;
     border-radius: $border-radius;
     color: $grey-900;
-    height: 40px;
+    height: $spacing * 2;
     cursor: default;
     mat-icon {
       margin-right: 34px;
-      margin-left: 4px;
+      margin-left: $spacing-XXS;
     }
   }
 }
