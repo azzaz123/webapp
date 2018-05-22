@@ -51,7 +51,7 @@ export class MessageService {
               message.doc.message,
               message.doc.from,
               message.doc.date,
-              message.doc.read,
+              message.doc.status,
               message.doc.payload);
           })
         });

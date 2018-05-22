@@ -2,6 +2,13 @@ import { Model } from '../resource/model.interface';
 import { User } from '../user/user';
 import { MessagePayload } from './messages.interface';
 
+export const messageStatus = {
+  PENDING: 0,
+  SENT: 1,
+  RECEIVED: 2,
+  READ: 3
+};
+
 export class Message implements Model {
 
   private _user: User;
@@ -12,7 +19,7 @@ export class Message implements Model {
               private _message: string,
               private _from: string,
               private _date?: Date,
-              private _read?: boolean,
+              private _status?: number,
               private _payload?: MessagePayload) {
   }
 
@@ -36,12 +43,12 @@ export class Message implements Model {
     this._date = value;
   }
 
-  get read(): boolean {
-    return this._read;
+  get status(): number {
+    return this._status;
   }
 
-  set read(value: boolean) {
-    this._read = value;
+  set status(value: number) {
+    this._status = value;
   }
 
   get from(): string {

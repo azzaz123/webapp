@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { EventEmitter, Injectable, HostListener } from '@angular/core';
-import { Message } from '../message/message';
+import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -265,9 +265,6 @@ export class XmppService {
       if (message.read) {
         this.eventService.emit(EventService.MESSAGE_READ_ACK);
       }
-      if (message.body) {
-        this.eventService.emit(EventService.MESSAGE_SENT_ACK);
-      }
     });
     this.client.on('session:started', () => {
       this.client.sendPresence();
@@ -324,10 +321,16 @@ export class XmppService {
     let messageId: string = null;
     if (message.timestamp && message.receipt) {
       messageId = message.receipt;
+    if (message.sentReceipt) {
+      messageId = message.sentReceipt.id;
+      this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
+    }
     } else {
       messageId = message.id;
     }
-    return new Message(messageId, message.thread, message.body, (message.from.full || message.from), new Date(message.date), false, message.payload);
+
+    return new Message(messageId, message.thread, message.body, (message.from.full || message.from),
+                       new Date(message.date), null, message.payload);
   }
 
   private sendMessageDeliveryReceipt(to: any, id: string, thread: string) {
@@ -445,7 +448,7 @@ export class XmppService {
       name: 'read',
       element: 'read',
       fields: {
-        xmlns: types.attribute('xmlns'),
+        xmlns: types.attribute('xmlns')
       }
     });
     const received: any = stanzas.define({
@@ -463,11 +466,20 @@ export class XmppService {
         xmlns: types.attribute('xmlns')
       }
     });
+    const sentReceipt = {
+      get: function get() {
+        const sent = this.xml.getElementsByTagName('sent')[0];
+        if (sent) {
+          return sent.attrs;
+        }
+      }
+    };
     stanzas.withMessage(function (Message: any) {
       stanzas.extend(Message, read);
       stanzas.extend(Message, timestamp);
       stanzas.extend(Message, received);
       stanzas.extend(Message, request);
+      stanzas.add(Message, 'sentReceipt', sentReceipt);
     });
   }
 

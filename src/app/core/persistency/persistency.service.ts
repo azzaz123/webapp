@@ -76,7 +76,7 @@ export class PersistencyService {
       _id: message.id,
       date: message.date,
       message: message.message,
-      read: message.read,
+      status: message.status,
       from: message.from,
       conversationId: message.conversationId,
       payload: message.payload

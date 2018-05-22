@@ -21,11 +21,13 @@ export interface XmppMessage {
   to: string;
   thread: string;
   read?: any;
+  status?: number;
   type?: string;
   received?: any;
   receipt?: string;
   request?: any;
   requestReceipt?: boolean;
+  sentReceipt?: any;
 }
 export interface XmppTimestampMessage {
   id: string;
