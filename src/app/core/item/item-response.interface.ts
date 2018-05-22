@@ -148,6 +148,15 @@ export interface Order {
   product_id: string;
 }
 
+export interface OrderPro {
+  item_id: string;
+  start_date: number;
+  end_date: number;
+  autorenew: boolean;
+  bump: boolean;
+  national: boolean;
+}
+
 export interface ItemUploadForm {
   category_id: string;
   images: any[];

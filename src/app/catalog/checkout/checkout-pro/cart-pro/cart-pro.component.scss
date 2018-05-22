@@ -1,0 +1,200 @@
+@import "~style/common";
+
+:host {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: $white;
+    border-radius: $border-radius;
+    border: solid 1px $grey-50;
+    width: 280px;
+    height: calc(100vh - 150px);
+    position: fixed;
+    padding: 0 $spacing-XS;
+    overflow: hidden;
+}
+
+.cart-pro-title {
+    font-size: $font-size-S;
+    color: $grey-900;
+    font-weight: bold;
+    margin: 0;
+}
+
+.cancel-icon {
+    cursor: pointer;
+    width: 12px;
+    margin-right: $spacing-XS;    
+    &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}
+
+.cart-content {
+    overflow: auto;
+    padding: $spacing-2M * 2 0 $spacing * 4 0;
+    .cart-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $spacing-M - 2px $spacing-M 0 $spacing-M;
+        background-color: $white;
+        z-index: 1;
+        .btn-clear {
+            cursor: pointer;
+            font-size: $font-size-XXS;
+            color: $grey-500;
+            &.disabled {
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+        }
+    }
+}
+
+.items-list {
+    font-size: $font-size-XS;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    .cart-box {
+        overflow: hidden;
+        margin-top: $spacing-S;
+        border-radius: 5px;
+        background-color: $white;
+        box-shadow: 0 1px 2px 0 rgba($black, 0.05);
+        border: solid 0.5px $grey-100;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        user-select: none;
+    }
+    .cart-description {
+        white-space: nowrap;
+        width: 60%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .cart-days {
+        font-weight: bold;
+    }
+    .type-total {
+        padding: 10px;
+        margin: 0;
+        cursor: pointer;
+        .wing-icon {
+            width: 51px;
+            height: 30px;
+            margin-right: $spacing-XS;
+            &.citybump {
+                /deep/ svg g {
+                    fill: $zone-bump;
+                }
+            }
+        }
+        .arrow-icon {
+            transform: rotate(-90deg) scale(.8);
+            width: 9px;
+            height: 13px;
+            transition: transform 150ms ease-in;
+        }
+        &.collapsed {
+            .arrow-icon {
+                transform: rotate(90deg) scale(.8);
+            }
+        }
+    }
+    .type-wrapper {
+        background-color: rgba($grey-50, 0.3);
+        padding: $spacing-XS;
+        border-radius: 5px;
+        margin-bottom: $spacing-S;
+        ul {
+            padding-left: $spacing-S;
+        }
+    }
+    .price {
+        color: $grey-500;
+        font-weight: bold;
+    }
+    .citybump {
+        color: $zone-bump;
+    }
+    .countrybump {
+        color: $country-bump;
+    }
+    .type {
+        display: flex;        
+        flex-direction: column;
+        flex: 1;
+    }
+    .planned-label {
+        font-weight: bold;
+        color: $grey-500;
+    }
+    .close-icon {
+        @include square(16px);
+        margin: $spacing $spacing-XS $spacing-XS 0;
+        cursor: pointer;
+    }
+    .cart-item {
+        display: flex;
+        align-items: center;
+        .cart-box {
+        padding: $spacing-XXXS;
+        flex: 1;
+        }
+        .price {
+        margin-right: $spacing-XS;
+        }
+        tsl-item-avatar {
+            /deep/ div {
+                @include square(32px);
+            }
+        }
+    }
+}
+
+.cart-balance {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $grey-900;
+    font-weight: bold;
+    .cart-balance-title {
+        font-size: $font-size-XS;
+        text-transform: uppercase;
+    }
+    .cart-balance-number {
+        font-size: $font-size-XL;
+    }
+}
+
+.cart-separator {
+    width: 100%;
+    height: 1px;
+    background-color: $grey-50;
+    margin: $spacing-S 0;
+}
+
+.btn-wrapper { 
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: $spacing;
+    background-color: $white;
+    tsl-button {
+        display: block;
+        /deep/ .btn {
+            width: 100%;
+        }
+    }
+}

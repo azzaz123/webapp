@@ -1,7 +1,7 @@
-import { UserInfoResponse } from '../app/core/user/user-info.interface';
+import { UserInfoResponse, UserProInfo } from '../app/core/user/user-info.interface';
 import { Coordinate } from '../app/core/geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from '../app/core/user/user-stats.interface';
-import { UserData } from '../app/core/user/user-data.interface';
+import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
 
 import { Image, UserLocation, UserResponse, UserStats, UserValidations } from '../app/core/user/user-response.interface';
@@ -74,6 +74,7 @@ export const USER_FIRST_NAME = 'Daniele';
 export const USER_LAST_NAME = 'Ghidoli';
 export const USER_BIRTH_DATE = 1523560844000;
 export const USER_GENDER = 'male';
+export const USER_URL = 'https://www.wallapop.com/user/webslug-l1kmzn82zn3p';
 
 export const USER_DATA: UserResponse = {
   'legacy_id': 101,
@@ -114,7 +115,31 @@ export const MOCK_USER: User = new User(
   USER_DATA.scoring_stars,
   USER_DATA.scoring_starts,
   USER_DATA.response_rate,
-  USER_DATA.online
+  USER_DATA.online,
+  USER_DATA.type,
+  0,
+  USER_DATA.web_slug
+);
+
+export const MOCK_FULL_USER = new User(
+  USER_DATA.id,
+  USER_DATA.micro_name,
+  USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  USER_DATA.received_reports,
+  USER_DATA.web_slug,
+  USER_DATA.first_name,
+  USER_DATA.last_name,
+  USER_DATA.birth_date,
+  USER_DATA.gender
 );
 
 export const MOCK_USER_PRO: User = new User(
@@ -261,6 +286,24 @@ export const USER_EDIT_DATA: UserData = {
   last_name: USER_DATA.last_name,
   birth_date: '1987-02-10T00:00:00.000Z',
   gender: 'M'
+};
+
+export const USER_PRO_DATA: UserProData = {
+  description: 'description',
+  opening_hours: 'opening_hours',
+  phone_number: 'phone_number'
+};
+
+export const USER_PRO_INFO_NOTIFICATIONS: UserProDataNotifications = {
+  new_chat_notification: true,
+  only_chat_phone_notification: true,
+  consent_third_parties_use_data: true,
+  news_notification: true
+};
+
+export const USER_PRO_INFO_RESPONSE: UserProInfo = <UserProInfo>{
+  ...USER_PRO_DATA,
+  ...USER_PRO_INFO_NOTIFICATIONS
 };
 
 export const REASONS: UnsubscribeReason[] = [{

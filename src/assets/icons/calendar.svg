@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="18px" viewBox="0 0 16 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-    <title>Calendar Icon</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Empty-states" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Calendar-Icon">
-            <rect id="Rectangle-9" fill="#13C1AC" x="4" y="0" width="1" height="5" rx="0.5"></rect>
-            <rect id="Rectangle-9" fill="#13C1AC" x="11" y="0" width="1" height="5" rx="0.5"></rect>
-            <rect id="Rectangle-8" fill="#13C1AC" x="1" y="7" width="15" height="1"></rect>
-            <path d="M1,5.00947762 L1,14.9905224 C1,16.1068145 1.8953964,17 3.00947762,17 L12.9905224,17 C14.1068145,17 15,16.1046036 15,14.9905224 L15,5.00947762 C15,3.89318549 14.1046036,3 12.9905224,3 L3.00947762,3 C1.89318549,3 1,3.8953964 1,5.00947762 Z M0,5.00947762 C0,3.34738902 1.33663106,2 3.00947762,2 L12.9905224,2 C14.652611,2 16,3.33663106 16,5.00947762 L16,14.9905224 C16,16.652611 14.6633689,18 12.9905224,18 L3.00947762,18 C1.34738902,18 0,16.6633689 0,14.9905224 L0,5.00947762 Z" id="Rectangle-6" fill="#27C8B5" fill-rule="nonzero"></path>
-        </g>
-    </g>
-</svg>
+<svg width="16" height="18" viewBox="0 0 16 18" xmlns="http://www.w3.org/2000/svg"><g id="Empty-states" fill="none" fill-rule="evenodd"><g id="Calendar-Icon"><rect id="Rectangle-9" fill="#13C1AC" x="4" width="1" height="5" rx=".5"/><rect id="Rectangle-9" fill="#13C1AC" x="11" width="1" height="5" rx=".5"/><path id="Rectangle-8" fill="#13C1AC" d="M1 7h15v1H1z"/><path d="M1 5.01v9.98C1 16.108 1.895 17 3.01 17h9.98c1.117 0 2.01-.895 2.01-2.01V5.01C15 3.892 14.105 3 12.99 3H3.01C1.892 3 1 3.895 1 5.01zm-1 0A3.003 3.003 0 0 1 3.01 2h9.98A3.003 3.003 0 0 1 16 5.01v9.98A3.003 3.003 0 0 1 12.99 18H3.01A3.003 3.003 0 0 1 0 14.99V5.01z" id="Rectangle-6" fill="#27C8B5" fill-rule="nonzero"/></g></g></svg>

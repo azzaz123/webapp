@@ -18,7 +18,8 @@ const routes: Routes = [
           permissions: {
             only: PERMISSIONS.professional,
             redirectTo: '/catalog/list'
-          }
+          },
+          isMyZone: true
         }
       }
     ]
