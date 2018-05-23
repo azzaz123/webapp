@@ -406,7 +406,7 @@ describe('Component: ConversationsPanel', () => {
     it('should send conversation read confirm if the conversation open is the current', fakeAsync(() => {
       component['conversation'] = MOCK_CONVERSATION();
       const message: Message = MOCK_MESSAGE;
-      message.fromBuyer = true;
+      message.fromSelf = false;
 
       component['sendRead'](message);
       tick(1000);

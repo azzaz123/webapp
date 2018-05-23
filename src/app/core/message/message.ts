@@ -12,7 +12,7 @@ export const messageStatus = {
 export class Message implements Model {
 
   private _user: User;
-  private _fromBuyer: boolean;
+  private _fromSelf: boolean;
 
   constructor(private _id: string,
               private _conversationId: string,
@@ -63,12 +63,12 @@ export class Message implements Model {
     this._user = value;
   }
 
-  get fromBuyer(): boolean {
-    return this._fromBuyer;
+  get fromSelf(): boolean {
+    return this._fromSelf;
   }
 
-  set fromBuyer(value: boolean) {
-    this._fromBuyer = value;
+  set fromSelf(value: boolean) {
+    this._fromSelf = value;
   }
 
   get payload(): MessagePayload {

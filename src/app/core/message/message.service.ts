@@ -86,11 +86,11 @@ export class MessageService {
   }
 
   public addUserInfo(conversation: Conversation, message: Message): Message {
-    const seller: User = this.userService.user;
-    const buyer: User = conversation.user;
-    const userId: string = message.from.split('@')[0];
-    message.user = (userId === seller.id) ? seller : buyer;
-    message.fromBuyer = userId === buyer.id;
+    const self: User = this.userService.user;
+    const other: User = conversation.user; // buyer = other
+    const fromId: string = message.from.split('@')[0];
+    message.user = (fromId === self.id) ? self : other;
+    message.fromSelf = fromId === self.id;
     return message;
   }
 

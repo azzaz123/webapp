@@ -236,16 +236,15 @@ export class ConversationService extends LeadService {
     if (!this.findMessage(conversation.messages, message)) {
       conversation.messages.push(message);
       conversation.modifiedDate = new Date().getTime();
-      if (message.fromBuyer) {
-        this.handleUnreadMessage(conversation);
-      }
-      if (this.receiptSent) {
-        this.receiptSent = false;
-      } else if (conversation.user.id === message.user.id) {
+      if (!message.fromSelf) {
         this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
           this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED_ACK);
           this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
         });
+        this.handleUnreadMessage(conversation);
+      }
+      if (this.receiptSent) {
+        this.receiptSent = false;
       }
       return true;
     }
@@ -350,7 +349,7 @@ export class ConversationService extends LeadService {
               if (!this.findMessage(conversation.messages, message)) {
                 message = this.messageService.addUserInfo(conversation, message);
                 conversation.messages.push(message);
-                if (message.fromBuyer) {
+                if (!message.fromSelf) {
                   this.handleUnreadMessage(conversation);
                 }
               }
@@ -359,7 +358,7 @@ export class ConversationService extends LeadService {
                 message = this.messageService.addUserInfo(subscribedConversation, message);
                 this.addMessage(subscribedConversation, message);
                 conversations.unshift(subscribedConversation);
-                if (message.fromBuyer) {
+                if (message.fromSelf) {
                   this.handleUnreadMessage(subscribedConversation);
                 }
               });
@@ -453,7 +452,7 @@ export class ConversationService extends LeadService {
           if (this.addMessage(conversation, message)) {
             this.event.emit(EventService.MESSAGE_ADDED, message);
             this.leads = this.bumpConversation(conversation);
-            if (message.fromBuyer) {
+            if (!message.fromSelf) {
               this.notificationService.sendBrowserNotification(message, conversation.item.id);
             }
             this.stream$.next(this.leads);

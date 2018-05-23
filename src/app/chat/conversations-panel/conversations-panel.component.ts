@@ -181,7 +181,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   }
 
   private sendRead(message: Message) {
-    if (this.conversation && this.conversation.id === message.conversationId && message.fromBuyer) {
+    debugger;
+    if (this.conversation && this.conversation.id === message.conversationId && !message.fromSelf) {
       Visibility.onVisible(() => {
         setTimeout(() => {
           this.conversationService.sendRead(this.conversation);

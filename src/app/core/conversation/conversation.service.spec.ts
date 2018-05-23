@@ -1207,7 +1207,7 @@ describe('Service: Conversation', () => {
       const messageWithUser: Message = <Message>{
         ...MOCK_MESSAGE,
         user: MOCK_USER,
-        fromBuyer: true
+        fromSelf: false
       };
       spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
       service.handleNewMessages(MOCK_MESSAGE, false);
@@ -1219,7 +1219,7 @@ describe('Service: Conversation', () => {
       const messageWithUser: Message = <Message>{
         ...MOCK_MESSAGE,
         user: MOCK_USER,
-        fromBuyer: false
+        fromSelf: true
       };
       spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
       service.handleNewMessages(MOCK_MESSAGE, false);
