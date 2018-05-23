@@ -513,4 +513,8 @@
   <translation id="7291421467944217279">Activar coches</translation>
   <translation id="4937564264919515438">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> productos más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="7783294297217449801">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> productos más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="4862629622121675984"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
+  <translation id="3780659623990720220"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
+  <translation id="1290608591542945444">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="3475752672270482528">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
 </translationbundle>
