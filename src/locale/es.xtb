@@ -458,9 +458,9 @@
   <translation id="4701510938988860546">Volver atrás para cancelar bumps</translation>
   <translation id="2571738502834365520">Tu Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="3339663802248788155">Comprar extras</translation>
-  <translation id="8940063789367894785">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> item(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="8940063789367894785">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> producto(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="382039398019874632"><ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Subir ahora<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
-  <translation id="1613688231558042205">Puedes publicar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> item(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="1613688231558042205">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> producto(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="6587076436244065924">Queda <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="5272763997595694217">Cancelar Autorenovados</translation>
   <translation id="291347435854981703">Seguro que quieres cancelar el autorenovado para este producto?</translation>
