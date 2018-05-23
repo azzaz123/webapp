@@ -19,7 +19,7 @@
     text-align: left;
     @include border-radius(10px);
     /deep/ p {
-      font-size: $font-size-XS !important;
+      font-size: $font-size-XS;
     }
   }
 
