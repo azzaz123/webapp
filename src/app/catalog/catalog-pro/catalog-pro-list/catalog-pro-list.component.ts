@@ -128,6 +128,8 @@ export class CatalogProListComponent implements OnInit {
             }
           }, () => {
           });
+          this.cache = false;
+          this.getItems();
         } else if (params && params.urgent) {
           this.isUrgent = true;
           this.isRedirect = !this.getRedirectToTPV();
@@ -202,7 +204,10 @@ export class CatalogProListComponent implements OnInit {
   public itemChanged($event: ItemChangeEvent) {
     let index: number = _.findIndex(this.items, {'_id': $event.item.id});
     this.items.splice(index, 1);
+    this.cache = false;
+    this.page = 1;
     this.getCounters();
+    this.getItems();
   }
 
   public bumpCancelled($event: ItemChangeEvent) {
