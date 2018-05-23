@@ -7,6 +7,9 @@ import { SharedModule } from '../shared/shared.module';
 import { MomentModule } from 'angular2-moment';
 import { ConversationModule } from '../core/conversation/conversation.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { DailyStatsGraphComponent } from './daily-stats-graph/daily-stats-graph.component';
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
+import { StatisticsService } from './daily-stats-graph/statistics.service';
 
 @NgModule({
   imports: [
@@ -16,8 +19,10 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule,
     MomentModule,
     ConversationModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    AmChartsModule
   ],
-  declarations: [dashboardRoutedComponents, CallComponent]
+  declarations: [dashboardRoutedComponents, CallComponent, DailyStatsGraphComponent],
+  providers: [StatisticsService]
 })
 export class DashboardModule { }
