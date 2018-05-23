@@ -90,6 +90,8 @@ export class CatalogProListComponent implements OnInit {
           this.setRedirectToTPV(false);
         }
         if (params && params.code) {
+          this.cache = false;
+          this.getItems();
           const modals = {
             urgent: {
               component: ProUrgentConfirmationModalComponent,

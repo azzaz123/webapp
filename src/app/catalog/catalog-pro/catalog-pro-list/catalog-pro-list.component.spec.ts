@@ -173,7 +173,7 @@ describe('CatalogProListComponent', () => {
       tick();
       routerEvents.next(new NavigationEnd(1, 'url', 'url2'));
       expect(component.end).toBe(false);
-      expect(component['getItems']).toHaveBeenCalledTimes(2);
+      expect(component['getItems']).toHaveBeenCalledTimes(3);
     }));
 
     it('should feature order', fakeAsync(() => {

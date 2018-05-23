@@ -388,7 +388,7 @@
   <translation id="1906307008278702045">El plan de ciudad te permite destacar tus coches en tu ciudad y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en toda tu ciudad.</translation>
   <translation id="8986611533240831380">Para suscribirte a un plan de ciudad contacta con 674 726 372</translation>
   <translation id="6427098227437270446">Para cambiar tu plan de ciudad contacta con 674 726 372</translation>
-  <translation id="6703947649972852818">Destacado</translation>
+  <translation id="6703947649972852818">Destacados</translation>
   <translation id="5540010184241331088">Ahorra un <ph name="INTERPOLATION"><ex>{{bump.discount}}</ex></ph>%</translation>
   <translation id="2126069250654725782">Destacado país</translation>
   <translation id="251613711454912353">Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.national.total}}</ex></ph> país</translation>
@@ -458,9 +458,7 @@
   <translation id="4701510938988860546">Volver atrás para cancelar bumps</translation>
   <translation id="2571738502834365520">Tu Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="3339663802248788155">Comprar extras</translation>
-  <translation id="8940063789367894785">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> producto(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="382039398019874632"><ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Subir ahora<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
-  <translation id="1613688231558042205">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> producto(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
   <translation id="6587076436244065924">Queda <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="5272763997595694217">Cancelar Autorenovados</translation>
   <translation id="291347435854981703">Seguro que quieres cancelar el autorenovado para este producto?</translation>
@@ -513,4 +511,6 @@
   <translation id="428164738594731840">Cancelar</translation>
   <translation id="7166295046269696440">Desde <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> a <ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
   <translation id="7291421467944217279">Activar coches</translation>
+  <translation id="4937564264919515438">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> productos más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="7783294297217449801">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> productos más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
 </translationbundle>

@@ -565,6 +565,8 @@ export class ItemService extends ResourceService {
   }
 
   private setPlannedPurchase(item: Item): void {
+    this.plannedCountryPurchase = 0;
+    this.plannedCityPurchase = 0;
     switch (item.purchases.scheduled_bump_type) {
       case 'countrybump':
         this.plannedCountryPurchase++;
