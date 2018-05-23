@@ -494,6 +494,8 @@ export class ItemService extends ResourceService {
     let end: number = init + pageSize;
     let endStatus: string = status === 'featured' ? 'active' : status;
     let observable: Observable<Item[]>;
+    this.plannedCountryPurchase = 0;
+    this.plannedCityPurchase = 0;
 
     if (this.items[status].length && cache) {
       observable = Observable.of(this.items[status]);
@@ -565,8 +567,6 @@ export class ItemService extends ResourceService {
   }
 
   private setPlannedPurchase(item: Item): void {
-    this.plannedCountryPurchase = 0;
-    this.plannedCityPurchase = 0;
     switch (item.purchases.scheduled_bump_type) {
       case 'countrybump':
         this.plannedCountryPurchase++;

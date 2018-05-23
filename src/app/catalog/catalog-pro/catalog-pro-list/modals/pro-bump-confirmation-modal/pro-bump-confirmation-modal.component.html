@@ -11,6 +11,12 @@
   <tsl-button (click)="activeModal.close()" i18n>Start selling</tsl-button>
 </div>
 
+<div *ngIf="code === '201'">
+  <h1 i18n>Congratulations</h1>
+  <p i18n>You featured your products.</p>
+  <tsl-button (click)="activeModal.close()" i18n>Start selling</tsl-button>
+</div>
+
 <div *ngIf="code === '-1'">
   <h1 class="fail" i18n>Something happened...</h1>
   <p i18n>Your extra features have not been done because something went wrong with your credit card. Please check and try again</p>
