@@ -209,8 +209,9 @@ export class CatalogProListComponent implements OnInit {
     let index: number = _.findIndex(this.items, {'_id': $event.item.id});
     this.items[index].purchases = null;
     this.cache = false;
+    this.page = 1;
     this.getCounters();
-    //this.getItems();
+    this.getItems();
   }
 
   public deselect() {

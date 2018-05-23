@@ -40,6 +40,8 @@ describe('CatalogItemActionsComponent', () => {
             bulkDelete() {
             },
             bulkSetDeactivate() {
+            },
+            bulkSetActivate() {
             }
           }
         },
@@ -154,6 +156,61 @@ describe('CatalogItemActionsComponent', () => {
       expect(modalService.open).not.toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/checkout']);
     });
+  });
+
+  describe('activate', () => {
+    const TOTAL: number = 5;
+    beforeEach(() => {
+      component.selectedStatus = 'active';
+      component.items = createItemsArray(TOTAL);
+      component.active = true;
+    });
+
+    describe('success', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(itemService, 'bulkSetActivate').and.returnValue(Observable.of('200'));
+
+        component.activate(modal);
+        tick();
+      }));
+
+      it('should call modal and activate', () => {
+        expect(modalService.open).toHaveBeenCalledWith(modal);
+        expect(itemService.bulkSetActivate).toHaveBeenCalled();
+      });
+
+    });
+
+  });
+
+  describe('deactivate', () => {
+    const TOTAL: number = 5;
+    beforeEach(() => {
+      component.selectedStatus = 'active';
+      component.items = createItemsArray(TOTAL);
+      component.active = true;
+    });
+
+    describe('success', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(trackingService, 'track').and.callThrough();
+        spyOn(itemService, 'bulkSetDeactivate').and.returnValue(Observable.of('200'));
+
+        component.deactivate(modal);
+        tick();
+      }));
+
+      it('should call modal and deactivate', () => {
+        expect(modalService.open).toHaveBeenCalledWith(modal);
+        expect(itemService.bulkSetDeactivate).toHaveBeenCalled();
+      });
+
+      it('should send a tracking event', () => {
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
+      });
+
+    });
+
   });
 
 });

@@ -6,6 +6,8 @@ import { PurchaseService } from '../../../../core/payments/purchase.service';
 import { Observable } from 'rxjs/Observable';
 import { PURCHASES, createPerksModelFixture } from '../../../../../tests/payments.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ItemService } from '../../../../core/item/item.service';
+import { MockedItemService } from '../../../../../tests/item.fixtures.spec';
 
 describe('PlanDataComponent', () => {
   let component: PlanDataComponent;
@@ -14,11 +16,13 @@ describe('PlanDataComponent', () => {
   let paymentService: PaymentService;
   let purchaseService: PurchaseService;
   let modalService: NgbModal;
+  let itemService: ItemService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PlanDataComponent ],
       providers: [
+        {provide: ItemService, useClass: MockedItemService},
         {
           provide: PaymentService, useValue: {
             getPerks() {
@@ -59,6 +63,7 @@ describe('PlanDataComponent', () => {
     paymentService = TestBed.get(PaymentService);
     purchaseService = TestBed.get(PurchaseService);
     modalService = TestBed.get(NgbModal);
+    itemService = TestBed.get(ItemService);
     component = fixture.componentInstance;
   });
 
