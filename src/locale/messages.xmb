@@ -382,12 +382,12 @@
   <msg id="4862629622121675984"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:40</source><ph name="INTERPOLATION"><ex>{{perks?.subscription.bump.quantity}}</ex></ph> plan</msg>
   <msg id="2882470259260755892"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:41</source> <ph name="INTERPOLATION"><ex>{{perks?.extra.bump.quantity}}</ex></ph> extra</msg>
   <msg id="9054202731560341408"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:47</source><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:77</source>In Use</msg>
-  <msg id="8488915425381344887"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:49</source>(<ph name="INTERPOLATION"><ex>{{plannedCityPurchase}}</ex></ph> planned)</msg>
+  <msg id="5681895899318476927"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:49</source>(<ph name="INTERPOLATION"><ex>{{status?.autorenew_scheduled?.citybump || &apos;0&apos;}}</ex></ph> planned)</msg>
   <msg id="5092371717305178267"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:56</source>Country Plan</msg>
   <msg id="4772127996106888369"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:59</source>You don&apos;t have a Country Plan</msg>
   <msg id="3780659623990720220"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:70</source><ph name="INTERPOLATION"><ex>{{perks?.subscription.national.quantity}}</ex></ph> plan</msg>
   <msg id="6463509780873643723"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:71</source> <ph name="INTERPOLATION"><ex>{{perks?.extra.national.quantity}}</ex></ph> extra</msg>
-  <msg id="1725562452483752433"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:79</source>(<ph name="INTERPOLATION"><ex>{{plannedCountryPurchase}}</ex></ph> planned)</msg>
+  <msg id="53603691019051493"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:79</source>(<ph name="INTERPOLATION"><ex>{{status?.autorenew_scheduled?.countrybump || &apos;0&apos;}}</ex></ph> planned)</msg>
   <msg id="4185227957442923918"><source>app/reviews/reviews.component.ts:13</source>Your Reviews</msg>
   <msg id="5263225898611875859"><source>app/reviews/reviews.component.ts:16</source>This is what people think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:20</source>Your average</msg>

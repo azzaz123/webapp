@@ -438,14 +438,12 @@
   <translation id="3955868613858648955">Disponibles</translation>
   <translation id="6211554071012062130"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Plan</translation>
   <translation id="2882470259260755892"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
-  <translation id="8488915425381344887">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
   <translation id="5092371717305178267">Plan País</translation>
   <translation id="4772127996106888369">No tienes un Plan País</translation>
   <translation id="1466012768716286509">Apúntate</translation>
   <translation id="766927465251603474"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Plan</translation>
   <translation id="6463509780873643723"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
   <translation id="9054202731560341408">En uso</translation>
-  <translation id="1725562452483752433">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
   <translation id="4065372059698851857">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="3286725018134496844">Ya tienes tus destacados extras disponibles para que los puedas utilizar.</translation>
   <translation id="7542752854018206709">Tu compra no se ha podido realizar porque algo ha ido mal con la tarjeta. Comprueba y prueba otra vez. </translation>
@@ -518,4 +516,6 @@
   <translation id="1290608591542945444">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="3475752672270482528">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="1034935109316471792">Ya has aplicado los destacados a tus productos.</translation>
+  <translation id="53603691019051493">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
+  <translation id="5681895899318476927">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
 </translationbundle>

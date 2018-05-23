@@ -70,8 +70,8 @@ export class ItemService extends ResourceService {
     featured: []
   };
   public selectedItems: string[] = [];
-  public plannedCityPurchase = 0;
-  public plannedCountryPurchase = 0;
+  public countryBumpsInUse = 0;
+  public cityBumpsInUse = 0;
 
   constructor(http: HttpService,
               private i18n: I18nService,
@@ -494,8 +494,8 @@ export class ItemService extends ResourceService {
     let end: number = init + pageSize;
     let endStatus: string = status === 'featured' ? 'active' : status;
     let observable: Observable<Item[]>;
-    this.plannedCountryPurchase = 0;
-    this.plannedCityPurchase = 0;
+    this.cityBumpsInUse = 0;
+    this.countryBumpsInUse = 0;
 
     if (this.items[status].length && cache) {
       observable = Observable.of(this.items[status]);
@@ -511,8 +511,8 @@ export class ItemService extends ResourceService {
                 item.favorites = i.content.favorites;
                 item.conversations = i.content.conversations;
                 item.purchases = i.content.purchases ? i.content.purchases : null;
-                if (item.purchases && item.purchases.scheduled_bump_type) {
-                  this.setPlannedPurchase(item);
+                if (item.purchases && item.purchases.bump_type) {
+                  this.setBumpsInUse(item);
                 }
                 return item;
             });
@@ -564,17 +564,6 @@ export class ItemService extends ResourceService {
           return Observable.of([]);
         }
       });
-  }
-
-  private setPlannedPurchase(item: Item): void {
-    switch (item.purchases.scheduled_bump_type) {
-      case 'countrybump':
-        this.plannedCountryPurchase++;
-        break;
-      case 'citybump':
-        this.plannedCityPurchase++;
-        break;
-    }
   }
   
   public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {
@@ -669,6 +658,17 @@ export class ItemService extends ResourceService {
   public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
     return this.http.post(this.API_URL_PROTOOL + '/purchaseItems', orderParams)
     .map((r: Response) => r.json());
+  }
+
+  private setBumpsInUse(item: Item): void {
+    switch (item.purchases.scheduled_bump_type) {
+      case 'countrybump':
+        this.countryBumpsInUse++;
+        break;
+      case 'citybump':
+        this.cityBumpsInUse++;
+        break;
+    }
   }
 
 }

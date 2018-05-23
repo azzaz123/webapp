@@ -32,7 +32,7 @@
         <div>
           <span class="number">
             <span *ngIf="perks?.subscription.bump.quantity + perks?.extra.bump.quantity - purchases?.bumpItems?.length > -1">
-              {{perks?.subscription.bump.quantity + perks?.extra.bump.quantity - purchases?.bumpItems?.length}}</span>
+              {{perks?.subscription.bump.quantity + perks?.extra.bump.quantity}}</span>
             <span *ngIf="perks?.subscription.bump.quantity + perks?.extra.bump.quantity - purchases?.bumpItems?.length < 0">0</span>
           </span>
           <span class="text grey" i18n>Available</span>
@@ -43,10 +43,10 @@
         </div>
         <div class="border"></div>
         <div>
-          <span class="number">{{purchases?.bumpItems?.length || '0'}}</span>
+          <span class="number">{{cityBumpsInUse || '0'}}</span>
           <span class="text grey" i18n>In Use</span>
           <div class="extras">
-            <span class="grey" i18n>({{plannedCityPurchase}} planned)</span>
+            <span class="grey" i18n>({{status?.autorenew_scheduled?.citybump || '0'}} planned)</span>
           </div>
         </div>
       </div>
@@ -62,7 +62,7 @@
         <div>
           <span class="number">
             <span *ngIf="perks?.subscription.national.quantity + perks?.extra.national.quantity - purchases?.nationalBumpItems?.length > -1">
-              {{perks?.subscription.national.quantity + perks?.extra.national.quantity - purchases?.nationalBumpItems?.length}}</span>
+              {{perks?.subscription.national.quantity + perks?.extra.national.quantity}}</span>
             <span *ngIf="perks?.subscription.national.quantity + perks?.extra.national.quantity - purchases?.nationalBumpItems?.length < 0">0</span>
           </span>
           <span class="text grey" i18n>Available</span>
@@ -73,10 +73,10 @@
         </div>
         <div class="border"></div>
         <div>
-          <span class="number">{{purchases?.nationalBumpItems?.length || '0'}}</span>
+          <span class="number">{{countryBumpsInUse || '0'}}</span>
           <span class="text grey" i18n>In Use</span>
           <div class="extras">
-            <span class="grey" i18n>({{plannedCountryPurchase}} planned)</span>
+            <span class="grey" i18n>({{status?.autorenew_scheduled?.countrybump || '0'}} planned)</span>
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import { PURCHASES, createPerksModelFixture } from '../../../../../tests/payment
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../../core/item/item.service';
 import { MockedItemService } from '../../../../../tests/item.fixtures.spec';
+import { ScheduledStatus } from '../../../../core/payments/payment.interface';
 
 describe('PlanDataComponent', () => {
   let component: PlanDataComponent;
@@ -18,6 +19,12 @@ describe('PlanDataComponent', () => {
   let modalService: NgbModal;
   let itemService: ItemService;
 
+  const MOCK_STATUS: ScheduledStatus = {
+    active: true,
+    autorenew_alert: 0,
+    autorenew_scheduled: { citybump: 16, countrybump: 21 }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ PlanDataComponent ],
@@ -27,6 +34,9 @@ describe('PlanDataComponent', () => {
           provide: PaymentService, useValue: {
             getPerks() {
               return Observable.of({});
+            },
+            getStatus() {
+              return Observable.of({MOCK_STATUS});
             }
           }
         },
@@ -71,6 +81,7 @@ describe('PlanDataComponent', () => {
     beforeEach(() => {
       component.loading = true;
       spyOn(paymentService, 'getPerks').and.returnValue(Observable.of(createPerksModelFixture()));
+      spyOn(paymentService, 'getStatus').and.returnValue(Observable.of(MOCK_STATUS));
       spyOn(purchaseService, 'query').and.returnValue(Observable.of(PURCHASES));
       component.ngOnChanges();
     });
@@ -85,6 +96,11 @@ describe('PlanDataComponent', () => {
     });
     it('should set loading false', () => {
       expect(component.loading).toBeFalsy();
+    });
+
+    it('should get quantity of bumps scheduled', () => {
+      expect(paymentService.getStatus).toHaveBeenCalled();
+      expect(component.status).toEqual(MOCK_STATUS);
     });
 
   });
