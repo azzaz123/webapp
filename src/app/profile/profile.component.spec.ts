@@ -16,7 +16,8 @@ import { HttpService } from '../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec';
 import { User } from '../core/user/user';
 import { PrivacyService } from '../core/privacy/privacy.service';
-import { MOCK_PRIVACY_ALLOW, PrivacyRequestData } from '../core/privacy/privacy';
+import { PrivacyRequestData } from '../core/privacy/privacy.interface';
+import { MOCK_PRIVACY_ALLOW } from '../core/privacy/privacy.fixtures.spec';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -340,10 +341,16 @@ describe('ProfileComponent', () => {
   describe('switchAllowSegmentation', () => {
     it('should call updatePrivacy with PrivacyRequestData', () => {
       spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
+      const allowSegmentationData: PrivacyRequestData = {
+        gdpr_display: {
+          allow: false,
+          version: '0'
+        }
+      };
 
       component.switchAllowSegmentation(false);
 
-      expect(privacyService.updatePrivacy).toHaveBeenCalledWith(new PrivacyRequestData('gdpr_display', '0', false));
+      expect(privacyService.updatePrivacy).toHaveBeenCalledWith(allowSegmentationData);
     });
   });
 });

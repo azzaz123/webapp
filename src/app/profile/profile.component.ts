@@ -12,7 +12,7 @@ import { CanComponentDeactivate } from '../shared/guards/can-component-deactivat
 import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
 import { HttpService } from '../core/http/http.service';
 import { User } from '../core/user/user';
-import { PrivacyRequestData } from '../core/privacy/privacy';
+import { PrivacyRequestData } from '../core/privacy/privacy.interface';
 import { PrivacyService } from '../core/privacy/privacy.service';
 
 @Component({
@@ -183,7 +183,13 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   }
 
   public switchAllowSegmentation (value: boolean) {
-    this.privacyService.updatePrivacy(new PrivacyRequestData('gdpr_display', '0', value))
+    const allowSegmentationData: PrivacyRequestData = {
+      gdpr_display: {
+        allow: value,
+        version: '0'
+      }
+    };
+    this.privacyService.updatePrivacy(allowSegmentationData)
       .subscribe();
   }
 
