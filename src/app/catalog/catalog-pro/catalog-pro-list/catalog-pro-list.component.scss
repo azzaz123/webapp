@@ -6,6 +6,8 @@ $height: 40px;
 h2 {
   font-size: $font-size-LL;
   font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 .items {

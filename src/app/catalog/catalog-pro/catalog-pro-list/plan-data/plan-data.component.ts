@@ -20,32 +20,46 @@ export class PlanDataComponent implements OnChanges {
   public perks: PerksModel;
   public status: ScheduledStatus;
   public loading: boolean = true;
-  public cityBumpsInUse = 0;
-  public countryBumpsInUse = 0;
+  public cityBumpsInUse: number;
+  public countryBumpsInUse: number;
   
   constructor(private paymentService: PaymentService,
-              private purchaseService: PurchaseService,
-              private itemService: ItemService) { }
+              private purchaseService: PurchaseService) { }
 
   ngOnChanges() {
     this.getPerks(false);
   }
 
-  private getPerks(cache: boolean = true) {
+  private getPerks(cache: boolean = true): void {
     this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
       this.perks = perks;
       this.subscriptionPlan.emit(perks.subscription ? perks.subscription.listing.quantity : 0);
       this.paymentService.getStatus().subscribe((status: ScheduledStatus) => {
         this.status = status;
-        this.cityBumpsInUse = this.itemService.cityBumpsInUse;
-        this.countryBumpsInUse = this.itemService.countryBumpsInUse;
       });
       this.purchaseService.query().subscribe((purchases: PurchasesModel) => {
         this.purchases = purchases;
         this.loading = false;
+        this.setBumpsInUse();
       }, () => {
         this.loading = false;
       });
+    });
+  }
+
+  private setBumpsInUse(): void {
+    this.cityBumpsInUse = 0;
+    this.countryBumpsInUse = 0;
+
+    this.purchases.bumpItems.forEach((purchase: any) => {
+      if (purchase.start_date < Date.now()) {
+        this.cityBumpsInUse++;
+      }
+    });
+    this.purchases.nationalBumpItems.forEach((purchase: any) => {
+      if (purchase.start_date < Date.now()) {
+        this.countryBumpsInUse++;
+      }
     });
   }
 

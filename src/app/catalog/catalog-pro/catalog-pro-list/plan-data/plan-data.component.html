@@ -31,9 +31,9 @@
         <div class="border"></div>
         <div>
           <span class="number">
-            <span *ngIf="perks?.subscription.bump.quantity + perks?.extra.bump.quantity - purchases?.bumpItems?.length > -1">
+            <span *ngIf="perks?.subscription.bump.quantity + perks?.extra.bump.quantity > -1">
               {{perks?.subscription.bump.quantity + perks?.extra.bump.quantity}}</span>
-            <span *ngIf="perks?.subscription.bump.quantity + perks?.extra.bump.quantity - purchases?.bumpItems?.length < 0">0</span>
+            <span *ngIf="perks?.subscription.bump.quantity + perks?.extra.bump.quantity < 0">0</span>
           </span>
           <span class="text grey" i18n>Available</span>
           <div class="extras">
@@ -61,9 +61,9 @@
         <div class="border"></div>
         <div>
           <span class="number">
-            <span *ngIf="perks?.subscription.national.quantity + perks?.extra.national.quantity - purchases?.nationalBumpItems?.length > -1">
+            <span *ngIf="perks?.subscription.national.quantity + perks?.extra.national.quantity > -1">
               {{perks?.subscription.national.quantity + perks?.extra.national.quantity}}</span>
-            <span *ngIf="perks?.subscription.national.quantity + perks?.extra.national.quantity - purchases?.nationalBumpItems?.length < 0">0</span>
+            <span *ngIf="perks?.subscription.national.quantity + perks?.extra.national.quantity < 0">0</span>
           </span>
           <span class="text grey" i18n>Available</span>
           <div class="extras">

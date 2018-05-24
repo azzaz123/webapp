@@ -70,8 +70,8 @@ export class ItemService extends ResourceService {
     featured: []
   };
   public selectedItems: string[] = [];
-  public countryBumpsInUse = 0;
-  public cityBumpsInUse = 0;
+  public countryBumpsInUse: number;
+  public cityBumpsInUse: number;
 
   constructor(http: HttpService,
               private i18n: I18nService,
@@ -494,8 +494,6 @@ export class ItemService extends ResourceService {
     let end: number = init + pageSize;
     let endStatus: string = status === 'featured' ? 'active' : status;
     let observable: Observable<Item[]>;
-    this.cityBumpsInUse = 0;
-    this.countryBumpsInUse = 0;
 
     if (this.items[status].length && cache) {
       observable = Observable.of(this.items[status]);
@@ -511,9 +509,6 @@ export class ItemService extends ResourceService {
                 item.favorites = i.content.favorites;
                 item.conversations = i.content.conversations;
                 item.purchases = i.content.purchases ? i.content.purchases : null;
-                if (item.purchases && item.purchases.bump_type) {
-                  this.setBumpsInUse(item);
-                }
                 return item;
             });
             this.items[status] = items;
@@ -658,17 +653,6 @@ export class ItemService extends ResourceService {
   public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
     return this.http.post(this.API_URL_PROTOOL + '/purchaseItems', orderParams)
     .map((r: Response) => r.json());
-  }
-
-  private setBumpsInUse(item: Item): void {
-    switch (item.purchases.bump_type) {
-      case 'countrybump':
-        this.countryBumpsInUse++;
-        break;
-      case 'citybump':
-        this.cityBumpsInUse++;
-        break;
-    }
   }
 
 }

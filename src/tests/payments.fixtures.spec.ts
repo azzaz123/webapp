@@ -12,6 +12,7 @@ import {
   OrderProExtras,
   PerkResponse
 } from '../app/core/payments/payment.interface';
+import { PurchasesModel } from '../app/core/payments/purchase.model';
 
 export const FINANCIAL_CARD: FinancialCard = {
   expire_date: 61598188800000,
@@ -65,6 +66,11 @@ export const PURCHASES: Purchase[] = <Purchase[]>[{
   ...PURCHASES_RESPONSE[2],
   item: getMockItem('3', 3)
 }];
+
+export const PURCHASES_MODEL: PurchasesModel = {
+  bumpItems: PURCHASES_RESPONSE,
+  nationalBumpItems: PURCHASES_RESPONSE
+};
 
 export const AUTORENEW_DATA: AutorenewItem[] = [{
   item_id: '1',

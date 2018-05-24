@@ -4,7 +4,7 @@ import { PlanDataComponent } from './plan-data.component';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { PurchaseService } from '../../../../core/payments/purchase.service';
 import { Observable } from 'rxjs/Observable';
-import { PURCHASES, createPerksModelFixture } from '../../../../../tests/payments.fixtures.spec';
+import { createPerksModelFixture, PURCHASES_MODEL } from '../../../../../tests/payments.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../../core/item/item.service';
 import { MockedItemService } from '../../../../../tests/item.fixtures.spec';
@@ -82,7 +82,7 @@ describe('PlanDataComponent', () => {
       component.loading = true;
       spyOn(paymentService, 'getPerks').and.returnValue(Observable.of(createPerksModelFixture()));
       spyOn(paymentService, 'getStatus').and.returnValue(Observable.of(MOCK_STATUS));
-      spyOn(purchaseService, 'query').and.returnValue(Observable.of(PURCHASES));
+      spyOn(purchaseService, 'query').and.returnValue(Observable.of(PURCHASES_MODEL));
       component.ngOnChanges();
     });
 
@@ -95,12 +95,20 @@ describe('PlanDataComponent', () => {
       expect(purchaseService.query).toHaveBeenCalled();
     });
     it('should set loading false', () => {
-      expect(component.loading).toBeFalsy();
+      expect(component.loading).toBe(false);
     });
 
     it('should get quantity of bumps scheduled', () => {
       expect(paymentService.getStatus).toHaveBeenCalled();
       expect(component.status).toEqual(MOCK_STATUS);
+    });
+
+    it('should get the number of city bumps in use', () => {
+      expect(component.cityBumpsInUse).toEqual(0);
+    });
+
+    it('should get the number of city bumps in use', () => {
+      expect(component.countryBumpsInUse).toEqual(0);
     });
 
   });
