@@ -23,7 +23,8 @@ import { Lead } from './lead';
 import {
   CONVERSATION_DATE, CONVERSATION_ID, CONVERSATION_PHONE,
   CONVERSATIONS_DATA, createConversationsArray,
-  MOCK_CONVERSATION, MOCK_NOT_FOUND_CONVERSATION, NOT_FOUND_CONVERSATION_ID, SECOND_MOCK_CONVERSATION, SURVEY_RESPONSES, MOCKED_CONVERSATIONS
+  MOCK_CONVERSATION, MOCK_NOT_FOUND_CONVERSATION, NOT_FOUND_CONVERSATION_ID,
+  SECOND_MOCK_CONVERSATION, SURVEY_RESPONSES, MOCKED_CONVERSATIONS
 } from '../../../tests/conversation.fixtures.spec';
 import { MOCK_USER, MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
@@ -34,6 +35,7 @@ import {
   MOCK_RANDOM_MESSAGE
 } from '../../../tests/message.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { ConnectionService } from '../connection/connection.service';
 
 let service: ConversationService;
 let http: HttpService;
@@ -45,6 +47,7 @@ let xmpp: XmppService;
 let persistencyService: PersistencyService;
 let eventService: EventService;
 let trackingService: TrackingService;
+let connectionService: ConnectionService;
 
 const MOCKED_CONVERSATION_DATA: any = CONVERSATIONS_DATA[0];
 const EMPTY_RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
@@ -82,6 +85,9 @@ describe('Service: Conversation', () => {
           }
         }
         },
+        {
+          provide: ConnectionService, useValue: {}
+        },
         MessageService,
         EventService
       ]
@@ -96,6 +102,7 @@ describe('Service: Conversation', () => {
     notificationService = TestBed.get(NotificationService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
+    connectionService = TestBed.get(ConnectionService);
   });
 
   it('should instantiate the service', () => {
@@ -718,6 +725,8 @@ describe('Service: Conversation', () => {
     it('should return an empty array if no data', () => {
       spyOn(http, 'get').and.returnValues(Observable.of(EMPTY_RESPONSE));
       let conversations: Conversation[];
+      connectionService.isConnected = true;
+
       service.query().subscribe((res: Conversation[]) => {
         conversations = res;
       });
@@ -803,7 +812,6 @@ describe('Service: Conversation', () => {
   });
 
   describe('loadMessages', () => {
-
     let conversations: Conversation[];
     let convWithMessages: Conversation[];
     describe('with normal data', () => {
@@ -817,6 +825,7 @@ describe('Service: Conversation', () => {
             }
           });
         });
+        connectionService.isConnected = true;
         conversations = createConversationsArray(5);
         convWithMessages = [];
         service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
@@ -849,20 +858,22 @@ describe('Service: Conversation', () => {
     describe('with null conversation data', () => {
       it('should return an observable of null', () => {
         let observableResponse: any;
+        connectionService.isConnected = true;
+
         service['loadMessages'](null).subscribe((r: any) => {
           observableResponse = r;
         });
+
         expect(observableResponse).toBe(null);
       });
-
     });
-
   });
 
   describe('loadNotStoredMessages', () => {
     let initialConversations: Array<Conversation>;
     const MOCK_UNSAVED_CONVERSATION: Conversation = new Conversation('c', 3, CONVERSATION_DATE, false, MOCK_USER, MOCK_ITEM);
     beforeEach(() => {
+      connectionService.isConnected = true;
       initialConversations = [
         new Conversation('a', 1, CONVERSATION_DATE, false, MOCK_USER),
         new Conversation('b', 2, CONVERSATION_DATE, false, MOCK_USER)
@@ -1014,6 +1025,24 @@ describe('Service: Conversation', () => {
       }));
     });
 
+    describe('when not connected', () => {
+      beforeEach(() => {
+        connectionService.isConnected = false;
+      });
+      it('should return an observable with the same conversations', fakeAsync(() => {
+        spyOn(messageService, 'getNotSavedMessages');
+        let observableResponse: any;
+
+        service.loadNotStoredMessages(initialConversations).subscribe((data: any) => {
+          observableResponse = data;
+        });
+        tick();
+
+        expect(messageService.getNotSavedMessages).not.toHaveBeenCalled();
+        expect(observableResponse).toBe(null);
+      }));
+
+    });
   });
 
   describe('handleUnreadMessage', () => {

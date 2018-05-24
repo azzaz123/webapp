@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, HostListener } from '@angular/core';
 import { Message } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
@@ -18,14 +18,12 @@ import { ISubscription } from 'rxjs/Subscription';
 export class XmppService {
 
   private client: XMPPClient;
-  private _connected = false;
+  private _clientConnected = false;
   private confirmedMessages: string[] = [];
   private firstMessageDate: string;
   private currentJid: string;
   private resource: string;
-  private reconnectInterval: any;
-  private _reconnecting = false;
-  private connected$: ReplaySubject<boolean> = new ReplaySubject(1);
+  private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private sentAckSubscription: ISubscription;
@@ -44,9 +42,9 @@ export class XmppService {
   }
 
   public disconnect() {
-    if (this.connected) {
+    if (this.clientConnected) {
       this.client.disconnect();
-      this.connected = false;
+      this.clientConnected = false;
     }
   }
 
@@ -62,6 +60,7 @@ export class XmppService {
       },
       body: body
     };
+
     if (!conversation.messages.length) {
       this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
         to_user_id: conversation.user.id,
@@ -84,9 +83,10 @@ export class XmppService {
       });
       this.sentAckSubscription.unsubscribe();
     });
-    this.client.sendMessage(message);
+
     this.onNewMessage(_.clone(message));
-    }
+    this.client.sendMessage(message);
+  }
 
   public sendConversationStatus(userId: string, conversationId: string) {
     this.client.sendMessage({
@@ -198,16 +198,16 @@ export class XmppService {
   }
 
   public isConnected(): Observable<boolean> {
-    return this.connected$.asObservable();
+    return this.clientConnected$.asObservable();
   }
 
-  get connected(): boolean {
-    return this._connected;
+  get clientConnected(): boolean {
+    return this._clientConnected;
   }
 
-  set connected(value: boolean) {
-    this._connected = value;
-    this.connected$.next(value);
+  set clientConnected(value: boolean) {
+    this._clientConnected = value;
+    this.clientConnected$.next(value);
   }
 
   public debug() {
@@ -275,37 +275,23 @@ export class XmppService {
       this.setDefaultPrivacyList().subscribe();
       this.getPrivacyList().subscribe((jids: string[]) => {
         this.blockedUsers = jids;
-        this.connected = true;
+        this.clientConnected = true;
       });
     });
-    this.client.on('connected', () => {
-      if (this._reconnecting) {
-        this.connected = true;
-        this._reconnecting = false;
-      }
-    });
-    this.client.on('disconnected', (connection: any) => {
-      this.connected = false;
-      if (!connection.closing) {
-        this._reconnecting = true;
-        this.tryToReconnect();
-        this.eventService.emit(EventService.CONNECTION_ERROR);
-      }
-    });
-    this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
-  }
 
-  private tryToReconnect() {
-    if (!this.reconnectInterval) {
-      this.reconnectInterval = setInterval(() => {
-        if (this.connected) {
-          this.eventService.emit(EventService.CONNECTION_RESTORED);
-          clearInterval(this.reconnectInterval);
-        } else {
-          this.client.connect();
-        }
-      }, 5000);
-    }
+    this.client.on('disconnected', () => {
+      this.clientConnected = false;
+      this.eventService.emit(EventService.CLIENT_DISCONNECTED);
+    });
+
+    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
+      if (!this.clientConnected) {
+        this.client.connect();
+        this.clientConnected = true;
+      }
+    });
+
+    this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
   }
 
   private onNewMessage(message: XmppBodyMessage) {

@@ -20,6 +20,7 @@ import { MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/u
 import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
 import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { ConnectionService } from '../connection/connection.service';
 
 @Injectable()
 export class MockService extends LeadService {
@@ -31,8 +32,9 @@ export class MockService extends LeadService {
               userService: UserService,
               itemService: ItemService,
               event: EventService,
-              xmpp: XmppService) {
-    super(http, userService, itemService, event, xmpp);
+              xmpp: XmppService,
+              connectionService: ConnectionService) {
+    super(http, userService, itemService, event, xmpp, connectionService);
   }
 
   protected getLeads(since?: number, concat?: boolean, archived?: boolean): Observable<Conversation[]> {
@@ -65,6 +67,7 @@ let http: HttpService;
 let userService: UserService;
 let itemService: ItemService;
 let eventService: EventService;
+let connectionService: ConnectionService;
 
 describe('LeadService', () => {
   beforeEach(() => {
@@ -82,7 +85,10 @@ describe('LeadService', () => {
           isBlocked() {
             return true;
           }
-        }}
+        }},
+        {
+          provide: ConnectionService, useValue: {}
+        }
       ]
     });
     service = TestBed.get(MockService);
@@ -90,6 +96,7 @@ describe('LeadService', () => {
     itemService = TestBed.get(ItemService);
     eventService = TestBed.get(EventService);
     http = TestBed.get(HttpService);
+    connectionService = TestBed.get(ConnectionService);
   });
 
   it('should instantiate the service', () => {
@@ -217,6 +224,7 @@ describe('LeadService', () => {
     describe('with data', () => {
       beforeEach(() => {
         spyOn(http, 'get').and.returnValues(Observable.of(RESPONSE));
+        connectionService.isConnected = true;
       });
       describe('with no params', () => {
         let conversations: Conversation[];
