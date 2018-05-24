@@ -9,6 +9,7 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { Conversation } from '../../core/conversation/conversation';
 import { Message } from '../../core/message/message';
 import { NewConversationResponse } from '../../core/conversation/conversation-response.interface';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'tsl-conversations-panel',
@@ -23,12 +24,14 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private conversation: Conversation;
   public conversations: Array<Conversation> = [];
+  public archive = false;
   private _loading = false;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
   public page = 1;
   private active = true;
   private newConversationItemId: string;
+  public isProfessional: boolean;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
@@ -36,6 +39,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
               private trackingService: TrackingService,
               public userService: UserService,
               private elRef: ElementRef) {
+    this.userService.isProfessional().subscribe((value: boolean) => {
+      this.isProfessional = value;
+    });
   }
 
   set loading(value: boolean) {
@@ -53,9 +59,17 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.getConversations();
-    this.eventService.subscribe(EventService.CONVERSATION_ARCHIVED, () => this.setCurrentConversation(null));
+    this.eventService.subscribe(EventService.LEAD_ARCHIVED, () => this.setCurrentConversation(null));
     this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
     this.eventService.subscribe(EventService.FIND_CONVERSATION, (conversation: NewConversationResponse) => this.findConversation(conversation));
+    this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, () => {
+      if (this.archive) {
+        this.archive = false;
+        this.page = 1;
+        this.setCurrentConversation(null);
+        this.getConversations();
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -66,7 +80,13 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   public loadMore() {
     this.page++;
     this.loading = true;
-    this.conversationService.loadMore().subscribe(() => {
+    let observable: Observable<any>;
+    if (this.archive) {
+      observable = this.conversationService.loadMoreArchived();
+    } else {
+      observable = this.conversationService.loadMore();
+    }
+    observable.subscribe(() => {
       this.getConversations();
     });
   }
@@ -75,12 +95,16 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (this.conversationsSubscription) {
       this.conversationsSubscription.unsubscribe();
     }
-    this.conversationsSubscription = this.conversationService.getPage(this.page).takeWhile(() => {
+    this.conversationsSubscription = this.conversationService.getPage(this.page, this.archive).takeWhile(() => {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
-      this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
+      if (this.archive) {
+        this.trackingService.track(TrackingService.CONVERSATION_LIST_PROCESSED_LOADED);
+      } else {
+        this.trackingService.track(TrackingService.CONVERSATION_LIST_ACTIVE_LOADED);
+      }
       if (!this.currentConversationSet) {
-        this.route.queryParams.subscribe((params) => {
+        this.route.queryParams.subscribe((params: any) => {
           this.newConversationItemId = params.itemId;
           if (params.itemId) {
             this.conversationService.getByItemId(this.newConversationItemId).subscribe((convResponse: NewConversationResponse) => {
@@ -101,6 +125,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.conversations = [];
         this.loading = false;
       }
+      this.conversationService.checkIfLastPage().subscribe();
     });
   }
 
@@ -144,9 +169,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       this.conversationService.getSingleConversationMessages(newConversation).subscribe((newConversationWithMessages: Conversation) => {
         this.conversationService.addLead(newConversationWithMessages);
         this.setCurrentConversation(newConversationWithMessages);
-        this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW,
-          { user_id: newConversationWithMessages.user.id, item_id: newConversationWithMessages.item.id,
-            thread_id: newConversationWithMessages.id });
       });
     });
   }
@@ -171,6 +193,14 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   public setCurrentConversation(conversation: Conversation) {
     this.currentConversation.emit(conversation);
     this.conversation = conversation;
+  }
+
+  public filterByArchived(archive: boolean) {
+    this.archive = archive;
+    this.page = 1;
+    this.loading = true;
+    this.setCurrentConversation(null);
+    this.getConversations();
   }
 
 }

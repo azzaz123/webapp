@@ -5,9 +5,10 @@ import { EventService } from '../event/event.service';
 @Injectable()
 export class ConnectionService {
 
+  public isConnected = true;
+
   constructor(private winRef: WindowRef,
     private eventService: EventService) { }
-    public isConnected = true;
 
     public checkConnection() {
       this.winRef.nativeWindow.addEventListener('offline', () => {

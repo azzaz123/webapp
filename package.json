@@ -8,7 +8,7 @@
     "builddev": "ng build --env=dev --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "builddocker": "ng build --env=docker --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "builddocker-en": "ng build --env=docker --aot --no-progress",
-    "buildbeta": "ng build --env=beta --output-hashing all --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
+    "buildbeta": "ng build --prod --env=beta --output-hashing all --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "buildbeta-en": "ng build --env=beta --output-hashing all --aot --no-progress",
     "buildprod": "ng build --prod --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb --no-progress",
     "buildprod-en": "ng build --prod --aot --no-progress",
@@ -16,7 +16,8 @@
     "serve": "ng serve --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
     "test": "ng test --single-run --no-progress --reporters spec --browsers ChromeHeadless",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}"
   },
   "private": true,
   "dependencies": {

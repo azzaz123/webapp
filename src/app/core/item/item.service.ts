@@ -10,17 +10,18 @@ import {
   Duration,
   ItemBulkResponse,
   ItemContent,
-  ItemCounters,
+  ItemCounters, ItemDataResponse,
   ItemResponse,
   ItemsData,
   ItemsStore,
   ItemsWithAvailableProductsResponse,
-  ItemWithProducts,
+  ItemWithProducts, LatestItemResponse,
   Order,
   Product,
   ProductDurations,
   Purchase,
-  SelectedItemsAction
+  SelectedItemsAction,
+  OrderPro
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
@@ -46,6 +47,7 @@ export class ItemService extends ResourceService {
   protected API_URL = 'api/v3/items';
   private API_URL_WEB = 'api/v3/web/items';
   private API_URL_USER = 'api/v3/users';
+  private API_URL_PROTOOL = 'api/v3/protool';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
@@ -412,12 +414,28 @@ export class ItemService extends ResourceService {
     .map((response: AvailableProductsResponse) => response.products[0]);
   }
 
-  public getUrgentProductByCategoryId(categoryId: number): Observable<Product> {
+  public getUrgentProductByCategoryId(categoryId: string): Observable<Product> {
     return this.http.get(this.API_URL_WEB + '/available-urgent-products', {
       categoryId: categoryId
     })
       .map((r: Response) => r.json())
       .map((response: AvailableProductsResponse) => response.products[0]);
+  }
+
+  public getLatest(userId: string): Observable<ItemDataResponse> {
+    return this.http.get(this.API_URL + '/latest-cars', {userId: userId})
+      .map((r: Response) => r.json())
+      .map((resp: LatestItemResponse) => {
+        return {
+          count: resp.count - 1,
+          data: resp.items[0] ? this.mapRecordData(resp.items[0]) : null
+        };
+      });
+  }
+
+  public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
+    return this.http.post(this.API_URL_PROTOOL + '/purchaseItems', orderParams)
+    .map((r: Response) => r.json());
   }
 
 }

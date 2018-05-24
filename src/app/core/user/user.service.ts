@@ -13,10 +13,10 @@ import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
-import { UserInfoResponse } from './user-info.interface';
+import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
-import { UserData } from './user-data.interface';
+import { UserData, UserProData, UserProDataNotifications } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
@@ -26,6 +26,7 @@ export class UserService extends ResourceService {
 
   public queryParams: any = {};
   protected API_URL = 'api/v3/users';
+  protected API_URL_PROTOOL = 'api/v3/protool';
   private banReasons: BanReason[] = null;
   protected _user: User;
   private meObservable: Observable<User>;
@@ -162,6 +163,19 @@ export class UserService extends ResourceService {
     .map((r: Response) => r.json());
   }
 
+  public getProInfo(): Observable<UserProInfo> {
+    return this.http.get(this.API_URL_PROTOOL + '/extraInfo')
+      .map((r: Response) => r.json());
+  }
+
+  public updateProInfo(data: UserProData): Observable<any> {
+    return this.http.post(this.API_URL_PROTOOL + '/extraInfo', data);
+  }
+
+  public updateProInfoNotifications(data: UserProDataNotifications): Observable<any> {
+    return this.http.post(this.API_URL_PROTOOL + '/extraInfo/notifications', data);
+  }
+
   public updateLocation(coordinates: Coordinate): Observable<UserLocation> {
     return this.http.put(this.API_URL + '/me/location', {
       latitude: coordinates.latitude,
@@ -178,6 +192,16 @@ export class UserService extends ResourceService {
         counters: this.toCountersStats(r.json().counters)
       };
     });
+  }
+
+  public getUserStats(userId: string): Observable<UserStatsResponse> {
+    return this.http.get(this.API_URL + '/' + userId + '/stats')
+      .map((r: Response) => {
+        return {
+          ratings: this.toRatingsStats(r.json().ratings),
+          counters: this.toCountersStats(r.json().counters)
+        };
+      });
   }
 
   public toRatingsStats(ratings): Ratings {
@@ -252,7 +276,18 @@ export class UserService extends ResourceService {
   }
 
   public setPermission(userType: string): void {
-    this.permissionService.addPermission(PERMISSIONS[userType]);
+    if (environment.profeatures) {
+      this.permissionService.addPermission(PERMISSIONS[userType]);
+    } else {
+      this.permissionService.addPermission(PERMISSIONS['normal']);
+    }
+  }
+
+  public isProfessional(): Observable<boolean> {
+    return this.me()
+      .flatMap(() => {
+        return Observable.fromPromise(this.permissionService.hasPermission(PERMISSIONS.professional));
+      });
   }
 }
 

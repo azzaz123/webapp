@@ -29,6 +29,7 @@ import { User } from './core/user/user';
 import { Message } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
 import { ConnectionService } from './core/connection/connection.service';
+import { CallsService } from './core/conversation/calls.service';
 
 @Component({
   selector: 'tsl-root',
@@ -44,7 +45,6 @@ export class AppComponent implements OnInit {
   private previousUrl: string;
   private currentUrl: string;
   private previousSlug: string;
-  private _reconnecting = false;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -65,7 +65,8 @@ export class AppComponent implements OnInit {
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
-              private connectionService: ConnectionService) {
+              private connectionService: ConnectionService,
+              private callService: CallsService) {
     this.config();
   }
 
@@ -74,6 +75,7 @@ export class AppComponent implements OnInit {
     this.subscribeEventUserLogout();
     this.subscribeUnreadMessages();
     this.subscribeEventNewMessage();
+    this.subscribeEventClientDisconnect();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
@@ -83,6 +85,7 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
+    this.conversationService.firstLoad = true;
   }
 
   private updateUrlAndSendAnalytics() {
@@ -128,8 +131,18 @@ export class AppComponent implements OnInit {
       this.userService.me().subscribe(
         (user: User) => {
           this.xmppService.connect(user.id, accessToken);
-          this.conversationService.init().subscribe();
           this.userService.setPermission(user.type);
+          this.conversationService.init().subscribe(() => {
+            this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+              if (isProfessional) {
+                this.callService.init().subscribe(() => {
+                  this.conversationService.init(true).subscribe(() => {
+                    this.callService.init(true).subscribe();
+                  });
+                });
+              }
+            });
+          });
           appboy.changeUser(user.id);
           appboy.openSession();
           if (!this.cookieService.get('app_session_id')) {
@@ -172,6 +185,10 @@ export class AppComponent implements OnInit {
 
   private subscribeEventNewMessage() {
     this.event.subscribe(EventService.NEW_MESSAGE, (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate));
+  }
+
+  private subscribeEventClientDisconnect() {
+    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => this.conversationService.resetCache());
   }
 
   private setTitle() {

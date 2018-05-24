@@ -128,6 +128,15 @@ export interface Order {
   product_id: string;
 }
 
+export interface OrderPro {
+  item_id: string;
+  start_date: number;
+  end_date: number;
+  autorenew: boolean;
+  bump: boolean;
+  national: boolean;
+}
+
 export interface ItemUploadForm {
   category_id: string;
   images: any[];
@@ -238,4 +247,14 @@ export interface ItemsStore {
 export interface DeliveryInfo {
   max_weight_kg: number;
   min_weight_kg: number;
+}
+
+export interface ItemDataResponse {
+  count: number;
+  data: Item;
+}
+
+export interface LatestItemResponse {
+  count: number;
+  items: ItemResponse[];
 }

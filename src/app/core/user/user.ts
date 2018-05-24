@@ -110,6 +110,10 @@ export class User implements Model {
     return this._receivedReports;
   }
 
+  set receivedReports(value: number) {
+    this._receivedReports = value;
+  }
+
   get itemDistance(): number {
     return this._itemDistance;
   }

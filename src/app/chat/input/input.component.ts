@@ -4,6 +4,7 @@ import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
 import { XmppService } from '../../core/xmpp/xmpp.service';
 import { ConnectionService } from '../../core/connection/connection.service';
+import { TrackingService } from '../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-input',
@@ -18,8 +19,9 @@ export class InputComponent implements OnChanges, OnInit {
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
-              private xmppService: XmppService,
-              private connectionService: ConnectionService) {
+              private connectionService: ConnectionService,
+              private trackingService: TrackingService,
+              private xmppService: XmppService) {
   }
 
   ngOnInit() {
@@ -46,6 +48,10 @@ export class InputComponent implements OnChanges, OnInit {
     if (!this.disable) {
       const message = messageArea.value.trim();
       if (message !== '') {
+        this.trackingService.track(TrackingService.SEND_BUTTON, {
+          thread_id: this.currentConversation.id,
+          to_user_id: this.currentConversation.user.id
+        });
         this.messageService.send(this.currentConversation, message);
       }
       messageArea.value = '';

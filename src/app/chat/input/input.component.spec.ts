@@ -11,6 +11,7 @@ import { XmppService } from '../../core/xmpp/xmpp.service';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { ConnectionService } from '../../core/connection/connection.service';
+import { TrackingService } from '../../core/tracking/tracking.service';
 
 class MockMessageService {
   send(c: Conversation, t: string): void {
@@ -23,6 +24,7 @@ describe('Component: Input', () => {
   let messageService: MessageService;
   let fixture: ComponentFixture<InputComponent>;
   let eventService: EventService;
+  let trackingService: TrackingService;
   let xmppService: XmppService;
   let connectionService: ConnectionService;
 
@@ -39,6 +41,10 @@ describe('Component: Input', () => {
           isConnected: true
         }},
         EventService,
+        {provide: TrackingService, useValue: {
+          track() {}
+        }},
+        EventService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
@@ -46,6 +52,7 @@ describe('Component: Input', () => {
     component = TestBed.createComponent(InputComponent).componentInstance;
     messageService = TestBed.get(MessageService);
     eventService = TestBed.get(EventService);
+    trackingService = TestBed.get(TrackingService);
     xmppService = TestBed.get(XmppService);
     connectionService = TestBed.get(ConnectionService);
     spyOn(messageService, 'send');
@@ -56,30 +63,30 @@ describe('Component: Input', () => {
       component.ngOnInit();
 
       eventService.emit(EventService.CONNECTION_ERROR);
-      
+
       expect(component.disable).toBe(true);
     });
     it('should disable input when CONNECTION_RESTORED', () => {
       component.ngOnInit();
-      
+
       eventService.emit(EventService.CONNECTION_RESTORED);
-      
+
       expect(component.disable).toBe(false);
     });
     it('should disable input when USER_BLOCKED', () => {
       component.currentConversation = MOCK_CONVERSATION();
-      
+
       component.ngOnInit();
       eventService.emit(EventService.USER_BLOCKED, USER_ID);
-      
+
       expect(component.disable).toBe(true);
     });
     it('should disable input when USER_UNBLOCKED', () => {
       component.currentConversation = MOCK_CONVERSATION();
-      
+
       component.ngOnInit();
       eventService.emit(EventService.USER_UNBLOCKED, USER_ID);
-      
+
       expect(component.disable).toBe(false);
     });
   });
@@ -93,41 +100,51 @@ describe('Component: Input', () => {
 
     beforeEach(() => {
       spyOn(EVENT, 'preventDefault');
+      spyOn(trackingService, 'track');
       textarea = fixture.debugElement.query(By.css('textarea')).nativeElement;
       component.currentConversation = conversation;
     });
 
-    it('should call the send method if texts is present', () => {
+    it('should call the send method and track the SEND_BUTTON event if texts is present', () => {
       textarea.value = TEXT;
-      
+
       component.sendMessage(textarea, EVENT);
-      
+
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
+        thread_id: conversation.id,
+        to_user_id: conversation.user.id});
+      expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
-    it('should call the send method if texts is present with spaces', () => {
+    it('should call the send method and track the SEND_BUTTON event if texts is present with spaces', () => {
       textarea.value = '   ' + TEXT + ' ';
-      
+
       component.sendMessage(textarea, EVENT);
-      
+
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
+        thread_id: conversation.id,
+        to_user_id: conversation.user.id});
+      expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
-    it('should NOT call the send method if texts is empty', () => {
+    it('should NOT call the send method and NOT track the SEND_BUTTON event if texts is empty', () => {
       textarea.value = '';
-      
+
       component.sendMessage(textarea, EVENT);
-      
+
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(textarea.value).toBe('');
+      expect(trackingService.track).not.toHaveBeenCalled();
     });
 
-    it('should NOT call the send method if texts is just spaces', () => {
+    it('should NOT call the send method and NOT track the SEND_BUTTON event if texts is just spaces', () => {
       textarea.value = '   ';
 
       component.sendMessage(textarea, EVENT);
@@ -135,9 +152,10 @@ describe('Component: Input', () => {
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
       expect(textarea.value).toBe('');
+      expect(trackingService.track).not.toHaveBeenCalled();
     });
 
-    it('should NOT call the send method if disabled', () => {
+    it('should NOT call the send method and NOT track the SEND_BUTTON event if disabled', () => {
       textarea.value = TEXT;
       component.disable = true;
 
@@ -145,6 +163,7 @@ describe('Component: Input', () => {
 
       expect(EVENT.preventDefault).toHaveBeenCalled();
       expect(messageService.send).not.toHaveBeenCalled();
+      expect(trackingService.track).not.toHaveBeenCalled();
     });
 
   });

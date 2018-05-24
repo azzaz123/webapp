@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="14px" viewBox="0 0 22 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
-    <title>ic : arrow_left</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Item-Page" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="New_Item_CARS-+-gradient-and-bullets" transform="translate(-349.000000, -360.000000)" fill-rule="nonzero" fill="#253238">
-            <g id="Product-Image" transform="translate(322.000000, 177.000000)">
-                <g id="ic_arrows" transform="translate(20.000000, 172.000000)">
-                    <path d="M25.5857864,19 L21.2928932,23.2928932 C20.9023689,23.6834175 20.9023689,24.3165825 21.2928932,24.7071068 C21.6834175,25.0976311 22.3165825,25.0976311 22.7071068,24.7071068 L28.7071068,18.7071068 C29.0976311,18.3165825 29.0976311,17.6834175 28.7071068,17.2928932 L22.7071068,11.2928932 C22.3165825,10.9023689 21.6834175,10.9023689 21.2928932,11.2928932 C20.9023689,11.6834175 20.9023689,12.3165825 21.2928932,12.7071068 L25.5857864,17 L8,17 C7.44771525,17 7,17.4477153 7,18 C7,18.5522847 7.44771525,19 8,19 L25.5857864,19 Z" id="ic-:-arrow_left" transform="translate(18.000000, 18.000000) rotate(-180.000000) translate(-18.000000, -18.000000) "></path>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="22" height="14" viewBox="0 0 22 14" xmlns="http://www.w3.org/2000/svg"><g id="Item-Page" fill="none" fill-rule="evenodd"><g id="New_Item_CARS-+-gradient-and-bullets" transform="translate(-349 -360)" fill-rule="nonzero" fill="#253238"><g id="Product-Image" transform="translate(322 177)"><g id="ic_arrows" transform="translate(20 172)"><path d="M25.586 19l-4.293 4.293a1 1 0 0 0 1.414 1.414l6-6a1 1 0 0 0 0-1.414l-6-6a1 1 0 0 0-1.414 1.414L25.586 17H8a1 1 0 0 0 0 2h17.586z" id="ic-:-arrow_left" transform="rotate(-180 18 18)"/></g></g></g></g></svg>

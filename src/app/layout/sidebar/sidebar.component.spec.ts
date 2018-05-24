@@ -8,6 +8,7 @@ import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MessageService } from '../../core/message/message.service';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -17,6 +18,9 @@ describe('SidebarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SidebarComponent],
+      imports: [
+        NgxPermissionsModule.forRoot()
+      ],
       providers: [
         TutorialService,
         {
@@ -25,6 +29,9 @@ describe('SidebarComponent', () => {
           },
           me(): Observable<User> {
             return Observable.of(MOCK_USER);
+          },
+          isProfessional() {
+            return Observable.of(true);
           }
         },
         },
@@ -53,6 +60,15 @@ describe('SidebarComponent', () => {
     });
     it('should set the private user variable with the content of the user', () => {
       expect(component.user).toBe(MOCK_USER);
+    });
+
+    it('should call isProfessional and set the attribute', () => {
+      spyOn(userService, 'isProfessional').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.isProfessional).toHaveBeenCalled();
+      expect(component.isProfessional).toBe(true);
     });
   });
 

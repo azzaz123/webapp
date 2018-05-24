@@ -6,7 +6,7 @@ import { EventService } from '../event/event.service';
 import { Message } from '../message/message';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { PersistencyService } from '../persistency/persistency.service';
-import { CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATION_ID, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { XmppTimestampMessage } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
@@ -318,6 +318,30 @@ describe('Service: Xmpp', () => {
       expect(msg.payload.text).toEqual('text');
     }));
 
+    it('should emit a CLIENT_DISCONNECTED event when the Xmpp client is disconnected', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+
+      eventService.emit('disconnected');
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CLIENT_DISCONNECTED);
+    });
+
+    it('should reconnect the client if it is disconnected when a CONNECTION_RESTORED event is triggered', () => {
+      service.clientConnected = false;
+
+      eventService.emit(EventService.CONNECTION_RESTORED);
+
+      expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not reconnect the client if it is already connecetd when a CONNECTION_RESTORED event is triggered', () => {
+      service.clientConnected = true;
+
+      eventService.emit(EventService.CONNECTION_RESTORED);
+
+      expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(1);
+    });
+
     it('should send the message receipt when there is a new message', () => {
       spyOn<any>(service, 'sendMessageDeliveryReceipt');
 
@@ -328,6 +352,7 @@ describe('Service: Xmpp', () => {
         MOCKED_SERVER_MESSAGE.id,
         MOCKED_SERVER_MESSAGE.thread);
     });
+
     it('should not call the message receipt if the new message is from the current user', () => {
       spyOn<any>(service, 'sendMessageDeliveryReceipt');
       service['currentJid'] = MOCKED_SERVER_MESSAGE.from;
@@ -363,18 +388,55 @@ describe('Service: Xmpp', () => {
 
       expect(MOCKED_CLIENT.connect).toHaveBeenCalled();
     });
-  });
 
-  it('should send the read message', () => {
-    service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-    service.sendConversationStatus(USER_ID, MESSAGE_ID);
+    it('should send the read message', () => {
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      service.sendConversationStatus(USER_ID, MESSAGE_ID);
+      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
+        to: USER_ID + '@' + environment['xmppDomain'],
+        read: {
+          xmlns: 'wallapop:thread:status'
+        },
+        thread: MESSAGE_ID
+      });
+    });
 
-    expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
-      to: USER_ID + '@' + environment['xmppDomain'],
-      read: {
-        xmlns: 'wallapop:thread:status'
-      },
-      thread: MESSAGE_ID
+    it('should emit the messageReceivedAck event when a message with received receipt is sent', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+      const msg = {
+        received: {
+          xmlns: 'urn:xmpp:receipts',
+          id: MESSAGE_ID
+        }
+      };
+
+      eventService.emit('message:sent', msg);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_RECEIVED_ACK);
+    });
+
+    it('should emit the messageReadAck event when a message with read receipt is sent', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+      const msg = {
+        read: {
+          id: MESSAGE_ID
+        }
+      };
+
+      eventService.emit('message:sent', msg);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_READ_ACK);
+    });
+
+    it('should emit the messageSentAck event when a message with body is sent', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+      const msg = {
+        body: 'some content'
+      };
+
+      eventService.emit('message:sent', msg);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT_ACK);
     });
   });
 
@@ -576,7 +638,7 @@ describe('Service: Xmpp', () => {
 
       const message: Message = response.data[0];
       expect(response.data.length).toBe(1);
-      expect(message instanceof Message).toBeTruthy();
+      expect(message instanceof Message).toBe(true);
       expect(message.id).toBe(MESSAGE_ID);
       expect(message.conversationId).toBe(THREAD);
       expect(message.message).toBe(MESSAGE_BODY);
@@ -599,9 +661,9 @@ describe('Service: Xmpp', () => {
       const message: Message = response.data[0];
       const message2: Message = response.data[1];
       expect(response.data.length).toBe(2);
-      expect(message instanceof Message).toBeTruthy();
+      expect(message instanceof Message).toBe(true);
       expect(message.id).toBe(MESSAGE_ID2);
-      expect(message2 instanceof Message).toBeTruthy();
+      expect(message2 instanceof Message).toBe(true);
       expect(message2.id).toBe(MESSAGE_ID);
     }));
 
@@ -781,7 +843,7 @@ describe('Service: Xmpp', () => {
 
       const message: Message = response.data[0];
       expect(response.data.length).toBe(1);
-      expect(message instanceof Message).toBeTruthy();
+      expect(message instanceof Message).toBe(true);
       expect(message.id).toBe(MESSAGE_ID);
       expect(message.conversationId).toBe(THREAD);
       expect(message.message).toBe(MESSAGE_BODY);
@@ -912,48 +974,54 @@ describe('Service: Xmpp', () => {
 
   describe('isConnected', () => {
 
-    let connected: boolean;
+    let clientConnected: boolean;
 
     beforeEach(() => {
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      connected = false;
+      clientConnected = false;
     });
 
-    it('should say when is connected', fakeAsync(() => {
+    it('should say when is clientConnected', fakeAsync(() => {
       service.isConnected().subscribe((value: boolean) => {
-        connected = value;
+        clientConnected = value;
       });
 
-      service['connected$'].next(true);
+      service['clientConnected$'].next(true);
       tick();
 
-      expect(connected).toBe(true);
-      connected = false;
+      expect(clientConnected).toBe(true);
+      clientConnected = false;
+
       service.isConnected().subscribe((value: boolean) => {
-        connected = value;
+        clientConnected = value;
       });
-      expect(connected).toBe(true);
-      service['connected'] = true;
+
+      expect(clientConnected).toBe(true);
+      service['clientConnected'] = true;
+
       service.isConnected().subscribe((value: boolean) => {
-        connected = value;
+        clientConnected = value;
       });
-      expect(connected).toBe(true);
+
+      expect(clientConnected).toBe(true);
     }));
 
-    it('should say when is NOT connected', fakeAsync(() => {
+    it('should say when is NOT clientConnected', fakeAsync(() => {
       service.isConnected().subscribe((value: boolean) => {
-        connected = value;
+        clientConnected = value;
       });
 
-      service['connected$'].next(false);
+      service['clientConnected$'].next(false);
       tick();
 
-      expect(connected).toBe(false);
-      service['connected'] = false;
+      expect(clientConnected).toBe(false);
+      service['clientConnected'] = false;
+
       service.isConnected().subscribe((value: boolean) => {
-        connected = value;
+        clientConnected = value;
       });
-      expect(connected).toBe(false);
+
+      expect(clientConnected).toBe(false);
     }));
 
   });
@@ -964,7 +1032,7 @@ describe('Service: Xmpp', () => {
       spyOn<any>(service, 'onNewMessage');
 
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      service.sendMessage(USER_ID, CONVERSATION_ID, MESSAGE_BODY);
+      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
       const message: any = {
         id: queryId,
         to: service['createJid'](USER_ID),
@@ -978,11 +1046,13 @@ describe('Service: Xmpp', () => {
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(message);
       expect(service['onNewMessage']).toHaveBeenCalledWith(message);
     });
+
     it('should track the MessageSent event', () => {
       spyOn(trackingService, 'track');
 
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      service.sendMessage(USER_ID, CONVERSATION_ID, MESSAGE_BODY);
+
+      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
       const message: any = {
         id: queryId,
         to: service['createJid'](USER_ID),
@@ -993,8 +1063,36 @@ describe('Service: Xmpp', () => {
         body: MESSAGE_BODY
       };
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT, {conversation_id: message.thread});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT,
+        { thread_id: message.thread,
+          message_id: message.id,
+          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
+          item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
+
+    it('should track the MessageSentAck event', () => {
+      spyOn(trackingService, 'track');
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      const msg = {
+        id: queryId,
+        to: service['createJid'](USER_ID),
+        from: service['currentJid'],
+        thread: CONVERSATION_ID,
+        received: {
+          id: 'someId'
+        }
+      };
+
+      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+      eventService.emit(EventService.MESSAGE_SENT_ACK);
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT_ACK,
+        { thread_id: msg.thread,
+          message_id: msg.id,
+          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
+          item_id: MOCKED_CONVERSATIONS[0].item.id });
+    });
+
     it('should send a new message with the true updateDate parameter', () => {
       spyOn<any>(service, 'onNewMessage').and.callThrough();
 
@@ -1015,12 +1113,12 @@ describe('Service: Xmpp', () => {
     it('should disconnect', () => {
       spyOn(MOCKED_CLIENT, 'disconnect');
       service.connect('abc', 'def');
-      service['_connected'] = true;
+      service['_clientConnected'] = true;
 
       service.disconnect();
 
       expect(MOCKED_CLIENT.disconnect).toHaveBeenCalled();
-      expect(service['_connected']).toBe(false);
+      expect(service['_clientConnected']).toBe(false);
     });
 
   });
@@ -1150,6 +1248,5 @@ describe('Service: Xmpp', () => {
       expect(service.isBlocked('5')).toBe(false);
     });
   });
-
 
 });

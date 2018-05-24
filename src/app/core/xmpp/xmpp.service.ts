@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, HostListener } from '@angular/core';
 import { Message } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
@@ -11,21 +11,22 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
+import { Conversation } from '../conversation/conversation';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class XmppService {
 
   private client: XMPPClient;
-  private _connected = false;
+  private _clientConnected = false;
   private confirmedMessages: string[] = [];
   private firstMessageDate: string;
   private currentJid: string;
   private resource: string;
-  private reconnectInterval: any;
-  private _reconnecting = false;
-  private connected$: ReplaySubject<boolean> = new ReplaySubject(1);
+  private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
+  private sentAckSubscription: ISubscription;
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
@@ -41,27 +42,50 @@ export class XmppService {
   }
 
   public disconnect() {
-    if (this.connected) {
+    if (this.clientConnected) {
       this.client.disconnect();
-      this.connected = false;
+      this.clientConnected = false;
     }
   }
 
-  public sendMessage(userId: string, conversationId: string, body: string) {
+  public sendMessage(conversation: Conversation, body: string) {
     const message: XmppBodyMessage = {
       id: this.client.nextId(),
-      to: this.createJid(userId),
+      to: this.createJid(conversation.user.id),
       from: this.currentJid,
-      thread: conversationId,
+      thread: conversation.id,
       type: 'chat',
       request: {
         xmlns: 'urn:xmpp:receipts',
       },
       body: body
     };
-    this.client.sendMessage(message);
+
+    if (!conversation.messages.length) {
+      this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
+        to_user_id: conversation.user.id,
+        item_id: conversation.item.id,
+        thread_id: message.thread,
+        message_id: message.id });
+    }
+    this.trackingService.track(TrackingService.MESSAGE_SENT, {
+      thread_id: message.thread,
+      message_id: message.id,
+      to_user_id: conversation.user.id,
+      item_id: conversation.item.id
+    });
+    this.sentAckSubscription = this.eventService.subscribe(EventService.MESSAGE_SENT_ACK, () => {
+      this.trackingService.track(TrackingService.MESSAGE_SENT_ACK, {
+        thread_id: message.thread,
+        message_id: message.id,
+        to_user_id: conversation.user.id,
+        item_id: conversation.item.id
+      });
+      this.sentAckSubscription.unsubscribe();
+    });
+
     this.onNewMessage(_.clone(message));
-    this.trackingService.track(TrackingService.MESSAGE_SENT, {conversation_id: message.thread});
+    this.client.sendMessage(message);
   }
 
   public sendConversationStatus(userId: string, conversationId: string) {
@@ -174,16 +198,16 @@ export class XmppService {
   }
 
   public isConnected(): Observable<boolean> {
-    return this.connected$.asObservable();
+    return this.clientConnected$.asObservable();
   }
 
-  get connected(): boolean {
-    return this._connected;
+  get clientConnected(): boolean {
+    return this._clientConnected;
   }
 
-  set connected(value: boolean) {
-    this._connected = value;
-    this.connected$.next(value);
+  set clientConnected(value: boolean) {
+    this._clientConnected = value;
+    this.clientConnected$.next(value);
   }
 
   public debug() {
@@ -234,18 +258,37 @@ export class XmppService {
     this.client.on('message', (message: XmppBodyMessage) => {
       this.onNewMessage(message);
     });
+    this.client.on('message:sent', (message: XmppBodyMessage) => {
+      if (message.received) {
+        this.eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
+      }
+      if (message.read) {
+        this.eventService.emit(EventService.MESSAGE_READ_ACK);
+      }
+      if (message.body) {
+        this.eventService.emit(EventService.MESSAGE_SENT_ACK);
+      }
+    });
     this.client.on('session:started', () => {
       this.client.sendPresence();
       this.client.enableCarbons();
       this.setDefaultPrivacyList().subscribe();
       this.getPrivacyList().subscribe((jids: string[]) => {
         this.blockedUsers = jids;
-        this.connected = true;
+        this.clientConnected = true;
       });
     });
 
+    this.client.on('disconnected', () => {
+      this.clientConnected = false;
+      this.eventService.emit(EventService.CLIENT_DISCONNECTED);
+    });
+
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      this.client.connect();
+      if (!this.clientConnected) {
+        this.client.connect();
+        this.clientConnected = true;
+      }
     });
 
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
