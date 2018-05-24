@@ -3,6 +3,7 @@ import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
 import { XmppService } from '../../core/xmpp/xmpp.service';
+import { ConnectionService } from '../../core/connection/connection.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class InputComponent implements OnChanges, OnInit {
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
+              private connectionService: ConnectionService,
               private trackingService: TrackingService,
               private xmppService: XmppService) {
   }
@@ -62,7 +64,7 @@ export class InputComponent implements OnChanges, OnInit {
         this.messageArea.nativeElement.focus();
       }, 500);
     }
-    this.disable = this.currentConversation.user.blocked;
+    this.disable = this.currentConversation.user.blocked || !this.connectionService.isConnected;
   }
 
 }
