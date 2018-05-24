@@ -24,6 +24,7 @@ import { PushNotificationsModule } from 'ng-push';
 import { ToastrModule } from 'ngx-toastr';
 import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
+import { PurchaseService } from './payments/purchase.service';
 
 @NgModule({
   imports: [
@@ -66,7 +67,8 @@ export class CoreModule {
         XmppService,
         ReviewService,
         AdService,
-        ConnectionService
+        ConnectionService,
+        PurchaseService
       ]
     };
   }

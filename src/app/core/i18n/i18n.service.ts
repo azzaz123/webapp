@@ -77,7 +77,8 @@ export class I18nService {
       defaultSuccessTitle: 'Yup!',
       bumpError: 'Some listings have not been bumped due to an error',
       cantEditError: 'This item can not be modified because has a pending transaction.',
-      settingsEdited: 'Your setting has been updated'
+      settingsEdited: 'Your setting has been updated',
+      twitterShare: 'Look what I found on @Wallapop:'
     },
     es: {
       daysMomentConfig: {
@@ -152,7 +153,8 @@ export class I18nService {
       defaultSuccessTitle: '¡Bien!',
       bumpError: 'Algunos productos no se han destacado debido a un error',
       cantEditError: 'Este producto no se puede modificar, porque está en mitad de una transacción.',
-      settingsEdited: 'Se ha actualizado tu configuración'
+      settingsEdited: 'Se ha actualizado tu configuración',
+      twitterShare: 'Mira que acabo de encontrar en @Wallapop:'
     }
   };
 

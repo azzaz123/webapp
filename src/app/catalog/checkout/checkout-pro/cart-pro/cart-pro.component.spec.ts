@@ -208,7 +208,7 @@ describe('CartProComponent', () => {
       });
 
       it('should navigate to pro list', () => {
-        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 200 }]);
+        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 201 }]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
     });

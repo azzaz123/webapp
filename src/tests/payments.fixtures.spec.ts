@@ -1,7 +1,18 @@
-import {
-  BillingInfoResponse, FinancialCard, SabadellInfoResponse, Packs, PackResponse, ProductResponse, OrderProExtras, PerkResponse
-} from '../app/core/payments/payment.interface';
+import { PurchasingItem, Purchase, AutorenewItem } from '../app/core/payments/purchase.interface';
+import { PerksModel } from '../app/core/payments/payment.model';
+import { getMockItem } from './item.fixtures.spec';
 import { Pack } from '../app/core/payments/pack';
+import {
+  BillingInfoResponse,
+  FinancialCard,
+  SabadellInfoResponse,
+  Packs,
+  PackResponse,
+  ProductResponse,
+  OrderProExtras,
+  PerkResponse
+} from '../app/core/payments/payment.interface';
+import { PurchasesModel } from '../app/core/payments/purchase.model';
 
 export const FINANCIAL_CARD: FinancialCard = {
   expire_date: 61598188800000,
@@ -16,6 +27,97 @@ export const SABADELL_RESPONSE: SabadellInfoResponse = {
   target_url: 'https://sis-t.redsys.es:25443/sis/realizarPago'
 };
 
+export const PURCHASES_RESPONSE: Purchase[] = [{
+  'item_id': '1',
+  'expiration_date': 1495696668000,
+  'boost': true,
+  'highlight': true,
+  'national': true,
+  'bump': false,
+  'autorenew': false,
+  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
+}, {
+  'item_id': '2',
+  'expiration_date': 1496215651120,
+  'boost': true,
+  'highlight': false,
+  'national': false,
+  'bump': true,
+  'autorenew': true,
+  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
+}, {
+  'item_id': '3',
+  'expiration_date': 1495870049678,
+  'boost': false,
+  'highlight': true,
+  'national': true,
+  'bump': false,
+  'autorenew': true,
+  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
+}];
+
+export const PURCHASES: Purchase[] = <Purchase[]>[{
+  ...PURCHASES_RESPONSE[0],
+  item: getMockItem('1', 1)
+}, {
+  ...PURCHASES_RESPONSE[1],
+  item: getMockItem('2', 2)
+}, {
+  ...PURCHASES_RESPONSE[2],
+  item: getMockItem('3', 3)
+}];
+
+export const PURCHASES_MODEL: PurchasesModel = {
+  bumpItems: PURCHASES_RESPONSE,
+  nationalBumpItems: PURCHASES_RESPONSE
+};
+
+export const AUTORENEW_DATA: AutorenewItem[] = [{
+  item_id: '1',
+  autorenew: false
+}, {
+  item_id: '2',
+  autorenew: true
+}, {
+  item_id: '3',
+  autorenew: true
+}];
+
+export const PURCHASING_ITEMS: PurchasingItem[] = [
+  {
+    item_id: '1',
+    autorenew: false,
+    bump: true,
+    national: true,
+    boost: false,
+    highlight: false
+  },
+  {
+    item_id: '2',
+    autorenew: true,
+    bump: false,
+    national: true,
+    boost: false,
+    highlight: false
+  },
+  {
+    item_id: '3',
+    autorenew: false,
+    bump: true,
+    national: false,
+    boost: false,
+    highlight: false
+  },
+  {
+    item_id: '4',
+    autorenew: true,
+    bump: true,
+    national: true,
+    boost: false,
+    highlight: false
+  }
+];
+
 export const PACK_ID = '6b8ae6e1-0a71-412c-b1be-637ba654b91b';
 export const NATIONAL_BUMP_ID = '50ebcb0f-7fa5-4c02-be60-e2dbca80fe66';
 export const BUMP_ID = 'dc29027d-274d-4c0c-bdb6-155130db000d';
@@ -24,7 +126,6 @@ export const SUBSCRIPTION_ID = '1';
 export const BUMP_QUANTITY = 0;
 export const NATIONAL_QUANTITY = 0;
 export const LISTINGS_QUANTITY = 0;
-
 
 export function createPacksFixture(): Packs {
   const PACKS: Packs = {
@@ -211,3 +312,29 @@ export const PERK_RESPONSE: PerkResponse[] = [{
   subscription_id: null,
   total: 0
 }];
+
+export function createPerksModelFixture(): PerksModel {
+
+  let model = new PerksModel();
+  PERK_RESPONSE.map((perk: PerkResponse) => {
+    if (perk.product_id === NATIONAL_BUMP_ID) {
+      if (perk.subscription_id !== null) {
+        model.setNationalSubscription(perk);
+      } else {
+        model.setNationalExtra(perk);
+      }
+    } else if (perk.product_id === BUMP_ID) {
+      if (perk.subscription_id !== null) {
+        model.setBumpSubscription(perk);
+      } else {
+        model.setBumpExtra(perk);
+      }
+    } else if (perk.product_id === LISTINGS_ID) {
+      if (perk.subscription_id !== null) {
+        model.setListingSubscription(perk);
+      }
+    }
+  });
+
+  return model;
+}

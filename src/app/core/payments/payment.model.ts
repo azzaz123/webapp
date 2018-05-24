@@ -1,4 +1,4 @@
-import { CartPacks, Packs, PerkResponse, Perks } from './payment.interface';
+import { CartPacks, PerkResponse, Perks } from './payment.interface';
 import { Pack } from './pack';
 
 export class CartPacksModel implements CartPacks {

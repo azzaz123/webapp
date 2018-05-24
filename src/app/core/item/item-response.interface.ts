@@ -58,6 +58,26 @@ export interface ItemContent {
   delivery_info?: DeliveryInfo;
 }
 
+export interface ItemProResponse {
+  content: ItemProContent;
+  id: string;
+  type: string;
+}
+
+export interface ItemProContent extends ItemContent {
+  conversations: number;
+  publish_date: number;
+  purchases: AutorenewPurchase;
+}
+
+export interface AutorenewPurchase {
+  bump_type: string;
+  expiration_date: number;
+  scheduled_bump_type?: string;
+  scheduled_end_date?: number;
+  scheduled_start_date?: number;
+}
+
 export interface CarContent extends ItemContent {
   brand?: string;
   model?: string;
@@ -208,6 +228,7 @@ export interface ItemFlags {
   highlighted?: boolean;
   urgent?: boolean;
   bump_type?: string;
+  onhold?: boolean
 }
 
 export interface ItemActions {
@@ -242,6 +263,8 @@ export interface ItemBulkResponse {
 export interface ItemsStore {
   active: Item[];
   sold: Item[];
+  pending: Item[];
+  featured?: Item[];
 }
 
 export interface DeliveryInfo {

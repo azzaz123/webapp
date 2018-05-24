@@ -15,18 +15,18 @@ export interface Perks {
 
 export interface Perk {
   bump: {
-    total?: number,
     quantity: number,
+    total?: number,
     expireDate?: number
   };
   national: {
-    total?: number,
     quantity: number,
+    total?: number,
     expireDate?: number
   };
   listing?: {
-    total?: number,
     quantity: number,
+    total?: number,
     expireDate?: number
   };
 }

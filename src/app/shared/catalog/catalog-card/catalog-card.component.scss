@@ -1,0 +1,297 @@
+@import "~style/common";
+
+$checkbox-width: 24px;
+$transition: all .5s ease;
+$feature-button-width: 170px;
+
+.checkbox {
+  transition: $transition;
+  width: 0;
+  float: left;
+  .resized & {
+    width: $checkbox-width;
+    opacity: 1;
+  }
+  .select {
+    @include square($checkbox-width);
+    border: 2px solid $grey-100;
+    border-radius: 6px;
+    padding: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: $spacing;
+    margin-top: 42px;
+    cursor: pointer;
+    mat-icon {
+      display: none;
+      height: 9px;
+      width: 12px;
+    }
+    &.selected {
+      background: $corporate;
+      border-color: transparent;
+      mat-icon {
+        display: flex;
+        /deep/ svg g g {
+          fill: $white;
+        }
+      }
+    }
+    &:hover {
+      border-color: $corporate;
+    }
+  }
+}
+
+.item {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $grey-50;
+  margin-bottom: $spacing;
+  margin-left: $spacing-L;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: $transition;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 10px 0 rgba(37,50,56,.1);
+  }
+  &.expired, &.pending {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: $white;
+      opacity: .5;
+      z-index: 1;
+      border-radius: $border-radius;
+    }
+  }
+  &.onhold {
+    opacity: 0.5;
+  }
+  .selected-veil {
+    display: none;
+  }
+  .resized & {
+    .selected-veil {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      cursor: pointer;
+      z-index: 1;
+      border-radius: $border-radius;
+    }
+    &:not(.selected):hover {
+      .selected-veil {
+        border: solid 1px $corporate;
+      }
+    }
+  }
+  &.selected {
+    background-color: rgba($corporate, 0.2);
+    border: solid 1px $corporate;
+  }
+  a {
+    color: $grey-900;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  .image {
+    padding: 4px;
+    padding-right: $spacing-M;
+    display: block;
+  }
+  .title, .price {
+    &:focus {
+      text-decoration: none;
+    }
+  }
+  button, tsl-button /deep/ .btn-feature  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  button {
+    border: solid 1px rgba($grey-100, 0.5);
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    align-self: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 20em;
+    max-width: 17em;
+    margin-right: 1em;
+  }
+  .price {
+    font-weight: bold;
+    font-size: $font-size-M;
+    @include text-truncate();
+  }
+  .title {
+    @include text-truncate();
+  }
+  .published, .updated, .sold, .bumped {
+    & {
+      font-size: $font-size-S;
+      display: flex;
+      flex-direction: column;
+      align-self: auto;
+      flex-grow: 0;
+      flex-shrink: 0;
+      flex-basis: 12em;
+    }
+    .date {
+      color: $grey-250;
+    }
+  }
+  .sold, .bumped {
+    flex-basis: 24em;
+  }
+  .bumped {
+    .cancel-bump {
+      text-decoration: underline;
+      cursor: pointer;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .type {
+      font-weight: bold;
+    }
+  }
+  .zonebump{
+    color: $zone-bump;
+  }
+  .countrybump {
+    color: $country-bump;
+  }
+  .citybump {
+    color: $zone-bump;
+  }
+  .visibility {
+    display: flex;
+    flex-basis: 6em;
+    flex-grow: 1;
+    font-size: $font-size-XS;
+    color: $grey-500;
+    .counters {
+      display: flex;
+      flex-direction: column;
+      flex-basis: 3em;
+      align-items: center;
+    }
+    mat-icon {
+      height: 17px;
+      width: 19px;
+      vertical-align: top;
+      /deep/ svg path {
+        stroke: $grey-500;
+        &#Fill-3 {
+          stroke: none;
+          fill: $grey-500;
+        }
+      }
+    }
+  }
+  .actions {
+    margin-right: $spacing-2M;
+    .resized & {
+      display: none;
+    }
+    button, tsl-button {
+      margin-left: $spacing-S;
+      float: left;
+    }
+    button {
+      @include square(40px);
+      border-radius: 8px;
+      transition: all .2s ease;
+      mat-icon /deep/ {
+        svg g g, svg path {
+          fill: $grey-500;
+        }
+      }
+      &:hover, &.active {
+        mat-icon /deep/ {
+          svg g g, svg path {
+            fill: $white;
+          }
+        }
+      }
+      &.btn-featured {
+        width: $feature-button-width;
+        border: 1px solid $corporate;
+        color: $corporate;
+        cursor: default;
+        font-size: $font-size-S;
+        font-weight: bold;
+      }
+      &.btn-sold {
+        &:hover, &.active {
+          background: $sold-bg;
+          border-color: transparent;
+        }
+      }
+      &.btn-edit {
+        &:hover {
+          background: $edit-bg;
+          border-color: transparent;
+        }
+      }
+      &.btn-reserve {
+        &:hover, &.active {
+          background: $reserve-bg;
+          border-color: transparent;
+        }
+      }
+    }
+    tsl-button {
+      /deep/ .btn-feature {
+        width: $feature-button-width;
+        height: $spacing * 2;
+        padding: 0 $spacing;
+        padding-left: $spacing-S;
+        font-size: $font-size-S;
+        mat-icon {
+          width: 19px;
+          height: 21px;
+          margin-right: 9px;
+        }
+      }
+    }
+  }
+  &.itemSold {
+    .actions {
+      min-width: auto;
+    }
+  }
+  .btn-pending {
+    z-index: 2;
+    position: relative;
+    font-size: $font-size-S;
+    padding-right: $spacing-L * 2;
+    margin-right: $spacing-2M;
+    border-radius: $border-radius;
+    color: $grey-900;
+    height: $spacing * 2;
+    cursor: default;
+    mat-icon {
+      margin-right: 34px;
+      margin-left: $spacing-XXS;
+    }
+  }
+}

@@ -18,7 +18,7 @@ import {
   Order,
   Product,
   ProductDurations,
-  Purchase
+  Purchase, ItemProResponse, ItemProContent
 } from '../app/core/item/item-response.interface';
 import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
 import { CartItem } from '../app/catalog/checkout/cart/cart-item.interface';
@@ -145,6 +145,67 @@ export const ITEM_DATA: ItemResponseV2 = {
   'delivery_info': ITEM_DELIVERY_INFO
 };
 
+export const ITEM_DATA2: ItemResponseV2 = {
+  'id': ITEM_ID,
+  'legacy_id': 500002512,
+  'title': ITEM_TITLE2,
+  'description': ITEM_DESCRIPTION2,
+  'owner': USER_ID,
+  'category_id': ITEM_CATEGORY_ID,
+  'location': ITEM_LOCATION,
+  'sale_price': ITEM_SALE_PRICE2,
+  'currency_code': ITEM_CURRENCY_CODE,
+  'modified_date': ITEM_MODIFIED_DATE,
+  'url': ITEM_URL,
+  'flags': ITEM_FLAGS,
+  'actions_allowed': ITEM_ACTIONS_ALLOWED,
+  'sale_conditions': ITEM_SALE_CONDITIONS,
+  'main_image': ITEM_MAIN_IMAGE,
+  'images': ITEM_IMAGES,
+  'web_slug': ITEM_WEB_SLUG,
+  'published_date': ITEM_PUBLISHED_DATE2
+};
+export const ITEM_DATA3: ItemProResponse = {
+  'content': {
+    'id': ITEM_ID,
+    'title': ITEM_TITLE2,
+    'description': ITEM_DESCRIPTION2,
+    'category_id': ITEM_CATEGORY_ID,
+    'sale_price': ITEM_SALE_PRICE2,
+    'currency_code': ITEM_CURRENCY_CODE,
+    'modified_date': ITEM_MODIFIED_DATE,
+    'url': ITEM_URL,
+    'flags': ITEM_FLAGS,
+    'sale_conditions': ITEM_SALE_CONDITIONS,
+    'images': [{
+      'id': '0j2ylvwrpmzy',
+      'original_width': 100,
+      'original_height': 62,
+      'average_hex_color': '6a707b',
+      'urls_by_size': {
+        'original': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'small': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'large': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'medium': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320'
+      }
+    }],
+    'web_slug': ITEM_WEB_SLUG,
+    'conversations':      0,
+    'publish_date':       ITEM_PUBLISHED_DATE2,
+    'seller_id': '1',
+    'purchases': {
+      'bump_type': 'citybump',
+      'expiration_date': 1526375664070,
+      'scheduled_bump_type': 'citybump',
+      'scheduled_end_date': 1526515200000,
+      'scheduled_start_date': 1526256000000
+    }
+  },
+  'id': ITEM_ID,
+  'type': 'Cars'
+};
+
 export const ITEM_VIEWS = 123;
 export const ITEM_FAVORITES = 456;
 
@@ -256,6 +317,110 @@ export const ITEM_DATA_V3: ItemResponse = {
     }],
     'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
     'web_slug': 'raton-134690716'
+  }
+};
+
+export const ITEM_DATA_V4: ItemProResponse = {
+  'id': '0j2ylvwrpmzy',
+  'type': 'consumer_goods',
+  'content': {
+    'id': '0j2ylvwrpmzy',
+    'title': 'The title',
+    'description': 'The description',
+    'category_id': 12545,
+    'seller_id': 'l1kmzn82zn3p',
+    'flags': {'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false},
+    'sale_price': 123.45,
+    'price': 123.45,
+    'currency_code': 'EUR',
+    'modified_date': 1473784861894,
+    'publish_date': 1473784861894,
+    'url': 'http://dock2.wallapop.com/i/500002511?_pid=wi&_uid=101',
+    'images': [{
+      'id': '0j2ylvwrpmzy',
+      'original_width': 100,
+      'original_height': 62,
+      'average_hex_color': '6a707b',
+      'urls_by_size': {
+        'original': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'small': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'large': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'medium': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320'
+      }
+    }],
+    'image': {
+      'original': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'small': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'large': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'medium': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'original_height': 100,
+      'original_width': 62
+    },
+    'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
+    'web_slug': 'raton-134690716',
+    'views': 0,
+    'conversations': 0,
+    'purchases': {
+      'bump_type': 'citybump',
+      'expiration_date': 1526375664070,
+      'scheduled_bump_type': 'citybump',
+      'scheduled_end_date': 1526515200000,
+      'scheduled_start_date': 1526256000000
+    }
+  }
+};
+
+export const ITEM_DATA_V5: ItemProResponse = {
+  'id': '0j2ylvwrpmzy',
+  'type': 'consumer_goods',
+  'content': {
+    'id': '0j2ylvwrpmzy',
+    'title': 'The title',
+    'description': 'The description',
+    'category_id': 12545,
+    'seller_id': 'l1kmzn82zn3p',
+    'flags': {'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false},
+    'sale_price': 123.45,
+    'price': 123.45,
+    'currency_code': 'EUR',
+    'modified_date': 1473784861894,
+    'publish_date': 1473784861894,
+    'url': 'http://dock2.wallapop.com/i/500002511?_pid=wi&_uid=101',
+    'images': [{
+      'id': '0j2ylvwrpmzy',
+      'original_width': 100,
+      'original_height': 62,
+      'average_hex_color': '6a707b',
+      'urls_by_size': {
+        'original': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'small': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'large': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'medium': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+        'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320'
+      }
+    }],
+    'image': {
+      'original': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'small': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'large': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'medium': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320',
+      'original_height': 100,
+      'original_width': 62
+    },
+    'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
+    'web_slug': 'raton-134690716',
+    'views': 0,
+    'conversations': 0,
+    'purchases': {
+      'bump_type': 'citybump',
+      'expiration_date': 1526375664070,
+      'scheduled_bump_type': 'citybump',
+      'scheduled_end_date': 1526515200000,
+      'scheduled_start_date': 1526256000000
+    }
   }
 };
 

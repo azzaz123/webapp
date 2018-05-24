@@ -1,0 +1,105 @@
+@import "~style/common";
+
+$icon-size: 12px;
+$height: 40px;
+
+.bulk-actions {
+  align-self: center;
+  & > * {
+    margin: 0 9px 0 0;
+  }
+  &.disabled {
+    button {
+      cursor: auto;
+      background-color: $grey-50;
+      &.btn-bump, &.btn-sold, &.btn-reserve, &.btn-delete {
+        &:hover {
+          background-color: $grey-50;
+          border: solid 1px rgba($grey-100, 0.5);
+          color: $grey-300;
+        }
+      }
+    }
+  }
+  button {
+    $height: 42px;
+    height: $height;
+    line-height: $height;
+    padding: 0 $spacing;
+    cursor: pointer;
+    border-radius: $border-radius;
+    background: $white;
+    color: $grey-300;
+    font-size: $font-size-S;
+    border: solid 1px rgba($grey-100, 0.5);
+    &.btn-delete {
+      padding: 0 ($spacing / 2);
+      mat-icon {
+        height: 16px;
+        width: 14px;
+        vertical-align: sub;
+        margin-right: $spacing-XS;
+      }
+      &:hover {
+        background: $delete-bg;
+        border-color: transparent;
+        color: $white;
+        mat-icon /deep/ {
+          svg g g, svg path {
+            fill: $white;
+          }
+        }
+      }
+    }
+    &.btn-activate {
+      &:hover {
+        background: $corporate;
+        border-color: transparent;
+      }
+      &:disabled {
+        background: $grey-50;
+        border-color: $grey-100;
+      }
+    }
+  }
+
+  tsl-button /deep/ .btn-feat  {
+    &:disabled {
+      cursor: default;
+    }
+  }
+
+  &.show {
+    button {
+      animation: fadeInFromNone 0.5s ease-in-out;
+    }
+  }
+
+  #total-selected {
+    $height: 42px;
+    height: $height;
+    line-height: $height;
+    border-radius: $border-radius;
+    color: $grey-900;
+    font-size: $font-size-S;
+    display: inline-block;
+    padding: 0 $spacing;
+    cursor: pointer;
+    background-color: rgba($corporate, 0.2);
+    border: solid 1px $corporate;
+    &:after {
+      display: inline-block;
+      content: ' ';
+      background-image: url('/assets/icons/cross.svg');
+      background-size: $icon-size $icon-size;
+      height: $icon-size;
+      width: $icon-size;
+      margin-left: 10px;
+      vertical-align: middle;
+      margin-top: -2px;
+    }
+    &.show {
+      animation: fadeInFromNone 0.5s ease-in-out;
+    }
+  }
+}

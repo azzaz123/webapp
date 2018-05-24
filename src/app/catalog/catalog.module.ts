@@ -44,6 +44,12 @@ import { CartProComponent } from './checkout/checkout-pro/cart-pro/cart-pro.comp
 import { RangeDatepickerComponent } from './checkout/checkout-pro/range-datepicker/range-datepicker.component';
 import { CartExtrasProComponent } from './checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component';
 import { BillingInfoComponent } from './checkout/checkout-extras-pro/billing-info/billing-info.component';
+import { CatalogCardComponent } from '../shared/catalog/catalog-card/catalog-card.component';
+import { CatalogItemActionsComponent } from '../shared/catalog/catalog-item-actions/catalog-item-actions.component';
+import { CatalogStatusNavbarComponent } from '../shared/catalog/catalog-status-navbar/catalog-status-navbar.component';
+import { PlanDataComponent } from './catalog-pro/catalog-pro-list/plan-data/plan-data.component';
+import { ProBumpConfirmationModalComponent } from './catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
+import { ProUrgentConfirmationModalComponent } from './catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -102,7 +108,13 @@ import { BillingInfoComponent } from './checkout/checkout-extras-pro/billing-inf
     CartProComponent,
     RangeDatepickerComponent,
     CartExtrasProComponent,
-    BillingInfoComponent
+    BillingInfoComponent,
+    CatalogCardComponent,
+    CatalogItemActionsComponent,
+    CatalogStatusNavbarComponent,
+    PlanDataComponent,
+    ProBumpConfirmationModalComponent,
+    ProUrgentConfirmationModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -113,7 +125,9 @@ import { BillingInfoComponent } from './checkout/checkout-extras-pro/billing-inf
     PreviewModalComponent,
     RemoveConfirmModalComponent,
     ReactivateModalComponent,
-    UrgentConfirmationModalComponent
+    UrgentConfirmationModalComponent,
+    ProBumpConfirmationModalComponent,
+    ProUrgentConfirmationModalComponent
   ]
 })
 export class CatalogModule {

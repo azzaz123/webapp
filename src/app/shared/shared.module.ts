@@ -29,6 +29,11 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { MessageComponent } from './message/message.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { SwitchComponent } from './switch/switch.component';
+import { SearchInputComponent } from './search-input/search-input.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { SelectComponent } from './select/select.component';
+import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
+import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
 
 @NgModule({
   imports: [
@@ -38,7 +43,8 @@ import { SwitchComponent } from './switch/switch.component';
     NgbModule.forRoot(),
     ReactiveFormsModule,
     FormsModule,
-    GeolocationModule
+    GeolocationModule,
+    NgbDropdownModule
   ],
   exports: [
     CardModule,
@@ -63,7 +69,9 @@ import { SwitchComponent } from './switch/switch.component';
     ReviewModalComponent,
     NgxPermissionsModule,
     MessageComponent,
-    ReviewButtonComponent
+    ReviewButtonComponent,
+    SearchInputComponent,
+    SelectComponent
   ],
   declarations: [
     AdComponent,
@@ -87,7 +95,11 @@ import { SwitchComponent } from './switch/switch.component';
     ReviewModalComponent,
     MessageComponent,
     ReviewButtonComponent,
-    SwitchComponent
+    SwitchComponent,
+    SelectComponent,
+    SearchInputComponent,
+    TooManyItemsModalComponent,
+    AlreadyFeaturedModalComponent
   ],
   providers: [
     DecimalPipe,
@@ -97,7 +109,9 @@ import { SwitchComponent } from './switch/switch.component';
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,
-    ReviewModalComponent
+    ReviewModalComponent,
+    TooManyItemsModalComponent,
+    AlreadyFeaturedModalComponent
   ]
 })
 export class SharedModule { }
