@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
       if (!sessionStorage.getItem('isGDPRShown') &&
         this.privacyService.getPrivacyState('privacy_policy', '0') === PRIVACY_STATUS.unknown) {
           this.modalService.open(GdprModalComponent);
-          sessionStorage.setItem('isGDPRShown', true);
+          sessionStorage.setItem('isGDPRShown', 'true');
       }
     });
   }
