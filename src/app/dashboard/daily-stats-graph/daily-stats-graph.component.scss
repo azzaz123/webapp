@@ -1,11 +1,35 @@
 @import "~style/common";
 
-#chartdiv {
+.chart {
   background-color: $white;
   border-radius: $border-radius;
+  padding: $spacing-S;
+}
+
+#chartdiv {
   /deep/ {
     a {
       display: none !important;
+    }
+  }
+}
+
+ng-select {
+  width: 160px;
+  position: absolute;
+  margin-top: 22px;
+  margin-left: 25px;
+  height: 38px;
+  z-index: 1;
+  /deep/ {
+    & > div > div.single > div.value {
+      height: 38px;
+      line-height: 38px !important;
+    }
+    & > div > div.single > div.toggle {
+      background-position: 2px 2px;
+      height: 38px;
+      width: 38px !important;
     }
   }
 }
