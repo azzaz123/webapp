@@ -52,12 +52,12 @@ export class PlanDataComponent implements OnChanges {
     this.countryBumpsInUse = 0;
 
     this.purchases.bumpItems.forEach((purchase: any) => {
-      if (purchase.start_date < Date.now()) {
+      if (!purchase.start_date || purchase.start_date < Date.now()) {
         this.cityBumpsInUse++;
       }
     });
     this.purchases.nationalBumpItems.forEach((purchase: any) => {
-      if (purchase.start_date < Date.now()) {
+      if (!purchase.start_date || purchase.start_date < Date.now()) {
         this.countryBumpsInUse++;
       }
     });

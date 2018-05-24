@@ -24,7 +24,8 @@
   <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:33</source><source>app/chat/conversations-panel/conversation/conversation.component.ts:37</source>Messages</msg>
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.ts:31</source>My Zone</msg>
   <msg id="3983509092263971640"><source>app/layout/topbar/topbar.component.ts:32</source>My Pro Zone</msg>
-  <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.ts:37</source><source>app/catalog/catalog-pro/catalog-pro-list/catalog-pro-list.component.ts:31</source><source>app/catalog/catalog-pro/catalog-pro-list/catalog-pro-list.component.ts:42</source>List a product</msg>
+  <msg id="4818441514225396186"><source>app/layout/topbar/topbar.component.ts:37</source><source>app/catalog/catalog-pro/catalog-pro-list/catalog-pro-list.component.ts:42</source>List a product</msg>
+  <msg id="6348395677948023023"><source>app/layout/topbar/topbar.component.ts:38</source><source>app/catalog/catalog-pro/catalog-pro-list/catalog-pro-list.component.ts:31</source>List a car</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:7</source><source>app/profile/profile-pro/profile-pro.component.ts:21</source>Profile</msg>
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.ts:15</source>Dashboard</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:23</source>Products</msg>

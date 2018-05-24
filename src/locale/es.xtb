@@ -304,7 +304,7 @@
   <translation id="6707361102856436710">Productos</translation>
   <translation id="2027740642468122404">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
   <translation id="792930787826735850">Tu perfil</translation>
-  <translation id="4818441514225396186">Subir coche</translation>
+  <translation id="4818441514225396186">Subir producto</translation>
   <translation id="6763447295092579753">Destacando tus productos los harás más visibles para el resto de la comunidad, gracias a sus funciones especiales. ¿Qué te aportará eso? Básicamente que te contacten más personas y lo vendas más rápido. Mira a continuación cuál encaja mejor con tu tipo de productos:</translation>
   <translation id="3358820219972327972">Destácalo en tu barrio</translation>
   <translation id="7811918618267943066">Sé más visible entre los que te rodean. Sube tu producto a las primeras posiciones del muro y promociónalo en tu zona. También podrán chatear contigo directamente desde el muro.</translation>
@@ -518,4 +518,5 @@
   <translation id="1034935109316471792">Ya has aplicado los destacados a tus coches.</translation>
   <translation id="53603691019051493">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
   <translation id="5681895899318476927">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
+  <translation id="6348395677948023023">Subir coche</translation>
 </translationbundle>
