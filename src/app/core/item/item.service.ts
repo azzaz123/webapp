@@ -70,8 +70,8 @@ export class ItemService extends ResourceService {
     featured: []
   };
   public selectedItems: string[] = [];
-  public plannedCityPurchase = 0;
-  public plannedCountryPurchase = 0;
+  public countryBumpsInUse: number;
+  public cityBumpsInUse: number;
 
   constructor(http: HttpService,
               private i18n: I18nService,
@@ -509,9 +509,6 @@ export class ItemService extends ResourceService {
                 item.favorites = i.content.favorites;
                 item.conversations = i.content.conversations;
                 item.purchases = i.content.purchases ? i.content.purchases : null;
-                if (item.purchases && item.purchases.scheduled_bump_type) {
-                  this.setPlannedPurchase(item);
-                }
                 return item;
             });
             this.items[status] = items;
@@ -562,19 +559,6 @@ export class ItemService extends ResourceService {
           return Observable.of([]);
         }
       });
-  }
-
-  private setPlannedPurchase(item: Item): void {
-    this.plannedCountryPurchase = 0;
-    this.plannedCityPurchase = 0;
-    switch (item.purchases.scheduled_bump_type) {
-      case 'countrybump':
-        this.plannedCountryPurchase++;
-        break;
-      case 'citybump':
-        this.plannedCityPurchase++;
-        break;
-    }
   }
   
   public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {

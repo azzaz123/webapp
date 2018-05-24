@@ -79,7 +79,7 @@ export class CartProComponent implements OnInit {
       } else {
         this.itemService.deselectItems();
         this.trackingService.track(TrackingService.BUMP_PRO_APPLY, { selected_products: order });
-        this.router.navigate(['/pro/catalog/list', { code: 200 }]);
+        this.router.navigate(['/pro/catalog/list', { code: 201 }]);
       }
     }, (error) => {
       if (error.text()) {

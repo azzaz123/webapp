@@ -2,12 +2,18 @@
   <mat-icon svgIcon="cross"></mat-icon>
 </div>
 
-<img [hidden]="code !== '200'" src="../../../../../../assets/images/bump-ok.png" alt="">
-<img class="fail" [hidden]="code === '200'" src="../../../../../../assets/images/bump-ko.png" alt="">
+<img *ngIf="code === '200' || code === '201'" src="../../../../../../assets/images/bump-ok.png" alt="">
+<img class="fail" *ngIf="code !== '200' && code !== '201'" src="../../../../../../assets/images/bump-ko.png" alt="">
 
 <div *ngIf="code === '200'">
   <h1 i18n>Congratulations</h1>
   <p i18n>You already have your extra features and you can use them whenever you want.</p>
+  <tsl-button (click)="activeModal.close()" i18n>Start selling</tsl-button>
+</div>
+
+<div *ngIf="code === '201'">
+  <h1 i18n>Congratulations</h1>
+  <p i18n>You featured your products.</p>
   <tsl-button (click)="activeModal.close()" i18n>Start selling</tsl-button>
 </div>
 
