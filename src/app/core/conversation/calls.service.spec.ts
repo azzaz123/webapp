@@ -20,11 +20,13 @@ import { Observable } from 'rxjs/Observable';
 import { Conversation } from './conversation';
 import { createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { CallTotals } from './totals.interface';
+import { ConnectionService } from '../connection/connection.service';
 
 let service: CallsService;
 let userService: UserService;
 let itemService: ItemService;
 let conversationService: ConversationService;
+let connectionService: ConnectionService;
 
 describe('CallsService', () => {
   beforeEach(() => {
@@ -47,6 +49,9 @@ describe('CallsService', () => {
           archiveWithPhones() {
           }
         }
+        },
+        {
+          provide: ConnectionService, useValue: {}
         }
       ]
     });
@@ -54,6 +59,7 @@ describe('CallsService', () => {
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     conversationService = TestBed.get(ConversationService);
+    connectionService = TestBed.get(ConnectionService);
   });
 
   describe('getLeads', () => {
@@ -106,7 +112,7 @@ describe('CallsService', () => {
             service['getLeads'](SINCE, false).subscribe((r: Call[]) => {
               result = r;
             });
-            
+
             expect(service.leads.length).toBe(TOTAL);
           });
         });
@@ -241,16 +247,16 @@ describe('CallsService', () => {
           expect(result.length).toBe(TOTAL_CALLS);
         });
       });
-      
+
       describe('with no conversations and some calls', () => {
         it('should return calls', () => {
           service.getPage(1).subscribe((r: Call[]) => {
             result = r;
           });
-          
+
           conversationService.stream$.next([]);
           service.stream$.next(createCallsArray(TOTAL_CALLS));
-          
+
           expect(result.length).toBe(TOTAL_CALLS);
         });
       });
@@ -263,10 +269,10 @@ describe('CallsService', () => {
         });
         const WITH_SHARED_STATUS = 3;
         const MIXED_CALLS: any[] = [...createCallsArray(6), ...createConversationsArray(WITH_SHARED_STATUS)];
-        
+
         service.stream$.next(MIXED_CALLS);
         conversationService.stream$.next([]);
-        
+
         expect(result.length).toBe(WITH_SHARED_STATUS);
       });
 
@@ -281,10 +287,10 @@ describe('CallsService', () => {
           ...createCallsArray(WITH_ANSWERED_STATUS, 'ANSWERED'),
           ...createCallsArray(WITH_MISSED_STATUS, 'MISSED')
         ];
-        
+
         service.stream$.next(MIXED_CALLS);
         conversationService.stream$.next([]);
-        
+
         expect(result.length).toBe(WITH_ANSWERED_STATUS + WITH_MISSED_STATUS);
       });
     });
@@ -294,10 +300,10 @@ describe('CallsService', () => {
         service.getPage(1, false, null, 2).subscribe((r: Call[]) => {
           result = r;
         });
-        
+
         service.stream$.next(createCallsArray(5));
         conversationService.stream$.next([]);
-        
+
         expect(result.length).toBe(2);
       });
 
@@ -305,10 +311,10 @@ describe('CallsService', () => {
         service.getPage(2, false, null, 2).subscribe((r: Call[]) => {
           result = r;
         });
-        
+
         service.stream$.next(createCallsArray(5));
         conversationService.stream$.next([]);
-        
+
         expect(result.length).toBe(4);
       });
     });
@@ -319,10 +325,10 @@ describe('CallsService', () => {
           service.getPage(1, true).subscribe((r: Call[]) => {
             result = r;
           });
-          
+
           service.archivedStream$.next(createCallsArray(TOTAL_CALLS));
           conversationService.archivedStream$.next(MIXED_CONVERSATIONS);
-          
+
           expect(result.length).toBe(TOTAL_PHONES + TOTAL_CALLS);
         });
       });
@@ -332,10 +338,10 @@ describe('CallsService', () => {
           service.getPage(1, true).subscribe((r: Call[]) => {
             result = r;
           });
-          
+
           service.archivedStream$.next([]);
           conversationService.archivedStream$.next(MIXED_CONVERSATIONS);
-          
+
           expect(result.length).toBe(TOTAL_PHONES);
         });
       });
@@ -345,10 +351,10 @@ describe('CallsService', () => {
           service.getPage(1, true).subscribe((r: Call[]) => {
             result = r;
           });
-          
+
           service.archivedStream$.next(createCallsArray(TOTAL_CALLS));
           conversationService.archivedStream$.next(createConversationsArray(6));
-          
+
           expect(result.length).toBe(TOTAL_CALLS);
         });
       });
@@ -358,10 +364,10 @@ describe('CallsService', () => {
           service.getPage(1, true).subscribe((r: Call[]) => {
             result = r;
           });
-          
+
           service.archivedStream$.next(createCallsArray(TOTAL_CALLS));
           conversationService.archivedStream$.next([]);
-          
+
           expect(result.length).toBe(TOTAL_CALLS);
         });
       });
@@ -371,7 +377,7 @@ describe('CallsService', () => {
   describe('mapRecordData', () => {
     it('should return a Call object', () => {
       const response: Call = service['mapRecordData'](CALLS_DATA[0]);
-      
+
       expect(response instanceof Call).toBeTruthy();
     });
   });
@@ -382,10 +388,10 @@ describe('CallsService', () => {
       service.getTotals().subscribe((r: CallTotals) => {
         result = r;
       });
-      
+
       service.stream$.next(createCallsArray(5));
       service.archivedStream$.next(createCallsArray(4));
-      
+
       expect(result.calls).toBe(5);
       expect(result.archived).toBe(4);
     });
@@ -394,23 +400,23 @@ describe('CallsService', () => {
   describe('onArchiveAll', () => {
     const CONVERSATIONS: Conversation[] = createConversationsArray(4);
     const RETURNED_CONVERSATIONS: Conversation[] = createConversationsArray(2);
-    
+
     beforeEach(() => {
       spyOn<any>(service, 'bulkArchive').and.returnValue(RETURNED_CONVERSATIONS);
       spyOn(service, 'stream');
       spyOn(conversationService, 'stream');
       spyOn(conversationService, 'archiveWithPhones');
       service.leads = CONVERSATIONS;
-      
+
       service['onArchiveAll']();
     });
-    
+
     it('should call bulkArchive and archiveWithPhones', () => {
       expect(service['bulkArchive']).toHaveBeenCalledWith(CONVERSATIONS);
       expect(service.leads).toEqual(RETURNED_CONVERSATIONS);
       expect(conversationService.archiveWithPhones).toHaveBeenCalled();
     });
-    
+
     it('should call streams', () => {
       expect(service.stream).toHaveBeenCalled();
       expect(conversationService.stream).toHaveBeenCalled();

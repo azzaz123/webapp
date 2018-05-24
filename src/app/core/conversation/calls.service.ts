@@ -13,6 +13,7 @@ import { Lead } from './lead';
 import { Conversation } from './conversation';
 import { CallTotals } from './totals.interface';
 import { CallResponse } from './call-response.interface';
+import { ConnectionService } from '../connection/connection.service';
 
 @Injectable()
 export class CallsService extends LeadService {
@@ -28,8 +29,9 @@ export class CallsService extends LeadService {
               itemService: ItemService,
               event: EventService,
               xmpp: XmppService,
-              private conversationService: ConversationService) {
-    super(http, userService, itemService, event, xmpp);
+              connectionService: ConnectionService,
+              private conversationService: ConversationService ) {
+    super(http, userService, itemService, event, xmpp, connectionService);
   }
 
   protected getLeads(since?: number, archived?: boolean): Observable<Call[]> {
