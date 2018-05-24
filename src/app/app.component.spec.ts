@@ -32,7 +32,7 @@ import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
 import { PrivacyService } from './core/privacy/privacy.service';
-import { MOCK_PRIVACY_ALLOW } from './core/privacy/privacy';
+import { MOCK_PRIVACY_ALLOW } from './core/privacy/privacy.fixtures.spec';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -292,7 +292,7 @@ describe('App', () => {
         expect(component.updateSessionCookie).not.toHaveBeenCalled();
       });
 
-      it('should not call getPrivacyList method', () => {
+      it('should call getPrivacyList method', () => {
         spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
 
         component.ngOnInit();

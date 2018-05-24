@@ -3,14 +3,14 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Response, ResponseOptions } from '@angular/http';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { PrivacyService } from './privacy.service';
+import { PrivacyService, PRIVACY_STATUS } from './privacy.service';
+import { PrivacyList } from './privacy.interface';
 import {
   MOCK_PRIVACY_ALLOW,
   MOCK_PRIVACY_DISALLOW,
-  MOCK_PRIVACY_UNKNOW, PRIVACY_STATUS,
-  PrivacyList,
-  PrivacyStatus
-} from './privacy';
+  MOCK_PRIVACY_UNKNOW,
+  MOCK_PRIVACY_UPDATE_ALLOW
+} from './privacy.fixtures.spec';
 import { environment } from '../../../environments/environment';
 
 let http: HttpService;
@@ -42,9 +42,7 @@ describe('PrivacyService', () => {
     it('should call to url and get privacy list', fakeAsync(() => {
       let privacyList: PrivacyList;
 
-      service.updatePrivacy({gdpr_display: {
-
-      }}).subscribe((r: PrivacyList) => {
+      service.updatePrivacy(MOCK_PRIVACY_UPDATE_ALLOW).subscribe((r: PrivacyList) => {
         privacyList = r;
       });
 
@@ -97,7 +95,7 @@ describe('PrivacyService', () => {
         });
         service.getPrivacyList().subscribe();
 
-        expect(allowSegmentation).toBeTruthy();
+        expect(allowSegmentation).toBe(true);
       }));
     });
 
@@ -118,7 +116,7 @@ describe('PrivacyService', () => {
         });
         service.getPrivacyList().subscribe();
 
-        expect(allowSegmentation).toBeFalsy();
+        expect(allowSegmentation).toBe(false);
       }));
     });
 
@@ -139,7 +137,7 @@ describe('PrivacyService', () => {
         });
         service.getPrivacyList().subscribe();
 
-        expect(allowSegmentation).toBeFalsy();
+        expect(allowSegmentation).toBe(false);
       }));
     });
   });
@@ -175,7 +173,7 @@ describe('PrivacyService', () => {
 
     it('should be unknow permission status of gdpr_display version 0', () => {
       let status: string;
-      mockBackend.connections.subscribe((connection: MockConnection) => {
+      mockBackend.connections.subscribe((connection:  MockConnection) => {
         expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
         const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW)});
         connection.mockRespond(new Response(res));

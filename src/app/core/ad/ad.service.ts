@@ -66,7 +66,7 @@ export class AdService {
     });
   }
 
-  public fetchHeaderBids(allowSegmentation: boolean = false) {
+  public fetchHeaderBids(allowSegmentation = false) {
     if (allowSegmentation) {
       merge(this.requestBidAps(), this.requestBidCriteo())
         .subscribe(null, null, () => {
@@ -79,7 +79,7 @@ export class AdService {
 
   public requestBidAps() {
     const apstagSlots = this._adSlots.map((slot) => {
-      return { slotID: slot.id, sizes: slot.sizes, slotName: slot.name}
+      return { slotID: slot.id, sizes: slot.sizes, slotName: slot.name};
     });
     return Observable.create((observer) => {
       apstag.fetchBids({
@@ -107,7 +107,7 @@ export class AdService {
     });
   }
 
-  public sendAdServerRequest(allowSegmentation: boolean = false) {
+  public sendAdServerRequest(allowSegmentation = false) {
     googletag.cmd.push(() => {
       if (allowSegmentation) {
         apstag.setDisplayBids();
@@ -132,7 +132,7 @@ export class AdService {
         this.adKeyWords.longitude = user.location.approximated_longitude.toString();
       }
     }).flatMap(() => {
-      return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json())
+      return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json());
     }).flatMap((refreshRate: number) => {
       return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0);
     }).flatMap(() => {

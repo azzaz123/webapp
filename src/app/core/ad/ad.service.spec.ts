@@ -65,8 +65,6 @@ const defineSlot = {
   addService() {}
 };
 
-let geolocationSpy;
-
 describe('AdService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -104,7 +102,7 @@ describe('AdService', () => {
     mockBackend = TestBed.get(MockBackend);
     cookieService = TestBed.get(CookieService);
     privacyService = TestBed.get(PrivacyService);
-    geolocationSpy = spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
+    spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
       callback(position);
     });
     spyOn(googletag, 'pubads').and.returnValue(pubads);
@@ -290,7 +288,7 @@ describe('AdService', () => {
           privacyService.allowSegmentation$.next(false);
         });
 
-        it('should send keyWords allowSegmentation with true value', fakeAsync(() => {
+        it('should send keyWords allowSegmentation with false value', fakeAsync(() => {
           service.startAdsRefresh();
           tick(refreshRate);
 
@@ -298,7 +296,7 @@ describe('AdService', () => {
           discardPeriodicTasks();
         }));
 
-        it('should call amazon APS fetchBids', fakeAsync(() => {
+        it('should not call amazon APS fetchBids', fakeAsync(() => {
           spyOn(apstag, 'fetchBids');
 
           service.startAdsRefresh();
@@ -308,7 +306,7 @@ describe('AdService', () => {
           discardPeriodicTasks();
         }));
 
-        it('should call amazon APS setDisplayBids', fakeAsync(() => {
+        it('should not call amazon APS setDisplayBids', fakeAsync(() => {
           spyOn(apstag, 'setDisplayBids');
 
           service.startAdsRefresh();
@@ -317,8 +315,8 @@ describe('AdService', () => {
           expect(apstag.setDisplayBids).not.toHaveBeenCalled();
           discardPeriodicTasks();
         }));
-        //
-        it('should call Criteo SetLineItemRanges', fakeAsync(() => {
+
+        it('should not call Criteo SetLineItemRanges', fakeAsync(() => {
           spyOn(Criteo, 'SetLineItemRanges');
 
           service.startAdsRefresh();
@@ -328,7 +326,7 @@ describe('AdService', () => {
           discardPeriodicTasks();
         }));
 
-        it('should call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
+        it('should not call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
           spyOn(Criteo, 'SetDFPKeyValueTargeting');
 
           service.startAdsRefresh();

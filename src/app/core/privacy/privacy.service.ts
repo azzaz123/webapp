@@ -4,11 +4,15 @@ import { HttpService } from '../http/http.service';
 import {
   PrivacyRequestData,
   PrivacyList,
-  PrivacyVersionItem,
-  PRIVACY_STATUS
-} from './privacy';
-import {Subject} from 'rxjs/Subject';
+  PrivacyVersionItem
+} from './privacy.interface';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
+export const PRIVACY_STATUS = {
+  allow: 'allow',
+  disallow: 'disallow',
+  unknown: 'unknown'
+};
 
 @Injectable()
 export class PrivacyService {
@@ -33,7 +37,7 @@ export class PrivacyService {
       .map((privacyList: PrivacyList) => this._mapPrivacyList(privacyList));
   }
 
-  private _mapPrivacyList(privacyList: PrivacyList) {
+  private _mapPrivacyList(privacyList: PrivacyList): PrivacyList {
     this._privacyList = privacyList;
 
     const segmentationStatus = this.getPrivacyState('gdpr_display', '0');
