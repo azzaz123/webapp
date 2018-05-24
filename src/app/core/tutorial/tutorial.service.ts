@@ -41,7 +41,6 @@ export class TutorialService {
 
   public isAlreadyDisplayed(): Observable<boolean> {
     return this.userService.me()
-      .map((user: User) => !!localStorage.getItem(user.id + this.localStorageName));
+      .map((user: User) => user.type === 'professional' ? true : !!localStorage.getItem(user.id + this.localStorageName));
   }
-
 }
