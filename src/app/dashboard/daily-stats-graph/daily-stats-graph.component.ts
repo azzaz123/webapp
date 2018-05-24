@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 import { StatisticsService } from './statistics.service';
 import { StatisticEntriesResponse, StatisticFullResponse } from './statistic-response.interface';
+import { IOption } from 'ng-select';
 
 @Component({
   selector: 'tsl-daily-stats-graph',
@@ -10,6 +11,20 @@ import { StatisticEntriesResponse, StatisticFullResponse } from './statistic-res
 })
 export class DailyStatsGraphComponent implements OnInit, OnDestroy {
 
+  public duration: string = '30';
+  public statsDurations: IOption[] = [{
+    label: 'Last 30 days',
+    value: '30'
+  }, {
+    label: 'Last 15 days',
+    value: '15'
+  }, {
+    label: 'Last 7 days',
+    value: '7'
+  }, {
+    label: 'Last 24 hours',
+    value: '1'
+  }];
   private chart: AmChart;
   private chartOptions: any = {
     "type": "serial",
@@ -161,7 +176,12 @@ export class DailyStatsGraphComponent implements OnInit, OnDestroy {
   private statisticsService: StatisticsService) {}
 
   ngOnInit() {
-    this.statisticsService.getStatistics().subscribe((response: StatisticFullResponse) => {
+    this.loadStats();
+  }
+
+  loadStats() {
+    this.statisticsService.getStatistics(this.duration).subscribe((response: StatisticFullResponse) => {
+      this.chartOptions.dataProvider = [];
       response.entries.forEach((entry: StatisticEntriesResponse) => {
         this.chartOptions.dataProvider.push({
           date: +entry.date,
@@ -172,13 +192,21 @@ export class DailyStatsGraphComponent implements OnInit, OnDestroy {
           country_bump:  entry.values.country_bump || 0
         })
       });
-      console.log(this.chartOptions.dataProvider);
+      if (this.duration === '7') {
+        this.chartOptions.graphs[1].fixedColumnWidth = 8;
+        this.chartOptions.graphs[2].fixedColumnWidth = 8;
+      } else {
+        if (this.duration === '15') {
+          this.chartOptions.graphs[1].fixedColumnWidth = 6;
+          this.chartOptions.graphs[2].fixedColumnWidth = 6;
+        }
+      }
       this.chart = this.AmCharts.makeChart("chartdiv", this.chartOptions);
     });
   }
 
-  ngAfterViewInit() {
-
+  onStatsPeriodChange() {
+    this.loadStats();
   }
 
   ngOnDestroy() {

@@ -10,6 +10,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { DailyStatsGraphComponent } from './daily-stats-graph/daily-stats-graph.component';
 import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { StatisticsService } from './daily-stats-graph/statistics.service';
+import { SelectModule } from 'ng-select';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import { StatisticsService } from './daily-stats-graph/statistics.service';
     MomentModule,
     ConversationModule,
     NgbTooltipModule,
-    AmChartsModule
+    AmChartsModule,
+    SelectModule,
+    FormsModule
   ],
   declarations: [dashboardRoutedComponents, CallComponent, DailyStatsGraphComponent],
   providers: [StatisticsService]
