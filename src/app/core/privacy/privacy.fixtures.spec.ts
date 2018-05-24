@@ -1,4 +1,4 @@
-import { PrivacyList } from './privacy';
+import {PrivacyList, PrivacyRequestData} from './privacy.interface';
 
 export const MOCK_PRIVACY_ALLOW: PrivacyList = {
   gdpr_display: [
@@ -48,3 +48,15 @@ export const MOCK_PRIVACY_UNKNOW: PrivacyList = {
     }
   ]
 };
+
+export const MOCK_PRIVACY_UPDATE_ALLOW: PrivacyRequestData = {
+  gdpr_display: {
+      version: '0',
+      allow: true
+    },
+  privacy_policy: {
+    version: '0',
+    allow: true
+  }
+};
+
