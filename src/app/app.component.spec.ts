@@ -314,23 +314,23 @@ describe('App', () => {
         expect(privacyService.getPrivacyList).toHaveBeenCalled();
       });
 
-      it('should open modal gdpr when privacy permission is unknow', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW));
-        spyOn(modalService, 'open');
-
-        component.ngOnInit();
-
-        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent);
-      });
-
-      it('should not open modal gdpr when privacy permission is allow', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
-        spyOn(modalService, 'open');
-
-        component.ngOnInit();
-
-        expect(modalService.open).not.toHaveBeenCalledWith();
-      });
+      // it('should open modal gdpr when privacy permission is unknow', () => {
+      //   spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW));
+      //   spyOn(modalService, 'open');
+      //
+      //   component.ngOnInit();
+      //
+      //   expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent);
+      // });
+      //
+      // it('should not open modal gdpr when privacy permission is allow', () => {
+      //   spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
+      //   spyOn(modalService, 'open');
+      //
+      //   component.ngOnInit();
+      //
+      //   expect(modalService.open).not.toHaveBeenCalledWith();
+      // });
 
     });
 
