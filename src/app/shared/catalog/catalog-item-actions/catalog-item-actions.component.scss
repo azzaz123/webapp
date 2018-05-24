@@ -44,6 +44,11 @@ $height: 40px;
         background: $delete-bg;
         border-color: transparent;
         color: $white;
+        mat-icon /deep/ {
+          svg g g, svg path {
+            fill: $white;
+          }
+        }
       }
     }
     &.btn-activate {

@@ -661,7 +661,7 @@ export class ItemService extends ResourceService {
   }
 
   private setBumpsInUse(item: Item): void {
-    switch (item.purchases.scheduled_bump_type) {
+    switch (item.purchases.bump_type) {
       case 'countrybump':
         this.countryBumpsInUse++;
         break;
