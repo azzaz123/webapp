@@ -34,6 +34,7 @@
   </a>
   <tsl-button [routerLink]="['/catalog/upload']" tslTrackEvent="MYZONE_UPLOAD">
     <mat-icon svgIcon="upload"></mat-icon>
-    <span i18n>List a product</span>
+    <span *ngxPermissionsOnly="['isNormal']" i18n>List a product</span>
+    <span *ngxPermissionsOnly="['isProfessional']" i18n>List a car</span>
   </tsl-button>
 </div>

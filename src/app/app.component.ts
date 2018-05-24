@@ -28,6 +28,7 @@ import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
 import { Message } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
+import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 
 @Component({
@@ -64,6 +65,7 @@ export class AppComponent implements OnInit {
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
+              private connectionService: ConnectionService,
               private callService: CallsService) {
     this.config();
   }
@@ -73,14 +75,17 @@ export class AppComponent implements OnInit {
     this.subscribeEventUserLogout();
     this.subscribeUnreadMessages();
     this.subscribeEventNewMessage();
+    this.subscribeEventClientDisconnect();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
+    this.connectionService.checkConnection();
     appboy.initialize(environment.appboy);
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
+    this.conversationService.firstLoad = true;
   }
 
   private updateUrlAndSendAnalytics() {
@@ -180,6 +185,10 @@ export class AppComponent implements OnInit {
 
   private subscribeEventNewMessage() {
     this.event.subscribe(EventService.NEW_MESSAGE, (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate));
+  }
+
+  private subscribeEventClientDisconnect() {
+    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => this.conversationService.resetCache());
   }
 
   private setTitle() {

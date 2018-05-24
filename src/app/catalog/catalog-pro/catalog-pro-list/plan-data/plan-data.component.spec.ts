@@ -104,11 +104,11 @@ describe('PlanDataComponent', () => {
     });
 
     it('should get the number of city bumps in use', () => {
-      expect(component.cityBumpsInUse).toEqual(0);
+      expect(component.cityBumpsInUse).toEqual(3);
     });
 
     it('should get the number of city bumps in use', () => {
-      expect(component.countryBumpsInUse).toEqual(0);
+      expect(component.countryBumpsInUse).toEqual(3);
     });
 
   });
