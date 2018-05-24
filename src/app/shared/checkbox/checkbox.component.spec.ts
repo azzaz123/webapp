@@ -59,7 +59,7 @@ describe('CheckboxComponent', () => {
     const element = el.querySelector('button') as HTMLInputElement;
     element.click();
 
-    expect(inputValue).toBeTruthy();
+    expect(inputValue).toBe(true);
   });
 
   it('should emit onChange action, when checkbox is changed', () => {
@@ -69,6 +69,6 @@ describe('CheckboxComponent', () => {
     const element = el.querySelector('button') as HTMLInputElement;
     element.click();
 
-    expect(inputValue).toBeTruthy();
+    expect(inputValue).toBe(true);
   });
 });

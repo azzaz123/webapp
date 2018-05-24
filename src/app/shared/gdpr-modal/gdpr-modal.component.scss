@@ -17,9 +17,9 @@
     font-size: $font-size-XS;
     overflow-x: scroll;
     text-align: left;
-    @include border-radius(10px);
+    border-radius: $border-radius;
     /deep/ p {
-      font-size: $font-size-XS !important;
+      font-size: $font-size-XS;
     }
   }
 

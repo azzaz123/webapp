@@ -69,12 +69,12 @@ describe('GdprModalComponent', () => {
     });
 
     it('should get spanish text by default ', () => {
-      // const url = environment.siteUrl + 'rest/gdpr/popup/gb';
-      // spyOn(component, 'getSubdomain').and.returnValue('web-en');
-      //
-      // component.getGDPRText();
-      //
-      // expect(http.getNoBase).toHaveBeenCalledWith(url);
+      const url = environment.siteUrl + 'rest/gdpr/popup/gb';
+      spyOn<any>(component, 'getSubdomain').and.returnValue('web-en');
+
+      component.getGDPRText();
+
+      expect(http.getNoBase).toHaveBeenCalledWith(url);
     });
   });
 
