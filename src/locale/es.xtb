@@ -281,8 +281,8 @@
   <translation id="4486163214005133487">Accede aquí a todas tus conversaciones. Y contesta a tus mensajes desde donde prefieras, sea ordenador o móvil. Por cierto, verás lo bien que funciona desde la web.</translation>
   <translation id="5289897176155020957">Mira en pantalla grande tus productos favoritos de la app. ¿Quizá aquí te acabes de decidir?</translation>
   <translation id="8328195571736012184">Mira en este punto las valoraciones de tu perfil. ¿Eres una persona de confianza para la comunidad?</translation>
-  <translation id="1747851890616342359">¡Te presentamos nuestra nueva web pro!</translation>
-  <translation id="7965763213079559522">Esta es 'Tu Zona Pro'. Desde aquí podrás utilizar todas las funcionalidades que ya tenías en la app de wallapop y en la protool.</translation>
+  <translation id="1747851890616342359">¡Te presentamos nuestra nueva web profesional!</translation>
+  <translation id="7965763213079559522">Esta es "Tu zona Pro". Desde aquí podrás utilizar todas las funcionalidades que ya tenías en la app de wallapop y en la admin de profesionales.</translation>
   <translation id="5339303196793781359">Aquí puedes ver y editar los datos de tu perfil, información de facturación y ver tu plan de coches y de visibilidad. Podrás marcar tu ubicación (y la de todos tus productos), cambiar tu foto, modificar la contraseña o el email...</translation>
   <translation id="157339153102985723">Aquí podrás ver estadísticas de visualizaciones de tus productos, número de chats y llamas recibidas. Además podrás ver que impacto tienen los destacados en tus métricas.</translation>
   <translation id="9086693090800324810">En este punto tendrás acceso a todos tus productos. Además, podrás subir nuevos, editarlos, activarlos o destacarlos.</translation>
@@ -379,7 +379,7 @@
   <translation id="6883076399412251073">Plan actual: Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.listing.quantity}}</ex></ph></translation>
   <translation id="2732498404411727211">Aún no estas suscrito a ningún plan.</translation>
   <translation id="7532148292247615475">Cada plan te permite tener publicados hasta un número máximo de coches en la app y web de wallapop.</translation>
-  <translation id="777899500223419407">Publicar hasta <ph name="INTERPOLATION"><ex>{{bump.quantity}}</ex></ph> coches cada mes.</translation>
+  <translation id="4371626830398169808">Puedes publicar hasta <ph name="INTERPOLATION"><ex>{{bump.quantity}}</ex></ph> coches</translation>
   <translation id="4332428159510983797">Caduca el</translation>
   <translation id="7154496186015922312">Plan personalizado</translation>
   <translation id="2016810884599586784">Contáctanos para que te hagamos un plan a medida</translation>

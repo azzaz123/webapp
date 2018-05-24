@@ -16,7 +16,7 @@
                [ngClass]="{'selected': perks?.subscription.listing.quantity === bump.quantity}">
             <mat-icon [svgIcon]="bump | subscriptionIcon:(perks?.subscription.listing.quantity === bump.quantity)"></mat-icon>
             <div class="name">Plan {{bump.quantity}}</div>
-            <div class="desc" i18n>Publish a maximum of {{bump.quantity}} cars per month</div>
+            <div class="desc" i18n>Publish a maximum of {{bump.quantity}} cars</div>
             <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
             <div class="expire"><span i18n>Expires on</span><br />{{perks?.subscription.listing.expireDate | date}}</div>
           </div>

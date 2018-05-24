@@ -215,6 +215,7 @@ $feature-button-width: 170px;
     button, tsl-button {
       margin-left: $spacing-S;
       float: left;
+      background-color: transparent;
     }
     button {
       @include square(40px);
