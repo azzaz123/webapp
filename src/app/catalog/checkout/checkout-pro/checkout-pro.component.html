@@ -1,0 +1,37 @@
+<div class="page-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="table-header">
+          <a class="back" [routerLink]="['/pro/catalog/list']">
+            <mat-icon svgIcon="back-arrow"></mat-icon>
+            <span i18n>Back</span>
+          </a>
+          <div class="header-first-section">
+            <a class="info"></a>
+            <div class="bump-types">
+              <div class="type city">
+                <div i18n>City</div>
+              </div>
+              <div class="type country">
+                <div i18n>Country</div>
+              </div>
+            </div>
+          </div>
+          <div class="type planning">
+            <div i18n>Planning</div>
+          </div>
+        </div>
+        <div class="bumps-table">
+          <tsl-checkout-pro-item *ngFor="let item of itemsWithProducts" [cartProItem]="item" (dateFocus)="onDateFocus($event)"></tsl-checkout-pro-item>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <tsl-cart-pro></tsl-cart-pro>
+      </div>
+    </div>
+    <tsl-spinner [firstLoad]="false" [hidden]="itemsWithProducts"></tsl-spinner>
+  </div>
+  <tsl-range-datepicker *ngIf="!calendarHidden" (applyCalendar)="onApplyCalendar($event)" (closeCalendar)="calendarHidden = true"
+    [bumpType]="itemSelected?.bumpType" [selectedDates]="itemSelected?.selectedDates"></tsl-range-datepicker>
+</div>

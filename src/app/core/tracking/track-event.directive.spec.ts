@@ -38,7 +38,7 @@ describe('Directive: TrackEvent', () => {
   });
 
   it('should track the click', () => {
-    const TRACKING_EVENT = 'MESSAGE_SENT';
+    const TRACKING_EVENT = 'SEND_MESSAGE';
     const TRACKING_PARAMS = {test: 'test'};
     fixture.componentInstance.event = TRACKING_EVENT;
     fixture.componentInstance.params = TRACKING_PARAMS;

@@ -20,7 +20,8 @@ import {
   Product,
   ProductDurations,
   Purchase,
-  SelectedItemsAction
+  SelectedItemsAction,
+  OrderPro
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
@@ -46,6 +47,7 @@ export class ItemService extends ResourceService {
   protected API_URL = 'api/v3/items';
   private API_URL_WEB = 'api/v3/web/items';
   private API_URL_USER = 'api/v3/users';
+  private API_URL_PROTOOL = 'api/v3/protool';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
@@ -421,7 +423,7 @@ export class ItemService extends ResourceService {
   }
 
   public getLatest(userId: string): Observable<ItemDataResponse> {
-    return this.http.get(this.API_URL + '/latest', {userId: userId})
+    return this.http.get(this.API_URL + '/latest-cars', {userId: userId})
       .map((r: Response) => r.json())
       .map((resp: LatestItemResponse) => {
         return {
@@ -429,6 +431,11 @@ export class ItemService extends ResourceService {
           data: resp.items[0] ? this.mapRecordData(resp.items[0]) : null
         };
       });
+  }
+
+  public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
+    return this.http.post(this.API_URL_PROTOOL + '/purchaseItems', orderParams)
+    .map((r: Response) => r.json());
   }
 
 }
