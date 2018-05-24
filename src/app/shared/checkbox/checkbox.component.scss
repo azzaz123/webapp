@@ -17,6 +17,7 @@ $feature-button-width: 170px;
     }
     span {
       color: $grey-500;
+      cursor: pointer;
       &.selected {
         color: $corporate;
       }
