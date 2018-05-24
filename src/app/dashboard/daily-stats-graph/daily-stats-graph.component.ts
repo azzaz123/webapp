@@ -17,9 +17,9 @@ export class DailyStatsGraphComponent implements OnInit, OnDestroy {
     "dataDateFormat": "",
     "colors": [
       "#90a4ae",
-      "#13C1AC",
       "#3daabf",
       "#ffb238",
+      "#13C1AC",
       "#56acff"
     ],
     "startDuration": 1,
@@ -44,7 +44,7 @@ export class DailyStatsGraphComponent implements OnInit, OnDestroy {
         },
         {
           "period": "DD",
-          "format": "MMM DD"
+          "format": "DD"
         },
         {
           "period": "WW",
@@ -63,15 +63,17 @@ export class DailyStatsGraphComponent implements OnInit, OnDestroy {
       "parseDates": true,
       "twoLineMode": true,
       "axisAlpha": 0,
-      "boldLabels": true,
       "gridAlpha": 0,
       "markPeriodChange": false,
-      "minorGridAlpha": 0
+      "minorGridAlpha": 0,
+      "color": "#90A4AE",
+      "fontSize": 10,
+      "centerLabels": true
     },
     "trendLines": [],
     "graphs": [
       {
-        "balloonText": "[[title]] of [[category]]:[[value]]",
+        "balloonText": "[[value]]",
         "behindColumns": true,
         "bullet": "round",
         "bulletBorderAlpha": 1,
@@ -86,19 +88,6 @@ export class DailyStatsGraphComponent implements OnInit, OnDestroy {
         "title": "Views",
         "type": "smoothedLine",
         "valueField": "views"
-      },
-      {
-        "behindColumns": true,
-        "fillAlphas": 0.36,
-        "fillColors": "#13C1AC",
-        "fixedColumnWidth": 0,
-        "id": "city_bump",
-        "lineAlpha": 0,
-        "lineThickness": 0,
-        "title": "city_bump",
-        "topRadius": 0,
-        "type": "smoothedLine",
-        "valueField": "city_bump"
       },
       {
         "cornerRadiusTop": 4,
@@ -118,6 +107,18 @@ export class DailyStatsGraphComponent implements OnInit, OnDestroy {
         "title": "Calls",
         "type": "column",
         "valueField": "phone_numbers"
+      },
+      {
+        "behindColumns": true,
+        "fillAlphas": 0.36,
+        "fixedColumnWidth": 0,
+        "id": "city_bump",
+        "lineAlpha": 0,
+        "lineThickness": 0,
+        "title": "City Featured",
+        "topRadius": 0,
+        "type": "smoothedLine",
+        "valueField": "city_bump"
       },
       {
         "behindColumns": true,
@@ -163,7 +164,7 @@ export class DailyStatsGraphComponent implements OnInit, OnDestroy {
     this.statisticsService.getStatistics().subscribe((response: StatisticFullResponse) => {
       response.entries.forEach((entry: StatisticEntriesResponse) => {
         this.chartOptions.dataProvider.push({
-          date: this.AmCharts.stringToDate(entry.date, "DD-MM"),
+          date: +entry.date,
           phone_numbers: entry.values.phone_numbers || 0,
           views:  entry.values.views || 0,
           chats:  entry.values.chats || 0,
