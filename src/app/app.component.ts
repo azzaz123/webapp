@@ -86,8 +86,10 @@ export class AppComponent implements OnInit {
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
     this.privacyService.getPrivacyList().subscribe(() => {
-      if (this.privacyService.getPrivacyState('privacy_policy', '0') === PRIVACY_STATUS.unknown) {
-        this.modalService.open(GdprModalComponent);
+      if (!sessionStorage.getItem('isGDPRShown') &&
+        this.privacyService.getPrivacyState('privacy_policy', '0') === PRIVACY_STATUS.unknown) {
+          this.modalService.open(GdprModalComponent);
+          sessionStorage.setItem('isGDPRShown', true);
       }
     });
   }
