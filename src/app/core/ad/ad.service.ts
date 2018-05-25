@@ -113,6 +113,7 @@ export class AdService {
         apstag.setDisplayBids();
         Criteo.SetDFPKeyValueTargeting();
       }
+      googletag.pubads().setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
       googletag.pubads().refresh();
     });
   }
