@@ -78,7 +78,9 @@ export class I18nService {
       bumpError: 'Some listings have not been bumped due to an error',
       cantEditError: 'This item can not be modified because has a pending transaction.',
       settingsEdited: 'Your setting has been updated',
-      twitterShare: 'Look what I found on @Wallapop:'
+      twitterShare: 'Look what I found on @Wallapop:',
+      countrybump: 'Country Bump',
+      citybump: 'City Bump'
     },
     es: {
       daysMomentConfig: {
@@ -116,10 +118,10 @@ export class I18nService {
       blockUserSuccess: 'El usuario se ha bloqueado correctamente',
       unblockUserSuccess: 'El usuario se ha desbloqueado correctamente',
       newMessageNotification: 'Nuevo mensaje de ',
-      date_desc: 'Fecha: descendente',
-      date_asc: 'Fecha: ascendente',
-      price_desc: 'Precio: descendente',
-      price_asc: 'Precio: ascendente',
+      date_desc: 'Más recientes',
+      date_asc: 'Más antiguos',
+      price_desc: 'Precio mayor',
+      price_asc: 'Precio menor',
       bulkDeleteError: 'Algunos productos no se han eliminado debido a un error',
       bulkReserveError: 'Algunos productos no se han reservado debido a un error',
       bulkSoldError: 'Algunos productos no se han marcado como vendido debido a un error',
@@ -154,7 +156,9 @@ export class I18nService {
       bumpError: 'Algunos productos no se han destacado debido a un error',
       cantEditError: 'Este producto no se puede modificar, porque está en mitad de una transacción.',
       settingsEdited: 'Se ha actualizado tu configuración',
-      twitterShare: 'Mira que acabo de encontrar en @Wallapop:'
+      twitterShare: 'Mira que acabo de encontrar en @Wallapop:',
+      countrybump: 'Destacado País',
+      citybump: 'Destacado Ciudad'
     }
   };
 
