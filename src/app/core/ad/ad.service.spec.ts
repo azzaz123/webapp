@@ -58,7 +58,8 @@ const pubads = {
   collapseEmptyDivs() {},
   setPublisherProvidedId() {},
   setTargeting () {},
-  refresh () {}
+  refresh () {},
+  setRequestNonPersonalizedAds() {}
 };
 
 const defineSlot = {
@@ -242,6 +243,16 @@ describe('AdService', () => {
           discardPeriodicTasks();
         }));
 
+        it('should call DFP setRequestNonPersonalizedAds with value 0', fakeAsync(() => {
+          spyOn(pubads, 'setRequestNonPersonalizedAds');
+
+          service.startAdsRefresh();
+          tick(refreshRate);
+
+          expect(pubads.setRequestNonPersonalizedAds).toHaveBeenCalledWith(0);
+          discardPeriodicTasks();
+        }));
+
         it('should call amazon APS fetchBids', fakeAsync(() => {
           spyOn(apstag, 'fetchBids');
 
@@ -293,6 +304,16 @@ describe('AdService', () => {
           tick(refreshRate);
 
           expect(pubads.setTargeting).toHaveBeenCalledWith('allowSegmentation', 'false');
+          discardPeriodicTasks();
+        }));
+
+        it('should call DFP setRequestNonPersonalizedAds with value 1', fakeAsync(() => {
+          spyOn(pubads, 'setRequestNonPersonalizedAds');
+
+          service.startAdsRefresh();
+          tick(refreshRate);
+
+          expect(pubads.setRequestNonPersonalizedAds).toHaveBeenCalledWith(1);
           discardPeriodicTasks();
         }));
 
