@@ -18,6 +18,7 @@
     overflow-x: scroll;
     text-align: left;
     border-radius: $border-radius;
+    margin-bottom: $spacing-L;
     /deep/ p {
       font-size: $font-size-XS;
     }
@@ -30,6 +31,7 @@
 
   tsl-button {
     display: block;
+    margin-top: $spacing-L;
     & /deep/ button{
       width: 100%;
     }
