@@ -10,19 +10,19 @@ export abstract class CartBase {
   zonebump: BumpGroup = {
     total: 0,
     cartItems: [],
-    collapsed: true
+    collapsed: false
   };
 
   citybump: BumpGroup = {
     total: 0,
     cartItems: [],
-    collapsed: true
+    collapsed: false
   };
 
   countrybump: BumpGroup = {
     total: 0,
     cartItems: [],
-    collapsed: true
+    collapsed: false
   };
 
   abstract add(cartItem: CartItem | CartProItem | CartProExtrasPack, type: string);
