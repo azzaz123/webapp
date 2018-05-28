@@ -277,6 +277,7 @@ export const BUMPS_PRODUCT_RESPONSE: ProductResponse[] = [{
 }];
 
 export const PERK_RESPONSE: PerkResponse[] = [{
+  create_date: 21342344,
   expire_date: 21342344,
   perk_id: '123',
   product_id: NATIONAL_BUMP_ID,
@@ -284,6 +285,7 @@ export const PERK_RESPONSE: PerkResponse[] = [{
   subscription_id: SUBSCRIPTION_ID,
   total: 0
 }, {
+  create_date: 21342344,
   expire_date: 21342344,
   perk_id: '1234',
   product_id: BUMP_ID,
@@ -291,6 +293,7 @@ export const PERK_RESPONSE: PerkResponse[] = [{
   subscription_id: SUBSCRIPTION_ID,
   total: 0
 }, {
+  create_date: 21342344,
   expire_date: 21342344,
   perk_id: '1234',
   product_id: LISTINGS_ID,
@@ -298,6 +301,7 @@ export const PERK_RESPONSE: PerkResponse[] = [{
   subscription_id: SUBSCRIPTION_ID,
   total: 0
 }, {
+  create_date: 21342344,
   expire_date: 21342344,
   perk_id: '123',
   product_id: NATIONAL_BUMP_ID,
@@ -305,6 +309,7 @@ export const PERK_RESPONSE: PerkResponse[] = [{
   subscription_id: null,
   total: 0
 }, {
+  create_date: 21342344,
   expire_date: 21342344,
   perk_id: '1234',
   product_id: BUMP_ID,

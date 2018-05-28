@@ -1,6 +1,7 @@
 import { Pack } from './pack';
 export interface PerkResponse {
   expire_date: number;
+  create_date: number;
   perk_id: string;
   product_id: string;
   quantity: number;
@@ -17,17 +18,17 @@ export interface Perk {
   bump: {
     quantity: number,
     total?: number,
-    expireDate?: number
+    createDate?: number
   };
   national: {
     quantity: number,
     total?: number,
-    expireDate?: number
+    createDate?: number
   };
   listing?: {
     quantity: number,
     total?: number,
-    expireDate?: number
+    createDate?: number
   };
 }
 
