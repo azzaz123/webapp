@@ -6,6 +6,7 @@ import { IOption } from 'ng-select';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { UUID } from 'angular2-uuid';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-stats-graph',
@@ -17,16 +18,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
   @Input() yearly: boolean = false;
   public id: string = 'chart-' + UUID.UUID();
   public duration: string = '30';
-  public statsDurations: IOption[] = [{
-    label: 'Last 30 days',
-    value: '30'
-  }, {
-    label: 'Last 15 days',
-    value: '15'
-  }, {
-    label: 'Last 7 days',
-    value: '7'
-  }];
+  public statsDurations: IOption[] = [];
   private chart: AmChart;
   private chartOptions: any = {
     'type': 'serial',
@@ -159,7 +151,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       'marginRight': 0,
       'marginBottom': 30,
       'fontSize': 14,
-      'spacing': -30,
+      'spacing': -35,
       'position': 'top',
       'rollOverGraphAlpha': 0.75,
       'switchType': 'v',
@@ -171,6 +163,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
 
   constructor(private AmCharts: AmChartsService,
               private statisticsService: StatisticsService,
+              private i18n: I18nService,
               @Inject(LOCALE_ID) private locale: string) {
   }
 
@@ -226,7 +219,22 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
     }
     if (this.locale === 'es') {
       this.AmCharts.shortMonthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dec'];
+      this.chartOptions.graphs[0].title = this.i18n.getTranslations('views');
+      this.chartOptions.graphs[1].title = this.i18n.getTranslations('messages');
+      this.chartOptions.graphs[2].title = this.i18n.getTranslations('phoneCalls');
+      this.chartOptions.graphs[3].title = this.i18n.getTranslations('cityFeatured');
+      this.chartOptions.graphs[4].title = this.i18n.getTranslations('countryFeatured');
     }
+    this.statsDurations = [{
+      label: this.i18n.getTranslations('last30Days'),
+      value: '30'
+    }, {
+      label: this.i18n.getTranslations('last15Days'),
+      value: '15'
+    }, {
+      label: this.i18n.getTranslations('last7Days'),
+      value: '7'
+    }];
     this.loadStats();
   }
 

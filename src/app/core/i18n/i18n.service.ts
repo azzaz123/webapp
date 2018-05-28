@@ -77,7 +77,10 @@ export class I18nService {
       defaultSuccessTitle: 'Yup!',
       bumpError: 'Some listings have not been bumped due to an error',
       cantEditError: 'This item can not be modified because has a pending transaction.',
-      settingsEdited: 'Your setting has been updated'
+      settingsEdited: 'Your setting has been updated',
+      last30Days: 'Last 30 days',
+      last15Days: 'Last 15 days',
+      last7Days: 'Last 7 days'
     },
     es: {
       daysMomentConfig: {
@@ -132,7 +135,9 @@ export class I18nService {
       answered: 'Llamada recibida',
       chats: 'Chats',
       sold: 'Vendido',
-      views: 'Visualizaciones',
+      views: 'Vistos',
+      cityFeatured: 'Destacados ciudad',
+      countryFeatured: 'Destacados país',
       ExtensionNotAllowed: 'Has intentado subir un formato no adecuado. Solo se pueden añadir fotos en jpg o jpeg: ',
       MaxUploadsExceeded: 'Este fichero excede el limite de fotos: ',
       MaxSizeExceeded: 'Este fichero excede el limite de peso: ',
@@ -152,7 +157,10 @@ export class I18nService {
       defaultSuccessTitle: '¡Bien!',
       bumpError: 'Algunos productos no se han destacado debido a un error',
       cantEditError: 'Este producto no se puede modificar, porque está en mitad de una transacción.',
-      settingsEdited: 'Se ha actualizado tu configuración'
+      settingsEdited: 'Se ha actualizado tu configuración',
+      last30Days: 'Últimos 30 días',
+      last15Days: 'Últimos 15 días',
+      last7Days: 'Últimos 7 días'
     }
   };
 
