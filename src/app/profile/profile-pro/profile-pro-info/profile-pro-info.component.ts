@@ -56,6 +56,7 @@ export class ProfileProInfoComponent implements OnInit {
         first_name: this.user.firstName,
         last_name: this.user.lastName
       });
+      this.formComponent.hasNotSavedChanges = false;
     });
   }
 
