@@ -2,6 +2,7 @@
 
 :host {
   position: relative;
+  display: block;
 }
 
 .chart {
@@ -10,7 +11,7 @@
   padding: $spacing $spacing-S;
 }
 
-#chartdiv {
+.chart {
   /deep/ {
     a {
       display: none !important;
@@ -18,17 +19,27 @@
     text {
       font-family: $wallie;
     }
+    .amcharts-axis-label {
+      text-transform: uppercase;
+    }
   }
+}
+
+.title, ng-select {
+  position: absolute;
+  margin-left: 25px;
+  width: 205px;
+  z-index: 1;
+}
+
+.title {
+  margin-top: 28px;
 }
 
 ng-select {
   $height: 38px;
-  width: 205px;
-  position: absolute;
-  margin-top: 22px;
-  margin-left: 25px;
   height: $height;
-  z-index: 1;
+  margin-top: 22px;
   /deep/ {
     & > div {
       height: $height !important;
