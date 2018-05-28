@@ -51,6 +51,11 @@ export class ProfileProInfoComponent implements OnInit {
     this.userService.getProInfo().subscribe((userInfo: UserProInfo) => {
       this.userInfo = userInfo;
       this.setUserData();
+    }, () => {
+      this.profileForm.patchValue({
+        first_name: this.user.firstName,
+        last_name: this.user.lastName
+      });
     });
   }
 
