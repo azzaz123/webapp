@@ -1,5 +1,9 @@
 @import "~style/common";
 
+:host {
+  position: relative;
+}
+
 .chart {
   background-color: $white;
   border-radius: $border-radius;

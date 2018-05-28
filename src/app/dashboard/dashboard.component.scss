@@ -5,13 +5,14 @@ $container-spacing: 50px;
 .container {
   position: static;
   padding-top: $spacing-L;
+  padding-bottom: $spacing-L;
   overflow: auto;
   width: calc(100% - #{$sidebar-width} - #{$stats-sidebar-width} - (2 * #{$container-spacing}));
   padding-left: $sidebar-width;
   padding-right: $stats-sidebar-width;
   box-sizing: content-box;
   max-width: 960px;
-  height: 100vh;
+  height: calc(100vh - #{$topbar-height} - #{$spacing-L * 2});
   background-color: $grey-50;
 }
 

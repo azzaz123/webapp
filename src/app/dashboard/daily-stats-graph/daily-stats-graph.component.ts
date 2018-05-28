@@ -21,9 +21,6 @@ export class DailyStatsGraphComponent implements OnInit, OnDestroy {
   }, {
     label: 'Last 7 days',
     value: '7'
-  }, {
-    label: 'Last 24 hours',
-    value: '1'
   }];
   private chart: AmChart;
   private chartOptions: any = {
