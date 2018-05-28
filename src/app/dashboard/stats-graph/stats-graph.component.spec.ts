@@ -5,6 +5,7 @@ import { AmChartsService } from '@amcharts/amcharts3-angular';
 import { StatisticsService } from './statistics.service';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 describe('StatsGraphComponent', () => {
   let component: StatsGraphComponent;
@@ -20,6 +21,12 @@ describe('StatsGraphComponent', () => {
           provide: StatisticsService, useValue: {
           getStatistics() {
             return Observable.of();
+          }
+        }
+        },
+        {
+          provide: I18nService, useValue: {
+          getTranslations() {
           }
         }
         }],
