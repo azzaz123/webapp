@@ -19,7 +19,4 @@ export class MessageComponent implements OnInit {
   ngOnInit() {
     this.userWebSlug = this.message.user ? this.message.user.getUrl(this.subdomain) : null;
   }
-
-
-
 }

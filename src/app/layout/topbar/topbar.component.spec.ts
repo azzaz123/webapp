@@ -13,6 +13,7 @@ import { USER_DATA } from '../../../tests/user.fixtures.spec';
 import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../core/message/message.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -40,13 +41,16 @@ describe('TopbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, NgxPermissionsModule.forRoot()],
       providers: [
         {
           provide: UserService, useValue: {
             me(): Observable<User> {
               return Observable.of(MOCK_USER);
-            }
+            },
+          isProfessional() {
+              return Observable.of(true);
+          }
           },
         },
         {
@@ -91,6 +95,15 @@ describe('TopbarComponent', () => {
       component.user = null;
       component.ngOnInit();
       expect(component.user).toBe(MOCK_USER);
+    });
+
+    it('should call isProfessional and set the attribute', () => {
+      spyOn(userService, 'isProfessional').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.isProfessional).toHaveBeenCalled();
+      expect(component.isProfessional).toBe(true);
     });
   });
 

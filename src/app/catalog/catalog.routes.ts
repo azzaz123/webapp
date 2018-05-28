@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes, ActivatedRouteSnapshot } from '@angular/router';
 
 import { ListComponent } from './list/list.component';
+import { CatalogProListComponent } from '../catalog/catalog-pro/catalog-pro-list/catalog-pro-list.component'
 import { LoggedGuard } from '../core/user/logged.guard';
 import { CatalogComponent } from './catalog.component';
+import { CatalogProComponent } from '../catalog/catalog-pro/catalog-pro.component';
 import { UploadCarComponent } from './upload/upload-car/upload-car.component';
 import { UploadComponent } from './upload/upload.component';
 import { EditComponent } from './edit/edit.component';
@@ -13,12 +15,13 @@ import { TutorialGuard } from '../shared/guards/tutorial.guard';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
+import { CheckoutProComponent } from './checkout/checkout-pro/checkout-pro.component';
 import * as _ from 'lodash';
+import { CheckoutExtrasProComponent } from './checkout/checkout-extras-pro/checkout-extras-pro.component';
 
 const routes: Routes = [
   {
     path: 'catalog',
-    component: CatalogComponent,
     canActivate: [LoggedGuard, TutorialGuard],
     canActivateChild: [NgxPermissionsGuard],
     children: [
@@ -103,7 +106,6 @@ const routes: Routes = [
     children: [
       {
         path: 'catalog',
-        component: CatalogComponent,
         canActivateChild: [NgxPermissionsGuard],
         children: [
           {
@@ -113,7 +115,7 @@ const routes: Routes = [
           },
           {
             path: 'list',
-            component: ListComponent,
+            component: CatalogProListComponent,
             data: {
               isMyZone: true,
               isProducts: true,
@@ -169,7 +171,7 @@ const routes: Routes = [
           },
           {
             path: 'checkout',
-            component: CheckoutComponent,
+            component: CheckoutProComponent,
             data: {
               isMyZone: true,
               isProducts: true,
@@ -179,6 +181,18 @@ const routes: Routes = [
               }
             }
           },
+          {
+            path: 'checkout-extras',
+            component: CheckoutExtrasProComponent,
+            data: {
+              isMyZone: true,
+              isProducts: true,
+              permissions: {
+                only: PERMISSIONS.professional,
+                redirectTo: '/catalog/list'
+              }
+            }
+          }
         ]
       },
     ]
@@ -198,5 +212,7 @@ export const catalogRoutedComponents = [
   UploadComponent,
   UploadCarComponent,
   EditComponent,
-  CheckoutComponent
+  CheckoutComponent,
+  CatalogProComponent,
+  CatalogProListComponent
 ];

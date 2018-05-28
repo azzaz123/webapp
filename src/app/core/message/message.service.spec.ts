@@ -24,6 +24,7 @@ import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
+import { ConnectionService } from '../connection/connection.service';
 
 describe('Service: Message', () => {
 
@@ -31,6 +32,7 @@ describe('Service: Message', () => {
   let service: MessageService;
   let persistencyService: PersistencyService;
   let userService: UserService;
+  let connectionService: ConnectionService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,6 +41,7 @@ describe('Service: Message', () => {
         XmppService,
         EventService,
         {provide: TrackingService, useClass: MockTrackingService},
+        {provide: ConnectionService, useValue: {}},
         {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: UserService, useValue: {user: new User(USER_ID)}}
       ]
@@ -47,6 +50,7 @@ describe('Service: Message', () => {
     service = TestBed.get(MessageService);
     persistencyService = TestBed.get(PersistencyService);
     userService = TestBed.get(UserService);
+    connectionService = TestBed.get(ConnectionService);
   });
 
   it('should instanciate', () => {
@@ -74,9 +78,9 @@ describe('Service: Message', () => {
         });
         expect(response.meta.first).toBe(MOCK_DB_FILTERED_RESPONSE[0].doc._id);
         expect(response.meta.last).toBe(MOCK_DB_FILTERED_RESPONSE[1].doc._id);
-        expect(response.meta.end).toBeTruthy();
+        expect(response.meta.end).toBe(true);
         expect(response.data.length).toBe(MOCK_DB_FILTERED_RESPONSE.length);
-        expect(response.data[0] instanceof Message).toBeTruthy();
+        expect(response.data[0] instanceof Message).toBe(true);
         expect(response.data[0].id).toBe(MOCK_DB_FILTERED_RESPONSE[0].doc._id);
         expect(response.data[0].message).toBe(MOCK_DB_FILTERED_RESPONSE[0].doc.message);
       });
@@ -85,7 +89,7 @@ describe('Service: Message', () => {
         service.getMessages(conversation, 1).subscribe((data: any) => {
           response = data;
         });
-        expect(response.data.length >= 1).toBeTruthy();
+        expect(response.data.length >= 1).toBe(true);
       });
 
       it('should call addUserInfoToArray', () => {
@@ -97,7 +101,7 @@ describe('Service: Message', () => {
         expect(service.addUserInfoToArray).toHaveBeenCalled();
         expect(response.meta.first).toBe(MOCK_DB_FILTERED_RESPONSE[0].doc._id);
         expect(response.meta.last).toBe(MOCK_DB_FILTERED_RESPONSE[1].doc._id);
-        expect(response.meta.end).toBeTruthy();
+        expect(response.meta.end).toBe(true);
         expect(response.data).toEqual(MESSAGES);
       });
 
@@ -165,7 +169,7 @@ describe('Service: Message', () => {
           res = data;
         });
         expect(res.data.length).toBe(55);
-        expect(res.meta.end).toBeTruthy();
+        expect(res.meta.end).toBe(true);
         expect(res.meta.first).toBe('5');
       });
 
@@ -221,7 +225,7 @@ describe('Service: Message', () => {
           res = data;
         });
         expect(res.data.length).toBe(9);
-        expect(res.meta.end).toBeFalsy();
+        expect(res.meta.end).toBe(false);
         expect(res.meta.first).toBe('5');
       });
 
@@ -265,7 +269,7 @@ describe('Service: Message', () => {
           res = data;
         });
         expect(res.data.length).toBe(20);
-        expect(res.meta.end).toBeTruthy();
+        expect(res.meta.end).toBe(true);
         expect(res.meta.last).toBe('4');
       });
 
@@ -321,7 +325,7 @@ describe('Service: Message', () => {
           res = data;
         });
         expect(res.data.length).toBe(9);
-        expect(res.meta.end).toBeFalsy();
+        expect(res.meta.end).toBe(false);
         expect(res.meta.last).toBe('5');
       });
 
@@ -335,7 +339,7 @@ describe('Service: Message', () => {
       spyOn(xmpp, 'sendMessage');
       const conversation: Conversation = MOCK_CONVERSATION();
       service.send(conversation, 'text');
-      expect(xmpp.sendMessage).toHaveBeenCalledWith(USER_ID, CONVERSATION_ID, 'text');
+      expect(xmpp.sendMessage).toHaveBeenCalledWith(conversation, 'text');
     });
 
   });
@@ -344,35 +348,57 @@ describe('Service: Message', () => {
     beforeEach(() => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of(MOCK_DB_META));
     });
-    it('should get the meta information from the database', () => {
-      service.getNotSavedMessages();
-      expect(persistencyService.getMetaInformation).toHaveBeenCalled();
+    describe('with connection', () => {
+      beforeEach(() => {
+        connectionService.isConnected = true;
+      });
+
+      it('should get the meta information from the database', () => {
+        service.getNotSavedMessages();
+        expect(persistencyService.getMetaInformation).toHaveBeenCalled();
+      });
+
+      it('should call the query method using the provide information of the db', () => {
+        const messagesArray: Array<Message> = createMessagesArray(5);
+        spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
+        service.getNotSavedMessages().subscribe();
+        expect(service.query).toHaveBeenCalledWith(null, MOCK_DB_META.data.last, -1, MOCK_DB_META.data.start);
+      });
+
+      it('should call the query method using the provide information of the db', () => {
+        const messagesArray: Array<Message> = createMessagesArray(5);
+        spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
+        service.getNotSavedMessages().subscribe();
+        expect(service.query).toHaveBeenCalledWith(null, MOCK_DB_META.data.last, -1, MOCK_DB_META.data.start);
+
+      });
+
+      it('should save the new meta information if the query returns messages', () => {
+        const messagesArray: Array<Message> = createMessagesArray(5);
+        spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
+        spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
+        service.getNotSavedMessages().subscribe();
+        expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith(
+          {last: MOCK_DB_META.data.last, start: messagesArray[messagesArray.length - 1].date.toISOString()}
+        );
+      });
+
+      it('should NOT save the new meta information if the query does not return messages', () => {
+        spyOn(service, 'query').and.returnValue(Observable.of({data: [], meta: MOCK_DB_META.data}));
+        spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
+        service.getNotSavedMessages().subscribe();
+        expect(persistencyService.saveMetaInformation).not.toHaveBeenCalled();
+      });
     });
 
-    it('should call the query method using the provide information of the db', () => {
-      const messagesArray: Array<Message> = createMessagesArray(5);
-      spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
-      let observableResponse: any;
-      service.getNotSavedMessages().subscribe();
-      expect(service.query).toHaveBeenCalledWith(null, MOCK_DB_META.data.last, -1, MOCK_DB_META.data.start);
+    describe('without connection', () => {
+      it('should NOT call getMetaInformation when there is no connection', () => {
+        connectionService.isConnected = false;
 
-    });
+        service.getNotSavedMessages();
 
-    it('should save the new meta information if the query returns messages', () => {
-      const messagesArray: Array<Message> = createMessagesArray(5);
-      spyOn(service, 'query').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
-      spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
-      service.getNotSavedMessages().subscribe();
-      expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith(
-        {last: MOCK_DB_META.data.last, start: messagesArray[messagesArray.length - 1].date.toISOString()}
-      );
-    });
-
-    it('should NOT save the new meta information if the query does not return messages', () => {
-      spyOn(service, 'query').and.returnValue(Observable.of({data: [], meta: MOCK_DB_META.data}));
-      spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
-      service.getNotSavedMessages().subscribe();
-      expect(persistencyService.saveMetaInformation).not.toHaveBeenCalled();
+        expect(persistencyService.getMetaInformation).not.toHaveBeenCalled();
+      });
     });
 
   });
@@ -395,7 +421,7 @@ describe('Service: Message', () => {
       );
       service.addUserInfo(conversation, message);
       expect(message.user).toEqual(conversation.user);
-      expect(message.fromBuyer).toBeTruthy();
+      expect(message.fromBuyer).toBe(true);
     });
 
     it('should add seller user to message', () => {
@@ -407,7 +433,7 @@ describe('Service: Message', () => {
       );
       message = service.addUserInfo(conversation, message);
       expect(message.user).toEqual(userService.user);
-      expect(message.fromBuyer).toBeFalsy();
+      expect(message.fromBuyer).toBe(false);
     });
 
   });

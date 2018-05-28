@@ -7,15 +7,17 @@
   <h2 i18n>Profile</h2>
 </a>
 
-<a *ngxPermissionsOnly="['isProfessional']" class="sidebar-section" [routerLink]="['/pro/dashboard']" tslTrackEvent="MYZONE_MENU_DASHBOARD" [class.active]="isDashboard">
+<!--Disabled until this section is finished-->
+<!-- <a *ngxPermissionsOnly="['isProfessional']" class="sidebar-section" [routerLink]="['/pro/dashboard']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_DASHBOARD"
+   [ngClass]="{active: tutorialService.step === 2}">
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_dashboard"></mat-icon>
   </div>
   <h2 i18n>Dashboard</h2>
-</a>
+</a> -->
 
 <a class="sidebar-section" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_MENU_CATALOG" [class.active]="isProducts"
-  [ngClass]="{active: tutorialService.step === 2}">
+  [ngClass]="{active: !isProfessional && tutorialService.step === 2 || isProfessional && tutorialService.step === 3}">
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_catalog"></mat-icon>
   </div>
@@ -23,7 +25,8 @@
   <h2 *ngxPermissionsOnly="['isProfessional']" i18n>Catalog</h2>
 </a>
 
-<a class="sidebar-section" [routerLink]="['/chat']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CHAT" [ngClass]="{active: tutorialService.step === 3}">
+<a class="sidebar-section" [routerLink]="['/chat']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CHAT"
+   [ngClass]="{active: !isProfessional && tutorialService.step === 3 || isProfessional && tutorialService.step === 4}">
   <div class="chat-notification-pending" *ngIf="(messageService.totalUnreadMessages$ | async) > 0"></div>
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_messages"></mat-icon>
@@ -46,7 +49,8 @@
   <h2 i18n>Reviews</h2>
 </a>
 
-<a *ngxPermissionsOnly="['isProfessional']" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CALLS">
+<a *ngxPermissionsOnly="['isProfessional']" class="sidebar-section" [routerLink]="['/pro/calls']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_CALLS"
+   [ngClass]="{active: tutorialService.step === 5}">
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_phones"></mat-icon>
   </div>

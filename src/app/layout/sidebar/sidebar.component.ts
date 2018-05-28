@@ -13,6 +13,7 @@ export class SidebarComponent implements OnInit {
 
   public user: User;
   @Input() isProducts: boolean;
+  public isProfessional: boolean;
 
   constructor(private userService: UserService,
               public tutorialService: TutorialService,
@@ -22,6 +23,9 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.userService.me().subscribe((user) => {
       this.user = user;
+    });
+    this.userService.isProfessional().subscribe((value: boolean) => {
+      this.isProfessional = value;
     });
   }
 
