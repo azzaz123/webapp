@@ -99,7 +99,8 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         "minDistance": 0,
         "title": "Views",
         "type": "smoothedLine",
-        "valueField": "views"
+        "valueField": "views",
+        "valueAxis": "ValueAxisViews",
       },
       {
         "cornerRadiusTop": 4,
@@ -122,7 +123,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       },
       {
         "behindColumns": true,
-        "fillAlphas": 0.36,
+        "fillAlphas": 0.20,
         "fixedColumnWidth": 0,
         "id": "city_bump",
         "lineAlpha": 0,
@@ -134,7 +135,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       },
       {
         "behindColumns": true,
-        "fillAlphas": 0.42,
+        "fillAlphas": 0.20,
         "id": "CountryFeatured",
         "lineAlpha": 0,
         "title": "Country Featured",
@@ -145,10 +146,21 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
     "guides": [],
     "valueAxes": [
       {
-        "id": "ValueAxis-1",
+        "id": "ValueAxisGeneral",
         "color": "#607D8B",
         "fontSize": 8,
-        "title": ""
+        "title": "",
+        "gridColor": "#ECEFF1"
+      },
+      {
+        "id": "ValueAxisViews",
+        "color": "#607D8B",
+        "fontSize": 8,
+        "title": "",
+        "position": "right",
+        "synchronizationMultiplier": 5,
+        "synchronizeWith": "ValueAxisGeneral",
+        "gridColor": "#ECEFF1"
       }
     ],
     "allLabels": [],
@@ -157,11 +169,14 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       "enabled": true,
       "align": "right",
       "equalWidths": false,
+      "autoMargins": false,
       "marginLeft": 0,
       "marginRight": 0,
+      "marginBottom": 30,
+      "fontSize": 14,
+      "spacing": -30,
       "position": "top",
       "rollOverGraphAlpha": 0.75,
-      "spacing": 0,
       "switchType": "v",
       "valueWidth": 30
     },
