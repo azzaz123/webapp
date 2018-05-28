@@ -2,10 +2,11 @@
 
 import { TestBed, inject } from '@angular/core/testing';
 import { StatisticsService } from './statistics.service';
-import { HttpService, TEST_HTTP_PROVIDERS } from 'shield';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { ResponseOptions, Response } from '@angular/http';
-const STATISTIC_API_URL: string = 'api/v3/protool/statistics';
+import { HttpService } from '../../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
+const STATISTIC_API_URL: string = 'api/v3/protool/dashboard/statistics';
 let service: StatisticsService;
 let http: HttpService;
 let mockBackend: MockBackend;
@@ -35,7 +36,7 @@ describe('StatisticsService', () => {
       service.getStatistics().subscribe((r) => {
         response = r;
       });
-      expect(http.get).toHaveBeenCalledWith(STATISTIC_API_URL);
+      expect(http.get).toHaveBeenCalledWith(STATISTIC_API_URL + '?durationInDays=30');
       expect(response).toBe('Response');
     });
   });
