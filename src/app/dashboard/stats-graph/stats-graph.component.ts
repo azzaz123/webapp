@@ -5,11 +5,11 @@ import { StatisticEntriesResponse, StatisticFullResponse } from './statistic-res
 import { IOption } from 'ng-select';
 
 @Component({
-  selector: 'tsl-daily-stats-graph',
-  templateUrl: './daily-stats-graph.component.html',
-  styleUrls: ['./daily-stats-graph.component.scss']
+  selector: 'tsl-stats-graph',
+  templateUrl: './stats-graph.component.html',
+  styleUrls: ['./stats-graph.component.scss']
 })
-export class DailyStatsGraphComponent implements OnInit, OnDestroy {
+export class StatsGraphComponent implements OnInit, OnDestroy {
 
   public duration: string = '30';
   public statsDurations: IOption[] = [{

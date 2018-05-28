@@ -7,9 +7,9 @@ import { SharedModule } from '../shared/shared.module';
 import { MomentModule } from 'angular2-moment';
 import { ConversationModule } from '../core/conversation/conversation.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { DailyStatsGraphComponent } from './daily-stats-graph/daily-stats-graph.component';
+import { StatsGraphComponent } from './stats-graph/stats-graph.component';
 import { AmChartsModule } from '@amcharts/amcharts3-angular';
-import { StatisticsService } from './daily-stats-graph/statistics.service';
+import { StatisticsService } from './stats-graph/statistics.service';
 import { SelectModule } from 'ng-select';
 import { FormsModule } from '@angular/forms';
 
@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
     SelectModule,
     FormsModule
   ],
-  declarations: [dashboardRoutedComponents, CallComponent, DailyStatsGraphComponent],
+  declarations: [dashboardRoutedComponents, CallComponent, StatsGraphComponent],
   providers: [StatisticsService]
 })
 export class DashboardModule { }

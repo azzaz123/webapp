@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DailyStatsGraphComponent } from './daily-stats-graph.component';
+import { StatsGraphComponent } from './stats-graph.component';
 import { AmChartsService } from '@amcharts/amcharts3-angular';
 import { StatisticsService } from './statistics.service';
 import { Observable } from 'rxjs/Observable';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('DailyStatsGraphComponent', () => {
-  let component: DailyStatsGraphComponent;
-  let fixture: ComponentFixture<DailyStatsGraphComponent>;
+describe('StatsGraphComponent', () => {
+  let component: StatsGraphComponent;
+  let fixture: ComponentFixture<StatsGraphComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DailyStatsGraphComponent],
+      declarations: [StatsGraphComponent],
       providers: [{
         provide: AmChartsService, useValue: {}
       },
@@ -29,7 +29,7 @@ describe('DailyStatsGraphComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DailyStatsGraphComponent);
+    fixture = TestBed.createComponent(StatsGraphComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
