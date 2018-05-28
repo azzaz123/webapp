@@ -9,11 +9,12 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { MOCK_ITEM, ITEM_ID } from '../../../../tests/item.fixtures.spec';
+import { MOCK_ITEM, ITEM_ID, ITEM_DATA3 } from '../../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { MomentModule } from 'angular2-moment';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
@@ -22,6 +23,7 @@ describe('CatalogCardComponent', () => {
   let modalService: NgbModal;
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
+  let i18nService: I18nService;
   const modal: any = {modal: true};
   const componentInstance = {
     price: null,
@@ -34,24 +36,25 @@ describe('CatalogCardComponent', () => {
       imports: [ MomentModule ],
       providers: [
         DecimalPipe,
+        I18nService,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
-          selectedItems: [],
-          selectItem() {
-          },
-          deselectItem() {
-          },
-          reserveItem() {
-            return Observable.of({});
-          },
-          setSold() {
-            return Observable.of({});
-          },
-          cancelAutorenew() {
-            return Observable.of({});
+            selectedItems: [],
+            selectItem() {
+            },
+            deselectItem() {
+            },
+            reserveItem() {
+              return Observable.of({});
+            },
+            setSold() {
+              return Observable.of({});
+            },
+            cancelAutorenew() {
+              return Observable.of({});
+            }
           }
-        }
         },
         {
           provide: NgbModal, useValue: {
@@ -91,6 +94,7 @@ describe('CatalogCardComponent', () => {
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
+    i18nService = TestBed.get(I18nService);
   });
 
   describe('select', () => {
@@ -192,6 +196,19 @@ describe('CatalogCardComponent', () => {
     it('should set selected true and call selectItem', () => {
       expect(modalService.open).toHaveBeenCalledWith(modal);
       expect(itemService.cancelAutorenew).toHaveBeenCalledWith(MOCK_ITEM.id);
+    });
+  });
+
+  describe('ngOnInit', () => {
+
+    it('should set the bump name', () => {
+      spyOn(i18nService, 'getTranslations').and.callThrough();
+      component.item = ITEM_DATA3.content;
+
+      component.ngOnInit();
+
+      expect(i18nService.getTranslations).toHaveBeenCalledWith(component.item.purchases.bump_type);
+      expect(component.bumpName).toBe('City Bump');
     });
   });
 

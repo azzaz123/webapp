@@ -11,10 +11,6 @@ export const ITEM_STATUSES: any = {
   'active': 'PUBLISHED',
   'sold': ['SOLD_OUTSIDE', 'BOUGHT']
 };
-export const BUMP_TYPES: any = {
-  'countrybump': 'Country bump',
-  'citybump': 'City bump'
-};
 
 export class Item implements Model {
 
@@ -198,10 +194,6 @@ export class Item implements Model {
 
   get sold(): boolean {
     return this._flags ? this._flags.sold : false;
-  }
-
-  get bumpName(): string {
-    return BUMP_TYPES[this._purchases.bump_type || this._purchases.scheduled_bump_type];
   }
 
   set reserved(value: boolean) {
