@@ -6,10 +6,10 @@ export class I18nService {
   protected translations: any = {
     en: {
       daysMomentConfig: {
-        lastDay: '[Yesterday]',
+        lastDay: '[Yesterday] - HH:mm',
         sameDay: '[Today] - HH:mm',
         nextDay: '[Tomorrow]',
-        lastWeek: 'dddd',
+        lastWeek: 'dddd - HH:mm',
         nextWeek: 'dddd',
         sameElse: 'Do [of] MMMM'
       },
@@ -84,10 +84,10 @@ export class I18nService {
     },
     es: {
       daysMomentConfig: {
-        lastDay: '[Ayer]',
+        lastDay: '[Ayer] - HH:mm',
         sameDay: '[Hoy] - HH:mm',
         nextDay: '[Mañana]',
-        lastWeek: 'dddd',
+        lastWeek: 'dddd - HH:mm',
         nextWeek: 'dddd',
         sameElse: 'D [de] MMMM'
       },
