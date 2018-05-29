@@ -3,9 +3,12 @@ export interface StatisticFullResponse {
   entries: StatisticEntriesResponse[];
 }
 export interface StatisticTotalResponse {
-  phone_numbers: string;
-  views: string;
-  chats: string;
+  phone_numbers: number;
+  country_bump: number;
+  views: number;
+  city_bump: number;
+  chats: number;
+  sold: number
 }
 export interface StatisticEntriesResponse {
   date: string;

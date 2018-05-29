@@ -12,8 +12,6 @@ export class StatisticsService {
 
   public getStatistics(duration: string = '30'): Observable<StatisticFullResponse> {
     return this.http.get('api/v3/protool/dashboard/statistics?durationInDays=' + duration)
-      .map((res: Response) => {
-      return res.json();
-    });
+      .map((res: Response) => res.json());
   }
 }
