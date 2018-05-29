@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
   public hideSidebar: boolean;
   public isMyZone: boolean;
   public isProducts: boolean;
+  public isProfile: boolean;
   private previousUrl: string;
   private currentUrl: string;
   private previousSlug: string;
@@ -184,7 +185,10 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeEventNewMessage() {
-    this.event.subscribe(EventService.NEW_MESSAGE, (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate));
+    this.event.subscribe(
+      EventService.NEW_MESSAGE,
+      (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate)
+    );
   }
 
   private subscribeEventClientDisconnect() {
@@ -214,6 +218,7 @@ export class AppComponent implements OnInit {
       this.hideSidebar = event['hideSidebar'];
       this.isMyZone = event['isMyZone'];
       this.isProducts = event['isProducts'];
+      this.isProfile = event['isProfile'];
     });
   }
 
