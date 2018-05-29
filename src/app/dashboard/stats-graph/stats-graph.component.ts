@@ -149,14 +149,14 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       'equalWidths': false,
       'autoMargins': false,
       'marginLeft': 0,
-      'marginRight': 0,
       'marginBottom': 30,
+      'marginRight': -40,
       'fontSize': 14,
-      'spacing': -35,
+      'spacing': -40,
       'position': 'top',
       'rollOverGraphAlpha': 0.75,
       'switchType': 'v',
-      'valueWidth': 30
+      'valueWidth': 30,
     },
     'titles': [],
     'dataProvider': []
