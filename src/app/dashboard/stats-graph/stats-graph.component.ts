@@ -31,7 +31,6 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       '#13C1AC',
       '#56acff'
     ],
-    'startDuration': 1,
     'columnSpacing': 3,
     'addClassNames': true,
     'theme': 'light',
@@ -101,24 +100,6 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         'type': 'smoothedLine',
         'valueField': 'views',
         'valueAxis': 'ValueAxisViews',
-      },
-      {
-        'cornerRadiusTop': 4,
-        'fillAlphas': 1,
-        'fixedColumnWidth': 4,
-        'id': 'Messages',
-        'title': 'Messages',
-        'type': 'column',
-        'valueField': 'chats'
-      },
-      {
-        'cornerRadiusTop': 4,
-        'fillAlphas': 1,
-        'fixedColumnWidth': 4,
-        'id': 'Calls',
-        'title': 'Calls',
-        'type': 'column',
-        'valueField': 'phone_numbers'
       }
     ],
     'guides': [],
@@ -169,51 +150,66 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.setChartOptions();
+    this.setStatsDurations();
+    this.loadStats();
+  }
+
+  private setChartOptions() {
+    const columnGraphOptions = {
+      'cornerRadiusTop': 4,
+      'fillAlphas': 1,
+      'fixedColumnWidth': 4,
+      'type': 'column',
+      'lineAlpha': 0
+    };
+    const lineGraphOptions = {
+      'behindColumns': true,
+      'lineAlpha': 0,
+      'type': 'smoothedLine',
+      'fillAlphas': 1,
+    };
+    this.chartOptions.graphs.push({
+      ...columnGraphOptions,
+      'id': 'Messages',
+      'title': 'Messages',
+      'valueField': 'chats'
+    });
+    this.chartOptions.graphs.push({
+      ...columnGraphOptions,
+      'id': 'Calls',
+      'title': 'Calls',
+      'valueField': 'phone_numbers'
+    });
     if (this.yearly) {
       this.duration = '365';
       this.chartOptions.categoryAxis.minPeriod = 'MM';
       this.chartOptions.categoryAxis.boldLabels = true;
       this.chartOptions.graphs.push({
-        'cornerRadiusTop': 4,
-        'fillAlphas': 1,
-        'fixedColumnWidth': 4,
+        ...columnGraphOptions,
         'id': 'city_bump',
         'title': 'City Featured',
-        'type': 'column',
         'valueField': 'city_bump'
       });
       this.chartOptions.graphs.push({
-        'cornerRadiusTop': 4,
-        'fillAlphas': 1,
-        'fixedColumnWidth': 4,
+        ...columnGraphOptions,
         'id': 'CountryFeatured',
         'title': 'Country Featured',
-        'type': 'column',
         'valueField': 'country_bump',
-        'fillColors': '#b5d7f8',
-        'lineAlpha': 0,
+        'fillColors': '#b5d7f8'
       });
     } else {
       this.chartOptions.graphs.push({
-        'behindColumns': true,
-        'fixedColumnWidth': 0,
+        ...lineGraphOptions,
         'id': 'city_bump',
-        'lineAlpha': 0,
-        'fillAlphas': 0.97,
-        'lineThickness': 0,
         'title': 'City Featured',
-        'topRadius': 0,
-        'type': 'smoothedLine',
         'valueField': 'city_bump',
         'fillColors': ['rgba(43, 226, 214, 0.4)', 'rgba(19, 193, 172, 0.15)']
       });
       this.chartOptions.graphs.push({
-        'behindColumns': true,
+        ...lineGraphOptions,
         'id': 'CountryFeatured',
-        'lineAlpha': 0,
-        'fillAlphas': 1,
         'title': 'Country Featured',
-        'type': 'smoothedLine',
         'valueField': 'country_bump',
         'fillColors': ['rgba(143, 214, 255, 0.58)', 'rgba(86, 172, 255, 0.16)']
       });
@@ -226,6 +222,23 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       this.chartOptions.graphs[3].title = this.i18n.getTranslations('cityFeatured');
       this.chartOptions.graphs[4].title = this.i18n.getTranslations('countryFeatured');
     }
+    if (this.duration === '30') {
+      this.chartOptions.graphs[1].fixedColumnWidth = 4;
+      this.chartOptions.graphs[2].fixedColumnWidth = 4;
+    } else if (this.duration === '7') {
+      this.chartOptions.graphs[1].fixedColumnWidth = 8;
+      this.chartOptions.graphs[2].fixedColumnWidth = 8;
+    } else {
+      if (this.duration === '15' || this.duration === '365') {
+        this.chartOptions.graphs[1].fixedColumnWidth = 6;
+        this.chartOptions.graphs[2].fixedColumnWidth = 6;
+        this.chartOptions.graphs[3].fixedColumnWidth = 6;
+        this.chartOptions.graphs[4].fixedColumnWidth = 6;
+      }
+    }
+  }
+
+  private setStatsDurations() {
     this.statsDurations = [{
       label: this.i18n.getTranslations('last30Days'),
       value: '30'
@@ -236,10 +249,9 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       label: this.i18n.getTranslations('last7Days'),
       value: '7'
     }];
-    this.loadStats();
   }
 
-  loadStats() {
+  private loadStats() {
     this.statisticsService.getStatistics(this.duration).subscribe((response: StatisticFullResponse) => {
       this.chartOptions.dataProvider = [];
       response.entries.forEach((entry: StatisticEntriesResponse) => {
@@ -262,20 +274,6 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
           })
         }
       });
-      if (this.duration === '30') {
-        this.chartOptions.graphs[1].fixedColumnWidth = 4;
-        this.chartOptions.graphs[2].fixedColumnWidth = 4;
-      } else if (this.duration === '7') {
-        this.chartOptions.graphs[1].fixedColumnWidth = 8;
-        this.chartOptions.graphs[2].fixedColumnWidth = 8;
-      } else {
-        if (this.duration === '15' || this.duration === '365') {
-          this.chartOptions.graphs[1].fixedColumnWidth = 6;
-          this.chartOptions.graphs[2].fixedColumnWidth = 6;
-          this.chartOptions.graphs[3].fixedColumnWidth = 6;
-          this.chartOptions.graphs[4].fixedColumnWidth = 6;
-        }
-      }
       this.chart = this.AmCharts.makeChart(this.id, this.chartOptions);
     });
   }
