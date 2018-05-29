@@ -81,10 +81,17 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       'centerLabels': true,
       'minHorizontalGap': 5
     },
+    'chartCursor': {
+      'valueLineAlpha': 0.2,
+      'categoryBalloonDateFormat': 'EEEE DD',
+      'cursorAlpha': 0.1,
+      'cursorColor':'#000000',
+      'fullWidth':true,
+      'zoomable': false
+    },
     'trendLines': [],
     'graphs': [
       {
-        'balloonText': '[[value]]',
         'behindColumns': true,
         'bullet': 'round',
         'bulletBorderAlpha': 1,
@@ -100,6 +107,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         'type': 'smoothedLine',
         'valueField': 'views',
         'valueAxis': 'ValueAxisViews',
+        'balloonText': '[[title]]: <b>[[value]]</b>'
       }
     ],
     'guides': [],
@@ -123,7 +131,12 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       }
     ],
     'allLabels': [],
-    'balloon': {},
+    'balloon': {
+      'cornerRadius': 4,
+      'color': '#607D8B',
+      'fillAlpha': 1,
+      'shadowAlpha': 0
+    },
     'legend': {
       'enabled': true,
       'align': 'right',
@@ -131,13 +144,14 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       'autoMargins': false,
       'marginLeft': 0,
       'marginBottom': 30,
-      'marginRight': -40,
+      'marginRight': 20,
       'fontSize': 14,
-      'spacing': -40,
+      'spacing': 15,
       'position': 'top',
       'rollOverGraphAlpha': 0.75,
       'switchType': 'v',
       'valueWidth': 30,
+      'valueText': '',
     },
     'titles': [],
     'dataProvider': []
@@ -161,13 +175,15 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       'fillAlphas': 1,
       'fixedColumnWidth': 4,
       'type': 'column',
-      'lineAlpha': 0
+      'lineAlpha': 0,
+      'balloonText': '[[title]]: <b>[[value]]</b>'
     };
     const lineGraphOptions = {
       'behindColumns': true,
       'lineAlpha': 0,
       'type': 'smoothedLine',
       'fillAlphas': 1,
+      'balloonText': '[[title]]: <b>[[value]]</b>'
     };
     this.chartOptions.graphs.push({
       ...columnGraphOptions,
@@ -185,6 +201,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       this.duration = '365';
       this.chartOptions.categoryAxis.minPeriod = 'MM';
       this.chartOptions.categoryAxis.boldLabels = true;
+      this.chartOptions.chartCursor.categoryBalloonDateFormat = 'MMM';
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
         'id': 'city_bump',
@@ -216,6 +233,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
     }
     if (this.locale === 'es') {
       this.AmCharts.shortMonthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dec'];
+      this.AmCharts.dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
       this.chartOptions.graphs[0].title = this.i18n.getTranslations('views');
       this.chartOptions.graphs[1].title = this.i18n.getTranslations('messages');
       this.chartOptions.graphs[2].title = this.i18n.getTranslations('phoneCalls');

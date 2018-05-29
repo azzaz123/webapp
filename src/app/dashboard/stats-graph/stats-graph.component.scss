@@ -19,8 +19,14 @@
     text {
       font-family: $wallie;
     }
-    .amcharts-axis-label {
+    .amcharts-axis-label, .amcharts-balloon-div-categoryAxis {
       text-transform: uppercase;
+      div {
+        font-family: $wallie !important;
+        font-size: 10px !important;
+        font-weight: bold !important;
+        line-height: 18px !important;
+      }
     }
   }
 }
