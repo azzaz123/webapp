@@ -1,19 +1,19 @@
 @import "~style/common";
 
 $stats-sidebar-width: 340px;
-$container-spacing: 50px;
+$h-container-spacing: 80px;
+$v-container-spacing: 40px;
+
 .container {
   position: static;
-  padding-top: $spacing-L;
-  padding-bottom: $spacing-L;
+  padding: $v-container-spacing $h-container-spacing;
   overflow: auto;
-  width: calc(100% - #{$sidebar-width} - #{$stats-sidebar-width} - (2 * #{$container-spacing}));
-  padding-left: $sidebar-width;
-  padding-right: $stats-sidebar-width;
+  width: calc(100% - #{$sidebar-width} - #{$stats-sidebar-width} - (2 * #{$h-container-spacing}));
   box-sizing: content-box;
-  max-width: 960px;
-  height: calc(100vh - #{$topbar-height} - #{$spacing-L * 2});
+  height: calc(100vh - #{$topbar-height} - #{$v-container-spacing * 2});
   background-color: $grey-50;
+  margin: 0;
+  margin-left: $sidebar-width;
 }
 
 h2 {

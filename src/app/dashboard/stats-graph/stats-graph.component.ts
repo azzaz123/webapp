@@ -79,7 +79,8 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       'minorGridAlpha': 0,
       'color': '#90A4AE',
       'fontSize': 10,
-      'centerLabels': true
+      'centerLabels': true,
+      'minHorizontalGap': 5
     },
     'trendLines': [],
     'graphs': [
@@ -261,7 +262,10 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
           })
         }
       });
-      if (this.duration === '7') {
+      if (this.duration === '30') {
+        this.chartOptions.graphs[1].fixedColumnWidth = 4;
+        this.chartOptions.graphs[2].fixedColumnWidth = 4;
+      } else if (this.duration === '7') {
         this.chartOptions.graphs[1].fixedColumnWidth = 8;
         this.chartOptions.graphs[2].fixedColumnWidth = 8;
       } else {
