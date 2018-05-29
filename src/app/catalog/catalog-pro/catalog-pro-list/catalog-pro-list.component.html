@@ -39,7 +39,7 @@
         <mat-icon svgIcon="pro-items-empty-state" class="image"></mat-icon>
         <div class="empty-text" *ngIf="subscriptionPlan - counters?.publish > 0 && counters?.onHold <= 0 && selectedStatus === 'active'">
           <span i18n>You can upload <b>{{subscriptionPlan - counters?.publish}} more cars</b> with your current plan.</span>
-          <tsl-button className="simple" [routerLink]="['/catalog/upload']" i18n>List a product</tsl-button>
+          <tsl-button className="simple" [routerLink]="['/catalog/upload']" i18n>List a car</tsl-button>
         </div>
         <div class="empty-text" *ngIf="subscriptionPlan - counters?.publish > 0 && counters?.onHold > 0 && selectedStatus === 'active'">
           <span i18n>You can activate <b>{{subscriptionPlan - counters?.publish}} more cars</b> with your current plan.</span>

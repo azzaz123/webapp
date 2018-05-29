@@ -114,13 +114,17 @@ tsl-selected-items {
 
 #catalog-empty-state {
   padding: 0 10px;
+  height: 103px;
   width: 100%;
-  height: 105px;
   margin-bottom: 18px;
   mat-icon {
     position: absolute;
     height: auto;
-    width: 100%;
+    width: 98%;
+    /deep/ svg {
+      width: 100%;
+      height: 103px;
+    }
   }
   .empty-text {
     z-index: 2;
@@ -139,6 +143,13 @@ tsl-selected-items {
       &:hover {
         color: $corporate-dark;
       }
+    }
+    tsl-button /deep/ button {
+      color: $corporate;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: normal;
+      padding: 0;
     }
   }
 }
