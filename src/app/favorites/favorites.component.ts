@@ -18,10 +18,6 @@ export class FavoritesComponent implements OnInit {
   public end = false;
   public numberOfFavorites: number;
 
-  public masonryOptions = {
-    gutter: 20
-  };
-
   constructor(public itemService: ItemService, private userService: UserService) { }
 
   ngOnInit() {
