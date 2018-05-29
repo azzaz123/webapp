@@ -98,4 +98,14 @@ describe('SoldModalComponent', () => {
     });
   });
 
+  describe('onBackPress', () => {
+    it('should reset buyer when invoked', () => {
+      component.chooseUser(CONVERSATION_USERS[0]);
+      component.onBackPress();
+
+      expect(component.buyer).toBe(undefined);
+      expect(component.buyer).not.toBeDefined();
+    });
+  });
+
 });
