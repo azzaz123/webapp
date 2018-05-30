@@ -196,7 +196,7 @@ describe('PaymentService', () => {
 
       service.deleteBillingInfo('123');
 
-      expect(http.delete).toHaveBeenCalledWith('/api/v3/payments/billing-info/123');
+      expect(http.delete).toHaveBeenCalledWith('api/v3/payments/billing-info/123');
     });
   });
 });

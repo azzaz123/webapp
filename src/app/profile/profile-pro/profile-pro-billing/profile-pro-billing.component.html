@@ -69,7 +69,7 @@
                 <tsl-button [type]="'submit'" className="btn-primary btn-big" i18n>Save</tsl-button>
               </div>
               <div class="col-3 delete-link" *ngIf="!isNewBillingInfoForm">
-                <a i18n>Delete billing info</a>
+                <a (click)="deleteBillingInfo()" i18n>Delete billing info</a>
               </div>
             </div>
           </div>

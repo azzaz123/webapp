@@ -5,6 +5,9 @@
     color: $grey-100;
     font-size: $font-size-S;
     cursor: pointer;
+    text-align: end;
+    align-items: end;
+    display: grid;
     &:hover {
         text-decoration: none;
     }

@@ -65,6 +65,7 @@ export class ProfileProBillingComponent implements OnInit {
   public deleteBillingInfo() {
     this.paymentService.deleteBillingInfo(this.billingForm.value.id).subscribe(() => {
       this.errorsService.i18nSuccess('deleteBillingInfoSuccess');
+      this.billingForm.reset();
     }, () => {
       this.errorsService.i18nError('deleteBillingInfoError');
     });

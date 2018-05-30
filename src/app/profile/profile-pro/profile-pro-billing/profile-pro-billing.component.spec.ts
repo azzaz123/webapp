@@ -135,23 +135,30 @@ describe('ProfileProBillingComponent', () => {
           surname: 'surname',
           id: '123'
         });
-        spyOn(paymentService, 'deleteBillingInfo');
       });
 
       it('should call payments service deleteBillingInfo method with ID', () => {
+        spyOn(paymentService, 'deleteBillingInfo').and.callThrough();
+
         component.deleteBillingInfo();
 
-        expect(paymentService.deleteBillingInfo).toHaveBeenCalledWith(component.billingForm.value.id);
+        expect(paymentService.deleteBillingInfo).toHaveBeenCalledWith('123');
       });
 
-      it('should show an 18n success message if the action has been success', () => {
+      it('should show an 18n success message if the action has been success and call reset form', () => {
+        spyOn(component.billingForm, 'reset');
+        spyOn(errorsService, 'i18nSuccess');
+        spyOn(paymentService, 'deleteBillingInfo').and.callThrough();
+
         component.deleteBillingInfo();
 
         expect(errorsService.i18nSuccess).toHaveBeenCalledWith('deleteBillingInfoSuccess');
+        expect(component.billingForm.reset).toHaveBeenCalled();
       });
 
       it('should show an 18n error message if the action has an error', () => {
-        spyOn(paymentService, 'deleteBillingInfo').and.returnValue(Observable.of({}));
+        spyOn(paymentService, 'deleteBillingInfo').and.returnValue(Observable.throw(''));
+        spyOn(errorsService, 'i18nError');
 
         component.deleteBillingInfo();
 
