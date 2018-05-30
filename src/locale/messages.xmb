@@ -403,7 +403,7 @@
   <msg id="2988941833994717815"><source>app/favorites/favorites.component.ts:15</source>These are the wallapop products that you like the most</msg>
   <msg id="1339317612974362100"><source>app/favorites/favorites.component.ts:21</source>favorites</msg>
   <msg id="6799485957303243139"><source>app/favorites/favorites.component.ts:22</source>favorite</msg>
-  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:29</source>In this list you can see all the products you saved as favourite</msg>
+  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:28</source>In this list you can see all the products you saved as favourite</msg>
   <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.ts:11</source> Remove </msg>
   <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:4</source>Are you sure you want to close your account?</msg>
   <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:5</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
@@ -443,6 +443,7 @@
   <msg id="8499614752066309224"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:50</source>City:</msg>
   <msg id="4863373404095396982"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:56</source>Country:</msg>
   <msg id="5125950009267587196"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:62</source>CIF Number:</msg>
+  <msg id="9200098812147482647"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:72</source>Delete billing info</msg>
   <msg id="2303735769987845467"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:5</source>Visibility products</msg>
   <msg id="5130627671872052700"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:8</source>Feature on your city</msg>
   <msg id="1768872655561111284"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:9</source>Get on first position</msg>
