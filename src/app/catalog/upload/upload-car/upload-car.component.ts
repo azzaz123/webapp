@@ -241,7 +241,14 @@ export class UploadCarComponent implements OnInit {
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
-    this.router.navigate(['/catalog/list', {[uploadEvent.action]: true, itemId: uploadEvent.response.id}]);
+    const params: any = {
+      [uploadEvent.action]: true,
+      itemId: uploadEvent.response.id
+    };
+    if (this.item.flags.onhold) {
+      params.onHold = true;
+    }
+    this.router.navigate(['/catalog/list', params]);
   }
 
   onError(response: any) {
