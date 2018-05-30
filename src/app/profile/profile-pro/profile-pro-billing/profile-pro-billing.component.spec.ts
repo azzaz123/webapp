@@ -145,7 +145,7 @@ describe('ProfileProBillingComponent', () => {
         expect(paymentService.deleteBillingInfo).toHaveBeenCalledWith('123');
       });
 
-      it('should show an 18n success message if the action has been success and call reset form', () => {
+      it('should show an 18n success message if the action has been success, call reset form and set true isnewbillinginfo boolean', () => {
         spyOn(component.billingForm, 'reset');
         spyOn(errorsService, 'i18nSuccess');
         spyOn(paymentService, 'deleteBillingInfo').and.callThrough();
@@ -154,6 +154,7 @@ describe('ProfileProBillingComponent', () => {
 
         expect(errorsService.i18nSuccess).toHaveBeenCalledWith('deleteBillingInfoSuccess');
         expect(component.billingForm.reset).toHaveBeenCalled();
+        expect(component.isNewBillingInfoForm).toBe(true);
       });
 
       it('should show an 18n error message if the action has an error', () => {
