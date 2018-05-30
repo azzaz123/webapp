@@ -19,6 +19,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
   public id: string = 'chart-' + UUID.UUID();
   public duration: string = '30';
   public statsDurations: IOption[] = [];
+  isSafari: boolean;
   private chart: AmChart;
   private chartOptions: any = {
     'type': 'serial',
@@ -161,6 +162,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
               private statisticsService: StatisticsService,
               private i18n: I18nService,
               @Inject(LOCALE_ID) private locale: string) {
+    this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   }
 
   ngOnInit() {
@@ -221,14 +223,14 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         'id': 'city_bump',
         'title': 'City Featured',
         'valueField': 'city_bump',
-        'fillColors': ['rgba(43, 226, 214, 0.4)', 'rgba(19, 193, 172, 0.15)']
+        'fillColors': this.isSafari ? 'rgba(19, 193, 172, 0.2)' : ['rgba(43, 226, 214, 0.4)', 'rgba(19, 193, 172, 0.15)']
       });
       this.chartOptions.graphs.push({
         ...lineGraphOptions,
         'id': 'CountryFeatured',
         'title': 'Country Featured',
         'valueField': 'country_bump',
-        'fillColors': ['rgba(143, 214, 255, 0.58)', 'rgba(86, 172, 255, 0.16)']
+        'fillColors': this.isSafari ? 'rgba(86, 172, 255, 0.2)' : ['rgba(143, 214, 255, 0.58)', 'rgba(86, 172, 255, 0.16)']
       });
     }
     if (this.locale === 'es') {
