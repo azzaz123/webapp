@@ -23,17 +23,21 @@ describe('StatisticsService', () => {
   });
 
   describe('getStatistics', () => {
+
     beforeEach(() => {
       mockBackend.connections.subscribe((connection: MockConnection) => {
         connection.mockRespond(new Response(new ResponseOptions({body: JSON.stringify(STATISTICS_RESPONSE)})));
       });
     });
+
     it('should call the get with the statistics api url', () => {
       spyOn(http, 'get').and.callThrough();
       let response;
+
       service.getStatistics('60').subscribe((r) => {
         response = r;
       });
+
       expect(http.get).toHaveBeenCalledWith(STATISTIC_API_URL + '?durationInDays=60');
       expect(response).toEqual(STATISTICS_RESPONSE);
     });
