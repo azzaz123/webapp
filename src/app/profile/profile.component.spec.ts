@@ -5,13 +5,9 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  MOCK_FULL_USER, USER_DATA, USER_EDIT_DATA, USER_LOCATION, USER_LOCATION_COORDINATES,
-  USER_URL
-} from '../../tests/user.fixtures.spec';
+import { MOCK_FULL_USER, USER_DATA, USER_URL } from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
-import { User } from '../core/user/user';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
 
 const USER_BIRTH_DATE = '2018-04-12';
