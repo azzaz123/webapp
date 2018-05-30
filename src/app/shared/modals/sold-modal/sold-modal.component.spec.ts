@@ -104,7 +104,6 @@ describe('SoldModalComponent', () => {
       component.onBackPress();
 
       expect(component.buyer).toBe(undefined);
-      expect(component.buyer).not.toBeDefined();
     });
   });
 
