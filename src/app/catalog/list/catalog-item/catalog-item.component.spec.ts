@@ -261,7 +261,7 @@ describe('CatalogItemComponent', () => {
     beforeEach(fakeAsync(() => {
       item = MOCK_ITEM;
       spyOn(itemService, 'reactivateItem').and.callThrough();
-      spyOn(appboy, 'logCustomEvent').and.callThrough();
+      spyOn(appboy, 'logCustomEvent');
       component.itemChange.subscribe(($event: ItemChangeEvent) => {
         event = $event;
       });
