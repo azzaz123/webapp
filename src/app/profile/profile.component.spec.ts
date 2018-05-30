@@ -5,7 +5,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MOCK_FULL_USER, USER_DATA, USER_URL } from '../../tests/user.fixtures.spec';
+import {
+  MOCK_FULL_USER, USER_DATA, USER_EDIT_DATA, USER_LOCATION, USER_LOCATION_COORDINATES,
+  USER_URL
+} from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { User } from '../core/user/user';
@@ -123,6 +126,21 @@ describe('ProfileComponent', () => {
       component.openUnsubscribeModal();
 
       expect(modalService.open).toHaveBeenCalledWith(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
+    });
+  });
+
+  describe('validation', () => {
+
+    it('should set birth_date valid if value is valid', () => {
+      component.profileForm.get('birth_date').setValue('1987-05-25');
+
+      expect(component.profileForm.get('birth_date').valid).toBe(true);
+    });
+
+    it('should set birth_date invalid if value is invalid', () => {
+      component.profileForm.get('birth_date').setValue('19870-05-25');
+
+      expect(component.profileForm.get('birth_date').valid).toBe(false);
     });
   });
 });
