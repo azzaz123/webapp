@@ -66,10 +66,10 @@ export class CatalogItemActionsComponent implements OnInit {
       this.itemService.bulkDelete(this.selectedStatus).takeWhile(() => {
         return this.active;
       }).subscribe((response: ItemBulkResponse) => {
-        this.getCounters.emit();
         response.updatedIds.forEach((id: string) => {
           let index: number = _.findIndex(this.items, {'id': id});
           this.items.splice(index, 1);
+          this.getCounters.emit();
         });
         if (response.failedIds.length) {
           this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
