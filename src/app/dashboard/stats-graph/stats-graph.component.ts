@@ -85,6 +85,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
     'chartCursor': {
       'valueLineAlpha': 0.2,
       'categoryBalloonDateFormat': 'EEEE DD',
+      'categoryBalloonColor': '#607D8B',
       'cursorAlpha': 0.1,
       'cursorColor':'#000000',
       'fullWidth':true,
