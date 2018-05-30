@@ -28,6 +28,9 @@ describe('ProfileProBillingComponent', () => {
           },
           getBillingInfo() {
             return Observable.of(BILLING_INFO_RESPONSE);
+          },
+          deleteBillingInfo() {
+            return Observable.of({});
           }
         }
         },
@@ -116,6 +119,43 @@ describe('ProfileProBillingComponent', () => {
 
         expect(component.billingForm.get('city').dirty).toBe(true);
         expect(component.billingForm.get('country').dirty).toBe(true);
+      });
+    });
+
+    describe('deleteBillingInfo', () => {
+      beforeEach(() => {
+        component.billingForm.patchValue({
+          cif: 'cif',
+          company_name: 'company',
+          email: 'email@email.com',
+          name: 'name',
+          phone: '666666666',
+          postal_code: '12345',
+          street: 'street',
+          surname: 'surname',
+          id: '123'
+        });
+        spyOn(paymentService, 'deleteBillingInfo');
+      });
+
+      it('should call payments service deleteBillingInfo method with ID', () => {
+        component.deleteBillingInfo();
+
+        expect(paymentService.deleteBillingInfo).toHaveBeenCalledWith(component.billingForm.value.id);
+      });
+
+      it('should show an 18n success message if the action has been success', () => {
+        component.deleteBillingInfo();
+
+        expect(errorsService.i18nSuccess).toHaveBeenCalledWith('deleteBillingInfoSuccess');
+      });
+
+      it('should show an 18n error message if the action has an error', () => {
+        spyOn(paymentService, 'deleteBillingInfo').and.returnValue(Observable.of({}));
+
+        component.deleteBillingInfo();
+
+        expect(errorsService.i18nError).toHaveBeenCalledWith('deleteBillingInfoError');
       });
     });
   });

@@ -13,6 +13,7 @@ import { BillingInfoResponse } from '../../../core/payments/payment.interface';
 export class ProfileProBillingComponent implements OnInit {
 
   public billingForm: FormGroup;
+  public isNewBillingInfoForm = true;
 
   constructor(private fb: FormBuilder,
               private paymentService: PaymentService,
@@ -34,12 +35,13 @@ export class ProfileProBillingComponent implements OnInit {
 
   ngOnInit() {
     this.paymentService.getBillingInfo().subscribe((billingInfo: BillingInfoResponse) => {
+      this.isNewBillingInfoForm = false;
       this.billingForm.patchValue(billingInfo);
-        for (let control in this.billingForm.controls) {
-          if (this.billingForm.controls.hasOwnProperty(control)) {
-            this.billingForm.controls[control].markAsDirty();
-          }
+      for (const control in this.billingForm.controls) {
+        if (this.billingForm.controls.hasOwnProperty(control)) {
+          this.billingForm.controls[control].markAsDirty();
         }
+      }
     });
   }
 
@@ -52,7 +54,7 @@ export class ProfileProBillingComponent implements OnInit {
       });
     } else {
       this.errorsService.i18nError('formErrors');
-      for (let control in this.billingForm.controls) {
+      for (const control in this.billingForm.controls) {
         if (this.billingForm.controls.hasOwnProperty(control) && !this.billingForm.controls[control].valid) {
           this.billingForm.controls[control].markAsDirty();
         }
@@ -60,4 +62,11 @@ export class ProfileProBillingComponent implements OnInit {
     }
   }
 
+  public deleteBillingInfo() {
+    this.paymentService.deleteBillingInfo(this.billingForm.value.id).subscribe(() => {
+      this.errorsService.i18nSuccess('deleteBillingInfoSuccess');
+    }, () => {
+      this.errorsService.i18nError('deleteBillingInfoError');
+    });
+  }
 }

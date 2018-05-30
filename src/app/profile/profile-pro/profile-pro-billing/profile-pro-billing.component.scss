@@ -1,0 +1,11 @@
+@import "~style/common";
+
+.delete-link {
+    text-decoration: underline;
+    color: $grey-100;
+    font-size: $font-size-S;
+    cursor: pointer;
+    &:hover {
+        text-decoration: none;
+    }
+}
