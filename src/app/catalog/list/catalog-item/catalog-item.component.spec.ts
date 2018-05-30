@@ -21,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Item } from '../../../core/item/item';
+import { environment } from '../../../../environments/environment';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -102,6 +103,7 @@ describe('CatalogItemComponent', () => {
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
+    appboy.initialize(environment.appboy);
   });
 
   it('should be created', () => {
@@ -259,6 +261,7 @@ describe('CatalogItemComponent', () => {
     beforeEach(fakeAsync(() => {
       item = MOCK_ITEM;
       spyOn(itemService, 'reactivateItem').and.callThrough();
+      spyOn(appboy, 'logCustomEvent').and.callThrough();
       component.itemChange.subscribe(($event: ItemChangeEvent) => {
         event = $event;
       });
@@ -278,6 +281,9 @@ describe('CatalogItemComponent', () => {
       expect(event.action).toBe('reactivated');
     });
 
+    it('should send appboy ReactivateItem event', () => {
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('ReactivateItem', {platform: 'web'});
+    });
   });
 
   describe('select', () => {

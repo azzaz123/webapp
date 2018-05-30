@@ -127,6 +127,7 @@ describe('Service: Xmpp', () => {
     }));
     sendIqSpy = spyOn(MOCKED_CLIENT, 'sendIq').and.callThrough();
     service = TestBed.get(XmppService);
+    appboy.initialize(environment.appboy);
   });
 
   it('should create the instance', () => {
@@ -1246,6 +1247,17 @@ describe('Service: Xmpp', () => {
       service['blockedUsers'] = JIDS;
 
       expect(service.isBlocked('5')).toBe(false);
+    });
+  });
+
+  describe('sendMessage', () => {
+    it('should send appboy FirstMessage event', () => {
+      spyOn(appboy, 'logCustomEvent');
+
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('FirstMessage', {platform: 'web'});
     });
   });
 

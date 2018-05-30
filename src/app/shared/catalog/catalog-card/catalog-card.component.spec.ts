@@ -15,6 +15,7 @@ import { MomentModule } from 'angular2-moment';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { environment } from '../../../../environments/environment';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
@@ -95,6 +96,7 @@ describe('CatalogCardComponent', () => {
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
     i18nService = TestBed.get(I18nService);
+    appboy.initialize(environment.appboy);
   });
 
   describe('select', () => {
@@ -130,6 +132,7 @@ describe('CatalogCardComponent', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
         spyOn(trackingService, 'track');
+        spyOn(appboy, 'logCustomEvent');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
@@ -147,6 +150,10 @@ describe('CatalogCardComponent', () => {
 
       it('should track the DeleteItem event', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+      });
+
+      it('should send appboy Sold event', () => {
+        expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {platform: 'web'});
       });
     });
   });
