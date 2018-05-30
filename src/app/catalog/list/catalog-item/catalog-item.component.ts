@@ -111,6 +111,7 @@ export class CatalogItemComponent implements OnInit {
         action: 'reactivated'
       });
     });
+    appboy.logCustomEvent('ReactivateItem', {platform: 'web'});
   }
 
   public select(item: Item) {
@@ -126,6 +127,7 @@ export class CatalogItemComponent implements OnInit {
 
   public setSold(item: Item) {
     this.trackingService.track(TrackingService.PRODUCT_SOLD, { product_id: item.id });
+    appboy.logCustomEvent('Sold', {platform: 'web'});
     this.itemChange.emit({
       item: item,
       action: 'sold'
