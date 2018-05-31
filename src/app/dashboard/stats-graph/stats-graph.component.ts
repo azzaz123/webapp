@@ -224,14 +224,16 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         'id': 'city_bump',
         'title': 'City Featured',
         'valueField': 'city_bump',
-        'fillColors': this.isSafari ? 'rgba(19, 193, 172, 0.2)' : ['rgba(43, 226, 214, 0.4)', 'rgba(19, 193, 172, 0.15)']
+        'fillColors': this.isSafari ? 'rgba(19, 193, 172, 0.2)' : ['rgba(43, 226, 214, 0.4)', 'rgba(19, 193, 172, 0.15)'],
+        'legendColor': '#13C1AC'
       });
       this.chartOptions.graphs.push({
         ...lineGraphOptions,
         'id': 'CountryFeatured',
         'title': 'Country Featured',
         'valueField': 'country_bump',
-        'fillColors': this.isSafari ? 'rgba(86, 172, 255, 0.2)' : ['rgba(143, 214, 255, 0.58)', 'rgba(86, 172, 255, 0.16)']
+        'fillColors': this.isSafari ? 'rgba(86, 172, 255, 0.2)' : ['rgba(143, 214, 255, 0.58)', 'rgba(86, 172, 255, 0.16)'],
+        'legendColor': '#56acff'
       });
     }
     if (this.locale === 'es') {
