@@ -365,8 +365,8 @@
     <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>{{counters?.publish}}</ex></ph>/<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscriptionPlan || &apos;0&apos;}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="8497824097226681583"><source>app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.ts:4,5</source>Inactive
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>{{counters?.onHold}}</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
-  <msg id="8142970589678873547"><source>app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.ts:6,7</source>Bumped
-    <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
+  <msg id="466090356732378705"><source>app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.ts:6,7</source>Bumped
+    <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>{{bumpsCounter || &apos;0&apos;}}</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="4403347238652124439"><source>app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.ts:8,9</source>Sold
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>{{counters?.sold}}</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="3576739165178660027"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:3</source>your plan</msg>
@@ -403,7 +403,7 @@
   <msg id="2988941833994717815"><source>app/favorites/favorites.component.ts:15</source>These are the wallapop products that you like the most</msg>
   <msg id="1339317612974362100"><source>app/favorites/favorites.component.ts:21</source>favorites</msg>
   <msg id="6799485957303243139"><source>app/favorites/favorites.component.ts:22</source>favorite</msg>
-  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:29</source>In this list you can see all the products you saved as favourite</msg>
+  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:28</source>In this list you can see all the products you saved as favourite</msg>
   <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.ts:11</source> Remove </msg>
   <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:4</source>Are you sure you want to close your account?</msg>
   <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:5</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
