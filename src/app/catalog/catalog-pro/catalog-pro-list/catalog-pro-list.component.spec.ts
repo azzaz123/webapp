@@ -22,7 +22,7 @@ import { Subject } from 'rxjs/Subject';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 
-describe('CatalogProListComponent', () => {
+fdescribe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
   let fixture: ComponentFixture<CatalogProListComponent>;
   let itemService: ItemService;
@@ -319,7 +319,7 @@ describe('CatalogProListComponent', () => {
       component['page'] = 2;
       component.filterByStatus('sold');
 
-      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'sold', undefined, true);
+      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'sold', undefined, false);
     });
   });
 
