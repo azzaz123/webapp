@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../core/user/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
-      birth_date: ['', [Validators.required]],
+      birth_date: ['', [Validators.required, this.dateValidator]],
       gender: ['', [Validators.required]],
       location: this.fb.group({
         address: ['', [Validators.required]],
@@ -71,6 +71,11 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   public logout($event: any) {
     $event.preventDefault();
     this.userService.logout();
+  }
+
+  private dateValidator(c: FormControl) {
+    const dateRegEx = new RegExp(/^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/);
+    return dateRegEx.test(c.value) ? null : {date: true}
   }
 
 }
