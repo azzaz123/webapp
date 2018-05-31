@@ -192,7 +192,7 @@ export class PaymentService {
       .map((r: Response) => r.json());
   }
 
-  public deleteBillingInfo(billingInfoId: string) {
+  public deleteBillingInfo(billingInfoId: string): Observable<any> {
     return this.http.delete(this.API_URL + '/billing-info/' + billingInfoId)
       .map((r: Response) => r.json());
   }
