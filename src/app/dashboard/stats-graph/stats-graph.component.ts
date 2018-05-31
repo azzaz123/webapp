@@ -109,7 +109,8 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         'type': 'smoothedLine',
         'valueField': 'views',
         'valueAxis': 'ValueAxisViews',
-        'balloonText': '[[title]]: <b>[[value]]</b>'
+        'balloonText': '[[title]]: <b>[[value]]</b>',
+        'switchable': false
       }
     ],
     'guides': [],
@@ -179,14 +180,15 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       'fixedColumnWidth': 4,
       'type': 'column',
       'lineAlpha': 0,
-      'balloonText': '[[title]]: <b>[[value]]</b>'
+      'balloonText': '[[title]]: <b>[[value]]</b>',
+      'switchable': false
     };
     const lineGraphOptions = {
       'behindColumns': true,
       'lineAlpha': 0,
       'type': 'smoothedLine',
       'fillAlphas': 1,
-      'balloonText': '[[title]]: <b>[[value]]</b>'
+      'balloonText': '[[title]]: <b>[[value]]</b>',
     };
     this.chartOptions.graphs.push({
       ...columnGraphOptions,
