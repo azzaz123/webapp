@@ -6,10 +6,10 @@ export class I18nService {
   protected translations: any = {
     en: {
       daysMomentConfig: {
-        lastDay: '[Yesterday]',
+        lastDay: '[Yesterday] - HH:mm',
         sameDay: '[Today] - HH:mm',
         nextDay: '[Tomorrow]',
-        lastWeek: 'dddd',
+        lastWeek: 'dddd - HH:mm',
         nextWeek: 'dddd',
         sameElse: 'Do [of] MMMM'
       },
@@ -80,14 +80,19 @@ export class I18nService {
       settingsEdited: 'Your setting has been updated',
       last30Days: 'Last 30 days',
       last15Days: 'Last 15 days',
-      last7Days: 'Last 7 days'
+      last7Days: 'Last 7 days',
+      twitterShare: 'Look what I found on @Wallapop:',
+      countrybump: 'Country Bump',
+      citybump: 'City Bump',
+      deleteBillingInfoSuccess: 'Your billing info has been deleted',
+      deleteBillingInfoError: 'There was a error deleting your billing info'
     },
     es: {
       daysMomentConfig: {
-        lastDay: '[Ayer]',
+        lastDay: '[Ayer] - HH:mm',
         sameDay: '[Hoy] - HH:mm',
         nextDay: '[Mañana]',
-        lastWeek: 'dddd',
+        lastWeek: 'dddd - HH:mm',
         nextWeek: 'dddd',
         sameElse: 'D [de] MMMM'
       },
@@ -118,10 +123,10 @@ export class I18nService {
       blockUserSuccess: 'El usuario se ha bloqueado correctamente',
       unblockUserSuccess: 'El usuario se ha desbloqueado correctamente',
       newMessageNotification: 'Nuevo mensaje de ',
-      date_desc: 'Fecha: descendente',
-      date_asc: 'Fecha: ascendente',
-      price_desc: 'Precio: descendente',
-      price_asc: 'Precio: ascendente',
+      date_desc: 'Más recientes',
+      date_asc: 'Más antiguos',
+      price_desc: 'Precio mayor',
+      price_asc: 'Precio menor',
       bulkDeleteError: 'Algunos productos no se han eliminado debido a un error',
       bulkReserveError: 'Algunos productos no se han reservado debido a un error',
       bulkSoldError: 'Algunos productos no se han marcado como vendido debido a un error',
@@ -160,7 +165,12 @@ export class I18nService {
       settingsEdited: 'Se ha actualizado tu configuración',
       last30Days: 'Últimos 30 días',
       last15Days: 'Últimos 15 días',
-      last7Days: 'Últimos 7 días'
+      last7Days: 'Últimos 7 días',
+      twitterShare: 'Mira que acabo de encontrar en @Wallapop:',
+      countrybump: 'Destacado País',
+      citybump: 'Destacado Ciudad',
+      deleteBillingInfoSuccess: 'Tu información de facturación ha sido borrada',
+      deleteBillingInfoError: 'Hubo un error borrando tu información de facturación'
     }
   };
 

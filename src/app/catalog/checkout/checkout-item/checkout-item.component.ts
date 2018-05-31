@@ -3,7 +3,8 @@ import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import * as _ from 'lodash';
 import { CartService } from '../cart/cart.service';
 import { CartChange, CartItem } from '../cart/cart-item.interface';
-import { BUMP_TYPES } from '../cart/cart';
+import { BUMP_TYPES } from '../cart/cart-base';
+import { Cart } from '../cart/cart';
 
 @Component({
   selector: 'tsl-checkout-item',
@@ -26,6 +27,7 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.cartService.createInstance(new Cart());
     this.durations = _.keys(this.itemWithProducts.products);
     this.duration = this.durations[1];
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {

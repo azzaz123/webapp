@@ -1,6 +1,6 @@
 import { Model } from '../resource/model.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
-import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo } from './item-response.interface';
+import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
 export const ITEM_BASE_PATH = 'http://es.wallapop.com/item/';
@@ -17,9 +17,13 @@ export class Item implements Model {
   private _webLink: string;
   private _views: number;
   private _favorites: number;
+  private _conversations: number;
+  private _purchases: AutorenewPurchase;
   private _favorited: boolean;
   private _selected = false;
   private _bumpExpiringDate: number;
+  private _bumpLast24h: boolean;
+  private _plannedStartsToday: boolean;
 
   constructor(private _id: string,
               private _legacyId: number,
@@ -139,6 +143,22 @@ export class Item implements Model {
     this._favorites = value;
   }
 
+  get conversations(): number {
+    return this._conversations;
+  }
+
+  set conversations(value: number) {
+    this._conversations = value;
+  }
+
+  get purchases(): AutorenewPurchase {
+    return this._purchases;
+  }
+
+  set purchases(value: AutorenewPurchase) {
+    this._purchases = value;
+  }
+
   get favorited(): boolean {
     return this._favorited;
   }
@@ -198,6 +218,14 @@ export class Item implements Model {
 
   set bumpExpiringDate(value: number) {
     this._bumpExpiringDate = value;
+  }
+
+  get bumpLast24h() {
+    return this._bumpExpiringDate - Date.now() < 86400;
+  }
+
+  get plannedStartsToday() {
+    return this._purchases && (this._purchases.scheduled_start_date - Date.now() < 86400);
   }
 
   get webSlug(): string {

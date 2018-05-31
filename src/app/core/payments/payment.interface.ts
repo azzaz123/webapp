@@ -1,15 +1,7 @@
-export interface ProductResponse {
-  id: string;
-  name: 'BOOST' | 'HIGHLIGHT' | 'BUMP' | 'LISTINGS' | 'CALL_TRACKING' | 'MULTI_PUBLICATOR' | 'LEAD_QUALIFICATION' | 'MULTI_ACCOUNT' |
-    'NATIONAL_BUMP' | 'BUMP';
-}
-
-export interface Products {
-  [key: string]: ProductResponse;
-}
-
+import { Pack } from './pack';
 export interface PerkResponse {
   expire_date: number;
+  create_date: number;
   perk_id: string;
   product_id: string;
   quantity: number;
@@ -24,20 +16,29 @@ export interface Perks {
 
 export interface Perk {
   bump: {
-    total?: number,
     quantity: number,
-    expireDate?: number
+    total?: number,
+    createDate?: number
   };
   national: {
-    total?: number,
     quantity: number,
-    expireDate?: number
+    total?: number,
+    createDate?: number
   };
   listing?: {
-    total?: number,
     quantity: number,
-    expireDate?: number
+    total?: number,
+    createDate?: number
   };
+}
+
+export interface CartPacks {
+  bumps: Pack;
+  nationals: Pack;
+}
+
+export interface Packs {
+  [key: string]: Pack[];
 }
 
 export interface PackResponse {
@@ -49,22 +50,18 @@ export interface PackResponse {
   currency: string;
 }
 
-export interface Pack {
+export interface ProductResponse {
   id: string;
-  quantity: number;
-  price: number;
-  currency: string;
-  discount: number;
+  name: 'NATIONAL_BUMP' | 'BUMP' | 'LISTINGS';
 }
 
-export interface Packs {
-  bumps: Pack[];
-  nationals: Pack[];
+export interface Products {
+  [key: string]: ProductResponse;
 }
 
-export interface CartPacks {
-  bumps: Pack;
-  nationals: Pack;
+export interface OrderProExtras {
+  packs: Array<string>;
+  id: string;
 }
 
 export interface BillingInfoResponse {
@@ -97,4 +94,15 @@ export interface SabadellInfoResponse {
   signature: string;
   signature_version: string;
   target_url: string;
+}
+
+export interface ScheduledStatus {
+  active: boolean;
+  autorenew_alert: number;
+  autorenew_scheduled: ScheduledBumps;
+}
+
+export interface ScheduledBumps {
+  citybump: number;
+  countrybump: number;
 }

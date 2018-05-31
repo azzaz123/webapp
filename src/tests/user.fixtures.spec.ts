@@ -213,7 +213,8 @@ export const COUNTERS_RESPONSE: Counters = {
   profile_favorited: 0,
   reviews: 0,
   sold: 0,
-  reports_received: USER_REPORTS_RECEIVED
+  reports_received: USER_REPORTS_RECEIVED,
+  onHold: 0
 };
 
 export const USERS_STATS_RESPONSE: UserStatsResponse = {
@@ -268,6 +269,10 @@ export const COUNTERS = [
   {
     type: 'reports_received',
     value: USER_REPORTS_RECEIVED
+  },
+  {
+    type: 'onHold',
+    value: 0
   }
 ];
 

@@ -33,6 +33,10 @@ export class SoldModalComponent implements OnInit {
     this.thanks = true;
   }
 
+  public onBackPress() {
+    delete this.buyer;
+  }
+
   public chooseUser(user: ConversationUser) {
     this.buyer = user;
   }

@@ -7,6 +7,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/others.svg'));
   matIconRegistry.addSvgIcon('phone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/phone.svg'));
   matIconRegistry.addSvgIcon('messages-icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/messages-icon.svg'));
+  matIconRegistry.addSvgIcon('ico-message', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/ico-message.svg'));
   matIconRegistry.addSvgIcon('call-missed', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-missed.svg'));
   matIconRegistry.addSvgIcon('call-received', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-received.svg'));
   matIconRegistry.addSvgIcon('call-shared', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/call-shared.svg'));
@@ -104,6 +105,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('commons-congrats', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/commons-congrats.svg'));
   matIconRegistry.addSvgIcon('congrats', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/congrats.svg'));
   matIconRegistry.addSvgIcon('items-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/items-empty-state.svg'));
+  matIconRegistry.addSvgIcon('pro-items-empty-state', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/pro-items-empty-state.svg'));
   matIconRegistry.addSvgIcon('feature', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/feature.svg'));
   matIconRegistry.addSvgIcon('shipping-available', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/shipping-available.svg'));
   matIconRegistry.addSvgIcon('firm-price', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/firm-price.svg'));
@@ -178,6 +180,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('arrow-back', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-back.svg'));
   matIconRegistry.addSvgIcon('car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/car.svg'));
   matIconRegistry.addSvgIcon('empty-state-phones', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/empty-state-phones.svg'));
+  matIconRegistry.addSvgIcon('bump-country-pro', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-country-pro.svg'));
+  matIconRegistry.addSvgIcon('bump-city-pro', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/bump-city-pro.svg'));
   matIconRegistry.addSvgIcon('plan-10', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan10.svg'));
   matIconRegistry.addSvgIcon('plan-10-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan10_selected.svg'));
   matIconRegistry.addSvgIcon('plan-20', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/plan20.svg'));

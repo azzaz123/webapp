@@ -73,6 +73,7 @@
   <translation id="4085930761302974863">Favoritos</translation>
   <translation id="3797778920049399855">Cerrar sesión</translation>
   <translation id="4053902008669548465">Mi zona</translation>
+  <translation id="3983509092263971640">Mi zona pro</translation>
   <translation id="4359291232904891489">Marca la localización</translation>
   <translation id="5371960677736303052">¿Dónde?</translation>
   <translation id="958176169457402389">Tus productos se verán en:</translation>
@@ -230,12 +231,11 @@
   <translation id="2595297634596426795">Mis destacados</translation>
   <translation id="6801638153695046345">Destacado de Barrio</translation>
   <translation id="7379728362084736907">Destacado de Provincia</translation>
-  <translation id="2789162672363314854">Destacado de Ciudad</translation>
+  <translation id="2789162672363314854">Destacado ciudad</translation>
   <translation id="5785357843753565591">Destacado de País</translation>
   <translation id="2906587845957718064">Barrio</translation>
   <translation id="1186759635333538896">Provincia</translation>
   <translation id="2314075913167237221">Ciudad</translation>
-  <translation id="7928837776892145785">País</translation>
   <translation id="6377139538537882652">Eliminar lista</translation>
   <translation id="3448462145758383019">Total</translation>
   <translation id="6581598798517073714">+ Añadir otra tarjeta</translation>
@@ -281,6 +281,12 @@
   <translation id="4486163214005133487">Accede aquí a todas tus conversaciones. Y contesta a tus mensajes desde donde prefieras, sea ordenador o móvil. Por cierto, verás lo bien que funciona desde la web.</translation>
   <translation id="5289897176155020957">Mira en pantalla grande tus productos favoritos de la app. ¿Quizá aquí te acabes de decidir?</translation>
   <translation id="8328195571736012184">Mira en este punto las valoraciones de tu perfil. ¿Eres una persona de confianza para la comunidad?</translation>
+  <translation id="1747851890616342359">¡Te presentamos nuestra nueva web profesional!</translation>
+  <translation id="7965763213079559522">Esta es "Tu zona Pro". Desde aquí podrás utilizar todas las funcionalidades que ya tenías en la app de wallapop y en la admin de profesionales.</translation>
+  <translation id="5339303196793781359">Aquí puedes ver y editar los datos de tu perfil, información de facturación y ver tu plan de coches y de visibilidad. Podrás marcar tu ubicación (y la de todos tus productos), cambiar tu foto, modificar la contraseña o el email...</translation>
+  <translation id="157339153102985723">Aquí podrás ver estadísticas de visualizaciones de tus productos, número de chats y llamas recibidas. Además podrás ver que impacto tienen los destacados en tus métricas.</translation>
+  <translation id="9086693090800324810">En este punto tendrás acceso a todos tus productos. Además, podrás subir nuevos, editarlos, activarlos o destacarlos.</translation>
+  <translation id="5119878065843230741">Aquí verás y podrás gestionar las llamadas recibidas, las perdidas y los teléfonos que te han compartido.</translation>
   <translation id="4563965495368336177">Saltar explicación</translation>
   <translation id="3885497195825665706">Siguiente</translation>
   <translation id="7160029661601775341">¡Listo!</translation>
@@ -346,7 +352,15 @@
   <translation id="7252908727899212022">Marcar como Pendiente</translation>
   <translation id="6570363013146073520">Panel</translation>
   <translation id="5762151072276461448">Llamadas</translation>
-  <translation id="4588618843305891254">Catálogo</translation>
+  <translation id="4588618843305891254">Tu Catálogo</translation>
+  <translation id="2157586494270826789">¿Qué son los extras?</translation>
+  <translation id="9078334813317415148">Destacados ciudad</translation>
+  <translation id="308057973020043316">Destacados país</translation>
+  <translation id="1427434561610422238">Ahorra un <ph name="INTERPOLATION"><ex>{{ pack.discount }}</ex></ph>% </translation>
+  <translation id="3249513483374643425">Añadir</translation>
+  <translation id="4669498559280449685">Destacado país</translation>
+  <translation id="379883361840792630">Destacados extras</translation>
+  <translation id="7570446684738490913">Destacados extras de 24 horas</translation>
   <translation id="4558593963938972556">Aquí podrás ver y editar los datos de tu perfil</translation>
   <translation id="690637757793763587">Facturación</translation>
   <translation id="7830707034534607415">Suscripción</translation>
@@ -365,8 +379,8 @@
   <translation id="6883076399412251073">Plan actual: Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.listing.quantity}}</ex></ph></translation>
   <translation id="2732498404411727211">Aún no estas suscrito a ningún plan.</translation>
   <translation id="7532148292247615475">Cada plan te permite tener publicados hasta un número máximo de coches en la app y web de wallapop.</translation>
-  <translation id="777899500223419407">Publicar hasta <ph name="INTERPOLATION"><ex>{{bump.quantity}}</ex></ph> coches cada mes.</translation>
-  <translation id="4332428159510983797">Caduca el</translation>
+  <translation id="4371626830398169808">Puedes publicar hasta <ph name="INTERPOLATION"><ex>{{bump.quantity}}</ex></ph> coches</translation>
+  <translation id="2374240332008805382">Suscrito desde</translation>
   <translation id="7154496186015922312">Plan personalizado</translation>
   <translation id="2016810884599586784">Contáctanos para que te hagamos un plan a medida</translation>
   <translation id="5736913742704520146">Destacado ciudad</translation>
@@ -374,7 +388,7 @@
   <translation id="1906307008278702045">El plan de ciudad te permite destacar tus coches en tu ciudad y aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización diferente y aparecerás en la zona de destacados en toda tu ciudad.</translation>
   <translation id="8986611533240831380">Para suscribirte a un plan de ciudad contacta con 674 726 372</translation>
   <translation id="6427098227437270446">Para cambiar tu plan de ciudad contacta con 674 726 372</translation>
-  <translation id="6703947649972852818">Destacado</translation>
+  <translation id="6703947649972852818">Destacados</translation>
   <translation id="5540010184241331088">Ahorra un <ph name="INTERPOLATION"><ex>{{bump.discount}}</ex></ph>%</translation>
   <translation id="2126069250654725782">Destacado país</translation>
   <translation id="251613711454912353">Plan <ph name="INTERPOLATION"><ex>{{perks?.subscription.national.total}}</ex></ph> país</translation>
@@ -403,7 +417,116 @@
   <translation id="6314007099242784066">Puntuación de usuario</translation>
   <translation id="3386449481449927569">Tiene un coche en venta</translation>
   <translation id="6901142032077238858">Ver perfil</translation>
+  <translation id="7251596190905542711">Busca productos</translation>
+  <translation id="7239750919884229270">Actualizado</translation>
+  <translation id="6140925356015461504"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="708449889891136724"><ph name="TOTAL_SELECTED"><ex>TOTAL_SELECTED</ex></ph> productos seleccionados</translation>
+  <translation id="6923676368903866016"><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Delete</translation>
+  <translation id="5322473252816589112">Desactivar</translation>
+  <translation id="4759723562137600498">Activar</translation>
+  <translation id="13886945388572438">Destácalo</translation>
+  <translation id="5943346117221479516">Desactivar productos</translation>
+  <translation id="1888437309536533541">Los productos seleccionados serán marcados como pendientes</translation>
+  <translation id="2299499307204911989">Activar productos</translation>
+  <translation id="3437651521808081039">Los productos seleccionados serán marcados como activos.</translation>
+  <translation id="3576739165178660027">tu plan</translation>
+  <translation id="8756155295186418998">Plan Profesional</translation>
+  <translation id="4154831356233082418">Disponibles</translation>
+  <translation id="1859131936150262113">Inactivos</translation>
+  <translation id="7697915584663780042">visibilidad</translation>
+  <translation id="5439433189125089418">Plan Ciudad</translation>
+  <translation id="3955868613858648955">Disponibles</translation>
+  <translation id="6211554071012062130"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Plan</translation>
+  <translation id="2882470259260755892"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
+  <translation id="5092371717305178267">Plan País</translation>
+  <translation id="4772127996106888369">No tienes un Plan País</translation>
+  <translation id="1466012768716286509">Apúntate</translation>
+  <translation id="766927465251603474"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Plan</translation>
+  <translation id="6463509780873643723"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
+  <translation id="9054202731560341408">En uso</translation>
+  <translation id="4065372059698851857">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="3286725018134496844">Ya tienes tus destacados extras disponibles para que los puedas utilizar.</translation>
+  <translation id="7542752854018206709">Tu compra no se ha podido realizar porque algo ha ido mal con la tarjeta. Comprueba y prueba otra vez. </translation>
+  <translation id="7392255340123577556">No tienes un Plan de Ciudad</translation>
+  <translation id="1839186591621749773">Publicado</translation>
+  <translation id="6850144876798655647">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
+  <translation id="2246851749264196483">Gestionar mi suscripción</translation>
+  <translation id="7122356013178226936">Estas intentando destacar coches que ya tienes planificados</translation>
+  <translation id="4011333478005344361">Destacar los productos disponibles</translation>
+  <translation id="4701510938988860546">Volver atrás para cancelar bumps</translation>
+  <translation id="2571738502834365520">Tu Catálogo <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="3339663802248788155">Comprar extras</translation>
+  <translation id="382039398019874632"><ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>Subir ahora<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="6587076436244065924">Queda <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="5272763997595694217">Cancelar Autorenovados</translation>
+  <translation id="291347435854981703">Seguro que quieres cancelar el autorenovado para este producto?</translation>
+  <translation id="2807800733729323332">Sí</translation>
+  <translation id="7803839229714588038">Mensaje de error</translation>
+  <translation id="6127871861896654127"> contacta con nosotros</translation>
+  <translation id="5849506438355710291">para administrar tu plan.</translation>
+  <translation id="7851668152562197014">Estás intentando activar más coches de los que te permite tu plan.</translation>
+  <translation id="8898651038129346696">Por favor deselecciona algunos productos, llama al o</translation>
+  <translation id="8497824097226681583">Inactivos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="8771233863417316687">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="4403347238652124439">Vendidos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="8142970589678873547">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="516176798986294299">País</translation>
+  <translation id="6668584344316209309">Planificación</translation>
+  <translation id="3133191810308229654">Resumen de tus destacados</translation>
+  <translation id="4414648729691064163">Cancelar todos</translation>
+  <translation id="1270706063203110386">No has planificado aún</translation>
+  <translation id="city">ciudad</translation>
+  <translation id="3598887185953670111">país</translation>
+  <translation id="9157216793820090491">Aplicar destacados</translation>
+  <translation id="2920017199919975554">Has seleccionado</translation>
+  <translation id="4380053465886000543">destacado</translation>
+  <translation id="5043856462494495753">destacados</translation>
+  <translation id="888341446683346521">Fecha de inicio</translation>
+  <translation id="126074860850048964">Fecha de fin</translation>
+  <translation id="4391289919356861627">Aplicar</translation>
+  <translation id="6888797559367695264">Saldo</translation>
+  <translation id="44001008918173539">Planificados de Ciudad</translation>
+  <translation id="8307062044109434285">Planificados de País</translation>
+  <translation id="9139280231181462">ciudad</translation>
+  <translation id="7608224812897171071"> planificados</translation>
+  <translation id="1355570958947358343">destacado de ciudad</translation>
+  <translation id="6299971173481067869">destacados de ciudad</translation>
+  <translation id="4849465581526004216">destacados de país</translation>
+  <translation id="8847634013548993288">destacado de país</translation>
   <translation id="5491649508975206315">Para cambiar tu plan llámanos al 674 726 372</translation>
+  <translation id="8108541630841000132">Información de facturación</translation>
+  <translation id="6028371114637047813">Nombre</translation>
+  <translation id="4407559560004943843">Apellidos</translation>
+  <translation id="6765071518635771784">Nombre de la empresa</translation>
+  <translation id="9005249750227479148">Email de facturación</translation>
+  <translation id="643007923046147044">Teléfono de facturación</translation>
+  <translation id="6539741229179513116">Dirección de facturación</translation>
+  <translation id="3164629351326127839">CIF</translation>
+  <translation id="7450324673386885301">Código Postal</translation>
+  <translation id="4464028962645674576">Activos <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>/<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="8005446546864167726">Los coches que están planeados no pueden ser destacados de nuevo. Puedes cancelar los destacados para estos productos o continuar destacando los otros.</translation>
+  <translation id="8364273265142434249">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="428164738594731840">Cancelar</translation>
+  <translation id="7166295046269696440">Desde <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> a <ph name="INTERPOLATION_1"><ex>INTERPOLATION_1</ex></ph></translation>
+  <translation id="7291421467944217279">Activar coches</translation>
+  <translation id="4937564264919515438">Puedes subir <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="7783294297217449801">Puedes activar <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> coche(s) más<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> con tu plan actual.</translation>
+  <translation id="4862629622121675984"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
+  <translation id="3780659623990720220"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> plan</translation>
+  <translation id="1290608591542945444">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="3475752672270482528">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
+  <translation id="1034935109316471792">Ya has aplicado los destacados a tus coches.</translation>
+  <translation id="53603691019051493">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
+  <translation id="5681895899318476927">(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> planeados)</translation>
+  <translation id="6348395677948023023">Subir coche</translation>
+  <translation id="8499720622157552489">Para actualizar tu plan, llámanos al 674 726 372 o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="1763761674247171206">Para subscribirte a un plan de ciudad, llámanos al 674 726 372 o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="1316161310089996670">Para cambiar tu plan de ciudad, llámanos al 674 726 372 o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="1658274921433299016">Para subscribirte a un plan de país, llámanos al 674 726 372 o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="5559193479269599693">Para cambiar tu plan de país, llámanos al 674 726 372 o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="8458658926966860767">¿Estás seguro que quieres eliminar la información de facturación? </translation>
+  <translation id="7092318893814699678">Sí, estoy seguro/a</translation>
+  <translation id="1250063669755603957">Eliminar información</translation>
   <translation id="7368172072093620772">Tus estadísticas</translation>
   <translation id="44488151127771040">Aquí podrás ver información relativa a las visualizaciones, chats y llamadas que genera tu catálogo de coches. También podrás ver el impacto que tienen sobre las métricas los destacados que apliques.</translation>
   <translation id="2734780694152757859">Ver más</translation>
