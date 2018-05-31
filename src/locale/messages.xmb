@@ -233,7 +233,7 @@
   <msg id="4138346261331244869"><source>app/catalog/upload/upload-car/upload-car.component.ts:215</source><source>app/catalog/upload/upload-product/upload-product.component.ts:137</source>How does it look?</msg>
   <msg id="4918814479561513634"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:2</source>Do you want to leave this page?</msg>
   <msg id="6618892692857491514"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
-  <msg id="3542042671420335679"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:6</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:87</source>No</msg>
+  <msg id="3542042671420335679"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:6</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:87</source><source>app/profile/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:5</source>No</msg>
   <msg id="4510233521290203619"><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:7</source><source>app/catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component.ts:8</source>Yes, leave</msg>
   <msg id="8890553633144307762"><source>app/catalog/checkout/checkout.component.ts:3</source><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:3</source><source>app/catalog/checkout/checkout-extras-pro/checkout-extras-pro.component.ts:4</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:8</source>Back</msg>
   <msg id="833919813165214228"><source>app/catalog/checkout/checkout.component.ts:14</source>Feature it locally</msg>
@@ -387,6 +387,8 @@
   <msg id="3780659623990720220"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:70</source><ph name="INTERPOLATION"><ex>{{perks?.subscription.national.quantity}}</ex></ph> plan</msg>
   <msg id="6463509780873643723"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:71</source> <ph name="INTERPOLATION"><ex>{{perks?.extra.national.quantity}}</ex></ph> extra</msg>
   <msg id="53603691019051493"><source>app/catalog/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:79</source>(<ph name="INTERPOLATION"><ex>{{status?.autorenew_scheduled?.countrybump || &apos;0&apos;}}</ex></ph> planned)</msg>
+  <msg id="8458658926966860767"><source>app/profile/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:2</source>Are you sure you want to delete billing information?</msg>
+  <msg id="7092318893814699678"><source>app/profile/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:6</source>Yes, I am sure</msg>
   <msg id="4185227957442923918"><source>app/reviews/reviews.component.ts:13</source>Your Reviews</msg>
   <msg id="5263225898611875859"><source>app/reviews/reviews.component.ts:16</source>This is what people think about you. </msg>
   <msg id="5858407943986110221"><source>app/reviews/reviews.component.ts:20</source>Your average</msg>
@@ -443,7 +445,7 @@
   <msg id="8499614752066309224"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:50</source>City:</msg>
   <msg id="4863373404095396982"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:56</source>Country:</msg>
   <msg id="5125950009267587196"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:62</source>CIF Number:</msg>
-  <msg id="9200098812147482647"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:72</source>Delete billing info</msg>
+  <msg id="1250063669755603957"><source>app/profile/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:72</source>Delete information</msg>
   <msg id="2303735769987845467"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:5</source>Visibility products</msg>
   <msg id="5130627671872052700"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:8</source>Feature on your city</msg>
   <msg id="1768872655561111284"><source>app/profile/profile-pro/profile-pro-subscription/visibility-products-modal/visibility-products-modal.component.ts:9</source>Get on first position</msg>

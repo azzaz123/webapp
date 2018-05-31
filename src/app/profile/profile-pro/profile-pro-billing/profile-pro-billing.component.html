@@ -66,10 +66,10 @@
             </div>
             <div class="row">
               <div class="col-9" [ngClass]="{'offset-3': isNewBillingInfoForm, 'text-center': !isNewBillingInfoForm}">
-                <tsl-button [type]="'submit'" className="btn-primary btn-big" i18n>Save</tsl-button>
+                <tsl-button [type]="'submit'" className="btn-primary btn-big" i18n [disabled]="!billingForm.valid">Save</tsl-button>
               </div>
               <div class="col-3 delete-link" *ngIf="!isNewBillingInfoForm">
-                <a (click)="deleteBillingInfo()" i18n>Delete billing info</a>
+                <a (click)="deleteBillingInfo()" i18n>Delete information</a>
               </div>
             </div>
           </div>
