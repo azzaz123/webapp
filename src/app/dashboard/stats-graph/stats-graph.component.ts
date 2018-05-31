@@ -110,7 +110,6 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         'valueField': 'views',
         'valueAxis': 'ValueAxisViews',
         'balloonText': '[[title]]: <b>[[value]]</b>',
-        'switchable': false
       }
     ],
     'guides': [],
@@ -152,9 +151,9 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       'spacing': 15,
       'position': 'top',
       'rollOverGraphAlpha': 0.75,
-      'switchType': 'v',
       'valueWidth': 30,
       'valueText': '',
+      'switchable': false
     },
     'titles': [],
     'dataProvider': []
@@ -180,15 +179,14 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       'fixedColumnWidth': 4,
       'type': 'column',
       'lineAlpha': 0,
-      'balloonText': '[[title]]: <b>[[value]]</b>',
-      'switchable': false
+      'balloonText': '[[title]]: <b>[[value]]</b>'
     };
     const lineGraphOptions = {
       'behindColumns': true,
       'lineAlpha': 0,
       'type': 'smoothedLine',
       'fillAlphas': 1,
-      'balloonText': '[[title]]: <b>[[value]]</b>',
+      'balloonText': '[[title]]: <b>[[value]]</b>'
     };
     this.chartOptions.graphs.push({
       ...columnGraphOptions,
