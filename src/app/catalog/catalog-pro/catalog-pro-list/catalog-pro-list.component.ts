@@ -20,6 +20,7 @@ import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirm
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { Order, Product } from '../../../core/item/item-response.interface';
 import { UploadConfirmationModalComponent } from '../../list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { User } from '../../../core/user/user';
 
 @Component({
   selector: 'tsl-catalog-pro-list',

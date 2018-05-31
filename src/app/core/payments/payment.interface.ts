@@ -100,6 +100,7 @@ export interface ScheduledStatus {
   active: boolean;
   autorenew_alert: number;
   autorenew_scheduled: ScheduledBumps;
+  purchased?: ScheduledBumps;
 }
 
 export interface ScheduledBumps {
