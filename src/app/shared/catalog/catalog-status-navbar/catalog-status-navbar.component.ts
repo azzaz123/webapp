@@ -32,7 +32,9 @@ export class CatalogStatusNavbarComponent implements OnInit {
   private getBumpedCounter(): void {
     this.paymentService.getStatus().subscribe((status: ScheduledStatus) => {
       if (status.purchased) {
-        this.bumpsCounter = status.purchased.citybump + status.purchased.countrybump;
+        const cityBump = status.purchased.citybump ? status.purchased.citybump : 0;
+        const countryBump = status.purchased.countrybump ? status.purchased.countrybump : 0;
+        this.bumpsCounter = cityBump + countryBump;
       }
     });
   }

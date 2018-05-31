@@ -104,6 +104,6 @@ export interface ScheduledStatus {
 }
 
 export interface ScheduledBumps {
-  citybump: number;
-  countrybump: number;
+  citybump?: number;
+  countrybump?: number;
 }
