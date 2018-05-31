@@ -29,10 +29,6 @@ describe('PaymentService', () => {
     http = TestBed.get(HttpService);
   });
 
-  it('should exist', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('pay', () => {
     it('should call endpoint', () => {
       spyOn(http, 'post').and.callThrough();
@@ -191,6 +187,16 @@ describe('PaymentService', () => {
 
       expect(response).toEqual(returnPerksModel);
       expect(http.get).toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteBillingInfo', () => {
+    it('should call http delete method with deleteBillingInfo endpoint and billingInfoId', () => {
+      spyOn(http, 'delete').and.callThrough();
+
+      service.deleteBillingInfo('123');
+
+      expect(http.delete).toHaveBeenCalledWith('api/v3/payments/billing-info/123');
     });
   });
 });

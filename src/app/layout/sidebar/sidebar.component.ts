@@ -13,6 +13,7 @@ export class SidebarComponent implements OnInit {
 
   public user: User;
   @Input() isProducts: boolean;
+  @Input() isProfile: boolean;
   public isProfessional: boolean;
 
   constructor(private userService: UserService,
