@@ -20,7 +20,10 @@ import {
   Product,
   ProductDurations,
   Purchase,
-  SelectedItemsAction
+  SelectedItemsAction,
+  ItemProResponse,
+  ItemProContent,
+  OrderPro
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
@@ -34,11 +37,20 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
-import { UserService } from '../user/user.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Car } from './car';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
+
+export const PUBLISHED_ID = 0;
+export const ONHOLD_ID = 90;
+export const SOLD_OUTSIDE = 30;
+
+export const ITEM_STATUSES: any = {
+  'active': PUBLISHED_ID,
+  'pending': ONHOLD_ID,
+  'sold': SOLD_OUTSIDE
+};
 
 @Injectable()
 export class ItemService extends ResourceService {
@@ -46,20 +58,25 @@ export class ItemService extends ResourceService {
   protected API_URL = 'api/v3/items';
   private API_URL_WEB = 'api/v3/web/items';
   private API_URL_USER = 'api/v3/users';
+  private API_URL_PROTOOL = 'api/v3/protool';
+  private API_URL_V1 = 'shnm-portlet/api/v1';
   public selectedAction: string;
   public selectedItems$: ReplaySubject<SelectedItemsAction> = new ReplaySubject(1);
   private banReasons: BanReason[] = null;
   protected items: ItemsStore = {
     active: [],
-    sold: []
+    pending: [],
+    sold: [],
+    featured: []
   };
   public selectedItems: string[] = [];
+  public countryBumpsInUse: number;
+  public cityBumpsInUse: number;
 
   constructor(http: HttpService,
               private i18n: I18nService,
               private trackingService: TrackingService,
-              private eventService: EventService,
-              private userService: UserService) {
+              private eventService: EventService) {
     super(http);
   }
 
@@ -98,6 +115,12 @@ export class ItemService extends ResourceService {
     this.items.sold.map((item: Item) => {
       item.selected = false;
     });
+    this.items.pending.map((item: Item) => {
+      item.selected = false;
+    });
+    this.items.featured.map((item: Item) => {
+      item.selected = false;
+    });
   }
 
   public getBanReasons(): Observable<BanReason[]> {
@@ -130,6 +153,12 @@ export class ItemService extends ResourceService {
       return this.mapCar(content);
     }
     return this.mapItem(content);
+  }
+
+  protected mapRecordDataPro(response: ItemProResponse): Item {
+    const data: ItemProResponse = <ItemProResponse>response;
+    const content: ItemProContent = data.content;
+    return this.mapItemPro(content);
   }
 
   private mapCar(content: CarContent): Car {
@@ -192,6 +221,42 @@ export class ItemService extends ResourceService {
       content.web_slug,
       content.modified_date,
       content.delivery_info
+    );
+  }
+
+  private mapItemPro(content: ItemProContent): Item {
+    return new Item(
+      content.id,
+      null,
+      content.seller_id,
+      content.title,
+      content.description,
+      content.category_id,
+      null,
+      content.price,
+      content.currency,
+      content.modified_date,
+      null,
+      content.flags,
+      null,
+      null,
+      {
+        id: UUID.UUID(),
+        original_width: content.image ? content.image.original_width : null,
+        original_height: content.image ? content.image.original_height : null,
+        average_hex_color: '',
+        urls_by_size:  {
+          original: content.image.original,
+          small: content.image.small,
+          large: content.image.large,
+          medium: content.image.medium,
+          xlarge: content.image.xlarge
+        }
+      },
+      content.images,
+      content.web_slug,
+      content.publish_date,
+      null
     );
   }
 
@@ -420,6 +485,160 @@ export class ItemService extends ResourceService {
       .map((response: AvailableProductsResponse) => response.products[0]);
   }
 
+  public cancelFeature(item: Item): Observable<any> {
+    return this.http.put(this.API_URL + '/purchases/cancelItemPurchase', { itemIds: item.id });
+  }
+
+  public mines(pageNumber: number, pageSize: number, sortBy: string, status: string = 'active', term?: string, cache: boolean = true): Observable<Item[]> {
+    let init: number = (pageNumber - 1) * pageSize;
+    let end: number = init + pageSize;
+    let endStatus: string = status === 'featured' ? 'active' : status;
+    let observable: Observable<Item[]>;
+
+    if (this.items[status].length && cache) {
+      observable = Observable.of(this.items[status]);
+    } else {
+      observable = this.recursiveMines(0, 300, endStatus)
+        .map((res: ItemProResponse[]) => {
+          if (res.length > 0) {
+            let items: Item[] = res
+              .filter(res => (res.content.purchases && status === 'featured') || status !== 'featured')
+              .map((i: ItemProResponse) => {
+                const item: Item = this.mapRecordDataPro(i);
+                item.views = i.content.views;
+                item.favorites = i.content.favorites;
+                item.conversations = i.content.conversations;
+                item.purchases = i.content.purchases ? i.content.purchases : null;
+                return item;
+            });
+            this.items[status] = items;
+            return items;
+          }
+          return [];
+        });
+    }
+    return observable
+      .map((res: Item[]) => {
+        term = term ? term.trim().toLowerCase() : '';
+        if (term !== '') {
+          return _.filter(res, (item: Item) => {
+            return item.title.toLowerCase().indexOf(term) !== -1 || item.description.toLowerCase().indexOf(term) !== -1;
+          });
+        }
+        return res;
+      })
+      .map((res: Item[]) => {
+        let sort: string[] = sortBy.split('_');
+        let field: string = sort[0] === 'price' ? 'salePrice' : 'modifiedDate';
+        let sorted: Item[] = _.sortBy(res, [field]);
+        if (sort[1] === 'desc') {
+          return _.reverse(sorted);
+        }
+        return sorted;
+      })
+      .map((res: Item[]) => {
+        return res.slice(init, end);
+      });
+  }
+
+  private recursiveMines(init: number, offset: number, status?: string): Observable<ItemProResponse[]> {
+    return this.http.get(this.API_URL_PROTOOL + '/mines', {
+        status: ITEM_STATUSES[status],
+        init: init,
+        end: init + offset,
+        newVersion: true
+      })
+      .map((r: Response) => r.json())
+      .flatMap((res: ItemProResponse[]) => {
+        if (res.length > 0) {
+          return this.recursiveMines(init + offset, offset, status)
+            .map((res2: ItemProResponse[]) => {
+              return res.concat(res2);
+            });
+        } else {
+          return Observable.of([]);
+        }
+      });
+  }
+  
+  public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {
+    const index: number = _.findIndex(this.items.active, {id: id});
+    if (index !== -1) {
+      this.items.active[index].bumpExpiringDate = purchase.expiration_date;
+      return this.items.active[index];
+    }
+    return;
+  }
+
+  public resetAllPurchaseInfo() {
+    this.items.active.forEach((item: Item) => {
+      if (item.bumpExpiringDate) {
+        item.bumpExpiringDate = null;
+      }
+    });
+  }
+
+  public bulkSetActivate(): Observable<any> {
+    return this.http.post(this.API_URL_PROTOOL + '/changeItemStatus', {
+        itemIds: this.selectedItems,
+        publishStatus: PUBLISHED_ID
+      })
+      .do(() => {
+        this.selectedItems.forEach((id: string) => {
+          let index: number = _.findIndex(this.items.pending, {'id': id});
+          let deletedItem: Item = this.items.pending.splice(index, 1)[0];
+          deletedItem.flags['onhold'] = false;
+          deletedItem.selected = false;
+          if (this.items.active.length) {
+            this.items.active.push(deletedItem);
+          }
+        });
+        this.eventService.emit('itemChangeStatus', this.selectedItems);
+        this.deselectItems();
+      }).catch((errorResponse: Response) => {
+        return Observable.of(errorResponse);
+      });
+  }
+
+  public bulkSetDeactivate(): Observable<any> {
+    return this.http.post(this.API_URL_PROTOOL + '/changeItemStatus', {
+        itemIds: this.selectedItems,
+        publishStatus: ONHOLD_ID
+      })
+      .do(() => {
+        this.selectedItems.forEach((id: string) => {
+          let index: number = _.findIndex(this.items.active, {'id': id});
+          let deletedItem: Item = this.items.active.splice(index, 1)[0];
+          deletedItem.flags['onhold'] = true;
+          deletedItem.selected = false;
+          if (this.items.pending.length) {
+            this.items.pending.push(deletedItem);
+          }
+        });
+        this.eventService.emit('itemChangeStatus', this.selectedItems);
+        this.deselectItems();
+      });
+  }
+
+  public setSold(id: number): Observable<any> {
+    return this.http.post(this.API_URL_V1 + '/item.json/' + id + '/sold')
+      .do(() => {
+        let index: number = _.findIndex(this.items.active, {'legacyId': id});
+        let deletedItem: Item = this.items.active.splice(index, 1)[0];
+        if (this.items.sold.length) {
+          this.items.sold.push(deletedItem);
+        }
+        this.eventService.emit(EventService.ITEM_SOLD, deletedItem);
+      });
+  }
+
+  public cancelAutorenew(itemId: string): Observable<any> {
+    return this.http.put(this.API_URL_PROTOOL + '/autorenew/update', [{
+      item_id: itemId,
+      autorenew: false
+    }]);
+  }
+
   public getLatest(userId: string): Observable<ItemDataResponse> {
     return this.http.get(this.API_URL + '/latest-cars', {userId: userId})
       .map((r: Response) => r.json())
@@ -429,6 +648,11 @@ export class ItemService extends ResourceService {
           data: resp.items[0] ? this.mapRecordData(resp.items[0]) : null
         };
       });
+  }
+
+  public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
+    return this.http.post(this.API_URL_PROTOOL + '/purchaseItems', orderParams)
+    .map((r: Response) => r.json());
   }
 
 }

@@ -3,6 +3,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpService } from '../http/http.service';
 import { Conversation } from './conversation';
+import { ConnectionService } from '../connection/connection.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { XmppService } from '../xmpp/xmpp.service';
@@ -46,12 +47,13 @@ export class ConversationService extends LeadService {
               itemService: ItemService,
               event: EventService,
               xmpp: XmppService,
+              connectionService: ConnectionService,
               private persistencyService: PersistencyService,
               protected messageService: MessageService,
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,
               private zone: NgZone) {
-    super(http, userService, itemService, event, xmpp);
+    super(http, userService, itemService, event, xmpp, connectionService);
   }
 
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
@@ -303,18 +305,20 @@ export class ConversationService extends LeadService {
     if (this.messagesObservable) {
       return this.messagesObservable;
     }
-    this.messagesObservable = this.recursiveLoadMessages(conversations)
-    .share()
-    .do(() => {
-      this.messagesObservable = null;
-    });
+    if (this.connectionService.isConnected) {
+      this.messagesObservable = this.recursiveLoadMessages(conversations)
+      .share()
+      .do(() => {
+        this.messagesObservable = null;
+      });
+    }
     return this.messagesObservable;
   }
 
   private recursiveLoadMessages(conversations: Conversation[], index: number = 0): Observable<Conversation[]> {
     return this.xmpp.isConnected()
     .flatMap(() => {
-      if (conversations && conversations[index]) {
+        if (conversations && conversations[index] && this.connectionService.isConnected) {
         return this.messageService.getMessages(conversations[index])
         .flatMap((res: MessagesData) => {
           conversations[index].messages = res.data;
@@ -326,7 +330,7 @@ export class ConversationService extends LeadService {
           return Observable.of(conversations);
         });
       } else {
-        return Observable.of(null);
+          return Observable.of(null);
       }
     });
   }
@@ -334,12 +338,13 @@ export class ConversationService extends LeadService {
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
     return this.xmpp.isConnected()
     .flatMap(() => {
+      if (this.connectionService.isConnected) {
       return this.messageService.getNotSavedMessages().map((response: MessagesData) => {
         if (response.data.length) {
           let conversation: Conversation;
           response.data.forEach((message: Message) => {
-            conversation = conversations.filter((conversation: Conversation): boolean => {
-              return (conversation.id === message.conversationId);
+            conversation = conversations.filter((filteredConversation: Conversation): boolean => {
+              return (filteredConversation.id === message.conversationId);
             })[0];
             if (conversation) {
               if (!this.findMessage(conversation.messages, message)) {
@@ -350,12 +355,12 @@ export class ConversationService extends LeadService {
                 }
               }
             } else {
-              this.get(message.conversationId).subscribe((conversation: Conversation) => {
-                message = this.messageService.addUserInfo(conversation, message);
-                this.addMessage(conversation, message);
-                conversations.unshift(conversation);
+              this.get(message.conversationId).subscribe((subscribedConversation: Conversation) => {
+                message = this.messageService.addUserInfo(subscribedConversation, message);
+                this.addMessage(subscribedConversation, message);
+                conversations.unshift(subscribedConversation);
                 if (message.fromBuyer) {
-                  this.handleUnreadMessage(conversation);
+                  this.handleUnreadMessage(subscribedConversation);
                 }
               });
             }
@@ -363,6 +368,9 @@ export class ConversationService extends LeadService {
         }
         return conversations;
       });
+      } else {
+        return Observable.of(null);
+      }
     });
   }
 

@@ -1,52 +1,5 @@
-import { CartPacks, Pack, Packs, PerkResponse, Perks } from './payment.interface';
-
-export class PacksModel implements Packs  {
-  bumps: Pack[];
-  nationals: Pack[];
-  listings: Pack[];
-
-  constructor() {
-    this.nationals = [];
-    this.bumps = [];
-    this.listings = [];
-  }
-
-  addNationalPack(pack: Pack) {
-    this.nationals.push(pack);
-  }
-
-  getNationalPacks(): Pack[] {
-    return this.nationals;
-  }
-
-  addBump(pack: Pack) {
-    this.bumps.push(pack);
-  }
-
-  getBumps() {
-    return this.bumps;
-  }
-
-  addListing(pack: Pack) {
-    this.listings.push(pack);
-  }
-
-  getListings(currentTotal: number) {
-    return this.listings.filter((listing) => {
-      return listing.quantity >= currentTotal;
-    }).slice(0, 3);
-  }
-
-  addCustomListingPack(quantity: number) {
-    this.listings.unshift({
-      id: '1',
-      quantity: quantity,
-      price: 1,
-      currency: 'EUR',
-      discount: 0
-    });
-  }
-}
+import { CartPacks, PerkResponse, Perks } from './payment.interface';
+import { Pack } from './pack';
 
 export class CartPacksModel implements CartPacks {
   nationals: Pack;
@@ -74,16 +27,16 @@ export class PerksModel implements Perks {
     bump: {
       total: 0,
       quantity: 0,
-      expireDate: 0
+      createDate: 0
     },
     national: {
       total: 0,
       quantity: 0,
-      expireDate: 0
+      createDate: 0
     },
     listing: {
       quantity: 0,
-      expireDate: 0
+      createDate: 0
     }
   };
   extra = {
@@ -103,7 +56,7 @@ export class PerksModel implements Perks {
   setBumpSubscription(bumpPerk: PerkResponse) {
     this.subscription.bump.quantity = bumpPerk.quantity;
     this.subscription.bump.total = bumpPerk.total;
-    this.subscription.bump.expireDate = bumpPerk.expire_date;
+    this.subscription.bump.createDate = bumpPerk.create_date;
   }
   setBumpExtra(bumpPerk: PerkResponse) {
     this.extra.bump.quantity = bumpPerk.quantity;
@@ -111,13 +64,13 @@ export class PerksModel implements Perks {
   setNationalSubscription(nationalPerk: PerkResponse) {
     this.subscription.national.quantity = nationalPerk.quantity;
     this.subscription.national.total = nationalPerk.total;
-    this.subscription.national.expireDate = nationalPerk.expire_date;
+    this.subscription.national.createDate = nationalPerk.create_date;
   }
   setNationalExtra(nationalPerk: PerkResponse) {
     this.extra.national.quantity = nationalPerk.quantity;
   }
   setListingSubscription(listingPerk: PerkResponse) {
     this.subscription.listing.quantity = listingPerk.quantity;
-    this.subscription.listing.expireDate = listingPerk.expire_date;
+    this.subscription.listing.createDate = listingPerk.create_date;
   }
 }

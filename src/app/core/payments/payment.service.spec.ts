@@ -1,17 +1,17 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
-
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs/Observable';
-import { BillingInfoResponse, FinancialCard, Packs, Perks, SabadellInfoResponse } from './payment.interface';
+import { BillingInfoResponse, FinancialCard, SabadellInfoResponse, Packs, Perks } from './payment.interface';
 import {
-  BILLING_INFO_RESPONSE, BUMPS_PRODUCT_RESPONSE, createPacksModelFixture, FINANCIAL_CARD, PACK_RESPONSE, PERK_RESPONSE,
-  SABADELL_RESPONSE
+  BILLING_INFO_RESPONSE, FINANCIAL_CARD, SABADELL_RESPONSE, PACK_RESPONSE, createPacksFixture, PRODUCTS_RESPONSE_PACKS,
+  BUMPS_PRODUCT_RESPONSE, PERK_RESPONSE
 } from '../../../tests/payments.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { PerksModel } from './payment.model';
 import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
+
 
 describe('PaymentService', () => {
 
@@ -27,10 +27,6 @@ describe('PaymentService', () => {
     });
     service = TestBed.get(PaymentService);
     http = TestBed.get(HttpService);
-  });
-
-  it('should exist', () => {
-    expect(service).toBeTruthy();
   });
 
   describe('pay', () => {
@@ -69,11 +65,32 @@ describe('PaymentService', () => {
     });
   });
 
+  describe('getPacks', () => {
+    let response: Packs;
+    beforeEach(fakeAsync(() => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PACK_RESPONSE)});
+      const res2: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE_PACKS)});
+      spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
+      service.getPacks().subscribe((r: Packs) => {
+        response = r;
+      });
+    }));
+
+    it('should call endpoint', () => {
+      expect(http.get).toHaveBeenCalledWith('api/v3/payments/packs');
+      expect(http.get).toHaveBeenCalledWith('api/v3/payments/products');
+    });
+
+    it('should return packs', () => {
+      expect(response).toEqual(createPacksFixture());
+    });
+  });
+
   describe('getBillingInfo', () => {
     let response: BillingInfoResponse;
 
     it('should call endpoint', () => {
-      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(BILLING_INFO_RESPONSE)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(BILLING_INFO_RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
 
       service.getBillingInfo().subscribe((r: BillingInfoResponse) => {
@@ -103,8 +120,8 @@ describe('PaymentService', () => {
     let response: Packs;
 
     beforeEach(fakeAsync(() => {
-      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PACK_RESPONSE)});
-      let res2: ResponseOptions = new ResponseOptions({body: JSON.stringify(BUMPS_PRODUCT_RESPONSE)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PACK_RESPONSE)});
+      const res2: ResponseOptions = new ResponseOptions({body: JSON.stringify(BUMPS_PRODUCT_RESPONSE)});
       spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
 
       service.getSubscriptionPacks().subscribe((r: Packs) => {
@@ -118,17 +135,17 @@ describe('PaymentService', () => {
     });
 
     it('should return packs', () => {
-      expect(response).toEqual(createPacksModelFixture());
+      expect(response).toEqual(createPacksFixture());
     });
   });
 
   describe('getPerks', () => {
     let response: Perks;
-    let returnPerksModel = new PerksModel();
+    const returnPerksModel = new PerksModel();
 
     beforeEach(fakeAsync(() => {
-      let res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PERK_RESPONSE)});
-      let res2: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCT_RESPONSE)});
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PERK_RESPONSE)});
+      const res2: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCT_RESPONSE)});
       spyOn(http, 'get').and.returnValues(
         Observable.of(new Response(res)),
         Observable.of(new Response(res2)),
@@ -170,6 +187,16 @@ describe('PaymentService', () => {
 
       expect(response).toEqual(returnPerksModel);
       expect(http.get).toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteBillingInfo', () => {
+    it('should call http delete method with deleteBillingInfo endpoint and billingInfoId', () => {
+      spyOn(http, 'delete').and.callThrough();
+
+      service.deleteBillingInfo('123');
+
+      expect(http.delete).toHaveBeenCalledWith('api/v3/payments/billing-info/123');
     });
   });
 });

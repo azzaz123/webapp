@@ -8,7 +8,6 @@
   },
   "include": [
     "../node_modules/ngx-uploader/src/ngx-uploader",
-    "../node_modules/angular2-masonry",
     "./"
   ],
   "exclude": [
