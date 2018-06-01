@@ -118,6 +118,15 @@ export class PersistencyService {
     );
   }
 
+  public updateMessageStatus(messageId: string, newStatus) {
+    return Observable.fromPromise(this.upsert(this.messagesDb, messageId, (doc: Document<any>) => {
+      if (doc.status !== newStatus) {
+        doc.status = newStatus;
+        return doc;
+      }
+    }));
+  }
+
   public getMetaInformation(): Observable<StoredMetaInfoData> {
     return Observable.fromPromise(this.messagesDb.get('meta'));
   }

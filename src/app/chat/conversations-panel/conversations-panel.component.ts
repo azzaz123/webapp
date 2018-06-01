@@ -7,9 +7,10 @@ import { ConversationService } from '../../core/conversation/conversation.servic
 import { UserService } from '../../core/user/user.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Conversation } from '../../core/conversation/conversation';
-import { Message } from '../../core/message/message';
+import { Message, messageStatus } from '../../core/message/message';
 import { NewConversationResponse } from '../../core/conversation/conversation-response.interface';
 import { Observable } from 'rxjs/Observable';
+import { XmppService } from '../../core/xmpp/xmpp.service';
 
 @Component({
   selector: 'tsl-conversations-panel',
@@ -32,12 +33,15 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private active = true;
   private newConversationItemId: string;
   public isProfessional: boolean;
+  private receivedMessages = [];
+  private readMessages = [];
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
               private route: ActivatedRoute,
               private trackingService: TrackingService,
               public userService: UserService,
+              private xmppService: XmppService,
               private elRef: ElementRef) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
@@ -59,6 +63,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.getConversations();
+    this.subscribeChatSignals();
     this.eventService.subscribe(EventService.LEAD_ARCHIVED, () => this.setCurrentConversation(null));
     this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
     this.eventService.subscribe(EventService.FIND_CONVERSATION, (conversation: NewConversationResponse) => this.findConversation(conversation));
@@ -75,6 +80,32 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.setCurrentConversation(null);
     this.active = false;
+  }
+
+  private subscribeChatSignals() {
+    this.eventService.subscribe(EventService.MESSAGE_SENT_ACK, (conversationId, messageId) => {
+      if (this.conversations.length) {
+        this.updateMessageStatus(messageStatus.SENT, conversationId, messageId);
+      }
+    });
+    this.eventService.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
+      this.conversations.length ? this.updateMessageStatus(messageStatus.RECEIVED, conversationId, messageId) : this.receivedMessages = this.xmppService.receivedReceipts;
+    });
+    this.eventService.subscribe(EventService.MESSAGE_READ, (conversationId) => {
+      this.conversations.length ? this.updateMessageStatus(messageStatus.READ, conversationId) : this.readMessages = this.xmppService.readReceipts;
+    });
+  }
+
+  private updateMessageStatus(newStatus: number, conversationId: string, messageId?: string) {
+    const conversation = this.conversations.find((c: Conversation) => c.id === conversationId);
+    if (messageId) {
+      const message = conversation.messages.find((m: Message) => m.id === messageId);
+      if (message) {
+        this.conversationService.markAs(newStatus, message, conversation);
+      }
+    } else {
+      this.conversationService.markAllAsRead(conversation);
+    }
   }
 
   public loadMore() {
@@ -118,6 +149,16 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       if (conversations && conversations.length > 0) {
         this.conversations = conversations;
         this.loading = false;
+        if (this.receivedMessages.length) {
+          this.receivedMessages.forEach(m => {
+            this.updateMessageStatus(messageStatus.RECEIVED, m.thread, m.id);
+          });
+        }
+        if (this.readMessages.length) {
+          this.readMessages.forEach(m => {
+            this.updateMessageStatus(messageStatus.READ, m.thread, m.id);
+          });
+        }
         if (!this.currentConversationSet) {
           this.setCurrentConversationFromQueryParams();
         }
@@ -181,7 +222,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   }
 
   private sendRead(message: Message) {
-    debugger;
     if (this.conversation && this.conversation.id === message.conversationId && !message.fromSelf) {
       Visibility.onVisible(() => {
         setTimeout(() => {

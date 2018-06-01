@@ -27,6 +27,9 @@ export class XmppService {
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private sentAckSubscription: ISubscription;
+  public totalUnreadMessages = 0;
+  public receivedReceipts = [];
+  public readReceipts = [];
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
@@ -88,13 +91,14 @@ export class XmppService {
     this.client.sendMessage(message);
   }
 
-  public sendConversationStatus(userId: string, conversationId: string) {
+    public sendConversationStatus(userId: string, conversation: Conversation) { // TODO unreadMessages: Message[]
     this.client.sendMessage({
       to: this.createJid(userId),
+        type: 'chat',
+        thread: conversation.id,
       read: {
         xmlns: 'wallapop:thread:status'
-      },
-      thread: conversationId
+        }
     });
   }
 
@@ -169,6 +173,11 @@ export class XmppService {
             }
           } else if (message.receivedId) {
             this.confirmedMessages.push(message.receivedId);
+            this.receivedReceipts.push({id: message.receivedId, thread: message.thread});
+            this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, message.receivedId);
+          } else if (message.readTimestamp) {
+            this.readReceipts.push(message);
+            this.eventService.emit(EventService.MESSAGE_READ, message.thread, message.receivedId);
           }
           query.then((response: any) => {
             const meta: any = response.mam.rsm;
@@ -319,12 +328,16 @@ export class XmppService {
       }
     }
     let messageId: string = null;
-    if (message.timestamp && message.receipt) {
+    if (message.timestamp && message.receipt && message.from.local !== message.to.local) {
       messageId = message.receipt;
+      this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
+    }
     if (message.sentReceipt) {
       messageId = message.sentReceipt.id;
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
+    if (message.readReceipt) {
+      this.eventService.emit(EventService.MESSAGE_READ, message.thread);
     } else {
       messageId = message.id;
     }
@@ -466,11 +479,19 @@ export class XmppService {
         xmlns: types.attribute('xmlns')
       }
     });
+    const readReceipt = {
+      get: function get() {
+        const readSignal = this.xml.getElementsByTagName('read')[0];
+        if (readSignal) {
+          return readSignal.attrs;
+        }
+      }
+    };
     const sentReceipt = {
       get: function get() {
-        const sent = this.xml.getElementsByTagName('sent')[0];
-        if (sent) {
-          return sent.attrs;
+        const sentSignal = this.xml.getElementsByTagName('sent')[0];
+        if (sentSignal) {
+          return sentSignal.attrs;
         }
       }
     };
@@ -480,6 +501,7 @@ export class XmppService {
       stanzas.extend(Message, received);
       stanzas.extend(Message, request);
       stanzas.add(Message, 'sentReceipt', sentReceipt);
+      stanzas.add(Message, 'readReceipt', readReceipt);
     });
   }
 
@@ -610,6 +632,8 @@ export class XmppService {
         const body: any = _.find(message.children, {name: 'body'});
         const thread: any = _.find(message.children, {name: 'thread'});
         const received: any = _.find(message.children, {name: 'received'});
+        const read: any = _.find(message.children, {name: 'read'});
+        const sent: any = _.find(message.children, {name: 'sent'});
         const payload: any = _.find(message.children, {name: 'payload'});
         return {
           id: message.attrs.id,
@@ -620,6 +644,8 @@ export class XmppService {
           thread: thread ? thread.children[0] : null,
           ref: xml.children[0].attrs.id,
           receivedId: received ? received.attrs.id : null,
+          readTimestamp: read ? read.parent.children[0].children[0] : null,
+          sent: sent ? sent.attrs : null,
           payload: payload ? JSON.parse(payload.children[0]) : null
         };
       }

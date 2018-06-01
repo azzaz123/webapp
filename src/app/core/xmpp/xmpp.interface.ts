@@ -18,7 +18,7 @@ export interface XMPPClient {
 
 export interface XmppMessage {
   id?: string;
-  to: string;
+  to: string | any;
   thread: string;
   read?: any;
   status?: number;
@@ -28,6 +28,7 @@ export interface XmppMessage {
   request?: any;
   requestReceipt?: boolean;
   sentReceipt?: any;
+  readReceipt?: any;
 }
 export interface XmppTimestampMessage {
   id: string;

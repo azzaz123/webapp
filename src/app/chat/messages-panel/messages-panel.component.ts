@@ -17,9 +17,11 @@ export class MessagesPanelComponent implements AfterViewChecked, OnChanges, OnIn
   @ViewChild('messagesPanel') messagesPanel: ElementRef;
   public momentConfig: any;
   private alreadyScrolled: boolean;
-  private messageSentAckSubscription: Subscription;
+  private newMessageSubscription: Subscription;
 
-  constructor(i18n: I18nService, private event: EventService, private persistencyService: PersistencyService) {
+  constructor(i18n: I18nService,
+              private event: EventService,
+              private persistencyService: PersistencyService) {
     this.momentConfig = i18n.getTranslations('daysMomentConfig');
   }
 
@@ -39,26 +41,10 @@ export class MessagesPanelComponent implements AfterViewChecked, OnChanges, OnIn
   }
 
   ngOnInit() {
-
-    this.messageSentAckSubscription = this.event.subscribe(EventService.MESSAGE_SENT_ACK, (thread, messageId) => {
-      if (this.currentConversation.id === thread) {
-        this.markAs(messageStatus.SENT, messageId);
-      }
-    });
+    this.newMessageSubscription = this.event.subscribe(EventService.NEW_MESSAGE, () => this.alreadyScrolled = false);
   }
 
   ngOnDestroy() {
-    this.messageSentAckSubscription.unsubscribe();
-  }
-
-  private markAs(newStatus: number, messageId: string) {
-    this.currentConversation.messages.filter((message) => {
-      return message.id === messageId;
-    }).forEach((message) => {
-      if (!message.status || message.status < newStatus) {
-        message.status = newStatus;
-        this.persistencyService.updateMessageStatus(messageId, newStatus);
-      }
-    });
+    this.newMessageSubscription.unsubscribe();
   }
 }
