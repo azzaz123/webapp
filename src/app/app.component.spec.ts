@@ -32,9 +32,9 @@ import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
 import { PrivacyService } from './core/privacy/privacy.service';
-import { MOCK_PRIVACY_ALLOW, MOCK_PRIVACY_UNKNOW } from './core/privacy/privacy';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
+import { MOCK_PRIVACY_ALLOW, MOCK_PRIVACY_UNKNOW } from './core/privacy/privacy.fixtures.spec';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;

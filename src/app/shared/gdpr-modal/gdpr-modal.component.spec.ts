@@ -7,7 +7,8 @@ import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../environments/environment';
 import { PrivacyService } from '../../core/privacy/privacy.service';
-import { PrivacyRequestData } from '../../core/privacy/privacy';
+import { PrivacyRequestData } from '../../core/privacy/privacy.interface';
+import { MOCK_PRIVACY_UPDATE_ALLOW, MOCK_PRIVACY_UPDATE_DISALLOW } from '../../core/privacy/privacy.fixtures.spec';
 
 describe('GdprModalComponent', () => {
   let component: GdprModalComponent;
@@ -85,14 +86,9 @@ describe('GdprModalComponent', () => {
       component.allowSegmentation = false;
       component.acceptPrivacy = false;
 
-      const permission = {
-        ...new PrivacyRequestData('gdpr_display', '0', false),
-        ...new PrivacyRequestData('privacy_policy', '0', false),
-      };
-
       component.setGRPRPermission();
 
-      expect(privacyService.updatePrivacy).toHaveBeenCalledWith(permission);
+      expect(privacyService.updatePrivacy).toHaveBeenCalledWith(MOCK_PRIVACY_UPDATE_DISALLOW);
     });
 
     it('should call updatePrivacy with gdpr_display and privacy_policy true', () => {
@@ -101,14 +97,9 @@ describe('GdprModalComponent', () => {
       component.allowSegmentation = true;
       component.acceptPrivacy = true;
 
-      const permission = {
-        ...new PrivacyRequestData('gdpr_display', '0', true),
-        ...new PrivacyRequestData('privacy_policy', '0', true),
-      };
-
       component.setGRPRPermission();
 
-      expect(privacyService.updatePrivacy).toHaveBeenCalledWith(permission);
+      expect(privacyService.updatePrivacy).toHaveBeenCalledWith(MOCK_PRIVACY_UPDATE_ALLOW);
     });
 
     it('should close modal ', () => {

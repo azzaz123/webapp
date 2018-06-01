@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpService } from '../../core/http/http.service';
 import { environment } from '../../../environments/environment';
 import { PrivacyService } from '../../core/privacy/privacy.service';
-import { PrivacyRequestData } from '../../core/privacy/privacy';
+import { PrivacyRequestData } from '../../core/privacy/privacy.interface';
 
 @Component({
   selector: 'tsl-gdpr-modal',
@@ -36,8 +36,14 @@ export class GdprModalComponent implements OnInit {
 
   setGRPRPermission() {
     this.privacyService.updatePrivacy({
-      ...new PrivacyRequestData('gdpr_display', '0', this.allowSegmentation),
-      ...new PrivacyRequestData('privacy_policy', '0', this.acceptPrivacy),
+      gdpr_display: {
+        version: '0',
+        allow: this.allowSegmentation
+      },
+      privacy_policy: {
+        version: '0',
+        allow: this.acceptPrivacy
+      }
     }).subscribe(null, null, () => {
       this.activeModal.close();
     });

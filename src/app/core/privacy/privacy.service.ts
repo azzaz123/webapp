@@ -4,10 +4,15 @@ import { HttpService } from '../http/http.service';
 import {
   PrivacyRequestData,
   PrivacyList,
-  PrivacyVersionItem,
-  PRIVACY_STATUS
-} from './privacy';
+  PrivacyVersionItem
+} from './privacy.interface';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
+export const PRIVACY_STATUS = {
+  allow: 'allow',
+  disallow: 'disallow',
+  unknown: 'unknown'
+};
 
 @Injectable()
 export class PrivacyService {

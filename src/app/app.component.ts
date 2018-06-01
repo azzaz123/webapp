@@ -28,8 +28,7 @@ import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
 import { Message } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
-import { PrivacyService } from './core/privacy/privacy.service';
-import { PRIVACY_STATUS } from './core/privacy/privacy';
+import { PrivacyService, PRIVACY_STATUS } from './core/privacy/privacy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
 

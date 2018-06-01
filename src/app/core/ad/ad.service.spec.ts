@@ -315,7 +315,7 @@ describe('AdService', () => {
           expect(apstag.setDisplayBids).not.toHaveBeenCalled();
           discardPeriodicTasks();
         }));
-        //
+
         it('should not call Criteo SetLineItemRanges', fakeAsync(() => {
           spyOn(Criteo, 'SetLineItemRanges');
 
