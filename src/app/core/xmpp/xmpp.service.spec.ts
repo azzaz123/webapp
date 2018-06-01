@@ -13,7 +13,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { MessagePayload } from '../message/messages.interface';
-import { MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
+import { MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK, MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 
 let mamFirstIndex = '1899';
@@ -1251,13 +1251,34 @@ describe('Service: Xmpp', () => {
   });
 
   describe('sendMessage', () => {
-    it('should send appboy FirstMessage event', () => {
-      spyOn(appboy, 'logCustomEvent');
 
-      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+    describe('Appboy FirstMessage event', () => {
+      beforeEach(() => {
+        service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+        MOCKED_CONVERSATIONS[0].messages = [];
+        spyOn(appboy, 'logCustomEvent');
+      });
 
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('FirstMessage', {platform: 'web'});
+      it('should send event if is the first message', () => {
+        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+
+        expect(appboy.logCustomEvent).toHaveBeenCalledWith('FirstMessage', {platform: 'web'});
+      });
+
+      it('should not send event if the conversation is already created', () => {
+        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
+        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+
+        expect(appboy.logCustomEvent).not.toHaveBeenCalled();
+      });
+
+      it('should send event once if more than one message is sended', () => {
+        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
+        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+
+        expect(appboy.logCustomEvent).toHaveBeenCalledTimes(1);
+      });
     });
   });
 
