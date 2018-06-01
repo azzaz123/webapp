@@ -77,25 +77,15 @@ export class XmppService {
       to_user_id: conversation.user.id,
       item_id: conversation.item.id
     });
-    this.sentAckSubscription = this.eventService.subscribe(EventService.MESSAGE_SENT_ACK, () => {
-      this.trackingService.track(TrackingService.MESSAGE_SENT_ACK, {
-        thread_id: message.thread,
-        message_id: message.id,
-        to_user_id: conversation.user.id,
-        item_id: conversation.item.id
-      });
-      this.sentAckSubscription.unsubscribe();
-    });
-
     this.onNewMessage(_.clone(message));
     this.client.sendMessage(message);
   }
 
-    public sendConversationStatus(userId: string, conversation: Conversation) { // TODO unreadMessages: Message[]
+    public sendConversationStatus(userId: string, conversationId: string) {
     this.client.sendMessage({
       to: this.createJid(userId),
         type: 'chat',
-        thread: conversation.id,
+        thread: conversationId,
       read: {
         xmlns: 'wallapop:thread:status'
         }
