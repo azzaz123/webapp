@@ -15,6 +15,7 @@ export class GdprModalComponent implements OnInit {
   public allowSegmentation = false;
   public acceptPrivacy = false;
   public gdprText = '';
+  public showSecondGdrpScreen = false;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -45,6 +46,21 @@ export class GdprModalComponent implements OnInit {
         allow: this.acceptPrivacy
       }
     }).subscribe(null, null, () => {
+      if (!this.allowSegmentation) {
+        this.showSecondGdrpScreen = true;
+      } else {
+        this.activeModal.close();
+      }
+    });
+  }
+
+  acceptAllowSegmentation() {
+    this.privacyService.updatePrivacy({
+      gdpr_display: {
+        version: '0',
+        allow: true
+      }
+    }).subscribe(null, null, () => {
       this.activeModal.close();
     });
   }
@@ -63,6 +79,5 @@ export class GdprModalComponent implements OnInit {
     const urlParts = regexParse.exec(hostname);
     return hostname.replace(urlParts[0],'').slice(0, -1);
   }
-
 
 }

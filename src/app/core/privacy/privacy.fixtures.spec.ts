@@ -60,6 +60,12 @@ export const MOCK_PRIVACY_UPDATE_ALLOW: PrivacyRequestData = {
   }
 };
 
+export const MOCK_PRIVACY_UPDATE_GDPR_ALLOW: PrivacyRequestData = {
+  gdpr_display: {
+    version: '0',
+    allow: true
+  }
+};
 
 export const MOCK_PRIVACY_UPDATE_DISALLOW: PrivacyRequestData = {
   gdpr_display: {

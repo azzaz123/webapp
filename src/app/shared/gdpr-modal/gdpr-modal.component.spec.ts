@@ -7,8 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../environments/environment';
 import { PrivacyService } from '../../core/privacy/privacy.service';
-import { PrivacyRequestData } from '../../core/privacy/privacy.interface';
-import { MOCK_PRIVACY_UPDATE_ALLOW, MOCK_PRIVACY_UPDATE_DISALLOW } from '../../core/privacy/privacy.fixtures.spec';
+import { MOCK_PRIVACY_UPDATE_ALLOW, MOCK_PRIVACY_UPDATE_DISALLOW, MOCK_PRIVACY_UPDATE_GDPR_ALLOW } from '../../core/privacy/privacy.fixtures.spec';
 
 describe('GdprModalComponent', () => {
   let component: GdprModalComponent;
@@ -102,13 +101,43 @@ describe('GdprModalComponent', () => {
       expect(privacyService.updatePrivacy).toHaveBeenCalledWith(MOCK_PRIVACY_UPDATE_ALLOW);
     });
 
-    it('should close modal ', () => {
+    it('should close modal when allowSegmentation is false', () => {
       spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of());
       spyOn(activeModal, 'close');
+      component.allowSegmentation = true;
 
       component.setGRPRPermission();
 
       expect(activeModal.close).toHaveBeenCalled();
     });
+
+    it('should change gdpr second screen when allowSegmentation is true', () => {
+      spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of());
+      component.allowSegmentation = true;
+
+      component.setGRPRPermission();
+
+      expect(component.showSecondGdrpScreen).toEqual(true);
+    });
+  });
+
+  describe('acceptAllowSegmentation', () => {
+    it('should close modal', () => {
+      spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of());
+      spyOn(activeModal, 'close')
+
+      component.acceptAllowSegmentation();
+
+      expect(activeModal.close).toHaveBeenCalled();
+    });
+
+    it('should call updatePrivacy', () => {
+      spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of());
+
+      component.acceptAllowSegmentation();
+
+      expect(privacyService.updatePrivacy).toHaveBeenCalledWith(MOCK_PRIVACY_UPDATE_GDPR_ALLOW);
+    });
+
   });
 });
