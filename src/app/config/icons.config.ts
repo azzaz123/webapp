@@ -74,6 +74,15 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('cat_toolbox', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Services.svg'));
   matIconRegistry.addSvgIcon('cat_ball', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Sports.svg'));
   matIconRegistry.addSvgIcon('cat_gamepad', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Videogames.svg'));
+  matIconRegistry.addSvgIcon('cat_motorbike', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/motos.svg'));
+  matIconRegistry.addSvgIcon('cat_tv', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/tv.svg'));
+  matIconRegistry.addSvgIcon('cat_pc', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/computing.svg'));
+  matIconRegistry.addSvgIcon('cat_phone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/electronics.svg'));
+  matIconRegistry.addSvgIcon('cat_bike', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/bikes.svg'));
+  matIconRegistry.addSvgIcon('cat_collecting', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/collecting.svg'));
+  matIconRegistry.addSvgIcon('cat_building', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/construction.svg'));
+  matIconRegistry.addSvgIcon('cat_farming', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/agriculture.svg'));
+  matIconRegistry.addSvgIcon('cat_jobs', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/stroke/job.svg'));
   matIconRegistry.addSvgIcon('send', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/send.svg'));
   matIconRegistry.addSvgIcon('wall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wall.svg'));
   matIconRegistry.addSvgIcon('check', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/check.svg'));
