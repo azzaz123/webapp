@@ -289,7 +289,7 @@ export class ConversationService extends LeadService {
   }
 
   public markAs(newStatus: string, message: Message, conversation: Conversation) {
-    if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status)) {
+    if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
       message.status = newStatus;
       this.persistencyService.updateMessageStatus(message.id, newStatus);
       if (newStatus === messageStatus.SENT) {

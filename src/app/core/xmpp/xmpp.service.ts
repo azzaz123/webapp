@@ -13,6 +13,7 @@ import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
 import { ISubscription } from 'rxjs/Subscription';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class XmppService {
@@ -30,9 +31,11 @@ export class XmppService {
   public totalUnreadMessages = 0;
   public receivedReceipts = [];
   public readReceipts = [];
+  private readTimestamps = {};
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
+              private userService: UserService,
               private trackingService: TrackingService) {
   }
 
@@ -160,6 +163,9 @@ export class XmppService {
             const builtMessage: Message = this.buildMessage(message);
             if (!message.payload || this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1) {
               messages.push(builtMessage);
+              if (this.messageFromSelf(builtMessage) && builtMessage.status === null) {
+                builtMessage.status = messageStatus.SENT;
+            }
             }
           } else if (message.receivedId) {
             this.confirmedMessages.push(message.receivedId);
@@ -213,22 +219,41 @@ export class XmppService {
     this.client.on('*', (k, v) => console.debug(k, v));
   }
 
+  private messageFromSelf(message) {
+    return message.from.split('@')[0] === this.userService.user.id;
+  }
+
   private checkReceivedMessages(messages: Message[]): Message[] {
-    messages.forEach((message: Message) => {
+    messages.filter(message => this.messageFromSelf(message))
+      .forEach((message: Message) => {
       const index: number = this.confirmedMessages.indexOf(message.id);
       if (index !== -1) {
-        message.read = true;
+        message.status = messageStatus.RECEIVED;
         this.confirmedMessages.splice(index, 1);
       }
     });
     return messages;
   }
 
+  public getLastReadTimestamps() {
+    this.readReceipts.filter(m => !this.messageFromSelf(m)).forEach((t) => {
+      if (!this.readTimestamps[t.thread]) {
+        this.readTimestamps[t.thread] = {
+          thread: t.thread,
+          timestamp: new Date(t.readTimestamp),
+        };
+      } else if (Date.parse(t.readTimestamp) > Date.parse(this.readTimestamps[t.thread].timestamp))  {
+        this.readTimestamps[t.thread].timestamp =  t.readTimestamp;
+  }
+    });
   private confirmNotConfirmedMessages(messages: Message[]) {
+    this.getLastReadTimestamps();
     messages.forEach((message: Message) => {
-      if (!message.read) {
+      if (!this.messageFromSelf(message)) {
         this.sendMessageDeliveryReceipt(message.from, message.id, message.conversationId);
-        message.read = true;
+      } else if (this.readTimestamps[message.conversationId] &&
+                  Date.parse(message.date.toString()) < Date.parse(this.readTimestamps[message.conversationId].timestamp)) {
+        message.status = messageStatus.READ;
       }
     });
     return messages;
@@ -320,20 +345,23 @@ export class XmppService {
     let messageId: string = null;
     if (message.timestamp && message.receipt && message.from.local !== message.to.local) {
       messageId = message.receipt;
+      message.status = messageStatus.RECEIVED;
       this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
     }
     if (message.sentReceipt) {
+      message.status = messageStatus.SENT;
       messageId = message.sentReceipt.id;
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
     if (message.readReceipt) {
+      message.status = messageStatus.READ;
       this.eventService.emit(EventService.MESSAGE_READ, message.thread);
     } else {
       messageId = message.id;
     }
 
     return new Message(messageId, message.thread, message.body, (message.from.full || message.from),
-                       new Date(message.date), null, message.payload);
+                       new Date(message.date), (message.status || null), message.payload);
   }
 
   private sendMessageDeliveryReceipt(to: any, id: string, thread: string) {

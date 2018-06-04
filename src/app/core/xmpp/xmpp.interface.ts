@@ -21,7 +21,7 @@ export interface XmppMessage {
   to: string | any;
   thread: string;
   read?: any;
-  status?: number;
+  status?: string;
   type?: string;
   received?: any;
   receipt?: string;

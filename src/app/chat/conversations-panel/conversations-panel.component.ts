@@ -100,7 +100,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     const conversation = this.conversations.find((c: Conversation) => c.id === conversationId);
     if (messageId) {
       const message = conversation.messages.find((m: Message) => m.id === messageId);
-      if (message) {
+      if (message && message.status !== newStatus) {
         this.conversationService.markAs(newStatus, message, conversation);
       }
     } else {
@@ -153,11 +153,13 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
           this.receivedMessages.forEach(m => {
             this.updateMessageStatus(messageStatus.RECEIVED, m.thread, m.id);
           });
+          this.receivedMessages = [];
         }
         if (this.readMessages.length) {
           this.readMessages.forEach(m => {
             this.updateMessageStatus(messageStatus.READ, m.thread, m.id);
           });
+          this.readMessages = [];
         }
         if (!this.currentConversationSet) {
           this.setCurrentConversationFromQueryParams();
