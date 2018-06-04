@@ -30,6 +30,7 @@ import { Message } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
+import { Item } from './core/item/item';
 
 @Component({
   selector: 'tsl-root',
@@ -77,6 +78,7 @@ export class AppComponent implements OnInit {
     this.subscribeUnreadMessages();
     this.subscribeEventNewMessage();
     this.subscribeEventClientDisconnect();
+    this.subscribeEventItemUpdated();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
@@ -193,6 +195,13 @@ export class AppComponent implements OnInit {
 
   private subscribeEventClientDisconnect() {
     this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => this.conversationService.resetCache());
+  }
+
+  private subscribeEventItemUpdated() {
+    this.event.subscribe(EventService.ITEM_UPDATED, (item: Item) => {
+      this.conversationService.syncItem(item);
+      this.callService.syncItem(item);
+    });
   }
 
   private setTitle() {
