@@ -1,4 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response, ResponseOptions } from '@angular/http';
 import { GdprModalComponent } from './gdpr-modal.component';
@@ -12,6 +13,8 @@ import { MOCK_PRIVACY_UPDATE_ALLOW, MOCK_PRIVACY_UPDATE_DISALLOW, MOCK_PRIVACY_U
 describe('GdprModalComponent', () => {
   let component: GdprModalComponent;
   let fixture: ComponentFixture<GdprModalComponent>;
+  let de: DebugElement;
+  let el: HTMLElement;
   let http: HttpService;
   let privacyService: PrivacyService;
   let activeModal: NgbActiveModal;
@@ -41,6 +44,8 @@ describe('GdprModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GdprModalComponent);
     component = fixture.componentInstance;
+    de = fixture.debugElement;
+    el = de.nativeElement;
     http = TestBed.get(HttpService);
     privacyService = TestBed.get(PrivacyService);
     activeModal = TestBed.get(NgbActiveModal);
@@ -111,14 +116,27 @@ describe('GdprModalComponent', () => {
       expect(activeModal.close).toHaveBeenCalled();
     });
 
-    it('should change gdpr second screen when allowSegmentation is true', () => {
+    it('should show gdpr second screen when showSecondGdrpScreen is true', fakeAsync(() => {
       spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of());
-      component.allowSegmentation = true;
+      component.showSecondGdrpScreen = true;
+
+      fixture.detectChanges();
+      tick();
+
+      const element = el.querySelector('.gdpr-second-modal');
+      expect(element).toBeDefined();
+    }));
+
+    it('should hide gdpr second screen when showSecondGdrpScreen is true', fakeAsync(() => {
+      spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of());
+      component.showSecondGdrpScreen = false;
 
       component.setGRPRPermission();
+      tick();
 
-      expect(component.showSecondGdrpScreen).toEqual(true);
-    });
+      const element = el.querySelector('.gdpr-second-modal');
+      expect(element).toBeNull();
+    }));
   });
 
   describe('acceptAllowSegmentation', () => {
