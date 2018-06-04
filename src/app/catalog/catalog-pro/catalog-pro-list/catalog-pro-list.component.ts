@@ -165,10 +165,10 @@ export class CatalogProListComponent implements OnInit {
       } else {
         this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {total_products: items.length});
       }
-
       this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {page_number: this.page});
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
+      this.end = true;
       if (this.uploadModalRef) {
         this.uploadModalRef.componentInstance.item = this.items[0];
         this.uploadModalRef.componentInstance.urgentPrice();
@@ -198,6 +198,7 @@ export class CatalogProListComponent implements OnInit {
     this.selectedStatus = status;
     this.itemService.deselectItems();
     this.page = 1;
+    this.cache = false;
     this.getItems();
     this.getNumberOfProducts();
   }
