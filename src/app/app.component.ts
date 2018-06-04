@@ -198,10 +198,13 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeEventItemUpdated() {
-    this.event.subscribe(EventService.ITEM_UPDATED, (item: Item) => {
+    const syncItem = (item: Item) => {
       this.conversationService.syncItem(item);
       this.callService.syncItem(item);
-    });
+    };
+    this.event.subscribe(EventService.ITEM_UPDATED, syncItem);
+    this.event.subscribe(EventService.ITEM_SOLD, syncItem);
+    this.event.subscribe(EventService.ITEM_RESERVED, syncItem);
   }
 
   private setTitle() {

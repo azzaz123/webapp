@@ -59,10 +59,12 @@ export class CatalogCardComponent implements OnInit {
       this.itemService.selectedAction = 'reserve';
       this.itemService.reserveItem(item.id, true).subscribe(() => {
         item.reserved = true;
+        this.eventService.emit(EventService.ITEM_RESERVED, item);
       });
     } else {
       this.itemService.reserveItem(item.id, false).subscribe(() => {
         item.reserved = false;
+        this.eventService.emit(EventService.ITEM_RESERVED, item);
       });
     }
   }
@@ -80,7 +82,7 @@ export class CatalogCardComponent implements OnInit {
       });
     });
   }
-  
+
   private setBumpName(): string {
     const bumpType = this.item.purchases.bump_type || this.item.purchases.scheduled_bump_type;
     return this.i18n.getTranslations(bumpType);

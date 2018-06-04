@@ -21,6 +21,7 @@ export class EventService {
   public static LEAD_ARCHIVED = 'leadArchived';
   public static ITEM_SOLD = 'itemSold';
   public static ITEM_UPDATED = 'itemUpdated';
+  public static ITEM_RESERVED = 'itemReserved';
   public static USER_BLOCKED = 'userBlocked';
   public static USER_UNBLOCKED = 'userUnblocked';
   public static FIND_CONVERSATION = 'findConversation';
