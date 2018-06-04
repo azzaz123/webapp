@@ -72,8 +72,8 @@ $avatar-size: 40px;
   bottom: $spacing-1S;
   right: $spacing-S;
   width: $spacing;
-  height: $spacing-XS;
-  background: right center no-repeat;
+  height: $spacing;
+  background: right bottom no-repeat;
   &.pending { background-image: url(/assets/icons/status-pending.svg); }
   &.sent { background-image: url(/assets/icons/status-sent.svg); }
   &.received { background-image: url(/assets/icons/status-received.svg); }
