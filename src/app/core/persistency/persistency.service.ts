@@ -118,7 +118,7 @@ export class PersistencyService {
     );
   }
 
-  public updateMessageStatus(messageId: string, newStatus) {
+  public updateMessageStatus(messageId: string, newStatus: string) {
     return Observable.fromPromise(this.upsert(this.messagesDb, messageId, (doc: Document<any>) => {
       if (doc.status !== newStatus) {
         doc.status = newStatus;

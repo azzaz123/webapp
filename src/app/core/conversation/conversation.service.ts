@@ -8,7 +8,7 @@ import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { MessageService } from '../message/message.service';
-import { Message, messageStatus } from '../message/message';
+import { Message, messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { MessagesData, StoredConversation } from '../message/messages.interface';
@@ -265,19 +265,19 @@ export class ConversationService extends LeadService {
     }
   }
 
-  private addStatusToStoredMessages(conversation: Conversation) {
+  private addStatusToStoredMessages(conversation: Conversation, newStatus: string) {
     this.persistencyService.localDbVersionUpdate(1.1, () => {
       conversation.messages.filter((message) => {
-        return isNaN(message.status) && message.fromSelf;
+        return message.fromSelf && typeof message.status !== 'string';
       }).forEach((message) => {
-        message.status = messageStatus.READ;
-        this.persistencyService.updateMessageStatus(message.id, messageStatus.READ);
+        message.status = newStatus;
+        this.persistencyService.updateMessageStatus(message.id, newStatus);
       });
     });
   }
 
   public markAllAsRead(conversation: Conversation) {
-    this.addStatusToStoredMessages(conversation);
+    this.addStatusToStoredMessages(conversation, messageStatus.READ);
     conversation.messages.filter((message) => {
       return (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT) && message.fromSelf;
     })
@@ -288,8 +288,8 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public markAs(newStatus: number, message: Message, conversation: Conversation) {
-    if (!message.status || message.status < newStatus) {
+  public markAs(newStatus: string, message: Message, conversation: Conversation) {
+    if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status)) {
       message.status = newStatus;
       this.persistencyService.updateMessageStatus(message.id, newStatus);
       if (newStatus === messageStatus.SENT) {

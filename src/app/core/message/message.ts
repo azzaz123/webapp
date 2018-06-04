@@ -3,11 +3,13 @@ import { User } from '../user/user';
 import { MessagePayload } from './messages.interface';
 
 export const messageStatus = {
-  PENDING: 0,
-  SENT: 1,
-  RECEIVED: 2,
-  READ: 3
+  PENDING: 'pending',
+  SENT: 'sent',
+  RECEIVED: 'received',
+  READ: 'read'
 };
+
+export const statusOrder = [messageStatus.PENDING, messageStatus.SENT, messageStatus.RECEIVED, messageStatus.READ];
 
 export class Message implements Model {
 
@@ -19,7 +21,7 @@ export class Message implements Model {
               private _message: string,
               private _from: string,
               private _date?: Date,
-              private _status?: number,
+              private _status?: string,
               private _payload?: MessagePayload) {
   }
 
@@ -43,11 +45,11 @@ export class Message implements Model {
     this._date = value;
   }
 
-  get status(): number {
+  get status(): string {
     return this._status;
   }
 
-  set status(value: number) {
+  set status(value: string) {
     this._status = value;
   }
 
