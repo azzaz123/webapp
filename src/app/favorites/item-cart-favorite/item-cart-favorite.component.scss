@@ -31,10 +31,6 @@ tsl-card {
 
     .cart-footer-icon {
       position: absolute;
-      g {
-        stroke: $color-favorite-icon-stroke;
-      }
-
       &.active g {
         fill: $color-favorite-icon-fill;
       }

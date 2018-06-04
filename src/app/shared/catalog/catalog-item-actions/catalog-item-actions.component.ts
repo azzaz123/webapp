@@ -75,6 +75,7 @@ export class CatalogItemActionsComponent implements OnInit {
         response.updatedIds.forEach((id: string) => {
           let index: number = _.findIndex(this.items, {'id': id});
           this.items.splice(index, 1);
+          this.getCounters.emit();
         });
         if (response.failedIds.length) {
           this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));
