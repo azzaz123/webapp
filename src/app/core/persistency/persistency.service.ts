@@ -150,6 +150,7 @@ export class PersistencyService {
     this.getDbVersion().subscribe((response) => {
       if (response.version < newVersion) {
         callback();
+        this.saveDbVersion(newVersion);
       }
     }, (error) => {
       if (error.reason === 'missing') {
