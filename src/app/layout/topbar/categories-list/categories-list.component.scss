@@ -1,56 +1,51 @@
 @import "~style/common";
 
+$dropdown-height: 412px;
+$dropdown-width: 900px;
+
 #dropdown-main-search-btn {
-  & {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0 8px 0 0;
-    border-right: 1px solid $grey-100;
-    float: initial;
-    height: 100%;
-    width: 54px;
-    cursor: pointer;
-    position: relative;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 8px 0 0;
+  border-right: 1px solid $grey-100;
+  float: initial;
+  height: 100%;
+  width: 54px;
+  cursor: pointer;
+  position: relative;
   &.dropdown-toggle::after {
     display: none;
   }
+  .dropdown-item {
+    float: left;
+    clear: right;
+  }
   .dropdown-menu {
-    & {
-      padding: 0;
-      width: 320px;
-      border: solid 1px $color-grey-separator;
-    }
+    padding: 0;
+    border: solid 1px $color-grey-separator;
+    box-shadow: 0 2px 6px 0 rgba($grey-900, 0.05);
+    height: $dropdown-height;
+    width: $dropdown-width;
+    box-sizing: content-box;
+    overflow: hidden;
     li {
-      & {
-        background-color: transparent;
-        padding: 0;
-        position: relative;
-      }
-      .list-separator {
-        & {
-          border-bottom: 1px solid $grey-50;
-          margin-left: 16px;
-          position: absolute;
-          bottom: 0;
-          width: 95%;
-        }
-      }
+      background-color: transparent;
+      padding: 0;
+      position: relative;
+      height: $dropdown-height/4;
+      width: $dropdown-width/6;
       a {
-        & {
-          display: flex;
-          align-items: center;
-          padding: 0 1rem;
-          color: $grey-900;
-          height: 55px;
-          width: 100%;
-          overflow: hidden;
-          -webkit-transition: all .15s linear;
-          -moz-transition: all .15s linear;
-          -o-transition: all .15s linear;
-          transition: all .15s linear;
-        }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        float: left;
+        width: 100%; 
+        height: 100%;
+        color: $grey-900;
+        overflow: hidden;
+        transition: all .15s linear;
         i {
           vertical-align: middle;
         }
@@ -58,20 +53,18 @@
           vertical-align: middle;
         }
         .main-search-category-ico {
-          & {
-            margin-right: $spacing-S;
-            vertical-align: middle;
-          }
-          /deep/ svg g g {
-            fill: $grey-900;
-          }
+          width: 100%;
+          height: 45px;
         }
-        .main-search-category-ico, span {
-          vertical-align: middle;
+        span {
+          width: 70%;
+          font-size: 12px;
+          white-space: normal;
+          text-align: center;
         }
-        &:hover {
-          background-color: $grey-50;
-        }
+        // &:hover {
+        //   background-color: $grey-50;
+        // }
       }
     }
     &.active {
@@ -81,13 +74,11 @@
 }
 
 .topbar-icon {
-  & {
-    height: 36px;
-    width: 36px;
-    color: $grey-200;
-    vertical-align: middle;
-    vertical-align: middle;
-  }
+  height: 36px;
+  width: 36px;
+  color: $grey-200;
+  vertical-align: middle;
+  vertical-align: middle;
 }
 
 .arrow-icon {
@@ -98,20 +89,16 @@
 }
 
 .main-search-category-ico {
-  & {
-    height: 38px;
-    width: 38px;
-    stroke: $grey-200;
-  }
+  height: 38px;
+  width: 38px;
+  stroke: $grey-200;
 }
 
 .categories {
-  & {
-    color: $grey-900;
-    font-size: 14px;
-    line-height: 14px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
+  color: $grey-900;
+  font-size: 14px;
+  line-height: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
