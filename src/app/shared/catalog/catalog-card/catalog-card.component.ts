@@ -52,6 +52,7 @@ export class CatalogCardComponent implements OnInit {
       item: item,
       action: 'sold'
     });
+    this.eventService.emit(EventService.ITEM_SOLD, item);
   }
 
   public reserve(item: Item) {
