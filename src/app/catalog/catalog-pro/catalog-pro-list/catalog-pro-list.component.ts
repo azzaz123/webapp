@@ -142,6 +142,9 @@ export class CatalogProListComponent implements OnInit {
           }
         } else if (params && params.updated) {
           this.cache = false;
+          if (params.onHold) {
+            this.selectedStatus = 'pending';
+          }
           this.getItems();
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
