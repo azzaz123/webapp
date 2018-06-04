@@ -74,4 +74,8 @@
             [loading]="loading"
             (click)="saveAndCheckout()"
             i18n>Continue to Checkout</tsl-button>
+<div class="secure-payment">
+  <mat-icon svgIcon="secure-card"></mat-icon>
+  <span i18n>Secure payment through Sabadell</span>
+</div>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

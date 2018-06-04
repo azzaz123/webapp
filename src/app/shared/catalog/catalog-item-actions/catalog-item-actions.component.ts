@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import { TooManyItemsModalComponent } from '../modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from '../modals/already-featured-modal/already-featured-modal.component';
 import { Router } from '@angular/router';
+import { EventService } from '../../../core/event/event.service';
 
 @Component({
   selector:    'tsl-catalog-item-actions',
@@ -29,7 +30,8 @@ export class CatalogItemActionsComponent implements OnInit {
               private modalService: NgbModal,
               private toastr: ToastrService,
               private i18n: I18nService,
-              private router: Router) {
+              private router: Router,
+              private eventService: EventService) {
   }
 
   ngOnInit() {
@@ -39,6 +41,7 @@ export class CatalogItemActionsComponent implements OnInit {
     this.modalService.open(deactivateItemsModal).result.then(() => {
       this.itemService.bulkSetDeactivate().takeWhile(() => {
         this.trackingService.track(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
+        this.eventService.emit('itemChanged');
         return this.active;
       }).subscribe(() => this.getCounters.emit());
     });
@@ -50,6 +53,7 @@ export class CatalogItemActionsComponent implements OnInit {
         return this.active;
       }).subscribe((resp: any) => {
         this.getCounters.emit();
+        this.eventService.emit('itemChanged');
         if (resp.status === 406) {
           const modalRef: NgbModalRef = this.modalService.open(TooManyItemsModalComponent, {
             windowClass: 'bump'
@@ -67,9 +71,11 @@ export class CatalogItemActionsComponent implements OnInit {
         return this.active;
       }).subscribe((response: ItemBulkResponse) => {
         this.getCounters.emit();
+        this.eventService.emit('itemChanged');
         response.updatedIds.forEach((id: string) => {
           let index: number = _.findIndex(this.items, {'id': id});
           this.items.splice(index, 1);
+          this.getCounters.emit();
         });
         if (response.failedIds.length) {
           this.toastr.error(this.i18n.getTranslations('bulkDeleteError'));

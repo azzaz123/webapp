@@ -319,7 +319,7 @@ describe('CatalogProListComponent', () => {
       component['page'] = 2;
       component.filterByStatus('sold');
 
-      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'sold', undefined, true);
+      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'sold', undefined, false);
     });
   });
 

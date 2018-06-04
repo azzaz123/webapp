@@ -15,6 +15,7 @@ import { MomentModule } from 'angular2-moment';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { EventService } from '../../../core/event/event.service';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
@@ -24,6 +25,7 @@ describe('CatalogCardComponent', () => {
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
   let i18nService: I18nService;
+  let eventService: EventService;
   const modal: any = {modal: true};
   const componentInstance = {
     price: null,
@@ -78,7 +80,8 @@ describe('CatalogCardComponent', () => {
           }
         }
         },
-        {provide: 'SUBDOMAIN', useValue: 'es'}
+        {provide: 'SUBDOMAIN', useValue: 'es'},
+        EventService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -95,6 +98,7 @@ describe('CatalogCardComponent', () => {
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
     i18nService = TestBed.get(I18nService);
+    eventService = TestBed.get(EventService);
   });
 
   describe('select', () => {
