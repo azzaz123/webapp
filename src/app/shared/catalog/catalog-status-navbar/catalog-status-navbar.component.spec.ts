@@ -4,6 +4,7 @@ import { CatalogStatusNavbarComponent } from './catalog-status-navbar.component'
 import { PaymentService } from '../../../core/payments/payment.service';
 import { Observable } from 'rxjs/Observable';
 import { ScheduledStatus } from '../../../core/payments/payment.interface';
+import { EventService } from '../../../core/event/event.service';
 
 describe('CatalogStatusNavbarComponent', () => {
   let component: CatalogStatusNavbarComponent;
@@ -35,6 +36,7 @@ describe('CatalogStatusNavbarComponent', () => {
           }
         }
         },
+        EventService
       ]
     })
     .compileComponents();
