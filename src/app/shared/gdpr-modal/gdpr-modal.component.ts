@@ -3,7 +3,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpService } from '../../core/http/http.service';
 import { environment } from '../../../environments/environment';
 import { PrivacyService } from '../../core/privacy/privacy.service';
-import { PrivacyRequestData } from '../../core/privacy/privacy.interface';
 
 @Component({
   selector: 'tsl-gdpr-modal',
