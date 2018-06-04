@@ -62,21 +62,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('messages', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/messages.svg'));
   matIconRegistry.addSvgIcon('arrow-waterfall', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-waterfall.svg'));
   matIconRegistry.addSvgIcon('arrow-right', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/arrow-right.svg'));
-  // matIconRegistry.addSvgIcon('category_All', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_All.svg'));
-  // matIconRegistry.addSvgIcon('category_Appliances', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Appliances.svg'));
-  // matIconRegistry.addSvgIcon('category_Babies', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Babies.svg'));
-  // matIconRegistry.addSvgIcon('category_Cars', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Cars.svg'));
-  // matIconRegistry.addSvgIcon('category_Electronics', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Electronics.svg'));
-  // matIconRegistry.addSvgIcon('category_GamesBooks', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_GamesBooks.svg'));
-  // matIconRegistry.addSvgIcon('category_God', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_God.svg'));
-  // matIconRegistry.addSvgIcon('category_HomeGarden', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_HomeGarden.svg'));
-  // matIconRegistry.addSvgIcon('category_Housing', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Housing.svg'));
-  // matIconRegistry.addSvgIcon('category_Moda', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Moda.svg'));
-  // matIconRegistry.addSvgIcon('category_Motor', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Motor.svg'));
-  // matIconRegistry.addSvgIcon('category_Others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Others.svg'));
-  // matIconRegistry.addSvgIcon('category_Services', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Services.svg'));
-  // matIconRegistry.addSvgIcon('category_Sports', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Sports.svg'));
-  // matIconRegistry.addSvgIcon('category_Videogames', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Videogames.svg'));
   matIconRegistry.addSvgIcon('cat_laundry', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Appliances.svg'));
   matIconRegistry.addSvgIcon('cat_baby_car', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Babies.svg'));
   matIconRegistry.addSvgIcon('cat_smartphone', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/category_Electronics.svg'));
@@ -202,7 +187,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('plan-personal-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/personal1_selected.svg'));
   matIconRegistry.addSvgIcon('plan-personal-plus', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/personal2.svg'));
   matIconRegistry.addSvgIcon('secure-card', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/secure-card.svg'));
-
   matIconRegistry.addSvgIcon('category_Motorbike', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/motos.svg'));
   matIconRegistry.addSvgIcon('category_Cars', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/cars.svg'));
   matIconRegistry.addSvgIcon('category_MotorAccessories', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/motoraccesories.svg'));
@@ -224,4 +208,25 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('category_RealEstate', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/realstate.svg'));
   matIconRegistry.addSvgIcon('category_Services', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/services.svg'));
   matIconRegistry.addSvgIcon('category_Others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/others.svg'));
+  matIconRegistry.addSvgIcon('category_Motorbike-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/motos.svg'));
+  matIconRegistry.addSvgIcon('category_Cars-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/cars.svg'));
+  matIconRegistry.addSvgIcon('category_MotorAccessories-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/motoraccesories.svg'));
+  matIconRegistry.addSvgIcon('category_TVAudioCameras-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/tv.svg'));
+  matIconRegistry.addSvgIcon('category_ComputersElectronic-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/computing.svg'));
+  matIconRegistry.addSvgIcon('category_CellPhonesAccessories-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/electronics.svg'));
+  matIconRegistry.addSvgIcon('category_SportsLeisure-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/sports.svg'));
+  matIconRegistry.addSvgIcon('category_Bikes-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/bikes.svg'));
+  matIconRegistry.addSvgIcon('category_GamesConsoles-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/gaming.svg'));
+  matIconRegistry.addSvgIcon('category_HomeGarden-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/home.svg'));
+  matIconRegistry.addSvgIcon('category_FashionAccessories-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/fashion.svg'));
+  matIconRegistry.addSvgIcon('category_Appliances-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/electrodomestics.svg'));
+  matIconRegistry.addSvgIcon('category_GamesBooks-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/movies.svg'));
+  matIconRegistry.addSvgIcon('category_BabiesChild-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/babys.svg'));
+  matIconRegistry.addSvgIcon('category_CollectiblesArt-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/collecting.svg'));
+  matIconRegistry.addSvgIcon('category_Construction-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/construction.svg'));
+  matIconRegistry.addSvgIcon('category_AgricultureIndustrial-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/agriculture.svg'));
+  matIconRegistry.addSvgIcon('category_Jobs-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/job.svg'));
+  matIconRegistry.addSvgIcon('category_RealEstate-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/realstate.svg'));
+  matIconRegistry.addSvgIcon('category_Services-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/services.svg'));
+  matIconRegistry.addSvgIcon('category_Others-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/others.svg'));
 }

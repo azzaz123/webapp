@@ -4,7 +4,8 @@
   <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-left">
       <li class="dropdown-item" *ngFor="let category of categories">
         <a (click)="selectCategory(category)">
-          <mat-icon svgIcon="{{ category.iconName }}" class="main-search-category-ico"></mat-icon>
+          <mat-icon svgIcon="{{ category.iconName }}" class="category-icon"></mat-icon>
+          <mat-icon svgIcon="{{ category.iconName }}-hover" class="category-icon category-icon-hover"></mat-icon>
           <span>{{ category.title }}</span>
         </a>
       </li>
