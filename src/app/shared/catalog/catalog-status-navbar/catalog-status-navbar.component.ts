@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Counters } from '../../../core/user/user-stats.interface';
 import { ScheduledStatus } from '../../../core/payments/payment.interface';
 import { PaymentService } from '../../../core/payments/payment.service';
+import { EventService } from '../../../core/event/event.service';
 
 @Component({
   selector: 'tsl-catalog-status-navbar',
@@ -17,10 +18,14 @@ export class CatalogStatusNavbarComponent implements OnInit {
   private page: number;
   public bumpsCounter: number;
 
-  constructor(private paymentService: PaymentService) { }
+  constructor(private paymentService: PaymentService,
+              private eventService: EventService) { }
 
   ngOnInit() {
     this.getBumpedCounter();
+    this.eventService.subscribe('itemChanged', () => {
+      this.getBumpedCounter();
+    });
   }
 
   public selectStatus(status: string): void {

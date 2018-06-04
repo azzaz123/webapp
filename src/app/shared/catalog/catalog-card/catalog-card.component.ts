@@ -6,6 +6,7 @@ import { ItemService } from '../../../core/item/item.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { I18nService } from '../../../core/i18n/i18n.service';
+import { EventService } from '../../../core/event/event.service';
 
 @Component({
   selector: 'tsl-catalog-card',
@@ -24,7 +25,8 @@ export class CatalogCardComponent implements OnInit {
               private trackingService: TrackingService,
               private modalService: NgbModal,
               private errorService: ErrorsService,
-              private i18n: I18nService) { }
+              private i18n: I18nService,
+              private eventService: EventService) { }
 
   ngOnInit() {
     if (this.item.purchases) {
@@ -45,6 +47,7 @@ export class CatalogCardComponent implements OnInit {
 
   public setSold(item: Item) {
     this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+    this.eventService.emit('itemChanged');
     this.itemChange.emit({
       item: item,
       action: 'sold'
