@@ -216,7 +216,8 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         'id': 'CountryFeatured',
         'title': 'Country Featured',
         'valueField': 'country_bump',
-        'fillColors': '#b5d7f8'
+        'fillColors': '#b5d7f8',
+        'legendColor': '#56acff'
       });
     } else {
       this.chartOptions.graphs.push({
