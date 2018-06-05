@@ -134,9 +134,11 @@ describe('CatalogCardComponent', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
         spyOn(trackingService, 'track');
+        spyOn(eventService, 'emit');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
+
         component.setSold(item);
       }));
 
@@ -152,6 +154,10 @@ describe('CatalogCardComponent', () => {
       it('should track the DeleteItem event', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {product_id: item.id});
       });
+
+      it('should emit ITEM_SOLD event', () => {
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item)
+      });
     });
   });
 
@@ -162,8 +168,10 @@ describe('CatalogCardComponent', () => {
     describe('not reserved', () => {
       beforeEach(fakeAsync(() => {
         spyOn(itemService, 'reserveItem').and.callThrough();
+        spyOn(eventService, 'emit');
         item = MOCK_ITEM;
         item.reserved = false;
+
         component.reserve(item);
       }));
 
@@ -171,12 +179,17 @@ describe('CatalogCardComponent', () => {
         expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, true);
         expect(item.reserved).toBe(true);
       });
+
+      it('should emit ITEM_RESERVED event', () => {
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, item)
+      });
     });
 
     describe('already reserved', () => {
       beforeEach(() => {
         spyOn(itemService, 'reserveItem').and.callThrough();
         spyOn(trackingService, 'track');
+        spyOn(eventService, 'emit');
         item = MOCK_ITEM;
         item.reserved = true;
         component.reserve(item);
@@ -185,6 +198,10 @@ describe('CatalogCardComponent', () => {
       it('should call reserve with false', () => {
         expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, false);
         expect(item.reserved).toBe(false);
+      });
+
+      it('should emit ITEM_RESERVED event', () => {
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, item)
       });
     });
   });

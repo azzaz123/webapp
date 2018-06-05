@@ -18,7 +18,10 @@ import { Lead } from './lead';
 import { XmppService } from '../xmpp/xmpp.service';
 import { MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
-import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
+import {
+  CONVERSATIONS_DATA, createConversationsArray,
+  MOCK_CONVERSATION
+} from '../../../tests/conversation.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 
@@ -475,6 +478,21 @@ describe('LeadService', () => {
       });
       service.stream(true);
       expect(response).toEqual(CONVERSATIONS);
+    });
+  });
+
+  describe('syncItem', () => {
+    it('should replace item in leads and archivedLeads', () => {
+      const CONVERSATIONS: Conversation[] = createConversationsArray(4);
+      CONVERSATIONS[1].item = new Item('id', 1, '1');
+      const ITEM = new Item('id', 1, '1', 'new item');
+      service.leads = CONVERSATIONS;
+      service.archivedLeads = CONVERSATIONS;
+
+      service.syncItem(ITEM);
+
+      expect(service.leads[1].item).toEqual(ITEM);
+      expect(service.archivedLeads[1].item).toEqual(ITEM);
     });
   });
 });
