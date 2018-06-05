@@ -72,13 +72,15 @@ describe('SwitchComponent', () => {
     }));
   });
 
-  it('should emit onChange action, when switch is changed', () => {
+  it('should emit change action and set model, when switch is changed', () => {
     let inputValue: boolean;
-    component.onChange.subscribe( value => inputValue = value);
+    component.onChange.subscribe(value => inputValue = value);
 
     const element = el.querySelector('input[type=checkbox]') as HTMLInputElement;
     element.click();
 
     expect(inputValue).toBeTruthy();
+    expect(component.model).toBe(true);
+
   });
 });

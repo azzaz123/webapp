@@ -1,0 +1,40 @@
+@import "~style/common";
+
+:host {
+  display: inline-block;
+}
+::-webkit-input-placeholder {
+  color: $grey-300;
+}
+div {
+  width: 38px;
+  overflow: hidden;
+  border-bottom: 2px solid transparent;
+  transition: all .2s ease;
+  position: relative;
+  mat-icon {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: 0;
+    left: -7px;
+    pointer-events: none;
+    color: $grey-300;
+  }
+  input {
+    height: 36px;
+    border: 0;
+    color: $grey-300;
+    background: transparent;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: 0 18px 0 28px;
+  }
+  &.active {
+    width: 204px;
+    border-color: $corporate;
+  }
+}

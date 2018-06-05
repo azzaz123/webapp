@@ -19,6 +19,7 @@ import { ProfileModule } from './profile/profile.module';
 import { HttpClientModule } from '@angular/common/http';
 import { TutorialModule } from './tutorial/tutorial.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { CallsModule } from './calls/calls.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     FavoritesModule,
     ProfileModule,
     TutorialModule,
-    NgxPermissionsModule.forRoot()
+    NgxPermissionsModule.forRoot(),
+    CallsModule
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

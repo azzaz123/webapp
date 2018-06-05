@@ -1,3 +1,3 @@
-FROM nginx:1.13
+FROM nginx:stable
 COPY dist /usr/share/nginx/html/
 COPY docker/nginx.conf /etc/nginx/nginx.conf
