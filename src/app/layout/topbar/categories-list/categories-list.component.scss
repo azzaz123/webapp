@@ -21,6 +21,9 @@ $dropdown-width: 900px;
     float: left;
     clear: right;
     &:hover {
+      .category-label {
+        color: $corporate;
+      }
       .category-icon {
         display: none;
       }
@@ -30,23 +33,21 @@ $dropdown-width: 900px;
     }
   }
   .dropdown-menu {
-    padding: 0;
     border: solid 1px $color-grey-separator;
     box-shadow: 0 2px 6px 0 rgba($grey-900, 0.05);
-    height: $dropdown-height;
     width: $dropdown-width;
     box-sizing: content-box;
     overflow: hidden;
+    padding: $spacing 0 0 0;
     li {
       background-color: transparent;
       padding: 0;
       position: relative;
-      height: $dropdown-height/4;
       width: $dropdown-width/6;
+      margin-bottom: $spacing;
       a {
         display: flex;
         align-items: center;
-        justify-content: center;
         flex-direction: column;
         float: left;
         width: 100%; 
@@ -77,7 +78,7 @@ $dropdown-width: 900px;
 
 .category-icon {
   width: 100%;
-  height: 45px;
+  height: 48px;
   &-hover {
     display: none;
   }
