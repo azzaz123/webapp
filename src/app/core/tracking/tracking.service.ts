@@ -30,7 +30,9 @@ const CATEGORY_IDS: any = {
   ItemDetail: '103',
   UploadForm: '114',
   Reactivate: '60',
-  BottomBar: '78'
+  BottomBar: '78',
+  Link: '122',
+  Bump: '123'
 };
 
 const SCREENS_IDS: any = {
@@ -48,17 +50,22 @@ const SCREENS_IDS: any = {
   MyItemDetail: '114',
   MyProfile: '112',
   Conversation: '118',
-  Messages: '117'
+  Messages: '117',
+  ProPhoneManager: '94',
+  MyZonePro: '158',
+  Chat: '27'
 };
 
 const TYPES_IDS: any = {
   Tap: '6',
+  Click: '16',
   Message: '14',
   ActionServer: '3',
   Success: '8',
   Display: '7',
   Error: '9',
-  Button: '5'
+  Button: '5',
+  PushNotification: '15'
 };
 
 @Injectable()
@@ -70,23 +77,59 @@ export class TrackingService {
     screen: SCREENS_IDS.ProChat,
     type: TYPES_IDS.Tap
   };
-  public static CONVERSATION_READ: TrackingEventBase = {
+  public static MESSAGES_READ: TrackingEventBase = {
     name: '441',
-    category: CATEGORY_IDS.ProConversations,
-    screen: SCREENS_IDS.Log,
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Message
   };
-  public static MESSAGE_NOTIFIED: TrackingEventBase = {
-    name: '353',
-    category: CATEGORY_IDS.ProNotifications,
-    screen: SCREENS_IDS.ProChat,
-    type: TYPES_IDS.Tap
+  public static MESSAGE_RECEIVED: TrackingEventBase = {
+    name: '442',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Message
   };
   public static MESSAGE_SENT: TrackingEventBase = {
+    name: '443',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Message
+  };
+  public static MESSAGE_RECEIVED_ACK: TrackingEventBase = {
+    name: '436',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Message
+  };
+  public static NOTIFICATION_RECEIVED: TrackingEventBase = {
+    name: '437',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.PushNotification
+  };
+  public static NOTIFICATION_READ: TrackingEventBase = {
+    name: '438',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Click
+  };
+  public static MESSAGE_READ_ACK: TrackingEventBase = {
+    name: '439',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Message
+  };
+  public static SEND_BUTTON: TrackingEventBase = {
     name: '76',
-    category: CATEGORY_IDS.ProConversations,
-    screen: SCREENS_IDS.Log,
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.ActionServer
+  };
+  public static MESSAGE_SENT_ACK: TrackingEventBase = {
+    name: '440',
+    category: CATEGORY_IDS.Conversations,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Message
   };
   public static MY_PROFILE_LOGGED_IN: TrackingEventBase = {
     name: '355',
@@ -136,11 +179,23 @@ export class TrackingService {
     screen: SCREENS_IDS.ProCatalog,
     type: TYPES_IDS.Tap
   };
+  public static PRODUCT_LIST_FILTERED_BY_TEXT: TrackingEventBase = {
+    name: '372',
+    category: CATEGORY_IDS['ProInventoryManagement']
+  };
+  public static PRODUCT_LIST_ORDERED_BY: TrackingEventBase = {
+    name: '374',
+    category: CATEGORY_IDS['ProInventoryManagement']
+  };
   public static PRODUCT_LIST_SOLD_VIEWED: TrackingEventBase = {
     name: '375',
     category: CATEGORY_IDS.ProInventoryManagement,
     screen: SCREENS_IDS.ProCatalog,
     type: TYPES_IDS.Tap
+  };
+  public static PRODUCT_LIST_BULK_SOLD: TrackingEventBase = {
+    name: '370',
+    category: CATEGORY_IDS['ProInventoryManagement']
   };
   public static PRODUCT_REPPORTED: TrackingEventBase = {
     name: '379',
@@ -235,7 +290,7 @@ export class TrackingService {
   public static CONVERSATION_CREATE_NEW: TrackingEventBase = {
     name: '121',
     category: CATEGORY_IDS.Conversations,
-    screen: SCREENS_IDS.ItemDetail,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.ActionServer
   };
   public static FEATURED_PURCHASE_FINAL: TrackingEventBase = {
@@ -490,8 +545,62 @@ export class TrackingService {
     screen: SCREENS_IDS.Conversation,
     type: TYPES_IDS.Tap
   };
+  public static CALLS_MARK_PENDING: TrackingEventBase = {
+    name: '393',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_OPENED: TrackingEventBase = {
+    name: '396',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_LIST_PROCESSED_LOADED: TrackingEventBase = {
+    name: '399',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_LIST_ACTIVE_LOADED: TrackingEventBase = {
+    name: '690',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_VIEWED_CONVERSATION: TrackingEventBase = {
+    name: '395',
+    category: CATEGORY_IDS.ProPhoneManagement,
+    screen: SCREENS_IDS.ProPhoneManager,
+    type: TYPES_IDS.Tap
+  };
+  public static CONVERSATION_SELLING_CAR_VIEWED: TrackingEventBase = {
+    name: '691',
+    category: CATEGORY_IDS.BottomBar,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Tap
+  };
+  public static PRO_PURCHASE_CHECKOUTPROEXTRACART: TrackingEventBase = {
+    name: '699',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static PHONE_LEAD_LIST_ALL_PROCESSED: TrackingEventBase = {
+    name: '688',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
   public static MYZONE_MENU_CALLS: TrackingEventBase = {
     name: '686',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static CALLS_PROCESSED: TrackingEventBase = {
+    name: '689',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
@@ -502,10 +611,64 @@ export class TrackingService {
     screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
   };
-  public static CONVERSATION_SELLING_CAR_VIEWED: TrackingEventBase = {
-    name: '691',
-    category: CATEGORY_IDS.BottomBar,
-    screen: SCREENS_IDS.Conversation,
+  public static PRO_FEATURED_PURCHASE_SUCCESS: TrackingEventBase = {
+    name: '700',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Success
+  };
+  public static PRO_FEATURED_PURCHASE_ERROR: TrackingEventBase = {
+    name: '701',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Error
+  };
+  public static MYCATALOG_PRO_PURCHASE_EXTRAS: TrackingEventBase = {
+    name: '703',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_UPLOAD: TrackingEventBase = {
+    name: '704',
+    category: CATEGORY_IDS.UploadForm,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_MANAGE_SUBSCRIPTION: TrackingEventBase = {
+    name: '705',
+    category: CATEGORY_IDS.Link,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_FEATURE: TrackingEventBase = {
+    name: '706',
+    category: CATEGORY_IDS.Bump,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_DEACTIVATE: TrackingEventBase = {
+    name: '707',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_MODAL_DEACTIVATE: TrackingEventBase = {
+    name: '708',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static MYCATALOG_PRO_EDIT_CARD: TrackingEventBase = {
+    name: '709',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+  public static BUMP_PRO_APPLY: TrackingEventBase = {
+    name: '710',
+    category: CATEGORY_IDS.Button,
+    screen: SCREENS_IDS.MyZonePro,
     type: TYPES_IDS.Tap
   };
 
@@ -546,7 +709,10 @@ export class TrackingService {
       this.userService.user.id,
       this.sessionStartTime,
       event);
-    newEvent.setDeviceInfo(this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId, this.navigatorService.browserName, this.navigatorService.fullVersion);
+    newEvent.setDeviceInfo(
+      this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId,
+      this.navigatorService.browserName, this.navigatorService.fullVersion
+    );
     return this.userService.isProfessional()
       .map((isProfessional: boolean) => {
         if (isProfessional) {

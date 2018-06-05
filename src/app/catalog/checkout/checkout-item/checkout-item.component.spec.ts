@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CheckoutItemComponent } from './checkout-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
@@ -35,17 +34,19 @@ describe('CheckoutItemComponent', () => {
         DecimalPipe,
         {
           provide: CartService, useValue: {
-          add() {
-          },
-          remove() {
-          },
-          cart$: Observable.of(CART_CHANGE)
-        }
+            createInstance() {
+            },
+            add() {
+            },
+            remove() {
+            },
+            cart$: Observable.of(CART_CHANGE)
+          }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -57,6 +58,17 @@ describe('CheckoutItemComponent', () => {
   });
 
   describe('ngOnInit', () => {
+
+    describe('ngOnInit', () => {
+      it('should call createInstance cartService method', () => {
+        spyOn(cartService, 'createInstance').and.callThrough();
+
+        component.ngOnInit();
+
+        expect(cartService.createInstance).toHaveBeenCalledWith(new Cart());
+      });
+    });
+
     it('should set durations and default duration', () => {
       expect(component.durations).toEqual(['24', '72', '168']);
       expect(component.duration).toEqual('72');

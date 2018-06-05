@@ -10,6 +10,7 @@ import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { MessagesData, MessagesDataRecursive, StoredMessageRow, StoredMetaInfoData } from './messages.interface';
 import 'rxjs/add/operator/first';
+import { ConnectionService } from '../connection/connection.service';
 
 @Injectable()
 export class MessageService {
@@ -20,7 +21,8 @@ export class MessageService {
 
   constructor(private xmpp: XmppService,
               private persistencyService: PersistencyService,
-              private userService: UserService) {
+              private userService: UserService,
+              private connectionService: ConnectionService) {
   }
 
   set totalUnreadMessages(value: number) {
@@ -66,15 +68,17 @@ export class MessageService {
   }
 
   public getNotSavedMessages(): Observable<MessagesData> {
-    return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
-      return this.query(null, resp.data.last, -1, resp.data.start).do((newMessages: MessagesData) => {
-        if (newMessages.data.length) {
-          this.persistencyService.saveMetaInformation(
-            {last: newMessages.meta.last, start: newMessages.data[newMessages.data.length - 1].date.toISOString()}
-          );
-        }
+    if (this.connectionService.isConnected) {
+      return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
+        return this.query(null, resp.data.last, -1, resp.data.start).do((newMessages: MessagesData) => {
+          if (newMessages.data.length) {
+            this.persistencyService.saveMetaInformation(
+              {last: newMessages.meta.last, start: newMessages.data[newMessages.data.length - 1].date.toISOString()}
+            );
+          }
+        });
       });
-    });
+    }
   }
 
   public addUserInfoToArray(conversation: Conversation, messages: Message[]): Message[] {
@@ -91,7 +95,7 @@ export class MessageService {
   }
 
   public send(conversation: Conversation, message: string) {
-    this.xmpp.sendMessage(conversation.user.id, conversation.id, message);
+    this.xmpp.sendMessage(conversation, message);
   }
 
   public query(conversationId: string, lastMessageRef: string, total: number = -1,
