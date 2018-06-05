@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Counters } from '../../../core/user/user-stats.interface';
+import { ScheduledStatus } from '../../../core/payments/payment.interface';
+import { PaymentService } from '../../../core/payments/payment.service';
+import { EventService } from '../../../core/event/event.service';
 
 @Component({
   selector: 'tsl-catalog-status-navbar',
@@ -13,16 +16,32 @@ export class CatalogStatusNavbarComponent implements OnInit {
   @Input() subscriptionPlan: number;
   @Output() public filterByStatus: EventEmitter<any> = new EventEmitter();
   private page: number;
+  public bumpsCounter: number;
 
-  constructor() { }
+  constructor(private paymentService: PaymentService,
+              private eventService: EventService) { }
 
   ngOnInit() {
+    this.getBumpedCounter();
+    this.eventService.subscribe('itemChanged', () => {
+      this.getBumpedCounter();
+    });
   }
 
-  public selectStatus(status: string) {
+  public selectStatus(status: string): void {
     this.selectedStatus = status;
     this.page = 1;
     this.filterByStatus.emit(status);
+  }
+  
+  private getBumpedCounter(): void {
+    this.paymentService.getStatus().subscribe((status: ScheduledStatus) => {
+      if (status.purchased) {
+        const cityBump = status.purchased.citybump ? status.purchased.citybump : 0;
+        const countryBump = status.purchased.countrybump ? status.purchased.countrybump : 0;
+        this.bumpsCounter = cityBump + countryBump;
+      }
+    });
   }
 
 }

@@ -148,13 +148,6 @@ $feature-button-width: 170px;
       width: 19px;
       vertical-align: top;
       margin-left: 10px;
-      /deep/ svg path {
-        stroke: $grey-500;
-        &#Fill-3 {
-          stroke: none;
-          fill: $grey-500;
-        }
-      }
     }
   }
   .actions {
