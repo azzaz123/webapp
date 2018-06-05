@@ -200,3 +200,15 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     max-width: unset;
   }
 }
+
+.modal.visibility-products {
+  $modal-width: 1090px;
+  .modal-dialog {
+    max-width: $modal-width;
+  }
+  .modal-content {
+    width: $modal-width !important;
+    max-width: unset;
+    background-color: rgba($grey-900, .95);
+  }
+}
