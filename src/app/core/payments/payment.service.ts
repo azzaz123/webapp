@@ -22,7 +22,11 @@ export class PaymentService {
 
   public getFinancialCard(): Observable<FinancialCard> {
     return this.http.get(this.API_URL + '/c2b/financial-card')
-      .map((r: Response) => r.json());
+    .map((r: Response) => r.json());
+  }
+
+  public deleteFinancialCard(): Observable<any> {
+    return this.http.delete(this.API_URL + '/c2b/financial-card');
   }
 
   public getSabadellInfo(orderId: string): Observable<SabadellInfoResponse> {
