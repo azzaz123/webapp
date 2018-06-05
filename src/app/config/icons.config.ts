@@ -196,6 +196,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('plan-personal-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/personal1_selected.svg'));
   matIconRegistry.addSvgIcon('plan-personal-plus', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/personal2.svg'));
   matIconRegistry.addSvgIcon('secure-card', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/secure-card.svg'));
+  matIconRegistry.addSvgIcon('category_All', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/allcategories.svg'));
   matIconRegistry.addSvgIcon('category_Motorbike', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/motos.svg'));
   matIconRegistry.addSvgIcon('category_Cars', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/cars.svg'));
   matIconRegistry.addSvgIcon('category_MotorAccessories', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/motoraccesories.svg'));
@@ -217,6 +218,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('category_RealEstate', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/realstate.svg'));
   matIconRegistry.addSvgIcon('category_Services', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/services.svg'));
   matIconRegistry.addSvgIcon('category_Others', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/normal/others.svg'));
+  matIconRegistry.addSvgIcon('category_All-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/allcategories.svg'));
   matIconRegistry.addSvgIcon('category_Motorbike-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/motos.svg'));
   matIconRegistry.addSvgIcon('category_Cars-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/cars.svg'));
   matIconRegistry.addSvgIcon('category_MotorAccessories-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/motoraccesories.svg'));

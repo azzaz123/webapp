@@ -121,6 +121,7 @@
   the other items.</msg>
   <msg id="4011333478005344361"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:7</source>Feature the available items</msg>
   <msg id="4701510938988860546"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:8</source>Go back and cancel bumps</msg>
+  <msg id="221922226324249098"><source>app/layout/topbar/categories-list/categories-list.component.ts:9</source>All Categories</msg>
   <msg id="4580988005648117665" desc="Search"><source>app/layout/topbar/suggester/suggester.component.ts:1</source>Search</msg>
   <msg id="855735721940425245"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:9</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:6</source><source>app/catalog/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.ts:6</source><source>app/catalog/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:9</source><source>app/catalog/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:15</source>Congratulations</msg>
   <msg id="9213119646873056135"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:10</source>Your item(s) have been featured and you can see them in the top position.</msg>
@@ -295,7 +296,7 @@
   <msg id="3448462145758383019"><source>app/catalog/checkout/cart/cart.component.ts:54</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:46</source>Total</msg>
   <msg id="6581598798517073714"><source>app/catalog/checkout/cart/cart.component.ts:70</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:62</source>+ Add another credit card</msg>
   <msg id="7274286978511770772"><source>app/catalog/checkout/cart/cart.component.ts:78</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:71</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:76</source>Continue to Checkout</msg>
-  <msg id="3708302938863076299"><source>app/catalog/checkout/cart/cart.component.ts:81</source>Secure payment through Sabadell</msg>
+  <msg id="3708302938863076299"><source>app/catalog/checkout/cart/cart.component.ts:81</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:79</source>Secure payment through Sabadell</msg>
   <msg id="124288245683167765"><source>app/catalog/upload/urgent-checkbox/urgent-checkbox.component.ts:3</source>Apply the ASAP Feature</msg>
   <msg id="6583839768249288834"><source>app/catalog/upload/urgent-checkbox/urgent-checkbox.component.ts:4,6</source>
       For only <ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph> mark your product as &quot;Asap&quot; for 7 days to differentiate it in the wall and make it easier to find through the asap filter.
