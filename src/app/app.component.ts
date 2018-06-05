@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-    appboy.initialize(environment.appboy);
+    appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
     this.conversationService.firstLoad = true;

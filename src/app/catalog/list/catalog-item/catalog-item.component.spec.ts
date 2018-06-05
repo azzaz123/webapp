@@ -22,6 +22,7 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Item } from '../../../core/item/item';
 import { EventService } from '../../../core/event/event.service';
+import { environment } from '../../../../environments/environment';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -106,6 +107,7 @@ describe('CatalogItemComponent', () => {
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
     eventService = TestBed.get(EventService);
+    appboy.initialize(environment.appboy);
   });
 
   it('should be created', () => {
@@ -272,6 +274,7 @@ describe('CatalogItemComponent', () => {
     beforeEach(fakeAsync(() => {
       item = MOCK_ITEM;
       spyOn(itemService, 'reactivateItem').and.callThrough();
+      spyOn(appboy, 'logCustomEvent');
       component.itemChange.subscribe(($event: ItemChangeEvent) => {
         event = $event;
       });
@@ -291,6 +294,9 @@ describe('CatalogItemComponent', () => {
       expect(event.action).toBe('reactivated');
     });
 
+    it('should send appboy ReactivateItem event', () => {
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('ReactivateItem', {platform: 'web'});
+    });
   });
 
   describe('select', () => {

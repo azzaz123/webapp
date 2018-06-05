@@ -41,7 +41,7 @@ export class CatalogProListComponent implements OnInit {
   private page = 1;
   private pageSize = 20;
   public active = true;
-  private cache = true;
+  private cache = false;
   public numberOfProducts: number;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public subscriptionPlan: number;
