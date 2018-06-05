@@ -7,6 +7,7 @@ import { CATEGORY_DATA_WEB } from '../../../../tests/category.fixtures.spec';
 import { EventService } from '../../../core/event/event.service';
 import { CategoryResponse } from '../../../core/category/category-response.interface';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { I18nService } from '../../../core/i18n/i18n.service';
 
 describe('CategoriesListComponent', () => {
   let component: CategoriesListComponent;
@@ -24,6 +25,8 @@ describe('CategoriesListComponent', () => {
         }
         }},
         EventService,
+        I18nService,
+        {provide: 'SUBDOMAIN', useValue: 'www'},
         ...TEST_HTTP_PROVIDERS],
       schemas: [NO_ERRORS_SCHEMA]
     })
