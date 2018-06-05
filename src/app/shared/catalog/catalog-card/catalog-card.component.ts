@@ -47,6 +47,7 @@ export class CatalogCardComponent implements OnInit {
 
   public setSold(item: Item) {
     this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+    appboy.logCustomEvent('Sold', {platform: 'web'});
     this.eventService.emit('itemChanged');
     this.itemChange.emit({
       item: item,
@@ -80,7 +81,7 @@ export class CatalogCardComponent implements OnInit {
       });
     });
   }
-  
+
   private setBumpName(): string {
     const bumpType = this.item.purchases.bump_type || this.item.purchases.scheduled_bump_type;
     return this.i18n.getTranslations(bumpType);
