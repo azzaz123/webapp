@@ -14,6 +14,7 @@ import { UserService } from '../../core/user/user.service';
 import { ItemComponent } from './item.component';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
+import { environment } from '../../../environments/environment';
 
 describe('Component: Item', () => {
 
@@ -54,6 +55,7 @@ describe('Component: Item', () => {
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     trackingService = TestBed.get(TrackingService);
+    appboy.initialize(environment.appboy);
   });
 
   it('should create an instance', () => {
@@ -215,6 +217,15 @@ describe('Component: Item', () => {
       component.trackSoldEvent(component.item);
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CHAT_PRODUCT_SOLD, {item_id: component.item.id});
+    });
+
+
+    it('should send appboy Sold event', () => {
+      spyOn(appboy, 'logCustomEvent');
+
+      component.trackSoldEvent(MOCK_ITEM);
+
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {platform: 'web'});
     });
   });
 

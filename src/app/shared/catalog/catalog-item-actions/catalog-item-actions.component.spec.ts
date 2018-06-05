@@ -15,6 +15,7 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Router } from '@angular/router';
+import { EventService } from '../../../core/event/event.service';
 
 describe('CatalogItemActionsComponent', () => {
   let component: CatalogItemActionsComponent;
@@ -25,6 +26,7 @@ describe('CatalogItemActionsComponent', () => {
   let toastr: ToastrService;
   let trackingService: TrackingService;
   let router: Router;
+  let eventService: EventService;
   const modal: any = {modal: true};
 
   beforeEach(async(() => {
@@ -73,6 +75,7 @@ describe('CatalogItemActionsComponent', () => {
             }
           }
         },
+        EventService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -88,6 +91,7 @@ describe('CatalogItemActionsComponent', () => {
     errorsService = TestBed.get(ErrorsService);
     modalService = TestBed.get(NgbModal);
     router = TestBed.get(Router);
+    eventService = TestBed.get(EventService);
     spyOn(modalService, 'open').and.callThrough();
     spyOn(toastr, 'error');
   });
