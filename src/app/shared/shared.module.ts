@@ -29,6 +29,8 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { MessageComponent } from './message/message.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { SwitchComponent } from './switch/switch.component';
+import { GdprModalComponent } from './gdpr-modal/gdpr-modal.component';
+import { CheckboxComponent } from './checkbox/checkbox.component';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
@@ -68,6 +70,7 @@ import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
+    GdprModalComponent,
     MessageComponent,
     ReviewButtonComponent,
     SearchInputComponent,
@@ -96,6 +99,9 @@ import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured
     MessageComponent,
     ReviewButtonComponent,
     SwitchComponent,
+    ReviewModalComponent,
+    GdprModalComponent,
+    CheckboxComponent,
     SelectComponent,
     SearchInputComponent,
     TooManyItemsModalComponent,
@@ -110,6 +116,7 @@ import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured
     ConfirmationModalComponent,
     SoldModalComponent,
     ReviewModalComponent,
+    GdprModalComponent,
     TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent
   ]
