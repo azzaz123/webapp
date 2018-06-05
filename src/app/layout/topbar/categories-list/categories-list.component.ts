@@ -23,7 +23,6 @@ export class CategoriesListComponent implements OnInit {
   ngOnInit() {
     this.getCategories();
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
-    console.log(this.i18n.locale);
   }
 
   public getCategories() {
