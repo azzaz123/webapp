@@ -18,6 +18,7 @@ import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import { XmppService } from '../xmpp/xmpp.service';
+import { ConnectionService } from '../connection/connection.service';
 
 @Injectable()
 export abstract class LeadService {
@@ -35,7 +36,8 @@ export abstract class LeadService {
               protected userService: UserService,
               protected itemService: ItemService,
               protected event: EventService,
-              protected xmpp: XmppService) {
+              protected xmpp: XmppService,
+              protected connectionService: ConnectionService) {
   }
 
   public init(archived?: boolean): Observable<Lead[]> {
@@ -78,11 +80,7 @@ export abstract class LeadService {
     if (!until) {
       until = new Date().getTime();
     }
-    return this.xmpp.isConnected()
-    .flatMap((connected: boolean) => {
-      if (!connected) {
-        return Observable.throw('');
-      }
+    if (this.connectionService.isConnected) {
       return this.http.get(this.API_URL, {until: until, hidden: archived})
       .map((res: Response) => res.json())
       .flatMap((res: LeadResponse[]) => {
@@ -105,7 +103,9 @@ export abstract class LeadService {
       .catch((a) => {
         return Observable.of(null);
       });
-    });
+    } else {
+      return Observable.of(null);
+    }
   }
 
   protected getUser(conversation: LeadResponse): Observable<LeadResponse> {
@@ -146,6 +146,7 @@ export abstract class LeadService {
         this.onArchive(deletedLead);
         this.archivedLeads.push(deletedLead);
         this.stream(true);
+        this.stream();
         this.event.emit(EventService.LEAD_ARCHIVED, deletedLead);
         return deletedLead;
       }
