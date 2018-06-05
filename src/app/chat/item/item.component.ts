@@ -71,5 +71,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
 
   public trackSoldEvent(item: Item) {
     this.trackingService.track(TrackingService.CHAT_PRODUCT_SOLD, {item_id: item.id});
+    appboy.logCustomEvent('Sold', {platform: 'web'});
   }
 }

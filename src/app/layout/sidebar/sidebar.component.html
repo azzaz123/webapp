@@ -7,14 +7,13 @@
   <h2 i18n>Profile</h2>
 </a>
 
-<!--Disabled until this section is finished-->
-<!-- <a *ngxPermissionsOnly="['isProfessional']" class="sidebar-section" [routerLink]="['/pro/dashboard']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_DASHBOARD"
+<a *ngxPermissionsOnly="['isProfessional']" class="sidebar-section" [routerLink]="['/pro/dashboard']" routerLinkActive="active" tslTrackEvent="MYZONE_MENU_DASHBOARD"
    [ngClass]="{active: tutorialService.step === 2}">
   <div class="sidebar-section-circle">
     <mat-icon svgIcon="navigation_dashboard"></mat-icon>
   </div>
   <h2 i18n>Dashboard</h2>
-</a> -->
+</a>
 
 <a class="sidebar-section" [routerLink]="['/catalog/list']" tslTrackEvent="MYZONE_MENU_CATALOG" [class.active]="isProducts"
   [ngClass]="{active: !isProfessional && tutorialService.step === 2 || isProfessional && tutorialService.step === 3}">

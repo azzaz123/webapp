@@ -1,0 +1,129 @@
+@import "~style/common";
+
+$stats-sidebar-width: 340px;
+$h-container-spacing: 80px;
+$v-container-spacing: 40px;
+
+.container {
+  position: static;
+  padding: $v-container-spacing $h-container-spacing;
+  overflow: auto;
+  width: calc(100% - #{$sidebar-width} - #{$stats-sidebar-width} - (2 * #{$h-container-spacing}));
+  box-sizing: content-box;
+  height: calc(100vh - #{$topbar-height} - #{$v-container-spacing * 2});
+  background-color: $grey-50;
+  margin: 0;
+  margin-left: $sidebar-width;
+}
+
+h2 {
+  font-size: $font-size-XXL;
+  font-weight: bold;
+}
+
+.list-group-item {
+  padding-left: 0;
+  padding-bottom: $spacing;
+  padding-right: 0;
+}
+
+.nav.filters-nav {
+  font-weight: normal;
+  font-size: $font-size-L;
+  text-transform: none;
+}
+
+$sidebar-title: 64px;
+.stats-sidebar {
+  h2 {
+    font-size: $font-size-M;
+    margin-bottom: $spacing;
+  }
+  h2, h3 {
+    padding: 0 18px;
+  }
+  height: calc(100vh - #{$topbar-height});
+  background-color: $white;
+  width: $stats-sidebar-width;
+  position: absolute;
+  top: $topbar-height;
+  right: 0;
+  padding: $spacing 0;
+  .stats-sidebar-container {
+    position: relative;
+    .check-corporate {
+      position: absolute;
+      bottom: $spacing;
+      right: $spacing;
+    }
+    &.calls-container {
+      border-top: 1px solid $grey-50;
+    }
+  }
+  .scroll-panel {
+    overflow-y: auto;
+    height: calc(100vh - #{$sidebar-title} - #{$topbar-height});
+    position: relative;
+    .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+    }
+  }
+  h3 {
+    font-size: $spacing-S;
+    font-weight: bold;
+    color: $grey-300;
+    margin-top: $spacing;
+    margin-bottom: $spacing-S;
+    text-transform: uppercase;
+    padding-right: $spacing-S;
+    a {
+      float: right;
+      color: $corporate;
+      font-size: $font-size-XS;
+      text-decoration: none;
+      text-transform: uppercase;
+      &:hover {
+        opacity: .8;
+      }
+    }
+  }
+  .calls-container {
+    h3 {
+      margin-bottom: $spacing;
+    }
+  }
+}
+.stats-sidebar-empty-state {
+  display: block;
+  width: 400px;
+  height: auto;
+  margin: $spacing-L 0;
+}
+
+.stats-sidebar-completed {
+  height: calc(100vh - #{$sidebar-title});
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  text-align: center;
+  md-icon {
+    width: 144px;
+    height: 212px;
+    margin-bottom: $spacing-XL;
+  }
+  h2 {
+    margin-bottom: $spacing-XS;
+  }
+  p {
+    padding: 0 $spacing-XL;
+    color: $grey-200;
+  }
+}
+
+tsl-stats-graph {
+  margin-bottom: $spacing;
+}

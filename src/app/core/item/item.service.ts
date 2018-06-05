@@ -70,8 +70,6 @@ export class ItemService extends ResourceService {
     featured: []
   };
   public selectedItems: string[] = [];
-  public countryBumpsInUse: number;
-  public cityBumpsInUse: number;
 
   constructor(http: HttpService,
               private i18n: I18nService,

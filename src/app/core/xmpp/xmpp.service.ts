@@ -67,6 +67,7 @@ export class XmppService {
         item_id: conversation.item.id,
         thread_id: message.thread,
         message_id: message.id });
+      appboy.logCustomEvent('FirstMessage', {platform: 'web'});
     }
     this.trackingService.track(TrackingService.MESSAGE_SENT, {
       thread_id: message.thread,
