@@ -101,6 +101,24 @@
           </div>
         </div>
       </div>
+      <div class="box profile-settings">
+        <div class="box-content">
+          <div class="row">
+            <div class="col-10 offset-2">
+              <form [formGroup]="settingsForm">
+                <div class="form-group row">
+                  <div class="col-3" >
+                    <tsl-switch (onChange)="switchAllowSegmentation($event)" formControlName="allow_segmentation"></tsl-switch>
+                  </div>
+                  <div class="col-5" i18n>
+                    In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 </div>

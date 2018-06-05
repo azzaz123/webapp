@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
@@ -8,7 +8,13 @@ import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MOCK_FULL_USER, USER_DATA, USER_URL } from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
+import { HttpService } from '../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec';
+import { PrivacyService } from '../core/privacy/privacy.service';
+import { PrivacyRequestData } from '../core/privacy/privacy.interface';
+import { MOCK_PRIVACY_ALLOW } from '../core/privacy/privacy.fixtures.spec';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
+import { SwitchComponent } from './../shared/switch/switch.component';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -18,15 +24,19 @@ describe('ProfileComponent', () => {
   let fixture: ComponentFixture<ProfileComponent>;
   let userService: UserService;
   let errorsService: ErrorsService;
+  let http: HttpService;
   let modalService: NgbModal;
+  let privacyService: PrivacyService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
+        FormsModule,
         NgbButtonsModule
       ],
       providers: [
+        ...TEST_HTTP_PROVIDERS,
         {
           provide: UserService, useValue: {
           user: MOCK_FULL_USER,
@@ -54,9 +64,10 @@ describe('ProfileComponent', () => {
             };
           }
         }
-        }
+        },
+        PrivacyService
       ],
-      declarations: [ProfileComponent, ProfileFormComponent],
+      declarations: [ProfileComponent, ProfileFormComponent, SwitchComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -67,7 +78,9 @@ describe('ProfileComponent', () => {
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
+    http = TestBed.get(HttpService);
     modalService = TestBed.get(NgbModal);
+    privacyService = TestBed.get(PrivacyService);
     spyOn(userService, 'me').and.callThrough();
     component.formComponent = TestBed.createComponent(ProfileFormComponent).componentInstance;
     fixture.detectChanges();
@@ -92,6 +105,42 @@ describe('ProfileComponent', () => {
       expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
       expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
+    });
+
+    it('should subscribe privacyService allowSegmentation$', () => {
+      spyOn(privacyService.allowSegmentation$, 'subscribe');
+
+      component.ngOnInit();
+
+      expect(privacyService.allowSegmentation$.subscribe).toHaveBeenCalled();
+    });
+
+    it('should change allowSegmentation value to false when allowSegmentation$ trigger false value', () => {
+      privacyService.allowSegmentation$.next(false);
+
+      component.ngOnInit();
+
+      expect(component.allowSegmentation).toBe(false);
+    });
+
+    it('should change allowSegmentation value to true when allowSegmentation$ trigger true value', () => {
+      privacyService.allowSegmentation$.next(true);
+
+      component.ngOnInit();
+
+      expect(component.allowSegmentation).toBe(true);
+    });
+
+    it('should change settingForm allow_segmentation property to true when allowSegmentation is true', () => {
+      privacyService.allowSegmentation$.next(true);
+
+      expect(component.settingsForm.value.allow_segmentation).toBe(true);
+    });
+
+    it('should change settingForm allow_segmentation property to false when allowSegmentation is false', () => {
+      privacyService.allowSegmentation$.next(false);
+
+      expect(component.settingsForm.value.allow_segmentation).toBe(false);
     });
   });
 
@@ -137,6 +186,22 @@ describe('ProfileComponent', () => {
       component.profileForm.get('birth_date').setValue('19870-05-25');
 
       expect(component.profileForm.get('birth_date').valid).toBe(false);
+    });
+  });
+
+  describe('switchAllowSegmentation', () => {
+    it('should call updatePrivacy with PrivacyRequestData', () => {
+      spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
+      const allowSegmentationData: PrivacyRequestData = {
+        gdpr_display: {
+          allow: false,
+          version: '0'
+        }
+      };
+
+      component.switchAllowSegmentation(false);
+
+      expect(privacyService.updatePrivacy).toHaveBeenCalledWith(allowSegmentationData);
     });
   });
 });

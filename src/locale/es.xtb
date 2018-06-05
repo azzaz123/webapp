@@ -236,6 +236,7 @@
   <translation id="2906587845957718064">Barrio</translation>
   <translation id="1186759635333538896">Provincia</translation>
   <translation id="2314075913167237221">Ciudad</translation>
+  <translation id="7928837776892145785">País</translation>
   <translation id="6377139538537882652">Eliminar lista</translation>
   <translation id="3448462145758383019">Total</translation>
   <translation id="6581598798517073714">+ Añadir otra tarjeta</translation>
@@ -537,4 +538,5 @@
   <translation id="1250063669755603957">Eliminar información</translation>
   <translation id="3708302938863076299">Pago seguro a través de Sabadell</translation>
   <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="1476922037725665227">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
 </translationbundle>
