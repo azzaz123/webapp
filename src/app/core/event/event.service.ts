@@ -9,9 +9,13 @@ export class EventService {
   public static USER_LOGOUT = 'logoutEvent';
   public static NEW_MESSAGE = 'newMessage';
   public static MESSAGE_ADDED = 'messageAdded';
-  public static CONVERSATION_READ = 'conversationRead';
+  public static MESSAGES_READ = 'conversationRead';
+  public static MESSAGE_READ_ACK = 'messageReadAck';
+  public static MESSAGE_SENT_ACK = 'messageSentAck';
+  public static MESSAGE_RECEIVED_ACK = 'messageReceivedAck';
   public static CONNECTION_ERROR = 'connectionError';
   public static CONNECTION_RESTORED = 'connectionRestored';
+  public static CLIENT_DISCONNECTED = 'clientDisconnected';
   public static CONVERSATION_ARCHIVED = 'conversationArchived';
   public static CONVERSATION_UNARCHIVED = 'conversationUnarchived';
   public static LEAD_ARCHIVED = 'leadArchived';
@@ -22,6 +26,7 @@ export class EventService {
   public static UPDATE_COORDINATE = 'updateCoordinate';
   public static UPDATE_CATEGORY = 'updateCategory';
   public static UPDATE_SEARCH = 'updateSearch';
+  public static CLOSE_EXPANDED_CALLS = 'closeExpandedCalls';
 
   private subjects: any = {};
 

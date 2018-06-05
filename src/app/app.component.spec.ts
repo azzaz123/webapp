@@ -26,13 +26,15 @@ import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
 import { DebugService } from './core/debug/debug.service';
-import { MOCK_USER, MOCK_USER_PRO, USER_DATA, USER_ID } from '../tests/user.fixtures.spec';
+import { MOCK_USER, USER_DATA, USER_ID } from '../tests/user.fixtures.spec';
 import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
 import { PrivacyService } from './core/privacy/privacy.service';
 import { MOCK_PRIVACY_ALLOW } from './core/privacy/privacy.fixtures.spec';
+import { ConnectionService } from './core/connection/connection.service';
+import { CallsService } from './core/conversation/calls.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -46,8 +48,10 @@ let titleService: Title;
 let trackingService: TrackingService;
 let window: any;
 let conversationService: ConversationService;
+let callsService: CallsService;
 let cookieService: CookieService;
 let privacyService: PrivacyService;
+let connectionService: ConnectionService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
@@ -65,6 +69,11 @@ describe('App', () => {
       providers: [
         EventService,
         {provide: DebugService, useValue: {}},
+        {
+          provide: ConnectionService, useValue: {
+          checkConnection() {}
+        }
+        },
         {
           provide: XmppService, useValue: {
           connect() {
@@ -86,7 +95,7 @@ describe('App', () => {
           },
           setPermission() {},
           isProfessional() {
-            return Observable.of(false)
+            return Observable.of(false);
           }
         }
         },
@@ -130,8 +139,16 @@ describe('App', () => {
             return Observable.of();
           },
           handleNewMessages() {
-          }
+          },
+          resetCache() {}
         }
+        },
+        {
+          provide: CallsService, useValue: {
+            init() {
+              return Observable.of();
+            }
+          }
         },
         {
           provide: Router, useValue: {
@@ -176,8 +193,10 @@ describe('App', () => {
     trackingService = TestBed.get(TrackingService);
     window = TestBed.get(WindowRef).nativeWindow;
     conversationService = TestBed.get(ConversationService);
+    callsService = TestBed.get(CallsService);
     cookieService = TestBed.get(CookieService);
     privacyService = TestBed.get(PrivacyService);
+    connectionService = TestBed.get(ConnectionService);
     spyOn(notificationService, 'init');
   });
 
@@ -214,6 +233,7 @@ describe('App', () => {
           connection.mockRespond(new Response(res));
         });
         spyOn(conversationService, 'init').and.returnValue(Observable.of({}));
+        spyOn(callsService, 'init').and.returnValue(Observable.of({}));
       }));
 
       it('should call the eventService.subscribe passing the login event', () => {
@@ -247,6 +267,23 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(conversationService.init).toHaveBeenCalledTimes(2);
+      });
+
+      it('should call checkConnection when the component initialises', () => {
+        spyOn(connectionService, 'checkConnection');
+
+        component.ngOnInit();
+
+        expect(connectionService.checkConnection).toHaveBeenCalled();
+      });
+
+      it('should call callsService.init twice if user is professional', () => {
+        spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(callsService.init).toHaveBeenCalledTimes(2);
       });
 
       it('should call userService setpermission method', () => {
@@ -298,6 +335,15 @@ describe('App', () => {
         component.ngOnInit();
 
         expect(privacyService.getPrivacyList).toHaveBeenCalled();
+      });
+
+      it('should call the resetCache method in conversationService when a CLIENT_DISCONNECTED event is triggered', () => {
+        spyOn(conversationService, 'resetCache');
+
+        component.ngOnInit();
+        eventService.emit(EventService.CLIENT_DISCONNECTED);
+
+        expect(conversationService.resetCache).toHaveBeenCalledTimes(1);
       });
 
     });

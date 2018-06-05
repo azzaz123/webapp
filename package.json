@@ -16,7 +16,8 @@
     "serve": "ng serve --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
     "test": "ng test --single-run --no-progress --reporters spec --browsers ChromeHeadless",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}"
   },
   "private": true,
   "dependencies": {
@@ -35,7 +36,6 @@
     "@ng-bootstrap/ng-bootstrap": "1.0.0",
     "@types/hammerjs": "^2.0.33",
     "@types/heremaps": "^3.0.10",
-    "angular2-masonry": "^0.4.0",
     "angular2-moment": "https://github.com/Wallapop/angular2-moment#2.2.0",
     "angular2-uuid": "^1.1.1",
     "appboy-web-sdk": "^2.0.7",

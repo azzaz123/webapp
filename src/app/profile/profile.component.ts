@@ -1,18 +1,12 @@
-import { Component, EventEmitter, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../core/user/user.service';
-import { environment } from '../../environments/environment';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import * as _ from 'lodash';
-import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from 'ngx-uploader';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
-import { ErrorsService } from '../core/errors/errors.service';
 import { CanComponentDeactivate } from '../shared/guards/can-component-deactivate.interface';
-import { ExitConfirmationModalComponent } from '../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
-import { HttpService } from '../core/http/http.service';
 import { User } from '../core/user/user';
-import { PrivacyRequestData } from '../core/privacy/privacy.interface';
+import { ProfileFormComponent } from './profile-form/profile-form.component';
 import { PrivacyService } from '../core/privacy/privacy.service';
 
 @Component({
@@ -25,24 +19,19 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   public user: User;
   public userUrl: string;
   public profileForm: FormGroup;
-  file: UploadFile;
-  uploadInput: EventEmitter<UploadInput> = new EventEmitter();
-  options: NgUploaderOptions;
-  public hasNotSavedChanges: boolean;
+  public settingsForm: FormGroup;
   public allowSegmentation: boolean;
-  private oldFormValue: any;
+  @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
   constructor(private userService: UserService,
     private fb: FormBuilder,
-    private errorsService: ErrorsService,
-    private http: HttpService,
     private modalService: NgbModal,
     private privacyService: PrivacyService,
     @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
-      birth_date: ['', [Validators.required]],
+      birth_date: ['', [Validators.required, this.dateValidator]],
       gender: ['', [Validators.required]],
       location: this.fb.group({
         address: ['', [Validators.required]],
@@ -50,152 +39,70 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
         longitude: ['', [Validators.required]],
       })
     });
+
+    this.settingsForm = fb.group({
+      allow_segmentation: false
+    });
   }
 
   ngOnInit() {
-    this.options = {
-      allowedExtensions: ['jpg', 'jpeg'],
-      maxUploads: 1,
-      maxSize: 3145728 // 3 MB
-    };
-    this.userService.me().subscribe((user) => {
+    this.userService.me().subscribe((user: User) => {
       this.user = user;
       if (user) {
         this.userUrl = user.getUrl(this.subdomain);
         this.setUserData();
-        this.detectFormChanges();
       }
     });
     this.privacyService.allowSegmentation$.subscribe((value: boolean) => {
       this.allowSegmentation = value;
-    });
-  }
-
-  private detectFormChanges() {
-    this.profileForm.valueChanges.subscribe((value) => {
-      const oldProfileData = _.omit(this.oldFormValue, ['location']);
-      const newProfileData = _.omit(value, ['location']);
-      if (!this.oldFormValue) {
-        this.oldFormValue = value;
-      } else {
-        if (!_.isEqual(oldProfileData, newProfileData)) {
-          this.hasNotSavedChanges = true;
-        }
-        this.oldFormValue = value;
-      }
+      this.setSettingsData();
     });
   }
 
   public canExit() {
-    if (!this.hasNotSavedChanges) {
-      return true;
-    }
-    return this.modalService.open(ExitConfirmationModalComponent, {
-      backdrop: 'static'
-    }).result;
-  }
-
-  @HostListener('window:beforeunload')
-  handleBeforeUnload() {
-    if (this.hasNotSavedChanges) {
-      return confirm();
-    }
+    return this.formComponent.canExit();
   }
 
   public onSubmit() {
-    if (this.profileForm.valid) {
-      delete this.profileForm.value.location;
-      this.userService.edit(this.profileForm.value).subscribe(() => {
-        this.errorsService.i18nSuccess('userEdited');
-        this.hasNotSavedChanges = false;
-      });
-    } else {
-      for (const control in this.profileForm.controls) {
-        if (this.profileForm.controls.hasOwnProperty(control) && !this.profileForm.controls[control].valid) {
-          this.profileForm.controls[control].markAsDirty();
-        }
-      }
-      if (!this.profileForm.get('location.address').valid) {
-        this.profileForm.get('location.address').markAsDirty();
-      }
-      this.errorsService.i18nError('formErrors');
-    }
+    return this.formComponent.onSubmit();
   }
 
   private setUserData() {
-    this.profileForm.get('first_name').patchValue(this.user.firstName);
-    this.profileForm.get('last_name').patchValue(this.user.lastName);
-    this.profileForm.get('birth_date').patchValue(moment(this.user.birthDate).format('YYYY-MM-DD'));
-    this.profileForm.get('gender').patchValue(this.user.gender.toUpperCase().substr(0, 1));
+    this.profileForm.patchValue({
+      first_name: this.user.firstName,
+      last_name: this.user.lastName,
+      birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
+      gender: this.user.gender.toUpperCase().substr(0, 1)
+    });
   }
 
-  public onUploadOutput(output: UploadOutput): void {
-    switch (output.type) {
-      case 'addedToQueue':
-        this.file = output.file;
-        this.uploadPicture();
-        break;
-      case 'uploading':
-        this.file = output.file;
-        break;
-      case 'done':
-        this.removeFromQueue(output);
-        this.onUploadDone(output);
-        break;
-      case 'rejected':
-        this.errorsService.i18nError(output.reason, output.file.name);
-        this.file = null;
-        break;
-    }
+  private setSettingsData() {
+    this.settingsForm.patchValue({
+      allow_segmentation: this.allowSegmentation
+    });
   }
 
   public openUnsubscribeModal() {
     this.modalService.open(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
   }
 
-  private uploadPicture() {
-    const url = 'api/v3/users/me/image';
-    const uploadinput: UploadInput = {
-      type: 'uploadFile',
-      url: environment.baseUrl + url,
-      method: 'POST',
-      fieldName: 'image',
-      headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
-      file: this.file
-    };
-    this.uploadInput.emit(uploadinput);
-  }
-
-  private onUploadDone(output: UploadOutput) {
-    if (output.file.progress.data.responseStatus === 204) {
-      this.userService.user.image.urls_by_size.medium = output.file.preview;
-    } else {
-      this.errorsService.i18nError('serverError', output.file.response.message ? output.file.response.message : '');
-    }
-  }
-
-  private removeFromQueue(output) {
-    this.uploadInput.emit({
-      type: 'remove',
-      id: output.file.id
-    });
-    this.file = null;
-  }
-
-  public switchAllowSegmentation (value: boolean) {
-    const allowSegmentationData: PrivacyRequestData = {
-      gdpr_display: {
-        allow: value,
-        version: '0'
-      }
-    };
-    this.privacyService.updatePrivacy(allowSegmentationData)
-      .subscribe();
-  }
-
   public logout($event: any) {
     $event.preventDefault();
     this.userService.logout();
+  }
+
+  public switchAllowSegmentation (value: boolean) {
+    this.privacyService.updatePrivacy({
+        gdpr_display: {
+          version: '0',
+          allow: value
+        }
+      }).subscribe();
+  }
+
+  private dateValidator(c: FormControl) {
+    const dateRegEx = new RegExp(/^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/);
+    return dateRegEx.test(c.value) ? null : {date: true}
   }
 
 }

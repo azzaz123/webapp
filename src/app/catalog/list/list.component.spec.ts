@@ -378,6 +378,18 @@ describe('ListComponent', () => {
 
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
     });
+
+    it('should change expired flag item if event is reactivated', () => {
+      component.items = createItemsArray(TOTAL);
+      item = component.items[3];
+
+      component.itemChanged({
+        item: item,
+        action: 'reactivated'
+      });
+
+      expect(component.items[3].flags.expired).toBe(false);
+    });
   });
 
   describe('deselect', () => {

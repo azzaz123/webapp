@@ -1,0 +1,37 @@
+@import "~style/common";
+
+:host {
+  padding: $spacing-L;
+  text-align: center;
+}
+.modal-close {
+  @include square(13px);
+  top: 10px;
+  right: 10px;
+  mat-icon {
+    @include square(13px);
+    line-height: initial;
+  }
+}
+img {
+  margin-bottom: $spacing-L;
+  margin-top: $spacing-L;
+  &.fail {
+    width: 173px;
+  }
+}
+p {
+  color: $grey-250;
+  font-size: $font-size;
+  max-width: 300px;
+  margin: 0 auto $spacing-S auto;
+}
+h1 {
+  font-weight: bold;
+  color: $grey-900;
+  font-size: $spacing;
+  margin-bottom: $spacing-2M;
+  &.fail {
+    color: $warn;
+  }
+}
