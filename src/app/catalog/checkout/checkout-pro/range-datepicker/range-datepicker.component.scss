@@ -1,0 +1,169 @@
+@import "~style/common";
+
+.datepicker-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  .datepicker-overlay {
+    background-color: rgba($grey-900, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }  
+  .datepicker-wrapper {
+    border-radius: $border-radius;
+    padding: $spacing $spacing-L;
+    background-color: $white;
+    z-index: 1;
+  }
+}
+
+.datepicker-btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+    border-top: solid 1px $grey-50;
+    padding-top: $spacing;    
+    .datepicker-btn {
+      -webkit-appearance: none;
+      background-color: transparent;
+      border: 0;
+      font-size: $font-size-S;
+      &.cancel {
+        color: $grey-250;
+      }
+      &.apply {
+        font-weight: bold;
+        color: $corporate;
+      }
+      &.citybump {
+        color: $zone-bump;
+      }
+      &.countrybump {
+        color: $country-bump;
+      }
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;        
+      }
+    }
+  }
+  
+  :host /deep/ ngb-datepicker {
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .ngb-dp-day {
+      width: 2.5rem;
+    }
+    .ngb-dp-arrow-btn {
+      box-shadow: none;
+      &:disabled {
+        opacity: 0.4;
+      }
+    }
+    .ngb-dp-weekdays {
+      border: 0;
+    }
+    .ngb-dp-weekday {
+      font-weight: bold;
+      font-style: normal;
+      color: $grey-500;
+      margin: $spacing-S 0;
+      width: 2.5rem;
+      text-transform: lowercase;
+    }
+    .ngb-dp-navigation-chevron {
+      width: 5px;
+      background-size: contain;
+      height: 10px;
+      float: left;
+      background-repeat: no-repeat;
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjExIj48cGF0aCBmaWxsPSIjOTBBNEFFIiBkPSJNNC43OCAxLjgxMmMuMzMtLjQ2Mi4yODMtMS4xNTctLjEwNi0xLjU1LS4zOS0uMzk0LS45NzQtLjMzNy0xLjMwNS4xMjZMLjIyIDQuNzg4YTEuMjYxIDEuMjYxIDAgMCAwIDAgMS40MjRsMy4xNDkgNC40Yy4zMy40NjMuOTE1LjUyIDEuMzA1LjEyNi4zOS0uMzkzLjQzNy0xLjA4OC4xMDYtMS41NUwyLjE0IDUuNWwyLjY0LTMuNjg4eiIvPjwvc3ZnPg==);
+      outline: none;
+      &:before {
+        display: none;
+      }
+    }
+    .ngb-dp-month-name {
+      font-size: $font-size;
+      font-weight: bold;
+      margin: 0 $spacing-M;
+    }
+    .right {
+      .ngb-dp-navigation-chevron {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .selected-text {
+    font-size: $font-size-S;
+    margin: $spacing 0;
+    &.citybump {
+      color: $zone-bump;
+    }
+    &.countrybump {
+      color: $country-bump;
+    }
+    .bold {
+      display: inline-block;
+      font-weight: bold;
+    }
+  }
+  
+  .custom-day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 2rem;
+    width: 100%;
+    font-size: $font-size-XS;
+    &.range, &:hover {
+      color: white;
+      font-weight: bold;
+      &.citybump {
+        background-color: $zone-bump;
+      }
+      &.countrybump {
+        background-color: $country-bump;
+      }
+    }
+    &.start {
+      border-top-left-radius: $spacing;
+      border-bottom-left-radius: $spacing;
+    }
+    &.end {
+      border-top-right-radius: $spacing;
+      border-bottom-right-radius: $spacing;
+    }
+    &.disabled {
+      color: $grey-250;
+      &:hover {
+        color: $grey-250;
+        background-color: transparent;
+        cursor: not-allowed; 
+      }
+    }
+    &.faded {
+      color: white;
+      &.citybump {
+        background-color: rgba($zone-bump, 0.7);
+      }
+      &.countrybump {
+        background-color: rgba($country-bump, 0.7);
+      }
+    }
+  }
