@@ -430,7 +430,7 @@
   <msg id="6631334172623029500"><source>app/profile/profile.component.ts:84</source><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:57</source>Email:</msg>
   <msg id="6865009229971482891"><source>app/profile/profile.component.ts:90</source><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:63</source>Password:</msg>
   <msg id="2322688793988378029"><source>app/profile/profile.component.ts:99</source>Close account</msg>
-  <msg id="1476922037725665227"><source>app/profile/profile.component.ts:132,134</source>In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.</msg>
+  <msg id="3649443966888874108"><source>app/profile/profile.component.ts:113,115</source>In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.</msg>
   <msg id="9032739290449539063"><source>app/profile/profile-pro/profile-pro.component.ts:6</source>Your info</msg>
   <msg id="4558593963938972556"><source>app/profile/profile-pro/profile-pro.component.ts:9</source>Here you can see and manage the information related to your profile</msg>
   <msg id="690637757793763587"><source>app/profile/profile-pro/profile-pro.component.ts:22</source>Billing information</msg>
