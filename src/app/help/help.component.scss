@@ -2,6 +2,13 @@
 
 .box-left {
   padding: 56px 100px;
+  a {
+    color: $grey-900;
+    &:hover, &:active, &:focus {
+      text-decoration: none;
+      color: $corporate;
+    }
+  }
 }
 
 ul, li {
@@ -22,14 +29,6 @@ h2 {
 h3 {
   font-size: $font-size;
   margin-bottom: $spacing;
-}
-
-a {
-  color: $grey-900;
-  &:hover, &:active, &:focus {
-    text-decoration: none;
-    color: $corporate;
-  }
 }
 
 .features {
@@ -80,5 +79,22 @@ a {
     color: $grey-250;
     font-size: $font-size-S;
     margin-bottom: $spacing-2M;
+  }
+}
+
+.contacts {
+  padding: 56px 42px;
+  h2 {
+    margin-bottom: $spacing-S;
+  }
+  .grey {
+    color: $grey-250;
+  }
+  a {
+    font-weight: bold;
+  }
+  .phone {
+    font-size: $font-size-L;
+    font-weight: bold;
   }
 }
