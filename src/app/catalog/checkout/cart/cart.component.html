@@ -50,6 +50,9 @@
     </a>
   </div>
 </div>
+<div class="discounted-total">
+  <s>{{cart?.discountedTotal | customCurrency}}</s>
+</div>
 <div class="total">
   <span class="pull-left" i18n>Total</span>
   <span class="pull-right price">{{cart?.total | customCurrency}}</span>

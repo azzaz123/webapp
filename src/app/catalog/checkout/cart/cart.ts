@@ -47,9 +47,12 @@ export class Cart extends CartBase {
 
   private calculateTotals() {
     this.total = 0;
+    this.discountedTotal = 0;
     BUMP_TYPES.forEach((type: string) => {
       this[type].total = _.sumBy(this[type].cartItems, (c: CartItem) => +c.duration.market_code);
       this.total += this[type].total;
+      this[type].discountedTotal = _.sumBy(this[type].cartItems, (c: CartItem) => +c.duration.original_market_code || 0);
+      this.discountedTotal += this[type].discountedTotal;
     });
   }
 
