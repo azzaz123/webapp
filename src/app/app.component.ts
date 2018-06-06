@@ -98,7 +98,6 @@ export class AppComponent implements OnInit {
           sessionStorage.setItem('isGDPRShown', 'true');
       }
     });
-    this.privacyService.getPrivacyList().subscribe();
     this.conversationService.firstLoad = true;
   }
 
