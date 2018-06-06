@@ -1,0 +1,84 @@
+@import "~style/common";
+
+.box-left {
+  padding: 56px 100px;
+}
+
+ul, li {
+  list-style: none;
+  padding: 0;
+}
+
+h2, h3 {
+  font-weight: bold;
+  margin: 0;
+}
+
+h2 {
+  font-size: $font-size-M;
+  margin-bottom: $spacing-L;
+}
+
+h3 {
+  font-size: $font-size;
+  margin-bottom: $spacing;
+}
+
+a {
+  color: $grey-900;
+  &:hover, &:active, &:focus {
+    text-decoration: none;
+    color: $corporate;
+  }
+}
+
+.features {
+  margin-bottom: 50px;
+  .col {
+    display:flex;
+  }
+  a.featured {
+    border: solid 1px $grey-50;
+    display: block;
+    border-radius: 5px;
+    text-align: center;
+    padding: 36px $spacing-S;
+    font-size: $font-size-S;
+    .title {
+      font-weight: bold;
+      margin-bottom: $spacing-XS;
+    }
+    .desc {
+      color: $grey-250;
+    }
+  }
+}
+
+.summary {
+  border-bottom: solid 1px $grey-50;
+  margin-bottom: $spacing-L;
+  .section {
+    margin-bottom: $spacing-L;
+  }
+  .question {
+    font-size: $font-size-S;
+    margin-bottom: $spacing;
+    &:last-of-type {
+      margin: 0;
+    }
+  }
+}
+
+.faqs {
+  .section {
+    margin-bottom: $spacing-L;
+  }
+  h3 {
+    margin-bottom: $spacing-M;
+  }
+  .answer {
+    color: $grey-250;
+    font-size: $font-size-S;
+    margin-bottom: $spacing-2M;
+  }
+}
