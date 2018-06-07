@@ -524,4 +524,18 @@
   <translation id="1316161310089996670">Para cambiar tu plan de ciudad, llámanos al 674 726 372 o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
   <translation id="1658274921433299016">Para subscribirte a un plan de país, llámanos al 674 726 372 o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
   <translation id="5559193479269599693">Para cambiar tu plan de país, llámanos al 674 726 372 o envíanos un email a <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></translation>
+  <translation id="8458658926966860767">¿Estás seguro que quieres eliminar la información de facturación? </translation>
+  <translation id="7092318893814699678">Sí, estoy seguro/a</translation>
+  <translation id="1250063669755603957">Eliminar información</translation>
+  <translation id="773668064257926548">Eliminar tarjeta</translation>
+  <translation id="8843627277100451781">¿Estas seguro que quieres eliminar la tarjeta?</translation>
+  <translation id="4468071625554558577">Método de pago:</translation>
+  <translation id="8037476586059399916">Expira</translation>
+  <translation id="7368172072093620772">Tus estadísticas</translation>
+  <translation id="44488151127771040">Aquí podrás ver información relativa a las visualizaciones, chats y llamadas que genera tu catálogo de coches. También podrás ver el impacto que tienen sobre las métricas los destacados que apliques.</translation>
+  <translation id="2734780694152757859">Ver más</translation>
+  <translation id="8778531687214591857">Has procesado todos los contactos pendientes. ¡Buen trabajo!</translation>
+  <translation id="5554592740021607017">Últimos 12 meses</translation>
+  <translation id="3708302938863076299">Pago seguro a través de Sabadell</translation>
+  <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
 </translationbundle>

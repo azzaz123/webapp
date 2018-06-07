@@ -29,6 +29,9 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { MessageComponent } from './message/message.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { SwitchComponent } from './switch/switch.component';
+import { ConversationComponent } from './conversation/conversation.component';
+import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
+import { MomentModule } from 'angular2-moment';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
@@ -44,6 +47,8 @@ import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
+    MomentModule,
+    NgxPermissionsModule,
     NgbDropdownModule
   ],
   exports: [
@@ -70,6 +75,8 @@ import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured
     NgxPermissionsModule,
     MessageComponent,
     ReviewButtonComponent,
+    ConversationComponent,
+    ItemAvatarComponent,
     SearchInputComponent,
     SelectComponent
   ],
@@ -96,6 +103,8 @@ import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured
     MessageComponent,
     ReviewButtonComponent,
     SwitchComponent,
+    ConversationComponent,
+    ItemAvatarComponent,
     SelectComponent,
     SearchInputComponent,
     TooManyItemsModalComponent,

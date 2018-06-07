@@ -201,4 +201,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('plan-personal', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/personal1.svg'));
   matIconRegistry.addSvgIcon('plan-personal-selected', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/personal1_selected.svg'));
   matIconRegistry.addSvgIcon('plan-personal-plus', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/plans/personal2.svg'));
+  matIconRegistry.addSvgIcon('secure-card', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/secure-card.svg'));
 }

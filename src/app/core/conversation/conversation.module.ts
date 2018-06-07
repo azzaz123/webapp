@@ -8,6 +8,7 @@ import { MomentModule } from 'angular2-moment';
 import { MatIconModule } from '@angular/material';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CallsService } from './calls.service';
+import { CallStatusLabelPipe } from './call-status-label.pipe';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { CallsService } from './calls.service';
     MessageService,
     CallsService
   ],
-  declarations: []
+  declarations: [CallStatusLabelPipe],
+  exports: [CallStatusLabelPipe]
 })
 export class ConversationModule {
 }

@@ -13,13 +13,14 @@ import {
 } from '../../../../tests/car.fixtures.spec';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures.spec';
+import { MOCK_ITEM_V3, UPLOAD_FORM_CAR_VALUES } from '../../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { User } from '../../../core/user/user';
 import { IMAGE, USER_ID } from '../../../../tests/user.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
+import { Car } from '../../../core/item/car';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -340,6 +341,7 @@ describe('UploadCarComponent', () => {
 
   describe('onUploaded', () => {
     it('should redirect', () => {
+      component.item = <Car>MOCK_ITEM_V3;
       const uploadedEvent = {
         action: 'updated',
         response: {
@@ -351,6 +353,22 @@ describe('UploadCarComponent', () => {
       component.onUploaded(uploadedEvent);
 
       expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
+    });
+
+    it('should redirect with onHold true', () => {
+      component.item = <Car>MOCK_ITEM_V3;
+      component.item.flags.onhold = true;
+      const uploadedEvent = {
+        action: 'updated',
+        response: {
+          id: '1'
+        }
+      };
+      spyOn(router, 'navigate');
+
+      component.onUploaded(uploadedEvent);
+
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true}]);
     });
   });
 

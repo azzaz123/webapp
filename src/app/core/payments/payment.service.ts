@@ -22,7 +22,11 @@ export class PaymentService {
 
   public getFinancialCard(): Observable<FinancialCard> {
     return this.http.get(this.API_URL + '/c2b/financial-card')
-      .map((r: Response) => r.json());
+    .map((r: Response) => r.json());
+  }
+
+  public deleteFinancialCard(): Observable<any> {
+    return this.http.delete(this.API_URL + '/c2b/financial-card');
   }
 
   public getSabadellInfo(orderId: string): Observable<SabadellInfoResponse> {
@@ -187,6 +191,16 @@ export class PaymentService {
       .catch(() => Observable.of(response));
   }
 
+  public getStatus(): Observable<ScheduledStatus> {
+    return this.http.get(this.API_URL_PROTOOL + '/status')
+      .map((r: Response) => r.json());
+  }
+
+  public deleteBillingInfo(billingInfoId: string): Observable<any> {
+    return this.http.delete(this.API_URL + '/billing-info/' + billingInfoId)
+      .map((r: Response) => r.json());
+  }
+
   private sortPacksByQuantity(packs: PackResponse[]): PackResponse[] {
     const sortedPacks = packs.sort(function (a, b) {
       const quantityA: any = _.values(a.benefits)[0];
@@ -207,11 +221,5 @@ export class PaymentService {
         return this.products;
       });
   }
-
-  public getStatus(): Observable<ScheduledStatus> {
-    return this.http.get(this.API_URL_PROTOOL + '/status')
-      .map((r: Response) => r.json());
-  }
-
 }
 

@@ -18,6 +18,7 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { ITEM_CATEGORY_ID, ITEM_DATA, ITEM_DELIVERY_INFO, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { Item } from '../../../core/item/item';
 import { UserLocation } from '../../../core/user/user-response.interface';
+import { environment } from '../../../../environments/environment';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -102,6 +103,7 @@ describe('UploadProductComponent', () => {
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
     fixture.detectChanges();
+    appboy.initialize(environment.appboy);
   });
 
   describe('ngOnInit', () => {
@@ -318,6 +320,23 @@ describe('UploadProductComponent', () => {
       component.onUploaded(uploadedEvent);
 
       expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
+    });
+
+    it('should send appboy Edit event if item is selected', () => {
+      spyOn(appboy, 'logCustomEvent');
+
+      component.item = MOCK_ITEM;
+      component.onUploaded(uploadedEvent);
+
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('Edit', {platform: 'web'});
+    });
+
+    it('should send appboy List event if any item is selected', () => {
+      spyOn(appboy, 'logCustomEvent');
+
+      component.onUploaded(uploadedEvent);
+
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('List', {platform: 'web'});
     });
   });
 

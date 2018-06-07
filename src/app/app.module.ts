@@ -20,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TutorialModule } from './tutorial/tutorial.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CallsModule } from './calls/calls.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { CallsModule } from './calls/calls.module';
     ProfileModule,
     TutorialModule,
     NgxPermissionsModule.forRoot(),
-    CallsModule
+    CallsModule,
+    DashboardModule
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

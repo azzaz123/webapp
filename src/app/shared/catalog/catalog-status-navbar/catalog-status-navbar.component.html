@@ -4,7 +4,7 @@
   <a (click)="selectStatus('pending')" [ngClass]="{active: selectedStatus === 'pending'}" class="nav-link" i18n>Inactive
     <span *ngIf="counters">({{counters?.onHold}})</span></a>
   <a (click)="selectStatus('featured')" [ngClass]="{active: selectedStatus === 'featured'}" class="nav-link" i18n>Bumped
-    <span *ngIf="counters"></span></a>
+    <span *ngIf="counters">({{bumpsCounter || '0'}})</span></a>
   <a (click)="selectStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n>Sold
     <span *ngIf="counters">({{counters?.sold}})</span></a>
 </nav>
