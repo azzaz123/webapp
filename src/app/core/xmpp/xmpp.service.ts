@@ -31,6 +31,7 @@ export class XmppService {
   public totalUnreadMessages = 0;
   public receivedReceipts = [];
   public readReceipts = [];
+  private ownReadTimestamps = {};
   private readTimestamps = {};
 
   constructor(private eventService: EventService,

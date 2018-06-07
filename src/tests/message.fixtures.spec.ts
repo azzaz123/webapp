@@ -1,4 +1,4 @@
-import { USER_ID } from './user.fixtures.spec';
+import { USER_ID, OTHE_USER_ID } from './user.fixtures.spec';
 import { Message, messageStatus } from '../app/core/message/message';
 import { MessagePayload } from '../app/core/message/messages.interface';
 
@@ -40,7 +40,16 @@ export const MOCK_MESSAGE: Message = new Message(
   MESSAGE_MAIN.body,
   MESSAGE_MAIN.from,
   MESSAGE_MAIN.date,
-  messageStatus.RECEIVED
+  null
+);
+
+export const MOCK_MESSAGE_FROM_OTHER: Message = new Message(
+  'other-id',
+  MESSAGE_MAIN.thread,
+  MESSAGE_MAIN.body,
+  OTHE_USER_ID + '@host',
+  MESSAGE_MAIN.date,
+  null
 );
 
 export const MOCK_RANDOM_MESSAGE: Message = new Message(
@@ -49,7 +58,7 @@ export const MOCK_RANDOM_MESSAGE: Message = new Message(
   MESSAGE_MAIN.body,
   MESSAGE_MAIN.from,
   MESSAGE_MAIN.date,
-  messageStatus.READ
+  null
 );
 
 export const MOCK_PAYLOAD_OK: MessagePayload = {

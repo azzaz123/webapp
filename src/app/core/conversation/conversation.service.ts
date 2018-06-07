@@ -57,7 +57,7 @@ export class ConversationService extends LeadService {
     super(http, userService, itemService, event, xmpp, connectionService);
   }
 
-  public subscribeConversationRead(conversation) {
+  private subscribeConversationRead(conversation) {
     this.messagesReadSubscription = this.event.subscribe(EventService.MESSAGE_READ, (thread) => {
       if (thread === conversation.id) {
         this.markAllAsRead(conversation);
@@ -251,7 +251,7 @@ export class ConversationService extends LeadService {
       }
       conversation.messages.push(message);
       conversation.modifiedDate = new Date().getTime();
-      if (!message.fromSelf) {
+      if (!message.fromSelf && !this.receiptSent) {
         this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
           this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED_ACK);
           this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
