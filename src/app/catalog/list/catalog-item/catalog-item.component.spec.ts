@@ -21,6 +21,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Item } from '../../../core/item/item';
+import { EventService } from '../../../core/event/event.service';
 import { environment } from '../../../../environments/environment';
 
 describe('CatalogItemComponent', () => {
@@ -30,6 +31,7 @@ describe('CatalogItemComponent', () => {
   let modalService: NgbModal;
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
+  let eventService: EventService;
   const componentInstance = {
     price: null,
     item: null
@@ -41,6 +43,7 @@ describe('CatalogItemComponent', () => {
       imports: [MomentModule],
       providers: [
         DecimalPipe,
+        EventService,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
@@ -103,6 +106,7 @@ describe('CatalogItemComponent', () => {
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
+    eventService = TestBed.get(EventService);
     appboy.initialize(environment.appboy);
   });
 
@@ -177,17 +181,26 @@ describe('CatalogItemComponent', () => {
       beforeEach(() => {
         spyOn(itemService, 'reserveItem').and.callThrough();
         spyOn(trackingService, 'track');
+        spyOn(eventService, 'emit');
         item = MOCK_ITEM;
         item.reserved = true;
+
         component.reserve(item);
       });
+
       it('should call reserve with false', () => {
         expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, false);
         expect(item.reserved).toBeFalsy();
       });
+
       it('should track the ProductUnReserved event', () => {
         component.reserve(item);
+
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
+      });
+
+      it('should emit ITEM_RESERVED event', () => {
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, item);
       });
     });
   });
@@ -314,9 +327,11 @@ describe('CatalogItemComponent', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
         spyOn(trackingService, 'track');
+        spyOn(eventService, 'emit');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
+
         component.setSold(item);
       }));
 
@@ -331,6 +346,10 @@ describe('CatalogItemComponent', () => {
 
       it('should track the DeleteItem event', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+      });
+
+      it('should emit ITEM_SOLD event', () => {
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
       });
     });
   });

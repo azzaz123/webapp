@@ -398,7 +398,8 @@ export class ItemService extends ResourceService {
   public update(item: any): Observable<any> {
     const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
     return this.http.put(this.API_URL + (item.category_id === '100' ? '/cars/' : '/') + item.id, item, options)
-    .map((r: Response) => r.json());
+      .map((r: Response) => r.json())
+      .do(() => this.eventService.emit(EventService.ITEM_UPDATED, item))
   }
 
   public deletePicture(itemId: string, pictureId: string): Observable<any> {
@@ -558,7 +559,7 @@ export class ItemService extends ResourceService {
         }
       });
   }
-  
+
   public getItemAndSetPurchaseInfo(id: string, purchase: Purchase): Item {
     const index: number = _.findIndex(this.items.active, {id: id});
     if (index !== -1) {
