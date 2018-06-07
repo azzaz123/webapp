@@ -28,11 +28,13 @@ export class XmppService {
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private sentAckSubscription: ISubscription;
+  public unreadMessages = [];
   public totalUnreadMessages = 0;
   public receivedReceipts = [];
   public readReceipts = [];
   private ownReadTimestamps = {};
   private readTimestamps = {};
+  public convWithUnread = {};
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
@@ -168,11 +170,13 @@ export class XmppService {
                 builtMessage.status = messageStatus.SENT;
             }
             }
-          } else if (message.receivedId) {
+          }
+          if (message.receivedId) {
             this.confirmedMessages.push(message.receivedId);
             this.receivedReceipts.push({id: message.receivedId, thread: message.thread});
             this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, message.receivedId);
-          } else if (message.readTimestamp) {
+          }
+          if (message.readTimestamp) {
             this.readReceipts.push(message);
             this.eventService.emit(EventService.MESSAGE_READ, message.thread, message.receivedId);
           }
@@ -181,6 +185,7 @@ export class XmppService {
             if (message.ref === meta.last) {
               messages = this.checkReceivedMessages(messages);
               messages = this.confirmNotConfirmedMessages(messages);
+              this.countUnreadMessages();
               const metaObject: MetaInfo = {
                 first: meta.first,
                 last: meta.last,
@@ -225,11 +230,12 @@ export class XmppService {
   }
 
   private checkReceivedMessages(messages: Message[]): Message[] {
-    messages.filter(message => this.messageFromSelf(message))
-      .forEach((message: Message) => {
+    messages.forEach((message: Message) => {
       const index: number = this.confirmedMessages.indexOf(message.id);
       if (index !== -1) {
+        if (this.messageFromSelf(message)) {
         message.status = messageStatus.RECEIVED;
+        }
         this.confirmedMessages.splice(index, 1);
       }
     });
@@ -237,7 +243,17 @@ export class XmppService {
   }
 
   public getLastReadTimestamps() {
-    this.readReceipts.filter(m => !this.messageFromSelf(m)).forEach((t) => {
+    this.readReceipts.filter(receipt => this.messageFromSelf(receipt)).forEach((t) => {
+      if (!this.ownReadTimestamps[t.thread]) {
+        this.ownReadTimestamps[t.thread] = {
+          thread: t.thread,
+          timestamp: new Date(t.readTimestamp),
+        };
+      } else if (Date.parse(t.readTimestamp) > Date.parse(this.ownReadTimestamps[t.thread].timestamp))  {
+        this.ownReadTimestamps[t.thread].timestamp =  t.readTimestamp;
+      }
+    });
+    this.readReceipts.filter(receipt => !this.messageFromSelf(receipt)).forEach((t) => {
       if (!this.readTimestamps[t.thread]) {
         this.readTimestamps[t.thread] = {
           thread: t.thread,
@@ -247,10 +263,21 @@ export class XmppService {
         this.readTimestamps[t.thread].timestamp =  t.readTimestamp;
   }
     });
+  }
+
   private confirmNotConfirmedMessages(messages: Message[]) {
     this.getLastReadTimestamps();
     messages.forEach((message: Message) => {
       if (!this.messageFromSelf(message)) {
+        if (this.ownReadTimestamps[message.conversationId]) {
+          if (Date.parse(message.date.toString()) > Date.parse(this.ownReadTimestamps[message.conversationId].timestamp.toString())) {
+            const receiptProcessed = this.unreadMessages.filter(m => m.id === message.id).length;
+            if (!receiptProcessed) {
+              this.unreadMessages.push({id: message.id, thread: message.conversationId});
+              this.totalUnreadMessages++;
+            }
+          }
+        }
         this.sendMessageDeliveryReceipt(message.from, message.id, message.conversationId);
       } else if (this.readTimestamps[message.conversationId] &&
                   Date.parse(message.date.toString()) < Date.parse(this.readTimestamps[message.conversationId].timestamp)) {
@@ -258,6 +285,15 @@ export class XmppService {
       }
     });
     return messages;
+  }
+
+  private countUnreadMessages() {
+    this.unreadMessages.forEach(receipt => {
+      this.convWithUnread[receipt.thread] ? this.convWithUnread[receipt.thread]++ : this.convWithUnread[receipt.thread] = 1;
+    });
+    for (const thread of Object.keys(this.convWithUnread)) {
+      this.persistencyService.saveUnreadMessages(thread, this.convWithUnread[thread]);
+    }
   }
 
   private createClient(accessToken: string): void {
@@ -360,7 +396,6 @@ export class XmppService {
     } else {
       messageId = message.id;
     }
-
     return new Message(messageId, message.thread, message.body, (message.from.full || message.from),
                        new Date(message.date), (message.status || null), message.payload);
   }
