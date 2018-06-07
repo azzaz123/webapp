@@ -5,9 +5,17 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label for="brand" i18n>Make</label>
-          <ng-select i18n-placeholder placeholder="E.g. Seat" class="form-control" formControlName="brand" id="brand"
+          <div class="pull-right">
+            <a class="other-make" (click)="toggleCustomMakeSelection()">
+              <span *ngIf="!customMake" i18n>Select another make</span>
+              <span *ngIf="customMake" i18n>Select a predefined make</span>
+            </a>
+          </div>
+          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Seat" class="form-control" formControlName="brand" id="brand"
                      [ngbPopover]="coachmarkMake" #p1="ngbPopover" triggers="manual" (opened)="p1.open()" (closed)="p1.close()"
                      [options]="brands" (selected)="getModels($event.value)"></ng-select>
+          <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand" id="brand"
+                 [ngbPopover]="coachmarkMake" />
           <ng-template #coachmarkMake>
             <mat-icon svgIcon="cm-car"></mat-icon>
             <div i18n>The basics: make and model.</div>
@@ -18,9 +26,11 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label for="model" i18n>Model</label>
-          <ng-select i18n-placeholder placeholder="E.g. Ibiza" class="form-control" formControlName="model" id="model"
+          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Ibiza" class="form-control" formControlName="model" id="model"
                      [ngbPopover]="coachmarkMake" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
                      [options]="models" (selected)="getYears($event.value)"></ng-select>
+          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="E.g. Ibiza" class="form-control" formControlName="model" id="model"
+                 [ngbPopover]="coachmarkMake" />
         </div>
       </div>
     </div>
@@ -28,8 +38,9 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label for="year" i18n>Year</label>
-          <ng-select i18n-placeholder placeholder="Number plate" class="form-control" formControlName="year" id="year" [options]="years"
+          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Number plate" class="form-control" formControlName="year" id="year" [options]="years"
                      (selected)="getVersions($event.value)"></ng-select>
+          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Number plate" class="form-control" formControlName="year" id="year" />
         </div>
       </div>
       <div class="col-sm-4">
@@ -75,7 +86,8 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label for="version" i18n>Version</label>
-          <ng-select i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" id="version" [options]="versions"></ng-select>
+          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" id="version" [options]="versions"></ng-select>
+          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" id="version" />
         </div>
       </div>
       <div class="col-sm-6">
