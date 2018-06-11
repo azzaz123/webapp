@@ -183,7 +183,7 @@ describe('Component: Input', () => {
     });
 
     it('should focus the message area', fakeAsync(() => {
-      component.ngOnChanges(component);
+      component.ngOnChanges();
       tick(500);
 
       expect(component.messageArea.nativeElement.focus).toHaveBeenCalled();
@@ -202,14 +202,14 @@ describe('Component: Input', () => {
     it('should not do anything if there is no message to read', () => {
       component.messageArea = undefined;
 
-      component.ngOnChanges(component);
+      component.ngOnChanges();
     });
 
     it('should disable input if user is blocked', () => {
       component.currentConversation = MOCK_CONVERSATION();
       component.currentConversation.user.blocked = true;
 
-      component.ngOnChanges(component);
+      component.ngOnChanges();
 
       expect(component.disable).toBe(true);
     });
@@ -218,7 +218,7 @@ describe('Component: Input', () => {
       component.currentConversation = MOCK_CONVERSATION();
       connectionService.isConnected = false;
 
-      component.ngOnChanges(component);
+      component.ngOnChanges();
 
       expect(component.disable).toBe(true);
     });
@@ -228,7 +228,7 @@ describe('Component: Input', () => {
       component.currentConversation = MOCK_CONVERSATION();
       component.currentConversation.user.blocked = false;
 
-      component.ngOnChanges(component);
+      component.ngOnChanges();
 
       expect(component.disable).toBe(false);
     });
@@ -237,7 +237,7 @@ describe('Component: Input', () => {
       component.currentConversation = MOCK_CONVERSATION();
       connectionService.isConnected = true;
 
-      component.ngOnChanges(component);
+      component.ngOnChanges();
 
       expect(component.disable).toBe(false);
     });

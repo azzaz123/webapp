@@ -64,7 +64,7 @@ export class InputComponent implements OnChanges, OnInit {
         this.messageArea.nativeElement.focus();
       }, 500);
 
-      if (changes.currentConversation && this.messageArea.nativeElement.value.length) {
+      if (changes && changes.currentConversation && this.messageArea.nativeElement.value.length) {
         this.messageArea.nativeElement.value = null;
       }
     }
