@@ -30,6 +30,7 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Item } from '../../core/item/item';
 import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
+import { EventService } from '../../core/event/event.service';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -47,6 +48,7 @@ describe('ListComponent', () => {
   const componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
   let modalSpy: jasmine.Spy;
   let userService: UserService;
+  let eventService: EventService;
   const routerEvents: Subject<any> = new Subject();
   const mockCounters = {
     sold: 7,
@@ -58,6 +60,7 @@ describe('ListComponent', () => {
       declarations: [ListComponent],
       providers: [
         I18nService,
+        EventService,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
@@ -155,6 +158,7 @@ describe('ListComponent', () => {
     router = TestBed.get(Router);
     errorService = TestBed.get(ErrorsService);
     userService = TestBed.get(UserService);
+    eventService = TestBed.get(EventService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemerviceSpy = spyOn(itemService, 'mine').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
@@ -469,6 +473,7 @@ describe('ListComponent', () => {
     describe('success', () => {
       beforeEach(fakeAsync(() => {
         spyOn(itemService, 'bulkReserve').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE));
+        spyOn(eventService, 'emit');
         component.items = [];
         for (let i = 1; i <= TOTAL; i++) {
           component.items.push(new Item(i.toString(), i, i.toString(), null, null, null, null, null, null, null, null, {
@@ -487,9 +492,11 @@ describe('ListComponent', () => {
         component.reserve();
         tick();
       }));
+
       it('should call the ProductListBulkReserved tracking event', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: '1, 3, 5'});
       });
+
       it('should set items as reserved', () => {
         expect(component.items[0].reserved).toBeTruthy();
         expect(component.items[1].reserved).toBeFalsy();
@@ -497,10 +504,18 @@ describe('ListComponent', () => {
         expect(component.items[3].reserved).toBeFalsy();
         expect(component.items[4].reserved).toBeTruthy();
       });
+
       it('should not call toastr', () => {
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
+
+      it('should emit ITEM_RESERVED event', () => {
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, component.items[0]);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, component.items[2]);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, component.items[4]);
+      });
     });
+
     describe('failed', () => {
       beforeEach(fakeAsync(() => {
         spyOn(itemService, 'bulkReserve').and.returnValue(Observable.of(ITEMS_BULK_RESPONSE_FAILED));
