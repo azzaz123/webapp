@@ -269,18 +269,17 @@ export class XmppService {
     this.getLastReadTimestamps();
     messages.forEach((message: Message) => {
       if (!this.messageFromSelf(message)) {
-        if (this.ownReadTimestamps[message.conversationId]) {
-          if (Date.parse(message.date.toString()) > Date.parse(this.ownReadTimestamps[message.conversationId].timestamp.toString())) {
+        this.sendMessageDeliveryReceipt(message.from, message.id, message.conversationId);
+        if (this.ownReadTimestamps[message.conversationId] &&
+            Date.parse(message.date.toString()) > Date.parse(this.ownReadTimestamps[message.conversationId].timestamp.toString())) {
             const receiptProcessed = this.unreadMessages.filter(m => m.id === message.id).length;
             if (!receiptProcessed) {
               this.unreadMessages.push({id: message.id, thread: message.conversationId});
               this.totalUnreadMessages++;
             }
           }
-        }
-        this.sendMessageDeliveryReceipt(message.from, message.id, message.conversationId);
       } else if (this.readTimestamps[message.conversationId] &&
-                  Date.parse(message.date.toString()) < Date.parse(this.readTimestamps[message.conversationId].timestamp)) {
+                 Date.parse(message.date.toString()) < Date.parse(this.readTimestamps[message.conversationId].timestamp)) {
         message.status = messageStatus.READ;
       }
     });
