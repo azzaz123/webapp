@@ -196,7 +196,7 @@ describe('Component: Input', () => {
       component.ngOnChanges(component);
       tick(500);
 
-      expect(component.messageArea.nativeElement.value).toBe(null);
+      expect(component.messageArea.nativeElement.value).toBe('');
     }));
 
     it('should not do anything if there is no message to read', () => {
