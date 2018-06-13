@@ -63,6 +63,8 @@ const CONVERSATION_RESPONSE: Response = new Response(new ResponseOptions(
 );
 
 class MockedXmppService {
+  totalUnreadMessages = 42;
+
   sendConversationStatus(userId: string, conversationId: string) {
   }
 
@@ -73,6 +75,8 @@ class MockedXmppService {
   isBlocked() {
     return true;
   }
+
+  addUnreadMessagesCounter() {}
 }
 
 describe('Service: Conversation', () => {
@@ -986,14 +990,52 @@ describe('Service: Conversation', () => {
         });
         connectionService.isConnected = true;
         conversations = createConversationsArray(5);
-        convWithMessages = [];
-        service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
-          convWithMessages = res;
-        });
       });
 
       it('should call messageService.getMessages', () => {
+        spyOn(xmpp, 'addUnreadMessagesCounter').and.returnValue(conversations);
+        convWithMessages = [];
+
+        service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
+          convWithMessages = res;
+        });
+
         expect(messageService.getMessages).toHaveBeenCalledTimes(5);
+      });
+
+      it('should call xmpp.addUnreadMessagesCounter', () => {
+        spyOn(xmpp, 'addUnreadMessagesCounter').and.returnValue(conversations);
+        convWithMessages = [];
+
+        service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
+          convWithMessages = res;
+        });
+
+        expect(xmpp.addUnreadMessagesCounter).toHaveBeenCalled();
+      });
+
+      it('should call persistencyService.saveUnreadMessages', () => {
+        spyOn(xmpp, 'addUnreadMessagesCounter').and.returnValue(conversations);
+        spyOn(persistencyService, 'saveUnreadMessages');
+        convWithMessages = [];
+
+        service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
+          convWithMessages = res;
+        });
+
+        expect(persistencyService.saveUnreadMessages).toHaveBeenCalledTimes(5);
+      });
+
+      it('should set messageService.totalUnreadMessages', () => {
+        spyOn(xmpp, 'addUnreadMessagesCounter').and.returnValue(conversations);
+        spyOnProperty(messageService, 'totalUnreadMessages', 'get').and.callThrough();
+        convWithMessages = [];
+
+        service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
+          convWithMessages = res;
+        });
+
+        expect(messageService.totalUnreadMessages).toBe(42);
       });
 
       it('should fill conversations with messages', () => {
