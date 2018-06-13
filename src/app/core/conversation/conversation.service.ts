@@ -376,6 +376,11 @@ export class ConversationService extends LeadService {
           if (index < conversations.length - 1) {
             return this.recursiveLoadMessages(conversations, index + 1);
           }
+          conversations = this.xmpp.addUnreadMessagesCounter(conversations);
+          conversations.forEach(conversation => {
+            this.persistencyService.saveUnreadMessages(conversation.id, conversation.unreadMessages);
+          });
+          this.messageService.totalUnreadMessages = this.xmpp.totalUnreadMessages;
           return Observable.of(conversations);
         });
       } else {

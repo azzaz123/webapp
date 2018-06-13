@@ -66,7 +66,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.subscribeChatSignals();
     this.eventService.subscribe(EventService.LEAD_ARCHIVED, () => this.setCurrentConversation(null));
     this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
-    this.eventService.subscribe(EventService.FIND_CONVERSATION, (conversation: NewConversationResponse) => this.findConversation(conversation));
+    this.eventService.subscribe(EventService.FIND_CONVERSATION,
+      (conversation: NewConversationResponse) => this.findConversation(conversation));
     this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, () => {
       if (this.archive) {
         this.archive = false;
@@ -89,10 +90,14 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       }
     });
     this.eventService.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
-      this.conversations.length ? this.updateMessageStatus(messageStatus.RECEIVED, conversationId, messageId) : this.receivedMessages = this.xmppService.receivedReceipts;
+      this.conversations.length ?
+        this.updateMessageStatus(messageStatus.RECEIVED, conversationId, messageId) :
+        this.receivedMessages = this.xmppService.receivedReceipts;
     });
     this.eventService.subscribe(EventService.MESSAGE_READ, (conversationId) => {
-      this.conversations.length ? this.updateMessageStatus(messageStatus.READ, conversationId) : this.readMessages = this.xmppService.readReceipts;
+      this.conversations.length ?
+        this.updateMessageStatus(messageStatus.READ, conversationId) :
+        this.readMessages = this.xmppService.readReceipts;
     });
   }
 
