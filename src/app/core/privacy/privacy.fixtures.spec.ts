@@ -34,7 +34,7 @@ export const MOCK_PRIVACY_DISALLOW: PrivacyList = {
   ]
 };
 
-export const MOCK_PRIVACY_UNKNOW: PrivacyList = {
+export const MOCK_PRIVACY_UNKNOW_DISALLOW: PrivacyList = {
   gdpr_display: [
     {
       version: '0',
@@ -45,6 +45,21 @@ export const MOCK_PRIVACY_UNKNOW: PrivacyList = {
     {
       version: '0',
       allow: false
+    }
+  ]
+};
+
+export const MOCK_PRIVACY_UNKNOW_ALLOW: PrivacyList = {
+  gdpr_display: [
+    {
+      version: '0',
+      allow: true
+    }
+  ],
+  privacy_policy: [
+    {
+      version: '0',
+      allow: true
     }
   ]
 };

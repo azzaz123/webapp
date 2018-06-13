@@ -8,7 +8,8 @@ import { PrivacyList } from './privacy.interface';
 import {
   MOCK_PRIVACY_ALLOW,
   MOCK_PRIVACY_DISALLOW,
-  MOCK_PRIVACY_UNKNOW,
+  MOCK_PRIVACY_UNKNOW_ALLOW,
+  MOCK_PRIVACY_UNKNOW_DISALLOW,
   MOCK_PRIVACY_UPDATE_ALLOW
 } from './privacy.fixtures.spec';
 import { environment } from '../../../environments/environment';
@@ -124,7 +125,7 @@ describe('PrivacyService', () => {
       beforeEach(fakeAsync(() => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
-          const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW)});
+          const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW_DISALLOW)});
           connection.mockRespond(new Response(res));
         });
       }));
@@ -175,7 +176,7 @@ describe('PrivacyService', () => {
       let status: string;
       mockBackend.connections.subscribe((connection:  MockConnection) => {
         expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
-        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW)});
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW_DISALLOW)});
         connection.mockRespond(new Response(res));
       });
 
@@ -183,6 +184,64 @@ describe('PrivacyService', () => {
       status = service.getPrivacyState('gdpr_display', '0');
 
       expect(status).toEqual(PRIVACY_STATUS.unknown);
+    });
+  });
+
+  describe('isPrivacyAllow', () => {
+    it('should return false when status of gdpr_display is disallow', () => {
+      let allowSegmentation: boolean;
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_DISALLOW)});
+        connection.mockRespond(new Response(res));
+      });
+
+      service.getPrivacyList().subscribe();
+      allowSegmentation = service.isPrivacyAllow('gdpr_display', '0');
+
+      expect(allowSegmentation).toEqual(false);
+    });
+
+    it('should return true when status of gdpr_display is allow', () => {
+      let allowSegmentation: boolean;
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_ALLOW)});
+        connection.mockRespond(new Response(res));
+      });
+
+      service.getPrivacyList().subscribe();
+      allowSegmentation = service.isPrivacyAllow('gdpr_display', '0');
+
+      expect(allowSegmentation).toEqual(true);
+    });
+
+    it('should return false when status of gdpr_display is unknow and allow segmentation is false', () => {
+      let allowSegmentation: boolean;
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW_DISALLOW)});
+        connection.mockRespond(new Response(res));
+      });
+
+      service.getPrivacyList().subscribe();
+      allowSegmentation = service.isPrivacyAllow('gdpr_display', '0');
+
+      expect(allowSegmentation).toEqual(false);
+    });
+
+    it('should return false when status of gdpr_display is unknow and allow segmentation is false', () => {
+      let allowSegmentation: boolean;
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW_ALLOW)});
+        connection.mockRespond(new Response(res));
+      });
+
+      service.getPrivacyList().subscribe();
+      allowSegmentation = service.isPrivacyAllow('gdpr_display', '0');
+
+      expect(allowSegmentation).toEqual(true);
     });
   });
 
