@@ -83,7 +83,21 @@ class MockedClient {
   }
 }
 
+class Receipts {
+  createArrayOfReceipts(total: number, thread: string, date?: string): any {
+    const messages: any[] = [];
+    for (let i = 1; i <= total; i++) {
+      messages.push({
+        thread: thread,
+        readTimestamp: new Date(date)
+      });
+    }
+    return messages;
+  }
+}
+
 const MOCKED_CLIENT: MockedClient = new MockedClient();
+const MOCKED_RECEIPTS: Receipts = new Receipts();
 const MOCKED_LOGIN_USER: any = '1';
 const MOCKED_LOGIN_PASSWORD: any = 'abc';
 const MOCKED_SERVER_MESSAGE: any = {
@@ -1266,29 +1280,23 @@ describe('Service: Xmpp', () => {
         thread: message1.thread,
         timestamp: new Date(message1.readTimestamp)
       });
-      expect(service['ownReadTimestamps'][message2.thread]).toEqual({
-        thread: message2.thread,
-        timestamp: new Date(message2.readTimestamp)
-      });
     });
 
-    it('should add replace the existing receipt when a newer receipt is received for a message fromSelf', () => {
+    it('should replace the existing receipt when a newer receipt is received for a message fromSelf', () => {
       spyOn<any>(service, 'messageFromSelf').and.returnValue(true);
-      const olderDate = new Date('2015-12-12 13:00').getTime();
-      const newerDate = new Date('2016-12-12 13:00').getTime();
-      const message1: any = MOCK_MESSAGE;
-      const message2: any = MOCK_MESSAGE;
-      message1.readTimestamp = olderDate;
-      message1.thread = message1.conversationId;
-      message2.readTimestamp = newerDate;
-      message2.thread = message1.conversationId;
-      service.readReceipts = [message1, message2];
+      const messages = MOCKED_RECEIPTS.createArrayOfReceipts(2, 'someRandomThread');
+      const olderDate = new Date('2015-12-12 13:00');
+      const newerDate = new Date('2016-12-12 13:00');
+
+      messages[0].readTimestamp = olderDate;
+      messages[1].readTimestamp = newerDate;
+      service.readReceipts = [messages[0], messages[1]];
 
       service.getLastReadTimestamps();
 
-      expect(service['ownReadTimestamps'][message1.thread]).toEqual({
-        thread: message1.thread,
-        timestamp: new Date(newerDate)
+      expect(service['ownReadTimestamps'][messages[0].thread]).toEqual({
+        thread: messages[0].thread,
+        timestamp: newerDate
       });
     });
 
@@ -1308,29 +1316,23 @@ describe('Service: Xmpp', () => {
         thread: message1.thread,
         timestamp: new Date(message1.readTimestamp)
       });
-      expect(service['readTimestamps'][message2.thread]).toEqual({
-        thread: message2.thread,
-        timestamp: new Date(message2.readTimestamp)
-      });
     });
 
-    it('should add replace the existing receipt when a newer receipt is received for a message NOT fromSelf', () => {
+    it('should replace the existing receipt when a newer receipt is received for a message NOT fromSelf', () => {
       spyOn<any>(service, 'messageFromSelf').and.returnValue(false);
-      const olderDate = new Date('2015-12-12 13:00').getTime();
-      const newerDate = new Date('2016-12-12 13:00').getTime();
-      const message1: any = MOCK_MESSAGE;
-      const message2: any = MOCK_MESSAGE;
-      message1.readTimestamp = olderDate;
-      message1.thread = message1.conversationId;
-      message2.readTimestamp = newerDate;
-      message2.thread = message1.conversationId;
-      service.readReceipts = [message1, message2];
+      const messages = MOCKED_RECEIPTS.createArrayOfReceipts(2, 'someRandomThread');
+      const olderDate = new Date('2015-12-12 13:00');
+      const newerDate = new Date('2016-12-12 13:00');
+
+      messages[0].readTimestamp = olderDate;
+      messages[1].readTimestamp = newerDate;
+      service.readReceipts = [messages[0], messages[1]];
 
       service.getLastReadTimestamps();
 
-      expect(service['readTimestamps'][message1.thread]).toEqual({
-        thread: message1.thread,
-        timestamp: new Date(newerDate)
+      expect(service['readTimestamps'][messages[0].thread]).toEqual({
+        thread: messages[0].thread,
+        timestamp: newerDate
       });
     });
   });
