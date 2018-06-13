@@ -8,7 +8,7 @@ import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
 import { XmppService } from '../../core/xmpp/xmpp.service';
-import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { ConnectionService } from '../../core/connection/connection.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
@@ -174,7 +174,8 @@ describe('Component: Input', () => {
       component.messageArea = {
         nativeElement: {
           focus() {
-          }
+          },
+          value: ''
         }
       };
       spyOn(component.messageArea.nativeElement, 'focus');
@@ -186,6 +187,16 @@ describe('Component: Input', () => {
       tick(500);
 
       expect(component.messageArea.nativeElement.focus).toHaveBeenCalled();
+    }));
+
+    it('should reset the input value when the conversation is changed', fakeAsync(() => {
+      component.messageArea.nativeElement.value = 'I typed some some text...';
+      component.currentConversation = SECOND_MOCK_CONVERSATION;
+
+      component.ngOnChanges(component);
+      tick(500);
+
+      expect(component.messageArea.nativeElement.value).toBe('');
     }));
 
     it('should not do anything if there is no message to read', () => {
