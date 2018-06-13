@@ -19,7 +19,6 @@ import { MessagePayload } from '../message/messages.interface';
 import { MOCK_PAYLOAD_KO,
   MOCK_PAYLOAD_OK,
   MOCK_MESSAGE,
-  MOCK_RANDOM_MESSAGE,
   createMessagesArray } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../user/user.service';

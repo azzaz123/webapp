@@ -28,7 +28,7 @@ export class XmppService {
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private sentAckSubscription: ISubscription;
-  public unreadMessages = [];
+  private unreadMessages = [];
   public totalUnreadMessages = 0;
   public receivedReceipts = [];
   public readReceipts = [];
