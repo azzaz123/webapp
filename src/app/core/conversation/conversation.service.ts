@@ -8,7 +8,7 @@ import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { MessageService } from '../message/message.service';
-import { Message } from '../message/message';
+import { Message, messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import { MessagesData, StoredConversation } from '../message/messages.interface';
@@ -21,7 +21,7 @@ import { Filters } from './conversation-filters';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConversationTotals } from './totals.interface';
 import { Item } from '../item/item';
-import { ISubscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -38,8 +38,9 @@ export class ConversationService extends LeadService {
   private SURVEY_MESSAGE = 'Ya he respondido a tus preguntas';
 
   private messagesObservable: Observable<Conversation[]>;
-  private readSubscription: ISubscription;
+  private readSubscription: Subscription;
   private receiptSent = false;
+  public messagesReadSubscription: Subscription;
   public ended: boolean;
 
   constructor(http: HttpService,
@@ -56,10 +57,21 @@ export class ConversationService extends LeadService {
     super(http, userService, itemService, event, xmpp, connectionService);
   }
 
+  private subscribeConversationRead(conversation) {
+    this.messagesReadSubscription = this.event.subscribe(EventService.MESSAGE_READ, (thread) => {
+      if (thread === conversation.id) {
+        this.markAllAsRead(conversation);
+      }
+    });
+  }
+
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
     return this.query(since, archived)
     .flatMap((conversations: Conversation[]) => {
       if (conversations && conversations.length > 0) {
+        if (!this.messagesReadSubscription) {
+          conversations.forEach((conversation: Conversation) => this.subscribeConversationRead(conversation));
+        }
         return Observable.forkJoin(
           conversations.map((conversation: Conversation) => this.loadUnreadMessagesNumber(conversation))
         )
@@ -234,20 +246,57 @@ export class ConversationService extends LeadService {
 
   public addMessage(conversation: Conversation, message: Message): boolean {
     if (!this.findMessage(conversation.messages, message)) {
+      if (message.fromSelf) {
+        message.status = messageStatus.PENDING;
+      }
       conversation.messages.push(message);
       conversation.modifiedDate = new Date().getTime();
-      if (message.fromBuyer) {
-        this.handleUnreadMessage(conversation);
-      }
-      if (this.receiptSent) {
-        this.receiptSent = false;
-      } else if (conversation.user.id === message.user.id) {
+      if (!message.fromSelf && !this.receiptSent) {
         this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
           this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED_ACK);
           this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
         });
+        this.handleUnreadMessage(conversation);
+      }
+      if (this.receiptSent) {
+        this.receiptSent = false;
       }
       return true;
+    }
+  }
+
+  private addStatusToStoredMessages(conversation: Conversation, newStatus: string) {
+    this.persistencyService.localDbVersionUpdate(1.1, () => {
+      conversation.messages.filter((message) => {
+        return message.fromSelf && typeof message.status !== 'string';
+      }).forEach((message) => {
+        message.status = newStatus;
+        this.persistencyService.updateMessageStatus(message.id, newStatus);
+      });
+    });
+  }
+
+  public markAllAsRead(conversation: Conversation) {
+    this.addStatusToStoredMessages(conversation, messageStatus.READ);
+    conversation.messages.filter((message) => {
+      return (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT) && message.fromSelf;
+    })
+    .forEach((message) => {
+      message.status = messageStatus.READ;
+      this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_READ);
+      this.persistencyService.updateMessageStatus(message.id, messageStatus.READ);
+    });
+  }
+
+  public markAs(newStatus: string, message: Message, conversation: Conversation) {
+    if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
+      message.status = newStatus;
+      this.persistencyService.updateMessageStatus(message.id, newStatus);
+      if (newStatus === messageStatus.SENT) {
+        this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_SENT_ACK);
+      } else if (newStatus === messageStatus.RECEIVED) {
+        this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED);
+      }
     }
   }
 
@@ -350,7 +399,7 @@ export class ConversationService extends LeadService {
               if (!this.findMessage(conversation.messages, message)) {
                 message = this.messageService.addUserInfo(conversation, message);
                 conversation.messages.push(message);
-                if (message.fromBuyer) {
+                if (!message.fromSelf) {
                   this.handleUnreadMessage(conversation);
                 }
               }
@@ -359,7 +408,7 @@ export class ConversationService extends LeadService {
                 message = this.messageService.addUserInfo(subscribedConversation, message);
                 this.addMessage(subscribedConversation, message);
                 conversations.unshift(subscribedConversation);
-                if (message.fromBuyer) {
+                if (message.fromSelf) {
                   this.handleUnreadMessage(subscribedConversation);
                 }
               });
@@ -453,7 +502,7 @@ export class ConversationService extends LeadService {
           if (this.addMessage(conversation, message)) {
             this.event.emit(EventService.MESSAGE_ADDED, message);
             this.leads = this.bumpConversation(conversation);
-            if (message.fromBuyer) {
+            if (!message.fromSelf) {
               this.notificationService.sendBrowserNotification(message, conversation.item.id);
             }
             this.stream$.next(this.leads);
@@ -514,9 +563,9 @@ export class ConversationService extends LeadService {
     this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED_ACK);
     message = this.messageService.addUserInfo(conversation, message);
     this.addMessage(conversation, message);
+    this.subscribeConversationRead(conversation);
     this.leads.unshift(conversation);
     this.notificationService.sendBrowserNotification(message, conversation.item.id);
     this.stream$.next(this.leads);
   }
-
 }
