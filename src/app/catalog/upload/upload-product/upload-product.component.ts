@@ -155,8 +155,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       return null;
     }
     return this.deliveryInfo.find((deliveryInfo) => {
-      return deliveryInfo.value.min_weight_kg === this.item.deliveryInfo.min_weight_kg &&
-        deliveryInfo.value.max_weight_kg === this.item.deliveryInfo.max_weight_kg;
+      return deliveryInfo.value.max_weight_kg === this.item.deliveryInfo.max_weight_kg;
     }).value;
   }
 

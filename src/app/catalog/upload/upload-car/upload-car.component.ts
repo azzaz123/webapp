@@ -89,6 +89,8 @@ export class UploadCarComponent implements OnInit {
 
   private setItemData() {
     if (this.item) {
+      const carYear: string =  this.item.year ? this.item.year.toString() : '';
+      const carCategory: string = this.item.categoryId ? this.item.categoryId.toString() : '';
       this.uploadForm.patchValue({
         id: this.item.id,
         title: this.item.title,
@@ -96,7 +98,7 @@ export class UploadCarComponent implements OnInit {
         currency_code: this.item.currencyCode,
         storytelling: this.item.description,
         sale_conditions: this.item.saleConditions,
-        category_id: this.item.categoryId.toString(),
+        category_id: carCategory,
         num_seats: this.item.numSeats,
         body_type: this.item.bodyType,
         km: this.item.km,
@@ -104,12 +106,12 @@ export class UploadCarComponent implements OnInit {
         gearbox: this.item.gearbox,
         brand: this.item.brand,
         model: this.item.model,
-        year: this.item.year.toString(),
+        year: carYear,
         version: this.item.version
       });
       this.getModels(this.item.brand, true);
       this.getYears(this.item.model, true);
-      this.getVersions(this.item.year.toString(), true);
+      this.getVersions(carYear, true);
       this.detectFormChanges();
     }
   }
