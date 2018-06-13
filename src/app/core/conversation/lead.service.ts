@@ -193,6 +193,16 @@ export abstract class LeadService {
     }
   }
 
+  public syncItem(item: Item) {
+    const replaceItem = (lead: Lead) => {
+      if (lead.item.id === item.id) {
+        lead.item = item;
+      }
+    };
+    this.leads.forEach(replaceItem);
+    this.archivedLeads.forEach(replaceItem);
+  }
+
   protected abstract mapRecordData(r: LeadResponse): Lead;
 
   protected abstract getLeads(since?: number, archived?: boolean): Observable<Lead[]>;

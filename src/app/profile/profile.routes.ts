@@ -19,6 +19,7 @@ const routes: Routes = [
     canDeactivate: [ExitConfirmGuard],
     data: {
       isMyZone: true,
+      isProfile: true,
       permissions: {
         only: PERMISSIONS.normal,
         redirectTo: '/pro/profile'
@@ -46,7 +47,8 @@ const routes: Routes = [
             component: ProfileProInfoComponent,
             canDeactivate: [ExitConfirmGuard],
             data: {
-              isMyZone: true
+              isMyZone: true,
+              isProfile: true
             }
           },
           {
@@ -54,14 +56,16 @@ const routes: Routes = [
             component: ProfileProBillingComponent,
             canDeactivate: [ExitConfirmGuard],
             data: {
-              isMyZone: true
+              isMyZone: true,
+              isProfile: true
             }
           },
           {
             path: 'subscription',
             component: ProfileProSubscriptionComponent,
             data: {
-              isMyZone: true
+              isMyZone: true,
+              isProfile: true
             }
           }
         ]

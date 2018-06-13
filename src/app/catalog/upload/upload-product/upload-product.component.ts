@@ -155,8 +155,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       return null;
     }
     return this.deliveryInfo.find((deliveryInfo) => {
-      return deliveryInfo.value.min_weight_kg === this.item.deliveryInfo.min_weight_kg &&
-        deliveryInfo.value.max_weight_kg === this.item.deliveryInfo.max_weight_kg;
+      return deliveryInfo.value.max_weight_kg === this.item.deliveryInfo.max_weight_kg;
     }).value;
   }
 
@@ -222,8 +221,10 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     this.onFormChanged.emit(false);
     if (this.item) {
       this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
+      appboy.logCustomEvent('Edit', {platform: 'web'});
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
+      appboy.logCustomEvent('List', {platform: 'web'});
     }
 
     if (this.isUrgent) {

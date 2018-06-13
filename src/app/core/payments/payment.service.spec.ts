@@ -29,10 +29,6 @@ describe('PaymentService', () => {
     http = TestBed.get(HttpService);
   });
 
-  it('should exist', () => {
-    expect(service).toBeTruthy();
-  });
-
   describe('pay', () => {
     it('should call endpoint', () => {
       spyOn(http, 'post').and.callThrough();
@@ -53,6 +49,15 @@ describe('PaymentService', () => {
       });
       expect(http.get).toHaveBeenCalledWith('api/v3/payments/c2b/financial-card');
       expect(response).toEqual(FINANCIAL_CARD);
+    });
+  });
+
+  describe('deleteFinancialCard', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify({})});
+      spyOn(http, 'delete').and.returnValue(Observable.of(new Response(res)));
+      service.deleteFinancialCard().subscribe();
+      expect(http.delete).toHaveBeenCalledWith('api/v3/payments/c2b/financial-card');
     });
   });
 
@@ -191,6 +196,16 @@ describe('PaymentService', () => {
 
       expect(response).toEqual(returnPerksModel);
       expect(http.get).toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteBillingInfo', () => {
+    it('should call http delete method with deleteBillingInfo endpoint and billingInfoId', () => {
+      spyOn(http, 'delete').and.callThrough();
+
+      service.deleteBillingInfo('123');
+
+      expect(http.delete).toHaveBeenCalledWith('api/v3/payments/billing-info/123');
     });
   });
 });

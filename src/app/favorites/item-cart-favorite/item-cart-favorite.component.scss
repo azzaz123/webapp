@@ -2,6 +2,11 @@
 
 tsl-card {
   cursor: pointer;
+  width: 220px;
+  border-radius: $border-radius;
+  box-shadow: 0 0 2px 0 rgba($black, .1);
+  transition: all .15s ease;
+  margin: 0 $spacing-S/2 $spacing-S $spacing-S/2;
 
   & /deep/ tsl-card-image {
     display: block;
@@ -12,7 +17,7 @@ tsl-card {
 
     padding-top: $spacing-S;
 
-    span{
+    span {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -26,11 +31,7 @@ tsl-card {
 
     .cart-footer-icon {
       position: absolute;
-      g {
-        stroke: $color-favorite-icon-stroke;
-      }
-
-      &.active g{
+      &.active g {
         fill: $color-favorite-icon-fill;
       }
     }

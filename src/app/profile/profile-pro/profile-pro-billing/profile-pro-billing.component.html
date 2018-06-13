@@ -65,8 +65,11 @@
               </div>
             </div>
             <div class="row">
-              <div class="offset-3 col-9">
-                <tsl-button [type]="'submit'" className="btn-primary btn-big" i18n>Save</tsl-button>
+              <div class="col-9" [ngClass]="{'offset-3': isNewBillingInfoForm, 'text-center': !isNewBillingInfoForm}">
+                <tsl-button [type]="'submit'" className="btn-primary btn-big" i18n [disabled]="!billingForm.valid">Save</tsl-button>
+              </div>
+              <div class="col-3 delete-link" *ngIf="!isNewBillingInfoForm">
+                <a (click)="deleteBillingInfo()" i18n>Delete information</a>
               </div>
             </div>
           </div>
@@ -75,3 +78,4 @@
     </div>
   </tsl-profile-form>
 </form>
+<tsl-credit-card-info></tsl-credit-card-info>

@@ -198,13 +198,6 @@ $feature-button-width: 170px;
       height: 17px;
       width: 19px;
       vertical-align: top;
-      /deep/ svg path {
-        stroke: $grey-500;
-        &#Fill-3 {
-          stroke: none;
-          fill: $grey-500;
-        }
-      }
     }
   }
   .actions {
@@ -215,6 +208,7 @@ $feature-button-width: 170px;
     button, tsl-button {
       margin-left: $spacing-S;
       float: left;
+      background-color: transparent;
     }
     button {
       @include square(40px);

@@ -522,31 +522,58 @@ describe('Service: Item', () => {
 
     const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
 
-    it('should call endpoint and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
-      spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
-      let item: any;
+    describe('consumer good', () => {
 
-      service.update(ITEM_DATA).subscribe((r: any) => {
-        item = r;
+      beforeEach(() => {
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEM_DATA_V3)});
+        spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
+        spyOn(eventService, 'emit');
       });
 
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID, ITEM_DATA, options);
-      expect(item).toEqual(ITEM_DATA_V3);
-    });
+      it('should call endpoint and return response', () => {
+        let item: any;
 
-    it('should call CAR endpoint if category is 100 and return response', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_DATA)});
-      spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
-      let item: any;
+        service.update(ITEM_DATA).subscribe((r: any) => {
+          item = r;
+        });
 
-      service.update(CAR_DATA_FORM).subscribe((r: any) => {
-        item = r;
+        expect(http.put).toHaveBeenCalledWith('api/v3/items/' + ITEM_ID, ITEM_DATA, options);
+        expect(item).toEqual(ITEM_DATA_V3);
       });
 
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/cars/' + CAR_ID, CAR_DATA_FORM, options);
-      expect(item).toEqual(CAR_DATA);
+      it('should emit ITEM_UPDATED event', () => {
+        service.update(ITEM_DATA).subscribe();
+
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, ITEM_DATA)
+      });
     });
+
+    describe('car', () => {
+
+      beforeEach(() => {
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_DATA)});
+        spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
+        spyOn(eventService, 'emit');
+      });
+
+      it('should call CAR endpoint if category is 100 and return response', () => {
+        let item: any;
+
+        service.update(CAR_DATA_FORM).subscribe((r: any) => {
+          item = r;
+        });
+
+        expect(http.put).toHaveBeenCalledWith('api/v3/items/cars/' + CAR_ID, CAR_DATA_FORM, options);
+        expect(item).toEqual(CAR_DATA);
+      });
+
+      it('should emit ITEM_UPDATED event', () => {
+        service.update(ITEM_DATA).subscribe();
+
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, ITEM_DATA)
+      });
+    });
+
   });
 
   describe('deletePicture', () => {
@@ -710,22 +737,22 @@ describe('Service: Item', () => {
         service.mines(1, 10, 'date_desc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse.length).toBe(4);
       });
       it('should return cached results the second time', () => {
         let observableResponse: Item[];
         let observableResponse2: Item[];
-        
+
         service.mines(1, 10, 'date_desc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(http.get).toHaveBeenCalledTimes(3);
       });
       it('should NOT return cached results the second time', () => {
         service.mines(1, 10, 'date_desc').subscribe();
-        
+
         expect(http.get).toHaveBeenCalledTimes(3);
       });
       it('should filter by term', () => {
@@ -733,45 +760,45 @@ describe('Service: Item', () => {
         service.mines(1, 10, 'date_desc', undefined, 'title').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse.length).toBe(4);
-        
+
         observableResponse = undefined;
         service.mines(1, 10, 'date_desc', undefined, 'TITLE').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse.length).toBe(4);
-        
+
         observableResponse = undefined;
         service.mines(1, 10, 'date_desc', undefined, 'title2').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse.length).toBe(0);
-        
+
         observableResponse = undefined;
         service.mines(1, 10, 'date_desc', undefined, 'test').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse.length).toBe(0);
-        
+
         observableResponse = undefined;
         service.mines(1, 10, 'date_desc', undefined, 'description').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse.length).toBe(4);
-        
+
         observableResponse = undefined;
         service.mines(1, 10, 'date_desc', undefined, 'description2').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse.length).toBe(0);
       });
-      
+
       it('should sort by date', () => {
         let observableResponse: Item[];
         service.mines(1, 10, 'date_desc').subscribe((r: Item[]) => {
@@ -782,7 +809,7 @@ describe('Service: Item', () => {
         expect(observableResponse[1].publishedDate).toBe(ITEM_PUBLISHED_DATE);
         expect(observableResponse[2].publishedDate).toBe(ITEM_PUBLISHED_DATE);
         expect(observableResponse[3].publishedDate).toBe(ITEM_PUBLISHED_DATE);
-        
+
         observableResponse = undefined;
         service.mines(1, 10, 'date_asc').subscribe((r: Item[]) => {
           observableResponse = r;
@@ -791,23 +818,23 @@ describe('Service: Item', () => {
         expect(observableResponse[1].publishedDate).toBe(ITEM_PUBLISHED_DATE);
         expect(observableResponse[2].publishedDate).toBe(ITEM_PUBLISHED_DATE);
         expect(observableResponse[3].publishedDate).toBe(ITEM_PUBLISHED_DATE);
-        
+
         observableResponse = undefined;
         service.mines(1, 10, 'price_asc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
         expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
         expect(observableResponse[2].salePrice).toBe(ITEM_SALE_PRICE);
         expect(observableResponse[3].salePrice).toBe(ITEM_SALE_PRICE);
-        
+
         observableResponse = undefined;
-        
+
         service.mines(1, 10, 'price_desc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
         expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
         expect(observableResponse[2].salePrice).toBe(ITEM_SALE_PRICE);
@@ -820,20 +847,20 @@ describe('Service: Item', () => {
         });
         expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
         expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
-        
+
         observableResponse = undefined;
         service.mines(2, 2, 'date_desc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse[0].salePrice).toBe(ITEM_SALE_PRICE);
         expect(observableResponse[1].salePrice).toBe(ITEM_SALE_PRICE);
-        
+
         observableResponse = undefined;
         service.mines(1, 4, 'date_desc').subscribe((r: Item[]) => {
           observableResponse = r;
         });
-        
+
         expect(observableResponse.length).toBe(4);
       });
     });
@@ -846,7 +873,7 @@ describe('Service: Item', () => {
       service.mines(1, 2, 'date_desc').subscribe((r: Item[]) => {
         observableResponse = r;
       });
-     
+
       expect(observableResponse.length).toBe(0);
     });
   });

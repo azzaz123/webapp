@@ -1,6 +1,7 @@
 import { Pack } from './pack';
 export interface PerkResponse {
   expire_date: number;
+  create_date: number;
   perk_id: string;
   product_id: string;
   quantity: number;
@@ -17,17 +18,17 @@ export interface Perk {
   bump: {
     quantity: number,
     total?: number,
-    expireDate?: number
+    createDate?: number
   };
   national: {
     quantity: number,
     total?: number,
-    expireDate?: number
+    createDate?: number
   };
   listing?: {
     quantity: number,
     total?: number,
-    expireDate?: number
+    createDate?: number
   };
 }
 
@@ -99,9 +100,10 @@ export interface ScheduledStatus {
   active: boolean;
   autorenew_alert: number;
   autorenew_scheduled: ScheduledBumps;
+  purchased?: ScheduledBumps;
 }
 
 export interface ScheduledBumps {
-  citybump: number;
-  countrybump: number;
+  citybump?: number;
+  countrybump?: number;
 }

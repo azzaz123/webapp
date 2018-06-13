@@ -131,6 +131,7 @@ describe('Service: Xmpp', () => {
     }));
     sendIqSpy = spyOn(MOCKED_CLIENT, 'sendIq').and.callThrough();
     service = TestBed.get(XmppService);
+    appboy.initialize(environment.appboy);
   });
 
   it('should create the instance', () => {
@@ -1432,6 +1433,38 @@ describe('Service: Xmpp', () => {
       service['blockedUsers'] = JIDS;
 
       expect(service.isBlocked('5')).toBe(false);
+    });
+  });
+
+  describe('sendMessage', () => {
+
+    describe('Appboy FirstMessage event', () => {
+      beforeEach(() => {
+        service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+        MOCKED_CONVERSATIONS[0].messages = [];
+        spyOn(appboy, 'logCustomEvent');
+      });
+
+      it('should send event if is the first message', () => {
+        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+
+        expect(appboy.logCustomEvent).toHaveBeenCalledWith('FirstMessage', {platform: 'web'});
+      });
+
+      it('should not send event if the conversation is already created', () => {
+        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
+        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+
+        expect(appboy.logCustomEvent).not.toHaveBeenCalled();
+      });
+
+      it('should send event once if more than one message is sended', () => {
+        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
+        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+
+        expect(appboy.logCustomEvent).toHaveBeenCalledTimes(1);
+      });
     });
   });
 

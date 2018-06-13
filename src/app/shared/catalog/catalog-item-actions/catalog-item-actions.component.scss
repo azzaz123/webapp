@@ -50,15 +50,24 @@ $height: 40px;
           }
         }
       }
+      &:disabled {
+        mat-icon /deep/ {
+          svg g g, svg path {
+            fill: $grey-300;
+          }
+        }
+      }
     }
     &.btn-activate {
       &:hover {
         background: $corporate;
         border-color: transparent;
+        color: $white;
       }
       &:disabled {
         background: $grey-50;
         border-color: $grey-100;
+        color: $grey-300;
       }
     }
   }

@@ -9,6 +9,7 @@ import { OrderEvent } from '../selected-items/selected-product.interface';
 import { DEFAULT_ERROR_MESSAGE, ErrorsService } from '../../../core/errors/errors.service';
 import { ToastrService } from 'ngx-toastr';
 import { Item } from '../../../core/item/item';
+import { EventService } from '../../../core/event/event.service';
 
 @Component({
   selector: 'tsl-catalog-item',
@@ -26,6 +27,7 @@ export class CatalogItemComponent implements OnInit {
               private trackingService: TrackingService,
               private toastr: ToastrService,
               private errorsService: ErrorsService,
+              private eventService: EventService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -52,6 +54,7 @@ export class CatalogItemComponent implements OnInit {
       this.itemService.reserveItem(item.id, false).subscribe(() => {
         item.reserved = false;
         this.trackingService.track(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
+        this.eventService.emit(EventService.ITEM_RESERVED, item);
       });
     }
   }
@@ -111,6 +114,7 @@ export class CatalogItemComponent implements OnInit {
         action: 'reactivated'
       });
     });
+    appboy.logCustomEvent('ReactivateItem', {platform: 'web'});
   }
 
   public select(item: Item) {
@@ -126,10 +130,12 @@ export class CatalogItemComponent implements OnInit {
 
   public setSold(item: Item) {
     this.trackingService.track(TrackingService.PRODUCT_SOLD, { product_id: item.id });
+    appboy.logCustomEvent('Sold', {platform: 'web'});
     this.itemChange.emit({
       item: item,
       action: 'sold'
     });
+    this.eventService.emit(EventService.ITEM_SOLD, item);
   }
 
 }

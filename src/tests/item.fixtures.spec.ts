@@ -243,6 +243,18 @@ export function getMockItem(id: string, legacyId: number) {
   return item;
 }
 
+export function getMockItemWithPurchases() {
+  const item: Item = _.clone(MOCK_ITEM);
+  item.purchases = {
+      bump_type: 'citybump',
+      expiration_date: 1526375664070,
+      scheduled_bump_type: 'citybump',
+      scheduled_end_date: 1526515200000,
+      scheduled_start_date: 1526256000000
+  };
+  return item;
+}
+
 export function createItemsArray(total: number, starting: number = 1) {
   const items: Item[] = [];
   for (let i: number = starting; i < total + starting; i++) {

@@ -246,7 +246,7 @@ describe('CatalogProListComponent', () => {
 
   describe('getItems', () => {
     it('should call mines with default values and set items', () => {
-      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'active', undefined, true );
+      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'active', undefined, false );
       expect(component.items.length).toBe(2);
     });
 
@@ -319,7 +319,7 @@ describe('CatalogProListComponent', () => {
       component['page'] = 2;
       component.filterByStatus('sold');
 
-      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'sold', undefined, true);
+      expect(itemService.mines).toHaveBeenCalledWith(1, 20, 'date_desc', 'sold', undefined, false);
     });
   });
 

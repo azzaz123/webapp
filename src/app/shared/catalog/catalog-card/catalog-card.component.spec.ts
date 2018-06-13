@@ -9,11 +9,14 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { MOCK_ITEM, ITEM_ID } from '../../../../tests/item.fixtures.spec';
+import { MOCK_ITEM, ITEM_ID, ITEM_DATA3, getMockItemWithPurchases } from '../../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { MomentModule } from 'angular2-moment';
 import { ItemChangeEvent } from '../../../catalog/list/catalog-item/item-change.interface';
 import { Item } from '../../../core/item/item';
+import { I18nService } from '../../../core/i18n/i18n.service';
+import { environment } from '../../../../environments/environment';
+import { EventService } from '../../../core/event/event.service';
 
 describe('CatalogCardComponent', () => {
   let component: CatalogCardComponent;
@@ -22,6 +25,8 @@ describe('CatalogCardComponent', () => {
   let modalService: NgbModal;
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
+  let i18nService: I18nService;
+  let eventService: EventService;
   const modal: any = {modal: true};
   const componentInstance = {
     price: null,
@@ -34,24 +39,25 @@ describe('CatalogCardComponent', () => {
       imports: [ MomentModule ],
       providers: [
         DecimalPipe,
+        I18nService,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
-          selectedItems: [],
-          selectItem() {
-          },
-          deselectItem() {
-          },
-          reserveItem() {
-            return Observable.of({});
-          },
-          setSold() {
-            return Observable.of({});
-          },
-          cancelAutorenew() {
-            return Observable.of({});
+            selectedItems: [],
+            selectItem() {
+            },
+            deselectItem() {
+            },
+            reserveItem() {
+              return Observable.of({});
+            },
+            setSold() {
+              return Observable.of({});
+            },
+            cancelAutorenew() {
+              return Observable.of({});
+            }
           }
-        }
         },
         {
           provide: NgbModal, useValue: {
@@ -75,7 +81,8 @@ describe('CatalogCardComponent', () => {
           }
         }
         },
-        {provide: 'SUBDOMAIN', useValue: 'es'}
+        {provide: 'SUBDOMAIN', useValue: 'es'},
+        EventService
       ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })
@@ -91,6 +98,9 @@ describe('CatalogCardComponent', () => {
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
+    i18nService = TestBed.get(I18nService);
+    appboy.initialize(environment.appboy);
+    eventService = TestBed.get(EventService);
   });
 
   describe('select', () => {
@@ -126,9 +136,12 @@ describe('CatalogCardComponent', () => {
       beforeEach(fakeAsync(() => {
         item = MOCK_ITEM;
         spyOn(trackingService, 'track');
+        spyOn(eventService, 'emit');
+        spyOn(appboy, 'logCustomEvent');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
+
         component.setSold(item);
       }));
 
@@ -144,6 +157,14 @@ describe('CatalogCardComponent', () => {
       it('should track the DeleteItem event', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {product_id: item.id});
       });
+
+      it('should emit ITEM_SOLD event', () => {
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item)
+      });
+
+      it('should send appboy Sold event', () => {
+        expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {platform: 'web'});
+      });
     });
   });
 
@@ -154,8 +175,10 @@ describe('CatalogCardComponent', () => {
     describe('not reserved', () => {
       beforeEach(fakeAsync(() => {
         spyOn(itemService, 'reserveItem').and.callThrough();
+        spyOn(eventService, 'emit');
         item = MOCK_ITEM;
         item.reserved = false;
+
         component.reserve(item);
       }));
 
@@ -163,12 +186,17 @@ describe('CatalogCardComponent', () => {
         expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, true);
         expect(item.reserved).toBe(true);
       });
+
+      it('should emit ITEM_RESERVED event', () => {
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, item)
+      });
     });
 
     describe('already reserved', () => {
       beforeEach(() => {
         spyOn(itemService, 'reserveItem').and.callThrough();
         spyOn(trackingService, 'track');
+        spyOn(eventService, 'emit');
         item = MOCK_ITEM;
         item.reserved = true;
         component.reserve(item);
@@ -177,6 +205,10 @@ describe('CatalogCardComponent', () => {
       it('should call reserve with false', () => {
         expect(itemService.reserveItem).toHaveBeenCalledWith(ITEM_ID, false);
         expect(item.reserved).toBe(false);
+      });
+
+      it('should emit ITEM_RESERVED event', () => {
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_RESERVED, item)
       });
     });
   });
@@ -192,6 +224,19 @@ describe('CatalogCardComponent', () => {
     it('should set selected true and call selectItem', () => {
       expect(modalService.open).toHaveBeenCalledWith(modal);
       expect(itemService.cancelAutorenew).toHaveBeenCalledWith(MOCK_ITEM.id);
+    });
+  });
+
+  describe('ngOnInit', () => {
+
+    it('should set the bump name', () => {
+      spyOn(i18nService, 'getTranslations').and.callThrough();
+      component.item = getMockItemWithPurchases();
+
+      component.ngOnInit();
+
+      expect(i18nService.getTranslations).toHaveBeenCalledWith(component.item.purchases.bump_type);
+      expect(component.bumpName).toBe('City Bump');
     });
   });
 
