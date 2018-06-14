@@ -18,7 +18,7 @@
             <div class="name">Plan {{bump.quantity}}</div>
             <div class="desc" i18n>Publish a maximum of {{bump.quantity}} cars</div>
             <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
-            <div class="expire"><span i18n>Subscribed since</span><br />{{perks?.subscription.listing.createDate | date:'MMMM y'}}</div>
+            <div class="expire"><span i18n>Subscribed since</span><br />{{perks?.subscription.listing.createDate | date:'mediumDate'}}</div>
           </div>
           <div class="pack personal" *ngIf="getListings(perks?.subscription.listing.quantity).length <= 2">
             <mat-icon svgIcon="plan-personal-plus"></mat-icon>
@@ -58,7 +58,7 @@
             <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
             <div class="discount" [hidden]="!bump.discount" i18n>Save {{bump.discount}}%</div>
             <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
-            <div class="expire"><span i18n>Subscribed since</span><br />{{perks?.subscription.bump.createDate | date:'MMMM y'}}</div>
+            <div class="expire"><span i18n>Subscribed since</span><br />{{perks?.subscription.bump.createDate | date:'mediumDate'}}</div>
           </div>
         </div>
       </div>
@@ -86,7 +86,7 @@
             <div class="price">&euro;{{bump.price | number:'1.2-2'}}</div>
             <div class="discount" [hidden]="!bump.discount" i18n>Save {{bump.discount}}%</div>
             <a href="mailto:{{email}}" class="btn btn-block" i18n>Subscribe</a>
-            <div class="expire"><span i18n>Subscribed since</span><br />{{perks?.subscription.national.createDate | date:'MMMM y'}}</div>
+            <div class="expire"><span i18n>Subscribed since</span><br />{{perks?.subscription.national.createDate | date:'mediumDate'}}</div>
           </div>
         </div>
       </div>
