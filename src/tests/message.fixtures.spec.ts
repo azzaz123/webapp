@@ -1,5 +1,5 @@
-import { USER_ID } from './user.fixtures.spec';
-import { Message } from '../app/core/message/message';
+import { USER_ID, OTHE_USER_ID } from './user.fixtures.spec';
+import { Message, messageStatus } from '../app/core/message/message';
 import { MessagePayload } from '../app/core/message/messages.interface';
 
 export const MESSAGE_MAIN: any = {
@@ -34,13 +34,33 @@ export function createMessagesArray(total: number) {
   return messages;
 }
 
+export function createReceiptsArray(total: number, thread: string, date?: string): any {
+  const messages: any[] = [];
+  for (let i = 1; i <= total; i++) {
+    messages.push({
+      thread: thread,
+      readTimestamp: new Date(date)
+    });
+  }
+  return messages;
+}
+
 export const MOCK_MESSAGE: Message = new Message(
   MESSAGE_MAIN.id,
   MESSAGE_MAIN.thread,
   MESSAGE_MAIN.body,
   MESSAGE_MAIN.from,
   MESSAGE_MAIN.date,
-  true
+  null
+);
+
+export const MOCK_MESSAGE_FROM_OTHER: Message = new Message(
+  'other-id',
+  MESSAGE_MAIN.thread,
+  MESSAGE_MAIN.body,
+  OTHE_USER_ID + '@host',
+  MESSAGE_MAIN.date,
+  null
 );
 
 export const MOCK_RANDOM_MESSAGE: Message = new Message(
@@ -49,7 +69,7 @@ export const MOCK_RANDOM_MESSAGE: Message = new Message(
   MESSAGE_MAIN.body,
   MESSAGE_MAIN.from,
   MESSAGE_MAIN.date,
-  true
+  null
 );
 
 export const MOCK_PAYLOAD_OK: MessagePayload = {
