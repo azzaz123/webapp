@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
+import { Response, ResponseOptions } from '@angular/http';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MOCK_FULL_USER, USER_DATA, USER_URL } from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
@@ -12,9 +13,16 @@ import { HttpService } from '../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec';
 import { PrivacyService } from '../core/privacy/privacy.service';
 import { PrivacyRequestData } from '../core/privacy/privacy.interface';
-import { MOCK_PRIVACY_ALLOW } from '../core/privacy/privacy.fixtures.spec';
+import { MockBackend, MockConnection } from '@angular/http/testing';
+import {
+  MOCK_PRIVACY_ALLOW,
+  MOCK_PRIVACY_DISALLOW,
+  MOCK_PRIVACY_UNKNOW_ALLOW,
+  MOCK_PRIVACY_UNKNOW_DISALLOW
+} from '../core/privacy/privacy.fixtures.spec';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
 import { SwitchComponent } from './../shared/switch/switch.component';
+import { environment } from '../../environments/environment';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -27,6 +35,7 @@ describe('ProfileComponent', () => {
   let http: HttpService;
   let modalService: NgbModal;
   let privacyService: PrivacyService;
+  let mockBackend: MockBackend;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -81,6 +90,7 @@ describe('ProfileComponent', () => {
     http = TestBed.get(HttpService);
     modalService = TestBed.get(NgbModal);
     privacyService = TestBed.get(PrivacyService);
+    mockBackend = TestBed.get(MockBackend);
     spyOn(userService, 'me').and.callThrough();
     component.formComponent = TestBed.createComponent(ProfileFormComponent).componentInstance;
     fixture.detectChanges();
@@ -115,32 +125,56 @@ describe('ProfileComponent', () => {
       expect(privacyService.allowSegmentation$.subscribe).toHaveBeenCalled();
     });
 
-    it('should change allowSegmentation value to false when allowSegmentation$ trigger false value', () => {
-      privacyService.allowSegmentation$.next(false);
+    it('should change allowSegmentation value to false when gdrp_display is false', () => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_DISALLOW)});
+        connection.mockRespond(new Response(res));
+      });
 
       component.ngOnInit();
+      privacyService.getPrivacyList().subscribe();
 
       expect(component.allowSegmentation).toBe(false);
     });
 
-    it('should change allowSegmentation value to true when allowSegmentation$ trigger true value', () => {
-      privacyService.allowSegmentation$.next(true);
+    it('should change allowSegmentation value to true when gdrp_display is true', () => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_ALLOW)});
+        connection.mockRespond(new Response(res));
+      });
 
       component.ngOnInit();
+      privacyService.getPrivacyList().subscribe();
 
       expect(component.allowSegmentation).toBe(true);
     });
 
-    it('should change settingForm allow_segmentation property to true when allowSegmentation is true', () => {
-      privacyService.allowSegmentation$.next(true);
+    it('should change allowSegmentation value to false when gdrp_display status is unknow, and value is true', () => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW_ALLOW)});
+        connection.mockRespond(new Response(res));
+      });
 
-      expect(component.settingsForm.value.allow_segmentation).toBe(true);
+      component.ngOnInit();
+      privacyService.getPrivacyList().subscribe();
+
+      expect(component.allowSegmentation).toBe(false);
     });
 
-    it('should change settingForm allow_segmentation property to false when allowSegmentation is false', () => {
-      privacyService.allowSegmentation$.next(false);
+    it('should change allowSegmentation value to false when gdrp_display status is unknow, and value is false', () => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW_DISALLOW)});
+        connection.mockRespond(new Response(res));
+      });
 
-      expect(component.settingsForm.value.allow_segmentation).toBe(false);
+      component.ngOnInit();
+      privacyService.getPrivacyList().subscribe();
+
+      expect(component.allowSegmentation).toBe(false);
     });
   });
 

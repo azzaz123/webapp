@@ -7,7 +7,7 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
 import { CanComponentDeactivate } from '../shared/guards/can-component-deactivate.interface';
 import { User } from '../core/user/user';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
-import { PrivacyService } from '../core/privacy/privacy.service';
+import { PrivacyService, PRIVACY_STATUS } from '../core/privacy/privacy.service';
 
 @Component({
   selector: 'tsl-profile',
@@ -54,7 +54,8 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       }
     });
     this.privacyService.allowSegmentation$.subscribe((value: boolean) => {
-      this.allowSegmentation = value;
+      const allowSegmentationState = this.privacyService.getPrivacyState('gdpr_display', '0');
+      this.allowSegmentation = allowSegmentationState === PRIVACY_STATUS.unknown ? false : value;
       this.setSettingsData();
     });
   }
