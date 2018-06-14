@@ -8,7 +8,6 @@ import { Subject } from 'rxjs/Subject';
 })
 export class SearchInputComponent {
 
-  @ViewChild('input') public input: ElementRef;
   @Output('term') public term$: EventEmitter<string> = new EventEmitter<string>();
   private term: Subject<string> = new Subject<string>();
 
