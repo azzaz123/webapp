@@ -40,8 +40,8 @@ export class PrivacyService {
   private _mapPrivacyList(privacyList: PrivacyList): PrivacyList {
     this._privacyList = privacyList;
 
-    const segmentationStatus = this.getPrivacyState('gdpr_display', '0');
-    this.allowSegmentation$.next(segmentationStatus === PRIVACY_STATUS.allow ? true : false);
+    const allowSegmentation = this.isPrivacyAllow('gdpr_display', '0');
+    this.allowSegmentation$.next(allowSegmentation);
 
     return privacyList;
   }
@@ -62,6 +62,23 @@ export class PrivacyService {
       }
     }
     return PRIVACY_STATUS.unknown;
+  }
+
+  public isPrivacyAllow(permissionName: string, version: string): boolean {
+    if (!this._privacyList ||
+      !this._privacyList[permissionName] ||
+      !this._privacyList[permissionName].length) {
+      return false;
+    } else {
+      for (const key in this._privacyList[permissionName]) {
+        if (this._privacyList[permissionName].hasOwnProperty(key)) {
+          const permission: PrivacyVersionItem = this._privacyList[permissionName][key];
+          if (permission && permission.version === version) {
+            return permission.allow;
+          }
+        }
+      }
+    }
   }
 
 }

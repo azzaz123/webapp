@@ -34,7 +34,7 @@ import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
 import { PrivacyService } from './core/privacy/privacy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
-import { MOCK_PRIVACY_ALLOW, MOCK_PRIVACY_UNKNOW } from './core/privacy/privacy.fixtures.spec';
+import { MOCK_PRIVACY_ALLOW, MOCK_PRIVACY_UNKNOW_DISALLOW } from './core/privacy/privacy.fixtures.spec';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 
@@ -352,7 +352,7 @@ describe('App', () => {
       });
 
       it('should open modal gdpr when privacy permission is unknow and sessionStorage isGDPRShown dont have value', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW));
+        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
         spyOn(modalService, 'open');
         sessionStorage.removeItem('isGDPRShown');
         component.ngOnInit();
@@ -361,7 +361,7 @@ describe('App', () => {
       });
 
       it('should open modal gdpr when privacy permission is unknow and sessionStorage isGDPRShown value is undefined', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW));
+        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
         spyOn(modalService, 'open');
         sessionStorage.removeItem('isGDPRShown');
         component.ngOnInit();
@@ -379,7 +379,7 @@ describe('App', () => {
       });
 
       it('should open modal gdpr when sessionStorage isGDPRShown value is defined', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW));
+        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
         spyOn(modalService, 'open');
         sessionStorage.removeItem('isGDPRShown');
         component.ngOnInit();
