@@ -33,7 +33,7 @@ export interface StoredMessage {
   _id: string;
   date: Date;
   message: string;
-  read: boolean;
+  status: string;
   from: string;
   conversationId: string;
   payload?: MessagePayload;

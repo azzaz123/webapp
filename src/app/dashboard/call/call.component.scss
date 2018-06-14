@@ -1,0 +1,139 @@
+@import "../../../style/_common.scss";
+
+$transition-time: .15s;
+$check-width-and-spacing: 50px;
+:host {
+  display: block;
+  padding: $spacing $spacing-S $spacing $spacing;
+  box-sizing: border-box;
+  border-left: 2px solid transparent;
+  transition: $transition-time ease background-color,
+  $transition-time ease border;
+  border-top: 1px solid $grey-50;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  &:first-child {
+    border-top: 0;
+  }
+  &.active {
+    background-color: rgba($grey-100, .4);
+  }
+  tsl-archive-button, tsl-unarchive-button {
+    @include hide();
+    position: absolute;
+    top: 43px;
+    right: $spacing-S;
+  }
+  &:hover {
+    background-color: rgba($grey-600, .1);
+    tsl-archive-button {
+      opacity: 1;
+      visibility: visible;
+    }
+    .call-item-row-left {
+      max-width: calc(100% - #{$check-width-and-spacing});
+    }
+  }
+}
+tsl-user-avatar {
+  @include square-avatar($item-avatar-size);
+  float: left;
+  margin-right: $item-avatar-margin;
+  display: flex;
+  position: relative;
+}
+.call-info {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-left: $item-avatar-space;
+  max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
+  color: $grey-900;
+  p {
+    font-size: $font-size-S;
+    margin-bottom: 0;
+    @include text-truncate();
+  }
+  .call-user-row {
+    line-height: $spacing-M;
+    display: flex;
+    flex-direction: row;
+    vertical-align: super;
+    .call-user-name {
+      font-weight: bold;
+      font-size: $font-size-S;
+      display: flex;
+      @include text-truncate;
+      flex-grow: 1;
+      span {
+        @include text-truncate;
+        flex-grow: 1;
+      }
+    }
+    .call-meta {
+      flex: none;
+      margin-left: $spacing-XXS;
+    }
+  }
+  .call-item-row {
+    $phone-icon-size: 18px;
+    $phone-icon-adjusted-size: 15px;
+    line-height: $phone-icon-size;
+    overflow: hidden;
+    font-size: $font-size-XS;
+    display: flex;
+    flex-direction: row;
+    .call-item-row-left {
+      @include text-truncate;
+      flex-grow: 1;
+      span {
+        @include text-truncate;
+        flex-grow: 1;
+      }
+    }
+    .call-item-row-right {
+      flex: none;
+    }
+    mat-icon, span {
+      vertical-align: middle;
+    }
+    mat-icon {
+      @include square($phone-icon-adjusted-size);
+    }
+    .call-item-title {
+      color: $grey-600;
+    }
+    &.has-phone {
+      $phone-icon-size: 10px;
+      .user-name {
+        width: calc(100% - #{$phone-icon-size});
+      }
+    }
+  }
+  .call-date {
+    font-size: $font-size-XS;
+    font-weight: bold;
+    color: $grey-300;
+    text-transform: uppercase;
+  }
+  .call-data-row {
+    line-height: $font-size-S;
+    p{
+      color: $grey-600;
+      margin: 10px 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    mat-icon {
+      height: 15px;
+      width: 15px;
+      vertical-align: bottom;
+    }
+    .call-missed {
+      width: 20px;
+    }
+  }
+}

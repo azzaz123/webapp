@@ -77,7 +77,7 @@ export class TrackingService {
     screen: SCREENS_IDS.ProChat,
     type: TYPES_IDS.Tap
   };
-  public static MESSAGES_READ: TrackingEventBase = {
+  public static MESSAGE_READ: TrackingEventBase = {
     name: '441',
     category: CATEGORY_IDS.Conversations,
     screen: SCREENS_IDS.Chat,

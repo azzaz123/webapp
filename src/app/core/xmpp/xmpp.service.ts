@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { EventEmitter, Injectable, HostListener } from '@angular/core';
-import { Message } from '../message/message';
+import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -13,6 +13,7 @@ import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
 import { ISubscription } from 'rxjs/Subscription';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class XmppService {
@@ -27,9 +28,17 @@ export class XmppService {
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private sentAckSubscription: ISubscription;
+  private unreadMessages = [];
+  public totalUnreadMessages = 0;
+  public receivedReceipts = [];
+  public readReceipts = [];
+  private ownReadTimestamps = {};
+  private readTimestamps = {};
+  public convWithUnread = {};
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
+              private userService: UserService,
               private trackingService: TrackingService) {
   }
 
@@ -75,27 +84,18 @@ export class XmppService {
       to_user_id: conversation.user.id,
       item_id: conversation.item.id
     });
-    this.sentAckSubscription = this.eventService.subscribe(EventService.MESSAGE_SENT_ACK, () => {
-      this.trackingService.track(TrackingService.MESSAGE_SENT_ACK, {
-        thread_id: message.thread,
-        message_id: message.id,
-        to_user_id: conversation.user.id,
-        item_id: conversation.item.id
-      });
-      this.sentAckSubscription.unsubscribe();
-    });
-
     this.onNewMessage(_.clone(message));
     this.client.sendMessage(message);
   }
 
-  public sendConversationStatus(userId: string, conversationId: string) {
+    public sendConversationStatus(userId: string, conversationId: string) {
     this.client.sendMessage({
       to: this.createJid(userId),
+        type: 'chat',
+        thread: conversationId,
       read: {
         xmlns: 'wallapop:thread:status'
-      },
-      thread: conversationId
+        }
     });
   }
 
@@ -167,9 +167,19 @@ export class XmppService {
             const builtMessage: Message = this.buildMessage(message);
             if (!message.payload || this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1) {
               messages.push(builtMessage);
+              if (this.messageFromSelf(builtMessage) && builtMessage.status === null) {
+                builtMessage.status = messageStatus.SENT;
             }
-          } else if (message.receivedId) {
+            }
+          }
+          if (message.receivedId) {
             this.confirmedMessages.push(message.receivedId);
+            this.receivedReceipts.push({id: message.receivedId, thread: message.thread});
+            this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, message.receivedId);
+          }
+          if (message.readTimestamp) {
+            this.readReceipts.push(message);
+            this.eventService.emit(EventService.MESSAGE_READ, message.thread, message.receivedId);
           }
           query.then((response: any) => {
             const meta: any = response.mam.rsm;
@@ -215,25 +225,73 @@ export class XmppService {
     this.client.on('*', (k, v) => console.debug(k, v));
   }
 
+  private messageFromSelf(message) {
+    return message.from.split('@')[0] === this.userService.user.id;
+  }
+
   private checkReceivedMessages(messages: Message[]): Message[] {
     messages.forEach((message: Message) => {
       const index: number = this.confirmedMessages.indexOf(message.id);
       if (index !== -1) {
-        message.read = true;
+        if (this.messageFromSelf(message)) {
+        message.status = messageStatus.RECEIVED;
+        }
         this.confirmedMessages.splice(index, 1);
       }
     });
     return messages;
   }
 
+  public getLastReadTimestamps() {
+    this.readReceipts.filter(receipt => this.messageFromSelf(receipt)).forEach((t) => {
+      if (!this.ownReadTimestamps[t.thread]) {
+        this.ownReadTimestamps[t.thread] = {
+          thread: t.thread,
+          timestamp: new Date(t.readTimestamp),
+        };
+      } else if (Date.parse(t.readTimestamp) > Date.parse(this.ownReadTimestamps[t.thread].timestamp))  {
+        this.ownReadTimestamps[t.thread].timestamp =  t.readTimestamp;
+      }
+    });
+    this.readReceipts.filter(receipt => !this.messageFromSelf(receipt)).forEach((t) => {
+      if (!this.readTimestamps[t.thread]) {
+        this.readTimestamps[t.thread] = {
+          thread: t.thread,
+          timestamp: new Date(t.readTimestamp),
+        };
+      } else if (Date.parse(t.readTimestamp) > Date.parse(this.readTimestamps[t.thread].timestamp))  {
+        this.readTimestamps[t.thread].timestamp =  t.readTimestamp;
+  }
+    });
+  }
+
   private confirmNotConfirmedMessages(messages: Message[]) {
+    this.getLastReadTimestamps();
     messages.forEach((message: Message) => {
-      if (!message.read) {
+      if (!this.messageFromSelf(message)) {
         this.sendMessageDeliveryReceipt(message.from, message.id, message.conversationId);
-        message.read = true;
+        if (this.ownReadTimestamps[message.conversationId] &&
+            Date.parse(message.date.toString()) > Date.parse(this.ownReadTimestamps[message.conversationId].timestamp.toString())) {
+            const receiptProcessed = this.unreadMessages.filter(m => m.id === message.id).length;
+            if (!receiptProcessed) {
+              this.unreadMessages.push({id: message.id, thread: message.conversationId});
+              this.totalUnreadMessages++;
+            }
+          }
+      } else if (this.readTimestamps[message.conversationId] &&
+                 Date.parse(message.date.toString()) < Date.parse(this.readTimestamps[message.conversationId].timestamp)) {
+        message.status = messageStatus.READ;
       }
     });
     return messages;
+  }
+
+  public addUnreadMessagesCounter(conversations) {
+    this.unreadMessages.forEach(receipt => {
+      const convWithUnread = conversations.find(c => c.id === receipt.thread);
+      convWithUnread.unreadMessages = convWithUnread.unreadMessages ? ++convWithUnread.unreadMessages : 1;
+    });
+    return conversations;
   }
 
   private createClient(accessToken: string): void {
@@ -265,9 +323,6 @@ export class XmppService {
       }
       if (message.read) {
         this.eventService.emit(EventService.MESSAGE_READ_ACK);
-      }
-      if (message.body) {
-        this.eventService.emit(EventService.MESSAGE_SENT_ACK);
       }
     });
     this.client.on('session:started', () => {
@@ -323,12 +378,24 @@ export class XmppService {
       }
     }
     let messageId: string = null;
-    if (message.timestamp && message.receipt) {
+    if (message.timestamp && message.receipt && message.from.local !== message.to.local) {
       messageId = message.receipt;
+      message.status = messageStatus.RECEIVED;
+      this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
+    }
+    if (message.sentReceipt) {
+      message.status = messageStatus.SENT;
+      messageId = message.sentReceipt.id;
+      this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
+    }
+    if (message.readReceipt) {
+      message.status = messageStatus.READ;
+      this.eventService.emit(EventService.MESSAGE_READ, message.thread);
     } else {
       messageId = message.id;
     }
-    return new Message(messageId, message.thread, message.body, (message.from.full || message.from), new Date(message.date), false, message.payload);
+    return new Message(messageId, message.thread, message.body, (message.from.full || message.from),
+                       new Date(message.date), (message.status || null), message.payload);
   }
 
   private sendMessageDeliveryReceipt(to: any, id: string, thread: string) {
@@ -446,7 +513,7 @@ export class XmppService {
       name: 'read',
       element: 'read',
       fields: {
-        xmlns: types.attribute('xmlns'),
+        xmlns: types.attribute('xmlns')
       }
     });
     const received: any = stanzas.define({
@@ -464,11 +531,29 @@ export class XmppService {
         xmlns: types.attribute('xmlns')
       }
     });
+    const readReceipt = {
+      get: function get() {
+        const readSignal = this.xml.getElementsByTagName('read')[0];
+        if (readSignal) {
+          return readSignal.attrs;
+        }
+      }
+    };
+    const sentReceipt = {
+      get: function get() {
+        const sentSignal = this.xml.getElementsByTagName('sent')[0];
+        if (sentSignal) {
+          return sentSignal.attrs;
+        }
+      }
+    };
     stanzas.withMessage(function (Message: any) {
       stanzas.extend(Message, read);
       stanzas.extend(Message, timestamp);
       stanzas.extend(Message, received);
       stanzas.extend(Message, request);
+      stanzas.add(Message, 'sentReceipt', sentReceipt);
+      stanzas.add(Message, 'readReceipt', readReceipt);
     });
   }
 
@@ -599,6 +684,8 @@ export class XmppService {
         const body: any = _.find(message.children, {name: 'body'});
         const thread: any = _.find(message.children, {name: 'thread'});
         const received: any = _.find(message.children, {name: 'received'});
+        const read: any = _.find(message.children, {name: 'read'});
+        const sent: any = _.find(message.children, {name: 'sent'});
         const payload: any = _.find(message.children, {name: 'payload'});
         return {
           id: message.attrs.id,
@@ -609,6 +696,8 @@ export class XmppService {
           thread: thread ? thread.children[0] : null,
           ref: xml.children[0].attrs.id,
           receivedId: received ? received.attrs.id : null,
+          readTimestamp: read ? read.parent.children[0].children[0] : null,
+          sent: sent ? sent.attrs : null,
           payload: payload ? JSON.parse(payload.children[0]) : null
         };
       }

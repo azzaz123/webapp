@@ -9,7 +9,8 @@ export class EventService {
   public static USER_LOGOUT = 'logoutEvent';
   public static NEW_MESSAGE = 'newMessage';
   public static MESSAGE_ADDED = 'messageAdded';
-  public static MESSAGES_READ = 'conversationRead';
+  public static MESSAGE_READ = 'messageRead';
+  public static MESSAGE_RECEIVED = 'messageReceive';
   public static MESSAGE_READ_ACK = 'messageReadAck';
   public static MESSAGE_SENT_ACK = 'messageSentAck';
   public static MESSAGE_RECEIVED_ACK = 'messageReceivedAck';
@@ -20,6 +21,8 @@ export class EventService {
   public static CONVERSATION_UNARCHIVED = 'conversationUnarchived';
   public static LEAD_ARCHIVED = 'leadArchived';
   public static ITEM_SOLD = 'itemSold';
+  public static ITEM_UPDATED = 'itemUpdated';
+  public static ITEM_RESERVED = 'itemReserved';
   public static USER_BLOCKED = 'userBlocked';
   public static USER_UNBLOCKED = 'userUnblocked';
   public static FIND_CONVERSATION = 'findConversation';

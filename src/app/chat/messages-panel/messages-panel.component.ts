@@ -1,22 +1,27 @@
-import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Conversation } from '../../core/conversation/conversation';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { Message } from '../../core/message/message';
+import { Message, messageStatus } from '../../core/message/message';
 import { EventService } from '../../core/event/event.service';
+import { PersistencyService } from '../../core/persistency/persistency.service';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'tsl-messages-panel',
   templateUrl: './messages-panel.component.html',
   styleUrls: ['./messages-panel.component.scss']
 })
-export class MessagesPanelComponent implements AfterViewChecked, OnChanges, OnInit {
+export class MessagesPanelComponent implements AfterViewChecked, OnChanges, OnInit, OnDestroy {
 
   @Input() currentConversation: Conversation;
   @ViewChild('messagesPanel') messagesPanel: ElementRef;
   public momentConfig: any;
   private alreadyScrolled: boolean;
+  private newMessageSubscription: Subscription;
 
-  constructor(i18n: I18nService, private event: EventService) {
+  constructor(i18n: I18nService,
+              private event: EventService,
+              private persistencyService: PersistencyService) {
     this.momentConfig = i18n.getTranslations('daysMomentConfig');
   }
 
@@ -36,7 +41,10 @@ export class MessagesPanelComponent implements AfterViewChecked, OnChanges, OnIn
   }
 
   ngOnInit() {
-    this.event.subscribe(EventService.NEW_MESSAGE, () => this.alreadyScrolled = false);
+    this.newMessageSubscription = this.event.subscribe(EventService.NEW_MESSAGE, () => this.alreadyScrolled = false);
   }
 
+  ngOnDestroy() {
+    this.newMessageSubscription.unsubscribe();
+  }
 }

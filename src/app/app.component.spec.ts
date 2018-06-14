@@ -37,6 +37,7 @@ import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
 import { MOCK_PRIVACY_ALLOW, MOCK_PRIVACY_UNKNOW_DISALLOW } from './core/privacy/privacy.fixtures.spec';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
+import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -153,14 +154,16 @@ describe('App', () => {
           },
           handleNewMessages() {
           },
-          resetCache() {}
+          resetCache() {},
+          syncItem() {}
         }
         },
         {
           provide: CallsService, useValue: {
             init() {
               return Observable.of();
-            }
+            },
+          syncItem() {}
           }
         },
         {
@@ -428,6 +431,39 @@ describe('App', () => {
       eventService.emit(EventService.USER_LOGOUT);
 
       expect(xmppService.disconnect).toHaveBeenCalled();
+    });
+
+    it('should call syncItem on ITEM_UPDATED', () => {
+      spyOn(conversationService, 'syncItem');
+      spyOn(callsService, 'syncItem');
+
+      component.ngOnInit();
+      eventService.emit(EventService.ITEM_UPDATED, MOCK_ITEM_V3);
+
+      expect(conversationService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
+      expect(callsService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
+    });
+
+    it('should call syncItem on ITEM_SOLD', () => {
+      spyOn(conversationService, 'syncItem');
+      spyOn(callsService, 'syncItem');
+
+      component.ngOnInit();
+      eventService.emit(EventService.ITEM_SOLD, MOCK_ITEM_V3);
+
+      expect(conversationService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
+      expect(callsService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
+    });
+
+    it('should call syncItem on ITEM_RESERVED', () => {
+      spyOn(conversationService, 'syncItem');
+      spyOn(callsService, 'syncItem');
+
+      component.ngOnInit();
+      eventService.emit(EventService.ITEM_RESERVED, MOCK_ITEM_V3);
+
+      expect(conversationService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
+      expect(callsService.syncItem).toHaveBeenCalledWith(MOCK_ITEM_V3);
     });
   });
 

@@ -52,6 +52,15 @@ describe('PaymentService', () => {
     });
   });
 
+  describe('deleteFinancialCard', () => {
+    it('should call endpoint', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify({})});
+      spyOn(http, 'delete').and.returnValue(Observable.of(new Response(res)));
+      service.deleteFinancialCard().subscribe();
+      expect(http.delete).toHaveBeenCalledWith('api/v3/payments/c2b/financial-card');
+    });
+  });
+
   describe('getSabadellInfo', () => {
     let response: SabadellInfoResponse;
     it('should call endpoint', () => {

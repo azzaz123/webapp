@@ -1,8 +1,8 @@
-import { Component, HostBinding, HostListener, Input } from '@angular/core';
-import { Conversation } from '../../../core/conversation/conversation';
-import { Remove } from '../../../shared/archivable/animations';
-import { ConversationService } from '../../../core/conversation/conversation.service';
-import { UserService } from '../../../core/user/user.service';
+import { Component, HostBinding, HostListener, Input, OnChanges } from '@angular/core';
+import { Remove } from '../archivable/animations';
+import { Conversation } from '../../core/conversation/conversation';
+import { ConversationService } from '../../core/conversation/conversation.service';
+import { UserService } from '../../core/user/user.service';
 
 @Component({
   selector: 'tsl-conversation',
@@ -10,12 +10,12 @@ import { UserService } from '../../../core/user/user.service';
   styleUrls: ['./conversation.component.scss'],
   animations: [Remove('1s 1s')]
 })
-export class ConversationComponent {
+export class ConversationComponent implements OnChanges {
 
   @Input() conversation: Conversation;
   @Input() dashboard: boolean;
-  @HostBinding('class.archive') archive: boolean = false;
-  @HostBinding('class.archived') @HostBinding('@remove') archived: boolean = false;
+  @HostBinding('class.archive') archive = false;
+  @HostBinding('class.archived') @HostBinding('@remove') archived = false;
   @HostBinding('class.professional') public isProfessional: boolean;
 
   public momentConfig: any = {

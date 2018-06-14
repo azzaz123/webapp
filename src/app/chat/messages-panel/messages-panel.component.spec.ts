@@ -9,11 +9,14 @@ import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Message } from '../../core/message/message';
 import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
+import { PersistencyService } from '../../core/persistency/persistency.service';
+import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 
 describe('Component: MessagesPanel', () => {
   let component: MessagesPanelComponent;
   let fixture: ComponentFixture<MessagesPanelComponent>;
   let eventService: EventService;
+  let persistencyService: PersistencyService;
 
   const EVENT_CALLBACK: Function = jasmine.createSpy('EVENT_CALLBACK');
 
@@ -23,13 +26,17 @@ describe('Component: MessagesPanel', () => {
         MomentModule
       ],
       declarations: [MessagesPanelComponent],
-      providers: [I18nService, EventService],
+      providers: [
+        I18nService, EventService,
+        {provide: PersistencyService, useClass: MockedPersistencyService}
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(MessagesPanelComponent);
     component = fixture.componentInstance;
     component.currentConversation = MOCK_CONVERSATION();
     eventService = TestBed.get(EventService);
+    persistencyService = TestBed.get(PersistencyService);
   });
 
   it('should instantiate it', () => {

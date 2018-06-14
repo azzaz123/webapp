@@ -15,40 +15,79 @@ h5 {
 }
 
 $avatar-size: 40px;
-.message-avatar,
-.message-body {
+.message-avatar {
   color: $grey-700;
-  margin-top: $spacing;
-  &.calls-panel {
-    margin-top: 0;
-  }
+  margin-right: $spacing;
 }
 
 .message-avatar {
   float: left;
-  margin-right: $spacing;
+  margin: $spacing 0 0;
+  &.from-self {
+    float: right;
+    margin: $spacing 0 0;
+  }
 }
 
 .message-name {
   color: $grey-900;
 }
 .message-body {
+  color: $grey-700;
+  margin: $spacing $spacing-XL 0 $spacing-XL;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   &.without-avatar {
     margin-top: 0;
     margin-left: #{$spacing + $avatar-size};
   }
+  &.calls-panel {
+    margin-top: 0;
+  }
   span {
     white-space: pre-wrap;
   }
+  p {
+    flex: 0 0 auto;
+    width: fit-content;
+    padding: $spacing-XS $spacing-S;
+    border-radius: 20px;
+    background-color: $grey-40;
+    margin-bottom: 0;
+  }
+  &.from-self {
+    position: relative;
+    flex-direction: row-reverse;
+    p {
+      padding-right :$spacing-L;
+      background-color: $corporate-light;
+      float: right;
+    }
+  }
+}
+
+.message-status {
+  position: absolute;
+  bottom: $spacing-1S;
+  right: $spacing-S;
+  width: $spacing;
+  height: $spacing;
+  background: right bottom no-repeat;
+  &.pending { background-image: url(/assets/icons/status-pending.svg); }
+  &.sent { background-image: url(/assets/icons/status-sent.svg); }
+  &.received { background-image: url(/assets/icons/status-received.svg); }
+  &.read { background-image: url(/assets/icons/status-read.svg); }
 }
 
 .message-date {
-  margin-left: $spacing-XS;
+  float: right;
+  font-size: $font-size-XXS;
+  white-space: pre;
+  margin: 0 $spacing-XXS 0 $spacing-XS;
   color: $grey-250;
-  font-size: $font-size-XS;
+  position: relative;
+  bottom: -2px;
 }
 
 .media-left {

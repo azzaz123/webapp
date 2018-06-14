@@ -14,7 +14,6 @@ import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { ItemModule } from '../core/item/item.module';
 import { UserModule } from '../core/user/user.module';
-import { ConversationComponent } from './conversations-panel/conversation/conversation.component';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 import { ReportListingComponent } from './modals/report-listing/report-listing.component';
 import { ReportUserComponent } from './modals/report-user/report-user.component';
@@ -43,7 +42,6 @@ import { UserResponseRateComponent } from './user-response-rate/user-response-ra
   ],
   declarations: [
     chatRoutedComponents,
-    ConversationComponent,
     ConversationsPanelComponent,
     MessagesPanelComponent,
     InputComponent,

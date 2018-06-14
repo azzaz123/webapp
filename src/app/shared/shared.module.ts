@@ -31,6 +31,9 @@ import { ReviewButtonComponent } from './message/review-button/review-button.com
 import { SwitchComponent } from './switch/switch.component';
 import { GdprModalComponent } from './gdpr-modal/gdpr-modal.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
+import { ConversationComponent } from './conversation/conversation.component';
+import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
+import { MomentModule } from 'angular2-moment';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
@@ -46,6 +49,8 @@ import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured
     ReactiveFormsModule,
     FormsModule,
     GeolocationModule,
+    MomentModule,
+    NgxPermissionsModule,
     NgbDropdownModule
   ],
   exports: [
@@ -73,6 +78,8 @@ import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured
     GdprModalComponent,
     MessageComponent,
     ReviewButtonComponent,
+    ConversationComponent,
+    ItemAvatarComponent,
     SearchInputComponent,
     SelectComponent
   ],
@@ -102,6 +109,8 @@ import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured
     ReviewModalComponent,
     GdprModalComponent,
     CheckboxComponent,
+    ConversationComponent,
+    ItemAvatarComponent,
     SelectComponent,
     SearchInputComponent,
     TooManyItemsModalComponent,
