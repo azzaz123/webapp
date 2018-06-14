@@ -27,6 +27,7 @@ describe('SearchInputComponent', () => {
     component.term$.subscribe((t) => {
       term = t;
     });
+
     component.search(TEXT);
     tick(400);
 
