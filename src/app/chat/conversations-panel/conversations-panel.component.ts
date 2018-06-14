@@ -90,12 +90,14 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       }
     });
     this.eventService.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
-      this.conversations.length ?
+      const conversationLoaded = this.conversations.find(c => c.id === conversationId);
+      this.conversations.length && conversationLoaded ?
         this.updateMessageStatus(messageStatus.RECEIVED, conversationId, messageId) :
         this.receivedMessages = this.xmppService.receivedReceipts;
     });
     this.eventService.subscribe(EventService.MESSAGE_READ, (conversationId) => {
-      this.conversations.length ?
+      const conversationLoaded = this.conversations.find(c => c.id === conversationId);
+      this.conversations.length && conversationLoaded ?
         this.updateMessageStatus(messageStatus.READ, conversationId) :
         this.readMessages = this.xmppService.readReceipts;
     });
