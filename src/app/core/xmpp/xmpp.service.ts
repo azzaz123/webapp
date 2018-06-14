@@ -28,7 +28,7 @@ export class XmppService {
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private sentAckSubscription: ISubscription;
-  public unreadMessages = [];
+  private unreadMessages = [];
   public totalUnreadMessages = 0;
   public receivedReceipts = [];
   public readReceipts = [];
@@ -186,7 +186,6 @@ export class XmppService {
             if (message.ref === meta.last) {
               messages = this.checkReceivedMessages(messages);
               messages = this.confirmNotConfirmedMessages(messages);
-              this.countUnreadMessages();
               const metaObject: MetaInfo = {
                 first: meta.first,
                 last: meta.last,
@@ -287,13 +286,12 @@ export class XmppService {
     return messages;
   }
 
-  private countUnreadMessages() {
+  public addUnreadMessagesCounter(conversations) {
     this.unreadMessages.forEach(receipt => {
-      this.convWithUnread[receipt.thread] ? this.convWithUnread[receipt.thread]++ : this.convWithUnread[receipt.thread] = 1;
+      const convWithUnread = conversations.find(c => c.id === receipt.thread);
+      convWithUnread.unreadMessages = convWithUnread.unreadMessages ? ++convWithUnread.unreadMessages : 1;
     });
-    for (const thread of Object.keys(this.convWithUnread)) {
-      this.persistencyService.saveUnreadMessages(thread, this.convWithUnread[thread]);
-    }
+    return conversations;
   }
 
   private createClient(accessToken: string): void {

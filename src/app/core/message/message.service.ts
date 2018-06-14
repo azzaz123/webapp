@@ -17,8 +17,6 @@ export class MessageService {
 
   public totalUnreadMessages$: Subject<number> = new Subject<number>();
   private _totalUnreadMessages = 0;
-  public newMessageEvent: Subscription;
-  private receipts = {};
 
   constructor(private xmpp: XmppService,
               private persistencyService: PersistencyService,

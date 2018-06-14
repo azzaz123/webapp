@@ -34,6 +34,17 @@ export function createMessagesArray(total: number) {
   return messages;
 }
 
+export function createReceiptsArray(total: number, thread: string, date?: string): any {
+  const messages: any[] = [];
+  for (let i = 1; i <= total; i++) {
+    messages.push({
+      thread: thread,
+      readTimestamp: new Date(date)
+    });
+  }
+  return messages;
+}
+
 export const MOCK_MESSAGE: Message = new Message(
   MESSAGE_MAIN.id,
   MESSAGE_MAIN.thread,

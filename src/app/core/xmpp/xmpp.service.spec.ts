@@ -6,14 +6,21 @@ import { EventService } from '../event/event.service';
 import { Message, messageStatus } from '../message/message';
 import { MOCK_USER, USER_ID, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { PersistencyService } from '../persistency/persistency.service';
-import { CONVERSATION_ID, MOCKED_CONVERSATIONS, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATION_ID,
+  MOCKED_CONVERSATIONS,
+  MOCK_CONVERSATION,
+  createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { XmppTimestampMessage, XmppBodyMessage } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { MessagePayload } from '../message/messages.interface';
-import { MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK, MOCK_MESSAGE, MOCK_RANDOM_MESSAGE } from '../../../tests/message.fixtures.spec';
+import { MOCK_PAYLOAD_KO,
+  MOCK_PAYLOAD_OK,
+  MOCK_MESSAGE,
+  createMessagesArray,
+  createReceiptsArray } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../user/user.service';
 
@@ -1018,6 +1025,38 @@ describe('Service: Xmpp', () => {
 
   });
 
+  describe('addUnreadMessagesCounter', () => {
+    const thread = 'someThreadId';
+    let conversations = [];
+
+    beforeEach(() => {
+      spyOn<any>(service, 'xmlToMessage').and.callThrough();
+      conversations = createConversationsArray(5, false, thread);
+      conversations.forEach((c, index) => {
+        c.messages = createMessagesArray(5);
+        c.messages.forEach(receipt => {
+          receipt.thread = index + 1 + thread;
+        });
+      });
+      service.connect('1', 'abc');
+      service['unreadMessages'] = [
+        conversations[0].messages[3], conversations[0].messages[4],
+        conversations[1].messages[1],
+        conversations[2].messages[2], conversations[2].messages[4], conversations[2].messages[3]
+      ];
+    });
+
+    it('should update the counter of unreadMessages for receipts received', () => {
+      const expectedResult = service.addUnreadMessagesCounter(conversations);
+
+      expect(expectedResult[0].unreadMessages).toBe(2);
+      expect(expectedResult[1].unreadMessages).toBe(1);
+      expect(expectedResult[2].unreadMessages).toBe(3);
+      expect(expectedResult[3].unreadMessages).toBe(0);
+      expect(expectedResult[4].unreadMessages).toBe(0);
+    });
+  });
+
   describe('isConnected', () => {
 
     let clientConnected: boolean;
@@ -1227,29 +1266,23 @@ describe('Service: Xmpp', () => {
         thread: message1.thread,
         timestamp: new Date(message1.readTimestamp)
       });
-      expect(service['ownReadTimestamps'][message2.thread]).toEqual({
-        thread: message2.thread,
-        timestamp: new Date(message2.readTimestamp)
-      });
     });
 
-    it('should add replace the existing receipt when a newer receipt is received for a message fromSelf', () => {
+    it('should replace the existing receipt when a newer receipt is received for a message fromSelf', () => {
       spyOn<any>(service, 'messageFromSelf').and.returnValue(true);
-      const olderDate = new Date('2015-12-12 13:00').getTime();
-      const newerDate = new Date('2016-12-12 13:00').getTime();
-      const message1: any = MOCK_MESSAGE;
-      const message2: any = MOCK_MESSAGE;
-      message1.readTimestamp = olderDate;
-      message1.thread = message1.conversationId;
-      message2.readTimestamp = newerDate;
-      message2.thread = message1.conversationId;
-      service.readReceipts = [message1, message2];
+      const messages = createReceiptsArray(2, 'someRandomThread');
+      const olderDate = new Date('2015-12-12 13:00');
+      const newerDate = new Date('2016-12-12 13:00');
+
+      messages[0].readTimestamp = olderDate;
+      messages[1].readTimestamp = newerDate;
+      service.readReceipts = [messages[0], messages[1]];
 
       service.getLastReadTimestamps();
 
-      expect(service['ownReadTimestamps'][message1.thread]).toEqual({
-        thread: message1.thread,
-        timestamp: new Date(newerDate)
+      expect(service['ownReadTimestamps'][messages[0].thread]).toEqual({
+        thread: messages[0].thread,
+        timestamp: newerDate
       });
     });
 
@@ -1269,29 +1302,23 @@ describe('Service: Xmpp', () => {
         thread: message1.thread,
         timestamp: new Date(message1.readTimestamp)
       });
-      expect(service['readTimestamps'][message2.thread]).toEqual({
-        thread: message2.thread,
-        timestamp: new Date(message2.readTimestamp)
-      });
     });
 
-    it('should add replace the existing receipt when a newer receipt is received for a message NOT fromSelf', () => {
+    it('should replace the existing receipt when a newer receipt is received for a message NOT fromSelf', () => {
       spyOn<any>(service, 'messageFromSelf').and.returnValue(false);
-      const olderDate = new Date('2015-12-12 13:00').getTime();
-      const newerDate = new Date('2016-12-12 13:00').getTime();
-      const message1: any = MOCK_MESSAGE;
-      const message2: any = MOCK_MESSAGE;
-      message1.readTimestamp = olderDate;
-      message1.thread = message1.conversationId;
-      message2.readTimestamp = newerDate;
-      message2.thread = message1.conversationId;
-      service.readReceipts = [message1, message2];
+      const messages = createReceiptsArray(2, 'someRandomThread');
+      const olderDate = new Date('2015-12-12 13:00');
+      const newerDate = new Date('2016-12-12 13:00');
+
+      messages[0].readTimestamp = olderDate;
+      messages[1].readTimestamp = newerDate;
+      service.readReceipts = [messages[0], messages[1]];
 
       service.getLastReadTimestamps();
 
-      expect(service['readTimestamps'][message1.thread]).toEqual({
-        thread: message1.thread,
-        timestamp: new Date(newerDate)
+      expect(service['readTimestamps'][messages[0].thread]).toEqual({
+        thread: messages[0].thread,
+        timestamp: newerDate
       });
     });
   });
