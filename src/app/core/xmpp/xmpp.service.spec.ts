@@ -19,7 +19,8 @@ import { MessagePayload } from '../message/messages.interface';
 import { MOCK_PAYLOAD_KO,
   MOCK_PAYLOAD_OK,
   MOCK_MESSAGE,
-  createMessagesArray } from '../../../tests/message.fixtures.spec';
+  createMessagesArray,
+  createReceiptsArray } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { UserService } from '../user/user.service';
 
@@ -83,21 +84,7 @@ class MockedClient {
   }
 }
 
-class Receipts {
-  createArrayOfReceipts(total: number, thread: string, date?: string): any {
-    const messages: any[] = [];
-    for (let i = 1; i <= total; i++) {
-      messages.push({
-        thread: thread,
-        readTimestamp: new Date(date)
-      });
-    }
-    return messages;
-  }
-}
-
 const MOCKED_CLIENT: MockedClient = new MockedClient();
-const MOCKED_RECEIPTS: Receipts = new Receipts();
 const MOCKED_LOGIN_USER: any = '1';
 const MOCKED_LOGIN_PASSWORD: any = 'abc';
 const MOCKED_SERVER_MESSAGE: any = {
@@ -1067,7 +1054,6 @@ describe('Service: Xmpp', () => {
       expect(expectedResult[2].unreadMessages).toBe(3);
       expect(expectedResult[3].unreadMessages).toBe(0);
       expect(expectedResult[4].unreadMessages).toBe(0);
-      expect(expectedResult[4].unreadMessages).toBe(0);
     });
   });
 
@@ -1284,7 +1270,7 @@ describe('Service: Xmpp', () => {
 
     it('should replace the existing receipt when a newer receipt is received for a message fromSelf', () => {
       spyOn<any>(service, 'messageFromSelf').and.returnValue(true);
-      const messages = MOCKED_RECEIPTS.createArrayOfReceipts(2, 'someRandomThread');
+      const messages = createReceiptsArray(2, 'someRandomThread');
       const olderDate = new Date('2015-12-12 13:00');
       const newerDate = new Date('2016-12-12 13:00');
 
@@ -1320,7 +1306,7 @@ describe('Service: Xmpp', () => {
 
     it('should replace the existing receipt when a newer receipt is received for a message NOT fromSelf', () => {
       spyOn<any>(service, 'messageFromSelf').and.returnValue(false);
-      const messages = MOCKED_RECEIPTS.createArrayOfReceipts(2, 'someRandomThread');
+      const messages = createReceiptsArray(2, 'someRandomThread');
       const olderDate = new Date('2015-12-12 13:00');
       const newerDate = new Date('2016-12-12 13:00');
 
