@@ -380,7 +380,8 @@ export class ConversationService extends LeadService {
           conversations.forEach(conversation => {
             this.persistencyService.saveUnreadMessages(conversation.id, conversation.unreadMessages);
           });
-          this.messageService.totalUnreadMessages = this.xmpp.totalUnreadMessages;
+          this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
+            this.messageService.totalUnreadMessages : this.xmpp.totalUnreadMessages;
           return Observable.of(conversations);
         });
       } else {
