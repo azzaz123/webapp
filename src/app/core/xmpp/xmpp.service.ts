@@ -287,10 +287,16 @@ export class XmppService {
   }
 
   public addUnreadMessagesCounter(conversations) {
-    this.unreadMessages.forEach(receipt => {
-      const convWithUnread = conversations.find(c => c.id === receipt.thread);
-      convWithUnread.unreadMessages = convWithUnread.unreadMessages ? ++convWithUnread.unreadMessages : 1;
-    });
+    if (this.unreadMessages) {
+      for (let index = this.unreadMessages.length - 1; index >= 0; --index) {
+        const convWithUnread = conversations.find((c) => c.id === this.unreadMessages[index].thread);
+        if (convWithUnread) {
+          const i = _.findIndex(conversations, convWithUnread);
+          conversations[i].unreadMessages = conversations[i].unreadMessages ? ++conversations[i].unreadMessages : 1;
+          this.unreadMessages.splice(index, 1);
+        }
+      }
+    }
     return conversations;
   }
 
