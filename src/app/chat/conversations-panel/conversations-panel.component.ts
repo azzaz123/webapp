@@ -105,13 +105,15 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private updateMessageStatus(newStatus: string, conversationId: string, messageId?: string) {
     const conversation = this.conversations.find((c: Conversation) => c.id === conversationId);
-    if (messageId) {
-      const message = conversation.messages.find((m: Message) => m.id === messageId);
-      if (message && message.status !== newStatus) {
-        this.conversationService.markAs(newStatus, message, conversation);
+    if (conversation) {
+      if (messageId) {
+        const message = conversation.messages.find((m: Message) => m.id === messageId);
+        if (message && message.status !== newStatus) {
+          this.conversationService.markAs(newStatus, message, conversation);
+        }
+      } else {
+        this.conversationService.markAllAsRead(conversation);
       }
-    } else {
-      this.conversationService.markAllAsRead(conversation);
     }
   }
 
