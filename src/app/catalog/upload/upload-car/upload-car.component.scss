@@ -6,11 +6,11 @@
 
 a.other-make {
   font-size: $font-size-XS;
-  color: $grey-250;
+  color: $corporate;
   text-decoration: underline;
   cursor: pointer;
   &:hover {
-    color: $grey-250;
+    color: $corporate;
     text-decoration: none;
   }
 }
