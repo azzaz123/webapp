@@ -51,5 +51,6 @@ export interface XmppBodyMessage extends XmppMessage {
       message: XmppBodyMessage
     }
   };
+  carbon?: boolean;
   payload?: MessagePayload;
 }

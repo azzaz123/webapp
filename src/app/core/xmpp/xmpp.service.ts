@@ -169,7 +169,7 @@ export class XmppService {
               messages.push(builtMessage);
               if (this.messageFromSelf(builtMessage) && builtMessage.status === null) {
                 builtMessage.status = messageStatus.SENT;
-            }
+              }
             }
           }
           if (message.receivedId) {
@@ -234,7 +234,7 @@ export class XmppService {
       const index: number = this.confirmedMessages.indexOf(message.id);
       if (index !== -1) {
         if (this.messageFromSelf(message)) {
-        message.status = messageStatus.RECEIVED;
+          message.status = messageStatus.RECEIVED;
         }
         this.confirmedMessages.splice(index, 1);
       }
@@ -366,7 +366,7 @@ export class XmppService {
       );
       const replaceTimestamp = !message.timestamp || message.carbonSent;
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp);
-      if (message.from !== this.currentJid && message.requestReceipt) {
+      if (message.from !== this.currentJid && message.requestReceipt && !message.carbon) {
         this.sendMessageDeliveryReceipt(message.from, message.id, message.thread);
       }
     }
@@ -405,13 +405,17 @@ export class XmppService {
   }
 
   private sendMessageDeliveryReceipt(to: any, id: string, thread: string) {
-    this.client.sendMessage({
-      to: to,
-      type: 'chat',
-      thread: thread,
-      received: {
-        xmlns: 'urn:xmpp:receipts',
-        id: id
+    this.persistencyService.findMessage(id).subscribe(() => {}, (error) => {
+      if (error.reason === 'missing') {
+        this.client.sendMessage({
+          to: to,
+          type: 'chat',
+          thread: thread,
+          received: {
+            xmlns: 'urn:xmpp:receipts',
+            id: id
+          }
+        });
       }
     });
   }
