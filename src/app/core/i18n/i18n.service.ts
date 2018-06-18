@@ -11,7 +11,8 @@ export class I18nService {
         nextDay: '[Tomorrow]',
         lastWeek: 'dddd - HH:mm',
         nextWeek: 'dddd',
-        sameElse: 'Do [of] MMMM'
+        sameElse: 'Do [of] MMMM',
+        mediumDate: 'MMM d, y'
       },
       reportListingReasons: [
         {id: 2, label: 'People or animals'},
@@ -94,7 +95,8 @@ export class I18nService {
         nextDay: '[Mañana]',
         lastWeek: 'dddd - HH:mm',
         nextWeek: 'dddd',
-        sameElse: 'D [de] MMMM'
+        sameElse: 'D [de] MMMM',
+        mediumDate: 'd MMM y'
       },
       reportListingReasons: [
         {id: 2, label: 'Personas o Animales'},

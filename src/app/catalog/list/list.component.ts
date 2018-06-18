@@ -21,6 +21,7 @@ import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
 import { FinancialCard } from '../../core/payments/payment.interface';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
+import { EventService } from '../../core/event/event.service';
 
 @Component({
   selector: 'tsl-list',
@@ -53,7 +54,8 @@ export class ListComponent implements OnInit, OnDestroy {
               private paymentService: PaymentService,
               private errorService: ErrorsService,
               private router: Router,
-              private userService: UserService) {
+              private userService: UserService,
+              private eventService: EventService) {
   }
 
   ngOnInit() {
@@ -243,6 +245,7 @@ export class ListComponent implements OnInit, OnDestroy {
         const index: number = _.findIndex(this.items, {'id': id});
         if (this.items[index]) {
           this.items[index].reserved = true;
+          this.eventService.emit(EventService.ITEM_RESERVED, this.items[index]);
         }
       });
       if (response.failedIds.length) {

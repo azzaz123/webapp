@@ -53,6 +53,10 @@ export abstract class Lead {
     return this._modifiedDate;
   }
 
+  set item(item: Item) {
+    this._item = item;
+  }
+
   get item(): Item {
     return this._item;
   }

@@ -1,0 +1,61 @@
+@import "~style/common";
+
+$gdpr-second-screen-content-height: 565px;
+
+:host {
+  .gdpr-modal {
+    text-align: center;
+    padding: $spacing-L;
+  }
+
+  p{
+    margin: $spacing-M 0;
+  }
+
+  .gdpr-modal-body-term-box {
+    padding: $spacing-S;
+    background: $grey-50;
+    height: 290px;
+    font-size: $font-size-XS;
+    overflow-x: scroll;
+    text-align: left;
+    border-radius: $border-radius;
+    margin-bottom: $spacing-L;
+    /deep/ p {
+      font-size: $font-size-XS;
+    }
+  }
+
+  & /deep/ .checkbox {
+    margin-top: $spacing-M;
+    margin-bottom: $spacing-M;
+  }
+
+  tsl-button {
+    display: block;
+    margin-top: $spacing-L;
+    & /deep/ button{
+      width: 100%;
+    }
+  }
+
+  label {
+    font-size: $font-size-XS;
+  }
+
+  .gdpr-second-modal {
+    height: $gdpr-second-screen-content-height;
+    display: flex;
+    flex-direction: column;
+    > * {
+      flex-grow: 0;
+    }
+    .gdpr-second-modal-image {
+      flex-grow: 1;
+      background-image: url('/assets/images/gdpr-modal-second-screen.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+  }
+}

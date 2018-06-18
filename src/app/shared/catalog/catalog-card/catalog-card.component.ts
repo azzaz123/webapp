@@ -53,6 +53,7 @@ export class CatalogCardComponent implements OnInit {
       item: item,
       action: 'sold'
     });
+    this.eventService.emit(EventService.ITEM_SOLD, item);
   }
 
   public reserve(item: Item) {
@@ -60,10 +61,12 @@ export class CatalogCardComponent implements OnInit {
       this.itemService.selectedAction = 'reserve';
       this.itemService.reserveItem(item.id, true).subscribe(() => {
         item.reserved = true;
+        this.eventService.emit(EventService.ITEM_RESERVED, item);
       });
     } else {
       this.itemService.reserveItem(item.id, false).subscribe(() => {
         item.reserved = false;
+        this.eventService.emit(EventService.ITEM_RESERVED, item);
       });
     }
   }

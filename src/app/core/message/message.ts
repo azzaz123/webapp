@@ -2,17 +2,26 @@ import { Model } from '../resource/model.interface';
 import { User } from '../user/user';
 import { MessagePayload } from './messages.interface';
 
+export const messageStatus = {
+  PENDING: 'pending',
+  SENT: 'sent',
+  RECEIVED: 'received',
+  READ: 'read'
+};
+
+export const statusOrder = [messageStatus.PENDING, messageStatus.SENT, messageStatus.RECEIVED, messageStatus.READ];
+
 export class Message implements Model {
 
   private _user: User;
-  private _fromBuyer: boolean;
+  private _fromSelf: boolean;
 
   constructor(private _id: string,
               private _conversationId: string,
               private _message: string,
               private _from: string,
               private _date?: Date,
-              private _read?: boolean,
+              private _status?: string,
               private _payload?: MessagePayload) {
   }
 
@@ -36,12 +45,12 @@ export class Message implements Model {
     this._date = value;
   }
 
-  get read(): boolean {
-    return this._read;
+  get status(): string {
+    return this._status;
   }
 
-  set read(value: boolean) {
-    this._read = value;
+  set status(value: string) {
+    this._status = value;
   }
 
   get from(): string {
@@ -56,12 +65,12 @@ export class Message implements Model {
     this._user = value;
   }
 
-  get fromBuyer(): boolean {
-    return this._fromBuyer;
+  get fromSelf(): boolean {
+    return this._fromSelf;
   }
 
-  set fromBuyer(value: boolean) {
-    this._fromBuyer = value;
+  set fromSelf(value: boolean) {
+    this._fromSelf = value;
   }
 
   get payload(): MessagePayload {

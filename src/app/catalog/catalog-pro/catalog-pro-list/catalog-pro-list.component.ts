@@ -154,7 +154,7 @@ export class CatalogProListComponent implements OnInit {
     });
   }
 
-  public getItems(append?: boolean, openVisibility?: boolean) {
+  public getItems(append?: boolean) {
     this.loading = true;
     if (!append) {
       this.items = [];
@@ -171,7 +171,6 @@ export class CatalogProListComponent implements OnInit {
       this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {page_number: this.page});
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
-      this.end = true;
       if (this.uploadModalRef) {
         this.uploadModalRef.componentInstance.item = this.items[0];
         this.uploadModalRef.componentInstance.urgentPrice();

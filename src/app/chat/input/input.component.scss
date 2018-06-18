@@ -30,6 +30,9 @@ form {
         color: $warn;
       }
     }
+    &.selected {
+      border: 2px solid $corporate;
+    }
   }
   #send {
     cursor: pointer;
