@@ -81,10 +81,11 @@ export const MOCK_NOT_FOUND_CONVERSATION: Conversation = new Conversation(
   MOCK_USER,
   MOCK_ITEM);
 
-export function createConversationsArray(total: number, phone?: boolean) {
+export function createConversationsArray(total: number, phone?: boolean, conversationsId?: string) {
   const conversations: Conversation[] = [];
   for (let i = 1; i <= total; i++) {
-    conversations.push(MOCK_CONVERSATION(i + '', undefined, phone ? CONVERSATION_PHONE : undefined, CONVERSATION_DATE - i));
+    conversations.push(MOCK_CONVERSATION(conversationsId ? i + conversationsId : i.toString(),
+      undefined, phone ? CONVERSATION_PHONE : undefined, CONVERSATION_DATE - i));
   }
   return conversations;
 }

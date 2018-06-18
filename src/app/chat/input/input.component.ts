@@ -63,8 +63,11 @@ export class InputComponent implements OnChanges, OnInit {
       setTimeout(() => {
         this.messageArea.nativeElement.focus();
       }, 500);
+
+      if (changes && changes.currentConversation && this.messageArea.nativeElement.value.length) {
+        this.messageArea.nativeElement.value = '';
+      }
     }
     this.disable = this.currentConversation.user.blocked || !this.connectionService.isConnected;
   }
-
 }

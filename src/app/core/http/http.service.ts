@@ -142,7 +142,7 @@ export class HttpService extends Http {
 
   private getSignature(url: string, method: string, timestamp: number) {
     const separator = '+#+';
-    const signature = ['/' + url.split("?")[0], method, timestamp].join(separator) + separator;
+    const signature = ['/' + url.split('?')[0], method, timestamp].join(separator) + separator;
     return CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(signature, CryptoJS.enc.Base64.parse(SECRET)));
   }
 

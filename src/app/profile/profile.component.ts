@@ -7,6 +7,7 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
 import { CanComponentDeactivate } from '../shared/guards/can-component-deactivate.interface';
 import { User } from '../core/user/user';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
+import { PrivacyService, PRIVACY_STATUS } from '../core/privacy/privacy.service';
 
 @Component({
   selector: 'tsl-profile',
@@ -18,11 +19,14 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   public user: User;
   public userUrl: string;
   public profileForm: FormGroup;
+  public settingsForm: FormGroup;
+  public allowSegmentation: boolean;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
   constructor(private userService: UserService,
     private fb: FormBuilder,
     private modalService: NgbModal,
+    private privacyService: PrivacyService,
     @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
@@ -35,6 +39,10 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
         longitude: ['', [Validators.required]],
       })
     });
+
+    this.settingsForm = fb.group({
+      allow_segmentation: false
+    });
   }
 
   ngOnInit() {
@@ -44,6 +52,11 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
         this.userUrl = user.getUrl(this.subdomain);
         this.setUserData();
       }
+    });
+    this.privacyService.allowSegmentation$.subscribe((value: boolean) => {
+      const allowSegmentationState = this.privacyService.getPrivacyState('gdpr_display', '0');
+      this.allowSegmentation = allowSegmentationState === PRIVACY_STATUS.unknown ? false : value;
+      this.setSettingsData();
     });
   }
 
@@ -64,6 +77,12 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
     });
   }
 
+  private setSettingsData() {
+    this.settingsForm.patchValue({
+      allow_segmentation: this.allowSegmentation
+    });
+  }
+
   public openUnsubscribeModal() {
     this.modalService.open(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
   }
@@ -71,6 +90,15 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   public logout($event: any) {
     $event.preventDefault();
     this.userService.logout();
+  }
+
+  public switchAllowSegmentation (value: boolean) {
+    this.privacyService.updatePrivacy({
+        gdpr_display: {
+          version: '0',
+          allow: value
+        }
+      }).subscribe();
   }
 
   private dateValidator(c: FormControl) {

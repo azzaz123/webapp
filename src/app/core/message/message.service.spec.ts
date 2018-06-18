@@ -421,7 +421,7 @@ describe('Service: Message', () => {
       );
       service.addUserInfo(conversation, message);
       expect(message.user).toEqual(conversation.user);
-      expect(message.fromBuyer).toBe(true);
+      expect(message.fromSelf).toBe(false);
     });
 
     it('should add seller user to message', () => {
@@ -433,7 +433,7 @@ describe('Service: Message', () => {
       );
       message = service.addUserInfo(conversation, message);
       expect(message.user).toEqual(userService.user);
-      expect(message.fromBuyer).toBe(false);
+      expect(message.fromSelf).toBe(true);
     });
 
   });

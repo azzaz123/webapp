@@ -3,7 +3,7 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PersistencyService } from './persistency.service';
 import { createMessagesArray, MESSAGE_MAIN, MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
-import { Message } from '../message/message';
+import { Message, messageStatus } from '../message/message';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
@@ -11,6 +11,7 @@ import {
   MockedMessagesDb
 } from '../../../tests/persistency.fixtures.spec';
 import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
+import { Observable } from 'rxjs/Observable';
 
 let service: PersistencyService;
 const MOCK_REV = 'rev';
@@ -87,7 +88,7 @@ describe('Service: Persistency', () => {
         _id: MOCK_MESSAGE.id,
         date: MOCK_MESSAGE.date,
         message: MOCK_MESSAGE.message,
-        read: MOCK_MESSAGE.read,
+        status: MOCK_MESSAGE.status,
         from: MOCK_MESSAGE.from,
         conversationId: MOCK_MESSAGE.conversationId,
         payload: undefined
@@ -100,14 +101,14 @@ describe('Service: Persistency', () => {
         MESSAGE_MAIN.body,
         MESSAGE_MAIN.from,
         MESSAGE_MAIN.date,
-        true,
+        messageStatus.READ,
         MOCK_PAYLOAD_OK
       );
       expect((service as any).buildResponse(MOCK_MESSAGE)).toEqual({
         _id: MOCK_MESSAGE.id,
         date: MOCK_MESSAGE.date,
         message: MOCK_MESSAGE.message,
-        read: MOCK_MESSAGE.read,
+        status: MOCK_MESSAGE.status,
         from: MOCK_MESSAGE.from,
         conversationId: MOCK_MESSAGE.conversationId,
         payload: MOCK_PAYLOAD_OK
@@ -194,6 +195,79 @@ describe('Service: Persistency', () => {
       expect(service['upsert']).toHaveBeenCalled();
     }));
   });
+
+  describe('updateMessageStatus', () => {
+    it('should upsert the message status', fakeAsync(() => {
+      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
+      tick();
+
+      service.updateMessageStatus(MOCK_MESSAGE.id, messageStatus.READ).subscribe();
+      tick();
+
+      expect((service as any).upsert).toHaveBeenCalled();
+      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
+    }));
+  });
+
+  describe('getDbVersion', () => {
+    it('should return the database version information from the database', () => {
+      spyOn(service.messagesDb, 'get');
+
+      service['getDbVersion']();
+
+      expect(service.messagesDb.get).toHaveBeenCalledWith('version');
+    });
+  });
+
+  describe('saveDbVersion', () => {
+    it('should upsert the database version information', fakeAsync(() => {
+      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
+
+      service['saveDbVersion']({}).subscribe();
+      tick();
+
+      expect((service as any).upsert).toHaveBeenCalled();
+      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[0][1]).toBe('version');
+    }));
+  });
+
+  describe('localDbVersionUpdate', () => {
+    beforeEach(() => {
+      spyOn<any>(service, 'saveDbVersion');
+    });
+    it('should save the version when called with a version number greater than the current version number', () => {
+      spyOn<any>(service, 'getDbVersion').and.returnValue(Observable.of({version: 1.0}));
+      function mockCallback() {}
+
+      service.localDbVersionUpdate(1.2, mockCallback);
+
+      expect(service['getDbVersion']).toHaveBeenCalled();
+      expect(service['saveDbVersion']).toHaveBeenCalled();
+    });
+
+    it('should save the version when the error reason is `missing`', () => {
+      spyOn<any>(service, 'getDbVersion').and.returnValue(Observable.throw({reason: 'missing'}));
+      function mockCallback() {}
+
+      service.localDbVersionUpdate(1.2, mockCallback);
+
+      expect(service['getDbVersion']).toHaveBeenCalled();
+      expect(service['saveDbVersion']).toHaveBeenCalled();
+    });
+
+    it('should not save the version when the error message reason is not `missing`', () => {
+      spyOn<any>(service, 'getDbVersion').and.returnValue(Observable.throw({reason: 'something else'}));
+      function mockCallback() {}
+
+      service.localDbVersionUpdate(1.2, mockCallback);
+
+      expect(service['getDbVersion']).toHaveBeenCalled();
+      expect(service['saveDbVersion']).not.toHaveBeenCalled();
+    });
+  });
+
   describe('resetCache', () => {
     it('should set the storedMessages to null', () => {
       service['storedMessages'] = MOCK_DB_FILTERED_RESPONSE[0];

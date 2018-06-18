@@ -236,6 +236,7 @@
   <translation id="2906587845957718064">Barrio</translation>
   <translation id="1186759635333538896">Provincia</translation>
   <translation id="2314075913167237221">Ciudad</translation>
+  <translation id="7928837776892145785">País</translation>
   <translation id="6377139538537882652">Eliminar lista</translation>
   <translation id="3448462145758383019">Total</translation>
   <translation id="6581598798517073714">+ Añadir otra tarjeta</translation>
@@ -300,7 +301,7 @@
   <translation id="4101941266124151376">el</translation>
   <translation id="5941682960252754908">un usuario de wallapop</translation>
   <translation id="9029286143304711365">Opiniones</translation>
-  <translation id="5327426729320041573">Nadie ha opinado sobre ti por que todavía no has comprado ni vendido nada ¡Espabila!</translation>
+  <translation id="5327426729320041573">Nadie ha opinado sobre ti porque todavía no has comprado ni vendido nada ¡Espabila!</translation>
   <translation id="6707361102856436710">Productos</translation>
   <translation id="2027740642468122404">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
   <translation id="792930787826735850">Tu perfil</translation>
@@ -332,7 +333,7 @@
   <translation id="442085080206895883">productos</translation>
   <translation id="776785241867401546">producto</translation>
   <translation id="994157966875519838">opinión</translation>
-  <translation id="6583839768249288834">Por sólo <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> marca como tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge. </translation>
+  <translation id="6583839768249288834">Por sólo <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge. </translation>
   <translation id="1367227703192400664">Marcar como urgente</translation>
   <translation id="1002906181596709279">Tu producto será mucho más visible y lo venderás antes</translation>
   <translation id="2212105134437554730">Estás siendo redirigido a nuestra pasarela de pago<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
@@ -352,6 +353,14 @@
   <translation id="7252908727899212022">Marcar como Pendiente</translation>
   <translation id="6570363013146073520">Panel</translation>
   <translation id="5762151072276461448">Llamadas</translation>
+  <translation id="8473542904579897463">Acepta la nueva política de privacidad para seguir navegando.</translation>
+  <translation id="2027065996111573728">Y ayúdanos a construir una comunidad más protegida.</translation>
+  <translation id="2058875714516120541">Acepto ver contenido comercial según mis intereses.</translation>
+  <translation id="6053030049682367676">Acepto las condiciones de privacidad.</translation>
+  <translation id="3621660718268535813">Acepto</translation>
+  <translation id="2902767388086622493">Parece que no aceptas ver contenido comercial según tus intereses.</translation>
+  <translation id="3511695773156847637">Vas a seguir viendo publicidad, pero si no aceptas no será relevante a tus gustos.</translation>
+  <translation id="5630538151734871478">Sí, acepto</translation>
   <translation id="4588618843305891254">Tu Catálogo</translation>
   <translation id="2157586494270826789">¿Qué son los extras?</translation>
   <translation id="9078334813317415148">Destacados ciudad</translation>
@@ -536,6 +545,8 @@
   <translation id="2734780694152757859">Ver más</translation>
   <translation id="8778531687214591857">Has procesado todos los contactos pendientes. ¡Buen trabajo!</translation>
   <translation id="5554592740021607017">Últimos 12 meses</translation>
-  <translation id="3708302938863076299">Pago seguro a través de Sabadell</translation>
+  <translation id="3708302938863076299">Pago seguro con Banco Sabadell</translation>
   <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="3649443966888874108">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
+  <translation id="221922226324249098">Todas las categorías</translation>
 </translationbundle>

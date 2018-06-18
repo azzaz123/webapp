@@ -28,6 +28,9 @@ import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
 import { Message } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
+import { PrivacyService, PRIVACY_STATUS } from './core/privacy/privacy.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
@@ -67,6 +70,8 @@ export class AppComponent implements OnInit {
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
+              private privacyService: PrivacyService,
+              private modalService: NgbModal,
               private connectionService: ConnectionService,
               private callService: CallsService) {
     this.config();
@@ -88,6 +93,13 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
+    this.privacyService.getPrivacyList().subscribe(() => {
+      if (!sessionStorage.getItem('isGDPRShown') &&
+        this.privacyService.getPrivacyState('privacy_policy', '0') === PRIVACY_STATUS.unknown) {
+          this.modalService.open(GdprModalComponent);
+          sessionStorage.setItem('isGDPRShown', 'true');
+      }
+    });
     this.conversationService.firstLoad = true;
   }
 

@@ -10,6 +10,7 @@ import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';
 
 export const USER_ID = 'l1kmzn82zn3p';
+export const OTHE_USER_ID = 'qxkmav12tp8f';
 export const MICRO_NAME = 'String S.';
 export const ACCESS_TOKEN = 'bS7D7d26UordM5M0uy5o4IisuyrPz35mfxfpw7PLRqQfzouQGXGpQtyZWFRRDdRFFT5fJZ';
 export const USER_EMAIL = 'test@test.it';
@@ -106,6 +107,23 @@ export const MOCK_USER_RESPONSE_BODY: any = {
 
 export const MOCK_USER: User = new User(
   USER_DATA.id,
+  USER_DATA.micro_name,
+  USER_DATA.image,
+  USER_DATA.location,
+  USER_DATA.stats,
+  USER_DATA.validations,
+  USER_DATA.verification_level,
+  USER_DATA.scoring_stars,
+  USER_DATA.scoring_starts,
+  USER_DATA.response_rate,
+  USER_DATA.online,
+  USER_DATA.type,
+  0,
+  USER_DATA.web_slug
+);
+
+export const MOCK_OTHER_USER: User = new User(
+  'other',
   USER_DATA.micro_name,
   USER_DATA.image,
   USER_DATA.location,

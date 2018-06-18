@@ -102,6 +102,13 @@ export class MockedPersistencyService {
 
   public updateMessageDate() {
   }
+
+  public localDbVersionUpdate(newVersion: number, callback: Function) {
+    callback();
+  }
+
+  public updateMessageStatus(messageId: string, newStatus: string) {
+  }
 }
 
 /* istanbul ignore next */

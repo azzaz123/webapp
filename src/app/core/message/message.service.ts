@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { Conversation } from '../conversation/conversation';
-import { Message } from './message';
+import { Message, messageStatus } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
@@ -17,7 +17,6 @@ export class MessageService {
 
   public totalUnreadMessages$: Subject<number> = new Subject<number>();
   private _totalUnreadMessages = 0;
-  public newMessageEvent: Subscription;
 
   constructor(private xmpp: XmppService,
               private persistencyService: PersistencyService,
@@ -51,7 +50,7 @@ export class MessageService {
               message.doc.message,
               message.doc.from,
               message.doc.date,
-              message.doc.read,
+              message.doc.status,
               message.doc.payload);
           })
         });
@@ -86,11 +85,11 @@ export class MessageService {
   }
 
   public addUserInfo(conversation: Conversation, message: Message): Message {
-    const seller: User = this.userService.user;
-    const buyer: User = conversation.user;
-    const userId: string = message.from.split('@')[0];
-    message.user = (userId === seller.id) ? seller : buyer;
-    message.fromBuyer = userId === buyer.id;
+    const self: User = this.userService.user;
+    const other: User = conversation.user;
+    const fromId: string = message.from.split('@')[0];
+    message.user = (fromId === self.id) ? self : other;
+    message.fromSelf = fromId === self.id;
     return message;
   }
 

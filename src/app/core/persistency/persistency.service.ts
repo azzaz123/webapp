@@ -22,8 +22,8 @@ export class PersistencyService {
   private _conversationsDb: Database<StoredConversation>;
   private storedMessages: AllDocsResponse<StoredMessage>;
   constructor() {
-    this._messagesDb = new PouchDB('messages');
-    this._conversationsDb = new PouchDB('conversations');
+    this._messagesDb = new PouchDB('messages', {auto_compaction: true});
+    this._conversationsDb = new PouchDB('conversations', {auto_compaction: true});
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
@@ -76,7 +76,7 @@ export class PersistencyService {
       _id: message.id,
       date: message.date,
       message: message.message,
-      read: message.read,
+      status: message.status,
       from: message.from,
       conversationId: message.conversationId,
       payload: message.payload
@@ -118,8 +118,46 @@ export class PersistencyService {
     );
   }
 
+  public updateMessageStatus(messageId: string, newStatus: string) {
+    return Observable.fromPromise(this.upsert(this.messagesDb, messageId, (doc: Document<any>) => {
+      if (doc.status !== newStatus) {
+        doc.status = newStatus;
+        return doc;
+      }
+    }));
+  }
+
   public getMetaInformation(): Observable<StoredMetaInfoData> {
     return Observable.fromPromise(this.messagesDb.get('meta'));
+  }
+
+  private getDbVersion(): Observable<any> {
+    return Observable.fromPromise(this.messagesDb.get('version'));
+  }
+
+  private saveDbVersion(data: any): Observable<any> {
+    return Observable.fromPromise(
+      this.upsert(this.messagesDb, 'version', (doc: Document<any>) => {
+        doc.version = data;
+        return doc;
+      })
+    );
+  }
+
+  /* This method is used to update data in the local database when the schema is changed, and we want
+     these changes to be applied to existing (already stored) data. */
+  public localDbVersionUpdate(newVersion: number, callback: Function) {
+    this.getDbVersion().subscribe((response) => {
+      if (response.version < newVersion) {
+        callback();
+        this.saveDbVersion(newVersion);
+      }
+    }, (error) => {
+      if (error.reason === 'missing') {
+        callback();
+        this.saveDbVersion(newVersion);
+      }
+    });
   }
 
   public saveUnreadMessages(conversationId: string, unreadMessages: number): Observable<any> {

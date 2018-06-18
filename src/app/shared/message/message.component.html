@@ -1,14 +1,15 @@
-<a *ngIf="message.user?.webLink && message.fromBuyer" href="{{ userWebSlug }}" target="_blank">
+<a *ngIf="message.user?.webLink && !message.fromSelf" href="{{ userWebSlug }}" target="_blank">
   <tsl-user-avatar class="message-avatar" [user]="message.user" *ngIf="showUserInfo && !message.payload" [ngClass]="{'calls-panel': callsPanel}"></tsl-user-avatar>
 </a>
 
-<tsl-user-avatar class="message-avatar" [user]="message.user" *ngIf="showUserInfo && !message.payload && (!message.user?.webLink || !message.fromBuyer)" [ngClass]="{'calls-panel': callsPanel}"></tsl-user-avatar>
+<tsl-user-avatar class="message-avatar" [user]="message.user" *ngIf="showUserInfo && !message.payload && (!message.user?.webLink || message.fromSelf)" [ngClass]="{'calls-panel': callsPanel, 'from-self': message.fromSelf}"></tsl-user-avatar>
 
-<div class="message-body" *ngIf="!message.payload" [ngClass]="{'without-avatar': !showUserInfo, 'calls-panel': callsPanel}">
-  <h5 class="message-name" *ngIf="showUserInfo">{{message.user.microName}}
+<div class="message-body" *ngIf="!message.payload" [ngClass]="{'without-avatar': !showUserInfo, 'calls-panel': callsPanel, 'from-self': message.fromSelf}">
+  <p>
+    <span *ngIf="!message.payload">{{message.message}}</span>
     <small class="message-date">{{message.date | date:'shortTime'}}</small>
-  </h5>
-  <span *ngIf="!message.payload">{{message.message}}</span>
+    <span *ngIf="message.fromSelf" class="message-status" [ngClass]="message.status"></span>
+  </p>
 </div>
 <div *ngIf="message.payload" class="third-voice">
   {{message.payload.text}}
