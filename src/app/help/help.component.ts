@@ -9,17 +9,17 @@ import { NavigationEnd, Router } from '@angular/router';
 export class HelpComponent {
 
   public features = [{
-    title: 'Planificacion de Destacados',
-    desc: 'Cómo funciona la planificación',
-    link: 'Perfil-6'
+    title: 'Como destaco un coche',
+    desc: '',
+    link: 'Destacados-1'
   }, {
-    title: 'Suscripción de visibilidad',
-    desc: 'Todas las opciónes de visibilidad a tu medida',
+    title: 'Como puedo comprar extras',
+    desc: '',
+    link: 'Destacados-4'
+  }, {
+    title: 'Tu Plan de visibilidad',
+    desc: '',
     link: 'Perfil-5'
-  }, {
-    title: 'Destacados extras',
-    desc: 'Cúando, como y porque usar extras',
-    link: 'Perfil-4'
   }];
 
   public faqs = {
