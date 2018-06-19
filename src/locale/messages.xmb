@@ -33,6 +33,7 @@
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:41</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:48</source>Reviews</msg>
   <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:56</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
+  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:63</source>Help</msg>
   <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
         I accept the updated privacy policy in order to continue navigating.
       </msg>
@@ -551,4 +552,11 @@
   <msg id="2734780694152757859"><source>app/dashboard/dashboard.component.ts:25</source><source>app/dashboard/dashboard.component.ts:34</source>View all</msg>
   <msg id="8778531687214591857"><source>app/dashboard/dashboard.component.ts:47</source>You have processed all the pending leads. Good job!</msg>
   <msg id="5554592740021607017"><source>app/dashboard/stats-graph/stats-graph.component.ts:2</source>Last 12 months</msg>
+  <msg id="6806883447514569994"><source>app/help/help.component.ts:6</source>Your help center</msg>
+  <msg id="7002268576514991178"><source>app/help/help.component.ts:9</source>We hope that you can find here the answers for all your questions</msg>
+  <msg id="606929755258304715"><source>app/help/help.component.ts:53</source>Contact details</msg>
+  <msg id="6973742476031476639"><source>app/help/help.component.ts:54</source>Little text about how we are here to help you with anything!</msg>
+  <msg id="4907869765185411377"><source>app/help/help.component.ts:56</source>To manage your suscription:</msg>
+  <msg id="3157935134834586265"><source>app/help/help.component.ts:60</source>For any question:</msg>
+  <msg id="5539790500305687232"><source>app/help/help.component.ts:64</source>Mon to Fri 10:00 to 18:00</msg>
 </messagebundle>
