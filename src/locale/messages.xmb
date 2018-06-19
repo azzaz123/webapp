@@ -33,6 +33,26 @@
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:41</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:48</source>Reviews</msg>
   <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:56</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
+  <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
+        I accept the updated privacy policy in order to continue navigating.
+      </msg>
+  <msg id="2027065996111573728"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:8,10</source>
+        Help us to maintain a safe community.
+      </msg>
+  <msg id="2058875714516120541"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:14</source> I accept to recieve customized content and ads. </msg>
+  <msg id="6053030049682367676"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:17</source>I accept the conditions for privacy.</msg>
+  <msg id="3621660718268535813"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:22,24</source>
+        I accept
+      </msg>
+  <msg id="2902767388086622493"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:30,32</source>
+        It seems that you don&apos;t want to you see the ads most relevant to you.
+      </msg>
+  <msg id="3511695773156847637"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:33,35</source>
+        You will still see the ads but they won&apos;t be chosen according to your preferences.
+      </msg>
+  <msg id="5630538151734871478"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:39,41</source>
+        Yes, I accept
+      </msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.ts:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source><source>app/dashboard/dashboard.component.ts:46</source>Congratulations!</msg>
@@ -433,6 +453,9 @@
   <msg id="6631334172623029500"><source>app/profile/profile.component.ts:84</source><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:57</source>Email:</msg>
   <msg id="6865009229971482891"><source>app/profile/profile.component.ts:90</source><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:63</source>Password:</msg>
   <msg id="2322688793988378029"><source>app/profile/profile.component.ts:99</source>Close account</msg>
+  <msg id="3649443966888874108"><source>app/profile/profile.component.ts:113,115</source>
+                    In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.
+                  </msg>
   <msg id="9032739290449539063"><source>app/profile/profile-pro/profile-pro.component.ts:6</source>Your info</msg>
   <msg id="4558593963938972556"><source>app/profile/profile-pro/profile-pro.component.ts:9</source>Here you can see and manage the information related to your profile</msg>
   <msg id="690637757793763587"><source>app/profile/profile-pro/profile-pro.component.ts:22</source>Billing information</msg>
@@ -462,6 +485,7 @@
   <msg id="8499720622157552489"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:12</source>To upgrade your plan, call us at 674 726 372 or send us an email at <ph name="START_LINK"><ex>&lt;a&gt;</ex></ph>ventas.motor@wallapop.com<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex></ph></msg>
   <msg id="4371626830398169808"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:19</source>Publish a maximum of <ph name="INTERPOLATION"><ex>{{bump.quantity}}</ex></ph> cars</msg>
   <msg id="1144407473317535723"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:20</source><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:27</source><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:60</source><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:88</source>Subscribe</msg>
+  <msg id="2374240332008805382"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:21</source><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:61</source><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:89</source>Subscribed since</msg>
   <msg id="7154496186015922312"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:25</source>Personal Plan</msg>
   <msg id="2016810884599586784"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:26</source>We can work out the best plan for you</msg>
   <msg id="5736913742704520146"><source>app/profile/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:41</source>City visibility</msg>
