@@ -350,6 +350,7 @@ describe('App', () => {
         spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
 
         component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(privacyService.getPrivacyList).toHaveBeenCalled();
       });
@@ -358,18 +359,22 @@ describe('App', () => {
         spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
         spyOn(modalService, 'open');
         sessionStorage.removeItem('isGDPRShown');
-        component.ngOnInit();
 
-        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent);
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent, {beforeDismiss: jasmine.any(Function)});
       });
 
       it('should open modal gdpr when privacy permission is unknow and sessionStorage isGDPRShown value is undefined', () => {
         spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
         spyOn(modalService, 'open');
         sessionStorage.removeItem('isGDPRShown');
-        component.ngOnInit();
 
-        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent);
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent, {beforeDismiss: jasmine.any(Function)});
       });
 
       it('should not open modal gdpr when privacy permission is allow', () => {
@@ -377,6 +382,7 @@ describe('App', () => {
         spyOn(modalService, 'open');
 
         component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(modalService.open).not.toHaveBeenCalledWith();
       });
@@ -385,7 +391,9 @@ describe('App', () => {
         spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
         spyOn(modalService, 'open');
         sessionStorage.removeItem('isGDPRShown');
+
         component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(modalService.open).not.toHaveBeenCalledWith();
       });

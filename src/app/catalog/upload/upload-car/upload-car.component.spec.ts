@@ -440,4 +440,37 @@ describe('UploadCarComponent', () => {
     });
   });
 
+  describe('toggleCustomMakeSelection', () => {
+    it('should set customMake true and enable other fields', () => {
+      component.uploadForm.get('brand').patchValue('test');
+      component.uploadForm.get('model').disable();
+      component.uploadForm.get('year').disable();
+      component.uploadForm.get('version').disable();
+
+      component.toggleCustomMakeSelection();
+
+      expect(component.customMake).toBe(true);
+      expect(component.uploadForm.get('brand').value).toBe('');
+      expect(component.uploadForm.get('model').enabled).toBeTruthy();
+      expect(component.uploadForm.get('year').enabled).toBeTruthy();
+      expect(component.uploadForm.get('version').enabled).toBeTruthy();
+    });
+
+    it('should set customMake false and disable other fields', () => {
+      component.uploadForm.get('brand').patchValue('test');
+      component.uploadForm.get('model').enable();
+      component.uploadForm.get('year').enable();
+      component.uploadForm.get('version').enable();
+      component.customMake = true;
+
+      component.toggleCustomMakeSelection();
+
+      expect(component.customMake).toBe(false);
+      expect(component.uploadForm.get('brand').value).toBe('');
+      expect(component.uploadForm.get('model').disabled).toBeTruthy();
+      expect(component.uploadForm.get('year').disabled).toBeTruthy();
+      expect(component.uploadForm.get('version').disabled).toBeTruthy();
+    });
+  });
+
 });

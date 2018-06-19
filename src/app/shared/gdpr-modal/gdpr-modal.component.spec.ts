@@ -8,7 +8,13 @@ import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../environments/environment';
 import { PrivacyService } from '../../core/privacy/privacy.service';
-import { MOCK_PRIVACY_UPDATE_ALLOW, MOCK_PRIVACY_UPDATE_DISALLOW, MOCK_PRIVACY_UPDATE_GDPR_ALLOW } from '../../core/privacy/privacy.fixtures.spec';
+import {
+  MOCK_PRIVACY_UPDATE_ALLOW,
+  MOCK_PRIVACY_UPDATE_DISALLOW,
+  MOCK_PRIVACY_UPDATE_GDPR_ALLOW
+} from '../../core/privacy/privacy.fixtures.spec';
+import { TrackingService } from '../../core/tracking/tracking.service';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 
 describe('GdprModalComponent', () => {
   let component: GdprModalComponent;
@@ -18,6 +24,7 @@ describe('GdprModalComponent', () => {
   let http: HttpService;
   let privacyService: PrivacyService;
   let activeModal: NgbActiveModal;
+  let trackingService: TrackingService;
 
   const MOCK_HTTP_SERVICE = {
     getNoBase() {
@@ -35,7 +42,8 @@ describe('GdprModalComponent', () => {
         {
           provide: HttpService,
           useValue: MOCK_HTTP_SERVICE
-        }
+        },
+        {provide: TrackingService, useClass: MockTrackingService}
       ]
     })
     .compileComponents();
@@ -49,15 +57,26 @@ describe('GdprModalComponent', () => {
     http = TestBed.get(HttpService);
     privacyService = TestBed.get(PrivacyService);
     activeModal = TestBed.get(NgbActiveModal);
+    trackingService = TestBed.get(TrackingService);
     fixture.detectChanges();
   });
 
-  it('ngOnInit', () => {
-    spyOn(component, 'getGDPRText')
+  describe('ngOnInit', () => {
+    it('should call getGDPRText', () => {
+      spyOn(component, 'getGDPRText')
 
-    component.ngOnInit();
+      component.ngOnInit();
 
-    expect(component.getGDPRText).toHaveBeenCalled();
+      expect(component.getGDPRText).toHaveBeenCalled();
+    });
+
+    it('should track GDPR display modal', () => {
+      spyOn(trackingService, 'track');
+
+      component.ngOnInit();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.GDPR_UNDEFINED_DISPLAY_FIRST_MODAL);
+    });
   });
 
   describe('getGDPRText', () => {
@@ -137,6 +156,32 @@ describe('GdprModalComponent', () => {
       const element = el.querySelector('.gdpr-second-modal');
       expect(element).toBeNull();
     }));
+
+    it('should track GDPR Accept first modal ', fakeAsync(() => {
+      spyOn(trackingService, 'track');
+      spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of());
+      component.showSecondGdrpScreen = false;
+
+      component.setGRPRPermission();
+      tick();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.GDPR_ACCEPT_TAP_FIRST_MODAL, {
+        AcceptedGDPR: component.allowSegmentation,
+        AcceptedPrivacyPolicy: component.acceptPrivacy
+      });
+    }));
+
+    it('should track GDPR display second modal', fakeAsync(() => {
+      spyOn(trackingService, 'track');
+      spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of());
+      component.allowSegmentation = false;
+      component.acceptPrivacy = true;
+
+      component.setGRPRPermission();
+      tick();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.GDPR_UNDEFINED_DISPLAY_SECOND_MODAL);
+    }));
   });
 
   describe('acceptAllowSegmentation', () => {
@@ -157,5 +202,13 @@ describe('GdprModalComponent', () => {
       expect(privacyService.updatePrivacy).toHaveBeenCalledWith(MOCK_PRIVACY_UPDATE_GDPR_ALLOW);
     });
 
+    it('should track GDPR accept second modal', () => {
+      spyOn(trackingService, 'track');
+      spyOn(privacyService, 'updatePrivacy').and.returnValue(Observable.of());
+
+      component.acceptAllowSegmentation();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.GDPR_ACCEPT_TAP_SECOND_MODAL);
+    });
   });
 });
