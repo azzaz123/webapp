@@ -360,7 +360,7 @@ describe('App', () => {
         sessionStorage.removeItem('isGDPRShown');
         component.ngOnInit();
 
-        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent);
+        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent, {beforeDismiss: jasmine.any(Function)});
       });
 
       it('should open modal gdpr when privacy permission is unknow and sessionStorage isGDPRShown value is undefined', () => {
@@ -369,7 +369,7 @@ describe('App', () => {
         sessionStorage.removeItem('isGDPRShown');
         component.ngOnInit();
 
-        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent);
+        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent, {beforeDismiss: jasmine.any(Function)});
       });
 
       it('should not open modal gdpr when privacy permission is allow', () => {
