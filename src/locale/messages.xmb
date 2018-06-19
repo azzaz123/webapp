@@ -33,14 +33,26 @@
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:41</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:48</source>Reviews</msg>
   <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:56</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
-  <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>I accept the updated privacy policy in order to continue navigating.</msg>
-  <msg id="2027065996111573728"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:8,10</source>Help us to maintain a safe community.</msg>
+  <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
+        I accept the updated privacy policy in order to continue navigating.
+      </msg>
+  <msg id="2027065996111573728"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:8,10</source>
+        Help us to maintain a safe community.
+      </msg>
   <msg id="2058875714516120541"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:14</source> I accept to recieve customized content and ads. </msg>
   <msg id="6053030049682367676"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:17</source>I accept the conditions for privacy.</msg>
-  <msg id="3621660718268535813"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:22,24</source>I accept</msg>
-  <msg id="2902767388086622493"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:30,32</source>It seems that you don&apos;t want to you see the ads most relevant to you.</msg>
-  <msg id="3511695773156847637"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:33,35</source>You will still see the ads but they won&apos;t be chosen according to your preferences.</msg>
-  <msg id="5630538151734871478"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:39,41</source>Yes, I accept</msg>
+  <msg id="3621660718268535813"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:22,24</source>
+        I accept
+      </msg>
+  <msg id="2902767388086622493"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:30,32</source>
+        It seems that you don&apos;t want to you see the ads most relevant to you.
+      </msg>
+  <msg id="3511695773156847637"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:33,35</source>
+        You will still see the ads but they won&apos;t be chosen according to your preferences.
+      </msg>
+  <msg id="5630538151734871478"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:39,41</source>
+        Yes, I accept
+      </msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.ts:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source><source>app/dashboard/dashboard.component.ts:46</source>Congratulations!</msg>
@@ -139,9 +151,9 @@
   <msg id="8982629098121976758"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:11</source><source>app/catalog/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:11</source><source>app/catalog/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:17</source>Start selling</msg>
   <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:15</source><source>app/catalog/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:21</source>Something happened...</msg>
   <msg id="3979232265698800722"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:16</source>Your item(s) have not been featured because something went wrong with your credit card.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Please check and try again.</msg>
-  <msg id="3275068756845590930"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:17</source>Let?s go</msg>
-  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:21</source>Hmmm?</msg>
-  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:22</source>Your credit card seems suspicious. ?Why not trying with another account?</msg>
+  <msg id="3275068756845590930"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:17</source>Let’s go</msg>
+  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:21</source>Hmmm…</msg>
+  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:22</source>Your credit card seems suspicious. ¿Why not trying with another account?</msg>
   <msg id="833526722817345312"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:23</source>C&apos;mon</msg>
   <msg id="6811335180251341277"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:27</source>There has been a mistake</msg>
   <msg id="4140116217223755546"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:28</source>Your credit card has an invalid expiration date. Please check and try again.</msg>
@@ -156,7 +168,7 @@
   <msg id="868815663264397508"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:6</source>Your item is now on Wallapop</msg>
   <msg id="3258601590058086652"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:9</source>Want to sell ASAP?</msg>
   <msg id="4495547321385209565"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:10</source>Stand out on the wall during 7 days and be easy to find with the filter ASAP</msg>
-  <msg id="4568320268241275650"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:15</source>Feature it as ASAP for <ph name="INTERPOLATION"><ex>{{productPrice}}</ex></ph>?</msg>
+  <msg id="4568320268241275650"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:15</source>Feature it as ASAP for <ph name="INTERPOLATION"><ex>{{productPrice}}</ex></ph>€</msg>
   <msg id="2091018015289565203"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:16</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:16</source><source>app/catalog/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.ts:16</source>Share it with your friends:</msg>
   <msg id="5411836089142777830"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:4</source><source>app/catalog/list/list.component.ts:22</source><source>app/catalog/checkout/checkout.component.ts:9</source>What can features do for you?</msg>
   <msg id="6763447295092579753"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:5,7</source>By featuring your item you will make it more visible to the restof the community thanks to its special
@@ -228,7 +240,7 @@
   <msg id="4486490403948802296"><source>app/catalog/upload/upload-car/upload-car.component.ts:84</source>Add a number</msg>
   <msg id="988756868045673037"><source>app/catalog/upload/upload-car/upload-car.component.ts:89</source>Can all your family fit in there or just the dog?</msg>
   <msg id="2068484566855301885"><source>app/catalog/upload/upload-car/upload-car.component.ts:97</source>Type of car</msg>
-  <msg id="980829858200282983"><source>app/catalog/upload/upload-car/upload-car.component.ts:98</source>Small, coup?, sedan, family, van...</msg>
+  <msg id="980829858200282983"><source>app/catalog/upload/upload-car/upload-car.component.ts:98</source>Small, coupé, sedan, family, van...</msg>
   <msg id="3817917717199474011"><source>app/catalog/upload/upload-car/upload-car.component.ts:104</source>Is it for getting around at the weekend or for everyday use?</msg>
   <msg id="5430617499425264578"><source>app/catalog/upload/upload-car/upload-car.component.ts:110</source>Kilometers</msg>
   <msg id="1955180263634698200"><source>app/catalog/upload/upload-car/upload-car.component.ts:111</source>Exact kilometers</msg>
@@ -441,7 +453,9 @@
   <msg id="6631334172623029500"><source>app/profile/profile.component.ts:84</source><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:57</source>Email:</msg>
   <msg id="6865009229971482891"><source>app/profile/profile.component.ts:90</source><source>app/profile/profile-pro/profile-pro-info/profile-pro-info.component.ts:63</source>Password:</msg>
   <msg id="2322688793988378029"><source>app/profile/profile.component.ts:99</source>Close account</msg>
-  <msg id="3649443966888874108"><source>app/profile/profile.component.ts:113,115</source>In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.</msg>
+  <msg id="3649443966888874108"><source>app/profile/profile.component.ts:113,115</source>
+                    In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.
+                  </msg>
   <msg id="9032739290449539063"><source>app/profile/profile-pro/profile-pro.component.ts:6</source>Your info</msg>
   <msg id="4558593963938972556"><source>app/profile/profile-pro/profile-pro.component.ts:9</source>Here you can see and manage the information related to your profile</msg>
   <msg id="690637757793763587"><source>app/profile/profile-pro/profile-pro.component.ts:22</source>Billing information</msg>
