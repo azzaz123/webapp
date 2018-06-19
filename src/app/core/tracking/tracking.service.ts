@@ -672,6 +672,43 @@ export class TrackingService {
     type: TYPES_IDS.Tap
   };
 
+  public static GDPR_UNDEFINED_DISPLAY_FIRST_MODAL: TrackingEventBase = {
+    name: '681',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.GDPR,
+    type: TYPES_IDS.Display
+  };
+  public static GDPR_CLOSE_TAP_FIRST_MODAL: TrackingEventBase = {
+    name: '682',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.GDPR,
+    type: TYPES_IDS.Tap
+  };
+  public static GDPR_ACCEPT_TAP_FIRST_MODAL: TrackingEventBase = {
+    name: '683',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.GDPR,
+    type: TYPES_IDS.Tap
+  };
+  public static GDPR_UNDEFINED_DISPLAY_SECOND_MODAL: TrackingEventBase = {
+    name: '711',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.ReFishingGDPR,
+    type: TYPES_IDS.Display
+  };
+  public static GDPR_CLOSE_TAP_SECOND_MODAL: TrackingEventBase = {
+    name: '712',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.ReFishingGDPR,
+    type: TYPES_IDS.Tap
+  };
+  public static GDPR_ACCEPT_TAP_SECOND_MODAL: TrackingEventBase = {
+    name: '713',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.ReFishingGDPR,
+    type: TYPES_IDS.Tap
+  };
+
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
   private sessionId: string = null;

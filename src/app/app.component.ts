@@ -74,6 +74,7 @@ export class AppComponent implements OnInit {
               private modalService: NgbModal,
               private connectionService: ConnectionService,
               private callService: CallsService) {
+    this.initPrivacy();
     this.config();
   }
 
@@ -93,13 +94,6 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
-    this.privacyService.getPrivacyList().subscribe(() => {
-      if (!sessionStorage.getItem('isGDPRShown') &&
-        this.privacyService.getPrivacyState('privacy_policy', '0') === PRIVACY_STATUS.unknown) {
-          this.modalService.open(GdprModalComponent);
-          sessionStorage.setItem('isGDPRShown', 'true');
-      }
-    });
     this.conversationService.firstLoad = true;
   }
 
@@ -257,6 +251,25 @@ export class AppComponent implements OnInit {
           this.renderer.addClass(document.body, currentUrlSlug);
         }
         this.previousSlug = currentUrlSlug;
+      }
+    });
+  }
+
+  private initPrivacy() {
+    this.privacyService.getPrivacyList().subscribe(() => {
+      if (!sessionStorage.getItem('isGDPRShown') &&
+        this.privacyService.getPrivacyState('privacy_policy', '0') === PRIVACY_STATUS.unknown) {
+        sessionStorage.setItem('isGDPRShown', 'true');
+        const GdprModalRef = this.modalService.open(GdprModalComponent, {
+          beforeDismiss: () => {
+            if (GdprModalRef.componentInstance.showSecondGdrpScreen) {
+              this.trackingService.track(TrackingService.GDPR_CLOSE_TAP_SECOND_MODAL);
+            } else {
+              this.trackingService.track(TrackingService.GDPR_CLOSE_TAP_FIRST_MODAL);
+            }
+            return true;
+          }
+        });
       }
     });
   }
