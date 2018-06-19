@@ -697,13 +697,13 @@ export class TrackingService {
     type: TYPES_IDS.Display
   };
   public static GDPR_CLOSE_TAP_SECOND_MODAL: TrackingEventBase = {
-    name: '712',
+    name: '713',
     category: CATEGORY_IDS.GDPR,
     screen: SCREENS_IDS.ReFishingGDPR,
     type: TYPES_IDS.Tap
   };
   public static GDPR_ACCEPT_TAP_SECOND_MODAL: TrackingEventBase = {
-    name: '713',
+    name: '712',
     category: CATEGORY_IDS.GDPR,
     screen: SCREENS_IDS.ReFishingGDPR,
     type: TYPES_IDS.Tap
