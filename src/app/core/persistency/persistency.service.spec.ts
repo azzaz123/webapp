@@ -271,7 +271,9 @@ describe('Service: Persistency', () => {
   describe('findMessage', () => {
     it('should return the message if found in the database', () => {
       spyOn(service.messagesDb, 'get');
+
       service.findMessage('someId');
+
       expect(service.messagesDb.get).toHaveBeenCalledWith('someId');
     });
   });
