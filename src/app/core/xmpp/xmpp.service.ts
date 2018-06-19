@@ -389,12 +389,12 @@ export class XmppService {
       message.status = messageStatus.RECEIVED;
       this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
     }
-    if (message.sentReceipt) {
+    if (!message.carbon && message.sentReceipt) {
       message.status = messageStatus.SENT;
       messageId = message.sentReceipt.id;
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
-    if (message.readReceipt) {
+    if (!message.carbon && message.readReceipt) {
       message.status = messageStatus.READ;
       this.eventService.emit(EventService.MESSAGE_READ, message.thread);
     } else {
