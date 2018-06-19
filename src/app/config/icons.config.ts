@@ -241,4 +241,8 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('category_RealEstate-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/realstate.svg'));
   matIconRegistry.addSvgIcon('category_Services-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/services.svg'));
   matIconRegistry.addSvgIcon('category_Others-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/others.svg'));
+  matIconRegistry.addSvgIcon('faq-Destacados-1', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-Destacados-1.svg'));
+  matIconRegistry.addSvgIcon('faq-Destacados-4', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-Destacados-4.svg'));
+  matIconRegistry.addSvgIcon('faq-Perfil-5', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-Perfil-5.svg'));
+
 }

@@ -10,15 +10,15 @@ export class HelpComponent {
 
   public features = [{
     title: 'Como destaco un coche',
-    desc: '',
+    desc: 'Todos los pasos para destacar tus vehiculos',
     link: 'Destacados-1'
   }, {
     title: 'Como puedo comprar extras',
-    desc: '',
+    desc: 'Paso a paso para comprar destacados extras',
     link: 'Destacados-4'
   }, {
     title: 'Tu Plan de visibilidad',
-    desc: '',
+    desc: 'Te explicamos cómo funciona tu plan',
     link: 'Perfil-5'
   }];
 

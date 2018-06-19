@@ -33,6 +33,10 @@ h3 {
 
 .features {
   margin-bottom: 50px;
+  mat-icon {
+    width: 60px;
+    height: 40px;
+  }
   .col {
     display:flex;
   }
@@ -41,11 +45,12 @@ h3 {
     display: block;
     border-radius: 5px;
     text-align: center;
-    padding: 36px $spacing-S;
+    padding: $spacing-L $spacing-S $spacing-S;
     font-size: $font-size-S;
     .title {
       font-weight: bold;
       margin-bottom: $spacing-XS;
+      padding: 0 $spacing-S;
     }
     .desc {
       color: $grey-250;
