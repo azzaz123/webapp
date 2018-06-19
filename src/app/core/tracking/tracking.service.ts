@@ -32,7 +32,8 @@ const CATEGORY_IDS: any = {
   Reactivate: '60',
   BottomBar: '78',
   Link: '122',
-  Bump: '123'
+  Bump: '123',
+  GDPR: '119'
 };
 
 const SCREENS_IDS: any = {
@@ -53,7 +54,9 @@ const SCREENS_IDS: any = {
   Messages: '117',
   ProPhoneManager: '94',
   MyZonePro: '158',
-  Chat: '27'
+  Chat: '27',
+  GDPR: '155',
+  ReFishingGDPR: '159'
 };
 
 const TYPES_IDS: any = {
