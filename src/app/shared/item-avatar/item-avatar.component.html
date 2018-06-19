@@ -2,12 +2,17 @@
   tslsanitizedBackground="{{avatar}}"
   [fallback]="fallback"
   [ngClass]="size">
-  <span class="overlay" *ngIf="item?.sold || item?.reserved || item?.purchases"></span>
+  <span class="overlay" *ngIf="item?.featured || item?.sold || item?.reserved || item?.purchases"></span>
   <span class="sold" *ngIf="item?.sold">
     <mat-icon svgIcon="sold"></mat-icon>
   </span>
   <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured">
     <mat-icon svgIcon="reserved"></mat-icon>
+  </span>
+  <span class="featured"
+        *ngIf="item?.featured && !item?.purchases && !item?.urgent && !item?.sold && !item.flags.onhold"
+        [ngClass]="item?.flags?.bump_type">
+    <mat-icon svgIcon="wing"></mat-icon>
   </span>
   <span class="featured" [class.planned]="item.purchases.scheduled_bump_type && !item.plannedStartsToday"
         *ngIf="item?.purchases && !item?.urgent && !item?.sold && !item.flags.onhold"
