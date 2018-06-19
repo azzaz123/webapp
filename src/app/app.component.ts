@@ -74,7 +74,6 @@ export class AppComponent implements OnInit {
               private modalService: NgbModal,
               private connectionService: ConnectionService,
               private callService: CallsService) {
-    this.initPrivacy();
     this.config();
   }
 
