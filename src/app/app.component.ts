@@ -94,6 +94,7 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
+    this.initPrivacy();
     this.conversationService.firstLoad = true;
   }
 
