@@ -93,7 +93,6 @@ export class AppComponent implements OnInit {
     appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
     appboy.display.automaticallyShowNewInAppMessages();
     appboy.registerAppboyPushMessages();
-    this.initPrivacy();
     this.conversationService.firstLoad = true;
   }
 
@@ -154,6 +153,7 @@ export class AppComponent implements OnInit {
           });
           appboy.changeUser(user.id);
           appboy.openSession();
+          this.initPrivacy();
           if (!this.cookieService.get('app_session_id')) {
             this.trackAppOpen();
             this.updateSessionCookie();

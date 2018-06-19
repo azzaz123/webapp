@@ -350,6 +350,7 @@ describe('App', () => {
         spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
 
         component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(privacyService.getPrivacyList).toHaveBeenCalled();
       });
@@ -358,7 +359,9 @@ describe('App', () => {
         spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
         spyOn(modalService, 'open');
         sessionStorage.removeItem('isGDPRShown');
+
         component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent, {beforeDismiss: jasmine.any(Function)});
       });
@@ -367,7 +370,9 @@ describe('App', () => {
         spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
         spyOn(modalService, 'open');
         sessionStorage.removeItem('isGDPRShown');
+
         component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent, {beforeDismiss: jasmine.any(Function)});
       });
@@ -377,6 +382,7 @@ describe('App', () => {
         spyOn(modalService, 'open');
 
         component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(modalService.open).not.toHaveBeenCalledWith();
       });
@@ -385,7 +391,9 @@ describe('App', () => {
         spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
         spyOn(modalService, 'open');
         sessionStorage.removeItem('isGDPRShown');
+
         component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(modalService.open).not.toHaveBeenCalledWith();
       });
