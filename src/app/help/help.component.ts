@@ -126,6 +126,7 @@ export class HelpComponent {
   };
 
   public active: string;
+  public showScrollTop: boolean;
 
   constructor(@Inject(LOCALE_ID) private locale: string,
               private router: Router) {
@@ -143,4 +144,19 @@ export class HelpComponent {
     });
   }
 
+  public scrollTop() {
+    const element = document.querySelector('#header');
+    if (element) {
+      this.active = '';
+      element.scrollIntoView({block: 'start', inline: 'nearest', behavior: 'smooth'});
+    }
+  }
+
+  public onPageScroll($event: Event) {
+    if((<HTMLElement>$event.target).scrollTop >= 350) {
+      this.showScrollTop = true;
+    } else {
+      this.showScrollTop = false;
+    }
+  }
 }

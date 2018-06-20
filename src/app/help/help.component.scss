@@ -110,3 +110,25 @@ h3 {
 .page-content {
   padding-bottom: 65px;
 }
+
+.arrow-scroll-top {
+  @include square(34px);
+  background-color: $corporate;
+  position: fixed;
+  bottom: 50px;
+  right: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  mat-icon {
+    width: 17px;
+    height: 12px;
+    transform: rotate(-90deg);
+    margin-left: -10px;
+    /deep/ path {
+      fill: $white;
+    }
+  }
+}

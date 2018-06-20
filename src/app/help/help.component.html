@@ -1,6 +1,6 @@
-<div class="page-content">
+<div class="page-content" (scroll)="onPageScroll($event)">
   <div class="container">
-    <tsl-header>
+    <tsl-header id="header">
       <div class="col-12">
         <div class="header-row">
           <h1 class="header-title" i18n>Your help center</h1>
@@ -71,3 +71,5 @@
     </div>
   </div>
 </div>
+
+<a class="arrow-scroll-top" [hidden]="!showScrollTop"><mat-icon svgIcon="arrow-right" (click)="scrollTop()"></mat-icon></a>
