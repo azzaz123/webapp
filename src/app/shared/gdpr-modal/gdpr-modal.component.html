@@ -1,0 +1,44 @@
+<div class="modal-body gdpr-modal">
+  <ng-container *ngIf="showSecondGdrpScreen; then gdprSecondScreen; else gdprFirstScreen"></ng-container>
+  <ng-template #gdprFirstScreen>
+    <div class="gdpr-first-modal">
+      <h2 i18n>
+        I accept the updated privacy policy in order to continue navigating.
+      </h2>
+      <p i18n>
+        Help us to maintain a safe community.
+      </p>
+      <div class="gdpr-modal-body-term-box" [innerHTML]="gdprText">
+      </div>
+      <tsl-checkbox [(checked)]="allowSegmentation">
+        <label i18n> I accept to recieve customized content and ads. </label>
+      </tsl-checkbox>
+      <tsl-checkbox [(checked)]="acceptPrivacy">
+        <label i18n>I accept the conditions for privacy.</label>
+      </tsl-checkbox>
+      <tsl-button
+        [disabled]="!acceptPrivacy"
+        className="btn btn-primary" i18n
+        (click)="setGRPRPermission()">
+        I accept
+      </tsl-button>
+    </div>
+  </ng-template>
+
+  <ng-template #gdprSecondScreen>
+    <div class="gdpr-second-modal">
+      <h2 i18n>
+        It seems that you don't want to you see the ads most relevant to you.
+      </h2>
+      <p i18n>
+        You will still see the ads but they won't be chosen according to your preferences.
+      </p>
+      <div class="gdpr-second-modal-image"></div>
+      <tsl-button className="btn btn-primary"
+        (click)="acceptAllowSegmentation()"
+        i18n>
+        Yes, I accept
+      </tsl-button>
+    </div>
+  </ng-template>
+</div>

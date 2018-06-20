@@ -3,22 +3,31 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
-import { Message } from '../message/message';
-import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
+import { Message, messageStatus } from '../message/message';
+import { MOCK_USER, USER_ID, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { PersistencyService } from '../persistency/persistency.service';
-import { CONVERSATION_ID, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATION_ID,
+  MOCKED_CONVERSATIONS,
+  MOCK_CONVERSATION,
+  createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
-import { XmppTimestampMessage } from './xmpp.interface';
+import { XmppTimestampMessage, XmppBodyMessage } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { MessagePayload } from '../message/messages.interface';
-import { MOCK_PAYLOAD_KO, MOCK_PAYLOAD_OK, MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
+import { MOCK_PAYLOAD_KO,
+  MOCK_PAYLOAD_OK,
+  MOCK_MESSAGE,
+  createMessagesArray,
+  createReceiptsArray } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
+import { UserService } from '../user/user.service';
 
 let mamFirstIndex = '1899';
 let mamCount = 1900;
 let queryId = 'abcdef';
+let userService: UserService;
 const LAST_MESSAGE = 'second';
 const FIRST_MESSAGE = 'first';
 const MESSAGE_ID = 'messageId';
@@ -109,11 +118,13 @@ describe('Service: Xmpp', () => {
         XmppService,
         EventService,
         {provide: TrackingService, useClass: MockTrackingService},
-        {provide: PersistencyService, useClass: MockedPersistencyService}]
+        {provide: PersistencyService, useClass: MockedPersistencyService},
+        {provide: UserService, useClass: MockedUserService}]
     });
     service = TestBed.get(XmppService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
+    userService = TestBed.get(UserService);
     spyOn(XMPP, 'createClient').and.returnValue(MOCKED_CLIENT);
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
@@ -133,7 +144,6 @@ describe('Service: Xmpp', () => {
   it('should create the instance', () => {
     expect(service).toBeTruthy();
   });
-
   it('should create the client', () => {
     service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
 
@@ -398,6 +408,7 @@ describe('Service: Xmpp', () => {
         read: {
           xmlns: 'wallapop:thread:status'
         },
+        type: 'chat',
         thread: MESSAGE_ID
       });
     });
@@ -428,23 +439,12 @@ describe('Service: Xmpp', () => {
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_READ_ACK);
     });
-
-    it('should emit the messageSentAck event when a message with body is sent', () => {
-      spyOn(eventService, 'emit').and.callThrough();
-      const msg = {
-        body: 'some content'
-      };
-
-      eventService.emit('message:sent', msg);
-
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT_ACK);
-    });
   });
 
   describe('searchHistory', () => {
 
     const THREAD = '12345';
-    const getXmlMessage: any = (id: string, ref: string, receipt?: string, payload?: MessagePayload) => {
+    const getXmlMessage: any = (id: string, ref: string, receipt?: string, read?: any, payload?: MessagePayload) => {
       const data: any = {
         xml: {
           name: 'message',
@@ -492,6 +492,19 @@ describe('Service: Xmpp', () => {
         data.xml.children[0].children[0].children[1].children.push({
           name: 'payload',
           children: [payload]
+        });
+      }
+      if (read) {
+        data.xml.children[0].children[0].children[1].children.push({
+          name: 'read',
+          attrs: {
+            xmlns: 'wallapop:thread:status'
+          },
+          parent: {
+            children: [{
+              children: [new Date()]
+            }]
+          }
         });
       }
       return data;
@@ -832,9 +845,35 @@ describe('Service: Xmpp', () => {
       expect(response.data.length).toBe(0);
     }));
 
+    it('should add the message to receivedReceipts is if it is a message with receivedId', fakeAsync(() => {
+      let response: any;
+      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID, 'Random', 'receipt');
+      service.searchHistory().subscribe((res: any) => {
+        response = res;
+      });
+
+      eventService.emit('stream:data', XML_MESSAGE);
+      tick(2000);
+
+      expect(service.receivedReceipts.length).toBe(1);
+    }));
+
+    it('should add the message to readReceipts is if it is a message with read timestamp', fakeAsync(() => {
+      let response: any;
+      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID, 'Random', false, 'read');
+      service.searchHistory().subscribe((res: any) => {
+        response = res;
+      });
+
+      eventService.emit('stream:data', XML_MESSAGE);
+      tick(2000);
+
+      expect(service.readReceipts.length).toBe(1);
+    }));
+
     it('should return the response with one message in the array if payload is in whitelist', fakeAsync(() => {
       let response: any;
-      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE, false, JSON.stringify(MOCK_PAYLOAD_OK));
+      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE, false, false, JSON.stringify(MOCK_PAYLOAD_OK));
       service.searchHistory().subscribe((res: any) => {
         response = res;
       });
@@ -855,7 +894,7 @@ describe('Service: Xmpp', () => {
 
     it('should not parse data stream if payload is NOT in whitelist', fakeAsync(() => {
       let response: any;
-      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE, false, JSON.stringify(MOCK_PAYLOAD_KO));
+      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE, false, false,  JSON.stringify(MOCK_PAYLOAD_KO));
       service.searchHistory().subscribe((res: any) => {
         response = res;
       });
@@ -866,8 +905,8 @@ describe('Service: Xmpp', () => {
       expect(response.data.length).toBe(0);
     }));
 
-
-    it('should set messages in array as read if there are their receipts', fakeAsync(() => {
+    it('should set message status to received if the received signals have been received', fakeAsync(() => {
+      spyOn<any>(service, 'messageFromSelf').and.returnValue(true);
       let response: any;
       const MESSAGE_ID2 = 'message2';
       const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
@@ -885,8 +924,8 @@ describe('Service: Xmpp', () => {
       tick(2000);
 
       expect(response.data.length).toBe(2);
-      expect(response.data[0].read).toBe(true);
-      expect(response.data[1].read).toBe(true);
+      expect(response.data[0].status).toBe(messageStatus.RECEIVED);
+      expect(response.data[1].status).toBe(messageStatus.RECEIVED);
       expect(service['confirmedMessages'].length).toBe(0);
     }));
 
@@ -905,7 +944,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('stream:data', XML_MESSAGE2);
       tick(2000);
 
-      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledTimes(1);
+      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledTimes(2);
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
         to: 'from',
         type: 'chat',
@@ -916,8 +955,6 @@ describe('Service: Xmpp', () => {
         }
       });
       expect(response.data.length).toBe(2);
-      expect(response.data[0].read).toBe(true);
-      expect(response.data[1].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(0);
     }));
 
@@ -936,9 +973,25 @@ describe('Service: Xmpp', () => {
       eventService.emit('stream:data', XML_MESSAGE2_RECEIPT);
       tick(2000);
 
-      expect(MOCKED_CLIENT.sendMessage).not.toHaveBeenCalled();
+      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
+        to: 'from',
+        type: 'chat',
+        thread: THREAD,
+        received: {
+          xmlns: 'urn:xmpp:receipts',
+          id: MESSAGE_ID2
+        }
+      });
+      expect(MOCKED_CLIENT.sendMessage).not.toHaveBeenCalledWith({
+        to: 'from',
+        type: 'chat',
+        thread: THREAD,
+        received: {
+          xmlns: 'urn:xmpp:receipts',
+          id: MESSAGE_ID
+        }
+      });
       expect(response.data.length).toBe(1);
-      expect(response.data[0].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(1);
       expect(service['confirmedMessages'][0]).toBe(MESSAGE_ID);
     }));
@@ -965,12 +1018,43 @@ describe('Service: Xmpp', () => {
       });
       eventService.emit('stream:data', XML_MESSAGE2);
       tick(2000);
-      expect(MOCKED_CLIENT.sendMessage).not.toHaveBeenCalled();
+      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledTimes(2);
       expect(response.data.length).toBe(1);
-      expect(response.data[0].read).toBe(true);
       expect(service['confirmedMessages'].length).toBe(0);
     }));
 
+  });
+
+  describe('addUnreadMessagesCounter', () => {
+    const thread = 'someThreadId';
+    let conversations = [];
+
+    beforeEach(() => {
+      spyOn<any>(service, 'xmlToMessage').and.callThrough();
+      conversations = createConversationsArray(5, false, thread);
+      conversations.forEach((c, index) => {
+        c.messages = createMessagesArray(5);
+        c.messages.forEach(receipt => {
+          receipt.thread = index + 1 + thread;
+        });
+      });
+      service.connect('1', 'abc');
+      service['unreadMessages'] = [
+        conversations[0].messages[3], conversations[0].messages[4],
+        conversations[1].messages[1],
+        conversations[2].messages[2], conversations[2].messages[4], conversations[2].messages[3]
+      ];
+    });
+
+    it('should update the counter of unreadMessages for receipts received', () => {
+      const expectedResult = service.addUnreadMessagesCounter(conversations);
+
+      expect(expectedResult[0].unreadMessages).toBe(2);
+      expect(expectedResult[1].unreadMessages).toBe(1);
+      expect(expectedResult[2].unreadMessages).toBe(3);
+      expect(expectedResult[3].unreadMessages).toBe(0);
+      expect(expectedResult[4].unreadMessages).toBe(0);
+    });
   });
 
   describe('isConnected', () => {
@@ -1048,6 +1132,30 @@ describe('Service: Xmpp', () => {
       expect(service['onNewMessage']).toHaveBeenCalledWith(message);
     });
 
+    it('should track the conversationCreateNew event', () => {
+      spyOn(trackingService, 'track');
+      const newConversation = MOCK_CONVERSATION('newId');
+
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+
+      service.sendMessage(newConversation, MESSAGE_BODY);
+      const message: any = {
+        id: queryId,
+        to: service['createJid'](USER_ID),
+        from: service['currentJid'],
+        thread: newConversation.id,
+        type: 'chat',
+        request: {xmlns: 'urn:xmpp:receipts'},
+        body: MESSAGE_BODY
+      };
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
+        { thread_id: message.thread,
+          message_id: message.id,
+          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
+          item_id: MOCKED_CONVERSATIONS[0].item.id });
+    });
+
     it('should track the MessageSent event', () => {
       spyOn(trackingService, 'track');
 
@@ -1071,29 +1179,6 @@ describe('Service: Xmpp', () => {
           item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
 
-    it('should track the MessageSentAck event', () => {
-      spyOn(trackingService, 'track');
-      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      const msg = {
-        id: queryId,
-        to: service['createJid'](USER_ID),
-        from: service['currentJid'],
-        thread: CONVERSATION_ID,
-        received: {
-          id: 'someId'
-        }
-      };
-
-      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
-      eventService.emit(EventService.MESSAGE_SENT_ACK);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT_ACK,
-        { thread_id: msg.thread,
-          message_id: msg.id,
-          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
-          item_id: MOCKED_CONVERSATIONS[0].item.id });
-    });
-
     it('should send a new message with the true updateDate parameter', () => {
       spyOn<any>(service, 'onNewMessage').and.callThrough();
 
@@ -1107,6 +1192,134 @@ describe('Service: Xmpp', () => {
   describe('buildMessage', () => {
     it('should set the date of the message using the timestamp if it exists', () => {
       expect((service as any).buildMessage(MOCKED_SERVER_TIMESTAMP_MESSAGE).date).toEqual(new Date(MOCKED_SERVER_TIMESTAMP_MESSAGE.timestamp.body));
+    });
+
+    it('should emit a messageReceived event if the message has a receipt', () => {
+      spyOn(eventService, 'emit');
+      const message: XmppBodyMessage = {
+        from: {local: 'from'},
+        body: 'bla',
+        timestamp: {body: 'timestamp'},
+        thread: 'thread',
+        to: {local: 'to'},
+        id: 'someId',
+        receipt: 'received'
+      };
+
+      const builtMessage = service['buildMessage'](message);
+
+      expect(builtMessage.status).toBe(messageStatus.RECEIVED);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_RECEIVED, message.thread, message.receipt);
+    });
+
+    it('should emit a messageSentAck event if the message has a sentReceipt', () => {
+      spyOn(eventService, 'emit');
+      const message: XmppBodyMessage = {
+        from: {local: 'from'},
+        body: 'bla',
+        timestamp: {body: 'timestamp'},
+        thread: 'thread',
+        to: {local: 'to'},
+        id: 'someId',
+        sentReceipt: {id: 'someId'}
+      };
+
+      const builtMessage = service['buildMessage'](message);
+
+      expect(builtMessage.status).toBe(messageStatus.SENT);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT_ACK, message.thread, message.sentReceipt.id);
+    });
+
+    it('should emit a messageRead event if the message has a readReceipt', () => {
+      spyOn(eventService, 'emit');
+      const message: XmppBodyMessage = {
+        from: {local: 'from'},
+        body: 'bla',
+        timestamp: {body: 'timestamp'},
+        thread: 'thread',
+        to: {local: 'to'},
+        id: 'someId',
+        readReceipt: {id: 'someId'}
+      };
+
+      const builtMessage = service['buildMessage'](message);
+
+      expect(builtMessage.status).toBe(messageStatus.READ);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_READ, message.thread);
+    });
+  });
+
+  describe('getLastReadTimestamps', () => {
+    it('should add the receipt to the ownReadTimestamps when it received a receipt for a message fromSelf', () => {
+      spyOn<any>(service, 'messageFromSelf').and.returnValue(true);
+      const message1: any = MOCK_MESSAGE;
+      const message2: any = MOCK_MESSAGE;
+      message1.readTimestamp = message1.date;
+      message1.thread = message1.conversationId;
+      message2.readTimestamp = message2.date;
+      message2.thread = message2.conversationId;
+      service.readReceipts = [message1, message2];
+
+      service.getLastReadTimestamps();
+
+      expect(service['ownReadTimestamps'][message1.thread]).toEqual({
+        thread: message1.thread,
+        timestamp: new Date(message1.readTimestamp)
+      });
+    });
+
+    it('should replace the existing receipt when a newer receipt is received for a message fromSelf', () => {
+      spyOn<any>(service, 'messageFromSelf').and.returnValue(true);
+      const messages = createReceiptsArray(2, 'someRandomThread');
+      const olderDate = new Date('2015-12-12 13:00');
+      const newerDate = new Date('2016-12-12 13:00');
+
+      messages[0].readTimestamp = olderDate;
+      messages[1].readTimestamp = newerDate;
+      service.readReceipts = [messages[0], messages[1]];
+
+      service.getLastReadTimestamps();
+
+      expect(service['ownReadTimestamps'][messages[0].thread]).toEqual({
+        thread: messages[0].thread,
+        timestamp: newerDate
+      });
+    });
+
+    it('should add the receipt to the readTimestamps when it receives a receipt for a message not fromSelf', () => {
+      spyOn<any>(service, 'messageFromSelf').and.returnValue(false);
+      const message1: any = MOCK_MESSAGE;
+      const message2: any = MOCK_MESSAGE;
+      message1.readTimestamp = message1.date;
+      message1.thread = message1.conversationId;
+      message2.readTimestamp = message2.date;
+      message2.thread = message2.conversationId;
+      service.readReceipts = [message1, message2];
+
+      service.getLastReadTimestamps();
+
+      expect(service['readTimestamps'][message1.thread]).toEqual({
+        thread: message1.thread,
+        timestamp: new Date(message1.readTimestamp)
+      });
+    });
+
+    it('should replace the existing receipt when a newer receipt is received for a message NOT fromSelf', () => {
+      spyOn<any>(service, 'messageFromSelf').and.returnValue(false);
+      const messages = createReceiptsArray(2, 'someRandomThread');
+      const olderDate = new Date('2015-12-12 13:00');
+      const newerDate = new Date('2016-12-12 13:00');
+
+      messages[0].readTimestamp = olderDate;
+      messages[1].readTimestamp = newerDate;
+      service.readReceipts = [messages[0], messages[1]];
+
+      service.getLastReadTimestamps();
+
+      expect(service['readTimestamps'][messages[0].thread]).toEqual({
+        thread: messages[0].thread,
+        timestamp: newerDate
+      });
     });
   });
 
@@ -1127,8 +1340,8 @@ describe('Service: Xmpp', () => {
   describe('blockUser', () => {
     beforeEach(() => {
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-
     });
+
     it('should add user to blocked list and call sendIq', () => {
       service['blockedUsers'] = [...JIDS];
 

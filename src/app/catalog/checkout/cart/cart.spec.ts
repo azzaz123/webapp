@@ -35,6 +35,10 @@ describe('Cart', () => {
       expect(cart.zonebump.total).toBe(+CART_ITEM_ZONEBUMP.duration.market_code);
       expect(cart.countrybump.total).toBe(+CART_ITEM_COUNTRYBUMP.duration.market_code + +CART_ITEM_COUNTRYBUMP2.duration.market_code);
       expect(cart.total).toBe(cart.citybump.total + cart.zonebump.total + cart.countrybump.total);
+      expect(cart.citybump.discountedTotal).toBe(+CART_ITEM_CITYBUMP.duration.original_market_code + +CART_ITEM_CITYBUMP2.duration.original_market_code);
+      expect(cart.zonebump.discountedTotal).toBe(+CART_ITEM_ZONEBUMP.duration.original_market_code);
+      expect(cart.countrybump.discountedTotal).toBe(+CART_ITEM_COUNTRYBUMP.duration.original_market_code + +CART_ITEM_COUNTRYBUMP2.duration.original_market_code);
+      expect(cart.discountedTotal).toBe(cart.citybump.discountedTotal + cart.zonebump.discountedTotal + cart.countrybump.discountedTotal);
     });
 
     it('should move item from city to zone', () => {

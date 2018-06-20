@@ -32,7 +32,8 @@ const CATEGORY_IDS: any = {
   Reactivate: '60',
   BottomBar: '78',
   Link: '122',
-  Bump: '123'
+  Bump: '123',
+  GDPR: '119'
 };
 
 const SCREENS_IDS: any = {
@@ -53,7 +54,9 @@ const SCREENS_IDS: any = {
   Messages: '117',
   ProPhoneManager: '94',
   MyZonePro: '158',
-  Chat: '27'
+  Chat: '27',
+  GDPR: '155',
+  ReFishingGDPR: '159'
 };
 
 const TYPES_IDS: any = {
@@ -77,7 +80,7 @@ export class TrackingService {
     screen: SCREENS_IDS.ProChat,
     type: TYPES_IDS.Tap
   };
-  public static MESSAGES_READ: TrackingEventBase = {
+  public static MESSAGE_READ: TrackingEventBase = {
     name: '441',
     category: CATEGORY_IDS.Conversations,
     screen: SCREENS_IDS.Chat,
@@ -669,6 +672,43 @@ export class TrackingService {
     name: '710',
     category: CATEGORY_IDS.Button,
     screen: SCREENS_IDS.MyZonePro,
+    type: TYPES_IDS.Tap
+  };
+
+  public static GDPR_UNDEFINED_DISPLAY_FIRST_MODAL: TrackingEventBase = {
+    name: '681',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.GDPR,
+    type: TYPES_IDS.Display
+  };
+  public static GDPR_CLOSE_TAP_FIRST_MODAL: TrackingEventBase = {
+    name: '682',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.GDPR,
+    type: TYPES_IDS.Tap
+  };
+  public static GDPR_ACCEPT_TAP_FIRST_MODAL: TrackingEventBase = {
+    name: '683',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.GDPR,
+    type: TYPES_IDS.Tap
+  };
+  public static GDPR_UNDEFINED_DISPLAY_SECOND_MODAL: TrackingEventBase = {
+    name: '711',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.ReFishingGDPR,
+    type: TYPES_IDS.Display
+  };
+  public static GDPR_CLOSE_TAP_SECOND_MODAL: TrackingEventBase = {
+    name: '713',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.ReFishingGDPR,
+    type: TYPES_IDS.Tap
+  };
+  public static GDPR_ACCEPT_TAP_SECOND_MODAL: TrackingEventBase = {
+    name: '712',
+    category: CATEGORY_IDS.GDPR,
+    screen: SCREENS_IDS.ReFishingGDPR,
     type: TYPES_IDS.Tap
   };
 

@@ -2,12 +2,13 @@
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
 $title-height: 65px;
-$total-height: 80px;
+$total-height: 55px;
+$discounted-total-height: 30px;
 $button-height: 42px;
 $button-margin: $spacing - $spacing-XS;
 $button-space: $button-height + $spacing;
 $secure-label-height: 25px;
-$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $button-space + $secure-label-height});
+$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $discounted-total-height + $button-space + $secure-label-height});
 $clear-cart-height: 38px;
 $card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
 
@@ -48,6 +49,16 @@ h1 {
   .has-financial-card & {
     height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height});
   }
+}
+
+.discounted-total {
+  text-align: right;
+  font-size: $font-size-L;
+  color: $grey-250;
+  margin-top: $spacing-M;
+  padding-right: $spacing-XS;
+  margin-bottom: -7px;
+  height: $discounted-total-height;
 }
 
 .total {
@@ -224,7 +235,7 @@ tsl-button {
   justify-content: center;
   mat-icon {
     width: 21px;
-    height: 15.5px;    
+    height: 15.5px;
   }
   span {
     font-size: $font-size-XS;

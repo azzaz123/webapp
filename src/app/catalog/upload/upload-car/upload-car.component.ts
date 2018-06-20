@@ -39,6 +39,7 @@ export class UploadCarComponent implements OnInit {
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
   public isUrgent = false;
+  public customMake = false;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -89,6 +90,8 @@ export class UploadCarComponent implements OnInit {
 
   private setItemData() {
     if (this.item) {
+      const carYear: string =  this.item.year ? this.item.year.toString() : '';
+      const carCategory: string = this.item.categoryId ? this.item.categoryId.toString() : '';
       this.uploadForm.patchValue({
         id: this.item.id,
         title: this.item.title,
@@ -96,7 +99,7 @@ export class UploadCarComponent implements OnInit {
         currency_code: this.item.currencyCode,
         storytelling: this.item.description,
         sale_conditions: this.item.saleConditions,
-        category_id: this.item.categoryId.toString(),
+        category_id: carCategory,
         num_seats: this.item.numSeats,
         body_type: this.item.bodyType,
         km: this.item.km,
@@ -104,12 +107,12 @@ export class UploadCarComponent implements OnInit {
         gearbox: this.item.gearbox,
         brand: this.item.brand,
         model: this.item.model,
-        year: this.item.year.toString(),
+        year: carYear,
         version: this.item.version
       });
       this.getModels(this.item.brand, true);
       this.getYears(this.item.model, true);
-      this.getVersions(this.item.year.toString(), true);
+      this.getVersions(carYear, true);
       this.detectFormChanges();
     }
   }
@@ -138,6 +141,9 @@ export class UploadCarComponent implements OnInit {
     this.carSuggestionsService.getBrands().subscribe((brands: IOption[]) => {
       this.brands = brands;
       this.markFieldAsPristine('brand');
+      if (this.item) {
+        this.customMake = !_.has(this.brands, {value: this.item.brand});
+      }
     });
   }
 
@@ -245,7 +251,7 @@ export class UploadCarComponent implements OnInit {
       [uploadEvent.action]: true,
       itemId: uploadEvent.response.id
     };
-    if (this.item.flags.onhold) {
+    if (this.item && this.item.flags.onhold) {
       params.onHold = true;
     }
     this.router.navigate(['/catalog/list', params]);
@@ -312,6 +318,22 @@ export class UploadCarComponent implements OnInit {
 
   public emitLocation(): void {
     this.locationSelected.emit(100);
+  }
+
+  public toggleCustomMakeSelection() {
+    if (!this.customMake) {
+      this.customMake = true;
+      this.uploadForm.get('brand').patchValue('');
+      this.toggleField('model', 'enable');
+      this.toggleField('year', 'enable');
+      this.toggleField('version', 'enable');
+    } else {
+      this.customMake = false;
+      this.uploadForm.get('brand').patchValue('');
+      this.toggleField('model', 'disable');
+      this.toggleField('year', 'disable');
+      this.toggleField('version', 'disable');
+    }
   }
 
 }
