@@ -38,7 +38,7 @@
                 <h2 [id]="faq.category">{{faq.category}}</h2>
                 <ul>
                   <li *ngFor="let question of faq.questions; let index = index">
-                    <h3 [id]="faq.category + '-' + (index + 1)">{{question.title}}</h3>
+                    <h3 [id]="faq.category + '-' + (index + 1)" [class.active]="faq.category + '-' + (index + 1) === active ">{{question.title}}</h3>
                     <p class="answer">{{question.text}}</p>
                   </li>
                 </ul>
@@ -51,17 +51,18 @@
         <div class="box">
           <div class="box-content contacts">
             <h2 i18n>Contact details</h2>
-            <p i18n class="grey">Little text about how we are here to help you with anything!</p>
+            <p i18n class="grey">Here you can find the details to contact our sales and support department</p>
             <p>
               <span i18n>To manage your suscription:</span><br />
               <a href="mailto:ventasmotor@wallapop.com">ventasmotor@wallapop.com</a>
             </p>
             <p>
-              <span i18n>For any question:</span><br />
+              <span i18n>For any support:</span><br />
               <a href="mailto:soportemotor@wallapop.com">soportemotor@wallapop.com</a>
             </p>
             <p>
-              <span i18n>Mon to Fri 10:00 to 18:00</span><br />
+              <span i18n>Mon to Thurs from 10:00 to 18:00</span><br />
+              <span i18n>Fri from 09:00 to 15:00</span><br />
               <span class="phone">666 888 999</span>
             </p>
           </div>

@@ -125,6 +125,8 @@ export class HelpComponent {
     }]
   };
 
+  public active: string;
+
   constructor(@Inject(LOCALE_ID) private locale: string,
               private router: Router) {
     router.events.subscribe(s => {
@@ -133,7 +135,8 @@ export class HelpComponent {
         if (tree.fragment) {
           const element = document.querySelector('#' + tree.fragment);
           if (element) {
-            element.scrollIntoView(true);
+            this.active = tree.fragment;
+            element.scrollIntoView({block: 'start', inline: 'nearest', behavior: 'smooth'});
           }
         }
       }

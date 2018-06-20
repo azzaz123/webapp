@@ -79,6 +79,9 @@ h3 {
   }
   h3 {
     margin-bottom: $spacing-M;
+    &.active {
+      color: $corporate;
+    }
   }
   .answer {
     color: $grey-250;

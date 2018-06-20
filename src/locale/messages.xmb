@@ -555,8 +555,9 @@
   <msg id="6806883447514569994"><source>app/help/help.component.ts:6</source>Your help center</msg>
   <msg id="7002268576514991178"><source>app/help/help.component.ts:9</source>We hope that you can find here the answers for all your questions</msg>
   <msg id="606929755258304715"><source>app/help/help.component.ts:53</source>Contact details</msg>
-  <msg id="6973742476031476639"><source>app/help/help.component.ts:54</source>Little text about how we are here to help you with anything!</msg>
+  <msg id="8232450894993705823"><source>app/help/help.component.ts:54</source>Here you can find the details to contact our sales and support department</msg>
   <msg id="4907869765185411377"><source>app/help/help.component.ts:56</source>To manage your suscription:</msg>
-  <msg id="3157935134834586265"><source>app/help/help.component.ts:60</source>For any question:</msg>
-  <msg id="5539790500305687232"><source>app/help/help.component.ts:64</source>Mon to Fri 10:00 to 18:00</msg>
+  <msg id="5871405940994162095"><source>app/help/help.component.ts:60</source>For any support:</msg>
+  <msg id="4039809737462883261"><source>app/help/help.component.ts:64</source>Mon to Thurs from 10:00 to 18:00</msg>
+  <msg id="4911360466860911169"><source>app/help/help.component.ts:65</source>Fri from 09:00 to 15:00</msg>
 </messagebundle>
