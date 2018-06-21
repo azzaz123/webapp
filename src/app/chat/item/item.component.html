@@ -21,12 +21,21 @@
   </div>
   <div class="card-block">
     <h5 class="card-title">{{item.title}}</h5>
-    <div class="float-left price" *ngIf="item.salePrice !== undefined">{{item.salePrice | customCurrency:item.currencyCode}}</div>
-    <div class="float-right stats" *ngIf="item.views !== undefined && item.favorites !== undefined">
-      <mat-icon svgIcon="views"></mat-icon>
-      {{item.views}}
-      <mat-icon svgIcon="heart"></mat-icon>
-      {{item.favorites}}
+    <div class="card-item-info">
+      <div class="price" *ngIf="item.salePrice !== undefined">{{item.salePrice | customCurrency:item.currencyCode}}</div>
+      <div class="stats" *ngIf="item.views !== undefined && item.favorites !== undefined">
+        <mat-icon svgIcon="views"></mat-icon>
+        {{item.views}}
+        <mat-icon svgIcon="heart"></mat-icon>
+        {{item.favorites}}
+      </div>
+    </div>
+    <div class="card-external-link" *ngIf="item.categoryId === 100">
+      <hr>
+      <a href="https://www.carfax.es/informe?make={{item.brand}}&model={{item.model}}&pic={{item.mainImage?.urls_by_size.large.replace('http://', 'https://')}}#utm_medium=web_cars_chat&utm_medium=website&utm_source=wallapop.com"
+         target="_blank">
+        Check its full history
+      </a>
     </div>
   </div>
 </a>
