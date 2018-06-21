@@ -127,24 +127,24 @@
     <div class="row" [ngbPopover]="coachmarkMotor" triggers="mouseenter:mouseleave">
       <div class="col-sm-6 selector-container">
         <h3 i18n>Motor</h3>
-        <div ngbRadioGroup name="radioBasic" formControlName="engine">
+        <div ngbRadioGroup name="radioBasic" formControlName="engine" tabindex="11">
           <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" value="gasoline">
+            <input ngbButton type="radio" name="engine" value="gasoline">
             <mat-icon svgIcon="gasoline"></mat-icon>
             <span i18n>Petrol</span>
           </label>
           <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" value="gasoil">
+            <input ngbButton type="radio" name="engine" value="gasoil">
             <mat-icon svgIcon="gasoil"></mat-icon>
             <span i18n>Diesel</span>
           </label>
           <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" value="electric-hybrid">
+            <input ngbButton type="radio" name="engine" value="electric-hybrid">
             <mat-icon svgIcon="electric-hybrid"></mat-icon>
             <span i18n>Electric</span>
           </label>
           <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" value="others">
+            <input ngbButton type="radio" name="engine" value="others">
             <mat-icon svgIcon="others"></mat-icon>
             <span i18n>Other...</span>
           </label>
@@ -156,14 +156,14 @@
       </div>
       <div class="col-sm-6 selector-container">
         <h3 i18n>Transmission</h3>
-        <div ngbRadioGroup name="radioBasic" formControlName="gearbox">
+        <div ngbRadioGroup name="radioBasic" formControlName="gearbox" tabindex="12">
           <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" value="manual">
+            <input ngbButton type="radio" name="gearbox" value="manual">
             <mat-icon svgIcon="manual"></mat-icon>
             <span i18n>Manual</span>
           </label>
           <label ngbButtonLabel class="btn selector">
-            <input ngbButton type="radio" value="automatic">
+            <input ngbButton type="radio" name="gearbox" value="automatic">
             <mat-icon svgIcon="automatic"></mat-icon>
             <span i18n>Automatic</span>
           </label>

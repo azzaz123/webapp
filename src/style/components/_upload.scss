@@ -60,7 +60,9 @@
           box-shadow: none;
         }
         [ngbButton] {
-          display: none;
+          position: absolute;
+          clip: rect(0, 0, 0, 0);
+          pointer-events: none;
         }
       }
       span {
@@ -98,7 +100,7 @@
           }
         }
       }
-      &:hover:not(.active) {
+      &:hover:not(.active), &:focus-within:not(.active) {
         cursor: pointer;
         span {
           color: $grey-700;
