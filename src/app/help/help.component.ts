@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { HelpService } from './help.service';
 import { I18nService } from '../core/i18n/i18n.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'tsl-help',
@@ -17,12 +18,13 @@ export class HelpComponent implements OnInit {
 
   constructor(private i18n: I18nService,
               private helpService: HelpService,
-              private router: Router) {
+              private router: Router,
+              @Inject(DOCUMENT) private document: Document) {
     router.events.subscribe(s => {
       if (s instanceof NavigationEnd) {
         const tree = router.parseUrl(router.url);
         if (tree.fragment) {
-          const element = document.querySelector('#' + tree.fragment);
+          const element = this.document.querySelector('#' + tree.fragment);
           if (element) {
             this.active = tree.fragment;
             element.scrollIntoView({block: 'start', inline: 'nearest', behavior: 'smooth'});
@@ -42,7 +44,7 @@ export class HelpComponent implements OnInit {
   }
 
   public scrollTop() {
-    const element = document.querySelector('#header');
+    const element = this.document.querySelector('#header');
     if (element) {
       this.active = '';
       element.scrollIntoView({block: 'start', inline: 'nearest', behavior: 'smooth'});
