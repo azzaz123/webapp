@@ -109,6 +109,7 @@ const JIDS = ['1@wallapop.com', '2@wallapop.com', '3@wallapop.com'];
 let service: XmppService;
 let eventService: EventService;
 let trackingService: TrackingService;
+let persistencyService: PersistencyService;
 let sendIqSpy: jasmine.Spy;
 
 describe('Service: Xmpp', () => {
@@ -125,6 +126,7 @@ describe('Service: Xmpp', () => {
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
     userService = TestBed.get(UserService);
+    persistencyService = TestBed.get(PersistencyService);
     spyOn(XMPP, 'createClient').and.returnValue(MOCKED_CLIENT);
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
@@ -509,6 +511,25 @@ describe('Service: Xmpp', () => {
       }
       return data;
     };
+    const MESSAGE_ID2 = 'message2';
+    const MOCKED_MESSAGE_ID1 = {
+      to: 'from',
+      type: 'chat',
+      thread: THREAD,
+      received: {
+        xmlns: 'urn:xmpp:receipts',
+        id: MESSAGE_ID
+      }
+    };
+    const MOCKED_MESSAGE_ID2 = {
+      to: 'from',
+      type: 'chat',
+      thread: THREAD,
+      received: {
+        xmlns: 'urn:xmpp:receipts',
+        id: MESSAGE_ID2
+      }
+    };
 
     beforeEach(() => {
       service.connect('1', 'abc');
@@ -661,7 +682,6 @@ describe('Service: Xmpp', () => {
 
     it('should return the response with two messages in the array', fakeAsync(() => {
       let response: any;
-      const MESSAGE_ID2 = 'message2';
       const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
       const XML_MESSAGE2: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
       service.searchHistory().subscribe((res: any) => {
@@ -908,7 +928,6 @@ describe('Service: Xmpp', () => {
     it('should set message status to received if the received signals have been received', fakeAsync(() => {
       spyOn<any>(service, 'messageFromSelf').and.returnValue(true);
       let response: any;
-      const MESSAGE_ID2 = 'message2';
       const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
       const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
       const XML_MESSAGE2: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
@@ -929,98 +948,93 @@ describe('Service: Xmpp', () => {
       expect(service['confirmedMessages'].length).toBe(0);
     }));
 
-    it('should send received confirmation for messages without receipt', fakeAsync(() => {
+    describe('when messages do not already exist in the locaDb', () => {
+      beforeEach(() => {
+        spyOn<any>(persistencyService, 'findMessage').and.returnValue(Observable.throw({reason: 'missing'}));
+      });
+
+      it('should send received confirmation for messages without receipt', fakeAsync(() => {
+        let response: any;
+        const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
+        const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
+        const XML_MESSAGE2: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
+        service.searchHistory().subscribe((res: any) => {
+          response = res;
+        });
+
+        eventService.emit('stream:data', XML_MESSAGE);
+        eventService.emit('stream:data', XML_MESSAGE_RECEIPT);
+        eventService.emit('stream:data', XML_MESSAGE2);
+        tick(2000);
+
+        expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledTimes(2);
+        expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(MOCKED_MESSAGE_ID1);
+        expect(response.data.length).toBe(2);
+        expect(service['confirmedMessages'].length).toBe(0);
+      }));
+
+      it('should keep the not matched receipts in an array for further use', fakeAsync(() => {
+        let response: any;
+        const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
+        const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
+        const XML_MESSAGE2_RECEIPT: any = getXmlMessage('receipt_id2', LAST_MESSAGE, MESSAGE_ID);
+        service.searchHistory().subscribe((res: any) => {
+          response = res;
+        });
+
+        eventService.emit('stream:data', XML_MESSAGE);
+        eventService.emit('stream:data', XML_MESSAGE_RECEIPT);
+        eventService.emit('stream:data', XML_MESSAGE2_RECEIPT);
+        tick(2000);
+
+        expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(MOCKED_MESSAGE_ID2);
+        expect(MOCKED_CLIENT.sendMessage).not.toHaveBeenCalledWith(MOCKED_MESSAGE_ID1);
+        expect(response.data.length).toBe(1);
+        expect(service['confirmedMessages'].length).toBe(1);
+        expect(service['confirmedMessages'][0]).toBe(MESSAGE_ID);
+      }));
+
+      it('should match the receipt even if it is in another batch', fakeAsync(() => {
+        let response: any;
+        const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
+        const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
+        const XML_MESSAGE2_RECEIPT: any = getXmlMessage('receipt_id2', LAST_MESSAGE, MESSAGE_ID);
+        service.searchHistory().subscribe();
+
+        eventService.emit('stream:data', XML_MESSAGE);
+        eventService.emit('stream:data', XML_MESSAGE_RECEIPT);
+        eventService.emit('stream:data', XML_MESSAGE2_RECEIPT);
+        tick();
+
+        expect(service['confirmedMessages'].length).toBe(1);
+        expect(service['confirmedMessages'][0]).toBe(MESSAGE_ID);
+        queryId = 'newqi';
+        const XML_MESSAGE2: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
+        service.searchHistory().subscribe((res: any) => {
+          response = res;
+        });
+
+        eventService.emit('stream:data', XML_MESSAGE2);
+        tick(2000);
+
+        expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledTimes(2);
+        expect(response.data.length).toBe(1);
+        expect(service['confirmedMessages'].length).toBe(0);
+      }));
+    });
+
+    it('should NOT send received confirmation for messages that already exists in the localDb', fakeAsync(() => {
+      spyOn<any>(persistencyService, 'findMessage').and.returnValue(Observable.of({notAnError: 'true'}));
       let response: any;
-      const MESSAGE_ID2 = 'message2';
       const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
-      const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
-      const XML_MESSAGE2: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
       service.searchHistory().subscribe((res: any) => {
         response = res;
       });
 
       eventService.emit('stream:data', XML_MESSAGE);
-      eventService.emit('stream:data', XML_MESSAGE_RECEIPT);
-      eventService.emit('stream:data', XML_MESSAGE2);
       tick(2000);
 
-      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledTimes(2);
-      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
-        to: 'from',
-        type: 'chat',
-        thread: THREAD,
-        received: {
-          xmlns: 'urn:xmpp:receipts',
-          id: MESSAGE_ID
-        }
-      });
-      expect(response.data.length).toBe(2);
-      expect(service['confirmedMessages'].length).toBe(0);
-    }));
-
-    it('should keep the not matched receipts in an array for further use', fakeAsync(() => {
-      let response: any;
-      const MESSAGE_ID2 = 'message2';
-      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
-      const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
-      const XML_MESSAGE2_RECEIPT: any = getXmlMessage('receipt_id2', LAST_MESSAGE, MESSAGE_ID);
-      service.searchHistory().subscribe((res: any) => {
-        response = res;
-      });
-
-      eventService.emit('stream:data', XML_MESSAGE);
-      eventService.emit('stream:data', XML_MESSAGE_RECEIPT);
-      eventService.emit('stream:data', XML_MESSAGE2_RECEIPT);
-      tick(2000);
-
-      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
-        to: 'from',
-        type: 'chat',
-        thread: THREAD,
-        received: {
-          xmlns: 'urn:xmpp:receipts',
-          id: MESSAGE_ID2
-        }
-      });
-      expect(MOCKED_CLIENT.sendMessage).not.toHaveBeenCalledWith({
-        to: 'from',
-        type: 'chat',
-        thread: THREAD,
-        received: {
-          xmlns: 'urn:xmpp:receipts',
-          id: MESSAGE_ID
-        }
-      });
-      expect(response.data.length).toBe(1);
-      expect(service['confirmedMessages'].length).toBe(1);
-      expect(service['confirmedMessages'][0]).toBe(MESSAGE_ID);
-    }));
-
-    it('should match the receipt even if it is in another batch', fakeAsync(() => {
-      let response: any;
-      const MESSAGE_ID2 = 'message2';
-      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
-      const XML_MESSAGE_RECEIPT: any = getXmlMessage('receipt_id', 'random', MESSAGE_ID2);
-      const XML_MESSAGE2_RECEIPT: any = getXmlMessage('receipt_id2', LAST_MESSAGE, MESSAGE_ID);
-      service.searchHistory().subscribe();
-
-      eventService.emit('stream:data', XML_MESSAGE);
-      eventService.emit('stream:data', XML_MESSAGE_RECEIPT);
-      eventService.emit('stream:data', XML_MESSAGE2_RECEIPT);
-      tick();
-
-      expect(service['confirmedMessages'].length).toBe(1);
-      expect(service['confirmedMessages'][0]).toBe(MESSAGE_ID);
-      queryId = 'newqi';
-      const XML_MESSAGE2: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
-      service.searchHistory().subscribe((res: any) => {
-        response = res;
-      });
-      eventService.emit('stream:data', XML_MESSAGE2);
-      tick(2000);
-      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledTimes(2);
-      expect(response.data.length).toBe(1);
-      expect(service['confirmedMessages'].length).toBe(0);
+      expect(MOCKED_CLIENT.sendMessage).not.toHaveBeenCalled();
     }));
 
   });
@@ -1228,6 +1242,7 @@ describe('Service: Xmpp', () => {
 
       expect(builtMessage.status).toBe(messageStatus.SENT);
       expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT_ACK, message.thread, message.sentReceipt.id);
+      expect(eventService.emit).toHaveBeenCalledTimes(1);
     });
 
     it('should emit a messageRead event if the message has a readReceipt', () => {
@@ -1246,6 +1261,7 @@ describe('Service: Xmpp', () => {
 
       expect(builtMessage.status).toBe(messageStatus.READ);
       expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_READ, message.thread);
+      expect(eventService.emit).toHaveBeenCalledTimes(1);
     });
   });
 

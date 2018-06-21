@@ -169,7 +169,7 @@ export class XmppService {
               messages.push(builtMessage);
               if (this.messageFromSelf(builtMessage) && builtMessage.status === null) {
                 builtMessage.status = messageStatus.SENT;
-            }
+              }
             }
           }
           if (message.receivedId) {
@@ -234,7 +234,7 @@ export class XmppService {
       const index: number = this.confirmedMessages.indexOf(message.id);
       if (index !== -1) {
         if (this.messageFromSelf(message)) {
-        message.status = messageStatus.RECEIVED;
+          message.status = messageStatus.RECEIVED;
         }
         this.confirmedMessages.splice(index, 1);
       }
@@ -287,10 +287,16 @@ export class XmppService {
   }
 
   public addUnreadMessagesCounter(conversations) {
-    this.unreadMessages.forEach(receipt => {
-      const convWithUnread = conversations.find(c => c.id === receipt.thread);
-      convWithUnread.unreadMessages = convWithUnread.unreadMessages ? ++convWithUnread.unreadMessages : 1;
-    });
+    if (this.unreadMessages) {
+      for (let index = this.unreadMessages.length - 1; index >= 0; --index) {
+        const convWithUnread = conversations.find((c) => c.id === this.unreadMessages[index].thread);
+        if (convWithUnread) {
+          const i = _.findIndex(conversations, convWithUnread);
+          conversations[i].unreadMessages = conversations[i].unreadMessages ? ++conversations[i].unreadMessages : 1;
+          this.unreadMessages.splice(index, 1);
+        }
+      }
+    }
     return conversations;
   }
 
@@ -360,7 +366,7 @@ export class XmppService {
       );
       const replaceTimestamp = !message.timestamp || message.carbonSent;
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp);
-      if (message.from !== this.currentJid && message.requestReceipt) {
+      if (message.from !== this.currentJid && message.requestReceipt && !message.carbon) {
         this.sendMessageDeliveryReceipt(message.from, message.id, message.thread);
       }
     }
@@ -383,12 +389,12 @@ export class XmppService {
       message.status = messageStatus.RECEIVED;
       this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
     }
-    if (message.sentReceipt) {
+    if (!message.carbon && message.sentReceipt) {
       message.status = messageStatus.SENT;
       messageId = message.sentReceipt.id;
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
-    if (message.readReceipt) {
+    if (!message.carbon && message.readReceipt) {
       message.status = messageStatus.READ;
       this.eventService.emit(EventService.MESSAGE_READ, message.thread);
     } else {
@@ -399,13 +405,17 @@ export class XmppService {
   }
 
   private sendMessageDeliveryReceipt(to: any, id: string, thread: string) {
-    this.client.sendMessage({
-      to: to,
-      type: 'chat',
-      thread: thread,
-      received: {
-        xmlns: 'urn:xmpp:receipts',
-        id: id
+    this.persistencyService.findMessage(id).subscribe(() => {}, (error) => {
+      if (error.reason === 'missing') {
+        this.client.sendMessage({
+          to: to,
+          type: 'chat',
+          thread: thread,
+          received: {
+            xmlns: 'urn:xmpp:receipts',
+            id: id
+          }
+        });
       }
     });
   }

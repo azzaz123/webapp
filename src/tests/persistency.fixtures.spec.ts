@@ -1,5 +1,6 @@
 import { MESSAGE_MAIN } from './message.fixtures.spec';
 import { Message } from '../app/core/message/message';
+import { Observable } from 'rxjs/Observable';
 
 export const MOCK_DB_FILTERED_RESPONSE: any = [
   {
@@ -108,6 +109,10 @@ export class MockedPersistencyService {
   }
 
   public updateMessageStatus(messageId: string, newStatus: string) {
+  }
+
+  public findMessage(messageId: string) {
+    return Observable.of({});
   }
 }
 
