@@ -59,13 +59,13 @@
     </div>
     <div class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
-        <button class="btn-sold" [hidden]="item.sold" tslItemSold (callback)="setSold(item)" [item]="item" *ngIf="!item.flags.onhold">
+        <button ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top" class="btn-sold" [hidden]="item.sold" tslItemSold (callback)="setSold(item)" [item]="item" *ngIf="!item.flags.onhold">
           <mat-icon svgIcon="btn-sold"></mat-icon>
         </button>
-        <button class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.onhold">
+        <button ngbTooltip="Mark as reserved" i18n-ngbTooltip placement="top" class="btn-reserve" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold && !item.flags.onhold">
           <mat-icon svgIcon="btn-reserved"></mat-icon>
         </button>
-        <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_PRO_EDIT_CARD"
+        <button ngbTooltip="Edit" i18n-ngbTooltip placement="top" class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_PRO_EDIT_CARD"
                 [params]="{category: item.categoryId}" *ngIf="!item.sold">
           <mat-icon svgIcon="btn-edit"></mat-icon>
         </button>

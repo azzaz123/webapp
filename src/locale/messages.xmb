@@ -376,6 +376,9 @@
         </msg>
   <msg id="428164738594731840"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:42,43</source>
           Cancel</msg>
+  <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:62</source>Mark as sold</msg>
+  <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:65</source>Mark as reserved</msg>
+  <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:68</source>Edit</msg>
   <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:83</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:84</source>Do you really want to cancel the autorenew for this item?</msg>
   <msg id="2807800733729323332"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:88</source>Yes</msg>
