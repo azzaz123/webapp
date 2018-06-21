@@ -24,7 +24,7 @@
               </div>
             </div>
             <ul class="summary">
-              <li class="section" *ngFor="let faq of faqs['es']">
+              <li class="section" *ngFor="let faq of faqs">
                 <h3><a [routerLink]="[]" [fragment]="faq.category">{{faq.category}}</a></h3>
                 <ul>
                   <li class="question" *ngFor="let question of faq.questions; let index = index">
@@ -34,7 +34,7 @@
               </li>
             </ul>
             <ul class="faqs">
-              <li class="section" *ngFor="let faq of faqs['es']">
+              <li class="section" *ngFor="let faq of faqs">
                 <h2 [id]="faq.category">{{faq.category}}</h2>
                 <ul>
                   <li *ngFor="let question of faq.questions; let index = index">
