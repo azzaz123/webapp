@@ -716,13 +716,13 @@ export class TrackingService {
     name: '751',
     category: CATEGORY_IDS.Carfax,
     screen: SCREENS_IDS.Chat,
-    type: TYPES_IDS.Tap
+    type: TYPES_IDS.Display
   };
   public static CARFAX_CHAT_TAP = {
     name: '752',
     category: CATEGORY_IDS.Carfax,
     screen: SCREENS_IDS.Chat,
-    type: TYPES_IDS.Display
+    type: TYPES_IDS.Tap
   };
 
 
