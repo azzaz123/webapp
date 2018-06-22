@@ -160,6 +160,8 @@ export class PaymentService {
             packsResponse.countryBump.push(formattedPack);
           } else if (products[benefitsId].name === 'BUMP') {
             packsResponse.cityBump.push(formattedPack);
+          } else if (products[benefitsId].name === 'LISTINGS') {
+            packsResponse.listings.push(formattedPack);
           }
         });
         return packsResponse;
