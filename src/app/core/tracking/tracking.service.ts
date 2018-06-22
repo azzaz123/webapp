@@ -712,17 +712,17 @@ export class TrackingService {
     screen: SCREENS_IDS.ReFishingGDPR,
     type: TYPES_IDS.Tap
   };
-  public static CARFAX_CHAT_TAP = {
-    name: '749',
-    category: CATEGORY_IDS.Carfax,
-    screen: SCREENS_IDS.Chat,
-    type: TYPES_IDS.Display
-  };
   public static CARFAX_CHAT_DISPLAY = {
-    name: '750',
+    name: '751',
     category: CATEGORY_IDS.Carfax,
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Tap
+  };
+  public static CARFAX_CHAT_TAP = {
+    name: '752',
+    category: CATEGORY_IDS.Carfax,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Display
   };
 
 
