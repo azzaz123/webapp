@@ -7,7 +7,7 @@ import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency
 import { ItemService } from '../../core/item/item.service';
 import {
   ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, ITEM_WEB_SLUG,
-  MOCK_ITEM
+  MOCK_ITEM, MOCK_ITEM_CAR
 } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
@@ -69,6 +69,23 @@ describe('Component: Item', () => {
       component.ngOnInit();
 
       expect(userService.me).toHaveBeenCalled();
+    });
+
+    it('isCarItem should be true when item categoryID is 100',  () => {
+      component.item = MOCK_ITEM_CAR;
+
+      component.ngOnInit();
+
+      expect(component.isCarItem).toBe(true);
+    });
+
+    it('should track Carfax Display when isCarItem is true',  () => {
+      spyOn(trackingService, 'track');
+      component.item = MOCK_ITEM_CAR;
+
+      component.ngOnInit();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY);
     });
   });
 
@@ -226,6 +243,16 @@ describe('Component: Item', () => {
       component.trackSoldEvent(MOCK_ITEM);
 
       expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {platform: 'web'});
+    });
+  });
+
+  describe('clickCarfax', () => {
+    it('should track Carfax tap ', () => {
+      spyOn(trackingService, 'track');
+
+      component.clickCarfax();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_TAP);
     });
   });
 

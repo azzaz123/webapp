@@ -16,6 +16,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() item: Item;
   @Input() user: User;
   public itemUrl: string;
+  public isCarItem: boolean;
   private active = true;
   private allowReserve: boolean;
   private myUserId: string;
@@ -31,6 +32,11 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       (user: User) => {
         this.myUserId = user.id;
       });
+
+    if (this.item && this.item.categoryId === 100) {
+      this.isCarItem = true;
+      this.trackingService.track(TrackingService.CARFAX_CHAT_DISPLAY);
+    }
   }
 
   ngOnChanges(changes?: any) {
@@ -72,5 +78,9 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   public trackSoldEvent(item: Item) {
     this.trackingService.track(TrackingService.CHAT_PRODUCT_SOLD, {item_id: item.id});
     appboy.logCustomEvent('Sold', {platform: 'web'});
+  }
+
+  public clickCarfax() {
+    this.trackingService.track(TrackingService.CARFAX_CHAT_TAP);
   }
 }

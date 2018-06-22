@@ -33,7 +33,8 @@ const CATEGORY_IDS: any = {
   BottomBar: '78',
   Link: '122',
   Bump: '123',
-  GDPR: '119'
+  GDPR: '119',
+  Carfax: '128'
 };
 
 const SCREENS_IDS: any = {
@@ -711,6 +712,19 @@ export class TrackingService {
     screen: SCREENS_IDS.ReFishingGDPR,
     type: TYPES_IDS.Tap
   };
+  public static CARFAX_CHAT_TAP = {
+    name: '749',
+    category: CATEGORY_IDS.Carfax,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Display
+  };
+  public static CARFAX_CHAT_DISPLAY = {
+    name: '750',
+    category: CATEGORY_IDS.Carfax,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Tap
+  };
+
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
