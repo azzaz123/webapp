@@ -16,7 +16,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() item: Item;
   @Input() user: User;
   public itemUrl: string;
-  public isCarItem: boolean;
+  public isCarItem = false;
   private active = true;
   private allowReserve: boolean;
   private myUserId: string;

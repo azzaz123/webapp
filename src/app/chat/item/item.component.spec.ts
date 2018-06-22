@@ -71,12 +71,22 @@ describe('Component: Item', () => {
       expect(userService.me).toHaveBeenCalled();
     });
 
-    it('isCarItem should be true when item categoryID is 100',  () => {
-      component.item = MOCK_ITEM_CAR;
+    describe('isCarItem', () => {
+      it('should be true when item categoryID is 100',  () => {
+        component.item = MOCK_ITEM_CAR;
 
-      component.ngOnInit();
+        component.ngOnInit();
 
-      expect(component.isCarItem).toBe(true);
+        expect(component.isCarItem).toBe(true);
+      });
+
+      it('should be false when item categoryID not equal 100',  () => {
+        component.item = MOCK_ITEM;
+
+        component.ngOnInit();
+
+        expect(component.isCarItem).toBe(false);
+      });
     });
 
     it('should track Carfax Display when isCarItem is true',  () => {
@@ -86,6 +96,15 @@ describe('Component: Item', () => {
       component.ngOnInit();
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY);
+    });
+
+    it('should not track Carfax Display when isCarItem is false',  () => {
+      spyOn(trackingService, 'track');
+      component.item = MOCK_ITEM;
+
+      component.ngOnInit();
+
+      expect(trackingService.track).not.toHaveBeenCalled();
     });
   });
 
