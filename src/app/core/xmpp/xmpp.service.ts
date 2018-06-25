@@ -314,6 +314,13 @@ export class XmppService {
     this.client.use(this.thirdVoicePlugin);
   }
 
+  public reconnectClient() {
+    if (!this.clientConnected) {
+      this.client.connect();
+      this.clientConnected = true;
+    }
+  }
+
   private bindEvents(): void {
     this.client.enableKeepAlive({
       interval: 30
@@ -345,10 +352,7 @@ export class XmppService {
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      if (!this.clientConnected) {
-        this.client.connect();
-        this.clientConnected = true;
-      }
+      this.reconnectClient();
     });
 
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));

@@ -206,7 +206,12 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeEventClientDisconnect() {
-    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => this.conversationService.resetCache());
+    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => {
+      if (this.userService.isLogged && this.connectionService.isConnected) {
+        this.xmppService.reconnectClient();
+      }
+      this.conversationService.resetCache();
+    });
   }
 
   private subscribeEventItemUpdated() {
