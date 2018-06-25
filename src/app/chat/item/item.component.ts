@@ -32,11 +32,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       (user: User) => {
         this.myUserId = user.id;
       });
-
-    if (this.item && this.item.categoryId === 100) {
-      this.isCarItem = true;
-      this.trackingService.track(TrackingService.CARFAX_CHAT_DISPLAY);
-    }
   }
 
   ngOnChanges(changes?: any) {
@@ -49,6 +44,13 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
     this.itemUrl = this.item.webSlug ? this.item.getUrl(this.subdomain) : '#';
+
+    if (this.item && this.item.categoryId === 100) {
+      this.isCarItem = true;
+      this.trackingService.track(TrackingService.CARFAX_CHAT_DISPLAY);
+    } else {
+      this.isCarItem = false;
+    }
   }
 
   ngOnDestroy() {
