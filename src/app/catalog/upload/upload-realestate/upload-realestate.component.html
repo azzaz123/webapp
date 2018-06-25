@@ -2,7 +2,7 @@
   <div class="box">
     <h2 i18n>Information about your property</h2>
     <div class="row">
-      <div class="col-sm-3 selector-container">
+      <div class="col-sm-12 selector-container">
         <h3 i18n>Rent or buy?</h3>
         <div ngbRadioGroup name="radioBasic" formControlName="operation">
           <label ngbButtonLabel class="btn selector" *ngFor="let operation of operations">
@@ -12,7 +12,9 @@
           </label>
         </div>
       </div>
-      <div class="col-sm-9 selector-container" *ngIf="uploadForm.value?.operation">
+    </div>
+    <div class="row">
+      <div class="col-sm-12 selector-container" *ngIf="uploadForm.value?.operation">
         <h3 i18n>Type of space</h3>
         <div ngbRadioGroup name="radioBasic" formControlName="type">
           <label ngbButtonLabel class="btn selector" *ngFor="let type of types">
@@ -39,8 +41,6 @@
                      [options]="currencies" noFilter="10"></ng-select>
         </div>
       </div>
-    </div>
-    <div class="row">
       <div class="col-sm-2">
         <div class="form-group">
           <label for="surface" i18n>Area</label>
@@ -56,26 +56,26 @@
                      [options]="conditions" noFilter="10"></ng-select>
         </div>
       </div>
-      <ng-container *ngIf="uploadForm.value?.type === 'house' || uploadForm.value?.type === 'apartment'">
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label for="rooms" i18n>Nº of rooms</label>
-            <input placeholder="1, 2, 3..."
-                   type="number" class="form-control" formControlName="rooms"
-                   id="rooms" min="0" max="999999999"/>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label for="bathrooms" i18n>Nº of bathrooms</label>
-            <input placeholder="1, 2, 3..."
-                   type="number" class="form-control" formControlName="bathrooms"
-                   id="bathrooms" min="0" max="999999999"/>
-          </div>
-        </div>
-      </ng-container>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="uploadForm.value?.type === 'house' || uploadForm.value?.type === 'apartment'">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="rooms" i18n>Nº of rooms</label>
+          <input placeholder="1, 2, 3..."
+                 type="number" class="form-control" formControlName="rooms"
+                 id="rooms" min="0" max="999999999"/>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="bathrooms" i18n>Nº of bathrooms</label>
+          <input placeholder="1, 2, 3..."
+                 type="number" class="form-control" formControlName="bathrooms"
+                 id="bathrooms" min="0" max="999999999"/>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="uploadForm.value?.type === 'house' || uploadForm.value?.type === 'apartment'">
       <div class="col-12">
         <div class="selector-container features-options form-group" data-toggle="buttons">
           <label i18n>Features of the house</label>

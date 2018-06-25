@@ -154,7 +154,7 @@
   .real-estate-form {
     .selector-container {
       .selector {
-        margin-right: $spacing-XS;
+        margin-right: $spacing;
         mat-icon {
           /deep/ svg {
             @include square(48px);
