@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { EventEmitter, Injectable, HostListener } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
@@ -12,7 +12,6 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
-import { ISubscription } from 'rxjs/Subscription';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -27,7 +26,6 @@ export class XmppService {
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
-  private sentAckSubscription: ISubscription;
   private unreadMessages = [];
   public totalUnreadMessages = 0;
   public receivedReceipts = [];
@@ -147,7 +145,7 @@ export class XmppService {
       let messagesCount = 0;
       setTimeout(() => {
         if (messagesCount === 0) {
-          query.then((response) => {
+            query.then(() => {
             return observer.next({
               data: [],
               meta: {
