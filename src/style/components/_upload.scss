@@ -229,5 +229,23 @@
         border-color: $color-urgent;
       }
     }
+    &.checkbox-corporate {
+      .select {
+        &.selected {
+          background: $corporate;
+          mat-icon {
+            display: block;
+          }
+        }
+        &:hover {
+          border-color: $corporate;
+        }
+      }
+    }
+    input[type=checkbox] {
+      position: absolute;
+      clip: rect(0, 0, 0, 0);
+      pointer-events: none;
+    }
   }
 }

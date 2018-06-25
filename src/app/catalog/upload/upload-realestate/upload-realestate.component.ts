@@ -7,6 +7,8 @@ import { Key } from './key.interface';
 import { UploadEvent } from '../upload-event.interface';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
+import { ErrorsService } from '../../../core/errors/errors.service';
+import { Coordinate } from '../../../core/geolocation/address-response.interface';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -20,6 +22,7 @@ export class UploadRealestateComponent implements OnInit {
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   @Input() item: Car;
   @Input() urgentPrice: number;
+  public coordinates: Coordinate;
 
   public uploadForm: FormGroup;
   public loading: boolean;
@@ -39,6 +42,7 @@ export class UploadRealestateComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private realestateKeysService: RealestateKeysService,
               private router: Router,
+              private errorsService: ErrorsService,
               private trackingService: TrackingService) {
     this.uploadForm = fb.group({
       id: '',
@@ -82,7 +86,37 @@ export class UploadRealestateComponent implements OnInit {
       this.realestateKeysService.getTypes(operation).subscribe((types: Key[]) => {
         this.types = types;
       });
-    })
+    });
+    this.uploadForm.get('location').valueChanges.subscribe((location: Coordinate) => {
+      if (location.latitude && location.longitude) {
+        this.coordinates = location;
+      }
+    });
+  }
+
+  onSubmit() {
+    if (this.uploadForm.valid) {
+      this.loading = true;
+      this.uploadEvent.emit({
+        type: this.item ? 'update' : 'create',
+        values: this.uploadForm.value
+      });
+    } else {
+      for (const control in this.uploadForm.controls) {
+        if (this.uploadForm.controls.hasOwnProperty(control) && !this.uploadForm.controls[control].valid) {
+          this.uploadForm.controls[control].markAsDirty();
+        }
+      }
+      if (!this.uploadForm.get('location.address').valid) {
+        this.uploadForm.get('location.address').markAsDirty();
+      }
+      if (!this.uploadForm.get('images').valid) {
+        this.errorsService.i18nError('missingImageError');
+      } else {
+        this.errorsService.i18nError('formErrors', '', 'formErrorsTitle');
+        this.onValidationError.emit();
+      }
+    }
   }
 
   onUploaded(uploadEvent: any) {
@@ -114,6 +148,14 @@ export class UploadRealestateComponent implements OnInit {
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
+  }
+
+  public selectUrgent(isUrgent: boolean): void {
+    this.isUrgent = isUrgent;
+  }
+
+  public emitLocation(): void {
+    this.locationSelected.emit(13000);
   }
 
 }
