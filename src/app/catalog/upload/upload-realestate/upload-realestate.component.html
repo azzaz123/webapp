@@ -109,4 +109,9 @@
       </div>
     </div>
   </div>
+  <div class="box product-photos" >
+    <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos</h2>
+    <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
+                   formControlName="images" [maxUploads]="20" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
+  </div>
 </form>

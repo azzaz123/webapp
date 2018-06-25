@@ -69,12 +69,19 @@
   .photos-number-4 & {
     @include square(147px);
   }
+  .photos-number-20 & {
+    @include square(110px);
+    margin-bottom: $spacing-S;
+  }
   &.placeholder {
     background-image: url(/assets/icons/camera.svg);
     border: 2px dashed $grey-100;
     background-size: 26px;
     .photos-number-4 & {
       background-size: 51px;
+    }
+    .photos-number-20 & {
+      background-size: 40px;
     }
     &:hover {
       border-color: $corporate;
@@ -135,6 +142,10 @@
     .photos-number-4 & {
       bottom: -30px;
     }
+    .photos-number-20 & {
+      bottom: -16px;
+      font-size: $font-size-XXS - 1;
+    }
   }
   input {
     display: none;
@@ -149,6 +160,9 @@
 
   &:last-of-type {
     margin-right: 0;
+    .photos-number-20 & {
+      margin-right: $spacing-M;
+    }
   }
 
   .loader {
