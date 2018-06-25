@@ -96,6 +96,14 @@ describe('CatalogItemActionsComponent', () => {
     spyOn(toastr, 'error');
   });
 
+  describe('ngOnInit', () => {
+    it('should reset de selected items', () => {
+      component.ngOnInit();
+
+      expect(itemService.selectedItems.length).toBe(0);
+    });
+  });
+
   describe('deselect', () => {
     it('should call deselectItems', () => {
       spyOn(itemService, 'deselectItems');
