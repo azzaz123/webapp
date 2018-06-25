@@ -1,0 +1,112 @@
+<form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="real-estate-form">
+  <div class="box">
+    <h2 i18n>Information about your property</h2>
+    <div class="row">
+      <div class="col-sm-3 selector-container">
+        <h3 i18n>Rent or buy?</h3>
+        <div ngbRadioGroup name="radioBasic" formControlName="operation">
+          <label ngbButtonLabel class="btn selector" *ngFor="let operation of operations">
+            <input ngbButton type="radio" name="operation" [value]="operation.id">
+            <mat-icon [svgIcon]="operation.icon_id"></mat-icon>
+            <span i18n>{{operation.text}}</span>
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-9 selector-container" *ngIf="uploadForm.value?.operation">
+        <h3 i18n>Type of space</h3>
+        <div ngbRadioGroup name="radioBasic" formControlName="type">
+          <label ngbButtonLabel class="btn selector" *ngFor="let type of types">
+            <input ngbButton type="radio" name="type" [value]="type.id">
+            <mat-icon [svgIcon]="type.icon_id"></mat-icon>
+            <span i18n>{{type.text}}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="price" i18n>Price</label>
+          <input i18n-placeholder placeholder="(don't go crazy)"
+                 type="number" class="form-control" formControlName="sale_price"
+                 id="price" min="0" max="999999999"/>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="form-group">
+          <label for="currency" i18n>Currency</label>
+          <ng-select class="form-control" formControlName="currency_code" id="currency"
+                     [options]="currencies" noFilter="10"></ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2">
+        <div class="form-group">
+          <label for="surface" i18n>Area</label>
+          <input placeholder="m2"
+                 type="number" class="form-control" formControlName="surface"
+                 id="surface" min="0" max="999999999"/>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="condition" i18n>Status</label>
+          <ng-select id="condition" class="form-control" formControlName="condition"
+                     [options]="conditions" noFilter="10"></ng-select>
+        </div>
+      </div>
+      <ng-container *ngIf="uploadForm.value?.type === 'house' || uploadForm.value?.type === 'apartment'">
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="rooms" i18n>Nº of rooms</label>
+            <input placeholder="1, 2, 3..."
+                   type="number" class="form-control" formControlName="rooms"
+                   id="rooms" min="0" max="999999999"/>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="bathrooms" i18n>Nº of bathrooms</label>
+            <input placeholder="1, 2, 3..."
+                   type="number" class="form-control" formControlName="bathrooms"
+                   id="bathrooms" min="0" max="999999999"/>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="selector-container features-options form-group" data-toggle="buttons">
+          <label i18n>Features of the house</label>
+          <label class="btn selector" [class.active]="uploadForm.value[extra.id]" *ngFor="let extra of extras">
+            <input type="checkbox" [formControlName]="extra.id">
+            <mat-icon [svgIcon]="extra.icon_id"></mat-icon>
+            <span i18n>{{extra.text}}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label for="title" i18n>Title</label>
+          <span class="chars-counter">{{uploadForm.value?.title?.length}}/50</span>
+          <input i18n-placeholder placeholder="In two words..."
+                 type="text" class="form-control" formControlName="title"
+                 id="title" maxlength="50" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group last">
+          <label for="storytelling" i18n>Description</label>
+          <span class="chars-counter">{{uploadForm.value?.storytelling?.length}}/650</span>
+          <textarea i18n-placeholder placeholder="Tell us more..." fz-elastic class="form-control"
+                    formControlName="storytelling" id="storytelling" maxlength="650"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

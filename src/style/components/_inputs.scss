@@ -228,6 +228,31 @@ ng-select, select-dropdown {
   }
 }
 
+#condition {
+  select-dropdown {
+    & > div {
+      .options {
+        ul {
+          li {
+            background-repeat: no-repeat;
+            background-position: 8px;
+            padding-left: 60px !important;
+            &:nth-child(1) {
+              background-image: url(/assets/icons/new_construction.svg);
+            }
+            &:nth-child(2) {
+              background-image: url(/assets/icons/to_reform.svg);
+            }
+            &:nth-child(3) {
+              background-image: url(/assets/icons/mint.svg);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 form.disabled {
   .form-control:disabled {
     cursor: auto;

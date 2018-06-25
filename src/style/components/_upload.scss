@@ -39,6 +39,11 @@
     &.terms-options {
       margin-bottom: 23px;
     }
+    &.features-options {
+      label:not(.selector) {
+        display: block;
+      }
+    }
     h3 {
       font-size: $font-size-S;
       color: $grey-500;
@@ -113,6 +118,9 @@
           }
         }
       }
+      &:last-of-type {
+        margin-right: 0 !important;
+      }
     }
     &.shipping-options {
       margin-bottom: 15px;
@@ -137,6 +145,19 @@
           margin-top: 0;
           strong {
             font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  .real-estate-form {
+    .selector-container {
+      .selector {
+        margin-right: $spacing-XS;
+        mat-icon {
+          /deep/ svg {
+            @include square(48px);
           }
         }
       }
