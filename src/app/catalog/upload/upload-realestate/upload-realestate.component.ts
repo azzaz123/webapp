@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Car } from '../../../core/item/car';
 import { IOption } from 'ng-select';
 import { RealestateKeysService } from './realestate-keys.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,6 +8,8 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { Item } from '../../../core/item/item';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -20,7 +21,7 @@ export class UploadRealestateComponent implements OnInit {
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
-  @Input() item: Car;
+  @Input() item: Item;
   @Input() urgentPrice: number;
   public coordinates: Coordinate;
 
@@ -28,12 +29,12 @@ export class UploadRealestateComponent implements OnInit {
   public loading: boolean;
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   public isUrgent = false;
+  private oldFormValue: any;
 
   public operations: Key[];
   public types: Key[];
   public extras: Key[];
   public conditions: IOption[];
-  public sellerType: IOption[];
   public currencies: IOption[] = [
     {value: 'EUR', label: '€'},
     {value: 'GBP', label: '£'}
@@ -52,9 +53,9 @@ export class UploadRealestateComponent implements OnInit {
       sale_price: ['', [Validators.required, Validators.min(0), Validators.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
       storytelling: '',
-      operation: '',
-      type: '',
-      condition: '',
+      operation: ['', [Validators.required]],
+      type: ['', [Validators.required]],
+      condition: ['', [Validators.required]],
       surface: '',
       rooms: '',
       bathrooms: '',
@@ -73,6 +74,11 @@ export class UploadRealestateComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getOptions();
+    this.detectFormChanges();
+  }
+
+  private getOptions() {
     this.realestateKeysService.getOperations().subscribe((operations: Key[]) => {
       this.operations = operations;
     });
@@ -90,6 +96,23 @@ export class UploadRealestateComponent implements OnInit {
     this.uploadForm.get('location').valueChanges.subscribe((location: Coordinate) => {
       if (location.latitude && location.longitude) {
         this.coordinates = location;
+      }
+    });
+  }
+
+  private detectFormChanges() {
+    this.uploadForm.valueChanges.subscribe((value) => {
+      if (this.operations && this.conditions && this.extras) {
+        const oldItemData = _.omit(this.oldFormValue, ['images']);
+        const newItemData = _.omit(value, ['images']);
+        if (!this.oldFormValue) {
+          this.oldFormValue = value;
+        } else {
+          if (!_.isEqual(oldItemData, newItemData)) {
+            this.onFormChanged.emit(true);
+          }
+        }
+        this.oldFormValue = value;
       }
     });
   }

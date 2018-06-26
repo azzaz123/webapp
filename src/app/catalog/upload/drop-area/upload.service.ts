@@ -17,6 +17,8 @@ export class UploadService {
     let inputEvent: UploadInput;
     if (values.category_id === '100') {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/cars', 'item_car');
+    } else if (values.category_id === '13000') {
+        inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/real_estate', 'item_real_estate');
     } else {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
     }
@@ -24,7 +26,12 @@ export class UploadService {
   }
 
   private buildUploadEvent(values: any, file: UploadFile, url: string, fieldName: string): UploadInput {
-    delete values.location;
+    if (values.category_id !== '13000') {
+      delete values.location;
+    } else {
+      delete values.id;
+      delete values.category_id;
+    }
     const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
     return {
       type: 'uploadFile',
