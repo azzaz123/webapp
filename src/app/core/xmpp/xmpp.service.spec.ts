@@ -111,6 +111,7 @@ let eventService: EventService;
 let trackingService: TrackingService;
 let persistencyService: PersistencyService;
 let sendIqSpy: jasmine.Spy;
+let connectSpy: jasmine.Spy;
 
 describe('Service: Xmpp', () => {
   beforeEach(() => {
@@ -131,7 +132,7 @@ describe('Service: Xmpp', () => {
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
     });
-    spyOn(MOCKED_CLIENT, 'connect');
+    connectSpy = spyOn(MOCKED_CLIENT, 'connect');
     spyOn(MOCKED_CLIENT, 'sendPresence');
     spyOn(MOCKED_CLIENT, 'sendMessage');
     spyOn(MOCKED_CLIENT, 'enableCarbons');
@@ -331,6 +332,18 @@ describe('Service: Xmpp', () => {
       expect(msg.payload.text).toEqual('text');
     }));
 
+    describe('reconnectClient', () => {
+      it('should reconnect the client if it is disconnected', () => {
+        connectSpy.calls.reset();
+        service.clientConnected = false;
+
+        service.reconnectClient();
+
+        expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(1);
+        expect(service.clientConnected).toBe(true);
+      });
+    });
+
     it('should emit a CLIENT_DISCONNECTED event when the Xmpp client is disconnected', () => {
       spyOn(eventService, 'emit').and.callThrough();
 
@@ -339,12 +352,14 @@ describe('Service: Xmpp', () => {
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CLIENT_DISCONNECTED);
     });
 
-    it('should reconnect the client if it is disconnected when a CONNECTION_RESTORED event is triggered', () => {
+
+    it('should call reconnectClient if it is disconnected when a CONNECTION_RESTORED event is triggered', () => {
+      spyOn(service, 'reconnectClient');
       service.clientConnected = false;
 
       eventService.emit(EventService.CONNECTION_RESTORED);
 
-      expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(2);
+      expect(service.reconnectClient).toHaveBeenCalled();
     });
 
     it('should not reconnect the client if it is already connecetd when a CONNECTION_RESTORED event is triggered', () => {
