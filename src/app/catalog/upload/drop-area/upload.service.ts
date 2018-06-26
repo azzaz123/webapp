@@ -48,8 +48,10 @@ export class UploadService {
     };
   }
 
-  public uploadOtherImages(itemId: string, extraPath: string) {
-    const url = this.API_URL + extraPath + '/' + itemId + '/picture2';
+  public uploadOtherImages(itemId: string, type: string) {
+    const url = this.API_URL + '/' +
+      (type !== 'consumer_goods' ? type + '/' : '') + itemId + '/picture' +
+      (type !== 'real_estate' ? '2' : '');
     const inputEvent: UploadInput = {
       type: 'uploadAll',
       url: environment.baseUrl + url,

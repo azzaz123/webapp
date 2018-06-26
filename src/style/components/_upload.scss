@@ -122,6 +122,14 @@
         margin-right: 0 !important;
       }
     }
+    .ng-dirty.ng-invalid {
+      .selector {
+        border: 1px solid $warn;
+        span {
+          color: $warn;
+        }
+      }
+    }
     &.shipping-options {
       margin-bottom: 15px;
       h2 {
