@@ -989,6 +989,7 @@ describe('Service: Conversation', () => {
           });
         });
         connectionService.isConnected = true;
+        xmpp.clientConnected = true;
         conversations = createConversationsArray(5);
       });
 
