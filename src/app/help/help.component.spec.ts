@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HelpComponent } from './help.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
 import { HelpService } from './help.service';
 import { FAQ_FEATURES, FAQS } from '../../tests/faq.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
@@ -19,12 +18,7 @@ describe('HelpComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HelpComponent],
       providers: [{
-        provide: Router, useValue: {
-          events: Observable.of({})
-        }
-      },
-        {
-          provide: HelpService, useValue: {
+        provide: HelpService, useValue: {
           getFaqs() {
             return Observable.of(FAQS)
           },
@@ -32,10 +26,10 @@ describe('HelpComponent', () => {
             return Observable.of(FAQ_FEATURES)
           }
         }
-        },
+      },
         {
           provide: I18nService, useValue: {
-            locale: 'es'
+          locale: 'es'
         }
         }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -70,16 +64,28 @@ describe('HelpComponent', () => {
     });
   });
 
-  describe('scrollTop', () => {
-    it('should call scrollIntoView', () => {
-      const scrollIntoViewSpy = jasmine.createSpy('scrollIntoView');
+  describe('scrollToElement', () => {
+    it('should set scrollTop to element position', () => {
+      const OFFSET_TOP = 100;
+      const OFFSET_HEIGHT = 200;
+      const FRAGMENT = 'fragment';
       spyOn(documentObject, 'querySelector').and.returnValue({
-        scrollIntoView: scrollIntoViewSpy
+        offsetTop: OFFSET_TOP,
+        offsetHeight: OFFSET_HEIGHT
       });
 
-      component.scrollTop();
+      component.scrollToElement(FRAGMENT);
 
-      expect(scrollIntoViewSpy).toHaveBeenCalledWith({block: 'start', inline: 'nearest', behavior: 'smooth'});
+      expect(documentObject.querySelector).toHaveBeenCalledWith('#' + FRAGMENT);
+      expect(component.scrollTop).toBe(OFFSET_TOP - OFFSET_HEIGHT + 150);
+    });
+  });
+
+  describe('scrollToTop', () => {
+    it('should set scrollTop to 0', () => {
+      component.scrollToTop();
+
+      expect(component.scrollTop).toBe(0);
     });
   });
 

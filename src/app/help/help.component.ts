@@ -15,23 +15,11 @@ export class HelpComponent implements OnInit {
   public faqs: any[];
   public active: string;
   public showScrollTop: boolean;
+  public scrollTop: number;
 
   constructor(private i18n: I18nService,
               private helpService: HelpService,
-              private router: Router,
               @Inject(DOCUMENT) private document: Document) {
-    router.events.subscribe(s => {
-      if (s instanceof NavigationEnd) {
-        const tree = router.parseUrl(router.url);
-        if (tree.fragment) {
-          const element = this.document.querySelector('#' + tree.fragment);
-          if (element) {
-            this.active = tree.fragment;
-            element.scrollIntoView({block: 'start', inline: 'nearest', behavior: 'smooth'});
-          }
-        }
-      }
-    });
   }
 
   ngOnInit() {
@@ -43,12 +31,15 @@ export class HelpComponent implements OnInit {
     });
   }
 
-  public scrollTop() {
-    const element = this.document.querySelector('#header');
+  public scrollToElement(fragment: string) {
+    const element: HTMLElement = this.document.querySelector('#' + fragment);
     if (element) {
-      this.active = '';
-      element.scrollIntoView({block: 'start', inline: 'nearest', behavior: 'smooth'});
+      this.scrollTop = element.offsetTop - element.offsetHeight + 150;
     }
+  }
+
+  public scrollToTop() {
+    this.scrollTop = 0;
   }
 
   public onPageScroll($event: Event) {
