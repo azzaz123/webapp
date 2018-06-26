@@ -92,14 +92,18 @@ export const UPLOADED_RESPONSE = {
 
 export const UPLOADED_FILE_FIRST: UploadFile = <UploadFile>{
   ...UPLOAD_FILE,
-  response: UPLOADED_RESPONSE
+  response: {
+    ...UPLOADED_RESPONSE,
+    type: 'cars'
+  }
 };
 
 export const UPLOADED_FILE_FIRST_ITEM: UploadFile = <UploadFile>{
     ...UPLOADED_FILE_FIRST,
   response: {
     ...UPLOADED_RESPONSE,
-    id: ITEM_ID
+    id: ITEM_ID,
+    type: 'consumer_goods'
   }
 };
 

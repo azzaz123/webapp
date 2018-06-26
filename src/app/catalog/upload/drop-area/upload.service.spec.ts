@@ -157,9 +157,11 @@ describe('UploadService', () => {
         }
       });
     });
+
     describe('car', () => {
       it('should emit uploadFile event', () => {
-        service.uploadOtherImages(CAR_ID, '/cars');
+        service.uploadOtherImages(CAR_ID, 'cars');
+
         expect(response).toEqual({
           type: 'uploadAll',
           url: environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
@@ -172,9 +174,28 @@ describe('UploadService', () => {
         });
       });
     });
+
+    describe('real estate', () => {
+      it('should emit uploadFile event', () => {
+        service.uploadOtherImages(ITEM_ID, 'real_estate');
+
+        expect(response).toEqual({
+          type: 'uploadAll',
+          url: environment.baseUrl + 'api/v3/items/real_estate/' + ITEM_ID + '/picture',
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            order: '$order'
+          },
+          headers: headers
+        });
+      });
+    });
+
     describe('normal item', () => {
       it('should emit uploadFile event', () => {
-        service.uploadOtherImages(ITEM_ID, '');
+        service.uploadOtherImages(ITEM_ID, 'consumer_goods');
+
         expect(response).toEqual({
           type: 'uploadAll',
           url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',

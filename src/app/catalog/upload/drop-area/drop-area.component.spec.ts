@@ -340,7 +340,7 @@ describe('DropAreaComponent', () => {
               });
 
               expect(component['itemId']).toBe(ITEM_ID);
-              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(ITEM_ID, '');
+              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(ITEM_ID, UPLOADED_FILE_FIRST_ITEM.response.type);
             });
           });
 
@@ -356,7 +356,7 @@ describe('DropAreaComponent', () => {
               });
               expect(component['item']).toEqual(UPLOADED_FILE_FIRST.response);
               expect(component['itemId']).toBe(CAR_ID);
-              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(CAR_ID, '/cars');
+              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(CAR_ID, 'cars');
             });
           });
         });
