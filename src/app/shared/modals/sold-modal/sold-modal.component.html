@@ -4,8 +4,7 @@
       <mat-icon svgIcon="cross"></mat-icon>
     </div>
     <h1 i18n>Congratulations!</h1>
-    <p class="text" i18n>You sold
-      <strong>{{item.title}}</strong>
+    <p class="text" i18n>You sold <strong>{{item.title}}</strong>
     </p>
     <mat-icon class="congrats" svgIcon="commons-congrats"></mat-icon>
     <p class="text" [hidden]="!conversationUsers.length" i18n>Who bought this from you?</p>
@@ -36,8 +35,7 @@
     </div>
     <mat-icon class="congrats-icon" svgIcon="congrats"></mat-icon>
     <h1 i18n>Thanks</h1>
-    <p class="text" i18n>Your feedback is important for the
-      <br />Wallapop community.</p>
+    <p class="text" i18n>Your feedback is important for the<br />Wallapop community.</p>
     <tsl-button (click)="activeModal.close()" i18n>Continue</tsl-button>
   </div>
 </div>
