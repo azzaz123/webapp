@@ -24,11 +24,20 @@ $form-control-height: 50px;
     &.ng-dirty {
       &.ng-valid {
         border-color: $grey-200;
+        & > div {
+          border-color: $grey-200 !important;
+        }
+        & > div.focus {
+          border-color: $corporate !important;
+        }
       }
       &.ng-invalid {
         border-color: $warn;
         label {
           color: $warn;
+        }
+        & > div {
+          border-color: $warn !important;
         }
       }
     }
@@ -64,15 +73,20 @@ h2.ng-invalid {
 
 ng-select {
   padding: 0 !important;
+  border: 0 !important;
   &[aria-describedby] {
     border-color: $corporate !important;
   }
   & > div {
-    border: 0 !important;
-    height: $form-control-height - 3;
+    border: 1px solid $grey-50 !important;
+    border-radius: 6px;
+    height: $form-control-height;
     margin-left: -1px;
     &.disabled {
       background-color: transparent !important;
+    }
+    &.focus {
+      border-color: $corporate !important;
     }
     & > div.single {
       height: $form-control-height;

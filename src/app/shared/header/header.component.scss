@@ -39,6 +39,9 @@
     .header-numbers {
         color: $grey-250;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-self: flex-end;
         .header-numbers-top {
             font-size: 20px;
             font-weight: 700;

@@ -118,6 +118,10 @@ export class PersistencyService {
     );
   }
 
+  public findMessage(messageId: string): Observable<any> {
+    return Observable.fromPromise(this.messagesDb.get(messageId));
+  }
+
   public updateMessageStatus(messageId: string, newStatus: string) {
     return Observable.fromPromise(this.upsert(this.messagesDb, messageId, (doc: Document<any>) => {
       if (doc.status !== newStatus) {

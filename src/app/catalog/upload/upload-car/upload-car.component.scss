@@ -3,3 +3,14 @@
 .container {
   width: 700px;
 }
+
+a.other-make {
+  font-size: $font-size-XS;
+  color: $corporate;
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover {
+    color: $corporate;
+    text-decoration: none;
+  }
+}

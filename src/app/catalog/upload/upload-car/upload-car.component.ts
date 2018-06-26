@@ -39,6 +39,7 @@ export class UploadCarComponent implements OnInit {
   uploadEvent: EventEmitter<UploadEvent> = new EventEmitter();
   private oldFormValue: any;
   public isUrgent = false;
+  public customMake = false;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -140,6 +141,9 @@ export class UploadCarComponent implements OnInit {
     this.carSuggestionsService.getBrands().subscribe((brands: IOption[]) => {
       this.brands = brands;
       this.markFieldAsPristine('brand');
+      if (this.item) {
+        this.customMake = !_.has(this.brands, {value: this.item.brand});
+      }
     });
   }
 
@@ -314,6 +318,22 @@ export class UploadCarComponent implements OnInit {
 
   public emitLocation(): void {
     this.locationSelected.emit(100);
+  }
+
+  public toggleCustomMakeSelection() {
+    if (!this.customMake) {
+      this.customMake = true;
+      this.uploadForm.get('brand').patchValue('');
+      this.toggleField('model', 'enable');
+      this.toggleField('year', 'enable');
+      this.toggleField('version', 'enable');
+    } else {
+      this.customMake = false;
+      this.uploadForm.get('brand').patchValue('');
+      this.toggleField('model', 'disable');
+      this.toggleField('year', 'disable');
+      this.toggleField('version', 'disable');
+    }
   }
 
 }
