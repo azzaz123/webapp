@@ -4,7 +4,8 @@
       <mat-icon svgIcon="cross"></mat-icon>
     </div>
     <h1 i18n>Congratulations!</h1>
-    <p class="text" i18n>You sold <strong>{{item.title}}</strong></p>
+    <p class="text" i18n>You sold <strong>{{item.title}}</strong>
+    </p>
     <mat-icon class="congrats" svgIcon="commons-congrats"></mat-icon>
     <p class="text" [hidden]="!conversationUsers.length" i18n>Who bought this from you?</p>
     <ul [hidden]="!conversationUsers.length">
@@ -24,12 +25,15 @@
     <a href="" (click)="setSoldOutside(); $event.preventDefault()" i18n>I didn't sell this on wallapop</a>
   </div>
 </div>
-<div id="second-step" [hidden]="!buyer || thanks" >
+<div id="second-step" [hidden]="!buyer || thanks">
   <tsl-review-modal [buyer]="buyer" [item]="item" (finishedReview)="onFinishedReview()" (backPress)="onBackPress()" [isSeller]="true"></tsl-review-modal>
 </div>
 <div id="thanks" [hidden]="!thanks">
   <div class="modal-body center-heading">
-    <mat-icon svgIcon="congrats"></mat-icon>
+    <div class="modal-close" (click)="activeModal.dismiss()">
+      <mat-icon svgIcon="cross"></mat-icon>
+    </div>
+    <mat-icon class="congrats-icon" svgIcon="congrats"></mat-icon>
     <h1 i18n>Thanks</h1>
     <p class="text" i18n>Your feedback is important for the<br />Wallapop community.</p>
     <tsl-button (click)="activeModal.close()" i18n>Continue</tsl-button>
