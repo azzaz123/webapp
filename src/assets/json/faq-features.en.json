@@ -1,13 +1,16 @@
 [{
-  "title": "Como destaco un coche",
-  "desc": "Todos los pasos para destacar tus vehiculos",
-  "link": "Destacados-1"
+  "title": "How can I feature a car?",
+  "desc": "All the steps to feature your cars",
+  "link": "Featured-1",
+  "icon": "faq-features-1"
 }, {
-  "title": "Como puedo comprar extras",
-  "desc": "Paso a paso para comprar destacados extras",
-  "link": "Destacados-4"
+  "title": "How can I purchase more features?",
+  "desc": "Step by step for purchasing extra features",
+  "link": "Featured-4",
+  "icon": "faq-features-2"
 }, {
-  "title": "Tu Plan de visibilidad",
-  "desc": "Te explicamos cómo funciona tu plan",
-  "link": "Perfil-5"
+  "title": "Your visibility plan",
+  "desc": "We explain you how your plan works",
+  "link": "Profile-5",
+  "icon": "faq-features-3"
 }]

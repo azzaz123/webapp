@@ -1,100 +1,100 @@
 [{
-  "category": "Perfil",
+  "category": "Profile",
   "questions": [{
-    "title": "¿Qué información puedo encontrar en mi perfil?",
-    "text": "En la parte superior, encontrarás tres secciones: Perfil (información relativa a tu cuenta), datos de facturación y planes de suscripción."
+    "title": "What information can I find in my profile?",
+    "text": "At the top you will see three sections: Profile (all your account details) billing information and subscription plans."
   }, {
-    "title": "¿Qué puedo modificar de mi cuenta?",
-    "text": "Desde el perfil podrás subir una foto para que tu cuenta quede más completa. Eso sí, recuerda que sólo aceptamos formatos .jpg. Además podrás modificar todos los campos que aparecen incluyendo la ubicación y tu contraseña. Si necesitas cerrar sesión también puedes hacerlo desde aquí. ¿Fácil verdad?"
+    "title": "What can I change in my account?",
+    "text": "In your profile, you can add a photo so that your account appears complete. We only accept the .jpg format. From here you can edit all the info that appears including your location and password. If you want to log out, you can also do so from here. Easy isn't it?"
   }, {
-    "title": "¿Qué es la información de facturación?",
-    "text": "Esta información es la que guardamos cuando se compran destacados \"extra\" mediante tarjeta de crédito/débito. Todos los campos son obligatorios para asegurar una factura completa a final de mes."
+    "title": "What is the billing information?",
+    "text": "This is the information we need when you buy a feature using a credit or debit card. It is necessary to complete all of the fields so that the invoice is filled out correctly."
   }, {
-    "title": "Tu Plan de coches",
-    "text": "El plan actual indica el tipo de suscripción que tienes asociado a tus coches. Por ejemplo, si estás suscrito al \"Plan 50\", significa que puedes tener hasta 50 coches activos al mismo tiempo en la app y web de wallapop. ¿No está mal verdad?"
+    "title": "Your motor plan?",
+    "text": "The plan shows you the subscription you currently have. For example, if you have subscribed to \"Plan 50\" then you can have up to 50 cars active on the wallapop app and website at any one time. Not bad at all eh?"
   }, {
-    "title": "Tu Plan de visibilidad",
-    "text": "El plan de visibilidad ofrece dos opciones, el plan de ciudad para destacarlo en tu ciudad de residencia y el plan de país para destacar tu coche a nivel nacional. Tienes la posibilidad de comprar 25, 90 o 300 destacados. Cada destacado dura 24 horas. Cuanto más alto sea el pack, mayor es el porcentaje de ahorro. Puedes darte de alta o cambiar a otro llamando al 674 726 372 o enviando un correo a ventas.motor@wallapop.com"
+    "title": "Your visibility plan?",
+    "text": "The visibility plan offers two options; the city plan to feature your ads in your city of residence or the nationwide plan to feature your ads nationally. You can buy 25, 90 or 300 features. Each feature lasts 24 hours. The larger the pack you buy, the bigger the discount. You can sign up or change your package by calling this number 674 726 372 or sending an email to ventas.motor@wallapop.com"
   }, {
-    "title": "¿Para qué me sirve destacar un coche?",
-    "text": "Los destacados permiten que tu coche sea más visible para el resto de usuarios. ¿Cómo? Muy fácil, tener un destacado te permite aparecer en las primeras posiciones del muro de la web y de la app. La ficha de tu producto tendrá una visualización mucho más llamativa y aparecerás en la zona de destacados en toda tu ciudad o país."
+    "title": "Why should I feature a car?",
+    "text": "The features allow your car to be more visible to the users of the app and website. How? Well, it's really simple, featuring your ad means it will appear at the top of the wall. The ad will have a different style so that it stands out and it will also be included in the collections for your city or nationally."
   }]
 }, {
   "category": "Panel",
   "questions": [{
-    "title": "¿Qué información puedo ver en mi panel?",
-    "text": "¡De todo! Aquí podrás ver desde la información relativa a las visualizaciones, chats y llamadas que genera tu catálogo de coches hasta el impacto que tienen los destacados que apliques sobre las métricas."
+    "title": "What information can I see in my panel?",
+    "text": "Everything! Here you can see everything related to your ad, chats and calls related to your catalogue including the metrics for measuring the impact of the items you have featured."
   }, {
-    "title": "¿Cómo funciona el panel?",
-    "text": "¡Es muy sencillo! Arriba a la izquierda podrás filtrar por los últimos 30, 15 y 7 días. Si pones el cursor encima de los días verás; los chats, llamadas, visitas y destacados de ese mismo día."
+    "title": "How does the panel work?",
+    "text": "It's really simple. At the top left you can filter by the last 30, 15 and 7 days. If you move the cursor over these days you will see the chats, calls, and views of your featured items for the day."
   }, {
-    "title": "¿Qué es el panel de los últimos 12 meses?",
-    "text": "En este panel podrás ver el resumen del último año. Verás la misma información que en el superior pero separado por meses y sin la posibilidad de filtrar por días."
+    "title": "What is the panel for the last 12 months?",
+    "text": "In this panel you can see a summary of the last year. You will see the same information as before but divided by months and days."
   }]
 }, {
-  "category": "Catálogo",
+  "category": "Catalogue",
   "questions": [{
-    "title": "Tu Catálogo",
-    "text": "En el catálogo tienes toda la información relativa a tus vehículos. Verás que hay varias sub-secciones donde te enseñamos: coches activos en ese momento, los inactivos, los que tienes destacados y los que ya has vendido. En la parte superior tienes un resumen del plan de coches al que estás suscrito, la cantidad de coches que tienes disponibles y la cantidad de coches inactivos. Además puedes ver un resumen de los planes de visibilidad, el saldo de destacados que tienes disponible, los que tienes en uso y cuántos tienes planificados. Recuerda que cada destacado dura 24 horas, así que si tienes un coche destacado durante tres días, te cuenta como 3 destacados planificados."
+    "title": "Your catalogue",
+    "text": "In the catalogue you have all the information related your vehicles. You will see that there are various subsections where you can see the cars that are active at that time; the inactive vehicles and those that are featured or sold."
   }, {
-    "title": "¿Qué acciones puedo hacer para cada coche?",
-    "text": "Podrás editar, reservar o marcar como vendido un coche de manera individual así como destacarlo, borrarlo o desactivarlo (de manera individual o colectiva)."
+    "title": "What actions can I take for each car?",
+    "text": "From here you can edit, reserve or mark each individual car as sold, as well as, feature, remove or deactivate each vehicle or group of vehicles."
   }, {
-    "title": "¿Puedo ordenar mi catálogo de coches?",
-    "text": "¡Y tanto! De tres formas diferentes, sólo tiene que seleccionar la que más te convenga; por fecha de creación, los más recientes o por precio (del más alto al más bajo o viceversa)."
+    "title": "Can I sort my catalogue of cars?",
+    "text": "Of course! In three possible ways, you can select and sort each vehicle ad by the date created, most recent or by price (low to high and vise versa)."
   }, {
-    "title": "¿Puedo buscar dentro de mis productos?",
-    "text": "¡Cuándo tú quieras! Puedes hacer clic en el icono de la lupa situado a la izquierda y buscar por nombre dentro de tu catálogo el producto que quieras."
+    "title": "Can I search within my catalogue?",
+    "text": "Whenever you want! You can click on the magnifying glass icon on the left and look for the name within your item catalogue."
   }, {
-    "title": "¿Puedo subir un coche de forma manual desde mi catálogo?",
-    "text": "Tienes varios botones de acción para subir un coche a tu perfil de wallapop. Encontrarás en la barra superior de la navegación un botón que pone \"Subir coche\" este mismo botón lo tienes disponible en tu catálogo. Elige el que más te convenga y sube todos los coches que quieras."
+    "title": "Can I upload a car manually from my catalogue?",
+    "text": "You have various action buttons you can use to upload a car to your profile. You will find on the top bar of the navegation screen a button \"Upload car\" this button also appears in your catalogue. Choose the most convenient option and upload as many cars as you want."
   }, {
-    "title": "¿Qué información veo en la ficha de mi coche?",
-    "text": "Verás la foto, el precio y el modelo del coche así como la fecha de publicación y de la última modificación. Verás también el número de visualizaciones, las veces que tu coche ha sido marcado como favorito por los usuarios y el número de chats que tienes asociado a ese coche. Si tienes el coche destacado o con un destacado planeado verás un contador que te indica los días y las horas que estará destacado. Si lo has planeado verás la fecha de inicio y fin del destacado. Ta,bién podrás marcarlo como vendido, reservado o editarlo."
+    "title": "What information will I see on my car ad?",
+    "text": "You will see the photo, price and model, as well as, the date uploaded and date of your last edit. You can also see the number of views, the number of times your item has been marked as favourite by users and the number of chats you have related to that car. If your car is featured, you will also see a counter of the days and hours remaining. Or if the car is due to be featured on a specific day,  you will also see the start and end date of this period. You can also mark the car as sold, reserved or edit the ad."
   }]
 }, {
-  "category": "Destacados",
+  "category": "Featured",
   "questions": [{
-    "title": "¿Cómo destaco un coche?",
-    "text": "Si tienes un plan de visibilidad al que estás suscrito o tienes destacados \"extra\" podrás utilizarlos de la siguiente forma: selecciona el coche o los coches que quieres destacar y haz clic en el botón que pone \"Destácalo\"; en el siguiente paso te mostramos los coches que has seleccionado y tendrás que elegir que tipo de destacado quieres aplicar (de ciudad o de país) y los días que quieres destacarlo. Recuerda que los destacados duran 24 horas y que cada 24h se consume uno. Cuando hayas elegido que destacado aplicar a cada producto verás un resumen de toda la información en la parte derecha de la pantalla y un botón final para \"Aplicar destacados\"."
+    "title": "How can I feature a car?",
+    "text": "If you have subscribed to a visibility plan or you have items featured as \"extra\" you can use them in the following way: select the car or cars that you want to feature and select the button \"Feature it\" and in the next step we will show you the selected cars for you to then choose which type of feature you want to apply (city or nationwide) and for how long. Remember that each one lasts for 24 hours and every 24 hours uses one feature. Once you have decided which feature to apply to each item, you will see a summary of all the information on the right hand side of the screen and the button to apply the changes \"Apply features\"."
   }, {
-    "title": "¿Por qué no tengo habilitado el destacado de país o de ciudad?",
-    "text": "Si ves que no puedes seleccionar alguno de los destacados, ya sea el de país o el de ciudad significa que o bien no estás suscrito o que no tienes destacados disponibles. Recuerda que puedes suscribirte a cualquier plan de visibilidad a través del 674 726 372 o enviar un correo a ventas.motor@wallapop.com. Si lo deseas también puedes comprar destacados extra con tarjeta de crédito/débito. Para ello tienes un botón \"Comprar extras\" en la parte superior derecha de tu catálogo."
+    "title": "Why isn't the feature present nationally or in my city?",
+    "text": "If you find that you cannot select an item to be featured (either in the city or nationally) this could be that you are not currently subscribed to a visibility plan or you have no remaining features to be used. Remember, you can sign up for a visibility plan by calling us on 674 726 372 or sending an email to ventas.motor@wallapop.com. You can also purchase extra features with a credit or debit card. For this you have the \"Buy extras\" button on the top left of your catalogue."
   }, {
-    "title": "¿Puedo cancelar un destacado?",
-    "text": "Sólo puedes cancelar un destacado que está planeado para una fecha futura. Si actualmente tienes un coche destacado no puedes cancelarlo porque los destacados son de 24 horas y ya estaría en curso."
+    "title": "Can I cancel a feature?",
+    "text": "You can cancel the feature option on an item when it has been set for a future date. If you have a car that is cuurently featured, it will last for 24 hours following and therefore cannot be cancelled once it has begun."
   }, {
-    "title": "¿Cómo puedo comprar destacados extra?",
-    "text": "Si no estás suscrito a ningún plan de visibilidad o bien ya has consumido todos los destacados de tu plan puedes comprar extras tanto de ciudad como de país. Encontrarás en la parte superior derecha de tu catálogo un botón \"Comprar extras\"  en el que haciendo clic podrás ver los precios y los packs disponibles. Puedes añadir tantos destacados como quieras y comprarlos con una tarjeta de crédito/débito. Estos destacados se añadirán automáticamente y los podrás utilizar desde ese mismo momento."
+    "title": "How can I purchase more features?",
+    "text": "If you have not subscribed to a visibility plan or you have used up all the features in your plan, you can purchase extra credits for features by city or nationally. You will find in the top, right hand side of the catalogue a button \"Buy extras\" where you will find the prices and packs available. You can add as many features as you require and purchase them with a credit or debit card. They will be added immediately and you can start to use them straight away."
   }]
 }, {
-  "category": "Mensajes",
+  "category": "Messages",
   "questions": [{
-    "title": "¿Qué veo en la pestaña de Mensajes?",
-    "text": "Encontrarás un listado con el número de chats que tienes en tu perfil. Los mensajes se dividen en pendientes, que son los que estás gestionando y los procesados, que son los que ya has gestionado. Cada chat hace referencia a la conversación que tienes por coche y usuario."
+    "title": "What can I see via the Messages section?",
+    "text": "You will find a list of the number of chats you have in your profile. The messages will be divided into open and closed conversations. Each chat is a conversation with a particular user about a particular car."
   }, {
-    "title": "¿Qué acciones puedo hacer desde Mensajes?",
-    "text": "Desde esta sección puedes procesar los mensajes que aparecen en pendientes y que ya has respondido y viceversa. Lo único que tienes que hacer es poner el cursor en el chat que quieras procesar o devolver a pendiente. Aparecerá un tick en la parte derecha, si lo clicas pasará a la sección de procesado o al revés. También puedes borrar una conversación, reportar a un usuario o bloquearlo. A la derecha verás información relativa al usuario."
+    "title": "What actions can I take via Messages?",
+    "text": "From here you can select and manage your open messages and closed messages. All you have to do is use the cursor to close the message or move it back to open. A tick is shown when a message is marked as closed or unticked when it is moved back to open. You can also delete a conversation and report or block a user. On the right hand side you will see the user's information."
   }, {
-    "title": "¿Puedo bloquear o denunciar a un usuario que no quiero que me hable?",
-    "text": "Sí. Dentro de la conversación que tienes con el usuario, verás un menú de tres puntitos verticales en la parte superior derecha. Ahí podrás denunciar el producto, reportar al usuario, bloquearlo y borrar la conversación. De esta forma no podrá volver a contactarte y tu denuncia quedará registrada."
+    "title": "Can I block or report a user I don't want to speak to?",
+    "text": "Yes. From the conversation screen, you can see a menu shown by three vertical lines on the top right hand side. You can report the item, block or report the user, or delete the conversation. If you select this option, the user will not be able to contact you again and the report will registered."
   }]
 }, {
-  "category": "Llamadas",
+  "category": "Calls",
   "questions": [{
-    "title": "¿Qué información encuentro en la sección de llamadas?",
-    "text": "Al igual que en mensajes, en este apartado se recogen todas las llamadas, procesadas y pendientes."
+    "title": "What information can I see in the Calls section?",
+    "text": "Just as in the messages section, you can see all the calls that have been taken or are pending."
   }, {
-    "title": "¿Qué hay en las llamadas pendientes?",
-    "text": "Encontrarás todas las llamadas que te han hecho, incluyendo las perdidas y los números de teléfono compartidos. Podrás ver quién ha hecho la llamada, la fecha de la llamada, la duración de la misma y podrás procesarla."
+    "title": "What is in the Call record?",
+    "text": "You can see all the calls that you have received, including the missed calls and the telephone numbers. You can see who made the call, the date of the call and the duration."
   }, {
-    "title": "¿Qué significa cada icono de teléfono?",
-    "text": "Verás que tienes tres tipos de iconos que hacen referencia a un teléfono. El verde, significa que la llamada ha sido recibida. El rojo, significa que el usuario te ha llamado pero no has respondido y el teléfono azul es para todos los usuarios que han querido compartir su número contigo."
+    "title": "What do the icons mean?",
+    "text": "You will find three icons relating to the calls. The green icon shows a call that was taken. The red icon means a user has contacted you without success and the blue icon shows where a user has added their telephone number for you to contact them."
   }, {
-    "title": "¿Puedo ver información adicional del usuario que me llama?",
-    "text": "Cada línea de llamada se puede extender y podrás ver información relativa al usuario que te ha llamado o ha compartido su teléfono. Podrás ver la valoración, la distancia y si ha recibido denuncias. Asimismo podrás ver si tienes un chat pendiente con el usuario y acceder directamente a la conversación."
+    "title": "Can I see additional info about the person calling?",
+    "text": "For each entry into the call list you can view further information about the user and their contact details where supplied. You can see the rating, distance and whether or not they have been reported for any reason. You can also see if you have any open chats with the user and access the conversation from here."
   }, {
-    "title": "¿Para qué sirven las llamadas procesadas?",
-    "text": "Las llamadas procesadas las gestionas tu mismo/a. Tienes la posibilidad de marcar cada llamada como gestionada y pasarán a la pestaña de procesadas. Todas aquellas llamadas que has realizado, recibido o devuelto las puedes marcar como procesadas para una mejor organización."
+    "title": "What are the completed calls for?",
+    "text": "Your closed calls can be managed by you. You have the option to mark the call as closed and move it to the processed calls section. Any calls that you have made, received or returned can be moved to the completed section so that you can manage your calls more effectively."
   }]
 }]
