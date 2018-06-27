@@ -82,6 +82,7 @@ describe('UploadService', () => {
         });
         expect(appendSpy).not.toHaveBeenCalled();
       });
+
       describe('with user location', () => {
         const VALUES: any = {
           test: 'hola',
@@ -99,8 +100,8 @@ describe('UploadService', () => {
           expect(response.data.item_car).toEqual(new Blob([JSON.stringify(VALUES)]));
         });
       });
-
     });
+
     describe('normal item', () => {
       it('should emit uploadFile event', () => {
         const VALUES: any = {
@@ -139,6 +140,39 @@ describe('UploadService', () => {
 
           expect(response.data.item).toEqual(new Blob([JSON.stringify(VALUES)]));
         });
+      });
+    });
+
+    describe('real estate', () => {
+      it('should emit uploadFile event', () => {
+        const VALUES_FINAL: any = {
+          test: 'hola',
+          hola: 'hey',
+          location: USER_LOCATION_COORDINATES
+        };
+
+        const VALUES: any = {
+          ...VALUES_FINAL,
+          category_id: '13000',
+          id: 100
+        };
+
+        service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
+
+        expect(response).toEqual({
+          type: 'uploadFile',
+          url: environment.baseUrl + 'api/v3/items/real_estate',
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            item_real_estate: new Blob([JSON.stringify(VALUES_FINAL)], {
+              type: 'application/json'
+            })
+          },
+          headers: headers,
+          file: UPLOAD_FILE
+        });
+        expect(appendSpy).not.toHaveBeenCalled();
       });
     });
   });

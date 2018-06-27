@@ -18,7 +18,7 @@ import {
   Order,
   Product,
   ProductDurations,
-  Purchase, ItemProResponse, ItemProContent
+  Purchase, ItemProResponse, ItemProContent, RealEstateUploadForm
 } from '../app/core/item/item-response.interface';
 import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
 import { CartItem } from '../app/catalog/checkout/cart/cart-item.interface';
@@ -855,6 +855,32 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
     exchange_allowed: false,
     shipping_allowed: false
   },
+  images: [{'image': true}],
+  location: {
+    address: USER_LOCATION.title,
+    latitude: USER_LOCATION.approximated_latitude,
+    longitude: USER_LOCATION.approximated_longitude
+  }
+};
+
+export const UPLOAD_FORM_REALESTATE_VALUES: RealEstateUploadForm = {
+  id: '',
+  category_id: '13000',
+  title: 'title',
+  sale_price: 100,
+  currency_code: 'EUR',
+  storytelling: 'storytelling',
+  operation: 'operation',
+  type: 'type',
+  condition: 'condition',
+  surface: 100,
+  rooms: 2,
+  bathrooms: 2,
+  garage: false,
+  terrace: false,
+  elevator: false,
+  pool: false,
+  garden: false,
   images: [{'image': true}],
   location: {
     address: USER_LOCATION.title,
