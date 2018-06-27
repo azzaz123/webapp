@@ -14,7 +14,7 @@ class TestComponent {
 describe('RestrictInputNumberDirective', () => {
 
   let fixture: ComponentFixture<TestComponent>;
-  let element: DebugElement;
+  let element: HTMLElement;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -25,12 +25,39 @@ describe('RestrictInputNumberDirective', () => {
       imports: [FormsModule]
     });
     fixture = TestBed.createComponent(TestComponent);
-    element = fixture.debugElement.queryAll(By.directive(RestrictInputNumberDirective))[0];
+    element = fixture.debugElement.queryAll(By.directive(RestrictInputNumberDirective))[0].nativeElement;
     fixture.detectChanges();
   }));
 
-  it('should work', () => {
-    expect(element).toBeTruthy();
+  it('should prevent default if one of the prohibited keys is pressed', () => {
+    const prohibitedValues = [200, 300, 10];
+    prohibitedValues.forEach((key) => {
+      const event = keyPress(element, key);
+
+      expect(event.defaultPrevented).toBe(true);
+    });
   });
+
+  it('should NOT prevent default if another key is pressend', () => {
+    const event = keyPress(element, 48);
+
+    expect(event.defaultPrevented).toBe(false);
+  });
+
+  function keyPress(elem: HTMLElement, k: any) {
+    let event: any = document.createEvent('KeyboardEvent');
+    Object.defineProperty(event, 'keyCode', {
+      get : function() {
+        return this.keyCodeVal;
+      },
+      set : function(k) {
+        this.keyCodeVal = k;
+      }
+    });
+    event.initEvent('keydown', true, true);
+    event.keyCode = k;
+    elem.dispatchEvent(event);
+    return event;
+  }
 
 });
