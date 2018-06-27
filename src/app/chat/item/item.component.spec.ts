@@ -70,42 +70,42 @@ describe('Component: Item', () => {
 
       expect(userService.me).toHaveBeenCalled();
     });
+  });
 
-    describe('isCarItem', () => {
-      it('should be true when item categoryID is 100',  () => {
-        component.item = MOCK_ITEM_CAR;
-
-        component.ngOnInit();
-
-        expect(component.isCarItem).toBe(true);
-      });
-
-      it('should be false when item categoryID not equal 100',  () => {
-        component.item = MOCK_ITEM;
-
-        component.ngOnInit();
-
-        expect(component.isCarItem).toBe(false);
-      });
-    });
-
-    it('should track Carfax Display when isCarItem is true',  () => {
-      spyOn(trackingService, 'track');
+  describe('isCarItem', () => {
+    it('should be true when item categoryID is 100',  () => {
       component.item = MOCK_ITEM_CAR;
 
-      component.ngOnInit();
+      component.ngOnChanges();
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY);
+      expect(component.isCarItem).toBe(true);
     });
 
-    it('should not track Carfax Display when isCarItem is false',  () => {
-      spyOn(trackingService, 'track');
+    it('should be false when item categoryID not equal 100',  () => {
       component.item = MOCK_ITEM;
 
-      component.ngOnInit();
+      component.ngOnChanges();
 
-      expect(trackingService.track).not.toHaveBeenCalled();
+      expect(component.isCarItem).toBe(false);
     });
+  });
+
+  it('should track Carfax Display when isCarItem is true',  () => {
+    spyOn(trackingService, 'track');
+    component.item = MOCK_ITEM_CAR;
+
+    component.ngOnChanges();
+
+    expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY);
+  });
+
+  it('should not track Carfax Display when isCarItem is false',  () => {
+    spyOn(trackingService, 'track');
+    component.item = MOCK_ITEM;
+
+    component.ngOnChanges();
+
+    expect(trackingService.track).not.toHaveBeenCalled();
   });
 
   describe('getCounters', () => {
