@@ -4,6 +4,30 @@ $checkbox-width: 24px;
 $transition: all .5s ease;
 $feature-button-width: 170px;
 
+:host /deep/ ngb-tooltip-window {
+  margin-top: -5px;
+  &.show {
+    opacity: 1;
+  }
+  .tooltip-inner {
+    background-color: $grey-500;
+    font-family: $wallie;
+    padding: 10px 15px;
+    border-radius: $border-radius / 2;
+    font-size: $font-size-S;
+    &:after {
+      content: " ";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: $grey-500 transparent transparent transparent;
+    }
+  }
+}
+
 .checkbox {
   transition: $transition;
   width: 0;
@@ -201,7 +225,7 @@ $feature-button-width: 170px;
     }
   }
   .actions {
-    margin-right: $spacing-2M;
+    margin-right: $spacing-L;
     .resized & {
       display: none;
     }

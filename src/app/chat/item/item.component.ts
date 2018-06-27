@@ -16,6 +16,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() item: Item;
   @Input() user: User;
   public itemUrl: string;
+  public isCarItem = false;
   private active = true;
   private allowReserve: boolean;
   private myUserId: string;
@@ -43,6 +44,13 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
     this.itemUrl = this.item.webSlug ? this.item.getUrl(this.subdomain) : '#';
+
+    if (this.item && this.item.categoryId === 100) {
+      this.isCarItem = true;
+      this.trackingService.track(TrackingService.CARFAX_CHAT_DISPLAY);
+    } else {
+      this.isCarItem = false;
+    }
   }
 
   ngOnDestroy() {
@@ -72,5 +80,9 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   public trackSoldEvent(item: Item) {
     this.trackingService.track(TrackingService.CHAT_PRODUCT_SOLD, {item_id: item.id});
     appboy.logCustomEvent('Sold', {platform: 'web'});
+  }
+
+  public clickCarfax() {
+    this.trackingService.track(TrackingService.CARFAX_CHAT_TAP);
   }
 }

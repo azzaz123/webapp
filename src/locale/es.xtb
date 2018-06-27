@@ -200,7 +200,7 @@
   <translation id="8016649850785953911">Anular reserva</translation>
   <translation id="596181013964941327">Reactivar</translation>
   <translation id="3762527362373672599">¡Enhorabuena!</translation>
-  <translation id="3870527592184800997">Has vendido <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
+  <translation id="8914444864521670589">Has vendido <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
   <translation id="2882903364152951366">¿Quién lo ha comprado?</translation>
   <translation id="1337808500533761318">Lo he vendido fuera de Wallapop</translation>
   <translation id="3397082400587006706">Valora tu experiencia con <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
@@ -550,6 +550,9 @@
   <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="3649443966888874108">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
   <translation id="221922226324249098">Todas las categorías</translation>
+  <translation id="7514254130085804538">Marcar como vendido</translation>
+  <translation id="853408948668135550">Marcar como reservado</translation>
+  <translation id="7585826646011739428">Editar</translation>
   <translation id="7990122896525380062">Selecciona otra marca</translation>
   <translation id="6589788805402268888">Selecciona una marca predefinida</translation>
   <translation id="6806883447514569994">Tu centro de ayuda</translation>
@@ -560,4 +563,5 @@
   <translation id="5871405940994162095">Ayuda o incidencia:</translation>
   <translation id="4039809737462883261">Lunes a jueves de 10:00 a 18:00</translation>
   <translation id="4911360466860911169">Viernes de 09:00 a 15:00</translation>
+  <translation id="4123995928509826820">Ver historial del vehículo</translation>
 </translationbundle>

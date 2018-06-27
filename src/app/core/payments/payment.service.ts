@@ -52,98 +52,21 @@ export class PaymentService {
   }
 
   public getPacks(): Observable<Packs> {
-    const packsResponse: Packs = {
-      cityBump: [],
-      countryBump: [],
-      listings: []
-    };
-
     return this.http.get(this.API_URL + '/packs')
       .map((r: Response) => r.json())
       .flatMap((packs: PackResponse[]) => {
         const sortedPacks = this.sortPacksByQuantity(packs);
-        return this.getProducts()
-          .map((products: Products) => {
-            const values = _.groupBy(sortedPacks, (pack) => {
-              return Object.keys(pack.benefits)[0];
-            });
-            const mins = _.mapValues(values, (packsArray) => {
-              return _.min(packsArray.map((pack) => {
-                return _.values(pack.benefits)[0];
-              }));
-            });
-            sortedPacks.forEach((pack: PackResponse) => {
-              const benefitsId: string = Object.keys(pack.benefits)[0];
-              const name: string = PACKS_TYPES[products[benefitsId].name] ? PACKS_TYPES[products[benefitsId].name] : '';
-              const baseQuantity = mins[benefitsId];
-              const responsePrice: number = packsResponse[name][0] == null ? +pack.price : packsResponse[name][0].price;
-              const basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;
-              const formattedPack: Pack = new Pack(
-                pack.id,
-                pack.benefits[benefitsId],
-                +pack.price,
-                pack.currency,
-                name
-              );
-              formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
-
-              if (products[benefitsId].name === 'NATIONAL_BUMP') {
-                packsResponse.countryBump.push(formattedPack);
-              } else if (products[benefitsId].name === 'BUMP') {
-                packsResponse.cityBump.push(formattedPack);
-              }
-            });
-            return packsResponse;
-          });
-      });
+        return this.preparePacks(sortedPacks);
+      }
+    );
   }
 
   public getSubscriptionPacks(): Observable<Packs> {
-    const packsResponse: Packs = {
-      cityBump: [],
-      countryBump: [],
-      listings: []
-    };
-
     return this.http.get(this.API_URL + '/subscription/packs')
       .map((r: Response) => r.json())
       .flatMap((packs: PackResponse[]) => {
         const sortedPacks = this.sortPacksByQuantity(packs);
-        return this.getProducts()
-          .map((products: Products) => {
-            const values = _.groupBy(sortedPacks, (pack) => {
-              return Object.keys(pack.benefits)[0];
-            });
-            const mins = _.mapValues(values, (packsArray) => {
-              return _.min(packsArray.map((pack) => {
-                return _.values(pack.benefits)[0];
-              }));
-            });
-            sortedPacks.forEach((pack: PackResponse) => {
-              const benefitsId: string = Object.keys(pack.benefits)[0];
-              const name: string = PACKS_TYPES[products[benefitsId].name] ? PACKS_TYPES[products[benefitsId].name] : '';
-              const baseQuantity = mins[benefitsId];
-              const responsePrice: number = packsResponse[name][0] == null ? +pack.price : packsResponse[name][0].price;
-              const basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;
-              const formattedPack: Pack = new Pack(
-                pack.id,
-                pack.benefits[benefitsId],
-                +pack.price,
-                pack.currency,
-                name
-              );
-              formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
-
-              if (products[benefitsId].name === 'NATIONAL_BUMP') {
-                packsResponse.countryBump.push(formattedPack);
-              } else if (products[benefitsId].name === 'BUMP') {
-                packsResponse.cityBump.push(formattedPack);
-              } else if (products[benefitsId].name === 'LISTINGS') {
-                packsResponse.listings.push(formattedPack);
-              }
-            });
-            return packsResponse;
-          });
+        return this.preparePacks(sortedPacks);
       });
   }
 
@@ -199,6 +122,50 @@ export class PaymentService {
   public deleteBillingInfo(billingInfoId: string): Observable<any> {
     return this.http.delete(this.API_URL + '/billing-info/' + billingInfoId)
       .map((r: Response) => r.json());
+  }
+
+  private preparePacks(sortedPacks) {
+    const packsResponse: Packs = {
+      cityBump: [],
+      countryBump: [],
+      listings: []
+    };
+
+    return this.getProducts()
+      .map((products: Products) => {
+        const values = _.groupBy(sortedPacks, (pack) => {
+          return Object.keys(pack.benefits)[0];
+        });
+        const mins = _.mapValues(values, (packsArray) => {
+          return _.min(packsArray.map((pack) => {
+            return _.values(pack.benefits)[0];
+          }));
+        });
+        sortedPacks.forEach((pack: PackResponse) => {
+          const benefitsId: string = Object.keys(pack.benefits)[0];
+          const name: string = PACKS_TYPES[products[benefitsId].name] ? PACKS_TYPES[products[benefitsId].name] : '';
+          const baseQuantity = mins[benefitsId];
+          const responsePrice: number = packsResponse[name][0] == null ? +pack.price : packsResponse[name][0].price;
+          const basePrice: number = (pack.benefits[benefitsId] === baseQuantity ? +pack.price : responsePrice) / baseQuantity;
+          const formattedPack: Pack = new Pack(
+            pack.id,
+            pack.benefits[benefitsId],
+            +pack.price,
+            pack.currency,
+            name
+          );
+          formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
+
+          if (products[benefitsId].name === 'NATIONAL_BUMP') {
+            packsResponse.countryBump.push(formattedPack);
+          } else if (products[benefitsId].name === 'BUMP') {
+            packsResponse.cityBump.push(formattedPack);
+          } else if (products[benefitsId].name === 'LISTINGS') {
+            packsResponse.listings.push(formattedPack);
+          }
+        });
+        return packsResponse;
+      });
   }
 
   private sortPacksByQuantity(packs: PackResponse[]): PackResponse[] {

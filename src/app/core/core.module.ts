@@ -25,7 +25,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { ReviewService } from './review/review.service';
 import { PrivacyService } from './privacy/privacy.service';
 import { ConnectionService } from './connection/connection.service';
-import { PurchaseService } from './payments/purchase.service';
 
 @NgModule({
   imports: [
@@ -69,8 +68,7 @@ export class CoreModule {
         ReviewService,
         AdService,
         PrivacyService,
-        ConnectionService,
-        PurchaseService
+        ConnectionService
       ]
     };
   }

@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { EventEmitter, Injectable, HostListener } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
@@ -12,7 +12,6 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
-import { ISubscription } from 'rxjs/Subscription';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -27,7 +26,6 @@ export class XmppService {
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
-  private sentAckSubscription: ISubscription;
   private unreadMessages = [];
   public totalUnreadMessages = 0;
   public receivedReceipts = [];
@@ -147,7 +145,7 @@ export class XmppService {
       let messagesCount = 0;
       setTimeout(() => {
         if (messagesCount === 0) {
-          query.then((response) => {
+            query.then(() => {
             return observer.next({
               data: [],
               meta: {
@@ -169,7 +167,7 @@ export class XmppService {
               messages.push(builtMessage);
               if (this.messageFromSelf(builtMessage) && builtMessage.status === null) {
                 builtMessage.status = messageStatus.SENT;
-            }
+              }
             }
           }
           if (message.receivedId) {
@@ -234,7 +232,7 @@ export class XmppService {
       const index: number = this.confirmedMessages.indexOf(message.id);
       if (index !== -1) {
         if (this.messageFromSelf(message)) {
-        message.status = messageStatus.RECEIVED;
+          message.status = messageStatus.RECEIVED;
         }
         this.confirmedMessages.splice(index, 1);
       }
@@ -316,6 +314,13 @@ export class XmppService {
     this.client.use(this.thirdVoicePlugin);
   }
 
+  public reconnectClient() {
+    if (!this.clientConnected) {
+      this.client.connect();
+      this.clientConnected = true;
+    }
+  }
+
   private bindEvents(): void {
     this.client.enableKeepAlive({
       interval: 30
@@ -347,10 +352,7 @@ export class XmppService {
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      if (!this.clientConnected) {
-        this.client.connect();
-        this.clientConnected = true;
-      }
+      this.reconnectClient();
     });
 
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
@@ -366,7 +368,7 @@ export class XmppService {
       );
       const replaceTimestamp = !message.timestamp || message.carbonSent;
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp);
-      if (message.from !== this.currentJid && message.requestReceipt) {
+      if (message.from !== this.currentJid && message.requestReceipt && !message.carbon) {
         this.sendMessageDeliveryReceipt(message.from, message.id, message.thread);
       }
     }
@@ -389,12 +391,12 @@ export class XmppService {
       message.status = messageStatus.RECEIVED;
       this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
     }
-    if (message.sentReceipt) {
+    if (!message.carbon && message.sentReceipt) {
       message.status = messageStatus.SENT;
       messageId = message.sentReceipt.id;
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
-    if (message.readReceipt) {
+    if (!message.carbon && message.readReceipt) {
       message.status = messageStatus.READ;
       this.eventService.emit(EventService.MESSAGE_READ, message.thread);
     } else {
@@ -405,13 +407,17 @@ export class XmppService {
   }
 
   private sendMessageDeliveryReceipt(to: any, id: string, thread: string) {
-    this.client.sendMessage({
-      to: to,
-      type: 'chat',
-      thread: thread,
-      received: {
-        xmlns: 'urn:xmpp:receipts',
-        id: id
+    this.persistencyService.findMessage(id).subscribe(() => {}, (error) => {
+      if (error.reason === 'missing') {
+        this.client.sendMessage({
+          to: to,
+          type: 'chat',
+          thread: thread,
+          received: {
+            xmlns: 'urn:xmpp:receipts',
+            id: id
+          }
+        });
       }
     });
   }

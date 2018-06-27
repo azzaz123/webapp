@@ -50,6 +50,7 @@ export class AppComponent implements OnInit {
   private previousUrl: string;
   private currentUrl: string;
   private previousSlug: string;
+  private sendPresenceInterval = 240000;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -138,6 +139,7 @@ export class AppComponent implements OnInit {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
       this.userService.me().subscribe(
         (user: User) => {
+          this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
           this.xmppService.connect(user.id, accessToken);
           this.userService.setPermission(user.type);
           this.conversationService.init().subscribe(() => {
@@ -200,7 +202,12 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeEventClientDisconnect() {
-    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => this.conversationService.resetCache());
+    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => {
+      if (this.userService.isLogged && this.connectionService.isConnected) {
+        this.xmppService.reconnectClient();
+      }
+      this.conversationService.resetCache();
+    });
   }
 
   private subscribeEventItemUpdated() {

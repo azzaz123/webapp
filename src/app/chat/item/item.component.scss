@@ -57,7 +57,6 @@
       }
       width: calc(50% - 10px);
     }
-    
     /deep/
     .btn-reserve {
       font-size: 0.75rem;
@@ -86,21 +85,39 @@
       max-height: 44px;
       overflow: hidden;
     }
-    .price {
-      font-size: $font-size;
-      color: $grey-900;
+    .card-item-info {
+      display: flex;
+      flex-direction: row;
+      .price {
+        font-size: $font-size;
+        color: $grey-900;
+        flex-grow: 1;
+      }
+      .stats {
+        font-size: $font-size-XS;
+        color: $grey-300;
+        line-height: 24px;
+        flex-grow: 0;
+        mat-icon {
+          height: 14px;
+          width: 17px;
+          margin: 0 $spacing-XS;
+          margin-right: 2px;
+          display: inline-flex;
+          vertical-align: sub;
+        }
+      }
     }
-    .stats {
-      font-size: $font-size-XS;
-      color: $grey-300;
-      line-height: 24px;
-      mat-icon {
-        height: 14px;
-        width: 17px;
-        margin: 0 $spacing-XS;
-        margin-right: 2px;
-        display: inline-flex;
-        vertical-align: sub;
+
+    .card-external-link{
+      hr {
+        border: 0;
+        margin: $spacing-S 0;
+        border-top: 1px solid $grey-50;
+        height: 1px;
+      }
+      a {
+        text-decoration: underline;
       }
     }
   }

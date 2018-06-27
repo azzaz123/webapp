@@ -57,12 +57,13 @@
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.ts:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source><source>app/dashboard/dashboard.component.ts:46</source>Congratulations!</msg>
-  <msg id="3870527592184800997"><source>app/shared/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
-  <msg id="2882903364152951366"><source>app/shared/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
-  <msg id="1337808500533761318"><source>app/shared/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
-  <msg id="2286494898080570401"><source>app/shared/modals/sold-modal/sold-modal.component.ts:33</source>Thanks</msg>
-  <msg id="2928844379959000123"><source>app/shared/modals/sold-modal/sold-modal.component.ts:34</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
-  <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.ts:35</source>Continue</msg>
+  <msg id="8914444864521670589"><source>app/shared/modals/sold-modal/sold-modal.component.ts:7,8</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph>
+    </msg>
+  <msg id="2882903364152951366"><source>app/shared/modals/sold-modal/sold-modal.component.ts:10</source>Who bought this from you?</msg>
+  <msg id="1337808500533761318"><source>app/shared/modals/sold-modal/sold-modal.component.ts:25</source>I didn&apos;t sell this on wallapop</msg>
+  <msg id="2286494898080570401"><source>app/shared/modals/sold-modal/sold-modal.component.ts:37</source>Thanks</msg>
+  <msg id="2928844379959000123"><source>app/shared/modals/sold-modal/sold-modal.component.ts:38</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
+  <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.ts:39</source>Continue</msg>
   <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.ts:7</source><source>app/shared/process-all-button/process-all-button.component.ts:12</source><source>app/calls/calls.component.ts:28</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.ts:8</source>This will process all the elements in this page.</msg>
   <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.ts:11</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source><source>app/catalog/checkout/checkout-pro/range-datepicker/range-datepicker.component.ts:23</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:31</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:42</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:53</source><source>app/profile/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:5</source>Cancel</msg>
@@ -105,6 +106,9 @@
   <msg id="2874924373232293084"><source>app/chat/item/item.component.ts:17</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:27</source><source>app/catalog/list/selected-items/selected-items.component.ts:19</source>Reserve</msg>
   <msg id="8016649850785953911"><source>app/chat/item/item.component.ts:18</source>Unreserve</msg>
   <msg id="4338022632676445411"><source>app/chat/item/item.component.ts:20</source><source>app/chat/item/item-sold/item-sold.component.ts:3</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:25</source>Sold</msg>
+  <msg id="4123995928509826820"><source>app/chat/item/item.component.ts:36,38</source>
+        Check its full history
+      </msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/chat/user-detail/user-detail.component.ts:6</source><source>app/chat/user-card/user-card.component.ts:14</source><source>app/calls/user-card-calls/user-card-calls.component.ts:10</source><ph name="DISTANCE"><ex>{{user.itemDistance | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you</msg>
   <msg id="9119757647796405986"><source>app/chat/user-detail/user-detail.component.ts:7</source><source>app/chat/user-card/user-card.component.ts:15</source><source>app/calls/user-card-calls/user-card-calls.component.ts:11</source>No location</msg>
@@ -377,6 +381,9 @@
         </msg>
   <msg id="428164738594731840"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:42,43</source>
           Cancel</msg>
+  <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:62</source>Mark as sold</msg>
+  <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:65</source>Mark as reserved</msg>
+  <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:68</source>Edit</msg>
   <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:83</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:84</source>Do you really want to cancel the autorenew for this item?</msg>
   <msg id="2807800733729323332"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:88</source>Yes</msg>

@@ -90,11 +90,10 @@ describe('App', () => {
         },
         {
           provide: XmppService, useValue: {
-          connect() {
-          },
-          disconnect() {
+          connect() {},
+          disconnect() {},
+          reconnectClient() {}
           }
-        }
         },
         ErrorsService,
         MockBackend,
@@ -107,6 +106,7 @@ describe('App', () => {
           },
           logout() {
           },
+          sendUserPresenceInterval() {},
           setPermission() {},
           isProfessional() {
             return Observable.of(false);
@@ -277,6 +277,15 @@ describe('App', () => {
         expect(conversationService.init).toHaveBeenCalledTimes(1);
       });
 
+      it('should call userService.sendUserPresenceInterval', () => {
+        spyOn(userService, 'sendUserPresenceInterval');
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(userService.sendUserPresenceInterval).toHaveBeenCalled();
+      });
+
       it('should call conversationService.init twice if user is professional', () => {
         spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
 
@@ -407,6 +416,32 @@ describe('App', () => {
         expect(conversationService.resetCache).toHaveBeenCalledTimes(1);
       });
 
+      it('should call xmppService.clientReconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
+        spyOn(xmppService, 'reconnectClient');
+        connectionService.isConnected = true;
+        Object.defineProperty(userService, 'isLogged', {
+          get() {
+            return true;
+          }
+        });
+
+        component.ngOnInit();
+        eventService.emit(EventService.CLIENT_DISCONNECTED);
+
+        expect(xmppService.reconnectClient).toHaveBeenCalled();
+      });
+
+    });
+
+    it('should NOT call userService.sendUserPresenceInterval is the user has not successfully logged in', () => {
+      spyOn(userService, 'me').and.returnValue(Observable.throw({}));
+      spyOn(errorsService, 'show');
+      spyOn(userService, 'sendUserPresenceInterval');
+
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+      expect(userService.sendUserPresenceInterval).not.toHaveBeenCalled();
     });
 
     it('should logout the user and show the error if token is expired', fakeAsync(() => {

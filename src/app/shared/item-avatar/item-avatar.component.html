@@ -6,7 +6,7 @@
   <span class="sold" *ngIf="item?.sold">
     <mat-icon svgIcon="sold"></mat-icon>
   </span>
-  <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured">
+  <span class="reserved" *ngIf="item?.reserved && !item?.sold && !item?.featured && !item?.purchases">
     <mat-icon svgIcon="reserved"></mat-icon>
   </span>
   <span class="featured"
