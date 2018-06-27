@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-12 selector-container" *ngIf="uploadForm.value?.operation">
+      <div class="col-sm-12 selector-container">
         <h3 i18n>Type of space</h3>
         <div ngbRadioGroup name="radioBasic" formControlName="type">
           <label ngbButtonLabel class="btn selector" *ngFor="let type of types">
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <div class="form-group">
           <label for="price" i18n>Price</label>
           <input i18n-placeholder placeholder="(don't go crazy)"
@@ -41,7 +41,7 @@
                      [options]="currencies" noFilter="10"></ng-select>
         </div>
       </div>
-      <div class="col-sm-2">
+      <div class="col-sm-3">
         <div class="form-group">
           <label for="surface" i18n>Area</label>
           <input placeholder="m2"

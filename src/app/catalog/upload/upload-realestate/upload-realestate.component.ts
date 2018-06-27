@@ -88,15 +88,18 @@ export class UploadRealestateComponent implements OnInit {
     this.realestateKeysService.getExtras().subscribe((extras: Key[]) => {
       this.extras = extras;
     });
-    this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => {
-      this.realestateKeysService.getTypes(operation).subscribe((types: Key[]) => {
-        this.types = types;
-      });
-    });
+    this.getTypes('rent');
+    this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => this.getTypes(operation));
     this.uploadForm.get('location').valueChanges.subscribe((location: Coordinate) => {
       if (location.latitude && location.longitude) {
         this.coordinates = location;
       }
+    });
+  }
+
+  private getTypes(operation: string) {
+    this.realestateKeysService.getTypes(operation).subscribe((types: Key[]) => {
+      this.types = types;
     });
   }
 

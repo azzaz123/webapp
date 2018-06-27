@@ -252,4 +252,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('garden', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/garden.svg'));
   matIconRegistry.addSvgIcon('pool', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/pool.svg'));
   matIconRegistry.addSvgIcon('terrace', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/terrace.svg'));
+  matIconRegistry.addSvgIcon('box_room', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/box_room.svg'));
 }
