@@ -30,6 +30,9 @@
         background: url(/assets/images/urgent-background.svg) no-repeat;
         background-size: 105px;
         opacity: 0.3;
+        &.active {
+          opacity: 1;
+        }
       }
     }
   }
