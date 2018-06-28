@@ -205,6 +205,12 @@ export interface RealEstateUploadForm extends ItemUploadForm {
   elevator: boolean;
   pool: boolean;
   garden: boolean;
+  location?: {
+    address: string;
+    latitude: number;
+    longitude: number;
+    approximated_location: boolean;
+  };
 }
 
 export interface ItemsWithAvailableProductsResponse extends ItemResponse {
