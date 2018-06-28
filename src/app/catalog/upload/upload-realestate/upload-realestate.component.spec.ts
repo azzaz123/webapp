@@ -9,12 +9,13 @@ import { RealestateKeysService } from './realestate-keys.service';
 import { Observable } from 'rxjs/Observable';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Router } from '@angular/router';
-import { MOCK_ITEM_V3, UPLOAD_FORM_REALESTATE_VALUES } from '../../../../tests/item.fixtures.spec';
+import { MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { Key } from './key.interface';
 import { IOption } from 'ng-select';
 import { USER_LOCATION } from '../../../../tests/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
+import { UPLOAD_FORM_REALESTATE_VALUES } from '../../../../tests/realestate.fixtures.spec';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;

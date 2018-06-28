@@ -39,6 +39,13 @@ export interface Coordinate {
   name?: string;
 }
 
+export interface ItemLocation {
+  latitude: number;
+  longitude: number;
+  address: string;
+  approximated_location: boolean;
+}
+
 export interface Positioning {
   northeast: Coordinate;
   southwest: Coordinate;

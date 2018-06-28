@@ -863,33 +863,6 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   }
 };
 
-export const UPLOAD_FORM_REALESTATE_VALUES: RealEstateUploadForm = {
-  id: '',
-  category_id: '13000',
-  title: 'title',
-  sale_price: 100,
-  currency_code: 'EUR',
-  storytelling: 'storytelling',
-  operation: 'operation',
-  type: 'type',
-  condition: 'condition',
-  surface: 100,
-  rooms: 2,
-  bathrooms: 2,
-  garage: false,
-  terrace: false,
-  elevator: false,
-  pool: false,
-  garden: false,
-  images: [{'image': true}],
-  location: {
-    address: USER_LOCATION.title,
-    latitude: USER_LOCATION.approximated_latitude,
-    longitude: USER_LOCATION.approximated_longitude,
-    approximated_location: false
-  }
-};
-
 export const CITYBUMP_DURATIONS: Duration[] = [{
   'id': 'p1k3zlq6xdyo',
   'duration': 24,

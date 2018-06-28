@@ -7,11 +7,13 @@ import { UploadEvent } from '../upload-event.interface';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { Coordinate, ItemLocation } from '../../../core/geolocation/address-response.interface';
 import { Item } from '../../../core/item/item';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
+import { ItemService } from '../../../core/item/item.service';
+import { Realestate } from '../../../core/item/realestate';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -23,9 +25,9 @@ export class UploadRealestateComponent implements OnInit {
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
-  @Input() item: Item;
+  @Input() item: Realestate;
   @Input() urgentPrice: number;
-  public coordinates: Coordinate;
+  public coordinates: ItemLocation;
 
   public uploadForm: FormGroup;
   public loading: boolean;
@@ -47,6 +49,7 @@ export class UploadRealestateComponent implements OnInit {
               private router: Router,
               private errorsService: ErrorsService,
               private modalService: NgbModal,
+              private itemService: ItemService,
               private trackingService: TrackingService) {
     this.uploadForm = fb.group({
       id: '',
@@ -78,7 +81,29 @@ export class UploadRealestateComponent implements OnInit {
 
   ngOnInit() {
     this.getOptions();
-    this.detectFormChanges();
+    if (this.item) {
+      this.uploadForm.patchValue({
+        id: this.item.id,
+        title: this.item.title,
+        sale_price: this.item.salePrice,
+        currency_code: this.item.currencyCode,
+        storytelling: this.item.description,
+        category_id: this.item.categoryId.toString(),
+        operation: this.item.operation,
+        type: this.item.type,
+        condition: this.item.condition,
+        surface: this.item.surface,
+        rooms: this.item.rooms,
+        bathrooms: this.item.bathrooms,
+        garage: this.item.garage,
+        terrace: this.item.terrace,
+        elevator: this.item.elevator,
+        pool: this.item.pool,
+        garden: this.item.garden,
+        location: this.item.location
+      });
+      this.detectFormChanges();
+    }
   }
 
   private getOptions() {
@@ -93,11 +118,18 @@ export class UploadRealestateComponent implements OnInit {
     });
     this.getTypes('rent');
     this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => this.getTypes(operation));
-    this.uploadForm.get('location').valueChanges.subscribe((location: Coordinate) => {
+    this.uploadForm.get('location').valueChanges.subscribe((location: ItemLocation) => {
       if (location.latitude && location.longitude) {
         this.coordinates = location;
+        if (this.item) {
+          this.updateLocation()
+        }
       }
     });
+  }
+
+  private updateLocation() {
+    this.itemService.updateRealEstateLocation(this.item.id, this.coordinates).subscribe();
   }
 
   private getTypes(operation: string) {

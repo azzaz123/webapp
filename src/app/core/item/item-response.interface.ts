@@ -97,6 +97,22 @@ export interface CarContent extends ItemContent {
   version?: string;
 }
 
+export interface RealestateContent extends ItemContent {
+   operation?: string;
+   type?: string;
+   condition?: string;
+   surface?: number;
+   bathrooms?: number;
+   rooms?: number;
+   garage?: boolean;
+   terrace?: boolean;
+   elevator?: boolean;
+   pool?: boolean;
+   garden?: boolean;
+   storytelling?: string;
+   location?: any;
+}
+
 export interface ItemsData {
   data: Item[];
   init: number;
