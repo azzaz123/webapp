@@ -453,8 +453,8 @@ export class ItemService extends ResourceService {
 
   public get(id: string): Observable<Item> {
     return this.http.get(this.API_URL + `/${id}`)
-    //.map((r: Response) => r.json())
-      .map(_ => REALESTATE_DATA) // TODO: remove it when api works
+    .map((r: Response) => r.json())
+    // .map(_ => REALESTATE_DATA) // TODO: remove it when api works
     .map((r: any) => this.mapRecordData(r))
     .catch(() => {
       return Observable.of(this.getFakeItem(id));

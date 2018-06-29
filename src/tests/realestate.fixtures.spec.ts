@@ -1,6 +1,7 @@
 import { USER_LOCATION } from './user.fixtures.spec';
 import { RealEstateUploadForm } from '../app/core/item/item-response.interface';
 import { Realestate } from '../app/core/item/realestate';
+import { ITEM_ID } from './item.fixtures.spec';
 
 export const REALESTATE_CONTENT_DATA = {
   'id': '9g0j2rev6ymw',
@@ -47,13 +48,6 @@ export const REALESTATE_CONTENT_DATA = {
   'bathrooms': 2,
   'location': {
     'address': 'España, Barcelona',
-    'city': 'Barcelona',
-    'country': 'Spain',
-    'region': 'Cataluña',
-    'region2': 'Barcelona',
-    'postal_code': '08007',
-    'approximated_latitude': 41.38804,
-    'approximated_longitude': 2.17001,
     'approximated_location': true,
     'latitude': 41.38804,
     'longitude': 2.17001
@@ -73,7 +67,7 @@ export const REALESTATE_DATA = {
 };
 
 export const UPLOAD_FORM_REALESTATE_VALUES: RealEstateUploadForm = {
-  id: '',
+  id: ITEM_ID,
   category_id: '13000',
   title: 'title',
   sale_price: 100,

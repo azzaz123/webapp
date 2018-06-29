@@ -9,13 +9,13 @@ import { RealestateKeysService } from './realestate-keys.service';
 import { Observable } from 'rxjs/Observable';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { Router } from '@angular/router';
-import { MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { Key } from './key.interface';
 import { IOption } from 'ng-select';
-import { USER_LOCATION } from '../../../../tests/user.fixtures.spec';
+import { IMAGE, USER_LOCATION } from '../../../../tests/user.fixtures.spec';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
-import { UPLOAD_FORM_REALESTATE_VALUES } from '../../../../tests/realestate.fixtures.spec';
+import { MOCK_REALESTATE, UPLOAD_FORM_REALESTATE_VALUES } from '../../../../tests/realestate.fixtures.spec';
+import { ItemService } from '../../../core/item/item.service';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -25,6 +25,7 @@ describe('UploadRealestateComponent', () => {
   let trackingService: TrackingService;
   let realestateKeysService: RealestateKeysService;
   let modalService: NgbModal;
+  let itemService: ItemService;
   const RESPONSE: Key[] = [{id: 'test', icon_id: 'test', text: 'test'}];
   const RESPONSE_OPTION: IOption[] = [{value: 'test', label: 'test'}];
   const componentInstance: any = {};
@@ -74,6 +75,13 @@ describe('UploadRealestateComponent', () => {
             };
           }
         }
+        },
+        {
+          provide: ItemService, useValue: {
+          updateRealEstateLocation() {
+            return Observable.of({});
+          }
+        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -89,6 +97,7 @@ describe('UploadRealestateComponent', () => {
     trackingService = TestBed.get(TrackingService);
     realestateKeysService = TestBed.get(RealestateKeysService);
     modalService = TestBed.get(NgbModal);
+    itemService = TestBed.get(ItemService);
   });
 
   describe('ngOnInit', () => {
@@ -138,18 +147,78 @@ describe('UploadRealestateComponent', () => {
       expect(component.types).toEqual(RESPONSE);
     });
 
-    it('should set coordinates when location change', () => {
+    describe('location change', () => {
+
       const USER_LOCATION_COORDINATES: any = {
         latitude: USER_LOCATION.approximated_latitude,
         longitude: USER_LOCATION.approximated_longitude,
         address: USER_LOCATION.title,
         approximated_location: false
       };
-      fixture.detectChanges();
 
-      component.uploadForm.get('location').patchValue(USER_LOCATION_COORDINATES);
+      it('should set coordinates when location change', () => {
+        fixture.detectChanges();
 
-      expect(component.coordinates).toEqual(USER_LOCATION_COORDINATES);
+        component.uploadForm.get('location').patchValue(USER_LOCATION_COORDINATES);
+
+        expect(component.coordinates).toEqual(USER_LOCATION_COORDINATES);
+      });
+
+      it('should call updateRealEstateLocation when location change if in edit mode', () => {
+        component.item = MOCK_REALESTATE;
+        spyOn(itemService, 'updateRealEstateLocation').and.callThrough();
+        fixture.detectChanges();
+
+        component.uploadForm.get('location').patchValue(USER_LOCATION_COORDINATES);
+
+        expect(itemService.updateRealEstateLocation).toHaveBeenCalledWith(MOCK_REALESTATE.id, USER_LOCATION_COORDINATES);
+      });
+    });
+
+    describe('edit mode', () => {
+
+      it('should set form value', () => {
+        component.item = MOCK_REALESTATE;
+
+        component.ngOnInit();
+
+        expect(component.uploadForm.value).toEqual({
+          id: MOCK_REALESTATE.id,
+          title: MOCK_REALESTATE.title,
+          sale_price: MOCK_REALESTATE.salePrice,
+          currency_code: MOCK_REALESTATE.currencyCode,
+          storytelling: MOCK_REALESTATE.description,
+          category_id: MOCK_REALESTATE.categoryId.toString(),
+          operation: MOCK_REALESTATE.operation,
+          type: MOCK_REALESTATE.type,
+          condition: MOCK_REALESTATE.condition,
+          surface: MOCK_REALESTATE.surface,
+          rooms: MOCK_REALESTATE.rooms,
+          bathrooms: MOCK_REALESTATE.bathrooms,
+          garage: MOCK_REALESTATE.garage,
+          terrace: MOCK_REALESTATE.terrace,
+          elevator: MOCK_REALESTATE.elevator,
+          pool: MOCK_REALESTATE.pool,
+          garden: MOCK_REALESTATE.garden,
+          location: MOCK_REALESTATE.location,
+          images: []
+        });
+      });
+
+      it('should emit changed event if form values changes', () => {
+        let formChanged: boolean;
+        component.item = MOCK_REALESTATE;
+        component.onFormChanged.subscribe((value: boolean) => {
+          formChanged = value;
+        });
+        component.ngOnInit();
+        component.uploadForm.get('images').patchValue([IMAGE]);
+
+        component.uploadForm.get('title').patchValue('new title');
+        fixture.detectChanges();
+
+        expect(formChanged).toBeTruthy();
+      });
     });
 
   });
@@ -196,7 +265,7 @@ describe('UploadRealestateComponent', () => {
 
   describe('onUploaded', () => {
     it('should redirect', () => {
-      component.item = MOCK_ITEM_V3;
+      component.item = MOCK_REALESTATE;
       const uploadedEvent = {
         action: 'updated',
         response: {
@@ -207,11 +276,11 @@ describe('UploadRealestateComponent', () => {
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
     });
 
     it('should redirect with onHold true', () => {
-      component.item = MOCK_ITEM_V3;
+      component.item = MOCK_REALESTATE;
       component.item.flags.onhold = true;
       const uploadedEvent = {
         action: 'updated',
