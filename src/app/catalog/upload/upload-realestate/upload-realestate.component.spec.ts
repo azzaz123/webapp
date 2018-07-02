@@ -13,6 +13,7 @@ import { MOCK_ITEM_V3, UPLOAD_FORM_REALESTATE_VALUES } from '../../../../tests/i
 import { Key } from './key.interface';
 import { IOption } from 'ng-select';
 import { USER_LOCATION } from '../../../../tests/user.fixtures.spec';
+import { REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -141,13 +142,13 @@ describe('UploadRealestateComponent', () => {
 
   describe('onSubmit', () => {
     it('should has category set by default', () => {
-      expect(component.uploadForm.get('category_id').value).toBe('13000');
+      expect(component.uploadForm.get('category_id').value).toBe(REALESTATE_CATEGORY);
     });
 
     it('should emit uploadEvent if form is valid', () => {
       let input: any;
       component.uploadForm.patchValue(UPLOAD_FORM_REALESTATE_VALUES);
-      expect(component.uploadForm.valid).toBeTruthy();
+      expect(component.uploadForm.valid).toBe(true);
       component.uploadEvent.subscribe((i: any) => {
         input = i;
       });
@@ -158,15 +159,15 @@ describe('UploadRealestateComponent', () => {
         type: 'create',
         values: component.uploadForm.value
       });
-      expect(component.loading).toBeTruthy();
+      expect(component.loading).toBe(true);
     });
 
     it('should set dirty invalid fields', () => {
       component.onSubmit();
 
-      expect(component.uploadForm.get('title').dirty).toBeTruthy();
-      expect(component.uploadForm.get('sale_price').dirty).toBeTruthy();
-      expect(component.uploadForm.get('location.address').dirty).toBeTruthy();
+      expect(component.uploadForm.get('title').dirty).toBe(true);
+      expect(component.uploadForm.get('sale_price').dirty).toBe(true);
+      expect(component.uploadForm.get('location.address').dirty).toBe(true);
     });
 
     it('should show image error', () => {
@@ -219,7 +220,7 @@ describe('UploadRealestateComponent', () => {
 
       component.onError('response');
 
-      expect(component.loading).toBeFalsy();
+      expect(component.loading).toBe(false);
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
     });
   });
@@ -228,12 +229,12 @@ describe('UploadRealestateComponent', () => {
     it('should set as urgent when checkbox is selected', () => {
       component.selectUrgent(true);
 
-      expect(component.isUrgent).toBeTruthy();
+      expect(component.isUrgent).toBe(true);
     });
     it('should set as not urgent when checkbox is unselected', () => {
       component.selectUrgent(false);
 
-      expect(component.isUrgent).toBeFalsy();
+      expect(component.isUrgent).toBe(false);
     });
   });
 

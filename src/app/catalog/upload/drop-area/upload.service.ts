@@ -3,6 +3,7 @@ import { UploadFile, UploadInput } from 'ngx-uploader';
 import { environment } from '../../../../environments/environment';
 import { Headers, RequestOptions } from '@angular/http';
 import { HttpService } from '../../../core/http/http.service';
+import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 @Injectable()
 export class UploadService {
@@ -15,9 +16,9 @@ export class UploadService {
 
   public createItemWithFirstImage(values: any, file: UploadFile) {
     let inputEvent: UploadInput;
-    if (values.category_id === '100') {
+    if (values.category_id === CARS_CATEGORY) {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/cars', 'item_car');
-    } else if (values.category_id === '13000') {
+    } else if (values.category_id === REALESTATE_CATEGORY) {
         inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/real_estate', 'item_real_estate');
     } else {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
@@ -26,7 +27,7 @@ export class UploadService {
   }
 
   private buildUploadEvent(values: any, file: UploadFile, url: string, fieldName: string): UploadInput {
-    if (values.category_id !== '13000') {
+    if (values.category_id !== REALESTATE_CATEGORY) {
       delete values.location;
     } else {
       delete values.id;

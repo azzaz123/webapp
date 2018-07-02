@@ -10,6 +10,7 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { Item } from '../../../core/item/item';
 import * as _ from 'lodash';
+import { REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -47,7 +48,7 @@ export class UploadRealestateComponent implements OnInit {
               private trackingService: TrackingService) {
     this.uploadForm = fb.group({
       id: '',
-      category_id: '13000',
+      category_id: REALESTATE_CATEGORY,
       images: [[], [Validators.required]],
       title: ['', [Validators.required]],
       sale_price: ['', [Validators.required, Validators.min(0), Validators.max(999999999)]],

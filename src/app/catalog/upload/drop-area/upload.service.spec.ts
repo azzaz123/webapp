@@ -8,6 +8,7 @@ import { AccessTokenService } from '../../../core/http/access-token.service';
 import { HttpService } from '../../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
+import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 describe('UploadService', () => {
 
@@ -64,7 +65,7 @@ describe('UploadService', () => {
         const VALUES: any = {
           test: 'hola',
           hola: 'hey',
-          category_id: '100'
+          category_id: CARS_CATEGORY
         };
         service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
         expect(response).toEqual({
@@ -87,7 +88,7 @@ describe('UploadService', () => {
         const VALUES: any = {
           test: 'hola',
           hola: 'hey',
-          category_id: '100'
+          category_id: CARS_CATEGORY
         };
         const VALUES_WITH_LOCATION: any = {
           ...VALUES,
@@ -153,7 +154,7 @@ describe('UploadService', () => {
 
         const VALUES: any = {
           ...VALUES_FINAL,
-          category_id: '13000',
+          category_id: REALESTATE_CATEGORY,
           id: 100
         };
 

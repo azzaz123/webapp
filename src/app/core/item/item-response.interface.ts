@@ -193,7 +193,6 @@ export interface CarUploadForm extends ItemUploadForm {
 
 export interface RealEstateUploadForm extends ItemUploadForm {
   storytelling: string;
-  id?: string;
   operation: string;
   type: string;
   condition: string;
@@ -205,6 +204,7 @@ export interface RealEstateUploadForm extends ItemUploadForm {
   elevator: boolean;
   pool: boolean;
   garden: boolean;
+  id?: string;
 }
 
 export interface ItemsWithAvailableProductsResponse extends ItemResponse {
