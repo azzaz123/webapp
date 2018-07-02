@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { Product } from '../../core/item/item-response.interface';
 import { UserService } from '../../core/user/user.service';
+import { CARS_CATEGORY } from '../../core/item/item-categories';
 
 @Component({
   selector: 'tsl-upload',
@@ -20,7 +21,7 @@ export class UploadComponent implements OnInit {
   ngOnInit() {
     this.userService.isProfessional().subscribe((isProfessional: boolean) => {
       if (isProfessional) {
-        this.setCategory('100');
+        this.setCategory(CARS_CATEGORY);
       }
     });
   }

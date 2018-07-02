@@ -16,6 +16,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { MOCK_REALESTATE, UPLOAD_FORM_REALESTATE_VALUES } from '../../../../tests/realestate.fixtures.spec';
 import { ItemService } from '../../../core/item/item.service';
+import { REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 describe('UploadRealestateComponent', () => {
   let component: UploadRealestateComponent;
@@ -119,15 +120,6 @@ describe('UploadRealestateComponent', () => {
       expect(component.conditions).toEqual(RESPONSE_OPTION);
     });
 
-    it('should call getExtras and set it', () => {
-      spyOn(realestateKeysService, 'getExtras').and.callThrough();
-
-      fixture.detectChanges();
-
-      expect(realestateKeysService.getExtras).toHaveBeenCalled();
-      expect(component.extras).toEqual(RESPONSE);
-    });
-
     it('should call getTypes and set it', () => {
       spyOn(realestateKeysService, 'getTypes').and.callThrough();
 
@@ -145,6 +137,16 @@ describe('UploadRealestateComponent', () => {
 
       expect(realestateKeysService.getTypes).toHaveBeenCalledWith('operation');
       expect(component.types).toEqual(RESPONSE);
+    });
+
+    it('should call getExtras when type change', () => {
+      spyOn(realestateKeysService, 'getExtras').and.callThrough();
+      fixture.detectChanges();
+
+      component.uploadForm.get('type').setValue('house');
+
+      expect(realestateKeysService.getExtras).toHaveBeenCalledWith('house');
+      expect(component.extras).toEqual(RESPONSE);
     });
 
     describe('location change', () => {
@@ -225,13 +227,13 @@ describe('UploadRealestateComponent', () => {
 
   describe('onSubmit', () => {
     it('should has category set by default', () => {
-      expect(component.uploadForm.get('category_id').value).toBe('13000');
+      expect(component.uploadForm.get('category_id').value).toBe(REALESTATE_CATEGORY);
     });
 
     it('should emit uploadEvent if form is valid', () => {
       let input: any;
       component.uploadForm.patchValue(UPLOAD_FORM_REALESTATE_VALUES);
-      expect(component.uploadForm.valid).toBeTruthy();
+      expect(component.uploadForm.valid).toBe(true);
       component.uploadEvent.subscribe((i: any) => {
         input = i;
       });
@@ -242,15 +244,15 @@ describe('UploadRealestateComponent', () => {
         type: 'create',
         values: component.uploadForm.value
       });
-      expect(component.loading).toBeTruthy();
+      expect(component.loading).toBe(true);
     });
 
     it('should set dirty invalid fields', () => {
       component.onSubmit();
 
-      expect(component.uploadForm.get('title').dirty).toBeTruthy();
-      expect(component.uploadForm.get('sale_price').dirty).toBeTruthy();
-      expect(component.uploadForm.get('location.address').dirty).toBeTruthy();
+      expect(component.uploadForm.get('title').dirty).toBe(true);
+      expect(component.uploadForm.get('sale_price').dirty).toBe(true);
+      expect(component.uploadForm.get('location.address').dirty).toBe(true);
     });
 
     it('should show image error', () => {
@@ -303,7 +305,7 @@ describe('UploadRealestateComponent', () => {
 
       component.onError('response');
 
-      expect(component.loading).toBeFalsy();
+      expect(component.loading).toBe(false);
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
     });
   });
@@ -312,12 +314,12 @@ describe('UploadRealestateComponent', () => {
     it('should set as urgent when checkbox is selected', () => {
       component.selectUrgent(true);
 
-      expect(component.isUrgent).toBeTruthy();
+      expect(component.isUrgent).toBe(true);
     });
     it('should set as not urgent when checkbox is unselected', () => {
       component.selectUrgent(false);
 
-      expect(component.isUrgent).toBeFalsy();
+      expect(component.isUrgent).toBe(false);
     });
   });
 

@@ -19,6 +19,7 @@ import { ITEM_CATEGORY_ID, ITEM_DATA, ITEM_DELIVERY_INFO, MOCK_ITEM } from '../.
 import { Item } from '../../../core/item/item';
 import { UserLocation } from '../../../core/user/user-response.interface';
 import { environment } from '../../../../environments/environment';
+import { REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -162,12 +163,12 @@ describe('UploadProductComponent', () => {
 
     describe('with preselected category', () => {
       beforeEach(() => {
-        component.categoryId = '13000';
+        component.categoryId = REALESTATE_CATEGORY;
         component.ngOnChanges();
       });
 
       it('should set form category_id', () => {
-        expect(component.uploadForm.get('category_id').value).toBe('13000');
+        expect(component.uploadForm.get('category_id').value).toBe(REALESTATE_CATEGORY);
       });
 
       it('should set form sale_conditions.shipping_allowed', () => {

@@ -47,6 +47,7 @@ import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
 import { REALESTATE_DATA } from '../../../tests/realestate.fixtures.spec';
 import { Realestate } from './realestate';
+import { CARS_CATEGORY, REALESTATE_CATEGORY } from './item-categories';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -433,9 +434,9 @@ export class ItemService extends ResourceService {
 
   public update(item: any): Observable<any> {
     let url: string = this.API_URL + '/';
-    if (item.category_id === '100') {
+    if (item.category_id === CARS_CATEGORY) {
       url += 'cars/'
-    } else if (item.category_id === '13000') {
+    } else if (item.category_id === REALESTATE_CATEGORY) {
       url += 'real_estate/'
     }
     const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});

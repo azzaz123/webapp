@@ -14,6 +14,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { ItemService } from '../../../core/item/item.service';
 import { Realestate } from '../../../core/item/realestate';
+import { REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 @Component({
   selector: 'tsl-upload-realestate',
@@ -53,7 +54,7 @@ export class UploadRealestateComponent implements OnInit {
               private trackingService: TrackingService) {
     this.uploadForm = fb.group({
       id: '',
-      category_id: '13000',
+      category_id: REALESTATE_CATEGORY,
       images: [[], [Validators.required]],
       title: ['', [Validators.required]],
       sale_price: ['', [Validators.required, Validators.min(0), Validators.max(999999999)]],
@@ -113,11 +114,9 @@ export class UploadRealestateComponent implements OnInit {
     this.realestateKeysService.getConditions().subscribe((conditions: IOption[]) => {
       this.conditions = conditions;
     });
-    this.realestateKeysService.getExtras().subscribe((extras: Key[]) => {
-      this.extras = extras;
-    });
     this.getTypes('rent');
     this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => this.getTypes(operation));
+    this.uploadForm.get('type').valueChanges.subscribe((type: string) => this.getExtras(type));
     this.uploadForm.get('location').valueChanges.subscribe((location: ItemLocation) => {
       if (location.latitude && location.longitude) {
         this.coordinates = location;
@@ -135,6 +134,12 @@ export class UploadRealestateComponent implements OnInit {
   private getTypes(operation: string) {
     this.realestateKeysService.getTypes(operation).subscribe((types: Key[]) => {
       this.types = types;
+    });
+  }
+
+  private getExtras(type: string) {
+    this.realestateKeysService.getExtras(type).subscribe((extras: Key[]) => {
+      this.extras = extras;
     });
   }
 
