@@ -96,18 +96,19 @@ describe('RealestateKeysService', () => {
 
   describe('getExtras', () => {
     let response: Key[];
+    const TYPE = 'house';
 
     beforeEach(fakeAsync(() => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESPONSE)});
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
 
-      service.getExtras().subscribe((r: Key[]) => {
+      service.getExtras(TYPE).subscribe((r: Key[]) => {
         response = r;
       });
     }));
 
     it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/real_estate/keys/extra', {language: 'en'});
+      expect(http.get).toHaveBeenCalledWith('api/v3/real_estate/keys/extra', {language: 'en', type: TYPE});
     });
 
     it('should return options', () => {

@@ -94,15 +94,6 @@ describe('UploadRealestateComponent', () => {
       expect(component.conditions).toEqual(RESPONSE_OPTION);
     });
 
-    it('should call getExtras and set it', () => {
-      spyOn(realestateKeysService, 'getExtras').and.callThrough();
-
-      fixture.detectChanges();
-
-      expect(realestateKeysService.getExtras).toHaveBeenCalled();
-      expect(component.extras).toEqual(RESPONSE);
-    });
-
     it('should call getTypes and set it', () => {
       spyOn(realestateKeysService, 'getTypes').and.callThrough();
 
@@ -120,6 +111,16 @@ describe('UploadRealestateComponent', () => {
 
       expect(realestateKeysService.getTypes).toHaveBeenCalledWith('operation');
       expect(component.types).toEqual(RESPONSE);
+    });
+
+    it('should call getExtras when type change', () => {
+      spyOn(realestateKeysService, 'getExtras').and.callThrough();
+      fixture.detectChanges();
+
+      component.uploadForm.get('type').setValue('house');
+
+      expect(realestateKeysService.getExtras).toHaveBeenCalledWith('house');
+      expect(component.extras).toEqual(RESPONSE);
     });
 
     it('should set coordinates when location change', () => {

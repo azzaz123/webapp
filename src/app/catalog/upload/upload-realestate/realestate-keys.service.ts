@@ -36,8 +36,8 @@ export class RealestateKeysService {
       });
   }
 
-  getExtras(): Observable<Key[]> {
-    return this.http.get(this.API_URL + '/extra', {language: this.i18n.locale})
+  getExtras(type: string): Observable<Key[]> {
+    return this.http.get(this.API_URL + '/extra', {language: this.i18n.locale, type: type})
       .map((r: Response) => r.json());
   }
 
