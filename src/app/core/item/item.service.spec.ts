@@ -607,7 +607,7 @@ describe('Service: Item', () => {
       it('should emit ITEM_UPDATED event', () => {
         service.update(ITEM_DATA).subscribe();
 
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, ITEM_DATA)
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, ITEM_DATA);
       });
     });
 

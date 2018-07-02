@@ -121,7 +121,7 @@ export class UploadRealestateComponent implements OnInit {
       if (location.latitude && location.longitude) {
         this.coordinates = location;
         if (this.item) {
-          this.updateLocation()
+          this.updateLocation();
         }
       }
     });
