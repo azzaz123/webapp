@@ -166,10 +166,16 @@
     .selector-container {
       .selector {
         margin-right: $spacing;
+        line-height: 35px;
         mat-icon {
+          @include square(48px);
+          margin-top: 5px;
           /deep/ svg {
             @include square(48px);
           }
+        }
+        span {
+          margin: 0;
         }
       }
     }
