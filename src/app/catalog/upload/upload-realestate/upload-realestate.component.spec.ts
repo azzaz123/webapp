@@ -149,34 +149,6 @@ describe('UploadRealestateComponent', () => {
       expect(component.extras).toEqual(RESPONSE);
     });
 
-    describe('location change', () => {
-
-      const USER_LOCATION_COORDINATES: any = {
-        latitude: USER_LOCATION.approximated_latitude,
-        longitude: USER_LOCATION.approximated_longitude,
-        address: USER_LOCATION.title,
-        approximated_location: false
-      };
-
-      it('should set coordinates when location change', () => {
-        fixture.detectChanges();
-
-        component.uploadForm.get('location').patchValue(USER_LOCATION_COORDINATES);
-
-        expect(component.coordinates).toEqual(USER_LOCATION_COORDINATES);
-      });
-
-      it('should call updateRealEstateLocation when location change if in edit mode', () => {
-        component.item = MOCK_REALESTATE;
-        spyOn(itemService, 'updateRealEstateLocation').and.callThrough();
-        fixture.detectChanges();
-
-        component.uploadForm.get('location').patchValue(USER_LOCATION_COORDINATES);
-
-        expect(itemService.updateRealEstateLocation).toHaveBeenCalledWith(MOCK_REALESTATE.id, USER_LOCATION_COORDINATES);
-      });
-    });
-
     describe('edit mode', () => {
 
       it('should set form value', () => {
@@ -325,6 +297,30 @@ describe('UploadRealestateComponent', () => {
 
   describe('emitLocation', () => {
     let categoryId: number;
+    const USER_LOCATION_COORDINATES: any = {
+      latitude: USER_LOCATION.approximated_latitude,
+      longitude: USER_LOCATION.approximated_longitude,
+      address: USER_LOCATION.title,
+      approximated_location: false
+    };
+
+    beforeEach(() => {
+      component.uploadForm.get('location').setValue(USER_LOCATION_COORDINATES);
+    });
+
+    it('should set coordinates when location change', () => {
+      component.emitLocation();
+
+      expect(component.coordinates).toEqual(USER_LOCATION_COORDINATES);
+    });
+
+    it('should call updateRealEstateLocation when location change if in edit mode', () => {
+      component.item = MOCK_REALESTATE;
+      spyOn(itemService, 'updateRealEstateLocation').and.callThrough();
+      component.emitLocation();
+
+      expect(itemService.updateRealEstateLocation).toHaveBeenCalledWith(MOCK_REALESTATE.id, USER_LOCATION_COORDINATES);
+    });
 
     it('should emit location updated event', () => {
       component.locationSelected.subscribe((s: number) => {
