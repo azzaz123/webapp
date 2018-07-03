@@ -16,6 +16,7 @@ export class GeolocationComponent implements OnInit, OnChanges {
   public focus: boolean;
   @Output() public newCoordinate = new EventEmitter<Coordinate>();
   @Input() value: string;
+  @Input() updateLocation = true;
   public model: any = {description: ''};
   @ViewChild('pacInputHeader') searchInputEl: ElementRef;
 
@@ -52,13 +53,15 @@ export class GeolocationComponent implements OnInit, OnChanges {
     this.geolocationService.geocode(address.item.description).subscribe((data: Coordinate) => {
       this.newCoordinate.emit(data);
 
-      const expirationDate = new Date();
-      expirationDate.setTime(expirationDate.getTime() + (15 * 60 * 1000));
-      const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
+      if (this.updateLocation) {
+        const expirationDate = new Date();
+        expirationDate.setTime(expirationDate.getTime() + (15 * 60 * 1000));
+        const cookieOptions = {expires: expirationDate, domain: '.wallapop.com'};
 
-      this.cookieService.put('searchLat', data.latitude.toString(), cookieOptions);
-      this.cookieService.put('searchLng', data.longitude.toString(), cookieOptions);
-      this.cookieService.put('searchPosName', address.item.description, cookieOptions);
+        this.cookieService.put('searchLat', data.latitude.toString(), cookieOptions);
+        this.cookieService.put('searchLng', data.longitude.toString(), cookieOptions);
+        this.cookieService.put('searchPosName', address.item.description, cookieOptions);
+      }
     });
   }
 }

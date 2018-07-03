@@ -55,13 +55,13 @@ export class LocationSelectComponent implements OnChanges {
           latitude: this.latitudeControl.value,
           longitude: this.longitudeControl.value,
           name: this.control.value
-        });
+        }, this.updateLocation);
       } else if (lat && lng) {
         modal.componentInstance.init({
           latitude: lat,
           longitude: lng,
           name: name
-        });
+        }, this.updateLocation);
       } else {
         modal.componentInstance.init();
       }

@@ -13,13 +13,15 @@ export class LocationModalComponent {
 
   public coordinates: Coordinate;
   public zoom;
+  public updateLocation = true;
 
   constructor(public activeModal: NgbActiveModal) {
   }
 
-  public init(coordinates?: Coordinate) {
+  public init(coordinates?: Coordinate, updateLocation?: boolean) {
     this.coordinates = coordinates ? coordinates : DEFAULT_COORDINATES;
     this.zoom = coordinates ? MAP_ZOOM_MARKER : MAP_ZOOM_GENERAL;
+    this.updateLocation = updateLocation;
   }
 
   public onCoordinateUpdate(newCoordinate: Coordinate) {
