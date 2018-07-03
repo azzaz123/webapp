@@ -107,6 +107,12 @@ export class UploadRealestateComponent implements OnInit {
         garden: this.item.garden,
         location: this.item.location
       });
+      this.coordinates = {
+        latitude: this.item.location.latitude,
+        longitude: this.item.location.longitude,
+        address: this.item.location.address,
+        approximated_location: this.item.location.approximated_location
+      };
       this.detectFormChanges();
     }
   }
@@ -121,14 +127,14 @@ export class UploadRealestateComponent implements OnInit {
     this.getTypes('rent');
     this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => this.getTypes(operation));
     this.uploadForm.get('type').valueChanges.subscribe((type: string) => this.getExtras(type));
-    this.uploadForm.get('location').valueChanges.subscribe((location: ItemLocation) => {
-      if (location.latitude && location.longitude) {
-        this.coordinates = location;
-        if (this.item) {
-          this.updateLocation();
-        }
-      }
-    });
+  }
+
+  public emitLocation(): void {
+    this.coordinates = this.uploadForm.value.location;
+    if (this.item) {
+      this.updateLocation();
+    }
+    this.locationSelected.emit(13000);
   }
 
   private updateLocation() {
@@ -222,10 +228,6 @@ export class UploadRealestateComponent implements OnInit {
 
   public selectUrgent(isUrgent: boolean): void {
     this.isUrgent = isUrgent;
-  }
-
-  public emitLocation(): void {
-    this.locationSelected.emit(13000);
   }
 
   preview() {
