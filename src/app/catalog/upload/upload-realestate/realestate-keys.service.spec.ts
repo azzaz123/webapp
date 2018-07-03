@@ -40,7 +40,7 @@ describe('RealestateKeysService', () => {
     }));
 
     it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/real_estate/keys/operation', {language: 'en'});
+      expect(http.get).toHaveBeenCalledWith('api/v3/real_estate/keys/operation', {language: 'en', filter: false});
     });
 
     it('should return options', () => {
