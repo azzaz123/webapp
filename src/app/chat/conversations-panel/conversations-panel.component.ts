@@ -177,7 +177,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.conversations = [];
         this.loading = false;
       }
-      this.conversationService.checkIfLastPage().subscribe();
+      this.conversationService.checkIfLastPage(this.archive).subscribe();
     });
   }
 
