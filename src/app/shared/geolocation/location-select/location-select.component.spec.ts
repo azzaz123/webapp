@@ -220,7 +220,7 @@ describe('LocationSelectComponent', () => {
         component.open(element);
         tick(LOCATION_MODAL_TIMEOUT);
 
-        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
+        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES, true);
       }));
     });
 
@@ -234,7 +234,7 @@ describe('LocationSelectComponent', () => {
         component.open(element);
         tick(LOCATION_MODAL_TIMEOUT);
 
-        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
+        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES, true);
       }));
     });
   });
