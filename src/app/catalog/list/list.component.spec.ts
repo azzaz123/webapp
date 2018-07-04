@@ -87,9 +87,6 @@ describe('ListComponent', () => {
           },
           get() {
             return Observable.of(MOCK_ITEM_V3);
-          },
-          canDoAction() {
-            return Observable.of(false);
           }
         }
         },
