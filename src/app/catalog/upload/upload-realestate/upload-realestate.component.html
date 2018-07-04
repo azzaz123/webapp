@@ -139,4 +139,9 @@
     <span *ngIf="!item" i18n>Post Ad</span>
     <span *ngIf="item" i18n>Update</span>
   </tsl-button>
+  <button type="button"
+          (click)="preview()"
+          class="btn btn-link"
+          [disabled]="!uploadForm.valid"
+          tslTrackEvent="UPLOADFORM_PREVIEW" i18n>How does it look?</button>
 </form>

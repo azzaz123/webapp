@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { UploadRealestateComponent } from './upload-realestate.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -13,6 +13,8 @@ import { MOCK_ITEM_V3, UPLOAD_FORM_REALESTATE_VALUES } from '../../../../tests/i
 import { Key } from './key.interface';
 import { IOption } from 'ng-select';
 import { USER_LOCATION } from '../../../../tests/user.fixtures.spec';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 describe('UploadRealestateComponent', () => {
@@ -22,8 +24,10 @@ describe('UploadRealestateComponent', () => {
   let router: Router;
   let trackingService: TrackingService;
   let realestateKeysService: RealestateKeysService;
+  let modalService: NgbModal;
   const RESPONSE: Key[] = [{id: 'test', icon_id: 'test', text: 'test'}];
   const RESPONSE_OPTION: IOption[] = [{value: 'test', label: 'test'}];
+  const componentInstance: any = {};
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -60,6 +64,16 @@ describe('UploadRealestateComponent', () => {
           i18nError() {
           }
         }
+        },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              result: Promise.resolve(),
+              componentInstance: componentInstance
+            };
+          }
+        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -73,7 +87,8 @@ describe('UploadRealestateComponent', () => {
     errorService = TestBed.get(ErrorsService);
     router = TestBed.get(Router);
     trackingService = TestBed.get(TrackingService);
-    realestateKeysService = TestBed.get(RealestateKeysService)
+    realestateKeysService = TestBed.get(RealestateKeysService);
+    modalService = TestBed.get(NgbModal);
   });
 
   describe('ngOnInit', () => {
@@ -250,5 +265,31 @@ describe('UploadRealestateComponent', () => {
 
       expect(categoryId).toBe(13000);
     });
+  });
+
+  describe('preview', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn(modalService, 'open').and.callThrough();
+      spyOn(component, 'onSubmit');
+      component.uploadForm.patchValue(UPLOAD_FORM_REALESTATE_VALUES);
+
+      component.preview();
+    }));
+
+    it('should open modal', () => {
+      expect(modalService.open).toHaveBeenCalledWith(PreviewModalComponent, {
+        windowClass: 'preview'
+      });
+    });
+
+    it('should set itemPreview', () => {
+      expect(componentInstance.itemPreview).toEqual(UPLOAD_FORM_REALESTATE_VALUES);
+    });
+
+    it('should submit form', fakeAsync(() => {
+      tick();
+
+      expect(component.onSubmit).toHaveBeenCalled();
+    }));
   });
 });

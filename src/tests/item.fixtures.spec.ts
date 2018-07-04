@@ -886,7 +886,8 @@ export const UPLOAD_FORM_REALESTATE_VALUES: RealEstateUploadForm = {
   location: {
     address: USER_LOCATION.title,
     latitude: USER_LOCATION.approximated_latitude,
-    longitude: USER_LOCATION.approximated_longitude
+    longitude: USER_LOCATION.approximated_longitude,
+    approximated_location: false
   }
 };
 

@@ -10,6 +10,8 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { Coordinate } from '../../../core/geolocation/address-response.interface';
 import { Item } from '../../../core/item/item';
 import * as _ from 'lodash';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 @Component({
@@ -45,6 +47,7 @@ export class UploadRealestateComponent implements OnInit {
               private realestateKeysService: RealestateKeysService,
               private router: Router,
               private errorsService: ErrorsService,
+              private modalService: NgbModal,
               private trackingService: TrackingService) {
     this.uploadForm = fb.group({
       id: '',
@@ -187,6 +190,17 @@ export class UploadRealestateComponent implements OnInit {
 
   public emitLocation(): void {
     this.locationSelected.emit(13000);
+  }
+
+  preview() {
+    const modalRef: NgbModalRef = this.modalService.open(PreviewModalComponent, {
+      windowClass: 'preview'
+    });
+    modalRef.componentInstance.itemPreview = this.uploadForm.value;
+    modalRef.result.then(() => {
+      this.onSubmit();
+    }, () => {
+    });
   }
 
 }
