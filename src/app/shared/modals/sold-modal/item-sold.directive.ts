@@ -15,7 +15,6 @@ export class ItemSoldDirective {
 
   constructor(private itemService: ItemService,
               private modalService: NgbModal,
-              private trackingService: TrackingService,
               private errorsService: ErrorsService) {}
 
   @HostListener('click') onClick() {
