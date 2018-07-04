@@ -193,7 +193,7 @@ describe('UploadRealestateComponent', () => {
         component.uploadForm.get('title').patchValue('new title');
         fixture.detectChanges();
 
-        expect(formChanged).toBeTruthy();
+        expect(formChanged).toBe(true);
       });
     });
 
@@ -319,6 +319,7 @@ describe('UploadRealestateComponent', () => {
     it('should call updateRealEstateLocation when location change if in edit mode', () => {
       component.item = MOCK_REALESTATE;
       spyOn(itemService, 'updateRealEstateLocation').and.callThrough();
+
       component.emitLocation();
 
       expect(itemService.updateRealEstateLocation).toHaveBeenCalledWith(MOCK_REALESTATE.id, USER_LOCATION_COORDINATES);
