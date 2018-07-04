@@ -178,6 +178,8 @@ export class ConversationService extends LeadService {
       .map((res: ConversationResponse[]) => {
         if (res.length === 0) {
           this.ended = true;
+        } else {
+          this.ended = false;
         }
       });
     }

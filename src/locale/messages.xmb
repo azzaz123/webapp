@@ -33,6 +33,7 @@
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:41</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:48</source>Reviews</msg>
   <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:56</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
+  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:63</source>Help</msg>
   <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
         I accept the updated privacy policy in order to continue navigating.
       </msg>
@@ -56,12 +57,13 @@
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.ts:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source><source>app/dashboard/dashboard.component.ts:46</source>Congratulations!</msg>
-  <msg id="3870527592184800997"><source>app/shared/modals/sold-modal/sold-modal.component.ts:7</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
-  <msg id="2882903364152951366"><source>app/shared/modals/sold-modal/sold-modal.component.ts:9</source>Who bought this from you?</msg>
-  <msg id="1337808500533761318"><source>app/shared/modals/sold-modal/sold-modal.component.ts:24</source>I didn&apos;t sell this on wallapop</msg>
-  <msg id="2286494898080570401"><source>app/shared/modals/sold-modal/sold-modal.component.ts:33</source>Thanks</msg>
-  <msg id="2928844379959000123"><source>app/shared/modals/sold-modal/sold-modal.component.ts:34</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
-  <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.ts:35</source>Continue</msg>
+  <msg id="8914444864521670589"><source>app/shared/modals/sold-modal/sold-modal.component.ts:7,8</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph>
+    </msg>
+  <msg id="2882903364152951366"><source>app/shared/modals/sold-modal/sold-modal.component.ts:10</source>Who bought this from you?</msg>
+  <msg id="1337808500533761318"><source>app/shared/modals/sold-modal/sold-modal.component.ts:25</source>I didn&apos;t sell this on wallapop</msg>
+  <msg id="2286494898080570401"><source>app/shared/modals/sold-modal/sold-modal.component.ts:37</source>Thanks</msg>
+  <msg id="2928844379959000123"><source>app/shared/modals/sold-modal/sold-modal.component.ts:38</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
+  <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.ts:39</source>Continue</msg>
   <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.ts:7</source><source>app/shared/process-all-button/process-all-button.component.ts:12</source><source>app/calls/calls.component.ts:28</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.ts:8</source>This will process all the elements in this page.</msg>
   <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.ts:11</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source><source>app/catalog/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source><source>app/catalog/checkout/checkout-pro/range-datepicker/range-datepicker.component.ts:23</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:31</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:42</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:53</source><source>app/profile/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:5</source>Cancel</msg>
@@ -568,4 +570,12 @@
   <msg id="2734780694152757859"><source>app/dashboard/dashboard.component.ts:25</source><source>app/dashboard/dashboard.component.ts:34</source>View all</msg>
   <msg id="8778531687214591857"><source>app/dashboard/dashboard.component.ts:47</source>You have processed all the pending leads. Good job!</msg>
   <msg id="5554592740021607017"><source>app/dashboard/stats-graph/stats-graph.component.ts:2</source>Last 12 months</msg>
+  <msg id="6806883447514569994"><source>app/help/help.component.ts:6</source>Your help center</msg>
+  <msg id="7002268576514991178"><source>app/help/help.component.ts:9</source>We hope that you can find here the answers for all your questions</msg>
+  <msg id="606929755258304715"><source>app/help/help.component.ts:53</source>Contact details</msg>
+  <msg id="8232450894993705823"><source>app/help/help.component.ts:54</source>Here you can find the details to contact our sales and support department</msg>
+  <msg id="4907869765185411377"><source>app/help/help.component.ts:56</source>To manage your suscription:</msg>
+  <msg id="5871405940994162095"><source>app/help/help.component.ts:60</source>For any support:</msg>
+  <msg id="4039809737462883261"><source>app/help/help.component.ts:64</source>Mon to Thurs from 10:00 to 18:00</msg>
+  <msg id="4911360466860911169"><source>app/help/help.component.ts:65</source>Fri from 09:00 to 15:00</msg>
 </messagebundle>

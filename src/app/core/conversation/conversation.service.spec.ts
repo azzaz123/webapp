@@ -517,7 +517,7 @@ describe('Service: Conversation', () => {
         until: 12345,
         hidden: false
       });
-      expect(service.ended).toBeFalsy();
+      expect(service.ended).toBe(false);
     });
     it('should set ended true', () => {
       const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
