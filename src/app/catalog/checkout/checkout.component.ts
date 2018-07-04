@@ -28,7 +28,6 @@ export class CheckoutComponent implements OnInit {
         this.getProductsFromSelectedItems();
       }
     });
-
   }
 
   private getProductsFromSelectedItems() {

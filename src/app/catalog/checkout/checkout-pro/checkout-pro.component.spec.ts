@@ -4,7 +4,7 @@ import { CheckoutProComponent } from './checkout-pro.component';
 import { ItemService } from '../../../core/item/item.service';
 import { ITEMS_WITH_PRODUCTS, ITEM_ID } from '../../../../tests/item.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../cart/cart.service';
 import { CartPro } from '../cart/cart-pro';
 import { MOCK_PROITEM } from '../../../../tests/pro-item.fixtures.spec';
@@ -17,6 +17,7 @@ describe('CheckoutProComponent', () => {
   let itemService: ItemService;
   let router: Router;
   let spyCall;
+  let route: ActivatedRoute;
 
   const SELECTED_ITEMS = ['1', '2', '3'];
   const CART = new CartPro();
@@ -46,6 +47,11 @@ describe('CheckoutProComponent', () => {
             add() {
             }
           }
+        },
+        {
+          provide: ActivatedRoute, useValue: {
+          params: Observable.of({})
+        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -59,6 +65,7 @@ describe('CheckoutProComponent', () => {
     cartService = TestBed.get(CartService);
     itemService = TestBed.get(ItemService);
     router = TestBed.get(Router);
+    route = TestBed.get(ActivatedRoute);
     spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
     fixture.detectChanges();
   });
@@ -72,18 +79,39 @@ describe('CheckoutProComponent', () => {
       expect(cartService.createInstance).toHaveBeenCalledWith(new CartPro());
     });
 
-    it('should call getItemsWithAvailableProducts and set it', () => {
-      expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(SELECTED_ITEMS);
-      expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
+    describe('no params', () => {
+
+      it('should call getItemsWithAvailableProducts and set it', () => {
+        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith(SELECTED_ITEMS);
+        expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
+      });
+
+      it('should redirect to catalog if no item selected', () => {
+        spyOn(router, 'navigate');
+        itemService.selectedItems = [];
+
+        component.ngOnInit();
+
+        expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list']);
+      });
+
     });
 
-    it('should redirect to catalog if no item selected', () => {
-      spyOn(router, 'navigate');
-      itemService.selectedItems = [];
+    describe('with params', () => {
 
-      component.ngOnInit();
+      beforeEach(() => {
+        route.params = Observable.of({
+          itemId: ITEM_ID
+        });
+      });
 
-      expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list']);
+      it('should call getItemsWithAvailableProducts and set it', () => {
+        component.ngOnInit();
+
+        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([ITEM_ID]);
+        expect(component.itemsWithProducts).toEqual(ITEMS_WITH_PRODUCTS);
+      });
+
     });
   });
 
