@@ -67,6 +67,7 @@ describe('LocationSelectComponent', () => {
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
         longitude: ['', [Validators.required]],
+        approximated_location: false
       })
     });
     cookieService = TestBed.get(CookieService);
@@ -216,11 +217,15 @@ describe('LocationSelectComponent', () => {
         component.form.get('location.address').setValue(USER_LOCATION_COORDINATES.name);
         component.form.get('location.latitude').setValue(USER_LOCATION_COORDINATES.latitude);
         component.form.get('location.longitude').setValue(USER_LOCATION_COORDINATES.longitude);
+        component.form.get('location.approximated_location').setValue(true);
 
         component.open(element);
         tick(LOCATION_MODAL_TIMEOUT);
 
-        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
+        expect(componentInstance.init).toHaveBeenCalledWith({
+          ...USER_LOCATION_COORDINATES,
+          approximated_location: true
+        }, true);
       }));
     });
 
@@ -234,7 +239,10 @@ describe('LocationSelectComponent', () => {
         component.open(element);
         tick(LOCATION_MODAL_TIMEOUT);
 
-        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
+        expect(componentInstance.init).toHaveBeenCalledWith({
+          ...USER_LOCATION_COORDINATES,
+          approximated_location: false
+        }, true);
       }));
     });
   });

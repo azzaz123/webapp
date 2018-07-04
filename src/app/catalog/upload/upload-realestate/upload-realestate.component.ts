@@ -7,11 +7,13 @@ import { UploadEvent } from '../upload-event.interface';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Router } from '@angular/router';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { Coordinate } from '../../../core/geolocation/address-response.interface';
+import { Coordinate, ItemLocation } from '../../../core/geolocation/address-response.interface';
 import { Item } from '../../../core/item/item';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
+import { ItemService } from '../../../core/item/item.service';
+import { Realestate } from '../../../core/item/realestate';
 import { REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 @Component({
@@ -24,9 +26,9 @@ export class UploadRealestateComponent implements OnInit {
   @Output() onValidationError: EventEmitter<any> = new EventEmitter();
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
-  @Input() item: Item;
+  @Input() item: Realestate;
   @Input() urgentPrice: number;
-  public coordinates: Coordinate;
+  public coordinates: ItemLocation;
 
   public uploadForm: FormGroup;
   public loading: boolean;
@@ -48,6 +50,7 @@ export class UploadRealestateComponent implements OnInit {
               private router: Router,
               private errorsService: ErrorsService,
               private modalService: NgbModal,
+              private itemService: ItemService,
               private trackingService: TrackingService) {
     this.uploadForm = fb.group({
       id: '',
@@ -79,7 +82,35 @@ export class UploadRealestateComponent implements OnInit {
 
   ngOnInit() {
     this.getOptions();
-    this.detectFormChanges();
+    if (this.item) {
+      this.uploadForm.patchValue({
+        id: this.item.id,
+        title: this.item.title,
+        sale_price: this.item.salePrice,
+        currency_code: this.item.currencyCode,
+        storytelling: this.item.description,
+        category_id: this.item.categoryId.toString(),
+        operation: this.item.operation,
+        type: this.item.type,
+        condition: this.item.condition,
+        surface: this.item.surface,
+        rooms: this.item.rooms,
+        bathrooms: this.item.bathrooms,
+        garage: this.item.garage,
+        terrace: this.item.terrace,
+        elevator: this.item.elevator,
+        pool: this.item.pool,
+        garden: this.item.garden,
+        location: this.item.location
+      });
+      this.coordinates = {
+        latitude: this.item.location.latitude,
+        longitude: this.item.location.longitude,
+        address: this.item.location.address,
+        approximated_location: this.item.location.approximated_location
+      };
+      this.detectFormChanges();
+    }
   }
 
   private getOptions() {
@@ -92,11 +123,18 @@ export class UploadRealestateComponent implements OnInit {
     this.getTypes('rent');
     this.uploadForm.get('operation').valueChanges.subscribe((operation: string) => this.getTypes(operation));
     this.uploadForm.get('type').valueChanges.subscribe((type: string) => this.getExtras(type));
-    this.uploadForm.get('location').valueChanges.subscribe((location: Coordinate) => {
-      if (location.latitude && location.longitude) {
-        this.coordinates = location;
-      }
-    });
+  }
+
+  public emitLocation(): void {
+    this.coordinates = this.uploadForm.value.location;
+    if (this.item) {
+      this.updateLocation();
+    }
+    this.locationSelected.emit(13000);
+  }
+
+  private updateLocation() {
+    this.itemService.updateRealEstateLocation(this.item.id, this.coordinates).subscribe();
   }
 
   private getTypes(operation: string) {
@@ -186,10 +224,6 @@ export class UploadRealestateComponent implements OnInit {
 
   public selectUrgent(isUrgent: boolean): void {
     this.isUrgent = isUrgent;
-  }
-
-  public emitLocation(): void {
-    this.locationSelected.emit(13000);
   }
 
   preview() {

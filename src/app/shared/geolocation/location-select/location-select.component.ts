@@ -19,10 +19,11 @@ export class LocationSelectComponent implements OnChanges {
   @Input() form: FormGroup;
   @Input() name: string;
   @Input() updateLocation = true;
-  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
+  @Output() locationSelected: EventEmitter<Coordinate> = new EventEmitter();
   private control: AbstractControl;
   private latitudeControl: AbstractControl;
   private longitudeControl: AbstractControl;
+  private approximatedLocation: AbstractControl;
 
   constructor(private modalService: NgbModal,
               private cookieService: CookieService,
@@ -34,6 +35,7 @@ export class LocationSelectComponent implements OnChanges {
       this.control = this.form.get(this.name + '.address');
       this.latitudeControl = this.form.get(this.name + '.latitude');
       this.longitudeControl = this.form.get(this.name + '.longitude');
+      this.approximatedLocation = this.form.get(this.name + '.approximated_location');
       if (this.control.value) {
         this.control.markAsDirty();
       }
@@ -54,14 +56,16 @@ export class LocationSelectComponent implements OnChanges {
         modal.componentInstance.init({
           latitude: this.latitudeControl.value,
           longitude: this.longitudeControl.value,
-          name: this.control.value
-        });
+          name: this.control.value,
+          approximated_location: this.approximatedLocation ? this.approximatedLocation.value : null
+        }, this.updateLocation);
       } else if (lat && lng) {
         modal.componentInstance.init({
           latitude: lat,
           longitude: lng,
-          name: name
-        });
+          name: name,
+          approximated_location: this.approximatedLocation ? this.approximatedLocation.value : null
+        }, this.updateLocation);
       } else {
         modal.componentInstance.init();
       }

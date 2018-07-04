@@ -81,10 +81,14 @@ describe('GeolocationComponent', () => {
   });
 
   describe('select item', (): void => {
-    it('should emit an event with the selected item', (done) => {
-      jasmine.clock().install();
+
+    beforeEach(() => {
       spyOn(component.newCoordinate, 'emit');
       spyOn(cookieService, 'put');
+    });
+
+    it('should emit an event with the selected item', (done) => {
+      jasmine.clock().install();
       const currentDate = new Date();
       const expirationDate = new Date(currentDate.getTime() + ( 15 * 60 * 1000));
       jasmine.clock().mockDate(currentDate);
@@ -99,6 +103,14 @@ describe('GeolocationComponent', () => {
       expect(cookieService.put).toHaveBeenCalledWith('searchPosName', GEOLOCATION_DATA_WEB[0].item.description, cookieOptions);
 
       jasmine.clock().uninstall();
+    });
+
+    it('should not save cookies if updateLocation false', () => {
+      component.updateLocation = false;
+
+      component.selectItem(GEOLOCATION_DATA_WEB[0]);
+
+      expect(cookieService.put).not.toHaveBeenCalled();
     });
   });
 

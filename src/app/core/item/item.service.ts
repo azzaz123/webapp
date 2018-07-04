@@ -10,20 +10,23 @@ import {
   Duration,
   ItemBulkResponse,
   ItemContent,
-  ItemCounters, ItemDataResponse,
+  ItemCounters,
+  ItemDataResponse,
+  ItemProContent,
+  ItemProResponse,
   ItemResponse,
   ItemsData,
   ItemsStore,
   ItemsWithAvailableProductsResponse,
-  ItemWithProducts, LatestItemResponse,
+  ItemWithProducts,
+  LatestItemResponse,
   Order,
+  OrderPro,
   Product,
   ProductDurations,
   Purchase,
-  SelectedItemsAction,
-  ItemProResponse,
-  ItemProContent,
-  OrderPro
+  RealestateContent,
+  SelectedItemsAction
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
@@ -41,7 +44,10 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Car } from './car';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
-import { CARS_CATEGORY } from './item-categories';
+import { ItemLocation } from '../geolocation/address-response.interface';
+import { REALESTATE_DATA } from '../../../tests/realestate.fixtures.spec';
+import { Realestate } from './realestate';
+import { CARS_CATEGORY, REALESTATE_CATEGORY } from './item-categories';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -150,6 +156,8 @@ export class ItemService extends ResourceService {
     const content: ItemContent = data.content;
     if (data.type === 'cars') {
       return this.mapCar(content);
+    } else if (data.type === 'real_estate') {
+      return this.mapRealEstate(content);
     }
     return this.mapItem(content);
   }
@@ -190,6 +198,34 @@ export class ItemService extends ResourceService {
       content.condition,
       content.version,
       content.image
+    );
+  }
+
+  private mapRealEstate(content: RealestateContent): Realestate {
+    return new Realestate(
+      content.id,
+      content.seller_id,
+      content.title,
+      content.storytelling,
+      content.location,
+      content.sale_price,
+      content.currency_code,
+      content.modified_date,
+      content.url,
+      content.flags,
+      content.images,
+      content.web_slug,
+      content.operation,
+      content.type,
+      content.condition,
+      content.surface,
+      content.bathrooms,
+      content.rooms,
+      content.garage,
+      content.terrace,
+      content.elevator,
+      content.pool,
+      content.garden
     );
   }
 
@@ -397,10 +433,19 @@ export class ItemService extends ResourceService {
   }
 
   public update(item: any): Observable<any> {
+    let url: string = this.API_URL + '/';
+    if (item.category_id === CARS_CATEGORY) {
+      url += 'cars/'
+    } else if (item.category_id === REALESTATE_CATEGORY) {
+      url += 'real_estate/'
+    }
     const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
-    return this.http.put(this.API_URL + (item.category_id === CARS_CATEGORY ? '/cars/' : '/') + item.id, item, options)
+    return this.http.put(url + item.id, item, options)
       .map((r: Response) => r.json())
       .do(() => this.eventService.emit(EventService.ITEM_UPDATED, item))
+  }
+  public updateRealEstateLocation(itemId: string, location: ItemLocation): Observable<any> {
+    return this.http.put(this.API_URL + '/real_estate/' + itemId + '/location', location);
   }
 
   public deletePicture(itemId: string, pictureId: string): Observable<any> {
@@ -410,6 +455,7 @@ export class ItemService extends ResourceService {
   public get(id: string): Observable<Item> {
     return this.http.get(this.API_URL + `/${id}`)
     .map((r: Response) => r.json())
+    // .map(_ => REALESTATE_DATA) // TODO: remove it when api works
     .map((r: any) => this.mapRecordData(r))
     .catch(() => {
       return Observable.of(this.getFakeItem(id));

@@ -16,7 +16,7 @@ export class RealestateKeysService {
   }
 
   getOperations(): Observable<Key[]> {
-    return this.http.get(this.API_URL + '/operation', {language: this.i18n.locale})
+    return this.http.get(this.API_URL + '/operation', {language: this.i18n.locale, filter: false})
       .map((r: Response) => r.json());
   }
 
