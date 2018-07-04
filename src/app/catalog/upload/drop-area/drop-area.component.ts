@@ -180,7 +180,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
           this.itemId = output.file.response.id;
           this.item = output.file.response;
           if (this.files.length > 1) {
-            this.uploadService.uploadOtherImages(output.file.response.id, this.maxUploads === 8 ? '/cars' : '');
+            this.uploadService.uploadOtherImages(output.file.response.id, output.file.response.type);
           } else {
             if (this.item.hasOwnProperty('flags') && this.item.flags['onhold']) {
               this.onUploaded.emit({action: 'createdOnHold', response: ''});

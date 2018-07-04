@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { GeolocationService } from '../../core/geolocation/geolocation.service';
@@ -17,6 +17,7 @@ export class GeolocationComponent implements OnInit, OnChanges {
   @Output() public newCoordinate = new EventEmitter<Coordinate>();
   @Input() value: string;
   public model: any = {description: ''};
+  @ViewChild('pacInputHeader') searchInputEl: ElementRef;
 
   constructor(private geolocationService: GeolocationService, private cookieService: CookieService) { }
 
@@ -25,6 +26,7 @@ export class GeolocationComponent implements OnInit, OnChanges {
     if (searchPosName) {
       this.model.description = searchPosName;
     }
+    this.searchInputEl.nativeElement.focus();
   }
 
   ngOnChanges(changes?: any) {

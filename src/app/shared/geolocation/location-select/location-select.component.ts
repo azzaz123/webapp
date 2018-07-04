@@ -18,6 +18,7 @@ export class LocationSelectComponent implements OnChanges {
 
   @Input() form: FormGroup;
   @Input() name: string;
+  @Input() updateLocation = true;
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   private control: AbstractControl;
   private latitudeControl: AbstractControl;
@@ -65,16 +66,25 @@ export class LocationSelectComponent implements OnChanges {
         modal.componentInstance.init();
       }
       modal.result.then((result: Coordinate) => {
-        this.userService.updateLocation(result).subscribe((location: UserLocation) => {
-          this.control.setValue(location.title);
-          this.latitudeControl.setValue(result.latitude);
-          this.longitudeControl.setValue(result.longitude);
-          this.userService.user.location = location;
-          this.locationSelected.emit();
-        });
+        if (this.updateLocation) {
+          this.userService.updateLocation(result).subscribe((location: UserLocation) => {
+            this.control.setValue(location.title);
+            this.userService.user.location = location;
+            this.setLocation(result);
+          });
+        } else {
+          this.control.setValue(result.name);
+          this.setLocation(result);
+        }
       }, () => {
       });
     }, LOCATION_MODAL_TIMEOUT);
 
+  }
+
+  setLocation(coordinates: Coordinate) {
+    this.latitudeControl.setValue(coordinates.latitude);
+    this.longitudeControl.setValue(coordinates.longitude);
+    this.locationSelected.emit();
   }
 }

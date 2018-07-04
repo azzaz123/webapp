@@ -12,6 +12,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { Car } from '../../../core/item/car';
 import * as _ from 'lodash';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { CARS_CATEGORY } from '../../../core/item/item-categories';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -51,7 +52,7 @@ export class UploadCarComponent implements OnInit {
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
-      category_id: '100',
+      category_id: CARS_CATEGORY,
       images: [[], [Validators.required]],
       model: [{value: '', disabled: true}, [Validators.required]],
       brand: ['', [Validators.required]],

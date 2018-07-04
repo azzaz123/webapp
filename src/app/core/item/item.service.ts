@@ -41,6 +41,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Car } from './car';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
+import { CARS_CATEGORY } from './item-categories';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -397,7 +398,7 @@ export class ItemService extends ResourceService {
 
   public update(item: any): Observable<any> {
     const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
-    return this.http.put(this.API_URL + (item.category_id === '100' ? '/cars/' : '/') + item.id, item, options)
+    return this.http.put(this.API_URL + (item.category_id === CARS_CATEGORY ? '/cars/' : '/') + item.id, item, options)
       .map((r: Response) => r.json())
       .do(() => this.eventService.emit(EventService.ITEM_UPDATED, item))
   }

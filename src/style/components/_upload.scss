@@ -30,6 +30,9 @@
         background: url(/assets/images/urgent-background.svg) no-repeat;
         background-size: 105px;
         opacity: 0.3;
+        &.active {
+          opacity: 1;
+        }
       }
     }
   }
@@ -38,6 +41,11 @@
     margin: 5px 0 $spacing-L;
     &.terms-options {
       margin-bottom: 23px;
+    }
+    &.features-options {
+      label:not(.selector) {
+        display: block;
+      }
     }
     h3 {
       font-size: $font-size-S;
@@ -113,6 +121,17 @@
           }
         }
       }
+      &:last-of-type {
+        margin-right: 0 !important;
+      }
+    }
+    .ng-dirty.ng-invalid {
+      .selector {
+        border: 1px solid $warn;
+        span {
+          color: $warn;
+        }
+      }
     }
     &.shipping-options {
       margin-bottom: 15px;
@@ -140,6 +159,28 @@
           }
         }
       }
+    }
+  }
+
+  .real-estate-form {
+    .selector-container {
+      .selector {
+        margin-right: $spacing;
+        line-height: 35px;
+        mat-icon {
+          @include square(48px);
+          margin-top: 5px;
+          /deep/ svg {
+            @include square(48px);
+          }
+        }
+        span {
+          margin: 0;
+        }
+      }
+    }
+    .product-photos {
+      padding-bottom: 0;
     }
   }
 
@@ -204,6 +245,24 @@
       &:hover {
         border-color: $color-urgent;
       }
+    }
+    &.checkbox-corporate {
+      .select {
+        &.selected {
+          background: $corporate;
+          mat-icon {
+            display: block;
+          }
+        }
+        &:hover {
+          border-color: $corporate;
+        }
+      }
+    }
+    input[type=checkbox] {
+      position: absolute;
+      clip: rect(0, 0, 0, 0);
+      pointer-events: none;
     }
   }
 }

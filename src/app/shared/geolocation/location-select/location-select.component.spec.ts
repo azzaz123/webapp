@@ -125,44 +125,90 @@ describe('LocationSelectComponent', () => {
         spyOn(modalService, 'open').and.callThrough();
         spyOn(userService, 'updateLocation').and.callThrough();
         spyOn(component.locationSelected, 'emit');
-
-        component.open(element);
-        tick(LOCATION_MODAL_TIMEOUT);
       }));
 
-      it('should blur element', () => {
-        expect(element.blur).toHaveBeenCalled();
+      describe('with updateLocation true', () => {
+
+        beforeEach(fakeAsync(() => {
+          component.open(element);
+          tick(LOCATION_MODAL_TIMEOUT);
+        }));
+
+        it('should blur element', () => {
+          expect(element.blur).toHaveBeenCalled();
+        });
+
+        it('should mark address as dirty', () => {
+          expect(component.form.get('location.address').dirty).toBeTruthy();
+        });
+
+        it('should open modal', () => {
+          expect(modalService.open).toHaveBeenCalled();
+        });
+
+        it('should set location', () => {
+          expect(component.form.get('location.address').value).toEqual(USER_LOCATION_COORDINATES.name);
+          expect(component.form.get('location.latitude').value).toEqual(USER_LOCATION_COORDINATES.latitude);
+          expect(component.form.get('location.longitude').value).toEqual(USER_LOCATION_COORDINATES.longitude);
+        });
+
+        it('should call init with no params', () => {
+          expect(componentInstance.init).toHaveBeenCalled();
+        });
+
+        it('should call updateLocation', () => {
+          expect(userService.updateLocation).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
+        });
+
+        it('should set user location', () => {
+          expect(userService.user.location).toEqual(USER_LOCATION);
+        });
+
+        it('should emit an update location event', () => {
+          expect(component.locationSelected.emit).toHaveBeenCalled();
+        });
       });
 
-      it('should mark address as dirty', () => {
-        expect(component.form.get('location.address').dirty).toBeTruthy();
+      describe('with updateLocation false', () => {
+
+        beforeEach(fakeAsync(() => {
+          component.updateLocation = false;
+          component.open(element);
+          tick(LOCATION_MODAL_TIMEOUT);
+        }));
+
+        it('should blur element', () => {
+          expect(element.blur).toHaveBeenCalled();
+        });
+
+        it('should mark address as dirty', () => {
+          expect(component.form.get('location.address').dirty).toBeTruthy();
+        });
+
+        it('should open modal', () => {
+          expect(modalService.open).toHaveBeenCalled();
+        });
+
+        it('should set location', () => {
+          expect(component.form.get('location.address').value).toEqual(USER_LOCATION_COORDINATES.name);
+          expect(component.form.get('location.latitude').value).toEqual(USER_LOCATION_COORDINATES.latitude);
+          expect(component.form.get('location.longitude').value).toEqual(USER_LOCATION_COORDINATES.longitude);
+        });
+
+        it('should call init with no params', () => {
+          expect(componentInstance.init).toHaveBeenCalled();
+        });
+
+        it('should not call updateLocation', () => {
+          expect(userService.updateLocation).not.toHaveBeenCalled();
+        });
+
+        it('should emit an update location event', () => {
+          expect(component.locationSelected.emit).toHaveBeenCalled();
+        });
       });
 
-      it('should open modal', () => {
-        expect(modalService.open).toHaveBeenCalled();
-      });
 
-      it('should set location', () => {
-        expect(component.form.get('location.address').value).toEqual(USER_LOCATION_COORDINATES.name);
-        expect(component.form.get('location.latitude').value).toEqual(USER_LOCATION_COORDINATES.latitude);
-        expect(component.form.get('location.longitude').value).toEqual(USER_LOCATION_COORDINATES.longitude);
-      });
-
-      it('should call init with no params', () => {
-        expect(componentInstance.init).toHaveBeenCalled();
-      });
-
-      it('should call updateLocation', () => {
-        expect(userService.updateLocation).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
-      });
-
-      it('should set user location', () => {
-        expect(userService.user.location).toEqual(USER_LOCATION);
-      });
-
-      it('should emit an update location event', () => {
-        expect(component.locationSelected.emit).toHaveBeenCalled();
-      });
     });
 
     describe('with form values', () => {
