@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { Key } from './key.interface';
 import { IOption } from 'ng-select';
 import { IMAGE, USER_LOCATION } from '../../../../tests/user.fixtures.spec';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { MOCK_REALESTATE, UPLOAD_FORM_REALESTATE_VALUES } from '../../../../tests/realestate.fixtures.spec';
 import { ItemService } from '../../../core/item/item.service';
@@ -33,9 +33,11 @@ describe('UploadRealestateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [NgbPopoverModule],
       declarations: [ UploadRealestateComponent ],
       providers: [
         FormBuilder,
+        NgbPopoverConfig,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: RealestateKeysService, useValue: {
