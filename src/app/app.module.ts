@@ -22,6 +22,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { CallsModule } from './calls/calls.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { HelpModule } from './help/help.module';
+import { WallacoinsModule } from './wallacoins/wallacoins.module';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { HelpModule } from './help/help.module';
     NgxPermissionsModule.forRoot(),
     CallsModule,
     DashboardModule,
-    HelpModule
+    HelpModule,
+    WallacoinsModule
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]
