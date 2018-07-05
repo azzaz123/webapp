@@ -294,11 +294,15 @@ export class ConversationService extends LeadService {
     if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
       message.status = newStatus;
       this.persistencyService.updateMessageStatus(message.id, newStatus);
-      if (newStatus === messageStatus.SENT) {
+    }
+
+    switch (newStatus) {
+      case messageStatus.SENT:
         this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_SENT_ACK);
-      } else if (newStatus === messageStatus.RECEIVED) {
+        break;
+      case messageStatus.RECEIVED:
         this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED);
-      }
+        break;
     }
   }
 

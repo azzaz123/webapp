@@ -851,7 +851,7 @@ describe('Service: Conversation', () => {
       service.markAs(messageStatus.RECEIVED, mockedConversation.messages[1], mockedConversation);
       service.markAs(messageStatus.SENT, mockedConversation.messages[2], mockedConversation);
 
-      expect(service['sendAck']).toHaveBeenCalledTimes(2);
+      expect(service['sendAck']).toHaveBeenCalledTimes(3);
       expect(service['sendAck']).toHaveBeenCalledWith(
         mockedConversation.messages[0].id,
         mockedConversation.item.id,
@@ -864,7 +864,7 @@ describe('Service: Conversation', () => {
         mockedConversation.user.id,
         mockedConversation.id,
         TrackingService.MESSAGE_RECEIVED);
-      expect(service['sendAck']).not.toHaveBeenCalledWith(
+      expect(service['sendAck']).toHaveBeenCalledWith(
         mockedConversation.messages[2].id,
         mockedConversation.item.id,
         mockedConversation.user.id,
