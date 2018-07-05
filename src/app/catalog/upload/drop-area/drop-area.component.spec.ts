@@ -332,6 +332,7 @@ describe('DropAreaComponent', () => {
           describe('normal item', () => {
             it('should set itemId and call uploadOtherImages', () => {
               component.files = [UPLOAD_FILE, UPLOAD_FILE];
+              component.type = 'consumer_goods';
               spyOn(uploadService, 'uploadOtherImages');
 
               component['onUploadDone']({
@@ -340,13 +341,14 @@ describe('DropAreaComponent', () => {
               });
 
               expect(component['itemId']).toBe(ITEM_ID);
-              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(ITEM_ID, UPLOADED_FILE_FIRST_ITEM.response.type);
+              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(ITEM_ID, component.type);
             });
           });
 
           describe('car item', () => {
             it('should set itemId, item and call uploadOtherImages', () => {
               component.files = [UPLOAD_FILE, UPLOAD_FILE];
+              component.type = 'cars';
               component.maxUploads = 8;
               spyOn(uploadService, 'uploadOtherImages');
 
@@ -356,7 +358,7 @@ describe('DropAreaComponent', () => {
               });
               expect(component['item']).toEqual(UPLOADED_FILE_FIRST.response);
               expect(component['itemId']).toBe(CAR_ID);
-              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(CAR_ID, 'cars');
+              expect(uploadService.uploadOtherImages).toHaveBeenCalledWith(CAR_ID, component.type);
             });
           });
         });
@@ -393,7 +395,7 @@ describe('DropAreaComponent', () => {
 
             expect(component['itemId']).toBe(CAR_ID);
             expect(component['item']).toEqual(UPLOADED_FILE_FIRST.response);
-            expect(event).toEqual({ action: 'createdOnHold', response: '' });
+            expect(event).toEqual({ action: 'createdOnHold', response: UPLOADED_FILE_FIRST.response });
           });
         });
       });
