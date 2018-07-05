@@ -349,6 +349,7 @@ export class XmppService {
     });
 
     this.client.on('disconnected', () => {
+      console.warn('Client disconnected');
       this.clientConnected = false;
       this.eventService.emit(EventService.CLIENT_DISCONNECTED);
     });

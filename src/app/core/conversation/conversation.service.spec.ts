@@ -1157,7 +1157,7 @@ describe('Service: Conversation', () => {
         .and
         .returnValue(Observable.of({
           data: [
-            new Message('5', 'c', MESSAGE_MAIN.body, MESSAGE_MAIN.from),
+            new Message('5', 'c', MESSAGE_MAIN.body, MOCK_MESSAGE_FROM_OTHER.from),
           ]
         }));
         service.loadNotStoredMessages(initialConversations).subscribe((data: Array<Conversation>) => {
@@ -1171,12 +1171,12 @@ describe('Service: Conversation', () => {
         expect(initialConversations[0].messages[0].id).toBe('5');
         expect(service['handleUnreadMessage']).toHaveBeenCalled();
       }));
-      it('should not handle unread messages if the message is from the seller', fakeAsync(() => {
+      it('should not handle unread messages if the message is not from self', fakeAsync(() => {
         spyOn(messageService, 'getNotSavedMessages')
         .and
         .returnValue(Observable.of({
           data: [
-            new Message('5', 'c', MESSAGE_MAIN.body, 'seller@host'),
+            new Message('5', 'c', MESSAGE_MAIN.body, MESSAGE_MAIN.from),
           ]
         }));
         service.loadNotStoredMessages(initialConversations).subscribe((data: Array<Conversation>) => {

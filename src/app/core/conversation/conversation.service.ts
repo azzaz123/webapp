@@ -412,7 +412,7 @@ export class ConversationService extends LeadService {
                 message = this.messageService.addUserInfo(subscribedConversation, message);
                 this.addMessage(subscribedConversation, message);
                 conversations.unshift(subscribedConversation);
-                if (message.fromSelf) {
+                if (!message.fromSelf) {
                   this.handleUnreadMessage(subscribedConversation);
                 }
               });
