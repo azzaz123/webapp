@@ -70,7 +70,6 @@ export class XmppService {
 
     if (!conversation.messages.length) {
       this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
-        to_user_id: conversation.user.id,
         item_id: conversation.item.id,
         thread_id: message.thread,
         message_id: message.id });
@@ -79,7 +78,6 @@ export class XmppService {
     this.trackingService.track(TrackingService.MESSAGE_SENT, {
       thread_id: message.thread,
       message_id: message.id,
-      to_user_id: conversation.user.id,
       item_id: conversation.item.id
     });
     this.onNewMessage(_.clone(message));

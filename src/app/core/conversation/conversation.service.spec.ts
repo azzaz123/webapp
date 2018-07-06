@@ -918,13 +918,11 @@ describe('Service: Conversation', () => {
       expect(trackingService.track).toHaveBeenCalledTimes(2);
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_READ_ACK, {
         thread_id: conversation.id,
-        from_user_id: conversation.user.id,
         message_id: MOCK_MESSAGE.id,
         item_id: conversation.item.id
       });
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_READ_ACK, {
         thread_id: conversation.id,
-        from_user_id: conversation.user.id,
         message_id: MOCK_RANDOM_MESSAGE.id,
         item_id: conversation.item.id
       });
@@ -1297,7 +1295,6 @@ describe('Service: Conversation', () => {
 
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_RECEIVED_ACK, {
           thread_id: MESSAGE_MAIN.thread,
-          from_user_id: USER_ID,
           message_id: MESSAGE_MAIN.id,
           item_id: ITEM_ID
         });

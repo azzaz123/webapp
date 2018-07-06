@@ -322,7 +322,6 @@ export class ConversationService extends LeadService {
   private sendAck(messageId: string, itemId: string, toUserId: string, conversationId: string, trackingEvent: any) {
     this.trackingService.track(trackingEvent, {
       thread_id: conversationId,
-      from_user_id: toUserId,
       message_id: messageId,
       item_id: itemId
     });

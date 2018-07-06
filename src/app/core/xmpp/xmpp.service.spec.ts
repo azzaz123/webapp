@@ -1181,7 +1181,6 @@ describe('Service: Xmpp', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
         { thread_id: message.thread,
           message_id: message.id,
-          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
           item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
 
@@ -1204,7 +1203,6 @@ describe('Service: Xmpp', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT,
         { thread_id: message.thread,
           message_id: message.id,
-          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
           item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
 
