@@ -45,8 +45,12 @@ export class CheckoutComponent implements OnInit {
   }
 
   private setItems(itemsWithProducts: ItemWithProducts[]) {
-    this.itemsWithProducts = itemsWithProducts;
-    this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
+    if (itemsWithProducts.length) {
+      this.itemsWithProducts = itemsWithProducts;
+      this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
+    } else {
+      this.router.navigate(['pro/catalog/list', {alreadyFeatured: true}]);
+    }
   }
 
 }

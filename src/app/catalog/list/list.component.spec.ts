@@ -287,6 +287,17 @@ describe('ListComponent', () => {
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
+
+    it('should show error message if alreadyFeatured', fakeAsync(() => {
+      route.params = Observable.of({
+        alreadyFeatured: true
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(errorService.i18nError).toHaveBeenCalledWith('alreadyFeatured');
+    }));
   });
 
   describe('getItems', () => {

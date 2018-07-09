@@ -103,6 +103,16 @@ describe('CheckoutComponent', () => {
 
         expect(component.provincialBump).toBeTruthy();
       });
+
+      it('should redirect if no products available', () => {
+        spyCall.and.returnValue(Observable.of([]));
+        spyOn(router, 'navigate');
+
+        component.ngOnInit();
+
+        expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([ITEM_ID]);
+        expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', {alreadyFeatured: true}])
+      });
     });
   });
 });

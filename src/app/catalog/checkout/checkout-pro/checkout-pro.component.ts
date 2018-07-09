@@ -49,7 +49,11 @@ export class CheckoutProComponent implements OnInit {
   private getProductsFromParamsItem(itemId: string) {
     this.itemService.getItemsWithAvailableProducts([itemId])
       .subscribe((itemsWithProducts: ItemWithProducts[]) => {
-        this.itemsWithProducts = itemsWithProducts;
+        if (itemsWithProducts.length) {
+          this.itemsWithProducts = itemsWithProducts;
+        } else {
+          this.router.navigate(['pro/catalog/list', {alreadyFeatured: true}]);
+        }
       });
   }
 
