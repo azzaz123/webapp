@@ -47,6 +47,7 @@ export interface PackResponse {
     [key: string]: number;
   };
   price: string;
+  original_price: string;
   currency: string;
 }
 

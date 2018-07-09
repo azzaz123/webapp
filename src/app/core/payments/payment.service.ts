@@ -7,8 +7,9 @@ import {
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
 import * as _ from 'lodash';
-import { Pack, PACKS_TYPES } from './pack';
+import { CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
+import { Product } from '../item/item-response.interface';
 
 @Injectable()
 export class PaymentService {
@@ -17,12 +18,13 @@ export class PaymentService {
   private API_URL_PROTOOL = 'api/v3/protool';
   private products: Products;
   private perksModel: PerksModel;
+
   constructor(private http: HttpService) {
   }
 
   public getFinancialCard(): Observable<FinancialCard> {
     return this.http.get(this.API_URL + '/c2b/financial-card')
-    .map((r: Response) => r.json());
+      .map((r: Response) => r.json());
   }
 
   public deleteFinancialCard(): Observable<any> {
@@ -51,14 +53,31 @@ export class PaymentService {
     });
   }
 
-  public getPacks(): Observable<Packs> {
-    return this.http.get(this.API_URL + '/packs')
+  public getPacks(product?: Products): Observable<Packs> {
+    const params: any = {};
+    if (product) {
+      params.products = Object.keys(product)[0];
+    }
+    return this.http.get(this.API_URL + '/packs', params)
       .map((r: Response) => r.json())
       .flatMap((packs: PackResponse[]) => {
-        const sortedPacks = this.sortPacksByQuantity(packs);
-        return this.preparePacks(sortedPacks);
+          const sortedPacks = this.sortPacksByQuantity(packs);
+          return this.preparePacks(sortedPacks, product);
+        }
+      );
+  }
+
+  public getCreditsPacks(): Observable<Pack[]> {
+    const product: Products = {
+      [CREDITS_PACK_ID]: {
+        id: CREDITS_PACK_ID,
+        name: 'WALLACOINS'
       }
-    );
+    };
+    return this.getPacks(product)
+      .map((packs: Packs) => {
+        return packs.wallacoins;
+      });
   }
 
   public getSubscriptionPacks(): Observable<Packs> {
@@ -124,14 +143,14 @@ export class PaymentService {
       .map((r: Response) => r.json());
   }
 
-  private preparePacks(sortedPacks) {
+  private preparePacks(sortedPacks, product?: Products) {
     const packsResponse: Packs = {
       cityBump: [],
       countryBump: [],
-      listings: []
+      listings: [],
+      wallacoins: []
     };
-
-    return this.getProducts()
+    return (product ? Observable.of(product) : this.getProducts())
       .map((products: Products) => {
         const values = _.groupBy(sortedPacks, (pack) => {
           return Object.keys(pack.benefits)[0];
@@ -154,7 +173,11 @@ export class PaymentService {
             pack.currency,
             name
           );
-          formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
+          if (pack.original_price) {
+            formattedPack.calculateDiscountWithOriginalPrice(pack.price, +pack.original_price);
+          } else {
+            formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
+          }
 
           if (products[benefitsId].name === 'NATIONAL_BUMP') {
             packsResponse.countryBump.push(formattedPack);
@@ -162,6 +185,8 @@ export class PaymentService {
             packsResponse.cityBump.push(formattedPack);
           } else if (products[benefitsId].name === 'LISTINGS') {
             packsResponse.listings.push(formattedPack);
+          } else if (products[benefitsId].name === 'WALLACOINS') {
+            packsResponse.wallacoins.push(formattedPack);
           }
         });
         return packsResponse;

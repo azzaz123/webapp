@@ -3,16 +3,20 @@ import { Model } from '../resource/model.interface';
 export const PACKS_TYPES = {
   'BUMP': 'cityBump',
   'NATIONAL_BUMP': 'countryBump',
-  'LISTINGS': 'listings'
+  'LISTINGS': 'listings',
+  'WALLACOINS': 'wallacoins'
 };
+
+export const CREDITS_PACK_ID = 'b4f402c8-1468-49e9-84df-fcd7de7d8000';
+
 export class Pack implements Model {
   private _discount: number;
-
-  constructor(private _id,
-              private _quantity,
-              private _price,
-              private _currency,
-              private _name) {}
+  private _forFree: number;
+  constructor(private _id: string,
+              private _quantity: number,
+              private _price: number,
+              private _currency: string,
+              private _name: string) {}
 
   get id(): string {
     return this._id;
@@ -62,10 +66,26 @@ export class Pack implements Model {
     this._name = value;
   }
 
+  get forFree(): number {
+    return this._forFree;
+  }
+
+  set forFree(value: number) {
+    this._forFree = value;
+  }
+
   public calculateDiscount(packPrice: string, quantity: number, basePrice: number): void {
     const price: number = basePrice * quantity;
     const save: number = price - +packPrice;
 
     this.discount = Math.floor(save * 100 / price);
+  }
+
+  public calculateDiscountWithOriginalPrice(price: string, originalPrice: number): void {
+    const save: number = originalPrice - price;
+    const wallacoinFactor = 100;
+
+    this.discount = Math.floor(save * 100 / price);
+    this.forFree = save * wallacoinFactor;
   }
 }
