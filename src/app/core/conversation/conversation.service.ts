@@ -314,23 +314,23 @@ export class ConversationService extends LeadService {
     .map((data: ConversationResponse ) => this.mapRecordData(data));
   }
 
+  private sendTracking(trackingEvent: any, conversationId: string, messageId: string, itemId: string): void {
+    this.trackingService.track(trackingEvent, {
+      thread_id: conversationId,
+      message_id: messageId,
+      item_id: itemId
+    });
+  }
+
   public sendAck(trackingEvent: any, conversationId: string, messageId: string) {
     if (this.leads.length) {
       const conversation = this.leads.find(c => c.id === conversationId);
       if (conversation) {
-        this.trackingService.track(trackingEvent, {
-          thread_id: conversationId,
-          message_id: messageId,
-          item_id: conversation.item.id
-        });
+        this.sendTracking(trackingEvent, conversationId, messageId, conversation.item.id);
       }
     } else {
       this.get(conversationId).subscribe(conversation => {
-    this.trackingService.track(trackingEvent, {
-      thread_id: conversationId,
-      message_id: messageId,
-          item_id: conversation.item.id
-    });
+        this.sendTracking(trackingEvent, conversationId, messageId, conversation.item.id);
       }, e => e.catch());
     }
   }
