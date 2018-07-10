@@ -40,6 +40,7 @@ describe('CatalogProListComponent', () => {
   let router: Router;
   let route: ActivatedRoute;
   let eventService: EventService;
+  let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
   const routerEvents: Subject<any> = new Subject();
   const mockCounters = {
@@ -110,7 +111,9 @@ describe('CatalogProListComponent', () => {
           provide: ErrorsService, useValue: {
             show() {
               return Observable.of({});
-            }
+            },
+          i18nError() {
+          }
           }
         },
         {
@@ -151,6 +154,7 @@ describe('CatalogProListComponent', () => {
     userService = TestBed.get(UserService);
     router = TestBed.get(Router);
     route = TestBed.get(ActivatedRoute);
+    errorService = TestBed.get(ErrorsService);
     paymentService = TestBed.get(PaymentService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
@@ -278,6 +282,18 @@ describe('CatalogProListComponent', () => {
         action: 'sold'
       });
       expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, MOCK_ITEM_V3);
+    }));
+
+    it('should show error message if alreadyFeatured', fakeAsync(() => {
+      spyOn(errorService, 'i18nError');
+      route.params = Observable.of({
+        alreadyFeatured: true
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(errorService.i18nError).toHaveBeenCalledWith('alreadyFeatured');
     }));
   });
 

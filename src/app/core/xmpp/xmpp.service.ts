@@ -46,6 +46,7 @@ export class XmppService {
     this.createClient(accessToken);
     this.bindEvents();
     this.client.connect();
+    this.clientConnected = true;
   }
 
   public disconnect() {
@@ -70,7 +71,6 @@ export class XmppService {
 
     if (!conversation.messages.length) {
       this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
-        to_user_id: conversation.user.id,
         item_id: conversation.item.id,
         thread_id: message.thread,
         message_id: message.id });
@@ -79,7 +79,6 @@ export class XmppService {
     this.trackingService.track(TrackingService.MESSAGE_SENT, {
       thread_id: message.thread,
       message_id: message.id,
-      to_user_id: conversation.user.id,
       item_id: conversation.item.id
     });
     this.onNewMessage(_.clone(message));
@@ -169,6 +168,7 @@ export class XmppService {
                 builtMessage.status = messageStatus.SENT;
               }
             }
+            this.onNewMessage(message);
           }
           if (message.receivedId) {
             this.confirmedMessages.push(message.receivedId);
@@ -179,7 +179,7 @@ export class XmppService {
             this.readReceipts.push(message);
             this.eventService.emit(EventService.MESSAGE_READ, message.thread, message.receivedId);
           }
-          query.then((response: any) => {
+            query.then((response: any) => {
             const meta: any = response.mam.rsm;
             if (message.ref === meta.last) {
               messages = this.checkReceivedMessages(messages);
@@ -285,7 +285,7 @@ export class XmppService {
   }
 
   public addUnreadMessagesCounter(conversations) {
-    if (this.unreadMessages) {
+    if (this.unreadMessages.length) {
       for (let index = this.unreadMessages.length - 1; index >= 0; --index) {
         const convWithUnread = conversations.find((c) => c.id === this.unreadMessages[index].thread);
         if (convWithUnread) {
@@ -347,6 +347,7 @@ export class XmppService {
     });
 
     this.client.on('disconnected', () => {
+      console.warn('Client disconnected');
       this.clientConnected = false;
       this.eventService.emit(EventService.CLIENT_DISCONNECTED);
     });

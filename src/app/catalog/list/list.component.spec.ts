@@ -323,6 +323,17 @@ describe('ListComponent', () => {
       });
       expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, MOCK_ITEM_V3);
     }));
+
+    it('should show error message if alreadyFeatured', fakeAsync(() => {
+      route.params = Observable.of({
+        alreadyFeatured: true
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(errorService.i18nError).toHaveBeenCalledWith('alreadyFeatured');
+    }));
   });
 
   describe('getItems', () => {

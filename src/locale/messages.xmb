@@ -30,7 +30,7 @@
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.ts:15</source>Dashboard</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:23</source>Products</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:24</source>Catalog</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:41</source>Favorites</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:41</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:51</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:48</source>Reviews</msg>
   <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:56</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
   <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:63</source>Help</msg>
@@ -381,6 +381,8 @@
         </msg>
   <msg id="428164738594731840"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:42,43</source>
           Cancel</msg>
+  <msg id="2123659921722214537"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:47</source>Views</msg>
+  <msg id="6181907632373133266"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:55</source>Chats</msg>
   <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:62</source>Mark as sold</msg>
   <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:65</source>Mark as reserved</msg>
   <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:68</source>Edit</msg>

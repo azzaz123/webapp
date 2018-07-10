@@ -165,6 +165,8 @@ export class CatalogProListComponent implements OnInit {
               this.eventService.emit(EventService.ITEM_SOLD, item);
             });
           });
+        } else if (params && params.alreadyFeatured) {
+          this.errorService.i18nError('alreadyFeatured');
         }
       });
     });
