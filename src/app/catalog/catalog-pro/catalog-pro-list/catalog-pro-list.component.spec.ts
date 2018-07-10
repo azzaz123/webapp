@@ -1,8 +1,11 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CatalogProListComponent } from './catalog-pro-list.component';
 import { ItemService } from '../../../core/item/item.service';
-import { MOCK_ITEM, ORDER, PRODUCT_RESPONSE, ORDER_EVENT } from '../../../../tests/item.fixtures.spec';
+import {
+  MOCK_ITEM, ORDER, PRODUCT_RESPONSE, ORDER_EVENT, ITEM_ID,
+  MOCK_ITEM_V3
+} from '../../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { I18nService } from '../../../core/i18n/i18n.service';
@@ -21,6 +24,7 @@ import { CreditCardModalComponent } from '../../list/modals/credit-card-modal/cr
 import { Subject } from 'rxjs/Subject';
 import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
+import { ItemSoldDirective } from '../../../shared/modals/sold-modal/item-sold.directive';
 
 describe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;
@@ -35,6 +39,7 @@ describe('CatalogProListComponent', () => {
   let paymentService: PaymentService;
   let router: Router;
   let route: ActivatedRoute;
+  let eventService: EventService;
   let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
   const routerEvents: Subject<any> = new Subject();
@@ -46,7 +51,7 @@ describe('CatalogProListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CatalogProListComponent ],
+      declarations: [ CatalogProListComponent, ItemSoldDirective ],
       providers: [
         I18nService,
         EventService,
@@ -64,6 +69,9 @@ describe('CatalogProListComponent', () => {
             purchaseProducts() {
             },
             getUrgentProducts() {
+            },
+            get() {
+              return Observable.of(MOCK_ITEM_V3);
             }
           }
         },
@@ -151,6 +159,7 @@ describe('CatalogProListComponent', () => {
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
     modalSpy = spyOn(modalService, 'open').and.callThrough();
+    eventService = TestBed.get(EventService);
     fixture.detectChanges();
   });
 
@@ -245,6 +254,34 @@ describe('CatalogProListComponent', () => {
         backdrop: 'static'
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
+    }));
+
+    it('should open sold modal', fakeAsync(() => {
+      route.params = Observable.of({
+        sold: true,
+        itemId: ITEM_ID
+      });
+      const onClickSpy = jasmine.createSpy('onClick');
+      const emitter: EventEmitter<any> = new EventEmitter();
+      component.soldButton = {
+        item: null,
+        onClick: onClickSpy,
+        callback: emitter
+      } as any;
+      spyOn(component, 'itemChanged');
+      spyOn(eventService, 'emit');
+
+      component.ngOnInit();
+      tick();
+      emitter.emit();
+
+      expect(component.soldButton.item).toEqual(MOCK_ITEM_V3);
+      expect(onClickSpy).toHaveBeenCalled();
+      expect(component.itemChanged).toHaveBeenCalledWith({
+        item: MOCK_ITEM_V3,
+        action: 'sold'
+      });
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, MOCK_ITEM_V3);
     }));
 
     it('should show error message if alreadyFeatured', fakeAsync(() => {
