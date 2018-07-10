@@ -366,29 +366,27 @@ export class ConversationService extends LeadService {
   }
 
   private recursiveLoadMessages(conversations: Conversation[], index: number = 0): Observable<Conversation[]> {
-    return this.xmpp.isConnected()
-    .flatMap(() => {
-        if (conversations && conversations[index] && this.connectionService.isConnected) {
-        return this.messageService.getMessages(conversations[index])
-        .flatMap((res: MessagesData) => {
-          conversations[index].messages = res.data;
-          conversations[index].lastMessageRef = res.meta.first;
-          conversations[index].oldMessagesLoaded = res.meta.end;
-          if (index < conversations.length - 1) {
-            return this.recursiveLoadMessages(conversations, index + 1);
-          }
-          conversations = this.xmpp.addUnreadMessagesCounter(conversations);
-          conversations.forEach(conversation => {
-            this.persistencyService.saveUnreadMessages(conversation.id, conversation.unreadMessages);
-          });
-          this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
-            this.messageService.totalUnreadMessages : this.xmpp.totalUnreadMessages;
-          return Observable.of(conversations);
+    if (conversations && conversations[index] && this.connectionService.isConnected && this.xmpp.clientConnected) {
+      return this.messageService.getMessages(conversations[index])
+      .flatMap((res: MessagesData) => {
+        conversations[index].messages = res.data;
+        conversations[index].lastMessageRef = res.meta.first;
+        conversations[index].oldMessagesLoaded = res.meta.end;
+        if (index < conversations.length - 1) {
+          return this.recursiveLoadMessages(conversations, index + 1);
+        }
+        conversations = this.xmpp.addUnreadMessagesCounter(conversations);
+        conversations.forEach(conversation => {
+          this.persistencyService.saveUnreadMessages(conversation.id, conversation.unreadMessages);
         });
-      } else {
-          return Observable.of(null);
-      }
-    });
+        this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
+          this.messageService.totalUnreadMessages :
+          this.xmpp.totalUnreadMessages;
+        return Observable.of(conversations);
+      });
+    } else {
+      return Observable.of(null);
+    }
   }
 
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
@@ -415,7 +413,7 @@ export class ConversationService extends LeadService {
                 message = this.messageService.addUserInfo(subscribedConversation, message);
                 this.addMessage(subscribedConversation, message);
                 conversations.unshift(subscribedConversation);
-                if (message.fromSelf) {
+                if (!message.fromSelf) {
                   this.handleUnreadMessage(subscribedConversation);
                 }
               });
