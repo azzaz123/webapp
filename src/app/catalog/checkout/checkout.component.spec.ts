@@ -77,7 +77,7 @@ describe('CheckoutComponent', () => {
 
         component.ngOnInit();
 
-        expect(component.provincialBump).toBeTruthy();
+        expect(component.provincialBump).toBe(true);
       });
     });
 
@@ -101,7 +101,7 @@ describe('CheckoutComponent', () => {
 
         component.ngOnInit();
 
-        expect(component.provincialBump).toBeTruthy();
+        expect(component.provincialBump).toBe(true);
       });
 
       it('should redirect if no products available', () => {
