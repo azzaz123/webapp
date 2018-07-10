@@ -1455,6 +1455,21 @@ describe('Service: Conversation', () => {
     });
   });
 
+  describe('getSingleConversationMessages', () => {
+    it('should call messageService.getMessages and return the conversation with messages', fakeAsync(() => {
+      spyOn(messageService, 'getMessages').and.returnValue(Observable.of({data: [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE]}));
+      let conversation = SECOND_MOCK_CONVERSATION;
+      const expectedConversation = SECOND_MOCK_CONVERSATION;
+      expectedConversation.messages = [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE];
+
+      service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
+      tick();
+
+      expect(messageService.getMessages).toHaveBeenCalled();
+      expect(conversation).toEqual(expectedConversation);
+    }));
+  });
+
   describe('onNewMessage', () => {
     it('should update the message date if the parameter is set', () => {
       service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
