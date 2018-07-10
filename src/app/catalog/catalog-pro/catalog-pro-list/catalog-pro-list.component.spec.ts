@@ -35,6 +35,7 @@ describe('CatalogProListComponent', () => {
   let paymentService: PaymentService;
   let router: Router;
   let route: ActivatedRoute;
+  let errorService: ErrorsService;
   let modalSpy: jasmine.Spy;
   const routerEvents: Subject<any> = new Subject();
   const mockCounters = {
@@ -102,7 +103,9 @@ describe('CatalogProListComponent', () => {
           provide: ErrorsService, useValue: {
             show() {
               return Observable.of({});
-            }
+            },
+          i18nError() {
+          }
           }
         },
         {
@@ -143,6 +146,7 @@ describe('CatalogProListComponent', () => {
     userService = TestBed.get(UserService);
     router = TestBed.get(Router);
     route = TestBed.get(ActivatedRoute);
+    errorService = TestBed.get(ErrorsService);
     paymentService = TestBed.get(PaymentService);
     trackingServiceSpy = spyOn(trackingService, 'track');
     itemServiceSpy = spyOn(itemService, 'mines').and.callThrough();
@@ -242,6 +246,18 @@ describe('CatalogProListComponent', () => {
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
+
+    it('should show error message if alreadyFeatured', fakeAsync(() => {
+      spyOn(errorService, 'i18nError');
+      route.params = Observable.of({
+        alreadyFeatured: true
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(errorService.i18nError).toHaveBeenCalledWith('alreadyFeatured');
+    }));
   });
 
   describe('getItems', () => {
@@ -326,9 +342,9 @@ describe('CatalogProListComponent', () => {
   describe('deselect', () => {
     it('should call deselectItems', () => {
       spyOn(itemService, 'deselectItems');
-      
+
       component.deselect();
-      
+
       expect(itemService.deselectItems).toHaveBeenCalled();
     });
   });
@@ -523,5 +539,5 @@ describe('CatalogProListComponent', () => {
     });
 
   });
-  
+
 });

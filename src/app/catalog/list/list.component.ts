@@ -126,6 +126,8 @@ export class ListComponent implements OnInit, OnDestroy {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
           this.errorService.i18nError('productCreated', ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.');
+        } else if (params && params.alreadyFeatured) {
+          this.errorService.i18nError('alreadyFeatured');
         }
       });
     });
