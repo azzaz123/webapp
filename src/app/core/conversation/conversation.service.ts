@@ -255,7 +255,7 @@ export class ConversationService extends LeadService {
       conversation.modifiedDate = new Date().getTime();
       if (!message.fromSelf && !this.receiptSent) {
         this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
-          this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED_ACK);
+          this.sendAck(TrackingService.MESSAGE_RECEIVED_ACK, conversation.id, message.id);
           this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
         });
         this.handleUnreadMessage(conversation);
@@ -285,7 +285,7 @@ export class ConversationService extends LeadService {
     })
     .forEach((message) => {
       message.status = messageStatus.READ;
-      this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_READ);
+      this.sendAck(TrackingService.MESSAGE_READ, conversation.id, message.id);
       this.persistencyService.updateMessageStatus(message.id, messageStatus.READ);
     });
   }
@@ -295,16 +295,7 @@ export class ConversationService extends LeadService {
       message.status = newStatus;
       this.persistencyService.updateMessageStatus(message.id, newStatus);
     }
-
-    switch (newStatus) {
-      case messageStatus.SENT:
-        this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_SENT_ACK);
-        break;
-      case messageStatus.RECEIVED:
-        this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED);
-        break;
     }
-  }
 
   public get(id: string): Observable<Conversation> {
     return this.http.get(`${this.API_URL}/${id}`)
@@ -323,13 +314,25 @@ export class ConversationService extends LeadService {
     .map((data: ConversationResponse ) => this.mapRecordData(data));
   }
 
-  private sendAck(messageId: string, itemId: string, toUserId: string, conversationId: string, trackingEvent: any) {
+  public sendAck(trackingEvent: any, conversationId: string, messageId: string) {
+    if (this.leads.length) {
+      const conversation = this.leads.find(c => c.id === conversationId);
+      if (conversation) {
+        this.trackingService.track(trackingEvent, {
+          thread_id: conversationId,
+          message_id: messageId,
+          item_id: conversation.item.id
+        });
+      }
+    } else {
+      this.get(conversationId).subscribe(conversation => {
     this.trackingService.track(trackingEvent, {
       thread_id: conversationId,
-      from_user_id: toUserId,
       message_id: messageId,
-      item_id: itemId
+          item_id: conversation.item.id
     });
+      }, e => e.catch());
+    }
   }
 
   public sendRead(conversation: Conversation) {
@@ -337,7 +340,7 @@ export class ConversationService extends LeadService {
       const unreadMessages = conversation.messages.slice(-conversation.unreadMessages);
       this.readSubscription = this.event.subscribe(EventService.MESSAGE_READ_ACK, () => {
         unreadMessages.forEach((message) => {
-          this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_READ_ACK);
+          this.sendAck(TrackingService.MESSAGE_READ_ACK, conversation.id, message.id);
         });
         this.readSubscription.unsubscribe();
       });
@@ -572,7 +575,7 @@ export class ConversationService extends LeadService {
   }
 
   private addConversation(conversation: Conversation, message: Message) {
-    this.sendAck(message.id, conversation.item.id, conversation.user.id, conversation.id, TrackingService.MESSAGE_RECEIVED_ACK);
+    this.sendAck(TrackingService.MESSAGE_RECEIVED_ACK, conversation.id, message.id);
     message = this.messageService.addUserInfo(conversation, message);
     this.addMessage(conversation, message);
     this.subscribeConversationRead(conversation);

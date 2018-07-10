@@ -838,39 +838,6 @@ describe('Service: Conversation', () => {
       expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(mockedConversation.messages[1].id, messageStatus.RECEIVED);
       expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(mockedConversation.messages[2], messageStatus.SENT);
     });
-
-    it('should call sendAck with the new message status when it is updated', () => {
-      spyOn<any>(service, 'sendAck');
-      const mockedConversation = MOCK_CONVERSATION();
-      mockedConversation.messages = [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER];
-      mockedConversation.messages[0].status = messageStatus.PENDING;
-      mockedConversation.messages[1].status = messageStatus.SENT;
-      mockedConversation.messages[2].status = messageStatus.RECEIVED;
-
-      service.markAs(messageStatus.SENT, mockedConversation.messages[0], mockedConversation);
-      service.markAs(messageStatus.RECEIVED, mockedConversation.messages[1], mockedConversation);
-      service.markAs(messageStatus.SENT, mockedConversation.messages[2], mockedConversation);
-
-      expect(service['sendAck']).toHaveBeenCalledTimes(3);
-      expect(service['sendAck']).toHaveBeenCalledWith(
-        mockedConversation.messages[0].id,
-        mockedConversation.item.id,
-        mockedConversation.user.id,
-        mockedConversation.id,
-        TrackingService.MESSAGE_SENT_ACK);
-      expect(service['sendAck']).toHaveBeenCalledWith(
-        mockedConversation.messages[1].id,
-        mockedConversation.item.id,
-        mockedConversation.user.id,
-        mockedConversation.id,
-        TrackingService.MESSAGE_RECEIVED);
-      expect(service['sendAck']).toHaveBeenCalledWith(
-        mockedConversation.messages[2].id,
-        mockedConversation.item.id,
-        mockedConversation.user.id,
-        mockedConversation.id,
-        TrackingService.MESSAGE_SENT_ACK);
-    });
   });
 
   describe('get', () => {
@@ -906,6 +873,7 @@ describe('Service: Conversation', () => {
       spyOn(xmpp, 'sendConversationStatus');
       spyOn(trackingService, 'track');
       conversation = MOCK_CONVERSATION();
+      service['leads'].push(conversation);
     });
 
     it('should track MESSAGE_READ_ACK for each unread message', () => {
@@ -918,13 +886,11 @@ describe('Service: Conversation', () => {
       expect(trackingService.track).toHaveBeenCalledTimes(2);
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_READ_ACK, {
         thread_id: conversation.id,
-        from_user_id: conversation.user.id,
         message_id: MOCK_MESSAGE.id,
         item_id: conversation.item.id
       });
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_READ_ACK, {
         thread_id: conversation.id,
-        from_user_id: conversation.user.id,
         message_id: MOCK_RANDOM_MESSAGE.id,
         item_id: conversation.item.id
       });
@@ -1297,7 +1263,6 @@ describe('Service: Conversation', () => {
 
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_RECEIVED_ACK, {
           thread_id: MESSAGE_MAIN.thread,
-          from_user_id: USER_ID,
           message_id: MESSAGE_MAIN.id,
           item_id: ITEM_ID
         });
@@ -1575,11 +1540,9 @@ describe('Service: Conversation', () => {
       service['addConversation'](mockedConversation, MOCK_MESSAGE);
 
       expect(service['sendAck']).toHaveBeenCalledWith(
-        MOCK_MESSAGE.id,
-        mockedConversation.item.id,
-        mockedConversation.user.id,
+        TrackingService.MESSAGE_RECEIVED_ACK,
         mockedConversation.id,
-        TrackingService.MESSAGE_RECEIVED_ACK
+        MOCK_MESSAGE.id
       );
     });
 
