@@ -171,10 +171,11 @@ describe('Service: Xmpp', () => {
     expect(MOCKED_CLIENT.enableCarbons).toHaveBeenCalled();
   });
 
-  it('should connect the client', () => {
+  it('should connect the client and set clientConnected to true', () => {
     service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
 
     expect(MOCKED_CLIENT.connect).toHaveBeenCalled();
+    expect(service.clientConnected).toBe(true);
   });
 
   describe('bindEvents', () => {
@@ -695,6 +696,17 @@ describe('Service: Xmpp', () => {
       expect(message.date).toEqual(new Date(MESSAGE_DATE));
     }));
 
+    it('should emit a NEW_MESSAGE event when stream:data is triggered with a message containing a body', fakeAsync(() => {
+      spyOn<any>(service, 'onNewMessage');
+      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
+      service.searchHistory().subscribe();
+
+      eventService.emit('stream:data', XML_MESSAGE);
+      tick(2000);
+
+      expect(service['onNewMessage']).toHaveBeenCalled();
+    }));
+
     it('should return the response with two messages in the array', fakeAsync(() => {
       let response: any;
       const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID2, 'random');
@@ -1181,7 +1193,6 @@ describe('Service: Xmpp', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
         { thread_id: message.thread,
           message_id: message.id,
-          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
           item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
 
@@ -1204,7 +1215,6 @@ describe('Service: Xmpp', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT,
         { thread_id: message.thread,
           message_id: message.id,
-          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
           item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
 

@@ -32,7 +32,6 @@ export class NotificationService {
       }).subscribe((event: any) => {
         this.trackingService.track(TrackingService.NOTIFICATION_RECEIVED, {
           thread_id: message.conversationId,
-          from_user_id: message.user.id,
           item_id: itemId,
           message_id: message.id
         });
