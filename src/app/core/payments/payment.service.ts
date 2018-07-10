@@ -67,7 +67,7 @@ export class PaymentService {
       );
   }
 
-  public getCreditsPacks(): Observable<Pack[]> {
+  public getCreditsPacks(): Observable<Pack[][]> {
     const product: Products = {
       [CREDITS_PACK_ID]: {
         id: CREDITS_PACK_ID,
@@ -77,7 +77,19 @@ export class PaymentService {
     return this.getPacks(product)
       .map((packs: Packs) => {
         return packs.wallacoins;
+      })
+      .map((packs: Pack[]) => {
+        return this.chunkArray(packs, 3);
       });
+  }
+
+  private chunkArray(array, chunkSize): Pack[][] {
+    return _.reduce(array, function(result, value) {
+      const lastChunk = result[result.length-1];
+      if (lastChunk.length < chunkSize) lastChunk.push(value);
+      else result.push([value]);
+      return result;
+    }, [[]]);
   }
 
   public getSubscriptionPacks(): Observable<Packs> {
@@ -174,7 +186,7 @@ export class PaymentService {
             name
           );
           if (pack.original_price) {
-            formattedPack.calculateDiscountWithOriginalPrice(pack.price, +pack.original_price);
+            formattedPack.calculateDiscountWithOriginalPrice(+pack.price, +pack.original_price);
           } else {
             formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
           }

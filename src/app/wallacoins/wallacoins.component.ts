@@ -9,12 +9,12 @@ import { Pack } from '../core/payments/pack';
 })
 export class WallacoinsComponent implements OnInit {
 
-  public packs: Pack[];
+  public packs: Pack[][];
 
   constructor(private paymentService: PaymentService) { }
 
   ngOnInit() {
-    this.paymentService.getCreditsPacks().subscribe((packs: Pack[]) => {
+    this.paymentService.getCreditsPacks().subscribe((packs: Pack[][]) => {
       this.packs = packs;
       console.log(packs);
     });

@@ -81,7 +81,7 @@ export class Pack implements Model {
     this.discount = Math.floor(save * 100 / price);
   }
 
-  public calculateDiscountWithOriginalPrice(price: string, originalPrice: number): void {
+  public calculateDiscountWithOriginalPrice(price: number, originalPrice: number): void {
     const save: number = originalPrice - price;
     const wallacoinFactor = 100;
 

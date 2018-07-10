@@ -53,7 +53,7 @@ export interface PackResponse {
 
 export interface ProductResponse {
   id: string;
-  name: 'NATIONAL_BUMP' | 'BUMP' | 'LISTINGS';
+  name: 'NATIONAL_BUMP' | 'BUMP' | 'LISTINGS' | 'WALLACOINS';
 }
 
 export interface Products {
