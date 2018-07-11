@@ -24,7 +24,7 @@ export class CartComponent implements OnInit, OnDestroy {
   public cart: CartBase;
   public types: string[] = BUMP_TYPES;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
-  public financialCard: FinancialCard;
+  public hasFinancialCard: boolean;
   public cardType = 'old';
   public loading: boolean;
 
@@ -41,7 +41,6 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.cartService.createInstance(new Cart());
-    this.getCard();
   }
 
   ngOnDestroy() {
@@ -76,7 +75,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   private buy(orderId: string) {
-    if (!this.financialCard || this.financialCard && this.cardType === 'new') {
+    if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
       this.sabadellSubmit.emit(orderId);
     } else {
       this.paymentService.pay(orderId).subscribe(() => {
@@ -106,10 +105,8 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getCard() {
-    this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
-      this.financialCard = financialCard;
-    });
+  public hasCard(hasCard: boolean) {
+    this.hasFinancialCard = hasCard;
   }
 
 }

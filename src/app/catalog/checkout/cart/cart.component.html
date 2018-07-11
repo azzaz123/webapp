@@ -1,5 +1,5 @@
 <h1 i18n>My features</h1>
-<div class="cart-wrapper" [ngClass]="{'has-financial-card': financialCard}">
+<div class="cart-wrapper" [ngClass]="{'has-financial-card': hasFinancialCard}">
   <div class="scroll-panel">
     <ul *ngIf="cart" class="items-list">
       <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
@@ -57,24 +57,7 @@
   <span class="pull-left" i18n>Total</span>
   <span class="pull-right price">{{cart?.total | customCurrency}}</span>
 </div>
-<div class="select-card" *ngIf="financialCard">
-  <form>
-    <div ngbRadioGroup name="cardType" [(ngModel)]="cardType">
-      <label ngbButtonLabel class="custom-radio">
-        <input ngbButton type="radio" value="old">
-        <mat-icon svgIcon="radio-button"></mat-icon>
-        <mat-icon svgIcon="card" class="card-icon"></mat-icon>
-        <div class="number">{{financialCard?.number}}</div>
-        <div class="date">{{financialCard?.expire_date | date:'MM/yy'}}</div>
-      </label>
-      <label ngbButtonLabel class="custom-radio new-card">
-        <input ngbButton type="radio" value="new">
-        <mat-icon svgIcon="radio-button"></mat-icon>
-        <span i18n>+ Add another credit card</span>
-      </label>
-    </div>
-  </form>
-</div>
+<tsl-card-selection [(ngModel)]="cardType" (hasCard)="hasCard($event)"></tsl-card-selection>
 <tsl-button [disabled]="!cart?.total || loading"
             [loading]="loading"
             (click)="checkout()"

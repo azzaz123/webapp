@@ -125,7 +125,7 @@ describe('CartExtrasProComponent', () => {
     });
 
     it('should set card', () => {
-      expect(component.financialCard).toEqual(FINANCIAL_CARD);
+      expect(component.hasFinancialCard).toEqual(FINANCIAL_CARD);
     });
   });
 
@@ -209,7 +209,7 @@ describe('CartExtrasProComponent', () => {
         describe('buy method', () => {
           describe('should call sabadellSubmit emit', () => {
             it('if there is not financial card', () => {
-              component.financialCard = null;
+              component.hasFinancialCard = null;
 
               component.checkout();
 

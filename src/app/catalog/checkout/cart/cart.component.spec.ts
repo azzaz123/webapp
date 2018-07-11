@@ -122,7 +122,7 @@ describe('CartComponent', () => {
       expect(component.cart).toEqual(CART);
     });
     it('should set card', () => {
-      expect(component.financialCard).toEqual(FINANCIAL_CARD);
+      expect(component.hasFinancialCard).toEqual(FINANCIAL_CARD);
     });
   });
 
@@ -187,7 +187,7 @@ describe('CartComponent', () => {
 
       describe('without credit card', () => {
         it('should submit sabadell with orderId', () => {
-          component.financialCard = null;
+          component.hasFinancialCard = null;
 
           component.checkout();
 
