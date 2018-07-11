@@ -40,7 +40,8 @@ import { SelectComponent } from './select/select.component';
 import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
 import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
-import { CardSelectionComponent } from './card-selection/card-selection.component';
+import { CardSelectionComponent } from './payments/card-selection/card-selection.component';
+import { SabadellComponent } from './payments/sabadell/sabadell.component';
 
 @NgModule({
   imports: [
@@ -85,7 +86,8 @@ import { CardSelectionComponent } from './card-selection/card-selection.componen
     SearchInputComponent,
     SelectComponent,
     RestrictInputNumberDirective,
-    CardSelectionComponent
+    CardSelectionComponent,
+    SabadellComponent
   ],
   declarations: [
     AdComponent,
@@ -120,7 +122,8 @@ import { CardSelectionComponent } from './card-selection/card-selection.componen
     TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
     RestrictInputNumberDirective,
-    CardSelectionComponent
+    CardSelectionComponent,
+    SabadellComponent
   ],
   providers: [
     DecimalPipe,

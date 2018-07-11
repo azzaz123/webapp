@@ -1,7 +1,7 @@
 import { Component, EventEmitter, forwardRef, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { PaymentService } from '../../core/payments/payment.service';
-import { FinancialCard } from '../../core/payments/payment.interface';
+import { FinancialCard } from '../../../core/payments/payment.interface';
+import { PaymentService } from '../../../core/payments/payment.service';
 
 @Component({
   selector: 'tsl-card-selection',
