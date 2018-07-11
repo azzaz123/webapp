@@ -52,7 +52,6 @@ export class XmppService {
   public disconnect() {
     if (this.clientConnected) {
       this.client.disconnect();
-      this.clientConnected = false;
     }
   }
 
@@ -352,6 +351,10 @@ export class XmppService {
       this.eventService.emit(EventService.CLIENT_DISCONNECTED);
     });
 
+    this.client.on('connected', () => {
+      this.clientConnected = true;
+    });
+
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.reconnectClient();
     });
@@ -381,11 +384,9 @@ export class XmppService {
     }
     if (message.timestamp) {
       message.date = new Date(message.timestamp.body).getTime();
-    } else {
-      if (!message.date) {
+    } else if (!message.date) {
         message.date = new Date().getTime();
       }
-    }
     let messageId: string = null;
     if (message.timestamp && message.receipt && message.from.local !== message.to.local) {
       messageId = message.receipt;
