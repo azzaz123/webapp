@@ -118,7 +118,6 @@ export class ConversationService extends LeadService {
     const end: number = init + pageSize;
     return (archive ? this.archivedStream$ : this.stream$).asObservable()
       .map((conversations: Conversation[]) => {
-        console.log('conversations', conversations.length);
         if (filters) {
           return this.filter(conversations, filters);
         }
