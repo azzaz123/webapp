@@ -112,12 +112,13 @@ describe('Service: Message', () => {
 
     describe('with pending messages', () => {
       let response: any;
+      let pendingMsg;
 
       it('should resend messages that have the status PENDING and is newer than 5 days', () => {
         spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_PENDING));
         spyOn(xmpp, 'sendMessage');
-        let pendingMsg;
-        const pendingMsgCount = MOCK_DB_RESPONSE_WITH_PENDING.filter(m => m.status === messageStatus.PENDING);
+        const pendingMsgCount = MOCK_DB_RESPONSE_WITH_PENDING.filter(m => m.doc.status === messageStatus.PENDING).length;
+
 
         service.getMessages(conversation, 1).subscribe((data: any) => {
           response = data;
