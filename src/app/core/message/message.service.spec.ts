@@ -107,14 +107,18 @@ describe('Service: Message', () => {
 
     });
 
-    it('should call the query method if there are not messages in the db', () => {
+    it('should call the query method when there are no messages in the db AND xmpp client is connected AND there is internet connection', () => {
       xmpp.connect('1', 'token');
       spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of([]));
       spyOn(service, 'query').and.returnValue(Observable.of({
         meta: null,
         data: []
       }));
+      connectionService.isConnected = true;
+      xmpp.clientConnected = true;
+
       service.getMessages(conversation).subscribe();
+
       expect(service.query).toHaveBeenCalledWith(conversation.id, conversation.lastMessageRef, -1);
     });
   });

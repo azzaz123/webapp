@@ -398,9 +398,7 @@ export class ConversationService extends LeadService {
   }
 
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
-    return this.xmpp.isConnected()
-    .flatMap(() => {
-      if (this.connectionService.isConnected) {
+    if (this.connectionService.isConnected && this.xmpp.clientConnected) {
       return this.messageService.getNotSavedMessages().map((response: MessagesData) => {
         if (response.data.length) {
           let conversation: Conversation;
@@ -430,10 +428,9 @@ export class ConversationService extends LeadService {
         }
         return conversations;
       });
-      } else {
-        return Observable.of(null);
-      }
-    });
+    } else {
+      return Observable.of(null);
+    }
   }
 
   protected mapRecordData(data: ConversationResponse): Conversation {
