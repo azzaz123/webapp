@@ -55,16 +55,9 @@ export class PaymentService {
   }
 
   public pay(orderId: string): Observable<any> {
-    const options: RequestOptions = new RequestOptions({
-      headers: new Headers({
-        'X-Wallapop-User-Id': '101',
-        'X-Wallapop-Auth-Token': '60856fe26dbf6f5eaf7530024aaa3214'
-      })
-    });
-    return this.http.post(this.API_URL + '/c2b/give?orderId=' + orderId, null, options);
-    /*return this.http.post(this.API_URL + '/c2b/sabadell/tpv/pay', {
+    return this.http.post(this.API_URL + '/c2b/sabadell/tpv/pay', {
       order_id: orderId
-    });*/
+    });
   }
 
   public getPacks(product?: Products): Observable<Packs> {

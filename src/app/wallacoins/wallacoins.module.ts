@@ -6,6 +6,7 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoins-modal.component';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material';
+import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 
 @NgModule({
   imports: [
@@ -18,8 +19,9 @@ import { MatIconModule } from '@angular/material';
   ],
   declarations: [
     wallacoinsRoutedComponents,
-    BuyWallacoinsModalComponent
+    BuyWallacoinsModalComponent,
+    WallacoinsConfirmModalComponent
   ],
-  entryComponents: [BuyWallacoinsModalComponent]
+  entryComponents: [BuyWallacoinsModalComponent, WallacoinsConfirmModalComponent]
 })
 export class WallacoinsModule { }

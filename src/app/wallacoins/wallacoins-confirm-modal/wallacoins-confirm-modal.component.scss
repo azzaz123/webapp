@@ -1,0 +1,31 @@
+@import "~style/common";
+
+.modal-body {
+  text-align: center;
+  padding: 76px 100px $spacing-L;
+  h1 {
+    font-size: $font-size-LL;
+    font-weight: bold;
+    margin-bottom: $spacing-2M;
+  }
+  p {
+    font-size: $font-size;
+    color: $grey-500;
+    margin-bottom: 52px;
+  }
+  tsl-button {
+    margin-bottom: $spacing-S;
+    /deep/ {
+      .btn {
+        width: 350px;
+      }
+    }
+  }
+  .link {
+    color: $grey-250;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}

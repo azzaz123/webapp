@@ -222,3 +222,14 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     overflow: hidden;
   }
 }
+
+.modal.confirm-wallacoins {
+  $modal-width: 654px;
+  .modal-dialog {
+    max-width: $modal-width;
+  }
+  .modal-content {
+    width: $modal-width !important;
+    max-width: unset;
+  }
+}
