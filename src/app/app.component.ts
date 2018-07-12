@@ -216,7 +216,6 @@ export class AppComponent implements OnInit {
       if (this.userService.isLogged && this.connectionService.isConnected) {
         this.xmppService.reconnectClient();
       }
-      this.conversationService.resetCache();
     });
   }
 
