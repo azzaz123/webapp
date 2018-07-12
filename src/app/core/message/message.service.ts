@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { Conversation } from '../conversation/conversation';
 import { Message, messageStatus } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
