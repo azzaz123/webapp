@@ -108,8 +108,8 @@ export class ConversationService extends LeadService {
 
   public loadMoreArchived(): Observable<any> {
     return this.getLeads(this.getLastDate(this.archivedLeads), true)
-      .map(() => {
-        this.archivedStream$.next(this.archivedLeads);
+    .map(() => {
+      this.archivedStream$.next(this.archivedLeads);
       });
   }
 
@@ -118,6 +118,7 @@ export class ConversationService extends LeadService {
     const end: number = init + pageSize;
     return (archive ? this.archivedStream$ : this.stream$).asObservable()
       .map((conversations: Conversation[]) => {
+        console.log('conversations', conversations.length);
         if (filters) {
           return this.filter(conversations, filters);
         }
@@ -252,6 +253,9 @@ export class ConversationService extends LeadService {
         message.status = messageStatus.PENDING;
       }
       conversation.messages.push(message);
+      conversation.messages.sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      });
       conversation.modifiedDate = new Date().getTime();
       if (!message.fromSelf && !this.receiptSent) {
         this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
@@ -428,10 +432,9 @@ export class ConversationService extends LeadService {
         }
         return conversations;
       });
-      } else {
-        return Observable.of(null);
-      }
-    });
+    } else {
+      return Observable.of(null);
+    }
   }
 
   protected mapRecordData(data: ConversationResponse): Conversation {
