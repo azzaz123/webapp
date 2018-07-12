@@ -1,15 +1,30 @@
 @import "~style/common";
 
+.spinner-wrapper {
+  @include square(280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .buy-modal {
   display: flex;
   color: $grey-900;
   .left {
     background-color: $grey-50;
     text-align: center;
-    padding: 55px 67px 42px;
+    padding: 49px 30px 28px;
+    min-width: 294px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     h2 {
       font-size: $font-size-M;
-      margin-bottom: 28px;
+    }
+    .for-free {
+      color: $corporate;
+      font-weight: bold;
+      margin-bottom: $spacing-1M;
     }
     .icon {
       @include square(160px);
@@ -21,6 +36,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      width: 100%;
       .total {
         text-transform: uppercase;
         font-weight: bold;
@@ -32,19 +48,36 @@
       }
     }
   }
+  &.vertical {
+    flex-direction: column;
+    .left {
+      max-width: 330px;
+      padding: 49px 50px 28px;
+    }
+  }
   .right {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 360px;
     padding: $spacing-L;
     p {
       margin-bottom: $spacing-L;
     }
+  }
+  .right, .bottom {
     tsl-card-selection {
       width: 100%;
       margin-bottom: $spacing-2M;
+    }
+  }
+  .bottom {
+    width: 330px;
+    padding: $spacing-2M;
+    text-align: center;
+    p {
+      color: $grey-250;
     }
   }
 }

@@ -30,6 +30,8 @@ export class CardSelectionComponent implements OnInit, ControlValueAccessor {
     this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
       this.financialCard = financialCard;
       this.hasCard.emit(!!this.financialCard);
+    }, () => {
+      this.hasCard.emit(false);
     });
   }
 
