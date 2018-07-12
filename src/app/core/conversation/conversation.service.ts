@@ -401,39 +401,42 @@ export class ConversationService extends LeadService {
   }
 
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
-    if (this.connectionService.isConnected && this.xmpp.clientConnected) {
-      return this.messageService.getNotSavedMessages().map((response: MessagesData) => {
-        if (response.data.length) {
-          let conversation: Conversation;
-          response.data.forEach((message: Message) => {
-            conversation = conversations.filter((filteredConversation: Conversation): boolean => {
-              return (filteredConversation.id === message.conversationId);
-            })[0];
-            if (conversation) {
-              if (!this.findMessage(conversation.messages, message)) {
-                message = this.messageService.addUserInfo(conversation, message);
-                conversation.messages.push(message);
-                if (!message.fromSelf) {
-                  this.handleUnreadMessage(conversation);
+    return this.xmpp.isConnected()
+      .flatMap(() => {
+        if (this.connectionService.isConnected) {
+        return this.messageService.getNotSavedMessages().map((response: MessagesData) => {
+          if (response.data.length) {
+            let conversation: Conversation;
+            response.data.forEach((message: Message) => {
+              conversation = conversations.filter((filteredConversation: Conversation): boolean => {
+                return (filteredConversation.id === message.conversationId);
+              })[0];
+              if (conversation) {
+                if (!this.findMessage(conversation.messages, message)) {
+                  message = this.messageService.addUserInfo(conversation, message);
+                  conversation.messages.push(message);
+                  if (!message.fromSelf) {
+                    this.handleUnreadMessage(conversation);
+                  }
                 }
+              } else {
+                this.get(message.conversationId).subscribe((subscribedConversation: Conversation) => {
+                  message = this.messageService.addUserInfo(subscribedConversation, message);
+                  this.addMessage(subscribedConversation, message);
+                  conversations.unshift(subscribedConversation);
+                  if (!message.fromSelf) {
+                    this.handleUnreadMessage(subscribedConversation);
+                  }
+                });
               }
-            } else {
-              this.get(message.conversationId).subscribe((subscribedConversation: Conversation) => {
-                message = this.messageService.addUserInfo(subscribedConversation, message);
-                this.addMessage(subscribedConversation, message);
-                conversations.unshift(subscribedConversation);
-                if (!message.fromSelf) {
-                  this.handleUnreadMessage(subscribedConversation);
-                }
-              });
-            }
-          });
-        }
-        return conversations;
-      });
-    } else {
-      return Observable.of(null);
-    }
+            });
+          }
+          return conversations;
+        });
+      } else {
+        return Observable.of(null);
+      }
+    });
   }
 
   protected mapRecordData(data: ConversationResponse): Conversation {

@@ -148,11 +148,7 @@ describe('Service: Message', () => {
         meta: null,
         data: []
       }));
-      connectionService.isConnected = true;
-      xmpp.clientConnected = true;
-
       service.getMessages(conversation).subscribe();
-
       expect(service.query).toHaveBeenCalledWith(conversation.id, conversation.lastMessageRef, -1);
     });
   });
