@@ -11,7 +11,7 @@
       </div>
       <div class="col-1">
         <div class="total-credits">
-          <div class="credits">0</div>
+          <div class="credits">{{wallacoins}}</div>
           <div class="label">wallacoins</div>
         </div>
       </div>
@@ -30,7 +30,7 @@
               <div class="quantity">{{pack.quantity}}</div>
               <div class="label">wallacoins</div>
               <div class="for-free"><span *ngIf="pack.forFree > 0">Te regalamos {{pack.forFree}}!</span></div>
-              <tsl-button [className]="'btn-block ' + (i === 0 && j === 1 ? 'btn-primary' : 'btn-grey')">{{pack.price | customCurrency}}</tsl-button>
+              <tsl-button (click)="openBuyModal(pack)" [className]="'btn-block ' + (i === 0 && j === 1 ? 'btn-primary' : 'btn-grey')">{{pack.price | customCurrency}}</tsl-button>
             </div>
           </ng-template>
         </ngb-carousel>

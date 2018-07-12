@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
+import { Headers, RequestOptions, Response } from '@angular/http';
 import {
-  FinancialCard, SabadellInfoResponse, Packs,
-  ProductResponse, Products, PackResponse, BillingInfoResponse, OrderProExtras, PerkResponse, ScheduledStatus
+  BillingInfoResponse,
+  FinancialCard,
+  OrderProExtras,
+  PackResponse,
+  Packs,
+  PerkResponse,
+  ProductResponse,
+  Products,
+  SabadellInfoResponse,
+  ScheduledStatus
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
 import * as _ from 'lodash';
 import { CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
-import { Product } from '../item/item-response.interface';
 
 @Injectable()
 export class PaymentService {
@@ -48,9 +55,16 @@ export class PaymentService {
   }
 
   public pay(orderId: string): Observable<any> {
-    return this.http.post(this.API_URL + '/c2b/sabadell/tpv/pay', {
-      order_id: orderId
+    const options: RequestOptions = new RequestOptions({
+      headers: new Headers({
+        'X-Wallapop-User-Id': '101',
+        'X-Wallapop-Auth-Token': '60856fe26dbf6f5eaf7530024aaa3214'
+      })
     });
+    return this.http.post(this.API_URL + '/c2b/give?orderId=' + orderId, null, options);
+    /*return this.http.post(this.API_URL + '/c2b/sabadell/tpv/pay', {
+      order_id: orderId
+    });*/
   }
 
   public getPacks(product?: Products): Observable<Packs> {
@@ -135,6 +149,8 @@ export class PaymentService {
                   if (perk.subscription_id !== null) {
                     response.setListingSubscription(perk);
                   }
+                } else if (name === 'WALLACOINS') {
+                  response.setWallacoins(perk);
                 }
               }
             });
@@ -224,6 +240,10 @@ export class PaymentService {
         this.products = _.keyBy(products, 'id');
         return this.products;
       });
+  }
+
+  public forceOrder(order: string): Observable<any> {
+    return this.http.post(this.API_URL + '/c2b/pack-order/create', order);
   }
 }
 

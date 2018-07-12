@@ -1,0 +1,50 @@
+@import "~style/common";
+
+.buy-modal {
+  display: flex;
+  color: $grey-900;
+  .left {
+    background-color: $grey-50;
+    text-align: center;
+    padding: 55px 67px 42px;
+    h2 {
+      font-size: $font-size-M;
+      margin-bottom: 28px;
+    }
+    .icon {
+      @include square(160px);
+      border-radius: 50%;
+      background-color: $white;
+      margin-bottom: $spacing-2M;
+    }
+    .price {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .total {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: $font-size-XS;
+      }
+      .amount {
+        font-weight: bold;
+        font-size: $font-size-3L;
+      }
+    }
+  }
+  .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: $spacing-L;
+    p {
+      margin-bottom: $spacing-L;
+    }
+    tsl-card-selection {
+      width: 100%;
+      margin-bottom: $spacing-2M;
+    }
+  }
+}

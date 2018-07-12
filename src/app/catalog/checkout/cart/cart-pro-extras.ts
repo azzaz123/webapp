@@ -24,7 +24,7 @@ export class CartProExtras extends CartBase {
     this.calculateTotals();
   }
 
-  prepareOrder() {
+  prepareOrder(): OrderProExtras {
     const ordersArray: Array<string> = [];
     BUMP_TYPES.forEach((type: string) => {
       const orders: Array<string> = this[type].cartItems.map((cartProExtrasPack: CartProExtrasPack) => {
