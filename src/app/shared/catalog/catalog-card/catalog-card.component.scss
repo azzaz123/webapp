@@ -5,7 +5,7 @@ $transition: all .5s ease;
 $feature-button-width: 170px;
 
 :host /deep/ ngb-tooltip-window {
-  margin-top: -5px;
+  margin-top: -12px;
   &.show {
     opacity: 1;
   }
