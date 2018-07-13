@@ -2,15 +2,23 @@ import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs/Observable';
-import { BillingInfoResponse, FinancialCard, SabadellInfoResponse, Packs, Perks } from './payment.interface';
+import { BillingInfoResponse, FinancialCard, Packs, Perks, Products, SabadellInfoResponse } from './payment.interface';
 import {
-  BILLING_INFO_RESPONSE, FINANCIAL_CARD, SABADELL_RESPONSE, PACK_RESPONSE, createPacksFixture, PRODUCTS_RESPONSE_PACKS,
-  BUMPS_PRODUCT_RESPONSE, PERK_RESPONSE
+  BILLING_INFO_RESPONSE,
+  BUMPS_PRODUCT_RESPONSE,
+  createPacksFixture, createWallacoinsPacksFixture,
+  FINANCIAL_CARD,
+  PACK_RESPONSE,
+  PERK_RESPONSE,
+  PRODUCTS_RESPONSE_PACKS,
+  SABADELL_RESPONSE,
+  WALLACOINS_PACKS_RESPONSE
 } from '../../../tests/payments.fixtures.spec';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { PerksModel } from './payment.model';
 import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
+import { CREDITS_PACK_ID, Pack } from './pack';
 
 
 describe('PaymentService', () => {
@@ -76,22 +84,85 @@ describe('PaymentService', () => {
 
   describe('getPacks', () => {
     let response: Packs;
-    beforeEach(fakeAsync(() => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PACK_RESPONSE)});
-      const res2: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE_PACKS)});
-      spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
-      service.getPacks().subscribe((r: Packs) => {
-        response = r;
-      });
-    }));
 
-    it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/payments/packs', undefined);
-      expect(http.get).toHaveBeenCalledWith('api/v3/payments/products');
+    describe('with no param', () => {
+      beforeEach(fakeAsync(() => {
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PACK_RESPONSE)});
+        const res2: ResponseOptions = new ResponseOptions({body: JSON.stringify(PRODUCTS_RESPONSE_PACKS)});
+        spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)), Observable.of(new Response(res2)));
+
+        service.getPacks().subscribe((r: Packs) => {
+          response = r;
+        });
+      }));
+      it('should call endpoint', () => {
+        expect(http.get).toHaveBeenCalledWith('api/v3/payments/packs', undefined);
+        expect(http.get).toHaveBeenCalledWith('api/v3/payments/products');
+      });
+
+      it('should return packs', () => {
+        expect(response).toEqual(createPacksFixture());
+      });
     });
 
-    it('should return packs', () => {
-      expect(response).toEqual(createPacksFixture());
+    describe('with param', () => {
+      const product: Products = {
+        [CREDITS_PACK_ID]: {
+          id: CREDITS_PACK_ID,
+          name: 'WALLACOINS'
+        }
+      };
+
+      beforeEach(fakeAsync(() => {
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(WALLACOINS_PACKS_RESPONSE)});
+        spyOn(http, 'get').and.returnValues(Observable.of(new Response(res)));
+
+        service.getPacks(product).subscribe((r: Packs) => {
+          response = r;
+        });
+      }));
+
+      it('should call endpoint', () => {
+        expect(http.get).toHaveBeenCalledWith('api/v3/payments/packs', {
+          products: CREDITS_PACK_ID
+        });
+        expect(http.get).not.toHaveBeenCalledWith('api/v3/payments/products');
+      });
+
+      it('should return packs', () => {
+        expect(response).toEqual(createWallacoinsPacksFixture());
+      });
+    });
+
+  });
+
+  describe('getCreditsPacks', () => {
+
+    let resp: Pack[][];
+
+    beforeEach(() => {
+      spyOn(service, 'getPacks').and.returnValue(Observable.of(createWallacoinsPacksFixture()));
+
+      service.getCreditsPacks().subscribe((r: Pack[][]) => {
+        resp = r;
+      });
+    });
+
+    it('should call getPacks', () => {
+      expect(service.getPacks).toHaveBeenCalledWith({
+        [CREDITS_PACK_ID]: {
+          id: CREDITS_PACK_ID,
+          name: 'WALLACOINS'
+        }
+      });
+    });
+
+    it('should return an array of wallacoins packs array', () => {
+      expect(resp.length).toBe(2);
+      expect(resp[0].length).toBe(3);
+      expect(resp[1].length).toBe(3);
+      expect(resp[0][0] instanceof Pack).toBe(true);
+      expect(resp[0][0].name).toBe('wallacoins');
     });
   });
 

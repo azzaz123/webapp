@@ -10,13 +10,13 @@ const routes: Routes = [
     path: 'wallacoins',
     component: WallacoinsComponent,
     canActivate: [LoggedGuard, NgxPermissionsGuard],
-    /*data: {
+    data: {
       permissions: {
         only: PERMISSIONS.normal,
         redirectTo: '/pro/profile'
       },
       isMyZone: true
-    }*/
+    }
   }
 ];
 

@@ -236,9 +236,5 @@ export class PaymentService {
         return this.products;
       });
   }
-
-  public forceOrder(order: string): Observable<any> {
-    return this.http.post(this.API_URL + '/c2b/pack-order/create', order);
-  }
 }
 

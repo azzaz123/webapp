@@ -11,6 +11,7 @@ import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
 describe('CardSelectionComponent', () => {
   let component: CardSelectionComponent;
   let fixture: ComponentFixture<CardSelectionComponent>;
+  let paymentService: PaymentService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -32,9 +33,36 @@ describe('CardSelectionComponent', () => {
     fixture = TestBed.createComponent(CardSelectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    paymentService = TestBed.get(PaymentService);
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngOnInit', () => {
+
+    it('should get and set financial card and emit true if present', () => {
+      let resp: boolean;
+      spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
+      component.hasCard.subscribe((hasCard: boolean) => {
+        resp = hasCard;
+      });
+
+      component.ngOnInit();
+
+      expect(component.financialCard).toEqual(FINANCIAL_CARD);
+      expect(resp).toBe(true);
+    });
+
+    it('should get financial card and emit false if not present', () => {
+      let resp: boolean;
+      component.financialCard = undefined;
+      spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.throw({}));
+      component.hasCard.subscribe((hasCard: boolean) => {
+        resp = hasCard;
+      });
+
+      component.ngOnInit();
+
+      expect(component.financialCard).toBeUndefined();
+      expect(resp).toBe(false);
+    });
   });
 });
