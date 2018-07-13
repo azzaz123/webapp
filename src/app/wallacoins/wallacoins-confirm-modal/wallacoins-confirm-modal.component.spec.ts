@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('WallacoinsConfirmModalComponent', () => {
   let component: WallacoinsConfirmModalComponent;
@@ -8,7 +10,16 @@ describe('WallacoinsConfirmModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WallacoinsConfirmModalComponent ]
+      declarations: [ WallacoinsConfirmModalComponent ],
+      providers: [{
+        provide: NgbActiveModal, useValue: {
+          close() {
+          },
+          dismiss() {
+          }
+        }
+      }],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

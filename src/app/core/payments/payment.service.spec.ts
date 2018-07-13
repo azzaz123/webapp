@@ -86,7 +86,7 @@ describe('PaymentService', () => {
     }));
 
     it('should call endpoint', () => {
-      expect(http.get).toHaveBeenCalledWith('api/v3/payments/packs');
+      expect(http.get).toHaveBeenCalledWith('api/v3/payments/packs', undefined);
       expect(http.get).toHaveBeenCalledWith('api/v3/payments/products');
     });
 

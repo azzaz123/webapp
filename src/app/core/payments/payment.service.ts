@@ -61,9 +61,11 @@ export class PaymentService {
   }
 
   public getPacks(product?: Products): Observable<Packs> {
-    const params: any = {};
+    let params: any;
     if (product) {
-      params.products = Object.keys(product)[0];
+      params = {
+        products: Object.keys(product)[0]
+      };
     }
     return this.http.get(this.API_URL + '/packs', params)
       .map((r: Response) => r.json())

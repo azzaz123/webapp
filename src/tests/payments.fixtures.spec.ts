@@ -131,7 +131,8 @@ export function createPacksFixture(): Packs {
   const PACKS: Packs = {
     cityBump: [],
     countryBump: [],
-    listings: []
+    listings: [],
+    wallacoins: []
   };
   const packCityBump = new Pack(
     '1',

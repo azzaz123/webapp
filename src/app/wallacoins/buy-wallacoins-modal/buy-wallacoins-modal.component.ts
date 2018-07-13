@@ -1,11 +1,8 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Pack } from '../../core/payments/pack';
 import { PaymentService } from '../../core/payments/payment.service';
-import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { ItemService } from '../../core/item/item.service';
 import { UUID } from 'angular2-uuid';
-import { Order } from '../../core/item/item-response.interface';
 import { OrderProExtras } from '../../core/payments/payment.interface';
 import { Response } from '@angular/http';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
