@@ -114,7 +114,8 @@ describe('Component: Input', () => {
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
-        thread_id: conversation.id});
+        thread_id: conversation.id,
+        to_user_id: conversation.user.id});
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
@@ -127,7 +128,8 @@ describe('Component: Input', () => {
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
-        thread_id: conversation.id});
+        thread_id: conversation.id,
+        to_user_id: conversation.user.id});
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 

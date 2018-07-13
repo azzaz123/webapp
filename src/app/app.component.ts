@@ -50,7 +50,6 @@ export class AppComponent implements OnInit {
   private previousUrl: string;
   private currentUrl: string;
   private previousSlug: string;
-  private sendPresenceInterval = 240000;
 
   constructor(private event: EventService,
               private xmppService: XmppService,
@@ -85,7 +84,6 @@ export class AppComponent implements OnInit {
     this.subscribeEventNewMessage();
     this.subscribeEventClientDisconnect();
     this.subscribeEventItemUpdated();
-    this.subscribeChatSignals();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
@@ -136,20 +134,10 @@ export class AppComponent implements OnInit {
       this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
   }
 
-  private subscribeChatSignals() {
-    this.event.subscribe(EventService.MESSAGE_SENT_ACK, (conversationId, messageId) => {
-      this.conversationService.sendAck(TrackingService.MESSAGE_SENT_ACK, conversationId, messageId);
-    });
-    this.event.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
-      this.conversationService.sendAck(TrackingService.MESSAGE_RECEIVED, conversationId, messageId);
-    });
-  }
-
   private subscribeEventUserLogin() {
     this.event.subscribe(EventService.USER_LOGIN, (accessToken: string) => {
       this.userService.me().subscribe(
         (user: User) => {
-          this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
           this.xmppService.connect(user.id, accessToken);
           this.userService.setPermission(user.type);
           this.conversationService.init().subscribe(() => {
@@ -212,12 +200,7 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeEventClientDisconnect() {
-    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => {
-      if (this.userService.isLogged && this.connectionService.isConnected) {
-        this.xmppService.reconnectClient();
-      }
-      this.conversationService.resetCache();
-    });
+    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => this.conversationService.resetCache());
   }
 
   private subscribeEventItemUpdated() {

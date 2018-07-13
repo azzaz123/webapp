@@ -93,7 +93,6 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('navigation_reviews', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_reviews.svg'));
   matIconRegistry.addSvgIcon('navigation_dashboard', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_dashboard.svg'));
   matIconRegistry.addSvgIcon('navigation_phones', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_phones.svg'));
-  matIconRegistry.addSvgIcon('navigation_help', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_help.svg'));
   matIconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/delete.svg'));
   matIconRegistry.addSvgIcon('clock', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/clock.svg'));
   matIconRegistry.addSvgIcon('back-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/back-arrow.svg'));
@@ -241,21 +240,4 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('category_RealEstate-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/realstate.svg'));
   matIconRegistry.addSvgIcon('category_Services-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/services.svg'));
   matIconRegistry.addSvgIcon('category_Others-hover', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/categories/hover/others.svg'));
-  matIconRegistry.addSvgIcon('buy', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/buy.svg'));
-  matIconRegistry.addSvgIcon('rent', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/rent.svg'));
-  matIconRegistry.addSvgIcon('apartment', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/apartment.svg'));
-  matIconRegistry.addSvgIcon('garage', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/garage.svg'));
-  matIconRegistry.addSvgIcon('house', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/house.svg'));
-  matIconRegistry.addSvgIcon('land', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/land.svg'));
-  matIconRegistry.addSvgIcon('office', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/office.svg'));
-  matIconRegistry.addSvgIcon('room', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/room.svg'));
-  matIconRegistry.addSvgIcon('elevator', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/elevator.svg'));
-  matIconRegistry.addSvgIcon('garden', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/garden.svg'));
-  matIconRegistry.addSvgIcon('pool', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/pool.svg'));
-  matIconRegistry.addSvgIcon('terrace', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/terrace.svg'));
-  matIconRegistry.addSvgIcon('box_room', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/box_room.svg'));
-  matIconRegistry.addSvgIcon('faq-features-1', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-features-1.svg'));
-  matIconRegistry.addSvgIcon('faq-features-2', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-features-2.svg'));
-  matIconRegistry.addSvgIcon('faq-features-3', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-features-3.svg'));
-
 }

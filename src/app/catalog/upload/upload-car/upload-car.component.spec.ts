@@ -21,7 +21,6 @@ import { IMAGE, USER_ID } from '../../../../tests/user.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Car } from '../../../core/item/car';
-import { CARS_CATEGORY } from '../../../core/item/item-categories';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -264,7 +263,7 @@ describe('UploadCarComponent', () => {
 
   describe('onSubmit', () => {
     it('should has category set by default', () => {
-      expect(component.uploadForm.get('category_id').value).toBe(CARS_CATEGORY);
+      expect(component.uploadForm.get('category_id').value).toBe('100');
     });
 
     it('should emit uploadEvent if form is valid', () => {

@@ -44,11 +44,8 @@ body {
 }
 
 .page-content {
-  position: absolute;
-  left: $sidebar-width;
-  top: $topbar-height;
-  height: calc(100vh - #{$topbar-height});
-  width: calc(100% - #{$sidebar-width});
+  margin-left: $sidebar-width;
+  height: 100vh;
   overflow: auto;
   background: rgba(236, 239, 241, 0.6);
   padding: 0 $spacing-L;

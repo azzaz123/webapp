@@ -12,8 +12,9 @@
       <span i18n *ngIf="isUrgent" [ngClass]="{'selected': isUrgent}">Checked as ASAP</span>
     </div>
   </div>
-  <div class="urgent-background" [class.active]="isUrgent"></div>
+  <div class="urgent-background"></div>
   <ng-template #coachmarkUrgent>
+    <mat-icon svgIcon="cm-urgent"></mat-icon>
     <div i18n>Your product will be more visible and you will sell it faster.</div>
   </ng-template>
 </div>

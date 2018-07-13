@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { fakeAsync, TestBed, discardPeriodicTasks, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { UserService } from './user.service';
 import { HttpService } from '../http/http.service';
 import { MockBackend, MockConnection } from '@angular/http/testing';
@@ -39,6 +39,7 @@ describe('Service: User', () => {
   let mockBackend: MockBackend;
   let http: HttpService;
   let haversineService: HaversineService;
+  let response: any;
   const FAKE_USER_NAME = 'No disponible';
   let accessTokenService: AccessTokenService;
   let event: EventService;
@@ -226,39 +227,7 @@ describe('Service: User', () => {
       service.checkUserStatus();
       expect(service['event'].emit).not.toHaveBeenCalled();
     }));
-  });
 
-  describe('sendUserPresence', () => {
-    const intervalValue = 1000;
-    const callTimes = 6;
-
-    beforeEach(() => {
-      spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
-      spyOn(permissionService, 'flushPermissions').and.returnValue({});
-      spyOn(accessTokenService, 'deleteAccessToken').and.callThrough();
-      spyOn(http, 'post').and.returnValue(Observable.of({}));
-      accessTokenService.storeAccessToken('abc');
-    });
-
-    it('should call the me/online endpoint ONCE when the client connects and then every <intervalValue> milliseconds', fakeAsync(() => {
-      service.sendUserPresenceInterval(intervalValue);
-      tick(intervalValue * callTimes);
-
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/online');
-      expect(http.post).toHaveBeenCalledTimes(callTimes + 1);
-      discardPeriodicTasks();
-    }));
-
-    it('should call the me/online endpoint ONCE when the client connects and stop after the user has logged out', fakeAsync(() => {
-      service.sendUserPresenceInterval(intervalValue);
-      tick(intervalValue * callTimes);
-      service.logout();
-      tick(intervalValue * 4);
-
-      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/online');
-      expect(http.post).toHaveBeenCalledTimes(callTimes + 1);
-      discardPeriodicTasks();
-    }));
   });
 
   describe('getFakeUser', () => {
@@ -570,7 +539,7 @@ describe('Service: User', () => {
 
       service.isProfessional().subscribe((v) => {
         val = v;
-      });
+      })
     });
 
     it('should call me', () => {
@@ -578,7 +547,7 @@ describe('Service: User', () => {
     });
 
     it('should call hasPermission', () => {
-      expect(permissionService.hasPermission).toHaveBeenCalledWith(PERMISSIONS.professional);
+      expect(permissionService.hasPermission).toHaveBeenCalledWith(PERMISSIONS.professional)
     });
 
     it('should return true', () => {

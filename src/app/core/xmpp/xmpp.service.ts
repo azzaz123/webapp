@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, HostListener } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
@@ -12,6 +12,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
+import { ISubscription } from 'rxjs/Subscription';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -26,6 +27,7 @@ export class XmppService {
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
+  private sentAckSubscription: ISubscription;
   private unreadMessages = [];
   public totalUnreadMessages = 0;
   public receivedReceipts = [];
@@ -46,7 +48,6 @@ export class XmppService {
     this.createClient(accessToken);
     this.bindEvents();
     this.client.connect();
-    this.clientConnected = true;
   }
 
   public disconnect() {
@@ -71,6 +72,7 @@ export class XmppService {
 
     if (!conversation.messages.length) {
       this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
+        to_user_id: conversation.user.id,
         item_id: conversation.item.id,
         thread_id: message.thread,
         message_id: message.id });
@@ -79,6 +81,7 @@ export class XmppService {
     this.trackingService.track(TrackingService.MESSAGE_SENT, {
       thread_id: message.thread,
       message_id: message.id,
+      to_user_id: conversation.user.id,
       item_id: conversation.item.id
     });
     this.onNewMessage(_.clone(message));
@@ -144,7 +147,7 @@ export class XmppService {
       let messagesCount = 0;
       setTimeout(() => {
         if (messagesCount === 0) {
-            query.then(() => {
+          query.then((response) => {
             return observer.next({
               data: [],
               meta: {
@@ -168,7 +171,6 @@ export class XmppService {
                 builtMessage.status = messageStatus.SENT;
               }
             }
-            this.onNewMessage(message);
           }
           if (message.receivedId) {
             this.confirmedMessages.push(message.receivedId);
@@ -179,7 +181,7 @@ export class XmppService {
             this.readReceipts.push(message);
             this.eventService.emit(EventService.MESSAGE_READ, message.thread, message.receivedId);
           }
-            query.then((response: any) => {
+          query.then((response: any) => {
             const meta: any = response.mam.rsm;
             if (message.ref === meta.last) {
               messages = this.checkReceivedMessages(messages);
@@ -285,7 +287,7 @@ export class XmppService {
   }
 
   public addUnreadMessagesCounter(conversations) {
-    if (this.unreadMessages.length) {
+    if (this.unreadMessages) {
       for (let index = this.unreadMessages.length - 1; index >= 0; --index) {
         const convWithUnread = conversations.find((c) => c.id === this.unreadMessages[index].thread);
         if (convWithUnread) {
@@ -314,13 +316,6 @@ export class XmppService {
     this.client.use(this.thirdVoicePlugin);
   }
 
-  public reconnectClient() {
-    if (!this.clientConnected) {
-      this.client.connect();
-      this.clientConnected = true;
-    }
-  }
-
   private bindEvents(): void {
     this.client.enableKeepAlive({
       interval: 30
@@ -347,13 +342,15 @@ export class XmppService {
     });
 
     this.client.on('disconnected', () => {
-      console.warn('Client disconnected');
       this.clientConnected = false;
       this.eventService.emit(EventService.CLIENT_DISCONNECTED);
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      this.reconnectClient();
+      if (!this.clientConnected) {
+        this.client.connect();
+        this.clientConnected = true;
+      }
     });
 
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));

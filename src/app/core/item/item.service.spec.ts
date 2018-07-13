@@ -54,11 +54,6 @@ import { CAR_DATA, CAR_DATA_FORM, MOCK_CAR } from '../../../tests/car.fixtures.s
 import { Car } from './car';
 import { CART_ORDER_PRO } from '../../../tests/pro-item.fixtures.spec';
 import * as _ from 'lodash';
-import {
-  MOCK_REALESTATE, REALESTATE_CONTENT_DATA, REALESTATE_DATA,
-  UPLOAD_FORM_REALESTATE_VALUES
-} from '../../../tests/realestate.fixtures.spec';
-import { Realestate } from './realestate';
 
 describe('Service: Item', () => {
 
@@ -299,12 +294,6 @@ describe('Service: Item', () => {
       const car: Car = <Car>service['mapRecordData'](CAR_DATA);
 
       expect(car).toEqual(MOCK_CAR);
-    });
-
-    it('should map real estate data', () => {
-      const car: Realestate = <Realestate>service['mapRecordData'](REALESTATE_DATA);
-
-      expect(car).toEqual(MOCK_REALESTATE);
     });
   });
 
@@ -585,42 +574,6 @@ describe('Service: Item', () => {
       });
     });
 
-    describe('real estate', () => {
-
-      beforeEach(() => {
-        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(REALESTATE_DATA)});
-        spyOn(http, 'put').and.returnValue(Observable.of(new Response(res)));
-        spyOn(eventService, 'emit');
-      });
-
-      it('should call REAL ESTATE endpoint if category is 13000 and return response', () => {
-        let item: any;
-
-        service.update(UPLOAD_FORM_REALESTATE_VALUES).subscribe((r: any) => {
-          item = r;
-        });
-
-        expect(http.put).toHaveBeenCalledWith('api/v3/items/real_estate/' + ITEM_ID, UPLOAD_FORM_REALESTATE_VALUES, options);
-        expect(item).toEqual(REALESTATE_DATA);
-      });
-
-      it('should emit ITEM_UPDATED event', () => {
-        service.update(ITEM_DATA).subscribe();
-
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, ITEM_DATA);
-      });
-    });
-
-  });
-
-  describe('updateRealEstateLocation', () => {
-    it('should call endpoint', () => {
-      spyOn(http, 'put').and.returnValue(Observable.of({}));
-
-      service.updateRealEstateLocation(ITEM_ID, REALESTATE_CONTENT_DATA.location);
-
-      expect(http.put).toHaveBeenCalledWith('api/v3/items/real_estate/' + ITEM_ID + '/location', REALESTATE_CONTENT_DATA.location);
-    });
   });
 
   describe('deletePicture', () => {

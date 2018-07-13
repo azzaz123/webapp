@@ -22,8 +22,7 @@ import { LocationBoxComponent } from './location-box/location-box.component';
     CommonModule,
     LocationSelectComponent,
     GeolocationComponent,
-    LocationBoxComponent,
-    HereMapsComponent
+    LocationBoxComponent
   ],
   declarations: [
     LocationSelectComponent,

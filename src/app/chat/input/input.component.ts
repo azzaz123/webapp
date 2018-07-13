@@ -50,6 +50,7 @@ export class InputComponent implements OnChanges, OnInit {
       if (message !== '') {
         this.trackingService.track(TrackingService.SEND_BUTTON, {
           thread_id: this.currentConversation.id,
+          to_user_id: this.currentConversation.user.id
         });
         this.messageService.send(this.currentConversation, message);
       }

@@ -6,7 +6,6 @@ import { PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../../tests/item.fixtures.spe
 import { Observable } from 'rxjs/Observable';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { UserService } from '../../core/user/user.service';
-import { CARS_CATEGORY } from '../../core/item/item-categories';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -54,7 +53,7 @@ describe('UploadComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.setCategory).toHaveBeenCalledWith(CARS_CATEGORY);
+      expect(component.setCategory).toHaveBeenCalledWith('100');
     });
 
     it('should not set any category if user is not professional', () => {

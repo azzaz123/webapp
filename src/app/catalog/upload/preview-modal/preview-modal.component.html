@@ -47,15 +47,15 @@
     </div>
   </div>
   <div class="extras" *ngIf="hasExtras">
-    <div *ngIf="itemPreview.sale_conditions?.fix_price">
+    <div *ngIf="itemPreview.sale_conditions.fix_price">
       <mat-icon svgIcon="firm-price"></mat-icon>
       <span i18n>Firm Price</span>
     </div>
-    <div *ngIf="itemPreview.sale_conditions?.shipping_allowed">
+    <div *ngIf="itemPreview.sale_conditions.shipping_allowed">
       <mat-icon svgIcon="shipping-available"></mat-icon>
       <span i18n>Shipping available</span>
     </div>
-    <div *ngIf="itemPreview.sale_conditions?.exchange_allowed">
+    <div *ngIf="itemPreview.sale_conditions.exchange_allowed">
       <mat-icon svgIcon="accept-trades"></mat-icon>
       <span i18n>Accept trades</span>
     </div>

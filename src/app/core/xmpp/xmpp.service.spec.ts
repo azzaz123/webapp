@@ -111,7 +111,6 @@ let eventService: EventService;
 let trackingService: TrackingService;
 let persistencyService: PersistencyService;
 let sendIqSpy: jasmine.Spy;
-let connectSpy: jasmine.Spy;
 
 describe('Service: Xmpp', () => {
   beforeEach(() => {
@@ -132,7 +131,7 @@ describe('Service: Xmpp', () => {
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
     });
-    connectSpy = spyOn(MOCKED_CLIENT, 'connect');
+    spyOn(MOCKED_CLIENT, 'connect');
     spyOn(MOCKED_CLIENT, 'sendPresence');
     spyOn(MOCKED_CLIENT, 'sendMessage');
     spyOn(MOCKED_CLIENT, 'enableCarbons');
@@ -171,11 +170,10 @@ describe('Service: Xmpp', () => {
     expect(MOCKED_CLIENT.enableCarbons).toHaveBeenCalled();
   });
 
-  it('should connect the client and set clientConnected to true', () => {
+  it('should connect the client', () => {
     service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
 
     expect(MOCKED_CLIENT.connect).toHaveBeenCalled();
-    expect(service.clientConnected).toBe(true);
   });
 
   describe('bindEvents', () => {
@@ -333,18 +331,6 @@ describe('Service: Xmpp', () => {
       expect(msg.payload.text).toEqual('text');
     }));
 
-    describe('reconnectClient', () => {
-      it('should reconnect the client if it is disconnected', () => {
-        connectSpy.calls.reset();
-        service.clientConnected = false;
-
-        service.reconnectClient();
-
-        expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(1);
-        expect(service.clientConnected).toBe(true);
-      });
-    });
-
     it('should emit a CLIENT_DISCONNECTED event when the Xmpp client is disconnected', () => {
       spyOn(eventService, 'emit').and.callThrough();
 
@@ -353,14 +339,12 @@ describe('Service: Xmpp', () => {
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CLIENT_DISCONNECTED);
     });
 
-
-    it('should call reconnectClient if it is disconnected when a CONNECTION_RESTORED event is triggered', () => {
-      spyOn(service, 'reconnectClient');
+    it('should reconnect the client if it is disconnected when a CONNECTION_RESTORED event is triggered', () => {
       service.clientConnected = false;
 
       eventService.emit(EventService.CONNECTION_RESTORED);
 
-      expect(service.reconnectClient).toHaveBeenCalled();
+      expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(2);
     });
 
     it('should not reconnect the client if it is already connecetd when a CONNECTION_RESTORED event is triggered', () => {
@@ -694,17 +678,6 @@ describe('Service: Xmpp', () => {
       expect(message.conversationId).toBe(THREAD);
       expect(message.message).toBe(MESSAGE_BODY);
       expect(message.date).toEqual(new Date(MESSAGE_DATE));
-    }));
-
-    it('should emit a NEW_MESSAGE event when stream:data is triggered with a message containing a body', fakeAsync(() => {
-      spyOn<any>(service, 'onNewMessage');
-      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
-      service.searchHistory().subscribe();
-
-      eventService.emit('stream:data', XML_MESSAGE);
-      tick(2000);
-
-      expect(service['onNewMessage']).toHaveBeenCalled();
     }));
 
     it('should return the response with two messages in the array', fakeAsync(() => {
@@ -1193,6 +1166,7 @@ describe('Service: Xmpp', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
         { thread_id: message.thread,
           message_id: message.id,
+          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
           item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
 
@@ -1215,6 +1189,7 @@ describe('Service: Xmpp', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT,
         { thread_id: message.thread,
           message_id: message.id,
+          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
           item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
 

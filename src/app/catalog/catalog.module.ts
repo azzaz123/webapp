@@ -51,8 +51,6 @@ import { PlanDataComponent } from './catalog-pro/catalog-pro-list/plan-data/plan
 import { ProBumpConfirmationModalComponent } from './catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { ProUrgentConfirmationModalComponent } from './catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component';
 import { DeleteInfoConfirmationModalComponent } from '../profile/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component';
-import { UploadRealestateComponent } from './upload/upload-realestate/upload-realestate.component';
-import { RealestateKeysService } from './upload/upload-realestate/realestate-keys.service';
 
 @NgModule({
   imports: [
@@ -82,8 +80,7 @@ import { RealestateKeysService } from './upload/upload-realestate/realestate-key
     UploadService,
     ItemResolverService,
     CartService,
-    BumpTutorialService,
-    RealestateKeysService
+    BumpTutorialService
   ],
   declarations: [
     catalogRoutedComponents,
@@ -119,8 +116,7 @@ import { RealestateKeysService } from './upload/upload-realestate/realestate-key
     CatalogStatusNavbarComponent,
     PlanDataComponent,
     ProBumpConfirmationModalComponent,
-    ProUrgentConfirmationModalComponent,
-    UploadRealestateComponent
+    ProUrgentConfirmationModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,

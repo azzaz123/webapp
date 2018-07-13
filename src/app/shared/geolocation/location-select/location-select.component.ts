@@ -18,12 +18,10 @@ export class LocationSelectComponent implements OnChanges {
 
   @Input() form: FormGroup;
   @Input() name: string;
-  @Input() updateLocation = true;
-  @Output() locationSelected: EventEmitter<Coordinate> = new EventEmitter();
+  @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   private control: AbstractControl;
   private latitudeControl: AbstractControl;
   private longitudeControl: AbstractControl;
-  private approximatedLocation: AbstractControl;
 
   constructor(private modalService: NgbModal,
               private cookieService: CookieService,
@@ -35,7 +33,6 @@ export class LocationSelectComponent implements OnChanges {
       this.control = this.form.get(this.name + '.address');
       this.latitudeControl = this.form.get(this.name + '.latitude');
       this.longitudeControl = this.form.get(this.name + '.longitude');
-      this.approximatedLocation = this.form.get(this.name + '.approximated_location');
       if (this.control.value) {
         this.control.markAsDirty();
       }
@@ -56,39 +53,28 @@ export class LocationSelectComponent implements OnChanges {
         modal.componentInstance.init({
           latitude: this.latitudeControl.value,
           longitude: this.longitudeControl.value,
-          name: this.control.value,
-          approximated_location: this.approximatedLocation ? this.approximatedLocation.value : null
-        }, this.updateLocation);
+          name: this.control.value
+        });
       } else if (lat && lng) {
         modal.componentInstance.init({
           latitude: lat,
           longitude: lng,
-          name: name,
-          approximated_location: this.approximatedLocation ? this.approximatedLocation.value : null
-        }, this.updateLocation);
+          name: name
+        });
       } else {
         modal.componentInstance.init();
       }
       modal.result.then((result: Coordinate) => {
-        if (this.updateLocation) {
-          this.userService.updateLocation(result).subscribe((location: UserLocation) => {
-            this.control.setValue(location.title);
-            this.userService.user.location = location;
-            this.setLocation(result);
-          });
-        } else {
-          this.control.setValue(result.name);
-          this.setLocation(result);
-        }
+        this.userService.updateLocation(result).subscribe((location: UserLocation) => {
+          this.control.setValue(location.title);
+          this.latitudeControl.setValue(result.latitude);
+          this.longitudeControl.setValue(result.longitude);
+          this.userService.user.location = location;
+          this.locationSelected.emit();
+        });
       }, () => {
       });
     }, LOCATION_MODAL_TIMEOUT);
 
-  }
-
-  setLocation(coordinates: Coordinate) {
-    this.latitudeControl.setValue(coordinates.latitude);
-    this.longitudeControl.setValue(coordinates.longitude);
-    this.locationSelected.emit();
   }
 }

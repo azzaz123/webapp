@@ -30,7 +30,6 @@ export class UserService extends ResourceService {
   private banReasons: BanReason[] = null;
   protected _user: User;
   private meObservable: Observable<User>;
-  private presenceInterval: any;
 
   constructor(http: HttpService,
               protected event: EventService,
@@ -70,21 +69,6 @@ export class UserService extends ResourceService {
 
   public get isLogged(): boolean {
     return this.accessTokenService.accessToken ? true : false;
-  }
-
-  private sendUserPresence() {
-    return this.http.post(this.API_URL + '/me/online').subscribe();
-  }
-
-  public sendUserPresenceInterval(interval: number) {
-    this.sendUserPresence();
-    this.presenceInterval = setInterval(() => {
-      if (this.isLogged) {
-        this.sendUserPresence();
-      } else {
-        clearInterval(this.presenceInterval);
-      }
-    }, interval);
   }
 
   public get(id: string, noCache?: boolean): Observable<User> {

@@ -39,7 +39,6 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectComponent } from './select/select.component';
 import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
-import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
 
 @NgModule({
   imports: [
@@ -82,8 +81,7 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
     ConversationComponent,
     ItemAvatarComponent,
     SearchInputComponent,
-    SelectComponent,
-    RestrictInputNumberDirective
+    SelectComponent
   ],
   declarations: [
     AdComponent,
@@ -116,8 +114,7 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
     SelectComponent,
     SearchInputComponent,
     TooManyItemsModalComponent,
-    AlreadyFeaturedModalComponent,
-    RestrictInputNumberDirective
+    AlreadyFeaturedModalComponent
   ],
   providers: [
     DecimalPipe,

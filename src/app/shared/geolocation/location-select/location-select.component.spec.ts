@@ -67,7 +67,6 @@ describe('LocationSelectComponent', () => {
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
         longitude: ['', [Validators.required]],
-        approximated_location: false
       })
     });
     cookieService = TestBed.get(CookieService);
@@ -126,90 +125,44 @@ describe('LocationSelectComponent', () => {
         spyOn(modalService, 'open').and.callThrough();
         spyOn(userService, 'updateLocation').and.callThrough();
         spyOn(component.locationSelected, 'emit');
+
+        component.open(element);
+        tick(LOCATION_MODAL_TIMEOUT);
       }));
 
-      describe('with updateLocation true', () => {
-
-        beforeEach(fakeAsync(() => {
-          component.open(element);
-          tick(LOCATION_MODAL_TIMEOUT);
-        }));
-
-        it('should blur element', () => {
-          expect(element.blur).toHaveBeenCalled();
-        });
-
-        it('should mark address as dirty', () => {
-          expect(component.form.get('location.address').dirty).toBeTruthy();
-        });
-
-        it('should open modal', () => {
-          expect(modalService.open).toHaveBeenCalled();
-        });
-
-        it('should set location', () => {
-          expect(component.form.get('location.address').value).toEqual(USER_LOCATION_COORDINATES.name);
-          expect(component.form.get('location.latitude').value).toEqual(USER_LOCATION_COORDINATES.latitude);
-          expect(component.form.get('location.longitude').value).toEqual(USER_LOCATION_COORDINATES.longitude);
-        });
-
-        it('should call init with no params', () => {
-          expect(componentInstance.init).toHaveBeenCalled();
-        });
-
-        it('should call updateLocation', () => {
-          expect(userService.updateLocation).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
-        });
-
-        it('should set user location', () => {
-          expect(userService.user.location).toEqual(USER_LOCATION);
-        });
-
-        it('should emit an update location event', () => {
-          expect(component.locationSelected.emit).toHaveBeenCalled();
-        });
+      it('should blur element', () => {
+        expect(element.blur).toHaveBeenCalled();
       });
 
-      describe('with updateLocation false', () => {
-
-        beforeEach(fakeAsync(() => {
-          component.updateLocation = false;
-          component.open(element);
-          tick(LOCATION_MODAL_TIMEOUT);
-        }));
-
-        it('should blur element', () => {
-          expect(element.blur).toHaveBeenCalled();
-        });
-
-        it('should mark address as dirty', () => {
-          expect(component.form.get('location.address').dirty).toBeTruthy();
-        });
-
-        it('should open modal', () => {
-          expect(modalService.open).toHaveBeenCalled();
-        });
-
-        it('should set location', () => {
-          expect(component.form.get('location.address').value).toEqual(USER_LOCATION_COORDINATES.name);
-          expect(component.form.get('location.latitude').value).toEqual(USER_LOCATION_COORDINATES.latitude);
-          expect(component.form.get('location.longitude').value).toEqual(USER_LOCATION_COORDINATES.longitude);
-        });
-
-        it('should call init with no params', () => {
-          expect(componentInstance.init).toHaveBeenCalled();
-        });
-
-        it('should not call updateLocation', () => {
-          expect(userService.updateLocation).not.toHaveBeenCalled();
-        });
-
-        it('should emit an update location event', () => {
-          expect(component.locationSelected.emit).toHaveBeenCalled();
-        });
+      it('should mark address as dirty', () => {
+        expect(component.form.get('location.address').dirty).toBeTruthy();
       });
 
+      it('should open modal', () => {
+        expect(modalService.open).toHaveBeenCalled();
+      });
 
+      it('should set location', () => {
+        expect(component.form.get('location.address').value).toEqual(USER_LOCATION_COORDINATES.name);
+        expect(component.form.get('location.latitude').value).toEqual(USER_LOCATION_COORDINATES.latitude);
+        expect(component.form.get('location.longitude').value).toEqual(USER_LOCATION_COORDINATES.longitude);
+      });
+
+      it('should call init with no params', () => {
+        expect(componentInstance.init).toHaveBeenCalled();
+      });
+
+      it('should call updateLocation', () => {
+        expect(userService.updateLocation).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
+      });
+
+      it('should set user location', () => {
+        expect(userService.user.location).toEqual(USER_LOCATION);
+      });
+
+      it('should emit an update location event', () => {
+        expect(component.locationSelected.emit).toHaveBeenCalled();
+      });
     });
 
     describe('with form values', () => {
@@ -217,15 +170,11 @@ describe('LocationSelectComponent', () => {
         component.form.get('location.address').setValue(USER_LOCATION_COORDINATES.name);
         component.form.get('location.latitude').setValue(USER_LOCATION_COORDINATES.latitude);
         component.form.get('location.longitude').setValue(USER_LOCATION_COORDINATES.longitude);
-        component.form.get('location.approximated_location').setValue(true);
 
         component.open(element);
         tick(LOCATION_MODAL_TIMEOUT);
 
-        expect(componentInstance.init).toHaveBeenCalledWith({
-          ...USER_LOCATION_COORDINATES,
-          approximated_location: true
-        }, true);
+        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
       }));
     });
 
@@ -239,10 +188,7 @@ describe('LocationSelectComponent', () => {
         component.open(element);
         tick(LOCATION_MODAL_TIMEOUT);
 
-        expect(componentInstance.init).toHaveBeenCalledWith({
-          ...USER_LOCATION_COORDINATES,
-          approximated_location: false
-        }, true);
+        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
       }));
     });
   });

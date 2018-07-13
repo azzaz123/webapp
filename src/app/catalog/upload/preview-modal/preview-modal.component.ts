@@ -21,9 +21,6 @@ export class PreviewModalComponent {
   }
 
   get hasExtras() {
-    if (!this.itemPreview.sale_conditions) {
-      return false;
-    }
     return this.itemPreview.sale_conditions.fix_price ||
       this.itemPreview.sale_conditions.shipping_allowed ||
       this.itemPreview.sale_conditions.exchange_allowed;

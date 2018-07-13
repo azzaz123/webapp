@@ -21,7 +21,6 @@ import { TutorialModule } from './tutorial/tutorial.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CallsModule } from './calls/calls.module';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { HelpModule } from './help/help.module';
 
 @NgModule({
   declarations: [
@@ -46,8 +45,7 @@ import { HelpModule } from './help/help.module';
     TutorialModule,
     NgxPermissionsModule.forRoot(),
     CallsModule,
-    DashboardModule,
-    HelpModule
+    DashboardModule
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

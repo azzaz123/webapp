@@ -17,6 +17,7 @@
           <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand" id="brand"
                  [ngbPopover]="coachmarkMake" />
           <ng-template #coachmarkMake>
+            <mat-icon svgIcon="cm-car"></mat-icon>
             <div i18n>The basics: make and model.</div>
           </ng-template>
 
@@ -49,6 +50,7 @@
                  [ngbPopover]="coachmarkPrice"
                  max="999999999"/>
           <ng-template #coachmarkPrice>
+            <mat-icon svgIcon="cm-money"></mat-icon>
             <div i18n>Tell us how much you want for it: we won't tell anyone ;)</div>
           </ng-template>
         </div>
@@ -71,6 +73,7 @@
                  class="form-control" formControlName="title" id="headline" maxlength="50"
                  [ngbPopover]="coachmarkTitle" />
           <ng-template #coachmarkTitle>
+            <mat-icon svgIcon="cm-eye"></mat-icon>
             <div i18n>Go for it! The more you say the better chance they have of finding of reaching you.</div>
           </ng-template>
         </div>
@@ -94,6 +97,7 @@
                  [ngbPopover]="coachmarkSeats"
                  formControlName="num_seats" id="seats" min="0" max="99"/>
           <ng-template #coachmarkSeats>
+            <mat-icon svgIcon="cm-seats"></mat-icon>
             <div i18n>Can all your family fit in there or just the dog?</div>
           </ng-template>
         </div>
@@ -108,6 +112,7 @@
                      [ngbPopover]="coachmarkType" #p4="ngbPopover" triggers="manual" (opened)="p4.open()" (closed)="p4.close()"
                      noFilter="20"></ng-select>
           <ng-template #coachmarkType>
+            <mat-icon svgIcon="cm-velocity"></mat-icon>
             <div i18n>Is it for getting around at the weekend or for everyday use?</div>
           </ng-template>
         </div>
@@ -145,6 +150,7 @@
           </label>
         </div>
         <ng-template #coachmarkMotor>
+          <mat-icon svgIcon="cm-speaker"></mat-icon>
           <div i18n>It's important, trust us!</div>
         </ng-template>
       </div>
@@ -173,6 +179,7 @@
                       [ngbPopover]="coachmarkDescription"
                       fz-elastic class="form-control" formControlName="storytelling" id="tellUs" maxlength="650"></textarea>
           <ng-template #coachmarkDescription>
+            <mat-icon svgIcon="cm-chat"></mat-icon>
             <div i18n>Don't leave anything out. The details are key to selling faster.</div>
           </ng-template>
         </div>
@@ -181,9 +188,10 @@
   </div>
   <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
     <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos</h2>
-    <tsl-drop-area [uploadEvent]="uploadEvent" type="cars" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
+    <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
                    formControlName="images" [maxUploads]="8" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
+      <mat-icon svgIcon="cm-drag"></mat-icon>
       <div i18n>You can drag and drop your photos here. Select and drag to change the order. Max 10MB. We accept only .jpg images.</div>
     </ng-template>
   </div>
@@ -202,6 +210,7 @@
       </label>
     </div>
     <ng-template #coachmarkExtras>
+      <mat-icon svgIcon="cm-question"></mat-icon>
       <div i18n>What sellers usually ask...</div>
     </ng-template>
   </div>

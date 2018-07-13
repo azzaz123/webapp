@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
 import { ItemWithProducts } from '../../core/item/item-response.interface';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { BumpTutorialComponent } from './bump-tutorial/bump-tutorial.component';
 
 @Component({
@@ -16,41 +16,18 @@ export class CheckoutComponent implements OnInit {
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(private itemService: ItemService,
-              private router: Router,
-              private route: ActivatedRoute) {
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params: any) => {
-      if (params.itemId) {
-        this.getProductsFromParamsItem(params.itemId);
-      } else {
-        this.getProductsFromSelectedItems();
-      }
-    });
-  }
-
-  private getProductsFromSelectedItems() {
     if (!this.itemService.selectedItems.length) {
       this.router.navigate(['catalog/list']);
       return;
     }
-    this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems)
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
-  }
-
-  private getProductsFromParamsItem(itemId: string) {
-    this.itemService.getItemsWithAvailableProducts([itemId])
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => this.setItems(itemsWithProducts));
-  }
-
-  private setItems(itemsWithProducts: ItemWithProducts[]) {
-    if (itemsWithProducts.length) {
+    this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems).subscribe((itemsWithProducts: ItemWithProducts[]) => {
       this.itemsWithProducts = itemsWithProducts;
       this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
-    } else {
-      this.router.navigate(['pro/catalog/list', {alreadyFeatured: true}]);
-    }
+    });
   }
 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import { ItemService } from '../../../core/item/item.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CartProItem } from '../cart/cart-item.interface';
 import { CartService } from '../cart/cart.service';
 import { CartPro } from '../cart/cart-pro';
@@ -18,24 +18,11 @@ export class CheckoutProComponent implements OnInit {
   itemSelected: CartProItem;
   calendarHidden = true;
 
-  constructor(private itemService: ItemService,
-              private router: Router,
-              private cartService: CartService,
-              private route: ActivatedRoute) {
+  constructor(private itemService: ItemService, private router: Router, private cartService: CartService) {
   }
 
   ngOnInit() {
     this.cartService.createInstance(new CartPro());
-    this.route.params.subscribe((params: any) => {
-      if (params.itemId) {
-        this.getProductsFromParamsItem(params.itemId);
-      } else {
-        this.getProductsFromSelectedItems();
-      }
-    });
-  }
-
-  private getProductsFromSelectedItems() {
     if (!this.itemService.selectedItems.length) {
       this.router.navigate(['pro/catalog/list']);
       return;
@@ -43,17 +30,6 @@ export class CheckoutProComponent implements OnInit {
     this.itemService.getItemsWithAvailableProducts(this.itemService.selectedItems)
       .subscribe((itemsWithProducts: ItemWithProducts[]) => {
         this.itemsWithProducts = itemsWithProducts;
-      });
-  }
-
-  private getProductsFromParamsItem(itemId: string) {
-    this.itemService.getItemsWithAvailableProducts([itemId])
-      .subscribe((itemsWithProducts: ItemWithProducts[]) => {
-        if (itemsWithProducts.length) {
-          this.itemsWithProducts = itemsWithProducts;
-        } else {
-          this.router.navigate(['pro/catalog/list', {alreadyFeatured: true}]);
-        }
       });
   }
 

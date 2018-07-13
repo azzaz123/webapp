@@ -35,7 +35,6 @@ export class CatalogItemActionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.resetSelectedItems();
   }
   
   public deactivate(deactivateItemsModal: any) {
@@ -113,10 +112,6 @@ export class CatalogItemActionsComponent implements OnInit {
       }
     });
     return isBumped;
-  }
-
-  private resetSelectedItems(): void {
-    this.itemService.selectedItems = [];
   }
 
 }

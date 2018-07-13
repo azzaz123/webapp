@@ -7,7 +7,7 @@
      (scrolled)="loadMore()"
      [scrollTop]="scrollTop">
   <tsl-spinner [firstLoad]="false" *ngIf="isUrgent && isRedirect"></tsl-spinner>
-  <div class="container" *ngIf="!isUrgent || !isRedirect">
+  <div class="container">
     <tsl-header>
       <div class="col-7">
         <div class="header-row">
@@ -81,4 +81,3 @@
 ></tsl-selected-items>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>
 <tsl-bump-tutorial></tsl-bump-tutorial>
-<button [hidden]="true" tslItemSold></button>

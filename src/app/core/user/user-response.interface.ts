@@ -45,10 +45,6 @@ export interface UserLocation {
   approxRadius: number;
   title?: string;
   full_address?: string;
-  approximated_location?: boolean;
-  latitude?: number;
-  longitude?: number;
-  address?: string;
 }
 
 export interface UserStats {

@@ -37,14 +37,6 @@ export interface Coordinate {
   latitude: number;
   longitude: number;
   name?: string;
-  approximated_location?: boolean;
-}
-
-export interface ItemLocation {
-  latitude: number;
-  longitude: number;
-  address: string;
-  approximated_location: boolean;
 }
 
 export interface Positioning {

@@ -112,6 +112,7 @@ describe('Service: Notification', () => {
         tick(NOTIFICATION_DURATION + 1000);
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.NOTIFICATION_RECEIVED,
           { thread_id: MOCK_MESSAGE.conversationId,
+            from_user_id: MOCK_MESSAGE.user.id,
             item_id: MOCK_ITEM.id,
             message_id: MOCK_MESSAGE.id });
       }));

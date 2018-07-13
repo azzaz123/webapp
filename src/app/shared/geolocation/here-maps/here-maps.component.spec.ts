@@ -5,7 +5,6 @@ import { USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec'
 
 const ICON = {url: 'icon'};
 const MARKER = {marker: 'marker'};
-const CIRCLE = {circle: 'circle'};
 
 const platform = {
   createDefaultLayers() {
@@ -34,9 +33,6 @@ const map = {
   },
   Marker: () => {
     return MARKER;
-  },
-  Circle: () => {
-    return CIRCLE;
   }
 };
 
@@ -72,7 +68,6 @@ describe('HereMapsComponent', () => {
     spyOn(Map, 'setCenter');
     spyOn(map, 'Icon').and.callThrough();
     spyOn(map, 'Marker').and.callThrough();
-    spyOn(map, 'Circle').and.callThrough();
     spyOn(Map, 'addObject');
     spyOn(Map, 'removeObject');
     tick();
@@ -112,89 +107,35 @@ describe('HereMapsComponent', () => {
       }, {icon: ICON});
       expect(Map.addObject).toHaveBeenCalledWith(MARKER);
     }));
-
-    it('should add circle if zoom is the marker zoom and isApproximateLocation', fakeAsync(() => {
-      component.zoom = MAP_ZOOM_MARKER;
-      component.isApproximateLocation = true;
-
-      component.ngOnInit();
-      tick();
-
-      expect(map.Circle).toHaveBeenCalledWith({
-        lat: USER_LOCATION_COORDINATES.latitude,
-        lng: USER_LOCATION_COORDINATES.longitude
-      }, 650, {
-        style: {
-          fillColor: 'rgba(51, 51, 51, 0.15)',
-          lineWidth: 0
-        }
-      });
-      expect(Map.addObject).toHaveBeenCalledWith(CIRCLE);
-    }));
   });
 
   describe('ngOnChanges', () => {
-
     beforeEach(() => {
       component.zoom = MAP_ZOOM_MARKER;
+      component.ngOnChanges();
     });
 
-    describe('not isApproximateLocation', () => {
-      beforeEach(() => {
-        component.ngOnChanges();
-      });
-
-      it('should add marker with icon', () => {
-        expect(map.Icon).toHaveBeenCalledWith(USER_MARKER);
-        expect(map.Marker).toHaveBeenCalledWith({
-          lat: USER_LOCATION_COORDINATES.latitude,
-          lng: USER_LOCATION_COORDINATES.longitude
-        }, {icon: ICON});
-        expect(Map.addObject).toHaveBeenCalledWith(MARKER);
-      });
-
-      it('should remove marker before adding a new one', () => {
-        component.ngOnChanges();
-
-        expect(Map.removeObject).toHaveBeenCalledWith(MARKER);
+    it('should set map center and zoom', () => {
+      expect(Map.setZoom).toHaveBeenCalledWith(MAP_ZOOM_MARKER);
+      expect(Map.setCenter).toHaveBeenCalledWith({
+        lat: USER_LOCATION_COORDINATES.latitude,
+        lng: USER_LOCATION_COORDINATES.longitude
       });
     });
 
-    describe('isApproximateLocation', () => {
-      beforeEach(() => {
-        component.isApproximateLocation = true;
-
-        component.ngOnChanges();
-      });
-
-      it('should add circle', () => {
-        expect(map.Circle).toHaveBeenCalledWith({
-          lat: USER_LOCATION_COORDINATES.latitude,
-          lng: USER_LOCATION_COORDINATES.longitude
-        }, 650, {
-          style: {
-            fillColor: 'rgba(51, 51, 51, 0.15)',
-            lineWidth: 0
-          }
-        });
-        expect(Map.addObject).toHaveBeenCalledWith(CIRCLE);
-      });
-
-      it('should remove circle before adding a new one', () => {
-        component.ngOnChanges();
-
-        expect(Map.removeObject).toHaveBeenCalledWith(CIRCLE);
-      });
+    it('should add marker with icon', () => {
+      expect(map.Icon).toHaveBeenCalledWith(USER_MARKER);
+      expect(map.Marker).toHaveBeenCalledWith({
+        lat: USER_LOCATION_COORDINATES.latitude,
+        lng: USER_LOCATION_COORDINATES.longitude
+      }, {icon: ICON});
+      expect(Map.addObject).toHaveBeenCalledWith(MARKER);
     });
 
-    afterEach(() => {
-      it('should set map center and zoom', () => {
-        expect(Map.setZoom).toHaveBeenCalledWith(MAP_ZOOM_MARKER);
-        expect(Map.setCenter).toHaveBeenCalledWith({
-          lat: USER_LOCATION_COORDINATES.latitude,
-          lng: USER_LOCATION_COORDINATES.longitude
-        });
-      });
+    it('should remove marker before adding a new one', () => {
+      component.ngOnChanges();
+
+      expect(Map.removeObject).toHaveBeenCalledWith(MARKER);
     });
 
   });

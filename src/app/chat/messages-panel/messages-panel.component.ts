@@ -1,8 +1,9 @@
 import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Conversation } from '../../core/conversation/conversation';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { Message } from '../../core/message/message';
+import { Message, messageStatus } from '../../core/message/message';
 import { EventService } from '../../core/event/event.service';
+import { PersistencyService } from '../../core/persistency/persistency.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -19,7 +20,8 @@ export class MessagesPanelComponent implements AfterViewChecked, OnChanges, OnIn
   private newMessageSubscription: Subscription;
 
   constructor(i18n: I18nService,
-              private event: EventService) {
+              private event: EventService,
+              private persistencyService: PersistencyService) {
     this.momentConfig = i18n.getTranslations('daysMomentConfig');
   }
 

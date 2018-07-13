@@ -18,7 +18,7 @@ import {
   Order,
   Product,
   ProductDurations,
-  Purchase, ItemProResponse, ItemProContent, RealEstateUploadForm
+  Purchase, ItemProResponse, ItemProContent
 } from '../app/core/item/item-response.interface';
 import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
 import { CartItem } from '../app/catalog/checkout/cart/cart-item.interface';
@@ -27,7 +27,6 @@ import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Item } from '../app/core/item/item';
-import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';
 
 export const PICTURE_ID = '9jd7ryx5odjk';
 export const ITEM_CATEGORY_ID = 12545;
@@ -848,7 +847,7 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   km: 1000,
   engine: 'engine',
   gearbox: 'gearbox',
-  category_id: CARS_CATEGORY,
+  category_id: '100',
   sale_price: 123.45,
   currency_code: 'EUR',
   sale_conditions: {
@@ -861,33 +860,6 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
     address: USER_LOCATION.title,
     latitude: USER_LOCATION.approximated_latitude,
     longitude: USER_LOCATION.approximated_longitude
-  }
-};
-
-export const UPLOAD_FORM_REALESTATE_VALUES: RealEstateUploadForm = {
-  id: '',
-  category_id: REALESTATE_CATEGORY,
-  title: 'title',
-  sale_price: 100,
-  currency_code: 'EUR',
-  storytelling: 'storytelling',
-  operation: 'operation',
-  type: 'type',
-  condition: 'condition',
-  surface: 100,
-  rooms: 2,
-  bathrooms: 2,
-  garage: false,
-  terrace: false,
-  elevator: false,
-  pool: false,
-  garden: false,
-  images: [{'image': true}],
-  location: {
-    address: USER_LOCATION.title,
-    latitude: USER_LOCATION.approximated_latitude,
-    longitude: USER_LOCATION.approximated_longitude,
-    approximated_location: false
   }
 };
 
