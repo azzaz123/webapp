@@ -334,23 +334,31 @@ describe('Service: Xmpp', () => {
     }));
 
     describe('reconnectClient', () => {
-      it('should reconnect the client if it is disconnected', () => {
+      it('should call client connect if it is disconnected', () => {
         connectSpy.calls.reset();
         service.clientConnected = false;
 
         service.reconnectClient();
 
         expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(1);
-        expect(service.clientConnected).toBe(true);
       });
     });
 
-    it('should emit a CLIENT_DISCONNECTED event when the Xmpp client is disconnected', () => {
+    it('should emit a CLIENT_DISCONNECTED event and set clientConnected to FALSE when the Xmpp client is disconnected', () => {
       spyOn(eventService, 'emit').and.callThrough();
 
       eventService.emit('disconnected');
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CLIENT_DISCONNECTED);
+      expect(service.clientConnected).toBe(false);
+    });
+
+    it('should set clientConnected to TRUE when the Xmpp client is connected', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+
+      eventService.emit('connected');
+
+      expect(service.clientConnected).toBe(true);
     });
 
 
@@ -1373,7 +1381,6 @@ describe('Service: Xmpp', () => {
       service.disconnect();
 
       expect(MOCKED_CLIENT.disconnect).toHaveBeenCalled();
-      expect(service['_clientConnected']).toBe(false);
     });
 
   });
