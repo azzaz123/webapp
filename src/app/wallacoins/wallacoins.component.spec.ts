@@ -34,7 +34,7 @@ describe('WallacoinsComponent', () => {
             open() {
               return {
                 componentInstance: {},
-                result: Promise.resolve();
+                result: Promise.resolve()
               }
             }
         }
