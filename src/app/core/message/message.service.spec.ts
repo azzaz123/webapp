@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { MessageService } from './message.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
-import { Message } from './message';
+import { Message, messageStatus } from './message';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
@@ -17,7 +17,9 @@ import {
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_META,
-  MockedPersistencyService
+  MockedPersistencyService,
+  MOCK_DB_RESPONSE_WITH_PENDING,
+  MOCK_DB_RESPONSE_WITH_OLD_PENDING
 } from '../../../tests/persistency.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
@@ -76,6 +78,7 @@ describe('Service: Message', () => {
         service.getMessages(conversation).subscribe((data: any) => {
           response = data;
         });
+
         expect(response.meta.first).toBe(MOCK_DB_FILTERED_RESPONSE[0].doc._id);
         expect(response.meta.last).toBe(MOCK_DB_FILTERED_RESPONSE[1].doc._id);
         expect(response.meta.end).toBe(true);
@@ -107,7 +110,38 @@ describe('Service: Message', () => {
 
     });
 
-    it('should call the query method if there are not messages in the db', () => {
+    describe('with pending messages', () => {
+      let response: any;
+      let pendingMsg;
+
+      it('should resend messages that have the status PENDING and is newer than 5 days', () => {
+        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_PENDING));
+        spyOn(xmpp, 'sendMessage');
+        const pendingMsgCount = MOCK_DB_RESPONSE_WITH_PENDING.filter(m => m.doc.status === messageStatus.PENDING).length;
+
+
+        service.getMessages(conversation, 1).subscribe((data: any) => {
+          response = data;
+          pendingMsg = response.data[0];
+        });
+
+        expect(xmpp.sendMessage).toHaveBeenCalledTimes(pendingMsgCount);
+        expect(xmpp.sendMessage).toHaveBeenCalledWith(conversation, pendingMsg.message, true, pendingMsg.id);
+      });
+
+      it('should not resend messages that have the status PENDING and are older than 5 days', () => {
+        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_OLD_PENDING));
+        spyOn(xmpp, 'sendMessage');
+
+        service.getMessages(conversation, 1).subscribe((data: any) => {
+          response = data;
+        });
+
+        expect(xmpp.sendMessage).not.toHaveBeenCalled();
+      });
+    });
+
+    it('should call the query method when there are no messages in the db AND xmpp client is connected AND there is internet connection', () => {
       xmpp.connect('1', 'token');
       spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of([]));
       spyOn(service, 'query').and.returnValue(Observable.of({

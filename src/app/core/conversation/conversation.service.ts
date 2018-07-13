@@ -108,8 +108,8 @@ export class ConversationService extends LeadService {
 
   public loadMoreArchived(): Observable<any> {
     return this.getLeads(this.getLastDate(this.archivedLeads), true)
-      .map(() => {
-        this.archivedStream$.next(this.archivedLeads);
+    .map(() => {
+      this.archivedStream$.next(this.archivedLeads);
       });
   }
 
@@ -252,6 +252,9 @@ export class ConversationService extends LeadService {
         message.status = messageStatus.PENDING;
       }
       conversation.messages.push(message);
+      conversation.messages.sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      });
       conversation.modifiedDate = new Date().getTime();
       if (!message.fromSelf && !this.receiptSent) {
         this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
@@ -399,37 +402,37 @@ export class ConversationService extends LeadService {
 
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
     return this.xmpp.isConnected()
-    .flatMap(() => {
-      if (this.connectionService.isConnected) {
-      return this.messageService.getNotSavedMessages().map((response: MessagesData) => {
-        if (response.data.length) {
-          let conversation: Conversation;
-          response.data.forEach((message: Message) => {
-            conversation = conversations.filter((filteredConversation: Conversation): boolean => {
-              return (filteredConversation.id === message.conversationId);
-            })[0];
-            if (conversation) {
-              if (!this.findMessage(conversation.messages, message)) {
-                message = this.messageService.addUserInfo(conversation, message);
-                conversation.messages.push(message);
-                if (!message.fromSelf) {
-                  this.handleUnreadMessage(conversation);
+      .flatMap(() => {
+        if (this.connectionService.isConnected) {
+        return this.messageService.getNotSavedMessages().map((response: MessagesData) => {
+          if (response.data.length) {
+            let conversation: Conversation;
+            response.data.forEach((message: Message) => {
+              conversation = conversations.filter((filteredConversation: Conversation): boolean => {
+                return (filteredConversation.id === message.conversationId);
+              })[0];
+              if (conversation) {
+                if (!this.findMessage(conversation.messages, message)) {
+                  message = this.messageService.addUserInfo(conversation, message);
+                  conversation.messages.push(message);
+                  if (!message.fromSelf) {
+                    this.handleUnreadMessage(conversation);
+                  }
                 }
+              } else {
+                this.get(message.conversationId).subscribe((subscribedConversation: Conversation) => {
+                  message = this.messageService.addUserInfo(subscribedConversation, message);
+                  this.addMessage(subscribedConversation, message);
+                  conversations.unshift(subscribedConversation);
+                  if (!message.fromSelf) {
+                    this.handleUnreadMessage(subscribedConversation);
+                  }
+                });
               }
-            } else {
-              this.get(message.conversationId).subscribe((subscribedConversation: Conversation) => {
-                message = this.messageService.addUserInfo(subscribedConversation, message);
-                this.addMessage(subscribedConversation, message);
-                conversations.unshift(subscribedConversation);
-                if (!message.fromSelf) {
-                  this.handleUnreadMessage(subscribedConversation);
-                }
-              });
-            }
-          });
-        }
-        return conversations;
-      });
+            });
+          }
+          return conversations;
+        });
       } else {
         return Observable.of(null);
       }
