@@ -90,11 +90,10 @@ describe('App', () => {
         },
         {
           provide: XmppService, useValue: {
-          connect() {
-          },
-          disconnect() {
+          connect() {},
+          disconnect() {},
+          reconnectClient() {}
           }
-        }
         },
         ErrorsService,
         MockBackend,
@@ -107,6 +106,7 @@ describe('App', () => {
           },
           logout() {
           },
+          sendUserPresenceInterval() {},
           setPermission() {},
           isProfessional() {
             return Observable.of(false);
@@ -152,8 +152,8 @@ describe('App', () => {
           init() {
             return Observable.of();
           },
-          handleNewMessages() {
-          },
+          handleNewMessages() {},
+          sendAck() {},
           resetCache() {},
           syncItem() {}
         }
@@ -261,6 +261,26 @@ describe('App', () => {
         expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.USER_LOGIN);
       });
 
+      it('should call the eventService.subscribe passing the chat tracking funnel events', () => {
+        spyOn(eventService, 'subscribe').and.callThrough();
+
+        component.ngOnInit();
+
+        expect(eventService.subscribe['calls'].argsFor(7)[0]).toBe(EventService.MESSAGE_SENT_ACK);
+        expect(eventService.subscribe['calls'].argsFor(8)[0]).toBe(EventService.MESSAGE_RECEIVED);
+      });
+
+      it('should call conversationService.sendAck when a chat signal is emitted', () => {
+        spyOn(conversationService, 'sendAck');
+
+        component.ngOnInit();
+        eventService.emit(EventService.MESSAGE_SENT_ACK, '123', 'abc');
+        eventService.emit(EventService.MESSAGE_RECEIVED, '234', 'cde');
+
+        expect(conversationService.sendAck).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT_ACK, '123', 'abc');
+        expect(conversationService.sendAck).toHaveBeenCalledWith(TrackingService.MESSAGE_RECEIVED, '234', 'cde');
+      });
+
       it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
         spyOn(xmppService, 'connect').and.callThrough();
 
@@ -275,6 +295,15 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(conversationService.init).toHaveBeenCalledTimes(1);
+      });
+
+      it('should call userService.sendUserPresenceInterval', () => {
+        spyOn(userService, 'sendUserPresenceInterval');
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+        expect(userService.sendUserPresenceInterval).toHaveBeenCalled();
       });
 
       it('should call conversationService.init twice if user is professional', () => {
@@ -407,6 +436,32 @@ describe('App', () => {
         expect(conversationService.resetCache).toHaveBeenCalledTimes(1);
       });
 
+      it('should call xmppService.clientReconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
+        spyOn(xmppService, 'reconnectClient');
+        connectionService.isConnected = true;
+        Object.defineProperty(userService, 'isLogged', {
+          get() {
+            return true;
+          }
+        });
+
+        component.ngOnInit();
+        eventService.emit(EventService.CLIENT_DISCONNECTED);
+
+        expect(xmppService.reconnectClient).toHaveBeenCalled();
+      });
+
+    });
+
+    it('should NOT call userService.sendUserPresenceInterval is the user has not successfully logged in', () => {
+      spyOn(userService, 'me').and.returnValue(Observable.throw({}));
+      spyOn(errorsService, 'show');
+      spyOn(userService, 'sendUserPresenceInterval');
+
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+
+      expect(userService.sendUserPresenceInterval).not.toHaveBeenCalled();
     });
 
     it('should logout the user and show the error if token is expired', fakeAsync(() => {

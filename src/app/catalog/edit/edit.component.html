@@ -8,7 +8,14 @@
                     [urgentPrice]="urgentPrice"
                     (locationSelected)="getUrgentPrice(100)">
     </tsl-upload-car>
-    <tsl-upload-product *ngIf="item.categoryId && item.categoryId !== 100"
+    <tsl-upload-realestate *ngIf="item.categoryId === 13000"
+                    [item]="item"
+                    (onValidationError)="onValidationError()"
+                    (onFormChanged)="onFormChanged($event)"
+                    [urgentPrice]="urgentPrice"
+                    (locationSelected)="getUrgentPrice(13000)">
+    </tsl-upload-realestate>
+    <tsl-upload-product *ngIf="item.categoryId && item.categoryId !== 100 && item.categoryId !== 13000"
                         [item]="item"
                         (onValidationError)="onValidationError()"
                         (onFormChanged)="onFormChanged($event)"

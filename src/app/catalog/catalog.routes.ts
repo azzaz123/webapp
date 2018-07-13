@@ -94,7 +94,16 @@ const routes: Routes = [
           isProducts: true,
           permissions: {
             only: PERMISSIONS.normal,
-            redirectTo: '/pro/catalog/checkout'
+            redirectTo: {
+              isNormal: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
+                if (!route.params.itemId) {
+                  return '/pro/catalog/checkout';
+                }
+                return {
+                  navigationCommands: ['/pro/catalog/checkout/', {itemId: route.params.itemId}]
+                };
+              }
+            }
           }
         }
       },

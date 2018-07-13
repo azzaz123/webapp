@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -20,6 +20,7 @@ import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirm
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { Order, Product } from '../../../core/item/item-response.interface';
 import { UploadConfirmationModalComponent } from '../../list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { ItemSoldDirective } from '../../../shared/modals/sold-modal/item-sold.directive';
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -46,6 +47,8 @@ export class CatalogProListComponent implements OnInit {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public subscriptionPlan: number;
   private uploadModalRef: NgbModalRef;
+
+  @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
 
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
@@ -149,6 +152,21 @@ export class CatalogProListComponent implements OnInit {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
           this.errorService.i18nError('productCreated', ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.');
+        } else if (params && params.sold && params.itemId) {
+          this.itemService.get(params.itemId).subscribe((item: Item) => {
+            this.soldButton.item = item;
+            this.soldButton.onClick();
+            this.soldButton.callback.subscribe(() => {
+              this.eventService.emit('itemChanged');
+              this.itemChanged({
+                item: item,
+                action: 'sold'
+              });
+              this.eventService.emit(EventService.ITEM_SOLD, item);
+            });
+          });
+        } else if (params && params.alreadyFeatured) {
+          this.errorService.i18nError('alreadyFeatured');
         }
       });
     });

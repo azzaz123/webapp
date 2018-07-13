@@ -21,11 +21,12 @@ export class HereMapsComponent implements OnInit, OnChanges {
   @Input() coordinates: Coordinate;
   @Input() zoom = MAP_ZOOM_GENERAL;
   @Input() size = 'normal';
+  @Input() isApproximateLocation = false;
   @ViewChild('map') mapEl: ElementRef;
   public platform: any;
   private map: any;
   private marker: any;
-
+  private circle: any;
 
   constructor() {
     this.platform = new H.service.Platform({
@@ -44,7 +45,11 @@ export class HereMapsComponent implements OnInit, OnChanges {
       this.map.setCenter(coordinates);
       this.map.setZoom(this.zoom);
       if (+this.zoom === MAP_ZOOM_MARKER) {
-        this.addMarker(coordinates);
+        if (!this.isApproximateLocation) {
+          this.addMarker(coordinates);
+        } else {
+          this.addCircle(coordinates);
+        }
       }
     });
   }
@@ -53,7 +58,11 @@ export class HereMapsComponent implements OnInit, OnChanges {
     if (this.map) {
       const coordinates = this.getCenter();
       this.map.setCenter(coordinates);
-      this.addMarker(coordinates);
+      if (!this.isApproximateLocation) {
+        this.addMarker(coordinates);
+      } else {
+        this.addCircle(coordinates);
+      }
       this.map.setZoom(this.zoom);
     }
   }
@@ -61,11 +70,31 @@ export class HereMapsComponent implements OnInit, OnChanges {
   private addMarker(coordinates: any) {
     const icon = this.size === 'small' ? USER_MARKER_SMALL : USER_MARKER;
     const markerIcon = new H.map.Icon(icon);
-    if (this.marker) {
-      this.map.removeObject(this.marker);
-    }
+    this.removeObjects();
     this.marker = new H.map.Marker(coordinates, {icon: markerIcon});
     this.map.addObject(this.marker);
+  }
+
+  private addCircle(coordinates: any) {
+    this.removeObjects();
+    this.circle = new H.map.Circle(coordinates, 650, {
+      style: {
+        fillColor: 'rgba(51, 51, 51, 0.15)',
+        lineWidth: 0
+      }
+    });
+    this.map.addObject(this.circle);
+  }
+
+  private removeObjects() {
+    if (this.circle) {
+      this.map.removeObject(this.circle);
+      this.circle = null;
+    }
+    if (this.marker) {
+      this.map.removeObject(this.marker);
+      this.marker = null;
+    }
   }
 
   private getCenter() {

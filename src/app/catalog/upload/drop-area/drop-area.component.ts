@@ -31,6 +31,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Input() maxUploads = 4;
   @Input() images: Image[];
   @Input() itemId: string;
+  @Input() type: string;
   dragOver: boolean;
   files: UploadFile[] = [];
   placeholders: number[];
@@ -180,10 +181,10 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
           this.itemId = output.file.response.id;
           this.item = output.file.response;
           if (this.files.length > 1) {
-            this.uploadService.uploadOtherImages(output.file.response.id, this.maxUploads === 8 ? '/cars' : '');
+            this.uploadService.uploadOtherImages(output.file.response.id, this.type);
           } else {
             if (this.item.hasOwnProperty('flags') && this.item.flags['onhold']) {
-              this.onUploaded.emit({action: 'createdOnHold', response: ''});
+              this.onUploaded.emit({action: 'createdOnHold', response: output.file.response});
             } else {
               this.onUploaded.emit({action: 'created', response: output.file.response});
             }
@@ -193,7 +194,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
               return file.progress.status === UploadStatus.Done;
             })) {
             if (this.item.hasOwnProperty('flags') && this.item.flags['onhold']) {
-              this.onUploaded.emit({action: 'createdOnHold', response: ''});
+              this.onUploaded.emit({action: 'createdOnHold', response: output.file.response});
             } else {
               this.onUploaded.emit({action: this.images ? 'updated' : 'created', response: output.file.response});
             }
