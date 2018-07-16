@@ -4,7 +4,7 @@
 
 <div class="modal-body">
   <h1>Maravilloso!!!!!</h1>
-  <p>Tu compra se ha realizado correctamente y ya dispones de <b>{{pack?.quantity}} wallacoins</b> para empezar a destacar tus productos y agilizar tus ventas!</p>
+  <p>Tu compra se ha realizado correctamente y ya dispones de <b>{{pack?.quantity}} {{pack?.name}}</b> para empezar a destacar tus productos y agilizar tus ventas!</p>
   <tsl-button (click)="activeModal.close()">Empieza a destacar</tsl-button><br />
   <a class="link" (click)="activeModal.dismiss()">Comprar mas wallacoins</a>
 </div>

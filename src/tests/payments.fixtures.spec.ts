@@ -1,7 +1,7 @@
 import { PurchasingItem, Purchase, AutorenewItem } from '../app/core/payments/purchase.interface';
 import { PerksModel } from '../app/core/payments/payment.model';
 import { getMockItem } from './item.fixtures.spec';
-import { CREDITS_PACK_ID, Pack } from '../app/core/payments/pack';
+import { COINS_PACK_ID, Pack } from '../app/core/payments/pack';
 import {
   BillingInfoResponse,
   FinancialCard,
@@ -194,37 +194,37 @@ export function createPacksFixture(): Packs {
 
 export const WALLACOINS_PACKS_RESPONSE: PackResponse[] = [{
   'id': '05265bfc-423d-4e38-989b-7079c83ca4d7',
-  'benefits': {[CREDITS_PACK_ID]: 5500.00},
+  'benefits': {[COINS_PACK_ID]: 5500.00},
   'price': '50.00',
   'original_price': '55.00',
   'currency': 'EUR'
 }, {
   'id': '2756ccaf-d59b-4fab-9758-163cc52f5246',
-  'benefits': {[CREDITS_PACK_ID]: 29000.00},
+  'benefits': {[COINS_PACK_ID]: 29000.00},
   'price': '250.00',
   'original_price': '290.00',
   'currency': 'EUR'
 }, {
   'id': '8913678e-b1a2-47c4-a954-5257dfc1df85',
-  'benefits': {[CREDITS_PACK_ID]: 125000.00},
+  'benefits': {[COINS_PACK_ID]: 125000.00},
   'price': '1000.00',
   'original_price': '1250.00',
   'currency': 'EUR'
 }, {
   'id': '994a1c68-c3dd-4e85-824e-8d1ae9d1a95a',
-  'benefits': {[CREDITS_PACK_ID]: 11500.00},
+  'benefits': {[COINS_PACK_ID]: 11500.00},
   'price': '100.00',
   'original_price': '115.00',
   'currency': 'EUR'
 }, {
   'id': 'e631c995-a9cb-4db3-a746-435b63dddc02',
-  'benefits': {[CREDITS_PACK_ID]: 3000.00},
+  'benefits': {[COINS_PACK_ID]: 3000.00},
   'price': '30.00',
   'original_price': '30.00',
   'currency': 'EUR'
 }, {
   'id': 'eaa7e591-6d86-4b62-94de-7ab8013a280b',
-  'benefits': {[CREDITS_PACK_ID]: 60000.00},
+  'benefits': {[COINS_PACK_ID]: 60000.00},
   'price': '500.00',
   'original_price': '600.00',
   'currency': 'EUR'
@@ -239,7 +239,7 @@ export function createWallacoinsPacksFixture(): Packs {
   };
   const packWallacoins = new Pack(
     WALLACOINS_PACKS_RESPONSE[4].id,
-    WALLACOINS_PACKS_RESPONSE[4].benefits[CREDITS_PACK_ID],
+    WALLACOINS_PACKS_RESPONSE[4].benefits[COINS_PACK_ID],
     +WALLACOINS_PACKS_RESPONSE[4].price,
     'EUR',
     'wallacoins'
@@ -247,7 +247,7 @@ export function createWallacoinsPacksFixture(): Packs {
   packWallacoins.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[4].price, +WALLACOINS_PACKS_RESPONSE[4].original_price);
   const packWallacoins2 = new Pack(
     WALLACOINS_PACKS_RESPONSE[0].id,
-    WALLACOINS_PACKS_RESPONSE[0].benefits[CREDITS_PACK_ID],
+    WALLACOINS_PACKS_RESPONSE[0].benefits[COINS_PACK_ID],
     +WALLACOINS_PACKS_RESPONSE[0].price,
     'EUR',
     'wallacoins'
@@ -255,7 +255,7 @@ export function createWallacoinsPacksFixture(): Packs {
   packWallacoins2.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[0].price, +WALLACOINS_PACKS_RESPONSE[0].original_price);
   const packWallacoins3 = new Pack(
     WALLACOINS_PACKS_RESPONSE[3].id,
-    WALLACOINS_PACKS_RESPONSE[3].benefits[CREDITS_PACK_ID],
+    WALLACOINS_PACKS_RESPONSE[3].benefits[COINS_PACK_ID],
     +WALLACOINS_PACKS_RESPONSE[3].price,
     'EUR',
     'wallacoins'
@@ -263,7 +263,7 @@ export function createWallacoinsPacksFixture(): Packs {
   packWallacoins3.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[3].price, +WALLACOINS_PACKS_RESPONSE[3].original_price);
   const packWallacoins4 = new Pack(
     WALLACOINS_PACKS_RESPONSE[1].id,
-    WALLACOINS_PACKS_RESPONSE[1].benefits[CREDITS_PACK_ID],
+    WALLACOINS_PACKS_RESPONSE[1].benefits[COINS_PACK_ID],
     +WALLACOINS_PACKS_RESPONSE[1].price,
     'EUR',
     'wallacoins'
@@ -271,7 +271,7 @@ export function createWallacoinsPacksFixture(): Packs {
   packWallacoins4.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[1].price, +WALLACOINS_PACKS_RESPONSE[1].original_price);
   const packWallacoins5 = new Pack(
     WALLACOINS_PACKS_RESPONSE[5].id,
-    WALLACOINS_PACKS_RESPONSE[5].benefits[CREDITS_PACK_ID],
+    WALLACOINS_PACKS_RESPONSE[5].benefits[COINS_PACK_ID],
     +WALLACOINS_PACKS_RESPONSE[5].price,
     'EUR',
     'wallacoins'
@@ -279,7 +279,7 @@ export function createWallacoinsPacksFixture(): Packs {
   packWallacoins5.calculateDiscountWithOriginalPrice(+WALLACOINS_PACKS_RESPONSE[5].price, +WALLACOINS_PACKS_RESPONSE[5].original_price);
   const packWallacoins6 = new Pack(
     WALLACOINS_PACKS_RESPONSE[2].id,
-    WALLACOINS_PACKS_RESPONSE[2].benefits[CREDITS_PACK_ID],
+    WALLACOINS_PACKS_RESPONSE[2].benefits[COINS_PACK_ID],
     +WALLACOINS_PACKS_RESPONSE[2].price,
     'EUR',
     'wallacoins'

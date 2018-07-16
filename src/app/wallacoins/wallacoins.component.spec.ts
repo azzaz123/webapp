@@ -70,8 +70,8 @@ describe('WallacoinsComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should call getCreditsPacks and set packs', () => {
-      spyOn(paymentService, 'getCreditsPacks').and.callThrough();
+    it('should call getCoinsPacks and set packs', () => {
+      spyOn(paymentService, 'getCoinsPacks').and.callThrough();
 
       component.ngOnInit();
 

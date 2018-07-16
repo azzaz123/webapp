@@ -16,6 +16,8 @@ export class WallacoinsComponent implements OnInit {
 
   public packs: Pack[][];
   public wallacoins: number = 0;
+  public currencyName: string;
+  public factor: number;
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
@@ -23,15 +25,17 @@ export class WallacoinsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.paymentService.getCreditsPacks().subscribe((packs: Pack[][]) => {
+    this.paymentService.getCoinsCreditsPacks().subscribe((packs: Pack[][]) => {
       this.packs = packs;
+      this.currencyName = this.packs[0][0].name;
+      this.factor = this.packs[0][0].factor;
     });
     this.updatePerks();
   }
 
   private updatePerks(cache?: boolean) {
     this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
-      this.wallacoins = perks.wallacoins.quantity;
+      this.wallacoins = perks[this.currencyName].quantity;
     });
   }
 

@@ -18,7 +18,7 @@ import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { PerksModel } from './payment.model';
 import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
-import { CREDITS_PACK_ID, Pack } from './pack';
+import { COINS_PACK_ID, Pack } from './pack';
 
 
 describe('PaymentService', () => {
@@ -107,8 +107,8 @@ describe('PaymentService', () => {
 
     describe('with param', () => {
       const product: Products = {
-        [CREDITS_PACK_ID]: {
-          id: CREDITS_PACK_ID,
+        [COINS_PACK_ID]: {
+          id: COINS_PACK_ID,
           name: 'WALLACOINS'
         }
       };
@@ -124,7 +124,7 @@ describe('PaymentService', () => {
 
       it('should call endpoint', () => {
         expect(http.get).toHaveBeenCalledWith('api/v3/payments/packs', {
-          products: CREDITS_PACK_ID
+          products: COINS_PACK_ID
         });
         expect(http.get).not.toHaveBeenCalledWith('api/v3/payments/products');
       });
@@ -136,22 +136,22 @@ describe('PaymentService', () => {
 
   });
 
-  describe('getCreditsPacks', () => {
+  describe('getCoinsPacks', () => {
 
     let resp: Pack[][];
 
     beforeEach(() => {
       spyOn(service, 'getPacks').and.returnValue(Observable.of(createWallacoinsPacksFixture()));
 
-      service.getCreditsPacks().subscribe((r: Pack[][]) => {
+      service.getCoinsPacks().subscribe((r: Pack[][]) => {
         resp = r;
       });
     });
 
     it('should call getPacks', () => {
       expect(service.getPacks).toHaveBeenCalledWith({
-        [CREDITS_PACK_ID]: {
-          id: CREDITS_PACK_ID,
+        [COINS_PACK_ID]: {
+          id: COINS_PACK_ID,
           name: 'WALLACOINS'
         }
       });

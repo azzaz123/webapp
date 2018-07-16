@@ -50,6 +50,9 @@ export class PerksModel implements Perks {
   wallacoins = {
     quantity: 0
   };
+  wallacredits = {
+    quantity: 0
+  };
   getBumpCounter(): number {
     return this.subscription.bump.quantity + this.extra.bump.quantity;
   }
@@ -78,5 +81,8 @@ export class PerksModel implements Perks {
   }
   setWallacoins(wallacoinsPerk: PerkResponse) {
     this.wallacoins.quantity = wallacoinsPerk.quantity;
+  }
+  setWallacredits(wallacreditsPerk: PerkResponse) {
+    this.wallacredits.quantity = wallacreditsPerk.quantity;
   }
 }

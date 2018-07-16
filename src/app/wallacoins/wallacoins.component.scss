@@ -8,6 +8,9 @@ $pack-width: 234px;
 
 tsl-header {
   /deep/ {
+    .header-title {
+      text-transform: capitalize;
+    }
     .total-credits {
       color: $grey-250;
       text-align: center;
