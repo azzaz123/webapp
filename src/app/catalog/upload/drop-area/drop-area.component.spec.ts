@@ -21,6 +21,7 @@ import { ITEM_ID, PICTURE_ID } from '../../../../tests/item.fixtures.spec';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { IMAGE } from '../../../../tests/user.fixtures.spec';
 import { UploadedEvent } from '../upload-event.interface';
+import { ITEM_TYPES } from '../../../core/item/item';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;
@@ -116,6 +117,7 @@ describe('DropAreaComponent', () => {
         test: 'test'
       };
       component.files = [UPLOAD_FILE];
+      component.type = ITEM_TYPES.CARS
       spyOn(uploadService, 'createItemWithFirstImage');
       fixture.detectChanges();
 
@@ -124,7 +126,7 @@ describe('DropAreaComponent', () => {
         values: VALUES
       });
 
-      expect(uploadService.createItemWithFirstImage).toHaveBeenCalledWith(VALUES, UPLOAD_FILE);
+      expect(uploadService.createItemWithFirstImage).toHaveBeenCalledWith(VALUES, UPLOAD_FILE, ITEM_TYPES.CARS);
     });
 
     it('should call update if event is update and emit updated event', () => {
@@ -133,6 +135,7 @@ describe('DropAreaComponent', () => {
         test: 'test'
       };
       const response = 'a response';
+      component.type = ITEM_TYPES.CARS;
       spyOn(itemService, 'update').and.returnValue(Observable.of(response));
       component.onUploaded.subscribe((value: UploadedEvent) => {
         event = value;
@@ -144,7 +147,7 @@ describe('DropAreaComponent', () => {
         values: VALUES
       });
 
-      expect(itemService.update).toHaveBeenCalledWith(VALUES);
+      expect(itemService.update).toHaveBeenCalledWith(VALUES, ITEM_TYPES.CARS);
       expect(event).toEqual( { action: 'updated', response: response } );
     });
 
@@ -156,6 +159,7 @@ describe('DropAreaComponent', () => {
       const ERROR = {
         message: 'error'
       };
+      component.type = ITEM_TYPES.CARS;
       spyOn(itemService, 'update').and.returnValue(Observable.throw(ERROR));
       spyOn(errorsService, 'i18nError');
       component.onError.subscribe((value: any) => {
@@ -168,7 +172,7 @@ describe('DropAreaComponent', () => {
         values: VALUES
       });
 
-      expect(itemService.update).toHaveBeenCalledWith(VALUES);
+      expect(itemService.update).toHaveBeenCalledWith(VALUES, ITEM_TYPES.CARS);
       expect(event).toEqual(ERROR);
       expect(errorsService.i18nError).toHaveBeenCalledWith('serverError', ERROR.message);
     });
@@ -206,6 +210,7 @@ describe('DropAreaComponent', () => {
     it('should upload file if event addedToQueue and edit mode', () => {
       component.images = [IMAGE, IMAGE];
       component.itemId = ITEM_ID;
+      component.type = ITEM_TYPES.CONSUMER_GOODS;
       spyOn(uploadService, 'uploadSingleImage');
 
       component.onUploadOutput({
@@ -213,7 +218,7 @@ describe('DropAreaComponent', () => {
         file: UPLOAD_FILE
       });
 
-      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(UPLOAD_FILE, ITEM_ID, '');
+      expect(uploadService.uploadSingleImage).toHaveBeenCalledWith(UPLOAD_FILE, ITEM_ID, ITEM_TYPES.CONSUMER_GOODS);
 
     });
 
