@@ -42,6 +42,7 @@ export class ConversationService extends LeadService {
   private receiptSent = false;
   public messagesReadSubscription: Subscription;
   public ended: boolean;
+  public unprocessedSignals = [];
 
   constructor(http: HttpService,
               userService: UserService,
@@ -86,6 +87,11 @@ export class ConversationService extends LeadService {
               }
             } else {
               this.archivedLeads = this.archivedLeads.concat(convWithMessages);
+            }
+            for (let index = this.unprocessedSignals.length - 1; index >= 0; --index) {
+              const signal = this.unprocessedSignals[index];
+              this.sendAck(signal.trackingEvent, signal.conversationId, signal.messageId);
+              this.unprocessedSignals.splice(index, 1);
             }
             this.firstLoad = false;
             return convWithMessages;
@@ -330,11 +336,11 @@ export class ConversationService extends LeadService {
       const conversation = this.leads.find(c => c.id === conversationId);
       if (conversation) {
         this.sendTracking(trackingEvent, conversationId, messageId, conversation.item.id);
+      } else {
+        this.unprocessedSignals.push({trackingEvent: trackingEvent, conversationId: conversationId, messageId: messageId});
       }
     } else {
-      this.get(conversationId).subscribe(conversation => {
-        this.sendTracking(trackingEvent, conversationId, messageId, conversation.item.id);
-      }, e => e.catch());
+        this.unprocessedSignals.push({trackingEvent: trackingEvent, conversationId: conversationId, messageId: messageId});
     }
   }
 
