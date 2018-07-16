@@ -132,7 +132,8 @@ export function createPacksFixture(): Packs {
     cityBump: [],
     countryBump: [],
     listings: [],
-    wallacoins: []
+    wallacoins: [],
+    wallacredits: []
   };
   const packCityBump = new Pack(
     '1',
@@ -235,7 +236,8 @@ export function createWallacoinsPacksFixture(): Packs {
     cityBump: [],
     countryBump: [],
     listings: [],
-    wallacoins: []
+    wallacoins: [],
+    wallacredits: []
   };
   const packWallacoins = new Pack(
     WALLACOINS_PACKS_RESPONSE[4].id,

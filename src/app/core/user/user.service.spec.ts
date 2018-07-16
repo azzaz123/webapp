@@ -32,6 +32,7 @@ import { LoginResponse } from './login-response.interface';
 import { UserLocation } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { FeatureflagService } from './featureflag.service';
 
 describe('Service: User', () => {
 
@@ -81,6 +82,13 @@ describe('Service: User', () => {
             flushPermissions() {},
             hasPermission() {}
           }
+        },
+        {
+          provide: FeatureflagService, useValue: {
+          getFlag() {
+            return Observable.of(true);
+          }
+        }
         }
       ]
     });

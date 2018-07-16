@@ -19,6 +19,7 @@ import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { PerksModel } from './payment.model';
 import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
 import { COINS_PACK_ID, Pack } from './pack';
+import { UserService } from '../user/user.service';
 
 
 describe('PaymentService', () => {
@@ -30,7 +31,14 @@ describe('PaymentService', () => {
     TestBed.configureTestingModule({
       providers: [
         ...TEST_HTTP_PROVIDERS,
-        PaymentService
+        PaymentService,
+        {
+          provide: UserService, useValue: {
+          hasPerm() {
+            return Observable.of(true);
+          }
+        }
+        }
       ]
     });
     service = TestBed.get(PaymentService);

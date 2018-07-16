@@ -30,7 +30,7 @@ describe('WallacoinsComponent', () => {
         DecimalPipe,
         {
           provide: PaymentService, useValue: {
-          getCreditsPacks() {
+          getCoinsCreditsPacks() {
             return Observable.of(CREDITS_PACKS);
           },
           getPerks() {
@@ -70,8 +70,8 @@ describe('WallacoinsComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should call getCoinsPacks and set packs', () => {
-      spyOn(paymentService, 'getCoinsPacks').and.callThrough();
+    it('should call getCoinsCreditsPacks and set packs', () => {
+      spyOn(paymentService, 'getCoinsCreditsPacks').and.callThrough();
 
       component.ngOnInit();
 
