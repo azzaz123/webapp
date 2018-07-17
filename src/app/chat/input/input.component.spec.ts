@@ -59,20 +59,6 @@ describe('Component: Input', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should disable input when CONNECTION_ERROR', () => {
-      component.ngOnInit();
-
-      eventService.emit(EventService.CONNECTION_ERROR);
-
-      expect(component.disable).toBe(true);
-    });
-    it('should disable input when CONNECTION_RESTORED', () => {
-      component.ngOnInit();
-
-      eventService.emit(EventService.CONNECTION_RESTORED);
-
-      expect(component.disable).toBe(false);
-    });
     it('should disable input when USER_BLOCKED', () => {
       component.currentConversation = MOCK_CONVERSATION();
 

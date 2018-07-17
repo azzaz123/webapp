@@ -52,13 +52,12 @@ export class XmppService {
   public disconnect() {
     if (this.clientConnected) {
       this.client.disconnect();
-      this.clientConnected = false;
     }
   }
 
-  public sendMessage(conversation: Conversation, body: string) {
+  public sendMessage(conversation: Conversation, body: string, resend = false, messageId?: string) {
     const message: XmppBodyMessage = {
-      id: this.client.nextId(),
+      id: resend ? messageId : this.client.nextId(),
       to: this.createJid(conversation.user.id),
       from: this.currentJid,
       thread: conversation.id,
@@ -69,30 +68,33 @@ export class XmppService {
       body: body
     };
 
-    if (!conversation.messages.length) {
-      this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
-        item_id: conversation.item.id,
+    if (!resend) {
+      if (!conversation.messages.length) {
+        this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
+          item_id: conversation.item.id,
+          thread_id: message.thread,
+          message_id: message.id });
+        appboy.logCustomEvent('FirstMessage', {platform: 'web'});
+      }
+      this.trackingService.track(TrackingService.MESSAGE_SENT, {
         thread_id: message.thread,
-        message_id: message.id });
-      appboy.logCustomEvent('FirstMessage', {platform: 'web'});
+        message_id: message.id,
+        item_id: conversation.item.id
+      });
+      this.onNewMessage(_.clone(message));
     }
-    this.trackingService.track(TrackingService.MESSAGE_SENT, {
-      thread_id: message.thread,
-      message_id: message.id,
-      item_id: conversation.item.id
-    });
-    this.onNewMessage(_.clone(message));
+
     this.client.sendMessage(message);
   }
 
-    public sendConversationStatus(userId: string, conversationId: string) {
+  public sendConversationStatus(userId: string, conversationId: string) {
     this.client.sendMessage({
       to: this.createJid(userId),
-        type: 'chat',
-        thread: conversationId,
+      type: 'chat',
+      thread: conversationId,
       read: {
         xmlns: 'wallapop:thread:status'
-        }
+      }
     });
   }
 
@@ -317,7 +319,6 @@ export class XmppService {
   public reconnectClient() {
     if (!this.clientConnected) {
       this.client.connect();
-      this.clientConnected = true;
     }
   }
 
@@ -352,6 +353,10 @@ export class XmppService {
       this.eventService.emit(EventService.CLIENT_DISCONNECTED);
     });
 
+    this.client.on('connected', () => {
+      this.clientConnected = true;
+    });
+
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.reconnectClient();
     });
@@ -381,11 +386,9 @@ export class XmppService {
     }
     if (message.timestamp) {
       message.date = new Date(message.timestamp.body).getTime();
-    } else {
-      if (!message.date) {
+    } else if (!message.date) {
         message.date = new Date().getTime();
       }
-    }
     let messageId: string = null;
     if (message.timestamp && message.receipt && message.from.local !== message.to.local) {
       messageId = message.receipt;

@@ -25,12 +25,6 @@ export class InputComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
-    this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
-      this.disable = true;
-    });
-    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      this.disable = false;
-    });
     this.eventService.subscribe(EventService.USER_BLOCKED, (userId: string) => {
       if (this.currentConversation.user.id === userId) {
         this.disable = true;
