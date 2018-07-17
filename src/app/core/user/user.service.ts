@@ -306,7 +306,7 @@ export class UserService extends ResourceService {
   }
 
   public setCoinsFeatureFlag(): Observable<boolean> {
-    return this.featureflagService.getFlag('creditTypeUser')
+    return this.featureflagService.getFlag('coinTypeUser')
       .map((isActive: boolean) => {
         if (isActive) {
           this.permissionService.addPermission(PERMISSIONS.coins);
