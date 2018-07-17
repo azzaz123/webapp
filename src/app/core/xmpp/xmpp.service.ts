@@ -81,7 +81,7 @@ export class XmppService {
         message_id: message.id,
         item_id: conversation.item.id
       });
-      this.onNewMessage(_.clone(message));
+      this.onNewMessage(_.clone(message), true);
     }
 
     this.client.sendMessage(message);
@@ -364,9 +364,9 @@ export class XmppService {
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
   }
 
-  private onNewMessage(message: XmppBodyMessage) {
+  private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
     if (message.body || message.timestamp || message.carbonSent || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
-      const builtMessage: Message = this.buildMessage(message);
+      const builtMessage: Message = this.buildMessage(message, markAsPending);
       this.persistencyService.saveMetaInformation({
           last: null,
           start: builtMessage.date.toISOString()
@@ -380,7 +380,7 @@ export class XmppService {
     }
   }
 
-  private buildMessage(message: XmppBodyMessage) {
+  private buildMessage(message: XmppBodyMessage, markAsPending = false) {
     if (message.carbonSent) {
       message = message.carbonSent.forwarded.message;
     }
@@ -390,6 +390,9 @@ export class XmppService {
         message.date = new Date().getTime();
       }
     let messageId: string = null;
+    if (markAsPending) {
+      message.status = messageStatus.PENDING;
+    }
     if (message.timestamp && message.receipt && message.from.local !== message.to.local) {
       messageId = message.receipt;
       message.status = messageStatus.RECEIVED;

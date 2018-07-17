@@ -254,9 +254,6 @@ export class ConversationService extends LeadService {
 
   public addMessage(conversation: Conversation, message: Message): boolean {
     if (!this.findMessage(conversation.messages, message)) {
-      if (message.fromSelf) {
-        message.status = messageStatus.PENDING;
-      }
       conversation.messages.push(message);
       conversation.messages.sort((a, b) => {
         return new Date(a.date).getTime() - new Date(b.date).getTime();
