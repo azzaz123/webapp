@@ -7,6 +7,7 @@ import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoi
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
+import { TrackingModule } from '../core/tracking/tracking.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wall
     WallacoinsRoutingModule,
     NgbCarouselModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
+    TrackingModule
   ],
   declarations: [
     wallacoinsRoutedComponents,
