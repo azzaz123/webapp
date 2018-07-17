@@ -1178,7 +1178,7 @@ describe('Service: Xmpp', () => {
       };
 
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(message);
-      expect(service['onNewMessage']).toHaveBeenCalledWith(message);
+      expect(service['onNewMessage']).toHaveBeenCalledWith(message, true);
     });
 
     it('should track the conversationCreateNew event', () => {
