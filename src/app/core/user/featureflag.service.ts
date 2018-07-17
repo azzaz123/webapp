@@ -13,6 +13,7 @@ export class FeatureflagService {
 
   protected API_URL = 'api/v3/featureflag';
 
+
   constructor(private http: HttpService) { }
 
   getFlag(name: string): Observable<boolean> {

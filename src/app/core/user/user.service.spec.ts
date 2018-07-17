@@ -45,6 +45,7 @@ describe('Service: User', () => {
   let event: EventService;
   let cookieService: CookieService;
   let permissionService: NgxPermissionsService;
+  let featureflagService: FeatureflagService;
 
   const DATA: any = {
     emailAddress: 'test@test.it',
@@ -101,6 +102,7 @@ describe('Service: User', () => {
     event = TestBed.get(EventService);
     cookieService = TestBed.get(CookieService);
     permissionService = TestBed.get(NgxPermissionsService);
+    featureflagService = TestBed.get(FeatureflagService);
   });
 
   it('should create an instance', () => {
@@ -216,6 +218,16 @@ describe('Service: User', () => {
       service.me().subscribe();
       service.me().subscribe();
       expect(http.get).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call setCoinsFeatureFlag', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      spyOn(service, 'setCoinsFeatureFlag').and.callThrough();
+
+      service.me().subscribe();
+
+      expect(service.setCoinsFeatureFlag).toHaveBeenCalled();
     });
 
   });
@@ -566,6 +578,22 @@ describe('Service: User', () => {
       service.setPermission('normal');
 
       expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
+    });
+  });
+
+  describe('setCoinsFeatureFlag', () => {
+    it('should call getFlag and add permission if active', () => {
+      spyOn(featureflagService, 'getFlag').and.callThrough();
+      spyOn(permissionService, 'addPermission');
+      let resp: boolean;
+
+      service.setCoinsFeatureFlag().subscribe((r: boolean) => {
+        resp = r;
+      });
+
+      expect(featureflagService.getFlag).toHaveBeenCalledWith('coinsTypeUser');
+      expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.coins);
+      expect(resp).toBe(true);
     });
   });
 

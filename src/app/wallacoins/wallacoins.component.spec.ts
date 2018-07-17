@@ -76,6 +76,8 @@ describe('WallacoinsComponent', () => {
       component.ngOnInit();
 
       expect(component.packs).toEqual(CREDITS_PACKS);
+      expect(component.currencyName).toBe('wallacoins');
+      expect(component.factor).toBe(100);
     });
 
     it('should call getPerks and set perks', () => {
