@@ -29,8 +29,8 @@ export class WallacoinsComponent implements OnInit {
       this.packs = packs;
       this.currencyName = this.packs[0][0].name;
       this.factor = this.packs[0][0].factor;
+      this.updatePerks();
     });
-    this.updatePerks();
   }
 
   private updatePerks(cache?: boolean) {
