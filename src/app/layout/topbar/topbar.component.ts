@@ -7,6 +7,8 @@ import { SuggesterResponse } from './suggester/suggester-response.interface';
 import { User } from '../../core/user/user';
 import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../core/message/message.service';
+import { PaymentService } from '../../core/payments/payment.service';
+import { PerksModel } from '../../core/payments/payment.model';
 
 @Component({
   selector: 'tsl-topbar',
@@ -27,10 +29,13 @@ export class TopbarComponent implements OnInit {
   @ViewChild('categoryEl') categoryEl: ElementRef;
   @ViewChild('kwsEl') kwsEl: ElementRef;
   public isProfessional: boolean;
+  public wallacoins: number = 0;
+  public currencyName: string;
 
   constructor(public userService: UserService,
               private windowRef: WindowRef,
               public messageService: MessageService,
+              private paymentService: PaymentService,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
@@ -41,6 +46,12 @@ export class TopbarComponent implements OnInit {
     });
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
+    });
+    this.paymentService.getPerks().subscribe((perks: PerksModel) => {
+      this.userService.getCreditCurrency().subscribe((currency: string) => {
+        this.currencyName = currency;
+        this.wallacoins = perks[this.currencyName].quantity;
+      });
     });
   }
 

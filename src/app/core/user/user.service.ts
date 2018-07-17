@@ -315,6 +315,13 @@ export class UserService extends ResourceService {
       });
   }
 
+  public getCreditCurrency(): Observable<string> {
+    return this.hasPerm(PERMISSIONS.coins)
+      .map((hasPerm: boolean) => {
+        return hasPerm ? 'wallacoins' : 'wallacredits';
+      });
+  }
+
   public hasPerm(permission: string): Observable<boolean> {
     return this.me()
       .flatMap(() => {
