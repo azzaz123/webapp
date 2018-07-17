@@ -55,3 +55,10 @@
   </div>
   <h2 i18n>Phones</h2>
 </a>
+
+<a *ngxPermissionsOnly="['isProfessional']" class="sidebar-section" [routerLink]="['/pro/help']" routerLinkActive="active">
+  <div class="sidebar-section-circle">
+    <mat-icon svgIcon="navigation_help"></mat-icon>
+  </div>
+  <h2 i18n>Help</h2>
+</a>

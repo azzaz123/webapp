@@ -8,6 +8,7 @@ import { AccessTokenService } from '../../../core/http/access-token.service';
 import { HttpService } from '../../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
+import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../../core/item/item-categories';
 
 describe('UploadService', () => {
 
@@ -64,7 +65,7 @@ describe('UploadService', () => {
         const VALUES: any = {
           test: 'hola',
           hola: 'hey',
-          category_id: '100'
+          category_id: CARS_CATEGORY
         };
         service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
         expect(response).toEqual({
@@ -82,11 +83,12 @@ describe('UploadService', () => {
         });
         expect(appendSpy).not.toHaveBeenCalled();
       });
+
       describe('with user location', () => {
         const VALUES: any = {
           test: 'hola',
           hola: 'hey',
-          category_id: '100'
+          category_id: CARS_CATEGORY
         };
         const VALUES_WITH_LOCATION: any = {
           ...VALUES,
@@ -99,8 +101,8 @@ describe('UploadService', () => {
           expect(response.data.item_car).toEqual(new Blob([JSON.stringify(VALUES)]));
         });
       });
-
     });
+
     describe('normal item', () => {
       it('should emit uploadFile event', () => {
         const VALUES: any = {
@@ -141,6 +143,39 @@ describe('UploadService', () => {
         });
       });
     });
+
+    describe('real estate', () => {
+      it('should emit uploadFile event', () => {
+        const VALUES_FINAL: any = {
+          test: 'hola',
+          hola: 'hey',
+          location: USER_LOCATION_COORDINATES
+        };
+
+        const VALUES: any = {
+          ...VALUES_FINAL,
+          category_id: REALESTATE_CATEGORY,
+          id: 100
+        };
+
+        service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
+
+        expect(response).toEqual({
+          type: 'uploadFile',
+          url: environment.baseUrl + 'api/v3/items/real_estate',
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            item_real_estate: new Blob([JSON.stringify(VALUES_FINAL)], {
+              type: 'application/json'
+            })
+          },
+          headers: headers,
+          file: UPLOAD_FILE
+        });
+        expect(appendSpy).not.toHaveBeenCalled();
+      });
+    });
   });
 
   describe('uploadOtherImages', () => {
@@ -157,9 +192,11 @@ describe('UploadService', () => {
         }
       });
     });
+
     describe('car', () => {
       it('should emit uploadFile event', () => {
-        service.uploadOtherImages(CAR_ID, '/cars');
+        service.uploadOtherImages(CAR_ID, 'cars');
+
         expect(response).toEqual({
           type: 'uploadAll',
           url: environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
@@ -172,9 +209,28 @@ describe('UploadService', () => {
         });
       });
     });
+
+    describe('real estate', () => {
+      it('should emit uploadFile event', () => {
+        service.uploadOtherImages(ITEM_ID, 'real_estate');
+
+        expect(response).toEqual({
+          type: 'uploadAll',
+          url: environment.baseUrl + 'api/v3/items/real_estate/' + ITEM_ID + '/picture',
+          method: 'POST',
+          fieldName: 'image',
+          data: {
+            order: '$order'
+          },
+          headers: headers
+        });
+      });
+    });
+
     describe('normal item', () => {
       it('should emit uploadFile event', () => {
-        service.uploadOtherImages(ITEM_ID, '');
+        service.uploadOtherImages(ITEM_ID, 'consumer_goods');
+
         expect(response).toEqual({
           type: 'uploadAll',
           url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',

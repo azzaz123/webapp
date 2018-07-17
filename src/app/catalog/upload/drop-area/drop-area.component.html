@@ -1,4 +1,4 @@
-<div class="wrapper" [ngClass]="{ 'is-drop-over': dragOver, 'photos-number-4': maxUploads === 4 }" ngFileDrop (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadService.uploadInput" [options]="options">
+<div class="wrapper photos-number-{{maxUploads}}" [ngClass]="{ 'is-drop-over': dragOver}" ngFileDrop (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadService.uploadInput" [options]="options">
   <div class="drag-area">
     <ng-container *ngIf="files.length < options.maxUploads; else maxUploadsReached">
       <mat-icon svgIcon="upload-dnd"></mat-icon>
