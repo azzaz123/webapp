@@ -19,7 +19,7 @@ export class FeatureflagService {
     return this.http.get(this.API_URL, {featureFlags: name})
       .map((r: Response) => r.json())
       .map((response: FeatureFlagResponse[]) => {
-        return response[0].active;
+        return response.length ? response[0].active : false;
       })
   }
 

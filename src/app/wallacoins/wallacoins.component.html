@@ -30,7 +30,10 @@
               <div class="quantity">{{pack.quantity | number}}</div>
               <div class="label">{{pack.name}}</div>
               <div class="for-free"><span *ngIf="pack.forFree > 0">Te regalamos {{pack.forFree | number}}!</span></div>
-              <tsl-button (click)="openBuyModal(pack)" [className]="'btn-block ' + (i === 0 && j === 1 ? 'btn-primary' : 'btn-grey')">{{pack.price | customCurrency}}</tsl-button>
+              <tsl-button (click)="openBuyModal(pack)"
+                          [className]="'btn-block ' + (i === 0 && j === 1 ? 'btn-primary' : 'btn-grey')"
+                          tslTrackEvent="PURCHASE_PACK_CREDITS" [params]="{packType: pack.name}"
+              >{{pack.price | customCurrency}}</tsl-button>
             </div>
           </ng-template>
         </ngb-carousel>

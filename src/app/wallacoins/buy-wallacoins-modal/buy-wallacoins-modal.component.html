@@ -17,10 +17,18 @@
   <div class="right" [hidden]="!hasFinancialCard">
     <p i18n>Secure payment through Sabadell</p>
     <tsl-card-selection [(ngModel)]="cardType" (hasCard)="hasCard($event)"></tsl-card-selection>
-    <tsl-button className="btn-block btn-primary" (click)="checkout()" [loading]="loading" i18n>Buy</tsl-button>
+    <tsl-button className="btn-block btn-primary"
+                (click)="checkout()"
+                [loading]="loading"
+                tslTrackEvent="PURCHASE_CONFIRM_PACK_CREDITS"
+                i18n>Buy</tsl-button>
   </div>
   <div class="bottom" [hidden]="hasFinancialCard">
-    <tsl-button className="btn-block btn-primary" (click)="checkout()" [loading]="loading" i18n>Buy</tsl-button>
+    <tsl-button className="btn-block btn-primary"
+                (click)="checkout()"
+                [loading]="loading"
+                tslTrackEvent="PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD"
+                i18n>Buy</tsl-button>
     <p>La compra se realiza a través del Banco Sabadell. No guardamos tus datos.</p>
   </div>
 </div>

@@ -34,7 +34,8 @@ const CATEGORY_IDS: any = {
   Link: '122',
   Bump: '123',
   GDPR: '119',
-  Carfax: '128'
+  Carfax: '128',
+  Credits: '131'
 };
 
 const SCREENS_IDS: any = {
@@ -57,7 +58,8 @@ const SCREENS_IDS: any = {
   MyZonePro: '158',
   Chat: '27',
   GDPR: '155',
-  ReFishingGDPR: '159'
+  ReFishingGDPR: '159',
+  Credits: '166'
 };
 
 const TYPES_IDS: any = {
@@ -342,6 +344,12 @@ export class TrackingService {
   public static MYZONE_MENU_REVIEWS: TrackingEventBase = {
     name: '609',
     category: CATEGORY_IDS.Menu,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYZONE_MENU_WALLACOINS: TrackingEventBase = {
+    name: '766',
+    category: CATEGORY_IDS.Credits,
     screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
   };
@@ -724,7 +732,36 @@ export class TrackingService {
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Tap
   };
-
+  public static PURCHASE_PACK_CREDITS = {
+    name: '767',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Tap
+  };
+  public static PURCHASE_CONFIRM_PACK_CREDITS = {
+    name: '768',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Tap
+  };
+  public static PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD = {
+    name: '769',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Tap
+  };
+  public static BUMP_FROM_MODAL_CREDITS_SUCCESS = {
+    name: '770',
+    category: CATEGORY_IDS.Bump,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Tap
+  };
+  public static BUY_MORE_CREDITS_SUCCESS = {
+    name: '771',
+    category: CATEGORY_IDS.Credits,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Tap
+  };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
