@@ -55,7 +55,7 @@ export class MessageService {
               message.doc.status,
               message.doc.payload);
 
-            if (msg.status === messageStatus.PENDING || msg.status === messageStatus.READ) {
+            if (msg.status === messageStatus.PENDING) {
               const timeLimit = new Date().getTime() - (this.resendOlderThan * 24 * 60 * 60 * 1000);
               if (Date.parse(msg.date.toString()) > timeLimit) {
                 this.xmpp.sendMessage(conversation, msg.message, true, msg.id);

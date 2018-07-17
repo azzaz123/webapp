@@ -9,6 +9,7 @@ import { HttpService } from '../../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { ITEM_ID } from '../../../../tests/item.fixtures.spec';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../../core/item/item-categories';
+import { ITEM_TYPES } from '../../../core/item/item';
 
 describe('UploadService', () => {
 
@@ -67,7 +68,7 @@ describe('UploadService', () => {
           hola: 'hey',
           category_id: CARS_CATEGORY
         };
-        service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
+        service.createItemWithFirstImage(VALUES, UPLOAD_FILE, ITEM_TYPES.CARS);
         expect(response).toEqual({
           type: 'uploadFile',
           url: environment.baseUrl + 'api/v3/items/cars',
@@ -96,7 +97,7 @@ describe('UploadService', () => {
         };
 
         it('should send values without user location', () => {
-          service.createItemWithFirstImage(VALUES_WITH_LOCATION, UPLOAD_FILE);
+          service.createItemWithFirstImage(VALUES_WITH_LOCATION, UPLOAD_FILE, ITEM_TYPES.CARS);
 
           expect(response.data.item_car).toEqual(new Blob([JSON.stringify(VALUES)]));
         });
@@ -110,7 +111,7 @@ describe('UploadService', () => {
           hola: 'hey',
           category_id: '200'
         };
-        service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
+        service.createItemWithFirstImage(VALUES, UPLOAD_FILE, ITEM_TYPES.CONSUMER_GOODS);
         expect(response).toEqual({
           type: 'uploadFile',
           url: environment.baseUrl + 'api/v3/items',
@@ -137,7 +138,7 @@ describe('UploadService', () => {
         };
 
         it('should send values without user location', () => {
-          service.createItemWithFirstImage(VALUES_WITH_LOCATION, UPLOAD_FILE);
+          service.createItemWithFirstImage(VALUES_WITH_LOCATION, UPLOAD_FILE, ITEM_TYPES.CONSUMER_GOODS);
 
           expect(response.data.item).toEqual(new Blob([JSON.stringify(VALUES)]));
         });
@@ -158,7 +159,7 @@ describe('UploadService', () => {
           id: 100
         };
 
-        service.createItemWithFirstImage(VALUES, UPLOAD_FILE);
+        service.createItemWithFirstImage(VALUES, UPLOAD_FILE, ITEM_TYPES.REAL_ESTATE);
 
         expect(response).toEqual({
           type: 'uploadFile',
@@ -261,7 +262,7 @@ describe('UploadService', () => {
     });
     describe('car', () => {
       it('should emit uploadFile event', () => {
-        service.uploadSingleImage(UPLOAD_FILE, CAR_ID, '/cars');
+        service.uploadSingleImage(UPLOAD_FILE, CAR_ID, ITEM_TYPES.CARS);
         expect(response).toEqual({
           type: 'uploadFile',
           url: environment.baseUrl + 'api/v3/items/cars/' + CAR_ID + '/picture2',
@@ -277,7 +278,7 @@ describe('UploadService', () => {
     });
     describe('normal item', () => {
       it('should emit uploadFile event', () => {
-        service.uploadSingleImage(UPLOAD_FILE, ITEM_ID, '');
+        service.uploadSingleImage(UPLOAD_FILE, ITEM_ID, ITEM_TYPES.CONSUMER_GOODS);
         expect(response).toEqual({
           type: 'uploadFile',
           url: environment.baseUrl + 'api/v3/items/' + ITEM_ID + '/picture2',

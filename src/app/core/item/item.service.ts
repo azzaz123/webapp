@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
-import { FAKE_ITEM_IMAGE_BASE_PATH, Item } from './item';
+import { FAKE_ITEM_IMAGE_BASE_PATH, Item, ITEM_TYPES } from './item';
 import { ResourceService } from '../resource/resource.service';
 import {
   AllowedActionResponse,
@@ -45,9 +45,7 @@ import { Car } from './car';
 import { ITEM_BAN_REASONS } from './ban-reasons';
 import { UUID } from 'angular2-uuid';
 import { ItemLocation } from '../geolocation/address-response.interface';
-import { REALESTATE_DATA } from '../../../tests/realestate.fixtures.spec';
 import { Realestate } from './realestate';
-import { CARS_CATEGORY, REALESTATE_CATEGORY } from './item-categories';
 
 export const PUBLISHED_ID = 0;
 export const ONHOLD_ID = 90;
@@ -432,11 +430,11 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json());
   }
 
-  public update(item: any): Observable<any> {
+  public update(item: any, itemType: string): Observable<any> {
     let url: string = this.API_URL + '/';
-    if (item.category_id === CARS_CATEGORY) {
+    if (itemType === ITEM_TYPES.CARS) {
       url += 'cars/'
-    } else if (item.category_id === REALESTATE_CATEGORY) {
+    } else if (itemType === ITEM_TYPES.REAL_ESTATE) {
       url += 'real_estate/'
     }
     const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
