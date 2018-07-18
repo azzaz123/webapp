@@ -157,7 +157,7 @@ describe('PaymentService', () => {
     it('should call getPerks, hasPerm and return credit and wallacoins if perm is true', () => {
       let resp: CreditInfo;
       spyOn(userService, 'hasPerm').and.returnValue(Observable.of(true));
-      spyOn(service, 'getPerks').and.callThrough();
+      spyOn(service, 'getPerks').and.returnValue(Observable.of(PERKS_MODEL));
       const CREDIT = 100;
       PERKS_MODEL.wallacoins.quantity = CREDIT;
 
@@ -176,7 +176,7 @@ describe('PaymentService', () => {
     it('should call getPerks, hasPerm and return credit and wallacredits if perm is false', () => {
       let resp: CreditInfo;
       spyOn(userService, 'hasPerm').and.returnValue(Observable.of(false));
-      spyOn(service, 'getPerks').and.callThrough();
+      spyOn(service, 'getPerks').and.returnValue(Observable.of(PERKS_MODEL));
       const CREDIT = 100;
       PERKS_MODEL.wallacredits.quantity = CREDIT;
 

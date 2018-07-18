@@ -80,7 +80,7 @@ export class PaymentService {
   }
 
   public getCreditInfo(cache: boolean = true): Observable<CreditInfo> {
-    return this.getPerks()
+    return this.getPerks(cache)
       .flatMap((perks: PerksModel) => {
         return this.userService.hasPerm(PERMISSIONS.coins)
           .map((hasPerm: boolean) => {
