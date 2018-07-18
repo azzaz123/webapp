@@ -64,7 +64,7 @@ export class MessageService {
             return msg;
           })
         });
-      } else {
+      } else if (this.xmpp.clientConnected && this.connectionService.isConnected) {
         return this.query(conversation.id, conversation.lastMessageRef, total);
       }
     })

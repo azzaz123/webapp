@@ -48,16 +48,6 @@ describe('UploadConfirmationModalComponent', () => {
     activeModal = TestBed.get(NgbActiveModal);
   });
 
-  describe('ngOnInit', () => {
-    it('should track open', () => {
-      spyOn(trackingService, 'track');
-
-      fixture.detectChanges();
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_SUCCESS);
-    });
-  });
-
   describe('urgentPrice', () => {
     it('should call urgentPrice', () => {
       spyOn(itemService, 'getUrgentProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
@@ -83,6 +73,17 @@ describe('UploadConfirmationModalComponent', () => {
 
       expect(activeModal.close).toHaveBeenCalledWith(ORDER_EVENT);
       expect(localStorage.setItem).toHaveBeenCalledWith('transactionType', 'urgent');
+    });
+  });
+
+  describe('trackUploaded', () => {
+    it('should send the uploaded tracking', () => {
+      spyOn(trackingService, 'track');
+
+      component.item = MOCK_ITEM;
+      component.trackUploaded();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_SUCCESS, {categoryId: component.item.categoryId});
     });
   });
 

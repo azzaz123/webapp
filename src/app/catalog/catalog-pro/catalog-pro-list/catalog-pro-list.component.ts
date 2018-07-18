@@ -135,6 +135,12 @@ export class CatalogProListComponent implements OnInit {
           });
           this.cache = false;
           this.getItems();
+          if (params.itemId) {
+            console.log('pro createeeeed');
+            this.itemService.get(params.itemId).subscribe((item: Item) => {
+              this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS, {categoryId: item.categoryId});
+            });
+          }
         } else if (params && params.urgent) {
           this.isUrgent = true;
           this.isRedirect = !this.getRedirectToTPV();

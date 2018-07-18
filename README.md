@@ -32,7 +32,7 @@ Run `yarn ng generate component component-name` to generate a new component. You
 
 ## Build
 
-You can run any of the following commands to build the project for each environment.
+You can run any of the following commands to build the project for each environment:
 The build artifacts will be stored in the `dist/` directory.
 
 ```
