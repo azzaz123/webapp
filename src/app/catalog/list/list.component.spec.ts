@@ -50,7 +50,7 @@ describe('ListComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let errorService: ErrorsService;
-  const componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
+  const componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice'), trackUploaded: jasmine.createSpy('trackUploaded') };
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   let eventService: EventService;
@@ -373,6 +373,7 @@ describe('ListComponent', () => {
       tick();
 
       expect(component['uploadModalRef'].componentInstance.item).toEqual(component.items[0]);
+      expect(component['uploadModalRef'].componentInstance.trackUploaded).toHaveBeenCalled();
       expect(component['uploadModalRef'].componentInstance.urgentPrice).toHaveBeenCalled();
     }));
   });
