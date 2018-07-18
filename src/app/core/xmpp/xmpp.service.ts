@@ -320,7 +320,6 @@ export class XmppService {
   }
 
   public reconnectClient() {
-    let i = 1;
     this.reconnectInterval = setInterval(() => {
       if (!this.clientConnected && this.reconnectedTimes < this.reconnectAttempts) {
       this.client.connect();
@@ -365,8 +364,8 @@ export class XmppService {
 
     this.client.on('connected', () => {
       this.clientConnected = true;
+      console.warn('Client connected');
       clearInterval(this.reconnectInterval);
-      this.reconnectedTimes = 0;
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
