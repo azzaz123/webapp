@@ -28,7 +28,6 @@ export class UploadConfirmationModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS);
     ga('send', 'event', 'Item', 'upload');
     gtag('event', 'conversion', {'send_to': 'AW-829909973/7aOVCJvxvHsQ1dfdiwM'});
     fbq('track', '567634953582843', {});
@@ -74,7 +73,10 @@ export class UploadConfirmationModalComponent implements OnInit {
       this.productPrice = product.durations[0].market_code;
       this.productId = product.durations[0].id;
     });
+  }
 
+  public trackUploaded(): void {
+    this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS, {categoryId: this.item.categoryId});
   }
 
 }
