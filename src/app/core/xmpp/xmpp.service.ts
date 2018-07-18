@@ -33,6 +33,9 @@ export class XmppService {
   private ownReadTimestamps = {};
   private readTimestamps = {};
   public convWithUnread = {};
+  private reconnectAttempts = 5;
+  private reconnectInterval: any;
+  private reconnectedTimes = 0;
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
@@ -319,11 +322,12 @@ export class XmppService {
   public reconnectClient() {
     let i = 1;
     this.reconnectInterval = setInterval(() => {
-      if (!this.clientConnected && i <= this.reconnectAttempts) {
+      if (!this.clientConnected && this.reconnectedTimes < this.reconnectAttempts) {
       this.client.connect();
-        i++;
+        this.reconnectedTimes++;
       } else {
         clearInterval(this.reconnectInterval);
+        this.reconnectedTimes = 0;
     }
     }, 5000);
   }
@@ -361,6 +365,8 @@ export class XmppService {
 
     this.client.on('connected', () => {
       this.clientConnected = true;
+      clearInterval(this.reconnectInterval);
+      this.reconnectedTimes = 0;
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
