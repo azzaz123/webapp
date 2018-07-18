@@ -15,7 +15,6 @@ import { MessageService } from '../../core/message/message.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { PaymentService } from '../../core/payments/payment.service';
-import { PerksModel } from '../../core/payments/payment.model';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -40,10 +39,9 @@ describe('TopbarComponent', () => {
   let fixture: ComponentFixture<TopbarComponent>;
   let eventService: EventService;
   let windowRef: WindowRef;
-  let paymentService: PaymentService;
   const CURRENCY = 'wallacoins';
-  const perksModel: PerksModel = new PerksModel();
   const CREDITS = 1000;
+  let paymentService: PaymentService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,11 +54,18 @@ describe('TopbarComponent', () => {
             },
           isProfessional() {
               return Observable.of(true);
-          },
-          getCreditCurrency() {
-              return Observable.of(CURRENCY);
           }
           },
+        },
+        {
+          provide: PaymentService, useValue: {
+          getCreditInfo() {
+            return Observable.of({
+              currencyName: CURRENCY,
+              credit: CREDITS
+            });
+          }
+        }
         },
         {
           provide: WindowRef, useValue: {
@@ -78,13 +83,6 @@ describe('TopbarComponent', () => {
         },
         {
           provide: 'SUBDOMAIN', useValue: 'www'
-        },
-        {
-          provide: PaymentService, useValue: {
-          getPerks() {
-            return Observable.of(perksModel);
-          }
-        }
         },
         EventService, ...TEST_HTTP_PROVIDERS],
       declarations: [TopbarComponent],
@@ -123,15 +121,12 @@ describe('TopbarComponent', () => {
       expect(component.isProfessional).toBe(true);
     });
 
-    it('should call getPerks, getCreditCurrency and set currency and coins total', () => {
-      spyOn(paymentService, 'getPerks').and.callThrough();
-      spyOn(userService, 'getCreditCurrency').and.callThrough();
-      perksModel.wallacoins.quantity = CREDITS;
+    it('should call getCreditInfo and set currency and coins total', () => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
 
       component.ngOnInit();
 
-      expect(paymentService.getPerks).toHaveBeenCalled();
-      expect(userService.getCreditCurrency).toHaveBeenCalled();
+      expect(paymentService.getCreditInfo).toHaveBeenCalled();
       expect(component.currencyName).toBe(CURRENCY);
       expect(component.wallacoins).toBe(CREDITS);
     });

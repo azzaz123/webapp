@@ -8,7 +8,7 @@ import { User } from '../../core/user/user';
 import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../core/message/message.service';
 import { PaymentService } from '../../core/payments/payment.service';
-import { PerksModel } from '../../core/payments/payment.model';
+import { CreditInfo } from '../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-topbar',
@@ -47,11 +47,9 @@ export class TopbarComponent implements OnInit {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
-    this.paymentService.getPerks().subscribe((perks: PerksModel) => {
-      this.userService.getCreditCurrency().subscribe((currency: string) => {
-        this.currencyName = currency;
-        this.wallacoins = perks[this.currencyName].quantity;
-      });
+    this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
+      this.currencyName = creditInfo.currencyName;
+      this.wallacoins = creditInfo.credit;
     });
   }
 

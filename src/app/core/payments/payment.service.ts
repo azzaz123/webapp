@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import {
-  BillingInfoResponse,
+  BillingInfoResponse, CreditInfo,
   FinancialCard,
   OrderProExtras,
   PackResponse,
@@ -18,6 +18,7 @@ import * as _ from 'lodash';
 import { COINS_PACK_ID, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
 import { UserService } from '../user/user.service';
+import { PERMISSIONS } from '../user/user';
 
 @Injectable()
 export class PaymentService {
@@ -76,6 +77,20 @@ export class PaymentService {
           return this.preparePacks(sortedPacks, product);
         }
       );
+  }
+
+  public getCreditInfo(cache: boolean = true): Observable<CreditInfo> {
+    return this.getPerks()
+      .flatMap((perks: PerksModel) => {
+        return this.userService.hasPerm(PERMISSIONS.coins)
+          .map((hasPerm: boolean) => {
+            const currencyName: string = hasPerm ? 'wallacoins' : 'wallacredits';
+            return {
+              currencyName: currencyName,
+              credit: perks[currencyName].quantity
+            }
+          });
+      });
   }
 
   public getCoinsCreditsPacks(): Observable<Pack[][]> {

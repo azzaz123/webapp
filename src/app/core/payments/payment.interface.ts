@@ -108,3 +108,8 @@ export interface ScheduledBumps {
   citybump?: number;
   countrybump?: number;
 }
+
+export interface CreditInfo {
+  currencyName: string;
+  credit: number;
+}

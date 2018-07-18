@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
-import { User, PERMISSIONS } from './user';
+import { PERMISSIONS, User } from './user';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../event/event.service';
 import { ResourceService } from '../resource/resource.service';
@@ -8,7 +8,7 @@ import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
-import { UserResponse, UserLocation } from './user-response.interface';
+import { UserLocation, UserResponse } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -312,13 +312,6 @@ export class UserService extends ResourceService {
           this.permissionService.addPermission(PERMISSIONS.coins);
           return isActive;
         }
-      });
-  }
-
-  public getCreditCurrency(): Observable<string> {
-    return this.hasPerm(PERMISSIONS.coins)
-      .map((hasPerm: boolean) => {
-        return hasPerm ? 'wallacoins' : 'wallacredits';
       });
   }
 

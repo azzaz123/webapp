@@ -2,7 +2,10 @@ import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs/Observable';
-import { BillingInfoResponse, FinancialCard, Packs, Perks, Products, SabadellInfoResponse } from './payment.interface';
+import {
+  BillingInfoResponse, CreditInfo, FinancialCard, Packs, Perks, Products,
+  SabadellInfoResponse
+} from './payment.interface';
 import {
   BILLING_INFO_RESPONSE,
   BUMPS_PRODUCT_RESPONSE,
@@ -20,6 +23,7 @@ import { PerksModel } from './payment.model';
 import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
 import { COINS_PACK_ID, CREDITS_PACK_ID, Pack } from './pack';
 import { UserService } from '../user/user.service';
+import { PERMISSIONS } from '../user/user';
 
 
 describe('PaymentService', () => {
@@ -144,6 +148,49 @@ describe('PaymentService', () => {
       });
     });
 
+  });
+
+  describe('getCreditInfo', () => {
+
+    const PERKS_MODEL = new PerksModel();
+
+    it('should call getPerks, hasPerm and return credit and wallacoins if perm is true', () => {
+      let resp: CreditInfo;
+      spyOn(userService, 'hasPerm').and.returnValue(Observable.of(true));
+      spyOn(service, 'getPerks').and.callThrough();
+      const CREDIT = 100;
+      PERKS_MODEL.wallacoins.quantity = CREDIT;
+
+      service.getCreditInfo().subscribe((r: CreditInfo) => {
+        resp = r;
+      });
+
+      expect(service.getPerks).toHaveBeenCalledWith(true);
+      expect(userService.hasPerm).toHaveBeenCalledWith(PERMISSIONS.coins);
+      expect(resp).toEqual({
+        currencyName: 'wallacoins',
+        credit: CREDIT
+      });
+    });
+
+    it('should call getPerks, hasPerm and return credit and wallacredits if perm is false', () => {
+      let resp: CreditInfo;
+      spyOn(userService, 'hasPerm').and.returnValue(Observable.of(false));
+      spyOn(service, 'getPerks').and.callThrough();
+      const CREDIT = 100;
+      PERKS_MODEL.wallacredits.quantity = CREDIT;
+
+      service.getCreditInfo().subscribe((r: CreditInfo) => {
+        resp = r;
+      });
+
+      expect(service.getPerks).toHaveBeenCalledWith(true);
+      expect(userService.hasPerm).toHaveBeenCalledWith(PERMISSIONS.coins);
+      expect(resp).toEqual({
+        currencyName: 'wallacredits',
+        credit: CREDIT
+      });
+    });
   });
 
   describe('getCoinsCreditsPacks', () => {
