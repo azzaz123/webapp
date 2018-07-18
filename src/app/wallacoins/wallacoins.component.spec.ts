@@ -13,6 +13,7 @@ import { createPerksModelFixture, createWallacoinsPacksFixture } from '../../tes
 import { Pack } from '../core/payments/pack';
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoins-modal.component';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
+import { EventService } from '../core/event/event.service';
 
 describe('WallacoinsComponent', () => {
   let component: WallacoinsComponent;
@@ -20,6 +21,7 @@ describe('WallacoinsComponent', () => {
   let paymentService: PaymentService;
   let modalService: NgbModal;
   let router: Router;
+  let eventService: EventService;
   const CREDITS_PACKS: Pack[][] = [createWallacoinsPacksFixture().wallacoins];
   const PERKS: PerksModel = createPerksModelFixture();
 
@@ -28,6 +30,7 @@ describe('WallacoinsComponent', () => {
       declarations: [ WallacoinsComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,
+        EventService,
         {
           provide: PaymentService, useValue: {
           getCoinsCreditsPacks() {
@@ -67,6 +70,7 @@ describe('WallacoinsComponent', () => {
     paymentService = TestBed.get(PaymentService);
     modalService = TestBed.get(NgbModal);
     router = TestBed.get(Router);
+    eventService = TestBed.get(EventService);
   });
 
   describe('ngOnInit', () => {
@@ -80,12 +84,14 @@ describe('WallacoinsComponent', () => {
       expect(component.factor).toBe(100);
     });
 
-    it('should call getPerks and set perks', () => {
+    it('should call getPerks, set perks and emit event', () => {
       spyOn(paymentService, 'getPerks').and.callThrough();
+      spyOn(eventService, 'emit');
 
       component.ngOnInit();
 
       expect(component.wallacoins).toEqual(PERKS.wallacoins.quantity);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, PERKS.wallacoins.quantity);
     });
   });
 

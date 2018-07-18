@@ -6,6 +6,7 @@ import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoi
 import { PerksModel } from '../core/payments/payment.model';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { Router } from '@angular/router';
+import { EventService } from '../core/event/event.service';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -21,6 +22,7 @@ export class WallacoinsComponent implements OnInit {
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
+              private eventService: EventService,
               private router: Router) {
   }
 
@@ -36,6 +38,7 @@ export class WallacoinsComponent implements OnInit {
   private updatePerks(cache?: boolean) {
     this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
       this.wallacoins = perks[this.currencyName].quantity;
+      this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, this.wallacoins);
     });
   }
 

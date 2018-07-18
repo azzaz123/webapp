@@ -130,6 +130,15 @@ describe('TopbarComponent', () => {
       expect(component.currencyName).toBe(CURRENCY);
       expect(component.wallacoins).toBe(CREDITS);
     });
+
+    it('should update wallacoins on TOTAL_CREDITS_UPDATED event', () => {
+      const CREDITS = 100;
+      component.ngOnInit();
+
+      eventService.emit(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
+
+      expect(component.wallacoins).toBe(CREDITS);
+    });
   });
 
   describe('update coordinate', () => {

@@ -9,6 +9,7 @@ import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../core/message/message.service';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
+import { EventService } from '../../core/event/event.service';
 
 @Component({
   selector: 'tsl-topbar',
@@ -36,6 +37,7 @@ export class TopbarComponent implements OnInit {
               private windowRef: WindowRef,
               public messageService: MessageService,
               private paymentService: PaymentService,
+              private eventService: EventService,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
@@ -50,6 +52,9 @@ export class TopbarComponent implements OnInit {
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
       this.currencyName = creditInfo.currencyName;
       this.wallacoins = creditInfo.credit;
+    });
+    this.eventService.subscribe(EventService.TOTAL_CREDITS_UPDATED, (totalCredits: number) => {
+      this.wallacoins = totalCredits;
     });
   }
 

@@ -30,6 +30,7 @@ export class EventService {
   public static UPDATE_CATEGORY = 'updateCategory';
   public static UPDATE_SEARCH = 'updateSearch';
   public static CLOSE_EXPANDED_CALLS = 'closeExpandedCalls';
+  public static TOTAL_CREDITS_UPDATED = 'packBought';
 
   private subjects: any = {};
 
