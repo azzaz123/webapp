@@ -13,8 +13,8 @@
     <button class="btn btn-price"
             (click)="select(type)"
             [ngClass]="{selected: type === selectedType && duration === selectedDuration}">
-      <s *ngIf="itemWithProducts.products[duration][type]?.original_market_code">{{itemWithProducts.products[duration][type]?.original_market_code | customCurrency}}</s>
-      {{itemWithProducts.products[duration][type]?.market_code | customCurrency}}
+      <s *ngIf="itemWithProducts.products[duration][type]?.original_market_code">{{itemWithProducts.products[duration][type]?.original_market_code * creditInfo.factor | number}}</s>
+      {{itemWithProducts.products[duration][type]?.market_code * creditInfo.factor | number}}
     </button>
   </div>
 </div>

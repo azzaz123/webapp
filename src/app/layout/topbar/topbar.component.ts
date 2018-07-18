@@ -49,12 +49,20 @@ export class TopbarComponent implements OnInit {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
     });
-    this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
+    this.updateCreditInfo();
+    this.eventService.subscribe(EventService.TOTAL_CREDITS_UPDATED, (totalCredits: number) => {
+      if (totalCredits) {
+        this.wallacoins = totalCredits;
+      } else {
+        this.updateCreditInfo(false);
+      }
+    });
+  }
+
+  private updateCreditInfo(cache?: boolean) {
+    this.paymentService.getCreditInfo(cache).subscribe((creditInfo: CreditInfo) => {
       this.currencyName = creditInfo.currencyName;
       this.wallacoins = creditInfo.credit;
-    });
-    this.eventService.subscribe(EventService.TOTAL_CREDITS_UPDATED, (totalCredits: number) => {
-      this.wallacoins = totalCredits;
     });
   }
 

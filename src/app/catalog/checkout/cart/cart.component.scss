@@ -2,7 +2,9 @@
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
 $title-height: 65px;
-$total-height: 55px;
+$main-total-height: 55px;
+$credit-total-height: 21px;
+$total-height: $main-total-height + 25px + $credit-total-height;
 $discounted-total-height: 30px;
 $button-height: 42px;
 $button-margin: $spacing - $spacing-XS;
@@ -61,13 +63,37 @@ h1 {
   height: $discounted-total-height;
 }
 
-.total {
-  height: $total-height;
-  line-height: $total-height;
+.walla-total, .credit, .total {
   font-size: $font-size-XS;
   font-weight: bold;
-  padding: 0 $spacing-XS;
   text-transform: uppercase;
+  padding: 0 $spacing-XS;
+  overflow: hidden;
+  clear: both;
+}
+
+.walla-total {
+  color: $grey-500;
+  line-height: 25px;
+  margin-top: $spacing-S;
+  .price {
+    font-size: $font-size-L;
+  }
+}
+
+.credit {
+  color: $corporate;
+  height: $credit-total-height;
+  .price {
+    font-size: $font-size-S;
+  }
+}
+
+.total {
+  height: $main-total-height;
+  line-height: $main-total-height;
+  margin-top: $spacing-1M;
+  margin-top: $spacing-S;
   .price {
     font-size: $font-size-XL;
   }

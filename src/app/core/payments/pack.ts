@@ -11,6 +11,9 @@ export const PACKS_TYPES = {
 export const COINS_PACK_ID = 'b4f402c8-1468-49e9-84df-fcd7de7d8000';
 export const CREDITS_PACK_ID = 'e0e3f72a-c57a-49a8-8e10-6e8063feabba';
 
+export const COINS_FACTOR = 100;
+export const CREDITS_FACTOR = 1;
+
 export class Pack implements Model {
 
   private _discount: number;
@@ -91,7 +94,7 @@ export class Pack implements Model {
 
   public calculateDiscountWithOriginalPrice(price: number, originalPrice: number): void {
     const save: number = originalPrice - price;
-    this._factor = this.name === 'wallacoins' ? 100 : 1;
+    this._factor = this.name === 'wallacoins' ? COINS_FACTOR : CREDITS_FACTOR;
 
     this.discount = Math.floor(save * 100 / price);
     this.forFree = save * this._factor;

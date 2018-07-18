@@ -16,7 +16,7 @@
               <ng-container *ngSwitchCase="'countrybump'" i18n>Country bump</ng-container>
             </span>
             <strong>x {{cart[type].cartItems.length}}</strong><br />
-            <span class="price">{{cart[type].total | customCurrency}}</span>
+            <span class="price">{{cart[type].total * creditInfo?.factor | number}}</span>
           </div>
           <mat-icon class="arrow-icon" svgIcon="arrow-right"></mat-icon>
         </div>
@@ -36,7 +36,7 @@
                 </span>
                 x {{cartItem.duration.duration / 24}}<span i18n>days</span>
               </div>
-              <div class="price">{{cartItem.duration.market_code | customCurrency}}</div>
+              <div class="price">{{cartItem.duration.market_code * creditInfo?.factor | number}}</div>
             </div>
           </li>
         </ul>
@@ -50,12 +50,17 @@
     </a>
   </div>
 </div>
-<div class="discounted-total">
-  <s>{{cart?.discountedTotal | customCurrency}}</s>
+<div class="walla-total">
+  <span class="pull-left" i18n>Total</span>
+  <span class="pull-right price">{{cart?.total * creditInfo?.factor | number}}</span>
+</div>
+<div class="credit">
+  <span class="pull-left" i18n>{{creditInfo?.credit | number}} {{creditInfo?.currencyName}}</span>
+  <span class="pull-right price" [hidden]="!usedCredits">{{usedCredits | number}}</span>
 </div>
 <div class="total">
-  <span class="pull-left" i18n>Total</span>
-  <span class="pull-right price">{{cart?.total | customCurrency}}</span>
+  <span class="pull-left" i18n>Total a pagar</span>
+  <span class="pull-right price">{{totalToPay | customCurrency}}</span>
 </div>
 <tsl-card-selection [(ngModel)]="cardType" name="card-type" (hasCard)="hasCard($event)"></tsl-card-selection>
 <tsl-button [disabled]="!cart?.total || loading"
