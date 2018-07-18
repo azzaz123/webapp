@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
 import { Message, messageStatus } from '../message/message';
@@ -334,14 +334,16 @@ describe('Service: Xmpp', () => {
     }));
 
     describe('reconnectClient', () => {
-      it('should call client connect if it is disconnected', () => {
+      it('should call client connect if it is disconnected', fakeAsync(() => {
         connectSpy.calls.reset();
         service.clientConnected = false;
 
         service.reconnectClient();
+        tick(5000);
 
         expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(1);
-      });
+        discardPeriodicTasks();
+      }));
     });
 
     it('should emit a CLIENT_DISCONNECTED event and set clientConnected to FALSE when the Xmpp client is disconnected', () => {
