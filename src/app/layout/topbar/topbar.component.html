@@ -22,7 +22,7 @@
 <div class="main-header-login" [class.professional]="isProfessional">
   <a *ngxPermissionsOnly="['isNormal']" class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
     <mat-icon svgIcon="messages" class="topbar-icon"></mat-icon>
-    <span i18n>{{wallacoins}} {{currencyName}}</span>
+    <span i18n><b>{{wallacoins}}</b> {{currencyName}}</span>
     <div class="horizontal-line"></div>
   </a>
   <a class="main-header-chat menu-link" [routerLink]="['/chat']" [routerLinkActive]="['active']">

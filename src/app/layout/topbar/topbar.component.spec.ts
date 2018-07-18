@@ -14,6 +14,8 @@ import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../core/message/message.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { PaymentService } from '../../core/payments/payment.service';
+import { PerksModel } from '../../core/payments/payment.model';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -38,6 +40,10 @@ describe('TopbarComponent', () => {
   let fixture: ComponentFixture<TopbarComponent>;
   let eventService: EventService;
   let windowRef: WindowRef;
+  let paymentService: PaymentService;
+  const CURRENCY = 'wallacoins';
+  const perksModel: PerksModel = new PerksModel();
+  const CREDITS = 1000;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -50,6 +56,9 @@ describe('TopbarComponent', () => {
             },
           isProfessional() {
               return Observable.of(true);
+          },
+          getCreditCurrency() {
+              return Observable.of(CURRENCY);
           }
           },
         },
@@ -70,6 +79,13 @@ describe('TopbarComponent', () => {
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         },
+        {
+          provide: PaymentService, useValue: {
+          getPerks() {
+            return Observable.of(perksModel);
+          }
+        }
+        },
         EventService, ...TEST_HTTP_PROVIDERS],
       declarations: [TopbarComponent],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -84,6 +100,7 @@ describe('TopbarComponent', () => {
     fixture.detectChanges();
     eventService = TestBed.get(EventService);
     windowRef = TestBed.get(WindowRef);
+    paymentService = TestBed.get(PaymentService);
   });
 
   it('should be created', () => {
@@ -104,6 +121,19 @@ describe('TopbarComponent', () => {
 
       expect(userService.isProfessional).toHaveBeenCalled();
       expect(component.isProfessional).toBe(true);
+    });
+
+    it('should call getPerks, getCreditCurrency and set currency and coins total', () => {
+      spyOn(paymentService, 'getPerks').and.callThrough();
+      spyOn(userService, 'getCreditCurrency').and.callThrough();
+      perksModel.wallacoins.quantity = CREDITS;
+
+      component.ngOnInit();
+
+      expect(paymentService.getPerks).toHaveBeenCalled();
+      expect(userService.getCreditCurrency).toHaveBeenCalled();
+      expect(component.currencyName).toBe(CURRENCY);
+      expect(component.wallacoins).toBe(CREDITS);
     });
   });
 

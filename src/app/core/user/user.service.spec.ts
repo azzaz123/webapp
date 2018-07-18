@@ -597,6 +597,32 @@ describe('Service: User', () => {
     });
   });
 
+  describe('getCreditCurrency', () => {
+    it('should call hasPerm and return wallacoins if perm is true', () => {
+      let resp: string;
+      spyOn(service, 'hasPerm').and.returnValue(Observable.of(true));
+
+      service.getCreditCurrency().subscribe((r: string) => {
+        resp = r;
+      });
+
+      expect(service.hasPerm).toHaveBeenCalledWith(PERMISSIONS.coins);
+      expect(resp).toBe('wallacoins');
+    });
+
+    it('should call hasPerm and return wallacredits if perm is false', () => {
+      let resp: string;
+      spyOn(service, 'hasPerm').and.returnValue(Observable.of(false));
+
+      service.getCreditCurrency().subscribe((r: string) => {
+        resp = r;
+      });
+
+      expect(service.hasPerm).toHaveBeenCalledWith(PERMISSIONS.coins);
+      expect(resp).toBe('wallacredits');
+    });
+  });
+
   describe('isProfessional', () => {
     let val: boolean;
 
