@@ -317,9 +317,15 @@ export class XmppService {
   }
 
   public reconnectClient() {
-    if (!this.clientConnected) {
+    let i = 1;
+    this.reconnectInterval = setInterval(() => {
+      if (!this.clientConnected && i <= this.reconnectAttempts) {
       this.client.connect();
+        i++;
+      } else {
+        clearInterval(this.reconnectInterval);
     }
+    }, 5000);
   }
 
   private bindEvents(): void {
