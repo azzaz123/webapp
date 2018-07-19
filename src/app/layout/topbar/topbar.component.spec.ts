@@ -15,6 +15,8 @@ import { MessageService } from '../../core/message/message.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { PaymentService } from '../../core/payments/payment.service';
+import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -47,6 +49,7 @@ describe('TopbarComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, NgxPermissionsModule.forRoot()],
       providers: [
+        DecimalPipe,
         {
           provide: UserService, useValue: {
             me(): Observable<User> {
@@ -85,7 +88,7 @@ describe('TopbarComponent', () => {
           provide: 'SUBDOMAIN', useValue: 'www'
         },
         EventService, ...TEST_HTTP_PROVIDERS],
-      declarations: [TopbarComponent],
+      declarations: [TopbarComponent, CustomCurrencyPipe],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
