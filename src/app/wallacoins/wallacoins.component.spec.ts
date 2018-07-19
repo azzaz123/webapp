@@ -94,7 +94,7 @@ describe('WallacoinsComponent', () => {
       spyOn(paymentService, 'getPerks').and.callThrough();
       spyOn(router, 'navigate');
 
-      component.openBuyModal(CREDITS_PACKS[0][0]);
+      component.openBuyModal(CREDITS_PACKS[0][0], 1);
     }));
 
     it('should open modal', () => {
