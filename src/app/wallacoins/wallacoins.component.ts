@@ -35,9 +35,10 @@ export class WallacoinsComponent implements OnInit {
     });
   }
 
-  public openBuyModal(pack: Pack) {
+  public openBuyModal(pack: Pack, packIndex: number) {
     const modal: NgbModalRef = this.modalService.open(BuyWallacoinsModalComponent, {windowClass: 'buy-wallacoins'});
     modal.componentInstance.pack = pack;
+    modal.componentInstance.packIndex = packIndex;
     modal.result.then(() => {
       this.updatePerks(false);
       this.openConfirmModal(pack);

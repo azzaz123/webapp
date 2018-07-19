@@ -20,6 +20,7 @@ export class BuyWallacoinsModalComponent implements OnInit {
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
   public mainLoading: boolean = true;
   public loading: boolean;
+  public packIndex: number;
 
   constructor(private errorService: ErrorsService,
               private paymentService: PaymentService,
