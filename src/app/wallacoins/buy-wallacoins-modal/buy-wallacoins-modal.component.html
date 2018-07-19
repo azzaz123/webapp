@@ -6,9 +6,9 @@
 </div>
 <div class="buy-modal" [hidden]="mainLoading" [class.vertical]="!hasFinancialCard">
   <div class="left">
-    <h2>{{pack.quantity}} {{pack.name}}</h2>
-    <div class="for-free">{{pack.forFree}} de regalo!</div>
-    <div class="icon"></div>
+    <h2>{{pack.quantity | number}} {{pack.name}}</h2>
+    <div class="for-free">{{pack.forFree | number}} de regalo!</div>
+    <div class="icon icon-{{packIndex}}"></div>
     <div class="price">
       <div class="total" i18n>Total</div>
       <div class="amount">{{pack.price | customCurrency}}</div>

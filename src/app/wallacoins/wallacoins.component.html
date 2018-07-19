@@ -11,7 +11,7 @@
       </div>
       <div class="col-1">
         <div class="total-credits">
-          <div class="credits">{{wallacoins}}</div>
+          <div class="credits">{{wallacoins | number}}</div>
           <div class="label">{{currencyName}}</div>
         </div>
       </div>
@@ -25,30 +25,29 @@
           <ng-template ngbSlide *ngFor="let packArray of packs; let i = index">
             <div class="pack" *ngFor="let pack of packArray; let j = index">
               <div class="featured" *ngIf="i === 0 && j === 1">Mas popular</div>
-              <div class="icon"></div>
-              <div class="discount" *ngIf="pack.discount > 0">{{pack.discount}}%</div>
+              <div class="icon icon-{{(i+1) * (j+1)}}"></div>
               <div class="quantity">{{pack.quantity | number}}</div>
               <div class="label">{{pack.name}}</div>
-              <div class="for-free"><span *ngIf="pack.forFree > 0">Te regalamos {{pack.forFree | number}}!</span></div>
-              <tsl-button (click)="openBuyModal(pack)"
+              <div class="for-free"><span *ngIf="pack.forFree > 0">{{pack.forFree | number}} de regalo!</span></div>
+              <tsl-button (click)="openBuyModal(pack, (i+1) * (j+1))"
                           [className]="'btn-block ' + (i === 0 && j === 1 ? 'btn-primary' : 'btn-grey')"
                           tslTrackEvent="PURCHASE_PACK_CREDITS" [params]="{packType: pack.name}"
-              >{{pack.price | customCurrency}}</tsl-button>
+              >Compra por <b>{{pack.price | customCurrency}}</b></tsl-button>
             </div>
           </ng-template>
         </ngb-carousel>
-        <h2>¿Por qué debería comprar wallas?</h2>
+        <h3>¿Por qué debería comprar wallas?</h3>
         <div class="info">
-          <div>
-            <h3>Pago muy seguro</h3>
+          <div class="info-1">
+            <h4>Pago muy seguro</h4>
             <p>Por cada paquete que compres te regalamos dinero para utilizar en wallapop.</p>
           </div>
-          <div>
-            <h3>Ahorras mucho dinero</h3>
+          <div class="info-2">
+            <h4>Ahorras mucho dinero</h4>
             <p>Puedes disponer en cualquier momento de los {{currencyName}} para destacar.</p>
           </div>
-          <div>
-            <h3>Mucho más rápido y cómodo</h3>
+          <div class="info-3">
+            <h4>Mucho más rápido y cómodo</h4>
             <p>Como todos los pagos que realices por wallapop la compra de {{currencyName}} es mega segura.</p>
           </div>
         </div>
