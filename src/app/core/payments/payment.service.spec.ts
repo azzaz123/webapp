@@ -21,7 +21,7 @@ import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { PerksModel } from './payment.model';
 import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
-import { COINS_PACK_ID, CREDITS_PACK_ID, Pack } from './pack';
+import { COINS_FACTOR, COINS_PACK_ID, CREDITS_FACTOR, CREDITS_PACK_ID, Pack } from './pack';
 import { UserService } from '../user/user.service';
 import { PERMISSIONS } from '../user/user';
 
@@ -169,7 +169,8 @@ describe('PaymentService', () => {
       expect(userService.hasPerm).toHaveBeenCalledWith(PERMISSIONS.coins);
       expect(resp).toEqual({
         currencyName: 'wallacoins',
-        credit: CREDIT
+        credit: CREDIT,
+        factor: COINS_FACTOR
       });
     });
 
@@ -188,7 +189,8 @@ describe('PaymentService', () => {
       expect(userService.hasPerm).toHaveBeenCalledWith(PERMISSIONS.coins);
       expect(resp).toEqual({
         currencyName: 'wallacredits',
-        credit: CREDIT
+        credit: CREDIT,
+        factor: CREDITS_FACTOR
       });
     });
   });

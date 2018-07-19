@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WallacoinComponent } from './wallacoin.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('WallacoinComponent', () => {
   let component: WallacoinComponent;
@@ -8,7 +9,8 @@ describe('WallacoinComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WallacoinComponent ]
+      declarations: [ WallacoinComponent ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

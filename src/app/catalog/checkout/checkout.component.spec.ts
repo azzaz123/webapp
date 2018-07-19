@@ -5,6 +5,7 @@ import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE } from '../../../tests/item.fixtures.spec';
 import { Router } from '@angular/router';
+import { PaymentService } from '../../core/payments/payment.service';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
@@ -30,6 +31,13 @@ describe('CheckoutComponent', () => {
         {
           provide: Router, useValue: {
           navigate() {
+          }
+        }
+        },
+        {
+          provide: PaymentService, useValue: {
+          getCreditInfo() {
+            return Observable.of({});
           }
         }
         }

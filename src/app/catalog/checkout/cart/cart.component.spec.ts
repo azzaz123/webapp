@@ -25,6 +25,7 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
 import { CardSelectionComponent } from '../../../shared/payments/card-selection/card-selection.component';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { EventService } from '../../../core/event/event.service';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -50,6 +51,7 @@ describe('CartComponent', () => {
       declarations: [CartComponent, CustomCurrencyPipe, CardSelectionComponent],
       providers: [
         DecimalPipe,
+        EventService,
         {
           provide: TrackingService, useClass: MockTrackingService
         },
@@ -70,6 +72,11 @@ describe('CartComponent', () => {
             return Observable.of({});
           },
           deselectItems() {
+          },
+          purchaseProductsWithCredits() {
+            return Observable.of({
+              payment_needed: true
+            });
           }
         }
         },
@@ -112,6 +119,11 @@ describe('CartComponent', () => {
     router = TestBed.get(Router);
     trackingService = TestBed.get(TrackingService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
+    component.creditInfo = {
+      currencyName: 'wallacoins',
+      credit: 200,
+      factor: 100
+    };
     fixture.detectChanges();
   });
 
@@ -281,7 +293,7 @@ describe('CartComponent', () => {
 
     describe('error', () => {
       it('should call toastr', () => {
-        spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.throw({
+        spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(Observable.throw({
           text() {
             return '';
           }
