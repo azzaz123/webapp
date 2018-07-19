@@ -25,11 +25,11 @@
           <ng-template ngbSlide *ngFor="let packArray of packs; let i = index">
             <div class="pack" *ngFor="let pack of packArray; let j = index">
               <div class="featured" *ngIf="i === 0 && j === 1">Mas popular</div>
-              <div class="icon icon-{{(i+1) * (j+1)}}"></div>
+              <div class="icon icon-{{i*packArray.length + j + 1}}"></div>
               <div class="quantity">{{pack.quantity | number}}</div>
               <div class="label">{{pack.name}}</div>
               <div class="for-free"><span *ngIf="pack.forFree > 0">{{pack.forFree | number}} de regalo!</span></div>
-              <tsl-button (click)="openBuyModal(pack, (i+1) * (j+1))"
+              <tsl-button (click)="openBuyModal(pack, i*packArray.length + j + 1)"
                           [className]="'btn-block ' + (i === 0 && j === 1 ? 'btn-primary' : 'btn-grey')"
                           tslTrackEvent="PURCHASE_PACK_CREDITS" [params]="{packType: pack.name}"
               >Compra por <b>{{pack.price | customCurrency}}</b></tsl-button>
