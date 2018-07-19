@@ -4,11 +4,20 @@
 <div class="spinner-wrapper" [hidden]="!mainLoading" >
   <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
 </div>
-<div class="buy-modal" [hidden]="mainLoading" [class.vertical]="!hasFinancialCard">
+<div class="buy-modal" [hidden]="mainLoading" [class.vertical]="!hasFinancialCard" [class.credits]="withCredits">
   <div class="left">
-    <h2>{{pack.quantity | number}} {{pack.name}}</h2>
-    <div class="for-free">{{pack.forFree | number}} de regalo!</div>
-    <div class="icon icon-{{packIndex}}"></div>
+    <ng-container *ngIf="!withCredits">
+      <h2>{{pack.quantity | number}} {{pack.name}}</h2>
+      <div class="for-free">{{pack.forFree | number}} de regalo!</div>
+      <div class="icon icon-{{packIndex}}"></div>
+    </ng-container>
+    <ng-container *ngIf="withCredits">
+      <div class="icon">
+        <div class="quantity">{{pack.quantity | customCurrency}}</div>
+        <div class="label">Recarga</div>
+      </div>
+      <div class="for-free">{{pack.forFree | customCurrency}} de regalo!</div>
+    </ng-container>
     <div class="price">
       <div class="total" i18n>Total</div>
       <div class="amount">{{pack.price | customCurrency}}</div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostBinding, OnInit } from '@angular/core';
 import { Pack } from '../../core/payments/pack';
 import { PaymentService } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
@@ -12,7 +12,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './buy-wallacoins-modal.component.html',
   styleUrls: ['./buy-wallacoins-modal.component.scss']
 })
-export class BuyWallacoinsModalComponent implements OnInit {
+export class BuyWallacoinsModalComponent {
 
   public pack: Pack;
   public hasFinancialCard: boolean;
@@ -27,7 +27,8 @@ export class BuyWallacoinsModalComponent implements OnInit {
               public activeModal: NgbActiveModal) {
   }
 
-  ngOnInit() {
+  get withCredits(): boolean {
+    return this.pack.name === 'wallacredits';
   }
 
   public hasCard(hasCard: boolean) {

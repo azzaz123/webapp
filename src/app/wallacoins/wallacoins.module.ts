@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { TrackingModule } from '../core/tracking/tracking.module';
+import { PackWallacoinsComponent } from './pack-wallacoins/pack-wallacoins.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { TrackingModule } from '../core/tracking/tracking.module';
   declarations: [
     wallacoinsRoutedComponents,
     BuyWallacoinsModalComponent,
-    WallacoinsConfirmModalComponent
+    WallacoinsConfirmModalComponent,
+    PackWallacoinsComponent
   ],
   entryComponents: [BuyWallacoinsModalComponent, WallacoinsConfirmModalComponent]
 })

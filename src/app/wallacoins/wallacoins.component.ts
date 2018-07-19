@@ -33,6 +33,10 @@ export class WallacoinsComponent implements OnInit {
     });
   }
 
+  get withCoins(): boolean {
+    return this.currencyName === 'wallacoins';
+  }
+
   private updatePerks(cache?: boolean) {
     this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
       this.wallacoins = perks[this.currencyName].quantity;

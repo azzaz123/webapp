@@ -1,0 +1,17 @@
+<div class="featured" *ngIf="packIndex === 2">Mas popular</div>
+<div class="icon" *ngIf="withCredits">
+  <div class="quantity">{{pack.quantity | customCurrency}}</div>
+  <div class="label">Recarga</div>
+</div>
+<ng-container *ngIf="!withCredits">
+  <div class="icon icon-{{packIndex}}"></div>
+  <div class="quantity">{{pack.quantity | number}}</div>
+  <div class="label">{{pack.name}}</div>
+</ng-container>
+<div class="for-free"><span *ngIf="pack.forFree > 0">{{pack.forFree | number}} de regalo!</span></div>
+<tsl-button (click)="onBuy.emit()"
+            [className]="'btn-block ' + (packIndex === 2 ? 'btn-primary' : 'btn-grey')"
+            tslTrackEvent="PURCHASE_PACK_CREDITS" [params]="{packType: pack.name}">
+  <span *ngIf="!withCredits">Compra por</span>
+  <span *ngIf="withCredits">Recarga por</span> <b>{{pack.price | customCurrency}}</b>
+</tsl-button>
