@@ -42,6 +42,7 @@ import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured
 import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
 import { CardSelectionComponent } from './payments/card-selection/card-selection.component';
 import { SabadellComponent } from './payments/sabadell/sabadell.component';
+import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
 
 @NgModule({
   imports: [
@@ -87,7 +88,8 @@ import { SabadellComponent } from './payments/sabadell/sabadell.component';
     SelectComponent,
     RestrictInputNumberDirective,
     CardSelectionComponent,
-    SabadellComponent
+    SabadellComponent,
+    WallacoinComponent
   ],
   declarations: [
     AdComponent,
@@ -123,7 +125,8 @@ import { SabadellComponent } from './payments/sabadell/sabadell.component';
     AlreadyFeaturedModalComponent,
     RestrictInputNumberDirective,
     CardSelectionComponent,
-    SabadellComponent
+    SabadellComponent,
+    WallacoinComponent
   ],
   providers: [
     DecimalPipe,

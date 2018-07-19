@@ -18,8 +18,10 @@ export class CustomCurrencyPipe implements PipeTransform {
     if (!value) {
       value = 0;
     }
-    if (currencyCode === 'EUR') {
-      return this.decimalPipe.transform(value, digits) + ' ' + this.currencies[currencyCode];
+    if (currencyCode === 'EUR' || currencyCode === 'wallacredits') {
+      return this.decimalPipe.transform(value, digits) + this.currencies['EUR'];
+    } else if (currencyCode === 'wallacoins') {
+      return this.decimalPipe.transform(value, digits);
     } else {
       return this.currencies[currencyCode] + this.decimalPipe.transform(value, digits);
     }

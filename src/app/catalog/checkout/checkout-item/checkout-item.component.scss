@@ -77,9 +77,20 @@
       }
       &:hover, &.selected {
         color: $white;
+        tsl-wallacoin {
+          /deep/ svg path {
+            fill: $white;
+          }
+        }
         s {
           color: $grey-100;
+          tsl-wallacoin {
+            /deep/ svg path {
+              fill: $grey-100;
+            }
+          }
         }
+
       }
       &.selected {
         box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.2);
