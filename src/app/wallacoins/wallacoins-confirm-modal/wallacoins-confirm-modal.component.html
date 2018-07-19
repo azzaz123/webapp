@@ -4,7 +4,9 @@
 
 <div class="modal-body">
   <h1>Maravilloso!!!!!</h1>
-  <p>Tu compra se ha realizado correctamente y ya dispones de <b>{{pack?.quantity}} {{pack?.name}}</b> para empezar a destacar tus productos y agilizar tus ventas!</p>
+  <p>Tu compra se ha realizado correctamente y puedes<br /> empezar a destacar tus productos y agilizar tus ventas!</p>
+  <p [hidden]="withCredits">Total compra: <b>{{pack?.quantity | number}} wallacoins</b>, <b class="green">conseguiste {{pack?.forFree | number}} de regalo!</b></p>
+  <p [hidden]="!withCredits">Total compra: <b>{{pack?.quantity | customCurrency}} wallacoins</b>, <b class="green">conseguiste {{pack?.forFree | customCurrency}} de regalo!</b></p>
   <tsl-button (click)="activeModal.close()" tslTrackEvent="BUMP_FROM_MODAL_CREDITS_SUCCESS">Empieza a destacar</tsl-button><br />
   <a class="link" (click)="activeModal.dismiss()" tslTrackEvent="BUY_MORE_CREDITS_SUCCESS">Comprar mas wallacoins</a>
 </div>

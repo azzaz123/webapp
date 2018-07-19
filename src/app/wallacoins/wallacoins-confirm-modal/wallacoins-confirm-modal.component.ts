@@ -7,13 +7,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './wallacoins-confirm-modal.component.html',
   styleUrls: ['./wallacoins-confirm-modal.component.scss']
 })
-export class WallacoinsConfirmModalComponent implements OnInit {
+export class WallacoinsConfirmModalComponent {
 
   public pack: Pack;
 
-  constructor(public activeModal: NgbActiveModal) { }
-
-  ngOnInit() {
+  get withCredits(): boolean {
+    return this.pack.name === 'wallacredits';
   }
+
+  constructor(public activeModal: NgbActiveModal) { }
 
 }

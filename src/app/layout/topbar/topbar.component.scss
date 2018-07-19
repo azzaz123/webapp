@@ -388,4 +388,7 @@
   b {
     color: $corporate;
   }
+  .topbar-icon {
+    @include square(38px);
+  }
 }
