@@ -29,7 +29,7 @@
         <h3 [hidden]="withCoins">Elije entre los paquetes que te ofrecemos</h3>
         <p>Tenemos diferentes paquetes que se ajustan a tus necesidades.<br />
           Cuanto más compres más te regalamos!</p>
-        <ngb-carousel *ngIf="packs?.length" interval="0">
+        <ngb-carousel *ngIf="packs?.length" interval="0" [wrap]="false" (slide)="onSlide($event)" [ngClass]="sliderClass">
           <ng-template ngbSlide *ngFor="let packArray of packs; let i = index">
             <ng-container *ngFor="let pack of packArray; let j = index">
               <tsl-pack-wallacoins [pack]="pack" [packIndex]="i*packArray.length + j + 1" (onBuy)="openBuyModal(pack, i*packArray.length + j + 1)"></tsl-pack-wallacoins>
