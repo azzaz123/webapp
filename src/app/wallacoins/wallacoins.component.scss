@@ -50,14 +50,59 @@ ngb-carousel {
   margin-top: 60px;
   margin-bottom: 86px;
 }
+
 /deep/ {
-  .carousel .carousel-item {
-    flex-direction: row;
-    justify-content: center;
-    height: unset;
+  .carousel {
+    .carousel-item {
+      flex-direction: row;
+      justify-content: center;
+      height: unset;
+    }
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+      background-image: url(/assets/icons/slider-arrow.svg);
+    }
+    .carousel-control-prev, .carousel-control-next {
+      opacity: 1;
+      &:focus, &:hover {
+        opacity: 1;
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+          background-image: url(/assets/icons/slider-arrow-green.svg);
+        }
+      }
+    }
   }
   .carousel-indicators {
     display: none;
+  }
+}
+
+.end.carousel {
+  /deep/ {
+    .carousel-control-next {
+      opacity: 0.5;
+      cursor: default;
+      &:focus, &:hover {
+        opacity: 0.5;
+        .carousel-control-next-icon {
+          background-image: url(/assets/icons/slider-arrow.svg);
+        }
+      }
+    }
+  }
+}
+
+.start.carousel {
+  /deep/ {
+    .carousel-control-prev {
+      opacity: 0.5;
+      cursor: default;
+      &:focus, &:hover {
+        opacity: 0.5;
+        .carousel-control-prev-icon {
+          background-image: url(/assets/icons/slider-arrow.svg);
+        }
+      }
+    }
   }
 }
 

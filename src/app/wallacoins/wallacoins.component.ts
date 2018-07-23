@@ -6,6 +6,7 @@ import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoi
 import { PerksModel } from '../core/payments/payment.model';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { Router } from '@angular/router';
+import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -18,6 +19,7 @@ export class WallacoinsComponent implements OnInit {
   public wallacoins: number = 0;
   public currencyName: string;
   public factor: number;
+  public sliderClass = 'start';
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
@@ -61,6 +63,10 @@ export class WallacoinsComponent implements OnInit {
       this.router.navigate(['catalog/list']);
     }, () => {
     });
+  }
+
+  public onSlide(event: NgbSlideEvent) {
+    this.sliderClass = event.current === 'ngb-slide-0' ? 'start' : 'end';
   }
 
 }
