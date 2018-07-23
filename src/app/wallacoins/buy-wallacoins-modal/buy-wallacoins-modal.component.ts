@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, OnInit } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { Pack } from '../../core/payments/pack';
 import { PaymentService } from '../../core/payments/payment.service';
 import { ErrorsService } from '../../core/errors/errors.service';
@@ -43,7 +43,6 @@ export class BuyWallacoinsModalComponent {
     };
     this.loading = true;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
-      this.track(order);
       this.buy(order.id);
     }, (error: Response) => {
       this.loading = false;
@@ -66,10 +65,6 @@ export class BuyWallacoinsModalComponent {
         this.loading = false;
       });
     }
-  }
-
-  private track(order: OrderProExtras) {
-    //this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {selected_packs: order.packs});
   }
 
 }
