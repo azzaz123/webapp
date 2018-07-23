@@ -33,6 +33,10 @@ export class CheckoutComponent implements OnInit {
       this.provincialBump = !this.itemsWithProducts[0].products['168'].citybump;
     });
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
+      if (creditInfo.credit === 0) {
+        creditInfo.currencyName = 'wallacredits';
+        creditInfo.factor = 1;
+      }
       this.creditInfo = creditInfo;
     });
   }

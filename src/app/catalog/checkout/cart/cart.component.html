@@ -1,5 +1,5 @@
 <h1 i18n>My features</h1>
-<div class="cart-wrapper" [class.has-financial-card]="hasFinancialCard">
+<div class="cart-wrapper" [class.has-financial-card]="hasFinancialCard" [class.no-credit]="!creditInfo?.credit">
   <div class="scroll-panel">
     <ul *ngIf="cart" class="items-list">
       <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
@@ -56,15 +56,15 @@
     </a>
   </div>
 </div>
-<div class="walla-total">
+<div class="walla-total" [hidden]="!creditInfo?.credit">
   <span class="pull-left" i18n>Total</span>
   <span class="pull-right price">
     {{cart?.total * creditInfo?.factor | customCurrency:creditInfo.currencyName}}
     <tsl-wallacoin [currency]="creditInfo.currencyName" size="medium" color="grey"></tsl-wallacoin>
   </span>
 </div>
-<div class="credit">
-  <span class="pull-left">
+<div class="credit" [hidden]="!creditInfo?.credit && !usedCredits">
+  <span class="pull-left" [hidden]="!creditInfo?.credit">
     {{creditInfo?.credit | customCurrency:creditInfo.currencyName}}
     <span [hidden]="creditInfo?.currencyName !== 'wallacredits'">Saldo</span>
     <span [hidden]="creditInfo?.currencyName === 'wallacredits'">Wallacredits</span>
