@@ -11,10 +11,15 @@ export const ITEM_STATUSES: any = {
   'active': 'PUBLISHED',
   'sold': ['SOLD_OUTSIDE', 'BOUGHT']
 };
+export const ITEM_TYPES: any = {
+  CONSUMER_GOODS: 'consumer_goods',
+  CARS: 'cars',
+  REAL_ESTATE: 'real_estate'
+};
 
 export class Item implements Model {
-
   private _webLink: string;
+
   private _views: number;
   private _favorites: number;
   private _conversations: number;
@@ -24,7 +29,6 @@ export class Item implements Model {
   private _bumpExpiringDate: number;
   private _bumpLast24h: boolean;
   private _plannedStartsToday: boolean;
-
   constructor(private _id: string,
               private _legacyId: number,
               private _owner: string,
@@ -43,7 +47,8 @@ export class Item implements Model {
               private _images?: Image[],
               private _webSlug?: string,
               private _publishedDate?: number,
-              private _deliveryInfo?: DeliveryInfo) {
+              private _deliveryInfo?: DeliveryInfo,
+              private _itemType: string = ITEM_TYPES.CONSUMER_GOODS) {
     this._webLink = ITEM_BASE_PATH + _webSlug;
   }
 
@@ -248,4 +253,7 @@ export class Item implements Model {
     return this._flags ? this._flags.urgent : false;
   }
 
+  get itemType(): string {
+    return this._itemType;
+  }
 }

@@ -33,6 +33,9 @@ export class XmppService {
   private ownReadTimestamps = {};
   private readTimestamps = {};
   public convWithUnread = {};
+  private reconnectAttempts = 5;
+  private reconnectInterval: any;
+  private reconnectedTimes = 0;
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
@@ -52,13 +55,12 @@ export class XmppService {
   public disconnect() {
     if (this.clientConnected) {
       this.client.disconnect();
-      this.clientConnected = false;
     }
   }
 
-  public sendMessage(conversation: Conversation, body: string) {
+  public sendMessage(conversation: Conversation, body: string, resend = false, messageId?: string) {
     const message: XmppBodyMessage = {
-      id: this.client.nextId(),
+      id: resend ? messageId : this.client.nextId(),
       to: this.createJid(conversation.user.id),
       from: this.currentJid,
       thread: conversation.id,
@@ -69,30 +71,33 @@ export class XmppService {
       body: body
     };
 
-    if (!conversation.messages.length) {
-      this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
-        item_id: conversation.item.id,
+    if (!resend) {
+      if (!conversation.messages.length) {
+        this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
+          item_id: conversation.item.id,
+          thread_id: message.thread,
+          message_id: message.id });
+        appboy.logCustomEvent('FirstMessage', {platform: 'web'});
+      }
+      this.trackingService.track(TrackingService.MESSAGE_SENT, {
         thread_id: message.thread,
-        message_id: message.id });
-      appboy.logCustomEvent('FirstMessage', {platform: 'web'});
+        message_id: message.id,
+        item_id: conversation.item.id
+      });
+      this.onNewMessage(_.clone(message), true);
     }
-    this.trackingService.track(TrackingService.MESSAGE_SENT, {
-      thread_id: message.thread,
-      message_id: message.id,
-      item_id: conversation.item.id
-    });
-    this.onNewMessage(_.clone(message));
+
     this.client.sendMessage(message);
   }
 
-    public sendConversationStatus(userId: string, conversationId: string) {
+  public sendConversationStatus(userId: string, conversationId: string) {
     this.client.sendMessage({
       to: this.createJid(userId),
-        type: 'chat',
-        thread: conversationId,
+      type: 'chat',
+      thread: conversationId,
       read: {
         xmlns: 'wallapop:thread:status'
-        }
+      }
     });
   }
 
@@ -315,10 +320,15 @@ export class XmppService {
   }
 
   public reconnectClient() {
-    if (!this.clientConnected) {
+    this.reconnectInterval = setInterval(() => {
+      if (!this.clientConnected && this.reconnectedTimes < this.reconnectAttempts) {
       this.client.connect();
-      this.clientConnected = true;
+        this.reconnectedTimes++;
+      } else {
+        clearInterval(this.reconnectInterval);
+        this.reconnectedTimes = 0;
     }
+    }, 5000);
   }
 
   private bindEvents(): void {
@@ -352,6 +362,12 @@ export class XmppService {
       this.eventService.emit(EventService.CLIENT_DISCONNECTED);
     });
 
+    this.client.on('connected', () => {
+      this.clientConnected = true;
+      console.warn('Client connected');
+      clearInterval(this.reconnectInterval);
+    });
+
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.reconnectClient();
     });
@@ -359,9 +375,9 @@ export class XmppService {
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
   }
 
-  private onNewMessage(message: XmppBodyMessage) {
+  private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
     if (message.body || message.timestamp || message.carbonSent || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
-      const builtMessage: Message = this.buildMessage(message);
+      const builtMessage: Message = this.buildMessage(message, markAsPending);
       this.persistencyService.saveMetaInformation({
           last: null,
           start: builtMessage.date.toISOString()
@@ -375,18 +391,19 @@ export class XmppService {
     }
   }
 
-  private buildMessage(message: XmppBodyMessage) {
+  private buildMessage(message: XmppBodyMessage, markAsPending = false) {
     if (message.carbonSent) {
       message = message.carbonSent.forwarded.message;
     }
     if (message.timestamp) {
       message.date = new Date(message.timestamp.body).getTime();
-    } else {
-      if (!message.date) {
+    } else if (!message.date) {
         message.date = new Date().getTime();
       }
-    }
     let messageId: string = null;
+    if (markAsPending) {
+      message.status = messageStatus.PENDING;
+    }
     if (message.timestamp && message.receipt && message.from.local !== message.to.local) {
       messageId = message.receipt;
       message.status = messageStatus.RECEIVED;

@@ -149,7 +149,7 @@
           <label class="checkbox checkbox-corporate" formGroupName="location">
             <div class="select" [ngClass]="{'selected': uploadForm.value.location.approximated_location}">
               <mat-icon svgIcon="check"></mat-icon>
-              <input type="checkbox" formControlName="approximated_location" />
+              <input type="checkbox" formControlName="approximated_location" (change)="emitLocation()"/>
             </div>
             <span i18n>Show the property's approximate location</span>
           </label>
