@@ -24,11 +24,11 @@
     .for-free {
       color: $corporate;
       font-weight: bold;
-      margin-bottom: $spacing-1M;
     }
     .icon {
       @include square(160px);
       border-radius: 50%;
+      margin-top: $spacing-1M;
       margin-bottom: $spacing-2M;
       background: $white no-repeat center;
       &.icon-1 {

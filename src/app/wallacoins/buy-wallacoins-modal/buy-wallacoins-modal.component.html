@@ -8,7 +8,7 @@
   <div class="left">
     <ng-container *ngIf="!withCredits">
       <h2>{{pack.quantity | number}} {{pack.name}}</h2>
-      <div class="for-free">{{pack.forFree | number}} de regalo!</div>
+      <div class="for-free" *ngIf="pack.forFree > 0">{{pack.forFree | number}} de regalo!</div>
       <div class="icon icon-{{packIndex}}"></div>
     </ng-container>
     <ng-container *ngIf="withCredits">
