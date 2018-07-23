@@ -13,7 +13,7 @@ const routes: Routes = [
     data: {
       permissions: {
         only: PERMISSIONS.normal,
-        redirectTo: '/pro/profile'
+        redirectTo: '/profile'
       },
       isMyZone: true
     }

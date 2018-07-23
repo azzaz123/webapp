@@ -46,7 +46,7 @@ p {
 }
 
 ngb-carousel {
-  margin-top: 60px;
+  margin-top: $spacing-XL;
   margin-bottom: 86px;
 }
 /deep/ {
@@ -142,7 +142,7 @@ ngb-carousel {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: $spacing-L 120px;
+  margin: $spacing-L $spacing-XL*2 ;
   div {
     width: 33%;
     padding: 130px $spacing-2M 0;
