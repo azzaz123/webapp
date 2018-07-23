@@ -198,28 +198,10 @@ describe('Component: Input', () => {
       expect(component.disable).toBe(true);
     });
 
-    it('should disable input if the browser is disconnected', () => {
-      component.currentConversation = MOCK_CONVERSATION();
-      connectionService.isConnected = false;
-
-      component.ngOnChanges();
-
-      expect(component.disable).toBe(true);
-    });
-
     it('should enable input if user is blocked', () => {
       component.disable = true;
       component.currentConversation = MOCK_CONVERSATION();
       component.currentConversation.user.blocked = false;
-
-      component.ngOnChanges();
-
-      expect(component.disable).toBe(false);
-    });
-
-    it('should enable input if the browser is connected', () => {
-      component.currentConversation = MOCK_CONVERSATION();
-      connectionService.isConnected = true;
 
       component.ngOnChanges();
 
