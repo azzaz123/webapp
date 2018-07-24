@@ -20,7 +20,7 @@ describe('WallacoinsComponent', () => {
   let paymentService: PaymentService;
   let modalService: NgbModal;
   let router: Router;
-  const CREDITS_PACKS: Pack[][] = [createWallacoinsPacksFixture().wallacoins];
+  const CREDITS_PACKS: Pack[] = createWallacoinsPacksFixture().wallacoins;
   const PERKS: PerksModel = createPerksModelFixture();
 
   beforeEach(async(() => {

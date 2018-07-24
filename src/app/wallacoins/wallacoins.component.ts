@@ -6,7 +6,7 @@ import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoi
 import { PerksModel } from '../core/payments/payment.model';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { Router } from '@angular/router';
-import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
+import { NguCarousel } from '@ngu/carousel';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -15,22 +15,33 @@ import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap/carousel/carousel';
 })
 export class WallacoinsComponent implements OnInit {
 
-  public packs: Pack[][];
+  public packs: Pack[];
   public wallacoins: number = 0;
+  public carouselOptions: NguCarousel;
   public currencyName: string;
   public factor: number;
-  public sliderClass = 'start';
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
-              private router: Router) {
+              private router: Router){
   }
 
   ngOnInit() {
-    this.paymentService.getCoinsCreditsPacks().subscribe((packs: Pack[][]) => {
+    this.carouselOptions = {
+      grid: {xs: 3, sm: 3, md: 3, lg: 3, all: 0},
+      slide: 2,
+      speed: 400,
+      interval: 0,
+      point: {
+        visible: false
+      },
+      loop: false,
+      custom: 'banner'
+    };
+    this.paymentService.getCoinsCreditsPacks().subscribe((packs: Pack[]) => {
       this.packs = packs;
-      this.currencyName = this.packs[0][0].name;
-      this.factor = this.packs[0][0].factor;
+      this.currencyName = this.packs[0].name;
+      this.factor = this.packs[0].factor;
       this.updatePerks();
     });
   }
@@ -63,10 +74,6 @@ export class WallacoinsComponent implements OnInit {
       this.router.navigate(['catalog/list']);
     }, () => {
     });
-  }
-
-  public onSlide(event: NgbSlideEvent) {
-    this.sliderClass = event.current === 'ngb-slide-0' ? 'start' : 'end';
   }
 
 }

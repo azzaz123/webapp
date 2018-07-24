@@ -29,13 +29,13 @@
         <h3 [hidden]="withCoins">Elije entre los paquetes que te ofrecemos</h3>
         <p>Tenemos diferentes paquetes que se ajustan a tus necesidades.<br />
           Cuanto más compres más te regalamos!</p>
-        <ngb-carousel *ngIf="packs?.length" interval="0" [wrap]="false" (slide)="onSlide($event)" [ngClass]="sliderClass">
-          <ng-template ngbSlide *ngFor="let packArray of packs; let i = index">
-            <ng-container *ngFor="let pack of packArray; let j = index">
-              <tsl-pack-wallacoins [pack]="pack" [packIndex]="i*packArray.length + j + 1" (onBuy)="openBuyModal(pack, i*packArray.length + j + 1)"></tsl-pack-wallacoins>
-            </ng-container>
-          </ng-template>
-        </ngb-carousel>
+        <ngu-carousel [inputs]="carouselOptions" *ngIf="packs?.length">
+          <ngu-item NguCarouselItem *ngFor="let pack of packs; let i = index">
+            <tsl-pack-wallacoins [pack]="pack" [packIndex]="i + 1" (onBuy)="openBuyModal(pack, i + 1)"></tsl-pack-wallacoins>
+          </ngu-item>
+          <mat-icon NguCarouselPrev svgIcon="slider-arrow" class="left-arrow"></mat-icon>
+          <mat-icon NguCarouselNext svgIcon="slider-arrow" class="right-arrow"></mat-icon>
+        </ngu-carousel>
         <h3 [hidden]="!withCoins">¿Por qué debería comprar wallas?</h3>
         <h3 [hidden]="withCoins">¿Por qué debería usar saldo de wallapop?</h3>
         <div class="info">

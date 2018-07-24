@@ -258,5 +258,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('faq-features-1', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-features-1.svg'));
   matIconRegistry.addSvgIcon('faq-features-2', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-features-2.svg'));
   matIconRegistry.addSvgIcon('faq-features-3', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-features-3.svg'));
-
+  matIconRegistry.addSvgIcon('slider-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/slider-arrow.svg'));
 }
