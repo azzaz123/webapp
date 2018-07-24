@@ -380,7 +380,7 @@ export class ConversationService extends LeadService {
   }
 
   private recursiveLoadMessages(conversations: Conversation[], index: number = 0): Observable<Conversation[]> {
-    return this.xmpp.isConnected()
+    return this.xmpp.isConnected().first()
     .flatMap(() => {
       if (conversations && conversations[index] && this.connectionService.isConnected) {
         return this.messageService.getMessages(conversations[index])
@@ -407,9 +407,9 @@ export class ConversationService extends LeadService {
   }
 
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
-    return this.xmpp.isConnected()
-      .flatMap(() => {
-        if (this.connectionService.isConnected) {
+    return this.xmpp.isConnected().first()
+    .flatMap(() => {
+      if (this.connectionService.isConnected) {
         return this.messageService.getNotSavedMessages().map((response: MessagesData) => {
           if (response.data.length) {
             let conversation: Conversation;

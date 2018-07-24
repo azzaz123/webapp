@@ -1067,6 +1067,8 @@ describe('Service: Conversation', () => {
               new Message('5', 'a', MESSAGE_MAIN.body, OTHE_USER_ID + '@host'),
             ]
           }));
+          connectionService.isConnected = true;
+          xmpp.clientConnected = true;
         });
         it('should return an observable with modified conversations', fakeAsync(() => {
           service.loadNotStoredMessages(initialConversations).subscribe((data: Array<Conversation>) => {
@@ -1102,11 +1104,15 @@ describe('Service: Conversation', () => {
               new Message('1', 'a', MESSAGE_MAIN.body, MESSAGE_MAIN.from),
             ]
           }));
+          connectionService.isConnected = true;
+          xmpp.clientConnected = true;
           let observableResponse: any;
+
           service.loadNotStoredMessages(initialConversations).subscribe((data: Array<Conversation>) => {
             observableResponse = data;
           });
           tick();
+
           expect(observableResponse[0].messages.length).toBe(2);
           expect(observableResponse[1].messages.length).toBe(2);
         }));
@@ -1117,6 +1123,8 @@ describe('Service: Conversation', () => {
       beforeEach(() => {
         spyOn(service, 'get').and.returnValue(Observable.of(MOCK_UNSAVED_CONVERSATION));
         spyOn(messageService, 'addUserInfo').and.callThrough();
+        connectionService.isConnected = true;
+        xmpp.clientConnected = true;
       });
       it('should request the information of the new conversation if it does not exist', fakeAsync(() => {
         spyOn(messageService, 'getNotSavedMessages')
@@ -1163,11 +1171,16 @@ describe('Service: Conversation', () => {
         spyOn(messageService, 'getNotSavedMessages')
         .and
         .returnValue(Observable.of({data: []}));
+        connectionService.isConnected = true;
+        xmpp.clientConnected = true;
         let observableResponse: any;
+
         service.loadNotStoredMessages(initialConversations).subscribe((data: Array<Conversation>) => {
           observableResponse = data;
         });
+
         tick();
+
         expect(observableResponse[0]).toEqual(initialConversations[0]);
         expect(observableResponse[1]).toEqual(initialConversations[1]);
         expect(service['handleUnreadMessage']).not.toHaveBeenCalled();

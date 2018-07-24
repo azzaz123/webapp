@@ -427,15 +427,6 @@ describe('App', () => {
         expect(modalService.open).not.toHaveBeenCalledWith();
       });
 
-      it('should call the resetCache method in conversationService when a CLIENT_DISCONNECTED event is triggered', () => {
-        spyOn(conversationService, 'resetCache');
-
-        component.ngOnInit();
-        eventService.emit(EventService.CLIENT_DISCONNECTED);
-
-        expect(conversationService.resetCache).toHaveBeenCalledTimes(1);
-      });
-
       it('should call xmppService.clientReconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
         spyOn(xmppService, 'reconnectClient');
         connectionService.isConnected = true;
