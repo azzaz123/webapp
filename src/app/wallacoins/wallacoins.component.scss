@@ -1,5 +1,7 @@
 @import "~style/common";
 
+$pack-width: 234px;
+
 .page-content {
   padding-bottom: 65px;
 }
@@ -46,62 +48,33 @@ p {
   color: $grey-250;
 }
 
-ngb-carousel {
+ngu-carousel {
   margin-top: $spacing-XL;
   margin-bottom: 86px;
-}
-
-/deep/ {
-  .carousel {
-    .carousel-item {
-      flex-direction: row;
-      justify-content: center;
-      height: unset;
-    }
-    .carousel-control-prev-icon, .carousel-control-next-icon {
-      background-image: url(/assets/icons/slider-arrow.svg);
-    }
-    .carousel-control-prev, .carousel-control-next {
-      opacity: 1;
-      &:focus, &:hover {
-        opacity: 1;
-        .carousel-control-prev-icon, .carousel-control-next-icon {
-          background-image: url(/assets/icons/slider-arrow-green.svg);
-        }
-      }
-    }
-  }
-  .carousel-indicators {
-    display: none;
-  }
-}
-
-.end.carousel {
+  padding: 0 150px;
   /deep/ {
-    .carousel-control-next {
-      opacity: 0.5;
-      cursor: default;
-      &:focus, &:hover {
-        opacity: 0.5;
-        .carousel-control-next-icon {
-          background-image: url(/assets/icons/slider-arrow.svg);
+    ngu-item {
+      height: 386px;
+      width: $pack-width;
+    }
+    .left-arrow, .right-arrow {
+      position: absolute;
+      top: 50%;
+      cursor: pointer;
+      &:hover {
+        /deep/ {
+          path {
+            fill: $corporate;
+          }
         }
       }
     }
-  }
-}
-
-.start.carousel {
-  /deep/ {
-    .carousel-control-prev {
-      opacity: 0.5;
-      cursor: default;
-      &:focus, &:hover {
-        opacity: 0.5;
-        .carousel-control-prev-icon {
-          background-image: url(/assets/icons/slider-arrow.svg);
-        }
-      }
+    .left-arrow {
+      left: 80px;
+    }
+    .right-arrow {
+      right: 80px;
+      transform: rotate(180deg);
     }
   }
 }

@@ -95,14 +95,14 @@ export class PaymentService {
       });
   }
 
-  public getCoinsCreditsPacks(): Observable<Pack[][]> {
+  public getCoinsCreditsPacks(): Observable<Pack[]> {
     return this.userService.hasPerm('coins')
       .flatMap((isActive: boolean) => {
         return isActive ? this.getCoinsPacks() : this.getCreditsPacks();
       });
   }
 
-  public getCoinsPacks(): Observable<Pack[][]> {
+  public getCoinsPacks(): Observable<Pack[]> {
     const product: Products = {
       [COINS_PACK_ID]: {
         id: COINS_PACK_ID,
@@ -112,13 +112,10 @@ export class PaymentService {
     return this.getPacks(product)
       .map((packs: Packs) => {
         return packs.wallacoins;
-      })
-      .map((packs: Pack[]) => {
-        return this.chunkArray(packs, 3);
       });
   }
 
-  public getCreditsPacks(): Observable<Pack[][]> {
+  public getCreditsPacks(): Observable<Pack[]> {
     const product: Products = {
       [CREDITS_PACK_ID]: {
         id: CREDITS_PACK_ID,
@@ -128,9 +125,6 @@ export class PaymentService {
     return this.getPacks(product)
       .map((packs: Packs) => {
         return packs.wallacredits;
-      })
-      .map((packs: Pack[]) => {
-        return this.chunkArray(packs, 3);
       });
   }
 

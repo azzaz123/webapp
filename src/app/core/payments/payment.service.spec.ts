@@ -225,12 +225,12 @@ describe('PaymentService', () => {
 
   describe('getCoinsPacks', () => {
 
-    let resp: Pack[][];
+    let resp: Pack[];
 
     beforeEach(() => {
       spyOn(service, 'getPacks').and.returnValue(Observable.of(createWallacoinsPacksFixture()));
 
-      service.getCoinsPacks().subscribe((r: Pack[][]) => {
+      service.getCoinsPacks().subscribe((r: Pack[]) => {
         resp = r;
       });
     });
@@ -244,23 +244,21 @@ describe('PaymentService', () => {
       });
     });
 
-    it('should return an array of wallacoins packs array', () => {
-      expect(resp.length).toBe(2);
-      expect(resp[0].length).toBe(3);
-      expect(resp[1].length).toBe(3);
-      expect(resp[0][0] instanceof Pack).toBe(true);
-      expect(resp[0][0].name).toBe('wallacoins');
+    it('should return an array of wallacoins packs', () => {
+      expect(resp.length).toBe(6);
+      expect(resp[0] instanceof Pack).toBe(true);
+      expect(resp[0].name).toBe('wallacoins');
     });
   });
 
   describe('getCreditsPacks', () => {
 
-    let resp: Pack[][];
+    let resp: Pack[];
 
     beforeEach(() => {
       spyOn(service, 'getPacks').and.returnValue(Observable.of(createWallacreditsPacksFixture()));
 
-      service.getCreditsPacks().subscribe((r: Pack[][]) => {
+      service.getCreditsPacks().subscribe((r: Pack[]) => {
         resp = r;
       });
     });
@@ -274,12 +272,10 @@ describe('PaymentService', () => {
       });
     });
 
-    it('should return an array of wallacredits packs array', () => {
-      expect(resp.length).toBe(2);
-      expect(resp[0].length).toBe(3);
-      expect(resp[1].length).toBe(3);
-      expect(resp[0][0] instanceof Pack).toBe(true);
-      expect(resp[0][0].name).toBe('wallacredits');
+    it('should return an array of wallacredits packs', () => {
+      expect(resp.length).toBe(6);
+      expect(resp[0] instanceof Pack).toBe(true);
+      expect(resp[0].name).toBe('wallacredits');
     });
   });
 
