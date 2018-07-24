@@ -203,6 +203,10 @@
     tree-kill "^1.0.0"
     webpack-sources "^1.1.0"
 
+"@ngu/carousel@^1.4.8":
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/@ngu/carousel/-/carousel-1.4.8.tgz#102a2472e319fa2c048d59b5c1c347f2ef60f922"
+
 "@schematics/angular@~0.1.16":
   version "0.1.16"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-0.1.16.tgz#174ab994fd56c423674171ae5a22407ba3ee2123"
