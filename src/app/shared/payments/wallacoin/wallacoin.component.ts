@@ -5,7 +5,7 @@ import { Component, HostBinding, Input, OnInit } from '@angular/core';
   templateUrl: './wallacoin.component.html',
   styleUrls: ['./wallacoin.component.scss']
 })
-export class WallacoinComponent implements OnInit {
+export class WallacoinComponent {
 
   @Input() currency: string;
   @Input() color: string;
@@ -17,11 +17,6 @@ export class WallacoinComponent implements OnInit {
 
   @HostBinding('class.hidden') get hide(): boolean {
     return this.currency !== 'wallacoins';
-  }
-
-  constructor() { }
-
-  ngOnInit() {
   }
 
 }

@@ -36,6 +36,7 @@ describe('CartComponent', () => {
   let paymentService: PaymentService;
   let router: Router;
   let trackingService: TrackingService;
+  let eventService: EventService;
 
   const CART = new Cart();
   const CART_CHANGE: CartChange = {
@@ -118,6 +119,7 @@ describe('CartComponent', () => {
     paymentService = TestBed.get(PaymentService);
     router = TestBed.get(Router);
     trackingService = TestBed.get(TrackingService);
+    eventService = TestBed.get(EventService);
     spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
     component.creditInfo = {
       currencyName: 'wallacoins',
@@ -189,12 +191,13 @@ describe('CartComponent', () => {
     let eventId: string;
 
     describe('success', () => {
+
       beforeEach(() => {
-        spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.of([]));
         spyOn(component.cart, 'prepareOrder').and.returnValue(CART_ORDER);
         spyOn(component.cart, 'getOrderId').and.returnValue('UUID');
         spyOn(trackingService, 'track');
         spyOn(localStorage, 'setItem');
+        spyOn(eventService, 'emit');
         eventId = null;
         component.sabadellSubmit.subscribe((id: string) => {
           eventId = id;
@@ -207,26 +210,17 @@ describe('CartComponent', () => {
         expect(localStorage.setItem).toHaveBeenCalledWith('transactionType', 'bump');
       });
 
-      describe('without credit card', () => {
-        it('should submit sabadell with orderId', () => {
-          component.hasFinancialCard = false;
+      it('should emit TOTAL_CREDITS_UPDATED event', () => {
+        component.checkout();
 
-          component.checkout();
-
-          expect(eventId).toBe('UUID');
-        });
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED);
       });
 
-      describe('with credit card', () => {
+      describe('with payment_needed true', () => {
 
-        beforeEach(() => {
-          component.hasFinancialCard = true;
-        });
-
-        describe('user wants new one', () => {
-
+        describe('without credit card', () => {
           it('should submit sabadell with orderId', () => {
-            component.cardType = 'new';
+            component.hasFinancialCard = false;
 
             component.checkout();
 
@@ -234,47 +228,89 @@ describe('CartComponent', () => {
           });
         });
 
-        describe('user wants old one', () => {
+        describe('with credit card', () => {
+
           beforeEach(() => {
-            spyOn(router, 'navigate');
+            component.hasFinancialCard = true;
           });
 
-          describe('payment ok', () => {
-            beforeEach(() => {
-              spyOn(paymentService, 'pay').and.callThrough();
-              spyOn(itemService, 'deselectItems');
-              itemService.selectedAction = 'feature';
+          describe('user wants new one', () => {
+
+            it('should submit sabadell with orderId', () => {
+              component.cardType = 'new';
 
               component.checkout();
-            });
 
-            it('should redirect to code 200', () => {
-              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
-            });
-
-            it('should call deselectItems', () => {
-              expect(itemService.deselectItems).toHaveBeenCalled();
-              expect(itemService.selectedAction).toBeNull();
+              expect(eventId).toBe('UUID');
             });
           });
 
-          describe('payment ko', () => {
+          describe('user wants old one', () => {
             beforeEach(() => {
-              spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
-
-              component.checkout();
+              spyOn(router, 'navigate');
             });
 
-            it('should redirect to code -1', () => {
-              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
+            describe('payment ok', () => {
+              beforeEach(() => {
+                spyOn(paymentService, 'pay').and.callThrough();
+                spyOn(itemService, 'deselectItems');
+                itemService.selectedAction = 'feature';
+
+                component.checkout();
+              });
+
+              it('should redirect to code 200', () => {
+                expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
+              });
+
+              it('should call deselectItems', () => {
+                expect(itemService.deselectItems).toHaveBeenCalled();
+                expect(itemService.selectedAction).toBeNull();
+              });
+            });
+
+            describe('payment ko', () => {
+              beforeEach(() => {
+                spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
+
+                component.checkout();
+              });
+
+              it('should redirect to code -1', () => {
+                expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
+              });
+            });
+
+            afterEach(() => {
+              it('should call pay', () => {
+                expect(paymentService.pay).toHaveBeenCalledWith('UUID');
+              });
             });
           });
+        });
+      });
 
-          afterEach(() => {
-            it('should call pay', () => {
-              expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-            });
-          });
+      describe('with payment_needed false', () => {
+        beforeEach(() => {
+          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(Observable.of({
+            payment_needed: false,
+            items_failed: []
+          }));
+          spyOn(paymentService, 'pay').and.callThrough();
+          spyOn(itemService, 'deselectItems');
+          spyOn(router, 'navigate');
+          itemService.selectedAction = 'feature';
+
+          component.checkout();
+        });
+
+        it('should redirect to code 200', () => {
+          expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
+        });
+
+        it('should call deselectItems', () => {
+          expect(itemService.deselectItems).toHaveBeenCalled();
+          expect(itemService.selectedAction).toBeNull();
         });
       });
 
@@ -306,5 +342,55 @@ describe('CartComponent', () => {
       });
     });
 
+  });
+
+  describe('totalToPay', () => {
+
+    beforeEach(() => {
+      component.cart = null;
+    });
+
+    it('should return 0 if no cart', () => {
+      expect(component.totalToPay).toBe(0);
+    });
+
+    it('should return 0 if credits to pay < user credits', () => {
+      component.cart = CART;
+      CART.total = 1;
+
+      expect(component.totalToPay).toBe(0);
+    });
+
+    it('should return the total to pay otherwise', () => {
+      component.cart = CART;
+      CART.total = 5;
+
+      expect(component.totalToPay).toBe(3);
+    });
+  });
+
+  describe('usedCredits', () => {
+
+    beforeEach(() => {
+      component.cart = null;
+    });
+
+    it('should return 0 if no cart', () => {
+      expect(component.usedCredits).toBe(0);
+    });
+
+    it('should return -credits if credits to pay < user credits', () => {
+      component.cart = CART;
+      CART.total = 1;
+
+      expect(component.usedCredits).toBe(-100);
+    });
+
+    it('should return -creditInfo.credit otherwise', () => {
+      component.cart = CART;
+      CART.total = 5;
+
+      expect(component.usedCredits).toBe(-200);
+    });
   });
 });

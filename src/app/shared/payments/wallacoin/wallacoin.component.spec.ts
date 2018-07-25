@@ -21,7 +21,25 @@ describe('WallacoinComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('getSize', () => {
+    it('should return true if size is medium', () => {
+      component.size = 'medium';
+
+      expect(component.getSize).toBe(true);
+    });
+
+    it('should return false if size is not medium', () => {
+      component.size = 'small';
+
+      expect(component.getSize).toBe(false);
+    });
+  });
+
+  describe('hide', () => {
+    it('should return false if currency is wallacoins', () => {
+      component.currency = 'wallacoins';
+
+      expect(component.hide).toBe(false);
+    });
   });
 });

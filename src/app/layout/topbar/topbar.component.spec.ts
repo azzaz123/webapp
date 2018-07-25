@@ -142,6 +142,17 @@ describe('TopbarComponent', () => {
 
       expect(component.wallacoins).toBe(CREDITS);
     });
+
+    it('should call getCreditInfo on TOTAL_CREDITS_UPDATED event if no credits passed', () => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+      component.ngOnInit();
+
+      eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
+
+      expect(paymentService.getCreditInfo).toHaveBeenCalledWith(false);
+      expect(component.currencyName).toBe(CURRENCY);
+      expect(component.wallacoins).toBe(CREDITS);
+    });
   });
 
   describe('update coordinate', () => {
