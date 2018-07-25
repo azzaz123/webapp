@@ -8,18 +8,18 @@
   <div class="left">
     <ng-container *ngIf="!withCredits">
       <h2>{{pack.quantity | number}} {{pack.name}}</h2>
-      <div class="for-free" *ngIf="pack.forFree > 0">{{pack.forFree | number}} de regalo!</div>
+      <div class="for-free" *ngIf="pack.forFree > 0">{{pack.forFree | number}} <span i18n>as a gift!</span></div>
       <div class="icon icon-{{packIndex}}"></div>
     </ng-container>
     <ng-container *ngIf="withCredits">
       <div class="icon">
         <div class="quantity">{{pack.quantity | customCurrency}}</div>
-        <div class="label">Recarga</div>
+        <div class="label" i18n>Recharge</div>
       </div>
-      <div class="for-free">{{pack.forFree | customCurrency}} de regalo!</div>
+      <div class="for-free">{{pack.forFree | customCurrency}} <span i18n>as a gift!</span></div>
     </ng-container>
     <div class="price">
-      <div class="total" i18n>Total</div>
+      <div class="total" i18n>Price</div>
       <div class="amount">{{pack.price | customCurrency}}</div>
     </div>
   </div>
@@ -30,15 +30,15 @@
                 (click)="checkout()"
                 [loading]="loading"
                 tslTrackEvent="PURCHASE_CONFIRM_PACK_CREDITS"
-                i18n>Buy</tsl-button>
+                i18n>Buy now</tsl-button>
   </div>
   <div class="bottom" [hidden]="hasFinancialCard">
     <tsl-button className="btn-block btn-primary"
                 (click)="checkout()"
                 [loading]="loading"
                 tslTrackEvent="PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD"
-                i18n>Buy</tsl-button>
-    <p>La compra se realiza a través del Banco Sabadell. No guardamos tus datos.</p>
+                i18n>Buy now</tsl-button>
+    <p i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
   </div>
 </div>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>
