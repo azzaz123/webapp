@@ -91,7 +91,8 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     return showWillisCategories.includes(this.item.categoryId);
   }
 
-  public clickCarfax() {
+  public clickCarfax(event) {
+    event.stopPropagation();
     this.trackingService.track(TrackingService.CARFAX_CHAT_TAP);
   }
 
