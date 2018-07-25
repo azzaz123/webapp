@@ -51,6 +51,10 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.isCarItem = false;
     }
+
+    if (this.showWillisLink()) {
+      this.trackingService.track(TrackingService.WILLIS_LINK_DISPLAY);
+    }
   }
 
   ngOnDestroy() {
@@ -82,7 +86,17 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     appboy.logCustomEvent('Sold', {platform: 'web'});
   }
 
+  public showWillisLink(): boolean {
+    const showWillisCategories = [13100, 12545, 15000, 16000, 12900];
+    return showWillisCategories.includes(this.item.categoryId);
+  }
+
   public clickCarfax() {
     this.trackingService.track(TrackingService.CARFAX_CHAT_TAP);
+  }
+
+  public clickWillis(event) {
+    event.stopPropagation();
+    this.trackingService.track(TrackingService.WILLIS_LINK_TAP);
   }
 }
