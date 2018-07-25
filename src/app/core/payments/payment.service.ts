@@ -80,10 +80,10 @@ export class PaymentService {
   }
 
   public getCreditInfo(cache: boolean = true): Observable<CreditInfo> {
-    return this.getPerks(cache)
-      .flatMap((perks: PerksModel) => {
-        return this.userService.hasPerm(PERMISSIONS.coins)
-          .map((hasPerm: boolean) => {
+    return this.userService.hasPerm(PERMISSIONS.coins)
+      .flatMap((hasPerm: boolean) => {
+        return this.getPerks(cache)
+          .map((perks: PerksModel) => {
             const currencyName: string = hasPerm ? 'wallacoins' : 'wallacredits';
             const factor: number = hasPerm ? COINS_FACTOR : CREDITS_FACTOR;
             return {
