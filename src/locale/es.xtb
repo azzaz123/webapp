@@ -614,4 +614,15 @@
   <translation id="464728679019331130">Comprar por</translation>
   <translation id="5949534173199806002">Seguro que tenemos un pack para ti. Y aún más seguro que con ellos ahorarrás dinero.</translation>
   <translation id="2730194589257448908">Estos son los packs que tenemos preparados. Con ellos ahorrarás dinero al comprar tus destacados</translation>
+  <translation id="8964250385363025364">¡Productos Destacados!</translation>
+  <translation id="4568163159205829962">Todo ha ido bien y tus productos ya son más visibles. ¡Ahora a venderlo todo!</translation>
+  <translation id="3799187930195457932">Has usado</translation>
+  <translation id="5301482109060388986">Y te quedan <ph name="INTERPOLATION"><ex>{{credit | number}}</ex></ph> wallacoins</translation>
+  <translation id="5708951428326419939">Y te quedan <ph name="INTERPOLATION"><ex>{{credit | customCurrency}}</ex></ph> de saldo</translation>
+  <translation id="5880798667461104338">Recargar saldo</translation>
+  <translation id="8191075807274604024">Ir a mi catálogo</translation>
+  <translation id="5722262557807435110">Algo no ha ido bien :(</translation>
+  <translation id="4289382185311381834">Parece que ha habido un problema con tu solicitud. ¡Lo estamos revisando!</translation>
+  <translation id="6650633628037596693">Inténtalo otra vez</translation>
+  <translation id="8916480189992774118">Packs de ahorro</translation>
 </translationbundle>

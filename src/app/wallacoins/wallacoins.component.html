@@ -29,7 +29,7 @@
     <div class="box">
       <div class="box-content">
         <h2 [hidden]="!withCoins">1€ = {{factor}} {{currencyName}}</h2>
-        <h3 [hidden]="withCoins">Elije entre los paquetes que te ofrecemos</h3>
+        <h3 [hidden]="withCoins" i18n>Saving packs</h3>
         <p [hidden]="!withCoins" i18n>We've definitely got a pack for you that will save you money.</p>
         <p [hidden]="withCoins" i18n>These are our ready to go packs; use them to save money when buying features.</p>
         <ngu-carousel [inputs]="carouselOptions" *ngIf="packs?.length">
