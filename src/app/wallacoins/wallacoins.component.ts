@@ -22,6 +22,7 @@ export class WallacoinsComponent implements OnInit {
   public carouselOptions: NguCarousel;
   public currencyName: string;
   public factor: number;
+  public loading = true;
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
@@ -71,6 +72,7 @@ export class WallacoinsComponent implements OnInit {
     this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
       this.wallacoins = perks[this.currencyName].quantity;
       this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, this.wallacoins);
+      this.loading = false;
     });
   }
 
