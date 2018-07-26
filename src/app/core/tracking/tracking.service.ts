@@ -761,13 +761,13 @@ export class TrackingService {
     name: '770',
     category: CATEGORY_IDS.Bump,
     screen: SCREENS_IDS.Credits,
-    type: TYPES_IDS.Tap
+    type: TYPES_IDS.Success
   };
   public static BUY_MORE_CREDITS_SUCCESS = {
     name: '771',
     category: CATEGORY_IDS.Credits,
     screen: SCREENS_IDS.Credits,
-    type: TYPES_IDS.Tap
+    type: TYPES_IDS.Success
   };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
