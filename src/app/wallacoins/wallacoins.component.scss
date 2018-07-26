@@ -49,9 +49,8 @@ p {
 }
 
 ngu-carousel {
-  margin-top: $spacing-XL;
-  margin-bottom: 86px;
-  padding: 0 150px;
+  width: 794px;
+  margin: $spacing-XL auto 86px;
   /deep/ {
     ngu-item {
       width: $pack-width;
@@ -69,10 +68,10 @@ ngu-carousel {
       }
     }
     .left-arrow {
-      left: 80px;
+      left: -50px;
     }
     .right-arrow {
-      right: 80px;
+      right: -50px;
       transform: rotate(180deg);
     }
   }
