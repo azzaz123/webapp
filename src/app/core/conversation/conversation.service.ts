@@ -328,16 +328,23 @@ export class ConversationService extends LeadService {
     });
   }
 
+  private addUniqueSignal(signal) {
+    if (!this.unprocessedSignals.find((s) => s.messageId === signal.messageId)) {
+      this.unprocessedSignals.push(signal);
+    }
+  }
+
   public sendAck(trackingEvent: any, conversationId: string, messageId: string) {
+    const signal = {trackingEvent: trackingEvent, conversationId: conversationId, messageId: messageId};
     if (this.leads.length) {
       const conversation = this.leads.find(c => c.id === conversationId);
       if (conversation) {
         this.sendTracking(trackingEvent, conversationId, messageId, conversation.item.id);
       } else {
-        this.unprocessedSignals.push({trackingEvent: trackingEvent, conversationId: conversationId, messageId: messageId});
+        this.addUniqueSignal(signal);
       }
     } else {
-        this.unprocessedSignals.push({trackingEvent: trackingEvent, conversationId: conversationId, messageId: messageId});
+      this.addUniqueSignal(signal);
     }
   }
 
