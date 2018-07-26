@@ -5,9 +5,10 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoins-modal.component';
 import { PerksModel } from '../core/payments/payment.model';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../core/event/event.service';
 import { NguCarousel } from '@ngu/carousel';
+import { TrackingService } from '../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -25,6 +26,8 @@ export class WallacoinsComponent implements OnInit {
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
               private eventService: EventService,
+              private route: ActivatedRoute,
+              private trackingService: TrackingService,
               private router: Router){
   }
 
@@ -45,6 +48,18 @@ export class WallacoinsComponent implements OnInit {
       this.currencyName = this.packs[0].name;
       this.factor = this.packs[0].factor;
       this.updatePerks();
+    });
+    this.route.params.subscribe((params: any) => {
+      if (params && params.code) {
+        const packJson = JSON.parse(localStorage.getItem('pack'));
+        const pack = new Pack(packJson._id, packJson._quantity, packJson._price, packJson._currency, packJson._name);
+        localStorage.removeItem('transactionType');
+        localStorage.removeItem('pack');
+        this.openConfirmModal(pack, params.code);
+        if (params.code === '-1') {
+          this.trackingService.track(TrackingService.BUY_MORE_CREDITS_ERROR);
+        }
+      }
     });
   }
 
@@ -70,9 +85,10 @@ export class WallacoinsComponent implements OnInit {
     });
   }
 
-  private openConfirmModal(pack: Pack) {
+  private openConfirmModal(pack: Pack, code = '200') {
     const modal: NgbModalRef = this.modalService.open(WallacoinsConfirmModalComponent, {windowClass: 'confirm-wallacoins'});
     modal.componentInstance.pack = pack;
+    modal.componentInstance.code = code;
     modal.result.then(() => {
       this.router.navigate(['catalog/list']);
     }, () => {

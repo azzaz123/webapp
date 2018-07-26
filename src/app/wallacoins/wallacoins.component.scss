@@ -54,7 +54,6 @@ ngu-carousel {
   padding: 0 150px;
   /deep/ {
     ngu-item {
-      height: 386px;
       width: $pack-width;
     }
     .left-arrow, .right-arrow {
