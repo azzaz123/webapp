@@ -392,4 +392,14 @@ describe('PaymentService', () => {
       expect(http.delete).toHaveBeenCalledWith('api/v3/payments/billing-info/123');
     });
   });
+
+  describe('deleteCache', () => {
+    it('should delete cache', () => {
+      service['perksModel'] = new PerksModel();
+
+      service.deleteCache();
+
+      expect(service['perksModel']).toBeNull();
+    });
+  });
 });

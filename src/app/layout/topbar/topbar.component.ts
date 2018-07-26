@@ -63,7 +63,6 @@ export class TopbarComponent implements OnInit {
     this.paymentService.getCreditInfo(cache).subscribe((creditInfo: CreditInfo) => {
       this.currencyName = creditInfo.currencyName;
       this.wallacoins = creditInfo.credit;
-      console.log(creditInfo);
     });
   }
 
