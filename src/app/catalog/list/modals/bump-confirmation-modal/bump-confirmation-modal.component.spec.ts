@@ -17,6 +17,9 @@ let component: BumpConfirmationModalComponent;
 let fixture: ComponentFixture<BumpConfirmationModalComponent>;
 let trackingService: TrackingService;
 let userService: UserService;
+let paymentService: PaymentService;
+const CURRENCY = 'wallacoins';
+const CREDITS = 1000;
 
 describe('BumpConfirmationModalComponent', () => {
   beforeEach(() => {
@@ -38,8 +41,8 @@ describe('BumpConfirmationModalComponent', () => {
             provide: PaymentService, useValue: {
             getCreditInfo() {
               return Observable.of({
-                currencyName: 'wallacoins',
-                credit: 100
+                currencyName: CURRENCY,
+                credit: CREDITS
               });
             }
           }
@@ -51,6 +54,7 @@ describe('BumpConfirmationModalComponent', () => {
     component = fixture.componentInstance;
     trackingService = TestBed.get(TrackingService);
     userService = TestBed.get(UserService);
+    paymentService = TestBed.get(PaymentService);
     fixture.detectChanges();
   });
 
@@ -76,6 +80,16 @@ describe('BumpConfirmationModalComponent', () => {
       component.code = '-1';
       component.ngOnInit();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.FEATURED_PURCHASE_ERROR, { error_code: component.code });
+    });
+
+    it('should call getCreditInfo and set currency and coins total', () => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(paymentService.getCreditInfo).toHaveBeenCalled();
+      expect(component.withCoins).toBe(true);
+      expect(component.credit).toBe(CREDITS);
     });
   });
 

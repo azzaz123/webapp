@@ -9,8 +9,11 @@ import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PerksModel } from '../core/payments/payment.model';
-import { createPerksModelFixture, createWallacoinsPacksFixture } from '../../tests/payments.fixtures.spec';
-import { Pack } from '../core/payments/pack';
+import {
+  createPerksModelFixture, createWallacoinsPacksFixture,
+  PACK_RESPONSE, WALLACREDITS_PACKS_RESPONSE
+} from '../../tests/payments.fixtures.spec';
+import { CREDITS_PACK_ID, Pack } from '../core/payments/pack';
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoins-modal.component';
 import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wallacoins-confirm-modal.component';
 import { EventService } from '../core/event/event.service';
@@ -26,6 +29,13 @@ describe('WallacoinsComponent', () => {
   let eventService: EventService;
   const CREDITS_PACKS: Pack[] = createWallacoinsPacksFixture().wallacoins;
   const PERKS: PerksModel = createPerksModelFixture();
+  const PACK = new Pack(
+    WALLACREDITS_PACKS_RESPONSE[0].id,
+    WALLACREDITS_PACKS_RESPONSE[0].benefits[CREDITS_PACK_ID],
+    +WALLACREDITS_PACKS_RESPONSE[0].price,
+    WALLACREDITS_PACKS_RESPONSE[0].currency,
+    'wallacredits'
+  );
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -62,7 +72,9 @@ describe('WallacoinsComponent', () => {
         },
         {
           provide: ActivatedRoute, useValue: {
-            params: Observable.of({})
+            params: Observable.of({
+              code: '-1'
+            })
         }
         }
       ],
@@ -74,6 +86,7 @@ describe('WallacoinsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WallacoinsComponent);
     component = fixture.componentInstance;
+    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(PACK));
     fixture.detectChanges();
     paymentService = TestBed.get(PaymentService);
     modalService = TestBed.get(NgbModal);
@@ -82,6 +95,7 @@ describe('WallacoinsComponent', () => {
   });
 
   describe('ngOnInit', () => {
+
     it('should call getCoinsCreditsPacks and set packs', () => {
       spyOn(paymentService, 'getCoinsCreditsPacks').and.callThrough();
 
@@ -100,6 +114,18 @@ describe('WallacoinsComponent', () => {
 
       expect(component.wallacoins).toEqual(PERKS.wallacoins.quantity);
       expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, PERKS.wallacoins.quantity);
+    });
+
+    it('should open modal if there is param.code', () => {
+      spyOn(localStorage, 'removeItem');
+      spyOn<any>(component, 'openConfirmModal');
+
+      component.ngOnInit();
+
+      expect(localStorage.getItem).toHaveBeenCalledWith('pack');
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
+      expect(localStorage.removeItem).toHaveBeenCalledWith('pack');
+      expect(component['openConfirmModal']).toHaveBeenCalledWith(PACK, '-1');
     });
   });
 

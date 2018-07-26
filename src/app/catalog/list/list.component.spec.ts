@@ -287,6 +287,39 @@ describe('ListComponent', () => {
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
+
+    it('should redirect to wallacoins if transaction is wallapack', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('wallapack');
+      spyOn(router, 'navigate');
+      route.params = Observable.of({
+        code: -1
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
+      expect(router.navigate).toHaveBeenCalledWith(['wallacoins', { code: -1 }]);
+    }));
+
+    it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('bumpWithCredits');
+      spyOn(localStorage, 'removeItem');
+      route.params = Observable.of({
+        code: 200
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'bump-confirm',
+        backdrop: 'static'
+      });
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionSpent');
+    }));
   });
 
   describe('getItems', () => {

@@ -53,7 +53,7 @@ export class WallacoinsComponent implements OnInit {
     this.route.params.subscribe((params: any) => {
       if (params && params.code) {
         const packJson = JSON.parse(localStorage.getItem('pack'));
-        const pack = new Pack(packJson._id, packJson._quantity, packJson._price, packJson._currency, packJson._name);
+        const pack = new Pack(packJson._id, +packJson._quantity, +packJson._price, packJson._currency, packJson._name);
         localStorage.removeItem('transactionType');
         localStorage.removeItem('pack');
         this.openConfirmModal(pack, params.code);
