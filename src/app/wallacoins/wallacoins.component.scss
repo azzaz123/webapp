@@ -81,19 +81,21 @@ ngu-carousel {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: $spacing-L $spacing-XL*2 ;
+  margin: $spacing-L $spacing;
   div {
     width: 33%;
-    padding: 130px $spacing-2M 0;
+    padding: 130px $spacing-M 0;
     background: no-repeat top;
     &.info-1 {
       background-image: url(/assets/images/wallacoins-info-1.svg);
+      padding-left: 0;
     }
     &.info-2 {
       background-image: url(/assets/images/wallacoins-info-2.svg);
     }
     &.info-3 {
       background-image: url(/assets/images/wallacoins-info-3.svg);
+      padding-right: 0;
     }
     h4 {
       font-size: $font-size;
