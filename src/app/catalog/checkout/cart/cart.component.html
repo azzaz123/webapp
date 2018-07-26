@@ -17,8 +17,8 @@
             </span>
             <strong>x {{cart[type].cartItems.length}}</strong><br />
             <span class="price">
-              {{cart[type].total * creditInfo?.factor | customCurrency:creditInfo.currencyName}}
-              <tsl-wallacoin [currency]="creditInfo.currencyName" color="grey"></tsl-wallacoin>
+              {{cart[type].total * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+              <tsl-wallacoin [currency]="creditInfo?.currencyName" color="grey"></tsl-wallacoin>
             </span>
           </div>
           <mat-icon class="arrow-icon" svgIcon="arrow-right"></mat-icon>
@@ -40,8 +40,8 @@
                 x {{cartItem.duration.duration / 24}}<span i18n>days</span>
               </div>
               <div class="price">
-                {{cartItem.duration.market_code * creditInfo?.factor | customCurrency:creditInfo.currencyName}}
-                <tsl-wallacoin [currency]="creditInfo.currencyName" color="grey"></tsl-wallacoin>
+                {{cartItem.duration.market_code * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+                <tsl-wallacoin [currency]="creditInfo?.currencyName" color="grey"></tsl-wallacoin>
               </div>
             </div>
           </li>
@@ -59,19 +59,19 @@
 <div class="walla-total" [hidden]="!creditInfo?.credit">
   <span class="pull-left" i18n>Total</span>
   <span class="pull-right price">
-    {{cart?.total * creditInfo?.factor | customCurrency:creditInfo.currencyName}}
-    <tsl-wallacoin [currency]="creditInfo.currencyName" size="medium" color="grey"></tsl-wallacoin>
+    {{cart?.total * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+    <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
   </span>
 </div>
 <div class="credit" [hidden]="!creditInfo?.credit && !usedCredits">
   <span class="pull-left" [hidden]="!creditInfo?.credit">
-    {{creditInfo?.credit | customCurrency:creditInfo.currencyName}}
+    {{creditInfo?.credit | customCurrency:creditInfo?.currencyName}}
     <span [hidden]="creditInfo?.currencyName !== 'wallacredits'">Saldo</span>
-    <span [hidden]="creditInfo?.currencyName === 'wallacredits'">Wallacredits</span>
+    <span [hidden]="creditInfo?.currencyName === 'wallacredits'">Wallacoins</span>
   </span>
   <span class="pull-right price" [hidden]="!usedCredits">
-    {{usedCredits | customCurrency:creditInfo.currencyName}}
-    <tsl-wallacoin [currency]="creditInfo.currencyName" color="corporate"></tsl-wallacoin>
+    {{usedCredits | customCurrency:creditInfo?.currencyName}}
+    <tsl-wallacoin [currency]="creditInfo?.currencyName" color="corporate"></tsl-wallacoin>
   </span>
 </div>
 <div class="total">
