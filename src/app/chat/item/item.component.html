@@ -40,7 +40,7 @@
       </a>
       <a (click)="clickWillis($event)"
          *ngIf="showWillisLink()"
-         href="https://checkout.wallapopgarantia.com/"
+         href="https://checkout.wallapopgarantia.com/?name={{ item.title }}&amount={{ item.salePrice }}&imageUrl={{ item.mainImage?.urls_by_size.large.replace('http://', 'https://') }}&tag={{ item.id }}"
          target="_blank" i18n>
         Add Insurance
       </a>
