@@ -35,7 +35,8 @@ const CATEGORY_IDS: any = {
   Bump: '123',
   GDPR: '119',
   Carfax: '128',
-  Credits: '131'
+  Credits: '131',
+  Navbar: '77'
 };
 
 const SCREENS_IDS: any = {
@@ -350,6 +351,12 @@ export class TrackingService {
   public static MYZONE_MENU_WALLACOINS: TrackingEventBase = {
     name: '766',
     category: CATEGORY_IDS.Credits,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYZONE_NAVBAR_WALLACOINS: TrackingEventBase = {
+    name: '765',
+    category: CATEGORY_IDS.Navbar,
     screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
   };
