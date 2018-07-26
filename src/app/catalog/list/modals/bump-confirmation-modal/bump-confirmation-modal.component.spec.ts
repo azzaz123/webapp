@@ -9,6 +9,9 @@ import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { UserService } from '../../../../core/user/user.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { MOCK_USER, USER_DATA } from '../../../../../tests/user.fixtures.spec';
+import { PaymentService } from '../../../../core/payments/payment.service';
+import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
 
 let component: BumpConfirmationModalComponent;
 let fixture: ComponentFixture<BumpConfirmationModalComponent>;
@@ -18,15 +21,26 @@ let userService: UserService;
 describe('BumpConfirmationModalComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-        declarations: [BumpConfirmationModalComponent],
+        declarations: [BumpConfirmationModalComponent, CustomCurrencyPipe],
         providers: [
           NgbActiveModal,
+          DecimalPipe,
           {provide: TrackingService, useClass: MockTrackingService},
           MockBackend,
           {
             provide: UserService, useValue: {
             me() {
               return Observable.of(MOCK_USER);
+            }
+          }
+          },
+          {
+            provide: PaymentService, useValue: {
+            getCreditInfo() {
+              return Observable.of({
+                currencyName: 'wallacoins',
+                credit: 100
+              });
             }
           }
           }
