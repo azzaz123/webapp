@@ -66,9 +66,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
     this.persistencyService.getMetaInformation().subscribe(() => {
       this.firstLoad = false;
-    }, () => {
-      this.firstLoad = true;
-    });
+      }, () => {
+        this.persistencyService.saveMetaInformation({last: null, start: null});
+        this.firstLoad = true;
+      });
     }
 
   ngOnDestroy () {
