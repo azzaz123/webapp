@@ -413,6 +413,7 @@ export class XmppService {
     if (!message.carbon && message.sentReceipt && !message.delay) {
       message.status = messageStatus.SENT;
       messageId = message.sentReceipt.id;
+      this.sentReceipts.push({id: messageId, thread: message.thread});
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
     if (!message.carbon && message.readReceipt) {
