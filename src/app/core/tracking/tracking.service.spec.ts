@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { TrackingService } from './tracking.service';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../user/user.service';
@@ -34,6 +34,24 @@ class MockedNavigatorService {
     return 'Windows';
   }
 }
+
+const eventsArray = [
+  {
+    eventData: TrackingService.NOTIFICATION_RECEIVED,
+    attributes: {conversation_id: 'conversation'}
+  },
+  {
+    eventData: TrackingService.MESSAGE_RECEIVED,
+    attributes: {thread_id: 'abc', message_id: '123'}
+  },
+  {
+    eventData: TrackingService.MESSAGE_RECEIVED,
+    attributes: {thread_id: 'abc', message_id: '234'}
+  }
+];
+
+const sendInterval = 60000;
+
 
 describe('Service: Tracking', () => {
   beforeEach(() => {
@@ -92,6 +110,29 @@ describe('Service: Tracking', () => {
       service.track(TrackingService.NOTIFICATION_RECEIVED, {conversation_id: 'conversation'});
       expect(http.postNoBase['calls'].argsFor(0)[0]).toBe('https://collector.wallapop.com/clickstream.json/sendEvents');
     });
+  });
+
+  describe('trackMultiple', () => {
+    it('should call createMultipleEvents passing the given arguments', fakeAsync(() => {
+      spyOn<any>(service, 'createMultipleEvents').and.callThrough();
+
+      service.trackMultiple(eventsArray);
+      tick(sendInterval);
+
+      expect((service as any).createMultipleEvents).toHaveBeenCalledWith(eventsArray);
+      discardPeriodicTasks();
+    }));
+
+    it('should do a post to clickstream', fakeAsync(() => {
+      spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
+      spyOn<any>(service, 'createMultipleEvents').and.callThrough();
+
+      service.trackMultiple(eventsArray);
+      tick(sendInterval);
+
+      expect(http.postNoBase['calls'].argsFor(0)[0]).toBe('https://collector.wallapop.com/clickstream.json/sendEvents');
+      discardPeriodicTasks();
+    }));
   });
 
 });
