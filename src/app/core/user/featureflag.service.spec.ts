@@ -31,13 +31,14 @@ describe('FeatureflagService', () => {
         active: true
       }];
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
+      const TIMESTAMP: number = new Date().getTime();
       spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
 
       service.getFlag(PERM).subscribe((r: boolean) => {
         resp = r;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/featureflag', {featureFlags: PERM});
+      expect(http.get).toHaveBeenCalledWith('api/v3/featureflag', {featureFlags: PERM, timestamp: TIMESTAMP});
       expect(resp).toBe(true);
     });
   });
