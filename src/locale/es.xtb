@@ -239,7 +239,7 @@
   <translation id="7928837776892145785">País</translation>
   <translation id="6377139538537882652">Eliminar lista</translation>
   <translation id="3448462145758383019">Total</translation>
-  <translation id="6581598798517073714">+ Añadir otra tarjeta</translation>
+  <translation id="6581598798517073714">+ Añadir nueva tarjeta</translation>
   <translation id="7274286978511770772">Comprar</translation>
   <translation id="2921056091899795948">¿Seguro que quieres darte de baja?</translation>
   <translation id="6787712303097193375">Nunca es tarde para cambiar de opinión, ¿eh? Piensa que el equipo estará muy triste si te vas :(</translation>
@@ -586,13 +586,12 @@
   <translation id="1727129754992951825">Puedes arrastrar las imágenes de tu producto aquí. Selecciona y mueve una imagen para cambiar el orden. Máximo 4MB.</translation>
   <translation id="1660800252915157371">saldo</translation>
   <translation id="6315786827665033981">Total a pagar</translation>
-  <translation id="5062013309105490436">de regalo!</translation>
   <translation id="8729513055451382632">Recarga</translation>
   <translation id="5745314848838735502">Comprar ya</translation>
   <translation id="1381141590254425331">No guardaremos los datos de esta transacción. La compra se realiza a través del Banco Sabadell.</translation>
   <translation id="1443195823760151170">¡Listo!</translation>
-   <translation id="3804503586016528106">Todo ha ido perfecto. Ya tienes <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack?.quantity | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu cartera. Con ellos podrás destacar tus productos. Recuerda que solo están (por el momento) disponibles en web y que no se puede intercambiar por Euros.</translation>
-  <translation id="4071579685082853112">Todo ha ido perfecto. Ya tienes <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack?.quantity | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu cartera para destacar productos. Ahora, ¡a destacar!</translation>
+  <translation id="1713854539577872039">Todo ha ido perfecto. Ya tienes <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu cartera. Con ellos podrás destacar tus productos. Recuerda que solo están (por el momento) disponibles en web y que no se puede intercambiar por Euros.</translation>
+  <translation id="7454449407329433040">Todo ha ido perfecto. Ya tienes <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu cartera para destacar productos. Ahora, ¡a destacar!</translation>
   <translation id="5711960821733439342">Destacar productos</translation>
   <translation id="5378722151309930038">Comprar más Wallacoins</translation>
   <translation id="272934122656341350">Saldo</translation>
@@ -603,7 +602,7 @@
   <translation id="8972705651876957680">Una moneda para controlarlos a todos</translation>
   <translation id="4227038332606900920">Nuestras opciones de visibilidad tienen una nueva llave: Los Wallacoins. Nueva moneda de cambio para tus destacados con ventajas exclusivas.</translation>
   <translation id="6476837981311588329">Ahora, ahorra</translation>
-  <translation id="821464507642641418">Con los Wallacoins ahorrarás dinero. Porque al comprar nuestros packs, te regalaremos más wallacoins. Y eso se traduce en más destacados por menos</translation>
+  <translation id="821464507642641418">Con los Wallacoins ahorrarás dinero. Porque al comprar nuestros packs, te regalaremos más wallacoins. Y eso se traduce en más destacados por menos dinero</translation>
   <translation id="1602017727565399936">¡Rápido, rápido!</translation>
   <translation id="8993523603270106124">Comprar con Wallacoins es más rápido. Cárgalos una vez en tu cartera y paga con ellos directamente cuando quieras destacar algo.</translation>
   <translation id="1802698774660252903">Paga una vez y olvídate</translation>
@@ -619,7 +618,7 @@
   <translation id="3799187930195457932">Has usado</translation>
   <translation id="5301482109060388986">Y te quedan <ph name="INTERPOLATION"><ex>{{credit | number}}</ex></ph> wallacoins</translation>
   <translation id="5708951428326419939">Y te quedan <ph name="INTERPOLATION"><ex>{{credit | customCurrency}}</ex></ph> de saldo</translation>
-  <translation id="5880798667461104338">Recargar saldo</translation>
+  <translation id="5880798667461104338">Comprar más saldo</translation>
   <translation id="8191075807274604024">Ir a mi catálogo</translation>
   <translation id="5722262557807435110">Algo no ha ido bien :(</translation>
   <translation id="4289382185311381834">Parece que ha habido un problema con tu solicitud. ¡Lo estamos revisando!</translation>
@@ -627,4 +626,7 @@
   <translation id="8916480189992774118">Packs de ahorro</translation>
   <translation id="5269877616047992907">Que gastas</translation>
   <translation id="7484614059925376312">Que te faltan</translation>
+  <translation id="2813042926821514028">¡<ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph> de regalo!</translation>
+  <translation id="2032108307444898053">¡<ph name="INTERPOLATION"><ex>{{pack.forFree | customCurrency}}</ex></ph> de regalo!</translation>
+  <translation id="8421470283413526010">¡<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{pack.forFree | customCurrency}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de regalo!</translation>
 </translationbundle>

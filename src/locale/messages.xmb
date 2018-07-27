@@ -161,8 +161,8 @@
   <msg id="3799187930195457932"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:19</source>You have used</msg>
   <msg id="5301482109060388986"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:24</source>You have <ph name="INTERPOLATION"><ex>{{credit | number}}</ex></ph> wallacoins left</msg>
   <msg id="5708951428326419939"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:25</source>You have <ph name="INTERPOLATION"><ex>{{credit | customCurrency}}</ex></ph> credit</msg>
-  <msg id="5378722151309930038"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:29</source><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:10</source>Buy more Wallacoins</msg>
-  <msg id="5880798667461104338"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:30</source>Buy more credit</msg>
+  <msg id="5378722151309930038"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:29</source><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:11</source>Buy more Wallacoins</msg>
+  <msg id="5880798667461104338"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:30</source><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:12</source>Buy more credit</msg>
   <msg id="8191075807274604024"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:32</source>Go to my catalogue</msg>
   <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:36</source><source>app/catalog/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:21</source>Something happened...</msg>
   <msg id="3979232265698800722"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:37</source>Your item(s) have not been featured because something went wrong with your credit card.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Please check and try again.</msg>
@@ -599,17 +599,18 @@
   <msg id="5871405940994162095"><source>app/help/help.component.ts:60</source>For any support:</msg>
   <msg id="4039809737462883261"><source>app/help/help.component.ts:64</source>Mon to Thurs from 10:00 to 18:00</msg>
   <msg id="4911360466860911169"><source>app/help/help.component.ts:65</source>Fri from 09:00 to 15:00</msg>
-  <msg id="5062013309105490436"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:11</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:19</source><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.ts:13</source>as a gift!</msg>
+  <msg id="2813042926821514028"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:11</source><ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph> as a gift!</msg>
   <msg id="8729513055451382632"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:17</source><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.ts:4</source>Recharge</msg>
+  <msg id="2032108307444898053"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:19</source><ph name="INTERPOLATION"><ex>{{pack.forFree | customCurrency}}</ex></ph> as a gift!</msg>
   <msg id="5745314848838735502"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:33</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:40</source>Buy now</msg>
   <msg id="1381141590254425331"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:41</source>We don&apos;t save details of this transaction. The purchase is made via Banco Sabadell.</msg>
   <msg id="1443195823760151170"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:6</source>Let&apos;s go!</msg>
-  <msg id="3804503586016528106"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:7</source>All sorted. Now you have <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack?.quantity | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your wallet. You can feature your items. Remember that for now you can only get these from the website and they are not interchangeable for Euros.</msg>
-  <msg id="4071579685082853112"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:8</source>It&apos;s all sorted. Now you have <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack?.quantity | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your wallet to feature your listings. Now get featuring!</msg>
+  <msg id="1713854539577872039"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:7</source>All sorted. Now you have <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your wallet. You can feature your items. Remember that for now you can only get these from the website and they are not interchangeable for Euros.</msg>
+  <msg id="7454449407329433040"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:8</source>It&apos;s all sorted. Now you have <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your wallet to feature your listings. Now get featuring!</msg>
   <msg id="5711960821733439342"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:9</source>Feature listings</msg>
-  <msg id="5722262557807435110"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:14</source>Something went wrong :(</msg>
-  <msg id="4289382185311381834"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:15</source>There was a problem with your request. Please, try again. </msg>
-  <msg id="6650633628037596693"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:16</source>Try again</msg>
+  <msg id="5722262557807435110"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:17</source>Something went wrong :(</msg>
+  <msg id="4289382185311381834"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:18</source>There was a problem with your request. Please, try again. </msg>
+  <msg id="6650633628037596693"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:19</source>Try again</msg>
   <msg id="272934122656341350"><source>app/wallacoins/wallacoins.component.ts:9</source>Credit</msg>
   <msg id="7379990901688990808"><source>app/wallacoins/wallacoins.component.ts:15</source>Your remaining credit for features</msg>
   <msg id="5761082716975566083"><source>app/wallacoins/wallacoins.component.ts:16</source>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit</msg>
@@ -629,5 +630,9 @@
   <msg id="2678815268089639687"><source>app/wallacoins/wallacoins.component.ts:67</source>Buying a pack means you can save up to -XX% on your features.</msg>
   <msg id="5415567930272713889"><source>app/wallacoins/wallacoins.component.ts:71</source>Buying with credit is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</msg>
   <msg id="2028747142234068875"><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.ts:1</source>Recommended for you</msg>
-  <msg id="464728679019331130"><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.ts:18</source>Buy for</msg>
+  <msg id="8421470283413526010"><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.ts:12,15</source>
+    <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+    <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{pack.forFree | customCurrency}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> as a gift!
+  </msg>
+  <msg id="464728679019331130"><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.ts:20</source>Buy for</msg>
 </messagebundle>

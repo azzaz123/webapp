@@ -11,6 +11,7 @@ export class WallacoinsConfirmModalComponent {
 
   public pack: Pack;
   public code: string;
+  public total: number;
 
   get withCredits(): boolean {
     return this.pack.name === 'wallacredits';

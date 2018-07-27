@@ -91,6 +91,7 @@ export class WallacoinsComponent implements OnInit {
     const modal: NgbModalRef = this.modalService.open(WallacoinsConfirmModalComponent, {windowClass: 'confirm-wallacoins'});
     modal.componentInstance.pack = pack;
     modal.componentInstance.code = code;
+    modal.componentInstance.total = this.wallacoins;
     modal.result.then(() => {
       this.router.navigate(['catalog/list']);
     }, () => {
