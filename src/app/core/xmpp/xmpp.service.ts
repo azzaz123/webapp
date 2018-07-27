@@ -387,7 +387,7 @@ export class XmppService {
       const replaceTimestamp = !message.timestamp || message.carbonSent;
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp);
       if (message.from !== this.currentJid && message.requestReceipt && !message.carbon) {
-        this.sendMessageDeliveryReceipt(message.from, message.id, message.thread);
+        this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
       }
     }
   }
@@ -425,7 +425,7 @@ export class XmppService {
                        new Date(message.date), (message.status || null), message.payload);
   }
 
-  private sendMessageDeliveryReceipt(to: any, id: string, thread: string) {
+  private sendMessageDeliveryReceipt(to: string, id: string, thread: string) {
     this.persistencyService.findMessage(id).subscribe(() => {}, (error) => {
       if (error.reason === 'missing') {
         this.client.sendMessage({

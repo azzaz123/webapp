@@ -387,7 +387,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('message', MOCKED_SERVER_MESSAGE);
 
       expect(service['sendMessageDeliveryReceipt']).toHaveBeenCalledWith(
-        MOCKED_SERVER_MESSAGE.from,
+        MOCKED_SERVER_MESSAGE.from.bare,
         MOCKED_SERVER_MESSAGE.id,
         MOCKED_SERVER_MESSAGE.thread);
     });
