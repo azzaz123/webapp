@@ -85,7 +85,7 @@
       <span i18n>missing</span>
     </div>
     <div class="price">
-      {{totalToPay | number}}
+      {{totalToPay * creditInfo?.factor | number}}
       <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
     </div>
   </div>
