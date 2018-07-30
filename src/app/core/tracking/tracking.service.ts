@@ -789,6 +789,7 @@ export class TrackingService {
           ev[key] = ev.eventData[key];
         }
       }
+      delete ev.eventData;
       ev.attributes = ev.attributes;
       ev.id = UUID.UUID();
       ev.timestamp = getTimestamp();
