@@ -16,7 +16,7 @@ phases:
       - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export ENV="beta"; fi
 
       # LAUNCH TEST
-      - yarn test
+      - docker run --rm --name nodejs8 node:8.11 yarn test
 
       # INSTALL ENV
 
