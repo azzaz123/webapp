@@ -16,7 +16,7 @@ phases:
       - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export ENV="beta"; fi
 
       # LAUNCH TEST
-      - docker run --rm --name nodejs8 -v "$PWD":/root -v ".cache/yarn":/root/.cache/yarn -w /root node:8.11 yarn test
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 node:8.11 yarn
 
       # INSTALL ENV
 
@@ -54,4 +54,4 @@ phases:
 
 cache:
   paths:
-    - '.cache/yarn/**/*'
+    - '/tmp/.cache/yarn/**/*'
