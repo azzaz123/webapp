@@ -92,7 +92,8 @@ const MOCKED_SERVER_MESSAGE: any = {
   body: 'body',
   requestReceipt: true,
   from: {
-    full: 'from'
+    full: 'from',
+    bare: 'from-bare'
   },
   id: 'id'
 };
