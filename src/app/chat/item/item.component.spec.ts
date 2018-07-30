@@ -11,7 +11,7 @@ import {
 } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
-import { ItemComponent } from './item.component';
+import { ItemComponent, showWillisCategories } from './item.component';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { environment } from '../../../environments/environment';
@@ -113,7 +113,7 @@ describe('Component: Item', () => {
     expect(trackingService.track).not.toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY);
   });
 
-  it('should track Willis Display when show willis link',  () => {
+  it('should not track Willis Display when show willis link',  () => {
     spyOn(trackingService, 'track');
     component.item = { ...MOCK_ITEM, categoryId: 10000 } as Item;
 
@@ -290,7 +290,7 @@ describe('Component: Item', () => {
 
   describe('showWillisLink', () => {
     it('should show return true when item categoryId is 13100, 12545, 15000, 16000 or 12900 ', () => {
-      [13100, 12545, 15000, 16000, 12900].forEach((categoryId) => {
+      Object.values(showWillisCategories).forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
 
         expect(component.showWillisLink()).toEqual(true);

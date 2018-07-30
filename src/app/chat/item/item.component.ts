@@ -6,6 +6,14 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
 import { User } from '../../core/user/user';
 
+export const showWillisCategories = {
+  'GAME': 13100,
+  'TV_AUDIO_CAMERAS' : 12545,
+  'COMPUTERS_ELECTRONIC' : 15000,
+  'PHONES_ACCESSORIES' : 16000,
+  'GAMES_CONSOLES' : 12900
+};
+
 @Component({
   selector: 'tsl-item',
   templateUrl: './item.component.html',
@@ -87,8 +95,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public showWillisLink(): boolean {
-    const showWillisCategories = [13100, 12545, 15000, 16000, 12900];
-    return showWillisCategories.includes(this.item.categoryId);
+    return Object.values(showWillisCategories).includes(this.item.categoryId);
   }
 
   public clickCarfax(event) {
