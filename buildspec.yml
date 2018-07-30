@@ -1,0 +1,53 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - $(aws ecr get-login --no-include-email --region eu-west-1)
+
+      # OBTAIN WORKING BRANCH
+      - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
+      - echo $BRANCH
+
+      # EXPORT TAG ENV FROM BRANCH
+      - if [ "`echo $BRANCH | grep develop`" != "" ]; then export ENV="docker"; else export TAG_BRANCH="docker" ; fi
+      - if [ "`echo $BRANCH | grep master`" != "" ]; then export ENV="prod"; fi
+      - if [ "`echo $BRANCH | grep release/`" != "" ]; then export ENV="beta"; fi
+      - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export ENV="beta"; fi
+
+      # LAUNCH TEST
+      - yarn test
+
+      # INSTALL ENV
+
+      - >
+        if [ ENV == 'prod' ]; then
+          docker run --rm --name nodejs8 node:8.11 npm run buildprod
+          aws s3 sync dist s3://web-es.wallapop.com --delete
+          aws s3 cp dist/index.html s3://web-es.wallapop.com/index.html --cache-control max-age=0
+          docker run --rm --name nodejs8 node:8.11 npm run buildprod-en
+          aws s3 sync dist s3://web-en.wallapop.com --delete
+          aws s3 cp dist/index.html s3://web-en.wallapop.com/index.html --cache-control max-age=0
+          docker run --rm --name nodejs8 node:8.11 npm run builddocker
+          docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:stable .
+          $(aws ecr get-login --region eu-west-1)
+          docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:stable"
+        fi
+
+      - >
+        if [ ENV == 'beta' ]; then
+          docker run --rm --name nodejs8 node:8.11 npm run buildbeta
+          aws s3 sync dist s3://web-es.beta.wallapop.com --delete
+          aws s3 cp dist/index.html s3://web-es.beta.wallapop.com/index.html --cache-control max-age=0
+          docker run --rm --name nodejs8 node:8.11 npm run buildbeta-en
+          aws s3 sync dist s3://web-en.beta.wallapop.com --delete
+          aws s3 cp dist/index.html s3://web-en.beta.wallapop.com/index.html --cache-control max-age=0
+        fi
+
+      - >
+        if [ ENV == 'beta' ]; then
+          docker run --rm --name nodejs8 node:8.11 npm run builddocker
+          docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:feature-$BRANCH .
+          $(aws ecr get-login --region eu-west-1)
+          docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:feature-$BRANCH"
+        fi
