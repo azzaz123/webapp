@@ -234,22 +234,26 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('saveDbVersion', () => {
+  describe('saveDbVersionMsg and saveDbVersionConv', () => {
     it('should upsert the database version information', fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
 
-      service['saveDbVersion']({}).subscribe();
+      service['saveDbVersionMsg']({}).subscribe();
+      service['saveDbVersionConv']({}).subscribe();
       tick();
 
       expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.conversationsDb);
       expect((service as any).upsert.calls.allArgs()[0][1]).toBe('version');
+      expect((service as any).upsert.calls.allArgs()[1][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[1][1]).toBe('version');
     }));
   });
 
   describe('localDbVersionUpdate', () => {
     beforeEach(() => {
-      spyOn<any>(service, 'saveDbVersion');
+      spyOn<any>(service, 'saveDbVersionMsg');
+      spyOn<any>(service, 'saveDbVersionConv');
     });
     it('should save the version when called with a version number greater than the current version number', () => {
       spyOn<any>(service, 'getDbVersion').and.returnValue(Observable.of({version: 1.0}));
@@ -258,7 +262,8 @@ describe('Service: Persistency', () => {
       service.localDbVersionUpdate(1.2, mockCallback);
 
       expect(service['getDbVersion']).toHaveBeenCalled();
-      expect(service['saveDbVersion']).toHaveBeenCalled();
+      expect(service['saveDbVersionMsg']).toHaveBeenCalled();
+      expect(service['saveDbVersionConv']).toHaveBeenCalled();
     });
 
     it('should save the version when the error reason is `missing`', () => {
@@ -268,7 +273,8 @@ describe('Service: Persistency', () => {
       service.localDbVersionUpdate(1.2, mockCallback);
 
       expect(service['getDbVersion']).toHaveBeenCalled();
-      expect(service['saveDbVersion']).toHaveBeenCalled();
+      expect(service['saveDbVersionMsg']).toHaveBeenCalled();
+      expect(service['saveDbVersionConv']).toHaveBeenCalled();
     });
 
     it('should not save the version when the error message reason is not `missing`', () => {
@@ -278,7 +284,8 @@ describe('Service: Persistency', () => {
       service.localDbVersionUpdate(1.2, mockCallback);
 
       expect(service['getDbVersion']).toHaveBeenCalled();
-      expect(service['saveDbVersion']).not.toHaveBeenCalled();
+      expect(service['saveDbVersionMsg']).not.toHaveBeenCalled();
+      expect(service['saveDbVersionConv']).not.toHaveBeenCalled();
     });
   });
 

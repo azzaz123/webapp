@@ -150,9 +150,18 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get('version'));
   }
 
-  private saveDbVersion(data: any): Observable<any> {
+  private saveDbVersionConv(data: any): Observable<any> {
     return Observable.fromPromise(
       this.upsert(this.messagesDb, 'version', (doc: Document<any>) => {
+        doc.version = data;
+        return doc;
+      })
+    );
+  }
+
+  private saveDbVersionMsg(data: any): Observable<any> {
+    return Observable.fromPromise(
+      this.upsert(this.conversationsDb, 'version', (doc: Document<any>) => {
         doc.version = data;
         return doc;
       })
@@ -165,12 +174,14 @@ export class PersistencyService {
     this.getDbVersion().subscribe((response) => {
       if (response.version < newVersion) {
         callback();
-        this.saveDbVersion(newVersion);
+        this.saveDbVersionMsg(newVersion);
+        this.saveDbVersionConv(newVersion);
       }
     }, (error) => {
       if (error.reason === 'missing') {
         callback();
-        this.saveDbVersion(newVersion);
+        this.saveDbVersionMsg(newVersion);
+        this.saveDbVersionConv(newVersion);
       }
     });
   }
