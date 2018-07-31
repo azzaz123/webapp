@@ -29,10 +29,14 @@ export class XmppService {
   private unreadMessages = [];
   public totalUnreadMessages = 0;
   public receivedReceipts = [];
+  public sentReceipts = [];
   public readReceipts = [];
   private ownReadTimestamps = {};
   private readTimestamps = {};
   public convWithUnread = {};
+  private reconnectAttempts = 5;
+  private reconnectInterval: any;
+  private reconnectedTimes = 0;
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
@@ -46,18 +50,18 @@ export class XmppService {
     this.createClient(accessToken);
     this.bindEvents();
     this.client.connect();
+    this.clientConnected = true;
   }
 
   public disconnect() {
     if (this.clientConnected) {
       this.client.disconnect();
-      this.clientConnected = false;
     }
   }
 
-  public sendMessage(conversation: Conversation, body: string) {
+  public sendMessage(conversation: Conversation, body: string, resend = false, messageId?: string) {
     const message: XmppBodyMessage = {
-      id: this.client.nextId(),
+      id: resend ? messageId : this.client.nextId(),
       to: this.createJid(conversation.user.id),
       from: this.currentJid,
       thread: conversation.id,
@@ -68,32 +72,33 @@ export class XmppService {
       body: body
     };
 
-    if (!conversation.messages.length) {
-      this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
-        to_user_id: conversation.user.id,
-        item_id: conversation.item.id,
+    if (!resend) {
+      if (!conversation.messages.length) {
+        this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
+          item_id: conversation.item.id,
+          thread_id: message.thread,
+          message_id: message.id });
+        appboy.logCustomEvent('FirstMessage', {platform: 'web'});
+      }
+      this.trackingService.track(TrackingService.MESSAGE_SENT, {
         thread_id: message.thread,
-        message_id: message.id });
-      appboy.logCustomEvent('FirstMessage', {platform: 'web'});
+        message_id: message.id,
+        item_id: conversation.item.id
+      });
+      this.onNewMessage(_.clone(message), true);
     }
-    this.trackingService.track(TrackingService.MESSAGE_SENT, {
-      thread_id: message.thread,
-      message_id: message.id,
-      to_user_id: conversation.user.id,
-      item_id: conversation.item.id
-    });
-    this.onNewMessage(_.clone(message));
+
     this.client.sendMessage(message);
   }
 
-    public sendConversationStatus(userId: string, conversationId: string) {
+  public sendConversationStatus(userId: string, conversationId: string) {
     this.client.sendMessage({
       to: this.createJid(userId),
-        type: 'chat',
-        thread: conversationId,
+      type: 'chat',
+      thread: conversationId,
       read: {
         xmlns: 'wallapop:thread:status'
-        }
+      }
     });
   }
 
@@ -169,6 +174,7 @@ export class XmppService {
                 builtMessage.status = messageStatus.SENT;
               }
             }
+            this.onNewMessage(message);
           }
           if (message.receivedId) {
             this.confirmedMessages.push(message.receivedId);
@@ -177,9 +183,9 @@ export class XmppService {
           }
           if (message.readTimestamp) {
             this.readReceipts.push(message);
-            this.eventService.emit(EventService.MESSAGE_READ, message.thread, message.receivedId);
+            this.eventService.emit(EventService.MESSAGE_READ, message.thread);
           }
-          query.then((response: any) => {
+            query.then((response: any) => {
             const meta: any = response.mam.rsm;
             if (message.ref === meta.last) {
               messages = this.checkReceivedMessages(messages);
@@ -285,7 +291,7 @@ export class XmppService {
   }
 
   public addUnreadMessagesCounter(conversations) {
-    if (this.unreadMessages) {
+    if (this.unreadMessages.length) {
       for (let index = this.unreadMessages.length - 1; index >= 0; --index) {
         const convWithUnread = conversations.find((c) => c.id === this.unreadMessages[index].thread);
         if (convWithUnread) {
@@ -315,10 +321,15 @@ export class XmppService {
   }
 
   public reconnectClient() {
-    if (!this.clientConnected) {
+    this.reconnectInterval = setInterval(() => {
+      if (!this.clientConnected && this.reconnectedTimes < this.reconnectAttempts) {
       this.client.connect();
-      this.clientConnected = true;
+        this.reconnectedTimes++;
+      } else {
+        clearInterval(this.reconnectInterval);
+        this.reconnectedTimes = 0;
     }
+    }, 5000);
   }
 
   private bindEvents(): void {
@@ -347,8 +358,15 @@ export class XmppService {
     });
 
     this.client.on('disconnected', () => {
+      console.warn('Client disconnected');
       this.clientConnected = false;
       this.eventService.emit(EventService.CLIENT_DISCONNECTED);
+    });
+
+    this.client.on('connected', () => {
+      this.clientConnected = true;
+      console.warn('Client connected');
+      clearInterval(this.reconnectInterval);
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
@@ -358,9 +376,9 @@ export class XmppService {
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
   }
 
-  private onNewMessage(message: XmppBodyMessage) {
+  private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
     if (message.body || message.timestamp || message.carbonSent || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
-      const builtMessage: Message = this.buildMessage(message);
+      const builtMessage: Message = this.buildMessage(message, markAsPending);
       this.persistencyService.saveMetaInformation({
           last: null,
           start: builtMessage.date.toISOString()
@@ -369,31 +387,33 @@ export class XmppService {
       const replaceTimestamp = !message.timestamp || message.carbonSent;
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp);
       if (message.from !== this.currentJid && message.requestReceipt && !message.carbon) {
-        this.sendMessageDeliveryReceipt(message.from, message.id, message.thread);
+        this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
       }
     }
   }
 
-  private buildMessage(message: XmppBodyMessage) {
+  private buildMessage(message: XmppBodyMessage, markAsPending = false) {
     if (message.carbonSent) {
       message = message.carbonSent.forwarded.message;
     }
     if (message.timestamp) {
       message.date = new Date(message.timestamp.body).getTime();
-    } else {
-      if (!message.date) {
+    } else if (!message.date) {
         message.date = new Date().getTime();
       }
-    }
     let messageId: string = null;
-    if (message.timestamp && message.receipt && message.from.local !== message.to.local) {
+    if (markAsPending) {
+      message.status = messageStatus.PENDING;
+    }
+    if (message.timestamp && message.receipt && message.from.local !== message.to.local && !message.delay) {
       messageId = message.receipt;
       message.status = messageStatus.RECEIVED;
       this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
     }
-    if (!message.carbon && message.sentReceipt) {
+    if (!message.carbon && message.sentReceipt && !message.delay) {
       message.status = messageStatus.SENT;
       messageId = message.sentReceipt.id;
+      this.sentReceipts.push({id: messageId, thread: message.thread});
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
     if (!message.carbon && message.readReceipt) {
@@ -406,7 +426,7 @@ export class XmppService {
                        new Date(message.date), (message.status || null), message.payload);
   }
 
-  private sendMessageDeliveryReceipt(to: any, id: string, thread: string) {
+  private sendMessageDeliveryReceipt(to: string, id: string, thread: string) {
     this.persistencyService.findMessage(id).subscribe(() => {}, (error) => {
       if (error.reason === 'missing') {
         this.client.sendMessage({

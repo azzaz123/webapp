@@ -1,4 +1,4 @@
-import { Item } from './item';
+import { Item, ITEM_TYPES } from './item';
 import { ItemFlags } from './item-response.interface';
 import { Image } from '../user/user-response.interface';
 
@@ -44,7 +44,11 @@ export class Realestate extends Item {
       null,
       images ? images[0] : null,
       images,
-      webSlug);
+      webSlug,
+      null,
+      null,
+      ITEM_TYPES.REAL_ESTATE
+    );
   }
 
   get operation(): string {

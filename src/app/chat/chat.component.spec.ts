@@ -98,7 +98,8 @@ describe('Component: Chat', () => {
           provide: PersistencyService, useValue: {
           getMetaInformation() {
             return Observable.of({});
-          }
+          },
+          saveMetaInformation() {}
         }
         },
         I18nService,
@@ -238,12 +239,14 @@ describe('Component: Chat', () => {
       expect(component.firstLoad).toBe(false);
     });
 
-    it('should set firstLoad true if getMetaInformation does NOT return meta', () => {
+    it('should set firstLoad true and call saveMetaInformation if getMetaInformation does NOT return meta', () => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw('err'));
+      spyOn(persistencyService, 'saveMetaInformation');
 
       component.ngOnInit();
 
       expect(component.firstLoad).toBe(true);
+      expect(persistencyService.saveMetaInformation).toHaveBeenCalled();
     });
   });
 

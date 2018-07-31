@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,12 +10,17 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { Order } from '../../core/item/item-response.interface';
-import { createItemsArray,
+import {
+  createItemsArray,
+  ITEM_ID,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
-  ORDER, ORDER_EVENT,
-  PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
+  MOCK_ITEM_V3,
+  ORDER,
+  ORDER_EVENT,
+  PRODUCT_RESPONSE
+} from '../../../tests/item.fixtures.spec';
 import { UUID } from 'angular2-uuid';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
@@ -24,13 +29,13 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures.spec';
 import { PaymentService } from '../../core/payments/payment.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Item } from '../../core/item/item';
 import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
+import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -45,7 +50,7 @@ describe('ListComponent', () => {
   let route: ActivatedRoute;
   let router: Router;
   let errorService: ErrorsService;
-  const componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice') };
+  const componentInstance: any = { urgentPrice: jasmine.createSpy('urgentPrice'), trackUploaded: jasmine.createSpy('trackUploaded') };
   let modalSpy: jasmine.Spy;
   let userService: UserService;
   let eventService: EventService;
@@ -57,7 +62,7 @@ describe('ListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ListComponent],
+      declarations: [ListComponent, ItemSoldDirective],
       providers: [
         I18nService,
         EventService,
@@ -79,6 +84,9 @@ describe('ListComponent', () => {
           selectItem() {
           },
           getUrgentProducts() {
+          },
+          get() {
+            return Observable.of(MOCK_ITEM_V3);
           }
         }
         },
@@ -359,6 +367,7 @@ describe('ListComponent', () => {
       tick();
 
       expect(component['uploadModalRef'].componentInstance.item).toEqual(component.items[0]);
+      expect(component['uploadModalRef'].componentInstance.trackUploaded).toHaveBeenCalled();
       expect(component['uploadModalRef'].componentInstance.urgentPrice).toHaveBeenCalled();
     }));
   });

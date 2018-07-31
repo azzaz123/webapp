@@ -31,10 +31,10 @@
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.ts:15</source>Dashboard</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:23</source>Products</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:24</source>Catalog</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:49</source>Favorites</msg>
-  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:56</source>Reviews</msg>
-  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:64</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
-  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:71</source>Help</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:41</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:51</source>Favorites</msg>
+  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:48</source>Reviews</msg>
+  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:56</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
+  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:63</source>Help</msg>
   <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
         I accept the updated privacy policy in order to continue navigating.
       </msg>
@@ -108,9 +108,10 @@
   <msg id="2874924373232293084"><source>app/chat/item/item.component.ts:17</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:27</source><source>app/catalog/list/selected-items/selected-items.component.ts:19</source>Reserve</msg>
   <msg id="8016649850785953911"><source>app/chat/item/item.component.ts:18</source>Unreserve</msg>
   <msg id="4338022632676445411"><source>app/chat/item/item.component.ts:20</source><source>app/chat/item/item-sold/item-sold.component.ts:3</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:25</source>Sold</msg>
-  <msg id="4123995928509826820"><source>app/chat/item/item.component.ts:37,39</source>
+  <msg id="4123995928509826820"><source>app/chat/item/item.component.ts:38,40</source>
         Check its full history
       </msg>
+  <msg id="3537961834218859224"><source>app/chat/item/item.component.ts:44,46</source>Add Insurance</msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/chat/user-detail/user-detail.component.ts:6</source><source>app/chat/user-card/user-card.component.ts:14</source><source>app/calls/user-card-calls/user-card-calls.component.ts:10</source><ph name="DISTANCE"><ex>{{user.itemDistance | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you</msg>
   <msg id="9119757647796405986"><source>app/chat/user-detail/user-detail.component.ts:7</source><source>app/chat/user-card/user-card.component.ts:15</source><source>app/calls/user-card-calls/user-card-calls.component.ts:11</source>No location</msg>
@@ -393,6 +394,8 @@
         </msg>
   <msg id="428164738594731840"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:42,43</source>
           Cancel</msg>
+  <msg id="2123659921722214537"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:47</source>Views</msg>
+  <msg id="6181907632373133266"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:55</source>Chats</msg>
   <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:62</source>Mark as sold</msg>
   <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:65</source>Mark as reserved</msg>
   <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:68</source>Edit</msg>

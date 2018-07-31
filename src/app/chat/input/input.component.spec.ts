@@ -59,20 +59,6 @@ describe('Component: Input', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should disable input when CONNECTION_ERROR', () => {
-      component.ngOnInit();
-
-      eventService.emit(EventService.CONNECTION_ERROR);
-
-      expect(component.disable).toBe(true);
-    });
-    it('should disable input when CONNECTION_RESTORED', () => {
-      component.ngOnInit();
-
-      eventService.emit(EventService.CONNECTION_RESTORED);
-
-      expect(component.disable).toBe(false);
-    });
     it('should disable input when USER_BLOCKED', () => {
       component.currentConversation = MOCK_CONVERSATION();
 
@@ -114,8 +100,7 @@ describe('Component: Input', () => {
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
-        thread_id: conversation.id,
-        to_user_id: conversation.user.id});
+        thread_id: conversation.id});
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
@@ -128,8 +113,7 @@ describe('Component: Input', () => {
       expect(messageService.send).toHaveBeenCalledWith(conversation, TEXT);
       expect(textarea.value).toBe('');
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SEND_BUTTON, {
-        thread_id: conversation.id,
-        to_user_id: conversation.user.id});
+        thread_id: conversation.id});
       expect(trackingService.track).toHaveBeenCalledTimes(1);
     });
 
@@ -214,28 +198,10 @@ describe('Component: Input', () => {
       expect(component.disable).toBe(true);
     });
 
-    it('should disable input if the browser is disconnected', () => {
-      component.currentConversation = MOCK_CONVERSATION();
-      connectionService.isConnected = false;
-
-      component.ngOnChanges();
-
-      expect(component.disable).toBe(true);
-    });
-
     it('should enable input if user is blocked', () => {
       component.disable = true;
       component.currentConversation = MOCK_CONVERSATION();
       component.currentConversation.user.blocked = false;
-
-      component.ngOnChanges();
-
-      expect(component.disable).toBe(false);
-    });
-
-    it('should enable input if the browser is connected', () => {
-      component.currentConversation = MOCK_CONVERSATION();
-      connectionService.isConnected = true;
 
       component.ngOnChanges();
 

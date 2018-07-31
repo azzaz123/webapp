@@ -3,7 +3,8 @@
 :host {
   height: $topbar-height;
   background-color: $white;
-  position: relative;
+  position: fixed;
+  top: 0;
   border-bottom: 1px solid;
   border-color: transparentize($color-grey-separator, 0.5);
   padding: 0 8px 0 11px;

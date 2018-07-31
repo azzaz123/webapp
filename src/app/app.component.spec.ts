@@ -154,8 +154,8 @@ describe('App', () => {
           init() {
             return Observable.of();
           },
-          handleNewMessages() {
-          },
+          handleNewMessages() {},
+          sendAck() {},
           resetCache() {},
           syncItem() {}
         }
@@ -268,6 +268,26 @@ describe('App', () => {
         component.ngOnInit();
 
         expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.USER_LOGIN);
+      });
+
+      it('should call the eventService.subscribe passing the chat tracking funnel events', () => {
+        spyOn(eventService, 'subscribe').and.callThrough();
+
+        component.ngOnInit();
+
+        expect(eventService.subscribe['calls'].argsFor(7)[0]).toBe(EventService.MESSAGE_SENT_ACK);
+        expect(eventService.subscribe['calls'].argsFor(8)[0]).toBe(EventService.MESSAGE_RECEIVED);
+      });
+
+      it('should call conversationService.sendAck when a chat signal is emitted', () => {
+        spyOn(conversationService, 'sendAck');
+
+        component.ngOnInit();
+        eventService.emit(EventService.MESSAGE_SENT_ACK, '123', 'abc');
+        eventService.emit(EventService.MESSAGE_RECEIVED, '234', 'cde');
+
+        expect(conversationService.sendAck).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT_ACK, '123', 'abc');
+        expect(conversationService.sendAck).toHaveBeenCalledWith(TrackingService.MESSAGE_RECEIVED, '234', 'cde');
       });
 
       it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
@@ -414,15 +434,6 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(modalService.open).not.toHaveBeenCalledWith();
-      });
-
-      it('should call the resetCache method in conversationService when a CLIENT_DISCONNECTED event is triggered', () => {
-        spyOn(conversationService, 'resetCache');
-
-        component.ngOnInit();
-        eventService.emit(EventService.CLIENT_DISCONNECTED);
-
-        expect(conversationService.resetCache).toHaveBeenCalledTimes(1);
       });
 
       it('should call xmppService.clientReconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {

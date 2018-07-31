@@ -4,6 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { Headers, RequestOptions } from '@angular/http';
 import { HttpService } from '../../../core/http/http.service';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../../core/item/item-categories';
+import { ITEM_TYPES } from '../../../core/item/item';
 
 @Injectable()
 export class UploadService {
@@ -14,11 +15,11 @@ export class UploadService {
   constructor(private http: HttpService) {
   }
 
-  public createItemWithFirstImage(values: any, file: UploadFile) {
+  public createItemWithFirstImage(values: any, file: UploadFile, itemType: string) {
     let inputEvent: UploadInput;
-    if (values.category_id === CARS_CATEGORY) {
+    if (itemType === ITEM_TYPES.CARS) {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/cars', 'item_car');
-    } else if (values.category_id === REALESTATE_CATEGORY) {
+    } else if (itemType === ITEM_TYPES.REAL_ESTATE) {
         inputEvent = this.buildUploadEvent(values, file, this.API_URL + '/real_estate', 'item_real_estate');
     } else {
       inputEvent = this.buildUploadEvent(values, file, this.API_URL, 'item');
@@ -66,8 +67,10 @@ export class UploadService {
     this.uploadInput.emit(inputEvent);
   }
 
-  public uploadSingleImage(file: UploadFile, itemId: string, extraPath: string) {
-    const url = this.API_URL + extraPath + '/' + itemId + '/picture2';
+  public uploadSingleImage(file: UploadFile, itemId: string, type: string) {
+    const url = this.API_URL + '/' +
+      (type !== 'consumer_goods' ? type + '/' : '') + itemId + '/picture' +
+      (type !== 'real_estate' ? '2' : '');
     const inputEvent: UploadInput = {
       type: 'uploadFile',
       url: environment.baseUrl + url,

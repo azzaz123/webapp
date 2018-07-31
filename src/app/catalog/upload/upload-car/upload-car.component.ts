@@ -250,7 +250,7 @@ export class UploadCarComponent implements OnInit {
     }
     const params: any = {
       [uploadEvent.action]: true,
-      itemId: uploadEvent.response.id
+      itemId: uploadEvent.response.id || uploadEvent.response
     };
     if (this.item && this.item.flags.onhold) {
       params.onHold = true;

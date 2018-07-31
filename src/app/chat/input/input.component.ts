@@ -25,12 +25,6 @@ export class InputComponent implements OnChanges, OnInit {
   }
 
   ngOnInit() {
-    this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
-      this.disable = true;
-    });
-    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      this.disable = false;
-    });
     this.eventService.subscribe(EventService.USER_BLOCKED, (userId: string) => {
       if (this.currentConversation.user.id === userId) {
         this.disable = true;
@@ -50,7 +44,6 @@ export class InputComponent implements OnChanges, OnInit {
       if (message !== '') {
         this.trackingService.track(TrackingService.SEND_BUTTON, {
           thread_id: this.currentConversation.id,
-          to_user_id: this.currentConversation.user.id
         });
         this.messageService.send(this.currentConversation, message);
       }
@@ -68,6 +61,6 @@ export class InputComponent implements OnChanges, OnInit {
         this.messageArea.nativeElement.value = '';
       }
     }
-    this.disable = this.currentConversation.user.blocked || !this.connectionService.isConnected;
+    this.disable = this.currentConversation.user.blocked;
   }
 }

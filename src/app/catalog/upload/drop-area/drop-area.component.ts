@@ -31,6 +31,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Input() maxUploads = 4;
   @Input() images: Image[];
   @Input() itemId: string;
+  @Input() type: string;
   dragOver: boolean;
   files: UploadFile[] = [];
   placeholders: number[];
@@ -64,7 +65,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
     this.uploadEvent.subscribe((event: UploadEvent) => {
       delete event.values.images;
       if (event.type === 'create') {
-        this.uploadService.createItemWithFirstImage(event.values, this.files[0]);
+        this.uploadService.createItemWithFirstImage(event.values, this.files[0], this.type);
       } else if (event.type === 'update') {
         this.updateItem(event.values);
       }
@@ -72,7 +73,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   }
 
   private updateItem(values: any) {
-    this.itemService.update(values).subscribe((response: any) => {
+    this.itemService.update(values, this.type).subscribe((response: any) => {
       this.onUploaded.emit({action: 'updated', response: response});
     }, (response) => {
       this.onError.emit(response);
@@ -141,7 +142,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
       case 'addedToQueue':
         if (this.images) {
           this.files.push(output.file);
-          this.uploadService.uploadSingleImage(output.file, this.itemId, this.maxUploads === 8 ? '/cars' : '');
+          this.uploadService.uploadSingleImage(output.file, this.itemId, this.type);
         } else {
           this.pictureUploaded(output);
         }
@@ -180,10 +181,10 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
           this.itemId = output.file.response.id;
           this.item = output.file.response;
           if (this.files.length > 1) {
-            this.uploadService.uploadOtherImages(output.file.response.id, output.file.response.type);
+            this.uploadService.uploadOtherImages(output.file.response.id, this.type);
           } else {
             if (this.item.hasOwnProperty('flags') && this.item.flags['onhold']) {
-              this.onUploaded.emit({action: 'createdOnHold', response: ''});
+              this.onUploaded.emit({action: 'createdOnHold', response: output.file.response});
             } else {
               this.onUploaded.emit({action: 'created', response: output.file.response});
             }
@@ -193,7 +194,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
               return file.progress.status === UploadStatus.Done;
             })) {
             if (this.item.hasOwnProperty('flags') && this.item.flags['onhold']) {
-              this.onUploaded.emit({action: 'createdOnHold', response: ''});
+              this.onUploaded.emit({action: 'createdOnHold', response: output.file.response});
             } else {
               this.onUploaded.emit({action: this.images ? 'updated' : 'created', response: output.file.response});
             }

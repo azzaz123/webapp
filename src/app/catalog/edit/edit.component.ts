@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
-import { Item } from '../../core/item/item';
+import { Item, ITEM_TYPES } from '../../core/item/item';
 import { Product } from '../../core/item/item-response.interface';
 import { ItemService } from '../../core/item/item.service';
 
@@ -18,6 +18,7 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
   @ViewChild('scrollPanel') scrollPanel: ElementRef;
   private hasNotSavedChanges: boolean;
   public urgentPrice: string = null;
+  public itemTypes: any = ITEM_TYPES;
 
   constructor(private route: ActivatedRoute,
               private modalService: NgbModal,

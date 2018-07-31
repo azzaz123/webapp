@@ -29,7 +29,7 @@ import {
   PRODUCTS_RESPONSE,
   PURCHASES, ITEM_PUBLISHED_DATE, ITEM_SALE_PRICE, ITEM_DATA_V4, ITEM_DATA_V5
 } from '../../../tests/item.fixtures.spec';
-import { Item, ITEM_BASE_PATH } from './item';
+import { Item, ITEM_BASE_PATH, ITEM_TYPES } from './item';
 import { Observable } from 'rxjs/Observable';
 import {
   ConversationUser,
@@ -561,7 +561,7 @@ describe('Service: Item', () => {
       it('should call endpoint and return response', () => {
         let item: any;
 
-        service.update(ITEM_DATA).subscribe((r: any) => {
+        service.update(ITEM_DATA, ITEM_TYPES.CONSUMER_GOODS).subscribe((r: any) => {
           item = r;
         });
 
@@ -570,7 +570,7 @@ describe('Service: Item', () => {
       });
 
       it('should emit ITEM_UPDATED event', () => {
-        service.update(ITEM_DATA).subscribe();
+        service.update(ITEM_DATA, ITEM_TYPES.CONSUMER_GOODS).subscribe();
 
         expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, ITEM_DATA)
       });
@@ -587,7 +587,7 @@ describe('Service: Item', () => {
       it('should call CAR endpoint if category is 100 and return response', () => {
         let item: any;
 
-        service.update(CAR_DATA_FORM).subscribe((r: any) => {
+        service.update(CAR_DATA_FORM, ITEM_TYPES.CARS).subscribe((r: any) => {
           item = r;
         });
 
@@ -596,7 +596,7 @@ describe('Service: Item', () => {
       });
 
       it('should emit ITEM_UPDATED event', () => {
-        service.update(ITEM_DATA).subscribe();
+        service.update(ITEM_DATA, ITEM_TYPES.CARS).subscribe();
 
         expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, ITEM_DATA)
       });
@@ -613,7 +613,7 @@ describe('Service: Item', () => {
       it('should call REAL ESTATE endpoint if category is 13000 and return response', () => {
         let item: any;
 
-        service.update(UPLOAD_FORM_REALESTATE_VALUES).subscribe((r: any) => {
+        service.update(UPLOAD_FORM_REALESTATE_VALUES, ITEM_TYPES.REAL_ESTATE).subscribe((r: any) => {
           item = r;
         });
 
@@ -622,7 +622,7 @@ describe('Service: Item', () => {
       });
 
       it('should emit ITEM_UPDATED event', () => {
-        service.update(ITEM_DATA).subscribe();
+        service.update(ITEM_DATA, ITEM_TYPES.REAL_ESTATE).subscribe();
 
         expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_UPDATED, ITEM_DATA);
       });

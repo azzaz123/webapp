@@ -149,7 +149,7 @@
           <label class="checkbox checkbox-corporate" formGroupName="location">
             <div class="select" [ngClass]="{'selected': uploadForm.value.location.approximated_location}">
               <mat-icon svgIcon="check"></mat-icon>
-              <input type="checkbox" formControlName="approximated_location" />
+              <input type="checkbox" formControlName="approximated_location" (change)="emitLocation()"/>
             </div>
             <span i18n>Show the property's approximate location</span>
           </label>
@@ -162,7 +162,7 @@
   </div>
   <div class="box product-photos" [ngbPopover]="coachmarkPictures" triggers="mouseenter:mouseleave">
     <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.images.valid && uploadForm.controls.images.dirty}" i18n>Photos</h2>
-    <tsl-drop-area [uploadEvent]="uploadEvent" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
+    <tsl-drop-area [uploadEvent]="uploadEvent" type="real_estate" (onUploaded)="onUploaded($event)" (onError)="onError($event)"
                    formControlName="images" [maxUploads]="10" [images]="item?.images" [itemId]="item?.id"></tsl-drop-area>
     <ng-template #coachmarkPictures>
       <div i18n>You can drag and drop your photos here. Also drag and drop to change the order. Max 4MB.</div>

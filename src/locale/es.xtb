@@ -629,4 +629,7 @@
   <translation id="2813042926821514028">¡<ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph> de regalo!</translation>
   <translation id="2032108307444898053">¡<ph name="INTERPOLATION"><ex>{{pack.forFree | customCurrency}}</ex></ph> de regalo!</translation>
   <translation id="8421470283413526010">¡<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{pack.forFree | customCurrency}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de regalo!</translation>
+  <translation id="6181907632373133266">Conversaciones</translation>
+  <translation id="2123659921722214537">Visualizaciones</translation>
+  <translation id="3537961834218859224">Te lo aseguramos</translation>
 </translationbundle>

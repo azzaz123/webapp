@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
 import { Message, messageStatus } from '../message/message';
@@ -92,7 +92,8 @@ const MOCKED_SERVER_MESSAGE: any = {
   body: 'body',
   requestReceipt: true,
   from: {
-    full: 'from'
+    full: 'from',
+    bare: 'from-bare'
   },
   id: 'id'
 };
@@ -171,10 +172,11 @@ describe('Service: Xmpp', () => {
     expect(MOCKED_CLIENT.enableCarbons).toHaveBeenCalled();
   });
 
-  it('should connect the client', () => {
+  it('should connect the client and set clientConnected to true', () => {
     service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
 
     expect(MOCKED_CLIENT.connect).toHaveBeenCalled();
+    expect(service.clientConnected).toBe(true);
   });
 
   describe('bindEvents', () => {
@@ -333,23 +335,33 @@ describe('Service: Xmpp', () => {
     }));
 
     describe('reconnectClient', () => {
-      it('should reconnect the client if it is disconnected', () => {
+      it('should call client connect if it is disconnected', fakeAsync(() => {
         connectSpy.calls.reset();
         service.clientConnected = false;
 
         service.reconnectClient();
+        tick(5000);
 
         expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(1);
-        expect(service.clientConnected).toBe(true);
-      });
+        discardPeriodicTasks();
+      }));
     });
 
-    it('should emit a CLIENT_DISCONNECTED event when the Xmpp client is disconnected', () => {
+    it('should emit a CLIENT_DISCONNECTED event and set clientConnected to FALSE when the Xmpp client is disconnected', () => {
       spyOn(eventService, 'emit').and.callThrough();
 
       eventService.emit('disconnected');
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CLIENT_DISCONNECTED);
+      expect(service.clientConnected).toBe(false);
+    });
+
+    it('should set clientConnected to TRUE when the Xmpp client is connected', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+
+      eventService.emit('connected');
+
+      expect(service.clientConnected).toBe(true);
     });
 
 
@@ -376,7 +388,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('message', MOCKED_SERVER_MESSAGE);
 
       expect(service['sendMessageDeliveryReceipt']).toHaveBeenCalledWith(
-        MOCKED_SERVER_MESSAGE.from,
+        MOCKED_SERVER_MESSAGE.from.bare,
         MOCKED_SERVER_MESSAGE.id,
         MOCKED_SERVER_MESSAGE.thread);
     });
@@ -693,6 +705,17 @@ describe('Service: Xmpp', () => {
       expect(message.conversationId).toBe(THREAD);
       expect(message.message).toBe(MESSAGE_BODY);
       expect(message.date).toEqual(new Date(MESSAGE_DATE));
+    }));
+
+    it('should emit a NEW_MESSAGE event when stream:data is triggered with a message containing a body', fakeAsync(() => {
+      spyOn<any>(service, 'onNewMessage');
+      const XML_MESSAGE: any = getXmlMessage(MESSAGE_ID, LAST_MESSAGE);
+      service.searchHistory().subscribe();
+
+      eventService.emit('stream:data', XML_MESSAGE);
+      tick(2000);
+
+      expect(service['onNewMessage']).toHaveBeenCalled();
     }));
 
     it('should return the response with two messages in the array', fakeAsync(() => {
@@ -1158,7 +1181,7 @@ describe('Service: Xmpp', () => {
       };
 
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(message);
-      expect(service['onNewMessage']).toHaveBeenCalledWith(message);
+      expect(service['onNewMessage']).toHaveBeenCalledWith(message, true);
     });
 
     it('should track the conversationCreateNew event', () => {
@@ -1181,7 +1204,6 @@ describe('Service: Xmpp', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
         { thread_id: message.thread,
           message_id: message.id,
-          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
           item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
 
@@ -1204,7 +1226,6 @@ describe('Service: Xmpp', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT,
         { thread_id: message.thread,
           message_id: message.id,
-          to_user_id: MOCKED_CONVERSATIONS[0].user.id,
           item_id: MOCKED_CONVERSATIONS[0].item.id });
     });
 
@@ -1363,7 +1384,6 @@ describe('Service: Xmpp', () => {
       service.disconnect();
 
       expect(MOCKED_CLIENT.disconnect).toHaveBeenCalled();
-      expect(service['_clientConnected']).toBe(false);
     });
 
   });
