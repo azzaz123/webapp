@@ -64,6 +64,8 @@ export class UserService extends ResourceService {
       const redirectUrl: any = response['_body'];
       const cookieOptions = environment.name === 'local' ? {domain: 'localhost'} : {domain: '.wallapop.com'};
       this.cookieService.remove('publisherId', cookieOptions);
+      this.cookieService.remove('creditName', cookieOptions);
+      this.cookieService.remove('creditQuantity', cookieOptions);
       this.accessTokenService.deleteAccessToken();
       this.permissionService.flushPermissions();
       this.event.emit(EventService.USER_LOGOUT, redirectUrl);
