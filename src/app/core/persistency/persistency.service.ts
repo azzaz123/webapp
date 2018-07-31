@@ -33,8 +33,12 @@ export class PersistencyService {
       this.userService.me().subscribe((user: User) => {
         this._messagesDb = new PouchDB('messages-' + user.id, {auto_compaction: true});
         this._conversationsDb = new PouchDB('conversations-' + user.id, {auto_compaction: true});
+
+        this.localDbVersionUpdate(1.2, () => {
+          this.destroyDbs(['messages', 'conversations']);
         });
       });
+    });
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
