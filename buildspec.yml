@@ -12,13 +12,7 @@ phases:
       - echo $BRANCH
 
       # EXPORT TAG ENV FROM BRANCH
-      - |
-        if [ "`echo $BRANCH | grep develop`" != "" ]; then
-          export ENV="docker"
-        else
-          export ENV="docker"
-        fi
-
+      - if [ "`echo $BRANCH | grep develop`" != "" ]; then export ENV="docker"; else export ENV="docker" ; fi
       - if [ "`echo $BRANCH | grep master`" != "" ]; then export ENV="prod"; fi
       - if [ "`echo $BRANCH | grep release/`" != "" ]; then export ENV="beta"; fi
       - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export ENV="beta"; fi
@@ -59,11 +53,12 @@ phases:
 
       - |
         if [ "$ENV" == "docker" ]; then
-          BRANCH=$(echo $BRANCH | cut -d '/' -f 2)
+          TAG_BRANCH=$(echo $BRANCH | cut -d '/' -f 2)
+          echo $TAG_BRANCH
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:ft-CLOUD-675 npm run builddocker
           docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:feature-$BRANCH .
           $(aws ecr get-login --region eu-west-1)
-          docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:feature-$BRANCH"
+          docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:feature-$TAG_BRANCH"
         fi
 
 cache:
