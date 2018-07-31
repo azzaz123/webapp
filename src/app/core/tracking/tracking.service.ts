@@ -35,7 +35,8 @@ const CATEGORY_IDS: any = {
   Bump: '123',
   GDPR: '119',
   Carfax: '128',
-  Credits: '131'
+  Credits: '131',
+  Navbar: '77'
 };
 
 const SCREENS_IDS: any = {
@@ -350,6 +351,12 @@ export class TrackingService {
   public static MYZONE_MENU_WALLACOINS: TrackingEventBase = {
     name: '766',
     category: CATEGORY_IDS.Credits,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYZONE_NAVBAR_WALLACOINS: TrackingEventBase = {
+    name: '765',
+    category: CATEGORY_IDS.Navbar,
     screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
   };
@@ -754,13 +761,19 @@ export class TrackingService {
     name: '770',
     category: CATEGORY_IDS.Bump,
     screen: SCREENS_IDS.Credits,
-    type: TYPES_IDS.Tap
+    type: TYPES_IDS.Success
   };
   public static BUY_MORE_CREDITS_SUCCESS = {
     name: '771',
     category: CATEGORY_IDS.Credits,
     screen: SCREENS_IDS.Credits,
-    type: TYPES_IDS.Tap
+    type: TYPES_IDS.Success
+  };
+  public static BUY_MORE_CREDITS_ERROR = {
+    name: '772',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Error
   };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';

@@ -7,6 +7,9 @@
     font-size: $font-size-LL;
     font-weight: bold;
     margin-bottom: $spacing-2M;
+    &.red {
+      color: $warn;
+    }
   }
   p {
     font-size: $font-size;
