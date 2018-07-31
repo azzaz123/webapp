@@ -19,7 +19,7 @@ phases:
       - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 node:8.11 yarn --verbose
 
       # LAUNCH TEST
-      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 node:8.11 yarn test
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 node:8.11 yarn test --single-run --no-progress --browsers HeadlessChrome
 
       # INSTALL ENV
 
