@@ -5,6 +5,8 @@ phases:
     commands:
       - $(aws ecr get-login --no-include-email --region eu-west-1)
 
+  build:
+    commands:
       # OBTAIN WORKING BRANCH
       - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
       - echo $BRANCH
