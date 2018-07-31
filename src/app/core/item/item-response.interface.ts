@@ -319,3 +319,8 @@ export interface LatestItemResponse {
   count: number;
   items: ItemResponse[];
 }
+
+export interface PurchaseProductsWithCreditsResponse {
+  payment_needed: boolean;
+  items_failed: string[];
+}

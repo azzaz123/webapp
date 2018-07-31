@@ -4,12 +4,15 @@
       <div class="col-11">
         <div class="header-row">
           <h1 class="header-title">
-            <span [hidden]="withCoins">Saldo</span>
+            <span [hidden]="withCoins" i18n>Credit</span>
             <span [hidden]="!withCoins">Wallacoins</span>
           </h1>
         </div>
         <div class="header-row header-row--margin">
-          <h4 class="header-subtitle" i18n>Esto es una pequeña línea sobre esta sección, sea cual sea el nombre</h4>
+          <h4 class="header-subtitle">
+            <span [hidden]="withCoins" i18n>Your remaining credit for features</span>
+            <span [hidden]="!withCoins" i18n>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit</span>
+          </h4>
         </div>
       </div>
       <div class="col-1">
@@ -19,16 +22,16 @@
         </div>
         <div class="total-credits" [hidden]="withCoins">
           <div class="credits">{{wallacoins | customCurrency}}</div>
-          <div class="label">saldo</div>
+          <div class="label" i18n>credit</div>
         </div>
       </div>
     </tsl-header>
     <div class="box">
       <div class="box-content">
-        <h2 [hidden]="!withCoins">Un euro = {{factor}} {{currencyName}}</h2>
+        <h2 [hidden]="!withCoins">1€ = {{factor}} {{currencyName}}</h2>
         <h3 [hidden]="withCoins">Elije entre los paquetes que te ofrecemos</h3>
-        <p>Tenemos diferentes paquetes que se ajustan a tus necesidades.<br />
-          Cuanto más compres más te regalamos!</p>
+        <p [hidden]="!withCoins" i18n>We've definitely got a pack for you that will save you money.</p>
+        <p [hidden]="withCoins" i18n>These are our ready to go packs; use them to save money when buying features.</p>
         <ngu-carousel [inputs]="carouselOptions" *ngIf="packs?.length">
           <ngu-item NguCarouselItem *ngFor="let pack of packs; let i = index">
             <tsl-pack-wallacoins [pack]="pack" [packIndex]="i + 1" (onBuy)="openBuyModal(pack, i + 1)"></tsl-pack-wallacoins>
@@ -36,20 +39,34 @@
           <mat-icon NguCarouselPrev svgIcon="slider-arrow" class="left-arrow"></mat-icon>
           <mat-icon NguCarouselNext svgIcon="slider-arrow" class="right-arrow"></mat-icon>
         </ngu-carousel>
-        <h3 [hidden]="!withCoins">¿Por qué debería comprar wallas?</h3>
-        <h3 [hidden]="withCoins">¿Por qué debería usar saldo de wallapop?</h3>
-        <div class="info">
+        <h3 [hidden]="!withCoins" i18n>Why get Wallacoins?</h3>
+        <h3 [hidden]="withCoins" i18n>Why buy a pack of features?</h3>
+        <div class="info" [hidden]="!withCoins">
           <div class="info-1">
-            <h4>Pago muy seguro</h4>
-            <p>Por cada paquete que compres te regalamos dinero para utilizar en wallapop.</p>
+            <h4 i18n>One coin for everyone</h4>
+            <p i18n>Our visibility options can now be unlocked with a new key: Wallacoins. Our new currency for your features with unique benefits.</p>
           </div>
           <div class="info-2">
-            <h4>Ahorras mucho dinero</h4>
-            <p>Puedes disponer en cualquier momento de los {{currencyName}} para destacar.</p>
+            <h4 i18n>Now, save</h4>
+            <p i18n>You can save money with Wallacoins. When you buy one our our packs, we will give you more wallacoins and that means you can feature more of your listings for less!</p>
           </div>
           <div class="info-3">
-            <h4>Mucho más rápido y cómodo</h4>
-            <p>Como todos los pagos que realices por wallapop la compra de {{currencyName}} es mega segura.</p>
+            <h4 i18n>Quick! Quick!</h4>
+            <p i18n>Buying with Wallacoins is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</p>
+          </div>
+        </div>
+        <div class="info" [hidden]="withCoins">
+          <div class="info-1">
+            <h4 i18n>Pay once and forget about it</h4>
+            <p i18n>Rather than paying every time you want to feature a listing; do it just once and use your features whenever you want. It's faster and easier.</p>
+          </div>
+          <div class="info-2">
+            <h4 i18n>Now, save</h4>
+            <p i18n>Buying a pack means you can save up to -XX% on your features.</p>
+          </div>
+          <div class="info-3">
+            <h4 i18n>Quick! Quick!</h4>
+            <p i18n>Buying with credit is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</p>
           </div>
         </div>
       </div>

@@ -15,7 +15,7 @@ import {
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
 import * as _ from 'lodash';
-import { COINS_PACK_ID, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
+import { COINS_FACTOR, COINS_PACK_ID, CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
 import { UserService } from '../user/user.service';
 import { PERMISSIONS } from '../user/user';
@@ -80,14 +80,16 @@ export class PaymentService {
   }
 
   public getCreditInfo(cache: boolean = true): Observable<CreditInfo> {
-    return this.getPerks(cache)
-      .flatMap((perks: PerksModel) => {
-        return this.userService.hasPerm(PERMISSIONS.coins)
-          .map((hasPerm: boolean) => {
+    return this.userService.hasPerm(PERMISSIONS.coins)
+      .flatMap((hasPerm: boolean) => {
+        return this.getPerks(cache)
+          .map((perks: PerksModel) => {
             const currencyName: string = hasPerm ? 'wallacoins' : 'wallacredits';
+            const factor: number = hasPerm ? COINS_FACTOR : CREDITS_FACTOR;
             return {
               currencyName: currencyName,
-              credit: perks[currencyName].quantity
+              credit: perks[currencyName].quantity,
+              factor: factor
             }
           });
       });

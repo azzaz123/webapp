@@ -112,4 +112,5 @@ export interface ScheduledBumps {
 export interface CreditInfo {
   currencyName: string;
   credit: number;
+  factor: number;
 }

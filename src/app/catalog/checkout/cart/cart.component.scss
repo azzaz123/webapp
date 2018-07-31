@@ -2,7 +2,10 @@
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
 $title-height: 65px;
-$total-height: 55px;
+$main-total-height: 55px;
+$credit-total-height: 21px;
+$totals-margins: 25px;
+$total-height: $main-total-height + $totals-margins + $credit-total-height;
 $discounted-total-height: 30px;
 $button-height: 42px;
 $button-margin: $spacing - $spacing-XS;
@@ -38,7 +41,13 @@ h1 {
   border-radius: 5px;
   position: relative;
   &.has-financial-card {
-    height: calc(#{$scroll-panel-height} - #{$card-select-height});
+    height: calc(#{$scroll-panel-height} - #{$card-select-height} );
+  }
+  &.no-credit {
+    height: calc(#{$scroll-panel-height} + #{$credit-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
+  }
+  &.has-financial-card.no-credit {
+    height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$credit-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
   }
 }
 
@@ -48,6 +57,12 @@ h1 {
   height: calc(#{$scroll-panel-height} - #{$clear-cart-height});
   .has-financial-card & {
     height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height});
+  }
+  .no-credit & {
+    height: calc(#{$scroll-panel-height} - #{$clear-cart-height} + #{$credit-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
+  }
+  .has-financial-card.no-credit & {
+    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height} + #{$credit-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
   }
 }
 
@@ -61,13 +76,37 @@ h1 {
   height: $discounted-total-height;
 }
 
-.total {
-  height: $total-height;
-  line-height: $total-height;
+.walla-total, .credit, .total {
   font-size: $font-size-XS;
   font-weight: bold;
-  padding: 0 $spacing-XS;
   text-transform: uppercase;
+  padding: 0 $spacing-XS;
+  overflow: hidden;
+  clear: both;
+}
+
+.walla-total {
+  color: $grey-500;
+  line-height: 25px;
+  margin-top: $spacing-S;
+  .price {
+    font-size: $font-size-L;
+  }
+}
+
+.credit {
+  color: $corporate;
+  height: $credit-total-height;
+  .price {
+    font-size: $font-size-S;
+  }
+}
+
+.total {
+  height: $main-total-height;
+  line-height: $main-total-height;
+  margin-top: $spacing-1M;
+  margin-top: $spacing-S;
   .price {
     font-size: $font-size-XL;
   }

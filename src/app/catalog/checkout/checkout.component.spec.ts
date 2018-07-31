@@ -5,12 +5,15 @@ import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE } from '../../../tests/item.fixtures.spec';
 import { Router } from '@angular/router';
+import { PaymentService } from '../../core/payments/payment.service';
+import { CreditInfo } from '../../core/payments/payment.interface';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
   let fixture: ComponentFixture<CheckoutComponent>;
   let itemService: ItemService;
   let router: Router;
+  let paymentService: PaymentService;
   let spyCall;
 
   const SELECTED_ITEMS = ['1', '2', '3'];
@@ -32,6 +35,13 @@ describe('CheckoutComponent', () => {
           navigate() {
           }
         }
+        },
+        {
+          provide: PaymentService, useValue: {
+          getCreditInfo() {
+            return Observable.of({});
+          }
+        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -44,6 +54,7 @@ describe('CheckoutComponent', () => {
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
     router = TestBed.get(Router);
+    paymentService = TestBed.get(PaymentService);
     spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
     fixture.detectChanges();
   });
@@ -69,6 +80,36 @@ describe('CheckoutComponent', () => {
       component.ngOnInit();
 
       expect(component.provincialBump).toBeTruthy();
+    });
+
+    it('should call getCreditInfo and set it', () => {
+      const creditInfo: CreditInfo = {
+        currencyName: 'wallacoins',
+        credit: 2000,
+        factor: 100
+      };
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+
+      component.ngOnInit();
+
+      expect(component.creditInfo).toEqual(creditInfo);
+    });
+
+    it('should call getCreditInfo and set it with wallacredits if credit is 0', () => {
+      const creditInfo: CreditInfo = {
+        currencyName: 'wallacoins',
+        credit: 0,
+        factor: 100
+      };
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+
+      component.ngOnInit();
+
+      expect(component.creditInfo).toEqual({
+        currencyName: 'wallacredits',
+        credit: 0,
+        factor: 1
+      });
     });
   });
 });

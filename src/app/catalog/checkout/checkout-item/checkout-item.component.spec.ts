@@ -53,6 +53,11 @@ describe('CheckoutItemComponent', () => {
     fixture = TestBed.createComponent(CheckoutItemComponent);
     component = fixture.componentInstance;
     component.itemWithProducts = ITEMS_WITH_PRODUCTS[0];
+    component.creditInfo = {
+      currencyName: 'wallacoins',
+      credit: 200,
+      factor: 100
+    };
     fixture.detectChanges();
     cartService = TestBed.get(CartService);
   });

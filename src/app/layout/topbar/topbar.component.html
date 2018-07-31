@@ -22,8 +22,8 @@
 <div class="main-header-login" [class.professional]="isProfessional">
   <a [hidden]="!currencyName" *ngxPermissionsOnly="['isNormal']" class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
     <mat-icon svgIcon="wallacoins-nav" class="topbar-icon"></mat-icon>
-    <span i18n *ngIf="currencyName === 'wallacoins'"><b>{{wallacoins | number}}</b> {{currencyName}}</span>
-    <span i18n *ngIf="currencyName !== 'wallacoins'"><b>{{wallacoins | customCurrency}}</b> saldo</span>
+    <span *ngIf="currencyName === 'wallacoins'"><b>{{wallacoins | number}}</b> {{currencyName}}</span>
+    <span *ngIf="currencyName !== 'wallacoins'"><b>{{wallacoins | customCurrency}}</b> <span i18n>credit</span></span>
     <div class="horizontal-line"></div>
   </a>
   <a class="main-header-chat menu-link" [routerLink]="['/chat']" [routerLinkActive]="['active']">
