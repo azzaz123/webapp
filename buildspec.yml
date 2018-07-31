@@ -12,10 +12,11 @@ phases:
       - echo $BRANCH
 
       # EXPORT TAG ENV FROM BRANCH
-      - if [ "`echo $BRANCH | grep develop`" != "" ]; then export ENV="docker"; else export TAG_BRANCH="docker" ; fi
+      - if [ "`echo $BRANCH | grep develop`" != "" ]; then export ENV="docker"; fi
       - if [ "`echo $BRANCH | grep master`" != "" ]; then export ENV="prod"; fi
       - if [ "`echo $BRANCH | grep release/`" != "" ]; then export ENV="beta"; fi
       - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export ENV="beta"; fi
+      - if [ "`echo $BRANCH | grep feature/`" != "" ]; then export ENV="docker"; fi
 
       - echo $ENV
 
