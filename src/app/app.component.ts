@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
     this.subscribeEventNewMessage();
     this.subscribeEventClientDisconnect();
     this.subscribeEventItemUpdated();
-    // this.subscribeChatSignals();
+    this.subscribeChatSignals();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();

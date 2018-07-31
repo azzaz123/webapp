@@ -22,6 +22,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ConversationTotals } from './totals.interface';
 import { Item } from '../item/item';
 import { Subscription } from 'rxjs/Subscription';
+import { TrackingEventData, TrackingEventBase } from '../tracking/tracking-event-base.interface';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -42,7 +43,7 @@ export class ConversationService extends LeadService {
   private receiptSent = false;
   public messagesReadSubscription: Subscription;
   public ended: boolean;
-  public unprocessedSignals = [];
+  private unprocessedSignals: Array<TrackingEventData> = [];
 
   constructor(http: HttpService,
               userService: UserService,
@@ -88,10 +89,10 @@ export class ConversationService extends LeadService {
             } else {
               this.archivedLeads = this.archivedLeads.concat(convWithMessages);
             }
-            for (let index = this.unprocessedSignals.length - 1; index >= 0; --index) {
-              const signal = this.unprocessedSignals[index];
-              this.sendAck(signal.trackingEvent, signal.conversationId, signal.messageId);
-              this.unprocessedSignals.splice(index, 1);
+
+            if (this.unprocessedSignals.length) {
+              this.trackingService.trackMultiple(this.unprocessedSignals);
+              this.unprocessedSignals = [];
             }
             this.firstLoad = false;
             return convWithMessages;
@@ -328,16 +329,28 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public sendAck(trackingEvent: any, conversationId: string, messageId: string) {
+  private addUniqueSignal(eventData: any, attributes: any) {
+    const signalStored = this.unprocessedSignals.find(
+      (signal) => (signal.attributes.message_id === attributes.message_id && signal.eventData.name === eventData.name)) ? true : false;
+    if (!signalStored) {
+      this.unprocessedSignals.push({eventData, attributes});
+    }
+  }
+
+  public sendAck(trackingEvent: TrackingEventBase, conversationId: string, messageId: string) {
+    const attributes = {
+        thread_id: conversationId,
+        message_id: messageId
+    };
     if (this.leads.length) {
       const conversation = this.leads.find(c => c.id === conversationId);
       if (conversation) {
         this.sendTracking(trackingEvent, conversationId, messageId, conversation.item.id);
       } else {
-        this.unprocessedSignals.push({trackingEvent: trackingEvent, conversationId: conversationId, messageId: messageId});
+        this.addUniqueSignal(trackingEvent, attributes);
       }
     } else {
-        this.unprocessedSignals.push({trackingEvent: trackingEvent, conversationId: conversationId, messageId: messageId});
+      this.addUniqueSignal(trackingEvent, attributes);
     }
   }
 

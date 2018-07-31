@@ -62,6 +62,22 @@ const CONVERSATION_RESPONSE: Response = new Response(new ResponseOptions(
   {body: JSON.stringify(MOCKED_CONVERSATION_DATA)})
 );
 
+const eventsArray = [
+  {
+    eventData: TrackingService.MESSAGE_RECEIVED,
+    attributes: {
+      message_id: '123',
+      thread_id: 'abc'
+    }
+  },
+  {
+    eventData: TrackingService.MESSAGE_RECEIVED,
+    attributes: {
+      message_id: '234',
+      thread_id: 'bcd'
+    }
+  }];
+
 class MockedXmppService {
   totalUnreadMessages = 42;
 
@@ -175,6 +191,8 @@ describe('Service: Conversation', () => {
       describe('no archived', () => {
         describe('without parameters', () => {
           beforeEach(() => {
+            spyOn(trackingService, 'trackMultiple').and.callThrough();
+            service['unprocessedSignals'] = eventsArray;
             service.getLeads().subscribe((r: Conversation[]) => {
               response = r;
             });
@@ -193,6 +211,12 @@ describe('Service: Conversation', () => {
           it('should set firstLoad to false', () => {
             expect(service.firstLoad).toBe(false);
           });
+
+          it('should process unprocessedSignals if they exist and empty the array', () => {
+            expect(trackingService.trackMultiple).toHaveBeenCalled();
+            expect(service['unprocessedSignals'].length).toBe(0);
+          });
+
           it('should call other functions', () => {
             expect(service['loadUnreadMessagesNumber']).toHaveBeenCalledTimes(TOTAL);
             expect(service['loadMessagesIntoConversations']).toHaveBeenCalled();

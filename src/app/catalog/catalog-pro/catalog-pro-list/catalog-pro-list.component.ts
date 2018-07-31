@@ -64,7 +64,7 @@ export class CatalogProListComponent implements OnInit {
   ngOnInit() {
     this.getCounters();
     this.getItems();
-    let sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
+    const sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
     this.orderBy = [];
     sorting.forEach((sort) => {
       this.orderBy.push({
@@ -75,7 +75,7 @@ export class CatalogProListComponent implements OnInit {
 
     this.eventService.subscribe('itemChangeStatus', (items) => {
       items.forEach((id: string) => {
-        let index: number = _.findIndex(this.items, {'id': id});
+        const index: number = _.findIndex(this.items, {'id': id});
         this.items.splice(index, 1);
       });
     });
@@ -136,7 +136,6 @@ export class CatalogProListComponent implements OnInit {
           this.cache = false;
           this.getItems();
           if (params.itemId) {
-            console.log('pro createeeeed');
             this.itemService.get(params.itemId).subscribe((item: Item) => {
               this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS, {categoryId: item.categoryId});
             });
@@ -235,7 +234,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public itemChanged($event: ItemChangeEvent) {
-    let index: number = _.findIndex(this.items, {'_id': $event.item.id});
+    const index: number = _.findIndex(this.items, {'_id': $event.item.id});
     this.items.splice(index, 1);
     this.cache = false;
     this.page = 1;
@@ -244,7 +243,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public bumpCancelled($event: ItemChangeEvent) {
-    let index: number = _.findIndex(this.items, {'_id': $event.item.id});
+    const index: number = _.findIndex(this.items, {'_id': $event.item.id});
     this.items[index].purchases = null;
     this.cache = false;
     this.page = 1;
