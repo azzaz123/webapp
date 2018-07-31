@@ -16,7 +16,7 @@ phases:
       - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export ENV="beta"; fi
 
       # LOAD YARN DEPENDENCIES
-      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 node:8.11 yarn
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 node:8.11 yarn --verbose
 
       # LAUNCH TEST
       - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 node:8.11 yarn test
@@ -57,4 +57,4 @@ phases:
 
 cache:
   paths:
-    - '/tmp/.cache/yarn/**/*'
+    - '/tmp/.cache/yarn/**/*
