@@ -15,15 +15,26 @@ import 'rxjs/add/observable/fromPromise';
 import Database = PouchDB.Database;
 import AllDocsResponse = PouchDB.Core.AllDocsResponse;
 import Document = PouchDB.Core.Document;
+import { UserService } from '../user/user.service';
+import { User } from '../user/user';
+import { EventService } from '../event/event.service';
 
 @Injectable()
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private _conversationsDb: Database<StoredConversation>;
   private storedMessages: AllDocsResponse<StoredMessage>;
-  constructor() {
-    this._messagesDb = new PouchDB('messages', {auto_compaction: true});
-    this._conversationsDb = new PouchDB('conversations', {auto_compaction: true});
+
+  constructor(
+    private userService: UserService,
+    private eventService: EventService
+  ) {
+    this.eventService.subscribe(EventService.USER_LOGIN, () => {
+      this.userService.me().subscribe((user: User) => {
+        this._messagesDb = new PouchDB('messages-' + user.id, {auto_compaction: true});
+        this._conversationsDb = new PouchDB('conversations-' + user.id, {auto_compaction: true});
+      });
+    });
   }
 
   set messagesDb(value: PouchDB.Database<any>) {

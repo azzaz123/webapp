@@ -12,8 +12,13 @@ import {
 } from '../../../tests/persistency.fixtures.spec';
 import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
+import { UserService } from '../user/user.service';
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { EventService } from '../event/event.service';
 
 let service: PersistencyService;
+let userService: UserService;
+let eventService: EventService;
 const MOCK_REV = 'rev';
 const MOCK_SAVE_DATA: any = {last: 'asdas', start: CONVERSATION_DATE_ISO};
 const MOCK_UNREAD_MESSAGES = 5;
@@ -22,9 +27,18 @@ describe('Service: Persistency', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PersistencyService],
+      providers: [PersistencyService, EventService,
+        {
+          provide: UserService, useValue: {
+          me() {
+            return Observable.of(MOCK_USER);
+          }
+        }
+        }],
     });
     service = TestBed.get(PersistencyService);
+    userService = TestBed.get(UserService);
+    eventService = TestBed.get(EventService);
     (service as any)['_messagesDb'] = new MockedMessagesDb();
     (service as any)['_conversationsDb'] = new MockedConversationsDb();
   });
