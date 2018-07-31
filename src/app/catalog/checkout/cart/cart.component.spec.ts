@@ -3,13 +3,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CartComponent } from './cart.component';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CartService } from './cart.service';
 import { Observable } from 'rxjs/Observable';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
 import {
-  CART_ITEM_CITYBUMP, CART_ORDER, CART_ORDER_TRACK, ITEM_ID,
+  CART_ITEM_CITYBUMP,
+  CART_ORDER,
+  CART_ORDER_TRACK,
+  ITEM_ID,
   MOCK_ITEM_V3
 } from '../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../core/item/item.service';
@@ -20,6 +23,8 @@ import { FormsModule } from '@angular/forms';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
+import { CardSelectionComponent } from '../../../shared/payments/card-selection/card-selection.component';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -41,8 +46,8 @@ describe('CartComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [CartComponent, CustomCurrencyPipe],
+      imports: [FormsModule, NgbButtonsModule],
+      declarations: [CartComponent, CustomCurrencyPipe, CardSelectionComponent],
       providers: [
         DecimalPipe,
         {
@@ -50,49 +55,49 @@ describe('CartComponent', () => {
         },
         {
           provide: CartService, useValue: {
-            cart$: Observable.of(CART_CHANGE),
-            createInstance() {
-            },
-            remove() {
-            },
-            clean() {
-            }
+          cart$: Observable.of(CART_CHANGE),
+          createInstance() {
+          },
+          remove() {
+          },
+          clean() {
           }
+        }
         },
         {
           provide: ItemService, useValue: {
-            purchaseProducts() {
-              return Observable.of({});
-            },
-            deselectItems() {
-            }
+          purchaseProducts() {
+            return Observable.of({});
+          },
+          deselectItems() {
           }
+        }
         },
         {
           provide: ErrorsService, useValue: {
-            i18nError() {
-            },
-            show() {
-            }
+          i18nError() {
+          },
+          show() {
           }
+        }
         },
         {
           provide: PaymentService, useValue: {
-            getFinancialCard() {
-            },
-            pay() {
-              return Observable.of('');
-            }
+          getFinancialCard() {
+          },
+          pay() {
+            return Observable.of('');
           }
+        }
         },
         {
           provide: Router, useValue: {
-            navigate() {
-            }
+          navigate() {
           }
         }
+        }
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -121,8 +126,13 @@ describe('CartComponent', () => {
     it('should set cart', () => {
       expect(component.cart).toEqual(CART);
     });
-    it('should set card', () => {
-      expect(component.financialCard).toEqual(FINANCIAL_CARD);
+  });
+
+  describe('hasCard', () => {
+    it('should set true if card exists', () => {
+      component.hasCard(true);
+
+      expect(component.hasFinancialCard).toEqual(true);
     });
   });
 
@@ -187,7 +197,7 @@ describe('CartComponent', () => {
 
       describe('without credit card', () => {
         it('should submit sabadell with orderId', () => {
-          component.financialCard = null;
+          component.hasFinancialCard = false;
 
           component.checkout();
 
@@ -196,6 +206,11 @@ describe('CartComponent', () => {
       });
 
       describe('with credit card', () => {
+
+        beforeEach(() => {
+          component.hasFinancialCard = true;
+        });
+
         describe('user wants new one', () => {
 
           it('should submit sabadell with orderId', () => {
@@ -222,7 +237,7 @@ describe('CartComponent', () => {
             });
 
             it('should redirect to code 200', () => {
-              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: 200 }]);
+              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
             });
 
             it('should call deselectItems', () => {
@@ -239,7 +254,7 @@ describe('CartComponent', () => {
             });
 
             it('should redirect to code -1', () => {
-              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: -1 }]);
+              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
             });
           });
 

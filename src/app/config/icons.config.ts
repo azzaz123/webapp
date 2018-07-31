@@ -94,6 +94,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('navigation_dashboard', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_dashboard.svg'));
   matIconRegistry.addSvgIcon('navigation_phones', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_phones.svg'));
   matIconRegistry.addSvgIcon('navigation_help', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_help.svg'));
+  matIconRegistry.addSvgIcon('navigation_wallacoins', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_wallacoins.svg'));
   matIconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/delete.svg'));
   matIconRegistry.addSvgIcon('clock', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/clock.svg'));
   matIconRegistry.addSvgIcon('back-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/back-arrow.svg'));

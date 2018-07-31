@@ -1,0 +1,11 @@
+<div class="modal-close" (click)="activeModal.dismiss()">
+  <mat-icon svgIcon="cross"></mat-icon>
+</div>
+
+<div class="modal-body">
+  <h1>Maravilloso!!!!!</h1>
+  <p>Tu compra se ha realizado correctamente y puedes<br /> empezar a destacar tus productos y agilizar tus ventas!</p>
+  <p>Total compra: <b>{{pack?.quantity | number}} wallacoins</b>, <b class="green">conseguiste {{pack?.forFree | number}} de regalo!</b></p>
+  <tsl-button (click)="activeModal.close()">Empieza a destacar</tsl-button><br />
+  <a class="link" (click)="activeModal.dismiss()">Comprar mas wallacoins</a>
+</div>

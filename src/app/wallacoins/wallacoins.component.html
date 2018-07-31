@@ -1,0 +1,56 @@
+<div class="page-content">
+  <div class="container">
+    <tsl-header>
+      <div class="col-11">
+        <div class="header-row">
+          <h1 class="header-title" i18n>Wallacoins</h1>
+        </div>
+        <div class="header-row header-row--margin">
+          <h4 class="header-subtitle" i18n>Esto es una pequeña línea sobre esta sección, sea cual sea el nombre</h4>
+        </div>
+      </div>
+      <div class="col-1">
+        <div class="total-credits">
+          <div class="credits">{{wallacoins | number}}</div>
+          <div class="label">wallacoins</div>
+        </div>
+      </div>
+    </tsl-header>
+    <div class="box">
+      <div class="box-content">
+        <h2>Un euro = 100 wallacoins</h2>
+        <p>Tenemos diferentes paquetes que se ajustan a tus necesidades.<br />
+          Cuanto más compres más te regalamos!</p>
+        <ngb-carousel *ngIf="packs?.length" interval="0">
+          <ng-template ngbSlide *ngFor="let packArray of packs; let i = index">
+            <div class="pack" *ngFor="let pack of packArray; let j = index">
+              <div class="featured" *ngIf="i === 0 && j === 1">Mas popular</div>
+              <div class="icon icon-{{i*packArray.length + j + 1}}"></div>
+              <div class="quantity">{{pack.quantity | number}}</div>
+              <div class="label">wallacoins</div>
+              <div class="for-free"><span *ngIf="pack.forFree > 0">{{pack.forFree | number}} de regalo!</span></div>
+              <tsl-button (click)="openBuyModal(pack, i*packArray.length + j + 1)" [className]="'btn-block ' + (i === 0 && j === 1 ? 'btn-primary' : 'btn-grey')">
+                Compra por <b>{{pack.price | customCurrency}}</b>
+              </tsl-button>
+            </div>
+          </ng-template>
+        </ngb-carousel>
+        <h3>¿Por qué debería comprar wallas?</h3>
+        <div class="info">
+          <div class="info-1">
+            <h4>Pago muy seguro</h4>
+            <p>Por cada paquete que compres te regalamos dinero para utilizar en wallapop.</p>
+          </div>
+          <div class="info-2">
+            <h4>Ahorras mucho dinero</h4>
+            <p>Puedes disponer en cualquier momento de los wallacoins para destacar.</p>
+          </div>
+          <div class="info-3">
+            <h4>Mucho más rápido y cómodo</h4>
+            <p>Como todos los pagos que realices por wallapop la compra de wallacoins es mega segura.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

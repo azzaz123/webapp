@@ -6,6 +6,7 @@ $vertical-padding: 10px;
   display: inline-block;
   &[className*='btn-block'] {
     display: block;
+    width: 100%;
   }
 }
 

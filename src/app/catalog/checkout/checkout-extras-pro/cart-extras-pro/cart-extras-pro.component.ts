@@ -20,7 +20,7 @@ import { FormGroup } from '@angular/forms';
 export class CartExtrasProComponent implements OnInit, OnDestroy {
 
   public cart: CartBase;
-  public financialCard: FinancialCard;
+  public hasFinancialCard: boolean;
   public types: string[] = BUMP_TYPES;
   public loading: boolean;
   public sabadellSubmit: EventEmitter<string> = new EventEmitter();
@@ -43,7 +43,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     this.cartService.cart$.takeWhile(() => this.active).subscribe((cartChange: CartChange) => {
       this.cart = cartChange.cart;
     });
-    this.getCard();
   }
 
   ngOnDestroy() {
@@ -98,7 +97,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   }
 
   private buy(orderId: string) {
-    if (!this.financialCard || this.financialCard && this.cardType === 'new') {
+    if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
       this.sabadellSubmit.emit(orderId);
     } else {
       this.paymentService.pay(orderId).subscribe(() => {
@@ -113,9 +112,7 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
     this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {selected_packs: order.packs});
   }
 
-  private getCard() {
-    this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
-      this.financialCard = financialCard;
-    });
+  public hasCard(hasCard: boolean) {
+    this.hasFinancialCard = hasCard;
   }
 }
