@@ -209,7 +209,7 @@
     & {
       color: $color-grey-item;
       height: 65px;
-      padding-right: 20px;
+      margin-right: 20px;
       position: relative;
       display: flex;
       align-items: center;
@@ -249,7 +249,7 @@
     .horizontal-line {
       display: none;
       border-bottom: 3px solid $grey-900;
-      width: 80%;
+      width: 100%;
       margin-left: 8px;
       position: absolute;
       bottom: 0;

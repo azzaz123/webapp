@@ -204,6 +204,10 @@ export class PaymentService {
       .map((r: Response) => r.json());
   }
 
+  public deleteCache() {
+    this.perksModel = null;
+  }
+
   private preparePacks(sortedPacks, product?: Products) {
     const packsResponse: Packs = {
       cityBump: [],

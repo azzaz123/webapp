@@ -8,7 +8,7 @@
   <div class="left">
     <ng-container *ngIf="!withCredits">
       <h2>{{pack.quantity | number}} {{pack.name}}</h2>
-      <div class="for-free" *ngIf="pack.forFree > 0">{{pack.forFree | number}} <span i18n>as a gift!</span></div>
+      <div class="for-free" *ngIf="pack.forFree > 0" i18n>{{pack.forFree | number}} as a gift!</div>
       <div class="icon icon-{{packIndex}}"></div>
     </ng-container>
     <ng-container *ngIf="withCredits">
@@ -16,7 +16,7 @@
         <div class="quantity">{{pack.quantity | customCurrency}}</div>
         <div class="label" i18n>Recharge</div>
       </div>
-      <div class="for-free">{{pack.forFree | customCurrency}} <span i18n>as a gift!</span></div>
+      <div class="for-free" *ngIf="pack.forFree > 0" i18n>{{pack.forFree | customCurrency}} as a gift!</div>
     </ng-container>
     <div class="price">
       <div class="total" i18n>Price</div>

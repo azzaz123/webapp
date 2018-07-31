@@ -20,7 +20,7 @@
   </div>
 </div>
 <div class="main-header-login" [class.professional]="isProfessional">
-  <a [hidden]="!currencyName" *ngxPermissionsOnly="['isNormal']" class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
+  <a [hidden]="!currencyName" *ngxPermissionsOnly="['isNormal']" tslTrackEvent="MYZONE_NAVBAR_WALLACOINS" class="main-header-credits menu-link" [routerLink]="['/wallacoins']" [routerLinkActive]="['active']">
     <mat-icon svgIcon="wallacoins-nav" class="topbar-icon"></mat-icon>
     <span *ngIf="currencyName === 'wallacoins'"><b>{{wallacoins | number}}</b> {{currencyName}}</span>
     <span *ngIf="currencyName !== 'wallacoins'"><b>{{wallacoins | customCurrency}}</b> <span i18n>credit</span></span>

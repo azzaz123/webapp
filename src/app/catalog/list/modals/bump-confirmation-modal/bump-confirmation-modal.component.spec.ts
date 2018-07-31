@@ -9,24 +9,41 @@ import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { UserService } from '../../../../core/user/user.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { MOCK_USER, USER_DATA } from '../../../../../tests/user.fixtures.spec';
+import { PaymentService } from '../../../../core/payments/payment.service';
+import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
 
 let component: BumpConfirmationModalComponent;
 let fixture: ComponentFixture<BumpConfirmationModalComponent>;
 let trackingService: TrackingService;
 let userService: UserService;
+let paymentService: PaymentService;
+const CURRENCY = 'wallacoins';
+const CREDITS = 1000;
 
 describe('BumpConfirmationModalComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-        declarations: [BumpConfirmationModalComponent],
+        declarations: [BumpConfirmationModalComponent, CustomCurrencyPipe],
         providers: [
           NgbActiveModal,
+          DecimalPipe,
           {provide: TrackingService, useClass: MockTrackingService},
           MockBackend,
           {
             provide: UserService, useValue: {
             me() {
               return Observable.of(MOCK_USER);
+            }
+          }
+          },
+          {
+            provide: PaymentService, useValue: {
+            getCreditInfo() {
+              return Observable.of({
+                currencyName: CURRENCY,
+                credit: CREDITS
+              });
             }
           }
           }
@@ -37,6 +54,7 @@ describe('BumpConfirmationModalComponent', () => {
     component = fixture.componentInstance;
     trackingService = TestBed.get(TrackingService);
     userService = TestBed.get(UserService);
+    paymentService = TestBed.get(PaymentService);
     fixture.detectChanges();
   });
 
@@ -62,6 +80,16 @@ describe('BumpConfirmationModalComponent', () => {
       component.code = '-1';
       component.ngOnInit();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.FEATURED_PURCHASE_ERROR, { error_code: component.code });
+    });
+
+    it('should call getCreditInfo and set currency and coins total', () => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(paymentService.getCreditInfo).toHaveBeenCalled();
+      expect(component.withCoins).toBe(true);
+      expect(component.credit).toBe(CREDITS);
     });
   });
 
