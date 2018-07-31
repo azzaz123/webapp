@@ -145,12 +145,20 @@ export class UploadRealestateComponent implements OnInit {
     this.realestateKeysService.getTypes(operation).subscribe((types: Key[]) => {
       this.types = types;
     });
+    this.uploadForm.get('type').setValue('');
   }
 
   private getExtras(type: string) {
     this.realestateKeysService.getExtras(type).subscribe((extras: Key[]) => {
       this.extras = extras;
     });
+    this.uploadForm.get('garage').setValue(false);
+    this.uploadForm.get('terrace').setValue(false);
+    this.uploadForm.get('elevator').setValue(false);
+    this.uploadForm.get('pool').setValue(false);
+    this.uploadForm.get('garden').setValue(false);
+    this.uploadForm.get('rooms').setValue('');
+    this.uploadForm.get('bathrooms').setValue('');
   }
 
   private detectFormChanges() {

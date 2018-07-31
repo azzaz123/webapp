@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { Conversation } from '../conversation/conversation';
 import { Message, messageStatus } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
@@ -17,6 +16,9 @@ export class MessageService {
 
   public totalUnreadMessages$: Subject<number> = new Subject<number>();
   private _totalUnreadMessages = 0;
+
+  /* The age (in days) of the messages we want to resend; if there are pending messages that are older than this, we won't resend them; */
+  private resendOlderThan = 5;
 
   constructor(private xmpp: XmppService,
               private persistencyService: PersistencyService,
@@ -45,16 +47,24 @@ export class MessageService {
             last: data[data.length - 1].doc._id
           },
           data: data.map((message: any): Message => {
-            return new Message(message.doc._id,
+            const msg = new Message(message.doc._id,
               message.doc.conversationId,
               message.doc.message,
               message.doc.from,
               message.doc.date,
               message.doc.status,
               message.doc.payload);
+
+            if (msg.status === messageStatus.PENDING) {
+              const timeLimit = new Date().getTime() - (this.resendOlderThan * 24 * 60 * 60 * 1000);
+              if (Date.parse(msg.date.toString()) > timeLimit) {
+                this.xmpp.sendMessage(conversation, msg.message, true, msg.id);
+              }
+            }
+            return msg;
           })
         });
-      } else {
+      } else if (this.xmpp.clientConnected && this.connectionService.isConnected) {
         return this.query(conversation.id, conversation.lastMessageRef, total);
       }
     })

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { Item } from '../../../core/item/item';
 import { ItemService } from '../../../core/item/item.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -20,6 +20,7 @@ import { ProUrgentConfirmationModalComponent } from './modals/pro-urgent-confirm
 import { ProBumpConfirmationModalComponent } from './modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component';
 import { Order, Product } from '../../../core/item/item-response.interface';
 import { UploadConfirmationModalComponent } from '../../list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
+import { ItemSoldDirective } from '../../../shared/modals/sold-modal/item-sold.directive';
 
 @Component({
   selector: 'tsl-catalog-pro-list',
@@ -47,6 +48,8 @@ export class CatalogProListComponent implements OnInit {
   public subscriptionPlan: number;
   private uploadModalRef: NgbModalRef;
 
+  @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
+
   constructor(public itemService: ItemService,
               private trackingService: TrackingService,
               private modalService: NgbModal,
@@ -61,7 +64,7 @@ export class CatalogProListComponent implements OnInit {
   ngOnInit() {
     this.getCounters();
     this.getItems();
-    let sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
+    const sorting: string[] = ['date_desc', 'date_asc', 'price_desc', 'price_asc'];
     this.orderBy = [];
     sorting.forEach((sort) => {
       this.orderBy.push({
@@ -72,7 +75,7 @@ export class CatalogProListComponent implements OnInit {
 
     this.eventService.subscribe('itemChangeStatus', (items) => {
       items.forEach((id: string) => {
-        let index: number = _.findIndex(this.items, {'id': id});
+        const index: number = _.findIndex(this.items, {'id': id});
         this.items.splice(index, 1);
       });
     });
@@ -132,6 +135,11 @@ export class CatalogProListComponent implements OnInit {
           });
           this.cache = false;
           this.getItems();
+          if (params.itemId) {
+            this.itemService.get(params.itemId).subscribe((item: Item) => {
+              this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS, {categoryId: item.categoryId});
+            });
+          }
         } else if (params && params.urgent) {
           this.isUrgent = true;
           this.isRedirect = !this.getRedirectToTPV();
@@ -149,6 +157,21 @@ export class CatalogProListComponent implements OnInit {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
           this.errorService.i18nError('productCreated', ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.');
+        } else if (params && params.sold && params.itemId) {
+          this.itemService.get(params.itemId).subscribe((item: Item) => {
+            this.soldButton.item = item;
+            this.soldButton.onClick();
+            this.soldButton.callback.subscribe(() => {
+              this.eventService.emit('itemChanged');
+              this.itemChanged({
+                item: item,
+                action: 'sold'
+              });
+              this.eventService.emit(EventService.ITEM_SOLD, item);
+            });
+          });
+        } else if (params && params.alreadyFeatured) {
+          this.errorService.i18nError('alreadyFeatured');
         }
       });
     });
@@ -211,7 +234,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public itemChanged($event: ItemChangeEvent) {
-    let index: number = _.findIndex(this.items, {'_id': $event.item.id});
+    const index: number = _.findIndex(this.items, {'_id': $event.item.id});
     this.items.splice(index, 1);
     this.cache = false;
     this.page = 1;
@@ -220,7 +243,7 @@ export class CatalogProListComponent implements OnInit {
   }
 
   public bumpCancelled($event: ItemChangeEvent) {
-    let index: number = _.findIndex(this.items, {'_id': $event.item.id});
+    const index: number = _.findIndex(this.items, {'_id': $event.item.id});
     this.items[index].purchases = null;
     this.cache = false;
     this.page = 1;

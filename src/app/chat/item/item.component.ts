@@ -6,6 +6,14 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
 import { User } from '../../core/user/user';
 
+export const showWillisCategories = {
+  'GAME': 13100,
+  'TV_AUDIO_CAMERAS' : 12545,
+  'COMPUTERS_ELECTRONIC' : 15000,
+  'PHONES_ACCESSORIES' : 16000,
+  'GAMES_CONSOLES' : 12900
+};
+
 @Component({
   selector: 'tsl-item',
   templateUrl: './item.component.html',
@@ -51,6 +59,10 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.isCarItem = false;
     }
+
+    if (this.showWillisLink()) {
+      this.trackingService.track(TrackingService.WILLIS_LINK_DISPLAY);
+    }
   }
 
   ngOnDestroy() {
@@ -82,7 +94,17 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     appboy.logCustomEvent('Sold', {platform: 'web'});
   }
 
-  public clickCarfax() {
+  public showWillisLink(): boolean {
+    return Object.values(showWillisCategories).includes(this.item.categoryId);
+  }
+
+  public clickCarfax(event) {
+    event.stopPropagation();
     this.trackingService.track(TrackingService.CARFAX_CHAT_TAP);
+  }
+
+  public clickWillis(event) {
+    event.stopPropagation();
+    this.trackingService.track(TrackingService.WILLIS_LINK_TAP);
   }
 }

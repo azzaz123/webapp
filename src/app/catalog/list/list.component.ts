@@ -22,6 +22,7 @@ import { PaymentService } from '../../core/payments/payment.service';
 import { FinancialCard } from '../../core/payments/payment.interface';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
+import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 
 @Component({
   selector: 'tsl-list',
@@ -45,6 +46,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public isRedirect = false;
   private counters: Counters;
 
+  @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
@@ -126,6 +128,20 @@ export class ListComponent implements OnInit, OnDestroy {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
           this.errorService.i18nError('productCreated', ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.');
+        } else if (params && params.sold && params.itemId) {
+          this.itemService.get(params.itemId).subscribe((item: Item) => {
+            this.soldButton.item = item;
+            this.soldButton.onClick();
+            this.soldButton.callback.subscribe(() => {
+              this.itemChanged({
+                item: item,
+                action: 'sold'
+              });
+              this.eventService.emit(EventService.ITEM_SOLD, item);
+            });
+          });
+        } else if (params && params.alreadyFeatured) {
+          this.errorService.i18nError('alreadyFeatured');
         }
       });
     });
@@ -176,6 +192,7 @@ export class ListComponent implements OnInit, OnDestroy {
       this.end = !this.init;
       if (this.uploadModalRef) {
         this.uploadModalRef.componentInstance.item = this.items[0];
+        this.uploadModalRef.componentInstance.trackUploaded();
         this.uploadModalRef.componentInstance.urgentPrice();
       }
       if (this.firstItemLoad) {

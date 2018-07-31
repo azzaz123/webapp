@@ -85,6 +85,7 @@ export class AppComponent implements OnInit {
     this.subscribeEventNewMessage();
     this.subscribeEventClientDisconnect();
     this.subscribeEventItemUpdated();
+    this.subscribeChatSignals();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
@@ -133,6 +134,15 @@ export class AppComponent implements OnInit {
 
   private trackAppOpen() {
       this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
+  }
+
+  private subscribeChatSignals() {
+    this.event.subscribe(EventService.MESSAGE_SENT_ACK, (conversationId, messageId) => {
+      this.conversationService.sendAck(TrackingService.MESSAGE_SENT_ACK, conversationId, messageId);
+    });
+    this.event.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
+      this.conversationService.sendAck(TrackingService.MESSAGE_RECEIVED, conversationId, messageId);
+    });
   }
 
   private subscribeEventUserLogin() {
@@ -206,7 +216,6 @@ export class AppComponent implements OnInit {
       if (this.userService.isLogged && this.connectionService.isConnected) {
         this.xmppService.reconnectClient();
       }
-      this.conversationService.resetCache();
     });
   }
 

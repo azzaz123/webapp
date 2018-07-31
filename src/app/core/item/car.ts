@@ -1,4 +1,4 @@
-import { Item } from './item';
+import { Item, ITEM_TYPES } from './item';
 import { ItemFlags, ItemSaleConditions } from './item-response.interface';
 import { Image } from '../user/user-response.interface';
 
@@ -55,7 +55,11 @@ export class Car extends Item {
         urls_by_size: image
       } : (images ? images[0] : null),
       images,
-      webSlug);
+      webSlug,
+      null,
+      null,
+      ITEM_TYPES.CARS
+    );
   }
 
   get brand(): string {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as CryptoJS from 'crypto-js';
 import { TrackingEvent } from './tracking-event';
-import { TrackingEventBase } from './tracking-event-base.interface';
+import { TrackingEventBase, TrackingEventData } from './tracking-event-base.interface';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
@@ -11,6 +11,9 @@ import { HttpService } from '../http/http.service';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
 import { Observable } from 'rxjs/Observable';
+
+const maxBatchSize = 100;
+const sendInterval = 60000;
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -34,7 +37,8 @@ const CATEGORY_IDS: any = {
   Link: '122',
   Bump: '123',
   GDPR: '119',
-  Carfax: '128'
+  Carfax: '128',
+  Willis: '130'
 };
 
 const SCREENS_IDS: any = {
@@ -724,6 +728,18 @@ export class TrackingService {
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Tap
   };
+  public static WILLIS_LINK_DISPLAY = {
+    name: '762',
+    category: CATEGORY_IDS.Willis,
+    screen: SCREENS_IDS.ItemDetail,
+    type: TYPES_IDS.Display
+  };
+  public static WILLIS_LINK_TAP = {
+    name: '763',
+    category: CATEGORY_IDS.Willis,
+    screen: SCREENS_IDS.ItemDetail,
+    type: TYPES_IDS.Tap
+  };
 
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
@@ -753,8 +769,68 @@ export class TrackingService {
       }).subscribe();
   }
 
+  private sendMultipleEvents(events: Array<TrackingEventData>) {
+    this.createMultipleEvents(events)
+    .flatMap((event: TrackingEvent) => {
+      delete event['sessions'][0]['window'];
+      const stringifiedEvent: string = JSON.stringify(event);
+      const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
+      return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body);
+    }).subscribe();
+  }
+
+  trackMultiple(events: Array<TrackingEventData>) {
+    const interval = setInterval(() => {
+      if (events.length > maxBatchSize) {
+        const slice = events.splice(0, maxBatchSize);
+        this.sendMultipleEvents(slice);
+      } else {
+        this.sendMultipleEvents(events);
+        clearInterval(interval);
+      }
+    }, sendInterval);
+  }
+
   private setSessionStartTime() {
     this.sessionStartTime = getTimestamp();
+  }
+
+  private createMultipleEvents(events: Array<TrackingEventData>): Observable<TrackingEvent> {
+    const transformedArr = events.map(ev => {
+      for (const key in ev.eventData) {
+        if (ev.eventData.hasOwnProperty(key)) {
+          ev[key] = ev.eventData[key];
+        }
+      }
+      delete ev.eventData;
+      ev.attributes = ev.attributes;
+      ev.id = UUID.UUID();
+      ev.timestamp = getTimestamp();
+      return ev;
+    });
+    return this.userService.isProfessional()
+      .map((isProfessional: boolean) => {
+        if (isProfessional) {
+          transformedArr.forEach((e, index) => {
+            if (!e.attributes) {
+              transformedArr[index].attributes = {};
+            }
+            transformedArr[index].attributes.professional = true;
+          });
+        }
+        const newEvent: TrackingEvent = new TrackingEvent(
+          this.winRef.nativeWindow,
+          this.userService.user.id,
+          this.sessionStartTime,
+          null,
+          transformedArr);
+        newEvent.setDeviceInfo(
+          this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId,
+          this.navigatorService.browserName, this.navigatorService.fullVersion
+        );
+        newEvent.setSessionId(this.sessionId);
+        return newEvent;
+      });
   }
 
   private createNewEvent(event: TrackingEventBase, attributes?: any): Observable<TrackingEvent> {
