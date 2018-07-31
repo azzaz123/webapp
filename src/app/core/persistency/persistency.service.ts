@@ -33,8 +33,8 @@ export class PersistencyService {
       this.userService.me().subscribe((user: User) => {
         this._messagesDb = new PouchDB('messages-' + user.id, {auto_compaction: true});
         this._conversationsDb = new PouchDB('conversations-' + user.id, {auto_compaction: true});
+        });
       });
-    });
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
@@ -51,6 +51,12 @@ export class PersistencyService {
 
   get conversationsDb(): PouchDB.Database<any> {
     return this._conversationsDb;
+  }
+
+  private destroyDbs(dbs: Array<any>) {
+    dbs.forEach((db) => {
+      new PouchDB(db).destroy().then(() => {}).catch((err) => {});
+    });
   }
 
   public getMessages(conversationId: string): Observable<StoredMessageRow[]> {
