@@ -18,7 +18,7 @@ phases:
       - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export ENV="beta"; fi
 
      # - echo $ENV
-      - if [[ $ENV == "dockx" ]]; then exit 1 ; fi
+      - if [[ "`echo $ENV | grep dockx`" != "" ]]; then echo "trolasso" ; fi
       - more /codebuild/output/tmp/script.sh
 
       # LOAD YARN DEPENDENCIES
