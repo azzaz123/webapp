@@ -17,8 +17,8 @@ phases:
       - if [ "`echo $BRANCH | grep release/`" != "" ]; then export ENV="beta"; fi
       - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export ENV="beta"; fi
 
-      - echo $ENV
-      - if [ ${ENV} == "trolo" ] ; then echo "hola" ; fi
+     # - echo $ENV
+      - if [ ${ENV} == "dockx" ]; then echo "hola" ; fi
 
       # LOAD YARN DEPENDENCIES
 #      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:ft-CLOUD-675 yarn
