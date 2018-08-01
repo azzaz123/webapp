@@ -51,8 +51,6 @@ phases:
 #          aws s3 cp dist/index.html s3://web-en.beta.wallapop.com/index.html --cache-control max-age=0
 #        fi
 
-
-
 cache:
   paths:
     - /tmp/.cache/yarn/**/*
