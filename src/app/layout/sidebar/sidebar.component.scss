@@ -24,6 +24,7 @@
 }
 
 $sidebar-section-circle-size: 50px;
+$sidebar-section-circle-size-small: 32px;
 
 .sidebar-section-circle {
   position: relative;
@@ -31,7 +32,7 @@ $sidebar-section-circle-size: 50px;
   width: $sidebar-section-circle-size;
   height: $sidebar-section-circle-size;
   background-color: rgba($grey-800, .5);
-  transition: .15s background-color ease;
+  transition: width 0.75s, height 0.75s;
   .active & {
     background-color: $corporate !important;
   }
@@ -48,6 +49,7 @@ $sidebar-section-circle-size: 50px;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
     @include square(34px);
+    transition: .15s background-color ease;
     g g {
       transition: .15s fill ease;
     }
@@ -81,7 +83,6 @@ h2 {
   display: block;
   padding: $spacing-S 0;
   text-align: center;
-  transition: all .5s ease;
   &:focus, &:hover {
     text-decoration: none;
   }
@@ -116,6 +117,27 @@ h2 {
     &:hover {
       .sidebar-section-circle {
         background-color: $warn;
+      }
+    }
+  }
+}
+
+@media screen and (max-height: 678px) {
+  .sidebar-section-circle {
+    width: $sidebar-section-circle-size-small;
+    height: $sidebar-section-circle-size-small;
+  }
+  .sidebar-section {
+    mat-icon {
+      @include square(24px);
+    }
+    &.profile-item {
+      tsl-user-avatar {
+        /deep/ .avatar-rounded {
+          transition: width .75s, height 0.75s;
+          width: $sidebar-section-circle-size-small;
+          height: $sidebar-section-circle-size-small;
+        }
       }
     }
   }
