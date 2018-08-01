@@ -12,7 +12,7 @@
 
 mat-icon {
   @include square(10px);
-  margin-left: 2px;
+  margin-left: $spacing-XXXS;
   /deep/ svg path {
     transition: all 0.2s ease-in-out;
   }
