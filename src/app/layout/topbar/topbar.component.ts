@@ -10,6 +10,7 @@ import { MessageService } from '../../core/message/message.service';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { EventService } from '../../core/event/event.service';
+import { CookieService } from 'ngx-cookie/index';
 
 @Component({
   selector: 'tsl-topbar',
@@ -38,6 +39,7 @@ export class TopbarComponent implements OnInit {
               public messageService: MessageService,
               private paymentService: PaymentService,
               private eventService: EventService,
+              private cookieService: CookieService,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.homeUrl = environment.siteUrl.replace('es', this.subdomain);
   }
@@ -63,7 +65,14 @@ export class TopbarComponent implements OnInit {
     this.paymentService.getCreditInfo(cache).subscribe((creditInfo: CreditInfo) => {
       this.currencyName = creditInfo.currencyName;
       this.wallacoins = creditInfo.credit;
+      this.setCreditCookie();
     });
+  }
+
+  private setCreditCookie() {
+    const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
+    this.cookieService.put('creditName', this.currencyName, cookieOptions);
+    this.cookieService.put('creditQuantity', this.wallacoins.toString(), cookieOptions);
   }
 
   public submitForm() {

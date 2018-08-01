@@ -17,6 +17,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
+import { CookieService } from 'ngx-cookie/index';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -44,6 +45,7 @@ describe('TopbarComponent', () => {
   const CURRENCY = 'wallacoins';
   const CREDITS = 1000;
   let paymentService: PaymentService;
+  let cookieService: CookieService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -87,6 +89,12 @@ describe('TopbarComponent', () => {
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         },
+        {
+          provide: CookieService, useValue: {
+          put(key, value) {
+          }
+        }
+        },
         EventService, ...TEST_HTTP_PROVIDERS],
       declarations: [TopbarComponent, CustomCurrencyPipe],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -102,6 +110,7 @@ describe('TopbarComponent', () => {
     eventService = TestBed.get(EventService);
     windowRef = TestBed.get(WindowRef);
     paymentService = TestBed.get(PaymentService);
+    cookieService = TestBed.get(CookieService);
   });
 
   it('should be created', () => {
@@ -152,6 +161,16 @@ describe('TopbarComponent', () => {
       expect(paymentService.getCreditInfo).toHaveBeenCalledWith(false);
       expect(component.currencyName).toBe(CURRENCY);
       expect(component.wallacoins).toBe(CREDITS);
+    });
+
+    it('should set the credits cookies', () => {
+      spyOn(cookieService, 'put');
+      const cookieOptions = {domain: '.wallapop.com'};
+
+      component.ngOnInit();
+
+      expect(cookieService.put).toHaveBeenCalledWith('creditName', component.currencyName, cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith('creditQuantity', component.wallacoins.toString(), cookieOptions);
     });
   });
 
