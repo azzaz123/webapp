@@ -590,8 +590,6 @@
   <translation id="5745314848838735502">Comprar ya</translation>
   <translation id="1381141590254425331">No guardaremos los datos de esta transacción. La compra se realiza a través del Banco Sabadell.</translation>
   <translation id="1443195823760151170">¡Listo!</translation>
-  <translation id="1713854539577872039">Todo ha ido perfecto. Ya tienes <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu cartera. Con ellos podrás destacar tus productos. Recuerda que solo están (por el momento) disponibles en web y que no se puede intercambiar por Euros.</translation>
-  <translation id="7454449407329433040">Todo ha ido perfecto. Ya tienes <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu cartera para destacar productos. Ahora, ¡a destacar!</translation>
   <translation id="5711960821733439342">Destacar productos</translation>
   <translation id="5378722151309930038">Comprar más Wallacoins</translation>
   <translation id="272934122656341350">Saldo</translation>
@@ -632,4 +630,10 @@
   <translation id="6181907632373133266">Conversaciones</translation>
   <translation id="2123659921722214537">Visualizaciones</translation>
   <translation id="3537961834218859224">Te lo aseguramos</translation>
+  <translation id="6174997588475722860">Recuerda que tu saldo y los packs de ahorro solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Una vez cargado tu saldo, tiene un año de vigencia</translation>
+  <translation id="7356703231883565314">El uso de los wallacoins es exclusivo para la compra de Destacados. Recuerda que solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>No se puede intercambiar por Euros y tienen un año de vigencia.</translation>
+  <translation id="2767524293310239820">Los Wallacoins te ayudarán a comprar Destacados. Aquí podrás conseguirlos y ver tu saldo disponible.</translation>
+  <translation id="5484168340945543767">Buy saving packs to feature your items and check your credit remaining.</translation>
+  <translation id="5219138809296533633">Todo ha ido perfecto. Hemos añadido <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu cartera. Con ellos podrás destacar tus productos. Recuerda que solo están (por el momento) disponibles en web y que no se puede intercambiar por Euros.</translation>
+  <translation id="9192855565716451718">Todo ha ido perfecto. Hemos cargado <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu saldo para destacar productos. Ahora, ¡a destacar!</translation>
 </translationbundle>

@@ -12,8 +12,8 @@
           </div>
           <div class="header-row header-row--margin">
             <h4 class="header-subtitle">
-              <span [hidden]="withCoins" i18n>Your remaining credit for features</span>
-              <span [hidden]="!withCoins" i18n>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit</span>
+              <span [hidden]="withCoins" i18n>Buy saving packs to feature your items and check your credit remaining.</span>
+              <span [hidden]="!withCoins" i18n>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit.</span>
             </h4>
           </div>
         </div>
@@ -73,7 +73,8 @@
           </div>
         </div>
       </div>
-      <p class="disclaimer">El uso de las wallacoins es exclusivo para la compra de Destacados en wallapop.<br />Recuerda que solo están (por el momento) disponibles en web. No se puede intercambiar por Euros y tienen un año de vigencia.</p>
+      <p class="disclaimer" i18n [hidden]="!withCoins">Wallacoins are only available in website.<br />You can use them to feature your items. Wallacoins that are purchased will expire 12 months after they are added to your Credit. Wallacoins are non-refundable, and can't be converted back into money once purchased.</p>
+      <p class="disclaimer" i18n [hidden]="withCoins">Your Credit and our Saving Packs are only available (for now) on the website.<br />Once your Credit is purchased will expire 12 months after.</p>
     </div>
   </div>
 </div>

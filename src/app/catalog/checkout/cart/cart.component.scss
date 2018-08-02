@@ -1,7 +1,7 @@
 @import "~style/common";
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
-$title-height: 65px;
+$title-height: 50px;
 $main-total-height: 55px;
 $credit-total-height: 21px;
 $missing-total-height: 43px;
@@ -12,6 +12,7 @@ $button-height: 42px;
 $button-margin: $spacing - $spacing-XS;
 $button-space: $button-height + $spacing;
 $secure-label-height: 25px;
+$extra-height: 15px;
 $scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $discounted-total-height + $button-space + $secure-label-height});
 $clear-cart-height: 38px;
 $card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
@@ -31,9 +32,8 @@ h1 {
   height: $title-height;
   line-height: $title-height;
   font-size: $font-size;
-  text-align: center;
+  text-align: left;
   margin: 0;
-  background: url(/assets/icons/cart.svg) no-repeat 10px center;
 }
 
 .cart-wrapper {
@@ -45,9 +45,9 @@ h1 {
     height: calc(#{$scroll-panel-height} + #{$missing-total-height});
   }
   &.has-financial-card {
-    height: calc(#{$scroll-panel-height} - #{$card-select-height});
+    height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$extra-height} + #{$extra-height * 1.5});
     .with-credits & {
-      height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$missing-total-height});
+      height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$missing-total-height} + #{$extra-height * 1.5});
     }
   }
   &.no-credit {
@@ -61,9 +61,9 @@ h1 {
 .scroll-panel {
   overflow: auto;
   padding: $spacing-XS;
-  height: calc(#{$scroll-panel-height} - #{$clear-cart-height});
+  height: calc(#{$scroll-panel-height} - #{$clear-cart-height} + #{$extra-height * 2});
   .has-financial-card & {
-    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height});
+    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height} + #{$extra-height * 6.5});
   }
   .no-credit & {
     height: calc(#{$scroll-panel-height} - #{$clear-cart-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
@@ -236,21 +236,12 @@ ul, li {
 
 .clean-cart {
   position: absolute;
-  bottom: 0;
-  font-size: $font-size-S;
-  margin: $spacing-XS;
-  padding: $spacing-XS $spacing-XS 0;
-  border-top: 1px solid $grey-50;
-  width: calc(100% - #{$spacing-XS * 2});
+  top: 17px;
+  right: $spacing-10;
+  font-size: $font-size-XS;
   a {
     color: $grey-500;
     cursor: pointer;
-    mat-icon {
-      width: 13px;
-      height: 15px;
-      margin-right: $spacing-XS;
-      vertical-align: sub;
-    }
   }
 }
 

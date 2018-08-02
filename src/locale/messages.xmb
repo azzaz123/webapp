@@ -31,10 +31,10 @@
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.ts:15</source>Dashboard</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:23</source>Products</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:24</source>Catalog</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:41</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:51</source>Favorites</msg>
-  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:48</source>Reviews</msg>
-  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:56</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
-  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:63</source>Help</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:49</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:51</source>Favorites</msg>
+  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:56</source>Reviews</msg>
+  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:64</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
+  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:71</source>Help</msg>
   <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
         I accept the updated privacy policy in order to continue navigating.
       </msg>
@@ -111,7 +111,9 @@
   <msg id="4123995928509826820"><source>app/chat/item/item.component.ts:38,40</source>
         Check its full history
       </msg>
-  <msg id="3537961834218859224"><source>app/chat/item/item.component.ts:44,46</source>Add Insurance</msg>
+  <msg id="3537961834218859224"><source>app/chat/item/item.component.ts:44,46</source>
+        Add Insurance
+      </msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="4095254644079775415" desc="The distance between the user and the item"><source>app/chat/user-detail/user-detail.component.ts:6</source><source>app/chat/user-card/user-card.component.ts:14</source><source>app/calls/user-card-calls/user-card-calls.component.ts:10</source><ph name="DISTANCE"><ex>{{user.itemDistance | number:&apos;1.0-1&apos; // i18n(ph=&quot;DISTANCE&quot;)}}</ex></ph>km from you</msg>
   <msg id="9119757647796405986"><source>app/chat/user-detail/user-detail.component.ts:7</source><source>app/chat/user-card/user-card.component.ts:15</source><source>app/calls/user-card-calls/user-card-calls.component.ts:11</source>No location</msg>
@@ -608,15 +610,15 @@
   <msg id="5745314848838735502"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:33</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:40</source>Buy now</msg>
   <msg id="1381141590254425331"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:41</source>We don&apos;t save details of this transaction. The purchase is made via Banco Sabadell.</msg>
   <msg id="1443195823760151170"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:6</source>Let&apos;s go!</msg>
-  <msg id="1713854539577872039"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:7</source>All sorted. Now you have <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your wallet. You can feature your items. Remember that for now you can only get these from the website and they are not interchangeable for Euros.</msg>
-  <msg id="7454449407329433040"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:8</source>It&apos;s all sorted. Now you have <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your wallet to feature your listings. Now get featuring!</msg>
+  <msg id="5219138809296533633"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:7</source>It&apos;s all sorted. We added <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your wallet. You can feature your items. Remember that for now you can only get these from the website and they are not interchangeable for Euros.</msg>
+  <msg id="9192855565716451718"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:8</source>It&apos;s all sorted. We added <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your credit to feature your listings. Now get featuring!</msg>
   <msg id="5711960821733439342"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:9</source>Feature listings</msg>
   <msg id="5722262557807435110"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:17</source>Something went wrong :(</msg>
   <msg id="4289382185311381834"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:18</source>There was a problem with your request. Please, try again. </msg>
   <msg id="6650633628037596693"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:19</source>Try again</msg>
   <msg id="272934122656341350"><source>app/wallacoins/wallacoins.component.ts:9</source>Credit</msg>
-  <msg id="7379990901688990808"><source>app/wallacoins/wallacoins.component.ts:15</source>Your remaining credit for features</msg>
-  <msg id="5761082716975566083"><source>app/wallacoins/wallacoins.component.ts:16</source>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit</msg>
+  <msg id="5484168340945543767"><source>app/wallacoins/wallacoins.component.ts:15</source>Buy saving packs to feature your items and check your credit remaining.</msg>
+  <msg id="2767524293310239820"><source>app/wallacoins/wallacoins.component.ts:16</source>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit.</msg>
   <msg id="8916480189992774118"><source>app/wallacoins/wallacoins.component.ts:34</source>Saving packs</msg>
   <msg id="5949534173199806002"><source>app/wallacoins/wallacoins.component.ts:35</source>We&apos;ve definitely got a pack for you that will save you money.</msg>
   <msg id="2730194589257448908"><source>app/wallacoins/wallacoins.component.ts:36</source>These are our ready to go packs; use them to save money when buying features.</msg>
@@ -632,6 +634,8 @@
   <msg id="690819193603454333"><source>app/wallacoins/wallacoins.component.ts:63</source>Rather than paying every time you want to feature a listing; do it just once and use your features whenever you want. It&apos;s faster and easier.</msg>
   <msg id="2678815268089639687"><source>app/wallacoins/wallacoins.component.ts:67</source>Buying a pack means you can save up to -XX% on your features.</msg>
   <msg id="5415567930272713889"><source>app/wallacoins/wallacoins.component.ts:71</source>Buying with credit is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</msg>
+  <msg id="7356703231883565314"><source>app/wallacoins/wallacoins.component.ts:76</source>Wallacoins are only available in website.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>You can use them to feature your items. Wallacoins that are purchased will expire 12 months after they are added to your Credit. Wallacoins are non-refundable, and can&apos;t be converted back into money once purchased.</msg>
+  <msg id="6174997588475722860"><source>app/wallacoins/wallacoins.component.ts:77</source>Your Credit and our Saving Packs are only available (for now) on the website.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Once your Credit is purchased will expire 12 months after.</msg>
   <msg id="2028747142234068875"><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.ts:1</source>Recommended for you</msg>
   <msg id="8421470283413526010"><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.ts:12,15</source>
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>

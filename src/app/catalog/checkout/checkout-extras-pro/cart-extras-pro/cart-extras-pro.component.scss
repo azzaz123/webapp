@@ -1,7 +1,7 @@
 @import "~style/common";
 
 $cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
-$title-height: 65px;
+$title-height: 50px;
 $total-height: 80px;
 $button-height: 42px;
 $button-margin: $spacing - $spacing-XS;
@@ -26,9 +26,8 @@ h1 {
   height: $title-height;
   line-height: $title-height;
   font-size: $font-size;
-  text-align: center;
+  text-align: left;
   margin: 0;
-  background: url(/assets/icons/cart.svg) no-repeat 10px center;
 }
 
 .cart-wrapper {
@@ -153,21 +152,12 @@ ul, li {
 
 .clean-cart {
   position: absolute;
-  bottom: 0;
-  font-size: $font-size-S;
-  margin: $spacing-XS;
-  padding: $spacing-XS $spacing-XS 0;
-  border-top: 1px solid $grey-50;
-  width: calc(100% - #{$spacing-XS * 2});
+  top: 17px;
+  right: $spacing-10;
+  font-size: $font-size-XS;
   a {
     color: $grey-500;
     cursor: pointer;
-    mat-icon {
-      width: 13px;
-      height: 15px;
-      margin-right: $spacing-XS;
-      vertical-align: sub;
-    }
   }
 }
 
