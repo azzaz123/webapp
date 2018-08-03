@@ -9,7 +9,7 @@ phases:
     commands:
       # OBTAIN WORKING BRANCH
       - BRANCH=$(git branch --contains $CODEBUILD_SOURCE_VERSION | sed '1d')
-#      - echo $BRANCH
+      - echo $BRANCH
 
       # EXPORT TAG ENV FROM BRANCH
       - export ENV="dockx"
@@ -50,10 +50,10 @@ phases:
 
       - >
         if [ "`echo $ENV | grep dockx`" != "" ]; then
-          TAG_BRANCH=ft-$(echo $BRANCH | cut -d '/' -f 2)
+          TAG_BRANCH=feature-$(echo $BRANCH | cut -d '/' -f 2)
           docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable npm run builddocker
           docker build -f docker/Dockerfile -t 745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:feature-$TAG_BRANCH .
-          docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:feature-$TAG_BRANCH"
+          docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$TAG_BRANCH"
         fi
 
 cache:
