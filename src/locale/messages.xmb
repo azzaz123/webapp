@@ -21,7 +21,7 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <messagebundle>
-  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:41</source><source>app/catalog/checkout/cart/cart.component.ts:70</source><source>app/wallacoins/wallacoins.component.ts:27</source>credit</msg>
+  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:41</source><source>app/catalog/checkout/cart/cart.component.ts:69</source><source>app/wallacoins/wallacoins.component.ts:27</source>credit</msg>
   <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.ts:32</source><source>app/layout/sidebar/sidebar.component.ts:33</source><source>app/dashboard/dashboard.component.ts:24</source>Messages</msg>
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.ts:37</source>My Zone</msg>
   <msg id="3983509092263971640"><source>app/layout/topbar/topbar.component.ts:38</source>My Pro Zone</msg>
@@ -325,23 +325,23 @@
   <msg id="6822624572232933913"><source>app/catalog/upload/category-selector/category-selector.component.ts:31</source>My services</msg>
   <msg id="4895100071976641944"><source>app/catalog/upload/category-selector/category-selector.component.ts:40</source>A property</msg>
   <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:45</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
-  <msg id="7036284206110282007"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:8</source><source>app/catalog/checkout/cart/cart.component.ts:41</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:29</source>days</msg>
+  <msg id="7036284206110282007"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:8</source><source>app/catalog/checkout/cart/cart.component.ts:46</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:34</source>days</msg>
   <msg id="2595297634596426795"><source>app/catalog/checkout/cart/cart.component.ts:1</source>My features</msg>
-  <msg id="6801638153695046345"><source>app/catalog/checkout/cart/cart.component.ts:13</source>Local bump</msg>
-  <msg id="7379728362084736907"><source>app/catalog/checkout/cart/cart.component.ts:14</source>Provincial bump</msg>
-  <msg id="2789162672363314854"><source>app/catalog/checkout/cart/cart.component.ts:16</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:11</source>City bump</msg>
-  <msg id="4669498559280449685"><source>app/catalog/checkout/cart/cart.component.ts:17</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:12</source>Country bump</msg>
-  <msg id="2906587845957718064"><source>app/catalog/checkout/cart/cart.component.ts:35</source>Local</msg>
-  <msg id="1186759635333538896"><source>app/catalog/checkout/cart/cart.component.ts:36</source>Provincial</msg>
-  <msg id="2314075913167237221"><source>app/catalog/checkout/cart/cart.component.ts:38</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:14</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:26</source><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:60</source>City</msg>
-  <msg id="516176798986294299"><source>app/catalog/checkout/cart/cart.component.ts:39</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:17</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:27</source><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:66</source>Country</msg>
-  <msg id="6377139538537882652"><source>app/catalog/checkout/cart/cart.component.ts:56</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:41</source>Delete list</msg>
-  <msg id="3448462145758383019"><source>app/catalog/checkout/cart/cart.component.ts:61</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:46</source>Total</msg>
-  <msg id="5269877616047992907"><source>app/catalog/checkout/cart/cart.component.ts:74</source>spending</msg>
-  <msg id="7484614059925376312"><source>app/catalog/checkout/cart/cart.component.ts:85</source>missing</msg>
-  <msg id="6315786827665033981"><source>app/catalog/checkout/cart/cart.component.ts:93</source>Total to pay</msg>
-  <msg id="7274286978511770772"><source>app/catalog/checkout/cart/cart.component.ts:100</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:54</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:59</source>Continue to Checkout</msg>
-  <msg id="3708302938863076299"><source>app/catalog/checkout/cart/cart.component.ts:103</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:62</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:27</source>Secure payment through Sabadell</msg>
+  <msg id="6377139538537882652"><source>app/catalog/checkout/cart/cart.component.ts:4</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:4</source>Delete list</msg>
+  <msg id="6801638153695046345"><source>app/catalog/checkout/cart/cart.component.ts:18</source>Local bump</msg>
+  <msg id="7379728362084736907"><source>app/catalog/checkout/cart/cart.component.ts:19</source>Provincial bump</msg>
+  <msg id="2789162672363314854"><source>app/catalog/checkout/cart/cart.component.ts:21</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:16</source>City bump</msg>
+  <msg id="4669498559280449685"><source>app/catalog/checkout/cart/cart.component.ts:22</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:17</source>Country bump</msg>
+  <msg id="2906587845957718064"><source>app/catalog/checkout/cart/cart.component.ts:40</source>Local</msg>
+  <msg id="1186759635333538896"><source>app/catalog/checkout/cart/cart.component.ts:41</source>Provincial</msg>
+  <msg id="2314075913167237221"><source>app/catalog/checkout/cart/cart.component.ts:43</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:14</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:31</source><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:60</source>City</msg>
+  <msg id="516176798986294299"><source>app/catalog/checkout/cart/cart.component.ts:44</source><source>app/catalog/checkout/checkout-pro/checkout-pro.component.ts:17</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:32</source><source>app/catalog/checkout/checkout-extras-pro/billing-info/billing-info.component.ts:66</source>Country</msg>
+  <msg id="3448462145758383019"><source>app/catalog/checkout/cart/cart.component.ts:60</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:45</source>Total</msg>
+  <msg id="5269877616047992907"><source>app/catalog/checkout/cart/cart.component.ts:73</source>spending</msg>
+  <msg id="7484614059925376312"><source>app/catalog/checkout/cart/cart.component.ts:84</source>missing</msg>
+  <msg id="6315786827665033981"><source>app/catalog/checkout/cart/cart.component.ts:92</source>Total to pay</msg>
+  <msg id="7274286978511770772"><source>app/catalog/checkout/cart/cart.component.ts:99</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:53</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:58</source>Continue to Checkout</msg>
+  <msg id="3708302938863076299"><source>app/catalog/checkout/cart/cart.component.ts:102</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:61</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:27</source>Secure payment through Sabadell</msg>
   <msg id="124288245683167765"><source>app/catalog/upload/urgent-checkbox/urgent-checkbox.component.ts:3</source>Apply the ASAP Feature</msg>
   <msg id="6583839768249288834"><source>app/catalog/upload/urgent-checkbox/urgent-checkbox.component.ts:4,6</source>
       For only <ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph> mark your product as &quot;Asap&quot; for 7 days to differentiate it in the wall and make it easier to find through the asap filter.
@@ -610,8 +610,8 @@
   <msg id="5745314848838735502"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:33</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:40</source>Buy now</msg>
   <msg id="1381141590254425331"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:41</source>We don&apos;t save details of this transaction. The purchase is made via Banco Sabadell.</msg>
   <msg id="1443195823760151170"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:6</source>Let&apos;s go!</msg>
-  <msg id="5219138809296533633"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:7</source>It&apos;s all sorted. We added <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your wallet. You can feature your items. Remember that for now you can only get these from the website and they are not interchangeable for Euros.</msg>
-  <msg id="9192855565716451718"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:8</source>It&apos;s all sorted. We added <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{total | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your credit to feature your listings. Now get featuring!</msg>
+  <msg id="2304802134193899623"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:7</source>It&apos;s all sorted. We added <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.quantity | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your wallet. You can feature your items. Remember that for now you can only get these from the website and they are not interchangeable for Euros.</msg>
+  <msg id="5174338286786022523"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:8</source>It&apos;s all sorted. We added <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.quantity | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> in your credit to feature your listings. Now get featuring!</msg>
   <msg id="5711960821733439342"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:9</source>Feature listings</msg>
   <msg id="5722262557807435110"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:17</source>Something went wrong :(</msg>
   <msg id="4289382185311381834"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:18</source>There was a problem with your request. Please, try again. </msg>

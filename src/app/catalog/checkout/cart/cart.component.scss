@@ -1,8 +1,8 @@
 @import "~style/common";
 
-$cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
-$title-height: 50px;
-$main-total-height: 55px;
+$cart-height: calc(100vh - #{$topbar-height + $spacing-L * 1.2});
+$title-height: 42px;
+$main-total-height: 46px;
 $credit-total-height: 21px;
 $missing-total-height: 43px;
 $totals-margins: 0px;
@@ -63,7 +63,7 @@ h1 {
   padding: $spacing-XS;
   height: calc(#{$scroll-panel-height} - #{$clear-cart-height} + #{$extra-height * 2});
   .has-financial-card & {
-    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height} + #{$extra-height * 6.5});
+    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height} + #{$extra-height * 4.7});
   }
   .no-credit & {
     height: calc(#{$scroll-panel-height} - #{$clear-cart-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
@@ -98,7 +98,7 @@ h1 {
 .walla-total {
   color: $grey-500;
   line-height: 25px;
-  margin-top: $spacing-S;
+  margin-top: $spacing-XS;
   .price {
     font-size: $font-size-L;
   }
@@ -137,7 +137,7 @@ h1 {
 
 .missing {
   border-top: solid 1px $grey-50;
-  margin: 9px 6px 0 8px;
+  margin: 6px 6px 0 8px;
   padding: 3px 2px 0 0;
   .label {
     color: $grey-250;
@@ -236,7 +236,7 @@ ul, li {
 
 .clean-cart {
   position: absolute;
-  top: 17px;
+  top: 13px;
   right: $spacing-10;
   font-size: $font-size-XS;
   a {
