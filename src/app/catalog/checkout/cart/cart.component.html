@@ -88,6 +88,9 @@
       <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
     </div>
   </div>
+  <div class="discounted-total" *ngIf="!creditInfo?.credit && cart?.discountedTotal">
+    <s>{{cart?.discountedTotal | customCurrency:creditInfo?.currencyName}}</s>
+  </div>
   <div class="total">
     <span class="label" i18n>Total to pay</span>
     <span class="price">{{totalToPay | customCurrency}}</span>
