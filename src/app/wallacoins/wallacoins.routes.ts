@@ -14,8 +14,7 @@ const routes: Routes = [
       permissions: {
         only: PERMISSIONS.normal,
         redirectTo: '/profile'
-      },
-      isMyZone: true
+      }
     }
   }
 ];

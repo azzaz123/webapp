@@ -34,6 +34,7 @@ import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
+import { PaymentService } from './core/payments/payment.service';
 
 @Component({
   selector: 'tsl-root',
@@ -74,6 +75,7 @@ export class AppComponent implements OnInit {
               private privacyService: PrivacyService,
               private modalService: NgbModal,
               private connectionService: ConnectionService,
+              private paymentService: PaymentService,
               private callService: CallsService) {
     this.config();
   }
@@ -181,6 +183,7 @@ export class AppComponent implements OnInit {
   private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
+      this.paymentService.deleteCache();
       try {
         this.xmppService.disconnect();
       } catch (err) {}

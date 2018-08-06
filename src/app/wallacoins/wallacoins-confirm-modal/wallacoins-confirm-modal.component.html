@@ -2,10 +2,20 @@
   <mat-icon svgIcon="cross"></mat-icon>
 </div>
 
-<div class="modal-body">
-  <h1>Maravilloso!!!!!</h1>
-  <p>Tu compra se ha realizado correctamente y puedes<br /> empezar a destacar tus productos y agilizar tus ventas!</p>
-  <p>Total compra: <b>{{pack?.quantity | number}} wallacoins</b>, <b class="green">conseguiste {{pack?.forFree | number}} de regalo!</b></p>
-  <tsl-button (click)="activeModal.close()">Empieza a destacar</tsl-button><br />
-  <a class="link" (click)="activeModal.dismiss()">Comprar mas wallacoins</a>
+<div class="modal-body" *ngIf="code === '200'">
+  <h1 i18n>Let's go!</h1>
+  <p [hidden]="withCredits" i18n>It's all sorted. We added <b>{{pack.quantity | number}} Wallacoins</b> in your wallet. You can feature your items. Remember that for now you can only get these from the website and they are not interchangeable for Euros.</p>
+  <p [hidden]="!withCredits" i18n>It's all sorted. We added <b>{{pack.quantity | customCurrency}}</b> in your credit to feature your listings. Now get featuring!</p>
+  <tsl-button (click)="activeModal.close()" tslTrackEvent="BUMP_FROM_MODAL_CREDITS_SUCCESS" i18n>Feature listings</tsl-button><br />
+  <a class="link" (click)="activeModal.dismiss()" tslTrackEvent="BUY_MORE_CREDITS_SUCCESS">
+    <span [hidden]="withCredits" i18n>Buy more Wallacoins</span>
+    <span [hidden]="!withCredits" i18n>Buy more credit</span>
+  </a>
 </div>
+
+<div class="modal-body" *ngIf="code === '-1'">
+  <h1 class="red" i18n>Something went wrong :(</h1>
+  <p i18n>There was a problem with your request. Please, try again. </p>
+  <tsl-button (click)="activeModal.dismiss()" i18n>Try again</tsl-button><br />
+</div>
+

@@ -1,4 +1,9 @@
 <h1 i18n>Extra features</h1>
+<div class="clean-cart" [hidden]="!cart?.total">
+  <a (click)="clean()">
+    <span i18n>Delete list</span>
+  </a>
+</div>
 <div class="cart-wrapper" [ngClass]="{'has-financial-card': hasFinancialCard}">
   <div class="scroll-panel">
     <ul *ngIf="cart" class="items-list">
@@ -34,12 +39,6 @@
         </ul>
       </li>
     </ul>
-  </div>
-  <div class="clean-cart" [hidden]="!cart?.total">
-    <a (click)="clean()">
-      <mat-icon svgIcon="delete"></mat-icon>
-      <span i18n>Delete list</span>
-    </a>
   </div>
 </div>
 <div class="total">

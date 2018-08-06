@@ -38,6 +38,7 @@ import { MOCK_PRIVACY_ALLOW, MOCK_PRIVACY_UNKNOW_DISALLOW } from './core/privacy
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
+import { PaymentService } from './core/payments/payment.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -56,6 +57,7 @@ let cookieService: CookieService;
 let privacyService: PrivacyService;
 let modalService: NgbModal;
 let connectionService: ConnectionService;
+let paymentService: PaymentService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
@@ -190,6 +192,12 @@ describe('App', () => {
             }
           }
         },
+        {
+          provide: PaymentService, useValue: {
+            deleteCache() {
+            }
+        }
+        },
         PrivacyService,
         ...
           TEST_HTTP_PROVIDERS
@@ -214,6 +222,7 @@ describe('App', () => {
     privacyService = TestBed.get(PrivacyService);
     modalService = TestBed.get(NgbModal);
     connectionService = TestBed.get(ConnectionService);
+    paymentService = TestBed.get(PaymentService);
     spyOn(notificationService, 'init');
   });
 
@@ -485,6 +494,15 @@ describe('App', () => {
       eventService.emit(EventService.USER_LOGOUT);
 
       expect(xmppService.disconnect).toHaveBeenCalled();
+    });
+
+    it('should delete payments cache', () => {
+      spyOn(paymentService, 'deleteCache');
+
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGOUT);
+
+      expect(paymentService.deleteCache).toHaveBeenCalled();
     });
 
     it('should call syncItem on ITEM_UPDATED', () => {

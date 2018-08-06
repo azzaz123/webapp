@@ -106,7 +106,7 @@ export class CatalogProListComponent implements OnInit {
             }
           };
           const modalType = localStorage.getItem('transactionType');
-          const modal = modalType ? modals[modalType] : modals.bump;
+          const modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
 
           let modalRef: NgbModalRef = this.modalService.open(modal.component, {
             windowClass: modal.windowClass,

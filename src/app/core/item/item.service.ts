@@ -24,7 +24,7 @@ import {
   OrderPro,
   Product,
   ProductDurations,
-  Purchase,
+  Purchase, PurchaseProductsWithCreditsResponse,
   RealestateContent,
   SelectedItemsAction
 } from './item-response.interface';
@@ -430,6 +430,10 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json());
   }
 
+  public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
+    return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams)
+      .map((r: Response) => r.json());
+  }
   public update(item: any, itemType: string): Observable<any> {
     let url: string = this.API_URL + '/';
     if (itemType === ITEM_TYPES.CARS) {

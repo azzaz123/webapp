@@ -37,7 +37,7 @@ import {
   ItemCounters, ItemDataResponse,
   ItemsData,
   ItemWithProducts,
-  Product
+  Product, PurchaseProductsWithCreditsResponse
 } from './item-response.interface';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { HttpService } from '../http/http.service';
@@ -526,6 +526,23 @@ describe('Service: Item', () => {
       });
       expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER]);
       expect(resp).toEqual(['1234']);
+    });
+  });
+
+  describe('purchaseProductsWithCredits', () => {
+    it('should call endpoint', () => {
+      const RESP: PurchaseProductsWithCreditsResponse = {
+        payment_needed: true,
+        items_failed: []
+      };
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      let resp: PurchaseProductsWithCreditsResponse;
+      service.purchaseProductsWithCredits([ORDER], 'UUID').subscribe((r: PurchaseProductsWithCreditsResponse) => {
+        resp = r;
+      });
+      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/credit/UUID', [ORDER]);
+      expect(resp).toEqual(RESP);
     });
   });
 

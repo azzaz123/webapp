@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .select-card {
-  margin-bottom: $spacing-S;
+  margin-bottom: $spacing-XS;
   .btn {
     width: 100%;
     border-radius: $border-radius;
@@ -9,8 +9,7 @@
     display: flex;
     font-size: $font-size-XS;
     align-items: center;
-    padding: $spacing-S;
-    height: 50px;
+    height: $spacing-40;
     color: $grey-250;
     &.active {
       border-color: $corporate;
@@ -31,7 +30,7 @@
       color: $grey-250;
     }
     &.new-card {
-      font-size: $font-size;
+      font-size: $font-size-S;
     }
     &:not(.active) {
       .card-icon {

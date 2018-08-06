@@ -87,7 +87,7 @@ export class I18nService {
       citybump: 'City Bump',
       deleteBillingInfoSuccess: 'Your billing info has been deleted',
       deleteBillingInfoError: 'There was a error deleting your billing info',
-      packError: 'There was a error buying this pack'
+      packError: 'There was a error buying this pack',
       alreadyFeatured: 'You are trying to feature an item that is already planned.'
     },
     es: {

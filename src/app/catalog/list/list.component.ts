@@ -89,18 +89,30 @@ export class ListComponent implements OnInit, OnDestroy {
             }
           };
           const modalType = localStorage.getItem('transactionType');
-          const modal = modalType ? modals[modalType] : modals.bump;
+          const modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
+
+          if (modalType === 'wallapack') {
+            this.router.navigate(['wallacoins', { code: -1 }]);
+            return;
+          }
 
           let modalRef: NgbModalRef = this.modalService.open(modal.component, {
             windowClass: modal.windowClass,
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
+          modalRef.componentInstance.creditUsed = modalType === 'bumpWithCredits';
+          modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
           modalRef.result.then(() => {
             modalRef = null;
             localStorage.removeItem('transactionType');
+            localStorage.removeItem('transactionSpent');
             this.router.navigate(['catalog/list']);
           }, () => {
+            modalRef = null;
+            localStorage.removeItem('transactionType');
+            localStorage.removeItem('transactionSpent');
+            this.router.navigate(['wallacoins']);
           });
         }
         if (params && params.created) {

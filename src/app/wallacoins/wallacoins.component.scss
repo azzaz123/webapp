@@ -8,6 +8,9 @@ $pack-width: 234px;
 
 tsl-header {
   /deep/ {
+    .header-title {
+      text-transform: capitalize;
+    }
     .total-credits {
       color: $grey-250;
       text-align: center;
@@ -24,11 +27,11 @@ tsl-header {
 
 .box-content {
   text-align: center;
+  padding-top: 100px;
 }
 
 h2 {
   font-size: $font-size-XL;
-  margin-top: 74px;
   margin-bottom: $spacing-2M;
 }
 
@@ -45,96 +48,32 @@ p {
   color: $grey-250;
 }
 
-ngb-carousel {
-  margin-top: $spacing-XL;
-  margin-bottom: 86px;
-}
-/deep/ {
-  .carousel .carousel-item {
-    flex-direction: row;
-    justify-content: center;
-    height: 386px;
-    .pack {
-      border-radius: $border-radius;
-      border: solid 2px $grey-50;
+ngu-carousel {
+  width: 794px;
+  margin: $spacing-XL auto 86px;
+  /deep/ {
+    ngu-item {
       width: $pack-width;
-      margin: 0 $spacing-M;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 48px $spacing $spacing-L;
-      position: relative;
-      .featured {
-        $height: 28px;
-        height: $height;
-        background-color: $corporate-light;
-        color: $corporate;
-        text-transform: uppercase;
-        font-size: $font-size-XS;
-        line-height: $height;
-        font-weight: bold;
-        text-align: center;
-        position: absolute;
-        top: 8px;
-        left: 8px;
-        width: 108px;
-        border-radius: 14px;
-      }
-      .icon {
-        @include square(120px);
-        border-radius: 50%;
-        background: rgba($grey-50, .3) no-repeat center;
-        &.icon-1 {
-          background-image: url(/assets/images/wallacoins-1.svg);
-        }
-        &.icon-2 {
-          background-image: url(/assets/images/wallacoins-2.svg);
-        }
-        &.icon-3 {
-          background-image: url(/assets/images/wallacoins-3.svg);
-        }
-        &.icon-4 {
-          background-image: url(/assets/images/wallacoins-4.svg);
-        }
-        &.icon-5 {
-          background-image: url(/assets/images/wallacoins-5.svg);
-        }
-        &.icon-6 {
-          background-image: url(/assets/images/wallacoins-6.svg);
-        }
-      }
-      .quantity {
-        font-size: 40px;
-        font-weight: bold;
-        color: $grey-900;
-        line-height: 30px;
-        margin-top: $spacing;
-      }
-      .label {
-        font-size: $font-size-L;
-        color: $grey-900;
-      }
-      .for-free {
-        color: $corporate;
-        font-size: $font-size;
-        font-weight: bold;
-        flex-grow: 1;
-      }
-      tsl-button {
-        display: block;
-        width: 100%;
+    }
+    .left-arrow, .right-arrow {
+      position: absolute;
+      top: 50%;
+      cursor: pointer;
+      &:hover {
         /deep/ {
-          button {
-            &.btn-grey {
-              background-color: $grey-250;
-            }
+          path {
+            fill: $corporate;
           }
         }
       }
     }
-  }
-  .carousel-indicators {
-    display: none;
+    .left-arrow {
+      left: -50px;
+    }
+    .right-arrow {
+      right: -50px;
+      transform: rotate(180deg);
+    }
   }
 }
 
@@ -142,19 +81,21 @@ ngb-carousel {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: $spacing-L $spacing-XL*2 ;
+  margin: $spacing-L $spacing;
   div {
     width: 33%;
-    padding: 130px $spacing-2M 0;
+    padding: 130px $spacing-M 0;
     background: no-repeat top;
     &.info-1 {
       background-image: url(/assets/images/wallacoins-info-1.svg);
+      padding-left: 0;
     }
     &.info-2 {
       background-image: url(/assets/images/wallacoins-info-2.svg);
     }
     &.info-3 {
       background-image: url(/assets/images/wallacoins-info-3.svg);
+      padding-right: 0;
     }
     h4 {
       font-size: $font-size;
@@ -162,4 +103,10 @@ ngb-carousel {
       font-weight: bold;
     }
   }
+}
+
+.disclaimer {
+  text-align: center;
+  font-size: $font-size-S;
+  padding: 0 12%;
 }

@@ -2,11 +2,14 @@ import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
 import { PaymentService } from './payment.service';
 import { Observable } from 'rxjs/Observable';
-import { BillingInfoResponse, FinancialCard, Packs, Perks, Products, SabadellInfoResponse } from './payment.interface';
+import {
+  BillingInfoResponse, CreditInfo, FinancialCard, Packs, Perks, Products,
+  SabadellInfoResponse
+} from './payment.interface';
 import {
   BILLING_INFO_RESPONSE,
   BUMPS_PRODUCT_RESPONSE,
-  createPacksFixture, createWallacoinsPacksFixture,
+  createPacksFixture, createWallacoinsPacksFixture, createWallacreditsPacksFixture,
   FINANCIAL_CARD,
   PACK_RESPONSE,
   PERK_RESPONSE,
@@ -18,23 +21,34 @@ import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { PerksModel } from './payment.model';
 import { PRODUCT_RESPONSE } from '../../../tests/item.fixtures.spec';
-import { CREDITS_PACK_ID, Pack } from './pack';
+import { COINS_FACTOR, COINS_PACK_ID, CREDITS_FACTOR, CREDITS_PACK_ID, Pack } from './pack';
+import { UserService } from '../user/user.service';
+import { PERMISSIONS } from '../user/user';
 
 
 describe('PaymentService', () => {
 
   let service: PaymentService;
   let http: HttpService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ...TEST_HTTP_PROVIDERS,
-        PaymentService
+        PaymentService,
+        {
+          provide: UserService, useValue: {
+          hasPerm() {
+            return Observable.of(true);
+          }
+        }
+        }
       ]
     });
     service = TestBed.get(PaymentService);
     http = TestBed.get(HttpService);
+    userService = TestBed.get(UserService);
   });
 
   describe('pay', () => {
@@ -107,8 +121,8 @@ describe('PaymentService', () => {
 
     describe('with param', () => {
       const product: Products = {
-        [CREDITS_PACK_ID]: {
-          id: CREDITS_PACK_ID,
+        [COINS_PACK_ID]: {
+          id: COINS_PACK_ID,
           name: 'WALLACOINS'
         }
       };
@@ -124,7 +138,7 @@ describe('PaymentService', () => {
 
       it('should call endpoint', () => {
         expect(http.get).toHaveBeenCalledWith('api/v3/payments/packs', {
-          products: CREDITS_PACK_ID
+          products: COINS_PACK_ID
         });
         expect(http.get).not.toHaveBeenCalledWith('api/v3/payments/products');
       });
@@ -136,14 +150,115 @@ describe('PaymentService', () => {
 
   });
 
-  describe('getCreditsPacks', () => {
+  describe('getCreditInfo', () => {
 
-    let resp: Pack[][];
+    const PERKS_MODEL = new PerksModel();
+
+    it('should call getPerks, hasPerm and return credit and wallacoins if perm is true', () => {
+      let resp: CreditInfo;
+      spyOn(userService, 'hasPerm').and.returnValue(Observable.of(true));
+      spyOn(service, 'getPerks').and.returnValue(Observable.of(PERKS_MODEL));
+      const CREDIT = 100;
+      PERKS_MODEL.wallacoins.quantity = CREDIT;
+
+      service.getCreditInfo().subscribe((r: CreditInfo) => {
+        resp = r;
+      });
+
+      expect(service.getPerks).toHaveBeenCalledWith(true);
+      expect(userService.hasPerm).toHaveBeenCalledWith(PERMISSIONS.coins);
+      expect(resp).toEqual({
+        currencyName: 'wallacoins',
+        credit: CREDIT,
+        factor: COINS_FACTOR
+      });
+    });
+
+    it('should call getPerks, hasPerm and return credit and wallacredits if perm is false', () => {
+      let resp: CreditInfo;
+      spyOn(userService, 'hasPerm').and.returnValue(Observable.of(false));
+      spyOn(service, 'getPerks').and.returnValue(Observable.of(PERKS_MODEL));
+      const CREDIT = 100;
+      PERKS_MODEL.wallacredits.quantity = CREDIT;
+
+      service.getCreditInfo().subscribe((r: CreditInfo) => {
+        resp = r;
+      });
+
+      expect(service.getPerks).toHaveBeenCalledWith(true);
+      expect(userService.hasPerm).toHaveBeenCalledWith(PERMISSIONS.coins);
+      expect(resp).toEqual({
+        currencyName: 'wallacredits',
+        credit: CREDIT,
+        factor: CREDITS_FACTOR
+      });
+    });
+  });
+
+  describe('getCoinsCreditsPacks', () => {
+
+    it('should call hasPerm', () => {
+      spyOn(userService, 'hasPerm').and.callThrough();
+
+      service.getCoinsCreditsPacks().subscribe();
+
+      expect(userService.hasPerm).toHaveBeenCalledWith('coins');
+    });
+
+    it('should call getCoinsPacks if user has perm', () => {
+      spyOn(service, 'getCoinsPacks').and.callThrough();
+
+      service.getCoinsCreditsPacks().subscribe();
+
+      expect(service.getCoinsPacks).toHaveBeenCalled();
+    });
+
+    it('should call getCreditsPacks if user has no perm', () => {
+      spyOn(userService, 'hasPerm').and.returnValue(Observable.of(false));
+      spyOn(service, 'getCreditsPacks').and.callThrough();
+
+      service.getCoinsCreditsPacks().subscribe();
+
+      expect(service.getCreditsPacks).toHaveBeenCalled();
+    });
+  });
+
+  describe('getCoinsPacks', () => {
+
+    let resp: Pack[];
 
     beforeEach(() => {
       spyOn(service, 'getPacks').and.returnValue(Observable.of(createWallacoinsPacksFixture()));
 
-      service.getCreditsPacks().subscribe((r: Pack[][]) => {
+      service.getCoinsPacks().subscribe((r: Pack[]) => {
+        resp = r;
+      });
+    });
+
+    it('should call getPacks', () => {
+      expect(service.getPacks).toHaveBeenCalledWith({
+        [COINS_PACK_ID]: {
+          id: COINS_PACK_ID,
+          name: 'WALLACOINS'
+        }
+      });
+    });
+
+    it('should return an array of wallacoins packs', () => {
+      expect(resp.length).toBe(6);
+      expect(resp[0] instanceof Pack).toBe(true);
+      expect(resp[0].name).toBe('wallacoins');
+    });
+  });
+
+  describe('getCreditsPacks', () => {
+
+    let resp: Pack[];
+
+    beforeEach(() => {
+      spyOn(service, 'getPacks').and.returnValue(Observable.of(createWallacreditsPacksFixture()));
+
+      service.getCreditsPacks().subscribe((r: Pack[]) => {
         resp = r;
       });
     });
@@ -152,17 +267,15 @@ describe('PaymentService', () => {
       expect(service.getPacks).toHaveBeenCalledWith({
         [CREDITS_PACK_ID]: {
           id: CREDITS_PACK_ID,
-          name: 'WALLACOINS'
+          name: 'WALLACREDITS'
         }
       });
     });
 
-    it('should return an array of wallacoins packs array', () => {
-      expect(resp.length).toBe(2);
-      expect(resp[0].length).toBe(3);
-      expect(resp[1].length).toBe(3);
-      expect(resp[0][0] instanceof Pack).toBe(true);
-      expect(resp[0][0].name).toBe('wallacoins');
+    it('should return an array of wallacredits packs', () => {
+      expect(resp.length).toBe(6);
+      expect(resp[0] instanceof Pack).toBe(true);
+      expect(resp[0].name).toBe('wallacredits');
     });
   });
 
@@ -277,6 +390,16 @@ describe('PaymentService', () => {
       service.deleteBillingInfo('123');
 
       expect(http.delete).toHaveBeenCalledWith('api/v3/payments/billing-info/123');
+    });
+  });
+
+  describe('deleteCache', () => {
+    it('should delete cache', () => {
+      service['perksModel'] = new PerksModel();
+
+      service.deleteCache();
+
+      expect(service['perksModel']).toBeNull();
     });
   });
 });

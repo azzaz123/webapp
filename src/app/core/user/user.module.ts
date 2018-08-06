@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material';
 import { ItemModule } from '../item/item.module';
 import { UserService } from './user.service';
 import { HaversineService } from 'ng2-haversine';
+import { FeatureflagService } from './featureflag.service';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { HaversineService } from 'ng2-haversine';
   ],
   providers: [
     UserService,
-    HaversineService
+    HaversineService,
+    FeatureflagService
   ]
 })
 export class UserModule { }

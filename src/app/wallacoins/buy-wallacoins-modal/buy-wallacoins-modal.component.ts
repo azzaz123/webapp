@@ -27,6 +27,10 @@ export class BuyWallacoinsModalComponent {
               public activeModal: NgbActiveModal) {
   }
 
+  get withCredits(): boolean {
+    return this.pack.name === 'wallacredits';
+  }
+
   public hasCard(hasCard: boolean) {
     this.hasFinancialCard = hasCard;
     this.mainLoading = false;
@@ -39,7 +43,6 @@ export class BuyWallacoinsModalComponent {
     };
     this.loading = true;
     this.paymentService.orderExtrasProPack(order).subscribe(() => {
-      this.track(order);
       this.buy(order.id);
     }, (error: Response) => {
       this.loading = false;
@@ -53,6 +56,8 @@ export class BuyWallacoinsModalComponent {
 
   private buy(orderId: string) {
     if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
+      localStorage.setItem('transactionType', 'wallapack');
+      localStorage.setItem('pack', JSON.stringify(this.pack));
       this.sabadellSubmit.emit(orderId);
     } else {
       this.paymentService.pay(orderId).subscribe(() => {
@@ -62,10 +67,6 @@ export class BuyWallacoinsModalComponent {
         this.loading = false;
       });
     }
-  }
-
-  private track(order: OrderProExtras) {
-    //this.trackingService.track(TrackingService.PRO_PURCHASE_CHECKOUTPROEXTRACART, {selected_packs: order.packs});
   }
 
 }

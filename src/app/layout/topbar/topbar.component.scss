@@ -210,7 +210,7 @@
     & {
       color: $color-grey-item;
       height: 65px;
-      padding-right: 20px;
+      margin-right: $spacing;
       position: relative;
       display: flex;
       align-items: center;
@@ -250,8 +250,8 @@
     .horizontal-line {
       display: none;
       border-bottom: 3px solid $grey-900;
-      width: 80%;
-      margin-left: 8px;
+      width: 100%;
+      margin-left: $spacing-XS;
       position: absolute;
       bottom: 0;
       left: 0;
@@ -382,5 +382,14 @@
         }
       }
     }
+  }
+}
+
+.main-header-credits {
+  b {
+    color: $corporate;
+  }
+  .topbar-icon {
+    @include square(38px);
   }
 }

@@ -3,6 +3,8 @@ import { ItemService } from '../../core/item/item.service';
 import { ItemWithProducts } from '../../core/item/item-response.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BumpTutorialComponent } from './bump-tutorial/bump-tutorial.component';
+import { CreditInfo } from '../../core/payments/payment.interface';
+import { PaymentService } from '../../core/payments/payment.service';
 
 @Component({
   selector: 'tsl-checkout',
@@ -13,10 +15,12 @@ export class CheckoutComponent implements OnInit {
 
   itemsWithProducts: ItemWithProducts[];
   provincialBump: boolean;
+  creditInfo: CreditInfo;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(private itemService: ItemService,
               private router: Router,
+              private paymentService: PaymentService,
               private route: ActivatedRoute) {
   }
 
@@ -51,6 +55,14 @@ export class CheckoutComponent implements OnInit {
     } else {
       this.router.navigate(['pro/catalog/list', {alreadyFeatured: true}]);
     }
+    this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
+      if (creditInfo.credit === 0) {
+        creditInfo.currencyName = 'wallacredits';
+        creditInfo.factor = 1;
+      }
+      this.creditInfo = creditInfo;
+    });
+
   }
 
 }

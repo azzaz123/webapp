@@ -53,7 +53,7 @@ export interface PackResponse {
 
 export interface ProductResponse {
   id: string;
-  name: 'NATIONAL_BUMP' | 'BUMP' | 'LISTINGS' | 'WALLACOINS';
+  name: 'NATIONAL_BUMP' | 'BUMP' | 'LISTINGS' | 'WALLACOINS' | 'WALLACREDITS';
 }
 
 export interface Products {
@@ -107,4 +107,10 @@ export interface ScheduledStatus {
 export interface ScheduledBumps {
   citybump?: number;
   countrybump?: number;
+}
+
+export interface CreditInfo {
+  currencyName: string;
+  credit: number;
+  factor: number;
 }

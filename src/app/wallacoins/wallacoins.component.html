@@ -1,56 +1,80 @@
 <div class="page-content">
   <div class="container">
-    <tsl-header>
-      <div class="col-11">
-        <div class="header-row">
-          <h1 class="header-title" i18n>Wallacoins</h1>
+    <tsl-spinner [firstLoad]="false" [hidden]="!loading"></tsl-spinner>
+    <div [hidden]="loading">
+      <tsl-header>
+        <div class="col-11">
+          <div class="header-row">
+            <h1 class="header-title">
+              <span [hidden]="withCoins" i18n>Credit</span>
+              <span [hidden]="!withCoins">Wallacoins</span>
+            </h1>
+          </div>
+          <div class="header-row header-row--margin">
+            <h4 class="header-subtitle">
+              <span [hidden]="withCoins" i18n>Buy saving packs to feature your items and check your credit remaining.</span>
+              <span [hidden]="!withCoins" i18n>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit.</span>
+            </h4>
+          </div>
         </div>
-        <div class="header-row header-row--margin">
-          <h4 class="header-subtitle" i18n>Esto es una pequeña línea sobre esta sección, sea cual sea el nombre</h4>
+        <div class="col-1">
+          <div class="total-credits" [hidden]="!withCoins">
+            <div class="credits">{{wallacoins | number}}</div>
+            <div class="label">{{currencyName}}</div>
+          </div>
+          <div class="total-credits" [hidden]="withCoins">
+            <div class="credits">{{wallacoins | customCurrency}}</div>
+            <div class="label" i18n>credit</div>
+          </div>
         </div>
-      </div>
-      <div class="col-1">
-        <div class="total-credits">
-          <div class="credits">{{wallacoins | number}}</div>
-          <div class="label">wallacoins</div>
-        </div>
-      </div>
-    </tsl-header>
-    <div class="box">
-      <div class="box-content">
-        <h2>Un euro = 100 wallacoins</h2>
-        <p>Tenemos diferentes paquetes que se ajustan a tus necesidades.<br />
-          Cuanto más compres más te regalamos!</p>
-        <ngb-carousel *ngIf="packs?.length" interval="0">
-          <ng-template ngbSlide *ngFor="let packArray of packs; let i = index">
-            <div class="pack" *ngFor="let pack of packArray; let j = index">
-              <div class="featured" *ngIf="i === 0 && j === 1">Mas popular</div>
-              <div class="icon icon-{{i*packArray.length + j + 1}}"></div>
-              <div class="quantity">{{pack.quantity | number}}</div>
-              <div class="label">wallacoins</div>
-              <div class="for-free"><span *ngIf="pack.forFree > 0">{{pack.forFree | number}} de regalo!</span></div>
-              <tsl-button (click)="openBuyModal(pack, i*packArray.length + j + 1)" [className]="'btn-block ' + (i === 0 && j === 1 ? 'btn-primary' : 'btn-grey')">
-                Compra por <b>{{pack.price | customCurrency}}</b>
-              </tsl-button>
+      </tsl-header>
+      <div class="box">
+        <div class="box-content">
+          <h2 [hidden]="!withCoins">1€ = {{factor}} {{currencyName}}</h2>
+          <h3 [hidden]="withCoins" i18n>Saving packs</h3>
+          <p [hidden]="!withCoins" i18n>We've definitely got a pack for you that will save you money.</p>
+          <p [hidden]="withCoins" i18n>These are our ready to go packs; use them to save money when buying features.</p>
+          <ngu-carousel [inputs]="carouselOptions" *ngIf="packs?.length">
+            <ngu-item NguCarouselItem *ngFor="let pack of packs; let i = index">
+              <tsl-pack-wallacoins [pack]="pack" [packIndex]="i + 1" (onBuy)="openBuyModal(pack, i + 1)"></tsl-pack-wallacoins>
+            </ngu-item>
+            <mat-icon NguCarouselPrev svgIcon="slider-arrow" class="left-arrow"></mat-icon>
+            <mat-icon NguCarouselNext svgIcon="slider-arrow" class="right-arrow"></mat-icon>
+          </ngu-carousel>
+          <h3 [hidden]="!withCoins" i18n>Why get Wallacoins?</h3>
+          <h3 [hidden]="withCoins" i18n>Why buy a pack of features?</h3>
+          <div class="info" [hidden]="!withCoins">
+            <div class="info-1">
+              <h4 i18n>One coin for everyone</h4>
+              <p i18n>Our visibility options can now be unlocked with a new key: Wallacoins. Our new currency for your features with unique benefits.</p>
             </div>
-          </ng-template>
-        </ngb-carousel>
-        <h3>¿Por qué debería comprar wallas?</h3>
-        <div class="info">
-          <div class="info-1">
-            <h4>Pago muy seguro</h4>
-            <p>Por cada paquete que compres te regalamos dinero para utilizar en wallapop.</p>
+            <div class="info-2">
+              <h4 i18n>Now, save</h4>
+              <p i18n>You can save money with Wallacoins. When you buy one our our packs, we will give you more wallacoins and that means you can feature more of your listings for less!</p>
+            </div>
+            <div class="info-3">
+              <h4 i18n>Quick! Quick!</h4>
+              <p i18n>Buying with Wallacoins is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</p>
+            </div>
           </div>
-          <div class="info-2">
-            <h4>Ahorras mucho dinero</h4>
-            <p>Puedes disponer en cualquier momento de los wallacoins para destacar.</p>
-          </div>
-          <div class="info-3">
-            <h4>Mucho más rápido y cómodo</h4>
-            <p>Como todos los pagos que realices por wallapop la compra de wallacoins es mega segura.</p>
+          <div class="info" [hidden]="withCoins">
+            <div class="info-1">
+              <h4 i18n>Pay once and forget about it</h4>
+              <p i18n>Rather than paying every time you want to feature a listing; do it just once and use your features whenever you want. It's faster and easier.</p>
+            </div>
+            <div class="info-2">
+              <h4 i18n>Now, save</h4>
+              <p i18n>Buying a pack means you can save up to -XX% on your features.</p>
+            </div>
+            <div class="info-3">
+              <h4 i18n>Quick! Quick!</h4>
+              <p i18n>Buying with credit is even faster. Add them to your wallet and pay with them directly when you want to feature a listing.</p>
+            </div>
           </div>
         </div>
       </div>
+      <p class="disclaimer" i18n [hidden]="!withCoins">Wallacoins are only available in website.<br />You can use them to feature your items. Wallacoins that are purchased will expire 12 months after they are added to your Credit. Wallacoins are non-refundable, and can't be converted back into money once purchased.</p>
+      <p class="disclaimer" i18n [hidden]="withCoins">Your Credit and our Saving Packs are only available (for now) on the website.<br />Once your Credit is purchased will expire 12 months after.</p>
     </div>
   </div>
 </div>
