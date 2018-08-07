@@ -424,10 +424,10 @@ export class ConversationService extends LeadService {
     return this.xmpp.isConnected().first()
     .flatMap(() => {
       if (this.connectionService.isConnected) {
-        return this.messageService.getNotSavedMessages().map((response: MessagesData) => {
-          if (response.data.length) {
+        return this.messageService.getNotSavedMessages().map((response: MsgArchiveData) => {
+          if (response.messages.length) {
             let conversation: Conversation;
-            response.data.forEach((message: Message) => {
+            response.messages.forEach((message: Message) => {
               conversation = conversations.filter((filteredConversation: Conversation): boolean => {
                 return (filteredConversation.id === message.conversationId);
               })[0];

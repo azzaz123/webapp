@@ -67,14 +67,14 @@ export class MessageService {
             return msg;
           })
         });
-      } else if (this.xmpp.clientConnected && this.connectionService.isConnected) {
-        return this.query(conversation.id, conversation.lastMessageRef, total);
+      } else if (this.connectionService.isConnected) {
+        return this.queryMessagesByThread(conversation.id);
       }
     })
     .map((res: any) => {
       return {
         meta: res.meta,
-        data: this.addUserInfoToArray(conversation, res.data)
+        data: this.addUserInfoToArray(conversation, res.data ? res.data : res.messages)
       };
     });
   }
@@ -120,13 +120,11 @@ export class MessageService {
     });
   }
 
-  public query(conversationId: string, lastMessageRef: string, total: number = -1,
-               start?: string): Observable<MessagesData> {
-    return this.recursiveQuery(conversationId, lastMessageRef, total, [], start).first()
-    .map((res: MessagesDataRecursive) => {
-      res.data = res.messages;
-      this.persistencyService.saveMessages(res.data);
-      delete res.messages;
+  public queryMessagesByThread(thread: string, since?: string): Observable<any> {
+    const nanoTimestamp = since ? (new Date(since).getTime() / 1000) + '000' : null;
+    return this.archive.getAllEvents(thread, nanoTimestamp)
+    .map((res: MsgArchiveResponse) => {
+      this.persistencyService.saveMessages(res.messages);
       return res;
     });
   }
