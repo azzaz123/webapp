@@ -140,10 +140,10 @@ export class MockedPersistencyService {
   public getMetaInformation() {
   }
 
-  public saveUnreadMessages(conversationId: string, unreadMessages: number) {
+  public saveUnreadMessagesCount(conversationId: string, unreadMessages: number) {
   }
 
-  public getUnreadMessages(conversationId: string) {
+  public getUnreadMessagesCount(conversationId: string) {
   }
 
   public resetCache() {

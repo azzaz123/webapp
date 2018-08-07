@@ -217,7 +217,7 @@ export class ConversationService extends LeadService {
   }
 
   private loadUnreadMessagesNumber(conversation: Conversation): Observable<Conversation> {
-    return this.persistencyService.getUnreadMessages(conversation.id)
+    return this.persistencyService.getUnreadMessagesCount(conversation.id)
     .map((storedConv: StoredConversation) => {
       conversation.unreadMessages = storedConv.unreadMessages;
       this.messageService.totalUnreadMessages += storedConv.unreadMessages;
@@ -366,14 +366,14 @@ export class ConversationService extends LeadService {
       this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);
       this.messageService.totalUnreadMessages -= conversation.unreadMessages;
       conversation.unreadMessages = 0;
-      this.persistencyService.saveUnreadMessages(conversation.id, 0);
+      this.persistencyService.saveUnreadMessagesCount(conversation.id, 0);
     }
   }
 
   private handleUnreadMessage(conversation: Conversation) {
     this.zone.run(() => {
       conversation.unreadMessages++;
-      this.persistencyService.saveUnreadMessages(conversation.id, conversation.unreadMessages);
+      this.persistencyService.saveUnreadMessagesCount(conversation.id, conversation.unreadMessages);
       this.messageService.totalUnreadMessages++;
     });
   }
@@ -406,7 +406,7 @@ export class ConversationService extends LeadService {
           }
           conversations = this.xmpp.addUnreadMessagesCounter(conversations);
           conversations.forEach(conversation => {
-            this.persistencyService.saveUnreadMessages(conversation.id, conversation.unreadMessages);
+            this.persistencyService.saveUnreadMessagesCount(conversation.id, conversation.unreadMessages);
           });
           this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
             this.messageService.totalUnreadMessages :
