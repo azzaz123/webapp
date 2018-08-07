@@ -29,7 +29,7 @@ export class MsgArchiveService {
       let messages = this.processMessages(events);
       const readReceipts = this.processReadReceipts(events);
       const receivedReceipts = this.processReceivedReceipts(events);
-      messages = this.updateStatusOwnMsg(messages, readReceipts, receivedReceipts);
+      messages = this.updateStatuses(messages, readReceipts, receivedReceipts);
 
       const response = {
         messages: messages,
@@ -70,7 +70,7 @@ export class MsgArchiveService {
       let messages = this.processMessages(events);
       const readReceipts = this.processReadReceipts(events);
       const receivedReceipts = this.processReceivedReceipts(events);
-      messages = this.updateStatusOwnMsg(messages, readReceipts, receivedReceipts);
+      messages = this.updateStatuses(messages, readReceipts, receivedReceipts);
 
       const response = {
         messages: messages,
@@ -93,16 +93,15 @@ export class MsgArchiveService {
     });
   }
 
-  private updateStatusOwnMsg(messages: Message[], readReceipts, receivedReceipts) {
-    const self: User = this.userService.user;
+  private updateStatuses(messages: Message[], readReceipts, receivedReceipts) {
     readReceipts.forEach(r => {
       messages.filter(m => {
-        const threadRead = m.conversationId === r.thread;
+        const threadMatches = m.conversationId === r.thread;
+        const senderMatches = m.from === r.to;
         const olderThanReadTs = (m.date.getTime() / 1000 < r.timestamp);
-        const msgFromSelf = m.from === self.id;
-        return threadRead && olderThanReadTs && msgFromSelf;
-      }).map(m => {
-        // TODO - send read_ack (441) per message; - or should I?...
+        return threadMatches && olderThanReadTs && senderMatches;
+      })
+      .map(m => {
         m.status = messageStatus.READ;
         return m;
       });
