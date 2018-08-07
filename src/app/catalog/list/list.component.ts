@@ -92,7 +92,7 @@ export class ListComponent implements OnInit, OnDestroy {
           const modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
 
           if (modalType === 'wallapack') {
-            this.router.navigate(['wallacoins', { code: -1 }]);
+            this.router.navigate(['wallacoins', { code: params.code }]);
             return;
           }
 
