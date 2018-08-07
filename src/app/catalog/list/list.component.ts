@@ -19,10 +19,11 @@ import { UserStatsResponse, Counters } from '../../core/user/user-stats.interfac
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
-import { FinancialCard } from '../../core/payments/payment.interface';
+import { FinancialCard, CreditInfo } from '../../core/payments/payment.interface';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
+import { PerksModel } from '../../core/payments/payment.model';
 
 @Component({
   selector: 'tsl-list',
@@ -94,6 +95,12 @@ export class ListComponent implements OnInit, OnDestroy {
           if (modalType === 'wallapack') {
             this.router.navigate(['wallacoins', { code: params.code }]);
             return;
+          }
+          if (localStorage.getItem('transactionSpent')) {
+            this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
+              const remainingCredit: number = creditInfo.credit - +localStorage.getItem('transactionSpent');
+              this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, remainingCredit);
+            });
           }
 
           let modalRef: NgbModalRef = this.modalService.open(modal.component, {
