@@ -96,7 +96,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.router.navigate(['wallacoins', { code: params.code }]);
             return;
           }
-          if (localStorage.getItem('transactionSpent')) {
+          if (+localStorage.getItem('transactionSpent') > 0) {
             this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
               const remainingCredit: number = creditInfo.credit - +localStorage.getItem('transactionSpent');
               this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, remainingCredit);
