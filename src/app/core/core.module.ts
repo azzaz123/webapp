@@ -15,6 +15,7 @@ import { HttpService } from './http/http.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { DebugService } from './debug/debug.service';
 import { MessageService } from './message/message.service';
+import { MsgArchiveService } from './message/archive.service';
 import { NotificationService } from './notification/notification.service';
 import { PaymentService } from './payments/payment.service';
 import { PersistencyService } from './persistency/persistency.service';
@@ -58,6 +59,7 @@ export class CoreModule {
         HttpService,
         DebugService,
         MessageService,
+        MsgArchiveService,
         NotificationService,
         PaymentService,
         PersistencyService,

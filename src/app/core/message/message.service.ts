@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
+import { MsgArchiveService } from './archive.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Conversation } from '../conversation/conversation';
@@ -7,7 +8,7 @@ import { Message, messageStatus } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
-import { MessagesData, MessagesDataRecursive, StoredMessageRow, StoredMetaInfoData } from './messages.interface';
+import { MessagesData, MessagesDataRecursive, StoredMessageRow, StoredMetaInfoData, MsgArchiveData } from './messages.interface';
 import 'rxjs/add/operator/first';
 import { ConnectionService } from '../connection/connection.service';
 
@@ -21,6 +22,7 @@ export class MessageService {
   private resendOlderThan = 5;
 
   constructor(private xmpp: XmppService,
+              private archive: MsgArchiveService,
               private persistencyService: PersistencyService,
               private userService: UserService,
               private connectionService: ConnectionService) {
@@ -76,13 +78,16 @@ export class MessageService {
     });
   }
 
-  public getNotSavedMessages(): Observable<MessagesData> {
+  public getNotSavedMessages(): Observable<MsgArchiveData> {
     if (this.connectionService.isConnected) {
       return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
-        return this.query(null, resp.data.last, -1, resp.data.start).do((newMessages: MessagesData) => {
-          if (newMessages.data.length) {
+        return this.queryMessages(resp.data.start).do((r: MsgArchiveData) => {
+          if (r.messages.length) {
             this.persistencyService.saveMetaInformation(
-              {last: newMessages.meta.last, start: newMessages.data[newMessages.data.length - 1].date.toISOString()}
+              {
+                last: r.messages[r.messages.length - 1].id,
+                start: r.messages[r.messages.length - 1].date.toISOString()
+              }
             );
           }
         });
@@ -105,6 +110,13 @@ export class MessageService {
 
   public send(conversation: Conversation, message: string) {
     this.xmpp.sendMessage(conversation, message);
+  }
+
+  public queryMessages(since: string): Observable<any> {
+    const nanoTimestamp = (new Date(since).getTime() / 1000) + '000';
+    return this.archive.getEventsSince(nanoTimestamp).map(r => {
+      return r;
+    });
   }
 
   public query(conversationId: string, lastMessageRef: string, total: number = -1,
