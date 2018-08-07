@@ -29,6 +29,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
+import { MsgArchiveData } from '../message/archive.interface';
 
 @Injectable()
 export class ConversationService extends LeadService {
