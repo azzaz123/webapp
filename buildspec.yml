@@ -55,6 +55,8 @@ phases:
           docker push "745640521341.dkr.ecr.eu-west-1.amazonaws.com/devel/webapp:$TAG_BRANCH"
         fi
 
+      - if [ "$TAG_BRANCH" = "release" ]; then VERSION=$(echo $BRANCH | cut -d '/' -f 2) ; curl -X POST "http://jenkins.wallapop.com:8080/job/PARAMETRIZED_TAG_AND_SEND_RELEASE_EMAIL/buildWithParameters?token=37a71f5b15ea00dcaf853153ec24ab0d&RELEASE_VERSION=$VERSION&JIRA_TAG_PREFIX=MOD&REPO=webapp&PLATFORM=jarvis"; fi
+
 cache:
   paths:
     - /tmp/.cache/yarn/**/*
