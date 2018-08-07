@@ -611,7 +611,7 @@ describe('Service: Conversation', () => {
     const INITIAL_UNREAD_MESSAGES = 3;
     let response: Conversation;
     beforeEach(() => {
-      spyOn(persistencyService, 'getUnreadMessages').and.returnValue(Observable.of({unreadMessages: UNREAD_MESSAGES}));
+      spyOn(persistencyService, 'getUnreadMessagesCount').and.returnValue(Observable.of({unreadMessages: UNREAD_MESSAGES}));
       const conversation: Conversation = MOCK_CONVERSATION();
       messageService.totalUnreadMessages = INITIAL_UNREAD_MESSAGES;
       service['loadUnreadMessagesNumber'](conversation).subscribe((r: Conversation) => {
@@ -933,10 +933,10 @@ describe('Service: Conversation', () => {
     });
 
     it('should set the pouchDb unreadMessages to 0', () => {
-      spyOn(persistencyService, 'saveUnreadMessages');
+      spyOn(persistencyService, 'saveUnreadMessagesCount');
       conversation.unreadMessages = 2;
       service.sendRead(conversation);
-      expect(persistencyService.saveUnreadMessages).toHaveBeenCalledWith(conversation.id, 0);
+      expect(persistencyService.saveUnreadMessagesCount).toHaveBeenCalledWith(conversation.id, 0);
     });
 
     it('should decrement totalUnreadMessages', () => {
@@ -1005,16 +1005,16 @@ describe('Service: Conversation', () => {
         expect(xmpp.addUnreadMessagesCounter).toHaveBeenCalled();
       });
 
-      it('should call persistencyService.saveUnreadMessages', () => {
+      it('should call persistencyService.saveUnreadMessagesCount', () => {
         spyOn(xmpp, 'addUnreadMessagesCounter').and.returnValue(conversations);
-        spyOn(persistencyService, 'saveUnreadMessages');
+        spyOn(persistencyService, 'saveUnreadMessagesCount');
         convWithMessages = [];
 
         service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
           convWithMessages = res;
         });
 
-        expect(persistencyService.saveUnreadMessages).toHaveBeenCalledTimes(5);
+        expect(persistencyService.saveUnreadMessagesCount).toHaveBeenCalledTimes(5);
       });
 
       it('should set messageService.totalUnreadMessages', () => {
@@ -1253,12 +1253,12 @@ describe('Service: Conversation', () => {
   describe('handleUnreadMessage', () => {
     it('should add 1 the unreadMessages to the conversation and save it on the DB', () => {
       const conversation: Conversation = MOCK_CONVERSATION();
-      spyOn(persistencyService, 'saveUnreadMessages');
+      spyOn(persistencyService, 'saveUnreadMessagesCount');
       messageService.totalUnreadMessages = 0;
       (service as any).handleUnreadMessage(conversation);
       expect(conversation.unreadMessages).toBe(1);
       expect(messageService.totalUnreadMessages).toBe(1);
-      expect(persistencyService.saveUnreadMessages).toHaveBeenCalledWith(conversation.id, conversation.unreadMessages);
+      expect(persistencyService.saveUnreadMessagesCount).toHaveBeenCalledWith(conversation.id, conversation.unreadMessages);
     });
   });
 

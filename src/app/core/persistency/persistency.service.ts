@@ -196,7 +196,7 @@ export class PersistencyService {
     });
   }
 
-  public saveUnreadMessages(conversationId: string, unreadMessages: number): Observable<any> {
+  public saveUnreadMessagesCount(conversationId: string, unreadMessages: number): Observable<any> {
     return Observable.fromPromise(
       this.upsert(this.conversationsDb, conversationId, (doc: StoredConversation) => {
         doc.unreadMessages = unreadMessages;
@@ -205,7 +205,7 @@ export class PersistencyService {
     );
   }
 
-  public getUnreadMessages(conversationId: string): Observable<StoredConversation> {
+  public getUnreadMessagesCount(conversationId: string): Observable<StoredConversation> {
     return Observable.create((observer: Observer<StoredConversation>) => {
       this.conversationsDb.get(conversationId).then((data: StoredConversation) => {
         if (!data.unreadMessages) {

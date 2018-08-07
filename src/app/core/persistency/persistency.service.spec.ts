@@ -196,7 +196,7 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('saveUnreadMessages', () => {
+  describe('saveUnreadMessagesCount', () => {
     it('should upsert the unread messages node', fakeAsync(() => {
       spyOn(service.conversationsDb, 'get').and.returnValue(Promise.resolve({
         _rev: MOCK_REV,
@@ -204,7 +204,7 @@ describe('Service: Persistency', () => {
       }));
       spyOn(service.conversationsDb, 'put').and.callThrough();
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
-      service.saveUnreadMessages(CONVERSATION_ID, MOCK_UNREAD_MESSAGES).subscribe();
+      service.saveUnreadMessagesCount(CONVERSATION_ID, MOCK_UNREAD_MESSAGES).subscribe();
       tick();
       expect(service['upsert']).toHaveBeenCalled();
     }));
