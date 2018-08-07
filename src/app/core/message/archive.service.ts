@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { MsgArchiveResponse } from './messages.interface';
+import { MsgArchiveResponse } from './archive.interface';
 import { HttpService } from '../http/http.service';
 import { Message, messageStatus } from './message';
 import { User } from '../user/user';
