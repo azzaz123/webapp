@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { MsgArchiveResponse } from './archive.interface';
+import { MsgArchiveResponse, MsgArchiveData } from './archive.interface';
 import { HttpService } from '../http/http.service';
 import { Message, messageStatus } from './message';
 import { User } from '../user/user';
@@ -56,17 +56,13 @@ export class MsgArchiveService {
       }
 
       r.events = events;
-      console.log('returning...', r.events.length);
-      console.log(r.events);
       return Observable.of(r);
     });
   }
 
-  public getAllEvents(start: string, thread: string): Observable<any> {
-    // TODO - first archive
-    return this.getAll(start, [], thread).first().map((r: any) => {
+  public getAllEvents(thread: string, since?: string): Observable<MsgArchiveResponse> {
+    return this.getAll(thread, [], since ? since : '0').first().map((r: any) => {
       const events = r.events;
-      console.log(r.events.length);
       let messages = this.processMessages(events);
       const readReceipts = this.processReadReceipts(events);
       const receivedReceipts = this.processReceivedReceipts(events);
@@ -82,13 +78,22 @@ export class MsgArchiveService {
     });
   }
 
-  private getAll(since: string, events, thread: string): Observable<any> {
+  private getAll(thread: string, events, since: string): Observable<any> {
     return this.http.get(this.API_URL, {
       since: since,
       'page-size': this.pageSize,
       conversation_hash: thread
     }).flatMap((r: any) => {
-      // TODO
+      const data = r.json();
+      const nextPage = r.headers.get('x-nextpage');
+      events = events.length ? events.concat(data) : data;
+
+      if (nextPage) {
+        const newSince = nextPage.split('since=')[1].split('&')[0];
+        return this.getAll(thread, events, newSince);
+      }
+
+      r.events = events;
       return Observable.of(r);
     });
   }
