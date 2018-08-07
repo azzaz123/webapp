@@ -168,20 +168,21 @@ export class MsgArchiveService {
 
   private processReadReceipts(archiveData: any) {
     const self: User = this.userService.user;
-    let receipts = [];
-    archiveData.filter((r) => r.type === this.eventTypes.read && r.event.to_user_hash !== self.id)
-    .map(m => {
-      const toSelf = m.event.to_user_hash === self.id;
+    const receipts = [];
+    const sentByMe = _.findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash !== self.id);
+    const sentToMe = _.findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash === self.id);
+
+    sentByMe ? receipts.push(sentByMe) : receipts.push();
+    sentToMe ? receipts.push(sentToMe) : receipts.push();
+
+    return receipts.map(m => {
       const receipt = {
         thread: m.event.conversation_hash,
         to: m.event.to_user_hash,
         timestamp: m.event.created_ts
       };
-      receipts.push(receipt);
+      return receipt;
     });
-    receipts = this.returnLatestBy(receipts, 'thread');
-
-    return receipts;
   }
 
 }
