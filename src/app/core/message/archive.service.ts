@@ -12,6 +12,7 @@ import { UserService } from '../user/user.service';
 export class MsgArchiveService {
 
   protected API_URL = 'api/v3/events/chat';
+  private pageSize = 100;
   private eventTypes = {
     message: 'chat.message.created',
     received: 'chat.message.received',
@@ -42,7 +43,8 @@ export class MsgArchiveService {
 
   private getSince(since: string, events): Observable<any> {
     return this.http.get(this.API_URL, {
-      since: since
+      since: since,
+      'page-size': this.pageSize
     }).flatMap((r: any) => {
       const data = r.json();
       const nextPage = r.headers.get('x-nextpage');
@@ -83,7 +85,8 @@ export class MsgArchiveService {
   private getAll(since: string, events, thread: string): Observable<any> {
     return this.http.get(this.API_URL, {
       since: since,
-      convesation_hash: thread
+      'page-size': this.pageSize,
+      conversation_hash: thread
     }).flatMap((r: any) => {
       // TODO
       return Observable.of(r);
