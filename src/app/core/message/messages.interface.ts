@@ -16,17 +16,6 @@ export interface MessagesData {
   meta: MetaInfo;
 }
 
-export interface MsgArchiveData {
-  messages: Message[];
-  meta: MetaInfo;
-}
-
-export interface MsgArchiveResponse {
-  messages: Message[];
-  receivedReceipts: Array<any>;
-  readReceipts: Array<any>;
-}
-
 export interface MessagesDataRecursive extends MessagesData {
   messages: Message[];
 }
