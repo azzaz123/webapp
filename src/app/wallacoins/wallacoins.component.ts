@@ -76,15 +76,18 @@ export class WallacoinsComponent implements OnInit {
     });
   }
 
+  private updateRemainingCredit(pack: Pack): void {
+    this.wallacoins = this.wallacoins + pack.quantity;
+    this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, this.wallacoins);
+  }
+
   public openBuyModal(pack: Pack, packIndex: number) {
     const modal: NgbModalRef = this.modalService.open(BuyWallacoinsModalComponent, {windowClass: 'buy-wallacoins'});
     modal.componentInstance.pack = pack;
     modal.componentInstance.packIndex = packIndex;
     modal.result.then(() => {
-      setTimeout(() => {
-        this.updatePerks(false);
-        this.openConfirmModal(pack);
-      });
+      this.updateRemainingCredit(pack);
+      this.openConfirmModal(pack);
     }, () => {
     });
   }
