@@ -21,7 +21,7 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <messagebundle>
-  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:41</source><source>app/catalog/checkout/cart/cart.component.ts:69</source><source>app/wallacoins/wallacoins.component.ts:27</source>credit</msg>
+  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.ts:26</source><source>app/layout/sidebar/sidebar.component.ts:42</source><source>app/catalog/checkout/cart/cart.component.ts:69</source><source>app/wallacoins/wallacoins.component.ts:27</source>credit</msg>
   <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.ts:32</source><source>app/layout/sidebar/sidebar.component.ts:33</source><source>app/dashboard/dashboard.component.ts:24</source>Messages</msg>
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.ts:37</source>My Zone</msg>
   <msg id="3983509092263971640"><source>app/layout/topbar/topbar.component.ts:38</source>My Pro Zone</msg>
@@ -31,10 +31,10 @@
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.ts:15</source>Dashboard</msg>
   <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:23</source>Products</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:24</source>Catalog</msg>
-  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:49</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:51</source>Favorites</msg>
-  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:56</source>Reviews</msg>
-  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:64</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
-  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:71</source>Help</msg>
+  <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:50</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:51</source>Favorites</msg>
+  <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:57</source>Reviews</msg>
+  <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:65</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
+  <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:72</source>Help</msg>
   <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
         I accept the updated privacy policy in order to continue navigating.
       </msg>
@@ -211,9 +211,9 @@
   <msg id="4213947433233162088"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:55</source>Special zones for your product</msg>
   <msg id="2483251316426820393"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:56,57</source>Your featured items will appear exclusively in certain zones and will stand out from the other
                         ads with better visibility.</msg>
-  <msg id="4563965495368336177"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:64</source><source>app/tutorial/tutorial.component.ts:62</source>Skip</msg>
-  <msg id="3885497195825665706"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:73</source><source>app/tutorial/tutorial.component.ts:73</source>Next</msg>
-  <msg id="7160029661601775341"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:77</source><source>app/tutorial/tutorial.component.ts:78</source>Ready!</msg>
+  <msg id="4563965495368336177"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:64</source><source>app/tutorial/tutorial.component.ts:67</source>Skip</msg>
+  <msg id="3885497195825665706"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:73</source><source>app/tutorial/tutorial.component.ts:78</source>Next</msg>
+  <msg id="7160029661601775341"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:77</source><source>app/tutorial/tutorial.component.ts:83</source>Ready!</msg>
   <msg id="1388549121916575785"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:7</source><source>app/catalog/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.ts:7</source>Your item has been uploaded and it&apos;s marked as urgent.</msg>
   <msg id="5433688037539750263"><source>app/catalog/list/list.component.ts:14</source>Your products</msg>
   <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:17</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
@@ -568,15 +568,17 @@
   <msg id="6002580040961562985"><source>app/tutorial/tutorial.component.ts:7</source>You&apos;re in the zone to access all of the features of the app.</msg>
   <msg id="2137505802700728396"><source>app/tutorial/tutorial.component.ts:11</source>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</msg>
   <msg id="3140417703982763936"><source>app/tutorial/tutorial.component.ts:15</source>From here you can view your items, you can choose to upload more or edit and feature the items you have for sale.</msg>
-  <msg id="4486163214005133487"><source>app/tutorial/tutorial.component.ts:19</source><source>app/tutorial/tutorial.component.ts:51</source>View your conversations and reply via the webpage or from the app. Oh see it works well from the webpage!</msg>
-  <msg id="5289897176155020957"><source>app/tutorial/tutorial.component.ts:23</source>Your favorites can be seen on the big screen which might help make up your mind.</msg>
-  <msg id="8328195571736012184"><source>app/tutorial/tutorial.component.ts:27</source>See your profile reviews. Is the community leaving good feedback?</msg>
-  <msg id="1747851890616342359"><source>app/tutorial/tutorial.component.ts:34</source>Introducing our new webpage pro!</msg>
-  <msg id="7965763213079559522"><source>app/tutorial/tutorial.component.ts:35</source>You&apos;re in the pro zone to access all of the features of the app and protool.</msg>
-  <msg id="5339303196793781359"><source>app/tutorial/tutorial.component.ts:39</source>From here you can view and edit your profile, billing info and check your listing car plan and your visibility plan. Also you can set your location and the location of your items, change your photo and password and edit your email address.</msg>
-  <msg id="157339153102985723"><source>app/tutorial/tutorial.component.ts:43</source>Here you can see statistics related with visualizations, chats and calls received from your items. Also you can see the impact when you have featured cars in the metrics.</msg>
-  <msg id="9086693090800324810"><source>app/tutorial/tutorial.component.ts:47</source>From here you can view your items, you can choose to upload more, active your items or edit and feature the items you have for sale.</msg>
-  <msg id="5119878065843230741"><source>app/tutorial/tutorial.component.ts:55</source>Here you can manage and see the information related with your calls.</msg>
+  <msg id="4486163214005133487"><source>app/tutorial/tutorial.component.ts:19</source><source>app/tutorial/tutorial.component.ts:56</source>View your conversations and reply via the webpage or from the app. Oh see it works well from the webpage!</msg>
+  <msg id="70240206675549090"><source>app/tutorial/tutorial.component.ts:23</source>Wallacoins? Wallacoins are the new wallapop&apos;s currency. You will save money featuring your products. Get one of our packs and we will give you some free wallacoins for your purchases.</msg>
+  <msg id="7478441329490273363"><source>app/tutorial/tutorial.component.ts:24</source>What is this? Saving packs for your Featured products. Add credit here and you will get great discounts. </msg>
+  <msg id="5289897176155020957"><source>app/tutorial/tutorial.component.ts:28</source>Your favorites can be seen on the big screen which might help make up your mind.</msg>
+  <msg id="8328195571736012184"><source>app/tutorial/tutorial.component.ts:32</source>See your profile reviews. Is the community leaving good feedback?</msg>
+  <msg id="1747851890616342359"><source>app/tutorial/tutorial.component.ts:39</source>Introducing our new webpage pro!</msg>
+  <msg id="7965763213079559522"><source>app/tutorial/tutorial.component.ts:40</source>You&apos;re in the pro zone to access all of the features of the app and protool.</msg>
+  <msg id="5339303196793781359"><source>app/tutorial/tutorial.component.ts:44</source>From here you can view and edit your profile, billing info and check your listing car plan and your visibility plan. Also you can set your location and the location of your items, change your photo and password and edit your email address.</msg>
+  <msg id="157339153102985723"><source>app/tutorial/tutorial.component.ts:48</source>Here you can see statistics related with visualizations, chats and calls received from your items. Also you can see the impact when you have featured cars in the metrics.</msg>
+  <msg id="9086693090800324810"><source>app/tutorial/tutorial.component.ts:52</source>From here you can view your items, you can choose to upload more, active your items or edit and feature the items you have for sale.</msg>
+  <msg id="5119878065843230741"><source>app/tutorial/tutorial.component.ts:60</source>Here you can manage and see the information related with your calls.</msg>
   <msg id="4662529977781351630"><source>app/calls/calls.component.ts:12</source>Calls</msg>
   <msg id="4812531333997465"><source>app/calls/calls.component.ts:15</source>Here you can manage and see the information related with your calls</msg>
   <msg id="8953033926734869941"><source>app/calls/calls.component.ts:35</source>Name</msg>
