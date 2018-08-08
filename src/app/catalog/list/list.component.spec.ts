@@ -326,14 +326,14 @@ describe('ListComponent', () => {
       spyOn(localStorage, 'getItem').and.returnValue('wallapack');
       spyOn(router, 'navigate');
       route.params = Observable.of({
-        code: -1
+        code: 200
       });
 
       component.ngOnInit();
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(router.navigate).toHaveBeenCalledWith(['wallacoins', { code: -1 }]);
+      expect(router.navigate).toHaveBeenCalledWith(['wallacoins', { code: 200 }]);
     }));
 
     it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {
