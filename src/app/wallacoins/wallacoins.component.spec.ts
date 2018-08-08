@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { WallacoinsComponent } from './wallacoins.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -135,8 +135,9 @@ describe('WallacoinsComponent', () => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(paymentService, 'getPerks').and.callThrough();
       spyOn(router, 'navigate');
-
+      
       component.openBuyModal(CREDITS_PACKS[0][0], 1);
+      tick();
     }));
 
     it('should open modal', () => {

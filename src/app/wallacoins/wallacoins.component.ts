@@ -81,8 +81,10 @@ export class WallacoinsComponent implements OnInit {
     modal.componentInstance.pack = pack;
     modal.componentInstance.packIndex = packIndex;
     modal.result.then(() => {
-      this.updatePerks(false);
-      this.openConfirmModal(pack);
+      setTimeout(() => {
+        this.updatePerks(false);
+        this.openConfirmModal(pack);
+      });
     }, () => {
     });
   }
