@@ -48,8 +48,7 @@ export class WallacoinsComponent implements OnInit {
       this.packs = packs;
       this.currencyName = this.packs[0].name;
       this.factor = this.packs[0].factor;
-      console.log('update packs');
-      this.updatePerks();
+      this.updatePerks(false);
     });
     this.route.params.subscribe((params: any) => {
       if (params && params.code) {
@@ -70,9 +69,7 @@ export class WallacoinsComponent implements OnInit {
   }
 
   private updatePerks(cache?: boolean) {
-    console.log('in update perks');
     this.paymentService.getPerks(cache).subscribe((perks: PerksModel) => {
-      console.log('got perks');
       this.wallacoins = perks[this.currencyName].quantity;
       this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, this.wallacoins);
       this.loading = false;
