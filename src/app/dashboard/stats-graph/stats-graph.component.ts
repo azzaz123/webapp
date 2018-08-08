@@ -127,7 +127,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         'fontSize': 8,
         'title': '',
         'position': 'right',
-        'synchronizationMultiplier': 5,
+        'synchronizationMultiplier': 1,
         'synchronizeWith': 'ValueAxisGeneral',
         'gridColor': '#ECEFF1'
       }
@@ -298,8 +298,52 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
           })
         }
       });
+      this.calculateSynchMultiplier(this.chartOptions.dataProvider);
       this.chart = this.AmCharts.makeChart(this.id, this.chartOptions);
     });
+  }
+
+  calculateSynchMultiplier(entries: any[]) {
+    let values: any = {
+      sold: [],
+      phone_numbers: [],
+      chats: [],
+      city_bump: [],
+      country_bump: []
+    };
+    let viewsValues: number[] = [];
+    let maxes: number[] = [];
+    entries.forEach((entry: any) => {
+      if (entry.sold) {
+        values.sold.push(entry.sold);
+      }
+      if (entry.phone_numbers) {
+        values.phone_numbers.push(entry.phone_numbers);
+      }
+      if (entry.chats) {
+        values.chats.push(entry.chats);
+      }
+      if (entry.city_bump) {
+        values.city_bump.push(entry.city_bump);
+      }
+      if (entry.country_bump) {
+        values.country_bump.push(entry.country_bump);
+      }
+      if (entry.views) {
+        viewsValues.push(entry.views);
+      }
+    });
+    for (const key in values) {
+      if (values.hasOwnProperty(key)) {
+        maxes.push(Math.max(...values[key]));
+      }
+    }
+    const maxValue: number = Math.max(...maxes);
+    const maxViewsValue: number = Math.max(...viewsValues);
+    const multiplier: number = Math.ceil(maxViewsValue / maxValue);
+    if (multiplier) {
+      this.chartOptions.valueAxes[1].synchronizationMultiplier = multiplier;
+    }
   }
 
   onStatsPeriodChange() {
