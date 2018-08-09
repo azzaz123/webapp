@@ -97,6 +97,12 @@ export class ListComponent implements OnInit, OnDestroy {
             return;
           }
 
+          if (+localStorage.getItem('transactionSpent') > 0) {
+            this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
+              this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, creditInfo.credit );
+            });
+          }
+
           let modalRef: NgbModalRef = this.modalService.open(modal.component, {
             windowClass: modal.windowClass,
             backdrop: 'static'

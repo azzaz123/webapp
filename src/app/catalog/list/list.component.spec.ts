@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -55,6 +55,9 @@ describe('ListComponent', () => {
   let userService: UserService;
   let eventService: EventService;
   const routerEvents: Subject<any> = new Subject();
+  const CURRENCY = 'wallacoins';
+  const CREDITS = 1000;
+  const TRANSACTION_SPENT = '50';
   const mockCounters = {
     sold: 7,
     publish: 12
@@ -121,6 +124,12 @@ describe('ListComponent', () => {
           },
           pay() {
             return Observable.of('');
+          },
+          getCreditInfo() {
+            return Observable.of({
+              currencyName: CURRENCY,
+              credit: CREDITS
+            });
           }
         }
         }, {
@@ -175,6 +184,23 @@ describe('ListComponent', () => {
   });
 
   describe('ngOnInit', () => {
+
+    beforeEach(() => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+    });
+
+    it('should emit the updated total credits if transactionSpent exists', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue(TRANSACTION_SPENT);
+      spyOn(eventService, 'emit');
+      route.params = Observable.of({
+        code: 200
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
+    }));
 
     it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');
