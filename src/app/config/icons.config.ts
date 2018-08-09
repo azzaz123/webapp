@@ -124,6 +124,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('herocat-consumer-goods', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-consumer-goods.svg'));
   matIconRegistry.addSvgIcon('herocat-real-estate', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-real-estate.svg'));
   matIconRegistry.addSvgIcon('herocat-services', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-services.svg'));
+  matIconRegistry.addSvgIcon('herocat-jobs', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-jobs.svg'));
   matIconRegistry.addSvgIcon('cm-camera', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-camera.svg'));
   matIconRegistry.addSvgIcon('cm-drag', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-drag.svg'));
   matIconRegistry.addSvgIcon('cm-speaker', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-speaker.svg'));

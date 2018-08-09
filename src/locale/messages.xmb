@@ -321,10 +321,11 @@
   <msg id="1551801042919193607"><source>app/catalog/upload/category-selector/category-selector.component.ts:2</source>What will you sell?</msg>
   <msg id="2649260508337759251"><source>app/catalog/upload/category-selector/category-selector.component.ts:3</source>Set the product type you will list</msg>
   <msg id="7926180204931135155"><source>app/catalog/upload/category-selector/category-selector.component.ts:13</source>Something I don&apos;t use anymore</msg>
-  <msg id="7909550640012468315"><source>app/catalog/upload/category-selector/category-selector.component.ts:22</source>A car</msg>
+  <msg id="1895957424873987405"><source>app/catalog/upload/category-selector/category-selector.component.ts:22</source>Job</msg>
   <msg id="6822624572232933913"><source>app/catalog/upload/category-selector/category-selector.component.ts:31</source>My services</msg>
-  <msg id="4895100071976641944"><source>app/catalog/upload/category-selector/category-selector.component.ts:40</source>A property</msg>
-  <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:45</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
+  <msg id="7909550640012468315"><source>app/catalog/upload/category-selector/category-selector.component.ts:40</source>A car</msg>
+  <msg id="4895100071976641944"><source>app/catalog/upload/category-selector/category-selector.component.ts:49</source>A property</msg>
+  <msg id="8222521338018520589"><source>app/catalog/upload/category-selector/category-selector.component.ts:54</source>It&apos;s important you select the product type or service to be reached by the other users.</msg>
   <msg id="7036284206110282007"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:8</source><source>app/catalog/checkout/cart/cart.component.ts:46</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:34</source>days</msg>
   <msg id="2595297634596426795"><source>app/catalog/checkout/cart/cart.component.ts:1</source>My features</msg>
   <msg id="6377139538537882652"><source>app/catalog/checkout/cart/cart.component.ts:4</source><source>app/catalog/checkout/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.ts:4</source>Delete list</msg>
