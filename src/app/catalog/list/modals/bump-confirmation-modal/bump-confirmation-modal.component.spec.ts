@@ -85,11 +85,12 @@ describe('BumpConfirmationModalComponent', () => {
     it('should call getCreditInfo and set currency and coins total', () => {
       spyOn(paymentService, 'getCreditInfo').and.callThrough();
 
+      component.spent = 500;
       component.ngOnInit();
 
       expect(paymentService.getCreditInfo).toHaveBeenCalled();
       expect(component.withCoins).toBe(true);
-      expect(component.credit).toBe(CREDITS);
+      expect(component.credit).toBe(CREDITS - component.spent);
     });
   });
 

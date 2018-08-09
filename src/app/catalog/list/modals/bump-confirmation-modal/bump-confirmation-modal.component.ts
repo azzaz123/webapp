@@ -35,9 +35,9 @@ export class BumpConfirmationModalComponent implements OnInit {
           ga('send', 'event', 'Item', 'bump-ko');
         }
       });
-    this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
+    this.paymentService.getCreditInfo(true).subscribe((creditInfo: CreditInfo) => {
       this.withCoins = creditInfo.currencyName === 'wallacoins';
-      this.credit = creditInfo.credit;
+      this.credit = creditInfo.credit - +this.spent;
     });
   }
 
