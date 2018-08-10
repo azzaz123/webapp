@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { PerksModel } from '../../../core/payments/payment.model';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { VisibilityProductsModalComponent } from './visibility-products-modal/visibility-products-modal.component';
+import { Router } from '@angular/router';
 import { Packs } from '../../../core/payments/payment.interface';
 import { Pack } from '../../../core/payments/pack';
 
@@ -19,7 +18,7 @@ export class ProfileProSubscriptionComponent implements OnInit {
   public loading = true;
 
   constructor(private paymentsService: PaymentService,
-              private modalService: NgbModal) {
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -52,7 +51,7 @@ export class ProfileProSubscriptionComponent implements OnInit {
     }
   }
 
-  public openVisibilityProductsModal() {
-    this.modalService.open(VisibilityProductsModalComponent, {windowClass: 'visibility-products'});
+  public openFaqs() {
+    this.router.navigate(['pro/help', {section: 'Perfil-6'}]);
   }
 }

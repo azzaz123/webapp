@@ -143,7 +143,7 @@ export class UploadCarComponent implements OnInit {
       this.brands = brands;
       this.markFieldAsPristine('brand');
       if (this.item) {
-        this.customMake = !_.has(this.brands, {value: this.item.brand});
+        this.customMake = !_.find(this.brands, {value: this.item.brand});
       }
     });
   }
