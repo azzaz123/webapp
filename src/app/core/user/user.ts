@@ -7,7 +7,8 @@ export const USER_BASE_PATH = 'http://es.wallapop.com/user/';
 export const PLACEHOLDER_AVATAR = '/assets/images/user.png';
 export const PERMISSIONS = {
   'normal': 'isNormal',
-  'professional': 'isProfessional'
+  'professional': 'isProfessional',
+  'coins': 'coins'
 };
 
 export class User implements Model {

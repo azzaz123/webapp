@@ -87,6 +87,7 @@ export class I18nService {
       citybump: 'City Bump',
       deleteBillingInfoSuccess: 'Your billing info has been deleted',
       deleteBillingInfoError: 'There was a error deleting your billing info',
+      packError: 'There was a error buying this pack',
       alreadyFeatured: 'You are trying to feature an item that is already planned.'
     },
     es: {
@@ -173,8 +174,7 @@ export class I18nService {
       countrybump: 'Destacado País',
       citybump: 'Destacado Ciudad',
       deleteBillingInfoSuccess: 'Tu información de facturación ha sido borrada',
-      deleteBillingInfoError: 'Hubo un error borrando tu información de facturación',
-      alreadyFeatured: 'Estas intentando destacar un item que ya tiene planificados'
+      deleteBillingInfoError: 'Hubo un error borrando tu información de facturación'
     }
   };
 

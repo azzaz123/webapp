@@ -32,6 +32,9 @@ describe('SidebarComponent', () => {
           },
           isProfessional() {
             return Observable.of(true);
+          },
+          hasPerm() {
+            return Observable.of(true);
           }
         },
         },
@@ -69,6 +72,15 @@ describe('SidebarComponent', () => {
 
       expect(userService.isProfessional).toHaveBeenCalled();
       expect(component.isProfessional).toBe(true);
+    });
+
+    it('should call hasPerm and set the attribute', () => {
+      spyOn(userService, 'hasPerm').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.hasPerm).toHaveBeenCalledWith('coins');
+      expect(component.withCoins).toBe(true);
     });
   });
 

@@ -123,9 +123,13 @@ describe('CartExtrasProComponent', () => {
     it('should set cart pro extras', () => {
       expect(component.cart).toEqual(CART_PRO_EXTRAS);
     });
+  });
 
-    it('should set card', () => {
-      expect(component.financialCard).toEqual(FINANCIAL_CARD);
+  describe('hasCard', () => {
+    it('should set true if card exists', () => {
+      component.hasCard(true);
+
+      expect(component.hasFinancialCard).toEqual(true);
     });
   });
 
@@ -209,7 +213,7 @@ describe('CartExtrasProComponent', () => {
         describe('buy method', () => {
           describe('should call sabadellSubmit emit', () => {
             it('if there is not financial card', () => {
-              component.financialCard = null;
+              component.hasFinancialCard = null;
 
               component.checkout();
 
@@ -226,6 +230,11 @@ describe('CartExtrasProComponent', () => {
           });
 
           describe('should call paymentService pay method', () => {
+
+            beforeEach(() => {
+              component.hasFinancialCard = true;
+            });
+
             it('if there is a financial card and cartype is old', () => {
               spyOn(paymentService, 'pay').and.callThrough();
 

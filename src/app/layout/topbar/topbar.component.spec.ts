@@ -14,6 +14,10 @@ import { WindowRef } from '../../core/window/window.service';
 import { MessageService } from '../../core/message/message.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { PaymentService } from '../../core/payments/payment.service';
+import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
+import { DecimalPipe } from '@angular/common';
+import { CookieService } from 'ngx-cookie/index';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -38,11 +42,16 @@ describe('TopbarComponent', () => {
   let fixture: ComponentFixture<TopbarComponent>;
   let eventService: EventService;
   let windowRef: WindowRef;
+  const CURRENCY = 'wallacoins';
+  const CREDITS = 1000;
+  let paymentService: PaymentService;
+  let cookieService: CookieService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, NgxPermissionsModule.forRoot()],
       providers: [
+        DecimalPipe,
         {
           provide: UserService, useValue: {
             me(): Observable<User> {
@@ -52,6 +61,16 @@ describe('TopbarComponent', () => {
               return Observable.of(true);
           }
           },
+        },
+        {
+          provide: PaymentService, useValue: {
+          getCreditInfo() {
+            return Observable.of({
+              currencyName: CURRENCY,
+              credit: CREDITS
+            });
+          }
+        }
         },
         {
           provide: WindowRef, useValue: {
@@ -70,8 +89,14 @@ describe('TopbarComponent', () => {
         {
           provide: 'SUBDOMAIN', useValue: 'www'
         },
+        {
+          provide: CookieService, useValue: {
+          put(key, value) {
+          }
+        }
+        },
         EventService, ...TEST_HTTP_PROVIDERS],
-      declarations: [TopbarComponent],
+      declarations: [TopbarComponent, CustomCurrencyPipe],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
@@ -84,6 +109,8 @@ describe('TopbarComponent', () => {
     fixture.detectChanges();
     eventService = TestBed.get(EventService);
     windowRef = TestBed.get(WindowRef);
+    paymentService = TestBed.get(PaymentService);
+    cookieService = TestBed.get(CookieService);
   });
 
   it('should be created', () => {
@@ -104,6 +131,46 @@ describe('TopbarComponent', () => {
 
       expect(userService.isProfessional).toHaveBeenCalled();
       expect(component.isProfessional).toBe(true);
+    });
+
+    it('should call getCreditInfo and set currency and coins total', () => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(paymentService.getCreditInfo).toHaveBeenCalled();
+      expect(component.currencyName).toBe(CURRENCY);
+      expect(component.wallacoins).toBe(CREDITS);
+    });
+
+    it('should update wallacoins on TOTAL_CREDITS_UPDATED event', () => {
+      const CREDITS = 100;
+      component.ngOnInit();
+
+      eventService.emit(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
+
+      expect(component.wallacoins).toBe(CREDITS);
+    });
+
+    it('should call getCreditInfo on TOTAL_CREDITS_UPDATED event if no credits passed', () => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+      component.ngOnInit();
+
+      eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
+
+      expect(paymentService.getCreditInfo).toHaveBeenCalledWith(false);
+      expect(component.currencyName).toBe(CURRENCY);
+      expect(component.wallacoins).toBe(CREDITS);
+    });
+
+    it('should set the credits cookies', () => {
+      spyOn(cookieService, 'put');
+      const cookieOptions = {domain: '.wallapop.com'};
+
+      component.ngOnInit();
+
+      expect(cookieService.put).toHaveBeenCalledWith('creditName', component.currencyName, cookieOptions);
+      expect(cookieService.put).toHaveBeenCalledWith('creditQuantity', component.wallacoins.toString(), cookieOptions);
     });
   });
 

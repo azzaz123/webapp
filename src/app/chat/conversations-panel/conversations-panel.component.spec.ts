@@ -26,15 +26,14 @@ import {
   MOCKED_CONVERSATIONS
 } from '../../../tests/conversation.fixtures.spec';
 import { Conversation } from '../../core/conversation/conversation';
-import { MOCK_MESSAGE, MESSAGE_MAIN } from '../../../tests/message.fixtures.spec';
+import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { Message, messageStatus } from '../../core/message/message';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { XmppService } from '../../core/xmpp/xmpp.service';
-import { Subscription } from 'rxjs/Subscription';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 class MockedXmppService {
   receivedReceipts = [{id: '1', thread: 'a'}, {id: '2', thread: 'b'}];
+  sentReceipts = [{id: '1', thread: 'a'}, {id: '2', thread: 'b'}];
   readReceipts = [{id: 'x', thread: 'threadX'}];
 }
 
@@ -193,6 +192,17 @@ describe('Component: ConversationsPanel', () => {
           expect(component['receivedMessages'].length).toBe(0);
         });
 
+        it('should call updateMessageStatus if sentMessages is not empty', () => {
+          component['sentMessages'] = xmppService.sentReceipts;
+          const receipt = xmppService.sentReceipts[0];
+
+          component['getConversations']();
+
+          expect(component['updateMessageStatus']).toHaveBeenCalledWith(messageStatus.SENT, receipt.thread, receipt.id);
+          expect(component['updateMessageStatus']).toHaveBeenCalledTimes(2);
+          expect(component['sentMessages'].length).toBe(0);
+        });
+
         it('should call updateMessageStatus if readMessages is not empty', () => {
           component['readMessages'] = xmppService.readReceipts;
           const receipt = xmppService.readReceipts[0];
@@ -313,10 +323,16 @@ describe('Component: ConversationsPanel', () => {
         expect(component['receivedMessages']).toBe(xmppService.receivedReceipts);
       });
 
-      it('should set receivedMessages to the xmpp.receivedReceipts when the MESSAGE_READ event is emitted', () => {
+      it('should set readMessages to the xmpp.readdReceipts when the MESSAGE_READ event is emitted', () => {
         eventService.emit(EventService.MESSAGE_READ, MOCK_MESSAGE.conversationId);
 
         expect(component['readMessages']).toBe(xmppService.readReceipts);
+      });
+
+      it('should set sentMessages to the xmpp.sentReceipts when the MESSAGE_SENT event is emitted', () => {
+        eventService.emit(EventService.MESSAGE_SENT_ACK, MOCK_MESSAGE.conversationId);
+
+        expect(component['sentMessages']).toBe(xmppService.sentReceipts);
       });
     });
   });

@@ -19,10 +19,11 @@ import { UserStatsResponse, Counters } from '../../core/user/user-stats.interfac
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
-import { FinancialCard } from '../../core/payments/payment.interface';
+import { FinancialCard, CreditInfo } from '../../core/payments/payment.interface';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
+import { PerksModel } from '../../core/payments/payment.model';
 
 @Component({
   selector: 'tsl-list',
@@ -89,18 +90,38 @@ export class ListComponent implements OnInit, OnDestroy {
             }
           };
           const modalType = localStorage.getItem('transactionType');
-          const modal = modalType ? modals[modalType] : modals.bump;
+          const modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
+
+          if (modalType === 'wallapack') {
+            this.router.navigate(['wallacoins', { code: params.code }]);
+            return;
+          }
+
+          /*if (+localStorage.getItem('transactionSpent') > 0) {
+            setTimeout(() => {
+              this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
+                this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, creditInfo.credit );
+              });
+            }, 1000);
+          }*/
 
           let modalRef: NgbModalRef = this.modalService.open(modal.component, {
             windowClass: modal.windowClass,
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
+          modalRef.componentInstance.creditUsed = modalType === 'bumpWithCredits';
+          modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
           modalRef.result.then(() => {
             modalRef = null;
             localStorage.removeItem('transactionType');
+            localStorage.removeItem('transactionSpent');
             this.router.navigate(['catalog/list']);
           }, () => {
+            modalRef = null;
+            localStorage.removeItem('transactionType');
+            localStorage.removeItem('transactionSpent');
+            this.router.navigate(['wallacoins']);
           });
         }
         if (params && params.created) {

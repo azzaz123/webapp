@@ -1,14 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
+import { Headers, RequestOptions, Response } from '@angular/http';
 import {
-  FinancialCard, SabadellInfoResponse, Packs,
-  ProductResponse, Products, PackResponse, BillingInfoResponse, OrderProExtras, PerkResponse, ScheduledStatus
+  BillingInfoResponse, CreditInfo,
+  FinancialCard,
+  OrderProExtras,
+  PackResponse,
+  Packs,
+  PerkResponse,
+  ProductResponse,
+  Products,
+  SabadellInfoResponse,
+  ScheduledStatus
 } from './payment.interface';
 import { HttpService } from '../http/http.service';
 import * as _ from 'lodash';
-import { Pack, PACKS_TYPES } from './pack';
+import { COINS_FACTOR, COINS_PACK_ID, CREDITS_FACTOR, CREDITS_PACK_ID, Pack, PACKS_TYPES } from './pack';
 import { PerksModel } from './payment.model';
+import { UserService } from '../user/user.service';
+import { PERMISSIONS } from '../user/user';
 
 @Injectable()
 export class PaymentService {
@@ -17,12 +27,14 @@ export class PaymentService {
   private API_URL_PROTOOL = 'api/v3/protool';
   private products: Products;
   private perksModel: PerksModel;
-  constructor(private http: HttpService) {
+
+  constructor(private http: HttpService,
+              private userService: UserService) {
   }
 
   public getFinancialCard(): Observable<FinancialCard> {
     return this.http.get(this.API_URL + '/c2b/financial-card')
-    .map((r: Response) => r.json());
+      .map((r: Response) => r.json());
   }
 
   public deleteFinancialCard(): Observable<any> {
@@ -51,14 +63,78 @@ export class PaymentService {
     });
   }
 
-  public getPacks(): Observable<Packs> {
-    return this.http.get(this.API_URL + '/packs')
+  public getPacks(product?: Products): Observable<Packs> {
+    let params: any;
+    if (product) {
+      params = {
+        products: Object.keys(product)[0]
+      };
+    }
+    return this.http.get(this.API_URL + '/packs', params)
       .map((r: Response) => r.json())
       .flatMap((packs: PackResponse[]) => {
-        const sortedPacks = this.sortPacksByQuantity(packs);
-        return this.preparePacks(sortedPacks);
+          const sortedPacks = this.sortPacksByQuantity(packs);
+          return this.preparePacks(sortedPacks, product);
+        }
+      );
+  }
+
+  public getCreditInfo(cache: boolean = true): Observable<CreditInfo> {
+    return this.userService.hasPerm(PERMISSIONS.coins)
+      .flatMap((hasPerm: boolean) => {
+        return this.getPerks(cache)
+          .map((perks: PerksModel) => {
+            const currencyName: string = hasPerm ? 'wallacoins' : 'wallacredits';
+            const factor: number = hasPerm ? COINS_FACTOR : CREDITS_FACTOR;
+            return {
+              currencyName: currencyName,
+              credit: perks[currencyName].quantity,
+              factor: factor
+            }
+          });
+      });
+  }
+
+  public getCoinsCreditsPacks(): Observable<Pack[]> {
+    return this.userService.hasPerm('coins')
+      .flatMap((isActive: boolean) => {
+        return isActive ? this.getCoinsPacks() : this.getCreditsPacks();
+      });
+  }
+
+  public getCoinsPacks(): Observable<Pack[]> {
+    const product: Products = {
+      [COINS_PACK_ID]: {
+        id: COINS_PACK_ID,
+        name: 'WALLACOINS'
       }
-    );
+    };
+    return this.getPacks(product)
+      .map((packs: Packs) => {
+        return packs.wallacoins;
+      });
+  }
+
+  public getCreditsPacks(): Observable<Pack[]> {
+    const product: Products = {
+      [CREDITS_PACK_ID]: {
+        id: CREDITS_PACK_ID,
+        name: 'WALLACREDITS'
+      }
+    };
+    return this.getPacks(product)
+      .map((packs: Packs) => {
+        return packs.wallacredits;
+      });
+  }
+
+  private chunkArray(array, chunkSize): Pack[][] {
+    return _.reduce(array, function (result, value) {
+      const lastChunk = result[result.length - 1];
+      if (lastChunk.length < chunkSize) lastChunk.push(value);
+      else result.push([value]);
+      return result;
+    }, [[]]);
   }
 
   public getSubscriptionPacks(): Observable<Packs> {
@@ -104,7 +180,11 @@ export class PaymentService {
                   if (perk.subscription_id !== null) {
                     response.setListingSubscription(perk);
                   }
-                }
+                } else if (name === 'WALLACOINS') {
+                  response.setWallacoins(perk);
+                } else if (name === 'WALLACREDITS') {
+                response.setWallacredits(perk);
+              }
               }
             });
             this.perksModel = response;
@@ -124,14 +204,19 @@ export class PaymentService {
       .map((r: Response) => r.json());
   }
 
-  private preparePacks(sortedPacks) {
+  public deleteCache() {
+    this.perksModel = null;
+  }
+
+  private preparePacks(sortedPacks, product?: Products) {
     const packsResponse: Packs = {
       cityBump: [],
       countryBump: [],
-      listings: []
+      listings: [],
+      wallacoins: [],
+      wallacredits: []
     };
-
-    return this.getProducts()
+    return (product ? Observable.of(product) : this.getProducts())
       .map((products: Products) => {
         const values = _.groupBy(sortedPacks, (pack) => {
           return Object.keys(pack.benefits)[0];
@@ -154,7 +239,11 @@ export class PaymentService {
             pack.currency,
             name
           );
-          formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
+          if (pack.original_price) {
+            formattedPack.calculateDiscountWithOriginalPrice(+pack.price, +pack.original_price);
+          } else {
+            formattedPack.calculateDiscount(pack.price, pack.benefits[benefitsId], basePrice);
+          }
 
           if (products[benefitsId].name === 'NATIONAL_BUMP') {
             packsResponse.countryBump.push(formattedPack);
@@ -162,6 +251,10 @@ export class PaymentService {
             packsResponse.cityBump.push(formattedPack);
           } else if (products[benefitsId].name === 'LISTINGS') {
             packsResponse.listings.push(formattedPack);
+          } else if (products[benefitsId].name === 'WALLACOINS') {
+            packsResponse.wallacoins.push(formattedPack);
+          } else if (products[benefitsId].name === 'WALLACREDITS') {
+            packsResponse.wallacredits.push(formattedPack);
           }
         });
         return packsResponse;

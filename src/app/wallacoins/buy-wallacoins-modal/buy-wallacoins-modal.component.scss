@@ -1,0 +1,124 @@
+@import "~style/common";
+
+.spinner-wrapper {
+  @include square(280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buy-modal {
+  display: flex;
+  color: $grey-900;
+  .left {
+    background-color: $grey-50;
+    text-align: center;
+    padding: 49px 30px 28px;
+    min-width: 294px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h2 {
+      font-size: $font-size-M;
+    }
+    .for-free {
+      color: $corporate;
+      font-weight: bold;
+    }
+    .icon {
+      @include square(160px);
+      border-radius: 50%;
+      margin-top: $spacing-1M;
+      margin-bottom: $spacing-2M;
+      background: $white no-repeat center;
+      &.icon-1 {
+        background-image: url(/assets/images/wallacoins-1.svg);
+      }
+      &.icon-2 {
+        background-image: url(/assets/images/wallacoins-2.svg);
+      }
+      &.icon-3 {
+        background-image: url(/assets/images/wallacoins-3.svg);
+      }
+      &.icon-4 {
+        background-image: url(/assets/images/wallacoins-4.svg);
+      }
+      &.icon-5 {
+        background-image: url(/assets/images/wallacoins-5.svg);
+      }
+      &.icon-6 {
+        background-image: url(/assets/images/wallacoins-6.svg);
+      }
+    }
+
+    .price {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      .total {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: $font-size-XS;
+      }
+      .amount {
+        font-weight: bold;
+        font-size: $font-size-3L;
+      }
+    }
+  }
+  &.vertical {
+    flex-direction: column;
+    .left {
+      max-width: 330px;
+      padding: 49px 50px 28px;
+    }
+  }
+  &.credits {
+    .icon {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: $spacing-S;
+      .quantity {
+        font-size: $font-size-XXL;
+        font-weight: bold;
+        line-height: 30px;
+        margin-top: $spacing-S;
+      }
+      .label {
+        font-size: $font-size-M;
+        color: $grey-900;
+      }
+    }
+    .for-free {
+      margin-top: -$spacing-XS;
+      margin-bottom: $spacing-1S;
+    }
+  }
+  .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 360px;
+    padding: $spacing-L;
+    p {
+      margin-bottom: $spacing-L;
+    }
+  }
+  .right, .bottom {
+    tsl-card-selection {
+      width: 100%;
+      margin-bottom: $spacing-2M;
+    }
+  }
+  .bottom {
+    width: 330px;
+    padding: $spacing-2M;
+    text-align: center;
+    p {
+      color: $grey-250;
+    }
+  }
+}

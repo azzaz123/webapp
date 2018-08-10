@@ -1,13 +1,18 @@
 @import "~style/common";
 
-$cart-height: calc(100vh - #{$topbar-height + $spacing-L * 2});
-$title-height: 65px;
-$total-height: 55px;
+$cart-height: calc(100vh - #{$topbar-height + $spacing-L * 1.2});
+$title-height: 42px;
+$main-total-height: 46px;
+$credit-total-height: 21px;
+$missing-total-height: 43px;
+$totals-margins: 0px;
+$total-height: $main-total-height + $totals-margins + $credit-total-height + $missing-total-height;
 $discounted-total-height: 30px;
 $button-height: 42px;
 $button-margin: $spacing - $spacing-XS;
 $button-space: $button-height + $spacing;
 $secure-label-height: 25px;
+$extra-height: 15px;
 $scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $discounted-total-height + $button-space + $secure-label-height});
 $clear-cart-height: 38px;
 $card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
@@ -27,9 +32,8 @@ h1 {
   height: $title-height;
   line-height: $title-height;
   font-size: $font-size;
-  text-align: center;
+  text-align: left;
   margin: 0;
-  background: url(/assets/icons/cart.svg) no-repeat 10px center;
 }
 
 .cart-wrapper {
@@ -37,17 +41,35 @@ h1 {
   background-color: rgba($grey-50, 0.3);
   border-radius: 5px;
   position: relative;
+  .with-credits & {
+    height: calc(#{$scroll-panel-height} + #{$missing-total-height});
+  }
   &.has-financial-card {
-    height: calc(#{$scroll-panel-height} - #{$card-select-height});
+    height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$extra-height} + #{$extra-height * 1.5});
+    .with-credits & {
+      height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$missing-total-height} + #{$extra-height * 1.5});
+    }
+  }
+  &.no-credit {
+    height: calc(#{$scroll-panel-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
+  }
+  &.has-financial-card.no-credit {
+    height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
   }
 }
 
 .scroll-panel {
   overflow: auto;
   padding: $spacing-XS;
-  height: calc(#{$scroll-panel-height} - #{$clear-cart-height});
+  height: calc(#{$scroll-panel-height} - #{$clear-cart-height} + #{$extra-height * 2});
   .has-financial-card & {
-    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height});
+    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height} + #{$extra-height * 4.7});
+  }
+  .no-credit & {
+    height: calc(#{$scroll-panel-height} - #{$clear-cart-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
+  }
+  .has-financial-card.no-credit & {
+    height: calc(#{$scroll-panel-height} - #{$clear-cart-height + $card-select-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
   }
 }
 
@@ -61,13 +83,74 @@ h1 {
   height: $discounted-total-height;
 }
 
-.total {
-  height: $total-height;
-  line-height: $total-height;
+.walla-total, .credit, .total, .missing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: $font-size-XS;
   font-weight: bold;
-  padding: 0 $spacing-XS;
   text-transform: uppercase;
+  padding: 0 $spacing-XS;
+  overflow: hidden;
+  clear: both;
+}
+
+.walla-total {
+  color: $grey-500;
+  line-height: 25px;
+  margin-top: $spacing-XS;
+  .price {
+    font-size: $font-size-L;
+  }
+  .with-credits & {
+    .price {
+      font-size: $font-size;
+    }
+  }
+}
+
+.credit, .missing {
+  .label {
+    tsl-wallacoin {
+      vertical-align: sub;
+      margin-right: 5px;
+    }
+  }
+}
+
+.credit {
+  color: $corporate;
+  height: $credit-total-height;
+  .price {
+    font-size: $font-size-S;
+  }
+  .with-credits & {
+    font-size: $font-size;
+    .price {
+      font-size: $font-size;
+    }
+    .label span span {
+      font-size: $font-size-XS;
+    }
+  }
+}
+
+.missing {
+  border-top: solid 1px $grey-50;
+  margin: 6px 6px 0 8px;
+  padding: 3px 2px 0 0;
+  .label {
+    color: $grey-250;
+  }
+  .price {
+    color: $grey-500;
+    font-size: $font-size-L;
+  }
+}
+
+.total {
+  height: $main-total-height;
+  line-height: $main-total-height;
   .price {
     font-size: $font-size-XL;
   }
@@ -153,21 +236,12 @@ ul, li {
 
 .clean-cart {
   position: absolute;
-  bottom: 0;
-  font-size: $font-size-S;
-  margin: $spacing-XS;
-  padding: $spacing-XS $spacing-XS 0;
-  border-top: 1px solid $grey-50;
-  width: calc(100% - #{$spacing-XS * 2});
+  top: 13px;
+  right: $spacing-10;
+  font-size: $font-size-XS;
   a {
     color: $grey-500;
     cursor: pointer;
-    mat-icon {
-      width: 13px;
-      height: 15px;
-      margin-right: $spacing-XS;
-      vertical-align: sub;
-    }
   }
 }
 
@@ -177,54 +251,6 @@ tsl-button {
     width: calc(100% - #{$button-margin * 2});
     margin: $button-margin;
     margin-top: 0;
-  }
-}
-
-.select-card {
-  margin-bottom: $spacing-S;
-  .btn {
-    width: 100%;
-    border-radius: $border-radius;
-    border: 1px solid rgba($grey-50, .5);
-    display: flex;
-    font-size: $font-size-XS;
-    align-items: center;
-    padding: $spacing-S;
-    height: 50px;
-    color: $grey-250;
-    &.active {
-      border-color: $corporate;
-      color: $grey-900;
-    }
-    .card-icon {
-      flex: 0 0 34px;
-      /deep/ svg {
-        rect, path {
-          transition: $transition-base;
-        }
-      }
-    }
-    .number {
-      flex: 1;
-    }
-    .date {
-      color: $grey-250;
-    }
-    &.new-card {
-      font-size: $font-size;
-    }
-    &:not(.active) {
-      .card-icon {
-        /deep/ svg {
-          rect {
-            fill: $grey-50;
-          }
-          path {
-            fill: $grey-100;
-          }
-        }
-      }
-    }
   }
 }
 

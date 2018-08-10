@@ -55,6 +55,9 @@ describe('ListComponent', () => {
   let userService: UserService;
   let eventService: EventService;
   const routerEvents: Subject<any> = new Subject();
+  const CURRENCY = 'wallacoins';
+  const CREDITS = 1000;
+  const TRANSACTION_SPENT = '50';
   const mockCounters = {
     sold: 7,
     publish: 12
@@ -121,6 +124,12 @@ describe('ListComponent', () => {
           },
           pay() {
             return Observable.of('');
+          },
+          getCreditInfo() {
+            return Observable.of({
+              currencyName: CURRENCY,
+              credit: CREDITS
+            });
           }
         }
         }, {
@@ -175,6 +184,24 @@ describe('ListComponent', () => {
   });
 
   describe('ngOnInit', () => {
+
+    /*beforeEach(() => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+    });
+
+    it('should emit the updated total credits if transactionSpent exists', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue(TRANSACTION_SPENT);
+      spyOn(eventService, 'emit');
+      route.params = Observable.of({
+        code: 200
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
+    }));*/
+
     it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');
@@ -296,43 +323,37 @@ describe('ListComponent', () => {
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
-    it('should open sold modal', fakeAsync(() => {
+    it('should redirect to wallacoins if transaction is wallapack', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('wallapack');
+      spyOn(router, 'navigate');
       route.params = Observable.of({
-        sold: true,
-        itemId: ITEM_ID
+        code: 200
       });
-      const onClickSpy = jasmine.createSpy('onClick');
-      const emitter: EventEmitter<any> = new EventEmitter();
-      component.soldButton = {
-        item: null,
-        onClick: onClickSpy,
-        callback: emitter
-      } as any;
-      spyOn(component, 'itemChanged');
-      spyOn(eventService, 'emit');
 
       component.ngOnInit();
       tick();
-      emitter.emit();
 
-      expect(component.soldButton.item).toEqual(MOCK_ITEM_V3);
-      expect(onClickSpy).toHaveBeenCalled();
-      expect(component.itemChanged).toHaveBeenCalledWith({
-        item: MOCK_ITEM_V3,
-        action: 'sold'
-      });
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, MOCK_ITEM_V3);
+      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
+      expect(router.navigate).toHaveBeenCalledWith(['wallacoins', { code: 200 }]);
     }));
 
-    it('should show error message if alreadyFeatured', fakeAsync(() => {
+    it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('bumpWithCredits');
+      spyOn(localStorage, 'removeItem');
       route.params = Observable.of({
-        alreadyFeatured: true
+        code: 200
       });
 
       component.ngOnInit();
       tick();
 
-      expect(errorService.i18nError).toHaveBeenCalledWith('alreadyFeatured');
+      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
+      expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
+        windowClass: 'bump-confirm',
+        backdrop: 'static'
+      });
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionSpent');
     }));
   });
 

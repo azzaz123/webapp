@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as CryptoJS from 'crypto-js';
 import { TrackingEvent } from './tracking-event';
-import { TrackingEventBase } from './tracking-event-base.interface';
+import { TrackingEventBase, TrackingEventData } from './tracking-event-base.interface';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
@@ -11,6 +11,9 @@ import { HttpService } from '../http/http.service';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
 import { Observable } from 'rxjs/Observable';
+
+const maxBatchSize = 100;
+const sendInterval = 60000;
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -34,7 +37,10 @@ const CATEGORY_IDS: any = {
   Link: '122',
   Bump: '123',
   GDPR: '119',
-  Carfax: '128'
+  Carfax: '128',
+  Credits: '131',
+  Navbar: '77',
+  Willis: '130'
 };
 
 const SCREENS_IDS: any = {
@@ -57,7 +63,8 @@ const SCREENS_IDS: any = {
   MyZonePro: '158',
   Chat: '27',
   GDPR: '155',
-  ReFishingGDPR: '159'
+  ReFishingGDPR: '159',
+  Credits: '166'
 };
 
 const TYPES_IDS: any = {
@@ -342,6 +349,18 @@ export class TrackingService {
   public static MYZONE_MENU_REVIEWS: TrackingEventBase = {
     name: '609',
     category: CATEGORY_IDS.Menu,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYZONE_MENU_WALLACOINS: TrackingEventBase = {
+    name: '766',
+    category: CATEGORY_IDS.Credits,
+    screen: SCREENS_IDS.MyZone,
+    type: TYPES_IDS.Tap
+  };
+  public static MYZONE_NAVBAR_WALLACOINS: TrackingEventBase = {
+    name: '765',
+    category: CATEGORY_IDS.Navbar,
     screen: SCREENS_IDS.MyZone,
     type: TYPES_IDS.Tap
   };
@@ -724,7 +743,54 @@ export class TrackingService {
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Tap
   };
-
+  public static WILLIS_LINK_DISPLAY = {
+    name: '762',
+    category: CATEGORY_IDS.Willis,
+    screen: SCREENS_IDS.ItemDetail,
+    type: TYPES_IDS.Display
+  };
+  public static WILLIS_LINK_TAP = {
+    name: '763',
+    category: CATEGORY_IDS.Willis,
+    screen: SCREENS_IDS.ItemDetail,
+    type: TYPES_IDS.Tap
+  };
+  public static PURCHASE_PACK_CREDITS = {
+    name: '767',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Tap
+  };
+  public static PURCHASE_CONFIRM_PACK_CREDITS = {
+    name: '768',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Tap
+  };
+  public static PURCHASE_CONFIRM_PACK_CREDITS_NO_CARD = {
+    name: '769',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Tap
+  };
+  public static BUMP_FROM_MODAL_CREDITS_SUCCESS = {
+    name: '770',
+    category: CATEGORY_IDS.Bump,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Success
+  };
+  public static BUY_MORE_CREDITS_SUCCESS = {
+    name: '771',
+    category: CATEGORY_IDS.Credits,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Success
+  };
+  public static BUY_MORE_CREDITS_ERROR = {
+    name: '772',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.Credits,
+    type: TYPES_IDS.Error
+  };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
@@ -753,8 +819,68 @@ export class TrackingService {
       }).subscribe();
   }
 
+  private sendMultipleEvents(events: Array<TrackingEventData>) {
+    this.createMultipleEvents(events)
+    .flatMap((event: TrackingEvent) => {
+      delete event['sessions'][0]['window'];
+      const stringifiedEvent: string = JSON.stringify(event);
+      const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
+      return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body);
+    }).subscribe();
+  }
+
+  trackMultiple(events: Array<TrackingEventData>) {
+    const interval = setInterval(() => {
+      if (events.length > maxBatchSize) {
+        const slice = events.splice(0, maxBatchSize);
+        this.sendMultipleEvents(slice);
+      } else {
+        this.sendMultipleEvents(events);
+        clearInterval(interval);
+      }
+    }, sendInterval);
+  }
+
   private setSessionStartTime() {
     this.sessionStartTime = getTimestamp();
+  }
+
+  private createMultipleEvents(events: Array<TrackingEventData>): Observable<TrackingEvent> {
+    const transformedArr = events.map(ev => {
+      for (const key in ev.eventData) {
+        if (ev.eventData.hasOwnProperty(key)) {
+          ev[key] = ev.eventData[key];
+        }
+      }
+      delete ev.eventData;
+      ev.attributes = ev.attributes;
+      ev.id = UUID.UUID();
+      ev.timestamp = getTimestamp();
+      return ev;
+    });
+    return this.userService.isProfessional()
+      .map((isProfessional: boolean) => {
+        if (isProfessional) {
+          transformedArr.forEach((e, index) => {
+            if (!e.attributes) {
+              transformedArr[index].attributes = {};
+            }
+            transformedArr[index].attributes.professional = true;
+          });
+        }
+        const newEvent: TrackingEvent = new TrackingEvent(
+          this.winRef.nativeWindow,
+          this.userService.user.id,
+          this.sessionStartTime,
+          null,
+          transformedArr);
+        newEvent.setDeviceInfo(
+          this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId,
+          this.navigatorService.browserName, this.navigatorService.fullVersion
+        );
+        newEvent.setSessionId(this.sessionId);
+        return newEvent;
+      });
   }
 
   private createNewEvent(event: TrackingEventBase, attributes?: any): Observable<TrackingEvent> {

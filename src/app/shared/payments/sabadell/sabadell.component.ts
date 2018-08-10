@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PaymentService } from '../../core/payments/payment.service';
-import { SabadellInfoResponse } from '../../core/payments/payment.interface';
+import { PaymentService } from '../../../core/payments/payment.service';
+import { SabadellInfoResponse } from '../../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-sabadell',
