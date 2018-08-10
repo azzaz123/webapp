@@ -9,13 +9,7 @@ const routes: Routes = [
   {
     path: 'wallacoins',
     component: WallacoinsComponent,
-    canActivate: [LoggedGuard, NgxPermissionsGuard],
-    data: {
-      permissions: {
-        only: PERMISSIONS.normal,
-        redirectTo: '/profile'
-      }
-    }
+    canActivate: [LoggedGuard, NgxPermissionsGuard]
   }
 ];
 

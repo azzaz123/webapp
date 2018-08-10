@@ -55,6 +55,9 @@ describe('ListComponent', () => {
   let userService: UserService;
   let eventService: EventService;
   const routerEvents: Subject<any> = new Subject();
+  const CURRENCY = 'wallacoins';
+  const CREDITS = 1000;
+  const TRANSACTION_SPENT = '50';
   const mockCounters = {
     sold: 7,
     publish: 12
@@ -121,6 +124,12 @@ describe('ListComponent', () => {
           },
           pay() {
             return Observable.of('');
+          },
+          getCreditInfo() {
+            return Observable.of({
+              currencyName: CURRENCY,
+              credit: CREDITS
+            });
           }
         }
         }, {
@@ -175,6 +184,24 @@ describe('ListComponent', () => {
   });
 
   describe('ngOnInit', () => {
+
+    /*beforeEach(() => {
+      spyOn(paymentService, 'getCreditInfo').and.callThrough();
+    });
+
+    it('should emit the updated total credits if transactionSpent exists', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue(TRANSACTION_SPENT);
+      spyOn(eventService, 'emit');
+      route.params = Observable.of({
+        code: 200
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
+    }));*/
+
     it('should open bump confirmation modal', fakeAsync(() => {
       spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');
@@ -300,14 +327,14 @@ describe('ListComponent', () => {
       spyOn(localStorage, 'getItem').and.returnValue('wallapack');
       spyOn(router, 'navigate');
       route.params = Observable.of({
-        code: -1
+        code: 200
       });
 
       component.ngOnInit();
       tick();
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
-      expect(router.navigate).toHaveBeenCalledWith(['wallacoins', { code: -1 }]);
+      expect(router.navigate).toHaveBeenCalledWith(['wallacoins', { code: 200 }]);
     }));
 
     it('should open the bump modal if transaction is set as bumpWithCredits', fakeAsync(() => {

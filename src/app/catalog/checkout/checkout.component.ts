@@ -55,7 +55,7 @@ export class CheckoutComponent implements OnInit {
     } else {
       this.router.navigate(['pro/catalog/list', {alreadyFeatured: true}]);
     }
-    this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
+    this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
       if (creditInfo.credit === 0) {
         creditInfo.currencyName = 'wallacredits';
         creditInfo.factor = 1;
