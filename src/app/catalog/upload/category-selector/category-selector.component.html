@@ -13,24 +13,6 @@
         <span i18n>Something I don't use anymore</span>
       </a>
       <a class="type"
-         (click)="setCategory(21000)"
-         [ngClass]="{active: category === 21000}"
-         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '21000'}">
-        <div class="square">
-          <mat-icon svgIcon="herocat-jobs"></mat-icon>
-        </div>
-        <span i18n>Job</span>
-      </a>
-      <a class="type"
-         (click)="setCategory(13200)"
-         [ngClass]="{active: category === 13200}"
-         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '13200'}">
-        <div class="square">
-          <mat-icon svgIcon="herocat-services"></mat-icon>
-        </div>
-        <span i18n>My services</span>
-      </a>
-      <a class="type"
          (click)="setCategory(100)"
          [ngClass]="{active: category === 100}"
          tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '100'}">
@@ -47,6 +29,24 @@
           <mat-icon svgIcon="herocat-real-estate"></mat-icon>
         </div>
         <span i18n>A property</span>
+      </a>
+      <a class="type"
+         (click)="setCategory(13200)"
+         [ngClass]="{active: category === 13200}"
+         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '13200'}">
+        <div class="square">
+          <mat-icon svgIcon="herocat-services"></mat-icon>
+        </div>
+        <span i18n>My services</span>
+      </a>
+      <a class="type"
+         (click)="setCategory(21000)"
+         [ngClass]="{active: category === 21000}"
+         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '21000'}">
+        <div class="square">
+          <mat-icon svgIcon="herocat-jobs"></mat-icon>
+        </div>
+        <span i18n>Job</span>
       </a>
     </div>
   </div>
