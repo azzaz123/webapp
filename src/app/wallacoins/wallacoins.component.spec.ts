@@ -136,15 +136,11 @@ describe('WallacoinsComponent', () => {
       spyOn(paymentService, 'getPerks').and.callThrough();
       spyOn(router, 'navigate');
 
-      component.openBuyModal(CREDITS_PACKS[0][0], 1);
+      component.openBuyModal(CREDITS_PACKS[0], 1);
     }));
 
     it('should open modal', () => {
       expect(modalService.open).toHaveBeenCalledWith(BuyWallacoinsModalComponent, {windowClass: 'buy-wallacoins'});
-    });
-
-    it('should call getPerks', () => {
-      expect(paymentService.getPerks).toHaveBeenCalledWith(false);
     });
 
     it('should open second modal', () => {

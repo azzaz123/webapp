@@ -32,12 +32,12 @@ describe('FeatureflagService', () => {
       }];
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
       const TIMESTAMP: number = 1234567890;
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
       spyOn<any>(window, 'Date').and.returnValue({
         getTime: () => {
           return TIMESTAMP;
         }
       });
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
 
       service.getFlag(PERM).subscribe((r: boolean) => {
         resp = r;

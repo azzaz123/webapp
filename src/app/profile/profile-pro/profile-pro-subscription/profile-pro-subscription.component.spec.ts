@@ -7,15 +7,16 @@ import { PACK_RESPONSE, createPacksFixture } from '../../../../tests/payments.fi
 import { PerksModel } from '../../../core/payments/payment.model';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { VisibilityProductsModalComponent } from './visibility-products-modal/visibility-products-modal.component';
 import { SubscriptionIconPipe } from './subscription-icon.pipe';
 import { Packs } from '../../../core/payments/payment.interface';
+import { Router } from '@angular/router';
 
 describe('ProfileProSubscriptionComponent', () => {
   let component: ProfileProSubscriptionComponent;
   let fixture: ComponentFixture<ProfileProSubscriptionComponent>;
   let paymentsService: PaymentService;
   let modalService: NgbModal;
+  let router: Router;
   const packs: Packs = createPacksFixture();
   const perksModel: PerksModel = new PerksModel();
 
@@ -38,6 +39,12 @@ describe('ProfileProSubscriptionComponent', () => {
           open() {}
         }
         },
+        {
+          provide: Router, useValue: {
+          navigate() {
+          }
+        }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -49,6 +56,7 @@ describe('ProfileProSubscriptionComponent', () => {
     component = fixture.componentInstance;
     paymentsService = TestBed.get(PaymentService);
     modalService = TestBed.get(NgbModal);
+    router = TestBed.get(Router);
     spyOn(paymentsService, 'getSubscriptionPacks').and.callThrough();
     spyOn(paymentsService, 'getPerks').and.callThrough();
     fixture.detectChanges();
@@ -66,13 +74,13 @@ describe('ProfileProSubscriptionComponent', () => {
     });
   });
 
-  describe('openVisibilityProductsModal', () => {
-    it('should open modal', () => {
-      spyOn(modalService, 'open');
+  describe('openFaqs', () => {
+    it('should redirect to the faqs', () => {
+      spyOn(router, 'navigate');
 
-      component.openVisibilityProductsModal();
-
-      expect(modalService.open).toHaveBeenCalledWith(VisibilityProductsModalComponent, {windowClass: 'visibility-products'});
+      component.openFaqs();
+      
+      expect(router.navigate).toHaveBeenCalledWith(['pro/help', {section: 'Perfil-6'}]);
     });
   });
 });
