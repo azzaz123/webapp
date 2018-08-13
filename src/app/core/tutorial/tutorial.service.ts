@@ -7,10 +7,13 @@ import { User } from '../user/user';
 export class TutorialService {
 
   private _step = 0;
-  public maxSteps = 6;
+  public maxSteps;
   localStorageName = '-tutorial';
 
   constructor(private userService: UserService) {
+    userService.isProfessional().subscribe((isPro: boolean) => {
+      this.maxSteps = isPro ? 6 : 7;
+    });
   }
 
   get step(): number {

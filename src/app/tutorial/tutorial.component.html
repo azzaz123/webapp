@@ -20,10 +20,15 @@
       </div>
 
       <div class="step step-4" *ngIf="tutorialService.step === 4" [@fade]>
-        <p i18n>Your favorites can be seen on the big screen which might help make up your mind.</p>
+        <p *ngIf="withCoins" i18n>Wallacoins? Wallacoins are the new wallapop's currency. You will save money featuring your products. Get one of our packs and we will give you some free wallacoins for your purchases.</p>
+        <p *ngIf="!withCoins" i18n>What is this? Saving packs for your Featured products. Add credit here and you will get great discounts. </p>
       </div>
 
       <div class="step step-5" *ngIf="tutorialService.step === 5" [@fade]>
+        <p i18n>Your favorites can be seen on the big screen which might help make up your mind.</p>
+      </div>
+
+      <div class="step step-6" *ngIf="tutorialService.step === 6" [@fade]>
         <p i18n>See your profile reviews. Is the community leaving good feedback?</p>
       </div>
     </div>
@@ -68,11 +73,11 @@
       </div>
       <button (click)="tutorialService.nextStep()"
               class="btn btn-next"
-              [hidden]="tutorialService.step === 5"
+              [hidden]="tutorialService.step === tutorialService.maxSteps - 1"
               tslTrackEvent="MYZONE_NEXTTUTORIAL" [params]="{step: tutorialService.step + 1}"
               i18n>Next</button>
       <button [routerLink]="['/catalog/list']"
-              [hidden]="tutorialService.step < 5"
+              [hidden]="tutorialService.step < tutorialService.maxSteps - 1"
               class="btn btn-next"
               tslTrackEvent="MYZONE_NEXTTUTORIAL" [params]="{step: tutorialService.step + 1}"
               i18n>Ready!</button>
