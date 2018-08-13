@@ -13,6 +13,10 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
+      },
+      {
+        path: 'calls',
+        loadChildren: 'app/calls/calls.module#CallsModule'
       }
     ]
   }

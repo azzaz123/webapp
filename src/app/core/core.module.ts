@@ -21,7 +21,6 @@ import { PersistencyService } from './persistency/persistency.service';
 import { WindowRef } from './window/window.service';
 import { XmppService } from './xmpp/xmpp.service';
 import { PushNotificationsModule } from 'ng-push';
-import { ToastrModule } from 'ngx-toastr';
 import { ReviewService } from './review/review.service';
 import { PrivacyService } from './privacy/privacy.service';
 import { ConnectionService } from './connection/connection.service';
@@ -30,7 +29,6 @@ import { ConnectionService } from './connection/connection.service';
   imports: [
     CommonModule,
     CookieModule.forChild(),
-    ToastrModule.forRoot(),
     CommonModule,
     UserModule,
     ItemModule,

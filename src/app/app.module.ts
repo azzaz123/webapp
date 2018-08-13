@@ -19,8 +19,8 @@ import { ProfileModule } from './profile/profile.module';
 import { HttpClientModule } from '@angular/common/http';
 import { TutorialModule } from './tutorial/tutorial.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { CallsModule } from './calls/calls.module';
 import { WallacoinsModule } from './wallacoins/wallacoins.module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -32,6 +32,7 @@ import { WallacoinsModule } from './wallacoins/wallacoins.module';
     CookieModule.forRoot(),
     CoreModule.forRoot(),
     DndModule.forRoot(),
+    ToastrModule.forRoot(),
     BrowserModule,
     LoginModule,
     HttpModule,
@@ -44,7 +45,6 @@ import { WallacoinsModule } from './wallacoins/wallacoins.module';
     ProfileModule,
     TutorialModule,
     NgxPermissionsModule.forRoot(),
-    CallsModule,
     WallacoinsModule
   ],
   providers: [PROVIDERS],
