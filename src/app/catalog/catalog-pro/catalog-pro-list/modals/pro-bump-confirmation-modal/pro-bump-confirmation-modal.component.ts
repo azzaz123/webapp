@@ -20,7 +20,7 @@ export class ProBumpConfirmationModalComponent implements OnInit {
   ngOnInit() {
     this.userService.me().subscribe(
       () => {
-        if (this.code === '200') {
+        if (this.code === '200' || this.code === '201') {
           this.trackingService.track(TrackingService.PRO_FEATURED_PURCHASE_SUCCESS);
         } else {
           this.trackingService.track(TrackingService.PRO_FEATURED_PURCHASE_ERROR);
