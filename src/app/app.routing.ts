@@ -9,6 +9,10 @@ const routes: Routes = [
       {
         path: 'help',
         loadChildren: 'app/help/help.module#HelpModule'
+      },
+      {
+        path: 'dashboard',
+        loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
       }
     ]
   }

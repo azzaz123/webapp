@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MessageService } from '../message/message.service';
 import { ConversationService } from './conversation.service';
-import { UserModule } from '../user/user.module';
 import { CommonModule } from '@angular/common';
 import { ItemModule } from '../item/item.module';
 import { MomentModule } from 'angular2-moment';
@@ -16,7 +15,6 @@ import { CallStatusLabelPipe } from './call-status-label.pipe';
     ItemModule,
     MomentModule,
     MatIconModule,
-    UserModule,
     NgbTooltipModule,
     NgbDropdownModule,
     NgbModalModule,

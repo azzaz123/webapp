@@ -20,7 +20,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { TutorialModule } from './tutorial/tutorial.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { CallsModule } from './calls/calls.module';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { WallacoinsModule } from './wallacoins/wallacoins.module';
 
 @NgModule({
@@ -46,7 +45,6 @@ import { WallacoinsModule } from './wallacoins/wallacoins.module';
     TutorialModule,
     NgxPermissionsModule.forRoot(),
     CallsModule,
-    DashboardModule,
     WallacoinsModule
   ],
   providers: [PROVIDERS],
