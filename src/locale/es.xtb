@@ -636,4 +636,6 @@
   <translation id="5484168340945543767">Aquí podrás comprar packs de ahorro para tus Destacados y ver tu saldo disponible.</translation>
   <translation id="2304802134193899623">Todo ha ido perfecto. Hemos añadido <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.quantity | number}}</ex></ph> Wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu cartera. Con ellos podrás destacar tus productos. Recuerda que solo están (por el momento) disponibles en web y que no se puede intercambiar por Euros.</translation>
   <translation id="5174338286786022523">Todo ha ido perfecto. Hemos cargado <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.quantity | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu saldo para destacar productos. Ahora, ¡a destacar!</translation>
+  <translation id="70240206675549090">¿Wallacoins? Los wallacoins son la nueva moneda de wallapop con la que podrás ahorrar comprando Destacados. Hazte con alguno de nuestros packs y te regalaremos más wallacoins para tus compras.</translation>
+  <translation id="7478441329490273363">¿Qué es esto? Son packs de ahorro para tus Destacados. Recarga tu saldo aquí y obtendrás descuentos para comprar tus Destacados.</translation>
 </translationbundle>
