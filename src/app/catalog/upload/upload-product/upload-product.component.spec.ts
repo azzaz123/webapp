@@ -156,6 +156,7 @@ describe('UploadProductComponent', () => {
 
   describe('ngOnChanges', () => {
     it('should get and set categories', () => {
+      spyOn(categoryService, 'isHeroCategory').and.returnValues(false, false, false, true, true);
       component.ngOnChanges();
       expect(categoryService.getUploadCategories).toHaveBeenCalled();
       expect(component.categories).toEqual(CATEGORIES_OPTIONS_CONSUMER_GOODS);

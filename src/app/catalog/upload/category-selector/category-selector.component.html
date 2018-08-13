@@ -22,6 +22,15 @@
         <span i18n>A car</span>
       </a>
       <a class="type"
+         (click)="setCategory(13000)"
+         [ngClass]="{active: category === 13000}"
+         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '13000'}">
+        <div class="square">
+          <mat-icon svgIcon="herocat-real-estate"></mat-icon>
+        </div>
+        <span i18n>A property</span>
+      </a>
+      <a class="type"
          (click)="setCategory(13200)"
          [ngClass]="{active: category === 13200}"
          tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '13200'}">
@@ -31,13 +40,13 @@
         <span i18n>My services</span>
       </a>
       <a class="type"
-         (click)="setCategory(13000)"
-         [ngClass]="{active: category === 13000}"
-         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '13000'}">
+         (click)="setCategory(21000)"
+         [ngClass]="{active: category === 21000}"
+         tslTrackEvent="UPLOADFORM_CHOOSEHEROCATEGORY" [params]="{herocategory: '21000'}">
         <div class="square">
-          <mat-icon svgIcon="herocat-real-estate"></mat-icon>
+          <mat-icon svgIcon="herocat-jobs"></mat-icon>
         </div>
-        <span i18n>A property</span>
+        <span i18n>Job</span>
       </a>
     </div>
   </div>

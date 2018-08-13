@@ -163,7 +163,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   ngOnChanges(changes?: any) {
     this.categoryService.getUploadCategories().subscribe((categories: CategoryOption[]) => {
       this.categories = categories.filter((category: CategoryOption) => {
-        return category.value !== REALESTATE_CATEGORY && category.value !== '13200';
+        return !this.categoryService.isHeroCategory(+category.value);
       });
       if (!this.item) {
         if (this.categoryId && this.categoryId !== '-1') {
