@@ -3,7 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'chat' },
-  { path: 'pro', pathMatch: 'full', redirectTo: 'chat' }
+  {
+    path: 'pro',
+    children: [
+      {
+        path: 'help',
+        loadChildren: 'app/help/help.module#HelpModule'
+      }
+    ]
+  }
 ];
 
 @NgModule({
