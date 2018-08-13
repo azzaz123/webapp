@@ -20,7 +20,7 @@ import {
   MOCK_PRIVACY_UNKNOW_ALLOW,
   MOCK_PRIVACY_UNKNOW_DISALLOW
 } from '../core/privacy/privacy.fixtures.spec';
-import { ProfileFormComponent } from './profile-form/profile-form.component';
+import { ProfileFormComponent } from '../shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from './../shared/switch/switch.component';
 import { environment } from '../../environments/environment';
 

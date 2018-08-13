@@ -6,6 +6,7 @@ const routes: Routes = [
   {
     path: 'pro',
     children: [
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       {
         path: 'help',
         loadChildren: 'app/help/help.module#HelpModule'
@@ -17,6 +18,10 @@ const routes: Routes = [
       {
         path: 'calls',
         loadChildren: 'app/calls/calls.module#CallsModule'
+      },
+      {
+        path: 'profile',
+        loadChildren: 'app/profile-pro/profile-pro.module#ProfileProModule'
       }
     ]
   }

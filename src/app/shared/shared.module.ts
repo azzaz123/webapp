@@ -43,6 +43,14 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
 import { CardSelectionComponent } from './payments/card-selection/card-selection.component';
 import { SabadellComponent } from './payments/sabadell/sabadell.component';
 import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
+import { ProfileFormComponent } from './profile/profile-form/profile-form.component';
+import { EditEmailComponent } from './profile/edit-email/edit-email.component';
+import { EmailModalComponent } from './profile/edit-email/email-modal/email-modal.component';
+import { EditPasswordComponent } from './profile/edit-password/edit-password.component';
+import { PasswordModalComponent } from './profile/edit-password/password-modal/password-modal.component';
+import { PictureUploadComponent } from './profile/picture-upload/picture-upload.component';
+import { CreditCardInfoComponent } from './profile/credit-card-info/credit-card-info.component';
+import { NgUploaderModule } from 'ngx-uploader';
 
 @NgModule({
   imports: [
@@ -55,7 +63,8 @@ import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
     GeolocationModule,
     MomentModule,
     NgxPermissionsModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    NgUploaderModule
   ],
   exports: [
     CardModule,
@@ -89,7 +98,14 @@ import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
     RestrictInputNumberDirective,
     CardSelectionComponent,
     SabadellComponent,
-    WallacoinComponent
+    WallacoinComponent,
+    EditEmailComponent,
+    EmailModalComponent,
+    EditPasswordComponent,
+    PasswordModalComponent,
+    PictureUploadComponent,
+    ProfileFormComponent,
+    CreditCardInfoComponent
   ],
   declarations: [
     AdComponent,
@@ -126,7 +142,14 @@ import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
     RestrictInputNumberDirective,
     CardSelectionComponent,
     SabadellComponent,
-    WallacoinComponent
+    WallacoinComponent,
+    EditEmailComponent,
+    EmailModalComponent,
+    EditPasswordComponent,
+    PasswordModalComponent,
+    PictureUploadComponent,
+    ProfileFormComponent,
+    CreditCardInfoComponent
   ],
   providers: [
     DecimalPipe,
@@ -139,7 +162,9 @@ import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
     ReviewModalComponent,
     GdprModalComponent,
     TooManyItemsModalComponent,
-    AlreadyFeaturedModalComponent
+    AlreadyFeaturedModalComponent,
+    EmailModalComponent,
+    PasswordModalComponent
   ]
 })
 export class SharedModule { }
