@@ -16,7 +16,6 @@ import { DndModule } from 'ng2-dnd';
 import { HttpClientModule } from '@angular/common/http';
 import { TutorialModule } from './tutorial/tutorial.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { WallacoinsModule } from './wallacoins/wallacoins.module';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -38,8 +37,7 @@ import { ToastrModule } from 'ngx-toastr';
     LayoutModule,
     CatalogModule,
     TutorialModule,
-    NgxPermissionsModule.forRoot(),
-    WallacoinsModule
+    NgxPermissionsModule.forRoot()
   ],
   providers: [PROVIDERS],
   bootstrap: [AppComponent]

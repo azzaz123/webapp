@@ -36,6 +36,10 @@ const routes: Routes = [
   {
     path: 'reviews',
     loadChildren: 'app/reviews/reviews.module#ReviewsModule'
+  },
+  {
+    path: 'wallacoins',
+    loadChildren: 'app/wallacoins/wallacoins.module#WallacoinsModule'
   }
 ];
 
