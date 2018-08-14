@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../core/event/event.service';
 import { NguCarousel } from '@ngu/carousel';
 import { TrackingService } from '../core/tracking/tracking.service';
+import { UserService } from '../core/user/user.service';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -29,7 +30,14 @@ export class WallacoinsComponent implements OnInit {
               private eventService: EventService,
               private route: ActivatedRoute,
               private trackingService: TrackingService,
-              private router: Router){
+              private router: Router,
+              private userService: UserService){
+
+    this.userService.isProfessional().subscribe((value: boolean) => {
+      if (value) {
+        this.router.navigate(['/pro/catalog/list']);
+      }
+    });
   }
 
   ngOnInit() {
