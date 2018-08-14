@@ -35,7 +35,6 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
-        Compress: 'true'
         Aliases:
         - !Ref HostES
         CustomErrorResponses:
@@ -44,6 +43,7 @@ Resources:
           ResponseCode: 404
           ResponsePagePath: '/'
         DefaultCacheBehavior:
+          Compress: 'true'
           ForwardedValues:
             QueryString: 'false'
             Cookies:
