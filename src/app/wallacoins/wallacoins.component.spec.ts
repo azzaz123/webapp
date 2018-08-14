@@ -19,6 +19,7 @@ import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wall
 import { EventService } from '../core/event/event.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../core/tracking/tracking.service';
+import { UserService } from '../core/user/user.service';
 
 describe('WallacoinsComponent', () => {
   let component: WallacoinsComponent;
@@ -27,6 +28,7 @@ describe('WallacoinsComponent', () => {
   let modalService: NgbModal;
   let router: Router;
   let eventService: EventService;
+  let userService: UserService;
   const CREDITS_PACKS: Pack[] = createWallacoinsPacksFixture().wallacoins;
   const PERKS: PerksModel = createPerksModelFixture();
   const PACK = new Pack(
@@ -43,6 +45,7 @@ describe('WallacoinsComponent', () => {
       providers: [
         DecimalPipe,
         EventService,
+        UserService,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: PaymentService, useValue: {
@@ -76,7 +79,14 @@ describe('WallacoinsComponent', () => {
               code: '-1'
             })
         }
+        },
+        {
+          provide: UserService, useValue: {
+            isProfessional() {
+              return Observable.of('')
+            }
         }
+        },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
