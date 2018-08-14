@@ -15,7 +15,6 @@ import { CatalogModule } from './catalog/catalog.module';
 import { DndModule } from 'ng2-dnd';
 import { FavoritesModule } from './favorites/favorites.module';
 import { ReviewsModule } from './reviews/reviews.module';
-import { ProfileModule } from './profile/profile.module';
 import { HttpClientModule } from '@angular/common/http';
 import { TutorialModule } from './tutorial/tutorial.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -42,7 +41,6 @@ import { ToastrModule } from 'ngx-toastr';
     CatalogModule,
     ReviewsModule,
     FavoritesModule,
-    ProfileModule,
     TutorialModule,
     NgxPermissionsModule.forRoot(),
     WallacoinsModule

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { profileRoutedComponents, ProfileRoutingModule } from './profile.routes';
-import { CoreModule } from '../core/core.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +11,6 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
   imports: [
     SharedModule,
     ProfileRoutingModule,
-    CoreModule,
     ReactiveFormsModule,
     FormsModule,
     MatIconModule,

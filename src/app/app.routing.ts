@@ -24,6 +24,10 @@ const routes: Routes = [
         loadChildren: 'app/profile-pro/profile-pro.module#ProfileProModule'
       }
     ]
+  },
+  {
+    path: 'profile',
+    loadChildren: 'app/profile/profile.module#ProfileModule'
   }
 ];
 

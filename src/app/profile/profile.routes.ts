@@ -9,7 +9,7 @@ import { PERMISSIONS } from '../core/user/user';
 
 const routes: Routes = [
   {
-    path: 'profile',
+    path: '',
     component: ProfileComponent,
     canActivate: [LoggedGuard, NgxPermissionsGuard],
     canDeactivate: [ExitConfirmGuard],
