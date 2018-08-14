@@ -203,7 +203,7 @@ const routes: Routes = [
             }
           }
         ]
-      },
+      }
     ]
   }
 ];

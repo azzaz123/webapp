@@ -2,7 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output, Injectable } from '@ang
 import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { I18nService } from '../../../../core/i18n/i18n.service';
 import { CalendarDates } from './calendar-dates';
-import { style, animate, transition, trigger } from '@angular/core';
+import { style, animate, transition, trigger } from '@angular/animations';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
   one && two && two.year === one.year && two.month === one.month && two.day === one.day;

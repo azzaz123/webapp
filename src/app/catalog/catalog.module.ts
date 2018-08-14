@@ -13,7 +13,7 @@ import { CreditCardModalComponent } from './list/modals/credit-card-modal/credit
 import { DropAreaComponent } from './upload/drop-area/drop-area.component';
 import { UploadService } from './upload/drop-area/upload.service';
 import { NgUploaderModule } from 'ngx-uploader';
-import { DndModule } from 'ng2-dnd';
+import { DndModule } from '@beyerleinf/ngx-dnd';
 import { SelectModule } from 'ng-select';
 import { CarSuggestionsService } from './upload/upload-car/car-suggestions.service';
 import { CarKeysService } from './upload/upload-car/car-keys.service';

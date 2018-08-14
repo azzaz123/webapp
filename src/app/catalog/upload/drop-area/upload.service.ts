@@ -93,7 +93,7 @@ export class UploadService {
     this.uploadInput.emit(inputEvent);
   }
 
-  public updateOrder(files: UploadFile[]) {
+  public updateOrder(files) {
     const inputEvent: UploadInput = {
       type: 'updateOrder',
       files: files
@@ -101,7 +101,7 @@ export class UploadService {
     this.uploadInput.emit(inputEvent);
   }
 
-  public setInitialImages(files: UploadFile[]) {
+  public setInitialImages(files) {
     const inputEvent: UploadInput = {
       type: 'initialImages',
       files: [...files]

@@ -6,7 +6,7 @@ import { TrackingEventBase } from './tracking-event-base.interface';
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
-import { CookieService } from 'ngx-cookie/index';
+import { CookieService } from 'ngx-cookie';
 import { HttpService } from '../http/http.service';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
