@@ -113,6 +113,7 @@ export class CatalogProListComponent implements OnInit {
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
+          modalRef.componentInstance.extras = params.extras;
           modalRef.result.then(() => {
             modalRef = null;
             localStorage.removeItem('transactionType');

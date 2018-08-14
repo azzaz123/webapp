@@ -249,7 +249,7 @@ describe('CartExtrasProComponent', () => {
 
               component.checkout();
 
-              expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { code: 201 }]);
+              expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { code: 201, extras: true }]);
             });
 
             it('should navigate to catalog with code -1 if the payment was ko', () => {

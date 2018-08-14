@@ -97,11 +97,12 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   }
 
   private buy(orderId: string) {
+    localStorage.setItem('transactionType', 'extras');
     if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
       this.sabadellSubmit.emit(orderId);
     } else {
       this.paymentService.pay(orderId).subscribe((response) => {
-        this.router.navigate(['pro/catalog/list', {code: response.status}]);
+        this.router.navigate(['pro/catalog/list', {code: response.status, extras: true}]);
       }, () => {
         this.router.navigate(['pro/catalog/list', {code: -1}]);
       });
