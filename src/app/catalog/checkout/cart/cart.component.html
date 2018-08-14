@@ -5,7 +5,9 @@
   </a>
 </div>
 <div [class.with-credits]="creditInfo?.currencyName === 'wallacredits'">
-  <div class="cart-wrapper" [class.has-financial-card]="hasFinancialCard" [class.no-credit]="!creditInfo?.credit">
+  <div class="cart-wrapper" [class.has-financial-card]="hasFinancialCard"
+       [class.no-credit]="!creditInfo?.credit"
+       [class.no-discount]="!cart?.discountedTotal && !creditInfo?.credit">
     <div class="scroll-panel">
       <ul *ngIf="cart" class="items-list">
         <li *ngFor="let type of types" [hidden]="!cart[type].cartItems.length" [ngClass]="type">
@@ -88,6 +90,9 @@
       <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
     </div>
   </div>
+  <div class="discounted-total" *ngIf="!creditInfo?.credit && cart?.discountedTotal">
+    <s>{{cart?.discountedTotal | customCurrency:creditInfo?.currencyName}}</s>
+  </div>
   <div class="total">
     <span class="label" i18n>Total to pay</span>
     <span class="price">{{totalToPay | customCurrency}}</span>
@@ -103,3 +108,4 @@
   </div>
 </div>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>
+
