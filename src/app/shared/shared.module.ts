@@ -51,6 +51,13 @@ import { PasswordModalComponent } from './profile/edit-password/password-modal/p
 import { PictureUploadComponent } from './profile/picture-upload/picture-upload.component';
 import { CreditCardInfoComponent } from './profile/credit-card-info/credit-card-info.component';
 import { NgUploaderModule } from 'ngx-uploader';
+import { CatalogCardComponent } from './catalog/catalog-card/catalog-card.component';
+import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/catalog-item-actions.component';
+import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
+import { CartComponent } from './catalog/cart/cart.component';
+import { CartService } from './catalog/cart/cart.service';
+import { TrackingModule } from '../core/tracking/tracking.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -62,9 +69,11 @@ import { NgUploaderModule } from 'ngx-uploader';
     FormsModule,
     GeolocationModule,
     MomentModule,
-    NgxPermissionsModule,
+    NgxPermissionsModule.forChild(),
     NgbDropdownModule,
-    NgUploaderModule
+    NgUploaderModule,
+    TrackingModule,
+    RouterModule
   ],
   exports: [
     CardModule,
@@ -105,7 +114,11 @@ import { NgUploaderModule } from 'ngx-uploader';
     PasswordModalComponent,
     PictureUploadComponent,
     ProfileFormComponent,
-    CreditCardInfoComponent
+    CreditCardInfoComponent,
+    CatalogCardComponent,
+    CatalogItemActionsComponent,
+    CatalogStatusNavbarComponent,
+    CartComponent
   ],
   declarations: [
     AdComponent,
@@ -149,12 +162,17 @@ import { NgUploaderModule } from 'ngx-uploader';
     PasswordModalComponent,
     PictureUploadComponent,
     ProfileFormComponent,
-    CreditCardInfoComponent
+    CreditCardInfoComponent,
+    CatalogCardComponent,
+    CatalogItemActionsComponent,
+    CatalogStatusNavbarComponent,
+    CartComponent
   ],
   providers: [
     DecimalPipe,
     ExitConfirmGuard,
-    TutorialGuard
+    TutorialGuard,
+    CartService
   ],
   entryComponents: [
     ConfirmationModalComponent,

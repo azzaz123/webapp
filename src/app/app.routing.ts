@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterModule, Routes } from '@angular/router';
+import { PERMISSIONS } from './core/user/user';
+import { NgxPermissionsGuard } from 'ngx-permissions';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'chat' },
@@ -22,6 +24,32 @@ const routes: Routes = [
       {
         path: 'profile',
         loadChildren: 'app/profile-pro/profile-pro.module#ProfileProModule'
+      },
+      {
+        path: 'catalog',
+        children: [
+          {
+            path: '',
+            loadChildren: 'app/catalog-pro/catalog-pro.module#CatalogProModule'
+          },
+          {
+            path: 'upload',
+            loadChildren: 'app/upload/upload.module#UploadModule',
+            canLoad: [NgxPermissionsGuard],
+            data: {
+              isMyZone: true,
+              isProducts: true,
+              permissions: {
+                only: PERMISSIONS.professional,
+                redirectTo: '/catalog/upload'
+              }
+            }
+          },
+          {
+            path: 'edit',
+            loadChildren: 'app/upload/upload.module#UploadModule'
+          }
+        ]
       }
     ]
   },
@@ -44,6 +72,32 @@ const routes: Routes = [
   {
     path: 'wallacoins',
     loadChildren: 'app/wallacoins/wallacoins.module#WallacoinsModule'
+  },
+  {
+    path: 'catalog',
+    children: [
+      {
+        path: '',
+        loadChildren: 'app/catalog/catalog.module#CatalogModule'
+      },
+      {
+        path: 'upload',
+        loadChildren: 'app/upload/upload.module#UploadModule',
+        canLoad: [NgxPermissionsGuard],
+        data: {
+          isMyZone: true,
+          isProducts: true,
+          permissions: {
+            only: PERMISSIONS.normal,
+            redirectTo: '/pro/catalog/upload'
+          }
+        }
+      },
+      {
+        path: 'edit',
+        loadChildren: 'app/upload/upload.module#UploadModule'
+      }
+    ]
   }
 ];
 

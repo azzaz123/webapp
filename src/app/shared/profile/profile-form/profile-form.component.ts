@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../core/user/user.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { ExitConfirmationModalComponent } from '../../../catalog/edit/exit-confirmation-modal/exit-confirmation-modal.component';
+import { ExitConfirmationModalComponent } from '../../../upload/edit/exit-confirmation-modal/exit-confirmation-modal.component';
 
 @Component({
   selector: 'tsl-profile-form',

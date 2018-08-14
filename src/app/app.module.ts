@@ -10,7 +10,6 @@ import { CookieModule } from 'ngx-cookie';
 import { PROVIDERS } from './providers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
-import { CatalogModule } from './catalog/catalog.module';
 import { DndModule } from 'ng2-dnd';
 import { HttpClientModule } from '@angular/common/http';
 import { TutorialModule } from './tutorial/tutorial.module';
@@ -33,7 +32,6 @@ import { ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     AppRoutingModule,
     LayoutModule,
-    CatalogModule,
     TutorialModule,
     NgxPermissionsModule.forRoot()
   ],

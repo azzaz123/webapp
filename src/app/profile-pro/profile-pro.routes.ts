@@ -16,7 +16,7 @@ const routes: Routes = [
     data: {
       permissions: {
         only: PERMISSIONS.professional,
-        redirectTo: '/'
+        redirectTo: '/profile'
       }
     },
     children: [
