@@ -28,6 +28,10 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: 'app/profile/profile.module#ProfileModule'
+  },
+  {
+    path: 'favorites',
+    loadChildren: 'app/favorites/favorites.module#FavoritesModule'
   }
 ];
 
