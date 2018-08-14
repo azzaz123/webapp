@@ -11,7 +11,7 @@ import { TrackingService } from '../../../../../core/tracking/tracking.service';
 export class ProBumpConfirmationModalComponent implements OnInit {
 
   public code: string;
-  public extras = false;
+  public extras: string;
 
   constructor(public activeModal: NgbActiveModal,
               private trackingService: TrackingService,
