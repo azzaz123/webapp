@@ -97,7 +97,6 @@ export class CartExtrasProComponent implements OnInit, OnDestroy {
   }
 
   private buy(orderId: string) {
-    localStorage.setItem('transactionType', 'extras');
     if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
       this.sabadellSubmit.emit(orderId);
     } else {
