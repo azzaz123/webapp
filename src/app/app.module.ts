@@ -13,7 +13,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { DndModule } from 'ng2-dnd';
-import { ReviewsModule } from './reviews/reviews.module';
 import { HttpClientModule } from '@angular/common/http';
 import { TutorialModule } from './tutorial/tutorial.module';
 import { NgxPermissionsModule } from 'ngx-permissions';
@@ -38,7 +37,6 @@ import { ToastrModule } from 'ngx-toastr';
     AppRoutingModule,
     LayoutModule,
     CatalogModule,
-    ReviewsModule,
     TutorialModule,
     NgxPermissionsModule.forRoot(),
     WallacoinsModule

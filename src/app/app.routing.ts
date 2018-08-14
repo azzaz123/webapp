@@ -32,6 +32,10 @@ const routes: Routes = [
   {
     path: 'favorites',
     loadChildren: 'app/favorites/favorites.module#FavoritesModule'
+  },
+  {
+    path: 'reviews',
+    loadChildren: 'app/reviews/reviews.module#ReviewsModule'
   }
 ];
 
