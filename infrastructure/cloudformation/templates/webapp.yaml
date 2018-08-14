@@ -35,6 +35,7 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
+        Compress: 'true'
         Aliases:
         - !Ref HostES
         CustomErrorResponses:
