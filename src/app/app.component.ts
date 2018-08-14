@@ -81,6 +81,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
+    appboy.display.automaticallyShowNewInAppMessages();
+    appboy.registerAppboyPushMessages();
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
     this.subscribeUnreadMessages();
@@ -94,9 +97,6 @@ export class AppComponent implements OnInit {
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-    appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
-    appboy.display.automaticallyShowNewInAppMessages();
-    appboy.registerAppboyPushMessages();
     this.conversationService.firstLoad = true;
   }
 
@@ -153,7 +153,6 @@ export class AppComponent implements OnInit {
         (user: User) => {
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
           this.xmppService.connect(user.id, accessToken);
-          this.userService.setPermission(user.type);
           this.conversationService.init().subscribe(() => {
             this.userService.isProfessional().subscribe((isProfessional: boolean) => {
               if (isProfessional) {
