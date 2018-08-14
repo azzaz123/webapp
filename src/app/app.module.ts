@@ -2,7 +2,6 @@ import './rxjs-extensions';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { ChatModule } from './chat/chat.module';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app.routing';
 import { LoginModule } from './login/login.module';
@@ -24,7 +23,6 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   imports: [
     BrowserAnimationsModule,
-    ChatModule,
     CookieModule.forRoot(),
     CoreModule.forRoot(),
     DndModule.forRoot(),

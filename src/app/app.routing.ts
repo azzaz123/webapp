@@ -30,6 +30,10 @@ const routes: Routes = [
     loadChildren: 'app/profile/profile.module#ProfileModule'
   },
   {
+    path: 'chat',
+    loadChildren: 'app/chat/chat.module#ChatModule'
+  },
+  {
     path: 'favorites',
     loadChildren: 'app/favorites/favorites.module#FavoritesModule'
   },
