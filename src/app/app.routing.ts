@@ -74,6 +74,10 @@ const routes: Routes = [
     loadChildren: 'app/wallacoins/wallacoins.module#WallacoinsModule'
   },
   {
+    path: 'tutorial',
+    loadChildren: 'app/tutorial/tutorial.module#TutorialModule'
+  },
+  {
     path: 'catalog',
     children: [
       {
