@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app.routing';
-import { LoginModule } from './login/login.module';
 import { CoreModule } from './core/core.module';
 import { CookieModule } from 'ngx-cookie';
 import { PROVIDERS } from './providers';
@@ -26,7 +25,6 @@ import { ToastrModule } from 'ngx-toastr';
     DndModule.forRoot(),
     ToastrModule.forRoot(),
     BrowserModule,
-    LoginModule,
     HttpModule,
     HttpClientModule,
     AppRoutingModule,

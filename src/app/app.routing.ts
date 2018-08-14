@@ -102,7 +102,11 @@ const routes: Routes = [
         loadChildren: 'app/upload/upload.module#UploadModule'
       }
     ]
-  }
+  },
+  {
+    path: 'login',
+    loadChildren: 'app/login/login.module#LoginModule'
+  },
 ];
 
 @NgModule({
