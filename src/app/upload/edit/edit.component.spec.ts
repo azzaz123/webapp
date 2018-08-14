@@ -1,12 +1,13 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { EditComponent } from './edit.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { MOCK_ITEM, PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../../tests/item.fixtures.spec';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
+import { UserService } from '../../core/user/user.service';
 
 describe('EditComponent', () => {
   let component: EditComponent;
@@ -25,6 +26,16 @@ describe('EditComponent', () => {
           snapshot: {
             data: {
               item: MOCK_ITEM
+            },
+            params: {
+              id: 1
+            },
+            parent: {
+              parent: {
+                parent: {
+                  url: ''
+                }
+              }
             }
           }
         }
@@ -43,6 +54,19 @@ describe('EditComponent', () => {
           provide: ItemService, useValue: {
             getUrgentProductByCategoryId() {}
           }
+        },
+        {
+          provide: Router, useValue: {
+            navigate() {
+            }
+        }
+        },
+        {
+          provide: UserService, useValue: {
+          isProfessional() {
+            return Observable.of(true);
+          }
+        }
         }
       ]
     })

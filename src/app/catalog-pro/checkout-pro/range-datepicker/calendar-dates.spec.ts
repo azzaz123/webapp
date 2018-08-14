@@ -1,5 +1,5 @@
 import { CalendarDates } from './calendar-dates';
-import { MOCK_SELECTED_DATES } from '../../../../../tests/calendar.fixtures.spec';
+import { MOCK_SELECTED_DATES } from '../../../../tests/calendar.fixtures.spec';
 
 describe('CalendarDates', () => {
 

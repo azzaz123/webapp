@@ -5,14 +5,14 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UploadService } from './upload.service';
 import {
   CAR_ID,
-  UPLOAD_FILE,
-  UPLOAD_FILE_DONE,
+  UPLOAD_FILE, UPLOAD_FILE_DATE,
+  UPLOAD_FILE_DONE, UPLOAD_FILE_ID,
   UPLOAD_FILE_NAME,
   UPLOADED_FILE_FIRST,
   UPLOADED_FILE_FIRST_ITEM,
-  UPLOADED_FILE_OTHER
+  UPLOADED_FILE_OTHER, UPLOADED_RESPONSE
 } from '../../../tests/upload.fixtures.spec';
-import { UploadFile } from 'ngx-uploader';
+import { UploadFile, UploadStatus } from 'ngx-uploader';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -330,13 +330,40 @@ describe('DropAreaComponent', () => {
     }));
   });
 
-  describe('onUploadDone', () => {
+  xdescribe('onUploadDone', () => {
     describe('with response 200', () => {
       describe('first image upload', () => {
         describe('with many images', () => {
           describe('normal item', () => {
             it('should set itemId and call uploadOtherImages', () => {
-              component.files = [UPLOAD_FILE, UPLOAD_FILE];
+              const upload = {
+                fileIndex: 0,
+                file: new File(['file'], ''),
+                id: UPLOAD_FILE_ID,
+                name: UPLOAD_FILE_NAME,
+                size: 123,
+                type: 'image/jpeg',
+                progress: {
+                  status: UploadStatus.Queue,
+                  data: {
+                    percentage: 0,
+                    speed: null,
+                    speedHuman: null,
+                    responseStatus: 200
+                  }
+                },
+                lastModifiedDate: UPLOAD_FILE_DATE,
+                preview: 'abcdef'
+              };
+              const uploadedFile = {
+                ...upload,
+                response: {
+                  ...UPLOADED_RESPONSE,
+                  id: ITEM_ID,
+                  type: 'consumer_goods'
+                }
+              };
+              component.files = [upload, upload];
               component.type = 'consumer_goods';
               spyOn(uploadService, 'uploadOtherImages');
 
