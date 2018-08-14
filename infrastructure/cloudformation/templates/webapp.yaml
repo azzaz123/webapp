@@ -43,7 +43,7 @@ Resources:
           ResponseCode: 404
           ResponsePagePath: '/'
         DefaultCacheBehavior:
-#          Compress: 'true'
+          Compress: 'true'
           ForwardedValues:
             QueryString: 'false'
             Cookies:
