@@ -33,7 +33,7 @@ import { ConnectionService } from './connection/connection.service';
     UserModule,
     ItemModule,
     TrackingModule,
-    ConversationModule,
+    ConversationModule.forRoot(),
     PushNotificationsModule
   ],
   exports: [

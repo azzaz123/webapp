@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { MessageService } from '../message/message.service';
 import { ConversationService } from './conversation.service';
 import { CommonModule } from '@angular/common';
@@ -19,13 +19,20 @@ import { CallStatusLabelPipe } from './call-status-label.pipe';
     NgbDropdownModule,
     NgbModalModule,
   ],
-  providers: [
-    ConversationService,
-    MessageService,
-    CallsService
-  ],
   declarations: [CallStatusLabelPipe],
   exports: [CallStatusLabelPipe]
 })
 export class ConversationModule {
+
+
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: ConversationModule,
+      providers: [
+        ConversationService,
+        MessageService,
+        CallsService
+      ]
+    };
+  }
 }
