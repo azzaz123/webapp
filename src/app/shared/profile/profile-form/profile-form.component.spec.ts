@@ -7,7 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../core/user/user.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
-import { ExitConfirmationModalComponent } from '../../../upload/edit/exit-confirmation-modal/exit-confirmation-modal.component';
+import { ExitConfirmationModalComponent } from '../../exit-confirmation-modal/exit-confirmation-modal.component';
 
 describe('ProfileFormComponent', () => {
   let component: ProfileFormComponent;

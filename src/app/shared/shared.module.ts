@@ -58,6 +58,7 @@ import { CartComponent } from './catalog/cart/cart.component';
 import { CartService } from './catalog/cart/cart.service';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { RouterModule } from '@angular/router';
+import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -118,7 +119,8 @@ import { RouterModule } from '@angular/router';
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
-    CartComponent
+    CartComponent,
+    ExitConfirmationModalComponent
   ],
   declarations: [
     AdComponent,
@@ -166,7 +168,8 @@ import { RouterModule } from '@angular/router';
     CatalogCardComponent,
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
-    CartComponent
+    CartComponent,
+    ExitConfirmationModalComponent
   ],
   providers: [
     DecimalPipe,
@@ -182,7 +185,8 @@ import { RouterModule } from '@angular/router';
     TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
     EmailModalComponent,
-    PasswordModalComponent
+    PasswordModalComponent,
+    ExitConfirmationModalComponent
   ]
 })
 export class SharedModule { }

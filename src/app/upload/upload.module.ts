@@ -7,7 +7,6 @@ import { DropAreaComponent } from './drop-area/drop-area.component';
 import { EditComponent } from './edit/edit.component';
 import { UploadService } from './drop-area/upload.service';
 import { RemoveConfirmModalComponent } from './drop-area/remove-confirm-modal/remove-confirm-modal.component';
-import { ExitConfirmationModalComponent } from './edit/exit-confirmation-modal/exit-confirmation-modal.component';
 import { PreviewModalComponent } from './preview-modal/preview-modal.component';
 import { UploadCarComponent } from './upload-car/upload-car.component';
 import { CarKeysService } from './upload-car/car-keys.service';
@@ -54,7 +53,6 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
     DropAreaComponent,
     EditComponent,
     RemoveConfirmModalComponent,
-    ExitConfirmationModalComponent,
     PreviewModalComponent,
     UploadCarComponent,
     UploadProductComponent,
@@ -71,7 +69,6 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
   ],
   entryComponents: [
     RemoveConfirmModalComponent,
-    ExitConfirmationModalComponent,
     PreviewModalComponent
   ]
 })

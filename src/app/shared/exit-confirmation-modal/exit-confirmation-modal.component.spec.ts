@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import { MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 
 describe('ExitConfirmationModalComponent', () => {
   let component: ExitConfirmationModalComponent;

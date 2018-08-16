@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
+import { ExitConfirmationModalComponent } from '../../shared/exit-confirmation-modal/exit-confirmation-modal.component';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 import { Item, ITEM_TYPES } from '../../core/item/item';
 import { Product } from '../../core/item/item-response.interface';
