@@ -44,6 +44,9 @@
     .amount {
       font-weight: bold;
       font-size: $font-size-3L;
+      tsl-wallacoin {
+        @include square(18px);
+      }
     }
   }
 }
@@ -67,7 +70,6 @@
     font-size: $font-size-XS;
     font-weight: bold;
     text-transform: uppercase;
-    overflow: hidden;
     clear: both;
   }
   .credit, .missing {
@@ -81,14 +83,12 @@
   .credit {
     color: $corporate;
     margin-bottom: $spacing-XS;
+    padding-right: 2px;
     .price {
-      font-size: $font-size-S;
+      font-size: $font-size;
     }
     .with-credits & {
       font-size: $font-size;
-      .price {
-        font-size: $font-size;
-      }
       .label span span {
         font-size: $font-size-XS;
       }
@@ -96,14 +96,14 @@
   }
   .missing {
     border-top: solid 1px $grey-50;
-    margin: 6px 6px 0 8px;
     padding: 3px 2px 0 0;
+    margin-bottom: $spacing-L;
     .label {
       color: $grey-250;
     }
     .price {
       color: $grey-500;
-      font-size: $font-size-L;
+      font-size: $font-size;
     }
   }
   .total {

@@ -7,6 +7,9 @@
     &.medium {
       @include square(14px);
     }
+    &.big {
+      @include square(18px);
+    }
   }
 }
 
@@ -29,6 +32,11 @@ mat-icon {
   &.corporate {
     /deep/ svg path {
       fill: $corporate;
+    }
+  }
+  &.black {
+    /deep/ svg path {
+      fill: $grey-900;
     }
   }
   &.medium {

@@ -15,14 +15,23 @@
     </div>
     <div class="price">
       <div class="total" i18n>Total</div>
-      <div class="amount">{{orderEvent.total | customCurrency}}</div>
+      <div class="amount">
+        {{orderEvent?.total * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+        <tsl-wallacoin [currency]="creditInfo?.currencyName" size="big" color="black"></tsl-wallacoin>
+      </div>
     </div>
   </div>
   <div class="right" [hidden]="!hasFinancialCard">
-    <p *ngIf="creditInfo.credit === 0" i18n>Secure payment through Sabadell</p>
-    <div class="totals" *ngIf="creditInfo.credit > 0">
-      <p *ngIf="creditInfo.credit < orderEvent.total" i18n>Pay partly with your credit:</p>
-      <p *ngIf="creditInfo.credit >= orderEvent.total" i18n>Pay easily with your credit:</p>
+    <p *ngIf="creditInfo?.credit === 0" i18n>Secure payment through Sabadell</p>
+    <div class="totals" *ngIf="creditInfo?.credit > 0">
+      <p *ngIf="creditInfo?.credit < orderEvent.total">
+        <span *ngIf="withCredits" i18n>Pay partly with your credit:</span>
+        <span *ngIf="!withCredits" i18n>Pay partly with your wallacoins:</span>
+      </p>
+      <p *ngIf="creditInfo?.credit >= orderEvent.total">
+        <span *ngIf="withCredits" i18n>Pay easily with your credit:</span>
+        <span *ngIf="!withCredits" i18n>Pay easily with your wallacoins:</span>
+      </p>
       <div class="credit" [hidden]="!creditInfo?.credit">
         <span class="label" [hidden]="!creditInfo?.credit">
           <span [hidden]="creditInfo?.currencyName !== 'wallacredits'">
@@ -34,7 +43,7 @@
           </span>
         </span>
         <span class="price">
-          {{-orderEvent.total | customCurrency:creditInfo?.currencyName}}
+          {{-orderEvent.total * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
           <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="corporate"></tsl-wallacoin>
         </span>
       </div>
@@ -44,7 +53,7 @@
           <span i18n>missing</span>
         </div>
         <div class="price">
-          {{orderEvent.total * creditInfo?.factor | number}}
+          {{totalToPay * creditInfo?.factor | number}}
           <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
         </div>
       </div>
@@ -53,7 +62,7 @@
         <span class="price">{{totalToPay | customCurrency}}</span>
       </div>
     </div>
-    <div class="credit-card" [hidden]="creditInfo.credit >= orderEvent.total">
+    <div class="credit-card" [hidden]="creditInfo?.credit >= orderEvent.total">
       <tsl-card-selection [(ngModel)]="cardType" (hasCard)="hasCard($event)"></tsl-card-selection>
     </div>
     <tsl-button className="btn-block btn-primary"

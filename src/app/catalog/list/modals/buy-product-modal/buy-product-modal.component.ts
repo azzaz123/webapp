@@ -39,6 +39,10 @@ export class BuyProductModalComponent implements OnInit {
       this.item.urgent = true;
     });
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
+      if (creditInfo.credit === 0) {
+        creditInfo.currencyName = 'wallacredits';
+        creditInfo.factor = 1;
+      }
       this.creditInfo = creditInfo;
     });
   }
