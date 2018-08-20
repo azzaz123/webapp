@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { CanComponentDeactivate } from '../shared/guards/can-component-deactivate.interface';
 import { User } from '../core/user/user';
-import { ProfileFormComponent } from './profile-form/profile-form.component';
+import { ProfileFormComponent } from '../shared/profile/profile-form/profile-form.component';
 import { PrivacyService, PRIVACY_STATUS } from '../core/privacy/privacy.service';
 
 @Component({
