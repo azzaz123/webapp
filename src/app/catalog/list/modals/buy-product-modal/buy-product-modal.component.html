@@ -1,0 +1,65 @@
+<div class="modal-close" (click)="activeModal.dismiss()">
+  <mat-icon svgIcon="cross"></mat-icon>
+</div>
+<div class="spinner-wrapper" [hidden]="!mainLoading" >
+  <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
+</div>
+<div class="buy-modal" [hidden]="mainLoading" [class.with-credits]="withCredits">
+  <div class="left">
+    <div>
+      <h2>Feature it as ASAP</h2>
+      <div class="box">
+        <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
+        <div>{{item?.title}}</div>
+      </div>
+    </div>
+    <div class="price">
+      <div class="total" i18n>Total</div>
+      <div class="amount">{{orderEvent.total | customCurrency}}</div>
+    </div>
+  </div>
+  <div class="right" [hidden]="!hasFinancialCard">
+    <p *ngIf="creditInfo.credit === 0" i18n>Secure payment through Sabadell</p>
+    <div class="totals" *ngIf="creditInfo.credit > 0">
+      <p *ngIf="creditInfo.credit < orderEvent.total" i18n>Pay partly with your credit:</p>
+      <p *ngIf="creditInfo.credit >= orderEvent.total" i18n>Pay easily with your credit:</p>
+      <div class="credit" [hidden]="!creditInfo?.credit">
+        <span class="label" [hidden]="!creditInfo?.credit">
+          <span [hidden]="creditInfo?.currencyName !== 'wallacredits'">
+            {{creditInfo?.credit | customCurrency:creditInfo?.currencyName}} <span i18n>credit</span>
+          </span>
+          <span [hidden]="creditInfo?.currencyName === 'wallacredits'">
+            <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="corporate"></tsl-wallacoin>
+            <span i18n>spending</span>
+          </span>
+        </span>
+        <span class="price">
+          {{-orderEvent.total | customCurrency:creditInfo?.currencyName}}
+          <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="corporate"></tsl-wallacoin>
+        </span>
+      </div>
+      <div class="missing" [hidden]="creditInfo?.currencyName === 'wallacredits' || !creditInfo?.credit">
+        <div class="label">
+          <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="strike"></tsl-wallacoin>
+          <span i18n>missing</span>
+        </div>
+        <div class="price">
+          {{orderEvent.total * creditInfo?.factor | number}}
+          <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
+        </div>
+      </div>
+      <div class="total">
+        <span class="label" i18n>Total to pay</span>
+        <span class="price">{{totalToPay | customCurrency}}</span>
+      </div>
+    </div>
+    <div class="credit-card" [hidden]="creditInfo.credit >= orderEvent.total">
+      <tsl-card-selection [(ngModel)]="cardType" (hasCard)="hasCard($event)"></tsl-card-selection>
+    </div>
+    <tsl-button className="btn-block btn-primary"
+                (click)="checkout()"
+                [loading]="loading"
+                i18n>Sell it faster</tsl-button>
+  </div>
+</div>
+<tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

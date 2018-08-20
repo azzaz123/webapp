@@ -2,7 +2,10 @@ import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import { ItemBulkResponse, ItemsData, Order, Product } from '../../core/item/item-response.interface';
+import {
+  ItemBulkResponse, ItemsData, Order, Product,
+  PurchaseProductsWithCreditsResponse
+} from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -24,6 +27,7 @@ import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-m
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { PerksModel } from '../../core/payments/payment.model';
+import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 
 @Component({
   selector: 'tsl-list',
@@ -133,7 +137,7 @@ export class ListComponent implements OnInit, OnDestroy {
             if (orderEvent) {
               this.isUrgent = true;
               this.isRedirect = !this.getRedirectToTPV();
-              this.feature(orderEvent);
+              this.feature(orderEvent, 'urgent');
             }
           }, () => {
           });
@@ -250,8 +254,6 @@ export class ListComponent implements OnInit, OnDestroy {
       this.delete();
     } else if (this.itemService.selectedAction === 'reserve') {
       this.reserve();
-    } else if (this.itemService.selectedAction === 'feature') {
-      this.feature($event);
     }
   }
 
@@ -292,10 +294,16 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public feature(orderEvent: OrderEvent) {
-    const orderId: string = UUID.UUID();
-    this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe((failedProducts: string[]) => {
-      if (failedProducts && failedProducts.length) {
+  public feature(orderEvent: OrderEvent, type?: string) {
+    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, {windowClass: 'buy-product'});
+    modalRef.componentInstance.type = type;
+    modalRef.componentInstance.orderEvent = orderEvent;
+    modalRef.result.then((result: string) => {
+      console.log(result);
+    });
+    /*const orderId: string = UUID.UUID();
+    this.itemService.purchaseProductsWithCredits(orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
+      if (response.items_failed && response.items_failed.length) {
         this.errorService.i18nError('bumpError');
       } else {
         this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
@@ -312,7 +320,7 @@ export class ListComponent implements OnInit, OnDestroy {
       } else {
         this.errorService.i18nError('bumpError');
       }
-    });
+    });*/
   }
 
   private chooseCreditCard(orderId: string, total: number, financialCard: FinancialCard) {
@@ -375,7 +383,7 @@ export class ListComponent implements OnInit, OnDestroy {
         order: order,
         total: +product.durations[0].market_code
       };
-      this.feature(orderEvent);
+      this.feature(orderEvent, 'urgent');
     });
   }
 

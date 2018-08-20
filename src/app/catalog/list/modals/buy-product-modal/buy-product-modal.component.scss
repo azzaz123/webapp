@@ -1,0 +1,125 @@
+@import "~style/common";
+
+.spinner-wrapper {
+  @include square(280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buy-modal {
+  display: flex;
+  color: $grey-900;
+}
+
+.left {
+  background-color: $grey-50;
+  text-align: center;
+  padding: 49px 30px 28px;
+  min-width: 294px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  h2 {
+    font-size: $font-size-M;
+    margin-bottom: $spacing-L;
+  }
+  .box {
+    display: flex;
+    width: 242px;
+    padding: $spacing-1S;
+    text-align: left;
+  }
+  .price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    .total {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: $font-size-XS;
+    }
+    .amount {
+      font-weight: bold;
+      font-size: $font-size-3L;
+    }
+  }
+}
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 360px;
+  padding: $spacing-L;
+  justify-content: space-between;
+  p {
+    margin-bottom: $spacing-L;
+  }
+  .totals {
+    width: 100%;
+  }
+  .credit, .total, .missing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: $font-size-XS;
+    font-weight: bold;
+    text-transform: uppercase;
+    overflow: hidden;
+    clear: both;
+  }
+  .credit, .missing {
+    .label {
+      tsl-wallacoin {
+        vertical-align: sub;
+        margin-right: 5px;
+      }
+    }
+  }
+  .credit {
+    color: $corporate;
+    margin-bottom: $spacing-XS;
+    .price {
+      font-size: $font-size-S;
+    }
+    .with-credits & {
+      font-size: $font-size;
+      .price {
+        font-size: $font-size;
+      }
+      .label span span {
+        font-size: $font-size-XS;
+      }
+    }
+  }
+  .missing {
+    border-top: solid 1px $grey-50;
+    margin: 6px 6px 0 8px;
+    padding: 3px 2px 0 0;
+    .label {
+      color: $grey-250;
+    }
+    .price {
+      color: $grey-500;
+      font-size: $font-size-L;
+    }
+  }
+  .total {
+    margin-bottom: $spacing-S;
+    .price {
+      font-size: $font-size-3L;
+    }
+  }
+  tsl-card-selection {
+    width: 100%;
+    margin-bottom: $spacing-2M;
+  }
+  tsl-button {
+    margin-top: $spacing;
+  }
+  .credit-card {
+    width: 100%;
+  }
+}

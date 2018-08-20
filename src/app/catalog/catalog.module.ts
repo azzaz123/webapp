@@ -17,6 +17,7 @@ import { CheckoutItemComponent } from './checkout/checkout-item/checkout-item.co
 import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.component';
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
 import { TrackingModule } from '../core/tracking/tracking.module';
+import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-product-modal.component';
 
 @NgModule({
   imports: [
@@ -43,14 +44,16 @@ import { TrackingModule } from '../core/tracking/tracking.module';
     ReactivateModalComponent,
     CheckoutItemComponent,
     BumpTutorialComponent,
-    UrgentConfirmationModalComponent
+    UrgentConfirmationModalComponent,
+    BuyProductModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
     CreditCardModalComponent,
     UploadConfirmationModalComponent,
     ReactivateModalComponent,
-    UrgentConfirmationModalComponent
+    UrgentConfirmationModalComponent,
+    BuyProductModalComponent
   ]
 })
 export class CatalogModule {

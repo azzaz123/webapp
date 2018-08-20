@@ -213,7 +213,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.buy-wallacoins {
+.modal.buy-wallacoins, .modal.buy-product {
   .modal-dialog {
     max-width: unset;
   }
