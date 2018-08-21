@@ -168,6 +168,13 @@ describe('CatalogProListComponent', () => {
       spyOn(router, 'navigate');
       spyOn(localStorage, 'getItem').and.returnValue('bump');
       spyOn(localStorage, 'removeItem');
+      route.params = Observable.of({
+        code: 200,
+        extras: true
+      });
+      component['modalRef'] = <any>{
+        componentInstance: componentInstance
+      };
       component.ngOnInit();
       tick();
       expect(modalService.open).toHaveBeenCalledWith(ProBumpConfirmationModalComponent, {
@@ -176,6 +183,7 @@ describe('CatalogProListComponent', () => {
       });
       expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list']);
       expect(localStorage.removeItem).toHaveBeenCalled();
+      expect(component['modalRef'].componentInstance.extras).toBe(true);
     }));
 
     it('should reset page on router event', fakeAsync(() => {
