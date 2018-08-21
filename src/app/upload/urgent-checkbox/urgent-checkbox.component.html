@@ -2,7 +2,10 @@
   <div class="content">
     <h2 i18n>Apply the ASAP Feature</h2>
     <p i18n *ngIf="urgentPrice">
-      For only {{urgentPrice | customCurrency:'EUR'}} mark your product as "Asap" for 7 days to differentiate it in the wall and make it easier to find through the asap filter.
+      For only {{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+      <span *ngIf="creditInfo?.currencyName === 'wallacoins'">wallacoins</span>
+      <span *ngIf="creditInfo?.currencyName === 'wallacredits' && creditInfo?.credit > 0">from your credit</span>
+      mark your product as "Asap" for 7 days to differentiate it in the wall and make it easier to find through the asap filter.
     </p>
     <div class="checkbox">
       <button type="button" class="select" [ngClass]="{'selected': isUrgent}" (click)="selectUrgent()">

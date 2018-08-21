@@ -7,6 +7,8 @@ import { Observable } from 'rxjs/Observable';
 import { ItemService } from '../../../../core/item/item.service';
 import { Item } from '../../../../core/item/item';
 import { WindowRef } from '../../../../core/window/window.service';
+import { PaymentService } from '../../../../core/payments/payment.service';
+import { CreditInfo } from '../../../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-upload-confirmation-modal',
@@ -20,10 +22,13 @@ export class UploadConfirmationModalComponent implements OnInit {
   public productId: string;
   private getUrgentProductsObservable: Observable<Product>;
   @Output() onAction: EventEmitter<OrderEvent> = new EventEmitter();
+  public creditInfo: CreditInfo;
+
 
   constructor(public activeModal: NgbActiveModal,
               private window: WindowRef,
               private trackingService: TrackingService,
+              private paymentService: PaymentService,
               public itemService: ItemService) {
   }
 
@@ -37,6 +42,9 @@ export class UploadConfirmationModalComponent implements OnInit {
       num_items: '0',
       content_type: 'product',
       content_name: 'Upload product from form'
+    });
+    this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
+      this.creditInfo = creditInfo;
     });
   }
 
