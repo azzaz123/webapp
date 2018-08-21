@@ -5,7 +5,6 @@ import { Item } from '../../../../core/item/item';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UUID } from 'angular2-uuid';
 import { PurchaseProductsWithCreditsResponse } from '../../../../core/item/item-response.interface';
-import { ErrorsService } from '../../../../core/errors/errors.service';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
@@ -31,8 +30,7 @@ export class BuyProductModalComponent implements OnInit {
   constructor(private itemService: ItemService,
               public activeModal: NgbActiveModal,
               private paymentService: PaymentService,
-              private eventService: EventService,
-              private errorService: ErrorsService) { }
+              private eventService: EventService) { }
 
   ngOnInit() {
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
@@ -64,8 +62,12 @@ export class BuyProductModalComponent implements OnInit {
   }
 
   public hasCard(hasCard: boolean) {
-    this.hasFinancialCard = hasCard;
-    this.mainLoading = false;
+    if (!hasCard) {
+      this.checkout();
+    } else {
+      this.hasFinancialCard = hasCard;
+      this.mainLoading = false;
+    }
   }
 
   public checkout() {
@@ -73,7 +75,6 @@ export class BuyProductModalComponent implements OnInit {
     const orderId: string = UUID.UUID();
     this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (response.items_failed && response.items_failed.length) {
-        this.errorService.i18nError('bumpError');
         this.activeModal.close('error');
       } else {
         localStorage.setItem('transactionSpent', (this.orderEvent.total * this.creditInfo.factor).toString());
@@ -85,17 +86,13 @@ export class BuyProductModalComponent implements OnInit {
         }
       }
     }, (error: Response) => {
-      if (error.text()) {
-        this.errorService.show(error);
-      } else {
-        this.errorService.i18nError('bumpError');
-      }
       this.activeModal.close('error');
     });
   }
 
   private buy(orderId: string) {
     if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
+      localStorage.setItem('redirectToTPV', 'true');
       this.sabadellSubmit.emit(orderId);
     } else {
       this.paymentService.pay(orderId).subscribe(() => {

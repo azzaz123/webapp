@@ -297,28 +297,10 @@ export class ListComponent implements OnInit, OnDestroy {
       this.setRedirectToTPV(false);
       if (result === 'success') {
         this.router.navigate(['catalog/list', {code: 200}]);
+      } else {
+        this.router.navigate(['catalog/list', {code: -1}]);
       }
     });
-    /*const orderId: string = UUID.UUID();
-    this.itemService.purchaseProductsWithCredits(orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
-      if (response.items_failed && response.items_failed.length) {
-        this.errorService.i18nError('bumpError');
-      } else {
-        this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
-          this.chooseCreditCard(orderId, orderEvent.total, financialCard);
-        }, () => {
-          this.setRedirectToTPV(true);
-          this.sabadellSubmit.emit(orderId);
-        });
-      }
-    }, (error: Response) => {
-      this.deselect();
-      if (error.text()) {
-        this.errorService.show(error);
-      } else {
-        this.errorService.i18nError('bumpError');
-      }
-    });*/
   }
 
   private chooseCreditCard(orderId: string, total: number, financialCard: FinancialCard) {
