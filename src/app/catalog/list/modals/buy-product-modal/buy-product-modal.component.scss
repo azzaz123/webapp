@@ -30,6 +30,9 @@
     width: 242px;
     padding: $spacing-1S;
     text-align: left;
+    .title {
+      word-break: break-word;
+    }
   }
   .price {
     display: flex;

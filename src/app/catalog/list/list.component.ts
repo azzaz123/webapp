@@ -2,31 +2,25 @@ import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import {
-  ItemBulkResponse, ItemsData, Order, Product,
-  PurchaseProductsWithCreditsResponse
-} from '../../core/item/item-response.interface';
+import { ItemBulkResponse, ItemsData, Order, Product } from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { UUID } from 'angular2-uuid';
-import { Response } from '@angular/http';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { OrderEvent } from './selected-items/selected-product.interface';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { UserStatsResponse, Counters } from '../../core/user/user-stats.interface';
+import { Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
-import { FinancialCard, CreditInfo } from '../../core/payments/payment.interface';
+import { FinancialCard } from '../../core/payments/payment.interface';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
-import { PerksModel } from '../../core/payments/payment.model';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 
 @Component({
@@ -299,7 +293,11 @@ export class ListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.type = type;
     modalRef.componentInstance.orderEvent = orderEvent;
     modalRef.result.then((result: string) => {
-      console.log(result);
+      this.isUrgent = false;
+      this.setRedirectToTPV(false);
+      if (result === 'success') {
+        this.router.navigate(['catalog/list', {code: 200}]);
+      }
     });
     /*const orderId: string = UUID.UUID();
     this.itemService.purchaseProductsWithCredits(orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {

@@ -9,6 +9,7 @@ import { ErrorsService } from '../../../../core/errors/errors.service';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { EventService } from '../../../../core/event/event.service';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { Response } from '@angular/http';
 
 @Component({
   selector: 'tsl-buy-product-modal',
@@ -68,12 +69,14 @@ export class BuyProductModalComponent implements OnInit {
   }
 
   public checkout() {
+    this.loading = true;
     const orderId: string = UUID.UUID();
     this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (response.items_failed && response.items_failed.length) {
         this.errorService.i18nError('bumpError');
         this.activeModal.close('error');
       } else {
+        localStorage.setItem('transactionSpent', (this.orderEvent.total * this.creditInfo.factor).toString());
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
           this.buy(orderId);

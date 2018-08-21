@@ -5,6 +5,13 @@
   <div *ngIf="code === '200'">
     <h1 i18n>Congratulations</h1>
     <p i18n>Your item has been uploaded and it's marked as urgent.</p>
+    <p><b>
+      <span i18n>You have used</span>
+      <span *ngIf="withCoins">{{spent | number}} wallacoins</span>
+      <span *ngIf="!withCoins">{{spent | customCurrency}}</span>
+      <span *ngIf="withCoins" i18n>and you have {{credit | number}} wallacoins left</span>
+      <span *ngIf="!withCoins" i18n>and you have {{credit | customCurrency}} credit</span>
+    </b></p>
   </div>
   <div *ngIf="code === '-1'">
     <h1 class="fail" i18n>Oops!</h1>
