@@ -8,6 +8,9 @@ import { PRODUCT_RESPONSE, ORDER_EVENT, PRODUCT_DURATION_ID, MOCK_ITEM } from '.
 import { Observable } from 'rxjs/Observable';
 import { WindowRef } from '../../../../core/window/window.service';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
+import { DecimalPipe } from '@angular/common';
+import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { PaymentService } from '../../../../core/payments/payment.service';
 
 describe('UploadConfirmationModalComponent', () => {
   let component: UploadConfirmationModalComponent;
@@ -18,10 +21,11 @@ describe('UploadConfirmationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UploadConfirmationModalComponent],
+      declarations: [UploadConfirmationModalComponent, CustomCurrencyPipe],
       providers: [
         NgbActiveModal,
         WindowRef,
+        DecimalPipe,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
@@ -33,6 +37,13 @@ describe('UploadConfirmationModalComponent', () => {
             close() {
             }
           }
+        },
+        {
+          provide: PaymentService, useValue: {
+          getCreditInfo() {
+            return Observable.of({});
+          }
+        }
         }
       ],
         schemas: [NO_ERRORS_SCHEMA]

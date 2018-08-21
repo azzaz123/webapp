@@ -303,41 +303,6 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private chooseCreditCard(orderId: string, total: number, financialCard: FinancialCard) {
-    const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, {windowClass: 'credit-card'});
-    modalRef.componentInstance.financialCard = financialCard;
-    modalRef.componentInstance.total = total;
-    this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
-    modalRef.result.then((result: string) => {
-      if (result === undefined) {
-        this.isUrgent = false;
-        localStorage.removeItem('transactionType');
-        this.isRedirect = !this.getRedirectToTPV();
-        this.deselect();
-        setTimeout(() => {
-          this.router.navigate(['catalog/list']);
-        }, 1000);
-      } else if (result === 'new') {
-        this.setRedirectToTPV(true);
-        this.sabadellSubmit.emit(orderId);
-      } else {
-        this.paymentService.pay(orderId).subscribe(() => {
-          this.deselect();
-          setTimeout(() => {
-            this.router.navigate(['catalog/list', {code: 200}]);
-          }, 1000);
-        }, () => {
-          this.deselect();
-          setTimeout(() => {
-            this.router.navigate(['catalog/list', {code: -1}]);
-          }, 1000);
-        });
-      }
-    }, () => {
-      this.deselect();
-    });
-  }
-
   public getNumberOfProducts() {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
       this.counters = userStats.counters;

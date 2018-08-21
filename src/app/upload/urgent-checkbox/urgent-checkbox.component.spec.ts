@@ -3,6 +3,8 @@ import { UrgentCheckboxComponent } from './urgent-checkbox.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+import { PaymentService } from '../../core/payments/payment.service';
 
 describe('UrgentCheckboxComponent', () => {
   let component: UrgentCheckboxComponent;
@@ -12,7 +14,14 @@ describe('UrgentCheckboxComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ UrgentCheckboxComponent, CustomCurrencyPipe ],
         providers: [
-          DecimalPipe
+          DecimalPipe,
+          {
+            provide: PaymentService, useValue: {
+            getCreditInfo() {
+              return Observable.of({});
+            }
+          }
+          }
         ],
       schemas: [NO_ERRORS_SCHEMA]
     })

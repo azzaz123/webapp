@@ -8,6 +8,10 @@ import { UserService } from '../../../../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { MOCK_USER } from '../../../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
+import { DecimalPipe } from '@angular/common';
+import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
+import { PaymentService } from '../../../../core/payments/payment.service';
+import { EventService } from '../../../../core/event/event.service';
 
 describe('UrgentConfirmationModalComponent', () => {
   let component: UrgentConfirmationModalComponent;
@@ -18,10 +22,12 @@ describe('UrgentConfirmationModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UrgentConfirmationModalComponent ],
+      declarations: [ UrgentConfirmationModalComponent, CustomCurrencyPipe],
       providers: [
         WindowRef,
         NgbActiveModal,
+        DecimalPipe,
+        EventService,
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: UserService, useValue: {
@@ -29,6 +35,13 @@ describe('UrgentConfirmationModalComponent', () => {
               return Observable.of(MOCK_USER);
             }
           }
+        },
+        {
+          provide: PaymentService, useValue: {
+          getCreditInfo() {
+            return Observable.of({});
+          }
+        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
