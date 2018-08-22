@@ -1,8 +1,12 @@
-import { Provider } from '@angular/core';
+import { APP_INITIALIZER, Provider } from '@angular/core';
 import { CookieService } from 'ngx-cookie';
 import { AccessTokenService } from './core/http/access-token.service';
 import { HttpService } from './core/http/http.service';
 import { RequestOptions, XHRBackend } from '@angular/http';
+import { NgxPermissionsService } from 'ngx-permissions';
+import { UserService } from './core/user/user.service';
+import { User } from './core/user/user';
+import { Observable } from 'rxjs/Observable';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -14,6 +18,12 @@ export const PROVIDERS: Provider[] = [
     provide: HttpService,
     useFactory: httpFactory,
     deps: [XHRBackend, RequestOptions, AccessTokenService]
+  },
+  {
+    provide: APP_INITIALIZER,
+    useFactory: permissionFactory,
+    deps: [UserService],
+    multi: true
   }
 ];
 
@@ -26,4 +36,24 @@ export function httpFactory(backend: XHRBackend,
                             defaultOptions: RequestOptions,
                             accessTokenService: AccessTokenService) {
   return new HttpService(backend, defaultOptions, accessTokenService);
+}
+
+export function permissionFactory(userService: UserService) {
+  return () => {
+    return userService.me()
+      .map((user: User) => {
+        if (user) {
+          userService.setPermission(user.type);
+        }
+        return user;
+      })
+      .flatMap((user: User) => {
+        if (user) {
+          return userService.setCoinsFeatureFlag();
+        } else {
+          return Observable.of({});
+        }
+      })
+      .toPromise();
+  }
 }

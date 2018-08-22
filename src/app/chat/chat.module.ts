@@ -9,11 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material';
 import { MomentModule } from 'angular2-moment';
 import { ItemComponent } from './item/item.component';
-import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { ItemModule } from '../core/item/item.module';
-import { UserModule } from '../core/user/user.module';
 import { ArchiveConversationComponent } from './modals/archive-conversation/archive-conversation.component';
 import { ReportListingComponent } from './modals/report-listing/report-listing.component';
 import { ReportUserComponent } from './modals/report-user/report-user.component';
@@ -24,21 +21,20 @@ import { ItemReservedComponent } from './item/item-reserved/item-reserved.compon
 import { ItemSoldComponent } from './item/item-sold/item-sold.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { UserResponseRateComponent } from './user-response-rate/user-response-rate.component';
+import { TrackingModule } from '../core/tracking/tracking.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     MomentModule,
-    ItemModule,
     MatIconModule,
-    UserModule,
     NgbTooltipModule,
     NgbDropdownModule,
     NgbModalModule,
-    CoreModule,
     SharedModule,
-    ChatRoutingModule
+    ChatRoutingModule,
+    TrackingModule
   ],
   declarations: [
     chatRoutedComponents,

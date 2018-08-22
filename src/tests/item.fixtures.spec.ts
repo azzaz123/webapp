@@ -21,7 +21,7 @@ import {
   Purchase, ItemProResponse, ItemProContent, RealEstateUploadForm
 } from '../app/core/item/item-response.interface';
 import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
-import { CartItem } from '../app/catalog/checkout/cart/cart-item.interface';
+import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import * as _ from 'lodash';

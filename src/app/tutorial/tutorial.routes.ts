@@ -5,7 +5,7 @@ import { TutorialComponent } from './tutorial.component';
 
 const routes: Routes = [
   {
-    path: 'tutorial',
+    path: '',
     component: TutorialComponent,
     canActivate: [LoggedGuard]
   }

@@ -1,0 +1,77 @@
+@import "~style/common";
+
+.box {
+  h2 {
+    margin-bottom: $spacing-XS;
+  }
+  p {
+    color: $grey-250;
+    margin-bottom: $spacing;
+  }
+}
+
+.types {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-size: $font-size-XXS;
+  .type {
+    display: block;
+    color: $grey-500;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    .square {
+      @include square(90px);
+      border-radius: 15px;
+      background: $grey-50;
+      border: solid 2px transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: $spacing-XS;
+      mat-icon {
+        @include square(43px);
+        opacity: .5;
+      }
+    }
+    &:hover:not(.active) {
+      text-decoration: none;
+      color: $grey-800;
+      .square {
+        border: solid 2px $grey-300;
+        mat-icon {
+          opacity: 1;
+        }
+      }
+    }
+    &:first-of-type {
+      .square {
+        width: 218px;
+        mat-icon {
+          width: 218px;
+          height: 90px;
+        }
+      }
+    }
+    &.active {
+      color: $corporate;
+      .square {
+        background-color: $corporate;
+        mat-icon {
+          opacity: 1;
+          /deep/ {
+            .black {
+              fill: $white;
+            }
+            .green {
+              fill: $white;
+              opacity: .3;
+            }
+          }
+        }
+      }
+    }
+  }
+}

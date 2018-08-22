@@ -109,7 +109,6 @@ describe('App', () => {
           logout() {
           },
           sendUserPresenceInterval() {},
-          setPermission() {},
           isProfessional() {
             return Observable.of(false);
           }
@@ -339,15 +338,6 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(callsService.init).toHaveBeenCalledTimes(2);
-      });
-
-      it('should call userService setpermission method', () => {
-        spyOn(userService, 'setPermission').and.callThrough();
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(userService.setPermission).toHaveBeenCalledWith(USER_DATA.type);
       });
 
       it('should send open_app event if cookie does not exist', () => {

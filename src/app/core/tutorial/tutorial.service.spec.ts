@@ -18,6 +18,9 @@ describe('TutorialService', () => {
           user: MOCK_USER,
           me() {
             return Observable.of(MOCK_USER);
+          },
+          isProfessional() {
+            return Observable.of(true);
           }
         }
         }
