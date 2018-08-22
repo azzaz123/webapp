@@ -11,6 +11,7 @@ import { UserService } from '../../../../core/user/user.service';
 export class ProBumpConfirmationModalComponent implements OnInit {
 
   public code: string;
+  public extras: string;
 
   constructor(public activeModal: NgbActiveModal,
               private trackingService: TrackingService,
@@ -20,7 +21,7 @@ export class ProBumpConfirmationModalComponent implements OnInit {
   ngOnInit() {
     this.userService.me().subscribe(
       () => {
-        if (this.code === '200') {
+        if (this.code === '200' || this.code === '201') {
           this.trackingService.track(TrackingService.PRO_FEATURED_PURCHASE_SUCCESS);
         } else {
           this.trackingService.track(TrackingService.PRO_FEATURED_PURCHASE_ERROR);
