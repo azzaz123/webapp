@@ -30,6 +30,7 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
 import { MsgArchiveData } from '../message/archive.interface';
+import { User } from '../user/user';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -394,21 +395,16 @@ export class ConversationService extends LeadService {
   }
 
   private recursiveLoadMessages(conversations: Conversation[], index: number = 0): Observable<Conversation[]> {
-    return this.xmpp.isConnected().first()
-    .flatMap(() => {
+    const self: User = this.userService.user;
       if (conversations && conversations[index] && this.connectionService.isConnected) {
         return this.messageService.getMessages(conversations[index])
         .flatMap((res: MessagesData) => {
           conversations[index].messages = res.data;
-          conversations[index].lastMessageRef = res.meta.first;
-          conversations[index].oldMessagesLoaded = res.meta.end;
+          conversations[index].unreadMessages = res.data.filter(m => m.from !== self.id && m.status !== messageStatus.READ).length;
+          this.persistencyService.saveUnreadMessagesCount(conversations[index].id, conversations[index].unreadMessages);
           if (index < conversations.length - 1) {
             return this.recursiveLoadMessages(conversations, index + 1);
           }
-          conversations = this.xmpp.addUnreadMessagesCounter(conversations);
-          conversations.forEach(conversation => {
-            this.persistencyService.saveUnreadMessagesCount(conversation.id, conversation.unreadMessages);
-          });
           this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
             this.messageService.totalUnreadMessages :
             this.xmpp.totalUnreadMessages;
@@ -417,7 +413,6 @@ export class ConversationService extends LeadService {
       } else {
         return Observable.of(null);
       }
-    });
   }
 
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
