@@ -11,6 +11,7 @@ import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
 import { PaymentService } from '../../../../core/payments/payment.service';
+import { CreditInfo } from '../../../../core/payments/payment.interface';
 
 describe('UploadConfirmationModalComponent', () => {
   let component: UploadConfirmationModalComponent;
@@ -18,6 +19,7 @@ describe('UploadConfirmationModalComponent', () => {
   let trackingService: TrackingService;
   let itemService: ItemService;
   let activeModal: NgbActiveModal;
+  let paymentService: PaymentService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -57,6 +59,23 @@ describe('UploadConfirmationModalComponent', () => {
     trackingService = TestBed.get(TrackingService);
     itemService = TestBed.get(ItemService);
     activeModal = TestBed.get(NgbActiveModal);
+    paymentService = TestBed.get(PaymentService);
+  });
+
+  describe('ngOnInit', () => {
+    it('should call and set credit info', () => {
+      const creditInfo: CreditInfo = {
+        currencyName: 'wallacoins',
+        credit: 200,
+        factor: 100
+      };
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+
+      component.ngOnInit();
+
+      expect(paymentService.getCreditInfo).toHaveBeenCalled();
+      expect(component.creditInfo).toEqual(creditInfo);
+    });
   });
 
   describe('urgentPrice', () => {
