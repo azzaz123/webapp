@@ -225,7 +225,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public itemChanged($event: ItemChangeEvent) {
     if ($event.action === 'reactivatedWithBump') {
-      this.feature($event.orderEvent);
+      localStorage.setItem('transactionType', 'bumpWithCredits');
+      this.feature($event.orderEvent, 'reactivate');
     } else if ($event.action === 'reactivated') {
       const index: number = _.findIndex(this.items, {'_id': $event.item.id});
       this.items[index].flags.expired = false;

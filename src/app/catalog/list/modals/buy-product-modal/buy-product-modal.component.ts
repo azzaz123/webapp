@@ -35,7 +35,11 @@ export class BuyProductModalComponent implements OnInit {
   ngOnInit() {
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
       this.item = item;
-      this.item.urgent = true;
+      if (this.type === 'urgent') {
+        this.item.urgent = true;
+      } else {
+        this.item.zoneBump = true;
+      }
     });
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
       if (creditInfo.credit === 0) {

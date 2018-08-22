@@ -3,7 +3,8 @@
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
   <h1 i18n>This time, sell it!</h1>
-  <p i18n>Reactivate this item for <b>{{price | customCurrency:'EUR'}}</b> and put it in the top positions.<br /> Get more visibility and sell it faster. </p>
+  <p i18n>Reactivate this item for <b>{{price * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+    <span *ngIf="creditInfo?.currencyName === 'wallacoins'">wallacoins</span></b> and put it in the top positions.<br /> Get more visibility and sell it faster. </p>
   <tsl-button
     (click)="activeModal.close('bump')"
     className="btn-feature"

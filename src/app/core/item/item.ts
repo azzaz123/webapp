@@ -260,4 +260,9 @@ export class Item implements Model {
   get itemType(): string {
     return this._itemType;
   }
+
+  set zoneBump(value: boolean) {
+    this._flags.bumped = value;
+    this._flags.bump_type = 'zonebump';
+  }
 }
