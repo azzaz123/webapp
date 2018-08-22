@@ -58,6 +58,13 @@ describe('BumpConfirmationModalComponent', () => {
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_FEATURED_PURCHASE_SUCCESS);
     });
+    it('should send event featured_purchase_success if code == 201', () => {
+      component.code = '201';
+
+      component.ngOnInit();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRO_FEATURED_PURCHASE_SUCCESS);
+    });
     it('should send event featured_purchase_error if code != 200', () => {
       component.code = '-1';
 

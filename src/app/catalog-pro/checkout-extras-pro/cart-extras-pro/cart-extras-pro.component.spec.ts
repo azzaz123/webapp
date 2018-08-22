@@ -57,7 +57,7 @@ describe('CartExtrasProComponent', () => {
             },
             getFinancialCard() { },
             pay() {
-              return Observable.of('');
+              return Observable.of({status: 201});
             },
             orderExtrasProPack() {
               return Observable.of({});
@@ -252,7 +252,7 @@ describe('CartExtrasProComponent', () => {
 
               component.checkout();
 
-              expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { code: 200 }]);
+              expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', { code: 201, extras: true }]);
             });
 
             it('should navigate to catalog with code -1 if the payment was ko', () => {
