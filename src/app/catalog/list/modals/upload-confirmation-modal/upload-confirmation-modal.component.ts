@@ -18,7 +18,7 @@ import { CreditInfo } from '../../../../core/payments/payment.interface';
 export class UploadConfirmationModalComponent implements OnInit {
 
   public item: Item;
-  public productPrice: string;
+  public productPrice: number;
   public productId: string;
   private getUrgentProductsObservable: Observable<Product>;
   @Output() onAction: EventEmitter<OrderEvent> = new EventEmitter();
@@ -68,7 +68,7 @@ export class UploadConfirmationModalComponent implements OnInit {
     }];
     const orderEvent: OrderEvent = {
       order: order,
-      total: +this.productPrice
+      total: this.productPrice
     };
     localStorage.setItem('transactionType', 'urgent');
     this.activeModal.close(orderEvent);
@@ -78,7 +78,7 @@ export class UploadConfirmationModalComponent implements OnInit {
     this.getUrgentProductsObservable = this.itemService.getUrgentProducts(this.item.id).share();
     this.getUrgentProductsObservable.subscribe((product: Product) => {
       this.getUrgentProductsObservable = null;
-      this.productPrice = product.durations[0].market_code;
+      this.productPrice = +product.durations[0].market_code;
       this.productId = product.durations[0].id;
     });
   }
