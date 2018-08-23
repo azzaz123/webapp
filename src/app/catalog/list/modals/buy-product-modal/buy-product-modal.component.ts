@@ -37,8 +37,6 @@ export class BuyProductModalComponent implements OnInit {
       this.item = item;
       if (this.type === 'urgent') {
         this.item.urgent = true;
-      } else {
-        this.item.zoneBump = true;
       }
     });
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
