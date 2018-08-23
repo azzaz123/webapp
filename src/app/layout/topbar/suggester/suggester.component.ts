@@ -11,7 +11,7 @@ import { SuggesterService } from './suggester.service';
 })
 export class SuggesterComponent implements OnInit {
 
-  private MIN_LENGTH = 3;
+  private MIN_LENGTH = 0;
   public focus: boolean;
   public model: any;
   @Output() public newSearch = new EventEmitter<SuggesterResponse>();
@@ -26,7 +26,6 @@ export class SuggesterComponent implements OnInit {
 
   public suggest = (text$: Observable<string>) =>
     text$
-      .debounceTime(1000)
       .distinctUntilChanged()
       .switchMap(term => term.length < this.MIN_LENGTH ? [] :
         this.suggesterService.getSuggestions(term)
