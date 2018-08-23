@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '../../shared/exit-confirmation-modal/exit-confirmation-modal.component';
-import { MOCK_ITEM, PRODUCT_RESPONSE, ITEM_DATA_V3 } from '../../../tests/item.fixtures.spec';
+import { MOCK_ITEM, PRODUCT_RESPONSE, ITEM_DATA_V3, ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../../core/user/user.service';
@@ -52,7 +52,7 @@ describe('EditComponent', () => {
         },
         {
           provide: ItemService, useValue: {
-            getUrgentProductByCategoryId() {}
+          getUrgentProducts() {}
           }
         },
         {
@@ -142,13 +142,11 @@ describe('EditComponent', () => {
 
   describe('get urgent price', () => {
     it('should set the urgent price', () => {
-      spyOn(itemService, 'getUrgentProductByCategoryId').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+      spyOn(itemService, 'getUrgentProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
 
-      const categoryId = ITEM_DATA_V3.content.category_id;
+      component.getUrgentPrice();
 
-      component.getUrgentPrice(categoryId.toString());
-
-      expect(itemService.getUrgentProductByCategoryId).toHaveBeenCalledWith(categoryId.toString());
+      expect(itemService.getUrgentProducts).toHaveBeenCalledWith(ITEM_ID);
     });
   });
 

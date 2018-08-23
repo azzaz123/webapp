@@ -301,6 +301,9 @@ export class ListComponent implements OnInit, OnDestroy {
       } else {
         this.router.navigate(['catalog/list', {code: -1}]);
       }
+    }, () => {
+      this.isUrgent = false;
+      this.setRedirectToTPV(false);
     });
   }
 

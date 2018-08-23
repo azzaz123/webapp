@@ -66,12 +66,8 @@ export class BuyProductModalComponent implements OnInit {
   }
 
   public hasCard(hasCard: boolean) {
-    if (!hasCard) {
-      this.checkout();
-    } else {
-      this.hasFinancialCard = hasCard;
-      this.mainLoading = false;
-    }
+    this.hasFinancialCard = hasCard;
+    this.mainLoading = false;
   }
 
   public checkout() {

@@ -94,7 +94,7 @@ describe('UrgentConfirmationModalComponent', () => {
 
         expect(paymentService.getCreditInfo).toHaveBeenCalledWith(false);
         expect(component.withCoins).toBe(true);
-        expect(component.credit).toBe(creditInfo.credit);
+        expect(component.creditInfo).toBe(creditInfo);
       }));
     });
   });

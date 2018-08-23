@@ -163,13 +163,6 @@ describe('BuyProductModalComponent', () => {
   });
 
   describe('hasCard', () => {
-    it('should call checkout if no card', () => {
-      spyOn(component, 'checkout');
-
-      component.hasCard(false);
-
-      expect(component.checkout).toHaveBeenCalled();
-    });
 
     it('should set card if present', () => {
       component.hasCard(true);

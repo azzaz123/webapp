@@ -20,7 +20,7 @@ export class UrgentConfirmationModalComponent implements OnInit {
   public creditUsed: boolean;
   public withCoins: boolean;
   public spent: number;
-  public credit: number;
+  public creditInfo: CreditInfo;
 
   constructor(public activeModal: NgbActiveModal,
               private window: WindowRef,
@@ -42,8 +42,12 @@ export class UrgentConfirmationModalComponent implements OnInit {
       });
     setTimeout(() => {
       this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
+        if (creditInfo.credit === 0) {
+          creditInfo.currencyName = 'wallacredits';
+          creditInfo.factor = 1;
+        }
+        this.creditInfo = creditInfo;
         this.withCoins = creditInfo.currencyName === 'wallacoins';
-        this.credit = creditInfo.credit;
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, creditInfo.credit );
       });
     }, 1000);
