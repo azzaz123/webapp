@@ -443,7 +443,7 @@ describe('ListComponent', () => {
         action: 'reactivatedWithBump'
       });
 
-      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
+      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT, 'reactivate');
     });
 
     it('should change expired flag item if event is reactivated', () => {

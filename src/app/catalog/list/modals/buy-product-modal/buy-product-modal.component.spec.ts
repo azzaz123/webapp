@@ -78,6 +78,7 @@ describe('BuyProductModalComponent', () => {
   describe('ngOnInit', () => {
     it('should get and set item', () => {
       spyOn(itemService, 'get').and.callThrough();
+      component.type = 'urgent';
 
       component.ngOnInit();
 
