@@ -4,7 +4,7 @@
 <div class="spinner-wrapper" [hidden]="!mainLoading" >
   <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
 </div>
-<div class="buy-modal" [hidden]="mainLoading" [class.with-credits]="withCredits">
+<div class="buy-modal" [hidden]="mainLoading" [class.vertical]="!hasFinancialCard && creditInfo?.credit === 0" [class.with-credits]="withCredits">
   <div class="left">
     <div>
       <h2 i18n>Mark as urgent</h2>
@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-  <div class="right" [hidden]="!hasFinancialCard">
+  <div class="right" [hidden]="!hasFinancialCard && creditInfo?.credit === 0">
     <p *ngIf="creditInfo?.credit === 0" i18n>Secure payment through Sabadell</p>
     <div class="totals" *ngIf="creditInfo?.credit > 0">
       <p *ngIf="creditInfo?.credit < orderEvent.total">
@@ -69,6 +69,14 @@
                 (click)="checkout()"
                 [loading]="loading"
                 i18n>Continue</tsl-button>
+    <p class="note" *ngIf="!hasFinancialCard && creditInfo?.credit < orderEvent.total" i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
+  </div>
+  <div class="bottom" [hidden]="hasFinancialCard || !hasFinancialCard && creditInfo?.credit > 0">
+    <tsl-button className="btn-block btn-primary"
+                (click)="checkout()"
+                [loading]="loading"
+                i18n>Continue</tsl-button>
+    <p class="note" i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
   </div>
 </div>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>
