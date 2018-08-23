@@ -38,7 +38,7 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
 
   ngOnInit() {
     this.item = this.route.snapshot.data['item'];
-    this.getUrgentPrice(this.item.categoryId.toString());
+    this.getUrgentPrice();
   }
 
   public onValidationError() {
@@ -60,8 +60,8 @@ export class EditComponent implements OnInit, CanComponentDeactivate {
     this.hasNotSavedChanges = notSavedChanges;
   }
 
-  public getUrgentPrice(categoryId: string): void {
-    this.itemService.getUrgentProductByCategoryId(categoryId).subscribe((product: Product) => {
+  public getUrgentPrice(): void {
+    this.itemService.getUrgentProducts(this.item.id).subscribe((product: Product) => {
       this.urgentPrice =  product.durations[0].market_code;
     });
   }
