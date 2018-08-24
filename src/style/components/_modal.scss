@@ -190,17 +190,6 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.reactivate {
-  $modal-width: 555px;
-  .modal-dialog {
-    max-width: $modal-width;
-  }
-  .modal-content {
-    width: $modal-width !important;
-    max-width: unset;
-  }
-}
-
 .modal.visibility-products {
   $modal-width: 1090px;
   .modal-dialog {
@@ -213,7 +202,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.buy-wallacoins, .modal.buy-product, .modal.urgent-confirm {
+.modal.buy-wallacoins, .modal.buy-product, .modal.urgent-confirm, .modal.reactivate {
   .modal-dialog {
     max-width: unset;
   }
