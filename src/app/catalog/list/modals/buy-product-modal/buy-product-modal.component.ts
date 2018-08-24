@@ -78,6 +78,8 @@ export class BuyProductModalComponent implements OnInit {
         localStorage.setItem('transactionSpent', (this.orderEvent.total * this.creditInfo.factor).toString());
         if (this.type === 'urgent' && this.creditInfo.credit > 0) {
           localStorage.setItem('transactionType', 'urgentWithCredits');
+        } else if (this.type === 'reactivate' && this.creditInfo.credit > 0) {
+          localStorage.setItem('transactionType', 'reactivateWithCredits');
         }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
