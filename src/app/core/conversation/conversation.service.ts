@@ -585,7 +585,9 @@ export class ConversationService extends LeadService {
   private requestConversationInfo(message: Message) {
     this.get(message.conversationId).subscribe((conversation: Conversation) => {
       if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId)) {
+        this.getSingleConversationMessages(conversation).subscribe(() => {
         this.addConversation(conversation, message);
+        });
       }
     });
   }
