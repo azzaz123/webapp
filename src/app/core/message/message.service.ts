@@ -39,7 +39,7 @@ export class MessageService {
     return this._totalUnreadMessages;
   }
 
-  public getMessages(conversation: Conversation, total: number = -1): Observable<MessagesData> {
+  public getMessages(conversation: Conversation, total: number = -1, archived?: boolean): Observable<MessagesData> {
     return this.persistencyService.getMessages(conversation.id)
     .flatMap((data: StoredMessageRow[]) => {
       if (data.length) {
@@ -68,7 +68,19 @@ export class MessageService {
           })
         });
       } else if (this.connectionService.isConnected) {
-        return this.queryMessagesByThread(conversation.id);
+        return this.queryMessagesByThread(conversation.id).map(r => {
+          if (r.messages.length) {
+            if (archived) {
+              r.messages.map(m => m.status = messageStatus.READ);
+      }
+            this.persistencyService.saveMessages(r.messages);
+            this.persistencyService.saveMetaInformation({
+              last: _.last(r.messages).id,
+              start: (_.last(r.messages)).date.toISOString()
+            });
+          }
+          return r;
+        });
       }
     })
     .map((res: any) => {
