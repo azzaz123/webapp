@@ -87,7 +87,8 @@ export class ListComponent implements OnInit, OnDestroy {
               windowClass: 'bump-confirm'
             }
           };
-          const modalType = localStorage.getItem('transactionType');
+          const transactionType = localStorage.getItem('transactionType');
+          const modalType = transactionType === 'urgentWithCredits' ? 'urgent' : transactionType;
           const modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
 
           if (modalType === 'wallapack') {
@@ -108,7 +109,7 @@ export class ListComponent implements OnInit, OnDestroy {
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
-          modalRef.componentInstance.creditUsed = modalType === 'bumpWithCredits';
+          modalRef.componentInstance.creditUsed = transactionType === 'bumpWithCredits' || transactionType === 'urgentWithCredits';
           modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
           modalRef.result.then(() => {
             modalRef = null;

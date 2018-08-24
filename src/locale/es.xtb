@@ -612,8 +612,8 @@
   <translation id="8964250385363025364">¡Productos Destacados!</translation>
   <translation id="4568163159205829962">Todo ha ido bien y tus productos ya son más visibles. ¡Ahora a venderlo todo!</translation>
   <translation id="3799187930195457932">Has usado</translation>
-  <translation id="5301482109060388986">Y te quedan <ph name="INTERPOLATION"><ex>{{credit | number}}</ex></ph> wallacoins</translation>
-  <translation id="5708951428326419939">Y te quedan <ph name="INTERPOLATION"><ex>{{credit | customCurrency}}</ex></ph> de saldo</translation>
+  <translation id="5579960282842930509">Y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
+  <translation id="3834459376438494911">Y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
   <translation id="5880798667461104338">Comprar más saldo</translation>
   <translation id="8191075807274604024">Ir a mi catálogo</translation>
   <translation id="5722262557807435110">Algo no ha ido bien :(</translation>
@@ -645,11 +645,11 @@
   <translation id="5575054737649759998">
     Por sólo <ph name="INTERPOLATION"><ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
-    <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>from your credit<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+    <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
     marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
   </translation>
   <translation id="4418606013051113523">Marcar como urgente por <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
       <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="1855793285845294665">y te quedan <ph name="INTERPOLATION"><ex>{{credit | number}}</ex></ph> wallacoins</translation>
-  <translation id="6724390866224555299">y te quedan <ph name="INTERPOLATION"><ex>{{credit | customCurrency}}</ex></ph> de saldo</translation>
+  <translation id="1666676372989024280">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
+  <translation id="3938280541945338173">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
 </translationbundle>
