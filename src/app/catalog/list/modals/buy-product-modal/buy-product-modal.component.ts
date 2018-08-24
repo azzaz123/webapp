@@ -76,6 +76,9 @@ export class BuyProductModalComponent implements OnInit {
         this.activeModal.close('error');
       } else {
         localStorage.setItem('transactionSpent', (this.orderEvent.total * this.creditInfo.factor).toString());
+        if (this.type === 'urgent' && this.creditInfo.credit > 0) {
+          localStorage.setItem('transactionType', 'urgentWithCredits');
+        }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
           this.buy(orderId);

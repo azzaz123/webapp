@@ -5,7 +5,7 @@
   <div *ngIf="code === '200'">
     <h1 i18n>Congratulations</h1>
     <p i18n>Your item has been uploaded and it's marked as urgent.</p>
-    <p><b>
+    <p *ngIf="creditUsed"><b>
       <span i18n>You have used</span>
       <span *ngIf="withCoins">{{spent * creditInfo?.factor | number}} wallacoins</span>
       <span *ngIf="!withCoins">{{spent | customCurrency}}</span>

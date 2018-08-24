@@ -15,6 +15,7 @@
   <h1 i18n>Featured listings!</h1>
   <p>
     <span i18n>All sorted, now your listings are more visibile to everyone. So let's get selling!</span><br />
+    <span *ngIf="creditUsed">
     <b>
       <span i18n>You have used</span>
       <span *ngIf="withCoins">{{spent * creditInfo?.factor | number}} wallacoins</span>
@@ -24,6 +25,7 @@
       <span *ngIf="withCoins" i18n>You have {{creditInfo?.credit | number}} wallacoins left</span>
       <span *ngIf="!withCoins" i18n>You have {{creditInfo?.credit | customCurrency}} credit</span>
     </b>
+    </span>
   </p>
   <tsl-button (click)="activeModal.dismiss()">
     <span *ngIf="withCoins" i18n>Buy more Wallacoins</span>
