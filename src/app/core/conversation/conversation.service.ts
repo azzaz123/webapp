@@ -227,8 +227,8 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public loadMessagesIntoConversations(conversations: Conversation[]): Observable<Conversation[]> {
-    return this.loadMessages(conversations)
+  public loadMessagesIntoConversations(conversations: Conversation[], archived: boolean = false): Observable<Conversation[]> {
+    return this.loadMessages(conversations, archived)
     .flatMap((convWithMessages: Conversation[]) => {
       return (this.firstLoad ? this.loadNotStoredMessages(convWithMessages) : Observable.of(convWithMessages));
     })
@@ -380,12 +380,12 @@ export class ConversationService extends LeadService {
     });
   }
 
-  private loadMessages(conversations: Conversation[]): Observable<Conversation[]> {
+  private loadMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
     if (this.messagesObservable) {
       return this.messagesObservable;
     }
     if (this.connectionService.isConnected) {
-      this.messagesObservable = this.recursiveLoadMessages(conversations)
+      this.messagesObservable = this.recursiveLoadMessages(conversations, archived)
       .share()
       .do(() => {
         this.messagesObservable = null;
@@ -394,20 +394,17 @@ export class ConversationService extends LeadService {
     return this.messagesObservable;
   }
 
-  private recursiveLoadMessages(conversations: Conversation[], index: number = 0): Observable<Conversation[]> {
+  private recursiveLoadMessages(conversations: Conversation[], archived: boolean, index: number = 0): Observable<Conversation[]> {
     const self: User = this.userService.user;
       if (conversations && conversations[index] && this.connectionService.isConnected) {
-        return this.messageService.getMessages(conversations[index])
+      return this.messageService.getMessages(conversations[index], null, archived)
         .flatMap((res: MessagesData) => {
           conversations[index].messages = res.data;
           conversations[index].unreadMessages = res.data.filter(m => m.from !== self.id && m.status !== messageStatus.READ).length;
           this.persistencyService.saveUnreadMessagesCount(conversations[index].id, conversations[index].unreadMessages);
           if (index < conversations.length - 1) {
-            return this.recursiveLoadMessages(conversations, index + 1);
+          return this.recursiveLoadMessages(conversations, archived, index + 1);
           }
-          this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
-            this.messageService.totalUnreadMessages :
-            this.xmpp.totalUnreadMessages;
           return Observable.of(conversations);
         });
       } else {
