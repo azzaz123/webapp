@@ -209,8 +209,8 @@
   <translation id="2928844379959000123">Tu opinión es muy importante para la<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>comunidad Wallapop.</translation>
   <translation id="6962699013778688473">Continuar</translation>
   <translation id="6071814986980529912">Esta vez, ¡véndelo!</translation>
-  <translation id="6015106152406835268">Reactivate this item for <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{price * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
-      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> y vuelve a las primeras posiciones.</translation>
+  <translation id="7814524838753447660">Reactiva tu producto con <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{price * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
+      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> y vuelve a las primeras posiciones.</translation>
   <translation id="5107282366152603486"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Consigue más visibilidad y véndelo antes.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="2538912110902686738">Reactivar + visibilidad</translation>
   <translation id="3244863581909362906">Sólo reactivar que no quiero venderlo más rápido</translation>
@@ -654,4 +654,5 @@
       <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="1666676372989024280">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
   <translation id="3938280541945338173">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
+  <translation id="349473182974314723">Tu producto se ha reactivado correctamente a wallapop y ha subido a las primeras posiciones</translation>
 </translationbundle>

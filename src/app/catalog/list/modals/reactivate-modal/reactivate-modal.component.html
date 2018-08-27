@@ -5,7 +5,7 @@
   <div class="content">
     <h1 i18n>This time, sell it!</h1>
     <p i18n>Reactivate this item for <b>{{price * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
-      <span *ngIf="creditInfo?.currencyName === 'wallacoins'">wallacoins</span></b> and put it in the top positions.</p>
+      <span *ngIf="creditInfo?.currencyName === 'wallacoins'">wallacoins</span><span *ngIf="creditInfo?.currencyName !== 'wallacoins'">of your credit</span></b> and put it in the top positions.</p>
     <p i18n><b>Get more visibility and sell it faster.</b></p>
   </div>
     <tsl-button

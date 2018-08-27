@@ -95,7 +95,11 @@ export class ListComponent implements OnInit, OnDestroy {
           const transactionType = localStorage.getItem('transactionType');
           let modalType = transactionType === 'urgentWithCredits' ? 'urgent' : transactionType;
           modalType = transactionType === 'reactivateWithCredits' ? 'reactivate' : transactionType;
-          const modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
+          let modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
+
+          if (params.code === '-1') {
+            modal = modals.bump;
+          }
 
           if (modalType === 'wallapack') {
             this.router.navigate(['wallacoins', { code: params.code }]);
