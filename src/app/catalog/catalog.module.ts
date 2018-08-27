@@ -18,6 +18,7 @@ import { BumpTutorialComponent } from './checkout/bump-tutorial/bump-tutorial.co
 import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.service';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-product-modal.component';
+import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-pr
     CheckoutItemComponent,
     BumpTutorialComponent,
     UrgentConfirmationModalComponent,
-    BuyProductModalComponent
+    BuyProductModalComponent,
+    ReactivateConfirmationModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -53,7 +55,8 @@ import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-pr
     UploadConfirmationModalComponent,
     ReactivateModalComponent,
     UrgentConfirmationModalComponent,
-    BuyProductModalComponent
+    BuyProductModalComponent,
+    ReactivateConfirmationModalComponent
   ]
 })
 export class CatalogModule {

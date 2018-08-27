@@ -1,0 +1,41 @@
+@import "~style/common";
+
+:host {
+  text-align: center;
+}
+
+.modal-body {
+  width: 660px;
+
+  p {
+    max-width: 435px;
+    margin: 0 auto $spacing auto;
+    font-size: $font-size;
+    color: $grey-500;
+  }
+  h1 {
+    font-weight: bold;
+    font-size: $font-size-LL;
+    margin-top: $spacing-L;
+    margin-bottom: $spacing-L;
+  }
+
+  tsl-button {
+    margin-bottom: $spacing-S;
+    margin-top: $spacing-L;
+    /deep/ {
+      button {
+        padding: 14px 114px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .link {
+    color: $grey-250 !important;
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}

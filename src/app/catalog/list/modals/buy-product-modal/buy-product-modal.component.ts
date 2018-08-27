@@ -35,7 +35,9 @@ export class BuyProductModalComponent implements OnInit {
   ngOnInit() {
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
       this.item = item;
-      this.item.urgent = true;
+      if (this.type === 'urgent') {
+        this.item.urgent = true;
+      }
     });
     this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
       if (creditInfo.credit === 0) {
@@ -76,6 +78,8 @@ export class BuyProductModalComponent implements OnInit {
         localStorage.setItem('transactionSpent', (this.orderEvent.total * this.creditInfo.factor).toString());
         if (this.type === 'urgent' && this.creditInfo.credit > 0) {
           localStorage.setItem('transactionType', 'urgentWithCredits');
+        } else if (this.type === 'reactivate' && this.creditInfo.credit > 0) {
+          localStorage.setItem('transactionType', 'reactivateWithCredits');
         }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {

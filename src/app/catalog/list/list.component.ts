@@ -22,6 +22,7 @@ import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-m
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
+import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 
 @Component({
   selector: 'tsl-list',
@@ -85,11 +86,20 @@ export class ListComponent implements OnInit, OnDestroy {
             bump: {
               component: BumpConfirmationModalComponent,
               windowClass: 'bump-confirm'
+            },
+            reactivate: {
+              component: ReactivateConfirmationModalComponent,
+              windowClass: 'reactivate-confirm'
             }
           };
           const transactionType = localStorage.getItem('transactionType');
-          const modalType = transactionType === 'urgentWithCredits' ? 'urgent' : transactionType;
-          const modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
+          let modalType = transactionType === 'urgentWithCredits' ? 'urgent' : transactionType;
+          modalType = transactionType === 'reactivateWithCredits' ? 'reactivate' : transactionType;
+          let modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
+
+          if (params.code === '-1') {
+            modal = modals.bump;
+          }
 
           if (modalType === 'wallapack') {
             this.router.navigate(['wallacoins', { code: params.code }]);
@@ -109,7 +119,8 @@ export class ListComponent implements OnInit, OnDestroy {
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
-          modalRef.componentInstance.creditUsed = transactionType === 'bumpWithCredits' || transactionType === 'urgentWithCredits';
+          modalRef.componentInstance.creditUsed = transactionType === 'bumpWithCredits' ||
+            transactionType === 'urgentWithCredits' || transactionType === 'reactivateWithCredits';
           modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
           modalRef.result.then(() => {
             modalRef = null;
@@ -226,7 +237,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public itemChanged($event: ItemChangeEvent) {
     if ($event.action === 'reactivatedWithBump') {
-      this.feature($event.orderEvent);
+      localStorage.setItem('transactionType', 'reactivate');
+      this.feature($event.orderEvent, 'reactivate');
     } else if ($event.action === 'reactivated') {
       const index: number = _.findIndex(this.items, {'_id': $event.item.id});
       this.items[index].flags.expired = false;

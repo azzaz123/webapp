@@ -7,7 +7,8 @@
 <div class="buy-modal" [hidden]="mainLoading" [class.vertical]="!hasFinancialCard && creditInfo?.credit === 0" [class.with-credits]="withCredits">
   <div class="left">
     <div>
-      <h2 i18n>Mark as urgent</h2>
+      <h2 *ngIf="type === 'urgent'" i18n>Mark as urgent</h2>
+      <h2 *ngIf="type === 'reactivate'" i18n>Reactivate + visibility</h2>
       <div class="box">
         <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
         <div class="title">{{item?.title}}</div>

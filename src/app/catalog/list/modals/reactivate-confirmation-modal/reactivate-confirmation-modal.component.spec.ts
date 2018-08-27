@@ -1,24 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 
-import { ReactivateModalComponent } from './reactivate-modal.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ReactivateConfirmationModalComponent } from './reactivate-confirmation-modal.component';
+import { DecimalPipe } from '@angular/common';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
-import { DecimalPipe } from '@angular/common';
-import { MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
 import { PaymentService } from '../../../../core/payments/payment.service';
 import { Observable } from 'rxjs/Observable';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
+import { EventService } from '../../../../core/event/event.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('ReactivateModalComponent', () => {
-  let component: ReactivateModalComponent;
-  let fixture: ComponentFixture<ReactivateModalComponent>;
+describe('ReactivateConfirmationModalComponent', () => {
+  let component: ReactivateConfirmationModalComponent;
+  let fixture: ComponentFixture<ReactivateConfirmationModalComponent>;
   let paymentService: PaymentService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ReactivateModalComponent, CustomCurrencyPipe],
+      declarations: [ ReactivateConfirmationModalComponent, CustomCurrencyPipe ],
       providers: [NgbActiveModal, DecimalPipe,
+        EventService,
         {
           provide: PaymentService, useValue: {
           getCreditInfo() {
@@ -33,15 +34,14 @@ describe('ReactivateModalComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReactivateModalComponent);
+    fixture = TestBed.createComponent(ReactivateConfirmationModalComponent);
     component = fixture.componentInstance;
-    component.item = MOCK_ITEM;
     fixture.detectChanges();
     paymentService = TestBed.get(PaymentService);
   });
 
   describe('ngOnInit', () => {
-    it('should call getCreditInfo and set it', () => {
+    it('should call getCreditInfo and set it', fakeAsync(() => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',
         credit: 2000,
@@ -50,11 +50,12 @@ describe('ReactivateModalComponent', () => {
       spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
 
       component.ngOnInit();
+      tick(1000);
 
       expect(component.creditInfo).toEqual(creditInfo);
-    });
+    }));
 
-    it('should call getCreditInfo and set it with wallacredits if credit is 0', () => {
+    it('should call getCreditInfo and set it with wallacredits if credit is 0', fakeAsync(() => {
       const creditInfo: CreditInfo = {
         currencyName: 'wallacoins',
         credit: 0,
@@ -63,12 +64,13 @@ describe('ReactivateModalComponent', () => {
       spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
 
       component.ngOnInit();
+      tick(1000);
 
       expect(component.creditInfo).toEqual({
         currencyName: 'wallacredits',
         credit: 0,
         factor: 1
       });
-    });
+    }));
   });
 });
