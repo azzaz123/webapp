@@ -99,10 +99,10 @@ describe('DropAreaComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set 4 placehodlers', () => {
+    it('should set 10 placehodlers', () => {
       fixture.detectChanges();
 
-      expect(component.placeholders.length).toBe(4);
+      expect(component.placeholders.length).toBe(10);
     });
 
     it('should set 8 placehodlers', () => {
