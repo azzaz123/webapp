@@ -2,6 +2,12 @@
 
 .modal-body {
   color: $grey-900;
+  height: calc(100vh - #{$spacing-40 * 2});
+  overflow: scroll;
+}
+
+.modal-close {
+  top: 25px;
 }
 
 p {
@@ -78,6 +84,6 @@ h1 {
 }
 
 .btn {
-  padding: 14px 18px;
-  margin: 0 0 $spacing-S;
+  border-radius: $button-border-radius;
+  margin: 0 0 $spacing;
 }
