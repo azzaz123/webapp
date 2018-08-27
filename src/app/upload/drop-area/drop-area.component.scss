@@ -6,7 +6,7 @@
 }
 
 .wrapper {
-  margin-bottom: 20px;
+  margin-bottom: $spacing;
 }
 
 .drag-area {
@@ -23,7 +23,9 @@
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  margin-bottom: 0;
+  &.photos-number-10 {
+    height: 258px;
+  }
   div {
     display: none;
   }
