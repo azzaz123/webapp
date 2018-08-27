@@ -3,16 +3,27 @@ import { UrgentCheckboxComponent } from './urgent-checkbox.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+import { PaymentService } from '../../core/payments/payment.service';
+import { CreditInfo } from '../../core/payments/payment.interface';
 
 describe('UrgentCheckboxComponent', () => {
   let component: UrgentCheckboxComponent;
   let fixture: ComponentFixture<UrgentCheckboxComponent>;
+  let paymentService: PaymentService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UrgentCheckboxComponent, CustomCurrencyPipe ],
         providers: [
-          DecimalPipe
+          DecimalPipe,
+          {
+            provide: PaymentService, useValue: {
+            getCreditInfo() {
+              return Observable.of({});
+            }
+          }
+          }
         ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -22,6 +33,22 @@ describe('UrgentCheckboxComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UrgentCheckboxComponent);
     component = fixture.componentInstance;
+    paymentService = TestBed.get(PaymentService);
+  });
+
+  describe('ngOnInit', () => {
+    it('should call getCreditInfo and set it', () => {
+      const creditInfo: CreditInfo = {
+        currencyName: 'wallacoins',
+        credit: 2000,
+        factor: 100
+      };
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+
+      component.ngOnInit();
+
+      expect(component.creditInfo).toEqual(creditInfo);
+    });
   });
 
   describe('Select urgent should', () => {

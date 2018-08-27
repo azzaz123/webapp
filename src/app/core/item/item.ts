@@ -253,6 +253,10 @@ export class Item implements Model {
     return this._flags ? this._flags.urgent : false;
   }
 
+  set urgent(value: boolean) {
+    this._flags.urgent = value;
+  }
+
   get itemType(): string {
     return this._itemType;
   }

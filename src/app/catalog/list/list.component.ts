@@ -7,23 +7,21 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { UUID } from 'angular2-uuid';
-import { Response } from '@angular/http';
 import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { OrderEvent } from './selected-items/selected-product.interface';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { UserStatsResponse, Counters } from '../../core/user/user-stats.interface';
+import { Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
-import { FinancialCard, CreditInfo } from '../../core/payments/payment.interface';
+import { FinancialCard } from '../../core/payments/payment.interface';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
-import { PerksModel } from '../../core/payments/payment.model';
+import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 
 @Component({
   selector: 'tsl-list',
@@ -89,7 +87,8 @@ export class ListComponent implements OnInit, OnDestroy {
               windowClass: 'bump-confirm'
             }
           };
-          const modalType = localStorage.getItem('transactionType');
+          const transactionType = localStorage.getItem('transactionType');
+          const modalType = transactionType === 'urgentWithCredits' ? 'urgent' : transactionType;
           const modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
 
           if (modalType === 'wallapack') {
@@ -110,7 +109,7 @@ export class ListComponent implements OnInit, OnDestroy {
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
-          modalRef.componentInstance.creditUsed = modalType === 'bumpWithCredits';
+          modalRef.componentInstance.creditUsed = transactionType === 'bumpWithCredits' || transactionType === 'urgentWithCredits';
           modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
           modalRef.result.then(() => {
             modalRef = null;
@@ -133,7 +132,7 @@ export class ListComponent implements OnInit, OnDestroy {
             if (orderEvent) {
               this.isUrgent = true;
               this.isRedirect = !this.getRedirectToTPV();
-              this.feature(orderEvent);
+              this.feature(orderEvent, 'urgent');
             }
           }, () => {
           });
@@ -250,8 +249,6 @@ export class ListComponent implements OnInit, OnDestroy {
       this.delete();
     } else if (this.itemService.selectedAction === 'reserve') {
       this.reserve();
-    } else if (this.itemService.selectedAction === 'feature') {
-      this.feature($event);
     }
   }
 
@@ -292,61 +289,21 @@ export class ListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public feature(orderEvent: OrderEvent) {
-    const orderId: string = UUID.UUID();
-    this.itemService.purchaseProducts(orderEvent.order, orderId).subscribe((failedProducts: string[]) => {
-      if (failedProducts && failedProducts.length) {
-        this.errorService.i18nError('bumpError');
-      } else {
-        this.paymentService.getFinancialCard().subscribe((financialCard: FinancialCard) => {
-          this.chooseCreditCard(orderId, orderEvent.total, financialCard);
-        }, () => {
-          this.setRedirectToTPV(true);
-          this.sabadellSubmit.emit(orderId);
-        });
-      }
-    }, (error: Response) => {
-      this.deselect();
-      if (error.text()) {
-        this.errorService.show(error);
-      } else {
-        this.errorService.i18nError('bumpError');
-      }
-    });
-  }
-
-  private chooseCreditCard(orderId: string, total: number, financialCard: FinancialCard) {
-    const modalRef: NgbModalRef = this.modalService.open(CreditCardModalComponent, {windowClass: 'credit-card'});
-    modalRef.componentInstance.financialCard = financialCard;
-    modalRef.componentInstance.total = total;
-    this.trackingService.track(TrackingService.FEATURED_PURCHASE_FINAL, {select_card: financialCard.id});
+  public feature(orderEvent: OrderEvent, type?: string) {
+    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, {windowClass: 'buy-product'});
+    modalRef.componentInstance.type = type;
+    modalRef.componentInstance.orderEvent = orderEvent;
     modalRef.result.then((result: string) => {
-      if (result === undefined) {
-        this.isUrgent = false;
-        localStorage.removeItem('transactionType');
-        this.isRedirect = !this.getRedirectToTPV();
-        this.deselect();
-        setTimeout(() => {
-          this.router.navigate(['catalog/list']);
-        }, 1000);
-      } else if (result === 'new') {
-        this.setRedirectToTPV(true);
-        this.sabadellSubmit.emit(orderId);
+      this.isUrgent = false;
+      this.setRedirectToTPV(false);
+      if (result === 'success') {
+        this.router.navigate(['catalog/list', {code: 200}]);
       } else {
-        this.paymentService.pay(orderId).subscribe(() => {
-          this.deselect();
-          setTimeout(() => {
-            this.router.navigate(['catalog/list', {code: 200}]);
-          }, 1000);
-        }, () => {
-          this.deselect();
-          setTimeout(() => {
-            this.router.navigate(['catalog/list', {code: -1}]);
-          }, 1000);
-        });
+        this.router.navigate(['catalog/list', {code: -1}]);
       }
     }, () => {
-      this.deselect();
+      this.isUrgent = false;
+      this.setRedirectToTPV(false);
     });
   }
 
@@ -375,7 +332,7 @@ export class ListComponent implements OnInit, OnDestroy {
         order: order,
         total: +product.durations[0].market_code
       };
-      this.feature(orderEvent);
+      this.feature(orderEvent, 'urgent');
     });
   }
 
