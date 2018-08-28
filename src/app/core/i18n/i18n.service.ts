@@ -174,7 +174,9 @@ export class I18nService {
       countrybump: 'Destacado País',
       citybump: 'Destacado Ciudad',
       deleteBillingInfoSuccess: 'Tu información de facturación ha sido borrada',
-      deleteBillingInfoError: 'Hubo un error borrando tu información de facturación'
+      deleteBillingInfoError: 'Hubo un error borrando tu información de facturación',
+      packError: 'Ha ocurrido un error al comprar este paquete',
+      alreadyFeatured: 'Estas intentando destacar un item que ya está planificado'
     }
   };
 
