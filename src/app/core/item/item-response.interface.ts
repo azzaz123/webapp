@@ -199,11 +199,13 @@ export interface CarUploadForm extends ItemUploadForm {
   year: string;
   version: string;
   num_seats: number;
+  num_doors: number;
   body_type: string;
   km: number;
   storytelling: string;
   engine: string;
   gearbox: string;
+  horsepower: number;
   id?: string;
 }
 

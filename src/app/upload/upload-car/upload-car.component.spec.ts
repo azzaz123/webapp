@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import {
-  CAR_BODY_TYPES, CAR_BRANDS, CAR_MODELS, CAR_VERSIONS, CAR_YEARS,
+  CAR_BODY_TYPES, CAR_BRANDS, CAR_INFO, CAR_MODELS, CAR_VERSIONS, CAR_YEARS,
   MOCK_CAR
 } from '../../../tests/car.fixtures.spec';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -22,6 +22,7 @@ import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Car } from '../../core/item/car';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
+import { ItemService } from '../../core/item/item.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -34,6 +35,7 @@ describe('UploadCarComponent', () => {
   let router: Router;
   let modalService: NgbModal;
   let trackingService: TrackingService;
+  let itemService: ItemService;
   const componentInstance: any = {
     getBodyType: jasmine.createSpy('getBodyType')
   };
@@ -92,6 +94,13 @@ describe('UploadCarComponent', () => {
             };
           }
         }
+        },
+        {
+          provide: ItemService, useValue: {
+          getCarInfo() {
+            return Observable.of(CAR_INFO);
+          }
+        }
         }
       ],
       declarations: [UploadCarComponent],
@@ -110,6 +119,7 @@ describe('UploadCarComponent', () => {
     router = TestBed.get(Router);
     modalService = TestBed.get(NgbModal);
     trackingService = TestBed.get(TrackingService);
+    itemService = TestBed.get(ItemService);
   });
 
   describe('ngOnInit', () => {
@@ -140,10 +150,12 @@ describe('UploadCarComponent', () => {
           sale_conditions: MOCK_CAR.saleConditions,
           category_id: MOCK_CAR.categoryId.toString(),
           num_seats: MOCK_CAR.numSeats,
+          num_doors: MOCK_CAR.numDoors,
           body_type: MOCK_CAR.bodyType,
           km: MOCK_CAR.km,
           engine: MOCK_CAR.engine,
           gearbox: MOCK_CAR.gearbox,
+          horsepower: MOCK_CAR.horsepower,
           brand: MOCK_CAR.brand,
           model: MOCK_CAR.model,
           year: MOCK_CAR.year.toString(),
@@ -471,6 +483,24 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('model').disabled).toBeTruthy();
       expect(component.uploadForm.get('year').disabled).toBeTruthy();
       expect(component.uploadForm.get('version').disabled).toBeTruthy();
+    });
+  });
+
+  describe('getInfo', () => {
+    it('should call getCarInfo and set it if in creation mode', () => {
+      spyOn(itemService, 'getCarInfo').and.callThrough();
+      const BRAND = 'brand';
+      const MODEL = 'model';
+      const VERSION = 'version';
+      component.uploadForm.get('brand').setValue(BRAND);
+      component.uploadForm.get('model').setValue(MODEL);
+
+      component.getInfo(VERSION);
+
+      expect(itemService.getCarInfo).toHaveBeenCalledWith(BRAND, MODEL, VERSION);
+      Object.keys(CAR_INFO).forEach((field) => {
+        expect(component.uploadForm.get(field).value).toEqual(CAR_INFO[field]);
+      })
     });
   });
 
