@@ -83,7 +83,7 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label for="version" i18n>Version</label>
-          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" id="version" [options]="versions"></ng-select>
+          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" for="version" [options]="versions" (selected)="getInfo($event.value)"></ng-select>
           <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" id="version" />
         </div>
       </div>
@@ -96,6 +96,22 @@
           <ng-template #coachmarkSeats>
             <div i18n>Can all your family fit in there or just the dog?</div>
           </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="seats" i18n>Number of doors</label>
+          <input i18n-placeholder placeholder="Add a number" type="number" class="form-control"
+                 formControlName="num_doors" id="doors" min="0" max="99"/>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="seats" i18n>Horsepower</label>
+          <input i18n-placeholder placeholder="Add a number" type="number" class="form-control"
+                 formControlName="horsepower" id="horsepower" min="0" max="999999999"/>
         </div>
       </div>
     </div>

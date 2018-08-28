@@ -13,6 +13,8 @@ import { Car } from '../../core/item/car';
 import * as _ from 'lodash';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { CARS_CATEGORY } from '../../core/item/item-categories';
+import { ItemService } from '../../core/item/item.service';
+import { CarInfo } from '../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-upload-car',
@@ -48,6 +50,7 @@ export class UploadCarComponent implements OnInit {
               private router: Router,
               private errorsService: ErrorsService,
               private modalService: NgbModal,
+              private itemService: ItemService,
               private trackingService: TrackingService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
@@ -62,11 +65,13 @@ export class UploadCarComponent implements OnInit {
       currency_code: ['EUR', [Validators.required]],
       version: {value: '', disabled: true},
       num_seats: ['', [this.min(0), this.max(99)]],
+      num_doors: ['', [this.min(0), this.max(99)]],
       body_type: '',
       km: ['', [this.min(0), this.max(999999999)]],
       storytelling: '',
       engine: '',
       gearbox: '',
+      horsepower: ['', [this.min(0), this.max(999999999)]],
       sale_conditions: fb.group({
         fix_price: false,
         exchange_allowed: false,
@@ -102,10 +107,12 @@ export class UploadCarComponent implements OnInit {
         sale_conditions: this.item.saleConditions,
         category_id: carCategory,
         num_seats: this.item.numSeats,
+        num_doors: this.item.numDoors,
         body_type: this.item.bodyType,
         km: this.item.km,
         engine: this.item.engine,
         gearbox: this.item.gearbox,
+        horsepower: this.item.horsepower,
         brand: this.item.brand,
         model: this.item.model,
         year: carYear,
@@ -191,6 +198,18 @@ export class UploadCarComponent implements OnInit {
       this.toggleField('version', 'enable', !editMode);
     });
     this.setTitle();
+  }
+
+  public getInfo(version: string) {
+    if (!this.item) {
+      this.itemService.getCarInfo(
+        this.uploadForm.get('brand').value,
+        this.uploadForm.get('model').value,
+        version
+      ).subscribe((carInfo: CarInfo) => {
+        this.uploadForm.patchValue(carInfo);
+      });
+    }
   }
 
   private setTitle() {

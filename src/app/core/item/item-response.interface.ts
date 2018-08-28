@@ -324,3 +324,15 @@ export interface PurchaseProductsWithCreditsResponse {
   payment_needed: boolean;
   items_failed: string[];
 }
+
+export interface CarInfo {
+  body_type: string;
+  brand: string;
+  engine: string;
+  gearbox: string;
+  horsepower: number;
+  model: string;
+  num_doors: number;
+  num_seats: number;
+  version: string;
+}
