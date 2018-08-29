@@ -114,7 +114,6 @@ export class MsgArchiveService {
     });
 
     receivedReceipts.forEach(r => {
-      // TODO - send read_ack (442) per message;
       const msg = messages.find(m => m.id === r.messageId);
       if (msg && msg.status !== messageStatus.READ) {
         msg.status = messageStatus.RECEIVED;
