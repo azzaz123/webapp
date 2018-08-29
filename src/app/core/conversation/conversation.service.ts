@@ -30,7 +30,6 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
 import { MsgArchiveData } from '../message/archive.interface';
-import { User } from '../user/user';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -42,7 +41,6 @@ export class ConversationService extends LeadService {
 
   private messagesObservable: Observable<Conversation[]>;
   private readSubscription: Subscription;
-  private receiptSent = false;
   public messagesReadSubscription: Subscription;
   public ended: boolean;
   private unprocessedSignals: Array<TrackingEventData> = [];
@@ -262,15 +260,12 @@ export class ConversationService extends LeadService {
         return new Date(a.date).getTime() - new Date(b.date).getTime();
       });
       conversation.modifiedDate = new Date().getTime();
-      if (!message.fromSelf && !this.receiptSent) {
+      if (!message.fromSelf) {
         this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
-          this.sendAck(TrackingService.MESSAGE_RECEIVED_ACK, conversation.id, message.id);
+          this.sendTracking(TrackingService.MESSAGE_RECEIVED_ACK, conversation.id, message.id, conversation.item.id);
           this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
         });
         this.handleUnreadMessage(conversation);
-      }
-      if (this.receiptSent) {
-        this.receiptSent = false;
       }
       return true;
     }
@@ -560,7 +555,6 @@ export class ConversationService extends LeadService {
           this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
             this.requestConversationInfo(message);
             this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
-            this.receiptSent = true;
           });
         }
       }
@@ -601,7 +595,7 @@ export class ConversationService extends LeadService {
   }
 
   private addConversation(conversation: Conversation, message: Message) {
-    this.sendAck(TrackingService.MESSAGE_RECEIVED_ACK, conversation.id, message.id);
+    this.sendTracking(TrackingService.MESSAGE_RECEIVED_ACK, conversation.id, message.id, conversation.item.id);
     message = this.messageService.addUserInfo(conversation, message);
     this.addMessage(conversation, message);
     this.subscribeConversationRead(conversation);
