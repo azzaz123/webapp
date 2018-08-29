@@ -423,8 +423,9 @@ export class XmppService {
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
     if (!message.carbon && message.readReceipt) {
+      const timestamp = new Date(message.date).getTime();
       message.status = messageStatus.READ;
-      this.eventService.emit(EventService.MESSAGE_READ, message.thread);
+      this.eventService.emit(EventService.MESSAGE_READ, message.thread, timestamp);
     } else {
       messageId = message.id;
     }
