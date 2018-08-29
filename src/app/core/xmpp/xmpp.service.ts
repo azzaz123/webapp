@@ -3,24 +3,19 @@ import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
 import { PersistencyService } from '../persistency/persistency.service';
-import { MessagesData, MetaInfo } from '../message/messages.interface';
 import { XmppBodyMessage, XMPPClient } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
-import { UserService } from '../user/user.service';
 
 @Injectable()
 export class XmppService {
 
   private client: XMPPClient;
   private _clientConnected = false;
-  private confirmedMessages: string[] = [];
-  private firstMessageDate: string;
   private currentJid: string;
   private resource: string;
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
@@ -28,11 +23,6 @@ export class XmppService {
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private unreadMessages = [];
   public totalUnreadMessages = 0;
-  public receivedReceipts = [];
-  public sentReceipts = [];
-  public readReceipts = [];
-  private ownReadTimestamps = {};
-  private readTimestamps = {};
   public convWithUnread = {};
   private reconnectAttempts = 5;
   private reconnectInterval: any;
@@ -40,7 +30,6 @@ export class XmppService {
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
-              private userService: UserService,
               private trackingService: TrackingService) {
   }
 
@@ -102,115 +91,6 @@ export class XmppService {
     });
   }
 
-  public searchHistory(thread?: string, refMessage?: string, start?: string): Observable<MessagesData> {
-    return Observable.create((observer: Observer<MessagesData>) => {
-      const queryId: string = this.client.nextId();
-      const options: any = {
-        from: this.currentJid,
-        type: 'get',
-        mam: {
-          thread: thread,
-          queryid: queryId,
-          start: start,
-          rsm: {
-            max: 50
-          }
-        }
-      };
-      if (!start) {
-        options.mam.rsm.before = refMessage || true;
-      } else {
-        options.mam.rsm.after = refMessage || true;
-      }
-      const query: Promise<any> = this.client.sendIq(options).then((response: any) => {
-        if (response.mam.rsm.count === 0) {
-          return observer.next({
-            data: [],
-            meta: {
-              first: null,
-              last: null,
-              end: true
-            }
-          });
-        }
-        return response;
-      }, (e) => {
-        console.log(options);
-        console.error(e);
-        return observer.next({
-          data: [],
-          meta: {
-            first: null,
-            last: null,
-            end: true
-          }
-        });
-      });
-      let messages: Message[] = [];
-      let messagesCount = 0;
-      setTimeout(() => {
-        if (messagesCount === 0) {
-            query.then(() => {
-            return observer.next({
-              data: [],
-              meta: {
-                first: null,
-                last: null,
-                end: true
-              }
-            });
-          });
-        }
-      }, 2000);
-      this.client.on('stream:data', (data: any) => {
-        if (data.xml.name === 'message' && data.xml.children[0].attrs.queryid === queryId) {
-          messagesCount++;
-          const message: any = this.xmlToMessage(data.xml);
-          if (message.body) {
-            const builtMessage: Message = this.buildMessage(message);
-            if (!message.payload || this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1) {
-              messages.push(builtMessage);
-              if (this.messageFromSelf(builtMessage) && builtMessage.status === null) {
-                builtMessage.status = messageStatus.SENT;
-              }
-            }
-            this.onNewMessage(message);
-          }
-          if (message.receivedId) {
-            this.confirmedMessages.push(message.receivedId);
-            this.receivedReceipts.push({id: message.receivedId, thread: message.thread});
-            this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, message.receivedId);
-          }
-          if (message.readTimestamp) {
-            this.readReceipts.push(message);
-            this.eventService.emit(EventService.MESSAGE_READ, message.thread);
-          }
-            query.then((response: any) => {
-            const meta: any = response.mam.rsm;
-            if (message.ref === meta.last) {
-              messages = this.checkReceivedMessages(messages);
-              messages = this.confirmNotConfirmedMessages(messages);
-              const metaObject: MetaInfo = {
-                first: meta.first,
-                last: meta.last,
-                end: start ? meta.count === +meta.firstIndex + messagesCount : meta.firstIndex === '0'
-              };
-              if (!start && meta.count === +meta.firstIndex + messagesCount) {
-                if (!this.firstMessageDate) {
-                  this.firstMessageDate = message.date;
-                }
-                this.persistencyService.saveMetaInformation({last: meta.last, start: this.firstMessageDate});
-              }
-              return observer.next({
-                data: messages,
-                meta: metaObject
-              });
-            }
-          });
-        }
-      });
-    });
-  }
 
   public isConnected(): Observable<boolean> {
     return this.clientConnected$.asObservable();
@@ -227,67 +107,6 @@ export class XmppService {
 
   public debug() {
     this.client.on('*', (k, v) => console.debug(k, v));
-  }
-
-  private messageFromSelf(message) {
-    return message.from.split('@')[0] === this.userService.user.id;
-  }
-
-  private checkReceivedMessages(messages: Message[]): Message[] {
-    messages.forEach((message: Message) => {
-      const index: number = this.confirmedMessages.indexOf(message.id);
-      if (index !== -1) {
-        if (this.messageFromSelf(message)) {
-          message.status = messageStatus.RECEIVED;
-        }
-        this.confirmedMessages.splice(index, 1);
-      }
-    });
-    return messages;
-  }
-
-  public getLastReadTimestamps() {
-    this.readReceipts.filter(receipt => this.messageFromSelf(receipt)).forEach((t) => {
-      if (!this.ownReadTimestamps[t.thread]) {
-        this.ownReadTimestamps[t.thread] = {
-          thread: t.thread,
-          timestamp: new Date(t.readTimestamp),
-        };
-      } else if (Date.parse(t.readTimestamp) > Date.parse(this.ownReadTimestamps[t.thread].timestamp))  {
-        this.ownReadTimestamps[t.thread].timestamp =  t.readTimestamp;
-      }
-    });
-    this.readReceipts.filter(receipt => !this.messageFromSelf(receipt)).forEach((t) => {
-      if (!this.readTimestamps[t.thread]) {
-        this.readTimestamps[t.thread] = {
-          thread: t.thread,
-          timestamp: new Date(t.readTimestamp),
-        };
-      } else if (Date.parse(t.readTimestamp) > Date.parse(this.readTimestamps[t.thread].timestamp))  {
-        this.readTimestamps[t.thread].timestamp =  t.readTimestamp;
-  }
-    });
-  }
-
-  private confirmNotConfirmedMessages(messages: Message[]) {
-    this.getLastReadTimestamps();
-    messages.forEach((message: Message) => {
-      if (!this.messageFromSelf(message)) {
-        this.sendMessageDeliveryReceipt(message.from, message.id, message.conversationId);
-        if (this.ownReadTimestamps[message.conversationId] &&
-            Date.parse(message.date.toString()) > Date.parse(this.ownReadTimestamps[message.conversationId].timestamp.toString())) {
-            const receiptProcessed = this.unreadMessages.filter(m => m.id === message.id).length;
-            if (!receiptProcessed) {
-              this.unreadMessages.push({id: message.id, thread: message.conversationId});
-              this.totalUnreadMessages++;
-            }
-          }
-      } else if (this.readTimestamps[message.conversationId] &&
-                 Date.parse(message.date.toString()) < Date.parse(this.readTimestamps[message.conversationId].timestamp)) {
-        message.status = messageStatus.READ;
-      }
-    });
-    return messages;
   }
 
   public addUnreadMessagesCounter(conversations) {
@@ -419,7 +238,6 @@ export class XmppService {
     if (!message.carbon && message.sentReceipt) {
       message.status = messageStatus.SENT;
       messageId = message.sentReceipt.id;
-      this.sentReceipts.push({id: messageId, thread: message.thread});
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
     if (!message.carbon && message.readReceipt) {
@@ -707,36 +525,5 @@ export class XmppService {
   private getIdFromJid(jid: string): string {
     const splitted = jid.split('@');
     return splitted[0];
-  }
-
-  private xmlToMessage(xml: any) {
-    const forwarded: any = xml.children[0].children[0];
-    /* istanbul ignore else  */
-    if (forwarded) {
-      const delay: any = _.find(forwarded.children, {name: 'delay'});
-      const message: any = _.find(forwarded.children, {name: 'message'});
-      /* istanbul ignore else  */
-      if (message && delay) {
-        const body: any = _.find(message.children, {name: 'body'});
-        const thread: any = _.find(message.children, {name: 'thread'});
-        const received: any = _.find(message.children, {name: 'received'});
-        const read: any = _.find(message.children, {name: 'read'});
-        const sent: any = _.find(message.children, {name: 'sent'});
-        const payload: any = _.find(message.children, {name: 'payload'});
-        return {
-          id: message.attrs.id,
-          from: message.attrs.from,
-          to: message.attrs.to,
-          date: delay.attrs.stamp,
-          body: body ? body.children[0] : null,
-          thread: thread ? thread.children[0] : null,
-          ref: xml.children[0].attrs.id,
-          receivedId: received ? received.attrs.id : null,
-          readTimestamp: read ? read.parent.children[0].children[0] : null,
-          sent: sent ? sent.attrs : null,
-          payload: payload ? JSON.parse(payload.children[0]) : null
-        };
-      }
-    }
   }
 }
