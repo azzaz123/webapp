@@ -135,6 +135,7 @@ export class MsgArchiveService {
         m.event.from_user_hash,
         new Date(m.event.created_ts * 1000),
         fromSelf ? messageStatus.SENT : messageStatus.RECEIVED);
+      msg.fromSelf = fromSelf;
 
       return msg;
     });
