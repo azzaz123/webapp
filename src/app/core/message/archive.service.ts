@@ -23,9 +23,8 @@ export class MsgArchiveService {
               private userService: UserService) { }
 
   public getEventsSince(start: string): Observable<MsgArchiveResponse> {
-    return this.getSince(start, []).first().map((r: any) => {
+    return this.getSince(start ? start : '0', []).first().map((r: any) => {
       const events = r.events;
-      console.log(r.events.length);
       let messages = this.processMessages(events);
       const readReceipts = this.processReadReceipts(events);
       const receivedReceipts = this.processReceivedReceipts(events);
@@ -51,8 +50,10 @@ export class MsgArchiveService {
       events = events.length ? events.concat(data) : data;
 
       if (nextPage) {
+        if (nextPage.indexOf('since=') > -1) {
         const newSince = nextPage.split('since=')[1].split('&')[0];
         return this.getSince(newSince, events);
+      }
       }
 
       r.events = events;
@@ -125,7 +126,7 @@ export class MsgArchiveService {
 
   private processMessages(archiveData: Array<any>) {
     const self: User = this.userService.user;
-    return archiveData.filter((d) => d.type === this.eventTypes.message)
+    let messages = archiveData.filter((d) => d.type === this.eventTypes.message)
     .map(m => {
       const fromSelf = m.event.from_user_hash === self.id;
       const msg = new Message(m.event.message_id,
@@ -138,7 +139,8 @@ export class MsgArchiveService {
       return msg;
     });
 
-    // return _.uniqBy(result, 'messageId');
+    messages = _.sortBy(messages, 'date');
+    return messages;
   }
 
   private processReceivedReceipts(archiveData: any) {
