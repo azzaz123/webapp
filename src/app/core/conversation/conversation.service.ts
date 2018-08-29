@@ -533,6 +533,9 @@ export class ConversationService extends LeadService {
       messageToUpdate.date = message.date;
       this.persistencyService.updateMessageDate(message);
     } else if (message.message) {
+      if (!message.fromSelf) {
+        message.status = messageStatus.RECEIVED;
+      }
       this.persistencyService.saveMessages(message);
       if (conversation) {
         this.updateConversation(message, conversation).subscribe(() => {
