@@ -63,7 +63,7 @@ export class UploadCarComponent implements OnInit {
       year: [{value: '', disabled: true}, [Validators.required]],
       sale_price: ['', [Validators.required, this.min(0), this.max(999999999)]],
       currency_code: ['EUR', [Validators.required]],
-      version: {value: '', disabled: true},
+      version: [{value: '', disabled: true}, [Validators.required]],
       num_seats: ['', [this.min(0), this.max(99)]],
       num_doors: ['', [this.min(0), this.max(99)]],
       body_type: '',
