@@ -411,12 +411,12 @@ export class XmppService {
     if (markAsPending) {
       message.status = messageStatus.PENDING;
     }
-    if (message.timestamp && message.receipt && message.from.local !== message.to.local && !message.delay) {
+    if (message.timestamp && message.receipt && message.from.local !== message.to.local && !message.carbon) {
       messageId = message.receipt;
       message.status = messageStatus.RECEIVED;
       this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
     }
-    if (!message.carbon && message.sentReceipt && !message.delay) {
+    if (!message.carbon && message.sentReceipt) {
       message.status = messageStatus.SENT;
       messageId = message.sentReceipt.id;
       this.sentReceipts.push({id: messageId, thread: message.thread});
