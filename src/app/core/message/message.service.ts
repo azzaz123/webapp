@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
 import { MsgArchiveService } from './archive.service';
@@ -8,10 +9,10 @@ import { Message, messageStatus } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
-import { MessagesData, MessagesDataRecursive, StoredMessageRow, StoredMetaInfoData } from './messages.interface';
+import { MessagesData, StoredMessageRow, StoredMetaInfoData } from './messages.interface';
 import 'rxjs/add/operator/first';
 import { ConnectionService } from '../connection/connection.service';
-import { MsgArchiveData, MsgArchiveResponse } from './archive.interface';
+import { MsgArchiveData } from './archive.interface';
 
 @Injectable()
 export class MessageService {
@@ -23,7 +24,7 @@ export class MessageService {
   private resendOlderThan = 5;
 
   constructor(private xmpp: XmppService,
-              private archive: MsgArchiveService,
+              private archiveService: MsgArchiveService,
               private persistencyService: PersistencyService,
               private userService: UserService,
               private connectionService: ConnectionService) {
@@ -94,16 +95,7 @@ export class MessageService {
   public getNotSavedMessages(): Observable<MsgArchiveData> {
     if (this.connectionService.isConnected) {
       return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
-        return this.queryMessages(resp.data.start).do((r: MsgArchiveData) => {
-          if (r.messages.length) {
-            this.persistencyService.saveMetaInformation(
-              {
-                last: r.messages[r.messages.length - 1].id,
-                start: r.messages[r.messages.length - 1].date.toISOString()
-              }
-            );
-          }
-        });
+        return this.queryMessages(resp.data.start);
       });
     }
   }
@@ -126,38 +118,17 @@ export class MessageService {
   }
 
   public queryMessages(since: string): Observable<any> {
-    const nanoTimestamp = (new Date(since).getTime() / 1000) + '000';
-    return this.archive.getEventsSince(nanoTimestamp).map(r => {
-      return r;
-    });
+    const nanoTimestamp = since && since !== '0' ? (new Date(since).getTime() / 1000) + '000' : null;
+    return this.archiveService.getEventsSince(nanoTimestamp);
   }
 
   public queryMessagesByThread(thread: string, since?: string): Observable<any> {
     const nanoTimestamp = since ? (new Date(since).getTime() / 1000) + '000' : null;
-    return this.archive.getAllEvents(thread, nanoTimestamp)
-    .map((res: MsgArchiveResponse) => {
-      this.persistencyService.saveMessages(res.messages);
-      return res;
-    });
+    return this.archiveService.getAllEvents(thread, nanoTimestamp);
   }
 
   public resetCache() {
     this.totalUnreadMessages = 0;
-  }
-
-  private recursiveQuery(conversationId: string, lastMessageRef: string, total: number, messages: Message[],
-                         start?: string): Observable<MessagesDataRecursive> {
-    return this.xmpp.searchHistory(conversationId, lastMessageRef, start)
-    .flatMap((res: MessagesDataRecursive) => {
-      messages = start ? messages.concat(res.data) : res.data.concat(messages);
-      const limit: boolean = total > -1 ? messages.length < total : true;
-      if (!res.meta.end && limit) {
-        lastMessageRef = start ? res.meta.last : res.meta.first;
-        return this.recursiveQuery(conversationId, lastMessageRef, total, messages, start);
-      }
-      res.messages = messages;
-      return Observable.of(res);
-    });
   }
 
 }
