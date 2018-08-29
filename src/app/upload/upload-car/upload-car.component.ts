@@ -71,7 +71,7 @@ export class UploadCarComponent implements OnInit {
       storytelling: '',
       engine: '',
       gearbox: '',
-      horsepower: ['', [this.min(0), this.max(999999999)]],
+      horsepower: ['', [this.min(0), this.max(999)]],
       sale_conditions: fb.group({
         fix_price: false,
         exchange_allowed: false,

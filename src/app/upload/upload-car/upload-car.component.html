@@ -17,7 +17,7 @@
           <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand" id="brand"
                  [ngbPopover]="coachmarkMake" />
           <ng-template #coachmarkMake>
-            <div i18n>The basics: make and model.</div> 
+            <div i18n>The basics: make and model.</div>
           </ng-template>
 
         </div>
@@ -111,7 +111,7 @@
         <div class="form-group">
           <label for="seats" i18n>Horsepower</label>
           <input i18n-placeholder placeholder="Add a number" type="number" class="form-control"
-                 formControlName="horsepower" id="horsepower" min="0" max="999999999"/>
+                 formControlName="horsepower" id="horsepower" min="0" max="999"/>
         </div>
       </div>
     </div>
