@@ -413,8 +413,6 @@ export class ConversationService extends LeadService {
   }
 
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
-    return this.xmpp.isConnected().first()
-    .flatMap(() => {
       if (this.connectionService.isConnected) {
         return this.messageService.getNotSavedMessages().map((response: MsgArchiveData) => {
           if (response.messages.length) {
@@ -432,14 +430,6 @@ export class ConversationService extends LeadService {
                   }
                 }
               } else {
-                this.get(message.conversationId).subscribe((subscribedConversation: Conversation) => {
-                  message = this.messageService.addUserInfo(subscribedConversation, message);
-                  this.addMessage(subscribedConversation, message);
-                  conversations.unshift(subscribedConversation);
-                  if (!message.fromSelf) {
-                    this.handleUnreadMessage(subscribedConversation);
-                  }
-                });
               }
             });
           }
@@ -448,7 +438,6 @@ export class ConversationService extends LeadService {
       } else {
         return Observable.of(null);
       }
-    });
   }
 
   protected mapRecordData(data: ConversationResponse): Conversation {
