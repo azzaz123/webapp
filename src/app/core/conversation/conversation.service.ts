@@ -402,7 +402,10 @@ export class ConversationService extends LeadService {
       return this.messageService.getMessages(conversations[index], null, archived)
         .flatMap((res: MessagesData) => {
           conversations[index].messages = res.data;
-          conversations[index].unreadMessages = res.data.filter(m => m.from !== self.id && m.status !== messageStatus.READ).length;
+        conversations[index].unreadMessages = res.data.filter(m => !m.fromSelf && m.status === messageStatus.RECEIVED).length;
+        this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
+          this.messageService.totalUnreadMessages + conversations[index].unreadMessages :
+          conversations[index].unreadMessages;
           this.persistencyService.saveUnreadMessagesCount(conversations[index].id, conversations[index].unreadMessages);
           if (index < conversations.length - 1) {
           return this.recursiveLoadMessages(conversations, archived, index + 1);
