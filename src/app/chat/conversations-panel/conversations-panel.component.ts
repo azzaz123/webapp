@@ -97,24 +97,24 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.updateMessageStatus(messageStatus.RECEIVED, conversationId, messageId) :
         this.receivedMessages = this.xmppService.receivedReceipts;
     });
-    this.eventService.subscribe(EventService.MESSAGE_READ, (conversationId) => {
+    this.eventService.subscribe(EventService.MESSAGE_READ, (conversationId, timestamp) => {
       const conversationLoaded = this.conversations.find(c => c.id === conversationId);
       this.conversations.length && conversationLoaded ?
-        this.updateMessageStatus(messageStatus.READ, conversationId) :
-        this.readMessages = this.xmppService.readReceipts;
+        this.updateMessageStatus(messageStatus.READ, conversationId, null, timestamp) :
+        console.log('else for READ', conversationId); // TODO
     });
   }
 
-  private updateMessageStatus(newStatus: string, conversationId: string, messageId?: string) {
+  private updateMessageStatus(newStatus: string, conversationId: string, messageId?: string, timestamp?: number) {
     const conversation = this.conversations.find((c: Conversation) => c.id === conversationId);
     if (conversation) {
       if (messageId) {
         const message = conversation.messages.find((m: Message) => m.id === messageId);
         if (message && message.status !== newStatus) {
-          this.conversationService.markAs(newStatus, message, conversation);
+          this.conversationService.markAs(newStatus, message);
         }
       } else {
-        this.conversationService.markAllAsRead(conversation);
+        this.conversationService.markAllAsRead(conversation, timestamp);
       }
     }
   }
