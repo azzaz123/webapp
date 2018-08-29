@@ -510,8 +510,13 @@ export class ConversationService extends LeadService {
   }
 
   public getSingleConversationMessages(conversation: Conversation) {
-    return this.messageService.getMessages(conversation).map((data: MessagesData) => {
-      conversation.messages = data.data;
+    return this.messageService.getMessages(conversation).map((res: MessagesData) => {
+      conversation.messages = res.data;
+      conversation.unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
+      this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
+        this.messageService.totalUnreadMessages + conversation.unreadMessages :
+        conversation.unreadMessages;
+      this.persistencyService.saveUnreadMessagesCount(conversation.id, conversation.unreadMessages);
       return conversation;
     });
   }
@@ -582,9 +587,7 @@ export class ConversationService extends LeadService {
   private requestConversationInfo(message: Message) {
     this.get(message.conversationId).subscribe((conversation: Conversation) => {
       if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId)) {
-        this.getSingleConversationMessages(conversation).subscribe(() => {
-        this.addConversation(conversation, message);
-        });
+        this.getSingleConversationMessages(conversation).subscribe(() => this.addConversation(conversation, message));
       }
     });
   }
