@@ -391,12 +391,36 @@ export class ConversationService extends LeadService {
     return this.messagesObservable;
   }
 
+  private updateMeta(lastMessage: Message) {
+    this.persistencyService.getMetaInformation().subscribe((r) => {
+      const newTs = new Date(lastMessage.date).getTime();
+      const currentTs = new Date(r.data.start).getTime();
+      if ( currentTs < newTs)  {
+        this.persistencyService.saveMetaInformation({
+          last: lastMessage.id,
+          start: (new Date(lastMessage.date)).toISOString()
+        });
+      }
+    }, (e) => {
+      if (e.reason === 'missing') {
+        this.persistencyService.saveMetaInformation({
+          last: lastMessage.id,
+          start: (new Date(lastMessage.date)).toISOString()
+        });
+      }
+    });
+  }
+
   private recursiveLoadMessages(conversations: Conversation[], archived: boolean, index: number = 0): Observable<Conversation[]> {
     const self: User = this.userService.user;
       if (conversations && conversations[index] && this.connectionService.isConnected) {
       return this.messageService.getMessages(conversations[index], null, archived)
         .flatMap((res: MessagesData) => {
           conversations[index].messages = res.data;
+        if (res.data.length) {
+          const lastMessage = _.last(res.data);
+          this.updateMeta(lastMessage);
+        }
         conversations[index].unreadMessages = res.data.filter(m => !m.fromSelf && m.status === messageStatus.RECEIVED).length;
         this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
           this.messageService.totalUnreadMessages + conversations[index].unreadMessages :
