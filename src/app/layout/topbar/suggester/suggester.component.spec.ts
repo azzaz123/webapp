@@ -45,10 +45,10 @@ describe('SuggesterComponent', () => {
       component.suggest(Observable.of(input)).subscribe();
       expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });
-    it('should NOT search for suggestions from input < 3', () => {
+    it('should search for suggestions from input < 3', () => {
       const input = 'me';
       component.suggest(Observable.of(input)).subscribe();
-      expect(suggesterService.getSuggestions).not.toHaveBeenCalled();
+      expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });
   });
 
