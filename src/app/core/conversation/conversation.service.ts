@@ -62,9 +62,9 @@ export class ConversationService extends LeadService {
   }
 
   private subscribeConversationRead(conversation) {
-    this.messagesReadSubscription = this.event.subscribe(EventService.MESSAGE_READ, (thread) => {
+    this.messagesReadSubscription = this.event.subscribe(EventService.MESSAGE_READ, (thread, timestamp) => {
       if (thread === conversation.id) {
-        this.markAllAsRead(conversation);
+        this.markAllAsRead(conversation, timestamp, false);
       }
     });
   }
@@ -80,7 +80,7 @@ export class ConversationService extends LeadService {
           conversations.map((conversation: Conversation) => this.loadUnreadMessagesNumber(conversation))
         )
         .flatMap((convWithUnreadNumber: Conversation[]) => {
-          return this.loadMessagesIntoConversations(convWithUnreadNumber)
+          return this.loadMessagesIntoConversations(convWithUnreadNumber, archived)
           .map((convWithMessages: Conversation[]) => {
             if (!archived) {
               if (!convWithMessages.length) {
@@ -287,19 +287,20 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public markAllAsRead(conversation: Conversation) {
+  public markAllAsRead(conversation: Conversation, timestamp: number, fromSelf: boolean = true) {
     this.addStatusToStoredMessages(conversation, messageStatus.READ);
-    conversation.messages.filter((message) => {
-      return (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT) && message.fromSelf;
-    })
-    .forEach((message) => {
+    conversation.messages.filter((message) => (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT)
+      && new Date(message.date).getTime() < timestamp)
+      .map((message) => {
       message.status = messageStatus.READ;
+        this.persistencyService.updateMessageStatus(message.id, messageStatus.READ);
+        if (fromSelf) {
       this.sendAck(TrackingService.MESSAGE_READ, conversation.id, message.id);
-      this.persistencyService.updateMessageStatus(message.id, messageStatus.READ);
+        }
     });
   }
 
-  public markAs(newStatus: string, message: Message, conversation: Conversation) {
+  public markAs(newStatus: string, message: Message) {
     if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
       message.status = newStatus;
       this.persistencyService.updateMessageStatus(message.id, newStatus);
@@ -369,6 +370,7 @@ export class ConversationService extends LeadService {
       this.messageService.totalUnreadMessages -= conversation.unreadMessages;
       conversation.unreadMessages = 0;
       this.persistencyService.saveUnreadMessagesCount(conversation.id, 0);
+      this.markAllAsRead(conversation, (new Date()).getTime(), false);
     }
   }
 
