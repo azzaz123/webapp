@@ -79,6 +79,7 @@ export class MessageService {
               last: _.last(r.messages).id,
               start: (_.last(r.messages)).date.toISOString()
             });
+            this.confirmUnconfirmedMessages(r.messages, r.receivedReceipts, conversation.item.id);
           }
           return r;
         });
@@ -92,6 +93,14 @@ export class MessageService {
     });
   }
 
+  private confirmUnconfirmedMessages(messages: Array<any>, receivedReceipts: Array<any>, itemId: string) {
+    messages.filter(message => !message.fromSelf).map(message => {
+      const msgAlreadyConfirmed = receivedReceipts.find(receipt => receipt.messageId === message.id);
+      if (!msgAlreadyConfirmed) {
+        this.xmpp.sendMessageDeliveryReceipt(message.from, message.id, message.conversationId);
+      }
+    });
+  }
   public getNotSavedMessages(): Observable<MsgArchiveData> {
     if (this.connectionService.isConnected) {
       return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
