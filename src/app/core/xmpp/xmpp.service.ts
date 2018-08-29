@@ -377,8 +377,10 @@ export class XmppService {
   }
 
   private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
-    if (message.body || message.timestamp || message.carbonSent || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
+    if (message.body || message.timestamp || message.carbonSent
+        || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
+      builtMessage.fromSelf = message.from === this.currentJid;
       this.persistencyService.saveMetaInformation({
           last: null,
           start: builtMessage.date.toISOString()
@@ -386,8 +388,12 @@ export class XmppService {
       );
       const replaceTimestamp = !message.timestamp || message.carbonSent;
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp);
-      if (message.from !== this.currentJid && message.requestReceipt && !message.carbon) {
+      if (message.requestReceipt && !builtMessage.fromSelf) {
+        this.persistencyService.findMessage(message.id).subscribe(() => {}, (error) => {
+          if (error.reason === 'missing') {
         this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
+      }
+        });
       }
     }
   }
@@ -426,9 +432,8 @@ export class XmppService {
                        new Date(message.date), (message.status || null), message.payload);
   }
 
-  private sendMessageDeliveryReceipt(to: string, id: string, thread: string) {
-    this.persistencyService.findMessage(id).subscribe(() => {}, (error) => {
-      if (error.reason === 'missing') {
+  public sendMessageDeliveryReceipt(to: string, id: string, thread: string) {
+    to = (to.indexOf('@') === -1) ? this.createJid(to) : to;
         this.client.sendMessage({
           to: to,
           type: 'chat',
@@ -439,8 +444,6 @@ export class XmppService {
           }
         });
       }
-    });
-  }
 
   private setDefaultPrivacyList(): Observable<any> {
     return Observable.fromPromise(this.client.sendIq({
