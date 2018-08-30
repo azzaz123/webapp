@@ -257,7 +257,15 @@ export class ConversationService extends LeadService {
       conversation.modifiedDate = new Date().getTime();
       if (!message.fromSelf) {
         this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
-          this.sendTracking(TrackingService.MESSAGE_RECEIVED_ACK, conversation.id, message.id, conversation.item.id);
+          const trackEvent: TrackingEventData = {
+            eventData: TrackingService.MESSAGE_RECEIVED_ACK,
+            attributes: {
+              thread_id: message.conversationId,
+              message_id: message.id,
+              item_id: conversation.item.id
+            }
+          };
+          this.trackingService.pendingTrackingEvents.push(trackEvent);
           this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
         });
         this.handleUnreadMessage(conversation);
@@ -285,7 +293,15 @@ export class ConversationService extends LeadService {
       message.status = messageStatus.READ;
         this.persistencyService.updateMessageStatus(message.id, messageStatus.READ);
         if (fromSelf) {
-      this.sendAck(TrackingService.MESSAGE_READ, conversation.id, message.id);
+          const trackEvent: TrackingEventData = {
+            eventData: TrackingService.MESSAGE_READ,
+            attributes: {
+              thread_id: message.conversationId,
+              message_id: message.id,
+              item_id: conversation.item.id
+            }
+          };
+          this.trackingService.pendingTrackingEvents.push(trackEvent);
         }
     });
   }
@@ -352,7 +368,15 @@ export class ConversationService extends LeadService {
       const unreadMessages = conversation.messages.slice(-conversation.unreadMessages);
       this.readSubscription = this.event.subscribe(EventService.MESSAGE_READ_ACK, () => {
         unreadMessages.forEach((message) => {
-          this.sendAck(TrackingService.MESSAGE_READ_ACK, conversation.id, message.id);
+          const trackEvent: TrackingEventData = {
+            eventData: TrackingService.MESSAGE_READ_ACK,
+            attributes: {
+              thread_id: message.conversationId,
+              message_id: message.id,
+              item_id: conversation.item.id
+            }
+          };
+          this.trackingService.pendingTrackingEvents.push(trackEvent);
         });
         this.readSubscription.unsubscribe();
       });
@@ -407,7 +431,6 @@ export class ConversationService extends LeadService {
   }
 
   private recursiveLoadMessages(conversations: Conversation[], archived: boolean, index: number = 0): Observable<Conversation[]> {
-    const self: User = this.userService.user;
       if (conversations && conversations[index] && this.connectionService.isConnected) {
       return this.messageService.getMessages(conversations[index], null, archived)
         .flatMap((res: MessagesData) => {
@@ -603,7 +626,15 @@ export class ConversationService extends LeadService {
   }
 
   private addConversation(conversation: Conversation, message: Message) {
-    this.sendTracking(TrackingService.MESSAGE_RECEIVED_ACK, conversation.id, message.id, conversation.item.id);
+    const trackEvent: TrackingEventData = {
+      eventData: TrackingService.MESSAGE_RECEIVED_ACK,
+      attributes: {
+        thread_id: message.conversationId,
+        message_id: message.id,
+        item_id: conversation.item.id
+      }
+    };
+    this.trackingService.pendingTrackingEvents.push(trackEvent);
     message = this.messageService.addUserInfo(conversation, message);
     this.addMessage(conversation, message);
     this.subscribeConversationRead(conversation);

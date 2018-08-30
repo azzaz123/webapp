@@ -13,6 +13,8 @@ import { MessagesData, StoredMessageRow, StoredMetaInfoData } from './messages.i
 import 'rxjs/add/operator/first';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveData } from './archive.interface';
+import { TrackingService } from '../tracking/tracking.service';
+import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 
 @Injectable()
 export class MessageService {
@@ -27,6 +29,7 @@ export class MessageService {
               private archiveService: MsgArchiveService,
               private persistencyService: PersistencyService,
               private userService: UserService,
+              private trackingService: TrackingService,
               private connectionService: ConnectionService) {
   }
 

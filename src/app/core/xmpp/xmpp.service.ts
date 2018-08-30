@@ -10,6 +10,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
+import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 
 @Injectable()
 export class XmppService {
@@ -69,11 +70,15 @@ export class XmppService {
           message_id: message.id });
         appboy.logCustomEvent('FirstMessage', {platform: 'web'});
       }
-      this.trackingService.track(TrackingService.MESSAGE_SENT, {
+      const trackEvent: TrackingEventData = {
+        eventData: TrackingService.MESSAGE_SENT,
+        attributes: {
         thread_id: message.thread,
         message_id: message.id,
         item_id: conversation.item.id
-      });
+        }
+      };
+      this.trackingService.pendingTrackingEvents.push(trackEvent);
       this.onNewMessage(_.clone(message), true);
     }
 
