@@ -79,6 +79,7 @@ export class MessageService {
               last: _.last(r.messages).id,
               start: (_.last(r.messages)).date.toISOString()
             });
+            this.addClickstreamEvents(r, conversation.item.id);
             this.confirmUnconfirmedMessages(r.messages, r.receivedReceipts);
           }
           return r;
@@ -93,6 +94,45 @@ export class MessageService {
     });
   }
 
+  private addClickstreamEvents(archiveData: MsgArchiveData, itemId) {
+    archiveData.messages.filter(message => !message.fromSelf).map(message => {
+      const msgAlreadyConfirmed = archiveData.receivedReceipts.find(receipt => receipt.messageId === message.id);
+      if (!msgAlreadyConfirmed) {
+        const trackReceivedAckEvent: TrackingEventData = {
+          eventData: TrackingService.MESSAGE_RECEIVED_ACK,
+          attributes: {
+            thread_id: message.conversationId,
+            message_id: message.id,
+            item_id: itemId
+          }
+        };
+        this.trackingService.pendingTrackingEvents.push(trackReceivedAckEvent);
+      }
+    });
+
+    archiveData.messages.filter(message => message.fromSelf).map(message => {
+      const attributes = {
+        thread_id: message.conversationId,
+        message_id: message.id,
+        item_id: itemId
+      };
+
+      switch (message.status) {
+        case messageStatus.READ:
+        this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attributes});
+          this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_RECEIVED, attributes: attributes});
+          this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_READ, attributes: attributes});
+          break;
+        case messageStatus.RECEIVED:
+          this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attributes});
+          this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_RECEIVED, attributes: attributes});
+          break;
+        case messageStatus.SENT:
+        this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attributes});
+        break;
+      }
+    });
+  }
 
   private confirmUnconfirmedMessages(messages: Array<any>, receivedReceipts: Array<any>) {
     messages.filter(message => !message.fromSelf).map(message => {
