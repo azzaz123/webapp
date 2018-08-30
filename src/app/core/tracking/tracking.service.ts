@@ -798,6 +798,7 @@ export class TrackingService {
   private deviceAccessTokenId: string = null;
   private sessionIdCookieName = 'session_id';
   private deviceAccessTokenIdCookieName = 'device_access_token_id';
+  public pendingTrackingEvents: Array<TrackingEventData> = [];
 
   constructor(private navigatorService: NavigatorService,
               private http: HttpService,
@@ -809,7 +810,7 @@ export class TrackingService {
     this.setDeviceAccessTokenId(this.deviceAccessTokenIdCookieName);
   }
 
-  track(event: TrackingEventBase, attributes?: any) {
+  public track(event: TrackingEventBase, attributes?: any) {
     this.createNewEvent(event, attributes)
       .flatMap((newEvent: TrackingEvent) => {
         delete newEvent['sessions'][0]['window'];
@@ -829,14 +830,16 @@ export class TrackingService {
     }).subscribe();
   }
 
-  trackMultiple(events: Array<TrackingEventData>) {
-    const interval = setInterval(() => {
-      if (events.length > maxBatchSize) {
-        const slice = events.splice(0, maxBatchSize);
-        this.sendMultipleEvents(slice);
-      } else {
-        this.sendMultipleEvents(events);
-        clearInterval(interval);
+  public trackAccumulatedEvents() {
+    setInterval(() => {
+      if (this.pendingTrackingEvents.length) {
+        if (this.pendingTrackingEvents.length > maxBatchSize) {
+          const batch = this.pendingTrackingEvents.splice(0, maxBatchSize);
+          this.sendMultipleEvents(batch);
+        } else {
+          this.sendMultipleEvents(this.pendingTrackingEvents);
+          this.pendingTrackingEvents = [];
+        }
       }
     }, sendInterval);
   }
