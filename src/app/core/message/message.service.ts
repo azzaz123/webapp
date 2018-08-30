@@ -79,7 +79,7 @@ export class MessageService {
               last: _.last(r.messages).id,
               start: (_.last(r.messages)).date.toISOString()
             });
-            this.confirmUnconfirmedMessages(r.messages, r.receivedReceipts, conversation.item.id);
+            this.confirmUnconfirmedMessages(r.messages, r.receivedReceipts);
           }
           return r;
         });
@@ -93,7 +93,8 @@ export class MessageService {
     });
   }
 
-  private confirmUnconfirmedMessages(messages: Array<any>, receivedReceipts: Array<any>, itemId: string) {
+
+  private confirmUnconfirmedMessages(messages: Array<any>, receivedReceipts: Array<any>) {
     messages.filter(message => !message.fromSelf).map(message => {
       const msgAlreadyConfirmed = receivedReceipts.find(receipt => receipt.messageId === message.id);
       if (!msgAlreadyConfirmed) {
