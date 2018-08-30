@@ -11,6 +11,8 @@ import { NguCarousel } from '@ngu/carousel';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { UserService } from '../core/user/user.service';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
+import { Observable } from 'rxjs/Observable';
+import { User } from '../core/user/user';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -25,6 +27,7 @@ export class WallacoinsComponent implements OnInit {
   public currencyName: string;
   public factor: number;
   public loading = true;
+  private localStorageName = '-wallacoins-tutorial';
 
   constructor(private paymentService: PaymentService,
               private modalService: NgbModal,
@@ -114,7 +117,23 @@ export class WallacoinsComponent implements OnInit {
   }
 
   private openTutorialModal() {
-    this.modalService.open(WallacoinsTutorialComponent, {windowClass: 'tutorial-wallacoins'});
+    this.isAlreadyDisplayed().subscribe((isDisplayed: boolean) => {
+      if (!isDisplayed) {
+        this.setDisplayed();
+        this.modalService.open(WallacoinsTutorialComponent, {windowClass: 'tutorial-wallacoins'});
+      }
+    });
+  }
+
+  public setDisplayed(): void {
+    if (this.userService.user) {
+      localStorage.setItem(this.userService.user.id + this.localStorageName, 'true');
+    }
+  }
+
+  public isAlreadyDisplayed(): Observable<boolean> {
+    return this.userService.me()
+      .map((user: User) => !!localStorage.getItem(user.id + this.localStorageName));
   }
 
 }
