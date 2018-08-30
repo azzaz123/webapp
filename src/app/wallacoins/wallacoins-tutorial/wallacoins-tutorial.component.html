@@ -1,0 +1,27 @@
+<div class="modal-body">
+  <div class="modal-close" (click)="activeModal.dismiss()">
+    <mat-icon svgIcon="cross"></mat-icon>
+  </div>
+  <ngb-carousel interval="0" (slide)="onSlide($event)">
+    <ng-template ngbSlide>
+      <div class="step step-1">
+        <h2 i18n>Introducing... wallacoins!</h2>
+        <p i18n>Our new currency for your features with unique benefits.</p>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <div class="step step-2">
+        <h2 i18n>Custom packs</h2>
+        <p i18n>You choose how many wallacoins you want to buy. Depending on your needs, you can choose the pack of wallacoins that best suits you.</p>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <div class="step step-3">
+        <h2 i18n>Save with your wallacoins</h2>
+        <p i18n>Buy our packs and you can get free wallacoins. The bigger the pack, we will give you more wallacoins.</p>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+  <tsl-button *ngIf="!isLast" (click)="carousel.next()" i18n>Next</tsl-button>
+  <tsl-button *ngIf="isLast" (click)="activeModal.close()" i18n>Go to wallacoins</tsl-button>
+</div>

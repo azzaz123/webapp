@@ -10,6 +10,7 @@ import { EventService } from '../core/event/event.service';
 import { NguCarousel } from '@ngu/carousel';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { UserService } from '../core/user/user.service';
+import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 
 @Component({
   selector: 'tsl-wallacoins',
@@ -41,6 +42,7 @@ export class WallacoinsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.openTutorialModal();
     this.carouselOptions = {
       grid: {xs: 3, sm: 3, md: 3, lg: 3, all: 0},
       slide: 1,
@@ -109,6 +111,10 @@ export class WallacoinsComponent implements OnInit {
       this.router.navigate(['catalog/list']);
     }, () => {
     });
+  }
+
+  private openTutorialModal() {
+    this.modalService.open(WallacoinsTutorialComponent, {windowClass: 'tutorial-wallacoins'});
   }
 
 }
