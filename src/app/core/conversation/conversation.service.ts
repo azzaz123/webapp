@@ -89,11 +89,6 @@ export class ConversationService extends LeadService {
             } else {
               this.archivedLeads = this.archivedLeads.concat(convWithMessages);
             }
-
-            if (this.unprocessedSignals.length) {
-              this.trackingService.trackMultiple(this.unprocessedSignals);
-              this.unprocessedSignals = [];
-            }
             this.firstLoad = false;
             return convWithMessages;
           });
