@@ -125,13 +125,13 @@ export class WallacoinsComponent implements OnInit {
     });
   }
 
-  public setDisplayed(): void {
+  private setDisplayed(): void {
     if (this.userService.user) {
       localStorage.setItem(this.userService.user.id + this.localStorageName, 'true');
     }
   }
 
-  public isAlreadyDisplayed(): Observable<boolean> {
+  private isAlreadyDisplayed(): Observable<boolean> {
     return this.userService.me()
       .map((user: User) => !!localStorage.getItem(user.id + this.localStorageName));
   }

@@ -10,8 +10,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PerksModel } from '../core/payments/payment.model';
 import {
-  createPerksModelFixture, createWallacoinsPacksFixture,
-  PACK_RESPONSE, WALLACREDITS_PACKS_RESPONSE
+  createPerksModelFixture,
+  createWallacoinsPacksFixture,
+  WALLACREDITS_PACKS_RESPONSE
 } from '../../tests/payments.fixtures.spec';
 import { CREDITS_PACK_ID, Pack } from '../core/payments/pack';
 import { BuyWallacoinsModalComponent } from './buy-wallacoins-modal/buy-wallacoins-modal.component';
@@ -20,6 +21,9 @@ import { EventService } from '../core/event/event.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { UserService } from '../core/user/user.service';
+import { MOCK_USER, USER_ID } from '../../tests/user.fixtures.spec';
+import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
+import Spy = jasmine.Spy;
 
 describe('WallacoinsComponent', () => {
   let component: WallacoinsComponent;
@@ -38,6 +42,7 @@ describe('WallacoinsComponent', () => {
     WALLACREDITS_PACKS_RESPONSE[0].currency,
     'wallacredits'
   );
+  let localStorageSpy: Spy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -82,8 +87,12 @@ describe('WallacoinsComponent', () => {
         },
         {
           provide: UserService, useValue: {
+            user: MOCK_USER,
             isProfessional() {
               return Observable.of('')
+            },
+            me() {
+              return Observable.of({})
             }
         }
         },
@@ -96,7 +105,7 @@ describe('WallacoinsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WallacoinsComponent);
     component = fixture.componentInstance;
-    spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(PACK));
+    localStorageSpy = spyOn(localStorage, 'getItem').and.returnValue(JSON.stringify(PACK));
     fixture.detectChanges();
     paymentService = TestBed.get(PaymentService);
     modalService = TestBed.get(NgbModal);
@@ -137,6 +146,14 @@ describe('WallacoinsComponent', () => {
       expect(localStorage.removeItem).toHaveBeenCalledWith('pack');
       expect(component['openConfirmModal']).toHaveBeenCalledWith(PACK, '-1');
     });
+
+    it('should call openTutorialModal', () => {
+      spyOn<any>(component, 'openTutorialModal');
+
+      component.ngOnInit();
+
+      expect(component['openTutorialModal']).toHaveBeenCalled();
+    });
   });
 
   describe('openBuyModal', () => {
@@ -159,6 +176,19 @@ describe('WallacoinsComponent', () => {
 
     it('should redirect to catalog', () => {
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
+    });
+  });
+
+  describe('openTutorialModal', () => {
+    it('should open modal if not displayed and set localStorage', () => {
+      localStorageSpy.and.returnValue(null);
+      spyOn(localStorage, 'setItem');
+      spyOn(modalService, 'open');
+
+      component['openTutorialModal']();
+
+      expect(modalService.open).toHaveBeenCalledWith(WallacoinsTutorialComponent, {windowClass: 'tutorial-wallacoins'});
+      expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '-wallacoins-tutorial', 'true');
     });
   });
 });
