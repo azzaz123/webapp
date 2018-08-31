@@ -23,13 +23,13 @@ import { ConversationTotals } from './totals.interface';
 import { Item } from '../item/item';
 import { Subscription } from 'rxjs/Subscription';
 import { TrackingEventData, TrackingEventBase } from '../tracking/tracking-event-base.interface';
+import { MsgArchiveResponse } from '../message/archive.interface';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
-import { MsgArchiveData } from '../message/archive.interface';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -457,7 +457,7 @@ export class ConversationService extends LeadService {
 
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
       if (this.connectionService.isConnected) {
-        return this.messageService.getNotSavedMessages().map((response: MsgArchiveData) => {
+        return this.messageService.getNotSavedMessages().map((response: MsgArchiveResponse) => {
           if (response.messages.length) {
             let conversation: Conversation;
             response.messages.forEach((message: Message) => {
