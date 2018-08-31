@@ -40,6 +40,25 @@ import { SelectComponent } from './select/select.component';
 import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
 import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
+import { CardSelectionComponent } from './payments/card-selection/card-selection.component';
+import { SabadellComponent } from './payments/sabadell/sabadell.component';
+import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
+import { ProfileFormComponent } from './profile/profile-form/profile-form.component';
+import { EditEmailComponent } from './profile/edit-email/edit-email.component';
+import { EmailModalComponent } from './profile/edit-email/email-modal/email-modal.component';
+import { EditPasswordComponent } from './profile/edit-password/edit-password.component';
+import { PasswordModalComponent } from './profile/edit-password/password-modal/password-modal.component';
+import { PictureUploadComponent } from './profile/picture-upload/picture-upload.component';
+import { CreditCardInfoComponent } from './profile/credit-card-info/credit-card-info.component';
+import { NgUploaderModule } from 'ngx-uploader';
+import { CatalogCardComponent } from './catalog/catalog-card/catalog-card.component';
+import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/catalog-item-actions.component';
+import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
+import { CartComponent } from './catalog/cart/cart.component';
+import { CartService } from './catalog/cart/cart.service';
+import { TrackingModule } from '../core/tracking/tracking.module';
+import { RouterModule } from '@angular/router';
+import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -51,8 +70,11 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
     FormsModule,
     GeolocationModule,
     MomentModule,
-    NgxPermissionsModule,
-    NgbDropdownModule
+    NgxPermissionsModule.forChild(),
+    NgbDropdownModule,
+    NgUploaderModule,
+    TrackingModule,
+    RouterModule
   ],
   exports: [
     CardModule,
@@ -83,7 +105,22 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
     ItemAvatarComponent,
     SearchInputComponent,
     SelectComponent,
-    RestrictInputNumberDirective
+    RestrictInputNumberDirective,
+    CardSelectionComponent,
+    SabadellComponent,
+    WallacoinComponent,
+    EditEmailComponent,
+    EmailModalComponent,
+    EditPasswordComponent,
+    PasswordModalComponent,
+    PictureUploadComponent,
+    ProfileFormComponent,
+    CreditCardInfoComponent,
+    CatalogCardComponent,
+    CatalogItemActionsComponent,
+    CatalogStatusNavbarComponent,
+    CartComponent,
+    ExitConfirmationModalComponent
   ],
   declarations: [
     AdComponent,
@@ -117,12 +154,28 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
     SearchInputComponent,
     TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
-    RestrictInputNumberDirective
+    RestrictInputNumberDirective,
+    CardSelectionComponent,
+    SabadellComponent,
+    WallacoinComponent,
+    EditEmailComponent,
+    EmailModalComponent,
+    EditPasswordComponent,
+    PasswordModalComponent,
+    PictureUploadComponent,
+    ProfileFormComponent,
+    CreditCardInfoComponent,
+    CatalogCardComponent,
+    CatalogItemActionsComponent,
+    CatalogStatusNavbarComponent,
+    CartComponent,
+    ExitConfirmationModalComponent
   ],
   providers: [
     DecimalPipe,
     ExitConfirmGuard,
-    TutorialGuard
+    TutorialGuard,
+    CartService
   ],
   entryComponents: [
     ConfirmationModalComponent,
@@ -130,7 +183,10 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
     ReviewModalComponent,
     GdprModalComponent,
     TooManyItemsModalComponent,
-    AlreadyFeaturedModalComponent
+    AlreadyFeaturedModalComponent,
+    EmailModalComponent,
+    PasswordModalComponent,
+    ExitConfirmationModalComponent
   ]
 })
 export class SharedModule { }

@@ -61,6 +61,6 @@ export class InputComponent implements OnChanges, OnInit {
         this.messageArea.nativeElement.value = '';
       }
     }
-    this.disable = this.currentConversation.user.blocked || !this.connectionService.isConnected;
+    this.disable = this.currentConversation.user.blocked;
   }
 }

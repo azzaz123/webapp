@@ -1,0 +1,45 @@
+@import "~style/common";
+
+:host {
+  &:not(.hidden) {
+    display: inline-block;
+    @include square(10px);
+    &.medium {
+      @include square(14px);
+    }
+    &.big {
+      @include square(18px);
+    }
+  }
+}
+
+mat-icon {
+  @include square(10px);
+  margin-left: $spacing-XXXS;
+  /deep/ svg path {
+    transition: all 0.2s ease-in-out;
+  }
+  &.strike {
+    /deep/ svg path {
+      fill: $grey-250;
+    }
+  }
+  &.grey {
+    /deep/ svg path {
+      fill: $grey-500;
+    }
+  }
+  &.corporate {
+    /deep/ svg path {
+      fill: $corporate;
+    }
+  }
+  &.black {
+    /deep/ svg path {
+      fill: $grey-900;
+    }
+  }
+  &.medium {
+    @include square(14px);
+  }
+}

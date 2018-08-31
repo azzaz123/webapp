@@ -35,6 +35,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   public isProfessional: boolean;
   private receivedMessages = [];
   private readMessages = [];
+  private sentMessages = [];
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
@@ -85,9 +86,10 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private subscribeChatSignals() {
     this.eventService.subscribe(EventService.MESSAGE_SENT_ACK, (conversationId, messageId) => {
-      if (this.conversations.length) {
-        this.updateMessageStatus(messageStatus.SENT, conversationId, messageId);
-      }
+      const conversationLoaded = this.conversations.find(c => c.id === conversationId);
+      this.conversations.length && conversationLoaded ?
+        this.updateMessageStatus(messageStatus.SENT, conversationId, messageId) :
+        this.sentMessages = this.xmppService.sentReceipts;
     });
     this.eventService.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
       const conversationLoaded = this.conversations.find(c => c.id === conversationId);
@@ -169,6 +171,12 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
             this.updateMessageStatus(messageStatus.READ, m.thread, m.id);
           });
           this.readMessages = [];
+        }
+        if (this.sentMessages.length) {
+          this.sentMessages.forEach(m => {
+            this.updateMessageStatus(messageStatus.SENT, m.thread, m.id);
+          });
+          this.sentMessages = [];
         }
         if (!this.currentConversationSet) {
           this.setCurrentConversationFromQueryParams();

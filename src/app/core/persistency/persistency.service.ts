@@ -15,15 +15,30 @@ import 'rxjs/add/observable/fromPromise';
 import Database = PouchDB.Database;
 import AllDocsResponse = PouchDB.Core.AllDocsResponse;
 import Document = PouchDB.Core.Document;
+import { UserService } from '../user/user.service';
+import { User } from '../user/user';
+import { EventService } from '../event/event.service';
 
 @Injectable()
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private _conversationsDb: Database<StoredConversation>;
   private storedMessages: AllDocsResponse<StoredMessage>;
-  constructor() {
-    this._messagesDb = new PouchDB('messages', {auto_compaction: true});
-    this._conversationsDb = new PouchDB('conversations', {auto_compaction: true});
+
+  constructor(
+    private userService: UserService,
+    private eventService: EventService
+  ) {
+    this.eventService.subscribe(EventService.USER_LOGIN, () => {
+      this.userService.me().subscribe((user: User) => {
+        this._messagesDb = new PouchDB('messages-' + user.id, {auto_compaction: true});
+        this._conversationsDb = new PouchDB('conversations-' + user.id, {auto_compaction: true});
+
+        this.localDbVersionUpdate(1.2, () => {
+          this.destroyDbs(['messages', 'conversations']);
+        });
+      });
+    });
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
@@ -40,6 +55,12 @@ export class PersistencyService {
 
   get conversationsDb(): PouchDB.Database<any> {
     return this._conversationsDb;
+  }
+
+  private destroyDbs(dbs: Array<any>) {
+    dbs.forEach((db) => {
+      new PouchDB(db).destroy().then(() => {}).catch((err) => {});
+    });
   }
 
   public getMessages(conversationId: string): Observable<StoredMessageRow[]> {
@@ -139,9 +160,18 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get('version'));
   }
 
-  private saveDbVersion(data: any): Observable<any> {
+  private saveDbVersionConv(data: any): Observable<any> {
     return Observable.fromPromise(
       this.upsert(this.messagesDb, 'version', (doc: Document<any>) => {
+        doc.version = data;
+        return doc;
+      })
+    );
+  }
+
+  private saveDbVersionMsg(data: any): Observable<any> {
+    return Observable.fromPromise(
+      this.upsert(this.conversationsDb, 'version', (doc: Document<any>) => {
         doc.version = data;
         return doc;
       })
@@ -154,12 +184,14 @@ export class PersistencyService {
     this.getDbVersion().subscribe((response) => {
       if (response.version < newVersion) {
         callback();
-        this.saveDbVersion(newVersion);
+        this.saveDbVersionMsg(newVersion);
+        this.saveDbVersionConv(newVersion);
       }
     }, (error) => {
       if (error.reason === 'missing') {
         callback();
-        this.saveDbVersion(newVersion);
+        this.saveDbVersionMsg(newVersion);
+        this.saveDbVersionConv(newVersion);
       }
     });
   }

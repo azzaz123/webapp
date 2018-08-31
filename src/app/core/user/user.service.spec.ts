@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { fakeAsync, TestBed, discardPeriodicTasks, tick } from '@angular/core/testing';
+import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { UserService } from './user.service';
 import { HttpService } from '../http/http.service';
 import { MockBackend, MockConnection } from '@angular/http/testing';
@@ -11,14 +11,31 @@ import { Item } from '../item/item';
 import { Observable } from 'rxjs/Observable';
 import { I18nService } from '../i18n/i18n.service';
 import {
-  CUSTOM_REASON, MICRO_NAME, MOCK_USER, MOCK_USER_RESPONSE_BODY, ONLINE,
-  REASONS, RESPONSE_RATE, SCORING_STARS, SCORING_STARTS,
-  SELECTED_REASON, STATS, USER_DATA,
-  USER_EDIT_DATA, USER_EMAIL, USER_ID,
-  USER_INFO_RESPONSE, USER_LOCATION,
-  USER_LOCATION_COORDINATES, USER_PRO_DATA, USER_PRO_INFO_NOTIFICATIONS, USER_PRO_INFO_RESPONSE,
+  CUSTOM_REASON,
+  MICRO_NAME,
+  MOCK_USER,
+  MOCK_USER_RESPONSE_BODY,
+  ONLINE,
+  REASONS,
+  RESPONSE_RATE,
+  SCORING_STARS,
+  SCORING_STARTS,
+  SELECTED_REASON,
+  STATS,
+  USER_DATA,
+  USER_EDIT_DATA,
+  USER_EMAIL,
+  USER_ID,
+  USER_INFO_RESPONSE,
+  USER_LOCATION,
+  USER_LOCATION_COORDINATES,
+  USER_PRO_DATA,
+  USER_PRO_INFO_NOTIFICATIONS,
+  USER_PRO_INFO_RESPONSE,
   USERS_STATS,
-  USERS_STATS_RESPONSE, VALIDATIONS, VERIFICATION_LEVEL
+  USERS_STATS_RESPONSE,
+  VALIDATIONS,
+  VERIFICATION_LEVEL
 } from '../../../tests/user.fixtures.spec';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { UserStatsResponse } from './user-stats.interface';
@@ -26,12 +43,13 @@ import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { AccessTokenService } from '../http/access-token.service';
 import { EventService } from '../event/event.service';
-import { User, PERMISSIONS } from './user';
+import { PERMISSIONS, User } from './user';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from './login-response.interface';
 import { UserLocation } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { FeatureflagService } from './featureflag.service';
 
 describe('Service: User', () => {
 
@@ -44,7 +62,7 @@ describe('Service: User', () => {
   let event: EventService;
   let cookieService: CookieService;
   let permissionService: NgxPermissionsService;
-
+  let featureflagService: FeatureflagService;
   const DATA: any = {
     emailAddress: 'test@test.it',
     installationType: 'ANDROID',
@@ -81,6 +99,13 @@ describe('Service: User', () => {
             flushPermissions() {},
             hasPermission() {}
           }
+        },
+        {
+          provide: FeatureflagService, useValue: {
+          getFlag() {
+            return Observable.of(true);
+          }
+        }
         }
       ]
     });
@@ -93,6 +118,7 @@ describe('Service: User', () => {
     event = TestBed.get(EventService);
     cookieService = TestBed.get(CookieService);
     permissionService = TestBed.get(NgxPermissionsService);
+    featureflagService = TestBed.get(FeatureflagService);
   });
 
   it('should create an instance', () => {
@@ -558,6 +584,22 @@ describe('Service: User', () => {
       service.setPermission('normal');
 
       expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS['normal']);
+    });
+  });
+
+  describe('setCoinsFeatureFlag', () => {
+    it('should call getFlag and add permission if active', () => {
+      spyOn(featureflagService, 'getFlag').and.callThrough();
+      spyOn(permissionService, 'addPermission');
+      let resp: boolean;
+
+      service.setCoinsFeatureFlag().subscribe((r: boolean) => {
+        resp = r;
+      });
+
+      expect(featureflagService.getFlag).toHaveBeenCalledWith('coinsTypeUser');
+      expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.coins);
+      expect(resp).toBe(true);
     });
   });
 

@@ -6,12 +6,15 @@ import { TutorialService } from '../core/tutorial/tutorial.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { UserService } from '../core/user/user.service';
+import { Observable } from 'rxjs/Observable';
 
 describe('TutorialComponent', () => {
   let component: TutorialComponent;
   let fixture: ComponentFixture<TutorialComponent>;
   let tutorialService: TutorialService;
   let router: Router;
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,6 +38,13 @@ describe('TutorialComponent', () => {
             navigate() {
             }
         }
+        },
+        {
+          provide: UserService, useValue: {
+          hasPerm() {
+            return Observable.of(true);
+          }
+        }
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -47,6 +57,7 @@ describe('TutorialComponent', () => {
     component = fixture.componentInstance;
     tutorialService = TestBed.get(TutorialService);
     router = TestBed.get(Router);
+    userService = TestBed.get(UserService);
   });
 
   describe('ngOnInit', () => {
@@ -56,6 +67,15 @@ describe('TutorialComponent', () => {
       fixture.detectChanges();
 
       expect(tutorialService.setDisplayed).toHaveBeenCalled();
+    });
+
+    it('should call hasPerm and set the attribute', () => {
+      spyOn(userService, 'hasPerm').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.hasPerm).toHaveBeenCalledWith('coins');
+      expect(component.withCoins).toBe(true);
     });
   });
 

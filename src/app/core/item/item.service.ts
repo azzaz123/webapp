@@ -5,7 +5,7 @@ import { ResourceService } from '../resource/resource.service';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
-  CarContent,
+  CarContent, CarInfo,
   ConversationUser,
   Duration,
   ItemBulkResponse,
@@ -24,7 +24,7 @@ import {
   OrderPro,
   Product,
   ProductDurations,
-  Purchase,
+  Purchase, PurchaseProductsWithCreditsResponse,
   RealestateContent,
   SelectedItemsAction
 } from './item-response.interface';
@@ -430,6 +430,10 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json());
   }
 
+  public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
+    return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams)
+      .map((r: Response) => r.json());
+  }
   public update(item: any, itemType: string): Observable<any> {
     let url: string = this.API_URL + '/';
     if (itemType === ITEM_TYPES.CARS) {
@@ -697,6 +701,15 @@ export class ItemService extends ResourceService {
   public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
     return this.http.post(this.API_URL_PROTOOL + '/purchaseItems', orderParams)
     .map((r: Response) => r.json());
+  }
+
+  public getCarInfo(brand: string, model: string, version: string): Observable<CarInfo> {
+    return this.http.get(this.API_URL + '/cars/info', {
+      brand: brand,
+      model: model,
+      version: version
+    })
+      .map((r: Response) => r.json());
   }
 
 }

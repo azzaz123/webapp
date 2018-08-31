@@ -199,11 +199,13 @@ export interface CarUploadForm extends ItemUploadForm {
   year: string;
   version: string;
   num_seats: number;
+  num_doors: number;
   body_type: string;
   km: number;
   storytelling: string;
   engine: string;
   gearbox: string;
+  horsepower: number;
   id?: string;
 }
 
@@ -318,4 +320,21 @@ export interface ItemDataResponse {
 export interface LatestItemResponse {
   count: number;
   items: ItemResponse[];
+}
+
+export interface PurchaseProductsWithCreditsResponse {
+  payment_needed: boolean;
+  items_failed: string[];
+}
+
+export interface CarInfo {
+  body_type: string;
+  brand: string;
+  engine: string;
+  gearbox: string;
+  horsepower: number;
+  model: string;
+  num_doors: number;
+  num_seats: number;
+  version: string;
 }

@@ -34,6 +34,7 @@ import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
+import { PaymentService } from './core/payments/payment.service';
 
 @Component({
   selector: 'tsl-root',
@@ -74,27 +75,28 @@ export class AppComponent implements OnInit {
               private privacyService: PrivacyService,
               private modalService: NgbModal,
               private connectionService: ConnectionService,
+              private paymentService: PaymentService,
               private callService: CallsService) {
     this.config();
   }
 
   ngOnInit() {
+    appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
+    appboy.display.automaticallyShowNewInAppMessages();
+    appboy.registerAppboyPushMessages();
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
     this.subscribeUnreadMessages();
     this.subscribeEventNewMessage();
     this.subscribeEventClientDisconnect();
     this.subscribeEventItemUpdated();
-    // this.subscribeChatSignals();
+    this.subscribeChatSignals();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-    appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
-    appboy.display.automaticallyShowNewInAppMessages();
-    appboy.registerAppboyPushMessages();
     this.conversationService.firstLoad = true;
   }
 
@@ -151,7 +153,6 @@ export class AppComponent implements OnInit {
         (user: User) => {
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
           this.xmppService.connect(user.id, accessToken);
-          this.userService.setPermission(user.type);
           this.conversationService.init().subscribe(() => {
             this.userService.isProfessional().subscribe((isProfessional: boolean) => {
               if (isProfessional) {
@@ -181,6 +182,7 @@ export class AppComponent implements OnInit {
   private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
+      this.paymentService.deleteCache();
       try {
         this.xmppService.disconnect();
       } catch (err) {}
@@ -216,7 +218,6 @@ export class AppComponent implements OnInit {
       if (this.userService.isLogged && this.connectionService.isConnected) {
         this.xmppService.reconnectClient();
       }
-      this.conversationService.resetCache();
     });
   }
 

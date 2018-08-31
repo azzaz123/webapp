@@ -29,6 +29,7 @@ export interface XmppMessage {
   requestReceipt?: boolean;
   sentReceipt?: any;
   readReceipt?: any;
+  delay?: any;
 }
 export interface XmppTimestampMessage {
   id: string;

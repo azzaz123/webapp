@@ -47,12 +47,13 @@ export interface PackResponse {
     [key: string]: number;
   };
   price: string;
+  original_price?: string;
   currency: string;
 }
 
 export interface ProductResponse {
   id: string;
-  name: 'NATIONAL_BUMP' | 'BUMP' | 'LISTINGS';
+  name: 'NATIONAL_BUMP' | 'BUMP' | 'LISTINGS' | 'WALLACOINS' | 'WALLACREDITS';
 }
 
 export interface Products {
@@ -62,6 +63,7 @@ export interface Products {
 export interface OrderProExtras {
   packs: Array<string>;
   id: string;
+  origin?: string;
 }
 
 export interface BillingInfoResponse {
@@ -106,4 +108,10 @@ export interface ScheduledStatus {
 export interface ScheduledBumps {
   citybump?: number;
   countrybump?: number;
+}
+
+export interface CreditInfo {
+  currencyName: string;
+  credit: number;
+  factor: number;
 }

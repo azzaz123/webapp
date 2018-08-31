@@ -38,6 +38,7 @@ import { MOCK_PRIVACY_ALLOW, MOCK_PRIVACY_UNKNOW_DISALLOW } from './core/privacy
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
+import { PaymentService } from './core/payments/payment.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -56,6 +57,7 @@ let cookieService: CookieService;
 let privacyService: PrivacyService;
 let modalService: NgbModal;
 let connectionService: ConnectionService;
+let paymentService: PaymentService;
 
 const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
@@ -107,7 +109,6 @@ describe('App', () => {
           logout() {
           },
           sendUserPresenceInterval() {},
-          setPermission() {},
           isProfessional() {
             return Observable.of(false);
           }
@@ -190,6 +191,12 @@ describe('App', () => {
             }
           }
         },
+        {
+          provide: PaymentService, useValue: {
+            deleteCache() {
+            }
+        }
+        },
         PrivacyService,
         ...
           TEST_HTTP_PROVIDERS
@@ -214,6 +221,7 @@ describe('App', () => {
     privacyService = TestBed.get(PrivacyService);
     modalService = TestBed.get(NgbModal);
     connectionService = TestBed.get(ConnectionService);
+    paymentService = TestBed.get(PaymentService);
     spyOn(notificationService, 'init');
   });
 
@@ -261,7 +269,7 @@ describe('App', () => {
         expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.USER_LOGIN);
       });
 
-      xit('should call the eventService.subscribe passing the chat tracking funnel events', () => {
+      it('should call the eventService.subscribe passing the chat tracking funnel events', () => {
         spyOn(eventService, 'subscribe').and.callThrough();
 
         component.ngOnInit();
@@ -270,7 +278,7 @@ describe('App', () => {
         expect(eventService.subscribe['calls'].argsFor(8)[0]).toBe(EventService.MESSAGE_RECEIVED);
       });
 
-      xit('should call conversationService.sendAck when a chat signal is emitted', () => {
+      it('should call conversationService.sendAck when a chat signal is emitted', () => {
         spyOn(conversationService, 'sendAck');
 
         component.ngOnInit();
@@ -330,15 +338,6 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(callsService.init).toHaveBeenCalledTimes(2);
-      });
-
-      it('should call userService setpermission method', () => {
-        spyOn(userService, 'setPermission').and.callThrough();
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(userService.setPermission).toHaveBeenCalledWith(USER_DATA.type);
       });
 
       it('should send open_app event if cookie does not exist', () => {
@@ -427,15 +426,6 @@ describe('App', () => {
         expect(modalService.open).not.toHaveBeenCalledWith();
       });
 
-      it('should call the resetCache method in conversationService when a CLIENT_DISCONNECTED event is triggered', () => {
-        spyOn(conversationService, 'resetCache');
-
-        component.ngOnInit();
-        eventService.emit(EventService.CLIENT_DISCONNECTED);
-
-        expect(conversationService.resetCache).toHaveBeenCalledTimes(1);
-      });
-
       it('should call xmppService.clientReconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
         spyOn(xmppService, 'reconnectClient');
         connectionService.isConnected = true;
@@ -494,6 +484,15 @@ describe('App', () => {
       eventService.emit(EventService.USER_LOGOUT);
 
       expect(xmppService.disconnect).toHaveBeenCalled();
+    });
+
+    it('should delete payments cache', () => {
+      spyOn(paymentService, 'deleteCache');
+
+      component.ngOnInit();
+      eventService.emit(EventService.USER_LOGOUT);
+
+      expect(paymentService.deleteCache).toHaveBeenCalled();
     });
 
     it('should call syncItem on ITEM_UPDATED', () => {

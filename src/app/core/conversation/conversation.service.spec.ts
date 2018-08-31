@@ -62,6 +62,22 @@ const CONVERSATION_RESPONSE: Response = new Response(new ResponseOptions(
   {body: JSON.stringify(MOCKED_CONVERSATION_DATA)})
 );
 
+const eventsArray = [
+  {
+    eventData: TrackingService.MESSAGE_RECEIVED,
+    attributes: {
+      message_id: '123',
+      thread_id: 'abc'
+    }
+  },
+  {
+    eventData: TrackingService.MESSAGE_RECEIVED,
+    attributes: {
+      message_id: '234',
+      thread_id: 'bcd'
+    }
+  }];
+
 class MockedXmppService {
   totalUnreadMessages = 42;
 
@@ -175,6 +191,8 @@ describe('Service: Conversation', () => {
       describe('no archived', () => {
         describe('without parameters', () => {
           beforeEach(() => {
+            spyOn(trackingService, 'trackMultiple').and.callThrough();
+            service['unprocessedSignals'] = eventsArray;
             service.getLeads().subscribe((r: Conversation[]) => {
               response = r;
             });
@@ -193,6 +211,12 @@ describe('Service: Conversation', () => {
           it('should set firstLoad to false', () => {
             expect(service.firstLoad).toBe(false);
           });
+
+          it('should process unprocessedSignals if they exist and empty the array', () => {
+            expect(trackingService.trackMultiple).toHaveBeenCalled();
+            expect(service['unprocessedSignals'].length).toBe(0);
+          });
+
           it('should call other functions', () => {
             expect(service['loadUnreadMessagesNumber']).toHaveBeenCalledTimes(TOTAL);
             expect(service['loadMessagesIntoConversations']).toHaveBeenCalled();
@@ -1067,6 +1091,8 @@ describe('Service: Conversation', () => {
               new Message('5', 'a', MESSAGE_MAIN.body, OTHE_USER_ID + '@host'),
             ]
           }));
+          connectionService.isConnected = true;
+          xmpp.clientConnected = true;
         });
         it('should return an observable with modified conversations', fakeAsync(() => {
           service.loadNotStoredMessages(initialConversations).subscribe((data: Array<Conversation>) => {
@@ -1102,11 +1128,15 @@ describe('Service: Conversation', () => {
               new Message('1', 'a', MESSAGE_MAIN.body, MESSAGE_MAIN.from),
             ]
           }));
+          connectionService.isConnected = true;
+          xmpp.clientConnected = true;
           let observableResponse: any;
+
           service.loadNotStoredMessages(initialConversations).subscribe((data: Array<Conversation>) => {
             observableResponse = data;
           });
           tick();
+
           expect(observableResponse[0].messages.length).toBe(2);
           expect(observableResponse[1].messages.length).toBe(2);
         }));
@@ -1117,6 +1147,8 @@ describe('Service: Conversation', () => {
       beforeEach(() => {
         spyOn(service, 'get').and.returnValue(Observable.of(MOCK_UNSAVED_CONVERSATION));
         spyOn(messageService, 'addUserInfo').and.callThrough();
+        connectionService.isConnected = true;
+        xmpp.clientConnected = true;
       });
       it('should request the information of the new conversation if it does not exist', fakeAsync(() => {
         spyOn(messageService, 'getNotSavedMessages')
@@ -1163,11 +1195,16 @@ describe('Service: Conversation', () => {
         spyOn(messageService, 'getNotSavedMessages')
         .and
         .returnValue(Observable.of({data: []}));
+        connectionService.isConnected = true;
+        xmpp.clientConnected = true;
         let observableResponse: any;
+
         service.loadNotStoredMessages(initialConversations).subscribe((data: Array<Conversation>) => {
           observableResponse = data;
         });
+
         tick();
+
         expect(observableResponse[0]).toEqual(initialConversations[0]);
         expect(observableResponse[1]).toEqual(initialConversations[1]);
         expect(service['handleUnreadMessage']).not.toHaveBeenCalled();

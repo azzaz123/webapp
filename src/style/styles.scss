@@ -55,7 +55,7 @@ body {
   > .container {
     padding: $spacing-L 10px;
     @-moz-document url-prefix() { // Firefox hack
-      padding: 70px 10px;
+      padding: $spacing-L 10px;
     }
   }
 }

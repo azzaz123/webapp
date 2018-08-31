@@ -5,7 +5,7 @@ import { LoginComponent } from './login.component';
 import { environment } from '../../environments/environment';
 
 const routes: Routes = environment.production ? [] : [
-  {path: 'login', component: LoginComponent},
+  {path: '', component: LoginComponent},
 ];
 
 @NgModule({

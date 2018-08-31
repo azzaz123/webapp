@@ -5,7 +5,7 @@ import { UserData, UserProData, UserProDataNotifications } from '../app/core/use
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
 
 import { Image, UserLocation, UserResponse, UserStats, UserValidations } from '../app/core/user/user-response.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs/Observable';
 import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';
 

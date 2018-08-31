@@ -3,6 +3,7 @@ import { TutorialService } from '../core/tutorial/tutorial.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
+import { UserService } from '../core/user/user.service';
 
 export enum KEY_CODE {
   RIGHT_ARROW = 39,
@@ -33,14 +34,19 @@ export enum KEY_CODE {
 export class TutorialComponent implements OnInit, OnDestroy {
 
   public dots: number;
+  public withCoins: boolean;
 
   constructor(public tutorialService: TutorialService,
+              private userService: UserService,
               private router: Router) {
     this.dots = _.range(this.tutorialService.maxSteps);
   }
 
   ngOnInit() {
     this.tutorialService.setDisplayed();
+    this.userService.hasPerm('coins').subscribe((withCoins: boolean) => {
+      this.withCoins = withCoins;
+    });
   }
 
   ngOnDestroy() {

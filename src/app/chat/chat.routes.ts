@@ -6,7 +6,7 @@ import { LoggedGuard } from '../core/user/logged.guard';
 
 const routes: Routes = [
   {
-    path: 'chat',
+    path: '',
     component: ChatComponent,
     canActivate: [LoggedGuard],
     data: {

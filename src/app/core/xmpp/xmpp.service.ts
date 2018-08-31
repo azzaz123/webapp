@@ -29,6 +29,7 @@ export class XmppService {
   private unreadMessages = [];
   public totalUnreadMessages = 0;
   public receivedReceipts = [];
+  public sentReceipts = [];
   public readReceipts = [];
   private ownReadTimestamps = {};
   private readTimestamps = {};
@@ -182,7 +183,7 @@ export class XmppService {
           }
           if (message.readTimestamp) {
             this.readReceipts.push(message);
-            this.eventService.emit(EventService.MESSAGE_READ, message.thread, message.receivedId);
+            this.eventService.emit(EventService.MESSAGE_READ, message.thread);
           }
             query.then((response: any) => {
             const meta: any = response.mam.rsm;
@@ -386,7 +387,7 @@ export class XmppService {
       const replaceTimestamp = !message.timestamp || message.carbonSent;
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp);
       if (message.from !== this.currentJid && message.requestReceipt && !message.carbon) {
-        this.sendMessageDeliveryReceipt(message.from, message.id, message.thread);
+        this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
       }
     }
   }
@@ -404,14 +405,15 @@ export class XmppService {
     if (markAsPending) {
       message.status = messageStatus.PENDING;
     }
-    if (message.timestamp && message.receipt && message.from.local !== message.to.local) {
+    if (message.timestamp && message.receipt && message.from.local !== message.to.local && !message.delay) {
       messageId = message.receipt;
       message.status = messageStatus.RECEIVED;
       this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
     }
-    if (!message.carbon && message.sentReceipt) {
+    if (!message.carbon && message.sentReceipt && !message.delay) {
       message.status = messageStatus.SENT;
       messageId = message.sentReceipt.id;
+      this.sentReceipts.push({id: messageId, thread: message.thread});
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
     if (!message.carbon && message.readReceipt) {
@@ -424,7 +426,7 @@ export class XmppService {
                        new Date(message.date), (message.status || null), message.payload);
   }
 
-  private sendMessageDeliveryReceipt(to: any, id: string, thread: string) {
+  private sendMessageDeliveryReceipt(to: string, id: string, thread: string) {
     this.persistencyService.findMessage(id).subscribe(() => {}, (error) => {
       if (error.reason === 'missing') {
         this.client.sendMessage({

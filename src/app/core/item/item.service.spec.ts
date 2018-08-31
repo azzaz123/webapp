@@ -32,12 +32,13 @@ import {
 import { Item, ITEM_BASE_PATH, ITEM_TYPES } from './item';
 import { Observable } from 'rxjs/Observable';
 import {
+  CarInfo,
   ConversationUser,
   ItemBulkResponse,
   ItemCounters, ItemDataResponse,
   ItemsData,
   ItemWithProducts,
-  Product
+  Product, PurchaseProductsWithCreditsResponse
 } from './item-response.interface';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { HttpService } from '../http/http.service';
@@ -50,7 +51,7 @@ import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
-import { CAR_DATA, CAR_DATA_FORM, MOCK_CAR } from '../../../tests/car.fixtures.spec';
+import { CAR_DATA, CAR_DATA_FORM, CAR_INFO, MOCK_CAR } from '../../../tests/car.fixtures.spec';
 import { Car } from './car';
 import { CART_ORDER_PRO } from '../../../tests/pro-item.fixtures.spec';
 import * as _ from 'lodash';
@@ -526,6 +527,23 @@ describe('Service: Item', () => {
       });
       expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/UUID', [ORDER]);
       expect(resp).toEqual(['1234']);
+    });
+  });
+
+  describe('purchaseProductsWithCredits', () => {
+    it('should call endpoint', () => {
+      const RESP: PurchaseProductsWithCreditsResponse = {
+        payment_needed: true,
+        items_failed: []
+      };
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      let resp: PurchaseProductsWithCreditsResponse;
+      service.purchaseProductsWithCredits([ORDER], 'UUID').subscribe((r: PurchaseProductsWithCreditsResponse) => {
+        resp = r;
+      });
+      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/credit/UUID', [ORDER]);
+      expect(resp).toEqual(RESP);
     });
   });
 
@@ -1178,6 +1196,28 @@ describe('Service: Item', () => {
       service['items']['active'][0].bumpExpiringDate = 1234;
       service.resetAllPurchaseInfo();
       expect(service['items']['active'][0].bumpExpiringDate).toBeNull();
+    });
+  });
+
+  describe('getCarInfo', () => {
+    it('should call endpoint', () => {
+      let resp: CarInfo;
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_INFO)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      const BRAND = 'brand';
+      const MODEL = 'model';
+      const VERSION = 'version';
+
+      service.getCarInfo(BRAND, MODEL, VERSION).subscribe((r: CarInfo) => {
+        resp = r;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/items/cars/info', {
+        brand: BRAND,
+        model: MODEL,
+        version: VERSION
+      });
+      expect(resp).toEqual(CAR_INFO);
     });
   });
 

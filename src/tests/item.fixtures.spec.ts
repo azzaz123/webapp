@@ -21,7 +21,7 @@ import {
   Purchase, ItemProResponse, ItemProContent, RealEstateUploadForm
 } from '../app/core/item/item-response.interface';
 import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
-import { CartItem } from '../app/catalog/checkout/cart/cart-item.interface';
+import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import * as _ from 'lodash';
@@ -844,10 +844,12 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   year: 'year',
   version: 'version',
   num_seats: 4,
+  num_doors: 3,
   body_type: 'body_type',
   km: 1000,
   engine: 'engine',
   gearbox: 'gearbox',
+  horsepower: 100,
   category_id: CARS_CATEGORY,
   sale_price: 123.45,
   currency_code: 'EUR',

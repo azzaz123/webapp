@@ -1,6 +1,6 @@
 import { TrackingEvent } from '../app/core/tracking/tracking-event';
 import { TrackingService } from '../app/core/tracking/tracking.service';
-import { TrackingEventBase } from '../app/core/tracking/tracking-event-base.interface';
+import { TrackingEventBase, TrackingEventData } from '../app/core/tracking/tracking-event-base.interface';
 
 export const TRACKING_EVENT: TrackingEvent = new TrackingEvent({
     screen: {
@@ -17,6 +17,8 @@ export const TRACKING_EVENT: TrackingEvent = new TrackingEvent({
 export class MockTrackingService {
 
   track(event: TrackingEventBase, params?: any) {
+  }
+  trackMultiple(events: Array<TrackingEventData>) {
   }
 
 }

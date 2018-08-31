@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { HelpService } from './help.service';
 import { I18nService } from '../core/i18n/i18n.service';
 import { DOCUMENT } from '@angular/common';
@@ -19,6 +19,7 @@ export class HelpComponent implements OnInit {
 
   constructor(private i18n: I18nService,
               private helpService: HelpService,
+              private route: ActivatedRoute,
               @Inject(DOCUMENT) private document: Document) {
   }
 
@@ -28,6 +29,13 @@ export class HelpComponent implements OnInit {
     });
     this.helpService.getFeatures(this.i18n.locale).subscribe((features: any[]) => {
       this.features = features;
+    });
+    setTimeout(() => {
+      this.route.params.subscribe((params: any) => {
+        if (params.section) {
+          this.scrollToElement(params.section);
+        }
+      });
     });
   }
 

@@ -2,16 +2,19 @@
   <div class="modal-close" (click)="activeModal.dismiss()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <h1 i18n>This time, sell it!</h1>
-  <p i18n>Reactivate this item for <b>{{price | customCurrency:'EUR'}}</b> and put it in the top positions.<br /> Get more visibility and sell it faster. </p>
-  <tsl-button
+  <div class="content">
+    <h1 i18n>This time, sell it!</h1>
+    <p i18n>Reactivate this item for <b>{{price * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+      <span *ngIf="creditInfo?.currencyName === 'wallacoins'">wallacoins</span><span *ngIf="creditInfo?.currencyName !== 'wallacoins'">of your credit</span></b> and put it in the top positions.</p>
+    <p i18n><b>Get more visibility and sell it faster.</b></p>
+  </div>
+    <tsl-button
     (click)="activeModal.close('bump')"
     className="btn-feature"
     tslTrackEvent="MYCATALOG_REACTIVATE_FROMMODAL" [params]="{category: item.categoryId}"
-    i18n>Reactivate + visibility </tsl-button>
-  <div class="line"></div>
-  <a class="reactivate"
+    i18n>Reactivate + visibility</tsl-button>
+  <p><a class="reactivate"
      (click)="activeModal.close('reactivate')"
      tslTrackEvent="MYCATALOG_JUSTREACTIVATE" [params]="{category: item.categoryId}"
-     i18n>Only reactivate it, I don't want to sell it faster</a>
+     i18n>Only reactivate it, I don't want to sell it faster</a></p>
 </div>
