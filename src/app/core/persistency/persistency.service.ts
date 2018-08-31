@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import * as _ from 'lodash';
-import { Message } from '../message/message';
+import { Message, statusOrder } from '../message/message';
 import {
   StoredConversation,
   StoredMessage,
@@ -145,7 +145,7 @@ export class PersistencyService {
 
   public updateMessageStatus(messageId: string, newStatus: string) {
     return Observable.fromPromise(this.upsert(this.messagesDb, messageId, (doc: Document<any>) => {
-      if (doc.status !== newStatus) {
+      if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
         doc.status = newStatus;
         return doc;
       }
