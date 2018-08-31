@@ -90,6 +90,7 @@ export class ConversationService extends LeadService {
               this.archivedLeads = this.archivedLeads.concat(convWithMessages);
             }
             this.firstLoad = false;
+            this.event.emit(EventService.MSG_ARCHIVE_LOADED);
             return convWithMessages;
           });
         });

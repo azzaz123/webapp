@@ -28,6 +28,8 @@ export class XmppService {
   private reconnectAttempts = 5;
   private reconnectInterval: any;
   private reconnectedTimes = 0;
+  public messageQ: Array<XmppBodyMessage> = [];
+  private archiveFinishedLoaded = false;
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
@@ -157,11 +159,16 @@ export class XmppService {
   }
 
   private bindEvents(): void {
+    this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADED, () => {
+      this.archiveFinishedLoaded = true;
+      this.messageQ.map(m => this.onNewMessage(m));
+    });
+
     this.client.enableKeepAlive({
       interval: 30
     });
     this.client.on('message', (message: XmppBodyMessage) => {
-      this.onNewMessage(message);
+      this.archiveFinishedLoaded ? this.onNewMessage(message) : this.messageQ.push(message);
     });
     this.client.on('message:sent', (message: XmppBodyMessage) => {
       if (message.received) {
