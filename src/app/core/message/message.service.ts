@@ -10,11 +10,11 @@ import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { MessagesData, StoredMessageRow, StoredMetaInfoData } from './messages.interface';
-import 'rxjs/add/operator/first';
 import { ConnectionService } from '../connection/connection.service';
-import { MsgArchiveData } from './archive.interface';
+import { MsgArchiveData, MsgArchiveResponse } from './archive.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
+import 'rxjs/add/operator/first';
 
 @Injectable()
 export class MessageService {
@@ -145,10 +145,12 @@ export class MessageService {
       }
     });
   }
-  public getNotSavedMessages(): Observable<MsgArchiveData> {
+
+  public getNotSavedMessages(): Observable<MsgArchiveResponse> {
     if (this.connectionService.isConnected) {
       return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
-        return this.queryMessages(resp.data.start);
+        const nanoTimestamp = resp.data.start && resp.data.start !== '0' ? (new Date(resp.data.start).getTime() / 1000) + '000' : null;
+        return this.archiveService.getEventsSince(nanoTimestamp);
       });
     }
   }
@@ -170,12 +172,7 @@ export class MessageService {
     this.xmpp.sendMessage(conversation, message);
   }
 
-  public queryMessages(since: string): Observable<any> {
-    const nanoTimestamp = since && since !== '0' ? (new Date(since).getTime() / 1000) + '000' : null;
-    return this.archiveService.getEventsSince(nanoTimestamp);
-  }
-
-  public queryMessagesByThread(thread: string, since?: string): Observable<any> {
+  private queryMessagesByThread(thread: string, since?: string): Observable<any> {
     const nanoTimestamp = since ? (new Date(since).getTime() / 1000) + '000' : null;
     return this.archiveService.getAllEvents(thread, nanoTimestamp);
   }
