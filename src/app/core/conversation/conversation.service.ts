@@ -563,7 +563,13 @@ export class ConversationService extends LeadService {
       if (!message.fromSelf) {
         message.status = messageStatus.RECEIVED;
       }
+      this.persistencyService.findMessage(message.id).subscribe(() => {
+        this.persistencyService.updateMessageStatus(message.id, message.status);
+      }, (err) => {
+        if (err.reason === 'missing') {
       this.persistencyService.saveMessages(message);
+        }
+      });
       if (conversation) {
         this.updateConversation(message, conversation).subscribe(() => {
           message = this.messageService.addUserInfo(conversation, message);
