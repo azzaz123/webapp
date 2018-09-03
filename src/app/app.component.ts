@@ -141,10 +141,13 @@ export class AppComponent implements OnInit {
 
   private subscribeChatSignals() {
     this.event.subscribe(EventService.MESSAGE_SENT_ACK, (conversationId, messageId) => {
-      this.conversationService.sendAck(TrackingService.MESSAGE_SENT_ACK, conversationId, messageId);
+      this.conversationService.markAs(messageStatus.SENT, messageId, conversationId);
     });
     this.event.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
-      this.conversationService.sendAck(TrackingService.MESSAGE_RECEIVED, conversationId, messageId);
+      this.conversationService.markAs(messageStatus.RECEIVED, messageId, conversationId);
+    });
+    this.event.subscribe(EventService.MESSAGE_READ, (conversationId, timestamp) => {
+      this.conversationService.markAllAsRead(conversationId, timestamp, false);
     });
   }
 

@@ -22,7 +22,8 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ConversationTotals } from './totals.interface';
 import { Item } from '../item/item';
 import { Subscription } from 'rxjs/Subscription';
-import { TrackingEventData, TrackingEventBase } from '../tracking/tracking-event-base.interface';
+import { TrackingEventData } from '../tracking/tracking-event-base.interface';
+import { Lead } from './lead';
 import { MsgArchiveResponse } from '../message/archive.interface';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -41,9 +42,7 @@ export class ConversationService extends LeadService {
 
   private messagesObservable: Observable<Conversation[]>;
   private readSubscription: Subscription;
-  public messagesReadSubscription: Subscription;
   public ended: boolean;
-  private unprocessedSignals: Array<TrackingEventData> = [];
 
   constructor(http: HttpService,
               userService: UserService,
@@ -59,21 +58,10 @@ export class ConversationService extends LeadService {
     super(http, userService, itemService, event, xmpp, connectionService);
   }
 
-  private subscribeConversationRead(conversation) {
-    this.messagesReadSubscription = this.event.subscribe(EventService.MESSAGE_READ, (thread, timestamp) => {
-      if (thread === conversation.id) {
-        this.markAllAsRead(conversation, timestamp, false);
-      }
-    });
-  }
-
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
     return this.query(since, archived)
     .flatMap((conversations: Conversation[]) => {
       if (conversations && conversations.length > 0) {
-        if (!this.messagesReadSubscription) {
-          conversations.forEach((conversation: Conversation) => this.subscribeConversationRead(conversation));
-        }
         return Observable.forkJoin(
           conversations.map((conversation: Conversation) => this.loadUnreadMessagesNumber(conversation))
         )
@@ -275,7 +263,7 @@ export class ConversationService extends LeadService {
     }
   }
 
-  private addStatusToStoredMessages(conversation: Conversation, newStatus: string) {
+  private addStatusToStoredMessages(conversation: Lead, newStatus: string) {
     this.persistencyService.localDbVersionUpdate(1.1, () => {
       conversation.messages.filter((message) => {
         return message.fromSelf && typeof message.status !== 'string';
@@ -286,7 +274,8 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public markAllAsRead(conversation: Conversation, timestamp: number, fromSelf: boolean = true) {
+  public markAllAsRead(conversationId: string, timestamp: number, fromSelf: boolean = true) {
+    const conversation = this.leads.find(c => c.id === conversationId);
     this.addStatusToStoredMessages(conversation, messageStatus.READ);
     conversation.messages.filter((message) => (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT)
       && new Date(message.date).getTime() < timestamp)
@@ -307,11 +296,34 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public markAs(newStatus: string, message: Message) {
+  public markAs(newStatus: string, messageId: string, thread: string) {
+    const conversation = this.leads.find(c => c.id === thread);
+    const message = conversation.messages.find(m => m.id === messageId);
+
     if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
       message.status = newStatus;
       this.persistencyService.updateMessageStatus(message.id, newStatus);
     }
+
+    const trackingEv: TrackingEventData = {
+      eventData: null,
+      attributes: {
+        thread_id: message.conversationId,
+        message_id: message.id,
+        item_id: conversation.item.id
+  }
+    };
+
+    switch (newStatus) {
+      case messageStatus.SENT:
+        trackingEv.eventData = TrackingService.MESSAGE_SENT_ACK;
+        break;
+      case messageStatus.RECEIVED:
+        trackingEv.eventData = TrackingService.MESSAGE_RECEIVED;
+        break;
+      }
+
+    this.trackingService.pendingTrackingEvents.push(trackingEv);
   }
 
   public get(id: string): Observable<Conversation> {
@@ -329,39 +341,6 @@ export class ConversationService extends LeadService {
       });
     })
     .map((data: ConversationResponse ) => this.mapRecordData(data));
-  }
-
-  private sendTracking(trackingEvent: any, conversationId: string, messageId: string, itemId: string): void {
-    this.trackingService.track(trackingEvent, {
-      thread_id: conversationId,
-      message_id: messageId,
-      item_id: itemId
-    });
-  }
-
-  private addUniqueSignal(eventData: any, attributes: any) {
-    const signalStored = this.unprocessedSignals.find(
-      (signal) => (signal.attributes.message_id === attributes.message_id && signal.eventData.name === eventData.name)) ? true : false;
-    if (!signalStored) {
-      this.unprocessedSignals.push({eventData, attributes});
-    }
-  }
-
-  public sendAck(trackingEvent: TrackingEventBase, conversationId: string, messageId: string) {
-    const attributes = {
-        thread_id: conversationId,
-        message_id: messageId
-    };
-    if (this.leads.length) {
-      const conversation = this.leads.find(c => c.id === conversationId);
-      if (conversation) {
-        this.sendTracking(trackingEvent, conversationId, messageId, conversation.item.id);
-      } else {
-        this.addUniqueSignal(trackingEvent, attributes);
-      }
-    } else {
-      this.addUniqueSignal(trackingEvent, attributes);
-    }
   }
 
   public sendRead(conversation: Conversation) {
@@ -385,7 +364,7 @@ export class ConversationService extends LeadService {
       this.messageService.totalUnreadMessages -= conversation.unreadMessages;
       conversation.unreadMessages = 0;
       this.persistencyService.saveUnreadMessagesCount(conversation.id, 0);
-      this.markAllAsRead(conversation, (new Date()).getTime(), false);
+      this.markAllAsRead(conversation.id, (new Date()).getTime(), false);
     }
   }
 
@@ -644,7 +623,6 @@ export class ConversationService extends LeadService {
     this.trackingService.pendingTrackingEvents.push(trackEvent);
     message = this.messageService.addUserInfo(conversation, message);
     this.addMessage(conversation, message);
-    this.subscribeConversationRead(conversation);
     this.leads.unshift(conversation);
     this.notificationService.sendBrowserNotification(message, conversation.item.id);
     this.stream$.next(this.leads);
