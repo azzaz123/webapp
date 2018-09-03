@@ -196,32 +196,6 @@ export class PersistencyService {
     });
   }
 
-  public saveUnreadMessagesCount(conversationId: string, unreadMessages: number): Observable<any> {
-    return Observable.fromPromise(
-      this.upsert(this.conversationsDb, conversationId, (doc: StoredConversation) => {
-        doc.unreadMessages = unreadMessages;
-        return doc;
-      })
-    );
-  }
-
-  public getUnreadMessagesCount(conversationId: string): Observable<StoredConversation> {
-    return Observable.create((observer: Observer<StoredConversation>) => {
-      this.conversationsDb.get(conversationId).then((data: StoredConversation) => {
-        if (!data.unreadMessages) {
-          data.unreadMessages = 0;
-        }
-        observer.next(data);
-        observer.complete();
-      }, (data) => {
-        observer.next({
-          unreadMessages: 0
-        });
-        observer.complete();
-      });
-    });
-  }
-
   /* istanbul ignore next */
 
   private upsert(db, docId, diffFun) {

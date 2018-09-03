@@ -11,7 +11,7 @@ import { MessageService } from '../message/message.service';
 import { Message, messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import { MessagesData, StoredConversation } from '../message/messages.interface';
+import { MessagesData } from '../message/messages.interface';
 import { RequestOptions, Response, Headers } from '@angular/http';
 import { NotificationService } from '../notification/notification.service';
 import { LeadService } from './lead.service';
@@ -62,11 +62,7 @@ export class ConversationService extends LeadService {
     return this.query(since, archived)
     .flatMap((conversations: Conversation[]) => {
       if (conversations && conversations.length > 0) {
-        return Observable.forkJoin(
-          conversations.map((conversation: Conversation) => this.loadUnreadMessagesNumber(conversation))
-        )
-        .flatMap((convWithUnreadNumber: Conversation[]) => {
-          return this.loadMessagesIntoConversations(convWithUnreadNumber, archived)
+        return this.loadMessagesIntoConversations(conversations, archived)
           .map((convWithMessages: Conversation[]) => {
             if (!archived) {
               if (!convWithMessages.length) {
@@ -81,7 +77,6 @@ export class ConversationService extends LeadService {
             this.event.emit(EventService.MSG_ARCHIVE_LOADED);
             return convWithMessages;
           });
-        });
       } else {
         this.firstLoad = false;
         this.ended = true;
@@ -198,15 +193,6 @@ export class ConversationService extends LeadService {
     this.leads = this.bulkArchive(this.leads);
     this.stream();
     this.stream(true);
-  }
-
-  private loadUnreadMessagesNumber(conversation: Conversation): Observable<Conversation> {
-    return this.persistencyService.getUnreadMessagesCount(conversation.id)
-    .map((storedConv: StoredConversation) => {
-      conversation.unreadMessages = storedConv.unreadMessages;
-      this.messageService.totalUnreadMessages += storedConv.unreadMessages;
-      return conversation;
-    });
   }
 
   public loadMessagesIntoConversations(conversations: Conversation[], archived: boolean = false): Observable<Conversation[]> {
@@ -363,7 +349,6 @@ export class ConversationService extends LeadService {
       this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);
       this.messageService.totalUnreadMessages -= conversation.unreadMessages;
       conversation.unreadMessages = 0;
-      this.persistencyService.saveUnreadMessagesCount(conversation.id, 0);
       this.markAllAsRead(conversation.id, (new Date()).getTime(), false);
     }
   }
@@ -371,7 +356,6 @@ export class ConversationService extends LeadService {
   private handleUnreadMessage(conversation: Conversation) {
     this.zone.run(() => {
       conversation.unreadMessages++;
-      this.persistencyService.saveUnreadMessagesCount(conversation.id, conversation.unreadMessages);
       this.messageService.totalUnreadMessages++;
     });
   }
@@ -423,7 +407,6 @@ export class ConversationService extends LeadService {
         this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
           this.messageService.totalUnreadMessages + conversations[index].unreadMessages :
           conversations[index].unreadMessages;
-          this.persistencyService.saveUnreadMessagesCount(conversations[index].id, conversations[index].unreadMessages);
           if (index < conversations.length - 1) {
           return this.recursiveLoadMessages(conversations, archived, index + 1);
           }
@@ -527,7 +510,6 @@ export class ConversationService extends LeadService {
       this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
         this.messageService.totalUnreadMessages + conversation.unreadMessages :
         conversation.unreadMessages;
-      this.persistencyService.saveUnreadMessagesCount(conversation.id, conversation.unreadMessages);
       return conversation;
     });
   }
