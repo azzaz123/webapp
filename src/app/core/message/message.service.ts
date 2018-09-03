@@ -11,7 +11,7 @@ import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { MessagesData, StoredMessageRow, StoredMetaInfoData } from './messages.interface';
 import { ConnectionService } from '../connection/connection.service';
-import { MsgArchiveData, MsgArchiveResponse } from './archive.interface';
+import { MsgArchiveResponse } from './archive.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import 'rxjs/add/operator/first';
@@ -45,15 +45,10 @@ export class MessageService {
 
   public getMessages(conversation: Conversation, total: number = -1, archived?: boolean): Observable<MessagesData> {
     return this.persistencyService.getMessages(conversation.id)
-    .flatMap((data: StoredMessageRow[]) => {
-      if (data.length) {
-        return Observable.of({
-          meta: {
-            first: data[0].doc._id,
-            end: true,
-            last: data[data.length - 1].doc._id
-          },
-          data: data.map((message: any): Message => {
+    .flatMap((messages: StoredMessageRow[]) => {
+      if (messages.length) {
+        const res: MsgArchiveResponse = {
+          messages: messages.map((message: any): Message => {
             const msg = new Message(message.doc._id,
               message.doc.conversationId,
               message.doc.message,
@@ -69,17 +64,30 @@ export class MessageService {
               }
             }
             return msg;
-          })
-        });
+          }),
+          receivedReceipts: null,
+          readReceipts: null,
+          meta: {
+            first: _.first(messages).doc._id,
+            last: _.last(messages).doc._id,
+            end: true
+          }
+        };
+        return Observable.of(res);
       } else if (this.connectionService.isConnected) {
         return this.queryMessagesByThread(conversation.id).map(r => {
           if (r.messages.length) {
+            r.meta = {
+              first: _.first(r.messages).id,
+              last: _.last(r.messages).id,
+              end: true
+            };
             if (archived) {
               r.messages.map(m => m.status = messageStatus.READ);
       }
             this.persistencyService.saveMessages(r.messages);
             this.persistencyService.saveMetaInformation({
-              last: _.last(r.messages).id,
+              last: r.meta.last,
               start: (_.last(r.messages)).date.toISOString()
             });
             this.addClickstreamEvents(r, conversation.item.id);
@@ -92,12 +100,12 @@ export class MessageService {
     .map((res: any) => {
       return {
         meta: res.meta,
-        data: this.addUserInfoToArray(conversation, res.data ? res.data : res.messages)
+        data: this.addUserInfoToArray(conversation, res.messages)
       };
     });
   }
 
-  private addClickstreamEvents(archiveData: MsgArchiveData, itemId) {
+  private addClickstreamEvents(archiveData: MsgArchiveResponse, itemId: string) {
     archiveData.messages.filter(message => !message.fromSelf).map(message => {
       const msgAlreadyConfirmed = archiveData.receivedReceipts.find(receipt => receipt.messageId === message.id);
       if (!msgAlreadyConfirmed) {

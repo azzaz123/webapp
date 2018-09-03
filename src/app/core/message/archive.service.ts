@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { MsgArchiveResponse, MsgArchiveData } from './archive.interface';
+import { MsgArchiveResponse, ReceivedReceipt, ReadReceipt } from './archive.interface';
 import { HttpService } from '../http/http.service';
 import { Message, messageStatus } from './message';
 import { User } from '../user/user';
@@ -99,7 +99,7 @@ export class MsgArchiveService {
     });
   }
 
-  private updateStatuses(messages: Message[], readReceipts, receivedReceipts) {
+  private updateStatuses(messages: Message[], readReceipts: ReadReceipt[], receivedReceipts: ReceivedReceipt[]) {
     readReceipts.forEach(r => {
       messages.filter(m => {
         const threadMatches = m.conversationId === r.thread;
@@ -143,12 +143,12 @@ export class MsgArchiveService {
     return messages;
   }
 
-  private processReceivedReceipts(archiveData: any) {
+  private processReceivedReceipts(archiveData: any): Array<ReceivedReceipt> {
     const self: User = this.userService.user;
     let receipts = archiveData.filter((d) => d.type === this.eventTypes.received)
     .map(m => {
       const fromSelf = m.event.from_user_hash === self.id;
-      const receipt = {
+      const receipt: ReceivedReceipt = {
         thread: m.event.conversation_hash,
         messageId: m.event.message_id,
         from: m.event.from_user_hash,
@@ -156,7 +156,6 @@ export class MsgArchiveService {
         fromSelf: fromSelf,
         timestamp: m.event.created_ts
       };
-
       return receipt;
     });
     receipts = this.returnLatestBy(receipts, 'messageId');
@@ -173,7 +172,7 @@ export class MsgArchiveService {
     return result;
   }
 
-  private processReadReceipts(archiveData: any) {
+  private processReadReceipts(archiveData: any): Array<ReadReceipt> {
     const self: User = this.userService.user;
     const receipts = [];
     const sentByMe = _.findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash !== self.id);
@@ -183,7 +182,7 @@ export class MsgArchiveService {
     sentToMe ? receipts.push(sentToMe) : receipts.push();
 
     return receipts.map(m => {
-      const receipt = {
+      const receipt: ReadReceipt = {
         thread: m.event.conversation_hash,
         to: m.event.to_user_hash,
         timestamp: m.event.created_ts
@@ -191,6 +190,4 @@ export class MsgArchiveService {
       return receipt;
     });
   }
-
 }
-
