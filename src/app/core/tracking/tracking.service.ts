@@ -834,10 +834,6 @@ export class TrackingService {
   public trackAccumulatedEvents() {
     setInterval(() => {
       if (this.pendingTrackingEvents.length) {
-        this.pendingTrackingEvents = _.uniqBy(this.pendingTrackingEvents, (ev) => {
-          return (ev.attributes && ev.attributes.message_id) ? ev.eventData.name && ev.attributes.message_id : ev;
-        });
-
           const batch = this.pendingTrackingEvents.splice(0, maxBatchSize);
           this.sendMultipleEvents(batch);
       }
