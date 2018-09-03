@@ -646,7 +646,8 @@
   <msg id="7468243639829626176"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:29</source>Buy our packs and you can get free wallacoins. The bigger the pack, we will give you more wallacoins.</msg>
   <msg id="3975193160474724854"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:32</source>Only for your features</msg>
   <msg id="2029069198994571617"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:33</source>Watch out! The available credit can be only used to buy features. As well, there are many advantages, you will save money and you will pay just once.</msg>
-  <msg id="3646679051227826982"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:38</source>Go to wallacoins</msg>
+  <msg id="3646679051227826982"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:39</source>Go to wallacoins</msg>
+  <msg id="78876651719315122"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:40</source>Go to credit</msg>
   <msg id="272934122656341350"><source>app/wallacoins/wallacoins.component.ts:9</source>Credit</msg>
   <msg id="5484168340945543767"><source>app/wallacoins/wallacoins.component.ts:15</source>Buy saving packs to feature your items and check your credit remaining.</msg>
   <msg id="2767524293310239820"><source>app/wallacoins/wallacoins.component.ts:16</source>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit.</msg>
