@@ -426,7 +426,6 @@ export class ConversationService extends LeadService {
                     this.handleUnreadMessage(conversation);
                   }
                 }
-              } else {
               }
             });
           }
