@@ -11,7 +11,7 @@ import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { MessagesData, StoredMessageRow, StoredMetaInfoData } from './messages.interface';
 import { ConnectionService } from '../connection/connection.service';
-import { MsgArchiveResponse } from './archive.interface';
+import { MsgArchiveResponse, ReceivedReceipt } from './archive.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import 'rxjs/add/operator/first';
@@ -145,7 +145,7 @@ export class MessageService {
     });
   }
 
-  private confirmUnconfirmedMessages(messages: Array<any>, receivedReceipts: Array<any>) {
+  private confirmUnconfirmedMessages(messages: Array<Message>, receivedReceipts: Array<ReceivedReceipt>) {
     messages.filter(message => !message.fromSelf).map(message => {
       const msgAlreadyConfirmed = receivedReceipts.find(receipt => receipt.messageId === message.id);
       if (!msgAlreadyConfirmed) {
@@ -180,7 +180,7 @@ export class MessageService {
     this.xmpp.sendMessage(conversation, message);
   }
 
-  private queryMessagesByThread(thread: string, since?: string): Observable<any> {
+  private queryMessagesByThread(thread: string, since?: string): Observable<MsgArchiveResponse> {
     const nanoTimestamp = since ? (new Date(since).getTime() / 1000) + '000' : null;
     return this.archiveService.getAllEvents(thread, nanoTimestamp);
   }
