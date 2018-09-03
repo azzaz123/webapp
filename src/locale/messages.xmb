@@ -265,7 +265,7 @@
   <msg id="2483251316426820393"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:56,57</source>Your featured items will appear exclusively in certain zones and will stand out from the other
                         ads with better visibility.</msg>
   <msg id="4563965495368336177"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:64</source><source>app/tutorial/tutorial.component.ts:67</source>Skip</msg>
-  <msg id="3885497195825665706"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:73</source><source>app/tutorial/tutorial.component.ts:78</source>Next</msg>
+  <msg id="3885497195825665706"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:73</source><source>app/tutorial/tutorial.component.ts:78</source><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:37</source>Next</msg>
   <msg id="7160029661601775341"><source>app/catalog/checkout/bump-tutorial/bump-tutorial.component.ts:77</source><source>app/tutorial/tutorial.component.ts:83</source>Ready!</msg>
   <msg id="1388549121916575785"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:7</source><source>app/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.ts:7</source>Your item has been uploaded and it&apos;s marked as urgent.</msg>
   <msg id="1666676372989024280"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:12</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.ts:11</source>and you have <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins left</msg>
@@ -635,6 +635,19 @@
   <msg id="5722262557807435110"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:17</source>Something went wrong :(</msg>
   <msg id="4289382185311381834"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:18</source>There was a problem with your request. Please, try again. </msg>
   <msg id="6650633628037596693"><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.ts:19</source>Try again</msg>
+  <msg id="1679509264092655850"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:8</source>Introducing... wallacoins!</msg>
+  <msg id="6032356805176766219"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:9</source>Our new currency for your features with unique benefits.</msg>
+  <msg id="977443694790489693"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:12</source>Introducing... credit!</msg>
+  <msg id="1923907148262898536"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:13</source>You don&apos;t need to pay for each feature anymore. Now you can buy packs of features... and save money!</msg>
+  <msg id="7310579825724301285"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:18</source><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:22</source>Custom packs</msg>
+  <msg id="6105008229590992791"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:19</source>You choose how many wallacoins you want to buy. Depending on your needs, you can choose the pack of wallacoins that best suits you.</msg>
+  <msg id="4047068775001617459"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:23</source>Depending on your needs, you can choose the pack of wallacoins that best suits you. No matter if you buy a lot of features or a few, you will save money for sure.</msg>
+  <msg id="2363998753044006673"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:28</source>Save with your wallacoins</msg>
+  <msg id="7468243639829626176"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:29</source>Buy our packs and you can get free wallacoins. The bigger the pack, we will give you more wallacoins.</msg>
+  <msg id="3975193160474724854"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:32</source>Only for your features</msg>
+  <msg id="2029069198994571617"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:33</source>Watch out! The available credit can be only used to buy features. As well, there are many advantages, you will save money and you will pay just once.</msg>
+  <msg id="3646679051227826982"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:39</source>Go to wallacoins</msg>
+  <msg id="78876651719315122"><source>app/wallacoins/wallacoins-tutorial/wallacoins-tutorial.component.ts:40</source>Go to credit</msg>
   <msg id="272934122656341350"><source>app/wallacoins/wallacoins.component.ts:9</source>Credit</msg>
   <msg id="5484168340945543767"><source>app/wallacoins/wallacoins.component.ts:15</source>Buy saving packs to feature your items and check your credit remaining.</msg>
   <msg id="2767524293310239820"><source>app/wallacoins/wallacoins.component.ts:16</source>Wallacoins make it easy for you to buy features. From here you can buy them and see your credit.</msg>
