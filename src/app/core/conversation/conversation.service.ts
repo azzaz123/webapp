@@ -196,15 +196,7 @@ export class ConversationService extends LeadService {
   }
 
   public loadMessagesIntoConversations(conversations: Conversation[], archived: boolean = false): Observable<Conversation[]> {
-    return this.loadMessages(conversations, archived)
-    .flatMap((convWithMessages: Conversation[]) => {
-      return (this.firstLoad ? this.loadNotStoredMessages(convWithMessages) : Observable.of(convWithMessages));
-    })
-    .map((convWithMessages: Conversation[]) => {
-      return convWithMessages.filter((conversation: Conversation) => {
-        return conversation.messages.length > 0;
-      });
-    });
+    return this.loadMessages(conversations, archived);
   }
 
   public getConversationPage(id: string, archive?: boolean): number {
