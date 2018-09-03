@@ -17,7 +17,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
-import { CookieService } from 'ngx-cookie/index';
+import { CookieService } from 'ngx-cookie';
 
 const MOCK_USER = new User(
   USER_DATA.id,
