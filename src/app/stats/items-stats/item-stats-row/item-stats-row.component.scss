@@ -1,0 +1,64 @@
+@import "~style/common";
+
+.item {
+  padding: $spacing-XS 0 $spacing-XS $spacing-L;
+  border-bottom: 1px solid $grey-50;
+  cursor: pointer;
+  &:hover:not(.active) {
+    background-color: $grey-50;
+  }
+}
+
+.col-item-title {
+  display: flex;
+  align-items: center;
+  .price {
+    font-weight: bold;
+    font-size: $font-size-M;
+    width: 100px;
+  }
+}
+
+.col-date {
+  color: $grey-250;
+  font-size: $font-size-S;
+}
+
+*[class^='col-'] {
+  align-items: center;
+  display: flex;
+}
+
+.col-counters {
+  justify-content: center;
+  .counters {
+    font-size: $font-size-XS;
+    color: $grey-900;
+    display: flex;
+    flex-basis: 3em;
+    align-items: center;
+    mat-icon {
+      height: 17px;
+      width: 19px;
+      margin-right: $spacing-XS;
+    }
+  }
+}
+
+.col-arrow {
+  justify-content: space-around;
+  mat-icon {
+    width: 10px;
+    transition: all .5s ease;
+    .active & {
+      transform: rotate(180deg);
+      /deep/ g g {
+        stroke: $corporate;
+      }
+    }
+  }
+}
+
+.stats-expanded {
+  height: 390px;
+}

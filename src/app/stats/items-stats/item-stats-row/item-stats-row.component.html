@@ -1,0 +1,36 @@
+<div class="item" [ngClass]="{'active': open}">
+  <div class="row" (click)="changeExpandedState()">
+    <div class="col-6 col-item-title">
+      <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="image"><tsl-item-avatar [item]="item" size="medium" fallbackLight="true"></tsl-item-avatar></a>
+      <div class="price">{{item.salePrice | customCurrency}}</div>
+      <div class="title">{{item.title}}</div>
+    </div>
+    <div class="col-2 col-date">
+      <span>{{item.publishedDate | amCalendar:momentConfig}}</span>
+    </div>
+    <div class="col-1 col-counters">
+      <div class="counters" ngbTooltip="Views" i18n-ngbTooltip placement="top">
+        <mat-icon svgIcon="views"></mat-icon>
+        <span>{{item.views}}</span>
+      </div>
+    </div>
+    <div class="col-1 col-counters">
+      <div class="counters" ngbTooltip="Chats" i18n-ngbTooltip placement="top">
+        <mat-icon svgIcon="ico-message"></mat-icon>
+        <span>{{item.conversations}}</span>
+      </div>
+    </div>
+    <div class="col-1 col-counters">
+      <div class="counters" ngbTooltip="Favorites" i18n-ngbTooltip placement="top">
+        <mat-icon svgIcon="heart"></mat-icon>
+        <span>{{item.favorites}}</span>
+      </div>
+    </div>
+    <div class="col-1 col-arrow">
+      <mat-icon svgIcon="caret"></mat-icon>
+    </div>
+  </div>
+  <div class="row stats-expanded" *ngIf="open">
+
+  </div>
+</div>
