@@ -7,7 +7,7 @@ import { PERMISSIONS } from '../core/user/user';
 
 const routes: Routes = [
   {
-    path: 'favorites',
+    path: '',
     component: FavoritesComponent,
     canActivate: [LoggedGuard, NgxPermissionsGuard],
     data: {

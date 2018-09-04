@@ -32,13 +32,13 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['HeadlessChrome', 'Chrome'],
-      customLaunchers:{
-        HeadlessChrome:{
-          base: 'ChromeHeadless',
-          flags: ['--no-sandbox']
-        }
-      },
-    singleRun: true,
+    singleRun: false,
+    customLaunchers:{
+      HeadlessChrome:{
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     browserNoActivityTimeout: 60000
   });
 };

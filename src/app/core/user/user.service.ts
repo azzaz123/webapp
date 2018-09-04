@@ -114,10 +114,6 @@ export class UserService extends ResourceService {
         this._user = user;
         return user;
       })
-      .flatMap((user: User) => {
-        return this.setCoinsFeatureFlag()
-          .map(_ => user);
-      })
       .share()
       .do(() => {
         this.meObservable = null;

@@ -1,28 +1,21 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { LoggedGuard } from '../core/user/logged.guard';
+import { RouterModule, Routes } from '@angular/router';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
 import { HelpComponent } from './help.component';
 
 const routes: Routes = [
   {
-    path: 'pro',
-    canActivate: [LoggedGuard],
-    children: [
-      {
-        path: 'help',
-        component: HelpComponent,
-        canActivate: [NgxPermissionsGuard],
-        data: {
-          permissions: {
-            only: PERMISSIONS.professional,
-            redirectTo: '/catalog/list'
-          },
-          isMyZone: true
-        }
-      }
-    ]
+    path: '',
+    component: HelpComponent,
+    canActivate: [NgxPermissionsGuard],
+    data: {
+      permissions: {
+        only: PERMISSIONS.professional,
+        redirectTo: '/catalog/list'
+      },
+      isMyZone: true
+    }
   }
 ];
 

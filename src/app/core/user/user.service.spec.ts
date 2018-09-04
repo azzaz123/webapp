@@ -236,16 +236,6 @@ describe('Service: User', () => {
       expect(http.get).toHaveBeenCalledTimes(1);
     });
 
-    it('should call setCoinsFeatureFlag', () => {
-      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_DATA)});
-      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
-      spyOn(service, 'setCoinsFeatureFlag').and.callThrough();
-
-      service.me().subscribe();
-
-      expect(service.setCoinsFeatureFlag).toHaveBeenCalled();
-    });
-
   });
 
   describe('checkUserStatus', () => {

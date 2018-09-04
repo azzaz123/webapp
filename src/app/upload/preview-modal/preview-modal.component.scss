@@ -1,0 +1,89 @@
+@import "~style/common";
+
+.modal-body {
+  color: $grey-900;
+  height: calc(100vh - #{$spacing-40 * 2});
+  overflow: scroll;
+}
+
+.modal-close {
+  top: 25px;
+}
+
+p {
+  margin: 0;
+}
+
+.price, h1 {
+  font-size: $font-size-XL;
+}
+
+h1 {
+  border-bottom: 1px solid $preview-border-color;
+  padding-bottom: $spacing;
+  margin-bottom: 0;
+}
+
+.price {
+  font-weight: bold;
+  line-height: $font-size-XL;
+  margin-bottom: $spacing-S;
+  margin-top: $spacing;
+}
+
+.description, .car-info {
+  font-size: $font-size;
+  padding: $spacing 0;
+  &:not(.last){
+    border-bottom: 1px solid $preview-border-color;
+    margin-bottom: $spacing;
+  }
+  &.last {
+    padding-bottom: 0;
+  }
+  &:empty {
+    margin: 0 !important;
+    border: 0 !important;
+    padding-top: 0;
+  }
+}
+
+.car-info {
+  padding: $spacing-S 0;
+  margin-bottom: 0 !important;
+}
+
+.extras {
+  overflow: hidden;
+  div {
+    float: left;
+    font-size: $font-size-XS;
+    text-align: center;
+    width: 75px;
+    margin: 0 $spacing;
+    mat-icon {
+      @include square(32px);
+      display: block;
+      margin: 0 auto;
+      margin-bottom: $spacing-S;
+      & /deep/ path {
+        fill: $grey-900;
+      }
+    }
+  }
+  &.car-extras {
+    border-bottom: 1px solid $preview-border-color;
+    padding-bottom: $spacing;
+    margin-bottom: $spacing;
+    &.last {
+      padding-bottom: 0;
+      border: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.btn {
+  border-radius: $button-border-radius;
+  margin: 0 0 $spacing;
+}

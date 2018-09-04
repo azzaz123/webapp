@@ -3,6 +3,7 @@ import { IOption } from 'ng-select';
 import { Car } from '../app/core/item/car';
 import { CAR_ID } from './upload.fixtures.spec';
 import { CARS_CATEGORY } from '../app/core/item/item-categories';
+import { CarInfo } from '../app/core/item/item-response.interface';
 
 export const CAR_BODY_TYPES_RESPONSE: any = [{
   'id': 'small_car',
@@ -154,3 +155,14 @@ export const MOCK_CAR: Car = new Car(
   CAR_DATA.content.version
 );
 
+export const CAR_INFO: CarInfo = {
+  body_type: 'body_type',
+  brand: 'brand',
+  engine: 'engine',
+  gearbox: 'gearbox',
+  horsepower: 123,
+  model: 'model',
+  num_doors: 2,
+  num_seats: 2,
+  version: 'version'
+};

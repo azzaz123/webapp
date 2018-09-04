@@ -13,6 +13,7 @@ import { PaymentService } from '../../../../core/payments/payment.service';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 import { EventService } from '../../../../core/event/event.service';
+import { CreditInfo } from '../../../../core/payments/payment.interface';
 
 let component: BumpConfirmationModalComponent;
 let fixture: ComponentFixture<BumpConfirmationModalComponent>;
@@ -22,6 +23,11 @@ let paymentService: PaymentService;
 let eventService: EventService;
 const CURRENCY = 'wallacoins';
 const CREDITS = 1000;
+const CREDIT_INFO: CreditInfo = {
+  currencyName: CURRENCY,
+  credit: CREDITS,
+  factor: 100
+};
 
 describe('BumpConfirmationModalComponent', () => {
   beforeEach(() => {
@@ -43,10 +49,7 @@ describe('BumpConfirmationModalComponent', () => {
           {
             provide: PaymentService, useValue: {
             getCreditInfo() {
-              return Observable.of({
-                currencyName: CURRENCY,
-                credit: CREDITS
-              });
+              return Observable.of(CREDIT_INFO);
             }
           }
           }
@@ -95,7 +98,7 @@ describe('BumpConfirmationModalComponent', () => {
 
       expect(paymentService.getCreditInfo).toHaveBeenCalled();
       expect(component.withCoins).toBe(true);
-      expect(component.credit).toBe(CREDITS);
+      expect(component.creditInfo).toBe(CREDIT_INFO);
       expect(eventService.emit).toHaveBeenCalledWith(EventService.TOTAL_CREDITS_UPDATED, CREDITS);
     }));
   });

@@ -5,7 +5,7 @@ import { ResourceService } from '../resource/resource.service';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
-  CarContent,
+  CarContent, CarInfo,
   ConversationUser,
   Duration,
   ItemBulkResponse,
@@ -701,6 +701,15 @@ export class ItemService extends ResourceService {
   public bumpProItems(orderParams: OrderPro[]): Observable<string[]> {
     return this.http.post(this.API_URL_PROTOOL + '/purchaseItems', orderParams)
     .map((r: Response) => r.json());
+  }
+
+  public getCarInfo(brand: string, model: string, version: string): Observable<CarInfo> {
+    return this.http.get(this.API_URL + '/cars/info', {
+      brand: brand,
+      model: model,
+      version: version
+    })
+      .map((r: Response) => r.json());
   }
 
 }

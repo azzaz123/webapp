@@ -1,0 +1,22 @@
+<div class="box urgent" *ngIf="urgentPrice" [ngbPopover]="coachmarkUrgent" triggers="mouseenter:mouseleave">
+  <div class="content">
+    <h2 i18n>Apply the ASAP Feature</h2>
+    <p i18n *ngIf="urgentPrice">
+      For only {{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+      <span *ngIf="creditInfo?.currencyName === 'wallacoins'">wallacoins</span>
+      <span *ngIf="creditInfo?.currencyName === 'wallacredits' && creditInfo?.credit > 0">from your credit</span>
+      mark your product as "Asap" for 7 days to differentiate it in the wall and make it easier to find through the asap filter.
+    </p>
+    <div class="checkbox">
+      <button type="button" class="select" [ngClass]="{'selected': isUrgent}" (click)="selectUrgent()">
+        <mat-icon svgIcon="check"></mat-icon>
+      </button>
+      <span i18n [hidden]="isUrgent">Check as ASAP</span>
+      <span i18n *ngIf="isUrgent" [ngClass]="{'selected': isUrgent}">Checked as ASAP</span>
+    </div>
+  </div>
+  <div class="urgent-background" [class.active]="isUrgent"></div>
+  <ng-template #coachmarkUrgent>
+    <div i18n>Your product will be more visible and you will sell it faster.</div>
+  </ng-template>
+</div>

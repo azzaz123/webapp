@@ -7,6 +7,8 @@ import { Observable } from 'rxjs/Observable';
 import { ItemService } from '../../../../core/item/item.service';
 import { Item } from '../../../../core/item/item';
 import { WindowRef } from '../../../../core/window/window.service';
+import { PaymentService } from '../../../../core/payments/payment.service';
+import { CreditInfo } from '../../../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-upload-confirmation-modal',
@@ -16,14 +18,17 @@ import { WindowRef } from '../../../../core/window/window.service';
 export class UploadConfirmationModalComponent implements OnInit {
 
   public item: Item;
-  public productPrice: string;
+  public productPrice: number;
   public productId: string;
   private getUrgentProductsObservable: Observable<Product>;
   @Output() onAction: EventEmitter<OrderEvent> = new EventEmitter();
+  public creditInfo: CreditInfo;
+
 
   constructor(public activeModal: NgbActiveModal,
               private window: WindowRef,
               private trackingService: TrackingService,
+              private paymentService: PaymentService,
               public itemService: ItemService) {
   }
 
@@ -37,6 +42,9 @@ export class UploadConfirmationModalComponent implements OnInit {
       num_items: '0',
       content_type: 'product',
       content_name: 'Upload product from form'
+    });
+    this.paymentService.getCreditInfo().subscribe((creditInfo: CreditInfo) => {
+      this.creditInfo = creditInfo;
     });
   }
 
@@ -60,7 +68,7 @@ export class UploadConfirmationModalComponent implements OnInit {
     }];
     const orderEvent: OrderEvent = {
       order: order,
-      total: +this.productPrice
+      total: this.productPrice
     };
     localStorage.setItem('transactionType', 'urgent');
     this.activeModal.close(orderEvent);
@@ -70,7 +78,7 @@ export class UploadConfirmationModalComponent implements OnInit {
     this.getUrgentProductsObservable = this.itemService.getUrgentProducts(this.item.id).share();
     this.getUrgentProductsObservable.subscribe((product: Product) => {
       this.getUrgentProductsObservable = null;
-      this.productPrice = product.durations[0].market_code;
+      this.productPrice = +product.durations[0].market_code;
       this.productId = product.durations[0].id;
     });
   }

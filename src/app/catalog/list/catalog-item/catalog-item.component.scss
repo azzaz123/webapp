@@ -213,25 +213,31 @@ $feature-button-width: 170px;
         z-index: 2;
         position: relative;
         width: $feature-button-width;
-        border-radius: $border-radius;
-        color: $grey-900;
+        color: $white;
         text-align: center;
         padding: 0 $spacing 0 $spacing*2;
+        background-color: $reactivate-bg;
+        border-color: transparent;
+        border-radius: 20px;
+        font-size: $font-size-S;
+        font-weight: bold;
         mat-icon {
           position: absolute;
           left: 10px;
         }
         mat-icon /deep/ {
           svg g g, svg path {
-            fill: $grey-900;
+            fill: $white;
           }
         }
         &:hover {
-          background-color: $reactivate-bg;
-          color: $white;
+          background-color: transparent;
+          border-color: $grey-900;
+          color: $grey-900;
+          border: solid 1px rgba(207, 216, 220, 0.5);
           mat-icon /deep/ {
             svg g g, svg path {
-              fill: $white;
+              fill: $grey-900;
             }
           }
         }

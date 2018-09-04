@@ -4,6 +4,9 @@ import { Item } from '../../../../core/item/item';
 import { WindowRef } from '../../../../core/window/window.service';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { UserService } from '../../../../core/user/user.service';
+import { PaymentService } from '../../../../core/payments/payment.service';
+import { EventService } from '../../../../core/event/event.service';
+import { CreditInfo } from '../../../../core/payments/payment.interface';
 
 @Component({
   selector: 'tsl-urgent-confirmation-modal',
@@ -14,10 +17,16 @@ export class UrgentConfirmationModalComponent implements OnInit {
 
   public item: Item;
   public code: string;
+  public creditUsed: boolean;
+  public withCoins: boolean;
+  public spent: number;
+  public creditInfo: CreditInfo;
 
   constructor(public activeModal: NgbActiveModal,
               private window: WindowRef,
               private trackingService: TrackingService,
+              private paymentService: PaymentService,
+              private eventService: EventService,
               private userService: UserService) { }
 
   ngOnInit() {
@@ -31,6 +40,17 @@ export class UrgentConfirmationModalComponent implements OnInit {
           ga('send', 'event', 'Item', 'urgent-ko');
         }
       });
+    setTimeout(() => {
+      this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
+        if (creditInfo.credit === 0) {
+          creditInfo.currencyName = 'wallacredits';
+          creditInfo.factor = 1;
+        }
+        this.creditInfo = creditInfo;
+        this.withCoins = creditInfo.currencyName === 'wallacoins';
+        this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, creditInfo.credit );
+      });
+    }, 1000);
   }
 
   public facebookShare() {

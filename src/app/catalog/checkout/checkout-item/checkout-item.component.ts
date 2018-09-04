@@ -1,10 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import * as _ from 'lodash';
-import { CartService } from '../cart/cart.service';
-import { CartChange, CartItem } from '../cart/cart-item.interface';
-import { BUMP_TYPES } from '../cart/cart-base';
-import { Cart } from '../cart/cart';
+import { CartService } from '../../../shared/catalog/cart/cart.service';
+import { CartChange, CartItem } from '../../../shared/catalog/cart/cart-item.interface';
+import { BUMP_TYPES } from '../../../shared/catalog/cart/cart-base';
+import { Cart } from '../../../shared/catalog/cart/cart';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { CreditInfo } from '../../../core/payments/payment.interface';
 

@@ -2,27 +2,22 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
 import { Observable } from 'rxjs/Observable';
-import { EventEmitter, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
-import { Order } from '../../core/item/item-response.interface';
 import {
   createItemsArray,
-  ITEM_ID,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
   MOCK_ITEM_V3,
-  ORDER,
   ORDER_EVENT,
   PRODUCT_RESPONSE
 } from '../../../tests/item.fixtures.spec';
-import { UUID } from 'angular2-uuid';
-import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Subject } from 'rxjs/Subject';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
@@ -32,7 +27,6 @@ import { UserService } from '../../core/user/user.service';
 import { PaymentService } from '../../core/payments/payment.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Item } from '../../core/item/item';
-import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
@@ -271,7 +265,7 @@ describe('ListComponent', () => {
       expect(component.isUrgent).toBe(true);
       expect(component.isRedirect).toBe(true);
       expect(localStorage.getItem).toHaveBeenCalledWith('redirectToTPV');
-      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
+      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT, 'urgent');
     }));
 
     it('should set the redirect to false if it is not urgent', fakeAsync(() => {
@@ -449,7 +443,7 @@ describe('ListComponent', () => {
         action: 'reactivatedWithBump'
       });
 
-      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
+      expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT, 'reactivate');
     });
 
     it('should change expired flag item if event is reactivated', () => {
@@ -485,13 +479,6 @@ describe('ListComponent', () => {
       spyOn(component, 'reserve');
       component.onAction();
       expect(component.reserve).toHaveBeenCalled();
-    });
-    it('should call feature', () => {
-      itemService.selectedAction = 'feature';
-      spyOn(component, 'feature');
-      const order: Order[] = [ORDER];
-      component.onAction(order);
-      expect(component.feature).toHaveBeenCalledWith(order);
     });
   });
 
@@ -598,192 +585,95 @@ describe('ListComponent', () => {
   });
 
   describe('feature', () => {
-    let eventId: string;
-    beforeEach(() => {
-      spyOn(UUID, 'UUID').and.returnValue('UUID');
+
+    const componentInstance: any = {};
+
+    it('should open modal', () => {
+      modalSpy.and.returnValue({
+        componentInstance: componentInstance,
+        result: Promise.resolve('success')
+      });
+
+      component.feature(ORDER_EVENT, 'urgent');
+
+      expect(componentInstance.type).toBe('urgent');
+      expect(componentInstance.orderEvent).toBe(ORDER_EVENT);
     });
+
     describe('success', () => {
-      beforeEach(() => {
-        spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.of([]));
-        eventId = null;
-        component.sabadellSubmit.subscribe((id: string) => {
-          eventId = id;
+      it('should redirect to success', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          componentInstance: componentInstance,
+          result: Promise.resolve('success')
         });
-      });
-      describe('without credit card', () => {
-        beforeEach(() => {
-          spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.throw(''));
-          component.feature({
-            order: [ORDER],
-            total: 10
-          });
-        });
-        it('should submit sabadell with orderId', () => {
-          expect(eventId).toBe('UUID');
-        });
-      });
-      describe('with credit card', () => {
-        beforeEach(() => {
-          spyOn(paymentService, 'getFinancialCard').and.returnValue(Observable.of(FINANCIAL_CARD));
-        });
-        describe('user wants new one', () => {
-          beforeEach(fakeAsync(() => {
-            modalSpy.and.returnValue({
-              result: Promise.resolve('new'),
-              componentInstance: componentInstance
-            });
-            component.feature({
-              order: [ORDER],
-              total: 10
-            });
-          }));
-          it('should submit sabadell with orderId', () => {
-            expect(eventId).toBe('UUID');
-          });
-        });
-        describe('user wants old one', () => {
-          beforeEach(fakeAsync(() => {
-            modalSpy.and.returnValue({
-              result: Promise.resolve('old'),
-              componentInstance: componentInstance
-            });
-            spyOn(router, 'navigate');
-            spyOn(component, 'deselect');
-          }));
-          describe('payment ok', () => {
-            beforeEach(fakeAsync(() => {
-              spyOn(paymentService, 'pay').and.callThrough();
-              component.feature({
-                order: [ORDER],
-                total: 10
-              });
-              tick(1000);
-            }));
-            it('should redirect to code 200', () => {
-              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
-            });
-            it('should call deselect', () => {
-              expect(component.deselect).toHaveBeenCalled();
-            });
-          });
-          describe('payment ko', () => {
-            beforeEach(fakeAsync(() => {
-              spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
-              component.feature({
-                order: [ORDER],
-                total: 10
-              });
-              tick(1000);
-            }));
-            it('should redirect to code -1', () => {
-              expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
-            });
-            it('should call deselect', () => {
-              expect(component.deselect).toHaveBeenCalled();
-            });
-          });
-          afterEach(() => {
-            it('should call pay', () => {
-              expect(paymentService.pay).toHaveBeenCalledWith('UUID');
-            });
-          });
-        });
-        describe('user closes modal', () => {
-          beforeEach(fakeAsync(() => {
-            spyOn(paymentService, 'pay').and.returnValue(Observable.throw(''));
-            spyOn(router, 'navigate');
-            component.feature({
-              order: [ORDER],
-              total: 10
-            });
-            tick(1000);
-          }));
-          it('should redirect without code', () => {
-            expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
-          });
-        });
-        afterEach(() => {
-          it('should open modal', () => {
-            expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
-          });
-          it('should set financialCard and total to componentInstance', () => {
-            expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
-            expect(componentInstance.total).toBe(10);
-          });
-        });
-      });
-      afterEach(() => {
-        it('should call purchaseProducts', () => {
-          expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
-        });
-        it('should call getFinancialCard', () => {
-          expect(paymentService.getFinancialCard).toHaveBeenCalled();
-        });
-      });
+        spyOn(router, 'navigate');
+
+        component.feature(ORDER_EVENT, 'urgent');
+        tick();
+
+        expect(component.isUrgent).toBe(false);
+        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
+      }));
     });
+
     describe('error', () => {
-      beforeEach(() => {
-        spyOn(itemService, 'purchaseProducts').and.returnValue(Observable.throw({
-          text() {
-            return '';
-          }
-        }));
-        spyOn(component, 'deselect');
-        component.feature({
-          order: [ORDER],
-          total: 10
+      it('should redirect to error', fakeAsync(() => {
+        modalSpy.and.returnValue({
+          componentInstance: componentInstance,
+          result: Promise.resolve('error')
         });
-      });
-      it('should call deselect', () => {
-        expect(component.deselect).toHaveBeenCalled();
-      });
-      it('should call toastr', () => {
-        expect(errorService.i18nError).toHaveBeenCalledWith('bumpError');
-      });
+        spyOn(router, 'navigate');
+
+        component.feature(ORDER_EVENT, 'urgent');
+        tick();
+
+        expect(component.isUrgent).toBe(false);
+        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
+      }));
     });
 
-    describe('getNumberOfProducts', () => {
-      beforeEach(() => {
-        spyOn(component, 'getNumberOfProducts').and.callThrough();
-        spyOn(userService, 'getStats').and.callThrough();
-      });
+  });
 
-      it('should call getStats method form the userService when invoked', () => {
-        component.getNumberOfProducts();
-        component.filterByStatus('published');
-
-        expect(userService.getStats).toHaveBeenCalled();
-      });
-
-      it('should call setNumberOfProducts method when invoked', () => {
-        component.getNumberOfProducts();
-        component.filterByStatus('published');
-
-        expect(component.getNumberOfProducts).toHaveBeenCalled();
-      });
+  describe('getNumberOfProducts', () => {
+    beforeEach(() => {
+      spyOn(component, 'getNumberOfProducts').and.callThrough();
+      spyOn(userService, 'getStats').and.callThrough();
     });
 
-    describe('setNumberOfProducts', () => {
-      beforeEach(() => {
-        spyOn(component, 'getNumberOfProducts').and.callThrough();
-        spyOn(userService, 'getStats').and.callThrough();
-      });
+    it('should call getStats method form the userService when invoked', () => {
+      component.getNumberOfProducts();
+      component.filterByStatus('published');
 
-      it('should set numberOfProducts to the numberOfPublishedProducts when published filter is selected', () => {
-        component.getNumberOfProducts();
-        component.filterByStatus('published');
-
-        expect(component.numberOfProducts).toEqual(mockCounters.publish);
-      });
-
-      it('should set numberOfProducts to the numberOfSoldProducts when sold filter is selected', () => {
-        component.getNumberOfProducts();
-        component.filterByStatus('sold');
-
-        expect(component.numberOfProducts).toEqual(mockCounters.sold);
-      });
+      expect(userService.getStats).toHaveBeenCalled();
     });
 
+    it('should call setNumberOfProducts method when invoked', () => {
+      component.getNumberOfProducts();
+      component.filterByStatus('published');
+
+      expect(component.getNumberOfProducts).toHaveBeenCalled();
+    });
+  });
+
+  describe('setNumberOfProducts', () => {
+    beforeEach(() => {
+      spyOn(component, 'getNumberOfProducts').and.callThrough();
+      spyOn(userService, 'getStats').and.callThrough();
+    });
+
+    it('should set numberOfProducts to the numberOfPublishedProducts when published filter is selected', () => {
+      component.getNumberOfProducts();
+      component.filterByStatus('published');
+
+      expect(component.numberOfProducts).toEqual(mockCounters.publish);
+    });
+
+    it('should set numberOfProducts to the numberOfSoldProducts when sold filter is selected', () => {
+      component.getNumberOfProducts();
+      component.filterByStatus('sold');
+
+      expect(component.numberOfProducts).toEqual(mockCounters.sold);
+    });
   });
 
 

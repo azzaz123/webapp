@@ -207,10 +207,12 @@
   <translation id="3113301792677314615">Lo he vendido por:</translation>
   <translation id="2286494898080570401">¡Gracias!</translation>
   <translation id="2928844379959000123">Tu opinión es muy importante para la<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>comunidad Wallapop.</translation>
-  <translation id="6962699013778688473">Aceptar</translation>
+  <translation id="6962699013778688473">Continuar</translation>
   <translation id="6071814986980529912">Esta vez, ¡véndelo!</translation>
-  <translation id="4836554913661222496">Reactiva tu producto por <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> y vuelve a las primeras posiciones.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Consigue más visibilidad y véndelo antes.</translation>
-  <translation id="6877992122026439414">Reactivar + visibilidad</translation>
+  <translation id="7814524838753447660">Reactiva tu producto con <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{price * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
+      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> y vuelve a las primeras posiciones.</translation>
+  <translation id="5107282366152603486"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Consigue más visibilidad y véndelo antes.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
+  <translation id="2538912110902686738">Reactivar + visibilidad</translation>
   <translation id="3244863581909362906">Sólo reactivar que no quiero venderlo más rápido</translation>
   <translation id="4416413576346763682">Pendiente</translation>
   <translation id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart">Continuar</translation>
@@ -321,7 +323,6 @@
   <translation id="2483251316426820393">Tus productos Destacados aparecerán en zonas exclusivas y bien diferenciadas del muro, que te darán más visibilidad y preferencia respecto a otros productos.</translation>
   <translation id="3258601590058086652">¿Tienes prisa para vender tu producto?</translation>
   <translation id="4495547321385209565">Diferencia tu producto durante 7 días en el muro para que sea más fácil de encontrar mediante el filtro "Urge"</translation>
-  <translation id="4568320268241275650">Marcar como urgente por <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>€</translation>
   <translation id="4532380494593950343">Aquí podrás ver y editar los datos de tu perfil</translation>
   <translation id="5433688037539750263">Tus productos</translation>
   <translation id="1953428607881051577">Aquí podrás subir productos, gestionar los que ya tienes y destacarlos para venderlos antes</translation>
@@ -333,7 +334,6 @@
   <translation id="442085080206895883">productos</translation>
   <translation id="776785241867401546">producto</translation>
   <translation id="994157966875519838">opinión</translation>
-  <translation id="6583839768249288834">Por sólo <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge. </translation>
   <translation id="1367227703192400664">Marcar como urgente</translation>
   <translation id="1002906181596709279">Tu producto será mucho más visible y lo venderás antes</translation>
   <translation id="2212105134437554730">Estás siendo redirigido a nuestra pasarela de pago<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>.<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
@@ -614,8 +614,8 @@
   <translation id="8964250385363025364">¡Productos Destacados!</translation>
   <translation id="4568163159205829962">Todo ha ido bien y tus productos ya son más visibles. ¡Ahora a venderlo todo!</translation>
   <translation id="3799187930195457932">Has usado</translation>
-  <translation id="5301482109060388986">Y te quedan <ph name="INTERPOLATION"><ex>{{credit | number}}</ex></ph> wallacoins</translation>
-  <translation id="5708951428326419939">Y te quedan <ph name="INTERPOLATION"><ex>{{credit | customCurrency}}</ex></ph> de saldo</translation>
+  <translation id="5579960282842930509">Y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
+  <translation id="3834459376438494911">Y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
   <translation id="5880798667461104338">Comprar más saldo</translation>
   <translation id="8191075807274604024">Ir a mi catálogo</translation>
   <translation id="5722262557807435110">Algo no ha ido bien :(</translation>
@@ -636,4 +636,38 @@
   <translation id="5484168340945543767">Aquí podrás comprar packs de ahorro para tus Destacados y ver tu saldo disponible.</translation>
   <translation id="2304802134193899623">Todo ha ido perfecto. Hemos añadido <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.quantity | number}}</ex></ph> wallacoins<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu cartera. Con ellos podrás destacar tus productos. Recuerda que solo están (por el momento) disponibles en web y que no se puede intercambiar por Euros.</translation>
   <translation id="5174338286786022523">Todo ha ido perfecto. Hemos cargado <ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.quantity | customCurrency}}</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> en tu saldo para destacar productos. Ahora, ¡a destacar!</translation>
+  <translation id="1895957424873987405">Empleo</translation>
+  <translation id="70240206675549090">¿Wallacoins? Los wallacoins son la nueva moneda de wallapop con la que podrás ahorrar comprando Destacados. Hazte con alguno de nuestros packs y te regalaremos más wallacoins para tus compras.</translation>
+  <translation id="7478441329490273363">¿Qué es esto? Son packs de ahorro para tus Destacados. Recarga tu saldo aquí y obtendrás descuentos para comprar tus Destacados.</translation>
+  <translation id="8329528856479718352">Marcar como urgente</translation>
+  <translation id="708817521397622777">Paga parte con tu saldo y con tu tarjeta de pago seguro a través de Banco Sabadell:</translation>
+  <translation id="3743194622120127205">Paga parte con tus wallacoins y con tu tarjeta de pago seguro a través de Banco Sabadell:</translation>
+  <translation id="3549265484659972037">Paga con tu saldo:</translation>
+  <translation id="5266269636016082386">Paga con tus wallacoins:</translation>
+  <translation id="5575054737649759998">
+    Por sólo <ph name="INTERPOLATION"><ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
+    <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+    <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+    marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
+  </translation>
+  <translation id="4418606013051113523">Marcar como urgente por <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
+      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="1666676372989024280">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
+  <translation id="3938280541945338173">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> de saldo</translation>
+  <translation id="349473182974314723">Tu producto se ha reactivado correctamente a wallapop y ha subido a las primeras posiciones</translation>
+  <translation id="6818519335368680373">Número de puertas</translation>
+  <translation id="1673708681290091875">Caballos</translation>
+  <translation id="1679509264092655850">Presentamos... ¡wallacoins!</translation>
+  <translation id="6032356805176766219">Una nueva moneda de cambio para comprar tus Destacados.</translation>
+  <translation id="977443694790489693">Presentamos... ¡Saldo!</translation>
+  <translation id="1923907148262898536">Ya no hace falta que pagues por cada Destacado. Ahora puedes comprar packs de Destacados..., ¡y ahorrar!</translation>
+  <translation id="7310579825724301285">Packs personalizados</translation>
+  <translation id="6105008229590992791">Tú escoges cuántas wallacoins quieres comprar. En función de tus necesidades, podrás escoger el pack de wallacoins que mejor se adapte a ti.</translation>
+  <translation id="4047068775001617459">En función de tus necesidades, podrás escoger el pack que mejor se adapte a ti. Tanto si compras muchos Destacados como pocos, ahorrarás seguro.</translation>
+  <translation id="2363998753044006673">Ahorra con tus wallacoins</translation>
+  <translation id="7468243639829626176">Compra nuestros packs y consigue wallacoins gratis. Cuanto más grande sea el pack, más te regalaremos.</translation>
+  <translation id="3975193160474724854">Solo para tus Destacados</translation>
+  <translation id="2029069198994571617">Ojo, el Saldo disponible solo podrás usarlo para comprar tus Destacados. Igualmente, tiene muchas ventajas, ahorrarás dinero y sólo pagarás una vez.</translation>
+  <translation id="3646679051227826982">Ir a wallacoins</translation>
+  <translation id="78876651719315122">Ir a saldo</translation>
 </translationbundle>
