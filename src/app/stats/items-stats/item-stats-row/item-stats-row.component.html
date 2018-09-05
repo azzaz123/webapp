@@ -30,7 +30,10 @@
       <mat-icon svgIcon="caret"></mat-icon>
     </div>
   </div>
-  <div class="row stats-expanded" *ngIf="open">
-
+  <div class="stats-expanded" *ngIf="open">
+    <div class="graphs-container">
+      <tsl-item-stats-graph></tsl-item-stats-graph>
+      <tsl-item-stats-graph type="favs"></tsl-item-stats-graph>
+    </div>
   </div>
 </div>

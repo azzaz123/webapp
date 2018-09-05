@@ -60,5 +60,17 @@
 }
 
 .stats-expanded {
-  height: 390px;
+  padding-top: $spacing-L;
+  .graphs-container {
+    width: 770px;
+    background-color: rgba($grey-50, .5);
+    padding: $spacing;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    tsl-item-stats-graph {
+      width:355px;
+      height: 358px;
+    }
+  }
 }

@@ -1,0 +1,37 @@
+@import "~style/common";
+
+:host {
+  position: relative;
+  display: block;
+}
+
+.chart {
+  background-color: $white;
+  border-radius: $border-radius;
+  padding-top: $spacing-XS;
+}
+
+.chart {
+  /deep/ {
+    a {
+      display: none !important;
+    }
+    text {
+      font-family: $wallie;
+    }
+    .amcharts-axis-label, .amcharts-balloon-div-categoryAxis {
+      text-transform: uppercase;
+      div {
+        font-family: $wallie !important;
+        font-size: $font-size-XXS !important;
+        font-weight: bold !important;
+        line-height: 18px !important;
+      }
+    }
+    .amcharts-legend-label {
+      text-transform: uppercase;
+      font-family: $wallie !important;
+      font-weight: bold !important;
+    }
+  }
+}
