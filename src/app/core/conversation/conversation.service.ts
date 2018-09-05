@@ -209,13 +209,13 @@ export class ConversationService extends LeadService {
     return Math.ceil((index + 1) / this.PAGE_SIZE);
   }
 
-  public findMessage(messages: Message[], message: Message): Message {
+  private findMessage(messages: Message[], message: Message): Message {
     return messages.filter((msg: Message): boolean => {
       return (msg.id === message.id);
     })[0];
   }
 
-  public addMessage(conversation: Conversation, message: Message): boolean {
+  private addMessage(conversation: Conversation, message: Message): boolean {
     if (!this.findMessage(conversation.messages, message)) {
       conversation.messages.push(message);
       conversation.messages.sort((a, b) => {
