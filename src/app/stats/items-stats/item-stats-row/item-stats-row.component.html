@@ -32,8 +32,31 @@
   </div>
   <div class="stats-expanded" *ngIf="open">
     <div class="graphs-container">
-      <tsl-item-stats-graph></tsl-item-stats-graph>
-      <tsl-item-stats-graph type="favs"></tsl-item-stats-graph>
+      <tsl-item-stats-graph [item]="item"></tsl-item-stats-graph>
+      <tsl-item-stats-graph [item]="item" type="favs"></tsl-item-stats-graph>
+    </div>
+    <div class="graphs-container graph-info">
+      <h2>
+        <span *ngIf="!item.featured" i18n>VISIBILITY OVERVIEW</span>
+        <span *ngIf="item.featured">{{item.flags.bump_type}}</span>
+      </h2>
+      <ul class="info">
+        <li>
+          <span><b>35</b> Views</span>
+          <div class="percent positive"><mat-icon svgIcon="up-arrow"></mat-icon>147%</div>
+        </li>
+        <li>
+          <span><b>24</b> Chats</span>
+          <div class="percent negative"><mat-icon svgIcon="up-arrow"></mat-icon>147%</div>
+        </li>
+        <li>
+          <span><b>12</b> Favorites</span>
+          <div class="percent positive"><mat-icon svgIcon="up-arrow"></mat-icon>147%</div>
+        </li>
+      </ul>
+      <p class="note">*Comparativa con la semana anterior. Datos medios de entradas y chats, y esas cosas, calculados guay</p>
+      <tsl-button *ngIf="!item.featured" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n>Feature it</tsl-button>
+      <p class="bump-note" *ngIf="item.featured">Your feature ends on {{item.bumpExpiringDate | amCalendar:momentConfig}}</p>
     </div>
   </div>
 </div>

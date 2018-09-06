@@ -262,4 +262,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('wallacoins-nav', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wallacoins-nav.svg'));
   matIconRegistry.addSvgIcon('coin', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/coin.svg'));
   matIconRegistry.addSvgIcon('slider-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/slider-arrow.svg'));
+  matIconRegistry.addSvgIcon('up-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/up-arrow.svg'));
 }

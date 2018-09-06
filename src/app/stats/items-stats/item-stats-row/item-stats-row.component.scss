@@ -3,9 +3,9 @@
 .item {
   padding: $spacing-XS 0 $spacing-XS $spacing-L;
   border-bottom: 1px solid $grey-50;
-  cursor: pointer;
   &:hover:not(.active) {
     background-color: $grey-50;
+    cursor: pointer;
   }
 }
 
@@ -61,6 +61,10 @@
 
 .stats-expanded {
   padding-top: $spacing-L;
+  display: flex;
+  justify-content: space-between;
+  padding-right: $spacing-L;
+  padding-bottom: $spacing-2M;
   .graphs-container {
     width: 770px;
     background-color: rgba($grey-50, .5);
@@ -71,6 +75,74 @@
     tsl-item-stats-graph {
       width:355px;
       height: 358px;
+    }
+  }
+  .graph-info {
+    width: 327px;
+    flex-direction: column;
+    h2 {
+      font-size: $font-size-S;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    .info {
+      border-radius: $border-radius;
+      background-color: $white;
+      padding: $spacing;
+      list-style: none;
+      margin: 0;
+      color: $grey-250;
+      b {
+        color: $grey-900;
+      }
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $spacing-S;
+      }
+      .percent {
+        font-weight: bold;
+        mat-icon {
+          width: 10px;
+          height: 12px;
+          margin-right: $spacing-XXS;
+        }
+        &.positive {
+          color: $success;
+        }
+        &.negative {
+          color: $warn;
+          mat-icon {
+            /deep/ {
+              svg {
+                transform: rotate(180deg);
+                transform-origin: center;
+              }
+              path {
+                fill: $warn;
+              }
+            }
+          }
+        }
+      }
+    }
+    .note, .bump-note {
+      color: $grey-250;
+      text-align: center;
+      font-size: $font-size-S;
+    }
+    .bump-note {
+      color: $grey-500;
+      font-weight: bold;
+    }
+    tsl-button {
+      margin: 0 auto;
+      /deep/ {
+        .btn {
+          padding: 10px 74px;
+        }
+      }
     }
   }
 }

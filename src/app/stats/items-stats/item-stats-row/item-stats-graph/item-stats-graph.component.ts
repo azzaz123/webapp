@@ -3,6 +3,7 @@ import { AmChart, AmChartsService } from '@amcharts/amcharts3-angular';
 import { UUID } from 'angular2-uuid';
 import { ItemStatsService } from './item-stats.service';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from './item-stats-response.interface';
+import { Item } from '../../../../core/item/item';
 
 @Component({
   selector: 'tsl-item-stats-graph',
@@ -12,6 +13,7 @@ import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from './item-
 export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
 
   @Input() type: string;
+  @Input() item: Item;
   public id: string = 'chart-' + UUID.UUID();
   private chart: AmChart;
   private chartOptions: any = {
@@ -167,11 +169,13 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
         'fillColorsField': 'colorViews',
       });
     }
-    this.chartOptions.graphs.push({
-      ...columnGraphOptions,
-      'id': 'City Bump',
-      'title': 'City Bump'
-    });
+    if (this.item.featured) {
+      this.chartOptions.graphs.push({
+        ...columnGraphOptions,
+        'id': this.item.flags.bump_type,
+        'title': this.item.flags.bump_type
+      });
+    }
   }
 
   private loadStats() {
