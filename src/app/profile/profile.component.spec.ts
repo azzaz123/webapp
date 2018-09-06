@@ -3,10 +3,10 @@ import { ProfileComponent } from './profile.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Response, ResponseOptions } from '@angular/http';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MOCK_FULL_USER, USER_DATA, USER_URL } from '../../tests/user.fixtures.spec';
+import { MOCK_FULL_USER, USER_DATA, USER_URL, USER_WEB_SLUG } from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { HttpService } from '../core/http/http.service';
@@ -107,7 +107,7 @@ describe('ProfileComponent', () => {
     });
 
     it('should set userUrl', () => {
-      expect(component.userUrl).toBe(USER_URL);
+      expect(component.userUrl).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + USER_WEB_SLUG);
     });
 
     it('should set profileForm with user data', () => {

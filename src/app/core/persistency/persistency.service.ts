@@ -1,7 +1,6 @@
 import PouchDB from 'pouchdb';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer, throwError } from 'rxjs';
 import * as _ from 'lodash';
 import { Message } from '../message/message';
 import {
@@ -226,7 +225,7 @@ export class PersistencyService {
 
   private upsert(db, docId, diffFun) {
     if (typeof docId !== 'string') {
-      return Promise.reject(new Error('doc id is required'));
+      return throwError(new Error("doc id is required"));
     }
 
     return db.get(docId)['catch']((err) => {

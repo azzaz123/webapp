@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { RealestateKeysService } from './realestate-keys.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Router } from '@angular/router';
 import { Key } from './key.interface';
@@ -252,7 +252,7 @@ describe('UploadRealestateComponent', () => {
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true }]);
     });
 
     it('should redirect with onHold true', () => {

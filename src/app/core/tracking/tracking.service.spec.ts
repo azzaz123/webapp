@@ -2,7 +2,7 @@
 
 import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { TrackingService } from './tracking.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { HttpService } from '../http/http.service';

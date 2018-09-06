@@ -4,7 +4,7 @@ import { BuyProductModalComponent } from './buy-product-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
-import { Observable } from 'rxjs/Observable';
+import { Observable, throwError } from 'rxjs';
 import { MOCK_ITEM_V3, ORDER_EVENT } from '../../../../../tests/item.fixtures.spec';
 import { ItemService } from '../../../../core/item/item.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -262,11 +262,14 @@ describe('BuyProductModalComponent', () => {
               });
             });
 
-            afterEach(() => {
-              it('should call pay', () => {
-                expect(paymentService.pay).toHaveBeenCalledWith('UUID');
+            describe('on checkout', () => {
+              afterEach(() => {
+                it('should call pay', () => {
+                  expect(paymentService.pay).toHaveBeenCalledWith('UUID');
+                });
               });
             });
+
           });
         });
       });
@@ -287,23 +290,19 @@ describe('BuyProductModalComponent', () => {
         });
       });
 
-    });
+      describe('error', () => {
+        beforeEach(() => {
+          spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(Observable.throwError(''));
 
-    describe('error', () => {
-      it('should call toastr', () => {
-        spyOn(itemService, 'purchaseProductsWithCredits').and.returnValue(Observable.throw({
-          text() {
-            return '';
-          }
-        }));
-
-        component.checkout();
+          component.checkout();
+        });
 
         it('should close with error', () => {
           expect(activeModal.close).toHaveBeenCalledWith('error');
         });
-      });
-    });
 
+      });
+
+    });
   });
 });

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { UserReviewService } from './user-review.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ReviewsData } from './review-response.interface';
 import { REVIEWS_RESPONSE, MOCK_REVIEWS } from '../../tests/review.fixtures.spec';
 import { Response, ResponseOptions, Headers } from '@angular/http';

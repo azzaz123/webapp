@@ -187,15 +187,18 @@ describe('HereMapsComponent', () => {
       });
     });
 
-    afterEach(() => {
-      it('should set map center and zoom', () => {
-        expect(Map.setZoom).toHaveBeenCalledWith(MAP_ZOOM_MARKER);
-        expect(Map.setCenter).toHaveBeenCalledWith({
-          lat: USER_LOCATION_COORDINATES.latitude,
-          lng: USER_LOCATION_COORDINATES.longitude
+    describe('update coordinates', () => {
+      afterEach(() => {
+        it('should set map center and zoom', () => {
+          expect(Map.setZoom).toHaveBeenCalledWith(MAP_ZOOM_MARKER);
+          expect(Map.setCenter).toHaveBeenCalledWith({
+            lat: USER_LOCATION_COORDINATES.latitude,
+            lng: USER_LOCATION_COORDINATES.longitude
+          });
         });
       });
     });
 
   });
 });
+

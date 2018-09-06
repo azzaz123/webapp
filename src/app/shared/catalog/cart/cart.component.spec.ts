@@ -5,7 +5,7 @@ import { CustomCurrencyPipe } from '../../custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CartService } from './cart.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
 import {

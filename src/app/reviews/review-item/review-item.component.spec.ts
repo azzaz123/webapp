@@ -3,9 +3,7 @@ import { ReviewItemComponent } from './review-item.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MOCK_REVIEWS, REVIEWS_RESPONSE } from '../../../tests/review.fixtures.spec';
 import { SanitizedBackgroundDirective } from '../../shared/sanitized-background/sanitized-background.directive';
-
-const WEB_SLUG_ITEM = 'https://www.wallapop.com/item/';
-const WEB_SLUG_USER = 'https://www.wallapop.com/user/';
+import { environment } from '../../../environments/environment';
 
 describe('ReviewItemComponent', () => {
   let component: ReviewItemComponent;
@@ -32,11 +30,11 @@ describe('ReviewItemComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set itemWebLink', () => {
-      expect(component.itemWebLink).toBe(WEB_SLUG_ITEM + MOCK_REVIEWS[0].item.webSlug);
+      expect(component.itemWebLink).toBe(environment.siteUrl.replace('es', 'www') + 'item/' + MOCK_REVIEWS[0].item.webSlug);
     });
 
     it('should set userWebSlug', () => {
-      expect(component.userWebSlug).toBe(WEB_SLUG_USER + REVIEWS_RESPONSE[0].user.web_slug);
+      expect(component.userWebSlug).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + REVIEWS_RESPONSE[0].user.web_slug);
     });
   });
 });

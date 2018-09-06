@@ -3,7 +3,7 @@ import { CheckoutProItemComponent } from './checkout-pro-item.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { DecimalPipe } from '@angular/common';
 import { CalendarDates } from '../range-datepicker/calendar-dates';
 import { CartService } from '../../../shared/catalog/cart/cart.service';
@@ -12,7 +12,7 @@ import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
 import { ITEM_ID, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { MOCK_DATE2, MOCK_DATE3 } from '../../../../tests/calendar.fixtures.spec';
-import { MOCK_PROITEM } from '../../../../tests/pro-item.fixtures.spec';
+import { MOCK_PROITEM, MOCK_PROITEM3 } from '../../../../tests/pro-item.fixtures.spec';
 
 describe('CheckoutProItemComponent', () => {
   let component: CheckoutProItemComponent;
@@ -65,7 +65,7 @@ describe('CheckoutProItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutProItemComponent);
     component = fixture.componentInstance;
-    component.cartProItem = MOCK_PROITEM;
+    component.cartProItem = MOCK_PROITEM3;
     fixture.detectChanges();
     cartService = TestBed.get(CartService);
     calendar = TestBed.get(NgbCalendar);

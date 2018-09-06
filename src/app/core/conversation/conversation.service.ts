@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Injectable, NgZone } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { Conversation } from './conversation';
 import { ConnectionService } from '../connection/connection.service';

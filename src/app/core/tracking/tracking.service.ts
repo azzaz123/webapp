@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie';
 import { HttpService } from '../http/http.service';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 const maxBatchSize = 100;
 const sendInterval = 60000;

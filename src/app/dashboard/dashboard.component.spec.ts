@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { DashboardComponent } from './dashboard.component';
 import { EventService } from '../core/event/event.service';
 import { ConversationService } from '../core/conversation/conversation.service';

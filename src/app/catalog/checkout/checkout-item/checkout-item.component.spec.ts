@@ -10,7 +10,7 @@ import {
 import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { Cart } from '../../../shared/catalog/cart/cart';
 import { CartChange } from '../../../shared/catalog/cart/cart-item.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 describe('CheckoutItemComponent', () => {
   let component: CheckoutItemComponent;
@@ -114,13 +114,14 @@ describe('CheckoutItemComponent', () => {
 
         component.ngOnInit();
       });
-    });
 
-    afterEach(() => {
-      expect(component.selectedType).toBeUndefined();
-      expect(component.selectedDuration).toBeUndefined();
-      expect(component.itemWithProducts.item.flags.bump_type).toBeUndefined();
-      expect(component.itemWithProducts.item.flags.bumped).toBeFalsy();
+      afterEach(() => {
+        expect(component.selectedType).toBeUndefined();
+        expect(component.selectedDuration).toBeUndefined();
+        expect(component.itemWithProducts.item.flags.bump_type).toBeUndefined();
+        expect(component.itemWithProducts.item.flags.bumped).toBeFalsy();
+      });
+
     });
   });
 

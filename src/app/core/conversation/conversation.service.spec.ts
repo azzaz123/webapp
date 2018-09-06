@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ConversationService } from './conversation.service';
 import { HttpService } from '../http/http.service';
 import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Conversation } from './conversation';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
@@ -1400,9 +1400,11 @@ describe('Service: Conversation', () => {
     it('should bump the conversation to the top if it is not already on the top', () => {
       expect(service.leads[0].id).toBe(CONVERSATION_ID);
       expect(service.leads[1].id).toBe(SECOND_MOCK_CONVERSATION.id);
+
       service.handleNewMessages(
         new Message(MESSAGE_MAIN.id, SECOND_MOCK_CONVERSATION.id, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date),
         false);
+
       expect(service.leads[0].id).toBe(SECOND_MOCK_CONVERSATION.id);
       expect(service.leads[1].id).toBe(CONVERSATION_ID);
     });

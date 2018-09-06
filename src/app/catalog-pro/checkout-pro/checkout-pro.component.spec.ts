@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CheckoutProComponent } from './checkout-pro.component';
 import { ItemService } from '../../core/item/item.service';
 import { ITEMS_WITH_PRODUCTS, ITEM_ID } from '../../../tests/item.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MOCK_PROITEM } from '../../../tests/pro-item.fixtures.spec';
 import { MOCK_SELECTED_DATES } from '../../../tests/calendar.fixtures.spec';

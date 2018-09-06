@@ -14,7 +14,7 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { XmppTimestampMessage, XmppBodyMessage } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MessagePayload } from '../message/messages.interface';
 import { MOCK_PAYLOAD_KO,
   MOCK_PAYLOAD_OK,
@@ -1462,10 +1462,11 @@ describe('Service: Xmpp', () => {
     beforeEach(() => {
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
     });
-    it('should remove user from blocked list and call sendIq', () => {
+    it('should remove user from blocked list and call sendIq', fakeAsync(() => {
       service['blockedUsers'] = [...JIDS, USER_ID + '@wallapop.com'];
 
       service.unblockUser(MOCK_USER).subscribe();
+      tick();
 
       expect(service['blockedUsers'].length).toBe(3);
       expect(MOCKED_CLIENT.sendIq).toHaveBeenCalledWith({
@@ -1477,7 +1478,7 @@ describe('Service: Xmpp', () => {
           }
         }
       });
-    });
+    }));
     it('should set user.blocked', fakeAsync(() => {
       service['blockedUsers'] = [USER_ID + '@wallapop.com'];
       MOCK_USER.blocked = true;
@@ -1504,7 +1505,6 @@ describe('Service: Xmpp', () => {
   describe('isBlocked', () => {
     it('should return true if user is in the blockedList', () => {
       service['blockedUsers'] = JIDS;
-
       expect(service.isBlocked('2')).toBe(true);
     });
     it('should return false if user is NOT in the blockedList', () => {

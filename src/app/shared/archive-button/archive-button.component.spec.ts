@@ -2,7 +2,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ArchiveButtonComponent } from './archive-button.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';

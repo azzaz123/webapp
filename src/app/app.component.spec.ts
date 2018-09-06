@@ -9,7 +9,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/throw';
 import { ConversationService } from './core/conversation/conversation.service';

@@ -8,7 +8,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
 import {
   CUSTOM_REASON,
@@ -351,7 +351,7 @@ describe('Service: User', () => {
     });
 
     it('should call endpoint', () => {
-      expect(http.postNoBase).toHaveBeenCalledWith('https://www.wallapop.com/rest/logout', undefined, undefined, true);
+      expect(http.postNoBase).toHaveBeenCalledWith(environment.siteUrl.replace('es', 'www') + 'rest/logout', undefined, undefined, true);
     });
 
     it('should call deleteAccessToken', () => {

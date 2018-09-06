@@ -4,7 +4,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response, ResponseOptions } from '@angular/http';
 import { GdprModalComponent } from './gdpr-modal.component';
 import { HttpService } from '../../core/http/http.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../environments/environment';
 import { PrivacyService } from '../../core/privacy/privacy.service';

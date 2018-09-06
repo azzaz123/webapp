@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, from } from 'rxjs';
 import { Observer } from 'rxjs/Observer';
 import { PersistencyService } from '../persistency/persistency.service';
 import { MessagesData, MetaInfo } from '../message/messages.interface';
@@ -443,7 +443,7 @@ export class XmppService {
   }
 
   private setDefaultPrivacyList(): Observable<any> {
-    return Observable.fromPromise(this.client.sendIq({
+    return Observable.from(this.client.sendIq({
       type: 'set',
       privacy: {
         default: {
@@ -455,7 +455,7 @@ export class XmppService {
   }
 
   private getPrivacyList(): Observable<any> {
-    return Observable.fromPromise(this.client.sendIq({
+    return Observable.from(this.client.sendIq({
       type: 'get',
       privacy: {
         list: {
@@ -516,7 +516,7 @@ export class XmppService {
   }
 
   private setPrivacyList(jids: string[]): Observable<any> {
-    return Observable.fromPromise(this.client.sendIq({
+    return Observable.from(this.client.sendIq({
       type: 'set',
       privacy: {
         list: {

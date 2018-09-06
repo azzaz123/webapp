@@ -5,7 +5,7 @@ import { CallsService } from '../core/conversation/calls.service';
 import { ActivatedRoute } from '@angular/router';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { createCallsArray } from '../../tests/call.fixtures';
 import { Call } from '../core/conversation/calls';
