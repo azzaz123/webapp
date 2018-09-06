@@ -14,6 +14,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
 
   @Input() type: string;
   @Input() item: Item;
+  @Input() statsData: ItemStatisticFullResponse;
   public id: string = 'chart-' + UUID.UUID();
   private chart: AmChart;
   private chartOptions: any = {
@@ -128,7 +129,6 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
   };
 
   constructor(private AmCharts: AmChartsService,
-              private itemStatsService: ItemStatsService,
               @Inject(LOCALE_ID) private locale: string) { }
 
   ngAfterViewInit() {
@@ -179,21 +179,19 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
   }
 
   private loadStats() {
-    this.itemStatsService.getStatistics().subscribe((response: ItemStatisticFullResponse) => {
-      this.chartOptions.dataProvider = [];
-      response.entries.forEach((entry: ItemStatisticEntriesResponse) => {
-        this.chartOptions.dataProvider.push({
-          date: +entry.date,
-          favs: entry.values.favs || 0, // TODO: replace
-          views: entry.values.views || 0,
-          chats: entry.values.chats || 0,
-          colorChats: entry.bumped ? '#0f9989' : '#ecb052',
-          colorViews: entry.bumped ? '#71dacd' : '#ffd89b',
-          colorFavs: entry.bumped ? '#71dacd' : '#ffcbd9'
-        });
+    this.chartOptions.dataProvider = [];
+    this.statsData.entries.forEach((entry: ItemStatisticEntriesResponse) => {
+      this.chartOptions.dataProvider.push({
+        date: +entry.date,
+        favs: entry.values.favs || 0, // TODO: replace
+        views: entry.values.views || 0,
+        chats: entry.values.chats || 0,
+        colorChats: entry.bumped ? '#0f9989' : '#ecb052',
+        colorViews: entry.bumped ? '#71dacd' : '#ffd89b',
+        colorFavs: entry.bumped ? '#71dacd' : '#ffcbd9'
       });
-      this.chart = this.AmCharts.makeChart(this.id, this.chartOptions);
     });
+    this.chart = this.AmCharts.makeChart(this.id, this.chartOptions);
   }
 
   ngOnDestroy() {
