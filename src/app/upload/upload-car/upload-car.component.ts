@@ -43,6 +43,7 @@ export class UploadCarComponent implements OnInit {
   private oldFormValue: any;
   public isUrgent = false;
   public customMake = false;
+  public customVersion = false;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -354,6 +355,10 @@ export class UploadCarComponent implements OnInit {
       this.toggleField('year', 'disable');
       this.toggleField('version', 'disable');
     }
+  }
+
+  public toggleCustomVersionSelection() {
+      this.customVersion = !this.customVersion;
   }
 
 }

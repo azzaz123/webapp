@@ -83,8 +83,14 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label for="version" i18n>Version</label>
-          <ng-select *ngIf="!customMake" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" for="version" [options]="versions" (selected)="getInfo($event.value)"></ng-select>
-          <input *ngIf="customMake" type="text" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" id="version" />
+          <div class="pull-right">
+            <a class="other-make" (click)="toggleCustomVersionSelection()">
+              <span *ngIf="!customVersion" i18n>Select another version</span>
+              <span *ngIf="customVersion" i18n>Select a predefined version</span>
+            </a>
+          </div>
+          <ng-select *ngIf="!customMake && !customVersion" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" for="version" [options]="versions" (selected)="getInfo($event.value)"></ng-select>
+          <input *ngIf="customMake || customVersion" type="text" i18n-placeholder placeholder="Is is a particular model or series?" class="form-control" formControlName="version" id="version" />
         </div>
       </div>
       <div class="col-sm-6">
