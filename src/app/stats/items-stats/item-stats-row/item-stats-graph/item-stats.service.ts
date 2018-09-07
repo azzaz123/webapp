@@ -8,7 +8,7 @@ import { ItemStatisticFullResponse } from './item-stats-response.interface';
 @Injectable()
 export class ItemStatsService {
 
-  constructor(private http: HttpService) {
+  constructor() {
   }
 
   public getStatistics(): Observable<ItemStatisticFullResponse> {
