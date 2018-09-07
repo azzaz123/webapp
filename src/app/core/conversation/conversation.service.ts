@@ -232,7 +232,7 @@ export class ConversationService extends LeadService {
               item_id: conversation.item.id
             }
           };
-          this.trackingService.pendingTrackingEvents.push(trackEvent);
+          this.trackingService.addTrackingEvent(trackEvent, false);
           this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
         });
         this.handleUnreadMessage(conversation);
@@ -260,16 +260,21 @@ export class ConversationService extends LeadService {
       .map((message) => {
       message.status = messageStatus.READ;
         this.persistencyService.updateMessageStatus(message.id, messageStatus.READ);
-        if (fromSelf) {
-          const trackEvent: TrackingEventData = {
-            eventData: TrackingService.MESSAGE_READ,
-            attributes: {
+        const eventAttributes = {
               thread_id: message.conversationId,
               message_id: message.id,
               item_id: conversation.item.id
-            }
           };
-          this.trackingService.pendingTrackingEvents.push(trackEvent);
+        if (fromSelf) {
+          this.trackingService.addTrackingEvent({
+            eventData: TrackingService.MESSAGE_READ,
+            attributes: eventAttributes
+          }, false);
+        } else {
+          this.trackingService.addTrackingEvent({
+            eventData: TrackingService.MESSAGE_READ_ACK,
+            attributes: eventAttributes
+          }, false);
         }
     });
   }
@@ -301,7 +306,7 @@ export class ConversationService extends LeadService {
         break;
       }
 
-    this.trackingService.pendingTrackingEvents.push(trackingEv);
+    this.trackingService.addTrackingEvent(trackingEv, false);
   }
 
   public get(id: string): Observable<Conversation> {

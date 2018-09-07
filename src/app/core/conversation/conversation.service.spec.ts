@@ -735,6 +735,7 @@ describe('Service: Conversation', () => {
     it(`should update message status to READ and push tracking events ONLY for messages that meet the criteria:
         status is 'received' OR 'sent' AND message is fromSelf`, () => {
       spyOn(persistencyService, 'updateMessageStatus');
+      spyOn(trackingService, 'addTrackingEvent');
       const mockedConversation = MOCK_CONVERSATION();
       const timestamp = new Date().getTime();
       mockedConversation.messages = [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER];
@@ -758,13 +759,13 @@ describe('Service: Conversation', () => {
       expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(2);
       expectedMarkedAsRead.forEach(m => {
         attributes.message_id = m.id;
-        expect(trackingService.pendingTrackingEvents).toContain({eventData: TrackingService.MESSAGE_READ, attributes: attributes});
+        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_READ, attributes: attributes}, false);
         expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m.id, messageStatus.READ);
       });
 
       expectedNotMarkedAsRead.forEach(m => {
         attributes.message_id = m.id;
-        expect(trackingService.pendingTrackingEvents).not.toContain({eventData: TrackingService.MESSAGE_READ, attributes: attributes});
+        expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_READ, attributes: attributes}, false);
         expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m.id, messageStatus.READ);
       });
     });
@@ -811,6 +812,7 @@ describe('Service: Conversation', () => {
     it(`should update message status and add a tracking event ONLY for messages that meet the criteria:
         message status is missing OR message status is NULL OR the new status order is greater than the current status order`, () => {
       spyOn(persistencyService, 'updateMessageStatus');
+      spyOn(trackingService, 'addTrackingEvent');
       const mockedConversation = MOCK_CONVERSATION();
       mockedConversation.messages = [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER];
       mockedConversation.messages[0].status = messageStatus.SENT;
@@ -833,19 +835,13 @@ describe('Service: Conversation', () => {
       expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(2);
       expectedChangedMessages.forEach(m => {
         attributes.message_id = m.id;
-        expect(trackingService.pendingTrackingEvents).toContain({
-          eventData: TrackingService.MESSAGE_RECEIVED,
-          attributes: attributes
-        });
+        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_RECEIVED, attributes: attributes}, false);
         expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(m.id, messageStatus.RECEIVED);
       });
 
       expectedNotChangedMessages.forEach(m => {
         attributes.message_id = m.id;
-        expect(trackingService.pendingTrackingEvents).not.toContain({
-          eventData: TrackingService.MESSAGE_SENT,
-          attributes: attributes
-        });
+        expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_SENT, attributes: attributes}, false);
         expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m.id, messageStatus.SENT);
       });
     });
@@ -1293,21 +1289,22 @@ describe('Service: Conversation', () => {
       });
 
       it('should add a new MESSAGE_RECEIVED_ACK event to pendingTrackingEvents when a new message is received', () => {
-        const message = new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, MESSAGE_MAIN.body, OTHE_USER_ID, MESSAGE_MAIN_UPDATED.date);
+        spyOn(trackingService, 'addTrackingEvent');
+        const message = new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, MESSAGE_MAIN.body, OTHER_USER_ID, MESSAGE_MAIN_UPDATED.date);
         message.user = MOCK_USER;
 
         service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
         (service as any).onNewMessage(message, true);
         eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
 
-        expect(trackingService.pendingTrackingEvents).toContain({
+        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
           eventData: TrackingService.MESSAGE_RECEIVED_ACK,
           attributes: {
             thread_id: MESSAGE_MAIN.thread,
             message_id: MESSAGE_MAIN.id,
             item_id: ITEM_ID
           }
-        });
+        }, false);
       });
 
       it('should NOT track MESSAGE_RECEIVED_ACK when the recepit has already been sent', () => {
@@ -1501,6 +1498,7 @@ describe('Service: Conversation', () => {
       const mockedConversation = MOCK_CONVERSATION();
 
       beforeEach(() => {
+        spyOn(trackingService, 'addTrackingEvent');
         service.leads = [];
         service.archivedLeads = [mockedConversation, SECOND_MOCK_CONVERSATION];
       });
@@ -1577,14 +1575,14 @@ describe('Service: Conversation', () => {
         service.handleNewMessages(message, false);
         eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
 
-        expect(trackingService.pendingTrackingEvents).toContain({
+        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
           eventData: TrackingService.MESSAGE_RECEIVED_ACK,
           attributes: {
             thread_id: message.conversationId,
             message_id: message.id,
             item_id: mockedConversation.item.id
           }
-        });
+        }, false);
       });
 
     });
