@@ -607,6 +607,7 @@ describe('Service: Xmpp', () => {
     });
 
     it('should add MessageSent event in the pendingTrackingEvents queue', () => {
+      spyOn(trackingService, 'addTrackingEvent');
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
 
       service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
@@ -629,7 +630,7 @@ describe('Service: Xmpp', () => {
         }
       };
 
-      expect(trackingService.pendingTrackingEvents).toContain(expectedEvent);
+      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(expectedEvent, false);
     });
 
     it('should send a new message with the true updateDate parameter', () => {

@@ -80,7 +80,7 @@ export class XmppService {
         item_id: conversation.item.id
         }
       };
-      this.trackingService.pendingTrackingEvents.push(trackEvent);
+      this.trackingService.addTrackingEvent(trackEvent, false);
       this.onNewMessage(_.clone(message), true);
     }
 
