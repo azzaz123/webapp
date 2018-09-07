@@ -86,9 +86,10 @@ export class MessageService {
               r.messages.map(m => m.status = messageStatus.READ);
       }
             this.persistencyService.saveMessages(r.messages);
+            const lastMsgDate = new Date(_.last(r.messages).date).toISOString();
             this.persistencyService.saveMetaInformation({
               last: r.meta.last,
-              start: (_.last(r.messages)).date.toISOString()
+              start: lastMsgDate
             });
             this.addClickstreamEvents(r, conversation.item.id);
             this.confirmUnconfirmedMessages(r.messages, r.receivedReceipts);
@@ -117,7 +118,7 @@ export class MessageService {
             item_id: itemId
           }
         };
-        this.trackingService.pendingTrackingEvents.push(trackReceivedAckEvent);
+        this.trackingService.addTrackingEvent(trackReceivedAckEvent, false);
       }
     });
 
@@ -130,16 +131,16 @@ export class MessageService {
 
       switch (message.status) {
         case messageStatus.READ:
-        this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attributes});
-          this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_RECEIVED, attributes: attributes});
-          this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_READ, attributes: attributes});
+          this.trackingService.addTrackingEvent({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attributes}, false);
+          this.trackingService.addTrackingEvent({eventData: TrackingService.MESSAGE_RECEIVED, attributes: attributes}, false);
+          this.trackingService.addTrackingEvent({eventData: TrackingService.MESSAGE_READ, attributes: attributes}, false);
           break;
         case messageStatus.RECEIVED:
-          this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attributes});
-          this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_RECEIVED, attributes: attributes});
+          this.trackingService.addTrackingEvent({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attributes}, false);
+          this.trackingService.addTrackingEvent({eventData: TrackingService.MESSAGE_RECEIVED, attributes: attributes}, false);
           break;
         case messageStatus.SENT:
-        this.trackingService.pendingTrackingEvents.push({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attributes});
+          this.trackingService.addTrackingEvent({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attributes}, false);
         break;
       }
     });
