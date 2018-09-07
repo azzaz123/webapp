@@ -45,6 +45,7 @@ $dropdown-width: 900px;
       position: relative;
       width: $dropdown-width/6;
       margin-bottom: $spacing;
+      height: 80px;
       a {
         display: flex;
         align-items: center;
