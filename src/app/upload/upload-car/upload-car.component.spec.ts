@@ -504,4 +504,14 @@ describe('UploadCarComponent', () => {
     });
   });
 
+  describe('toggleCustomVersionSelection', () => {
+    it ('should toggle the version value', () => {
+      component.customVersion = true;
+
+      component.toggleCustomVersionSelection();
+
+      expect(component.customVersion).toBe(false);
+    });
+  });
+
 });
