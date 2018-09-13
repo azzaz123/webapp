@@ -355,6 +355,7 @@ describe('UploadCarComponent', () => {
   describe('onUploaded', () => {
     it('should redirect', () => {
       component.item = <Car>MOCK_ITEM_V3;
+      component.item.flags.onhold = null;
       const uploadedEvent = {
         action: 'updated',
         response: {

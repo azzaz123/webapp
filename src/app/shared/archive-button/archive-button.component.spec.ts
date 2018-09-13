@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ArchiveButtonComponent } from './archive-button.component';
 import { Observable } from 'rxjs';
@@ -83,7 +83,12 @@ describe('ArchiveButtonComponent', () => {
 
 
     it('should emit click event', () => {
-      expect(called).toBeTruthy();
+      spyOn(callsService, 'archive').and.callThrough();
+
+      component.lead = MOCK_CALL();
+      component.archive(new Event(''));
+
+      expect(called).toBe(true);
     });
   });
 });

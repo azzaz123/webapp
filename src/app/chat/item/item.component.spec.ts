@@ -138,19 +138,8 @@ describe('Component: Item', () => {
 
       component.ngOnChanges();
 
-      expect(component.item.views).toBe(ITEM_VIEWS);
-      expect(component.item.favorites).toBe(ITEM_FAVORITES);
-    });
-
-    it('should not add item counters', () => {
-      component.item = MOCK_ITEM;
-      component.item.views = 1000;
-      component.item.favorites = 1000;
-
-      component.ngOnChanges();
-
-      expect(component.item.views).toBe(1000);
-      expect(component.item.favorites).toBe(1000);
+      expect(component.item.views).toBe(123);
+      expect(component.item.favorites).toBe(456);
     });
 
   });

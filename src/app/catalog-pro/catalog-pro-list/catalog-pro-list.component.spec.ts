@@ -432,6 +432,14 @@ describe('CatalogProListComponent', () => {
         it('should submit sabadell with orderId', () => {
           expect(eventId).toBe('UUID');
         });
+
+        it('should call purchaseProducts', () => {
+          expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+        });
+
+        it('should call getFinancialCard', () => {
+          expect(paymentService.getFinancialCard).toHaveBeenCalled();
+        });
       });
       describe('with credit card', () => {
         beforeEach(() => {
@@ -448,8 +456,26 @@ describe('CatalogProListComponent', () => {
               total: 10
             });
           }));
+
           it('should submit sabadell with orderId', () => {
             expect(eventId).toBe('UUID');
+          });
+
+          it('should open modal', () => {
+            expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
+          });
+
+          it('should set financialCard and total to componentInstance', () => {
+            expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
+            expect(componentInstance.total).toBe(10);
+          });
+
+          it('should call purchaseProducts', () => {
+            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+          });
+
+          it('should call getFinancialCard', () => {
+            expect(paymentService.getFinancialCard).toHaveBeenCalled();
           });
         });
         describe('user wants old one', () => {
@@ -470,11 +496,34 @@ describe('CatalogProListComponent', () => {
               });
               tick(1000);
             }));
+
             it('should redirect to code 200', () => {
               expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
             });
+
             it('should call deselect', () => {
               expect(component.deselect).toHaveBeenCalled();
+            });
+
+            it('should call pay', () => {
+              expect(paymentService.pay).toHaveBeenCalledWith('UUID');
+            });
+
+            it('should open modal', () => {
+              expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
+            });
+
+            it('should set financialCard and total to componentInstance', () => {
+              expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
+              expect(componentInstance.total).toBe(10);
+            });
+
+            it('should call purchaseProducts', () => {
+              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+            });
+
+            it('should call getFinancialCard', () => {
+              expect(paymentService.getFinancialCard).toHaveBeenCalled();
             });
           });
           describe('payment ko', () => {
@@ -486,16 +535,34 @@ describe('CatalogProListComponent', () => {
               });
               tick(1000);
             }));
+
             it('should redirect to code -1', () => {
               expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
             });
+
             it('should call deselect', () => {
               expect(component.deselect).toHaveBeenCalled();
             });
-          });
-          afterEach(() => {
+
             it('should call pay', () => {
               expect(paymentService.pay).toHaveBeenCalledWith('UUID');
+            });
+
+            it('should open modal', () => {
+              expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
+            });
+
+            it('should set financialCard and total to componentInstance', () => {
+              expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
+              expect(componentInstance.total).toBe(10);
+            });
+
+            it('should call purchaseProducts', () => {
+              expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+            });
+
+            it('should call getFinancialCard', () => {
+              expect(paymentService.getFinancialCard).toHaveBeenCalled();
             });
           });
         });
@@ -509,26 +576,27 @@ describe('CatalogProListComponent', () => {
             });
             tick(1000);
           }));
+
           it('should redirect without code', () => {
             expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
           });
-        });
-        afterEach(() => {
+
           it('should open modal', () => {
             expect(modalService.open).toHaveBeenCalledWith(CreditCardModalComponent, {windowClass: 'credit-card'});
           });
+
           it('should set financialCard and total to componentInstance', () => {
             expect(componentInstance.financialCard).toEqual(FINANCIAL_CARD);
             expect(componentInstance.total).toBe(10);
           });
-        });
-      });
-      afterEach(() => {
-        it('should call purchaseProducts', () => {
-          expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
-        });
-        it('should call getFinancialCard', () => {
-          expect(paymentService.getFinancialCard).toHaveBeenCalled();
+
+          it('should call purchaseProducts', () => {
+            expect(itemService.purchaseProducts).toHaveBeenCalledWith([ORDER], 'UUID');
+          });
+
+          it('should call getFinancialCard', () => {
+            expect(paymentService.getFinancialCard).toHaveBeenCalled();
+          });
         });
       });
     });

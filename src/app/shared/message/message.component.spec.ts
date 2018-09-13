@@ -5,6 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { USER_ID, USER_WEB_SLUG } from '../../../tests/user.fixtures.spec';
 import { User } from '../../core/user/user';
+import { environment } from '../../../environments/environment';
 
 const WEB_SLUG_USER = 'https://www.wallapop.com/user/';
 
@@ -33,7 +34,7 @@ describe('Component: Message', () => {
 
   describe('ngOnInit', () => {
     it('should set userWebSlug', () => {
-      expect(component.userWebSlug).toBe(WEB_SLUG_USER + USER_WEB_SLUG);
+      expect(component.userWebSlug).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + USER_WEB_SLUG);
     });
   });
 

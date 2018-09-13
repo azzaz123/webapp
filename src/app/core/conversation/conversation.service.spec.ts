@@ -1036,6 +1036,12 @@ describe('Service: Conversation', () => {
       });
 
       it('should set the lastMessageRef', () => {
+        convWithMessages = [];
+
+        service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
+          convWithMessages = res;
+        });
+        
         convWithMessages.forEach((conversation: Conversation) => {
           expect(conversation.lastMessageRef).toBe('abc');
         });

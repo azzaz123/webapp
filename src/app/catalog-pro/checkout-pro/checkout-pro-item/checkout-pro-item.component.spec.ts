@@ -107,16 +107,17 @@ describe('CheckoutProItemComponent', () => {
     beforeEach(() => {
       spyOn(cartService, 'add').and.callThrough();
       spyOn(component, 'removeItem').and.callThrough();
-
-      component.selectBump(TYPE);
     });
 
     it('should set item bump type and add it to cart', () => {
-      expect(component.cartProItem.bumpType).toBe(TYPE);
+      component.cartProItem.bumpType = TYPE2;
+      component.selectBump(TYPE);
+
       expect(cartService.add).toHaveBeenCalledWith(component.cartProItem, component.cartProItem.bumpType);
     });
 
     it('should remove item from cart if item is already added ', () => {
+      component.cartProItem.bumpType = TYPE;
       component.selectBump(TYPE);
 
       expect(component.removeItem).toHaveBeenCalled();
@@ -125,7 +126,6 @@ describe('CheckoutProItemComponent', () => {
     it('should change type of selected bump if selections are different', () => {
       component.selectBump(TYPE2);
 
-      expect(component.cartProItem.bumpType).toBe(TYPE2);
       expect(cartService.add).toHaveBeenCalledWith(component.cartProItem, component.cartProItem.bumpType);
     });
   });

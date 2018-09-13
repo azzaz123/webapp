@@ -232,6 +232,7 @@ describe('App', () => {
 
   describe('set cookie', () => {
     it('should create a cookie', () => {
+      jasmine.clock().uninstall();
       spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');
       jasmine.clock().install();

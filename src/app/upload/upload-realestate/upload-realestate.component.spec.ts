@@ -242,6 +242,7 @@ describe('UploadRealestateComponent', () => {
   describe('onUploaded', () => {
     it('should redirect', () => {
       component.item = MOCK_REALESTATE;
+      component.item.flags.onhold = null;
       const uploadedEvent = {
         action: 'updated',
         response: {
@@ -252,7 +253,7 @@ describe('UploadRealestateComponent', () => {
 
       component.onUploaded(uploadedEvent);
 
-      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true }]);
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id}]);
     });
 
     it('should redirect with onHold true', () => {
