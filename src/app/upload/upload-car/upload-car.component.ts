@@ -167,6 +167,8 @@ export class UploadCarComponent implements OnInit {
     this.carSuggestionsService.getModels(brand).subscribe((models: IOption[]) => {
       if (models.length <= 0) {
         this.customMake = true;
+      } else if (this.item) {
+        this.customMake = !_.find(models, {value: this.item.model});
       }
       this.models = models;
       this.toggleField('model', 'enable', !editMode);
