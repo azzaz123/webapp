@@ -22,7 +22,7 @@ phases:
       - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable yarn
 
       # LAUNCH TEST
-      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable yarn test --watch=false --no-progress
+      - docker run -v ${PWD}:/root -w /root -v /tmp/.cache/yarn:/root/.cache/yarn --rm --name nodejs8 745640521341.dkr.ecr.eu-west-1.amazonaws.com/nodejs8:stable yarn test --watch=false --no-progress --no-sandbox
 
       # INSTALL ENV
       - >
