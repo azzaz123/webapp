@@ -233,6 +233,15 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('title').value).toBe('');
       expect(component.uploadForm.get('title').pristine).toBeTruthy();
     });
+
+    it('should set the car as custom if there are no matching models', () => {
+      spyOn(carSuggestionsService, 'getModels').and.returnValue(Observable.of([]));
+
+      component.getModels('Gaudi');
+
+      expect(component.models.length).toBe(0);
+      expect(component.customMake).toBe(true);
+    });
   });
 
   describe('getYears', () => {
