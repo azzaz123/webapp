@@ -21,7 +21,7 @@ import {
   MOCK_DB_RESPONSE_WITH_PENDING,
   MOCK_DB_RESPONSE_WITH_OLD_PENDING
 } from '../../../tests/persistency.fixtures.spec';
-import { USER_ID } from '../../../tests/user.fixtures.spec';
+import { USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';

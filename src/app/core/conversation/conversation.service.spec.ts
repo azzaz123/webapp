@@ -29,7 +29,7 @@ import { MOCK_USER,
   MockedUserService,
   USER_ID,
   USER_ITEM_DISTANCE,
-  OTHE_USER_ID,
+  OTHER_USER_ID,
   MOCK_OTHER_USER} from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
@@ -1066,7 +1066,7 @@ describe('Service: Conversation', () => {
           .and
           .returnValue(Observable.of({
             data: [
-              new Message('5', 'a', MESSAGE_MAIN.body, OTHE_USER_ID + '@host'),
+              new Message('5', 'a', MESSAGE_MAIN.body, OTHER_USER_ID + '@host'),
             ]
           }));
           connectionService.isConnected = true;
@@ -1309,7 +1309,7 @@ describe('Service: Conversation', () => {
 
       it('should NOT track MESSAGE_RECEIVED_ACK when the recepit has already been sent', () => {
         spyOn(trackingService, 'track');
-        const message = new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, MESSAGE_MAIN.body, OTHE_USER_ID, MESSAGE_MAIN_UPDATED.date);
+        const message = new Message(MESSAGE_MAIN.id, MESSAGE_MAIN.thread, MESSAGE_MAIN.body, OTHER_USER_ID, MESSAGE_MAIN_UPDATED.date);
         message.user = MOCK_USER;
         service['receiptSent'] = true;
 
@@ -1363,7 +1363,7 @@ describe('Service: Conversation', () => {
             'new',
             MESSAGE_MAIN.thread,
             MESSAGE_MAIN.body,
-            OTHE_USER_ID + '@host',
+            OTHER_USER_ID + '@host',
             MESSAGE_MAIN.date
           ), false);
           expect(service.leads[0].unreadMessages).toBe(2);

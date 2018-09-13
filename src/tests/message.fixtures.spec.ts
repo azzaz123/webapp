@@ -1,5 +1,4 @@
-import { USER_ID, OTHE_USER_ID } from './user.fixtures.spec';
-import { Message, messageStatus } from '../app/core/message/message';
+import { USER_ID, OTHER_USER_ID } from './user.fixtures.spec';
 import { MessagePayload } from '../app/core/message/messages.interface';
 
 export const MESSAGE_MAIN: any = {
@@ -58,7 +57,7 @@ export const MOCK_MESSAGE_FROM_OTHER: Message = new Message(
   'other-id',
   MESSAGE_MAIN.thread,
   MESSAGE_MAIN.body,
-  OTHE_USER_ID + '@host',
+  OTHER_USER_ID + '@host',
   MESSAGE_MAIN.date,
   null
 );
