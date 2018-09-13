@@ -14,7 +14,7 @@
     "buildprod-en": "ng build --prod --aot --no-progress",
     "i18n": "ng xi18n -p src/tsconfig.app.json --i18nFormat=xmb --outputPath=src/locale",
     "serve": "ng serve --aot --locale es --i18n-file src/locale/es.xtb --i18n-format xtb",
-    "test": "ng test --no-single-run --no-progress --reporters spec --browsers ChromeHeadless",
+    "test": "ng test --no-progress --reporters spec --browsers ChromeHeadless",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "svgo": "svgo -f ./src/assets/icons --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}; svgo -f ./src/assets/images --disable={removeViewBox,cleanupIDs,removeUselessStrokeAndFill}"
