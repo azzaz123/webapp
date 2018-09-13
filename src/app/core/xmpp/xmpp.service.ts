@@ -22,9 +22,6 @@ export class XmppService {
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
-  private unreadMessages = [];
-  public totalUnreadMessages = 0;
-  public convWithUnread = {};
   private reconnectAttempts = 5;
   private reconnectInterval: any;
   private reconnectedTimes = 0;
@@ -114,20 +111,6 @@ export class XmppService {
 
   public debug() {
     this.client.on('*', (k, v) => console.debug(k, v));
-  }
-
-  public addUnreadMessagesCounter(conversations) {
-    if (this.unreadMessages.length) {
-      for (let index = this.unreadMessages.length - 1; index >= 0; --index) {
-        const convWithUnread = conversations.find((c) => c.id === this.unreadMessages[index].thread);
-        if (convWithUnread) {
-          const i = _.findIndex(conversations, convWithUnread);
-          conversations[i].unreadMessages = conversations[i].unreadMessages ? ++conversations[i].unreadMessages : 1;
-          this.unreadMessages.splice(index, 1);
-        }
-      }
-    }
-    return conversations;
   }
 
   private createClient(accessToken: string): void {

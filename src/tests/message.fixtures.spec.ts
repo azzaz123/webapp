@@ -1,4 +1,5 @@
 import { USER_ID, OTHER_USER_ID } from './user.fixtures.spec';
+import { Message } from '../app/core/message/message';
 import { MessagePayload } from '../app/core/message/messages.interface';
 
 export const MESSAGE_MAIN: any = {
