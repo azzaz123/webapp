@@ -393,7 +393,7 @@ export class ConversationService extends LeadService {
 
   private recursiveLoadMessages(conversations: Conversation[], archived: boolean, index: number = 0): Observable<Conversation[]> {
       if (conversations && conversations[index] && this.connectionService.isConnected) {
-      return this.messageService.getMessages(conversations[index], null, archived)
+      return this.messageService.getMessages(conversations[index], archived)
         .flatMap((res: MessagesData) => {
           conversations[index].messages = res.data;
         if (res.data.length) {

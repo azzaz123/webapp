@@ -89,7 +89,7 @@ describe('Service: Message', () => {
       });
 
       it('should return at least 1 message', () => {
-        service.getMessages(conversation, 1).subscribe((data: any) => {
+        service.getMessages(conversation).subscribe((data: any) => {
           response = data;
         });
         expect(response.data.length >= 1).toBe(true);
@@ -98,7 +98,7 @@ describe('Service: Message', () => {
       it('should call addUserInfoToArray', () => {
         const MESSAGES: Message[] = createMessagesArray(2);
         spyOn(service, 'addUserInfoToArray').and.returnValue(MESSAGES);
-        service.getMessages(conversation, 1).subscribe((data: any) => {
+        service.getMessages(conversation).subscribe((data: any) => {
           response = data;
         });
         expect(service.addUserInfoToArray).toHaveBeenCalled();
@@ -107,7 +107,6 @@ describe('Service: Message', () => {
         expect(response.meta.end).toBe(true);
         expect(response.data).toEqual(MESSAGES);
       });
-
     });
 
     describe('with pending messages', () => {
@@ -120,7 +119,7 @@ describe('Service: Message', () => {
         const pendingMsgCount = MOCK_DB_RESPONSE_WITH_PENDING.filter(m => m.doc.status === messageStatus.PENDING).length;
 
 
-        service.getMessages(conversation, 1).subscribe((data: any) => {
+        service.getMessages(conversation).subscribe((data: any) => {
           response = data;
           pendingMsg = response.data[0];
         });
@@ -133,7 +132,7 @@ describe('Service: Message', () => {
         spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_OLD_PENDING));
         spyOn(xmpp, 'sendMessage');
 
-        service.getMessages(conversation, 1).subscribe((data: any) => {
+        service.getMessages(conversation).subscribe((data: any) => {
           response = data;
         });
 

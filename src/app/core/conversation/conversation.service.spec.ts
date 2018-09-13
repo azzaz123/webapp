@@ -75,8 +75,6 @@ class MockedXmppService {
   isBlocked() {
     return true;
   }
-
-  addUnreadMessagesCounter() {}
 }
 
 describe('Service: Conversation', () => {
