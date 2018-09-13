@@ -35,7 +35,6 @@ export class MsgArchiveService {
         receivedReceipts: receivedReceipts,
         readReceipts: readReceipts
       };
-
       return response;
     });
   }
@@ -69,7 +68,7 @@ export class MsgArchiveService {
       const receivedReceipts = this.processReceivedReceipts(events);
       messages = this.updateStatuses(messages, readReceipts, receivedReceipts);
 
-      const response = {
+      const response: MsgArchiveResponse = {
         messages: messages,
         receivedReceipts: receivedReceipts,
         readReceipts: readReceipts
@@ -104,7 +103,7 @@ export class MsgArchiveService {
       messages.filter(m => {
         const threadMatches = m.conversationId === r.thread;
         const senderMatches = m.from === r.to;
-        const olderThanReadTs = (m.date.getTime() / 1000 < r.timestamp);
+        const olderThanReadTs = (m.date.getTime() / 1000 <= r.timestamp);
         return threadMatches && olderThanReadTs && senderMatches;
       })
       .map(m => {
@@ -134,7 +133,7 @@ export class MsgArchiveService {
         m.event.from_user_hash,
         new Date(m.event.created_ts * 1000),
         fromSelf ? messageStatus.SENT : messageStatus.RECEIVED);
-      msg.fromSelf = fromSelf;
+        msg.fromSelf = fromSelf;
 
       return msg;
     });

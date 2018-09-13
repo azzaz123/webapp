@@ -83,8 +83,8 @@ export class MessageService {
               end: true
             };
             if (archived) {
-              r.messages.map(m => m.status = messageStatus.READ);
-      }
+              r.messages.filter(m => !m.fromSelf).map(m => m.status = messageStatus.READ);
+            }
             this.persistencyService.saveMessages(r.messages);
             const lastMsgDate = new Date(_.last(r.messages).date).toISOString();
             this.persistencyService.saveMetaInformation({
@@ -141,7 +141,7 @@ export class MessageService {
           break;
         case messageStatus.SENT:
           this.trackingService.addTrackingEvent({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attributes}, false);
-        break;
+          break;
       }
     });
   }
