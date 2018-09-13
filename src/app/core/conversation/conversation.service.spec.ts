@@ -549,114 +549,132 @@ describe('Service: Conversation', () => {
     });
   });
 
-  describe('loadUnreadMessagesNumber', () => {
-    const UNREAD_MESSAGES = 5;
-    const INITIAL_UNREAD_MESSAGES = 3;
-    let response: Conversation;
-    beforeEach(() => {
-      spyOn(persistencyService, 'getUnreadMessagesCount').and.returnValue(Observable.of({unreadMessages: UNREAD_MESSAGES}));
-      const conversation: Conversation = MOCK_CONVERSATION();
-      messageService.totalUnreadMessages = INITIAL_UNREAD_MESSAGES;
-      service['loadUnreadMessagesNumber'](conversation).subscribe((r: Conversation) => {
-        response = r;
-      });
-    });
-    it('should return conversation with unreadMessages', () => {
-      expect(response instanceof Conversation).toBe(true);
-      expect(response.unreadMessages).toBe(UNREAD_MESSAGES);
-    });
-    it('should update totalUnreadMessages', () => {
-      expect(messageService.totalUnreadMessages).toBe(INITIAL_UNREAD_MESSAGES + UNREAD_MESSAGES);
-    });
-  });
-
   describe('loadMessagesIntoConversations', () => {
-    const TOTAL_MESSAGES = 4;
-    const TOTAL_UNREAD_MESSAGES = 4;
-    const TOTAL_CONVERSATIONS = 5;
-    const CONVERSATIONS: Conversation[] = createConversationsArray(TOTAL_CONVERSATIONS);
-    let response: Conversation[];
-    describe('conversations with messages', () => {
+    let conversations: Conversation[];
+    let convWithMessages: Conversation[];
+    const messagesArray = createMessagesArray(7);
+    describe('with normal data', () => {
       beforeEach(() => {
-        spyOn<any>(service, 'loadMessages').and.callFake((conversations: Conversation[]) => {
-          return Observable.of(conversations.map((conversation: Conversation) => {
-            conversation.messages = createMessagesArray(TOTAL_MESSAGES);
-            return conversation;
-          }));
+        messagesArray.map(m => m.status = messageStatus.RECEIVED);
+        spyOn(messageService, 'getMessages').and.callFake(() => {
+          return Observable.of({
+            data: messagesArray,
+            meta: {
+              first: 'abc',
+              end: false
+            }
+          });
         });
-        spyOn(service, 'loadNotStoredMessages').and.callFake((conversations: Conversation[]) => {
-          return Observable.of(conversations.map((conversation: Conversation) => {
-            conversation.messages.push(...createMessagesArray(TOTAL_UNREAD_MESSAGES));
-            return conversation;
-          }));
+        convWithMessages = [];
+        connectionService.isConnected = true;
+        xmpp.clientConnected = true;
+        conversations = createConversationsArray(5);
+      });
+
+      it('should call messageService.getMessages', () => {
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({reason: 'missing'}));
+        service.loadMessagesIntoConversations(conversations).subscribe((res: Conversation[]) => {
+          convWithMessages = res;
+        });
+
+        expect(messageService.getMessages).toHaveBeenCalledTimes(5);
+      });
+
+      it(`should set messageService.totalUnreadMessages to the sum of conversations' unread counters,
+      when messagesService.totalUnreadMessages is 0`, () => {
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({reason: 'missing'}));
+        spyOnProperty(messageService, 'totalUnreadMessages', 'get').and.callThrough();
+
+        service.loadMessagesIntoConversations(conversations).subscribe((res: Conversation[]) => {
+          convWithMessages = res;
+        });
+
+        expect(messageService.totalUnreadMessages).toBe(35);
+      });
+
+      it(`should increment messageService.totalUnreadMessages with the sum of conversations' unread counters,
+      when messagesService.totalUnreadMessages is greater than 0`, () => {
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({reason: 'missing'}));
+        spyOnProperty(messageService, 'totalUnreadMessages', 'get').and.callThrough();
+        messageService.totalUnreadMessages = 10;
+
+        service.loadMessagesIntoConversations(conversations).subscribe((res: Conversation[]) => {
+          convWithMessages = res;
+        });
+
+        expect(messageService.totalUnreadMessages).toBe(45);
+      });
+
+      it('should fill conversations with messages', () => {
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({reason: 'missing'}));
+        service.loadMessagesIntoConversations(conversations).subscribe();
+
+        conversations.map(c => expect(c.messages.length).toBe(7));
+      });
+
+      it('should set the lastMessageRef', () => {
+        convWithMessages.forEach((conversation: Conversation) => {
+          expect(conversation.lastMessageRef).toBe('abc');
         });
       });
-      describe('firstLoad', () => {
-        beforeEach(() => {
-          service.firstLoad = true;
-          service['loadMessagesIntoConversations'](CONVERSATIONS).subscribe((r: Conversation[]) => {
-            response = r;
-          });
-        });
-        it('should return conversations with old messages and new messages', () => {
-          expect(response.length).toBe(TOTAL_CONVERSATIONS);
-          response.forEach((conversation: Conversation) => {
-            expect(conversation instanceof Conversation).toBe(true);
-            expect(conversation.messages.length).toBe(TOTAL_MESSAGES + TOTAL_UNREAD_MESSAGES);
-          });
-        });
-        it('should call loadMessages and loadNotStoredMessages', () => {
-          expect(service['loadMessages']).toHaveBeenCalled();
-          expect(service['loadNotStoredMessages']).toHaveBeenCalled();
+
+      it('should set the oldMessagesLoaded', () => {
+        convWithMessages.forEach((conversation: Conversation) => {
+          expect(conversation.oldMessagesLoaded).toBe(false);
         });
       });
-      describe('firstLoad false', () => {
-        beforeEach(() => {
-          service.firstLoad = false;
-          service['loadMessagesIntoConversations'](CONVERSATIONS).subscribe((r: Conversation[]) => {
-            response = r;
-          });
-        });
-        it('should return conversations with old messages', () => {
-          expect(response.length).toBe(TOTAL_CONVERSATIONS);
-          response.forEach((conversation: Conversation) => {
-            expect(conversation instanceof Conversation).toBe(true);
-            expect(conversation.messages.length).toBe(TOTAL_MESSAGES);
-          });
-        });
-        it('should call loadMessages and loadNotStoredMessages', () => {
-          expect(service['loadMessages']).toHaveBeenCalled();
-          expect(service['loadNotStoredMessages']).not.toHaveBeenCalled();
-        });
+
+      it('should add the meta information is persistancyService, when it is missing', () => {
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw({reason: 'missing'}));
+        spyOn(persistencyService, 'saveMetaInformation').and.callThrough();
+
+        service.loadMessagesIntoConversations(conversations).subscribe();
+
+        expect(persistencyService.saveMetaInformation).toHaveBeenCalled();
+      });
+
+      it(`should update the meta information is persistancyService, when it is already present and
+      the new timestamp is greater than the stored timestamp`, () => {
+        spyOn(persistencyService, 'saveMetaInformation').and.callThrough();
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of({
+          data: {
+            start: new Date(_.last(messagesArray).date.getTime() - 100),
+            last: 'someOldMsgId'
+          }
+        }));
+
+        service.loadMessagesIntoConversations(conversations).subscribe();
+
+        expect(persistencyService.saveMetaInformation).toHaveBeenCalled();
+      });
+
+      it(`should NOT update the meta information is persistancyService, when it is already present and
+      the new timestamp is NOT greater than the stored timestamp`, () => {
+        spyOn(persistencyService, 'saveMetaInformation').and.callThrough();
+        spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of({
+          data: {
+            start: new Date(_.last(messagesArray).date.getTime() + 100),
+            last: 'someOldMsgId'
+          }
+        }));
+
+        service.loadMessagesIntoConversations(conversations).subscribe();
+
+        expect(persistencyService.saveMetaInformation).not.toHaveBeenCalled();
       });
     });
-    describe('conversations with no messages', () => {
-      beforeEach(() => {
-        spyOn<any>(service, 'loadMessages').and.callFake((conversations: Conversation[]) => {
-          return Observable.of(conversations.map((conversation: Conversation) => {
-            conversation.messages = createMessagesArray(TOTAL_MESSAGES);
-            return conversation;
-          }));
+
+    describe('with null conversation data', () => {
+      it('should return an observable of null', () => {
+        let observableResponse: any;
+        connectionService.isConnected = true;
+
+        service.loadMessagesIntoConversations(null).subscribe((r: any) => {
+          observableResponse = r;
         });
-        spyOn(service, 'loadNotStoredMessages').and.callFake((conversations: Conversation[]) => {
-          return Observable.of(conversations.map((conversation: Conversation) => {
-            if (+conversation.id % 2 === 0) {
-              conversation.messages.push(...createMessagesArray(TOTAL_UNREAD_MESSAGES));
-            } else {
-              conversation.messages = [];
-            }
-            return conversation;
-          }));
-        });
-        response = null;
+
+        expect(observableResponse).toBe(null);
       });
-      it('should filter conversations with no messages', () => {
-        service.firstLoad = true;
-        service['loadMessagesIntoConversations'](CONVERSATIONS).subscribe((r: Conversation[]) => {
-          response = r;
-        });
-        expect(response.length).toBe(2);
-  });
     });
   });
 
@@ -940,104 +958,7 @@ describe('Service: Conversation', () => {
 
   });
 
-  describe('loadMessages', () => {
-    let conversations: Conversation[];
-    let convWithMessages: Conversation[];
-    describe('with normal data', () => {
-      beforeEach(() => {
-        spyOn(messageService, 'getMessages').and.callFake(() => {
-          return Observable.of({
-            data: createMessagesArray(7),
-            meta: {
-              first: 'abc',
-              end: false
-            }
-          });
-        });
-        connectionService.isConnected = true;
-        xmpp.clientConnected = true;
-        conversations = createConversationsArray(5);
-      });
-
-      it('should call messageService.getMessages', () => {
-        spyOn(xmpp, 'addUnreadMessagesCounter').and.returnValue(conversations);
-        convWithMessages = [];
-
-        service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
-          convWithMessages = res;
-        });
-
-        expect(messageService.getMessages).toHaveBeenCalledTimes(5);
-      });
-
-      it('should call xmpp.addUnreadMessagesCounter', () => {
-        spyOn(xmpp, 'addUnreadMessagesCounter').and.returnValue(conversations);
-        convWithMessages = [];
-
-        service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
-          convWithMessages = res;
-        });
-
-        expect(xmpp.addUnreadMessagesCounter).toHaveBeenCalled();
-      });
-
-      it('should call persistencyService.saveUnreadMessagesCount', () => {
-        spyOn(xmpp, 'addUnreadMessagesCounter').and.returnValue(conversations);
-        spyOn(persistencyService, 'saveUnreadMessagesCount');
-        convWithMessages = [];
-
-        service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
-          convWithMessages = res;
-        });
-
-        expect(persistencyService.saveUnreadMessagesCount).toHaveBeenCalledTimes(5);
-      });
-
-      it('should set messageService.totalUnreadMessages', () => {
-        spyOn(xmpp, 'addUnreadMessagesCounter').and.returnValue(conversations);
-        spyOnProperty(messageService, 'totalUnreadMessages', 'get').and.callThrough();
-        convWithMessages = [];
-
-        service['loadMessages'](conversations).subscribe((res: Conversation[]) => {
-          convWithMessages = res;
-        });
-
-        expect(messageService.totalUnreadMessages).toBe(42);
-      });
-
-      it('should fill conversations with messages', () => {
-        convWithMessages.forEach((conversation: Conversation) => {
-          expect(conversation.messages.length).toBe(7);
-        });
-      });
-
-      it('should set the lastMessageRef', () => {
-        convWithMessages.forEach((conversation: Conversation) => {
-          expect(conversation.lastMessageRef).toBe('abc');
-        });
-      });
-
-      it('should set the oldMessagesLoaded', () => {
-        convWithMessages.forEach((conversation: Conversation) => {
-          expect(conversation.oldMessagesLoaded).toBe(false);
-        });
-      });
-    });
-    describe('with null conversation data', () => {
-      it('should return an observable of null', () => {
-        let observableResponse: any;
-        connectionService.isConnected = true;
-
-        service['loadMessages'](null).subscribe((r: any) => {
-          observableResponse = r;
-        });
-
-        expect(observableResponse).toBe(null);
-      });
-    });
-  });
-
-  describe('loadNotStoredMessages', () => {
+  xdescribe('loadNotStoredMessages', () => { // TODO - modify when logic relating to sinceArchive is added
     let initialConversations: Array<Conversation>;
     const MOCK_UNSAVED_CONVERSATION: Conversation = new Conversation('c', 3, CONVERSATION_DATE, false, MOCK_USER, MOCK_ITEM);
     beforeEach(() => {
