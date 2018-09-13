@@ -43,7 +43,7 @@ export class MessageService {
     return this._totalUnreadMessages;
   }
 
-  public getMessages(conversation: Conversation, total: number = -1, archived?: boolean): Observable<MessagesData> {
+  public getMessages(conversation: Conversation, archived?: boolean): Observable<MessagesData> {
     return this.persistencyService.getMessages(conversation.id)
     .flatMap((messages: StoredMessageRow[]) => {
       if (messages.length) {
