@@ -363,7 +363,6 @@ describe('Service: Xmpp', () => {
       expect(service.clientConnected).toBe(true);
     });
 
-
     it('should call reconnectClient if it is disconnected when a CONNECTION_RESTORED event is triggered', () => {
       spyOn(service, 'reconnectClient');
       service.clientConnected = false;

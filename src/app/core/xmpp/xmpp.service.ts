@@ -25,7 +25,7 @@ export class XmppService {
   private reconnectAttempts = 5;
   private reconnectInterval: any;
   private reconnectedTimes = 0;
-  public messageQ: Array<XmppBodyMessage> = [];
+  private messageQ: Array<XmppBodyMessage> = [];
   private archiveFinishedLoaded = false;
 
   constructor(private eventService: EventService,
@@ -142,6 +142,9 @@ export class XmppService {
   }
 
   private bindEvents(): void {
+    this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADING, () => {
+      this.archiveFinishedLoaded = false;
+    });
     this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADED, () => {
       this.archiveFinishedLoaded = true;
       this.messageQ.map(m => this.onNewMessage(m));
