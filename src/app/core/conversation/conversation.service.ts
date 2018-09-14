@@ -321,25 +321,13 @@ export class ConversationService extends LeadService {
 
   public sendRead(conversation: Conversation) {
     if (conversation.unreadMessages > 0) {
-      const unreadMessages = conversation.messages.slice(-conversation.unreadMessages);
       this.readSubscription = this.event.subscribe(EventService.MESSAGE_READ_ACK, () => {
-        unreadMessages.forEach((message) => {
-          const trackEvent: TrackingEventData = {
-            eventData: TrackingService.MESSAGE_READ_ACK,
-            attributes: {
-              thread_id: message.conversationId,
-              message_id: message.id,
-              item_id: conversation.item.id
-            }
-          };
-          this.trackingService.pendingTrackingEvents.push(trackEvent);
-        });
+        this.markAllAsRead(conversation.id, (new Date()).getTime(), false);
         this.readSubscription.unsubscribe();
       });
       this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);
       this.messageService.totalUnreadMessages -= conversation.unreadMessages;
       conversation.unreadMessages = 0;
-      this.markAllAsRead(conversation.id, (new Date()).getTime(), false);
     }
   }
 

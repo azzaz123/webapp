@@ -1234,7 +1234,6 @@ describe('Service: Conversation', () => {
 
         service.leads = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
         (service as any).onNewMessage(message, true);
-        eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
 
         expect(trackingService.track).not.toHaveBeenCalled();
       });
@@ -1444,21 +1443,19 @@ describe('Service: Conversation', () => {
       it('should call addUserInfo', () => {
         const messageWithUser: Message = MOCK_MESSAGE;
         messageWithUser.user = MOCK_USER;
-        spyOn(service, 'get').and.returnValue(Observable.of(MOCK_NOT_FOUND_CONVERSATION));
         spyOn(service, 'getSingleConversationMessages').and.returnValue(Observable.of([]));
         spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
         const newMessage: Message = new Message(
           MESSAGE_MAIN.id,
-          NOT_FOUND_CONVERSATION_ID,
+          mockedConversation.id,
           MESSAGE_MAIN.body,
           MESSAGE_MAIN.from,
           MESSAGE_MAIN.date);
 
         service.handleNewMessages(newMessage, false);
-        eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
 
         expect(messageService.addUserInfo).toHaveBeenCalledTimes(1);
-        expect(messageService.addUserInfo).toHaveBeenCalledWith(MOCK_NOT_FOUND_CONVERSATION, newMessage);
+        expect(messageService.addUserInfo).toHaveBeenCalledWith(mockedConversation, newMessage);
         expect(service.leads[0].messages[0]).toEqual(messageWithUser);
       });
 
@@ -1508,28 +1505,18 @@ describe('Service: Conversation', () => {
 
     describe('conversation NOT present', () => {
       const message = new Message(MESSAGE_MAIN.id, NOT_FOUND_CONVERSATION_ID, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date);
-      it('should subscribe to the MESSAGE_RECEIVED_ACK, event', () => {
-        spyOn(eventService, 'subscribe').and.callThrough();
-
-        service.handleNewMessages(message, false);
-
-        expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.MESSAGE_RECEIVED_ACK);
-      });
-
-      it('should request the conversation info, add the message and add to the list', () => {
+      it('should request the conversation info, request its messages and add it to the list', () => {
         spyOn(service, 'get').and.returnValue(Observable.of(MOCK_NOT_FOUND_CONVERSATION));
-        spyOn(service, 'getSingleConversationMessages').and.returnValue(Observable.of([]));
+        spyOn(service, 'getSingleConversationMessages').and.callThrough();
+        spyOn(messageService, 'getMessages').and.returnValue(Observable.of({data: [message]}));
 
         service.handleNewMessages(message, false);
-        eventService.emit(EventService.MESSAGE_RECEIVED_ACK);
-
         const newConversation: Conversation = <Conversation>service.leads[0];
 
         expect(service.get).toHaveBeenCalledWith(NOT_FOUND_CONVERSATION_ID);
         expect(newConversation.id).toBe(NOT_FOUND_CONVERSATION_ID);
-        expect(newConversation.modifiedDate).not.toBe(CONVERSATION_DATE);
         expect(newConversation.messages.length).toBe(1);
-        expect(newConversation.messages[0].id).toBe(MESSAGE_MAIN.id);
+        expect(newConversation.messages[0].id).toBe(message.id);
       });
     });
   });
