@@ -50,7 +50,7 @@ const eventsArray = [
   }
 ];
 
-const sendInterval = 60000;
+const sendInterval = 10000;
 
 
 describe('Service: Tracking', () => {
