@@ -558,17 +558,17 @@ describe('App', () => {
       expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.SENT, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
     });
 
-    it('should call the conversationService.markAs method when a MESSAGE_SENT_ACK event is triggered', () => {
+    it('should call the conversationService.markAs method when a MESSAGE_RECEIVED event is triggered', () => {
       eventService.emit(EventService.MESSAGE_RECEIVED, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
 
       expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.RECEIVED, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
     });
 
-    it('should call the conversationService.markAs method when a MESSAGE_SENT_ACK event is triggered', () => {
+    it('should call the conversationService.markAllAsRead method when a MESSAGE_READ event is triggered', () => {
       const timestamp = new Date().getTime();
       eventService.emit(EventService.MESSAGE_READ, MOCK_MESSAGE.conversationId, timestamp);
 
-      expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp, false);
+      expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp);
     });
   });
 
