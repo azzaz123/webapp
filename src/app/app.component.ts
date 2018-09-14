@@ -147,7 +147,7 @@ export class AppComponent implements OnInit {
       this.conversationService.markAs(messageStatus.RECEIVED, messageId, conversationId);
     });
     this.event.subscribe(EventService.MESSAGE_READ, (conversationId, timestamp) => {
-      this.conversationService.markAllAsRead(conversationId, timestamp, false);
+      this.conversationService.markAllAsRead(conversationId, timestamp);
     });
   }
 
