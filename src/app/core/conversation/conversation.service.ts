@@ -265,17 +265,10 @@ export class ConversationService extends LeadService {
               message_id: message.id,
               item_id: conversation.item.id
           };
-        if (fromSelf) {
           this.trackingService.addTrackingEvent({
-            eventData: TrackingService.MESSAGE_READ,
+          eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
             attributes: eventAttributes
           }, false);
-        } else {
-          this.trackingService.addTrackingEvent({
-            eventData: TrackingService.MESSAGE_READ_ACK,
-            attributes: eventAttributes
-          }, false);
-        }
     });
   }
 
@@ -547,10 +540,7 @@ export class ConversationService extends LeadService {
           this.addConversation(unarchivedConversation, message);
           this.event.emit(EventService.CONVERSATION_UNARCHIVED);
         } else {
-          this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
             this.requestConversationInfo(message);
-            this.event.unsubscribeAll(EventService.MESSAGE_RECEIVED_ACK);
-          });
         }
       }
     }
@@ -582,25 +572,22 @@ export class ConversationService extends LeadService {
   }
 
   private requestConversationInfo(message: Message) {
+    this.event.emit(EventService.MSG_ARCHIVE_LOADING);
     this.get(message.conversationId).subscribe((conversation: Conversation) => {
       if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId)) {
-        this.getSingleConversationMessages(conversation).subscribe(() => this.addConversation(conversation, message));
+        this.getSingleConversationMessages(conversation).subscribe(() => {
+          this.addConversation(conversation);
+          this.event.emit(EventService.MSG_ARCHIVE_LOADED);
+        });
       }
     });
   }
 
-  private addConversation(conversation: Conversation, message: Message) {
-    const trackEvent: TrackingEventData = {
-      eventData: TrackingService.MESSAGE_RECEIVED_ACK,
-      attributes: {
-        thread_id: message.conversationId,
-        message_id: message.id,
-        item_id: conversation.item.id
-      }
-    };
-    this.trackingService.pendingTrackingEvents.push(trackEvent);
+  private addConversation(conversation: Conversation, message?: Message) {
+    if (message) {
     message = this.messageService.addUserInfo(conversation, message);
     this.addMessage(conversation, message);
+    }
     this.leads.unshift(conversation);
     this.notificationService.sendBrowserNotification(message, conversation.item.id);
     this.stream$.next(this.leads);
