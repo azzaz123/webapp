@@ -172,7 +172,7 @@ describe('CatalogItemComponent', () => {
       it('should set selectedAction', () => {
         expect(itemService.selectedAction).toBe('reserve');
       });
-      xit('should call select', () => {
+      it('should call select', () => {
         expect(component.select).toHaveBeenCalledWith(MOCK_ITEM);
       });
     });

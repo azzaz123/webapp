@@ -204,10 +204,10 @@ describe('CartComponent', () => {
         });
       });
 
-      xit('should set localStorage with transaction type', () => {
+      it('should set localStorage with transaction type', () => {
         component.checkout();
 
-        expect(localStorage.setItem).toHaveBeenCalledWith([ 'transactionType', 'bumpWithCredits' ], [ 'transactionSpent', '100' ]);
+        expect(localStorage.setItem).toHaveBeenCalledWith('transactionType', 'bump');
       });
 
       it('should emit TOTAL_CREDITS_UPDATED event', () => {

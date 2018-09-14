@@ -623,7 +623,7 @@ describe('Service: User', () => {
       expect(permissionService.hasPermission).toHaveBeenCalledWith(PERMISSIONS.professional);
     });
 
-    xit('should return true', () => {
+    it('should return true', () => {
       expect(val).toBe(true);
     });
   });
