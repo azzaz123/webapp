@@ -16,7 +16,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/bufferTime';
 
 const maxBatchSize = 1000;
-const sendInterval = 60000;
+const sendInterval = 10000;
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
