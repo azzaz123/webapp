@@ -9,5 +9,6 @@ export interface ItemStatisticEntriesResponse {
     views: number;
     chats: number;
     favs: number;
+    visits: number;
   };
 }

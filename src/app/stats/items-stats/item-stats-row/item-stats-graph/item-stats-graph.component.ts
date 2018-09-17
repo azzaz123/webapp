@@ -5,6 +5,18 @@ import { ItemStatsService } from './item-stats.service';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from './item-stats-response.interface';
 import { Item } from '../../../../core/item/item';
 
+const GRAPH_COLORS = {
+  CHAT: '#EEAA42',
+  VISITS: '#FFD697',
+  VIEWS: '#FFEFD7',
+  FAVS: 'rgba(247, 88, 131, 0.2)',
+  FAVS_LINE: '#f75883',
+  CHAT_BUMPED: '#3CCFBD',
+  VISITS_BUMPED: '#8FE3D8',
+  VIEWS_BUMPED: '#E5FBF5',
+  FAVS_BUMPED: '#13C1AC' //['#3CCFBD', '#FFFFFF'],
+};
+
 @Component({
   selector: 'tsl-item-stats-graph',
   templateUrl: './item-stats-graph.component.html',
@@ -21,11 +33,6 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
     'type': 'serial',
     'categoryField': 'date',
     'dataDateFormat': '',
-    'colors': [
-      '#ecb052',
-      '#ffd89b',
-      '#71dacd'
-    ],
     'columnSpacing': 3,
     'addClassNames': true,
     'theme': 'light',
@@ -144,22 +151,41 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       'type': 'column',
       'balloonText': '[[title]]: <b>[[value]]</b>'
     };
+    const lineGraphOptions = {
+      'type': 'smoothedLine',
+      'balloonText': '[[title]]: <b>[[value]]</b>',
+      'fillAlphas': 1,
+      'lineThickness': 2
+    };
     if (this.type === 'favs') {
-      this.chartOptions.colors = ['#ffcbd9', '#71dacd'];
+      this.chartOptions.colors = [GRAPH_COLORS.FAVS];
       this.chartOptions.graphs.push({
-        ...columnGraphOptions,
+        ...lineGraphOptions,
         'id': 'Favs',
         'title': 'Favs',
         'valueField': 'favs',
-        'fillColorsField': 'colorFavs',
+        //'fillColorsField': 'colorFavs',
+        'lineColorField': 'colorFavs'
       });
     } else {
+      this.chartOptions.colors = [
+        GRAPH_COLORS.CHAT,
+        GRAPH_COLORS.VISITS,
+        GRAPH_COLORS.VIEWS
+      ];
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
         'id': 'Chats',
         'title': 'Chats',
         'valueField': 'chats',
         'fillColorsField': 'colorChats',
+      });
+      this.chartOptions.graphs.push({
+        ...columnGraphOptions,
+        'id': 'Visits',
+        'title': 'Visits',
+        'valueField': 'visits',
+        'fillColorsField': 'colorVisits',
       });
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
@@ -183,12 +209,16 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
     this.statsData.entries.forEach((entry: ItemStatisticEntriesResponse) => {
       this.chartOptions.dataProvider.push({
         date: +entry.date,
-        favs: entry.values.favs || 0, // TODO: replace
+        favs: entry.values.favs || 0,
         views: entry.values.views || 0,
         chats: entry.values.chats || 0,
-        colorChats: entry.bumped ? '#0f9989' : '#ecb052',
-        colorViews: entry.bumped ? '#71dacd' : '#ffd89b',
-        colorFavs: entry.bumped ? '#71dacd' : '#ffcbd9'
+        visits: entry.values.visits || 0,
+        colorChats: entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT,
+        colorViews: entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS,
+        colorVisits: entry.bumped ? GRAPH_COLORS.VISITS_BUMPED : GRAPH_COLORS.VISITS,
+        colorFavs: entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS_LINE,
+        //colorFavs: entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS,
+        //colorFavsLine: entry.bumped ? '#13C1AC' : '#f75883',
       });
     });
     this.chart = this.AmCharts.makeChart(this.id, this.chartOptions);
