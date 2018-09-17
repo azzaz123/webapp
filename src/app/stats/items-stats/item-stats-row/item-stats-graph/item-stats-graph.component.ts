@@ -116,20 +116,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       'shadowAlpha': 0
     },
     'legend': {
-      'enabled': true,
-      'align': 'left',
-      'equalWidths': false,
-      'autoMargins': false,
-      'marginLeft': 20,
-      'marginRight': 0,
-      'spacing': 15,
-      'position': 'top',
-      'rollOverGraphAlpha': 0.75,
-      'valueWidth': 30,
-      'valueText': '',
-      'switchable': false,
-      'color': '#253238',
-      'fontSize': 12
+      'enabled': false
     },
     'titles': [],
     'dataProvider': []

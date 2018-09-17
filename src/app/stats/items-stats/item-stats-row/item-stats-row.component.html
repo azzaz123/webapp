@@ -32,8 +32,23 @@
   </div>
   <div class="stats-expanded" *ngIf="open">
     <div class="graphs-container" *ngIf="statsData">
-      <tsl-item-stats-graph [item]="item" [statsData]="statsData"></tsl-item-stats-graph>
-      <tsl-item-stats-graph [item]="item" [statsData]="statsData" type="favs"></tsl-item-stats-graph>
+      <div class="charts-box">
+        <div class="header">
+          <h2>Estadísticas del producto</h2>
+          <div class="legend">
+            <ul>
+              <li class="views" i18n>Views</li>
+              <li class="visits" i18n>Visits</li>
+              <li class="chats" i18n>Chats</li>
+              <li class="favorites" i18n>Favorites</li>
+            </ul>
+          </div>
+        </div>
+        <div class="charts">
+          <tsl-item-stats-graph [item]="item" [statsData]="statsData"></tsl-item-stats-graph>
+          <tsl-item-stats-graph [item]="item" [statsData]="statsData" type="favs"></tsl-item-stats-graph>
+        </div>
+      </div>
     </div>
     <div class="graphs-container graph-info">
       <!--<h2>
