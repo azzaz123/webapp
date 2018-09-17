@@ -564,18 +564,16 @@ export class ConversationService extends LeadService {
     this.get(message.conversationId).subscribe((conversation: Conversation) => {
       if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId)) {
         this.getSingleConversationMessages(conversation).subscribe(() => {
-          this.addConversation(conversation);
+          this.addConversation(conversation, message);
           this.event.emit(EventService.MSG_ARCHIVE_LOADED);
         });
       }
     });
   }
 
-  private addConversation(conversation: Conversation, message?: Message) {
-    if (message) {
+  private addConversation(conversation: Conversation, message: Message) {
     message = this.messageService.addUserInfo(conversation, message);
     this.addMessage(conversation, message);
-    }
     this.leads.unshift(conversation);
     this.notificationService.sendBrowserNotification(message, conversation.item.id);
     this.stream$.next(this.leads);
