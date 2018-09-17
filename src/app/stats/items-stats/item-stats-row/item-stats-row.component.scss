@@ -80,10 +80,12 @@
   .graph-info {
     width: 327px;
     flex-direction: column;
+    background: rgba(236, 239, 241, 0.5) url(/assets/images/destacado.svg) no-repeat center 40px;
+    padding-top: 190px;
     h2 {
       font-size: $font-size-S;
-      text-transform: uppercase;
       font-weight: bold;
+      text-align: center;
     }
     .info {
       border-radius: $border-radius;
@@ -128,7 +130,7 @@
       }
     }
     .note, .bump-note {
-      color: $grey-250;
+      color: $grey-500;
       text-align: center;
       font-size: $font-size-S;
     }
