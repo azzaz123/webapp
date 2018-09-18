@@ -166,7 +166,7 @@ describe('Service: Message', () => {
 
       service.getMessages(conversation).subscribe();
 
-      expect(archiveService.getAllEvents).toHaveBeenCalledWith(conversation.id, null);
+      expect(archiveService.getAllEvents).toHaveBeenCalledWith(conversation.id, '0');
     });
 
     it('should set status to READ for all mesasges fromSelf, when parameter archived is true', () => {

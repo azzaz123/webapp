@@ -23,7 +23,7 @@ export class MsgArchiveService {
               private userService: UserService) { }
 
   public getEventsSince(start: string): Observable<MsgArchiveResponse> {
-    return this.getSince(start ? start : '0', []).first().map((r: any) => {
+    return this.getSince(start).first().map((r: any) => {
       const events = r.events;
       let messages = this.processMessages(events);
       const readReceipts = this.processReadReceipts(events);
@@ -39,14 +39,15 @@ export class MsgArchiveService {
     });
   }
 
-  private getSince(since: string, events): Observable<any> {
+  private getSince(since: string, events?: Array<any>): Observable<any> {
+    const nanoTimestamp = since.indexOf('.') === 10 || since === '0' ? since : (new Date(since).getTime() / 1000) + '000';
     return this.http.get(this.API_URL, {
-      since: since,
+      since: nanoTimestamp,
       'page-size': this.pageSize
     }).flatMap((r: any) => {
       const data = r.json();
       const nextPage = r.headers.get('x-nextpage');
-      events = events.length ? events.concat(data) : data;
+      events = events && events.length ? events.concat(data) : data;
 
       if (nextPage) {
         if (nextPage.indexOf('since=') > -1) {
@@ -61,7 +62,7 @@ export class MsgArchiveService {
   }
 
   public getAllEvents(thread: string, since?: string): Observable<MsgArchiveResponse> {
-    return this.getAll(thread, [], since ? since : '0').first().map((r: any) => {
+    return this.getAll(thread, since).first().map((r: any) => {
       const events = r.events;
       let messages = this.processMessages(events);
       const readReceipts = this.processReadReceipts(events);
@@ -78,19 +79,20 @@ export class MsgArchiveService {
     });
   }
 
-  private getAll(thread: string, events, since: string): Observable<any> {
+  private getAll(thread: string, since: string, events?: Array<any>): Observable<any> {
+    const nanoTimestamp = since.indexOf('.') === 10 || since === '0' ? since : (new Date(since).getTime() / 1000) + '000';
     return this.http.get(this.API_URL, {
-      since: since,
+      since: nanoTimestamp,
       'page-size': this.pageSize,
       conversation_hash: thread
     }).flatMap((r: any) => {
       const data = r.json();
       const nextPage = r.headers.get('x-nextpage');
-      events = events.length ? events.concat(data) : data;
+      events = events && events.length ? events.concat(data) : data;
 
       if (nextPage) {
         const newSince = nextPage.split('since=')[1].split('&')[0];
-        return this.getAll(thread, events, newSince);
+        return this.getAll(thread, newSince, events);
       }
 
       r.events = events;

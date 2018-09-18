@@ -128,7 +128,7 @@ describe('MsgArchiveService', () => {
     });
 
     it('should make more http.get requests if the header returns a x-nextpage since value', () => {
-      const nextPageTimestamp = '123';
+      const nextPageTimestamp = '1234567890.000000';
       const res: ResponseOptions = new ResponseOptions({
         body: JSON.stringify(createMockMessageEvents(3)),
         headers: new Headers({ 'x-nextpage': 'since=' + nextPageTimestamp })

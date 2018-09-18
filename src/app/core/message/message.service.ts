@@ -75,7 +75,7 @@ export class MessageService {
         };
         return Observable.of(res);
       } else if (this.connectionService.isConnected) {
-        return this.queryMessagesByThread(conversation.id).map(r => {
+        return this.queryMessagesByThread(conversation.id, '0').map(r => {
           if (r.messages.length) {
             r.meta = {
               first: _.first(r.messages).id,
@@ -181,9 +181,8 @@ export class MessageService {
     this.xmpp.sendMessage(conversation, message);
   }
 
-  private queryMessagesByThread(thread: string, since?: string): Observable<MsgArchiveResponse> {
-    const nanoTimestamp = since ? (new Date(since).getTime() / 1000) + '000' : null;
-    return this.archiveService.getAllEvents(thread, nanoTimestamp);
+  private queryMessagesByThread(thread: string, since: string): Observable<MsgArchiveResponse> {
+    return this.archiveService.getAllEvents(thread, since);
   }
 
   public resetCache() {
