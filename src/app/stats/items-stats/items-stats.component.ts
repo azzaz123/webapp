@@ -14,6 +14,7 @@ export class ItemsStatsComponent implements OnInit {
   public loading = true;
   private init = 0;
   public end: boolean;
+  public opens: boolean[] = [];
 
   constructor(private itemService: ItemService) { }
 
@@ -33,6 +34,11 @@ export class ItemsStatsComponent implements OnInit {
       this.loading = false;
       this.end = !this.init;
     });
+  }
+
+  public onOpen(index: number) {
+    this.opens = this.items.map(_ => false);
+    this.opens[index] = true;
   }
 
 }
