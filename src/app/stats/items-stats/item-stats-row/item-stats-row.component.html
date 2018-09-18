@@ -72,7 +72,7 @@
       <p class="note">*Comparativa con la semana anterior. Datos medios de entradas y chats, y esas cosas, calculados guay</p>-->
       <h2>¿Quieres mejorar tus números?</h2>
       <p class="note">Destaca tu producto y veras como incrementan las impresiones (y las posibilidades de venta) en un 200%</p>
-      <tsl-button className="btn-primary btn-block" *ngIf="!item.featured" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n>Feature it</tsl-button>
+      <tsl-button className="btn-primary btn-block" *ngIf="!item.featured && price" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n>Feature it from {{price | customCurrency}}</tsl-button>
       <p class="bump-note" *ngIf="item.featured">Your feature ends on {{item.bumpExpiringDate | amCalendar:momentConfig}}</p>
     </div>
   </div>

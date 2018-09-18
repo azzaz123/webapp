@@ -248,6 +248,10 @@ export interface ItemWithProducts {
   products: ProductDurations;
 }
 
+export interface CheapestProducts {
+  [itemId: string]: string;
+}
+
 export interface AllowedActionResponse {
   type: string;
   allowed: boolean;

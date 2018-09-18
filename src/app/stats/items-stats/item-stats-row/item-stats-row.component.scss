@@ -200,10 +200,9 @@
       font-weight: bold;
     }
     tsl-button {
-      margin: 0 auto;
       /deep/ {
         .btn {
-          padding: 10px 74px;
+          font-weight: bold;
         }
       }
     }

@@ -18,7 +18,7 @@
   </div>
   <div class="row calls-items">
     <div class="col-md-12">
-      <tsl-item-stats-row *ngFor="let item of items; let i = index" [item]="item" (onOpen)="onOpen(i)" [open]="opens[i]"></tsl-item-stats-row>
+      <tsl-item-stats-row *ngFor="let item of items; let i = index" [item]="item" (onOpen)="onOpen(i)" [open]="opens[i]" [price]="prices ? prices[item.id] : ''"></tsl-item-stats-row>
     </div>
   </div>
 </div>

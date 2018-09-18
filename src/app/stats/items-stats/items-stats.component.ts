@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemsData } from '../../core/item/item-response.interface';
+import { CheapestProducts, ItemsData } from '../../core/item/item-response.interface';
 import { ItemService } from '../../core/item/item.service';
 import { Item } from '../../core/item/item';
 
@@ -15,6 +15,7 @@ export class ItemsStatsComponent implements OnInit {
   private init = 0;
   public end: boolean;
   public opens: boolean[] = [];
+  public prices: CheapestProducts;
 
   constructor(private itemService: ItemService) { }
 
@@ -33,12 +34,20 @@ export class ItemsStatsComponent implements OnInit {
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
       this.end = !this.init;
+      this.getProductsFromItems();
     });
   }
 
   public onOpen(index: number) {
     this.opens = this.items.map(_ => false);
     this.opens[index] = true;
+  }
+
+  private getProductsFromItems() {
+    const itemsIds: string[] = this.items.map((item: Item) => item.id);
+    this.itemService.getCheapestProductPrice(itemsIds).subscribe((prices: CheapestProducts) => {
+      this.prices = prices;
+    });
   }
 
 }

@@ -14,6 +14,7 @@ export class ItemStatsRowComponent implements OnInit {
   @Input() item: Item;
   @Output() onOpen: EventEmitter<boolean> = new EventEmitter();
   @Input() open = false;
+  @Input() price: string;
   public link: string;
   public momentConfig: any;
   public statsData: ItemStatisticFullResponse;
