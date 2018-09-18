@@ -14,7 +14,7 @@ const GRAPH_COLORS = {
   CHAT_BUMPED: '#3CCFBD',
   VISITS_BUMPED: '#8FE3D8',
   VIEWS_BUMPED: '#E5FBF5',
-  FAVS_BUMPED: '#13C1AC' //['#3CCFBD', '#FFFFFF'],
+  FAVS_BUMPED: '#13C1AC'
 };
 
 @Component({
@@ -131,16 +131,24 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
   }
 
   private setChartOptions() {
+    const balloonFunction = (graphDataItem, graph) => {
+      let balloon = '<div style="text-align:left">';
+      if (graphDataItem.dataContext.bumped) {
+        balloon += '<b style="color:#13c1ac">Featured</b><br />';
+      }
+      balloon += graph.title + ': <b>' + graphDataItem.values.value + '</b>';
+      return balloon + '</div>';
+    };
     const columnGraphOptions = {
       'fillAlphas': 1,
       'lineAlpha': 0,
       'fixedColumnWidth': 20,
       'type': 'column',
-      'balloonText': '[[title]]: <b>[[value]]</b>'
+      'balloonFunction': balloonFunction
     };
     const lineGraphOptions = {
       'type': 'smoothedLine',
-      'balloonText': '[[title]]: <b>[[value]]</b>',
+      'balloonFunction': balloonFunction,
       'fillAlphas': 1,
       'lineThickness': 2
     };
@@ -151,7 +159,6 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
         'id': 'Favs',
         'title': 'Favs',
         'valueField': 'favs',
-        //'fillColorsField': 'colorFavs',
         'lineColorField': 'colorFavs'
       });
     } else {
@@ -204,8 +211,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
         colorViews: entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS,
         colorVisits: entry.bumped ? GRAPH_COLORS.VISITS_BUMPED : GRAPH_COLORS.VISITS,
         colorFavs: entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS_LINE,
-        //colorFavs: entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS,
-        //colorFavsLine: entry.bumped ? '#13C1AC' : '#f75883',
+        bumped: entry.bumped
       });
     });
     this.chart = this.AmCharts.makeChart(this.id, this.chartOptions);
