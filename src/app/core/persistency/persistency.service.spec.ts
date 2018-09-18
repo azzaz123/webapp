@@ -225,9 +225,9 @@ describe('Service: Persistency', () => {
       tick();
 
       expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.conversationsDb);
+      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
       expect((service as any).upsert.calls.allArgs()[0][1]).toBe('version');
-      expect((service as any).upsert.calls.allArgs()[1][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[1][0]).toBe(service.conversationsDb);
       expect((service as any).upsert.calls.allArgs()[1][1]).toBe('version');
     }));
   });

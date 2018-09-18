@@ -160,7 +160,7 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get('version'));
   }
 
-  private saveDbVersionConv(data: any): Observable<any> {
+  private saveDbVersionMsg(data: any): Observable<any> {
     return Observable.fromPromise(
       this.upsert(this.messagesDb, 'version', (doc: Document<any>) => {
         doc.version = data;
@@ -169,7 +169,7 @@ export class PersistencyService {
     );
   }
 
-  private saveDbVersionMsg(data: any): Observable<any> {
+  private saveDbVersionConv(data: any): Observable<any> {
     return Observable.fromPromise(
       this.upsert(this.conversationsDb, 'version', (doc: Document<any>) => {
         doc.version = data;
