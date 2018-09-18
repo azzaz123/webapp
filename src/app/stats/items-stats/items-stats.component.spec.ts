@@ -18,7 +18,7 @@ describe('ItemsStatsComponent', () => {
         {
           provide: ItemService, useValue: {
           mine() {
-            return Observable.of({});
+            return Observable.of({data: []});
           }
         }
         }

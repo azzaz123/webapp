@@ -34,7 +34,9 @@ export class ItemsStatsComponent implements OnInit {
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
       this.end = !this.init;
-      this.getProductsFromItems();
+      if (this.items.length) {
+        this.getProductsFromItems();
+      }
     });
   }
 
