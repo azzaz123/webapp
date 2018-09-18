@@ -764,7 +764,7 @@ describe('Service: Conversation', () => {
       const expectedMarkedAsRead = mockedConversation.messages.slice(0, 2);
       const expectedNotMarkedAsRead = mockedConversation.messages.slice(-1);
 
-      service.markAllAsRead(mockedConversation.id, timestamp);
+      service.markAllAsRead(mockedConversation.id);
 
       const attributes = {
         thread_id: mockedConversation.id,
@@ -909,7 +909,6 @@ describe('Service: Conversation', () => {
 
       expect(service.markAllAsRead).toHaveBeenCalled();
       expect(service.markAllAsRead['calls'].argsFor(0)[0]).toEqual(conversation.id);
-      expect(service.markAllAsRead['calls'].argsFor(0)[2]).toEqual(false);
     });
 
     it('should call the SendConversationStatus', () => {

@@ -558,7 +558,7 @@ describe('App', () => {
       const timestamp = new Date().getTime();
       eventService.emit(EventService.MESSAGE_READ, MOCK_MESSAGE.conversationId, timestamp);
 
-      expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp);
+      expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp, false);
     });
   });
 

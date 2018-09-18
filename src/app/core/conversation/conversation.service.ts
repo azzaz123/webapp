@@ -252,24 +252,24 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public markAllAsRead(conversationId: string, timestamp: number, fromSelf: boolean = true) {
+  public markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = true) {
     const conversation = this.leads.find(c => c.id === conversationId);
     this.addStatusToStoredMessages(conversation, messageStatus.READ);
     conversation.messages.filter((message) => (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT)
-      && new Date(message.date).getTime() < timestamp)
+      && fromSelf || new Date(message.date).getTime() < timestamp)
       .map((message) => {
-      message.status = messageStatus.READ;
+        message.status = messageStatus.READ;
         this.persistencyService.updateMessageStatus(message.id, messageStatus.READ);
         const eventAttributes = {
-              thread_id: message.conversationId,
-              message_id: message.id,
-              item_id: conversation.item.id
-          };
-          this.trackingService.addTrackingEvent({
+          thread_id: message.conversationId,
+          message_id: message.id,
+          item_id: conversation.item.id
+        };
+        this.trackingService.addTrackingEvent({
           eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
-            attributes: eventAttributes
-          }, false);
-    });
+          attributes: eventAttributes
+        }, false);
+      });
   }
 
   public markAs(newStatus: string, messageId: string, thread: string) {
@@ -322,7 +322,7 @@ export class ConversationService extends LeadService {
   public sendRead(conversation: Conversation) {
     if (conversation.unreadMessages > 0) {
       this.readSubscription = this.event.subscribe(EventService.MESSAGE_READ_ACK, () => {
-        this.markAllAsRead(conversation.id, (new Date()).getTime(), false);
+        this.markAllAsRead(conversation.id);
         this.readSubscription.unsubscribe();
       });
       this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);
