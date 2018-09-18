@@ -13,6 +13,7 @@ export class MsgArchiveService {
 
   protected API_URL = 'api/v3/events/chat';
   private pageSize = 100;
+  private selfId: string;
   private eventTypes = {
     message: 'chat.message.created',
     received: 'chat.message.received',
@@ -23,6 +24,7 @@ export class MsgArchiveService {
               private userService: UserService) { }
 
   public getEventsSince(start: string): Observable<MsgArchiveResponse> {
+    this.selfId = this.userService.user.id;
     return this.getSince(start).first().map((r: any) => {
       const events = r.events;
       let messages = this.processMessages(events);
@@ -51,9 +53,9 @@ export class MsgArchiveService {
 
       if (nextPage) {
         if (nextPage.indexOf('since=') > -1) {
-        const newSince = nextPage.split('since=')[1].split('&')[0];
-        return this.getSince(newSince, events);
-      }
+          const newSince = nextPage.split('since=')[1].split('&')[0];
+          return this.getSince(newSince, events);
+        }
       }
 
       r.events = events;
@@ -62,6 +64,7 @@ export class MsgArchiveService {
   }
 
   public getAllEvents(thread: string, since?: string): Observable<MsgArchiveResponse> {
+    this.selfId = this.userService.user.id;
     return this.getAll(thread, since).first().map((r: any) => {
       const events = r.events;
       let messages = this.processMessages(events);
@@ -125,10 +128,9 @@ export class MsgArchiveService {
   }
 
   private processMessages(archiveData: Array<any>) {
-    const self: User = this.userService.user;
     let messages = archiveData.filter((d) => d.type === this.eventTypes.message)
     .map(m => {
-      const fromSelf = m.event.from_user_hash === self.id;
+      const fromSelf = m.event.from_user_hash === this.selfId;
       const msg = new Message(m.event.message_id,
         m.event.conversation_hash,
         m.event.body,
@@ -145,10 +147,9 @@ export class MsgArchiveService {
   }
 
   private processReceivedReceipts(archiveData: any): Array<ReceivedReceipt> {
-    const self: User = this.userService.user;
     let receipts = archiveData.filter((d) => d.type === this.eventTypes.received)
     .map(m => {
-      const fromSelf = m.event.from_user_hash === self.id;
+      const fromSelf = m.event.from_user_hash === this.selfId;
       const receipt: ReceivedReceipt = {
         thread: m.event.conversation_hash,
         messageId: m.event.message_id,
@@ -174,10 +175,9 @@ export class MsgArchiveService {
   }
 
   private processReadReceipts(archiveData: any): Array<ReadReceipt> {
-    const self: User = this.userService.user;
     const receipts = [];
-    const sentByMe = _.findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash !== self.id);
-    const sentToMe = _.findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash === self.id);
+    const sentByMe = _.findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash !== this.selfId);
+    const sentToMe = _.findLast(archiveData, (r) => r.type === this.eventTypes.read && r.event.to_user_hash === this.selfId);
 
     sentByMe ? receipts.push(sentByMe) : receipts.push();
     sentToMe ? receipts.push(sentToMe) : receipts.push();
