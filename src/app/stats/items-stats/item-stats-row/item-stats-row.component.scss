@@ -155,48 +155,6 @@
       font-weight: bold;
       text-align: center;
     }
-    .info {
-      border-radius: $border-radius;
-      background-color: $white;
-      padding: $spacing;
-      list-style: none;
-      margin: 0;
-      color: $grey-250;
-      b {
-        color: $grey-900;
-      }
-      li {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: $spacing-S;
-      }
-      .percent {
-        font-weight: bold;
-        mat-icon {
-          width: 10px;
-          height: 12px;
-          margin-right: $spacing-XXS;
-        }
-        &.positive {
-          color: $success;
-        }
-        &.negative {
-          color: $warn;
-          mat-icon {
-            /deep/ {
-              svg {
-                transform: rotate(180deg);
-                transform-origin: center;
-              }
-              path {
-                fill: $warn;
-              }
-            }
-          }
-        }
-      }
-    }
     .note, .bump-note {
       color: $grey-500;
       text-align: center;
