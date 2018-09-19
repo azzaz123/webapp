@@ -4,6 +4,7 @@ import { UUID } from 'angular2-uuid';
 import { ItemStatsService } from './item-stats.service';
 import { ItemStatisticEntriesResponse, ItemStatisticFullResponse } from './item-stats-response.interface';
 import { Item } from '../../../../core/item/item';
+import { I18nService } from '../../../../core/i18n/i18n.service';
 
 const GRAPH_COLORS = {
   CHAT: '#EEAA42',
@@ -122,6 +123,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
   };
 
   constructor(private AmCharts: AmChartsService,
+              private i18n: I18nService,
               @Inject(LOCALE_ID) private locale: string) { }
 
   ngAfterViewInit() {
@@ -133,7 +135,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
     const balloonFunction = (graphDataItem, graph) => {
       let balloon = '<div style="text-align:left">';
       if (graphDataItem.dataContext.bumped) {
-        balloon += '<b style="color:#13c1ac">Featured</b><br />';
+        balloon += '<b style="color:#13c1ac">' + this.i18n.getTranslations('featured') + '</b><br />';
       }
       balloon += graph.title + ': <b>' + graphDataItem.values.value + '</b>';
       return balloon + '</div>';
@@ -149,7 +151,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
         'id': 'Favs',
-        'title': 'Favs',
+        'title': this.i18n.getTranslations('favorites'),
         'valueField': 'favs',
         'fillColorsField': 'colorFavs'
       });
@@ -157,24 +159,27 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
         'id': 'Chats',
-        'title': 'Chats',
+        'title': this.i18n.getTranslations('chats'),
         'valueField': 'chats',
         'fillColorsField': 'colorChats',
       });
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
         'id': 'Visits',
-        'title': 'Visits',
+        'title': this.i18n.getTranslations('visits'),
         'valueField': 'visits',
         'fillColorsField': 'colorVisits',
       });
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
         'id': 'Views',
-        'title': 'Views',
+        'title': this.i18n.getTranslations('views'),
         'valueField': 'views',
         'fillColorsField': 'colorViews',
       });
+    }
+    if (this.locale === 'es') {
+      this.AmCharts.dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
     }
   }
 
