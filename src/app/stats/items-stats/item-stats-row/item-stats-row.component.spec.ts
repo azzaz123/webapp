@@ -9,6 +9,7 @@ import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-curre
 import { DecimalPipe } from '@angular/common';
 import { MomentModule } from 'angular2-moment';
 import { MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ItemStatsRowComponent', () => {
   let component: ItemStatsRowComponent;
@@ -16,7 +17,7 @@ describe('ItemStatsRowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MomentModule],
+      imports: [MomentModule, NoopAnimationsModule],
       declarations: [ ItemStatsRowComponent, CustomCurrencyPipe ],
       providers: [
         I18nService,

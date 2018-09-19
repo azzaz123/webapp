@@ -60,11 +60,13 @@
 }
 
 .stats-expanded {
-  padding-top: $spacing-L;
   display: flex;
   justify-content: space-between;
-  padding-right: $spacing-L;
-  padding-bottom: $spacing-2M;
+  .active & {
+    padding-top: $spacing-L;
+    padding-right: $spacing-L;
+    padding-bottom: $spacing-2M;
+  }
   .graphs-container {
     width: 770px;
     background-color: rgba($grey-50, .5);

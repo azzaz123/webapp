@@ -30,7 +30,7 @@
       <mat-icon svgIcon="caret"></mat-icon>
     </div>
   </div>
-  <div class="stats-expanded" *ngIf="open">
+  <div class="stats-expanded" [@collapse]="!open">
     <div class="graphs-container" *ngIf="statsData">
       <div class="charts-box">
         <div class="header">
