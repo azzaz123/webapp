@@ -9,12 +9,11 @@ const GRAPH_COLORS = {
   CHAT: '#EEAA42',
   VISITS: '#FFD697',
   VIEWS: '#FFEFD7',
-  FAVS: 'rgba(247, 88, 131, 0.2)',
-  FAVS_LINE: '#f75883',
+  FAVS: '#f99bb5',
   CHAT_BUMPED: '#3CCFBD',
   VISITS_BUMPED: '#8FE3D8',
   VIEWS_BUMPED: '#E5FBF5',
-  FAVS_BUMPED: '#13C1AC'
+  FAVS_BUMPED: '#8FE3D8'
 };
 
 @Component({
@@ -146,27 +145,15 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       'type': 'column',
       'balloonFunction': balloonFunction
     };
-    const lineGraphOptions = {
-      'type': 'smoothedLine',
-      'balloonFunction': balloonFunction,
-      'fillAlphas': 1,
-      'lineThickness': 2
-    };
     if (this.type === 'favs') {
-      this.chartOptions.colors = [GRAPH_COLORS.FAVS];
       this.chartOptions.graphs.push({
-        ...lineGraphOptions,
+        ...columnGraphOptions,
         'id': 'Favs',
         'title': 'Favs',
         'valueField': 'favs',
-        'lineColorField': 'colorFavs'
+        'fillColorsField': 'colorFavs'
       });
     } else {
-      this.chartOptions.colors = [
-        GRAPH_COLORS.CHAT,
-        GRAPH_COLORS.VISITS,
-        GRAPH_COLORS.VIEWS
-      ];
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
         'id': 'Chats',
@@ -189,13 +176,6 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
         'fillColorsField': 'colorViews',
       });
     }
-    if (this.item.featured) {
-      this.chartOptions.graphs.push({
-        ...columnGraphOptions,
-        'id': this.item.flags.bump_type,
-        'title': this.item.flags.bump_type
-      });
-    }
   }
 
   private loadStats() {
@@ -210,7 +190,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
         colorChats: entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT,
         colorViews: entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS,
         colorVisits: entry.bumped ? GRAPH_COLORS.VISITS_BUMPED : GRAPH_COLORS.VISITS,
-        colorFavs: entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS_LINE,
+        colorFavs: entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS,
         bumped: entry.bumped
       });
     });

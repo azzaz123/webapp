@@ -121,7 +121,12 @@
               }
               &.favorites {
                 &:before {
-                  background: #f75883;
+                  background: #f99bb5;
+                }
+              }
+              &.featured {
+                &:before {
+                  background: #8FE3D8;
                 }
               }
             }
