@@ -9,12 +9,17 @@
       </label>
     </div>
   </form>
-  <div *ngFor="let type of types" class="price border-l" [ngClass]="type" [hidden]="!itemWithProducts.products[duration][type]">
-    <button class="btn btn-price"
-            (click)="select(type)"
-            [ngClass]="{selected: type === selectedType && duration === selectedDuration}">
-      <s *ngIf="itemWithProducts.products[duration][type]?.original_market_code">{{itemWithProducts.products[duration][type]?.original_market_code * creditInfo.factor | customCurrency:creditInfo.currencyName}}<tsl-wallacoin [currency]="creditInfo.currencyName" color="strike"></tsl-wallacoin></s>
-       {{itemWithProducts.products[duration][type]?.market_code * creditInfo.factor | customCurrency:creditInfo.currencyName}}<tsl-wallacoin [currency]="creditInfo.currencyName"></tsl-wallacoin>
-    </button>
+  <div *ngFor="let type of types" class="price border-l" [ngClass]="type">
+    <ng-container *ngIf="itemWithProducts.products[duration][type]; else notAvailable">
+      <button class="btn btn-price"
+              (click)="select(type)"
+              [ngClass]="{selected: type === selectedType && duration === selectedDuration}">
+        <s *ngIf="itemWithProducts.products[duration][type]?.original_market_code">{{itemWithProducts.products[duration][type]?.original_market_code * creditInfo.factor | customCurrency:creditInfo.currencyName}}<tsl-wallacoin [currency]="creditInfo.currencyName" color="strike"></tsl-wallacoin></s>
+         {{itemWithProducts.products[duration][type]?.market_code * creditInfo.factor | customCurrency:creditInfo.currencyName}}<tsl-wallacoin [currency]="creditInfo.currencyName"></tsl-wallacoin>
+      </button>
+    </ng-container>
+    <ng-template #notAvailable>
+      <span class="no-available">Not Available</span>
+    </ng-template>
   </div>
 </div>
