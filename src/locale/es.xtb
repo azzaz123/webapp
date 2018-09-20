@@ -114,6 +114,8 @@
   <translation id="8141228329244837517">Subir un producto a mi catálogo</translation>
   <translation id="6946649608831221934">Subir un producto más a mi catálogo</translation>
   <translation id="243983274320667129">Información de tu producto</translation>
+  <translation id="4601810369894625886">Información de tu inmueble</translation>
+  <translation id="8781767917622107949">Información básica</translation>
   <translation id="1511766279515968094">Marca</translation>
   <translation id="3937675945889395823">Ej: Seat</translation>
   <translation id="8348894888237155755">Lo básico: marca y modelo.</translation>
@@ -128,7 +130,9 @@
   <translation id="5701618810648052610">Título</translation>
   <translation id="1502561792056358737">Esto es lo que se verá en tu anuncio</translation>
   <translation id="2374867267744164173">Sin miedo, cuanto más descriptivo, más fácil será que lo encuentren.</translation>
-  <translation id="7367942639781560564">Información relevante</translation>
+  <translation id="3180168824839484839">Información de tu vehículo</translation>
+  <translation id="3429380014519274140">Información adicional</translation>
+  <translation id="3738144900818451024">Tu coche se verá en:</translation>
   <translation id="2724055831234181057">Versión</translation>
   <translation id="8422000809081880557">¿Es alguna versión o serie específica?</translation>
   <translation id="764453674498400202">Número de plazas</translation>
@@ -222,12 +226,12 @@
   <translation id="5112037422043971210">Deja tus fotos aquí para subirlas</translation>
   <translation id="1417432796546296307">Ya has llegado al límite de <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> fotos por producto.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph> Elimina una foto primero antes de añadir otra.</translation>
   <translation id="6145572175629887249">Foto principal</translation>
-  <translation id="1551801042919193607">¿Qué venderás?</translation>
-  <translation id="2649260508337759251">Marca el tipo de producto que subirás</translation>
-  <translation id="7926180204931135155">Algo que ya no uso</translation>
-  <translation id="7909550640012468315">Un coche</translation>
+  <translation id="1526908168288421707">¿Qué subirás?</translation>
+  <translation id="4890891474174650184">En wallapop hay sitio para (casi) todo</translation>
+  <translation id="7926180204931135155">Algo que ya no necesito</translation>
+  <translation id="7909550640012468315">Un vehículo</translation>
   <translation id="6822624572232933913">Mis servicios</translation>
-  <translation id="4895100071976641944">Una vivienda</translation>
+  <translation id="4895100071976641944">Una propiedad</translation>
   <translation id="8222521338018520589">Es importante que marques bien el tipo de producto o servicio para que lo encuentren el resto de wallapopers.</translation>
   <translation id="7036284206110282007">días</translation>
   <translation id="2595297634596426795">Mis destacados</translation>
