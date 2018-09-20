@@ -62,9 +62,9 @@
 .stats-expanded {
   display: flex;
   justify-content: space-between;
+  padding-right: $spacing-L;
   .active & {
     padding-top: $spacing-L;
-    padding-right: $spacing-L;
     padding-bottom: $spacing-2M;
   }
   .graphs-container {
@@ -161,7 +161,7 @@
       font-size: $font-size-S;
     }
     .bump-note {
-      color: $grey-500;
+      color: $corporate;
       font-weight: bold;
     }
     tsl-button {

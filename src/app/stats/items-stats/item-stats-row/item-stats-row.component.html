@@ -51,11 +51,15 @@
         </div>
       </div>
     </div>
-    <div class="graphs-container graph-info">
+    <div class="graphs-container graph-info" *ngIf="!item.featured">
       <h2>¿Quieres mejorar tus números?</h2>
       <p class="note">Destaca tu producto y veras como incrementan las impresiones (y las posibilidades de venta) en un 200%</p>
-      <tsl-button className="btn-primary btn-block" *ngIf="!item.featured && price" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n>Feature it from {{price | customCurrency}}</tsl-button>
-      <p class="bump-note" *ngIf="item.featured">Your feature ends on {{item.bumpExpiringDate | amCalendar:momentConfig}}</p>
+      <tsl-button className="btn-primary btn-block" *ngIf="price" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n>Feature it from {{price | customCurrency}}</tsl-button>
+    </div>
+    <div class="graphs-container graph-info" *ngIf="item.featured">
+      <h2>Producto destacado</h2>
+      <p class="note">Con el destacado de ciudad consigues que más gente cerca de ti vea tu producto.</p>
+      <p class="bump-note">Your feature ends on {{item.bumpExpiringDate | amCalendar:momentConfig}}</p>
     </div>
   </div>
 </div>
