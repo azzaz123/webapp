@@ -95,8 +95,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       description: ['', [Validators.required]],
       sale_conditions: fb.group({
         fix_price: false,
-        exchange_allowed: false,
-        shipping_allowed: false
+        exchange_allowed: false
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -111,15 +110,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   }
 
   ngOnInit() {
-    this.uploadForm.get('sale_conditions.shipping_allowed').valueChanges.subscribe((value: boolean) => {
-      const deliveryInfoControl: AbstractControl = this.uploadForm.get('delivery_info');
-      if (value) {
-        deliveryInfoControl.setValidators([Validators.required]);
-      } else {
-        deliveryInfoControl.setValidators([]);
-      }
-      deliveryInfoControl.updateValueAndValidity();
-    });
     if (this.item) {
       this.uploadForm.patchValue({
         id: this.item.id,
@@ -169,7 +159,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
           this.uploadForm.get('category_id').patchValue(this.categoryId);
           const fixedCategory = _.find(categories, {value: this.categoryId});
           this.fixedCategory = fixedCategory ? fixedCategory.label : null;
-          this.uploadForm.get('sale_conditions.shipping_allowed').patchValue(false);
           this.uploadForm.get('delivery_info').patchValue(null);
         } else {
           this.fixedCategory = null;

@@ -172,10 +172,6 @@ describe('UploadProductComponent', () => {
         expect(component.uploadForm.get('category_id').value).toBe(REALESTATE_CATEGORY);
       });
 
-      it('should set form sale_conditions.shipping_allowed', () => {
-        expect(component.uploadForm.get('sale_conditions.shipping_allowed').value).toBe(false);
-      });
-
       it('should set form delivery_info', () => {
         expect(component.uploadForm.get('delivery_info').value).toBe(null);
       });
@@ -287,14 +283,6 @@ describe('UploadProductComponent', () => {
 
       expect(component.uploadForm.valid).toBeFalsy();
     });
-
-    it('should set delivery_info as required when shipping_allowed true', () => {
-      fixture.detectChanges();
-
-      expect(component.uploadForm.get('delivery_info').valid).toBeTruthy();
-      component.uploadForm.get('sale_conditions.shipping_allowed').patchValue(true);
-      expect(component.uploadForm.get('delivery_info').valid).toBeFalsy();
-    });
   });
 
   describe('onUploaded', () => {
@@ -393,8 +381,7 @@ describe('UploadProductComponent', () => {
         images: [{'image': true}],
         sale_conditions: {
           fix_price: false,
-          exchange_allowed: false,
-          shipping_allowed: false
+          exchange_allowed: false
         },
         delivery_info: null,
         location: {
