@@ -23,8 +23,6 @@ import { ConversationTotals } from './totals.interface';
 import { Item } from '../item/item';
 import { Subscription } from 'rxjs/Subscription';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
-import { Lead } from './lead';
-import { MsgArchiveResponse } from '../message/archive.interface';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -196,7 +194,11 @@ export class ConversationService extends LeadService {
   }
 
   public loadMessagesIntoConversations(conversations: Conversation[], archived: boolean = false): Observable<Conversation[]> {
-    return this.loadMessages(conversations, archived);
+    return this.loadMessages(conversations, archived).map((convWithMessages: Conversation[]) => {
+      return convWithMessages.filter((conversation: Conversation) => {
+        return conversation.messages.length > 0;
+      });
+    });
   }
 
   public getConversationPage(id: string, archive?: boolean): number {
