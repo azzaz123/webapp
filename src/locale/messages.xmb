@@ -142,10 +142,12 @@
   <msg id="6127871861896654127"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.ts:8</source> contact us</msg>
   <msg id="5849506438355710291"><source>app/shared/catalog/modals/too-many-items-modal/too-many-items-modal.component.ts:8</source>to manage your plan.</msg>
   <msg id="7122356013178226936"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:4</source> You are trying to feature items that are already planned</msg>
-  <msg id="8005446546864167726"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:5,6</source>Items that are already planned can&apos;t be featured again. You can cancel the bumps for these items o continue featuring
-  the other items.</msg>
-  <msg id="4011333478005344361"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:7</source>Feature the available items</msg>
-  <msg id="4701510938988860546"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:8</source>Go back and cancel bumps</msg>
+  <msg id="6474953774520959911"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:6,7</source>Items that are already planned can&apos;t be featured again. You can cancel the bumps for these items o continue featuring
+    the other items.</msg>
+  <msg id="4011333478005344361"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:8</source>Feature the available items</msg>
+  <msg id="4701510938988860546"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:9</source>Go back and cancel bumps</msg>
+  <msg id="4807588143683316694"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:12</source>Items that are already planned can&apos;t be featured again.</msg>
+  <msg id="445243100567221931"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:13</source>Ok, got it</msg>
   <msg id="5262427597279775777"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:5</source><source>app/catalog/list/list.component.ts:40</source>1 item selected</msg>
   <msg id="708449889891136724"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:6,7</source>
         <ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
