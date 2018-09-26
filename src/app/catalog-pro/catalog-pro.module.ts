@@ -16,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { CreditCardModalComponent } from './catalog-pro-list/modals/credit-card-modal/credit-card-modal.component';
 
 @NgModule({
   imports: [
@@ -38,11 +39,13 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
     CheckoutExtrasProItemComponent,
     CartProComponent,
     CheckoutProItemComponent,
-    RangeDatepickerComponent
+    RangeDatepickerComponent,
+    CreditCardModalComponent
   ],
   entryComponents: [
     ProBumpConfirmationModalComponent,
-    ProUrgentConfirmationModalComponent
+    ProUrgentConfirmationModalComponent,
+    CreditCardModalComponent
   ]
 })
 export class CatalogProModule { }

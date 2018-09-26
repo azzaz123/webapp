@@ -19,7 +19,7 @@ import { OrderEvent } from '../../catalog/list/selected-items/selected-product.i
 import { UploadConfirmationModalComponent } from '../../catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { ItemChangeEvent } from '../../catalog/list/catalog-item/item-change.interface';
 import { FinancialCard } from '../../core/payments/payment.interface';
-import { CreditCardModalComponent } from '../../catalog/list/modals/credit-card-modal/credit-card-modal.component';
+import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 import { Order, Product } from '../../core/item/item-response.interface';
 
 @Component({
