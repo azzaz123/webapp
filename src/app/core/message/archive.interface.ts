@@ -5,7 +5,6 @@ export interface MsgArchiveResponse {
   messages: Message[];
   receivedReceipts?: Array<ReceivedReceipt>;
   readReceipts?: Array<ReadReceipt>;
-  meta?: MetaInfo;
   metaDate?: string;
 }
 
