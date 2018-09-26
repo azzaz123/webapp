@@ -64,14 +64,7 @@ export class MessageService {
               }
             }
             return msg;
-          }),
-          receivedReceipts: null,
-          readReceipts: null,
-          meta: {
-            first: _.first(messages).doc._id,
-            last: _.last(messages).doc._id,
-            end: true
-          }
+          })
         };
         return Observable.of(res);
       } else if (this.connectionService.isConnected) {
@@ -100,7 +93,6 @@ export class MessageService {
     })
     .map((res: any) => {
       return {
-        meta: res.meta,
         data: this.addUserInfoToArray(conversation, res.messages)
       };
     });

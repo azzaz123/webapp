@@ -199,7 +199,6 @@ export class XmppService {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
       builtMessage.fromSelf = message.from === this.currentJid;
       this.persistencyService.saveMetaInformation({
-          last: null,
           start: builtMessage.date.toISOString()
         }
       );

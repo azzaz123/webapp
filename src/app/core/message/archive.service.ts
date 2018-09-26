@@ -35,7 +35,8 @@ export class MsgArchiveService {
       const response = {
         messages: messages,
         receivedReceipts: receivedReceipts,
-        readReceipts: readReceipts
+        readReceipts: readReceipts,
+        metaDate: events.length ? _.last(events).ts : '0'
       };
       return response;
     });
@@ -75,7 +76,8 @@ export class MsgArchiveService {
       const response: MsgArchiveResponse = {
         messages: messages,
         receivedReceipts: receivedReceipts,
-        readReceipts: readReceipts
+        readReceipts: readReceipts,
+        metaDate: events.length ? _.last(events).ts : '0'
       };
 
       return response;

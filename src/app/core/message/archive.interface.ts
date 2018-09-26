@@ -6,6 +6,7 @@ export interface MsgArchiveResponse {
   receivedReceipts?: Array<ReceivedReceipt>;
   readReceipts?: Array<ReadReceipt>;
   meta?: MetaInfo;
+  metaDate?: string;
 }
 
 export interface ReceivedReceipt {
