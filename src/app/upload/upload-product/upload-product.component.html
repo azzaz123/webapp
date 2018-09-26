@@ -97,7 +97,7 @@
       <div i18n>FAQ</div>
     </ng-template>
   </div>
-  <div class="box" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave">
+  <div class="box" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave" *ngIf="categoryId === '-1' ">
     <div class="selector-container shipping-options"  data-toggle="buttons">
       <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.delivery_info.valid && uploadForm.controls.delivery_info.dirty}" i18n>Shipping</h2>
       <p i18n>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</p>
