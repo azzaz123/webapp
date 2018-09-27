@@ -98,9 +98,9 @@
     </ng-template>
   </div>
   <div class="box" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave" *ngIf="categoryId === '-1' ">
-    <div class="selector-container shipping-options"  data-toggle="buttons">
-      <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.delivery_info.valid && uploadForm.controls.delivery_info.dirty}" i18n>Shipping</h2>
-      <p i18n>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</p>
+    <div class="selector-container shipping-options" data-toggle="buttons">
+      <h2 i18n>Shipping</h2>
+      <p i18n>You can send (almost) anything through wallapop. And it's free for you!</p>
       <div ngbRadioGroup name="radioBasic" formControlName="delivery_info">
         <label ngbButtonLabel class="btn selector" *ngFor="let delivery of deliveryInfo">
           <input ngbButton type="radio" [value]="delivery.value">
@@ -110,7 +110,7 @@
       </div>
     </div>
     <ng-template #coachmarkShipping>
-      <div i18n>Important for shipping.</div>
+      <div i18n>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</div>
     </ng-template>
   </div>
   <tsl-location-box [form]="uploadForm" name="location" (locationSelected)="emitLocation()"></tsl-location-box>
