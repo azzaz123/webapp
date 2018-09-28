@@ -248,16 +248,6 @@ export class ConversationService extends LeadService {
     }
   }
 
-  private addStatusToStoredMessages(conversation: Lead, newStatus: string) {
-    this.persistencyService.localDbVersionUpdate(1.1, () => {
-      conversation.messages.filter((message) => {
-        return message.fromSelf && typeof message.status !== 'string';
-      }).forEach((message) => {
-        message.status = newStatus;
-        this.persistencyService.updateMessageStatus(message.id, newStatus);
-      });
-    });
-  }
 
   public markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = true) {
     const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
