@@ -23,10 +23,6 @@ export interface StoredMetaInfo {
   start: string;
 }
 
-export interface StoredMetaInfoData {
-  data: StoredMetaInfo;
-}
-
 export interface StoredMessage {
   _id: string;
   date: Date;

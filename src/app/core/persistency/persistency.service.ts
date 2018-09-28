@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { Message, statusOrder } from '../message/message';
 import {
   StoredConversation,
   StoredMessage,
   StoredMessageRow,
-  StoredMetaInfo,
-  StoredMetaInfoData
+  StoredMetaInfo
 } from '../message/messages.interface';
 import 'rxjs/add/observable/fromPromise';
 import Database = PouchDB.Database;
@@ -125,13 +125,17 @@ export class PersistencyService {
     }
   }
 
-  public saveMetaInformation(data: StoredMetaInfo): Observable<any> {
+  public saveMetaInformation(meta: StoredMetaInfo): Observable<any> {
+    const newMoment = (meta.start.indexOf('.') === 10 || meta.start === '0')
+      ? moment.unix(Number(meta.start)) // handle cases: '0' (from firstArchive) OR nanotimestamp (from server response)
+      : moment(meta.start);             // handle ISO format (from localDb meta doc)
     return Observable.fromPromise(
       this.upsert(this.messagesDb, 'meta', (doc: Document<any>) => {
-        doc.data = data;
+      if (!doc.start || newMoment.isAfter(moment(doc.start))) {
+        doc.start = newMoment.toISOString();
+      }
         return doc;
-      })
-    );
+    }));
   }
 
   public updateMessageDate(message: Message) {
@@ -155,7 +159,7 @@ export class PersistencyService {
     }));
   }
 
-  public getMetaInformation(): Observable<StoredMetaInfoData> {
+  public getMetaInformation(): Observable<StoredMetaInfo> {
     return Observable.fromPromise(this.messagesDb.get('meta'));
   }
 

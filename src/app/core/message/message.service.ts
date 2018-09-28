@@ -9,11 +9,9 @@ import { Message, messageStatus } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
-import { MessagesData, StoredMessageRow, StoredMetaInfoData } from './messages.interface';
+import { MessagesData, StoredMessageRow, StoredMetaInfo } from './messages.interface';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveResponse, ReceivedReceipt } from './archive.interface';
-import { TrackingService } from '../tracking/tracking.service';
-import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import 'rxjs/add/operator/first';
 
 @Injectable()
