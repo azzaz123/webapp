@@ -260,8 +260,8 @@ export class ConversationService extends LeadService {
   }
 
   public markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = true) {
-    const conversation = this.leads.find(c => c.id === conversationId);
-    this.addStatusToStoredMessages(conversation, messageStatus.READ);
+    const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
+    if (conversation) {
     conversation.messages.filter((message) => (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT)
       && fromSelf || new Date(message.date).getTime() < timestamp)
       .map((message) => {
@@ -277,6 +277,7 @@ export class ConversationService extends LeadService {
           attributes: eventAttributes
         }, false);
       });
+  }
   }
 
   public markAs(newStatus: string, messageId: string, thread: string) {
