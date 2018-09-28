@@ -64,12 +64,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.USER_UNBLOCKED, (userId: string) => {
       this.userService.updateBlockStatus(userId, false);
     });
-    this.persistencyService.getMetaInformation().subscribe(() => {
-      this.firstLoad = false;
-      }, () => {
-        this.persistencyService.saveMetaInformation({start: '0'});
-        this.firstLoad = true;
-      });
+    this.eventService.subscribe(EventService.DB_READY, () => {
+      this.persistencyService.getMetaInformation().subscribe(() => {
+        this.firstLoad = false;
+        }, () => {
+          this.persistencyService.saveMetaInformation({start: '0'});
+          this.firstLoad = true;
+        });
+    });
     }
 
   ngOnDestroy () {

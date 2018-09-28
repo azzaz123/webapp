@@ -24,6 +24,7 @@ export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private _conversationsDb: Database<StoredConversation>;
   private storedMessages: AllDocsResponse<StoredMessage>;
+  private latestVersion = 2;
 
   constructor(
     private userService: UserService,
@@ -31,13 +32,16 @@ export class PersistencyService {
   ) {
     this.eventService.subscribe(EventService.USER_LOGIN, () => {
       this.userService.me().subscribe((user: User) => {
-        this._messagesDb = new PouchDB('messages-' + user.id, {auto_compaction: true});
-        this._conversationsDb = new PouchDB('conversations-' + user.id, {auto_compaction: true});
-
-        this.localDbVersionUpdate(1.2, () => {
-          this.destroyDbs(['messages', 'conversations']);
+        this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
+        this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
+          this.messagesDb.destroy().then(() => {
+            this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
+            this.saveDbVersion(this.messagesDb, this.latestVersion);
+            this.eventService.emit(EventService.DB_READY);
         });
+          this.destroyDbs(['messages', 'conversations', 'conversations-' + user.id]);
       });
+    });
     });
   }
 
@@ -108,8 +112,7 @@ export class PersistencyService {
     if (Array.isArray(messages)) {
       const messagesToSave: StoredMessage[] = messages.map((message: Message) => {
           return this.buildResponse(message);
-        }
-      );
+      });
       return Observable.fromPromise(this.messagesDb.bulkDocs(
         messagesToSave
       ));
@@ -156,42 +159,32 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get('meta'));
   }
 
-  private getDbVersion(): Observable<any> {
-    return Observable.fromPromise(this.messagesDb.get('version'));
+  private getDbVersion(localDb): Observable<any> {
+    return Observable.fromPromise(localDb.get('version'));
   }
 
-  private saveDbVersionMsg(data: any): Observable<any> {
+  private saveDbVersion(localDb, newVersion: number): Observable<any> {
     return Observable.fromPromise(
-      this.upsert(this.messagesDb, 'version', (doc: Document<any>) => {
-        doc.version = data;
+      this.upsert(localDb, 'version', (doc: Document<any>) => {
+        doc.version = newVersion;
         return doc;
-      })
-    );
-  }
-
-  private saveDbVersionConv(data: any): Observable<any> {
-    return Observable.fromPromise(
-      this.upsert(this.conversationsDb, 'version', (doc: Document<any>) => {
-        doc.version = data;
-        return doc;
-      })
-    );
+      }).catch((err) => {}));
   }
 
   /* This method is used to update data in the local database when the schema is changed, and we want
      these changes to be applied to existing (already stored) data. */
-  public localDbVersionUpdate(newVersion: number, callback: Function) {
-    this.getDbVersion().subscribe((response) => {
+  public localDbVersionUpdate(localDb, newVersion: number, callback: Function) {
+    this.getDbVersion(localDb).subscribe((response) => {
       if (response.version < newVersion) {
         callback();
-        this.saveDbVersionMsg(newVersion);
-        this.saveDbVersionConv(newVersion);
+        this.saveDbVersion(localDb, newVersion);
+      } else {
+        this.eventService.emit(EventService.DB_READY);
       }
     }, (error) => {
       if (error.reason === 'missing') {
         callback();
-        this.saveDbVersionMsg(newVersion);
-        this.saveDbVersionConv(newVersion);
+        this.saveDbVersion(localDb, newVersion);
       }
     });
   }
