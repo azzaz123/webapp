@@ -16,7 +16,7 @@ export class CatalogStatusNavbarComponent implements OnInit {
   @Input() subscriptionPlan: number;
   @Output() public filterByStatus: EventEmitter<any> = new EventEmitter();
   private page: number;
-  public bumpsCounter: number;
+  public bumpsCounter = 0;
 
   constructor(private paymentService: PaymentService,
               private eventService: EventService) { }
@@ -33,13 +33,19 @@ export class CatalogStatusNavbarComponent implements OnInit {
     this.page = 1;
     this.filterByStatus.emit(status);
   }
-  
+
   private getBumpedCounter(): void {
     this.paymentService.getStatus().subscribe((status: ScheduledStatus) => {
       if (status.purchased) {
         const cityBump = status.purchased.citybump ? status.purchased.citybump : 0;
         const countryBump = status.purchased.countrybump ? status.purchased.countrybump : 0;
-        this.bumpsCounter = cityBump + countryBump;
+        const urgent = status.purchased.urgent ? status.purchased.urgent : 0;
+        this.bumpsCounter = cityBump + countryBump + urgent;
+      }
+      if (status.autorenew_scheduled) {
+        const cityBump = status.autorenew_scheduled.citybump ? status.autorenew_scheduled.citybump : 0;
+        const countryBump = status.autorenew_scheduled.countrybump ? status.autorenew_scheduled.countrybump : 0;
+        this.bumpsCounter += cityBump + countryBump;
       }
     });
   }
