@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { MsgArchiveResponse, ReceivedReceipt, ReadReceipt } from './archive.interface';
 import { HttpService } from '../http/http.service';
 import { Message, messageStatus } from './message';
-import { User } from '../user/user';
 import { UserService } from '../user/user.service';
 
 

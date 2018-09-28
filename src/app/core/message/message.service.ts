@@ -29,6 +29,7 @@ export class MessageService {
               private archiveService: MsgArchiveService,
               private persistencyService: PersistencyService,
               private userService: UserService,
+              private connectionService: ConnectionService,
               private eventService: EventService) {
   }
 
