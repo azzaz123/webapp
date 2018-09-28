@@ -105,12 +105,12 @@ export class MsgArchiveService {
     });
   }
 
-  private updateStatuses(messages: Message[], readReceipts: ReadReceipt[], receivedReceipts: ReceivedReceipt[]) {
+  public updateStatuses(messages: Message[], readReceipts: ReadReceipt[], receivedReceipts: ReceivedReceipt[]) {
     readReceipts.forEach(r => {
       messages.filter(m => {
         const threadMatches = m.conversationId === r.thread;
         const senderMatches = m.from === r.to;
-        const olderThanReadTs = (m.date.getTime() / 1000 <= r.timestamp);
+        const olderThanReadTs = ((new Date(m.date)).getTime() / 1000 <= r.timestamp);
         return threadMatches && olderThanReadTs && senderMatches;
       })
       .map(m => {

@@ -150,8 +150,8 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get(messageId));
   }
 
-  public updateMessageStatus(messageId: string, newStatus: string) {
-    return Observable.fromPromise(this.upsert(this.messagesDb, messageId, (doc: Document<any>) => {
+  public updateMessageStatus(message: Message, newStatus: string) {
+    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
       if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
         doc.status = newStatus;
         return doc;

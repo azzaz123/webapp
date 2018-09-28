@@ -13,12 +13,14 @@ import { MessagesData, StoredMessageRow, StoredMetaInfo } from './messages.inter
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveResponse, ReceivedReceipt } from './archive.interface';
 import 'rxjs/add/operator/first';
+import { EventService } from '../event/event.service';
 
 @Injectable()
 export class MessageService {
 
   public totalUnreadMessages$: Subject<number> = new Subject<number>();
   private _totalUnreadMessages = 0;
+  private allMessages = [];
 
   /* The age (in days) of the messages we want to resend; if there are pending messages that are older than this, we won't resend them; */
   private resendOlderThan = 5;
@@ -27,8 +29,7 @@ export class MessageService {
               private archiveService: MsgArchiveService,
               private persistencyService: PersistencyService,
               private userService: UserService,
-              private trackingService: TrackingService,
-              private connectionService: ConnectionService) {
+              private eventService: EventService) {
   }
 
   set totalUnreadMessages(value: number) {
@@ -45,6 +46,7 @@ export class MessageService {
     return this.persistencyService.getMessages(conversation.id)
     .flatMap((messages: StoredMessageRow[]) => {
       if (messages.length) {
+        this.eventService.emit(EventService.FOUND_MESSAGES_IN_DB);
         const res: MsgArchiveResponse = {
           messages: messages.map((message: any): Message => {
             const msg = new Message(message.doc._id,
@@ -61,30 +63,14 @@ export class MessageService {
                 this.xmpp.sendMessage(conversation, msg.message, true, msg.id);
               }
             }
+            this.allMessages.push(msg);
             return msg;
           })
         };
         return Observable.of(res);
       } else if (this.connectionService.isConnected) {
         return this.queryMessagesByThread(conversation.id, '0').map(r => {
-          if (r.messages.length) {
-            r.meta = {
-              first: _.first(r.messages).id,
-              last: _.last(r.messages).id,
-              end: true
-            };
-            if (archived) {
-              r.messages.filter(m => !m.fromSelf).map(m => m.status = messageStatus.READ);
-            }
-            this.persistencyService.saveMessages(r.messages);
-            const lastMsgDate = new Date(_.last(r.messages).date).toISOString();
-            this.persistencyService.saveMetaInformation({
-              last: r.meta.last,
-              start: lastMsgDate
-            });
-            this.addClickstreamEvents(r, conversation.item.id);
-            this.confirmUnconfirmedMessages(r.messages, r.receivedReceipts);
-          }
+          r = this.confirmAndSaveMessages(r, conversation.archived);
           return r;
         });
       }
@@ -145,13 +131,40 @@ export class MessageService {
     });
   }
 
-  public getNotSavedMessages(): Observable<MsgArchiveResponse> {
-    if (this.connectionService.isConnected) {
-      return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
-        const nanoTimestamp = resp.data.start && resp.data.start !== '0' ? (new Date(resp.data.start).getTime() / 1000) + '000' : null;
-        return this.archiveService.getEventsSince(nanoTimestamp);
+  public getNotSavedMessages(conversations: Conversation[]): Observable<Conversation[]> {
+    return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfo) => {
+        return this.archiveService.getEventsSince(resp.start).map(r => {
+        r.messages.map(msg => {
+          const conversation = conversations.find(c => c.id === msg.conversationId);
+          if (conversation) {
+            if (!(conversation.messages).find(m => m.id === msg.id)) {
+              msg = this.addUserInfo(conversation, msg);
+              conversation.messages.push(msg);
+              this.allMessages.push(msg);
+            }
+          }
+        });
+
+        if (r.readReceipts.length || r.receivedReceipts.length) {
+          this.totalUnreadMessages = 0;
+          let updatedMesages = [];
+          updatedMesages = this.archiveService.updateStatuses(this.allMessages, r.readReceipts, r.receivedReceipts);
+          updatedMesages.map(m => this.persistencyService.updateMessageStatus(m, m.status));
+
+          const updateMessagesByThread = _.groupBy(updatedMesages, 'conversationId');
+          Object.keys(updateMessagesByThread).map((thread) => {
+            const unreadCount = updateMessagesByThread[thread].filter(m => m.status !== messageStatus.READ && !m.fromSelf).length;
+            const conv = conversations.find(c => c.id === thread);
+            if (conv) {
+              conv.unreadMessages = unreadCount;
+              this.totalUnreadMessages += unreadCount;
+            }
       });
     }
+        r = this.confirmAndSaveMessages(r);
+        return conversations;
+      });
+    });
   }
 
   public addUserInfoToArray(conversation: Conversation, messages: Message[]): Message[] {

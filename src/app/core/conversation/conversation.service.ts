@@ -194,6 +194,11 @@ export class ConversationService extends LeadService {
   }
 
   public loadMessagesIntoConversations(conversations: Conversation[], archived: boolean = false): Observable<Conversation[]> {
+    this.event.subscribe(EventService.FOUND_MESSAGES_IN_DB, () => {
+      this.loadNotStoredMessages(conversations);
+      this.event.unsubscribeAll(EventService.FOUND_MESSAGES_IN_DB);
+    });
+
     return this.loadMessages(conversations, archived).map((convWithMessages: Conversation[]) => {
       return convWithMessages.filter((conversation: Conversation) => {
         return conversation.messages.length > 0;
@@ -399,25 +404,9 @@ export class ConversationService extends LeadService {
 
   public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
       if (this.connectionService.isConnected) {
-        return this.messageService.getNotSavedMessages().map((response: MsgArchiveResponse) => {
-          if (response.messages.length) {
-            let conversation: Conversation;
-            response.messages.forEach((message: Message) => {
-              conversation = conversations.filter((filteredConversation: Conversation): boolean => {
-                return (filteredConversation.id === message.conversationId);
-              })[0];
-              if (conversation) {
-                if (!this.findMessage(conversation.messages, message)) {
-                  message = this.messageService.addUserInfo(conversation, message);
-                  conversation.messages.push(message);
-                  if (!message.fromSelf) {
-                    this.handleUnreadMessage(conversation);
-                  }
-                }
-              }
-            });
-          }
-          return conversations;
+      this.event.emit(EventService.MSG_ARCHIVE_LOADING);
+        this.messageService.getNotSavedMessages(conversations).subscribe(() => {
+          this.event.emit(EventService.MSG_ARCHIVE_LOADED);
         });
       } else {
         return Observable.of(null);
