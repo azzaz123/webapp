@@ -89,8 +89,7 @@ export const ITEM_ACTIONS_ALLOWED: ItemActions = {
 
 export const ITEM_SALE_CONDITIONS: ItemSaleConditions = {
   'fix_price': false,
-  'exchange_allowed': false,
-  'shipping_allowed': false
+  'exchange_allowed': false
 };
 
 export const ITEM_MAIN_IMAGE: Image = {

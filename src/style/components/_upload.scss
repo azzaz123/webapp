@@ -210,6 +210,7 @@
     }
     span {
       color: $grey-500;
+      cursor: pointer;
       &.selected {
         color: $color-urgent;
       }

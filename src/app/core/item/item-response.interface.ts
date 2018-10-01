@@ -291,7 +291,7 @@ export interface ItemActions {
 export interface ItemSaleConditions {
   fix_price: boolean;
   exchange_allowed: boolean;
-  shipping_allowed: boolean;
+  shipping_allowed?: boolean;
 }
 
 export interface ItemCounters {
