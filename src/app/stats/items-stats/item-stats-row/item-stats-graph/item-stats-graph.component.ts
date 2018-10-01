@@ -8,11 +8,9 @@ import { I18nService } from '../../../../core/i18n/i18n.service';
 
 const GRAPH_COLORS = {
   CHAT: '#EEAA42',
-  VISITS: '#FFD697',
   VIEWS: '#FFEFD7',
   FAVS: '#f99bb5',
   CHAT_BUMPED: '#3CCFBD',
-  VISITS_BUMPED: '#8FE3D8',
   VIEWS_BUMPED: '#E5FBF5',
   FAVS_BUMPED: '#8FE3D8'
 };
@@ -165,13 +163,6 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
       });
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
-        'id': 'Visits',
-        'title': this.i18n.getTranslations('visits'),
-        'valueField': 'visits',
-        'fillColorsField': 'colorVisits',
-      });
-      this.chartOptions.graphs.push({
-        ...columnGraphOptions,
         'id': 'Views',
         'title': this.i18n.getTranslations('views'),
         'valueField': 'views',
@@ -191,10 +182,8 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
         favs: entry.values.favs || 0,
         views: entry.values.views || 0,
         chats: entry.values.chats || 0,
-        visits: entry.values.visits || 0,
         colorChats: entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT,
         colorViews: entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS,
-        colorVisits: entry.bumped ? GRAPH_COLORS.VISITS_BUMPED : GRAPH_COLORS.VISITS,
         colorFavs: entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS,
         bumped: entry.bumped
       });
