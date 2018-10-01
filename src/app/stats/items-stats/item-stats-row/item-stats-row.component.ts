@@ -4,6 +4,8 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import { ItemStatsService } from './item-stats-graph/item-stats.service';
 import { ItemStatisticFullResponse } from './item-stats-graph/item-stats-response.interface';
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
+import { ItemService } from '../../../core/item/item.service';
+import { ItemCounters } from '../../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-item-stats-row',
@@ -64,15 +66,22 @@ export class ItemStatsRowComponent implements OnInit {
 
   constructor(@Inject('SUBDOMAIN') private subdomain: string,
               private i18n: I18nService,
-              private itemStatsService: ItemStatsService) {
+              private itemStatsService: ItemStatsService,
+              private itemService: ItemService) {
     this.momentConfig = i18n.getTranslations('daysMomentConfig');
   }
 
   ngOnInit() {
     this.link = this.item.getUrl(this.subdomain);
-    this.itemStatsService.getStatistics().subscribe((response: ItemStatisticFullResponse) => {
+    this.itemStatsService.getStatistics(this.item.id).subscribe((response: ItemStatisticFullResponse) => {
       this.statsData = response;
     });
+    if (this.item.views === 0 || this.item.favorites === 0) {
+      this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {
+        this.item.views = counters.views;
+        this.item.favorites = counters.favorites;
+      });
+    }
   }
 
   changeExpandedState() {
