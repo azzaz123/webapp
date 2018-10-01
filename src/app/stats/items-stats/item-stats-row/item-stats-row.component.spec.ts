@@ -10,6 +10,8 @@ import { DecimalPipe } from '@angular/common';
 import { MomentModule } from 'angular2-moment';
 import { MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ItemService } from '../../../core/item/item.service';
+import { COUNTERS_RESPONSE } from '../../../../tests/user.fixtures.spec';
 
 describe('ItemStatsRowComponent', () => {
   let component: ItemStatsRowComponent;
@@ -29,6 +31,13 @@ describe('ItemStatsRowComponent', () => {
           provide: ItemStatsService, useValue: {
           getStatistics() {
             return Observable.of({});
+          }
+        }
+        },
+        {
+          provide: ItemService, useValue: {
+          getCounters() {
+            return Observable.of(COUNTERS_RESPONSE);
           }
         }
         }

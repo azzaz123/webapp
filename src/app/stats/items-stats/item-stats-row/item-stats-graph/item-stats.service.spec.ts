@@ -1,11 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { ItemStatsService } from './item-stats.service';
+import { TEST_HTTP_PROVIDERS } from '../../../../../tests/utils.spec';
 
 describe('ItemStatsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ItemStatsService]
+      providers: [
+        ItemStatsService,
+        ...TEST_HTTP_PROVIDERS
+      ]
     });
   });
 
