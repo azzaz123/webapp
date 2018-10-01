@@ -271,7 +271,7 @@ export class UploadCarComponent implements OnInit {
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    if (this.isUrgent) {
+    if (this.isUrgent && uploadEvent.action !== 'createdOnHold') {
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
