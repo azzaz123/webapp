@@ -80,6 +80,7 @@ export class ItemStatsRowComponent implements OnInit {
       this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {
         this.item.views = counters.views;
         this.item.favorites = counters.favorites;
+        this.item.conversations = counters.conversations;
       });
     }
   }

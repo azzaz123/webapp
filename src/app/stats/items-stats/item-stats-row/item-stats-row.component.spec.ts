@@ -8,7 +8,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 import { MomentModule } from 'angular2-moment';
-import { ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS, MOCK_ITEM_V3 } from '../../../../tests/item.fixtures.spec';
+import {
+  ITEM_CONVERSATIONS, ITEM_COUNTERS_DATA, ITEM_FAVORITES, ITEM_VIEWS,
+  MOCK_ITEM_V3
+} from '../../../../tests/item.fixtures.spec';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { COUNTERS_RESPONSE } from '../../../../tests/user.fixtures.spec';
@@ -83,6 +86,7 @@ describe('ItemStatsRowComponent', () => {
       expect(itemService.getCounters).toHaveBeenCalledWith(MOCK_ITEM_V3.id)
       expect(component.item.views).toBe(ITEM_VIEWS);
       expect(component.item.favorites).toBe(ITEM_FAVORITES);
+      expect(component.item.conversations).toBe(ITEM_CONVERSATIONS);
     });
   });
 
