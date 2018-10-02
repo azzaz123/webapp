@@ -5,10 +5,12 @@ import { AmChartsService } from '@amcharts/amcharts3-angular';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MOCK_ITEM_V3 } from '../../../../../tests/item.fixtures.spec';
 import { I18nService } from '../../../../core/i18n/i18n.service';
+import { ITEM_STATISTIC_RESPONSE } from '../../../../../tests/statistics.fixtures.spec';
 
 describe('ItemStatsGraphComponent', () => {
   let component: ItemStatsGraphComponent;
   let fixture: ComponentFixture<ItemStatsGraphComponent>;
+  let AmCharts: AmChartsService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,10 +38,29 @@ describe('ItemStatsGraphComponent', () => {
     component.statsData = {
       entries: []
     };
+    AmCharts = TestBed.get(AmChartsService);
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('ngAfterViewInit', () => {
+    it('should call getStatistics and push them to dataProvider', () => {
+      component.statsData = ITEM_STATISTIC_RESPONSE;
+
+      component.ngAfterViewInit();
+
+      expect(component['chartOptions'].dataProvider.length).toBe(ITEM_STATISTIC_RESPONSE.entries.length);
+    });
+  });
+
+  describe('ngOnDestroy', () => {
+    it('should call destroyChart', () => {
+      const CHART = {chart: 'chart'};
+      spyOn(AmCharts, 'destroyChart');
+      component['chart'] = CHART;
+
+      component.ngOnDestroy();
+
+      expect(AmCharts.destroyChart).toHaveBeenCalledWith(CHART);
+    });
   });
 });
