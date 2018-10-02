@@ -302,6 +302,7 @@
   <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:25</source>Feature Product</msg>
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:46</source>Reactivate</msg>
   <msg id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart"><source>app/catalog/list/selected-items/selected-items.component.ts:28</source>Continue</msg>
+  <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:22</source>Not Available</msg>
   <msg id="3286725018134496844"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:10</source>You already have your extra features and you can use them whenever you want.</msg>
   <msg id="1034935109316471792"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:16</source>You featured your products.</msg>
   <msg id="7542752854018206709"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:22</source>Your extra features have not been done because something went wrong with your credit card. Please check and try again</msg>
