@@ -678,9 +678,15 @@
   <translation id="78876651719315122">Ir a saldo</translation>
   <translation id="4239962849036412221">Selecciona otra versión</translation>
   <translation id="1201618934317428295">Selecciona una versión predefinida</translation>
-  <translation id="4088311569349098646">Stats</translation>
-  <translation id="8075168556531069883">Producto</translation>
-  <translation id="1069523139277190436">Estadísticas</translation>
-  <translation id="6690340909997415563">Destácalo desde <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></translation>
-  <translation id="2717809420859938329" desc="stats" meaning="Date of publication">Fecha publicación</translation>
+  <translation id="4088311569349098646">Estadísticas</translation>
+  <translation id="605166699517966750">Echemos cuatro números... Controla cuáles de tus productos tienen más éxito para mejorar tus ventas.</translation>
+  <translation id="7616770651914901276">Producto</translation>
+  <translation id="2868602391152223921">Fecha de publicación</translation>
+  <translation id="292531598178810581">Estadísticas de la semana</translation>
+  <translation id="7201983182105391783">Pon en forma tu anuncio</translation>
+  <translation id="8983319195885091038">Mejora los números de tu anuncio. A más visitas, ¡más ventas! Destaca tu producto</translation>
+  <translation id="6818764209697915477">Destácalo desde <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></translation>
+  <translation id="6821183586555063962">Este producto está Destacado</translation>
+  <translation id="3879651736105644738">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
+  <translation id="1762748105941602178">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amCalendar:momentConfig}}</ex></ph></translation>
 </translationbundle>

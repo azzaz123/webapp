@@ -34,7 +34,7 @@
     <div class="graphs-container" *ngIf="statsData">
       <div class="charts-box">
         <div class="header">
-          <h2 i18n>Statistics</h2>
+          <h2 i18n>Weekly stats</h2>
           <div class="legend">
             <ul>
               <li class="views" i18n>Views</li>
@@ -51,14 +51,14 @@
       </div>
     </div>
     <div class="graphs-container graph-info" *ngIf="!item.featured">
-      <h2>¿Quieres mejorar tus números?</h2>
-      <p class="note">Destaca tu producto y veras como incrementan las impresiones (y las posibilidades de venta) en un 200%</p>
-      <tsl-button className="btn-primary btn-block" *ngIf="price" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n>Feature it from {{price | customCurrency}}</tsl-button>
+      <h2 i18n>Get your listing in shape</h2>
+      <p class="note" i18n>Improve the stats of your listing. The more visits you get, the more you sell!</p>
+      <tsl-button className="btn-primary btn-block" *ngIf="price" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n>Feature it now from {{price | customCurrency}}</tsl-button>
     </div>
     <div class="graphs-container graph-info" *ngIf="item.featured">
-      <h2>Producto destacado</h2>
-      <p class="note">Con el destacado de ciudad consigues que más gente cerca de ti vea tu producto.</p>
-      <p class="bump-note">Your feature ends on {{item.bumpExpiringDate | amCalendar:momentConfig}}</p>
+      <h2 i18n>This product is Featured</h2>
+      <p class="note" i18n>You will get more views, chats and more interested people.</p>
+      <p class="bump-note" i18n>Your feature ends on {{item.bumpExpiringDate | amCalendar:momentConfig}}</p>
     </div>
   </div>
 </div>
