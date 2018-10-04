@@ -8,6 +8,8 @@ export enum KEY_CODE {
   ESC = 27
 }
 
+export const SLIDES_NUMBER = 2;
+
 @Component({
   selector: 'tsl-bump-tutorial',
   templateUrl: './bump-tutorial.component.html',
@@ -19,7 +21,7 @@ export class BumpTutorialComponent implements OnDestroy {
   public hidden = true;
 
   constructor(public tutorialService: BumpTutorialService) {
-    this.dots = _.range(2);
+    this.dots = _.range(SLIDES_NUMBER);
   }
 
   ngOnDestroy() {
