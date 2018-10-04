@@ -68,7 +68,7 @@ export class ItemStatsRowComponent implements OnInit {
               private i18n: I18nService,
               private itemStatsService: ItemStatsService,
               private itemService: ItemService) {
-    this.momentConfig = i18n.getTranslations('daysMomentConfig');
+    this.momentConfig = i18n.getTranslations('momentFormat');
   }
 
   ngOnInit() {

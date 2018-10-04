@@ -14,6 +14,7 @@ export class I18nService {
         sameElse: 'Do [of] MMMM',
         mediumDate: 'MMM d, y'
       },
+      momentFormat: 'Do [of] MMMM',
       reportListingReasons: [
         {id: 2, label: 'People or animals'},
         {id: 3, label: 'Joke'},
@@ -102,6 +103,7 @@ export class I18nService {
         sameElse: 'D [de] MMMM',
         mediumDate: 'd MMM y'
       },
+      momentFormat: 'D [de] MMMM',
       reportListingReasons: [
         {id: 2, label: 'Personas o Animales'},
         {id: 3, label: 'Broma'},
