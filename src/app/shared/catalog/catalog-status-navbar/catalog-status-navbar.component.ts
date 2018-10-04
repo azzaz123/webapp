@@ -42,9 +42,9 @@ export class CatalogStatusNavbarComponent implements OnInit {
         const urgent = status.purchased.urgent ? status.purchased.urgent : 0;
         this.bumpsCounter = cityBump + countryBump + urgent;
       }
-      if (status.autorenew_scheduled) {
-        const cityBump = status.autorenew_scheduled.citybump ? status.autorenew_scheduled.citybump : 0;
-        const countryBump = status.autorenew_scheduled.countrybump ? status.autorenew_scheduled.countrybump : 0;
+      if (status.items_scheduled_purchases) {
+        const cityBump = status.items_scheduled_purchases.citybump ? status.items_scheduled_purchases.citybump : 0;
+        const countryBump = status.items_scheduled_purchases.countrybump ? status.items_scheduled_purchases.countrybump : 0;
         this.bumpsCounter += cityBump + countryBump;
       }
     });

@@ -14,7 +14,8 @@ describe('CatalogStatusNavbarComponent', () => {
   const MOCK_STATUS: ScheduledStatus = {
     active: true,
     autorenew_alert: 0,
-    autorenew_scheduled: { citybump: 2, countrybump: 3 },
+    autorenew_scheduled: {},
+    items_scheduled_purchases: { citybump: 2, countrybump: 3 },
     purchased: { citybump: 1, countrybump: 2, urgent: 1 }
   };
 
