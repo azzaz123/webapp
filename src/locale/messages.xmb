@@ -510,12 +510,13 @@
   <msg id="7616770651914901276"><source>app/stats/items-stats/items-stats.component.ts:4</source>Product</msg>
   <msg id="2868602391152223921"><source>app/stats/items-stats/items-stats.component.ts:7</source>Listed on</msg>
   <msg id="292531598178810581"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:37</source>Weekly stats</msg>
-  <msg id="7201983182105391783"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:54</source>Get your listing in shape</msg>
-  <msg id="8983319195885091038"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:55</source>Improve the stats of your listing. The more visits you get, the more you sell!</msg>
-  <msg id="6818764209697915477"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:56</source>Feature it now from <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></msg>
-  <msg id="6821183586555063962"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:59</source>This product is Featured</msg>
-  <msg id="3879651736105644738"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:60</source>You will get more views, chats and more interested people.</msg>
-  <msg id="1762748105941602178"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:61</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amCalendar:momentConfig}}</ex></ph></msg>
+  <msg id="8413861205232330672"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:50</source>No data available for this product yet</msg>
+  <msg id="7201983182105391783"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:55</source>Get your listing in shape</msg>
+  <msg id="8983319195885091038"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:56</source>Improve the stats of your listing. The more visits you get, the more you sell!</msg>
+  <msg id="6818764209697915477"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:57</source>Feature it now from <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></msg>
+  <msg id="6821183586555063962"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:60</source>This product is Featured</msg>
+  <msg id="3879651736105644738"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:61</source>You will get more views, chats and more interested people.</msg>
+  <msg id="916352071278248935"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:62</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amDateFormat:momentConfig}}</ex></ph></msg>
   <msg id="8775411328776279097"><source>app/tutorial/tutorial.component.ts:6</source>Introducing our new webpage!</msg>
   <msg id="6002580040961562985"><source>app/tutorial/tutorial.component.ts:7</source>You&apos;re in the zone to access all of the features of the app.</msg>
   <msg id="2137505802700728396"><source>app/tutorial/tutorial.component.ts:11</source>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</msg>
