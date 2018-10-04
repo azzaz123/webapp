@@ -103,32 +103,26 @@
                 content: '';
                 display: inline-block;
                 @include square(10px);
-                background: red;
                 margin-right: $spacing-XS;
               }
               &.views {
                 &:before {
-                  background: #FFEFD7;
-                }
-              }
-              &.visits {
-                &:before {
-                  background: #FFD697;
+                  background: $graph-views;
                 }
               }
               &.chats {
                 &:before {
-                  background: #EEAA42;
+                  background: $graph-chats;
                 }
               }
               &.favorites {
                 &:before {
-                  background: #f99bb5;
+                  background: $graph-favorites;
                 }
               }
               &.featured {
                 &:before {
-                  background: #8FE3D8;
+                  background: $graph-featured;
                 }
               }
             }
