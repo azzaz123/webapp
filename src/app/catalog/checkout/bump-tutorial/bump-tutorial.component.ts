@@ -19,7 +19,7 @@ export class BumpTutorialComponent implements OnDestroy {
   public hidden = true;
 
   constructor(public tutorialService: BumpTutorialService) {
-    this.dots = _.range(this.tutorialService.maxSteps);
+    this.dots = _.range(2);
   }
 
   ngOnDestroy() {
