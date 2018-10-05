@@ -49,8 +49,8 @@ describe('ReviewItemComponent', () => {
       expect(component.userWebSlug).toBe(WEB_SLUG_USER + REVIEWS_RESPONSE[0].user.web_slug);
     });
 
-    it('should set categoryTitle', () => {
-      expect(component.categoryTitle).toBe(CATEGORY_DATA_WEB[0].title);
+    it('should set category', () => {
+      expect(component.category).toBe(CATEGORY_DATA_WEB[0]);
     });
   });
 });

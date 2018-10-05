@@ -1,9 +1,17 @@
 <div class="review-item row">
   <div class="col-1 images-container">
     <div class="review-image">
-      <a href="{{ itemWebLink }}" target="_blank" tslsanitizedBackground="{{ this.review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"
-           *ngIf="this.review.item?.image"></a>
-      <img src="{{ fallback }}" *ngIf="!this.review.item?.image" class="image"/>
+      <ng-container *ngIf="review.item?.image; else categoryIcon">
+        <a href="{{ itemWebLink }}" target="_blank" tslsanitizedBackground="{{ review.item?.image.small }}" [fallback]="fallback" class="image" [ngClass]="size"></a>
+      </ng-container>
+      <ng-template #categoryIcon>
+        <ng-container *ngIf="category?.iconName; else defaultImage">
+          <mat-icon [svgIcon]="category.iconName"></mat-icon>
+        </ng-container>
+      </ng-template>
+      <ng-template #defaultImage>
+        <img src="{{ fallback }}" class="image"/>
+      </ng-template>
     </div>
     <a href="{{ userWebSlug }}" target="_blank" class="avatar">
       <tsl-user-avatar  *ngIf="this.review.user" [user]="this.review.user" size="40"></tsl-user-avatar>
@@ -15,8 +23,8 @@
       <span *ngIf="this.review.isBought" i18n>Bought:</span>
     </div>
     <div class="review-title">
-      <a *ngIf="review.item?.id || categoryTitle" href="{{ itemWebLink }}" target="_blank"> {{ review.item.title || categoryTitle }} </a>
-      <span *ngIf="!this.review.item?.id && !categoryTitle" i18n>A wallapop item</span>
+      <a *ngIf="review.item?.id || category?.title" href="{{ itemWebLink }}" target="_blank"> {{ review.item.title || category.title }} </a>
+      <span *ngIf="!this.review.item?.id && ! category?.title" i18n>A wallapop item</span>
     </div>
     <tsl-stars class="review-rating" [stars]="this.review.scoring" [normalized]="false"></tsl-stars>
     <p class="review-comment">{{ this.review.comments }}</p>

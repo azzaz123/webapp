@@ -15,7 +15,7 @@ export class ReviewItemComponent implements OnInit {
   public fallback: string;
   public itemWebLink: string;
   public userWebSlug: string;
-  public categoryTitle: string;
+  public category: CategoryResponse;
 
   constructor(@Inject('SUBDOMAIN') private subdomain: string,
               private categoryService: CategoryService) { }
@@ -26,7 +26,7 @@ export class ReviewItemComponent implements OnInit {
     this.userWebSlug = this.review.user ? this.review.user.getUrl(this.subdomain) : null;
 
     this.categoryService.getCategoryById(this.review.item.categoryId).subscribe((category: CategoryResponse) => {
-      this.categoryTitle = category.title;
+      this.category = category;
     });
   }
 }
