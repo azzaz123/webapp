@@ -45,9 +45,9 @@
           </div>
         </div>
         <div class="charts">
-          <tsl-item-stats-graph [item]="item" [statsData]="statsData" *ngIf="statsData.entries.length"></tsl-item-stats-graph>
-          <tsl-item-stats-graph [item]="item" [statsData]="statsData" *ngIf="statsData.entries.length" type="favs"></tsl-item-stats-graph>
-          <p class="no-data" *ngIf="!statsData.entries.length" i18n>No data available for this product yet</p>
+          <tsl-item-stats-graph [item]="item" [statsData]="statsData" *ngIf="!noData"></tsl-item-stats-graph>
+          <tsl-item-stats-graph [item]="item" [statsData]="statsData" *ngIf="!noData" type="favs"></tsl-item-stats-graph>
+          <p class="no-data" *ngIf="noData" i18n>No data available for this product yet</p>
         </div>
       </div>
     </div>

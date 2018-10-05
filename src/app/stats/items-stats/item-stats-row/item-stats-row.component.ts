@@ -6,6 +6,7 @@ import { ItemStatisticFullResponse } from './item-stats-graph/item-stats-respons
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { ItemCounters } from '../../../core/item/item-response.interface';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'tsl-item-stats-row',
@@ -63,6 +64,7 @@ export class ItemStatsRowComponent implements OnInit {
   public link: string;
   public momentConfig: any;
   public statsData: ItemStatisticFullResponse;
+  public noData: boolean;
 
   constructor(@Inject('SUBDOMAIN') private subdomain: string,
               private i18n: I18nService,
@@ -75,6 +77,7 @@ export class ItemStatsRowComponent implements OnInit {
     this.link = this.item.getUrl(this.subdomain);
     this.itemStatsService.getStatistics(this.item.id).subscribe((response: ItemStatisticFullResponse) => {
       this.statsData = response;
+      this.noData = _.every(response.entries, (entry) => !entry.values);
     });
     if (this.item.views === 0 || this.item.favorites === 0) {
       this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {

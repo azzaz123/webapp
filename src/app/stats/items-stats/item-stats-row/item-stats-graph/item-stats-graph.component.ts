@@ -179,9 +179,9 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
     this.statsData.entries.forEach((entry: ItemStatisticEntriesResponse) => {
       this.chartOptions.dataProvider.push({
         date: +entry.date,
-        favs: entry.values.favs || 0,
-        views: entry.values.views || 0,
-        chats: entry.values.chats || 0,
+        favs: entry.values && entry.values.favs || 0,
+        views: entry.values && entry.values.views || 0,
+        chats: entry.values && entry.values.chats || 0,
         colorChats: entry.bumped ? GRAPH_COLORS.CHAT_BUMPED : GRAPH_COLORS.CHAT,
         colorViews: entry.bumped ? GRAPH_COLORS.VIEWS_BUMPED : GRAPH_COLORS.VIEWS,
         colorFavs: entry.bumped ? GRAPH_COLORS.FAVS_BUMPED : GRAPH_COLORS.FAVS,
