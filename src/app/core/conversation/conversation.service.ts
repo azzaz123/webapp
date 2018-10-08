@@ -256,7 +256,7 @@ export class ConversationService extends LeadService {
       && fromSelf || new Date(message.date).getTime() < timestamp)
       .map((message) => {
         message.status = messageStatus.READ;
-        this.persistencyService.updateMessageStatus(message.id, messageStatus.READ);
+          this.persistencyService.updateMessageStatus(message, messageStatus.READ);
         const eventAttributes = {
           thread_id: message.conversationId,
           message_id: message.id,
@@ -276,7 +276,7 @@ export class ConversationService extends LeadService {
 
     if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
       message.status = newStatus;
-      this.persistencyService.updateMessageStatus(message.id, newStatus);
+      this.persistencyService.updateMessageStatus(message, newStatus);
     }
 
     const trackingEv: TrackingEventData = {
@@ -459,13 +459,7 @@ export class ConversationService extends LeadService {
       if (!message.fromSelf) {
         message.status = messageStatus.RECEIVED;
       }
-      this.persistencyService.findMessage(message.id).subscribe(() => {
-        this.persistencyService.updateMessageStatus(message.id, message.status);
-      }, (err) => {
-        if (err.reason === 'missing') {
-      this.persistencyService.saveMessages(message);
-        }
-      });
+      this.persistencyService.updateMessageStatus(message, message.status);
       if (conversation) {
         this.updateConversation(message, conversation).subscribe(() => {
           message = this.messageService.addUserInfo(conversation, message);

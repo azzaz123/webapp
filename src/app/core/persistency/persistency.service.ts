@@ -153,8 +153,7 @@ export class PersistencyService {
   public updateMessageStatus(message: Message, newStatus: string) {
     return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
       if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
-        doc.status = newStatus;
-        return doc;
+        this.saveMessages(message);
       }
     }));
   }
