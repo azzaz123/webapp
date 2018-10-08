@@ -61,7 +61,6 @@ let modalService: NgbModal;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
 
-const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
 
 describe('App', () => {
@@ -282,11 +281,12 @@ describe('App', () => {
         expect(eventService.subscribe['calls'].argsFor(9)[0]).toBe(EventService.MESSAGE_READ);
       });
 
-      it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
+      it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
         spyOn(xmppService, 'connect').and.callThrough();
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        eventService.emit(EventService.DB_READY);
 
         expect(xmppService.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
@@ -294,6 +294,7 @@ describe('App', () => {
       it('should call conversationService.init', () => {
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        eventService.emit(EventService.DB_READY);
 
         expect(conversationService.init).toHaveBeenCalledTimes(1);
       });
@@ -312,6 +313,7 @@ describe('App', () => {
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        eventService.emit(EventService.DB_READY);
 
         expect(conversationService.init).toHaveBeenCalledTimes(2);
       });
@@ -329,6 +331,7 @@ describe('App', () => {
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        eventService.emit(EventService.DB_READY);
 
         expect(callsService.init).toHaveBeenCalledTimes(2);
       });
