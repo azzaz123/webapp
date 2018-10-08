@@ -197,7 +197,7 @@ export class XmppService {
     if (message.body || message.timestamp || message.carbonSent
         || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
-      builtMessage.fromSelf = message.from === this.currentJid;
+      builtMessage.fromSelf = message.from === this.currentJid || message.from.bare === this.currentJid;
       this.persistencyService.saveMetaInformation({
           start: builtMessage.date.toISOString()
         }
