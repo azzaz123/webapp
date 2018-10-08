@@ -200,12 +200,14 @@ export class PersistencyService {
       return Promise.reject(new Error('doc id is required'));
     }
 
-    return db.get(docId)['catch']((err) => {
+    return db.get(docId)
+    .catch((err) => {
       if (err.status !== 404) {
         throw err;
       }
       return {};
-    }).then((doc) => {
+    })
+    .then((doc) => {
       const docRev = doc._rev;
       const newDoc = diffFun(doc);
       if (!newDoc) {
