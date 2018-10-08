@@ -195,7 +195,7 @@ export class ConversationService extends LeadService {
 
   public loadMessagesIntoConversations(conversations: Conversation[], archived: boolean = false): Observable<Conversation[]> {
     this.event.subscribe(EventService.FOUND_MESSAGES_IN_DB, () => {
-      this.loadNotStoredMessages(conversations);
+      this.loadNotStoredMessages(conversations, archived);
       this.event.unsubscribeAll(EventService.FOUND_MESSAGES_IN_DB);
     });
 
@@ -271,7 +271,7 @@ export class ConversationService extends LeadService {
   }
 
   public markAs(newStatus: string, messageId: string, thread: string) {
-    const conversation = this.leads.find(c => c.id === thread);
+    const conversation = this.leads.find(c => c.id === thread) || this.archivedLeads.find(c => c.id === thread);
     const message = conversation.messages.find(m => m.id === messageId);
 
     if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
@@ -369,10 +369,10 @@ export class ConversationService extends LeadService {
       }
   }
 
-  public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
+  public loadNotStoredMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
       if (this.connectionService.isConnected) {
       this.event.emit(EventService.MSG_ARCHIVE_LOADING);
-        this.messageService.getNotSavedMessages(conversations).subscribe(() => {
+        this.messageService.getNotSavedMessages(conversations, archived).subscribe(() => {
           this.event.emit(EventService.MSG_ARCHIVE_LOADED);
         });
       } else {

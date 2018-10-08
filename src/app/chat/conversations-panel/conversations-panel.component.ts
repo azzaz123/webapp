@@ -73,7 +73,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      this.conversationService.loadNotStoredMessages(this.conversations);
+      this.conversationService.loadNotStoredMessages(this.conversations, this.archive);
     });
   }
 

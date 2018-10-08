@@ -104,7 +104,7 @@ export class MessageService {
     });
   }
 
-  public getNotSavedMessages(conversations: Conversation[]): Observable<Conversation[]> {
+  public getNotSavedMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
     return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfo) => {
         return this.archiveService.getEventsSince(resp.start).map(r => {
         r.messages.map(msg => {
@@ -119,10 +119,13 @@ export class MessageService {
         });
 
         if (r.readReceipts.length || r.receivedReceipts.length) {
-          this.totalUnreadMessages = 0;
           let updatedMesages = [];
           updatedMesages = this.archiveService.updateStatuses(this.allMessages, r.readReceipts, r.receivedReceipts);
           updatedMesages.map(m => this.persistencyService.updateMessageStatus(m, m.status));
+
+          if (!archived) {
+            this.totalUnreadMessages = 0;
+          }
 
           const updateMessagesByThread = _.groupBy(updatedMesages, 'conversationId');
           Object.keys(updateMessagesByThread).map((thread) => {
