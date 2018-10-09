@@ -10,6 +10,7 @@
       "assets": [
         "assets",
         "favicon.ico",
+        "robots.txt",
         "manifest.json",
         "service-worker.js",
         "doubleclick",
