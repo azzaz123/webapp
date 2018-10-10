@@ -43,7 +43,7 @@ export class MessageService {
     return this._totalUnreadMessages;
   }
 
-  public getMessages(conversation: Conversation, archived?: boolean): Observable<MessagesData> {
+  public getMessages(conversation: Conversation): Observable<MessagesData> {
     return this.persistencyService.getMessages(conversation.id)
     .flatMap((messages: StoredMessageRow[]) => {
       if (messages.length) {
@@ -70,8 +70,11 @@ export class MessageService {
         };
         return Observable.of(res);
       } else if (this.connectionService.isConnected) {
-        return this.queryMessagesByThread(conversation.id, '0').map(r => {
-          r = this.confirmAndSaveMessages(r, conversation.archived);
+        return this.archiveService.getAllEvents(conversation.id).map(r => {
+          this.persistencyService.saveMetaInformation({start: r.metaDate});
+          if (r.messages.length) {
+            r = this.confirmAndSaveMessagesByThread(r, conversation.archived);
+          }
           return r;
         });
       }
@@ -83,15 +86,12 @@ export class MessageService {
     });
   }
 
-  private confirmAndSaveMessages(r: MsgArchiveResponse, archived?: boolean): MsgArchiveResponse {
-    this.persistencyService.saveMetaInformation({start: r.metaDate});
-    if (r.messages.length) {
+  private confirmAndSaveMessagesByThread(r: MsgArchiveResponse, archived: boolean): MsgArchiveResponse {
       if (archived) {
         r.messages.filter(m => !m.fromSelf).map(m => m.status = messageStatus.READ);
           }
       this.confirmUnconfirmedMessages(r.messages, r.receivedReceipts);
       this.persistencyService.saveMessages(r.messages);
-      }
     return r;
   }
 
@@ -105,18 +105,33 @@ export class MessageService {
   }
 
   public getNotSavedMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
+    if (this.connectionService.isConnected) {
     return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfo) => {
+        this.eventService.emit(EventService.MSG_ARCHIVE_LOADING);
         return this.archiveService.getEventsSince(resp.start).map(r => {
-        r.messages.map(msg => {
-          const conversation = conversations.find(c => c.id === msg.conversationId);
+          this.persistencyService.saveMetaInformation({ start: r.metaDate });
+          if (r.messages.length) {
+            const messagesByThread = _.groupBy(r.messages, 'conversationId');
+            Object.keys(messagesByThread).map((thread) => {
+              const msgAndSingalsForThread = {
+                messages: messagesByThread[thread],
+                receivedReceipts: r.receivedReceipts.filter(rec => rec.thread === thread),
+                readReceipts: r.readReceipts.filter(rec => rec.thread === thread),
+                metaDate: r.metaDate
+              };
+              const conversation = conversations.find(c => c.id === thread);
           if (conversation) {
+                this.confirmAndSaveMessagesByThread(msgAndSingalsForThread, conversation.archived);
+                messagesByThread[thread].map(msg => {
             if (!(conversation.messages).find(m => m.id === msg.id)) {
               msg = this.addUserInfo(conversation, msg);
               conversation.messages.push(msg);
               this.allMessages.push(msg);
             }
+                });
           }
         });
+          }
 
         if (r.readReceipts.length || r.receivedReceipts.length) {
           let updatedMesages = [];
@@ -131,16 +146,17 @@ export class MessageService {
           Object.keys(updateMessagesByThread).map((thread) => {
             const unreadCount = updateMessagesByThread[thread].filter(m => m.status !== messageStatus.READ && !m.fromSelf).length;
             const conv = conversations.find(c => c.id === thread);
-            if (conv) {
+              if (conv && !conv.archived) {
               conv.unreadMessages = unreadCount;
               this.totalUnreadMessages += unreadCount;
             }
       });
     }
-        r = this.confirmAndSaveMessages(r);
+          this.eventService.emit(EventService.MSG_ARCHIVE_LOADED);
         return conversations;
       });
     });
+  }
   }
 
   public addUserInfoToArray(conversation: Conversation, messages: Message[]): Message[] {
@@ -158,10 +174,6 @@ export class MessageService {
 
   public send(conversation: Conversation, message: string) {
     this.xmpp.sendMessage(conversation, message);
-  }
-
-  private queryMessagesByThread(thread: string, since: string): Observable<MsgArchiveResponse> {
-    return this.archiveService.getAllEvents(thread, since);
   }
 
   public resetCache() {
