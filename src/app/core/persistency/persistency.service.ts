@@ -34,14 +34,14 @@ export class PersistencyService {
       this.userService.me().subscribe((user: User) => {
         this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
         this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
-          this.messagesDb.destroy().then(() => {
+          this.destroyDbs(() => {
             this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
             this.saveDbVersion(this.messagesDb, this.latestVersion);
             this.eventService.emit(EventService.DB_READY);
+          }, this.messagesDb);
+          this.destroyDbs(() => {}, 'messages', 'conversations', 'conversations-' + user.id);
         });
-          this.destroyDbs(['messages', 'conversations', 'conversations-' + user.id]);
       });
-    });
     });
   }
 
@@ -61,9 +61,11 @@ export class PersistencyService {
     return this._conversationsDb;
   }
 
-  private destroyDbs(dbs: Array<any>) {
+  private destroyDbs(callback: Function, ...dbs: Array<Database>) {
     dbs.forEach((db) => {
-      new PouchDB(db).destroy().then(() => {}).catch((err) => {});
+      new PouchDB(db).destroy().then(() => {
+        callback();
+      }).catch((err) => {});
     });
   }
 
@@ -111,7 +113,7 @@ export class PersistencyService {
   public saveMessages(messages: Array<Message> | Message): Observable<any> {
     if (Array.isArray(messages)) {
       const messagesToSave: StoredMessage[] = messages.map((message: Message) => {
-          return this.buildResponse(message);
+        return this.buildResponse(message);
       });
       return Observable.fromPromise(this.messagesDb.bulkDocs(
         messagesToSave
@@ -134,7 +136,7 @@ export class PersistencyService {
       if (!doc.start || newMoment.isAfter(moment(doc.start))) {
         doc.start = newMoment.toISOString();
       }
-        return doc;
+      return doc;
     }));
   }
 
