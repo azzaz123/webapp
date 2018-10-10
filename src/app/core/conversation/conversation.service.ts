@@ -199,10 +199,14 @@ export class ConversationService extends LeadService {
       this.event.unsubscribeAll(EventService.FOUND_MESSAGES_IN_DB);
     });
 
-    return this.loadMessages(conversations, archived).map((convWithMessages: Conversation[]) => {
+    return this.loadMessages(conversations).map((convWithMessages: Conversation[]) => {
+      if (convWithMessages) {
       return convWithMessages.filter((conversation: Conversation) => {
         return conversation.messages.length > 0;
       });
+      } else {
+        return null;
+      }
     });
   }
 
@@ -369,15 +373,8 @@ export class ConversationService extends LeadService {
       }
   }
 
-  public loadNotStoredMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
-      if (this.connectionService.isConnected) {
-      this.event.emit(EventService.MSG_ARCHIVE_LOADING);
-        this.messageService.getNotSavedMessages(conversations, archived).subscribe(() => {
-          this.event.emit(EventService.MSG_ARCHIVE_LOADED);
-        });
-      } else {
-        return Observable.of(null);
-      }
+  public loadNotStoredMessages(conversations: Conversation[], archived: boolean = false) {
+    this.messageService.getNotSavedMessages(conversations, archived).subscribe();
   }
 
   protected mapRecordData(data: ConversationResponse): Conversation {
