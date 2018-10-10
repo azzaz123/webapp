@@ -8,8 +8,11 @@ import { Message, messageStatus } from './message';
 import { Observable } from 'rxjs/Observable';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import { createMessagesArray, MESSAGE_MAIN, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER } from '../../../tests/message.fixtures.spec';
-import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import {
+  createMessagesArray, createReceivedReceiptsArray,
+  MESSAGE_MAIN, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER
+} from '../../../tests/message.fixtures.spec';
+import { MOCK_CONVERSATION, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_META,
@@ -24,7 +27,7 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingService } from '../tracking/tracking.service';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveService } from './archive.service';
-import { MockArchiveService, createMockMessagesArray } from '../../../tests/archive.fixture.spec';
+import { HttpService } from '../http/http.service';
 
 describe('Service: Message', () => {
 
@@ -35,6 +38,8 @@ describe('Service: Message', () => {
   let connectionService: ConnectionService;
   let archiveService: MsgArchiveService;
   let trackingService: TrackingService;
+  let httpService: HttpService;
+  let eventService: EventService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,11 +47,12 @@ describe('Service: Message', () => {
         MessageService,
         XmppService,
         EventService,
-        {provide: MsgArchiveService, useClass: MockArchiveService},
-        {provide: TrackingService, useClass: MockTrackingService},
-        {provide: ConnectionService, useValue: {}},
-        {provide: PersistencyService, useClass: MockedPersistencyService},
-        {provide: UserService, useValue: {user: new User(USER_ID)}}
+        MsgArchiveService,
+        { provide: HttpService, useValue: { get() { } } },
+        { provide: TrackingService, useClass: MockTrackingService },
+        { provide: ConnectionService, useValue: {} },
+        { provide: PersistencyService, useClass: MockedPersistencyService },
+        { provide: UserService, useValue: { user: new User(USER_ID) } }
       ]
     });
     xmpp = TestBed.get(XmppService);
@@ -56,6 +62,8 @@ describe('Service: Message', () => {
     connectionService = TestBed.get(ConnectionService);
     archiveService = TestBed.get(MsgArchiveService);
     trackingService = TestBed.get(TrackingService);
+    eventService = TestBed.get(EventService);
+    httpService = TestBed.get(HttpService);
   });
 
   it('should instanciate', () => {
@@ -80,6 +88,7 @@ describe('Service: Message', () => {
   describe('getMessages', () => {
 
     let conversation: Conversation;
+    const nanoTimestamp = (new Date(MOCK_DB_META.data.start).getTime() / 1000) + '000';
 
     beforeEach(() => {
       spyOn(xmpp, 'sendMessageDeliveryReceipt');
@@ -93,14 +102,22 @@ describe('Service: Message', () => {
         spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_FILTERED_RESPONSE));
       });
 
+      it('should emit FOUND_MESSAGES_IN_DB event if messages exit in the database', () => {
+        spyOn(eventService, 'emit');
+
+        service.getMessages(conversation).subscribe((data: any) => {
+          response = data;
+        });
+
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.FOUND_MESSAGES_IN_DB);
+
+      });
+
       it('should return data from the database if it exists', () => {
         service.getMessages(conversation).subscribe((data: any) => {
           response = data;
         });
 
-        expect(response.meta.first).toBe(MOCK_DB_FILTERED_RESPONSE[0].doc._id);
-        expect(response.meta.last).toBe(MOCK_DB_FILTERED_RESPONSE[1].doc._id);
-        expect(response.meta.end).toBe(true);
         expect(response.data.length).toBe(MOCK_DB_FILTERED_RESPONSE.length);
         expect(response.data[0] instanceof Message).toBe(true);
         expect(response.data[0].id).toBe(MOCK_DB_FILTERED_RESPONSE[0].doc._id);
@@ -116,14 +133,13 @@ describe('Service: Message', () => {
 
       it('should call addUserInfoToArray', () => {
         const MESSAGES: Message[] = createMessagesArray(2);
+
         spyOn(service, 'addUserInfoToArray').and.returnValue(MESSAGES);
         service.getMessages(conversation).subscribe((data: any) => {
           response = data;
         });
+
         expect(service.addUserInfoToArray).toHaveBeenCalled();
-        expect(response.meta.first).toBe(MOCK_DB_FILTERED_RESPONSE[0].doc._id);
-        expect(response.meta.last).toBe(MOCK_DB_FILTERED_RESPONSE[1].doc._id);
-        expect(response.meta.end).toBe(true);
         expect(response.data).toEqual(MESSAGES);
       });
     });
@@ -161,12 +177,12 @@ describe('Service: Message', () => {
 
     it('should call the archiveService.getAllEvents when there are no messages in the localDb AND there is internet connection', () => {
       spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of([]));
-      spyOn(archiveService, 'getAllEvents').and.returnValue(Observable.of({messages: []}));
+      spyOn(archiveService, 'getAllEvents').and.returnValue(Observable.of({ messages: [] }));
       connectionService.isConnected = true;
 
       service.getMessages(conversation).subscribe();
 
-      expect(archiveService.getAllEvents).toHaveBeenCalledWith(conversation.id, '0');
+      expect(archiveService.getAllEvents).toHaveBeenCalledWith(conversation.id);
     });
 
     it('should set status to READ for all mesasges fromSelf, when parameter archived is true', () => {
@@ -176,9 +192,10 @@ describe('Service: Message', () => {
         receivedReceipts: [],
         readReceipts: []
       }));
+      conversation.archived = true;
       connectionService.isConnected = true;
 
-      service.getMessages(conversation, true).subscribe(r => {
+      service.getMessages(conversation).subscribe(r => {
         expect(r.data[1].status).toBe(messageStatus.READ);
       });
     });
@@ -190,7 +207,8 @@ describe('Service: Message', () => {
       spyOn(archiveService, 'getAllEvents').and.returnValue(Observable.of({
         messages: [MESSAGE_MAIN, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER],
         receivedReceipts: [],
-        readReceipts: []
+        readReceipts: [],
+        metaDate: nanoTimestamp
       }));
       connectionService.isConnected = true;
 
@@ -198,158 +216,173 @@ describe('Service: Message', () => {
 
       expect(persistencyService.saveMessages).toHaveBeenCalledWith([MESSAGE_MAIN, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER]);
       expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith({
-        last: MOCK_MESSAGE_FROM_OTHER.id,
-        start: new Date(MOCK_MESSAGE_FROM_OTHER.date).toISOString()
-      });
-    });
-
-    it(`should add clickstream events of RECEIVED_ACK and call xmpp.sendMessageDeliveryReceipt only for messages that
-        are NOT fromSelf and don't have a receivedReceipt`, () => {
-      const messageArray = createMockMessagesArray(8);
-      spyOn(trackingService, 'addTrackingEvent');
-      spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of([]));
-      spyOn(archiveService, 'getAllEvents').and.returnValue(Observable.of({
-        messages: messageArray,
-        receivedReceipts: [],
-        readReceipts: []
-      }));
-      connectionService.isConnected = true;
-
-      service.getMessages(conversation).subscribe();
-
-      messageArray.map(m => {
-        const event = {
-          eventData: TrackingService.MESSAGE_RECEIVED_ACK,
-          attributes: { thread_id: m.conversationId, message_id: m.id, item_id: conversation.item.id }
-        };
-
-        if (m.fromSelf) {
-          expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith(event, false);
-          expect(xmpp.sendMessageDeliveryReceipt).not.toHaveBeenCalledWith(m.from, m.id, m.conversationId);
-        } else {
-          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event, false);
-          expect(xmpp.sendMessageDeliveryReceipt).toHaveBeenCalledWith(m.from, m.id, m.conversationId);
-        }
-      });
-    });
-
-    it(`should NOT add clickstream events of RECEIVED_ACK, nor call xmpp.sendMessageDeliveryReceipt for messages that
-        are NOT fromSelf but already have a receivedReceipt`, () => {
-      const messageArray = createMockMessagesArray(2);
-      const messageNotFromSelf = messageArray[1];
-      spyOn(trackingService, 'addTrackingEvent');
-      spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of([]));
-      spyOn(archiveService, 'getAllEvents').and.returnValue(Observable.of({
-        messages: messageArray,
-        receivedReceipts: [{
-          thread: messageNotFromSelf.conversationId,
-          messageId: messageNotFromSelf.id,
-          from: messageNotFromSelf.from,
-          to: OTHER_USER_ID,
-          fromSelf: false,
-          timestamp: new Date(messageNotFromSelf.date).getTime() + 1000
-        }],
-        readReceipts: []
-      }));
-      connectionService.isConnected = true;
-
-      service.getMessages(conversation).subscribe();
-
-      expect(xmpp.sendMessageDeliveryReceipt).not.toHaveBeenCalled();
-      expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({
-        eventData: TrackingService.MESSAGE_RECEIVED_ACK,
-        attributes: { thread_id: messageNotFromSelf.conversationId, message_id: messageNotFromSelf.id, item_id: conversation.item.id }
-      }, false);
-    });
-
-    it('should add clickstream events for the current and previous states, for messages that are fromSelf', () => {
-      const messageArray = createMockMessagesArray(6);
-      const expectedMessages = messageArray.filter(m => m.fromSelf);
-      expectedMessages[0].status = messageStatus.SENT;
-      expectedMessages[1].status = messageStatus.RECEIVED;
-      expectedMessages[2].status = messageStatus.READ;
-
-      spyOn(trackingService, 'addTrackingEvent');
-      spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of([]));
-      spyOn(archiveService, 'getAllEvents').and.returnValue(Observable.of({
-        messages: messageArray,
-        receivedReceipts: [],
-        readReceipts: []
-      }));
-      connectionService.isConnected = true;
-
-      service.getMessages(conversation).subscribe();
-
-      expectedMessages.map((m, index) => {
-        const attr = {
-          thread_id: m.conversationId,
-          message_id: m.id,
-          item_id: conversation.item.id
-        };
-
-        switch (index) {
-          case 0:
-            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attr}, false);
-            expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_RECEIVED, attributes: attr}, false);
-            expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_READ, attributes: attr}, false);
-            break;
-          case 1:
-            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attr}, false);
-            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_RECEIVED, attributes: attr}, false);
-            expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_READ, attributes: attr}, false);
-            break;
-          case 2:
-            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_SENT_ACK, attributes: attr}, false);
-            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_RECEIVED, attributes: attr}, false);
-            expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({eventData: TrackingService.MESSAGE_READ, attributes: attr}, false);
-            break;
-        }
+        start: nanoTimestamp
       });
     });
   });
 
   describe('getNotSavedMessages', () => {
+    let conversations = createConversationsArray(3);
+    const timestamp = new Date(MOCK_DB_META.data.start);
+    const messagesArray: Array<Message> = createMessagesArray(5);
     beforeEach(() => {
-      spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of(MOCK_DB_META));
+      spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of({ start: timestamp }));
+      spyOn(xmpp, 'sendMessageDeliveryReceipt');
     });
     describe('with connection', () => {
       beforeEach(() => {
         connectionService.isConnected = true;
       });
 
+      it('should emit a MSG_ARCHIVE_LOADING event after it retrieves the meta information', () => {
+        spyOn(eventService, 'emit');
+        spyOn(archiveService, 'getEventsSince').and.callFake(() => []);
+        service.getNotSavedMessages(conversations, false).subscribe();
+
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.MSG_ARCHIVE_LOADING);
+      });
+
+      it('should emit a MSG_ARCHIVE_LOADED event after archiveService.getEventsSince returns', () => {
+        spyOn(eventService, 'emit');
+        spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({
+          messages: messagesArray,
+          receivedReceipts: [],
+          readReceipts: []
+        }));
+        service.getNotSavedMessages(conversations, false).subscribe();
+
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.MSG_ARCHIVE_LOADED);
+      });
+
       it('should get the meta information from the database', () => {
-        service.getNotSavedMessages();
+        service.getNotSavedMessages(conversations, false);
 
         expect(persistencyService.getMetaInformation).toHaveBeenCalled();
       });
 
       it('should call archiveService.getEventsSince using the timestamp provided from the db', () => {
-        const messagesArray: Array<Message> = createMessagesArray(5);
-        const nanoTimestamp = (new Date(MOCK_DB_META.data.start).getTime() / 1000) + '000';
-        spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of(messagesArray));
+        spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({
+          messages: messagesArray,
+          receivedReceipts: [],
+          readReceipts: []
+        }));
 
-        service.getNotSavedMessages().subscribe();
+        service.getNotSavedMessages(conversations, true).subscribe();
 
-        expect(archiveService.getEventsSince).toHaveBeenCalledWith(nanoTimestamp);
+        expect(archiveService.getEventsSince).toHaveBeenCalledWith(timestamp);
       });
 
-      xit('should save the new meta information if the query returns messages', () => {  // TODO - add tests when code for sinceArchive is implemented
-        const messagesArray: Array<Message> = createMessagesArray(5);
-        spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({data: messagesArray, meta: MOCK_DB_META.data}));
-        spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
+      it('should call persistencyService.saveMetaInformation with the metaDate provided in the response', () => {
+        spyOn(persistencyService, 'saveMetaInformation');
+        spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({
+          messages: [],
+          receivedReceipts: [],
+          readReceipts: [],
+          metaDate: timestamp
+        }));
 
-        service.getNotSavedMessages().subscribe();
+        service.getNotSavedMessages(conversations, true).subscribe();
 
-        expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith(
-          {last: MOCK_DB_META.data.last, start: messagesArray[messagesArray.length - 1].date.toISOString()}
-        );
+        expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith({ start: timestamp });
       });
 
-      xit('should NOT save the new meta information if the query does not return messages', () => {  // TODO - add tests when code for sinceArchive is implemented
-        spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({data: [], meta: MOCK_DB_META.data}));
-        spyOn(persistencyService, 'saveMetaInformation').and.returnValue(Observable.of({}));
-        service.getNotSavedMessages().subscribe();
-        expect(persistencyService.saveMetaInformation).not.toHaveBeenCalled();
+      describe('with response that contains new messages', () => {
+        beforeEach(() => {
+          messagesArray.map(m => m.fromSelf = false);
+          spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({
+            messages: messagesArray,
+            receivedReceipts: [],
+            readReceipts: [],
+            metaDate: timestamp
+          }));
+          conversations = createConversationsArray(1);
+          conversations[0]['_id'] = messagesArray[0].conversationId;
+        });
+
+        it('should set statuses to READ for all new messages of an ARCHIVED conversation which are NOT fromSelf', () => {
+          conversations[0].archived = true;
+
+          service.getNotSavedMessages(conversations, true).subscribe();
+
+          conversations[0].messages.map(msg => {
+            expect(msg.status).toBe(messageStatus.READ);
+          });
+        });
+
+        it(`should sendMessageDeliveryReceipt for messages from the response, that don't have a corresponding receivedReceipt`, () => {
+          service.getNotSavedMessages(conversations, false).subscribe();
+
+          expect(xmpp.sendMessageDeliveryReceipt).toHaveBeenCalledTimes(messagesArray.length);
+          messagesArray.map(msg => {
+            expect(xmpp.sendMessageDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.conversationId);
+          });
+        });
+
+        it('should call persistencyService.saveMessages with the new messages from the response', () => {
+          spyOn(persistencyService, 'saveMessages');
+
+          service.getNotSavedMessages(conversations, false).subscribe();
+
+          expect(persistencyService.saveMessages).toHaveBeenCalledWith(messagesArray);
+        });
+      });
+
+      describe('with response that contains receipts', () => {
+        const receivedReceipts = createReceivedReceiptsArray(3);
+        let existingMessages;
+        let newAndOldMessages;
+
+        beforeEach(() => {
+          messagesArray.map(m => m['_from'] = OTHER_USER_ID);
+          messagesArray.map(m => m.status = messageStatus.RECEIVED);
+          const clonedMockDbResponse = JSON.parse(JSON.stringify(MOCK_DB_FILTERED_RESPONSE));
+          clonedMockDbResponse.map(msg => msg.thread = messagesArray[0].conversationId);
+          spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(clonedMockDbResponse));
+          spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({
+            messages: messagesArray,
+            receivedReceipts: receivedReceipts,
+            readReceipts: [],
+            metaDate: timestamp
+          }));
+          conversations = createConversationsArray(1);
+          conversations[0]['_id'] = messagesArray[0].conversationId;
+          service.getMessages(conversations[0]).subscribe(r => existingMessages = r.data);
+          newAndOldMessages = existingMessages.concat(messagesArray);
+        });
+
+        it('should call archiveService.updateStatuses with all existing and new messages and receipts', () => {
+          spyOn(archiveService, 'updateStatuses').and.callThrough();
+
+          service.getNotSavedMessages(conversations, false).subscribe();
+
+          expect(archiveService.updateStatuses).toHaveBeenCalledWith(newAndOldMessages, [], receivedReceipts);
+        });
+
+        it('should call persistencyService.updateMessageStatus for each old and new message', () => {
+          spyOn(persistencyService, 'updateMessageStatus');
+
+          service.getNotSavedMessages(conversations, false).subscribe();
+
+          newAndOldMessages.map(msg => {
+            expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(msg, msg.status);
+          });
+        });
+
+        it('should update unreadMessages counter and the totalUnreadMessages counter if the conversation is NOT archived', () => {
+          conversations[0].archived = false;
+          service.getNotSavedMessages(conversations, false).subscribe();
+
+          expect(conversations[0].unreadMessages).toBe(messagesArray.length);
+          expect(service.totalUnreadMessages).toBe(messagesArray.length);
+        });
+
+        it('should NOT update unreadMessages counter and the totalUnreadMessages counter if the conversation is archived', () => {
+          conversations[0].archived = true;
+          service.getNotSavedMessages(conversations, true).subscribe();
+
+          expect(conversations[0].unreadMessages).toBe(0);
+          expect(service.totalUnreadMessages).toBe(0);
+        });
       });
     });
 
@@ -357,7 +390,7 @@ describe('Service: Message', () => {
       it('should NOT call getMetaInformation when there is no connection', () => {
         connectionService.isConnected = false;
 
-        service.getNotSavedMessages();
+        service.getNotSavedMessages(conversations, true);
 
         expect(persistencyService.getMetaInformation).not.toHaveBeenCalled();
       });

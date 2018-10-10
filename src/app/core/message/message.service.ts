@@ -87,11 +87,11 @@ export class MessageService {
   }
 
   private confirmAndSaveMessagesByThread(r: MsgArchiveResponse, archived: boolean): MsgArchiveResponse {
-      if (archived) {
-        r.messages.filter(m => !m.fromSelf).map(m => m.status = messageStatus.READ);
-          }
-      this.confirmUnconfirmedMessages(r.messages, r.receivedReceipts);
-      this.persistencyService.saveMessages(r.messages);
+    if (archived) {
+      r.messages.filter(m => !m.fromSelf).map(m => m.status = messageStatus.READ);
+    }
+    this.confirmUnconfirmedMessages(r.messages, r.receivedReceipts);
+    this.persistencyService.saveMessages(r.messages);
     return r;
   }
 
@@ -106,7 +106,7 @@ export class MessageService {
 
   public getNotSavedMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
     if (this.connectionService.isConnected) {
-    return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfo) => {
+      return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfo) => {
         this.eventService.emit(EventService.MSG_ARCHIVE_LOADING);
         return this.archiveService.getEventsSince(resp.start).map(r => {
           this.persistencyService.saveMetaInformation({ start: r.metaDate });
@@ -120,43 +120,43 @@ export class MessageService {
                 metaDate: r.metaDate
               };
               const conversation = conversations.find(c => c.id === thread);
-          if (conversation) {
+              if (conversation) {
                 this.confirmAndSaveMessagesByThread(msgAndSingalsForThread, conversation.archived);
                 messagesByThread[thread].map(msg => {
-            if (!(conversation.messages).find(m => m.id === msg.id)) {
-              msg = this.addUserInfo(conversation, msg);
-              conversation.messages.push(msg);
-              this.allMessages.push(msg);
-            }
+                  if (!(conversation.messages).find(m => m.id === msg.id)) {
+                    msg = this.addUserInfo(conversation, msg);
+                    conversation.messages.push(msg);
+                    this.allMessages.push(msg);
+                  }
                 });
-          }
-        });
-          }
-
-        if (r.readReceipts.length || r.receivedReceipts.length) {
-          let updatedMesages = [];
-          updatedMesages = this.archiveService.updateStatuses(this.allMessages, r.readReceipts, r.receivedReceipts);
-          updatedMesages.map(m => this.persistencyService.updateMessageStatus(m, m.status));
-
-          if (!archived) {
-            this.totalUnreadMessages = 0;
+              }
+            });
           }
 
-          const updateMessagesByThread = _.groupBy(updatedMesages, 'conversationId');
-          Object.keys(updateMessagesByThread).map((thread) => {
-            const unreadCount = updateMessagesByThread[thread].filter(m => m.status !== messageStatus.READ && !m.fromSelf).length;
-            const conv = conversations.find(c => c.id === thread);
-              if (conv && !conv.archived) {
-              conv.unreadMessages = unreadCount;
-              this.totalUnreadMessages += unreadCount;
+          if (r.readReceipts.length || r.receivedReceipts.length) {
+            let updatedMesages = [];
+            updatedMesages = this.archiveService.updateStatuses(this.allMessages, r.readReceipts, r.receivedReceipts);
+            updatedMesages.map(m => this.persistencyService.updateMessageStatus(m, m.status));
+
+            if (!archived) {
+              this.totalUnreadMessages = 0;
             }
+
+            const updateMessagesByThread = _.groupBy(updatedMesages, 'conversationId');
+            Object.keys(updateMessagesByThread).map((thread) => {
+              const unreadCount = updateMessagesByThread[thread].filter(m => m.status !== messageStatus.READ && !m.fromSelf).length;
+              const conv = conversations.find(c => c.id === thread);
+              if (conv && !conv.archived) {
+                conv.unreadMessages = unreadCount;
+                this.totalUnreadMessages += unreadCount;
+              }
+            });
+          }
+          this.eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+          return conversations;
+        });
       });
     }
-          this.eventService.emit(EventService.MSG_ARCHIVE_LOADED);
-        return conversations;
-      });
-    });
-  }
   }
 
   public addUserInfoToArray(conversation: Conversation, messages: Message[]): Message[] {
