@@ -197,7 +197,7 @@ export class XmppService {
     if (message.body || message.timestamp || message.carbonSent
         || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
-      builtMessage.fromSelf = message.from === this.currentJid || message.from.bare === this.currentJid;
+      builtMessage.fromSelf = builtMessage.from.split('/')[0] === this.currentJid;
       this.persistencyService.saveMetaInformation({
           start: builtMessage.date.toISOString()
         }
@@ -207,8 +207,8 @@ export class XmppService {
       if (message.requestReceipt && !builtMessage.fromSelf) {
         this.persistencyService.findMessage(message.id).subscribe(() => {}, (error) => {
           if (error.reason === 'missing') {
-        this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
-      }
+            this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
+          }
         });
       }
     }
