@@ -88,7 +88,7 @@ describe('Service: Message', () => {
   describe('getMessages', () => {
 
     let conversation: Conversation;
-    const nanoTimestamp = (new Date(MOCK_DB_META.data.start).getTime() / 1000) + '000';
+    const nanoTimestamp = (new Date(MOCK_DB_META.start).getTime() / 1000) + '000';
 
     beforeEach(() => {
       spyOn(xmpp, 'sendMessageDeliveryReceipt');
@@ -223,7 +223,7 @@ describe('Service: Message', () => {
 
   describe('getNotSavedMessages', () => {
     let conversations = createConversationsArray(3);
-    const timestamp = new Date(MOCK_DB_META.data.start);
+    const timestamp = new Date(MOCK_DB_META.start);
     const messagesArray: Array<Message> = createMessagesArray(5);
     beforeEach(() => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of({ start: timestamp }));
