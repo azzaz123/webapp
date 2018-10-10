@@ -63,7 +63,7 @@ export class MsgArchiveService {
     });
   }
 
-  public getAllEvents(thread: string, since?: string): Observable<MsgArchiveResponse> {
+  public getAllEvents(thread: string, since: string = '0'): Observable<MsgArchiveResponse> {
     this.selfId = this.userService.user.id;
     return this.getAll(thread, since).first().map((r: any) => {
       const events = r.events;
