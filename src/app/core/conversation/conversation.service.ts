@@ -324,7 +324,7 @@ export class ConversationService extends LeadService {
   public sendRead(conversation: Conversation) {
     if (conversation.unreadMessages > 0) {
       this.readSubscription = this.event.subscribe(EventService.MESSAGE_READ_ACK, () => {
-        this.markAllAsRead(conversation.id);
+        this.markAllAsRead(conversation.id, new Date().getTime());
         this.readSubscription.unsubscribe();
       });
       this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);
