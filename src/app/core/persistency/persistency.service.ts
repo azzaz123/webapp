@@ -34,12 +34,12 @@ export class PersistencyService {
       this.userService.me().subscribe((user: User) => {
         this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
         this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
-          this.destroyDbs(() => {
+          this.messagesDb.destroy().then(() => {
             this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
             this.saveDbVersion(this.messagesDb, this.latestVersion);
             this.eventService.emit(EventService.DB_READY);
-          }, this.messagesDb);
-          this.destroyDbs(() => {}, 'messages', 'conversations', 'conversations-' + user.id);
+          });
+          this.destroyDbs('messages', 'conversations', 'conversations-' + user.id);
         });
       });
     });
@@ -61,11 +61,10 @@ export class PersistencyService {
     return this._conversationsDb;
   }
 
-  private destroyDbs(callback: Function, ...dbs: Array<Database>) {
+  private destroyDbs(...dbs: Array<Database>) {
     dbs.forEach((db) => {
       new PouchDB(db).destroy().then(() => {
-        callback();
-      }).catch((err) => {});
+      }).catch(() => {});
     });
   }
 
