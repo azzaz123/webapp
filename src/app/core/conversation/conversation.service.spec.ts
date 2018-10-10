@@ -709,23 +709,12 @@ describe('Service: Conversation', () => {
   });
 
   describe('markAllAsRead', () => {
-    // it('should call addStatusToStoredMessages', () => {
-    //   spyOn<any>(service, 'addStatusToStoredMessages');
-    //   service.leads.push(MOCK_CONVERSATION());
-    //   const thread = MOCK_CONVERSATION().id;
-    //   const timestamp = new Date().getTime();
-
-    //   service.markAllAsRead(thread, timestamp);
-
-    //   expect(service['addStatusToStoredMessages']).toHaveBeenCalled();
-    // });
 
     it(`should update message status to READ and push tracking events ONLY for messages that meet the criteria:
         status is 'received' OR 'sent' AND message is fromSelf`, () => {
       spyOn(persistencyService, 'updateMessageStatus');
       spyOn(trackingService, 'addTrackingEvent');
       const mockedConversation = MOCK_CONVERSATION();
-      // const timestamp = new Date().getTime();
       mockedConversation.messages = [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER];
       mockedConversation.messages[0].fromSelf = true;
       mockedConversation.messages[1].fromSelf = true;
@@ -757,47 +746,6 @@ describe('Service: Conversation', () => {
         expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(m, messageStatus.READ);
       });
     });
-
-    // it('should call localDbVersionUpdate in persistencyService and its callback methood', () => {
-    //   spyOn(persistencyService, 'localDbVersionUpdate');
-    //   const mockedConversation = MOCK_CONVERSATION();
-    //   mockedConversation.messages = [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER];
-
-    //   service['addStatusToStoredMessages'](mockedConversation, messageStatus.READ);
-
-    //   expect(persistencyService.localDbVersionUpdate).toHaveBeenCalled();
-    // });
-
-    // fit(`should call updateMessageStatus in persistencyService when the messages are fromSelf and they have the RECEIVED
-    //     or SENT status`, () => {
-    //   spyOn(persistencyService, 'updateMessageStatus');
-    //   const mockedConversation = MOCK_CONVERSATION();
-    //   service.leads.push(mockedConversation);
-    //   mockedConversation.messages = [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER];
-    //   mockedConversation.messages[0].status = messageStatus.SENT;
-    //   mockedConversation.messages[1].status = messageStatus.RECEIVED;
-    //   mockedConversation.messages[0].fromSelf = true;
-    //   mockedConversation.messages[1].fromSelf = true;
-    //   mockedConversation.messages[2].fromSelf = false;
-    //   const mockedFn = () => {
-    //     mockedConversation.messages.filter((message) => {
-    //         return message.fromSelf && typeof message.status !== 'string';
-    //       }).forEach((message) => {
-    //         message.status = messageStatus.READ;
-    //         persistencyService.updateMessageStatus(message.id, messageStatus.READ);
-    //       });
-    //     };
-    //   spyOn(persistencyService, 'localDbVersionUpdate').and.callFake(mockedFn);
-
-    //   service.markAllAsRead(mockedConversation.id);
-
-    //   // service['addStatusToStoredMessages'](mockedConversation, messageStatus.READ);
-
-    //   expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(2);
-    //   expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(mockedConversation.messages[0].id, messageStatus.READ);
-    //   expect(persistencyService.updateMessageStatus).toHaveBeenCalledWith(mockedConversation.messages[1].id, messageStatus.READ);
-    //   expect(persistencyService.updateMessageStatus).not.toHaveBeenCalledWith(mockedConversation.messages[2].id, messageStatus.READ);
-    // });
   });
 
   describe('markAs', () => {
