@@ -356,7 +356,7 @@ export class ConversationService extends LeadService {
 
   private recursiveLoadMessages(conversations: Conversation[], index: number = 0): Observable<Conversation[]> {
       if (conversations && conversations[index] && this.connectionService.isConnected) {
-      return this.messageService.getMessages(conversations[index])
+      return this.messageService.getMessages(conversations[index], !index)
         .flatMap((res: MessagesData) => {
           conversations[index].messages = res.data;
           conversations[index].unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
@@ -436,7 +436,7 @@ export class ConversationService extends LeadService {
   }
 
   public getSingleConversationMessages(conversation: Conversation) {
-    return this.messageService.getMessages(conversation).map((res: MessagesData) => {
+    return this.messageService.getMessages(conversation, true).map((res: MessagesData) => {
       conversation.messages = res.data;
       conversation.unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
       this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
@@ -509,7 +509,6 @@ export class ConversationService extends LeadService {
   }
 
   private requestConversationInfo(message: Message) {
-    this.event.emit(EventService.MSG_ARCHIVE_LOADING);
     this.get(message.conversationId).subscribe((conversation: Conversation) => {
       if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId)) {
         this.getSingleConversationMessages(conversation).subscribe(() => {

@@ -43,7 +43,7 @@ export class MessageService {
     return this._totalUnreadMessages;
   }
 
-  public getMessages(conversation: Conversation): Observable<MessagesData> {
+  public getMessages(conversation: Conversation, firstArchive: boolean = false): Observable<MessagesData> {
     return this.persistencyService.getMessages(conversation.id)
     .flatMap((messages: StoredMessageRow[]) => {
       if (messages.length) {
@@ -70,6 +70,9 @@ export class MessageService {
         };
         return Observable.of(res);
       } else if (this.connectionService.isConnected) {
+        if (firstArchive) {
+          this.eventService.emit(EventService.MSG_ARCHIVE_LOADING);
+        }
         return this.archiveService.getAllEvents(conversation.id).map(r => {
           this.persistencyService.saveMetaInformation({start: r.metaDate, last: null});
           if (r.messages.length) {

@@ -22,3 +22,14 @@ export interface ReadReceipt {
   to: string;
   timestamp: number;
 }
+
+export interface ArchiveMetrics {
+  downloadingTime: number;
+  processingTime: number;
+  eventsCount: number;
+  pageSize: number;
+  startDownloadTs?: number;
+  endDownloadTs?: number;
+  startProcessTs?: number;
+  endProcessTs?: number;
+}

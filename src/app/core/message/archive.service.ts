@@ -1,10 +1,12 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { MsgArchiveResponse, ReceivedReceipt, ReadReceipt } from './archive.interface';
+import { MsgArchiveResponse, ReceivedReceipt, ReadReceipt, ArchiveMetrics } from './archive.interface';
 import { HttpService } from '../http/http.service';
 import { Message, messageStatus } from './message';
 import { UserService } from '../user/user.service';
+import { EventService } from '../event/event.service';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Injectable()
@@ -19,10 +21,21 @@ export class MsgArchiveService {
     read: 'chat.conversation.read'
   };
 
+  public firstArchiveMetrics = {} as ArchiveMetrics;
+  public sinceArchiveMetrics = {} as ArchiveMetrics;
+  private firstArchiveSubscription: Subscription;
+  private sinceArchiveSubscription: Subscription;
+
   constructor(private http: HttpService,
+              private eventService: EventService,
               private userService: UserService) { }
 
   public getEventsSince(start: string): Observable<MsgArchiveResponse> {
+    if (!this.sinceArchiveSubscription) {
+      this.sinceArchiveSubscription = this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADED, () => {
+        this.sinceArchiveMetrics = this.calculateMetrics(this.sinceArchiveMetrics);
+      });
+    }
     this.selfId = this.userService.user.id;
     return this.getSince(start).first().map((r: any) => {
       const events = r.events;
@@ -43,6 +56,7 @@ export class MsgArchiveService {
 
   private getSince(since: string, events?: Array<any>): Observable<any> {
     const nanoTimestamp = since.indexOf('.') === 10 || since === '0' ? since : (new Date(since).getTime() / 1000) + '000';
+    this.addTimestampMetric(this.sinceArchiveMetrics, 'startDownloadTs');
     return this.http.get(this.API_URL, {
       since: nanoTimestamp,
       'page-size': this.pageSize
@@ -59,11 +73,20 @@ export class MsgArchiveService {
       }
 
       r.events = events;
+      this.addTimestampMetric(this.sinceArchiveMetrics, 'endDownloadTs', true);
+      this.sinceArchiveMetrics.eventsCount = this.sinceArchiveMetrics.eventsCount
+        ? this.sinceArchiveMetrics.eventsCount + events.length
+        : events.length;
       return Observable.of(r);
     });
   }
 
   public getAllEvents(thread: string, since: string = '0'): Observable<MsgArchiveResponse> {
+    if (!this.firstArchiveSubscription) {
+      this.firstArchiveSubscription = this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADED, () => {
+        this.firstArchiveMetrics = this.calculateMetrics(this.firstArchiveMetrics);
+      });
+    }
     this.selfId = this.userService.user.id;
     return this.getAll(thread, since).first().map((r: any) => {
       const events = r.events;
@@ -85,6 +108,7 @@ export class MsgArchiveService {
 
   private getAll(thread: string, since: string, events?: Array<any>): Observable<any> {
     const nanoTimestamp = since.indexOf('.') === 10 || since === '0' ? since : (new Date(since).getTime() / 1000) + '000';
+    this.addTimestampMetric(this.firstArchiveMetrics, 'startDownloadTs');
     return this.http.get(this.API_URL, {
       since: nanoTimestamp,
       'page-size': this.pageSize,
@@ -100,6 +124,10 @@ export class MsgArchiveService {
       }
 
       r.events = events;
+      this.addTimestampMetric(this.firstArchiveMetrics, 'endDownloadTs', true);
+      this.firstArchiveMetrics.eventsCount = this.firstArchiveMetrics.eventsCount
+        ? this.firstArchiveMetrics.eventsCount + events.length
+        : events.length;
       return Observable.of(r);
     });
   }
@@ -125,10 +153,14 @@ export class MsgArchiveService {
       }
     });
 
+    this.addTimestampMetric(this.firstArchiveMetrics, 'endProcessTs', true, Boolean(this.firstArchiveMetrics.startDownloadTs));
+    this.addTimestampMetric(this.sinceArchiveMetrics, 'endProcessTs', true, Boolean(this.sinceArchiveMetrics.startDownloadTs));
     return messages;
   }
 
   private processMessages(archiveData: Array<any>) {
+    this.addTimestampMetric(this.firstArchiveMetrics, 'startProcessTs', false, Boolean(this.firstArchiveMetrics.startDownloadTs));
+    this.addTimestampMetric(this.sinceArchiveMetrics, 'startProcessTs', false, Boolean(this.sinceArchiveMetrics.startDownloadTs));
     let messages = archiveData.filter((d) => d.type === this.eventTypes.message)
     .map(m => {
       const fromSelf = m.event.from_user_hash === this.selfId;
@@ -191,5 +223,23 @@ export class MsgArchiveService {
       };
       return receipt;
     });
+  }
+
+  private calculateMetrics(metricsObj: ArchiveMetrics) {
+    if (metricsObj.startDownloadTs) {
+      metricsObj.downloadingTime = metricsObj.endDownloadTs - metricsObj.startDownloadTs;
+      metricsObj.processingTime = metricsObj.endProcessTs - metricsObj.startProcessTs;
+    }
+    delete metricsObj.startDownloadTs;
+    delete metricsObj.endDownloadTs;
+    delete metricsObj.startProcessTs;
+    delete metricsObj.endProcessTs;
+    return metricsObj;
+  }
+
+  private addTimestampMetric(addTo: ArchiveMetrics, metricName: string, allowOverwrite = false, condition = true) {
+    if ((allowOverwrite || !addTo[metricName]) && condition) {
+      addTo[metricName] = Date.now();
+    }
   }
 }
