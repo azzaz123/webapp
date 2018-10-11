@@ -68,7 +68,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.persistencyService.getMetaInformation().subscribe(() => {
         this.firstLoad = false;
         }, () => {
-          this.persistencyService.saveMetaInformation({start: '0'});
+          this.persistencyService.saveMetaInformation({start: '0', last: null});
           this.firstLoad = true;
         });
     });

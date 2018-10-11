@@ -88,7 +88,7 @@ describe('Service: Message', () => {
   describe('getMessages', () => {
 
     let conversation: Conversation;
-    const nanoTimestamp = (new Date(MOCK_DB_META.start).getTime() / 1000) + '000';
+    const nanoTimestamp = (new Date(MOCK_DB_META.data.start).getTime() / 1000) + '000';
 
     beforeEach(() => {
       spyOn(xmpp, 'sendMessageDeliveryReceipt');
@@ -216,17 +216,18 @@ describe('Service: Message', () => {
 
       expect(persistencyService.saveMessages).toHaveBeenCalledWith([MESSAGE_MAIN, MOCK_RANDOM_MESSAGE, MOCK_MESSAGE_FROM_OTHER]);
       expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith({
-        start: nanoTimestamp
+        start: nanoTimestamp,
+        last: null
       });
     });
   });
 
   describe('getNotSavedMessages', () => {
     let conversations = createConversationsArray(3);
-    const timestamp = new Date(MOCK_DB_META.start);
+    const timestamp = new Date(MOCK_DB_META.data.start);
     const messagesArray: Array<Message> = createMessagesArray(5);
     beforeEach(() => {
-      spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of({ start: timestamp }));
+      spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of(MOCK_DB_META));
       spyOn(xmpp, 'sendMessageDeliveryReceipt');
     });
     describe('with connection', () => {
@@ -269,7 +270,7 @@ describe('Service: Message', () => {
 
         service.getNotSavedMessages(conversations, true).subscribe();
 
-        expect(archiveService.getEventsSince).toHaveBeenCalledWith(timestamp);
+        expect(archiveService.getEventsSince).toHaveBeenCalledWith(MOCK_DB_META.data.start);
       });
 
       it('should call persistencyService.saveMetaInformation with the metaDate provided in the response', () => {
@@ -283,7 +284,7 @@ describe('Service: Message', () => {
 
         service.getNotSavedMessages(conversations, true).subscribe();
 
-        expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith({ start: timestamp });
+        expect(persistencyService.saveMetaInformation).toHaveBeenCalledWith({ start: timestamp, last: null });
       });
 
       describe('with response that contains new messages', () => {

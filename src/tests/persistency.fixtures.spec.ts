@@ -111,7 +111,11 @@ export const MOCK_DB_RESPONSE: any = {
 };
 
 export const MOCK_DB_META: any = {
-  start: '2016-10-10T15:30:27.000Z'
+  data: {
+    last: 'last',
+    start: '2016-10-10T15:30:27.000Z',
+    end: true
+  }
 };
 
 /* istanbul ignore next */

@@ -21,6 +21,11 @@ export interface MessagesDataRecursive extends MessagesData {
 
 export interface StoredMetaInfo {
   start: string;
+  last: string;
+}
+
+export interface StoredMetaInfoData {
+  data: StoredMetaInfo;
 }
 
 export interface StoredMessage {

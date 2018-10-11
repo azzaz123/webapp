@@ -9,7 +9,7 @@ import { Message, messageStatus } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
-import { MessagesData, StoredMessageRow, StoredMetaInfo } from './messages.interface';
+import { MessagesData, StoredMessageRow, StoredMetaInfoData } from './messages.interface';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveResponse, ReceivedReceipt } from './archive.interface';
 import 'rxjs/add/operator/first';
@@ -71,7 +71,7 @@ export class MessageService {
         return Observable.of(res);
       } else if (this.connectionService.isConnected) {
         return this.archiveService.getAllEvents(conversation.id).map(r => {
-          this.persistencyService.saveMetaInformation({start: r.metaDate});
+          this.persistencyService.saveMetaInformation({start: r.metaDate, last: null});
           if (r.messages.length) {
             r = this.confirmAndSaveMessagesByThread(r, conversation.archived);
           }
@@ -106,10 +106,10 @@ export class MessageService {
 
   public getNotSavedMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
     if (this.connectionService.isConnected) {
-      return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfo) => {
+      return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
         this.eventService.emit(EventService.MSG_ARCHIVE_LOADING);
-        return this.archiveService.getEventsSince(resp.start).map(r => {
-          this.persistencyService.saveMetaInformation({ start: r.metaDate });
+        return this.archiveService.getEventsSince(resp.data.start).map(r => {
+          this.persistencyService.saveMetaInformation({ start: r.metaDate, last: null });
           if (r.messages.length) {
             const messagesByThread = _.groupBy(r.messages, 'conversationId');
             Object.keys(messagesByThread).map((thread) => {

@@ -9,7 +9,8 @@ import {
   StoredConversation,
   StoredMessage,
   StoredMessageRow,
-  StoredMetaInfo
+  StoredMetaInfo,
+  StoredMetaInfoData
 } from '../message/messages.interface';
 import 'rxjs/add/observable/fromPromise';
 import Database = PouchDB.Database;
@@ -24,7 +25,7 @@ export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private _conversationsDb: Database<StoredConversation>;
   private storedMessages: AllDocsResponse<StoredMessage>;
-  private latestVersion = 2;
+  private latestVersion = 2.0;
 
   constructor(
     private userService: UserService,
@@ -126,14 +127,15 @@ export class PersistencyService {
     }
   }
 
-  public saveMetaInformation(meta: StoredMetaInfo): Observable<any> {
-    const newMoment = (meta.start.indexOf('.') === 10 || meta.start === '0')
-      ? moment.unix(Number(meta.start)) // handle cases: '0' (from firstArchive) OR nanotimestamp (from server response)
-      : moment(meta.start);             // handle ISO format (from localDb meta doc)
+  public saveMetaInformation(data: StoredMetaInfo): Observable<any> {
+    const newMoment = (data.start.indexOf('.') === 10 || data.start === '0')
+      ? moment.unix(Number(data.start)) // handle cases: '0' (from firstArchive) OR nanotimestamp (from server response)
+      : moment(data.start);             // handle ISO format (from localDb meta doc)
+    data.start = newMoment.toISOString();
     return Observable.fromPromise(
       this.upsert(this.messagesDb, 'meta', (doc: Document<any>) => {
-      if (!doc.start || newMoment.isAfter(moment(doc.start))) {
-        doc.start = newMoment.toISOString();
+      if (!doc.data || !doc.data.start || newMoment.isAfter(moment(doc.data.start))) {
+        doc.data = data;
       }
       return doc;
     }));
@@ -159,7 +161,7 @@ export class PersistencyService {
     }));
   }
 
-  public getMetaInformation(): Observable<StoredMetaInfo> {
+  public getMetaInformation(): Observable<StoredMetaInfoData> {
     return Observable.fromPromise(this.messagesDb.get('meta'));
   }
 

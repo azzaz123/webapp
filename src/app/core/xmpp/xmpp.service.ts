@@ -199,7 +199,8 @@ export class XmppService {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
       builtMessage.fromSelf = builtMessage.from.split('/')[0] === this.currentJid;
       this.persistencyService.saveMetaInformation({
-          start: builtMessage.date.toISOString()
+          start: builtMessage.date.toISOString(),
+          last: null
         }
       );
       const replaceTimestamp = !message.timestamp || message.carbonSent;
