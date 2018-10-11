@@ -21,7 +21,7 @@ import { CategoryService } from '../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { Item } from '../../core/item/item';
+import { Item, ITEM_TYPES } from '../../core/item/item';
 import { DeliveryInfo } from '../../core/item/item-response.interface';
 
 @Component({
@@ -38,6 +38,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() onCategorySelect = new EventEmitter<number>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
+  public itemTypes: any = ITEM_TYPES;
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
