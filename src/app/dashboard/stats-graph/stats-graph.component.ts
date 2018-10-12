@@ -55,7 +55,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         },
         {
           'period': 'DD',
-          'format': 'DD'
+          'format': 'D'
         },
         {
           'period': 'WW',
@@ -205,6 +205,7 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       this.chartOptions.categoryAxis.minPeriod = 'MM';
       this.chartOptions.categoryAxis.boldLabels = true;
       this.chartOptions.chartCursor.categoryBalloonDateFormat = 'MMM';
+      this.chartOptions.chartCursor.categoryBalloonDateFormat = 'MMM';
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
         'id': 'city_bump',
@@ -236,6 +237,9 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
         'fillColors': this.isSafari ? 'rgba(86, 172, 255, 0.2)' : ['rgba(143, 214, 255, 0.58)', 'rgba(86, 172, 255, 0.16)'],
         'legendColor': '#56acff'
       });
+      this.chartOptions.chartCursor.categoryBalloonFunction = function(date) {
+        return date.toLocaleDateString(this.locale, { weekday: 'long', day: 'numeric' });
+      };
     }
     if (this.locale === 'es') {
       this.AmCharts.shortMonthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dec'];
