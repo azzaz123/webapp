@@ -10,10 +10,15 @@ import { createMockMessageEvents, createMockReceivedEvents, createMockReadEvents
 import { MsgArchiveResponse } from './archive.interface';
 import { Message, messageStatus } from './message';
 import { CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
+import { TrackingService } from '../tracking/tracking.service';
+import { EventService } from '../event/event.service';
+import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 
 let service: MsgArchiveService;
 let http: HttpService;
 let userSerice: UserService;
+let trackingService: TrackingService;
+let eventService: EventService;
 
 const API_URL = 'api/v3/events/chat';
 const pageSize = 100;
@@ -109,6 +114,8 @@ describe('MsgArchiveService', () => {
     TestBed.configureTestingModule({
       providers: [
         MsgArchiveService,
+        EventService,
+        { provide: TrackingService, useClass: MockTrackingService },
         { provide: HttpService, useValue: { get() { } } },
         { provide: UserService, useClass: MockedUserService }
       ]
@@ -117,6 +124,8 @@ describe('MsgArchiveService', () => {
     service = TestBed.get(MsgArchiveService);
     http = TestBed.get(HttpService);
     userSerice = TestBed.get(UserService);
+    trackingService = TestBed.get(TrackingService);
+    eventService = TestBed.get(EventService);
   });
 
   describe('getAllEvents', () => {
