@@ -23,8 +23,8 @@ export class MsgArchiveService {
     read: 'chat.conversation.read'
   };
 
-  public firstArchiveMetrics = {} as ArchiveMetrics;
-  public sinceArchiveMetrics = {} as ArchiveMetrics;
+  private firstArchiveMetrics = {} as ArchiveMetrics;
+  private sinceArchiveMetrics = {} as ArchiveMetrics;
   private firstArchiveSubscription: Subscription;
   private sinceArchiveSubscription: Subscription;
 
