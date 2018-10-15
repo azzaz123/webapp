@@ -54,19 +54,19 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   }, {
     size: '30x40x50cm',
     value: {
-      min_weight_kg: 5.1,
+      min_weight_kg: 5,
       max_weight_kg: 10
     }
   }, {
     size: '40x50x60cm',
     value: {
-      min_weight_kg: 10.1,
+      min_weight_kg: 10,
       max_weight_kg: 20
     }
   }, {
     size: '50x60x60cm',
     value: {
-      min_weight_kg: 20.1,
+      min_weight_kg: 20,
       max_weight_kg: 30
     }
   }];
@@ -185,6 +185,10 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
+      if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
+        this.uploadForm.value.sale_conditions.shipping_allowed = true;
+        console.log(this.uploadForm.value);
+      }
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
         values: this.uploadForm.value
