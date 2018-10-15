@@ -108,6 +108,7 @@ export interface ScheduledStatus {
 
 export interface ScheduledBumps {
   citybump?: number;
+  zonebump?: number;
   countrybump?: number;
   urgent?: number;
 }
