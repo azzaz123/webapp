@@ -33,7 +33,7 @@ export class EventService {
   public static UPDATE_SEARCH = 'updateSearch';
   public static CLOSE_EXPANDED_CALLS = 'closeExpandedCalls';
   public static TOTAL_CREDITS_UPDATED = 'packBought';
-  public static DB_READY = 'dbREady';
+  public static DB_READY = 'dbReady';
   public static FOUND_MESSAGES_IN_DB = 'foundMessagesInDb';
 
   private subjects: any = {};
