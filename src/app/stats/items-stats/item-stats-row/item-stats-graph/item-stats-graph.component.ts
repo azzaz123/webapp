@@ -172,6 +172,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
     if (this.locale === 'es') {
       this.AmCharts.dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
     }
+    this.AmCharts.useUTC = true;
   }
 
   private loadStats() {
