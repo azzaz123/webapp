@@ -40,7 +40,7 @@ export class BumpConfirmationModalComponent implements OnInit {
     );
     setTimeout(() => {
       this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
-        if (creditInfo.credit === 0) {
+        if (creditInfo.credit === 0 && !this.creditUsed) {
           creditInfo.currencyName = 'wallacredits';
           creditInfo.factor = 1;
         }

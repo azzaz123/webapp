@@ -651,12 +651,6 @@
   <translation id="3743194622120127205">Paga parte con tus wallacoins y con tu tarjeta de pago seguro a través de Banco Sabadell:</translation>
   <translation id="3549265484659972037">Paga con tu saldo:</translation>
   <translation id="5266269636016082386">Paga con tus wallacoins:</translation>
-  <translation id="5575054737649759998">
-    Por sólo <ph name="INTERPOLATION"><ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
-    <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
-    <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
-    marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
-  </translation>
   <translation id="4418606013051113523">Marcar como urgente por <ph name="INTERPOLATION"><ex>{{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
       <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="1666676372989024280">y te quedan <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | number}}</ex></ph> wallacoins</translation>
@@ -679,4 +673,12 @@
   <translation id="78876651719315122">Ir a saldo</translation>
   <translation id="4239962849036412221">Selecciona otra versión</translation>
   <translation id="1201618934317428295">Selecciona una versión predefinida</translation>
+  <translation id="8742069867763156698">
+    Por sólo
+    <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+    <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+    <ph name="START_TAG_SPAN_2"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+    <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+    marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
+  </translation>
 </translationbundle>

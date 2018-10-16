@@ -89,7 +89,7 @@
   <msg id="5340498030552368470"><source>app/shared/profile/edit-password/password-modal/password-modal.component.ts:7</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.ts:8</source>Current password</msg>
   <msg id="3588415639242079458"><source>app/shared/profile/edit-password/password-modal/password-modal.component.ts:11</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.ts:12</source>New password</msg>
   <msg id="8656126574213649581"><source>app/shared/profile/edit-password/password-modal/password-modal.component.ts:15</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.ts:16</source>Confirm new password</msg>
-  <msg id="4021752662928002901"><source>app/shared/profile/edit-password/password-modal/password-modal.component.ts:18</source><source>app/upload/preview-modal/preview-modal.component.ts:7</source><source>app/upload/upload-car/upload-car.component.ts:234</source><source>app/upload/upload-product/upload-product.component.ts:120</source><source>app/upload/upload-realestate/upload-realestate.component.ts:174</source>Update</msg>
+  <msg id="4021752662928002901"><source>app/shared/profile/edit-password/password-modal/password-modal.component.ts:18</source><source>app/upload/preview-modal/preview-modal.component.ts:7</source><source>app/upload/upload-car/upload-car.component.ts:234</source><source>app/upload/upload-product/upload-product.component.ts:121</source><source>app/upload/upload-realestate/upload-realestate.component.ts:174</source>Update</msg>
   <msg id="438622500917182822"><source>app/shared/profile/picture-upload/picture-upload.component.ts:7</source>Change your profile picture</msg>
   <msg id="1315384386910114762"><source>app/shared/profile/picture-upload/picture-upload.component.ts:8</source>This is the picture linked to your account. We accept only .jpg images</msg>
   <msg id="1897498190172236951"><source>app/shared/profile/picture-upload/picture-upload.component.ts:18</source>Upload picture</msg>
@@ -234,9 +234,6 @@
   <msg id="8766840274158243690"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:62</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:17</source><source>app/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.ts:10</source>Oops!</msg>
   <msg id="2785911750257412726"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:63</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.ts:18</source><source>app/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.ts:11</source>We are trying to figure out what happened. Try again later.</msg>
   <msg id="880177930328984754"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:64</source><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:23</source>Fine!</msg>
-  <msg id="6686102860613242031"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:11</source>Use this card:</msg>
-  <msg id="2005530248451232459"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:15</source>Add a new card</msg>
-  <msg id="4699023020194351074"><source>app/catalog/list/modals/credit-card-modal/credit-card-modal.component.ts:17</source>Feature for <ph name="INTERPOLATION"><ex>{{total | number:&apos;1.2-2&apos;}}</ex></ph> Euros</msg>
   <msg id="868815663264397508"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:6</source>Your item is now on Wallapop</msg>
   <msg id="3258601590058086652"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:9</source>Want to sell ASAP?</msg>
   <msg id="4495547321385209565"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:10</source>Stand out on the wall during 7 days and be easy to find with the filter ASAP</msg>
@@ -306,6 +303,9 @@
   <msg id="3286725018134496844"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:10</source>You already have your extra features and you can use them whenever you want.</msg>
   <msg id="1034935109316471792"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:16</source>You featured your products.</msg>
   <msg id="7542752854018206709"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:22</source>Your extra features have not been done because something went wrong with your credit card. Please check and try again</msg>
+  <msg id="6686102860613242031"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.ts:11</source>Use this card:</msg>
+  <msg id="2005530248451232459"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.ts:15</source>Add a new card</msg>
+  <msg id="4699023020194351074"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.ts:17</source>Feature for <ph name="INTERPOLATION"><ex>{{total | number:&apos;1.2-2&apos;}}</ex></ph> Euros</msg>
   <msg id="2571738502834365520"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.ts:12</source>Catalog <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="6850144876798655647"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.ts:13</source>Big packages with all your items and stuff</msg>
   <msg id="2246851749264196483"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.ts:15</source>Manage my subscription</msg>
@@ -500,12 +500,12 @@
   <msg id="6306441078838263413"><source>app/reviews/reviews.component.ts:25</source>reviews</msg>
   <msg id="994157966875519838"><source>app/reviews/reviews.component.ts:26</source>review</msg>
   <msg id="5327426729320041573"><source>app/reviews/reviews.component.ts:32</source>Nobody has written a review about you because you didn&apos;t buy or sell anything yet. Wake up!</msg>
-  <msg id="5653113390991708232"><source>app/reviews/review-item/review-item.component.ts:14</source>Sold:</msg>
-  <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.ts:15</source>Bought:</msg>
-  <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.ts:19</source>A wallapop item</msg>
-  <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:24</source>Posted by</msg>
-  <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.ts:26</source>a wallapop user</msg>
-  <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:27</source>on</msg>
+  <msg id="5653113390991708232"><source>app/reviews/review-item/review-item.component.ts:22</source>Sold:</msg>
+  <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.ts:23</source>Bought:</msg>
+  <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.ts:27</source>A wallapop item</msg>
+  <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:32</source>Posted by</msg>
+  <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.ts:34</source>a wallapop user</msg>
+  <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:35</source>on</msg>
   <msg id="8775411328776279097"><source>app/tutorial/tutorial.component.ts:6</source>Introducing our new webpage!</msg>
   <msg id="6002580040961562985"><source>app/tutorial/tutorial.component.ts:7</source>You&apos;re in the zone to access all of the features of the app.</msg>
   <msg id="2137505802700728396"><source>app/tutorial/tutorial.component.ts:11</source>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</msg>
@@ -534,7 +534,7 @@
   <msg id="5112037422043971210"><source>app/upload/drop-area/drop-area.component.ts:5</source>Drop here your files to upload as a product photo</msg>
   <msg id="1417432796546296307"><source>app/upload/drop-area/drop-area.component.ts:11</source>You have reached the limit of <ph name="INTERPOLATION"><ex>{{maxUploads}}</ex></ph> photos per product.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Remove one first if you want to add more.</msg>
   <msg id="6145572175629887249"><source>app/upload/drop-area/drop-area.component.ts:31</source>Main photo</msg>
-  <msg id="6622336784189066984"><source>app/upload/preview-modal/preview-modal.component.ts:6</source><source>app/upload/upload-car/upload-car.component.ts:233</source><source>app/upload/upload-product/upload-product.component.ts:119</source><source>app/upload/upload-realestate/upload-realestate.component.ts:173</source>Post Ad</msg>
+  <msg id="6622336784189066984"><source>app/upload/preview-modal/preview-modal.component.ts:6</source><source>app/upload/upload-car/upload-car.component.ts:233</source><source>app/upload/upload-product/upload-product.component.ts:120</source><source>app/upload/upload-realestate/upload-realestate.component.ts:173</source>Post Ad</msg>
   <msg id="2233560223291461480"><source>app/upload/preview-modal/preview-modal.component.ts:27</source><source>app/upload/upload-car/upload-car.component.ts:179</source>Manual</msg>
   <msg id="810888510148304696"><source>app/upload/preview-modal/preview-modal.component.ts:28</source><source>app/upload/upload-car/upload-car.component.ts:184</source>Automatic</msg>
   <msg id="7493844856700299080"><source>app/upload/preview-modal/preview-modal.component.ts:42</source><source>app/upload/upload-car/upload-car.component.ts:151</source>Petrol</msg>
@@ -587,7 +587,7 @@
   <msg id="3429380014519274140"><source>app/upload/upload-car/upload-car.component.ts:214</source><source>app/upload/upload-product/upload-product.component.ts:84</source>Further information</msg>
   <msg id="2224879576270143088"><source>app/upload/upload-car/upload-car.component.ts:227</source>What sellers usually ask...</msg>
   <msg id="3738144900818451024"><source>app/upload/upload-car/upload-car.component.ts:230</source>Your car is in:</msg>
-  <msg id="4138346261331244869"><source>app/upload/upload-car/upload-car.component.ts:240</source><source>app/upload/upload-product/upload-product.component.ts:126</source><source>app/upload/upload-realestate/upload-realestate.component.ts:180</source>How does it look?</msg>
+  <msg id="4138346261331244869"><source>app/upload/upload-car/upload-car.component.ts:240</source><source>app/upload/upload-product/upload-product.component.ts:127</source><source>app/upload/upload-realestate/upload-realestate.component.ts:180</source>How does it look?</msg>
   <msg id="243983274320667129"><source>app/upload/upload-product/upload-product.component.ts:3</source>Information about your item</msg>
   <msg id="3322682308330601072"><source>app/upload/upload-product/upload-product.component.ts:7</source>What are you selling?</msg>
   <msg id="368364095324628291"><source>app/upload/upload-product/upload-product.component.ts:9</source><source>app/upload/upload-realestate/upload-realestate.component.ts:115</source>In two words...</msg>
@@ -598,9 +598,9 @@
   <msg id="5433438112560949935"><source>app/upload/upload-product/upload-product.component.ts:65</source>Add relevant information such as condition, model, color...</msg>
   <msg id="7493287338252374869"><source>app/upload/upload-product/upload-product.component.ts:69</source>Every detail helps: so tell us more!</msg>
   <msg id="2806917038528218276"><source>app/upload/upload-product/upload-product.component.ts:97</source>FAQ</msg>
-  <msg id="5972351850683239127"><source>app/upload/upload-product/upload-product.component.ts:102</source>Shipping</msg>
-  <msg id="2059029015636272683"><source>app/upload/upload-product/upload-product.component.ts:103</source>You can send (almost) anything through wallapop. And it&apos;s free for you!</msg>
-  <msg id="2877776180648049476"><source>app/upload/upload-product/upload-product.component.ts:113</source>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</msg>
+  <msg id="5972351850683239127"><source>app/upload/upload-product/upload-product.component.ts:103</source>Shipping</msg>
+  <msg id="2059029015636272683"><source>app/upload/upload-product/upload-product.component.ts:104</source>You can send (almost) anything through wallapop. And it&apos;s free for you!</msg>
+  <msg id="2877776180648049476"><source>app/upload/upload-product/upload-product.component.ts:114</source>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</msg>
   <msg id="4601810369894625886"><source>app/upload/upload-realestate/upload-realestate.component.ts:3</source>Information about your property</msg>
   <msg id="2368160689121002750"><source>app/upload/upload-realestate/upload-realestate.component.ts:6</source>Rent or sale?</msg>
   <msg id="87397333944060990"><source>app/upload/upload-realestate/upload-realestate.component.ts:15</source>Is your property for sale or for rent?</msg>
@@ -623,15 +623,17 @@
   <msg id="3558440989058417740"><source>app/upload/upload-realestate/upload-realestate.component.ts:157</source>Set the location of the property.</msg>
   <msg id="1727129754992951825"><source>app/upload/upload-realestate/upload-realestate.component.ts:168</source>You can drag and drop your photos here. Also drag and drop to change the order. Max 4MB.</msg>
   <msg id="124288245683167765"><source>app/upload/urgent-checkbox/urgent-checkbox.component.ts:3</source>Apply the ASAP Feature</msg>
-  <msg id="5575054737649759998"><source>app/upload/urgent-checkbox/urgent-checkbox.component.ts:4,9</source>
-      For only <ph name="INTERPOLATION"><ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph>
-      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
-      <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>from your credit<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+  <msg id="8742069867763156698"><source>app/upload/urgent-checkbox/urgent-checkbox.component.ts:4,11</source>
+      For only
+      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+      <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{urgentPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+      <ph name="START_TAG_SPAN_2"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
+      <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex></ph>from your credit<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
       mark your product as &quot;Asap&quot; for 7 days to differentiate it in the wall and make it easier to find through the asap filter.
     </msg>
-  <msg id="1367227703192400664"><source>app/upload/urgent-checkbox/urgent-checkbox.component.ts:14</source>Check as ASAP</msg>
-  <msg id="6771710083447673223"><source>app/upload/urgent-checkbox/urgent-checkbox.component.ts:15</source>Checked as ASAP</msg>
-  <msg id="1002906181596709279"><source>app/upload/urgent-checkbox/urgent-checkbox.component.ts:20</source>Your product will be more visible and you will sell it faster.</msg>
+  <msg id="1367227703192400664"><source>app/upload/urgent-checkbox/urgent-checkbox.component.ts:16</source>Check as ASAP</msg>
+  <msg id="6771710083447673223"><source>app/upload/urgent-checkbox/urgent-checkbox.component.ts:17</source>Checked as ASAP</msg>
+  <msg id="1002906181596709279"><source>app/upload/urgent-checkbox/urgent-checkbox.component.ts:22</source>Your product will be more visible and you will sell it faster.</msg>
   <msg id="2813042926821514028"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:11</source><ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph> as a gift!</msg>
   <msg id="8729513055451382632"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:17</source><source>app/wallacoins/pack-wallacoins/pack-wallacoins.component.ts:4</source>Recharge</msg>
   <msg id="2032108307444898053"><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:19</source><ph name="INTERPOLATION"><ex>{{pack.forFree | customCurrency}}</ex></ph> as a gift!</msg>
