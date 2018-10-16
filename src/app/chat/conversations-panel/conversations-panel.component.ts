@@ -77,6 +77,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.getConversations();
       }
     });
+    this.eventService.subscribe(EventService.CONVERSATION_BUMPED, (leads) => this.conversations = leads);
   }
 
   ngOnDestroy() {
