@@ -186,24 +186,35 @@ describe('Component: Chat', () => {
     });
   });
 
-  it('should set the conversationsLoaded value', () => {
+  it('should set the conversationsLoaded value to TRUE when event.loaded AND event.firstPage are true', () => {
     component.onLoaded({
       loaded: false,
-      total: 0
+      total: 0,
+      firstPage: true
     });
 
     expect(component.conversationsLoaded).toBe(false);
     expect(component.conversationsTotal).toBe(0);
-    expect(component.chatLoaded).toBe(true);
 
     component.onLoaded({
       loaded: true,
-      total: 10
+      total: 10,
+      firstPage: 1
     });
 
     expect(component.conversationsLoaded).toBe(true);
     expect(component.conversationsTotal).toBe(10);
-    expect(component.chatLoaded).toBe(true);
+  });
+
+  it('should set the conversationsLoaded value to TRUE when event.firstPage is NOT true', () => {
+    component.onLoaded({
+      loaded: false,
+      total: 0,
+      firstPage: false
+    });
+
+    expect(component.conversationsLoaded).toBe(true);
+    expect(component.conversationsTotal).toBe(0);
   });
 
   describe('ngOnInit', () => {
