@@ -580,6 +580,18 @@ describe('Component: ConversationsPanel', () => {
       expect(component['getConversations']).toHaveBeenCalledTimes(2);
       expect(component.setCurrentConversation).toHaveBeenCalled();
     });
+
+    it('should update the conversations when a CONVERSATION_BUMPED event is triggered', () => {
+      const CONVERSATIONS: Conversation[] = createConversationsArray(3);
+      const conversationsInNewOrder = [CONVERSATIONS[2], CONVERSATIONS[0], CONVERSATIONS[1]];
+      component.conversations = CONVERSATIONS;
+      component.ngOnInit();
+
+      expect(component.conversations).toEqual(CONVERSATIONS);
+      eventService.emit(EventService.CONVERSATION_BUMPED, conversationsInNewOrder);
+
+      expect(component.conversations).toEqual(conversationsInNewOrder);
+    });
   });
 
   describe('sendRead', () => {

@@ -1397,14 +1397,18 @@ describe('Service: Conversation', () => {
       expect(service.leads[0].messages[0]).toEqual(messageWithUser);
     });
 
-    it('should bump the conversation to the top if it is not already on the top', () => {
+    it('should bump the conversation to the top if it is not already on the top, and emit a CONVERSATION_BUMPED event', () => {
       expect(service.leads[0].id).toBe(CONVERSATION_ID);
       expect(service.leads[1].id).toBe(SECOND_MOCK_CONVERSATION.id);
+      spyOn(eventService, 'emit');
+
       service.handleNewMessages(
         new Message(MESSAGE_MAIN.id, SECOND_MOCK_CONVERSATION.id, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date),
         false);
+
       expect(service.leads[0].id).toBe(SECOND_MOCK_CONVERSATION.id);
       expect(service.leads[1].id).toBe(CONVERSATION_ID);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_BUMPED, [service.leads[0], service.leads[1]]);
     });
 
     it('should send browser notification', () => {
