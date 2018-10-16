@@ -9,9 +9,12 @@ import { User } from '../../core/user/user';
 export const showWillisCategories = {
   'GAME': 13100,
   'TV_AUDIO_CAMERAS' : 12545,
-  'COMPUTERS_ELECTRONIC' : 15000,
-  'PHONES_ACCESSORIES' : 16000,
   'GAMES_CONSOLES' : 12900
+};
+
+export const showKlincCategories = {
+  'COMPUTERS_ELECTRONIC' : 15000,
+  'PHONES_ACCESSORIES' : 16000
 };
 
 @Component({
@@ -25,6 +28,8 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: User;
   public itemUrl: string;
   public isCarItem = false;
+  public showKlincLink = false;
+  public showWillisLink = false;
   private active = true;
   private allowReserve: boolean;
   private myUserId: string;
@@ -60,8 +65,14 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       this.isCarItem = false;
     }
 
-    if (this.showWillisLink()) {
+    this.showWillisLink = Object.values(showWillisCategories).includes(this.item.categoryId);
+    if (this.showWillisLink) {
       this.trackingService.track(TrackingService.WILLIS_LINK_DISPLAY);
+    }
+
+    this.showKlincLink = Object.values(showKlincCategories).includes(this.item.categoryId);
+    if (this.showKlincLink) {
+      this.trackingService.track(TrackingService.KLINC_LINK_DISPLAY);
     }
   }
 
@@ -94,10 +105,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     appboy.logCustomEvent('Sold', {platform: 'web'});
   }
 
-  public showWillisLink(): boolean {
-    return Object.values(showWillisCategories).includes(this.item.categoryId);
-  }
-
   public clickCarfax(event) {
     event.stopPropagation();
     this.trackingService.track(TrackingService.CARFAX_CHAT_TAP);
@@ -106,5 +113,10 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   public clickWillis(event) {
     event.stopPropagation();
     this.trackingService.track(TrackingService.WILLIS_LINK_TAP);
+  }
+
+  public clickKlinc(event) {
+    event.stopPropagation();
+    this.trackingService.track(TrackingService.KLINC_LINK_TAP);
   }
 }

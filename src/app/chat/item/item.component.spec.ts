@@ -11,7 +11,7 @@ import {
 } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
-import { ItemComponent, showWillisCategories } from './item.component';
+import { ItemComponent, showWillisCategories, showKlincCategories} from './item.component';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { environment } from '../../../environments/environment';
@@ -289,11 +289,43 @@ describe('Component: Item', () => {
   });
 
   describe('showWillisLink', () => {
-    it('should show return true when item categoryId is 13100, 12545, 15000, 16000 or 12900 ', () => {
+    it('should be true when item categoryId is 13100, 12545, or 12900', () => {
       Object.values(showWillisCategories).forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
+        component.ngOnChanges();
 
-        expect(component.showWillisLink()).toEqual(true);
+        expect(component.showWillisLink).toEqual(true);
+      });
+    });
+
+    it('should be false when item categoryId is not 13100, 12545 or 12900', () => {
+      const hideWillisCategories = [100, 14000];
+      Object.values(hideWillisCategories).forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+        component.ngOnChanges();
+
+        expect(component.showWillisLink).toEqual(false);
+      });
+    });
+  });
+
+  describe('showKlincLink', () => {
+    it('should be true when item categoryId is 15000, 16000', () => {
+      Object.values(showKlincCategories).forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+        component.ngOnChanges();
+
+        expect(component.showKlincLink).toEqual(true);
+      });
+    });
+
+    it('should be false when item categoryId is not 15000, 16000', () => {
+      const hideWillisCategories = [100, 14000];
+      Object.values(hideWillisCategories).forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+        component.ngOnChanges();
+
+        expect(component.showKlincLink).toEqual(false);
       });
     });
   });
@@ -318,4 +350,13 @@ describe('Component: Item', () => {
     });
   });
 
+  describe('clickKlinc', () => {
+    it('should track klinc tap ', () => {
+      spyOn(trackingService, 'track');
+
+      component.clickKlinc(MOCK_CLICK_EVENT);
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.KLINC_LINK_TAP);
+    });
+  });
 });
