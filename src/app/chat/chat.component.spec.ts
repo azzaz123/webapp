@@ -186,6 +186,17 @@ describe('Component: Chat', () => {
     });
   });
 
+  it('should set the conversationsLoaded value to FALSE when event.loaded is false', () => {
+    component.onLoaded({
+      loaded: false,
+      total: 0,
+      firstPage: true
+    });
+
+    expect(component.conversationsLoaded).toBe(false);
+    expect(component.conversationsTotal).toBe(0);
+  });
+
   it('should set the conversationsLoaded value to TRUE when event.loaded AND event.firstPage are true', () => {
     component.onLoaded({
       loaded: false,
@@ -199,7 +210,7 @@ describe('Component: Chat', () => {
     component.onLoaded({
       loaded: true,
       total: 10,
-      firstPage: 1
+      firstPage: true
     });
 
     expect(component.conversationsLoaded).toBe(true);
