@@ -1,6 +1,6 @@
 <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
   <div class="box">
-    <h2 i18n>Information about your item</h2>
+    <h2 i18n>Basic Information</h2>
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
@@ -78,7 +78,7 @@
     </div>
   </div>
   <div class="box">
-    <h2 i18n>Relevant information</h2>
+    <h2 i18n>Information about your vehicle</h2>
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
@@ -211,7 +211,7 @@
   </div>
   <div class="box" [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">
     <div class="selector-container terms-options" formGroupName="sale_conditions" data-toggle="buttons">
-      <h2 i18n>Extras</h2>
+      <h2 i18n>Further information</h2>
       <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.fix_price">
         <input type="checkbox" formControlName="fix_price">
         <mat-icon svgIcon="firm-price"></mat-icon>
@@ -227,7 +227,7 @@
       <div i18n>What sellers usually ask...</div>
     </ng-template>
   </div>
-  <tsl-location-box [form]="uploadForm" name="location" (locationSelected)="emitLocation()"></tsl-location-box>
+  <tsl-location-box [form]="uploadForm" name="location" (locationSelected)="emitLocation()" title="Your car is in:" i18n-title></tsl-location-box>
   <tsl-urgent-checkbox [categoryId]="100" [urgentPrice]="urgentPrice" (urgentSelected)="selectUrgent($event)"></tsl-urgent-checkbox>
   <tsl-button [type]="'submit'" className="btn-primary btn-big" [disabled]="loading" [loading]="loading">
     <span *ngIf="!item" i18n>Post Ad</span>

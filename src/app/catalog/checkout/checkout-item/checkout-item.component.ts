@@ -16,6 +16,8 @@ import { CreditInfo } from '../../../core/payments/payment.interface';
 export class CheckoutItemComponent implements OnInit, OnDestroy {
 
   @Input() creditInfo: CreditInfo;
+  @Input() itemWithProducts: ItemWithProducts;
+
   private active = true;
   types: string[] = BUMP_TYPES;
   durations: string[];
@@ -23,8 +25,6 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
   selectedType: string;
   selectedDuration: string;
   provincialBump: boolean;
-
-  @Input() itemWithProducts: ItemWithProducts;
 
   constructor(private cartService: CartService) {
   }

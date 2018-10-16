@@ -81,16 +81,11 @@
   </div>
   <div class="box" [ngbPopover]="coachmarkExtras" triggers="mouseenter:mouseleave">
     <div class="selector-container terms-options" formGroupName="sale_conditions" data-toggle="buttons">
-      <h2 i18n>Extras</h2>
+      <h2 i18n>Further information</h2>
       <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.fix_price">
         <input type="checkbox" formControlName="fix_price">
         <mat-icon svgIcon="firm-price"></mat-icon>
         <span i18n>Firm Price</span>
-      </label>
-      <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.shipping_allowed" [hidden]="fixedCategory">
-        <input type="checkbox" formControlName="shipping_allowed">
-        <mat-icon svgIcon="shipping-available"></mat-icon>
-        <span i18n>Shipping available</span>
       </label>
       <label class="btn selector" [class.active]="uploadForm.value.sale_conditions.exchange_allowed">
         <input type="checkbox" formControlName="exchange_allowed">
@@ -102,10 +97,11 @@
       <div i18n>FAQ</div>
     </ng-template>
   </div>
-  <div class="box" [hidden]="!uploadForm.value.sale_conditions.shipping_allowed" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave">
-    <div class="selector-container shipping-options"  data-toggle="buttons">
-      <h2 [ngClass]="{'ng-invalid': !uploadForm.controls.delivery_info.valid && uploadForm.controls.delivery_info.dirty}" i18n>Shipping</h2>
-      <p i18n>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</p>
+  <div class="box" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave"
+       *ngIf="categoryId === '-1' || item && item.itemType === itemTypes.CONSUMER_GOODS">
+    <div class="selector-container shipping-options" data-toggle="buttons">
+      <h2 i18n>Shipping</h2>
+      <p i18n>You can send (almost) anything through wallapop. And it's free for you!</p>
       <div ngbRadioGroup name="radioBasic" formControlName="delivery_info">
         <label ngbButtonLabel class="btn selector" *ngFor="let delivery of deliveryInfo">
           <input ngbButton type="radio" [value]="delivery.value">
@@ -115,7 +111,7 @@
       </div>
     </div>
     <ng-template #coachmarkShipping>
-      <div i18n>Important for shipping.</div>
+      <div i18n>Tell us how much your product weighs. Remember that the sum of the length, height and width can not exceed 270cm.</div>
     </ng-template>
   </div>
   <tsl-location-box [form]="uploadForm" name="location" (locationSelected)="emitLocation()"></tsl-location-box>
