@@ -10,7 +10,7 @@ import {
   MockedConversationsDb,
   MockedMessagesDb
 } from '../../../tests/persistency.fixtures.spec';
-import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATION_DATE_ISO } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
@@ -18,10 +18,7 @@ import { EventService } from '../event/event.service';
 
 let service: PersistencyService;
 let userService: UserService;
-let eventService: EventService;
-const MOCK_REV = 'rev';
 const MOCK_SAVE_DATA: any = {last: 'asdas', start: CONVERSATION_DATE_ISO};
-const MOCK_UNREAD_MESSAGES = 5;
 
 describe('Service: Persistency', () => {
 
@@ -38,7 +35,6 @@ describe('Service: Persistency', () => {
     });
     service = TestBed.get(PersistencyService);
     userService = TestBed.get(UserService);
-    eventService = TestBed.get(EventService);
     (service as any)['_messagesDb'] = new MockedMessagesDb();
     (service as any)['_conversationsDb'] = new MockedConversationsDb();
   });
@@ -103,7 +99,7 @@ describe('Service: Persistency', () => {
         date: MOCK_MESSAGE.date,
         message: MOCK_MESSAGE.message,
         status: MOCK_MESSAGE.status,
-        from: MOCK_MESSAGE.from,
+        from: MOCK_MESSAGE.from.split('@')[0],
         conversationId: MOCK_MESSAGE.conversationId,
         payload: undefined
       });
@@ -123,7 +119,7 @@ describe('Service: Persistency', () => {
         date: MOCK_MESSAGE.date,
         message: MOCK_MESSAGE.message,
         status: MOCK_MESSAGE.status,
-        from: MOCK_MESSAGE.from,
+        from: MOCK_MESSAGE.from.split('@')[0],
         conversationId: MOCK_MESSAGE.conversationId,
         payload: MOCK_PAYLOAD_OK
       });
@@ -196,20 +192,6 @@ describe('Service: Persistency', () => {
     });
   });
 
-  describe('saveUnreadMessages', () => {
-    it('should upsert the unread messages node', fakeAsync(() => {
-      spyOn(service.conversationsDb, 'get').and.returnValue(Promise.resolve({
-        _rev: MOCK_REV,
-        data: MOCK_UNREAD_MESSAGES
-      }));
-      spyOn(service.conversationsDb, 'put').and.callThrough();
-      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
-      service.saveUnreadMessages(CONVERSATION_ID, MOCK_UNREAD_MESSAGES).subscribe();
-      tick();
-      expect(service['upsert']).toHaveBeenCalled();
-    }));
-  });
-
   describe('updateMessageStatus', () => {
     it('should upsert the message status', fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
@@ -243,9 +225,9 @@ describe('Service: Persistency', () => {
       tick();
 
       expect((service as any).upsert).toHaveBeenCalled();
-      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.conversationsDb);
+      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
       expect((service as any).upsert.calls.allArgs()[0][1]).toBe('version');
-      expect((service as any).upsert.calls.allArgs()[1][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[1][0]).toBe(service.conversationsDb);
       expect((service as any).upsert.calls.allArgs()[1][1]).toBe('version');
     }));
   });

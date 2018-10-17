@@ -22,12 +22,10 @@ import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { User } from '../../core/user/user';
 import {
   createConversationsArray, MOCK_CONVERSATION, NEW_CONVERSATION_RESPONSE,
-  SECOND_MOCK_CONVERSATION,
-  MOCKED_CONVERSATIONS
-} from '../../../tests/conversation.fixtures.spec';
+  SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Conversation } from '../../core/conversation/conversation';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
-import { Message, messageStatus } from '../../core/message/message';
+import { Message } from '../../core/message/message';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { XmppService } from '../../core/xmpp/xmpp.service';
 
@@ -175,46 +173,6 @@ describe('Component: ConversationsPanel', () => {
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_LIST_PROCESSED_LOADED);
       });
 
-      describe('with read and received receipts', () => {
-        beforeEach(() => {
-          spyOn(conversationService, 'getPage').and.returnValue(Observable.of(CONVERSATIONS));
-          spyOn<any>(component, 'updateMessageStatus');
-        });
-
-        it('should call updateMessageStatus if receivedMessages is not empty', () => {
-          component['receivedMessages'] = xmppService.receivedReceipts;
-          const receipt = xmppService.receivedReceipts[0];
-
-          component['getConversations']();
-
-          expect(component['updateMessageStatus']).toHaveBeenCalledWith(messageStatus.RECEIVED, receipt.thread, receipt.id);
-          expect(component['updateMessageStatus']).toHaveBeenCalledTimes(2);
-          expect(component['receivedMessages'].length).toBe(0);
-        });
-
-        it('should call updateMessageStatus if sentMessages is not empty', () => {
-          component['sentMessages'] = xmppService.sentReceipts;
-          const receipt = xmppService.sentReceipts[0];
-
-          component['getConversations']();
-
-          expect(component['updateMessageStatus']).toHaveBeenCalledWith(messageStatus.SENT, receipt.thread, receipt.id);
-          expect(component['updateMessageStatus']).toHaveBeenCalledTimes(2);
-          expect(component['sentMessages'].length).toBe(0);
-        });
-
-        it('should call updateMessageStatus if readMessages is not empty', () => {
-          component['readMessages'] = xmppService.readReceipts;
-          const receipt = xmppService.readReceipts[0];
-
-          component['getConversations']();
-
-          expect(component['updateMessageStatus']).toHaveBeenCalledWith(messageStatus.READ, receipt.thread, receipt.id);
-          expect(component['updateMessageStatus']).toHaveBeenCalledTimes(1);
-          expect(component['readMessages'].length).toBe(0);
-        });
-      });
-
       it('should NOT call setCurrentConversationFromQueryParams if already called', () => {
         component['currentConversationSet'] = true;
         spyOn(conversationService, 'getPage').and.returnValue(Observable.of(CONVERSATIONS));
@@ -271,101 +229,6 @@ describe('Component: ConversationsPanel', () => {
       component['getConversations']();
 
       expect(conversationService.checkIfLastPage).toHaveBeenCalled();
-    });
-  });
-
-  describe('subscribeChatSignals', () => {
-    it('should subscribe to the MESSAGE_SENT_ACK, MESSAGE_RECEIVED and MESSAGE_READ events when the component initialises', () => {
-      spyOn(eventService, 'subscribe').and.callThrough();
-
-      component.ngOnInit();
-
-      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.MESSAGE_SENT_ACK);
-      expect(eventService.subscribe['calls'].argsFor(1)[0]).toBe(EventService.MESSAGE_RECEIVED);
-      expect(eventService.subscribe['calls'].argsFor(2)[0]).toBe(EventService.MESSAGE_READ);
-    });
-
-    describe('if conversations exist', () => {
-      beforeEach(() => {
-        spyOn<any>(component, 'updateMessageStatus');
-        component.ngOnInit();
-        component.conversations = [MOCK_CONVERSATION()];
-      });
-
-      it('should call updateMessageStatus when the MESSAGE_SENT_ACK event is emitted', () => {
-        eventService.emit(EventService.MESSAGE_SENT_ACK, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
-
-        expect(component['updateMessageStatus']).toHaveBeenCalledWith(messageStatus.SENT, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
-      });
-
-      it('should call updateMessageStatus when the MESSAGE_RECEIVED event is emitted', () => {
-        eventService.emit(EventService.MESSAGE_RECEIVED, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
-
-        expect(component['updateMessageStatus']).toHaveBeenCalledWith(messageStatus.RECEIVED, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
-      });
-
-      it('should call updateMessageStatus when the MESSAGE_READ event is emitted', () => {
-        eventService.emit(EventService.MESSAGE_READ, MOCK_MESSAGE.conversationId);
-
-        expect(component['updateMessageStatus']).toHaveBeenCalledWith(messageStatus.READ, MOCK_MESSAGE.conversationId);
-      });
-    });
-
-    describe('if conversations do not exist', () => {
-      beforeEach(() => {
-        component.ngOnInit();
-        component.conversations = [];
-      });
-
-      it('should set receivedMessages to the xmpp.receivedReceipts when the MESSAGE_RECEIVED event is emitted', () => {
-        eventService.emit(EventService.MESSAGE_RECEIVED, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
-
-        expect(component['receivedMessages']).toBe(xmppService.receivedReceipts);
-      });
-
-      it('should set readMessages to the xmpp.readdReceipts when the MESSAGE_READ event is emitted', () => {
-        eventService.emit(EventService.MESSAGE_READ, MOCK_MESSAGE.conversationId);
-
-        expect(component['readMessages']).toBe(xmppService.readReceipts);
-      });
-
-      it('should set sentMessages to the xmpp.sentReceipts when the MESSAGE_SENT event is emitted', () => {
-        eventService.emit(EventService.MESSAGE_SENT_ACK, MOCK_MESSAGE.conversationId);
-
-        expect(component['sentMessages']).toBe(xmppService.sentReceipts);
-      });
-    });
-  });
-
-  describe('updateMessageStatus', () => {
-    beforeEach(() => {
-      spyOn(conversationService, 'markAs');
-      spyOn(conversationService, 'markAllAsRead');
-      component.ngOnInit();
-      component.conversations = MOCKED_CONVERSATIONS;
-      component.conversations[0].messages = [MOCK_MESSAGE];
-    });
-
-    it('should call conversationService.markAs when the called with a conversation id and a message id and the new status is different than the current status', () => {
-      component.conversations[0].messages[0].status = messageStatus.SENT;
-
-      component['updateMessageStatus'](messageStatus.RECEIVED, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
-
-      expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.RECEIVED, MOCK_MESSAGE, MOCKED_CONVERSATIONS[0]);
-    });
-
-    it('should not call conversationService.markAs when the new status is the same as the current status', () => {
-      component.conversations[0].messages[0].status = messageStatus.RECEIVED;
-
-      component['updateMessageStatus'](messageStatus.RECEIVED, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
-
-      expect(conversationService.markAs).not.toHaveBeenCalled();
-    });
-
-    it('should call conversationService.markAllAsRead when called with a conversation id and no message id', () => {
-      component['updateMessageStatus'](messageStatus.READ, MOCK_MESSAGE.conversationId);
-
-      expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCKED_CONVERSATIONS[0]);
     });
   });
 
@@ -526,15 +389,8 @@ describe('Component: ConversationsPanel', () => {
   describe('ngOnInit', () => {
     beforeEach(() => {
       spyOn<any>(component, 'getConversations');
-      spyOn<any>(component, 'subscribeChatSignals');
       spyOn(component, 'setCurrentConversation');
       spyOn(component, 'findConversation');
-    });
-
-    it('should call subscribeChatSignals', () => {
-      component.ngOnInit();
-
-      expect(component['subscribeChatSignals']).toHaveBeenCalled();
     });
 
     it('should call getConversations', () => {

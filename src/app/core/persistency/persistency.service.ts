@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import * as _ from 'lodash';
-import { Message } from '../message/message';
+import { Message, statusOrder } from '../message/message';
 import {
   StoredConversation,
   StoredMessage,
@@ -98,7 +98,7 @@ export class PersistencyService {
       date: message.date,
       message: message.message,
       status: message.status,
-      from: message.from,
+      from: message.from.indexOf('@') > -1 ? message.from.split('@')[0] : message.from,
       conversationId: message.conversationId,
       payload: message.payload
     };
@@ -145,7 +145,7 @@ export class PersistencyService {
 
   public updateMessageStatus(messageId: string, newStatus: string) {
     return Observable.fromPromise(this.upsert(this.messagesDb, messageId, (doc: Document<any>) => {
-      if (doc.status !== newStatus) {
+      if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
         doc.status = newStatus;
         return doc;
       }
@@ -160,7 +160,7 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get('version'));
   }
 
-  private saveDbVersionConv(data: any): Observable<any> {
+  private saveDbVersionMsg(data: any): Observable<any> {
     return Observable.fromPromise(
       this.upsert(this.messagesDb, 'version', (doc: Document<any>) => {
         doc.version = data;
@@ -169,7 +169,7 @@ export class PersistencyService {
     );
   }
 
-  private saveDbVersionMsg(data: any): Observable<any> {
+  private saveDbVersionConv(data: any): Observable<any> {
     return Observable.fromPromise(
       this.upsert(this.conversationsDb, 'version', (doc: Document<any>) => {
         doc.version = data;
@@ -193,32 +193,6 @@ export class PersistencyService {
         this.saveDbVersionMsg(newVersion);
         this.saveDbVersionConv(newVersion);
       }
-    });
-  }
-
-  public saveUnreadMessages(conversationId: string, unreadMessages: number): Observable<any> {
-    return Observable.fromPromise(
-      this.upsert(this.conversationsDb, conversationId, (doc: StoredConversation) => {
-        doc.unreadMessages = unreadMessages;
-        return doc;
-      })
-    );
-  }
-
-  public getUnreadMessages(conversationId: string): Observable<StoredConversation> {
-    return Observable.create((observer: Observer<StoredConversation>) => {
-      this.conversationsDb.get(conversationId).then((data: StoredConversation) => {
-        if (!data.unreadMessages) {
-          data.unreadMessages = 0;
-        }
-        observer.next(data);
-        observer.complete();
-      }, (data) => {
-        observer.next({
-          unreadMessages: 0
-        });
-        observer.complete();
-      });
     });
   }
 
