@@ -12,7 +12,7 @@ export class ItemStatsService {
   }
 
   public getStatistics(itemId: string): Observable<ItemStatisticFullResponse> {
-    return this.http.get('api/v3/statistics/item?itemId=' + itemId)
+    return this.http.get('api/v3/statistics/item/' + itemId)
      .map((res: Response) => res.json());
   }
 

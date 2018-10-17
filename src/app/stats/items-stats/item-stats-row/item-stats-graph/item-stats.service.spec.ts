@@ -34,7 +34,7 @@ describe('ItemStatsService', () => {
         response = r;
       });
 
-      expect(http.get).toHaveBeenCalledWith('api/v3/statistics/item?itemId=123');
+      expect(http.get).toHaveBeenCalledWith('api/v3/statistics/item/123');
       expect(response).toEqual(ITEM_STATISTIC_RESPONSE);
     });
   });
