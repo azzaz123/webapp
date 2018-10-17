@@ -607,6 +607,16 @@ describe('Service: Xmpp', () => {
 
       expect(service['onNewMessage']).toHaveBeenCalledWith(MOCKED_SERVER_TIMESTAMP_MESSAGE);
     });
+
+    it('should not process new incoming messages if the message archive is loading', () => {
+      spyOn<any>(service, 'onNewMessage').and.callThrough();
+
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      eventService.emit(EventService.MSG_ARCHIVE_LOADING);
+      eventService.emit('message', MOCKED_SERVER_TIMESTAMP_MESSAGE, true);
+
+      expect(service['onNewMessage']).not.toHaveBeenCalled();
+    });
   });
 
   describe('buildMessage', () => {

@@ -197,10 +197,10 @@ export class XmppService {
     if (message.body || message.timestamp || message.carbonSent
         || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
-      builtMessage.fromSelf = message.from === this.currentJid;
+      builtMessage.fromSelf = builtMessage.from.split('/')[0] === this.currentJid;
       this.persistencyService.saveMetaInformation({
-          last: null,
-          start: builtMessage.date.toISOString()
+          start: builtMessage.date.toISOString(),
+          last: null
         }
       );
       const replaceTimestamp = !message.timestamp || message.carbonSent;
@@ -208,8 +208,8 @@ export class XmppService {
       if (message.requestReceipt && !builtMessage.fromSelf) {
         this.persistencyService.findMessage(message.id).subscribe(() => {}, (error) => {
           if (error.reason === 'missing') {
-        this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
-      }
+            this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
+          }
         });
       }
     }

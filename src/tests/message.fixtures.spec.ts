@@ -34,15 +34,19 @@ export function createMessagesArray(total: number) {
   return messages;
 }
 
-export function createReceiptsArray(total: number, thread: string, date?: string): any {
-  const messages: any[] = [];
+export function createReceivedReceiptsArray(total: number): any {
+  const receipts: any[] = [];
   for (let i = 1; i <= total; i++) {
-    messages.push({
-      thread: thread,
-      readTimestamp: new Date(date)
+    receipts.push({
+      thread: MESSAGE_MAIN.thread,
+      messageId: `${MESSAGE_MAIN.id}${i}`,
+      from: OTHER_USER_ID,
+      to: MESSAGE_MAIN.from,
+      fromSelf: false,
+      timestamp: new Date().getTime()
     });
   }
-  return messages;
+  return receipts;
 }
 
 export const MOCK_MESSAGE: Message = new Message(

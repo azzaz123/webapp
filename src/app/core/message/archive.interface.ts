@@ -5,7 +5,7 @@ export interface MsgArchiveResponse {
   messages: Message[];
   receivedReceipts?: Array<ReceivedReceipt>;
   readReceipts?: Array<ReadReceipt>;
-  meta?: MetaInfo;
+  metaDate?: string;
 }
 
 export interface ReceivedReceipt {
@@ -21,4 +21,15 @@ export interface ReadReceipt {
   thread: string;
   to: string;
   timestamp: number;
+}
+
+export interface ArchiveMetrics {
+  downloadingTime: number;
+  processingTime: number;
+  eventsCount: number;
+  pageSize: number;
+  startDownloadTs?: number;
+  endDownloadTs?: number;
+  startProcessTs?: number;
+  endProcessTs?: number;
 }
