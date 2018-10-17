@@ -11,7 +11,7 @@ import {
 } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
-import { ItemComponent, showWillisCategories, showKlincCategories} from './item.component';
+import { ItemComponent, showWillisCategories, showKlincCategories } from './item.component';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { environment } from '../../../environments/environment';
