@@ -64,8 +64,7 @@ export class PersistencyService {
 
   private destroyDbs(...dbs: Array<Database>) {
     dbs.forEach((db) => {
-      new PouchDB(db).destroy().then(() => {
-      }).catch(() => {});
+      new PouchDB(db).destroy().catch(() => {});
     });
   }
 
