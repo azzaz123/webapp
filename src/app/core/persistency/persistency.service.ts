@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import { Message, statusOrder } from '../message/message';
 import {
   StoredConversation,
@@ -24,6 +25,7 @@ export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private _conversationsDb: Database<StoredConversation>;
   private storedMessages: AllDocsResponse<StoredMessage>;
+  private latestVersion = 2.0;
 
   constructor(
     private userService: UserService,
@@ -31,11 +33,14 @@ export class PersistencyService {
   ) {
     this.eventService.subscribe(EventService.USER_LOGIN, () => {
       this.userService.me().subscribe((user: User) => {
-        this._messagesDb = new PouchDB('messages-' + user.id, {auto_compaction: true});
-        this._conversationsDb = new PouchDB('conversations-' + user.id, {auto_compaction: true});
-
-        this.localDbVersionUpdate(1.2, () => {
-          this.destroyDbs(['messages', 'conversations']);
+        this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
+        this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
+          this.messagesDb.destroy().then(() => {
+            this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
+            this.saveDbVersion(this.messagesDb, this.latestVersion);
+            this.eventService.emit(EventService.DB_READY);
+          });
+          this.destroyDbs('messages', 'conversations', 'conversations-' + user.id);
         });
       });
     });
@@ -57,9 +62,9 @@ export class PersistencyService {
     return this._conversationsDb;
   }
 
-  private destroyDbs(dbs: Array<any>) {
+  private destroyDbs(...dbs: Array<Database>) {
     dbs.forEach((db) => {
-      new PouchDB(db).destroy().then(() => {}).catch((err) => {});
+      new PouchDB(db).destroy().catch(() => {});
     });
   }
 
@@ -107,9 +112,8 @@ export class PersistencyService {
   public saveMessages(messages: Array<Message> | Message): Observable<any> {
     if (Array.isArray(messages)) {
       const messagesToSave: StoredMessage[] = messages.map((message: Message) => {
-          return this.buildResponse(message);
-        }
-      );
+        return this.buildResponse(message);
+      });
       return Observable.fromPromise(this.messagesDb.bulkDocs(
         messagesToSave
       ));
@@ -123,12 +127,17 @@ export class PersistencyService {
   }
 
   public saveMetaInformation(data: StoredMetaInfo): Observable<any> {
+    const newMoment = (data.start.indexOf('.') === 10 || data.start === '0')
+      ? moment.unix(Number(data.start)) // handle cases: '0' (from firstArchive) OR nanotimestamp (from server response)
+      : moment(data.start);             // handle ISO format (from localDb meta doc)
+    data.start = newMoment.toISOString();
     return Observable.fromPromise(
       this.upsert(this.messagesDb, 'meta', (doc: Document<any>) => {
+      if (!doc.data || !doc.data.start || newMoment.isAfter(moment(doc.data.start))) {
         doc.data = data;
-        return doc;
-      })
-    );
+      }
+      return doc;
+    }));
   }
 
   public updateMessageDate(message: Message) {
@@ -143,11 +152,10 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get(messageId));
   }
 
-  public updateMessageStatus(messageId: string, newStatus: string) {
-    return Observable.fromPromise(this.upsert(this.messagesDb, messageId, (doc: Document<any>) => {
+  public updateMessageStatus(message: Message, newStatus: string) {
+    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
       if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
-        doc.status = newStatus;
-        return doc;
+        this.saveMessages(message);
       }
     }));
   }
@@ -156,42 +164,32 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get('meta'));
   }
 
-  private getDbVersion(): Observable<any> {
-    return Observable.fromPromise(this.messagesDb.get('version'));
+  private getDbVersion(localDb): Observable<any> {
+    return Observable.fromPromise(localDb.get('version'));
   }
 
-  private saveDbVersionMsg(data: any): Observable<any> {
+  private saveDbVersion(localDb, newVersion: number): Observable<any> {
     return Observable.fromPromise(
-      this.upsert(this.messagesDb, 'version', (doc: Document<any>) => {
-        doc.version = data;
+      this.upsert(localDb, 'version', (doc: Document<any>) => {
+        doc.version = newVersion;
         return doc;
-      })
-    );
-  }
-
-  private saveDbVersionConv(data: any): Observable<any> {
-    return Observable.fromPromise(
-      this.upsert(this.conversationsDb, 'version', (doc: Document<any>) => {
-        doc.version = data;
-        return doc;
-      })
-    );
+      }).catch((err) => {}));
   }
 
   /* This method is used to update data in the local database when the schema is changed, and we want
      these changes to be applied to existing (already stored) data. */
-  public localDbVersionUpdate(newVersion: number, callback: Function) {
-    this.getDbVersion().subscribe((response) => {
+  public localDbVersionUpdate(localDb, newVersion: number, callback: Function) {
+    this.getDbVersion(localDb).subscribe((response) => {
       if (response.version < newVersion) {
         callback();
-        this.saveDbVersionMsg(newVersion);
-        this.saveDbVersionConv(newVersion);
+        this.saveDbVersion(localDb, newVersion);
+      } else {
+        this.eventService.emit(EventService.DB_READY);
       }
     }, (error) => {
       if (error.reason === 'missing') {
         callback();
-        this.saveDbVersionMsg(newVersion);
-        this.saveDbVersionConv(newVersion);
+        this.saveDbVersion(localDb, newVersion);
       }
     });
   }
@@ -203,12 +201,14 @@ export class PersistencyService {
       return Promise.reject(new Error('doc id is required'));
     }
 
-    return db.get(docId)['catch']((err) => {
+    return db.get(docId)
+    .catch((err) => {
       if (err.status !== 404) {
         throw err;
       }
       return {};
-    }).then((doc) => {
+    })
+    .then((doc) => {
       const docRev = doc._rev;
       const newDoc = diffFun(doc);
       if (!newDoc) {

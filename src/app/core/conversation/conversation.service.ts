@@ -23,8 +23,6 @@ import { ConversationTotals } from './totals.interface';
 import { Item } from '../item/item';
 import { Subscription } from 'rxjs/Subscription';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
-import { Lead } from './lead';
-import { MsgArchiveResponse } from '../message/archive.interface';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -196,7 +194,20 @@ export class ConversationService extends LeadService {
   }
 
   public loadMessagesIntoConversations(conversations: Conversation[], archived: boolean = false): Observable<Conversation[]> {
-    return this.loadMessages(conversations, archived);
+    this.event.subscribe(EventService.FOUND_MESSAGES_IN_DB, () => {
+      this.loadNotStoredMessages(conversations, archived);
+      this.event.unsubscribeAll(EventService.FOUND_MESSAGES_IN_DB);
+    });
+
+    return this.loadMessages(conversations).map((convWithMessages: Conversation[]) => {
+      if (convWithMessages) {
+      return convWithMessages.filter((conversation: Conversation) => {
+        return conversation.messages.length > 0;
+      });
+      } else {
+        return null;
+      }
+    });
   }
 
   public getConversationPage(id: string, archive?: boolean): number {
@@ -241,25 +252,15 @@ export class ConversationService extends LeadService {
     }
   }
 
-  private addStatusToStoredMessages(conversation: Lead, newStatus: string) {
-    this.persistencyService.localDbVersionUpdate(1.1, () => {
-      conversation.messages.filter((message) => {
-        return message.fromSelf && typeof message.status !== 'string';
-      }).forEach((message) => {
-        message.status = newStatus;
-        this.persistencyService.updateMessageStatus(message.id, newStatus);
-      });
-    });
-  }
 
   public markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = true) {
-    const conversation = this.leads.find(c => c.id === conversationId);
-    this.addStatusToStoredMessages(conversation, messageStatus.READ);
+    const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
+    if (conversation) {
     conversation.messages.filter((message) => (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT)
       && fromSelf || new Date(message.date).getTime() < timestamp)
       .map((message) => {
         message.status = messageStatus.READ;
-        this.persistencyService.updateMessageStatus(message.id, messageStatus.READ);
+          this.persistencyService.updateMessageStatus(message, messageStatus.READ);
         const eventAttributes = {
           thread_id: message.conversationId,
           message_id: message.id,
@@ -271,14 +272,15 @@ export class ConversationService extends LeadService {
         }, false);
       });
   }
+  }
 
   public markAs(newStatus: string, messageId: string, thread: string) {
-    const conversation = this.leads.find(c => c.id === thread);
+    const conversation = this.leads.find(c => c.id === thread) || this.archivedLeads.find(c => c.id === thread);
     const message = conversation.messages.find(m => m.id === messageId);
 
     if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
       message.status = newStatus;
-      this.persistencyService.updateMessageStatus(message.id, newStatus);
+      this.persistencyService.updateMessageStatus(message, newStatus);
     }
 
     const trackingEv: TrackingEventData = {
@@ -322,7 +324,7 @@ export class ConversationService extends LeadService {
   public sendRead(conversation: Conversation) {
     if (conversation.unreadMessages > 0) {
       this.readSubscription = this.event.subscribe(EventService.MESSAGE_READ_ACK, () => {
-        this.markAllAsRead(conversation.id);
+        this.markAllAsRead(conversation.id, new Date().getTime());
         this.readSubscription.unsubscribe();
       });
       this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);
@@ -338,12 +340,12 @@ export class ConversationService extends LeadService {
     });
   }
 
-  private loadMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
+  private loadMessages(conversations: Conversation[]): Observable<Conversation[]> {
     if (this.messagesObservable) {
       return this.messagesObservable;
     }
     if (this.connectionService.isConnected) {
-      this.messagesObservable = this.recursiveLoadMessages(conversations, archived)
+      this.messagesObservable = this.recursiveLoadMessages(conversations)
       .share()
       .do(() => {
         this.messagesObservable = null;
@@ -352,41 +354,17 @@ export class ConversationService extends LeadService {
     return this.messagesObservable;
   }
 
-  private updateMeta(lastMessage: Message) {
-    this.persistencyService.getMetaInformation().subscribe((r) => {
-      const newTs = new Date(lastMessage.date).getTime();
-      const currentTs = new Date(r.data.start).getTime();
-      if ( currentTs < newTs)  {
-        this.persistencyService.saveMetaInformation({
-          last: lastMessage.id,
-          start: (new Date(lastMessage.date)).toISOString()
-        });
-      }
-    }, (e) => {
-      if (e.reason === 'missing') {
-        this.persistencyService.saveMetaInformation({
-          last: lastMessage.id,
-          start: (new Date(lastMessage.date)).toISOString()
-        });
-      }
-    });
-  }
-
-  private recursiveLoadMessages(conversations: Conversation[], archived: boolean, index: number = 0): Observable<Conversation[]> {
+  private recursiveLoadMessages(conversations: Conversation[], index: number = 0): Observable<Conversation[]> {
       if (conversations && conversations[index] && this.connectionService.isConnected) {
-      return this.messageService.getMessages(conversations[index], archived)
+      return this.messageService.getMessages(conversations[index], !index)
         .flatMap((res: MessagesData) => {
           conversations[index].messages = res.data;
-        if (res.data.length) {
-          const lastMessage = _.last(res.data);
-          this.updateMeta(lastMessage);
-        }
-        conversations[index].unreadMessages = res.data.filter(m => !m.fromSelf && m.status === messageStatus.RECEIVED).length;
+          conversations[index].unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
         this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
           this.messageService.totalUnreadMessages + conversations[index].unreadMessages :
           conversations[index].unreadMessages;
           if (index < conversations.length - 1) {
-          return this.recursiveLoadMessages(conversations, archived, index + 1);
+            return this.recursiveLoadMessages(conversations, index + 1);
           }
           return Observable.of(conversations);
         });
@@ -395,31 +373,8 @@ export class ConversationService extends LeadService {
       }
   }
 
-  public loadNotStoredMessages(conversations: Conversation[]): Observable<Conversation[]> {
-      if (this.connectionService.isConnected) {
-        return this.messageService.getNotSavedMessages().map((response: MsgArchiveResponse) => {
-          if (response.messages.length) {
-            let conversation: Conversation;
-            response.messages.forEach((message: Message) => {
-              conversation = conversations.filter((filteredConversation: Conversation): boolean => {
-                return (filteredConversation.id === message.conversationId);
-              })[0];
-              if (conversation) {
-                if (!this.findMessage(conversation.messages, message)) {
-                  message = this.messageService.addUserInfo(conversation, message);
-                  conversation.messages.push(message);
-                  if (!message.fromSelf) {
-                    this.handleUnreadMessage(conversation);
-                  }
-                }
-              }
-            });
-          }
-          return conversations;
-        });
-      } else {
-        return Observable.of(null);
-      }
+  public loadNotStoredMessages(conversations: Conversation[], archived: boolean = false) {
+    this.messageService.getNotSavedMessages(conversations, archived).subscribe();
   }
 
   protected mapRecordData(data: ConversationResponse): Conversation {
@@ -481,7 +436,7 @@ export class ConversationService extends LeadService {
   }
 
   public getSingleConversationMessages(conversation: Conversation) {
-    return this.messageService.getMessages(conversation).map((res: MessagesData) => {
+    return this.messageService.getMessages(conversation, true).map((res: MessagesData) => {
       conversation.messages = res.data;
       conversation.unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
       this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
@@ -501,13 +456,7 @@ export class ConversationService extends LeadService {
       if (!message.fromSelf) {
         message.status = messageStatus.RECEIVED;
       }
-      this.persistencyService.findMessage(message.id).subscribe(() => {
-        this.persistencyService.updateMessageStatus(message.id, message.status);
-      }, (err) => {
-        if (err.reason === 'missing') {
-      this.persistencyService.saveMessages(message);
-        }
-      });
+      this.persistencyService.updateMessageStatus(message, message.status);
       if (conversation) {
         this.updateConversation(message, conversation).subscribe(() => {
           message = this.messageService.addUserInfo(conversation, message);
@@ -560,7 +509,6 @@ export class ConversationService extends LeadService {
   }
 
   private requestConversationInfo(message: Message) {
-    this.event.emit(EventService.MSG_ARCHIVE_LOADING);
     this.get(message.conversationId).subscribe((conversation: Conversation) => {
       if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId)) {
         this.getSingleConversationMessages(conversation).subscribe(() => {

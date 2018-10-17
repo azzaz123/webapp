@@ -74,6 +74,7 @@ export class MockArchiveService {
 
   getEventsSince() {}
   getAllEvents() {}
+  updateStatuses() {}
 
   public messageContructor(id: string, conversationId: string, message: string,
     from: string, date: Date, status: string, payload: MessagePayload, fromSelf: boolean) {

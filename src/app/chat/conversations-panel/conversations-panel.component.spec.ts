@@ -92,7 +92,8 @@ describe('Component: ConversationsPanel', () => {
             return Observable.of({});
           },
           markAs() {},
-          markAllAsRead() {}
+          markAllAsRead() {},
+          loadNotStoredMessages() {}
         }
         },
         EventService,
@@ -435,6 +436,15 @@ describe('Component: ConversationsPanel', () => {
       expect(component['page']).toBe(1);
       expect(component['getConversations']).toHaveBeenCalledTimes(2);
       expect(component.setCurrentConversation).toHaveBeenCalled();
+    });
+
+    it('should call converstionService.loadNotStoredMessages when a CONNECTION_RESTORED event is trigered', () => {
+      spyOn(conversationService, 'loadNotStoredMessages');
+
+      component.ngOnInit();
+      eventService.emit(EventService.CONNECTION_RESTORED);
+
+      expect(conversationService.loadNotStoredMessages).toHaveBeenCalled();
     });
   });
 

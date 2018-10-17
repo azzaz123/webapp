@@ -795,6 +795,20 @@ export class TrackingService {
     type: TYPES_IDS.Error
   };
 
+  public static CONVERSATION_FIRSTARCHIVE_OK = {
+    name: '714',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Success
+  };
+
+  public static CONVERSATION_SINCEARCHIVE_OK = {
+    name: '693',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Success
+  };
+
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
   private sessionId: string = null;
