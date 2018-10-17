@@ -204,6 +204,7 @@ export class MsgArchiveService {
       return msg;
     });
 
+    messages = _.uniqBy(messages, 'id');
     messages = _.sortBy(messages, 'date');
     return messages;
   }
