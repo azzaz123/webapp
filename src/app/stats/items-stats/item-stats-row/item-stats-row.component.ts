@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Item } from '../../../core/item/item';
-import { I18nService } from '../../../core/i18n/i18n.service';
 import { ItemStatsService } from './item-stats-graph/item-stats.service';
 import { ItemStatisticFullResponse } from './item-stats-graph/item-stats-response.interface';
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
@@ -67,10 +66,9 @@ export class ItemStatsRowComponent implements OnInit {
   public noData: boolean;
 
   constructor(@Inject('SUBDOMAIN') private subdomain: string,
-              private i18n: I18nService,
               private itemStatsService: ItemStatsService,
               private itemService: ItemService) {
-    this.momentConfig = i18n.getTranslations('momentFormat');
+    this.momentConfig = 'DD MMM YYYY';
   }
 
   ngOnInit() {
