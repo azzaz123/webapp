@@ -15,3 +15,4 @@ export const environment: any = {
   cookieSuffix: 'Local',
   clickStreamURL: 'https://precollector.wallapop.com/clickstream.json/sendEvents'
 };
+

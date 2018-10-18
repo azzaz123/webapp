@@ -11,7 +11,7 @@ import { SuggesterService } from './suggester.service';
 })
 export class SuggesterComponent implements OnInit {
 
-  private MIN_LENGTH = 0;
+  private MIN_LENGTH = 1;
   public focus: boolean;
   public model: any;
   @Output() public newSearch = new EventEmitter<SuggesterResponse>();

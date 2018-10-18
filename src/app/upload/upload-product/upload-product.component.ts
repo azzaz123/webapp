@@ -21,7 +21,7 @@ import { CategoryService } from '../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { Item } from '../../core/item/item';
+import { Item, ITEM_TYPES } from '../../core/item/item';
 import { DeliveryInfo } from '../../core/item/item-response.interface';
 
 @Component({
@@ -38,6 +38,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() onCategorySelect = new EventEmitter<number>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
+  public itemTypes: any = ITEM_TYPES;
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -53,19 +54,19 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   }, {
     size: '30x40x50cm',
     value: {
-      min_weight_kg: 5.1,
+      min_weight_kg: 5,
       max_weight_kg: 10
     }
   }, {
     size: '40x50x60cm',
     value: {
-      min_weight_kg: 10.1,
+      min_weight_kg: 10,
       max_weight_kg: 20
     }
   }, {
     size: '50x60x60cm',
     value: {
-      min_weight_kg: 20.1,
+      min_weight_kg: 20,
       max_weight_kg: 30
     }
   }];
@@ -184,6 +185,9 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
+      if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
+        this.uploadForm.value.sale_conditions.shipping_allowed = true;
+      }
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
         values: this.uploadForm.value

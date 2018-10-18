@@ -401,6 +401,21 @@ describe('UploadCarComponent', () => {
 
       expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true}]);
     });
+
+    it('should set action as urgent if item is urgent and product not on hold', () => {
+      component.isUrgent = true;
+      const uploadedEvent = {
+        action: 'updated',
+        response: {
+          id: '1'
+        }
+      };
+      spyOn(router, 'navigate');
+
+      component.onUploaded(uploadedEvent);
+
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {urgent: true, itemId: uploadedEvent.response.id}]);
+    });
   });
 
   describe('onError', () => {

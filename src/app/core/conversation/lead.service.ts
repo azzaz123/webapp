@@ -143,8 +143,8 @@ export abstract class LeadService {
       if (index > -1) {
         const deletedLead: Lead = this.leads.splice(index, 1)[0];
         deletedLead.archived = true;
-        this.onArchive(deletedLead);
         this.archivedLeads.push(deletedLead);
+        this.onArchive(deletedLead);
         this.stream(true);
         this.stream();
         this.event.emit(EventService.LEAD_ARCHIVED, deletedLead);
