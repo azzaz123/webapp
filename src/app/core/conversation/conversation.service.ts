@@ -253,11 +253,11 @@ export class ConversationService extends LeadService {
   }
 
 
-  public markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = true) {
+  public markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = false) {
     const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
     if (conversation) {
     conversation.messages.filter((message) => (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT)
-      && fromSelf || new Date(message.date).getTime() < timestamp)
+        && ( fromSelf ? message.fromSelf && new Date(message.date).getTime() <= timestamp : !message.fromSelf ))
       .map((message) => {
         message.status = messageStatus.READ;
           this.persistencyService.updateMessageStatus(message, messageStatus.READ);
@@ -324,7 +324,7 @@ export class ConversationService extends LeadService {
   public sendRead(conversation: Conversation) {
     if (conversation.unreadMessages > 0) {
       this.readSubscription = this.event.subscribe(EventService.MESSAGE_READ_ACK, () => {
-        this.markAllAsRead(conversation.id, new Date().getTime());
+        this.markAllAsRead(conversation.id);
         this.readSubscription.unsubscribe();
       });
       this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);

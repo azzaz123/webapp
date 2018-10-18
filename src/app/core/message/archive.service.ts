@@ -198,7 +198,8 @@ export class MsgArchiveService {
         m.event.body,
         m.event.from_user_hash,
         new Date(m.event.created_ts * 1000),
-        fromSelf ? messageStatus.SENT : messageStatus.RECEIVED);
+        fromSelf ? messageStatus.SENT : messageStatus.RECEIVED,
+        m.event.payload ? JSON.parse(m.event.payload) : null);
         msg.fromSelf = fromSelf;
 
       return msg;
