@@ -729,8 +729,7 @@ describe('Service: Conversation', () => {
 
       const attributes = {
         thread_id: mockedConversation.id,
-        message_id: null,
-        item_id: mockedConversation.item.id,
+        message_id: null
       };
 
       expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(2);
@@ -761,8 +760,7 @@ describe('Service: Conversation', () => {
       service.leads.push(mockedConversation);
       const attributes = {
         thread_id: mockedConversation.id,
-        message_id: null,
-        item_id: mockedConversation.item.id,
+        message_id: null
       };
 
       service.markAs(messageStatus.RECEIVED, mockedConversation.messages[0].id, mockedConversation.id);
@@ -965,8 +963,7 @@ describe('Service: Conversation', () => {
           eventData: TrackingService.MESSAGE_RECEIVED_ACK,
           attributes: {
             thread_id: MESSAGE_MAIN.thread,
-            message_id: MESSAGE_MAIN.id,
-            item_id: ITEM_ID
+            message_id: MESSAGE_MAIN.id
           }
         }, false);
       });
@@ -1240,8 +1237,7 @@ describe('Service: Conversation', () => {
           eventData: TrackingService.MESSAGE_RECEIVED_ACK,
           attributes: {
             thread_id: message.conversationId,
-            message_id: message.id,
-            item_id: mockedConversation.item.id
+            message_id: message.id
           }
         }, false);
       });

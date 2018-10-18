@@ -73,8 +73,7 @@ export class XmppService {
         eventData: TrackingService.MESSAGE_SENT,
         attributes: {
         thread_id: message.thread,
-        message_id: message.id,
-        item_id: conversation.item.id
+        message_id: message.id
         }
       };
       this.trackingService.addTrackingEvent(trackEvent, false);
