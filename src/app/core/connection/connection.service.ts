@@ -12,12 +12,12 @@ export class ConnectionService {
 
     public checkConnection() {
       this.winRef.nativeWindow.addEventListener('offline', () => {
-        this.eventService.emit(EventService.CONNECTION_ERROR);
         this.isConnected = false;
+        this.eventService.emit(EventService.CONNECTION_ERROR);
       });
       this.winRef.nativeWindow.addEventListener('online', () => {
-        this.eventService.emit(EventService.CONNECTION_RESTORED);
         this.isConnected = true;
+        this.eventService.emit(EventService.CONNECTION_RESTORED);
       });
     }
   }

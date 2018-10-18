@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as CryptoJS from 'crypto-js';
@@ -11,9 +12,11 @@ import { HttpService } from '../http/http.service';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/bufferTime';
 
-const maxBatchSize = 100;
-const sendInterval = 60000;
+const maxBatchSize = 1000;
+const sendInterval = 10000;
 
 const CATEGORY_IDS: any = {
   ProConversations: '24',
@@ -792,12 +795,30 @@ export class TrackingService {
     type: TYPES_IDS.Error
   };
 
+  public static CONVERSATION_FIRSTARCHIVE_OK = {
+    name: '714',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Success
+  };
+
+  public static CONVERSATION_SINCEARCHIVE_OK = {
+    name: '693',
+    category: CATEGORY_IDS.Conversation,
+    screen: SCREENS_IDS.Conversation,
+    type: TYPES_IDS.Success
+  };
+
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
   private sessionId: string = null;
   private deviceAccessTokenId: string = null;
   private sessionIdCookieName = 'session_id';
   private deviceAccessTokenIdCookieName = 'device_access_token_id';
+  private trackingEvents$: Subject<TrackingEventData> = new Subject();
+  private pendingTrackingEvents: Array<TrackingEventData> = [];
+  private pendingTrackingEvents$ = this.trackingEvents$.bufferTime(sendInterval, null, maxBatchSize).filter((buffer) => buffer.length > 0);
+  private sentEvents: Array<TrackingEventData> = [];
 
   constructor(private navigatorService: NavigatorService,
               private http: HttpService,
@@ -809,7 +830,7 @@ export class TrackingService {
     this.setDeviceAccessTokenId(this.deviceAccessTokenIdCookieName);
   }
 
-  track(event: TrackingEventBase, attributes?: any) {
+  public track(event: TrackingEventBase, attributes?: any) {
     this.createNewEvent(event, attributes)
       .flatMap((newEvent: TrackingEvent) => {
         delete newEvent['sessions'][0]['window'];
@@ -820,25 +841,37 @@ export class TrackingService {
   }
 
   private sendMultipleEvents(events: Array<TrackingEventData>) {
+    const originalEvents = [];
+    events.map(e => originalEvents.push(Object.assign({}, e)));
     this.createMultipleEvents(events)
     .flatMap((event: TrackingEvent) => {
       delete event['sessions'][0]['window'];
       const stringifiedEvent: string = JSON.stringify(event);
       const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
       return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body);
-    }).subscribe();
+    }).subscribe(() => this.sentEvents = this.sentEvents.concat(originalEvents));
   }
 
-  trackMultiple(events: Array<TrackingEventData>) {
-    const interval = setInterval(() => {
-      if (events.length > maxBatchSize) {
-        const slice = events.splice(0, maxBatchSize);
-        this.sendMultipleEvents(slice);
-      } else {
-        this.sendMultipleEvents(events);
-        clearInterval(interval);
-      }
-    }, sendInterval);
+  public addTrackingEvent(event: TrackingEventData, acceptDuplicates: boolean = true) {
+    const checkInArray = this.sentEvents.concat(this.pendingTrackingEvents);
+
+    if (acceptDuplicates || this.checkIsUnique(event, checkInArray)) {
+      this.trackingEvents$.next(event);
+      this.pendingTrackingEvents.push(event);
+    }
+  }
+
+  public trackAccumulatedEvents() {
+    this.pendingTrackingEvents$.subscribe((events: Array<TrackingEventData>) => {
+      this.sendMultipleEvents(events);
+      this.pendingTrackingEvents = [];
+    });
+  }
+
+  private checkIsUnique(event: TrackingEventData, checkInArray: TrackingEventData[]): boolean {
+    const existsInArray = checkInArray.find(e => e.eventData === event.eventData
+      && e.attributes.message_id === event.attributes.message_id);
+    return existsInArray ? false : true;
   }
 
   private setSessionStartTime() {
