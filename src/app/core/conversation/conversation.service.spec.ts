@@ -725,7 +725,7 @@ describe('Service: Conversation', () => {
       const expectedMarkedAsRead = mockedConversation.messages.slice(0, 2);
       const expectedNotMarkedAsRead = mockedConversation.messages.slice(-1);
 
-      service.markAllAsRead(mockedConversation.id);
+      service.markAllAsRead(mockedConversation.id, Date.now(), true);
 
       const attributes = {
         thread_id: mockedConversation.id,
