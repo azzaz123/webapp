@@ -458,6 +458,7 @@ describe('Component: ConversationsPanel', () => {
 
       expect(component.conversations).toEqual(conversationsInNewOrder);
     });
+  });
 
   describe('sendRead', () => {
     beforeEach(() => {
