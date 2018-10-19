@@ -74,6 +74,10 @@ $feature-button-width: 170px;
       border-radius: $border-radius;
     }
   }
+  .onHold {
+    background-color: $white;
+    opacity: .6;
+  }
   .selected-veil {
     display: none;
   }
@@ -137,6 +141,9 @@ $feature-button-width: 170px;
   .title {
     width: 31%;
     @include text-truncate();
+    &.onHold {
+      width: 19%;
+    }
   }
   .visibility {
     flex-grow: 2;
@@ -150,6 +157,12 @@ $feature-button-width: 170px;
       margin-left: 10px;
     }
   }
+  .subscribe {
+    flex-grow: 2;
+    font-size: $font-size;
+    color: $sold-bg;
+    min-width: 115px;
+  }
   .actions {
     margin-right: 24px;
     min-width: 400px;
@@ -159,6 +172,9 @@ $feature-button-width: 170px;
     button, tsl-button {
       margin-left: 12px;
       float: left;
+    }
+    .main-actions {
+      float: right;
     }
     button {
       @include square(40px);

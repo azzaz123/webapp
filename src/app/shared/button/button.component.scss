@@ -59,6 +59,15 @@ $vertical-padding: 10px;
       background: $corporate;
     }
   }
+  &.btn-inactive {
+    border: 2px dashed $sold-bg;
+    color: $sold-bg;
+    cursor: default;
+    font-size: $font-size-S;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 170px;
+  }
   &.btn-outline-primary {
     color: $corporate;
     &:hover {
