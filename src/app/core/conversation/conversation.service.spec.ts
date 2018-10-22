@@ -1267,8 +1267,9 @@ describe('Service: Conversation', () => {
   });
 
   describe('getSingleConversationMessages', () => {
-    it('should call messageService.getMessages and return the conversation with messages', fakeAsync(() => {
+    it('should call messageService.getMessages, return the conversation with messages and emit a MSG_ARCHIVE_LOADED event', fakeAsync(() => {
       spyOn(messageService, 'getMessages').and.returnValue(Observable.of({data: [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE]}));
+      spyOn(eventService, 'emit');
       let conversation = SECOND_MOCK_CONVERSATION;
       const expectedConversation = SECOND_MOCK_CONVERSATION;
       expectedConversation.messages = [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE];
@@ -1278,6 +1279,7 @@ describe('Service: Conversation', () => {
 
       expect(messageService.getMessages).toHaveBeenCalled();
       expect(conversation).toEqual(expectedConversation);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MSG_ARCHIVE_LOADED);
     }));
   });
 
