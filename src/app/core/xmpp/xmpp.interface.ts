@@ -10,7 +10,6 @@ export interface XMPPClient {
   enableCarbons(): void;
   use(plugin: Function): void;
   sendIq(options: any): Promise<any>;
-  searchHistory(options: any): void;
   getTime(userId: string): Promise<any>;
   nextId(): string;
   enableKeepAlive(opts: any): void;

@@ -255,8 +255,9 @@ describe('Component: Chat', () => {
       expect(userService.updateBlockStatus).toHaveBeenCalledWith('2', false);
     });
 
-    it('should set firstLoad to false if getMetaInformation return meta', () => {
+    it('should set firstLoad to false after DB_READY event triggered, and if getMetaInformation return meta', () => {
       component.ngOnInit();
+      eventService.emit(EventService.DB_READY);
 
       expect(component.firstLoad).toBe(false);
     });
@@ -266,6 +267,7 @@ describe('Component: Chat', () => {
       spyOn(persistencyService, 'saveMetaInformation');
 
       component.ngOnInit();
+      eventService.emit(EventService.DB_READY);
 
       expect(component.firstLoad).toBe(true);
       expect(persistencyService.saveMetaInformation).toHaveBeenCalled();

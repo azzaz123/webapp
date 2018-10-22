@@ -97,7 +97,8 @@
       <div i18n>FAQ</div>
     </ng-template>
   </div>
-  <div class="box" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave" *ngIf="categoryId === '-1' ">
+  <div class="box" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave"
+       *ngIf="categoryId === '-1' || item && item.itemType === itemTypes.CONSUMER_GOODS">
     <div class="selector-container shipping-options" data-toggle="buttons">
       <h2 i18n>Shipping</h2>
       <p i18n>You can send (almost) anything through wallapop. And it's free for you!</p>

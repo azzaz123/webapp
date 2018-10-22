@@ -1,4 +1,5 @@
 import { StatisticFullResponse } from '../app/dashboard/stats-graph/statistic-response.interface';
+import { ItemStatisticFullResponse } from '../app/stats/items-stats/item-stats-row/item-stats-graph/item-stats-response.interface';
 
 export const STATISTICS_RESPONSE: StatisticFullResponse = {
   'totals': {
@@ -99,5 +100,32 @@ export const STATISTICS_RESPONSE: StatisticFullResponse = {
   }, {
     'date': '1527465600000',
     'values': {'phone_numbers': 92, 'country_bump': 7, 'views': 93, 'city_bump': 87, 'sold': 97, 'chats': 69}
+  }]
+};
+
+export const ITEM_STATISTIC_RESPONSE: ItemStatisticFullResponse = {
+  'entries': [{
+    'date': '1504569600000',
+    'values': {'favs': 66, 'views': 35, 'chats': 73}
+  }, {
+    'date': '1504656000000',
+    'values': {'favs': 59, 'views': 35, 'chats': 80}
+  }, {
+    'date': '1504742400000',
+    'bumped': true,
+    'values': {'favs': 89, 'views': 98, 'chats': 70}
+  }, {
+    'date': '1504828800000',
+    'bumped': true,
+    'values': {'favs': 100, 'views': 50, 'chats': 100}
+  }, {
+    'date': '1504915200000',
+    'values': {'favs': 150, 'views': 90, 'chats': 50}
+  }, {
+    'date': '1505001600000',
+    'values': {'favs': 44, 'views': 48, 'chats': 87}
+  }, {
+    'date': '1505088000000',
+    'values': {'favs': 95, 'views': 37, 'chats': 63}
   }]
 };

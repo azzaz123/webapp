@@ -1,5 +1,5 @@
-import { USER_ID, OTHE_USER_ID } from './user.fixtures.spec';
-import { Message, messageStatus } from '../app/core/message/message';
+import { USER_ID, OTHER_USER_ID } from './user.fixtures.spec';
+import { Message } from '../app/core/message/message';
 import { MessagePayload } from '../app/core/message/messages.interface';
 
 export const MESSAGE_MAIN: any = {
@@ -34,15 +34,19 @@ export function createMessagesArray(total: number) {
   return messages;
 }
 
-export function createReceiptsArray(total: number, thread: string, date?: string): any {
-  const messages: any[] = [];
+export function createReceivedReceiptsArray(total: number): any {
+  const receipts: any[] = [];
   for (let i = 1; i <= total; i++) {
-    messages.push({
-      thread: thread,
-      readTimestamp: new Date(date)
+    receipts.push({
+      thread: MESSAGE_MAIN.thread,
+      messageId: `${MESSAGE_MAIN.id}${i}`,
+      from: OTHER_USER_ID,
+      to: MESSAGE_MAIN.from,
+      fromSelf: false,
+      timestamp: new Date().getTime()
     });
   }
-  return messages;
+  return receipts;
 }
 
 export const MOCK_MESSAGE: Message = new Message(
@@ -58,7 +62,7 @@ export const MOCK_MESSAGE_FROM_OTHER: Message = new Message(
   'other-id',
   MESSAGE_MAIN.thread,
   MESSAGE_MAIN.body,
-  OTHE_USER_ID + '@host',
+  OTHER_USER_ID + '@host',
   MESSAGE_MAIN.date,
   null
 );
