@@ -442,6 +442,7 @@ export class ConversationService extends LeadService {
       this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
         this.messageService.totalUnreadMessages + conversation.unreadMessages :
         conversation.unreadMessages;
+      this.event.emit(EventService.MSG_ARCHIVE_LOADED);
       return conversation;
     });
   }
