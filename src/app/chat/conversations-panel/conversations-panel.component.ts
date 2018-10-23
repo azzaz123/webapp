@@ -102,7 +102,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (this.conversationsSubscription) {
       this.conversationsSubscription.unsubscribe();
     }
-    this.conversationsSubscription = this.conversationService.getPage(this.page, this.archive).takeWhile(() => {
+    this.conversationsSubscription = this.conversationService.getPage(this.archive ? this.processedPagesLoaded : this.pendingPagesLoaded,
+      this.archive).takeWhile(() => {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
       if (this.archive) {
