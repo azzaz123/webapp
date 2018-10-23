@@ -463,11 +463,10 @@ export class ConversationService extends LeadService {
           message = this.messageService.addUserInfo(conversation, message);
           if (this.addMessage(conversation, message)) {
             this.event.emit(EventService.MESSAGE_ADDED, message);
-            this.leads = this.bumpConversation(conversation);
+            this.bumpConversation(conversation);
             if (!message.fromSelf) {
               this.notificationService.sendBrowserNotification(message, conversation.item.id);
             }
-            this.stream$.next(this.leads);
           }
         });
       } else {
@@ -506,7 +505,7 @@ export class ConversationService extends LeadService {
       this.leads.splice(index, 1);
       this.leads.unshift(conversation);
     }
-    return this.leads;
+    this.event.emit(EventService.CONVERSATION_BUMPED, this.leads);
   }
 
   private requestConversationInfo(message: Message) {
