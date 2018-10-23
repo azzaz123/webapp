@@ -412,7 +412,6 @@ describe('Component: ConversationsPanel', () => {
       spyOn<any>(component, 'getConversations');
       spyOn(component, 'setCurrentConversation');
       spyOn(component, 'findConversation');
-      // spyOn<any>(component, 'getConversations').and.callThrough();
     });
 
     it('should call getConversations', () => {
