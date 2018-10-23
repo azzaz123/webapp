@@ -38,15 +38,15 @@ class MockedNavigatorService {
 const eventsArray = [
   {
     eventData: TrackingService.NOTIFICATION_RECEIVED,
-    attributes: {thread_id: 'conversation', message_id: '123', item_id: 'xyz'}
+    attributes: {thread_id: 'conversation', message_id: '123'}
   },
   {
     eventData: TrackingService.MESSAGE_RECEIVED,
-    attributes: {thread_id: 'abc', message_id: '234', item_id: 'xyz'}
+    attributes: {thread_id: 'abc', message_id: '234'}
   },
   {
     eventData: TrackingService.MESSAGE_RECEIVED,
-    attributes: {thread_id: 'abc', message_id: '345', item_id: 'zyx'}
+    attributes: {thread_id: 'abc', message_id: '345'}
   }
 ];
 

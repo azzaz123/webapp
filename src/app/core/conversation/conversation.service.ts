@@ -239,8 +239,7 @@ export class ConversationService extends LeadService {
             eventData: TrackingService.MESSAGE_RECEIVED_ACK,
             attributes: {
               thread_id: message.conversationId,
-              message_id: message.id,
-              item_id: conversation.item.id
+              message_id: message.id
             }
           };
           this.trackingService.addTrackingEvent(trackEvent, false);
@@ -263,8 +262,7 @@ export class ConversationService extends LeadService {
           this.persistencyService.updateMessageStatus(message, messageStatus.READ);
         const eventAttributes = {
           thread_id: message.conversationId,
-          message_id: message.id,
-          item_id: conversation.item.id
+            message_id: message.id
         };
         this.trackingService.addTrackingEvent({
           eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
@@ -287,8 +285,7 @@ export class ConversationService extends LeadService {
       eventData: null,
       attributes: {
         thread_id: message.conversationId,
-        message_id: message.id,
-        item_id: conversation.item.id
+        message_id: message.id
   }
     };
 
