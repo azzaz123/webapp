@@ -773,10 +773,17 @@ export const CONVERSATION_USERS: ConversationUser[] = [{
 export const PURCHASES: Purchase[] = [{
   'item_id': '1',
   'expiration_date': 1510221655715,
+  'purchase_name': 'countrybump',
+  'visibility_flags': {'bumped': false, 'highlighted': true, 'urgent': false}
+}, {
+  'item_id': '1',
+  'expiration_date': 1510221346789,
+  'purchase_name': 'listingfee',
   'visibility_flags': {'bumped': false, 'highlighted': true, 'urgent': false}
 }, {
   'item_id': '3',
   'expiration_date': 1509874085135,
+  'purchase_name': 'countrybump',
   'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
 }];
 
