@@ -48,7 +48,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this._loading = value;
     this.loaded.emit({
       loaded: !value,
-      total: this.conversations ? this.conversations.length : 0
+      total: this.conversations ? this.conversations.length : 0,
+      firstPage: this.page === 1
     });
   }
 
