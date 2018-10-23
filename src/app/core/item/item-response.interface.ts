@@ -128,6 +128,7 @@ export interface ConversationUser {
 export interface Purchase {
   expiration_date: number;
   item_id: string;
+  purchase_name?: 'listingfee' | 'countrybump';
   visibility_flags: {
     bumped: boolean;
     highlighted: boolean;

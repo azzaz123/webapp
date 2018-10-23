@@ -337,7 +337,12 @@ export class ItemService extends ResourceService {
         purchases.forEach((purchase: Purchase) => {
           const index: number = _.findIndex(itemsData.data, {id: purchase.item_id});
           if (index !== -1) {
-            itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
+            if (purchase.purchase_name === 'listingfee') {
+              itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
+            }
+            if (purchase.purchase_name === 'countrybump') {
+              itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
+            }
             itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
             itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
             itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
