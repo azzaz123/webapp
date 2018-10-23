@@ -18,7 +18,7 @@
       <mat-icon svgIcon="views"></mat-icon> {{item.views}}
       <mat-icon svgIcon="heart"></mat-icon> {{item.favorites}}
     </span>
-    <span class="subscribe" *ngIf="item.flags.onhold" [ngClass]="{onHold: item.flags.onhold}">
+    <span class="subscribe" *ngIf="item.flags.onhold" [ngClass]="{onHold: item.flags.onhold}" i18n>
         Subscribe or publish it from the app
     </span>
     <span class="actions" *ngIf="!item.flags.pending">
@@ -44,7 +44,7 @@
           <button class="btn-reserve" [hidden]="item.flags.onhold" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
             <mat-icon svgIcon="btn-reserved"></mat-icon>
           </button>
-          <button class="btn-edit" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">
+          <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">
             <mat-icon svgIcon="btn-edit"></mat-icon>
           </button>
           <button class="btn-delete" (click)="deleteItem(item)">

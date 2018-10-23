@@ -132,7 +132,7 @@
   <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:62</source>Mark as sold</msg>
   <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:65</source>Mark as reserved</msg>
   <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:68</source>Edit</msg>
-  <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:76</source><source>app/calls/calls.component.ts:23</source><source>app/calls/calls.component.ts:51</source><source>app/catalog/list/catalog-item/catalog-item.component.ts:51</source><source>app/chat/conversations-panel/conversations-panel.component.ts:9</source><source>app/dashboard/dashboard.component.ts:17</source>Pending</msg>
+  <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:76</source><source>app/calls/calls.component.ts:23</source><source>app/calls/calls.component.ts:51</source><source>app/catalog/list/catalog-item/catalog-item.component.ts:62</source><source>app/chat/conversations-panel/conversations-panel.component.ts:9</source><source>app/dashboard/dashboard.component.ts:17</source>Pending</msg>
   <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:83</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:84</source>Do you really want to cancel the autorenew for this item?</msg>
   <msg id="2807800733729323332"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:88</source>Yes</msg>
@@ -296,8 +296,12 @@
       <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>of your credit<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> and put it in the top positions.</msg>
   <msg id="5107282366152603486"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:9</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Get more visibility and sell it faster.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></msg>
   <msg id="3244863581909362906"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:19</source>Only reactivate it, I don&apos;t want to sell it faster</msg>
-  <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:25</source>Feature Product</msg>
-  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:46</source>Reactivate</msg>
+  <msg id="703140349558791698"><source>app/catalog/list/catalog-item/catalog-item.component.ts:21,23</source>
+        Subscribe or publish it from the app
+    </msg>
+  <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:29</source>Feature Product</msg>
+  <msg id="1859131936150262113"><source>app/catalog/list/catalog-item/catalog-item.component.ts:37</source><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:18</source>Inactive</msg>
+  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:57</source>Reactivate</msg>
   <msg id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart"><source>app/catalog/list/selected-items/selected-items.component.ts:28</source>Continue</msg>
   <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:22</source>Not Available</msg>
   <msg id="3286725018134496844"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:10</source>You already have your extra features and you can use them whenever you want.</msg>
@@ -320,7 +324,6 @@
   <msg id="3576739165178660027"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:3</source>your plan</msg>
   <msg id="8756155295186418998"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:6</source>Pro Plan</msg>
   <msg id="4154831356233082418"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:15</source>Free Space</msg>
-  <msg id="1859131936150262113"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:18</source>Inactive</msg>
   <msg id="7697915584663780042"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:22</source>visibility</msg>
   <msg id="5439433189125089418"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:26</source>City Plan</msg>
   <msg id="7392255340123577556"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:29</source>You don&apos;t have a City Plan.</msg>

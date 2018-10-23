@@ -76,7 +76,7 @@ $feature-button-width: 170px;
   }
   .onHold {
     background-color: $white;
-    opacity: .6;
+    opacity: .4;
   }
   .selected-veil {
     display: none;
@@ -162,6 +162,9 @@ $feature-button-width: 170px;
     font-size: $font-size;
     color: $sold-bg;
     min-width: 115px;
+    &.onHold {
+      opacity: 1;
+    }
   }
   .actions {
     margin-right: 24px;
