@@ -103,6 +103,11 @@ $feature-button-width: 170px;
   &.selected {
     background-color: rgba($corporate, 0.2);
     border: solid 1px $corporate;
+    .subscribe {
+      &.onHold {
+        opacity: 0.4;
+      }
+    }
   }
   a {
     color: $grey-900;
@@ -163,6 +168,9 @@ $feature-button-width: 170px;
     color: $sold-bg;
     min-width: 115px;
     &.onHold {
+      align-self: stretch;
+      display: flex;
+      align-items: center;
       opacity: 1;
     }
   }
