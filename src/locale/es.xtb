@@ -681,9 +681,9 @@
     <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
     marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
   </translation>
-    <translation id="3769250581761699744">Ups! You´ve reached the maximum cars allowed with your plan</translation>
-    <translation id="5381085421152659763">Pay for a car or subscribe from the app.</translation>
-    <translation id="2652477817167335614">Publish your car</translation>
-    <translation id="2133220200071086071">Your car was uploaded but remains inactive in your catalog.</translation>
-    <translation id="8998179362936748717">OK</translation>
+  <translation id="2908216965016905963">You have reached the limit of published cars.</translation>
+  <translation id="3910225099921883332">To publish this car, contract a new Motor Plan from our app.</translation>
+  <translation id="7622938994831402105">This car is NOT published.</translation>
+  <translation id="8858428396989821345">It will remain filled in your catalogue as Inactive.</translation>
+  <translation id="5601530442010506564">Got it</translation>
 </translationbundle>
