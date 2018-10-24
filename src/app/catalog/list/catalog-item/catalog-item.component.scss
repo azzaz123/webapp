@@ -291,6 +291,8 @@ $feature-button-width: 170px;
     }
   }
   .btn-pending {
+    background-color: $white;
+    cursor: default;
     z-index: 2;
     position: relative;
     font-size: $font-size-S;
@@ -301,11 +303,6 @@ $feature-button-width: 170px;
     height: 40px;
     mat-icon {
       margin-right: 34px;
-    }
-  }
-  .btn-pending {
-    cursor: default;
-    mat-icon {
       margin-left: 4px;
     }
   }

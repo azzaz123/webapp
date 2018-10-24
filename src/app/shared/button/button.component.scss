@@ -60,6 +60,7 @@ $vertical-padding: 10px;
     }
   }
   &.btn-inactive {
+    background-color: $white;
     border: 2px dashed $sold-bg;
     color: $sold-bg;
     cursor: default;
