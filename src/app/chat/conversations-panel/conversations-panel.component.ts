@@ -68,7 +68,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, () => {
       if (this.archive) {
         this.archive = false;
-        this.processedPagesLoaded = 1;
         this.setCurrentConversation(null);
         this.getConversations();
       }
@@ -104,7 +103,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (this.conversationsSubscription) {
       this.conversationsSubscription.unsubscribe();
     }
-    this.conversationsSubscription = this.conversationService.getPage(this.archive ? this.processedPagesLoaded : this.pendingPagesLoaded,
+    this.conversationsSubscription = this.conversationService.getPage(
+      this.archive ? this.processedPagesLoaded || 1 : this.pendingPagesLoaded || 1,
       this.archive).takeWhile(() => {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
@@ -128,6 +128,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       if (conversations && conversations.length > 0) {
         this.conversations = conversations;
         this.loading = false;
+        this.archive ? this.processedPagesLoaded = this.processedPagesLoaded || 1 : this.pendingPagesLoaded = this.pendingPagesLoaded || 1;
         if (!this.currentConversationSet) {
           this.setCurrentConversationFromQueryParams();
         }
@@ -207,7 +208,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   public filterByArchived(archive: boolean) {
     this.archive = archive;
-    this.processedPagesLoaded = 1;
     this.loading = true;
     this.setCurrentConversation(null);
     this.getConversations();
