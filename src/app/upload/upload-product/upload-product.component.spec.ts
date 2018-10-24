@@ -20,6 +20,7 @@ import { Item } from '../../core/item/item';
 import { UserLocation } from '../../core/user/user-response.interface';
 import { environment } from '../../../environments/environment';
 import { REALESTATE_CATEGORY } from '../../core/item/item-categories';
+import { GeneralSuggestionsService } from './general-suggestions.service';
 
 export const MOCK_USER_NO_LOCATION: User = new User(USER_ID);
 
@@ -86,6 +87,19 @@ describe('UploadProductComponent', () => {
             };
           }
         }
+        },
+        {
+          provide: GeneralSuggestionsService, useValue: {
+          getObjectTypes() {
+            return Observable.of([]);
+          },
+          getBrands() {
+            return Observable.of([]);
+          },
+          getModels() {
+            return Observable.of([]);
+          }
+        }
         }
       ],
       declarations: [UploadProductComponent],
@@ -127,6 +141,11 @@ describe('UploadProductComponent', () => {
           address: '',
           latitude: '',
           longitude: ''
+        },
+        extra_info: {
+          object_type: '',
+          brand: '',
+          model: ''
         }
       });
     });
@@ -388,6 +407,11 @@ describe('UploadProductComponent', () => {
           address: USER_LOCATION.full_address,
           latitude: USER_LOCATION.approximated_latitude,
           longitude: USER_LOCATION.approximated_longitude
+        },
+        extra_info: {
+          object_type: '',
+          brand: '',
+          model: ''
         }
       });
     });
