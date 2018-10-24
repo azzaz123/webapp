@@ -37,8 +37,10 @@ export class CatalogItemComponent implements OnInit {
 
   get showCheckbox() {
     return (this.itemService.selectedAction !== 'feature' && this.itemService.selectedAction !== 'reserve') ||
-      (this.itemService.selectedAction === 'feature' && !this.item.featured && !this.item.flags.onhold && !this.item.flags.pending) ||
-      (this.itemService.selectedAction === 'reserve' && !this.item.reserved && !this.item.flags.onhold && !this.item.flags.pending);
+      (this.itemService.selectedAction === 'feature'
+      && !this.item.featured && !this.item.flags.onhold && !this.item.flags.pending && !this.item.flags.expired ) ||
+      (this.itemService.selectedAction === 'reserve'
+      && !this.item.reserved && !this.item.flags.onhold && !this.item.flags.pending && !this.item.flags.expired);
   }
 
   public deleteItem(item: Item): void {
