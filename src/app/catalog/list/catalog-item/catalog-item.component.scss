@@ -282,4 +282,11 @@ $feature-button-width: 170px;
       margin-left: 4px;
     }
   }
+
+  .listing-fee {
+    width: 130px;
+    .listing-fee-countdown {
+      color: $listing-fee-color;
+    }
+  }
 }
