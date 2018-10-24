@@ -52,7 +52,11 @@ export class CategoryService {
     return categories.map((category: CategoryConsumerGoodsResponse) => ({
       value: category.category_id.toString(),
       label: category.name,
-      icon_id: category.icon_id
+      icon_id: category.icon_id,
+      has_object_type: category.has_object_type,
+      has_brand: category.has_brand,
+      has_model: category.has_model,
+      object_type_title: category.object_type_title
     }));
   }
 }

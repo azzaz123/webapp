@@ -41,6 +41,7 @@
         <div class="form-group">
           <label for="category" i18n>Category</label>
           <ng-select [hidden]="fixedCategory" i18n-placeholder placeholder="Category"
+                     (selected)="onCategoryChange($event)"
                      class="form-control" formControlName="category_id"
                      [ngbPopover]="coachmarkPrice" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
                      id="category" [options]="categories" noFilter="10">
@@ -96,6 +97,47 @@
     <ng-template #coachmarkExtras>
       <div i18n>FAQ</div>
     </ng-template>
+  </div>
+  <div class="box" *ngIf="hasObjectType || hasBrand || hasModel">
+    <h2 i18n>TE ENCONTRARÁN ANTES SI CONCRETAS <span class="small">(Campo no obligatorio)</span></h2>
+    <div class="row" formGroupName="extra_info">
+      <div class="col-sm-4" *ngIf="hasObjectType">
+        <div class="form-group last">
+          <label for="objectType" i18n>{{objectTypeTitle}}</label>
+          <ng-select class="form-control" formControlName="object_type" id="objectType"
+                     (selected)="getBrandsAndModels($event.value)"
+                     [options]="objectTypes" noFilter="10"></ng-select>
+        </div>
+      </div>
+      <div class="col-sm-4" *ngIf="hasBrand">
+        <div class="form-group last">
+          <label for="brand" i18n>Make</label>
+          <div class="pull-right">
+            <a class="other-make" (click)="customMake = !customMake">
+              <span *ngIf="!customMake" i18n>Select another make</span>
+              <span *ngIf="customMake" i18n>Select a predefined make</span>
+            </a>
+          </div>
+          <ng-select *ngIf="!customMake" class="form-control" formControlName="brand" id="brand"
+                     [options]="brands"></ng-select>
+          <input *ngIf="customMake" type="text" class="form-control" formControlName="brand" id="brand" />
+        </div>
+      </div>
+      <div class="col-sm-4" *ngIf="hasModel">
+        <div class="form-group last">
+          <label for="brand" i18n>Model</label>
+          <div class="pull-right">
+            <a class="other-make" (click)="customModel = !customModel">
+              <span *ngIf="!customMake" i18n>Select another model</span>
+              <span *ngIf="customMake" i18n>Select a predefined model</span>
+            </a>
+          </div>
+          <ng-select *ngIf="!customModel" class="form-control" formControlName="model" id="model"
+                     [options]="models"></ng-select>
+          <input *ngIf="customModel" type="text" class="form-control" formControlName="model" id="model" />
+        </div>
+      </div>
+    </div>
   </div>
   <div class="box" [ngbPopover]="coachmarkShipping" triggers="mouseenter:mouseleave"
        *ngIf="categoryId === '-1' || item && item.itemType === itemTypes.CONSUMER_GOODS">

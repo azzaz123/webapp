@@ -1,0 +1,18 @@
+@import "~style/common";
+
+a.other-make {
+  font-size: $font-size-XS;
+  color: $corporate;
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover {
+    color: $corporate;
+    text-decoration: none;
+  }
+}
+
+.small {
+  font-size: $font-size-S;
+  font-weight: normal;
+  text-transform: none;
+}

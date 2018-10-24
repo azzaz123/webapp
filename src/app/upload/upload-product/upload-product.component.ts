@@ -23,6 +23,7 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Item, ITEM_TYPES } from '../../core/item/item';
 import { DeliveryInfo } from '../../core/item/item-response.interface';
+import { GeneralSuggestionsService } from './general-suggestions.service';
 
 @Component({
   selector: 'tsl-upload-product',
@@ -39,6 +40,13 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @Output() onCategorySelect = new EventEmitter<number>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public itemTypes: any = ITEM_TYPES;
+  public hasObjectType: boolean;
+  public hasBrand: boolean;
+  public hasModel: boolean;
+  public objectTypeTitle: string;
+  public objectTypes: IOption[];
+  public brands: IOption[];
+  public models: IOption[];
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -78,6 +86,8 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   private focused: boolean;
   private oldFormValue: any;
   public isUrgent = false;
+  public customMake = false;
+  public customModel = false;
 
   constructor(private fb: FormBuilder,
               private router: Router,
@@ -85,6 +95,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
               private categoryService: CategoryService,
               private modalService: NgbModal,
               private trackingService: TrackingService,
+              private generalSuggestionsService: GeneralSuggestionsService,
               config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
@@ -97,6 +108,11 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       sale_conditions: fb.group({
         fix_price: false,
         exchange_allowed: false
+      }),
+      extra_info: fb.group({
+        object_type: '',
+        brand: '',
+        model: ''
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -183,6 +199,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   }
 
   onSubmit() {
+    console.log(this.uploadForm.value);
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
@@ -278,6 +295,29 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   public emitLocation(): void {
     this.locationSelected.emit(this.categoryId);
+  }
+
+  public onCategoryChange(category: CategoryOption) {
+    this.hasObjectType = category.has_object_type;
+    this.hasBrand = category.has_brand;
+    this.hasModel = category.has_model;
+    this.objectTypeTitle = category.object_type_title;
+    this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
+      this.objectTypes = objectTypes;
+    })
+  }
+
+  public getBrandsAndModels(objectTypeId: string) {
+    if (this.hasBrand) {
+      this.generalSuggestionsService.getBrands(this.uploadForm.value.categoryId, objectTypeId).subscribe((brands: IOption[]) => {
+        this.brands = brands;
+      });
+    }
+    if (this.hasModel) {
+      this.generalSuggestionsService.getModels(this.uploadForm.value.categoryId, objectTypeId).subscribe((models: IOption[]) => {
+        this.models = models;
+      });
+    }
   }
 
 }
