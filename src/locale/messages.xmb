@@ -281,6 +281,7 @@
   <msg id="3910225099921883332"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:6</source>To publish this car, contract a new Motor Plan from our app.</msg>
   <msg id="7622938994831402105"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:12</source>This car is NOT published.</msg>
   <msg id="8858428396989821345"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:13</source>It will remain filled in your catalogue as Inactive.</msg>
+  <msg id="5020391428854742815"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:14</source>Go to the wallapop app and subscribe to a Motor Plan, or buy an extra ad to make it public.</msg>
   <msg id="5601530442010506564"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:17</source>Got it</msg>
   <msg id="5433688037539750263"><source>app/catalog/list/list.component.ts:14</source>Your products</msg>
   <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:17</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
