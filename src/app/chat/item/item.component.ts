@@ -91,6 +91,10 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     return ((this.item.owner === this.myUserId) && !this.item.sold);
   }
 
+  public isMine() {
+    return (this.item.owner === this.myUserId);
+  }
+
   public toggleReserve() {
     this.itemService.reserveItem(this.item.id, !this.item.reserved).subscribe(() => {
       this.item.reserved = !this.item.reserved;

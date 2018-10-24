@@ -235,6 +235,28 @@ describe('Component: Item', () => {
     });
   });
 
+  describe('isMine', () => {
+    beforeEach(() => {
+      component.item = MOCK_ITEM;
+    });
+
+    it('should return true if the logged user is item owner', () => {
+      component['myUserId'] = component.item.owner;
+
+      const expectedValue = component.isMine();
+
+      expect(expectedValue).toBe(true);
+    });
+
+    it('should return false if the item is not already sold', () => {
+      component['myUserID'] = 'Other Id';
+
+      const expectedValue = component.canEdit();
+
+      expect(expectedValue).toBe(false);
+    });
+  });
+
   describe('toggleReserve', () => {
     it('should call the reserveItem method on itemService', () => {
       component.item = MOCK_ITEM;

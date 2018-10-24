@@ -30,7 +30,7 @@
         {{item.favorites}}
       </div>
     </div>
-    <div class="card-external-link" *ngIf="isCarItem || showWillisLink || showKlincLink">
+    <div class="card-external-link" *ngIf="isCarItem || (showWillisLink && !isMine()) || (showKlincLink && !isMine())">
       <hr>
       <a (click)="clickCarfax($event)"
          *ngIf="isCarItem"
