@@ -28,7 +28,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private _loading = false;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
-  public page = 1;
+  private pendingPagesLoaded = 1;
+  private processedPagesLoaded = 1;
   private active = true;
   private newConversationItemId: string;
   public isProfessional: boolean;
@@ -67,7 +68,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, () => {
       if (this.archive) {
         this.archive = false;
-        this.page = 1;
+        this.processedPagesLoaded = 1;
         this.setCurrentConversation(null);
         this.getConversations();
       }
@@ -85,12 +86,13 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   }
 
   public loadMore() {
-    this.page++;
     this.loading = true;
     let observable: Observable<any>;
     if (this.archive) {
+      this.processedPagesLoaded++;
       observable = this.conversationService.loadMoreArchived();
     } else {
+      this.pendingPagesLoaded++;
       observable = this.conversationService.loadMore();
     }
     observable.subscribe(() => {
@@ -102,7 +104,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (this.conversationsSubscription) {
       this.conversationsSubscription.unsubscribe();
     }
-    this.conversationsSubscription = this.conversationService.getPage(this.page, this.archive).takeWhile(() => {
+    this.conversationsSubscription = this.conversationService.getPage(this.archive ? this.processedPagesLoaded : this.pendingPagesLoaded,
+      this.archive).takeWhile(() => {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
       if (this.archive) {
@@ -204,7 +207,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   public filterByArchived(archive: boolean) {
     this.archive = archive;
-    this.page = 1;
+    this.processedPagesLoaded = 1;
     this.loading = true;
     this.setCurrentConversation(null);
     this.getConversations();
