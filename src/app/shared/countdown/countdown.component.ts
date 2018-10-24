@@ -3,6 +3,8 @@ import * as moment from 'moment';
 import { Observable } from 'rxjs/observable';
 import { interval } from 'rxjs/observable/interval';
 import { Subscription } from 'rxjs/Subscription';
+import { I18nService } from '../../core/i18n/i18n.service';
+import 'rxjs/add/operator/startWith';
 
 @Component({
   selector: 'tsl-countdown',
@@ -12,28 +14,60 @@ import { Subscription } from 'rxjs/Subscription';
 export class CountdownComponent implements OnInit, OnDestroy {
 
   @Input() value: moment.MomentInput;
-  @Input() format: string;
+  @Input() format: string | 'listingFee'; // accept custom format and moment format: https://momentjs.com/docs/#/parsing/string-format
 
-  public countdownText: string;
-  private counter$: Observable<moment.Duration>;
+  public message: string;
+  private counter$: Observable<any>;
   private counterSubscription: Subscription;
 
-  constructor() {
+  constructor(
+    private i18n: I18nService
+  ) {
   }
 
   ngOnInit() {
-    this.counter$ = interval(1000).map(() => {
-      return this.getDuration(this.value);
-    });
+    const lastTime = moment(this.value);
+    let refreshRate = 1000;
 
-    this.counterSubscription = this.counter$.subscribe((duration) => {
-      if (duration.asMilliseconds() <= 0) {
-        this.counterSubscription.unsubscribe();
-      }
+    switch (this.format) {
+      case 'listingFee':
+        const duration = this.getDuration(lastTime);
+        if (duration.asHours() > 1) {
+          refreshRate = 6 * 1000;
+        }
+    }
+
+    this.counter$ = interval(refreshRate)
+      .startWith(0)
+      .map(() => {
+        const currentTime = moment();
+        return lastTime.diff(currentTime);
+      });
+
+    this.counterSubscription = this.counter$.subscribe((diffTime) => {
       switch (this.format) {
         case 'listingFee':
-          this.countdownText = this.getListingFeeDurationFormat(duration);
+          const locale = this.i18n.locale;
+          const duration = moment.duration(diffTime);
+          let timeText = '';
+          const durationDays = Math.floor(duration.asDays());
+          const durationHours = Math.floor(duration.asHours());
+          const durationMinutes = Math.floor(duration.asMinutes());
+          if (durationDays >= 1) {
+            timeText = `${durationDays} ${this.i18n.getTranslations('day')}${durationDays === 1 ? '' : 's' }`;
+          } else if (durationHours >= 1) {
+            timeText = `${durationHours} ${this.i18n.getTranslations('hour')}${durationHours === 1 ? '' : 's' }`;
+          } else {
+            timeText = `${durationMinutes} ${this.i18n.getTranslations('hour')}${durationMinutes === 1 ? '' : 's' }`;
+          }
+
+          this.message = locale === 'en' ? `${timeText} ${this.i18n.getTranslations('left')}` : `${this.i18n.getTranslations('left')} ${timeText}`;
+
+          if (durationMinutes === 0) { this.counterSubscription.unsubscribe(); }
           break;
+
+        default:
+          this.message = moment.utc(diffTime).format(this.format);
       }
     });
   }
@@ -44,17 +78,6 @@ export class CountdownComponent implements OnInit, OnDestroy {
 
   private getDuration(lastValue: moment.MomentInput): moment.Duration {
     return moment.duration( moment(lastValue).valueOf() - new Date().getTime(), 'milliseconds');
-  }
-
-  private getListingFeeDurationFormat(duration: moment.Duration): string {
-    const durationDays = Math.floor(duration.asDays());
-    if (durationDays > 0) {
-      return `Quedan ${durationDays} dias`;
-    } else {
-      const durationHours = duration.hours();
-      const durationMinutes = duration.minutes();
-      return `Quedan ${durationHours}h ${durationMinutes}m`;
-    }
   }
 
 }
