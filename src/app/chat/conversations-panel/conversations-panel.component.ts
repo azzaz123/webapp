@@ -28,8 +28,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private _loading = false;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
-  private pendingPagesLoaded = 1;
-  private processedPagesLoaded = 1;
+  private pendingPagesLoaded = 0;
+  private processedPagesLoaded = 0;
   private active = true;
   private newConversationItemId: string;
   public isProfessional: boolean;
@@ -50,7 +50,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.loaded.emit({
       loaded: !value,
       total: this.conversations ? this.conversations.length : 0,
-      firstPage: this.archive ? this.processedPagesLoaded === 1 : this.processedPagesLoaded === 1
+      firstPage: this.archive ? this.processedPagesLoaded === 0 : this.pendingPagesLoaded === 0
     });
   }
 

@@ -283,7 +283,7 @@ describe('Component: ConversationsPanel', () => {
     });
 
     it('should increment pendingPagesLoaded when archive is FALSE', () => {
-      let pageNumber = 1;
+      let pageNumber = 0;
       component.archive = false;
 
       component.loadMore();
@@ -293,7 +293,7 @@ describe('Component: ConversationsPanel', () => {
     });
 
     it('should increment processedPagesLoaded each time loadMore is called, when archive is TRUE', () => {
-      let pageNumber = 1;
+      let pageNumber = 0;
       component.archive = true;
 
       component.loadMore();
