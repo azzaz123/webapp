@@ -17,7 +17,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
   @Input() format: string | 'listingFee'; // accept custom format and moment format: https://momentjs.com/docs/#/parsing/string-format
 
   public message: string;
-  private counter$: Observable<any>;
+  private counter$: Observable<number>;
   private counterSubscription: Subscription;
 
   constructor(
@@ -33,7 +33,7 @@ export class CountdownComponent implements OnInit, OnDestroy {
       case 'listingFee':
         const duration = this.getDuration(lastTime);
         if (duration.asHours() > 1) {
-          refreshRate = 6 * 1000;
+          refreshRate = 60 * 1000;
         }
     }
 
@@ -47,27 +47,15 @@ export class CountdownComponent implements OnInit, OnDestroy {
     this.counterSubscription = this.counter$.subscribe((diffTime) => {
       switch (this.format) {
         case 'listingFee':
-          const locale = this.i18n.locale;
-          const duration = moment.duration(diffTime);
-          let timeText = '';
-          const durationDays = Math.floor(duration.asDays());
-          const durationHours = Math.floor(duration.asHours());
-          const durationMinutes = Math.floor(duration.asMinutes());
-          if (durationDays >= 1) {
-            timeText = `${durationDays} ${this.i18n.getTranslations('day')}${durationDays === 1 ? '' : 's' }`;
-          } else if (durationHours >= 1) {
-            timeText = `${durationHours} ${this.i18n.getTranslations('hour')}${durationHours === 1 ? '' : 's' }`;
-          } else {
-            timeText = `${durationMinutes} ${this.i18n.getTranslations('hour')}${durationMinutes === 1 ? '' : 's' }`;
-          }
-
-          this.message = locale === 'en' ? `${timeText} ${this.i18n.getTranslations('left')}` : `${this.i18n.getTranslations('left')} ${timeText}`;
-
-          if (durationMinutes === 0) { this.counterSubscription.unsubscribe(); }
+          this.message = this.getListingFeeCountDownText(diffTime);
           break;
 
         default:
           this.message = moment.utc(diffTime).format(this.format);
+      }
+
+      if (this.counterSubscription && diffTime <= 0) {
+        this.counterSubscription.unsubscribe();
       }
     });
   }
@@ -80,4 +68,22 @@ export class CountdownComponent implements OnInit, OnDestroy {
     return moment.duration( moment(lastValue).valueOf() - new Date().getTime(), 'milliseconds');
   }
 
+  private getListingFeeCountDownText (diffTime: number) {
+    if (diffTime <= 0) { return ''; }
+
+    const locale = this.i18n.locale;
+    const duration = moment.duration(diffTime);
+    let timeText = '';
+    const durationDays = Math.floor(duration.asDays());
+    const durationHours = Math.floor(duration.asHours());
+    const durationMinutes = Math.floor(duration.asMinutes());
+    if (durationDays >= 1) {
+      timeText = `${durationDays} ${this.i18n.getTranslations('day')}${durationDays === 1 ? '' : 's' }`;
+    } else if (durationHours >= 1) {
+      timeText = `${durationHours} ${this.i18n.getTranslations('hour')}${durationHours === 1 ? '' : 's' }`;
+    } else {
+      timeText = `${durationMinutes} ${this.i18n.getTranslations('minute')}${durationMinutes === 1 ? '' : 's' }`;
+    }
+    return locale === 'en' ? `${timeText} ${this.i18n.getTranslations('left')}` : `${this.i18n.getTranslations('left')} ${timeText}`;
+  }
 }
