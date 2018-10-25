@@ -729,8 +729,7 @@ describe('Service: Conversation', () => {
 
       const attributes = {
         thread_id: mockedConversation.id,
-        message_id: null,
-        item_id: mockedConversation.item.id,
+        message_id: null
       };
 
       expect(persistencyService.updateMessageStatus).toHaveBeenCalledTimes(2);
@@ -761,8 +760,7 @@ describe('Service: Conversation', () => {
       service.leads.push(mockedConversation);
       const attributes = {
         thread_id: mockedConversation.id,
-        message_id: null,
-        item_id: mockedConversation.item.id,
+        message_id: null
       };
 
       service.markAs(messageStatus.RECEIVED, mockedConversation.messages[0].id, mockedConversation.id);
@@ -965,8 +963,7 @@ describe('Service: Conversation', () => {
           eventData: TrackingService.MESSAGE_RECEIVED_ACK,
           attributes: {
             thread_id: MESSAGE_MAIN.thread,
-            message_id: MESSAGE_MAIN.id,
-            item_id: ITEM_ID
+            message_id: MESSAGE_MAIN.id
           }
         }, false);
       });
@@ -1098,14 +1095,18 @@ describe('Service: Conversation', () => {
       expect(service.leads[0].messages[0]).toEqual(messageWithUser);
     });
 
-    it('should bump the conversation to the top if it is not already on the top', () => {
+    it('should bump the conversation to the top if it is not already on the top, and emit a CONVERSATION_BUMPED event', () => {
       expect(service.leads[0].id).toBe(CONVERSATION_ID);
       expect(service.leads[1].id).toBe(SECOND_MOCK_CONVERSATION.id);
+      spyOn(eventService, 'emit');
+
       service.handleNewMessages(
         new Message(MESSAGE_MAIN.id, SECOND_MOCK_CONVERSATION.id, MESSAGE_MAIN.body, MESSAGE_MAIN.from, MESSAGE_MAIN.date),
         false);
+
       expect(service.leads[0].id).toBe(SECOND_MOCK_CONVERSATION.id);
       expect(service.leads[1].id).toBe(CONVERSATION_ID);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_BUMPED, [service.leads[0], service.leads[1]]);
     });
 
     it('should send browser notification', () => {
@@ -1240,8 +1241,7 @@ describe('Service: Conversation', () => {
           eventData: TrackingService.MESSAGE_RECEIVED_ACK,
           attributes: {
             thread_id: message.conversationId,
-            message_id: message.id,
-            item_id: mockedConversation.item.id
+            message_id: message.id
           }
         }, false);
       });

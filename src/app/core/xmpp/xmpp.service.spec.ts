@@ -590,8 +590,7 @@ describe('Service: Xmpp', () => {
         eventData: TrackingService.MESSAGE_SENT,
         attributes: {
           thread_id: message.thread,
-          message_id: message.id,
-          item_id: MOCKED_CONVERSATIONS[0].item.id
+          message_id: message.id
         }
       };
 
