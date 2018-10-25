@@ -43,7 +43,8 @@ const CATEGORY_IDS: any = {
   Carfax: '128',
   Credits: '131',
   Navbar: '77',
-  Willis: '130'
+  Willis: '130',
+  Klinc: '136'
 };
 
 const SCREENS_IDS: any = {
@@ -794,6 +795,19 @@ export class TrackingService {
     screen: SCREENS_IDS.Credits,
     type: TYPES_IDS.Error
   };
+  public static KLINC_LINK_DISPLAY = {
+    name: '801',
+    category: CATEGORY_IDS.Klinc,
+    screen: SCREENS_IDS.ItemDetail,
+    type: TYPES_IDS.Display
+  };
+  public static KLINC_LINK_TAP = {
+    name: '802',
+    category: CATEGORY_IDS.Klinc,
+    screen: SCREENS_IDS.ItemDetail,
+    type: TYPES_IDS.Tap
+  };
+
 
   public static CONVERSATION_FIRSTARCHIVE_OK = {
     name: '714',
