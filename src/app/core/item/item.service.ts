@@ -253,7 +253,15 @@ export class ItemService extends ResourceService {
       content.images,
       content.web_slug,
       content.modified_date,
-      content.delivery_info
+      content.delivery_info,
+      ITEM_TYPES.CONSUMER_GOODS,
+      content.extra_info ? {
+        object_type: {
+          id: content.extra_info.object_type.id.toString()
+        },
+        brand: content.extra_info.brand,
+        model: content.extra_info.model
+      } : undefined
     );
   }
 

@@ -218,6 +218,22 @@ describe('UploadProductComponent', () => {
 
         expect(component.fixedCategory).toBe('Real Estate');
       });
+
+      it('should should call onCategoryChange', () => {
+        spyOn(component, 'onCategoryChange');
+        component.item = new Item(
+          ITEM_DATA.id,
+          ITEM_DATA.legacy_id,
+          ITEM_DATA.owner,
+          ITEM_DATA.title,
+          ITEM_DATA.description,
+          13000
+        );
+
+        component.ngOnChanges();
+
+        expect(component.onCategoryChange).toHaveBeenCalled();
+      });
     });
   });
 

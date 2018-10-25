@@ -1,6 +1,9 @@
 import { Model } from '../resource/model.interface';
 import { Image, UserLocation } from '../user/user-response.interface';
-import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase } from './item-response.interface';
+import {
+  ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase,
+  ItemExtraInfo
+} from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
 export const ITEM_BASE_PATH = 'http://es.wallapop.com/item/';
@@ -19,8 +22,8 @@ export const ITEM_TYPES: any = {
 
 export class Item implements Model {
   private _webLink: string;
-
   private _views: number;
+
   private _favorites: number;
   private _conversations: number;
   private _purchases: AutorenewPurchase;
@@ -48,10 +51,10 @@ export class Item implements Model {
               private _webSlug?: string,
               private _publishedDate?: number,
               private _deliveryInfo?: DeliveryInfo,
-              private _itemType: string = ITEM_TYPES.CONSUMER_GOODS) {
+              private _itemType: string = ITEM_TYPES.CONSUMER_GOODS,
+              private _extraInfo?: ItemExtraInfo) {
     this._webLink = ITEM_BASE_PATH + _webSlug;
   }
-
   get id(): string {
     return this._id;
   }
@@ -259,5 +262,9 @@ export class Item implements Model {
 
   get itemType(): string {
     return this._itemType;
+  }
+
+  get extraInfo(): ItemExtraInfo {
+    return this._extraInfo;
   }
 }

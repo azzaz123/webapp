@@ -138,7 +138,8 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         description: this.item.description,
         sale_conditions: this.item.saleConditions,
         category_id: this.item.categoryId.toString(),
-        delivery_info: this.getDeliveryInfo()
+        delivery_info: this.getDeliveryInfo(),
+        extra_info: this.item.extraInfo ? this.item.extraInfo : {}
       });
       this.detectFormChanges();
     }
@@ -183,9 +184,13 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
           this.fixedCategory = null;
         }
       } else {
+        const selectedCategory = _.find(categories, {value: this.item.categoryId.toString()});
         if (this.categoryService.isHeroCategory(this.item.categoryId)) {
-          const fixedCategory = _.find(categories, {value: this.item.categoryId.toString()});
-          this.fixedCategory = fixedCategory ? fixedCategory.label : null;
+          this.fixedCategory = selectedCategory ? selectedCategory.label : null;
+        }
+        this.onCategoryChange(selectedCategory);
+        if (this.item.extraInfo) {
+          this.getBrandsAndModels(this.item.extraInfo.object_type.id);
         }
       }
     });
@@ -201,7 +206,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   }
 
   onSubmit() {
-    console.log(this.uploadForm.value);
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
