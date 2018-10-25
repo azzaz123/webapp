@@ -122,10 +122,11 @@ h2 {
   }
 }
 
-@media screen and (max-height: 678px) {
+@media screen and (max-height: 728px) {
   .sidebar-section-circle {
     width: $sidebar-section-circle-size-small;
     height: $sidebar-section-circle-size-small;
+    margin: 0 auto $spacing-XS auto;
   }
   .sidebar-section {
     mat-icon {

@@ -39,6 +39,8 @@ import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
 import { PaymentService } from './core/payments/payment.service';
+import { MOCK_MESSAGE } from '../tests/message.fixtures.spec';
+import { messageStatus } from './core/message/message';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -59,7 +61,6 @@ let modalService: NgbModal;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
 
-const EVENT_CALLBACK: Function = createSpy('EVENT_CALLBACK');
 const ACCESS_TOKEN = 'accesstoken';
 
 describe('App', () => {
@@ -154,7 +155,8 @@ describe('App', () => {
             return Observable.of();
           },
           handleNewMessages() {},
-          sendAck() {},
+          markAs() {},
+          markAllAsRead() {},
           resetCache() {},
           syncItem() {}
         }
@@ -276,24 +278,15 @@ describe('App', () => {
 
         expect(eventService.subscribe['calls'].argsFor(7)[0]).toBe(EventService.MESSAGE_SENT_ACK);
         expect(eventService.subscribe['calls'].argsFor(8)[0]).toBe(EventService.MESSAGE_RECEIVED);
+        expect(eventService.subscribe['calls'].argsFor(9)[0]).toBe(EventService.MESSAGE_READ);
       });
 
-      it('should call conversationService.sendAck when a chat signal is emitted', () => {
-        spyOn(conversationService, 'sendAck');
-
-        component.ngOnInit();
-        eventService.emit(EventService.MESSAGE_SENT_ACK, '123', 'abc');
-        eventService.emit(EventService.MESSAGE_RECEIVED, '234', 'cde');
-
-        expect(conversationService.sendAck).toHaveBeenCalledWith(TrackingService.MESSAGE_SENT_ACK, '123', 'abc');
-        expect(conversationService.sendAck).toHaveBeenCalledWith(TrackingService.MESSAGE_RECEIVED, '234', 'cde');
-      });
-
-      it('should perform a xmpp connect when the login event is triggered with the correct user data', () => {
+      it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
         spyOn(xmppService, 'connect').and.callThrough();
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        eventService.emit(EventService.DB_READY);
 
         expect(xmppService.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
@@ -301,6 +294,7 @@ describe('App', () => {
       it('should call conversationService.init', () => {
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        eventService.emit(EventService.DB_READY);
 
         expect(conversationService.init).toHaveBeenCalledTimes(1);
       });
@@ -319,6 +313,7 @@ describe('App', () => {
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        eventService.emit(EventService.DB_READY);
 
         expect(conversationService.init).toHaveBeenCalledTimes(2);
       });
@@ -336,6 +331,7 @@ describe('App', () => {
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        eventService.emit(EventService.DB_READY);
 
         expect(callsService.init).toHaveBeenCalledTimes(2);
       });
@@ -538,6 +534,46 @@ describe('App', () => {
       eventService.emit(EventService.USER_LOGOUT);
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MY_PROFILE_LOGGED_OUT);
+    });
+  });
+
+  describe('process chat signals', () => {
+    beforeEach(() => {
+      spyOn(conversationService, 'markAs');
+      spyOn(conversationService, 'markAllAsRead');
+
+      component.ngOnInit();
+    });
+
+    it('should call the conversationService.markAs method when a MESSAGE_SENT_ACK event is triggered', () => {
+      eventService.emit(EventService.MESSAGE_SENT_ACK, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
+
+      expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.SENT, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
+    });
+
+    it('should call the conversationService.markAs method when a MESSAGE_RECEIVED event is triggered', () => {
+      eventService.emit(EventService.MESSAGE_RECEIVED, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
+
+      expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.RECEIVED, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
+    });
+
+    it('should call the conversationService.markAllAsRead method when a MESSAGE_READ event is triggered', () => {
+      const timestamp = new Date().getTime();
+      eventService.emit(EventService.MESSAGE_READ, MOCK_MESSAGE.conversationId, timestamp);
+
+      expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp, true);
+    });
+  });
+
+  describe('process new message event', () => {
+    it('should call conversationService.handleNewMessages when a NEW_MESSAGE event is triggered', () => {
+      spyOn(conversationService, 'handleNewMessages');
+      const timestamp = new Date().getTime();
+
+      component.ngOnInit();
+      eventService.emit(EventService.NEW_MESSAGE, MOCK_MESSAGE, timestamp);
+
+      expect(conversationService.handleNewMessages).toHaveBeenCalledWith(MOCK_MESSAGE, timestamp);
     });
   });
 

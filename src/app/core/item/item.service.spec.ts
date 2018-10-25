@@ -32,7 +32,7 @@ import {
 import { Item, ITEM_BASE_PATH, ITEM_TYPES } from './item';
 import { Observable } from 'rxjs/Observable';
 import {
-  CarInfo,
+  CarInfo, CheapestProducts,
   ConversationUser,
   ItemBulkResponse,
   ItemCounters, ItemDataResponse,
@@ -680,6 +680,23 @@ describe('Service: Item', () => {
         itemsIds: '1,2'
       });
       expect(response).toEqual(ITEMS_WITH_PRODUCTS);
+    });
+  });
+
+  describe('getCheapestProductPrice', () => {
+    it('should call get', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let response: CheapestProducts;
+
+      service.getCheapestProductPrice(['1', '2']).subscribe((r: CheapestProducts) => {
+        response = r;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-visibility-products', {
+        itemsIds: '1,2'
+      });
+      expect(response).toEqual({ 1: '3.19', 2: '3.19' });
     });
   });
 

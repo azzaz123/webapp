@@ -14,6 +14,8 @@ export class EventService {
   public static MESSAGE_READ_ACK = 'messageReadAck';
   public static MESSAGE_SENT_ACK = 'messageSentAck';
   public static MESSAGE_RECEIVED_ACK = 'messageReceivedAck';
+  public static MSG_ARCHIVE_LOADED = 'archiveLoaded';
+  public static MSG_ARCHIVE_LOADING = 'archiveLoading';
   public static CONNECTION_ERROR = 'connectionError';
   public static CONNECTION_RESTORED = 'connectionRestored';
   public static CLIENT_DISCONNECTED = 'clientDisconnected';
@@ -31,6 +33,9 @@ export class EventService {
   public static UPDATE_SEARCH = 'updateSearch';
   public static CLOSE_EXPANDED_CALLS = 'closeExpandedCalls';
   public static TOTAL_CREDITS_UPDATED = 'packBought';
+  public static DB_READY = 'dbReady';
+  public static FOUND_MESSAGES_IN_DB = 'foundMessagesInDb';
+  public static CONVERSATION_BUMPED = 'conversationBumped';
 
   private subjects: any = {};
 

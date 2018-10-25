@@ -71,11 +71,12 @@ export class BuyProductModalComponent implements OnInit {
   public checkout() {
     this.loading = true;
     const orderId: string = UUID.UUID();
+    const creditsToPay = this.usedCredits(this.orderEvent.total);
     this.itemService.purchaseProductsWithCredits(this.orderEvent.order, orderId).subscribe((response: PurchaseProductsWithCreditsResponse) => {
       if (response.items_failed && response.items_failed.length) {
         this.activeModal.close('error');
       } else {
-        localStorage.setItem('transactionSpent', (this.orderEvent.total * this.creditInfo.factor).toString());
+        localStorage.setItem('transactionSpent', (creditsToPay).toString());
         if (this.type === 'urgent' && this.creditInfo.credit > 0) {
           localStorage.setItem('transactionType', 'urgentWithCredits');
         } else if (this.type === 'reactivate' && this.creditInfo.credit > 0) {
@@ -103,6 +104,15 @@ export class BuyProductModalComponent implements OnInit {
       }, () => {
         this.activeModal.close('error');
       });
+    }
+  }
+
+  private usedCredits(orderTotal: number): number {
+    const totalCreditsToPay: number = orderTotal * this.creditInfo.factor;
+    if (totalCreditsToPay < this.creditInfo.credit) {
+      return totalCreditsToPay;
+    } else {
+      return this.creditInfo.credit;
     }
   }
 

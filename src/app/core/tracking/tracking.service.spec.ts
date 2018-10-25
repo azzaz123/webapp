@@ -38,19 +38,19 @@ class MockedNavigatorService {
 const eventsArray = [
   {
     eventData: TrackingService.NOTIFICATION_RECEIVED,
-    attributes: {conversation_id: 'conversation'}
-  },
-  {
-    eventData: TrackingService.MESSAGE_RECEIVED,
-    attributes: {thread_id: 'abc', message_id: '123'}
+    attributes: {thread_id: 'conversation', message_id: '123'}
   },
   {
     eventData: TrackingService.MESSAGE_RECEIVED,
     attributes: {thread_id: 'abc', message_id: '234'}
+  },
+  {
+    eventData: TrackingService.MESSAGE_RECEIVED,
+    attributes: {thread_id: 'abc', message_id: '345'}
   }
 ];
 
-const sendInterval = 60000;
+const sendInterval = 10000;
 
 
 describe('Service: Tracking', () => {
@@ -112,27 +112,76 @@ describe('Service: Tracking', () => {
     });
   });
 
-  describe('trackMultiple', () => {
-    it('should call createMultipleEvents passing the given arguments', fakeAsync(() => {
-      spyOn<any>(service, 'createMultipleEvents').and.callThrough();
+  describe('addTrackingEvent', () => {
+    it('should add the tracking event multiple times if acceptDuplicates is true or is missing', () => {
+      service.addTrackingEvent(eventsArray[0], true);
+      service.addTrackingEvent(eventsArray[0]);
+      service.addTrackingEvent(eventsArray[0]);
 
-      service.trackMultiple(eventsArray);
-      tick(sendInterval);
+      const eventInstances = service['pendingTrackingEvents'].filter(e => e === eventsArray[0]).length;
 
-      expect((service as any).createMultipleEvents).toHaveBeenCalledWith(eventsArray);
-      discardPeriodicTasks();
-    }));
+      expect(service['pendingTrackingEvents']).toContain(eventsArray[0]);
+      expect(eventInstances).toBe(3);
+    });
 
-    it('should do a post to clickstream', fakeAsync(() => {
+    it('should only add the tracking event once if acceptDuplicates is false', () => {
+      service.addTrackingEvent(eventsArray[0], false);
+      service.addTrackingEvent(eventsArray[0], false);
+      service.addTrackingEvent(eventsArray[0], false);
+
+      const eventInstances = service['pendingTrackingEvents'].filter(e => e === eventsArray[0]).length;
+
+      expect(service['pendingTrackingEvents']).toContain(eventsArray[0]);
+      expect(eventInstances).toBe(1);
+    });
+
+    it('should NOT add the tracking event if acceptDuplicates is false and the event has been sent previously', () => {
+      service['sentEvents'] = [eventsArray[0]];
+
+      service.addTrackingEvent(eventsArray[0], false);
+
+      expect(service['pendingTrackingEvents']).not.toContain(eventsArray[0]);
+    });
+  });
+
+  describe('trackAccumulatedEvents', () => {
+    it('should send a batch of events accumulated when it has reached the maxBatchSize limit', () => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
-      spyOn<any>(service, 'createMultipleEvents').and.callThrough();
+      const maxBatchSize = 1000;
+      let x = 0;
 
-      service.trackMultiple(eventsArray);
+      service.trackAccumulatedEvents();
+      while (x < maxBatchSize) {
+        service.addTrackingEvent(eventsArray[0]);
+        x++;
+      }
+
+      expect(http.postNoBase['calls'].argsFor(0)[0]).toContain('clickstream.json/sendEvents');
+    });
+
+    it('should send a batch of events after the sendInterval time has passed', (fakeAsync(() => {
+      spyOn(http, 'postNoBase').and.callThrough();
+
+      service.trackAccumulatedEvents();
+      service.addTrackingEvent(eventsArray[0]);
       tick(sendInterval);
 
-      expect(http.postNoBase['calls'].argsFor(0)[0]).toBe('https://collector.wallapop.com/clickstream.json/sendEvents');
+      expect(http.postNoBase['calls'].argsFor(0)[0]).toContain('clickstream.json/sendEvents');
       discardPeriodicTasks();
-    }));
+    })));
+
+    it('should add the event to the sentEvents array if the post request completes successfully', (fakeAsync(() => {
+      spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
+      const firstEvent = Object.assign({}, eventsArray[0]);
+
+      service.trackAccumulatedEvents();
+      service.addTrackingEvent(eventsArray[0]);
+      tick(sendInterval);
+
+      expect(service['sentEvents']).toContain(firstEvent);
+      expect(service['pendingTrackingEvents'].length).toBe(0);
+      discardPeriodicTasks();
+    })));
   });
 
 });

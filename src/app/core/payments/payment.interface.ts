@@ -103,11 +103,14 @@ export interface ScheduledStatus {
   autorenew_alert: number;
   autorenew_scheduled: ScheduledBumps;
   purchased?: ScheduledBumps;
+  items_scheduled_purchases?: ScheduledBumps;
 }
 
 export interface ScheduledBumps {
   citybump?: number;
+  zonebump?: number;
   countrybump?: number;
+  urgent?: number;
 }
 
 export interface CreditInfo {

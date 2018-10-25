@@ -14,6 +14,7 @@ export class I18nService {
         sameElse: 'Do [of] MMMM',
         mediumDate: 'MMM d, y'
       },
+      momentFormat: 'Do [of] MMMM',
       reportListingReasons: [
         {id: 2, label: 'People or animals'},
         {id: 3, label: 'Joke'},
@@ -59,6 +60,8 @@ export class I18nService {
       chats: 'Chats',
       sold: 'Sold',
       views: 'Views',
+      favorites: 'Favorites',
+      featured: 'Featured',
       ExtensionNotAllowed: 'You tried to upload an inadequate format. Only photos in JPG or JPEG formats are accepted: ',
       MaxUploadsExceeded: 'This file exceeds the limit of photos: ',
       MaxSizeExceeded: 'This file exceeds the limit of size: ',
@@ -85,6 +88,7 @@ export class I18nService {
       twitterShare: 'Look what I found on @Wallapop:',
       countrybump: 'Country Bump',
       citybump: 'City Bump',
+      zonebump: 'City Bump',
       deleteBillingInfoSuccess: 'Your billing info has been deleted',
       deleteBillingInfoError: 'There was a error deleting your billing info',
       packError: 'There was a error buying this pack',
@@ -100,6 +104,7 @@ export class I18nService {
         sameElse: 'D [de] MMMM',
         mediumDate: 'd MMM y'
       },
+      momentFormat: 'D [de] MMMM',
       reportListingReasons: [
         {id: 2, label: 'Personas o Animales'},
         {id: 3, label: 'Broma'},
@@ -144,7 +149,9 @@ export class I18nService {
       answered: 'Llamada recibida',
       chats: 'Chats',
       sold: 'Vendido',
-      views: 'Vistos',
+      views: 'Visualizaciones',
+      favorites: 'Favoritos',
+      featured: 'Destacado',
       cityFeatured: 'Destacados ciudad',
       countryFeatured: 'Destacados país',
       ExtensionNotAllowed: 'Has intentado subir un formato no adecuado. Solo se pueden añadir fotos en jpg o jpeg: ',
@@ -173,6 +180,7 @@ export class I18nService {
       twitterShare: 'Mira que acabo de encontrar en @Wallapop:',
       countrybump: 'Destacado País',
       citybump: 'Destacado Ciudad',
+      zonebump: 'Destacado Ciudad',
       deleteBillingInfoSuccess: 'Tu información de facturación ha sido borrada',
       deleteBillingInfoError: 'Hubo un error borrando tu información de facturación',
       packError: 'Hubo un error al comprar este paquete',
