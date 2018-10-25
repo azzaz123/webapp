@@ -110,7 +110,9 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         exchange_allowed: false
       }),
       extra_info: fb.group({
-        object_type: '',
+        object_type: fb.group({
+          id: ''
+        }),
         brand: '',
         model: ''
       }),

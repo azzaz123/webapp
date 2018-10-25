@@ -143,7 +143,9 @@ describe('UploadProductComponent', () => {
           longitude: ''
         },
         extra_info: {
-          object_type: '',
+          object_type: {
+            id: ''
+          },
           brand: '',
           model: ''
         }
@@ -409,7 +411,9 @@ describe('UploadProductComponent', () => {
           longitude: USER_LOCATION.approximated_longitude
         },
         extra_info: {
-          object_type: '',
+          object_type: {
+            id: ''
+          },
           brand: '',
           model: ''
         }

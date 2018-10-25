@@ -102,9 +102,9 @@
     <h2 i18n>TE ENCONTRARÁN ANTES SI CONCRETAS <span class="small">(Campo no obligatorio)</span></h2>
     <div class="row" formGroupName="extra_info">
       <div class="col-sm-4" *ngIf="hasObjectType">
-        <div class="form-group last">
+        <div class="form-group last" formGroupName="object_type">
           <label for="objectType" i18n>{{objectTypeTitle}}</label>
-          <ng-select class="form-control" formControlName="object_type" id="objectType"
+          <ng-select class="form-control" formControlName="id" id="objectType"
                      (selected)="getBrandsAndModels($event.value)"
                      [options]="objectTypes" noFilter="10"></ng-select>
         </div>
