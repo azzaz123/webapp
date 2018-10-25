@@ -28,8 +28,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private _loading = false;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
-  private pendingPagesLoaded = 0;
-  private processedPagesLoaded = 0;
+  public pendingPagesLoaded = 0;
+  public processedPagesLoaded = 0;
   private active = true;
   private newConversationItemId: string;
   public isProfessional: boolean;
