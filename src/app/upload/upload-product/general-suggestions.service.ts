@@ -16,10 +16,12 @@ export class GeneralSuggestionsService {
     return this.http.get(this.API_URL + '/object-type', {category_id: categoryId})
       .map((r: Response) => r.json())
       .map((types: any[]) => {
-        return types.map((type: any) => ({
-          value: type.id,
-          label: type.name
-        }));
+        return types
+          .filter((type: any) => type.id)
+          .map((type: any) => ({
+            value: type.id,
+            label: type.name
+          }));
       });
   }
 
