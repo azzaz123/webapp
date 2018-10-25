@@ -1,11 +1,19 @@
 <div class="header" [hidden]="step === 2"></div>
 <div class="modal-body" [hidden]="step === 2">
 
-  <h1 i18n>Are you sure you want to close your account?</h1>
-  <p i18n>It's never too late to change your mind, you know?<br />The team will be sad to see you go :(</p>
+  <div *ngIf="!profileFeatured">
+    <h1 i18n>Are you sure you want to close your account?</h1>
+    <p i18n>It's never too late to change your mind, you know?<br />The team will be sad to see you go :(</p>
+    <button class="btn btn-secondary" (click)="step = 2" i18n>Yes, I do want to close my account</button>
+    <button class="btn btn-secondary" (click)="activeModal.dismiss()" i18n>No, I want to stay</button>
+  </div>
 
-  <button class="btn btn-secondary" (click)="step = 2" i18n>Yes, I do want to close my account</button>
-  <button class="btn btn-secondary" (click)="activeModal.dismiss()" i18n>No, I want to stay</button>
+  <div *ngIf="profileFeatured">
+    <h1 i18n>Are you sure you want to unsubscribe?</h1>
+    <p i18n>You are unsubscribing but you have an active subscription in Wallapop. To cancel it, visit the Play Store o the App Store.</p>
+    <button class="btn btn-secondary" (click)="step = 2" i18n>Unsuscribe me, I will cancel my subscription</button>
+    <button class="btn btn-secondary" (click)="activeModal.dismiss()" i18n>Ok, I changed my mind</button>
+  </div>
 
 </div>
 

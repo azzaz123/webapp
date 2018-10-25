@@ -5,6 +5,7 @@ import { UnsubscribeReason } from '../../core/user/unsubscribe-reason.interface'
 import { EventService } from '../../core/event/event.service';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../../core/http/access-token.service';
+import { User } from '../../core/user/user';
 
 @Component({
   selector: 'tsl-unsubscribe-modal',
@@ -17,6 +18,7 @@ export class UnsubscribeModalComponent implements OnInit {
   public reasons: UnsubscribeReason[];
   public selectedReason: number;
   public customReason: string;
+  public profileFeatured: boolean;
 
   constructor(public activeModal: NgbActiveModal,
               private userService: UserService,
@@ -27,6 +29,9 @@ export class UnsubscribeModalComponent implements OnInit {
   ngOnInit() {
     this.userService.getUnsubscribeReasons().subscribe((reasons: UnsubscribeReason[]) => {
       this.reasons = reasons;
+    });
+    this.userService.me().subscribe((user: User) => {
+      this.profileFeatured = user.featured;
     });
   }
 

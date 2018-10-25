@@ -291,7 +291,8 @@ export class UserService extends ResourceService {
       data.last_name,
       data.birth_date,
       data.gender,
-      data.email
+      data.email,
+      data.featured
     );
   }
 

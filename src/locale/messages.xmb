@@ -35,7 +35,6 @@
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:57</source>Reviews</msg>
   <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:65</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
   <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:72</source>Help</msg>
-  <msg id="4088311569349098646"><source>app/layout/sidebar/sidebar.component.ts:79</source><source>app/stats/stats.component.ts:6</source>Stats</msg>
   <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
         I accept the updated privacy policy in order to continue navigating.
       </msg>
@@ -224,9 +223,9 @@
   <msg id="8191075807274604024"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:34</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.ts:18</source>Go to my catalogue</msg>
   <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:38</source><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:21</source>Something happened...</msg>
   <msg id="3979232265698800722"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:39</source>Your item(s) have not been featured because something went wrong with your credit card.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Please check and try again.</msg>
-  <msg id="3275068756845590930"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:40</source>Letâs go</msg>
-  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:44</source>Hmmmâ¦</msg>
-  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:45</source>Your credit card seems suspicious. Â¿Why not trying with another account?</msg>
+  <msg id="3275068756845590930"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:40</source>Let’s go</msg>
+  <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:44</source>Hmmm…</msg>
+  <msg id="6711831572034428010"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:45</source>Your credit card seems suspicious. ¿Why not trying with another account?</msg>
   <msg id="833526722817345312"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:46</source>C&apos;mon</msg>
   <msg id="6811335180251341277"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:50</source>There has been a mistake</msg>
   <msg id="4140116217223755546"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.ts:51</source>Your credit card has an invalid expiration date. Please check and try again.</msg>
@@ -387,7 +386,7 @@
         Try again later.</msg>
   <msg id="6146618115870222180"><source>app/chat/conversations-panel/conversations-panel.component.ts:2</source>Your Messages</msg>
   <msg id="8848709900682152607"><source>app/chat/conversations-panel/conversations-panel.component.ts:5</source>Mark everything as Processed</msg>
-  <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:25</source>Load more</msg>
+  <msg id="33149636091572968"><source>app/chat/conversations-panel/conversations-panel.component.ts:27</source>Load more</msg>
   <msg id="4896863464728200563"><source>app/chat/input/input.component.ts:2</source>Write a message...</msg>
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.ts:2</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.ts:3</source>Connected</msg>
@@ -426,13 +425,17 @@
   <msg id="5871405940994162095"><source>app/help/help.component.ts:60</source>For any support:</msg>
   <msg id="4039809737462883261"><source>app/help/help.component.ts:64</source>Mon to Thurs from 10:00 to 18:00</msg>
   <msg id="4911360466860911169"><source>app/help/help.component.ts:65</source>Fri from 09:00 to 15:00</msg>
-  <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:4</source>Are you sure you want to close your account?</msg>
-  <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:5</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
+  <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:5</source>Are you sure you want to close your account?</msg>
+  <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:6</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
   <msg id="859827593140377121"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:7</source>Yes, I do want to close my account</msg>
   <msg id="3339283489391878454"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:8</source>No, I want to stay</msg>
-  <msg id="6908290931448223055"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:16</source>Can you tell us why you want to close your account? We won&apos;t tell anyone.</msg>
-  <msg id="7818739675790737204"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:25</source>Tell us what happened...</msg>
-  <msg id="6490688569532630280"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:30</source>Send</msg>
+  <msg id="7811210420459773233"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:12</source>Are you sure you want to unsubscribe?</msg>
+  <msg id="475161398925564146"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:13</source>You are unsubscribing but you have an active subscription in Wallapop. To cancel it, visit the Play Store o the App Store.</msg>
+  <msg id="1468205032926382389"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:14</source>Unsuscribe me, I will cancel my subscription</msg>
+  <msg id="6555865224397311626"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:15</source>Ok, I changed my mind</msg>
+  <msg id="6908290931448223055"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:24</source>Can you tell us why you want to close your account? We won&apos;t tell anyone.</msg>
+  <msg id="7818739675790737204"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:33</source>Tell us what happened...</msg>
+  <msg id="6490688569532630280"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:38</source>Send</msg>
   <msg id="792930787826735850"><source>app/profile/profile.component.ts:7</source>Your profile</msg>
   <msg id="4532380494593950343"><source>app/profile/profile.component.ts:10</source>From here you can view and edit your profile</msg>
   <msg id="7022993325750262876"><source>app/profile/profile.component.ts:12</source><source>app/profile-pro/profile-pro.component.ts:11</source>View my public profile</msg>
@@ -509,6 +512,7 @@
   <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:32</source>Posted by</msg>
   <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.ts:34</source>a wallapop user</msg>
   <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:35</source>on</msg>
+  <msg id="4088311569349098646"><source>app/stats/stats.component.ts:6</source>Stats</msg>
   <msg id="605166699517966750"><source>app/stats/stats.component.ts:9</source>Control the progress of your listings and improve your sales.</msg>
   <msg id="7616770651914901276"><source>app/stats/items-stats/items-stats.component.ts:4</source>Product</msg>
   <msg id="2868602391152223921"><source>app/stats/items-stats/items-stats.component.ts:7</source>Listed on</msg>
@@ -586,7 +590,7 @@
   <msg id="6818519335368680373"><source>app/upload/upload-car/upload-car.component.ts:111</source>Number of doors</msg>
   <msg id="1673708681290091875"><source>app/upload/upload-car/upload-car.component.ts:118</source>Horsepower</msg>
   <msg id="2068484566855301885"><source>app/upload/upload-car/upload-car.component.ts:127</source>Type of car</msg>
-  <msg id="980829858200282983"><source>app/upload/upload-car/upload-car.component.ts:128</source>Small, coupÃ©, sedan, family, van...</msg>
+  <msg id="980829858200282983"><source>app/upload/upload-car/upload-car.component.ts:128</source>Small, coupé, sedan, family, van...</msg>
   <msg id="3817917717199474011"><source>app/upload/upload-car/upload-car.component.ts:133</source>Is it for getting around at the weekend or for everyday use?</msg>
   <msg id="5430617499425264578"><source>app/upload/upload-car/upload-car.component.ts:139</source>Kilometers</msg>
   <msg id="1955180263634698200"><source>app/upload/upload-car/upload-car.component.ts:140</source>Exact kilometers</msg>
@@ -623,9 +627,9 @@
   <msg id="2304052952512211620"><source>app/upload/upload-realestate/upload-realestate.component.ts:42</source>Add a fair price and the area in m2. Tell us also the state of the property. </msg>
   <msg id="535619815544108850"><source>app/upload/upload-realestate/upload-realestate.component.ts:56</source>Area m2</msg>
   <msg id="5611592591303869712"><source>app/upload/upload-realestate/upload-realestate.component.ts:65</source>Status</msg>
-  <msg id="5776258208162504805"><source>app/upload/upload-realestate/upload-realestate.component.ts:75</source>NÂº of rooms</msg>
+  <msg id="5776258208162504805"><source>app/upload/upload-realestate/upload-realestate.component.ts:75</source>Nº of rooms</msg>
   <msg id="2249392835431463782"><source>app/upload/upload-realestate/upload-realestate.component.ts:81</source>How many rooms and bathrooms does it have?</msg>
-  <msg id="8139648533150237069"><source>app/upload/upload-realestate/upload-realestate.component.ts:87</source>NÂº of bathrooms</msg>
+  <msg id="8139648533150237069"><source>app/upload/upload-realestate/upload-realestate.component.ts:87</source>Nº of bathrooms</msg>
   <msg id="4750537799485477734"><source>app/upload/upload-realestate/upload-realestate.component.ts:98</source>Features of the house</msg>
   <msg id="6916262870833373718"><source>app/upload/upload-realestate/upload-realestate.component.ts:107</source>We would like to know more about your property.</msg>
   <msg id="8983162191434268514"><source>app/upload/upload-realestate/upload-realestate.component.ts:120</source>Pay attention to spelling mistakes, so our users can find your property easily.</msg>

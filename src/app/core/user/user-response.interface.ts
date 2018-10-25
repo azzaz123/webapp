@@ -19,6 +19,7 @@ export interface UserResponse extends ApiResponse {
   birth_date?: number;
   gender?: string;
   email?: string;
+  featured?: boolean;
 }
 
 export interface Image {
