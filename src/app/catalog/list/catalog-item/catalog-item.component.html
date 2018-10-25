@@ -17,9 +17,9 @@
       <mat-icon svgIcon="views"></mat-icon> {{item.views}}
       <mat-icon svgIcon="heart"></mat-icon> {{item.favorites}}
     </span>
-    <span class="listing-fee" *ngIf="item.listingFeeExpiringDate">
-      <div>Listing Fee</div>
-      <tsl-countdown class="listing-fee-countdown" [value]="item.listingFeeExpiringDate" format="listingFee"></tsl-countdown>
+    <span class="listing-fee">
+      <div *ngIf="showListingFee()">Listing Fee</div>
+      <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="listing-fee-countdown" [value]="item.listingFeeExpiringDate" format="listingFee"></tsl-countdown>
     </span>
     <span class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">

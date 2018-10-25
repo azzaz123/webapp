@@ -23,6 +23,7 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Item } from '../../../core/item/item';
 import { EventService } from '../../../core/event/event.service';
 import { environment } from '../../../../environments/environment';
+import * as moment from 'moment';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -351,6 +352,20 @@ describe('CatalogItemComponent', () => {
       it('should emit ITEM_SOLD event', () => {
         expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
       });
+    });
+  });
+
+  describe('showListingFee', () => {
+    it('should return true when listing fee expiration is more than current time', () => {
+      component.item.listingFeeExpiringDate = moment().add(2, 'seconds').valueOf();
+
+      expect(component.showListingFee()).toEqual(true);
+    });
+
+    it('should return false when listing fee expiration is less than current time', () => {
+      component.item.listingFeeExpiringDate = moment().subtract(2, 'seconds').valueOf();
+
+      expect(component.showListingFee()).toEqual(false);
     });
   });
 });

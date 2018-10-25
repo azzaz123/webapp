@@ -138,4 +138,8 @@ export class CatalogItemComponent implements OnInit {
     this.eventService.emit(EventService.ITEM_SOLD, item);
   }
 
+  public showListingFee(): boolean {
+    return this.item.listingFeeExpiringDate > new Date().getTime();
+  }
+
 }
