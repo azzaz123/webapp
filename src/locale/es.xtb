@@ -561,7 +561,7 @@
   <translation id="853408948668135550">Marcar como reservado</translation>
   <translation id="7585826646011739428">Editar</translation>
   <translation id="7990122896525380062">Selecciona otra marca</translation>
-  <translation id="6589788805402268888">Selecciona una marca predefinida</translation>
+  <translation id="6589788805402268888">Selecciona predefinida</translation>
   <translation id="6806883447514569994">Tu centro de ayuda</translation>
   <translation id="7002268576514991178">Aquí esperemos que encuentres las respuestas a todas tus preguntas</translation>
   <translation id="606929755258304715">Detalles de contacto</translation>
@@ -693,4 +693,8 @@
     <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
     marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
   </translation>
+  <translation id="8132836034776935972">Te encontrarán antes si concretas</translation>
+  <translation id="9051827910854458434">Selecciona otro modelo</translation>
+  <translation id="3930822870006657314">Selecciona predefinido</translation>
+
 </translationbundle>

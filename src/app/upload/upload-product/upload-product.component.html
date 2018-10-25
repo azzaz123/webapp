@@ -99,11 +99,11 @@
     </ng-template>
   </div>
   <div class="box" *ngIf="hasObjectType || hasBrand || hasModel">
-    <h2 i18n>TE ENCONTRARÁN ANTES SI CONCRETAS <span class="small">(Campo no obligatorio)</span></h2>
+    <h2><span i18n>The more precise, the better</span> 🎯</h2>
     <div class="row" formGroupName="extra_info">
       <div class="col-sm-4" *ngIf="hasObjectType">
         <div class="form-group last" formGroupName="object_type">
-          <label for="objectType" i18n>{{objectTypeTitle}}</label>
+          <label for="objectType">{{objectTypeTitle}}</label>
           <ng-select class="form-control" formControlName="id" id="objectType"
                      (selected)="getBrandsAndModels($event.value)"
                      [options]="objectTypes" noFilter="10"></ng-select>
@@ -128,8 +128,8 @@
           <label for="brand" i18n>Model</label>
           <div class="pull-right">
             <a class="other-make" (click)="customModel = !customModel">
-              <span *ngIf="!customMake" i18n>Select another model</span>
-              <span *ngIf="customMake" i18n>Select a predefined model</span>
+              <span *ngIf="!customModel" i18n>Select another model</span>
+              <span *ngIf="customModel" i18n>Select a predefined model</span>
             </a>
           </div>
           <ng-select *ngIf="!customModel" class="form-control" formControlName="model" id="model"
