@@ -32,7 +32,9 @@ export class GeneralSuggestionsService {
     })
       .map((r: Response) => r.json())
       .map((brands: any[]) => {
-        return brands.map((brand: any) => ({
+        return brands
+          .filter((brand: any) => brand.brand)
+          .map((brand: any) => ({
           value: brand.brand,
           label: brand.brand
         }));
