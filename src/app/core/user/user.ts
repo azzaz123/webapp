@@ -1,5 +1,5 @@
 import { Model } from '../resource/model.interface';
-import { UserLocation, UserStats, UserValidations } from './user-response.interface';
+import { UserLocation, UserStats, UserValidations, MotorPlan } from './user-response.interface';
 import { Item } from '../item/item';
 import { environment } from '../../../environments/environment';
 

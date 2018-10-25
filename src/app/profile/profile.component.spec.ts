@@ -23,6 +23,7 @@ import {
 import { ProfileFormComponent } from '../shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from './../shared/switch/switch.component';
 import { environment } from '../../environments/environment';
+import { I18nService } from '../core/i18n/i18n.service';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -36,6 +37,10 @@ describe('ProfileComponent', () => {
   let modalService: NgbModal;
   let privacyService: PrivacyService;
   let mockBackend: MockBackend;
+  const mockMotorPlan = {
+    type: 'motor_plan_pro',
+    subtype: 'sub_premium'
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -46,11 +51,17 @@ describe('ProfileComponent', () => {
       ],
       providers: [
         ...TEST_HTTP_PROVIDERS,
+        I18nService,
         {
           provide: UserService, useValue: {
           user: MOCK_FULL_USER,
           me() {
             return Observable.of(MOCK_FULL_USER);
+          },
+          getMotorPlan() {
+            return Observable.of({
+              motorPlan: mockMotorPlan
+            });
           }
         }
         },

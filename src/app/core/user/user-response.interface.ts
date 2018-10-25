@@ -73,3 +73,13 @@ export interface UserValidations {
   level: number;
   birthday: boolean;
 }
+
+export interface MotorPlan {
+  type: string,
+  subtype: string
+}
+
+export interface MotorPlanType {
+  subtype: string,
+  label: string
+}

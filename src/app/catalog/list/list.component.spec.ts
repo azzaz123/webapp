@@ -56,6 +56,10 @@ describe('ListComponent', () => {
     sold: 7,
     publish: 12
   };
+  const mockMotorPlan = {
+    type: 'motor_plan_pro',
+    subtype: 'sub_premium'
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -147,6 +151,11 @@ describe('ListComponent', () => {
             getStats() {
               return Observable.of({
                 counters: mockCounters
+              });
+            },
+            getMotorPlan() {
+              return Observable.of({
+                motorPlan: mockMotorPlan
               });
             }
           }
