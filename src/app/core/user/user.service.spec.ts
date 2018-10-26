@@ -643,9 +643,11 @@ describe('Service: User', () => {
         connection.mockRespond(new Response(res));
       });
       let motorPlan: MotorPlan;
+
       service.getMotorPlan().subscribe((r: MotorPlan) => {
         motorPlan = r;
       });
+
       expect(http.get).toHaveBeenCalled();
       expect(motorPlan.subtype).toEqual('sub_premium');
     }));
@@ -653,18 +655,22 @@ describe('Service: User', () => {
     it('should return the MotorPlan object if present', fakeAsync(() => {
       let motorPlan: MotorPlan;
       spyOn(http, 'get');
+
       service['_motorPlan'] = mockMotorPlan;
       service.getMotorPlan().subscribe((r: MotorPlan) => {
         motorPlan = r;
       });
+
       expect(motorPlan.subtype).toBe('sub_premium');
       expect(http.get).not.toHaveBeenCalled();
     }));
 
     it('should call http only once', () => {
       spyOn(http, 'get').and.callThrough();
+
       service.getMotorPlan().subscribe();
       service.getMotorPlan().subscribe();
+
       expect(http.get).toHaveBeenCalledTimes(1);
     });
 
