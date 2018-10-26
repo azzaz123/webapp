@@ -6,7 +6,7 @@ import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Response, ResponseOptions } from '@angular/http';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MOCK_FULL_USER, USER_DATA, USER_URL } from '../../tests/user.fixtures.spec';
+import { MOCK_FULL_USER, USER_DATA, USER_URL, MOTORPLAN_DATA } from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { HttpService } from '../core/http/http.service';
@@ -186,6 +186,22 @@ describe('ProfileComponent', () => {
       privacyService.getPrivacyList().subscribe();
 
       expect(component.allowSegmentation).toBe(false);
+    });
+
+    it('should subscribe to getMotorPlan', () => {
+      spyOn(userService, 'getMotorPlan').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.getMotorPlan).toHaveBeenCalled();
+    });
+
+    it('should set the translated user motor plan', () => {
+      spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of(MOTORPLAN_DATA));
+
+      component.ngOnInit();
+
+      expect(component.motorPlan).toEqual({subtype: 'sub_premium', label: 'Super Motor Plan'});
     });
   });
 
