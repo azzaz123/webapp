@@ -479,24 +479,51 @@ describe('Service: Conversation', () => {
       const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify(createConversationsArray(2))}));
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
+
       service.checkIfLastPage().subscribe();
+
       expect(http.get).toHaveBeenCalledWith('api/v3/protool/conversations', {
         until: 12345,
         hidden: false
       });
-      expect(service.ended).toBe(false);
     });
-    it('should set ended true', () => {
+
+    it('should set ended.pending to TRUE when called without any argument', () => {
       const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
+
       service.checkIfLastPage().subscribe();
-      expect(service.ended).toBe(true);
+
+      expect(service.ended.pending).toBe(true);
     });
+
+    it('should set ended.pending to TRUE when called with false', () => {
+      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
+      spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
+      spyOn<any>(service, 'getLastDate').and.returnValue(12345);
+
+      service.checkIfLastPage().subscribe();
+
+      expect(service.ended.pending).toBe(true);
+    });
+
+    it('should set ended.processed to TRUE when called with true', () => {
+      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
+      spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
+      spyOn<any>(service, 'getLastDate').and.returnValue(12345);
+
+      service.checkIfLastPage(true).subscribe();
+
+      expect(service.ended.processed).toBe(true);
+    });
+
     it('should do not call endpoint', () => {
       spyOn(http, 'get');
       spyOn<any>(service, 'getLastDate').and.returnValue(null);
+
       service.checkIfLastPage().subscribe();
+
       expect(http.get).not.toHaveBeenCalled();
     });
   });
