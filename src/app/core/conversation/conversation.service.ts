@@ -42,6 +42,8 @@ export class ConversationService extends LeadService {
   private readSubscription: Subscription;
   public ended: boolean;
 
+  public pendingPagesLoaded = 0;
+  public processedPagesLoaded = 0;
   constructor(http: HttpService,
               userService: UserService,
               itemService: ItemService,
