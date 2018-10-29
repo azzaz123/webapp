@@ -60,19 +60,28 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.item && this.item.categoryId === 100) {
       this.isCarItem = true;
-      this.trackingService.track(TrackingService.CARFAX_CHAT_DISPLAY);
+      this.trackingService.track(TrackingService.CARFAX_CHAT_DISPLAY, {
+        category_id: this.item.categoryId,
+        item_id: this.item.id
+      });
     } else {
       this.isCarItem = false;
     }
 
     this.showWillisLink = Object.values(showWillisCategories).includes(this.item.categoryId);
     if (this.showWillisLink) {
-      this.trackingService.track(TrackingService.WILLIS_LINK_DISPLAY);
+      this.trackingService.track(TrackingService.WILLIS_LINK_DISPLAY, {
+        category_id: this.item.categoryId,
+        item_id: this.item.id
+      });
     }
 
     this.showKlincLink = Object.values(showKlincCategories).includes(this.item.categoryId);
     if (this.showKlincLink) {
-      this.trackingService.track(TrackingService.KLINC_LINK_DISPLAY);
+      this.trackingService.track(TrackingService.KLINC_LINK_DISPLAY, {
+        category_id: this.item.categoryId,
+        item_id: this.item.id
+      });
     }
   }
 
@@ -111,16 +120,25 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
 
   public clickCarfax(event) {
     event.stopPropagation();
-    this.trackingService.track(TrackingService.CARFAX_CHAT_TAP);
+    this.trackingService.track(TrackingService.CARFAX_CHAT_TAP, {
+      category_id: this.item.categoryId,
+      item_id: this.item.id
+    });
   }
 
   public clickWillis(event) {
     event.stopPropagation();
-    this.trackingService.track(TrackingService.WILLIS_LINK_TAP);
+    this.trackingService.track(TrackingService.WILLIS_LINK_TAP, {
+      category_id: this.item.categoryId,
+      item_id: this.item.id
+    });
   }
 
   public clickKlinc(event) {
     event.stopPropagation();
-    this.trackingService.track(TrackingService.KLINC_LINK_TAP);
+    this.trackingService.track(TrackingService.KLINC_LINK_TAP, {
+      category_id: this.item.categoryId,
+      item_id: this.item.id
+    });
   }
 }
