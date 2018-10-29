@@ -21,7 +21,7 @@
   <div id="loader" [hidden]="!loading || (archive ? conversationService.processedPagesLoaded : conversationService.pendingPagesLoaded)">
     <mat-icon svgIcon="conversations-mock"></mat-icon>
   </div>
-  <div class="load-more-container" *ngIf="conversations.length > 0 && !conversationService.ended">
+  <div class="load-more-container" *ngIf="conversations.length > 0 && archive ? !conversationService.ended.processed : !conversationService.ended.pending">
     <a class="load-more" (click)="loadMore()">
       <mat-icon svgIcon="spinner" [hidden]="!loading || (archive ? !conversationService.processedPagesLoaded : !conversationService.pendingPagesLoaded)" class="spinner"></mat-icon>
       <span [hidden]="loading" i18n>Load more</span>

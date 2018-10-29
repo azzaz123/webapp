@@ -40,10 +40,14 @@ export class ConversationService extends LeadService {
 
   private messagesObservable: Observable<Conversation[]>;
   private readSubscription: Subscription;
-  public ended: boolean;
 
   public pendingPagesLoaded = 0;
   public processedPagesLoaded = 0;
+  public ended = {
+    pending: false,
+    processed: false
+  };
+
   constructor(http: HttpService,
               userService: UserService,
               itemService: ItemService,
@@ -66,12 +70,13 @@ export class ConversationService extends LeadService {
           .map((convWithMessages: Conversation[]) => {
             if (!archived) {
               if (!convWithMessages.length) {
-                this.ended = true;
+                this.ended.pending = true;
               } else {
                 this.leads = this.leads.concat(convWithMessages);
               }
             } else {
               this.archivedLeads = this.archivedLeads.concat(convWithMessages);
+              this.ended.processed = false;
             }
             this.firstLoad = false;
             this.event.emit(EventService.MSG_ARCHIVE_LOADED);
@@ -79,7 +84,7 @@ export class ConversationService extends LeadService {
           });
       } else {
         this.firstLoad = false;
-        this.ended = true;
+        archived ? this.ended.processed = true : this.ended.pending = true;
         return Observable.of([]);
       }
     });
@@ -163,9 +168,7 @@ export class ConversationService extends LeadService {
       .map((res: Response) => res.json())
       .map((res: ConversationResponse[]) => {
         if (res.length === 0) {
-          this.ended = true;
-        } else {
-          this.ended = false;
+          archive ? this.ended.processed = true : this.ended.pending = true;
         }
       });
     }
@@ -288,7 +291,7 @@ export class ConversationService extends LeadService {
       attributes: {
         thread_id: message.conversationId,
         message_id: message.id
-  }
+      }
     };
 
     switch (newStatus) {
@@ -298,7 +301,7 @@ export class ConversationService extends LeadService {
       case messageStatus.RECEIVED:
         trackingEv.eventData = TrackingService.MESSAGE_RECEIVED;
         break;
-      }
+    }
 
     this.trackingService.addTrackingEvent(trackingEv, false);
   }
