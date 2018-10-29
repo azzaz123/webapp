@@ -6,6 +6,7 @@ import { EventService } from '../../core/event/event.service';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../../core/http/access-token.service';
 import { User } from '../../core/user/user';
+import { MotorPlan, MotorPlanType } from '../../core/user/user-response.interface';
 
 @Component({
   selector: 'tsl-unsubscribe-modal',
@@ -18,7 +19,7 @@ export class UnsubscribeModalComponent implements OnInit {
   public reasons: UnsubscribeReason[];
   public selectedReason: number;
   public customReason: string;
-  public profileFeatured: boolean;
+  public hasSubscription = false;
 
   constructor(public activeModal: NgbActiveModal,
               private userService: UserService,
@@ -31,7 +32,9 @@ export class UnsubscribeModalComponent implements OnInit {
       this.reasons = reasons;
     });
     this.userService.me().subscribe((user: User) => {
-      this.profileFeatured = user.featured;
+      this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
+        this.hasSubscription = user.featured || !!motorPlan.subtype;
+      });
     });
   }
 

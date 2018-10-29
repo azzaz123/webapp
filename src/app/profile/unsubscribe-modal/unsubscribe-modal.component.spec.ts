@@ -32,6 +32,9 @@ describe('UnsubscribeModalComponent', () => {
           },
           me() {
             return Observable.of(MOCK_USER);
+          },
+          getMotorPlan() {
+            return Observable.of();
           }
         }
         },
@@ -79,13 +82,25 @@ describe('UnsubscribeModalComponent', () => {
       expect(component.reasons).toEqual(REASONS);
     });
 
-    it('should call me and set profileFeatured', () => {
+    it('should call me and set hasSubscription to false', () => {
       spyOn(userService, 'me').and.callThrough();
 
       component.ngOnInit();
 
       expect(userService.me).toHaveBeenCalled();
-      expect(component.profileFeatured).toBe(false);
+      expect(component.hasSubscription).toBe(false);
+    });
+
+    it('should call getMotorPlan and set hasSubscription to true', () => {
+      spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of({
+        type: 'type',
+        subtype: 'subtype'
+      }));
+
+      component.ngOnInit();
+
+      expect(userService.getMotorPlan).toHaveBeenCalled();
+      expect(component.hasSubscription).toBe(true);
     });
   });
 
