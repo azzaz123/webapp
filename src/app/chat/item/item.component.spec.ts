@@ -16,6 +16,7 @@ import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { Item } from '../../core/item/item';
+import {forEach} from "@angular/router/src/utils/collection";
 
 describe('Component: Item', () => {
 
@@ -109,7 +110,7 @@ describe('Component: Item', () => {
 
   it('should not track Carfax Display when isCarItem is false',  () => {
     spyOn(trackingService, 'track');
-    component.item = { ...MOCK_ITEM, categoryId: 'other' };
+    component.item = { ...MOCK_ITEM, categoryId: 'other' } as Item;
 
     component.ngOnChanges();
 
@@ -125,15 +126,17 @@ describe('Component: Item', () => {
     expect(trackingService.track).not.toHaveBeenCalled();
   });
 
-  it('should track Willis Display when ',  () => {
+  it('should track Willis Display when showWillisLink ',  () => {
     spyOn(trackingService, 'track');
-    component.item = MOCK_ITEM;
 
-    component.ngOnChanges();
+    Object.values(showWillisCategories).forEach((categoryId) => {
+      component.item = { ...MOCK_ITEM, categoryId} as Item;
+      component.ngOnChanges();
 
-    expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY, {
-      category_id: component.item.categoryId,
-      item_id: component.item.id
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
     });
   });
 
