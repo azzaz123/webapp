@@ -222,13 +222,40 @@ describe('Service: Conversation', () => {
 
     });
     describe('with no results', () => {
-      it('should return empty array', () => {
+      beforeEach(() => {
         spyOn(service, 'query').and.returnValue(Observable.of([]));
+      });
+
+      it('should return empty array', () => {
         service.getLeads(SINCE).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         expect(response.length).toBe(0);
-        expect(service.ended).toBe(true);
+      });
+
+      it('should set ended.pending to TRUE when getLeads is called without a second param', () => {
+        service.getLeads(SINCE).subscribe((r: Conversation[]) => {
+          response = r;
+        });
+
+        expect(service.ended.pending).toBe(true);
+      });
+
+      it('should set ended.pending to TRUE when getLeads is called with the second param false', () => {
+        service.getLeads(SINCE, false).subscribe((r: Conversation[]) => {
+          response = r;
+        });
+
+        expect(service.ended.pending).toBe(true);
+      });
+
+      it('should set ended.processed to TRUE when getLeads is called with the second param true', () => {
+        service.getLeads(SINCE, true).subscribe((r: Conversation[]) => {
+          response = r;
+        });
+
+        expect(service.ended.processed).toBe(true);
       });
     });
   });
