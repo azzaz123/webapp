@@ -277,7 +277,7 @@
   <msg id="5266269636016082386"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.ts:34</source>Pay with your wallacoins:</msg>
   <msg id="1381141590254425331"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.ts:73</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.ts:80</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:41</source>We don&apos;t save details of this transaction. The purchase is made via Banco Sabadell.</msg>
   <msg id="349473182974314723"><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.ts:6</source>Your item is now reactivated and in the first positions!</msg>
-  <msg id="5433688037539750263"><source>app/catalog/list/list.component.ts:14</source>Your products</msg>
+  <msg id="989776066026256137"><source>app/catalog/list/list.component.ts:14</source>Your products <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:17</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
   <msg id="442085080206895883"><source>app/catalog/list/list.component.ts:29</source>products</msg>
   <msg id="776785241867401546"><source>app/catalog/list/list.component.ts:30</source>product</msg>
@@ -436,7 +436,7 @@
   <msg id="6908290931448223055"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:24</source>Can you tell us why you want to close your account? We won&apos;t tell anyone.</msg>
   <msg id="7818739675790737204"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:33</source>Tell us what happened...</msg>
   <msg id="6490688569532630280"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:38</source>Send</msg>
-  <msg id="792930787826735850"><source>app/profile/profile.component.ts:7</source>Your profile</msg>
+  <msg id="548531554532991134"><source>app/profile/profile.component.ts:7</source>Your profile <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="4532380494593950343"><source>app/profile/profile.component.ts:10</source>From here you can view and edit your profile</msg>
   <msg id="7022993325750262876"><source>app/profile/profile.component.ts:12</source><source>app/profile-pro/profile-pro.component.ts:11</source>View my public profile</msg>
   <msg id="3797778920049399855"><source>app/profile/profile.component.ts:17</source><source>app/profile-pro/profile-pro.component.ts:16</source>Logout</msg>

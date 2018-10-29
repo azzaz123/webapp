@@ -35,7 +35,8 @@ import {
   USERS_STATS,
   USERS_STATS_RESPONSE,
   VALIDATIONS,
-  VERIFICATION_LEVEL
+  VERIFICATION_LEVEL,
+  MOTORPLAN_DATA
 } from '../../../tests/user.fixtures.spec';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { UserStatsResponse } from './user-stats.interface';
@@ -46,7 +47,7 @@ import { EventService } from '../event/event.service';
 import { PERMISSIONS, User } from './user';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from './login-response.interface';
-import { UserLocation } from './user-response.interface';
+import { UserLocation, MotorPlan } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
@@ -67,6 +68,10 @@ describe('Service: User', () => {
     emailAddress: 'test@test.it',
     installationType: 'ANDROID',
     password: 'test'
+  };
+  const mockMotorPlan = {
+    type: 'motor_plan_pro',
+    subtype: 'sub_premium'
   };
 
   beforeEach(() => {
@@ -627,4 +632,48 @@ describe('Service: User', () => {
       expect(val).toBe(true);
     });
   });
+
+  describe('getMotorPlan', () => {
+
+    it('should retrieve and return the Motor plan object', fakeAsync(() => {
+      spyOn(http, 'get').and.callThrough();
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/me/profile-subscription-info/type');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOTORPLAN_DATA)});
+        connection.mockRespond(new Response(res));
+      });
+      let motorPlan: MotorPlan;
+
+      service.getMotorPlan().subscribe((r: MotorPlan) => {
+        motorPlan = r;
+      });
+
+      expect(http.get).toHaveBeenCalled();
+      expect(motorPlan.subtype).toEqual('sub_premium');
+    }));
+
+    it('should return the MotorPlan object if present', fakeAsync(() => {
+      let motorPlan: MotorPlan;
+      spyOn(http, 'get');
+
+      service['_motorPlan'] = mockMotorPlan;
+      service.getMotorPlan().subscribe((r: MotorPlan) => {
+        motorPlan = r;
+      });
+
+      expect(motorPlan.subtype).toBe('sub_premium');
+      expect(http.get).not.toHaveBeenCalled();
+    }));
+
+    it('should call http only once', () => {
+      spyOn(http, 'get').and.callThrough();
+
+      service.getMotorPlan().subscribe();
+      service.getMotorPlan().subscribe();
+
+      expect(http.get).toHaveBeenCalledTimes(1);
+    });
+
+  });
+
 });
