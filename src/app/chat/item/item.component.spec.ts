@@ -110,7 +110,7 @@ describe('Component: Item', () => {
 
   it('should not track Carfax Display when isCarItem is false',  () => {
     spyOn(trackingService, 'track');
-    component.item = { ...MOCK_ITEM, categoryId: 'other' } as Item;
+    component.item = { ...MOCK_ITEM, categoryId: 12345678 } as Item;
 
     component.ngOnChanges();
 
