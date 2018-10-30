@@ -147,7 +147,7 @@ export class MessageService {
 
             const updateMessagesByThread = _.groupBy(updatedMesages, 'conversationId');
             Object.keys(updateMessagesByThread).map((thread) => {
-              const unreadCount = updateMessagesByThread[thread].filter(m => m.status !== messageStatus.READ && !m.fromSelf).length;
+              const unreadCount = updateMessagesByThread[thread].filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
               const conv = conversations.find(c => c.id === thread);
               if (conv && !conv.archived) {
                 conv.unreadMessages = unreadCount;
