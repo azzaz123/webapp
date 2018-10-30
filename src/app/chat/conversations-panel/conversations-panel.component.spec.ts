@@ -282,26 +282,23 @@ describe('Component: ConversationsPanel', () => {
       spyOn(conversationService, 'loadMoreArchived').and.callThrough();
     });
 
-    it('should increment pendingPagesLoaded when archive is FALSE', () => {
-      let pageNumber = 0;
+    it('should increment pendingPagesLoaded each time loadMore is called, when archive is FALSE', () => {
+      conversationService.pendingPagesLoaded = 0;
       component.archive = false;
 
       component.loadMore();
-      pageNumber++;
 
-      expect(conversationService.getPage).toHaveBeenCalledWith(pageNumber, false);
+      expect(conversationService.pendingPagesLoaded).toBe(1);
     });
 
     it('should increment processedPagesLoaded each time loadMore is called, when archive is TRUE', () => {
-      let pageNumber = 0;
+      conversationService.processedPagesLoaded = 0;
       component.archive = true;
 
       component.loadMore();
-      pageNumber++;
       component.loadMore();
-      pageNumber++;
 
-      expect(conversationService.getPage).toHaveBeenCalledWith(pageNumber, true);
+      expect(conversationService.processedPagesLoaded).toBe(2);
     });
 
     it('should call loadMore', () => {

@@ -147,6 +147,7 @@ describe('Service: Conversation', () => {
               response = r;
             });
           });
+
           it('should return conversations with unreadMessages and messages', () => {
             expect(response.length).toEqual(TOTAL);
             response.forEach((conversation: Conversation) => {
@@ -155,9 +156,11 @@ describe('Service: Conversation', () => {
               expect(conversation.messages.length).toBe(TOTAL_MESSAGES);
             });
           });
+
           it('should set conversations', () => {
             expect(service.leads).toEqual(QUERY_RESULT);
           });
+
           it('should set firstLoad to false', () => {
             expect(service.firstLoad).toBe(false);
           });
@@ -166,16 +169,21 @@ describe('Service: Conversation', () => {
             expect(service['loadMessagesIntoConversations']).toHaveBeenCalled();
           });
         });
+
         it('should call query with since', () => {
           service.getLeads(SINCE).subscribe();
+
           expect(service.query).toHaveBeenCalledWith(SINCE, undefined);
         });
+
         it('should return concatenated convesations', () => {
           const INITIAL_TOTAL = 3;
           service.leads = createConversationsArray(INITIAL_TOTAL);
+
           service.getLeads(SINCE).subscribe((r: Conversation[]) => {
             response = r;
           });
+
           expect(service.leads.length).toBe(TOTAL + INITIAL_TOTAL);
           expect(response.length).toBe(TOTAL);
         });
@@ -187,6 +195,7 @@ describe('Service: Conversation', () => {
               response = r;
             });
           });
+
           it('should return conversations with unreadMessages and messages', () => {
             expect(response.length).toEqual(TOTAL);
             response.forEach((conversation: Conversation) => {
@@ -195,40 +204,75 @@ describe('Service: Conversation', () => {
               expect(conversation.messages.length).toBe(TOTAL_MESSAGES);
             });
           });
+
           it('should set conversations', () => {
             expect(service.archivedLeads).toEqual(QUERY_RESULT);
           });
+
           it('should set firstLoad to false', () => {
             expect(service.firstLoad).toBe(false);
           });
+
           it('should call other functions', () => {
             expect(service['loadMessagesIntoConversations']).toHaveBeenCalled();
           });
         });
+
         it('should call query with since', () => {
           service.getLeads(SINCE, true).subscribe();
+
           expect(service.query).toHaveBeenCalledWith(SINCE, true);
         });
+
         it('should return concatenated convesations', () => {
           const INITIAL_TOTAL = 3;
           service.archivedLeads = createConversationsArray(INITIAL_TOTAL);
+
           service.getLeads(SINCE, true).subscribe((r: Conversation[]) => {
             response = r;
           });
+
           expect(service.archivedLeads.length).toBe(TOTAL + INITIAL_TOTAL);
           expect(response.length).toBe(TOTAL);
         });
       });
-
     });
+
     describe('with no results', () => {
-      it('should return empty array', () => {
+      beforeEach(() => {
         spyOn(service, 'query').and.returnValue(Observable.of([]));
+      });
+
+      it('should return empty array', () => {
         service.getLeads(SINCE).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         expect(response.length).toBe(0);
-        expect(service.ended).toBe(true);
+      });
+
+      it('should set ended.pending to TRUE when getLeads is called without a second param', () => {
+        service.getLeads(SINCE).subscribe((r: Conversation[]) => {
+          response = r;
+        });
+
+        expect(service.ended.pending).toBe(true);
+      });
+
+      it('should set ended.pending to TRUE when getLeads is called with the second param false', () => {
+        service.getLeads(SINCE, false).subscribe((r: Conversation[]) => {
+          response = r;
+        });
+
+        expect(service.ended.pending).toBe(true);
+      });
+
+      it('should set ended.processed to TRUE when getLeads is called with the second param true', () => {
+        service.getLeads(SINCE, true).subscribe((r: Conversation[]) => {
+          response = r;
+        });
+
+        expect(service.ended.processed).toBe(true);
       });
     });
   });
@@ -245,9 +289,11 @@ describe('Service: Conversation', () => {
       service['leads'] = LEADS;
       service.loadMore().subscribe();
     });
+
     it('should call getLeads', () => {
       expect(service['getLeads']).toHaveBeenCalledWith(1234);
     });
+
     it('should emit stream', () => {
       expect(response).toEqual(LEADS);
     });
@@ -265,9 +311,11 @@ describe('Service: Conversation', () => {
       service['archivedLeads'] = LEADS;
       service.loadMoreArchived().subscribe();
     });
+
     it('should call getLeads', () => {
       expect(service['getLeads']).toHaveBeenCalledWith(1234, true);
     });
+
     it('should emit stream', () => {
       expect(response).toEqual(LEADS);
     });
@@ -278,42 +326,58 @@ describe('Service: Conversation', () => {
     beforeEach(() => {
       response = null;
     });
+
     describe('no archive', () => {
       it('should emit 2 conversations', () => {
         service.getPage(1).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         service.stream$.next(createConversationsArray(2));
+
         expect(response.length).toBe(2);
       });
+
       it('should emit 30 conversations', () => {
         service.getPage(1).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         service.stream$.next(createConversationsArray(40));
+
         expect(response.length).toBe(30);
       });
+
       it('should emit 45 conversations', () => {
         service.getPage(2).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         service.stream$.next(createConversationsArray(45));
+
         expect(response.length).toBe(45);
       });
+
       it('should emit 90 conversations', () => {
         service.getPage(3).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         service.stream$.next(createConversationsArray(90));
+
         expect(response.length).toBe(90);
       });
+
       it('should emit conversations event after stream', () => {
         service.stream$.next(createConversationsArray(2));
+
         service.getPage(1).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         expect(response.length).toBe(2);
       });
+
       describe('filter', () => {
         it('should filter by expectedVisit property', () => {
           service.getPage(1, false, [{
@@ -328,6 +392,7 @@ describe('Service: Conversation', () => {
           service.stream$.next(conversations);
           expect(response.length).toBe(2);
         });
+
         it('should filter by phone property', () => {
           service.getPage(1, false, [{
             key: 'phone',
@@ -335,9 +400,12 @@ describe('Service: Conversation', () => {
           }]).subscribe((r: Conversation[]) => {
             response = r;
           });
+
           service.stream$.next([...createConversationsArray(6), ...createConversationsArray(4, true)]);
+
           expect(response.length).toBe(6);
         });
+
         it('should filter by multiple properties', () => {
           service.getPage(1, false, [{
             key: 'phone',
@@ -351,7 +419,9 @@ describe('Service: Conversation', () => {
           const conversations: Conversation[] = createConversationsArray(5);
           conversations[0]['_expectedVisit'] = true;
           conversations[2]['_expectedVisit'] = true;
+
           service.stream$.next([...conversations, ...createConversationsArray(4, true)]);
+
           expect(response.length).toBe(3);
         });
       });
@@ -362,66 +432,88 @@ describe('Service: Conversation', () => {
           response = r;
         });
         let conversations: Conversation[] = [];
+
         conversations.push(MOCK_CONVERSATION('1', undefined, undefined, 1));
         conversations.push(MOCK_CONVERSATION('2', undefined, undefined, 2));
         conversations.push(MOCK_CONVERSATION('3', undefined, undefined, 3));
         service.stream$.next(conversations);
+
         expect(response[0].id).toBe('3');
         expect(response[1].id).toBe('2');
         expect(response[2].id).toBe('1');
+
         conversations = [];
         conversations.push(MOCK_CONVERSATION('1', undefined, undefined, 1));
         conversations.push(MOCK_CONVERSATION('2', undefined, undefined, 3));
         conversations.push(MOCK_CONVERSATION('3', undefined, undefined, 2));
+
         service.stream$.next(conversations);
         expect(response[0].id).toBe('2');
         expect(response[1].id).toBe('3');
         expect(response[2].id).toBe('1');
       });
     });
+
     describe('page size', () => {
       it('should paginate with custom page size and return first page', () => {
         service.getPage(1, false, null, 2).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         service.stream$.next(createConversationsArray(5));
+
         expect(response.length).toBe(2);
       });
+
       it('should paginate with custom page size and return first + second page', () => {
         service.getPage(2, false, null, 2).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         service.stream$.next(createConversationsArray(5));
+
         expect(response.length).toBe(4);
       });
     });
+
     describe('archive', () => {
       it('should emit 2 conversations', () => {
         service.getPage(1, true).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         service.archivedStream$.next(createConversationsArray(2));
+
         expect(response.length).toBe(2);
       });
+
       it('should emit 30 conversations', () => {
         service.getPage(1, true).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         service.archivedStream$.next(createConversationsArray(40));
+
         expect(response.length).toBe(30);
       });
+
       it('should emit 45 conversations', () => {
         service.getPage(2, true).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         service.archivedStream$.next(createConversationsArray(45));
+
         expect(response.length).toBe(45);
       });
+
       it('should emit 90 conversations', () => {
         service.getPage(3, true).subscribe((r: Conversation[]) => {
           response = r;
         });
+
         service.archivedStream$.next(createConversationsArray(90));
+
         expect(response.length).toBe(90);
       });
     });
@@ -437,8 +529,10 @@ describe('Service: Conversation', () => {
         result = r;
       });
       const CONVERSATIONS: Conversation[] = [...CONVERSATIONS_WITH_PHONE, CONVERSATION_WITH_MEETING, ...NORMAL_CONVERSATIONS];
+
       service.stream$.next(CONVERSATIONS);
       service.archivedStream$.next(CONVERSATIONS);
+
       expect(result.phonesShared).toBe(CONVERSATIONS_WITH_PHONE.length);
       expect(result.meetings).toBe(1);
       expect(result.messages).toBe(NORMAL_CONVERSATIONS.length);
@@ -447,6 +541,7 @@ describe('Service: Conversation', () => {
       expect(result.archivedMeetings).toBe(1);
       expect(result.archivedMessages).toBe(NORMAL_CONVERSATIONS.length);
     });
+
     it('should count only as phone a conversation with phone AND meeting', () => {
       const CONVERSATIONS_WITH_PHONE: Conversation[] = createConversationsArray(4, true);
       const CONVERSATION_WITH_MEETING: Conversation = new Conversation('id', 1, CONVERSATION_DATE, true);
@@ -462,8 +557,10 @@ describe('Service: Conversation', () => {
         CONVERSATION_WITH_MEETING_AND_PHONE,
         ...NORMAL_CONVERSATIONS
       ];
+
       service.stream$.next(CONVERSATIONS);
       service.archivedStream$.next(CONVERSATIONS);
+
       expect(result.phonesShared).toBe(CONVERSATIONS_WITH_PHONE.length + 1);
       expect(result.meetings).toBe(1);
       expect(result.messages).toBe(NORMAL_CONVERSATIONS.length);
@@ -479,24 +576,51 @@ describe('Service: Conversation', () => {
       const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify(createConversationsArray(2))}));
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
+
       service.checkIfLastPage().subscribe();
+
       expect(http.get).toHaveBeenCalledWith('api/v3/protool/conversations', {
         until: 12345,
         hidden: false
       });
-      expect(service.ended).toBe(false);
     });
-    it('should set ended true', () => {
+
+    it('should set ended.pending to TRUE when called without any argument', () => {
       const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
       spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
       spyOn<any>(service, 'getLastDate').and.returnValue(12345);
+
       service.checkIfLastPage().subscribe();
-      expect(service.ended).toBe(true);
+
+      expect(service.ended.pending).toBe(true);
     });
+
+    it('should set ended.pending to TRUE when called with false', () => {
+      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
+      spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
+      spyOn<any>(service, 'getLastDate').and.returnValue(12345);
+
+      service.checkIfLastPage().subscribe();
+
+      expect(service.ended.pending).toBe(true);
+    });
+
+    it('should set ended.processed to TRUE when called with true', () => {
+      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
+      spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
+      spyOn<any>(service, 'getLastDate').and.returnValue(12345);
+
+      service.checkIfLastPage(true).subscribe();
+
+      expect(service.ended.processed).toBe(true);
+    });
+
     it('should do not call endpoint', () => {
       spyOn(http, 'get');
       spyOn<any>(service, 'getLastDate').and.returnValue(null);
+
       service.checkIfLastPage().subscribe();
+
       expect(http.get).not.toHaveBeenCalled();
     });
   });
@@ -510,9 +634,11 @@ describe('Service: Conversation', () => {
       service.leads = [...CONVERSATIONS_WITH_PHONE, ...NORMAL_CONVERSATIONS];
       service.archiveWithPhones();
     });
+
     it('should call bulkArchive with conversations with phone', () => {
       expect(service['bulkArchive']).toHaveBeenCalledWith(CONVERSATIONS_WITH_PHONE);
     });
+
     it('should call sendRead', () => {
       expect(service.sendRead).toHaveBeenCalledTimes(CONVERSATIONS_WITH_PHONE.length);
     });
@@ -521,8 +647,10 @@ describe('Service: Conversation', () => {
   describe('onArchive', () => {
     it('should call sendRead', () => {
       spyOn(service, 'sendRead');
+
       const CONVERSATION: Conversation = MOCK_CONVERSATION();
       service['onArchive'](CONVERSATION);
+
       expect(service.sendRead).toHaveBeenCalledWith(CONVERSATION);
     });
   });
@@ -537,13 +665,16 @@ describe('Service: Conversation', () => {
       service.leads = CONVERSATIONS;
       service['onArchiveAll']();
     });
+
     it('should call sendRead', () => {
       expect(service.sendRead).toHaveBeenCalledTimes(CONVERSATIONS.length);
     });
+
     it('should call bulkArchive', () => {
       expect(service['bulkArchive']).toHaveBeenCalledWith(CONVERSATIONS);
       expect(service.leads).toEqual(RETURNED_CONVERSATIONS);
     });
+
     it('should call streams', () => {
       expect(service.stream).toHaveBeenCalled();
     });
@@ -654,54 +785,83 @@ describe('Service: Conversation', () => {
     describe('no archive', () => {
       it('should return the page number where is a conversation', () => {
         service.leads = createConversationsArray(60);
+
         const page: number = service.getConversationPage('34');
+
         expect(page).toBe(2);
       });
+
       it('should return the page number where is a conversation', () => {
         service.leads = createConversationsArray(5);
+
         const page: number = service.getConversationPage('4');
+
         expect(page).toBe(1);
       });
+
       it('should return the page number where is a conversation', () => {
         service.leads = createConversationsArray(60);
+
         const page: number = service.getConversationPage('60');
+
         expect(page).toBe(2);
       });
+
       it('should return the page number where is a conversation', () => {
         service.leads = createConversationsArray(5);
+
         const page: number = service.getConversationPage('1');
+
         expect(page).toBe(1);
       });
+
       it('should return -1 if conversation not found', () => {
         service.leads = createConversationsArray(5);
+
         const page: number = service.getConversationPage('a');
+
         expect(page).toBe(-1);
       });
     });
+
     describe('archive', () => {
       it('should return the page number where is a conversation', () => {
         service.archivedLeads = createConversationsArray(60);
+
         const page: number = service.getConversationPage('34', true);
+
         expect(page).toBe(2);
       });
+
       it('should return the page number where is a conversation', () => {
         service.archivedLeads = createConversationsArray(5);
+
         const page: number = service.getConversationPage('4', true);
+
         expect(page).toBe(1);
       });
+
       it('should return the page number where is a conversation', () => {
         service.archivedLeads = createConversationsArray(60);
+
         const page: number = service.getConversationPage('60', true);
+
         expect(page).toBe(2);
       });
+
       it('should return the page number where is a conversation', () => {
         service.archivedLeads = createConversationsArray(5);
+
         const page: number = service.getConversationPage('1', true);
+
         expect(page).toBe(1);
       });
+
       it('should return -1 if conversation not found', () => {
         service.archivedLeads = createConversationsArray(5);
+
         const page: number = service.getConversationPage('a');
+
         expect(page).toBe(-1);
       });
     });
@@ -789,14 +949,17 @@ describe('Service: Conversation', () => {
     it('should return the requested conversation info and map the user and item data', () => {
       spyOn(http, 'get').and.returnValue(Observable.of(CONVERSATION_RESPONSE));
       let mappedResponse: any;
+
       service.get(MOCKED_CONVERSATION_DATA.id).subscribe((response) => {
         mappedResponse = response;
       });
+
       expect(mappedResponse.item instanceof Item).toBe(true);
       expect(mappedResponse.user instanceof User).toBe(true);
       expect(mappedResponse.user.itemDistance).toBe(USER_ITEM_DISTANCE);
       expect(mappedResponse.user.blocked).toBe(true);
     });
+
     it('should return an empty array if no data', () => {
       spyOn(http, 'get').and.returnValues(Observable.of(EMPTY_RESPONSE));
       let conversations: Conversation[];
@@ -805,6 +968,7 @@ describe('Service: Conversation', () => {
       service.query().subscribe((res: Conversation[]) => {
         conversations = res;
       });
+
       expect(conversations instanceof Array).toBe(true);
       expect(conversations.length).toBe(0);
     });
@@ -852,17 +1016,23 @@ describe('Service: Conversation', () => {
     it('should decrement totalUnreadMessages', () => {
       conversation.unreadMessages = 5;
       messageService.totalUnreadMessages = 10;
+
       service.sendRead(conversation);
+
       expect(messageService.totalUnreadMessages).toBe(5);
 
       conversation.unreadMessages = 10;
       messageService.totalUnreadMessages = 10;
+
       service.sendRead(conversation);
+
       expect(messageService.totalUnreadMessages).toBe(0);
 
       conversation.unreadMessages = 10;
       messageService.totalUnreadMessages = 5;
+
       service.sendRead(conversation);
+
       expect(messageService.totalUnreadMessages).toBe(0);
     });
 
@@ -893,7 +1063,9 @@ describe('Service: Conversation', () => {
   describe('getItemFromConvId', () => {
     it('should return item', () => {
       service.leads = createConversationsArray(4);
+
       const item: Item = service.getItemFromConvId('2');
+
       expect(item instanceof Item).toBe(true);
       expect(item.id).toBe(ITEM_ID);
     });
@@ -990,6 +1162,7 @@ describe('Service: Conversation', () => {
 
       it('should NOT add the same message twice', () => {
         service.handleNewMessages(MOCK_MESSAGE, false);
+
         expect(service.leads[0].messages.length).toEqual(1);
       });
 
@@ -1003,7 +1176,9 @@ describe('Service: Conversation', () => {
 
       it('should call the on new message with updateDate set to true if it is an update message', () => {
         spyOn<any>(service, 'onNewMessage');
+
         service.handleNewMessages(MOCK_RANDOM_MESSAGE, true);
+
         expect((service as any).onNewMessage).toHaveBeenCalledWith(MOCK_RANDOM_MESSAGE, true);
       });
 
@@ -1026,12 +1201,14 @@ describe('Service: Conversation', () => {
             OTHER_USER_ID + '@host',
             MESSAGE_MAIN.date
           ), false);
+
           expect(service.leads[0].unreadMessages).toBe(2);
           expect(messageService.totalUnreadMessages).toBe(2);
         });
 
         it('should not increment unreadMessages and totalUnreadMessages more if user is not fromSelf', () => {
           service.handleNewMessages(MOCK_MESSAGE, false);
+
           expect(service.leads[0].unreadMessages).toBe(1);
           expect(messageService.totalUnreadMessages).toBe(1);
         });
@@ -1051,6 +1228,7 @@ describe('Service: Conversation', () => {
           spyOn(http, 'get').and.returnValue(Observable.of(RESPONSE));
           service.leads = [MOCK_CONVERSATION()];
         });
+
         it('should update conversation if the message is the phone sharing', () => {
           service['onNewMessage'](new Message(
             MESSAGE_MAIN.id,
@@ -1059,8 +1237,10 @@ describe('Service: Conversation', () => {
             MESSAGE_MAIN.from,
             MESSAGE_MAIN.date
           ), false);
+
           expect(service.leads[0].phone).toBe(PHONE);
         });
+
         it('should update conversation if the message is the survey', () => {
           service['onNewMessage'](new Message(
             MESSAGE_MAIN.id,
@@ -1069,6 +1249,7 @@ describe('Service: Conversation', () => {
             MESSAGE_MAIN.from,
             MESSAGE_MAIN.date
           ), false);
+
           expect(service.leads[0].surveyResponses).toEqual(SURVEY_RESPONSES);
         });
       });
@@ -1079,18 +1260,24 @@ describe('Service: Conversation', () => {
       spyOn<any>(service, 'onNewMessage');
       service.firstLoad = true;
       service.handleNewMessages(MOCK_MESSAGE, false);
+
       expect(service['onNewMessage']).not.toHaveBeenCalled();
       tick(1000);
+
       expect(service['onNewMessage']).not.toHaveBeenCalled();
+
       service.firstLoad = false;
       tick(500);
+
       expect(service['onNewMessage']).toHaveBeenCalled();
     }));
 
     it('should call addUserInfo', () => {
       const messageWithUser: Message = MOCK_MESSAGE;
       spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
+
       service.handleNewMessages(MOCK_MESSAGE, false);
+
       expect(messageService.addUserInfo).toHaveBeenCalledTimes(1);
       expect(service.leads[0].messages[0]).toEqual(messageWithUser);
     });
@@ -1117,7 +1304,9 @@ describe('Service: Conversation', () => {
         fromSelf: false
       };
       spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
+
       service.handleNewMessages(MOCK_MESSAGE, false);
+
       expect(notificationService.sendBrowserNotification).toHaveBeenCalledWith(messageWithUser, ITEM_ID);
     });
 
@@ -1129,7 +1318,9 @@ describe('Service: Conversation', () => {
         fromSelf: true
       };
       spyOn(messageService, 'addUserInfo').and.returnValue(messageWithUser);
+
       service.handleNewMessages(MOCK_MESSAGE, false);
+
       expect(notificationService.sendBrowserNotification).not.toHaveBeenCalled();
     });
 
