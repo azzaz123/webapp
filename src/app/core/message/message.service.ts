@@ -171,7 +171,7 @@ export class MessageService {
     const other: User = conversation.user;
     const fromId: string = message.from.split('@')[0];
     message.user = (fromId === self.id) ? self : other;
-    message.fromSelf = fromId === self.id;
+    message.fromSelf = (fromId === self.id && !message.payload);
     return message;
   }
 

@@ -192,7 +192,9 @@ export class MsgArchiveService {
     this.addMetric(this.sinceArchiveMetrics, 'startProcessTs', Date.now(), false, Boolean(this.sinceArchiveMetrics.startDownloadTs));
     let messages = archiveData.filter((d) => d.type === this.eventTypes.message)
     .map(m => {
-      const fromSelf = m.event.from_user_hash === this.selfId;
+      /* fromSelf: The second part of condition is used to exclude 3rd voice messages, where from_user_hash = the id of the user
+      logged in, but they should not be considered messages fromSelf */
+      const fromSelf = m.event.from_user_hash === this.selfId && !m.event.payload;
       const msg = new Message(m.event.message_id,
         m.event.conversation_hash,
         m.event.body,
