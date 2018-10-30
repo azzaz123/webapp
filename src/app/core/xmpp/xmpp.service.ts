@@ -196,6 +196,8 @@ export class XmppService {
     if (message.body || message.timestamp || message.carbonSent
         || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
+      /* fromSelf: The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
+      logged in, but they should not be considered messages fromSelf */
       builtMessage.fromSelf = (builtMessage.from.split('/')[0] === this.currentJid) && !builtMessage.payload;
       this.persistencyService.saveMetaInformation({
           start: builtMessage.date.toISOString(),

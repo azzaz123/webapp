@@ -165,7 +165,10 @@ export class MsgArchiveService {
     readReceipts.forEach(r => {
       messages.filter(m => {
         const threadMatches = m.conversationId === r.thread;
-        const senderMatches = m.from === r.to;
+        /* senderMatches: The first part of ternary condition is used to match 3rd voice messages, where 'from' = the id of the user
+        logged in, so the readReceipts match inversley (example: a 3rd voice message will have 'from' as my user id, but it should be
+        marked as read with a read receipt sent by me, to the other user id) */
+        const senderMatches = m.payload ? m.from !== r.to : m.from === r.to;
         const olderThanReadTs = ((new Date(m.date)).getTime() / 1000 <= r.timestamp);
         return threadMatches && olderThanReadTs && senderMatches;
       })
