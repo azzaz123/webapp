@@ -5257,9 +5257,9 @@ ngx-toastr@8.1.1:
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-8.1.1.tgz#f34a57c8dfadf49392978bfb37019247700458b1"
 
-"ngx-uploader@https://github.com/Wallapop/ngx-uploader#3.2.2":
-  version "3.2.2"
-  resolved "https://github.com/Wallapop/ngx-uploader#eb4af7a806eefd25d023d57c3b8f39af80696886"
+"ngx-uploader@https://github.com/Wallapop/ngx-uploader#3.2.3":
+  version "3.2.3"
+  resolved "https://github.com/Wallapop/ngx-uploader#c36ba87dc249bca4a39fdd6404723ba90d501d37"
 
 no-case@^2.2.0:
   version "2.3.2"
