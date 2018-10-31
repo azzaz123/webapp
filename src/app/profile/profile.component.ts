@@ -37,7 +37,12 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
         longitude: ['', [Validators.required]],
-      })
+      }),
+      extra_info: this.fb.group({
+        description: ['', [Validators.required]],
+        phone_number: ['', [Validators.required]],
+        link: ['', [Validators.required]],
+      }),
     });
 
     this.settingsForm = fb.group({
@@ -73,7 +78,12 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       first_name: this.user.firstName,
       last_name: this.user.lastName,
       birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
-      gender: this.user.gender.toUpperCase().substr(0, 1)
+      gender: this.user.gender.toUpperCase().substr(0, 1),
+      extra_info: {
+        description: this.user.extraInfo.description,
+        phone_number: this.user.extraInfo.phone_number,
+        link: this.user.extraInfo.link
+      }
     });
   }
 

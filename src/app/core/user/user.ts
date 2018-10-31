@@ -1,5 +1,5 @@
 import { Model } from '../resource/model.interface';
-import { UserLocation, UserStats, UserValidations } from './user-response.interface';
+import { UserExtrainfo, UserLocation, UserStats, UserValidations } from './user-response.interface';
 import { Item } from '../item/item';
 import { environment } from '../../../environments/environment';
 
@@ -12,13 +12,12 @@ export const PERMISSIONS = {
 };
 
 export class User implements Model {
-
   private _itemDistance: number;
+
   private _webLink: string;
   private _sellingItem: Item;
   private _itemsCount: number;
   private _blocked: boolean;
-
   constructor(private _id: string,
               private _microName?: string,
               private _image?: any,
@@ -37,7 +36,8 @@ export class User implements Model {
               private _lastName?: string,
               private _birthDate?: number,
               private _gender?: string,
-              private _email?: string) {
+              private _email?: string,
+              private _extraInfo?: UserExtrainfo) {
 
     this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
     this._type = this.mapType(this._type);
@@ -197,6 +197,10 @@ export class User implements Model {
 
   set email(value: string) {
     this._email = value;
+  }
+
+  get extraInfo(): UserExtrainfo {
+    return this._extraInfo;
   }
 
   getUrl(subdomain: string) {

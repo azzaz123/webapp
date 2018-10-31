@@ -19,6 +19,7 @@ export interface UserResponse extends ApiResponse {
   birth_date?: number;
   gender?: string;
   email?: string;
+  extra_info?: UserExtrainfo;
 }
 
 export interface Image {
@@ -72,4 +73,13 @@ export interface UserValidations {
   scoring_stars: number;
   level: number;
   birthday: boolean;
+}
+
+export interface UserExtrainfo {
+  description: string;
+  address: string;
+  phone_number: string;
+  link: string;
+  latitude: number;
+  longitude: number;
 }
