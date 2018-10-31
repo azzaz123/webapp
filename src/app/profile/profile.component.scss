@@ -173,6 +173,9 @@ $border: solid 1px $grey-50;
       input, textarea {
         background: #eff0fe url(/assets/icons/disabled-lock.svg) no-repeat calc(100% - 15px) 10px;
       }
+      .form-control:focus {
+        border-color: transparent;
+      }
     }
   }
 }

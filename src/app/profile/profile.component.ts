@@ -8,6 +8,7 @@ import { CanComponentDeactivate } from '../shared/guards/can-component-deactivat
 import { User } from '../core/user/user';
 import { ProfileFormComponent } from '../shared/profile/profile-form/profile-form.component';
 import { PrivacyService, PRIVACY_STATUS } from '../core/privacy/privacy.service';
+import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
 
 @Component({
   selector: 'tsl-profile',
@@ -39,9 +40,9 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
         longitude: ['', [Validators.required]],
       }),
       extra_info: this.fb.group({
-        description: ['', [Validators.required]],
-        phone_number: ['', [Validators.required]],
-        link: ['', [Validators.required]],
+        description: '',
+        phone_number: '',
+        link: '',
       }),
     });
 
@@ -70,7 +71,7 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   }
 
   public onSubmit() {
-    return this.formComponent.onSubmit();
+    return this.formComponent.onSubmit(this.user);
   }
 
   private setUserData() {
@@ -88,10 +89,6 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
           link: this.user.extraInfo.link
         }
       });
-    } else {
-      this.profileForm.get('extra_info.description').disable();
-      this.profileForm.get('extra_info.phone_number').disable();
-      this.profileForm.get('extra_info.link').disable();
     }
   }
 
@@ -122,6 +119,12 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   private dateValidator(c: FormControl) {
     const dateRegEx = new RegExp(/^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/);
     return dateRegEx.test(c.value) ? null : {date: true}
+  }
+
+  public openBecomeProModal() {
+    if (!this.user.featured) {
+      this.modalService.open(BecomeProModalComponent, {windowClass: 'become-pro'});
+    }
   }
 
 }

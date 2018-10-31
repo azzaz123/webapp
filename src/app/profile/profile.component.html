@@ -82,27 +82,27 @@
                 <div class="form-group row">
                   <label for="description" class="col-3" i18n>Description:</label>
                   <div class="col-5">
-                    <textarea class="form-control" id="description" formControlName="description"
-                              i18n-placeholder placeholder="Tell us about your business (150 characters max)" maxlength="150"></textarea>
+                    <textarea class="form-control" id="description" formControlName="description" [readonly]="!user.featured"
+                              (click)="openBecomeProModal()" maxlength="150"></textarea>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="phone_number" class="col-3" i18n>Phone:</label>
                   <div class="col-5">
-                    <input type="text" class="form-control" id="phone_number" formControlName="phone_number"
-                           i18n-placeholder placeholder="Direct link to call you" />
+                    <input type="text" class="form-control" id="phone_number" formControlName="phone_number" [readonly]="!user.featured"
+                           (click)="openBecomeProModal()" />
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="link" class="col-3" i18n>Web:</label>
                   <div class="col-5">
-                    <input type="text" class="form-control" id="link" formControlName="link"
-                           i18n-placeholder placeholder="Your online site" />
+                    <input type="text" class="form-control" id="link" formControlName="link" [readonly]="!user.featured"
+                           (click)="openBecomeProModal()" />
                   </div>
                 </div>
                 <div class="row">
                   <div class="offset-3 col-9">
-                    <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!formComponent.hasNotSavedChanges"
+                    <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!formComponent.hasNotSavedChanges || !user.featured"
                                 i18n>Save</tsl-button>
                   </div>
                 </div>
