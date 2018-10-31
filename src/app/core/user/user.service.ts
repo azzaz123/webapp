@@ -292,6 +292,7 @@ export class UserService extends ResourceService {
       data.birth_date,
       data.gender,
       data.email,
+      data.featured,
       data.extra_info
     );
   }

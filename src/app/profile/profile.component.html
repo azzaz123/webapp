@@ -75,26 +75,29 @@
             </div>
           </div>
         </div>
-        <div class="box profile-box" formGroupName="extra_info">
+        <div class="box profile-box" formGroupName="extra_info" [class.disabled]="!user.featured">
           <div class="box-content">
             <div class="row">
               <div class="col-10 offset-2">
                 <div class="form-group row">
                   <label for="description" class="col-3" i18n>Description:</label>
                   <div class="col-5">
-                    <textarea class="form-control" id="description" formControlName="description"></textarea>
+                    <textarea class="form-control" id="description" formControlName="description"
+                              i18n-placeholder placeholder="Tell us about your business (150 characters max)" maxlength="150"></textarea>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="phone_number" class="col-3" i18n>Phone:</label>
                   <div class="col-5">
-                    <input type="text" class="form-control" id="phone_number" formControlName="phone_number" tslRestrictInput maxlength="50" />
+                    <input type="text" class="form-control" id="phone_number" formControlName="phone_number"
+                           i18n-placeholder placeholder="Direct link to call you" />
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="link" class="col-3" i18n>Web:</label>
                   <div class="col-5">
-                    <input type="text" class="form-control" id="link" formControlName="link" tslRestrictInput maxlength="50" />
+                    <input type="text" class="form-control" id="link" formControlName="link"
+                           i18n-placeholder placeholder="Your online site" />
                   </div>
                 </div>
                 <div class="row">

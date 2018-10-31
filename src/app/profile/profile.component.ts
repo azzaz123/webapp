@@ -78,13 +78,21 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       first_name: this.user.firstName,
       last_name: this.user.lastName,
       birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
-      gender: this.user.gender.toUpperCase().substr(0, 1),
-      extra_info: {
-        description: this.user.extraInfo.description,
-        phone_number: this.user.extraInfo.phone_number,
-        link: this.user.extraInfo.link
-      }
+      gender: this.user.gender.toUpperCase().substr(0, 1)
     });
+    if (this.user.featured && this.user.extraInfo) {
+      this.profileForm.patchValue({
+        extra_info: {
+          description: this.user.extraInfo.description,
+          phone_number: this.user.extraInfo.phone_number,
+          link: this.user.extraInfo.link
+        }
+      });
+    } else {
+      this.profileForm.get('extra_info.description').disable();
+      this.profileForm.get('extra_info.phone_number').disable();
+      this.profileForm.get('extra_info.link').disable();
+    }
   }
 
   private setSettingsData() {

@@ -165,6 +165,16 @@ $border: solid 1px $grey-50;
       }
     }
   }
+  &.disabled {
+    .form-group {
+      & > label {
+        color: #a7adfc;
+      }
+      input, textarea {
+        background: #eff0fe url(/assets/icons/disabled-lock.svg) no-repeat calc(100% - 15px) 10px;
+      }
+    }
+  }
 }
 .btn-wrapper {
   display: flex;

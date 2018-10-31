@@ -13,8 +13,8 @@ export const PERMISSIONS = {
 
 export class User implements Model {
   private _itemDistance: number;
-
   private _webLink: string;
+
   private _sellingItem: Item;
   private _itemsCount: number;
   private _blocked: boolean;
@@ -37,12 +37,12 @@ export class User implements Model {
               private _birthDate?: number,
               private _gender?: string,
               private _email?: string,
+              private _featured = false,
               private _extraInfo?: UserExtrainfo) {
 
     this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
     this._type = this.mapType(this._type);
   }
-
   get id(): string {
     return this._id;
   }
@@ -197,6 +197,10 @@ export class User implements Model {
 
   set email(value: string) {
     this._email = value;
+  }
+
+  get featured(): boolean {
+    return this._featured;
   }
 
   get extraInfo(): UserExtrainfo {
