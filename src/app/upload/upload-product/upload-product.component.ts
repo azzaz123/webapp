@@ -39,6 +39,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @Output() onCategorySelect = new EventEmitter<number>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public itemTypes: any = ITEM_TYPES;
+  private oldDeliveryValue: any = '';
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -278,6 +279,13 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   public emitLocation(): void {
     this.locationSelected.emit(this.categoryId);
+  }
+
+  public onDeliveryChange(newDeliveryValue: any) {
+    if (newDeliveryValue === this.oldDeliveryValue) {
+      this.uploadForm.controls['delivery_info'].reset();
+    }
+    this.oldDeliveryValue = newDeliveryValue;
   }
 
 }
