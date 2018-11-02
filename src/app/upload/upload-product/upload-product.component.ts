@@ -39,7 +39,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @Output() onCategorySelect = new EventEmitter<number>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
   public itemTypes: any = ITEM_TYPES;
-  private oldDeliveryValue: any = '';
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -78,6 +77,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
+  private oldDeliveryValue: any;
   public isUrgent = false;
 
   constructor(private fb: FormBuilder,
@@ -124,6 +124,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         delivery_info: this.getDeliveryInfo()
       });
       this.detectFormChanges();
+      this.oldDeliveryValue = this.getDeliveryInfo();
     }
   }
 
@@ -284,8 +285,10 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   public onDeliveryChange(newDeliveryValue: any) {
     if (newDeliveryValue === this.oldDeliveryValue) {
       this.uploadForm.controls['delivery_info'].reset();
+      delete this.oldDeliveryValue;
+    } else {
+      this.oldDeliveryValue = newDeliveryValue;
     }
-    this.oldDeliveryValue = newDeliveryValue;
   }
 
 }

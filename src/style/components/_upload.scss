@@ -108,7 +108,7 @@
           }
         }
       }
-      &:hover:not(.active), &:focus-within:not(.active) {
+      &:hover:not(.active) {
         cursor: pointer;
         span {
           color: $grey-700;
