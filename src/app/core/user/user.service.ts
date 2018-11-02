@@ -224,6 +224,12 @@ export class UserService extends ResourceService {
       });
   }
 
+  public getPhoneInfo(userId: string): Observable<any> {
+    return this.http.get(this.API_URL + '/' + userId + '/phone-method')
+      .map((r: any) => r.json())
+      .catch(e => Observable.of(null));
+  }
+
   public toRatingsStats(ratings): Ratings {
     return ratings.reduce(({}, rating) => {
       return {reviews: rating.value};
