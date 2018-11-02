@@ -63,8 +63,10 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       this.setSettingsData();
     });
     this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
-      const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
-      this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
+      if (motorPlan) {
+        const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
+        this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
+      }
     });
   }
 
