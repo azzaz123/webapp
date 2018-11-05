@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import * as moment from 'moment';
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs/Observable';
 import { interval } from 'rxjs/observable/interval';
 import { Subscription } from 'rxjs/Subscription';
 import { I18nService } from '../../core/i18n/i18n.service';
