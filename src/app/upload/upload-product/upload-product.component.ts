@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   Component,
   ElementRef,
   EventEmitter,
@@ -7,7 +6,8 @@ import {
   OnChanges,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  AfterContentInit
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -29,7 +29,7 @@ import { DeliveryInfo } from '../../core/item/item-response.interface';
   templateUrl: './upload-product.component.html',
   styleUrls: ['./upload-product.component.scss']
 })
-export class UploadProductComponent implements OnInit, AfterViewChecked, OnChanges {
+export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
 
   @Input() categoryId: string;
   @Input() item: Item;
@@ -173,13 +173,11 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     });
   }
 
-  ngAfterViewChecked() {
-    setTimeout(() => {
-      if (!this.item && this.titleField && !this.focused) {
-        this.titleField.nativeElement.focus();
-        this.focused = true;
-      }
-    });
+  ngAfterContentInit() {
+    if (!this.item && this.titleField && !this.focused) {
+      this.titleField.nativeElement.focus();
+      this.focused = true;
+    }
   }
 
   onSubmit() {
