@@ -249,6 +249,10 @@ export interface ItemWithProducts {
   products: ProductDurations;
 }
 
+export interface CheapestProducts {
+  [itemId: string]: string;
+}
+
 export interface AllowedActionResponse {
   type: string;
   allowed: boolean;
@@ -294,6 +298,7 @@ export interface ItemSaleConditions {
 export interface ItemCounters {
   views: number;
   favorites: number;
+  conversations?: number;
 }
 
 export interface ItemBulkResponse {

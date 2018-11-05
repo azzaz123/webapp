@@ -73,8 +73,7 @@ export class XmppService {
         eventData: TrackingService.MESSAGE_SENT,
         attributes: {
         thread_id: message.thread,
-        message_id: message.id,
-        item_id: conversation.item.id
+        message_id: message.id
         }
       };
       this.trackingService.addTrackingEvent(trackEvent, false);
@@ -197,7 +196,9 @@ export class XmppService {
     if (message.body || message.timestamp || message.carbonSent
         || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
-      builtMessage.fromSelf = builtMessage.from.split('/')[0] === this.currentJid;
+      /* fromSelf: The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
+      logged in, but they should not be considered messages fromSelf */
+      builtMessage.fromSelf = (builtMessage.from.split('/')[0] === this.currentJid) && !builtMessage.payload;
       this.persistencyService.saveMetaInformation({
           start: builtMessage.date.toISOString(),
           last: null

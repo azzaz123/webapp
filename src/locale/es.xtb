@@ -634,9 +634,11 @@
   <translation id="2813042926821514028">¡<ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph> de regalo!</translation>
   <translation id="2032108307444898053">¡<ph name="INTERPOLATION"><ex>{{pack.forFree | customCurrency}}</ex></ph> de regalo!</translation>
   <translation id="8421470283413526010">¡<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{pack.forFree | number}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{pack.forFree | customCurrency}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph> de regalo!</translation>
-  <translation id="6181907632373133266">Conversaciones</translation>
+  <translation id="6181907632373133266">Chats</translation>
   <translation id="2123659921722214537">Visualizaciones</translation>
   <translation id="3537961834218859224">Te lo aseguramos</translation>
+  <translation id="5131018503170911996">Asegura este móvil con Klinc by Zurich</translation>
+  <translation id="6207187827275323934">Asegura este producto con Klinc by Zurich</translation>
   <translation id="6174997588475722860">Recuerda que tu saldo y los packs de ahorro solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Una vez cargado tu saldo, tiene un año de vigencia.</translation>
   <translation id="7356703231883565314">El uso de los wallacoins es exclusivo para la compra de Destacados. Recuerda que solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>No se puede intercambiar por Euros y tienen un año de vigencia.</translation>
   <translation id="2767524293310239820">Los wallacoins te ayudarán a comprar Destacados. Aquí podrás conseguirlos y ver tu saldo disponible.</translation>
@@ -673,6 +675,18 @@
   <translation id="78876651719315122">Ir a saldo</translation>
   <translation id="4239962849036412221">Selecciona otra versión</translation>
   <translation id="1201618934317428295">Selecciona una versión predefinida</translation>
+  <translation id="4088311569349098646">Estadísticas</translation>
+  <translation id="605166699517966750">Echemos cuatro números... Controla cuáles de tus productos tienen más éxito para mejorar tus ventas.</translation>
+  <translation id="7616770651914901276">Producto</translation>
+  <translation id="2868602391152223921">Fecha de publicación</translation>
+  <translation id="292531598178810581">Estadísticas de la semana</translation>
+  <translation id="7201983182105391783">Pon en forma tu anuncio</translation>
+  <translation id="8983319195885091038">Mejora los números de tu anuncio. A más visitas, ¡más ventas! Destaca tu producto</translation>
+  <translation id="6818764209697915477">Destácalo desde <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></translation>
+  <translation id="6821183586555063962">Este producto está Destacado</translation>
+  <translation id="3879651736105644738">Así consigues más visitas, más conversaciones y más gente interesada.</translation>
+  <translation id="916352071278248935">Tu Destacado acaba el <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amCalendar:momentConfig}}</ex></ph></translation>
+  <translation id="8413861205232330672">Todavía no disponemos de datos para este producto</translation>
   <translation id="8742069867763156698">
     Por sólo
     <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{urgentPrice | customCurrency:&apos;EUR&apos;}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>

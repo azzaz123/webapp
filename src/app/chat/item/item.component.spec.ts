@@ -11,11 +11,12 @@ import {
 } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
-import { ItemComponent, showWillisCategories } from './item.component';
+import { ItemComponent, showWillisCategories, showKlincCategories } from './item.component';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { Item } from '../../core/item/item';
+import {forEach} from "@angular/router/src/utils/collection";
 
 describe('Component: Item', () => {
 
@@ -101,34 +102,42 @@ describe('Component: Item', () => {
 
     component.ngOnChanges();
 
-    expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY);
+    expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY, {
+      category_id: component.item.categoryId,
+      item_id: component.item.id
+    });
   });
 
   it('should not track Carfax Display when isCarItem is false',  () => {
     spyOn(trackingService, 'track');
-    component.item = MOCK_ITEM;
+    component.item = { ...MOCK_ITEM, categoryId: 12345678 } as Item;
 
     component.ngOnChanges();
 
-    expect(trackingService.track).not.toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY);
+    expect(trackingService.track).not.toHaveBeenCalled();
   });
 
-  it('should not track Willis Display when show willis link',  () => {
+  it('should not track Willis Display when categoriId is 10000',  () => {
     spyOn(trackingService, 'track');
     component.item = { ...MOCK_ITEM, categoryId: 10000 } as Item;
 
     component.ngOnChanges();
 
-    expect(trackingService.track).not.toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY);
+    expect(trackingService.track).not.toHaveBeenCalled();
   });
 
-  it('should track Willis Display when show willis link',  () => {
+  it('should track Willis Display when showWillisLink ',  () => {
     spyOn(trackingService, 'track');
-    component.item = MOCK_ITEM;
 
-    component.ngOnChanges();
+    Object.values(showWillisCategories).forEach((categoryId) => {
+      component.item = { ...MOCK_ITEM, categoryId} as Item;
+      component.ngOnChanges();
 
-    expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
+    });
   });
 
   describe('getCounters', () => {
@@ -235,6 +244,28 @@ describe('Component: Item', () => {
     });
   });
 
+  describe('isMine', () => {
+    beforeEach(() => {
+      component.item = MOCK_ITEM;
+    });
+
+    it('should return true if the logged user is item owner', () => {
+      component['myUserId'] = component.item.owner;
+
+      const expectedValue = component.isMine();
+
+      expect(expectedValue).toBe(true);
+    });
+
+    it('should return false if the item is not already sold', () => {
+      component['myUserID'] = 'Other Id';
+
+      const expectedValue = component.canEdit();
+
+      expect(expectedValue).toBe(false);
+    });
+  });
+
   describe('toggleReserve', () => {
     it('should call the reserveItem method on itemService', () => {
       component.item = MOCK_ITEM;
@@ -289,11 +320,43 @@ describe('Component: Item', () => {
   });
 
   describe('showWillisLink', () => {
-    it('should show return true when item categoryId is 13100, 12545, 15000, 16000 or 12900 ', () => {
+    it('should be true when item categoryId is 13100, 12545, or 12900', () => {
       Object.values(showWillisCategories).forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
+        component.ngOnChanges();
 
-        expect(component.showWillisLink()).toEqual(true);
+        expect(component.showWillisLink).toEqual(true);
+      });
+    });
+
+    it('should be false when item categoryId is not 13100, 12545 or 12900', () => {
+      const hideWillisCategories = [100, 14000];
+      Object.values(hideWillisCategories).forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+        component.ngOnChanges();
+
+        expect(component.showWillisLink).toEqual(false);
+      });
+    });
+  });
+
+  describe('showKlincLink', () => {
+    it('should be true when item categoryId is 15000, 16000', () => {
+      Object.values(showKlincCategories).forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+        component.ngOnChanges();
+
+        expect(component.showKlincLink).toEqual(true);
+      });
+    });
+
+    it('should be false when item categoryId is not 15000, 16000', () => {
+      const hideWillisCategories = [100, 14000];
+      Object.values(hideWillisCategories).forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+        component.ngOnChanges();
+
+        expect(component.showKlincLink).toEqual(false);
       });
     });
   });
@@ -301,21 +364,42 @@ describe('Component: Item', () => {
   describe('clickCarfax', () => {
     it('should track Carfax tap ', () => {
       spyOn(trackingService, 'track');
+      component.item = MOCK_ITEM;
 
       component.clickCarfax(MOCK_CLICK_EVENT);
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_TAP);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
     });
   });
 
   describe('clickWillis', () => {
     it('should track willis tap ', () => {
       spyOn(trackingService, 'track');
+      component.item = MOCK_ITEM;
 
       component.clickWillis(MOCK_CLICK_EVENT);
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_TAP);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
     });
   });
 
+  describe('clickKlinc', () => {
+    it('should track klinc tap ', () => {
+      spyOn(trackingService, 'track');
+      component.item = MOCK_ITEM;
+
+      component.clickKlinc(MOCK_CLICK_EVENT);
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.KLINC_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
+    });
+  });
 });

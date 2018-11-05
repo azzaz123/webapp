@@ -333,6 +333,23 @@ describe('Service: Xmpp', () => {
       expect(msg.payload.text).toEqual('text');
     }));
 
+    it('should set fromSelf to FALSE for a message with a payload', fakeAsync(() => {
+      let msg: Message;
+      eventService.emit('session:started', null);
+      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+        msg = message;
+      });
+
+      eventService.emit('message', {
+        ...MOCKED_SERVER_MESSAGE,
+        payload: MOCK_PAYLOAD_OK
+      });
+      tick();
+
+      expect(msg.fromSelf).toBe(false);
+    }));
+
     describe('reconnectClient', () => {
       it('should call client connect if it is disconnected', fakeAsync(() => {
         connectSpy.calls.reset();
@@ -590,8 +607,7 @@ describe('Service: Xmpp', () => {
         eventData: TrackingService.MESSAGE_SENT,
         attributes: {
           thread_id: message.thread,
-          message_id: message.id,
-          item_id: MOCKED_CONVERSATIONS[0].item.id
+          message_id: message.id
         }
       };
 

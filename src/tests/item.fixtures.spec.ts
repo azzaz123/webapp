@@ -208,10 +208,12 @@ export const ITEM_DATA3: ItemProResponse = {
 
 export const ITEM_VIEWS = 123;
 export const ITEM_FAVORITES = 456;
+export const ITEM_CONVERSATIONS = 100;
 
 export const ITEM_COUNTERS_DATA: ItemCounters = {
   'views': ITEM_VIEWS,
-  'favorites': ITEM_FAVORITES
+  'favorites': ITEM_FAVORITES,
+  'conversations': ITEM_CONVERSATIONS
 };
 
 export const MOCK_ITEM: Item = new Item(
