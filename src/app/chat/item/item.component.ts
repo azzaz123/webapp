@@ -5,17 +5,31 @@ import { ItemCounters } from '../../core/item/item-response.interface';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
 import { User } from '../../core/user/user';
+import { CATEGORY_IDS } from '../../core/category/category-ids';
 
-export const showWillisCategories = {
-  'GAME': 13100,
-  'TV_AUDIO_CAMERAS' : 12545,
-  'GAMES_CONSOLES' : 12900
+export const showWillisCategories = [ CATEGORY_IDS.GAMES_CONSOLES, CATEGORY_IDS.TV_AUDIO_CAMERAS, CATEGORY_IDS.APPLIANCES];
+
+export const showKlincCategories = [ CATEGORY_IDS.COMPUTERS_ELECTRONICS, CATEGORY_IDS.CELL_PHONES_ACCESSORIES];
+
+export const vertiCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR];
+
+export const mapfreCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR, CATEGORY_IDS.BIKES];
+
+const mapfreLinks = {
+  [CATEGORY_IDS.CAR]: 'http://segurosdecoche.mapfre.es/wallapop?act=act_prosp_mapfre_es_wallapop_car_crossdevice_20180806_internal_wallapop&utm_source=wallapop&utm_medium=tpa&utm_campaign=act_prosp_mapfre_es_wallapop_car_crossdevice_20180806&utm_term=ficha_producto&utm_content=&utm_product=coche',
+  [CATEGORY_IDS.MOTORBIKE]: 'https://segurosdemoto.mapfre.es/wallapop?&act=act_prosp_mapfre_es_wallapop_moto_crossdevice_20180806_internal_wallapop&utm_source=wallapop&utm_medium=tpa&utm_campaign=act_prosp_mapfre_es_wallapop_moto_crossdevice_20180806&utm_term=ficha_producto&utm_content=&utm_product=moto',
+  [CATEGORY_IDS.REAL_ESTATE]: 'https://segurosdehogar.mapfre.es/wallapop?act=act_prosp_mapfre_es_wallapop_home_crossdevice_20180806_internal_wallapop&utm_source=wallapop&utm_medium=tpa&utm_campaign=act_prosp_mapfre_es_wallapop_home_crossdevice_20180806&utm_term=ficha_producto&utm_content=&utm_product=hogar',
+  [CATEGORY_IDS.REAL_ESTATE_OLD]: 'https://segurosdehogar.mapfre.es/wallapop?act=act_prosp_mapfre_es_wallapop_home_crossdevice_20180806_internal_wallapop&utm_source=wallapop&utm_medium=tpa&utm_campaign=act_prosp_mapfre_es_wallapop_home_crossdevice_20180806&utm_term=ficha_producto&utm_content=&utm_product=hogar',
+  [CATEGORY_IDS.BIKES]: 'http://segurosdebici.mapfre.es/wallapop?act=act_prosp_mapfre_es_wallapop_bike_crossdevice_20180806_internal_wallapop&utm_source=wallapop&utm_medium=tpa&utm_campaign=act_prosp_mapfre_es_wallapop_bike_crossdevice_20180806&utm_term=ficha_producto&utm_content=&utm_product=bici'
 };
 
-export const showKlincCategories = {
-  'COMPUTERS_ELECTRONIC' : 15000,
-  'PHONES_ACCESSORIES' : 16000
+const vertiLinks = {
+  [CATEGORY_IDS.CAR] : 'https://www.verti.es/ov/SNetPeticion?idPeticion=ISERV01&servicio=COTIZAVER&dps=1&producto=AU01&CANAL=AFFINITY&SUBCANAL=AF32&pid=722C0832A1&utm_source=Affinity&utm_medium=tpaff&utm_campaign=AF32',
+  [CATEGORY_IDS.MOTORBIKE] : 'https://www.verti.es/ov/SNetPeticion?idPeticion=ISERV01&servicio=COTIZAVER&dps=1&producto=AU02&CANAL=AFFINITY&SUBCANAL=AF32&pid=722C0832A2&utm_source=Affinity&utm_medium=tpaff&utm_campaign=AF32',
+  [CATEGORY_IDS.REAL_ESTATE] : 'https://www.verti.es/ov/SNetPeticion?idPeticion=ISERV01&servicio=COTIZAVER&producto=HG01&CANAL=AFFINITY&SUBCANAL=AF32&pid=722C0832H1&utm_source=Affinity&utm_medium=tpaff&utm_campaign=AF32',
+  [CATEGORY_IDS.REAL_ESTATE_OLD]: 'https://www.verti.es/ov/SNetPeticion?idPeticion=ISERV01&servicio=COTIZAVER&producto=HG01&CANAL=AFFINITY&SUBCANAL=AF32&pid=722C0832H1&utm_source=Affinity&utm_medium=tpaff&utm_campaign=AF32',
 };
+
 
 @Component({
   selector: 'tsl-item',
@@ -68,7 +82,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       this.isCarItem = false;
     }
 
-    this.showWillisLink = Object.values(showWillisCategories).includes(this.item.categoryId);
+    this.showWillisLink = showWillisCategories.includes(this.item.categoryId);
     if (this.showWillisLink) {
       this.trackingService.track(TrackingService.WILLIS_LINK_DISPLAY, {
         category_id: this.item.categoryId,
@@ -76,7 +90,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    this.showKlincLink = Object.values(showKlincCategories).includes(this.item.categoryId);
+    this.showKlincLink = showKlincCategories.includes(this.item.categoryId);
     if (this.showKlincLink) {
       this.trackingService.track(TrackingService.KLINC_LINK_DISPLAY, {
         category_id: this.item.categoryId,
