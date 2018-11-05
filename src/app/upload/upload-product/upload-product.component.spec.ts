@@ -349,6 +349,7 @@ describe('UploadProductComponent', () => {
       component.onDeliveryChange(ITEM_DELIVERY_INFO);
       component.onDeliveryChange(ITEM_DELIVERY_INFO);
 
+      expect(component['oldDeliveryValue']).toBeUndefined();
       expect(component.uploadForm.controls['delivery_info'].reset).toHaveBeenCalled();
     });
   });
