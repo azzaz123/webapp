@@ -203,6 +203,7 @@ describe('UploadProductComponent', () => {
   describe('ngAfterContentInit', () => {
 
     beforeEach(() => {
+      component['focused'] = false;
       component.titleField = {
         nativeElement: {
           focus() {
@@ -213,7 +214,6 @@ describe('UploadProductComponent', () => {
     });
 
     it('should set focus', fakeAsync(() => {
-      component['focused'] = false;
       component.ngAfterContentInit();
 
       expect(component.titleField.nativeElement.focus).toHaveBeenCalled();
@@ -221,8 +221,8 @@ describe('UploadProductComponent', () => {
     }));
 
     it('should NOT set focus if edit mode', fakeAsync(() => {
-      component['focused'] = false;
       component.item = MOCK_ITEM;
+      component.ngAfterContentInit();
 
       expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();
       expect(component['focused']).toBe(false);
