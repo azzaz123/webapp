@@ -6,7 +6,7 @@ import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Response, ResponseOptions } from '@angular/http';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MOCK_FULL_USER, USER_DATA, USER_URL } from '../../tests/user.fixtures.spec';
+import { MOCK_FULL_USER, MOCK_USER, USER_DATA, USER_EXTRA_INFO, USER_URL } from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { HttpService } from '../core/http/http.service';
@@ -23,6 +23,7 @@ import {
 import { ProfileFormComponent } from '../shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from './../shared/switch/switch.component';
 import { environment } from '../../environments/environment';
+import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -115,6 +116,7 @@ describe('ProfileComponent', () => {
       expect(component.profileForm.get('last_name').value).toBe(USER_DATA.last_name);
       expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
+      expect(component.profileForm.get('extra_info').value).toEqual(USER_EXTRA_INFO);
     });
 
     it('should subscribe privacyService allowSegmentation$', () => {
@@ -194,7 +196,7 @@ describe('ProfileComponent', () => {
 
       component.onSubmit();
 
-      expect(component.formComponent.onSubmit).toHaveBeenCalled();
+      expect(component.formComponent.onSubmit).toHaveBeenCalledWith(MOCK_FULL_USER);
     });
   });
 
@@ -236,6 +238,17 @@ describe('ProfileComponent', () => {
       component.switchAllowSegmentation(false);
 
       expect(privacyService.updatePrivacy).toHaveBeenCalledWith(allowSegmentationData);
+    });
+  });
+
+  describe('openBecomeProModal', () => {
+    it('should open modal if user is not featured', () => {
+      component.user.featured = false;
+      spyOn(modalService, 'open');
+
+      component.openBecomeProModal();
+
+      expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {windowClass: 'become-pro'});
     });
   });
 });

@@ -7,13 +7,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './become-pro-modal.component.html',
   styleUrls: ['./become-pro-modal.component.scss']
 })
-export class BecomeProModalComponent implements OnInit {
+export class BecomeProModalComponent {
 
   @Input() user: User;
 
   constructor(public activeModal: NgbActiveModal) { }
-
-  ngOnInit() {
-  }
 
 }

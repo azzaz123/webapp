@@ -12,6 +12,7 @@ export const PERMISSIONS = {
 };
 
 export class User implements Model {
+
   private _itemDistance: number;
   private _webLink: string;
 
@@ -201,6 +202,10 @@ export class User implements Model {
 
   get featured(): boolean {
     return this._featured;
+  }
+
+  set featured(value: boolean) {
+    this._featured = value;
   }
 
   get extraInfo(): UserExtrainfo {

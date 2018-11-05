@@ -78,9 +78,9 @@ export interface UserValidations {
 
 export interface UserExtrainfo {
   description: string;
-  address: string;
+  address?: string;
   phone_number: string;
   link: string;
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
 }
