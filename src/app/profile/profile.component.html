@@ -100,6 +100,12 @@
                            (click)="openBecomeProModal()" />
                   </div>
                 </div>
+                <div class="form-group row">
+                  <label for="shop-address" class="col-3" i18n>Shop address:</label>
+                  <div class="col-5">
+                    <input #input type="text" class="form-control" formControlName="address" id="shop-address" (focus)="open(input)" />
+                  </div>
+                </div>
                 <div class="row">
                   <div class="offset-3 col-9">
                     <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!formComponent.hasNotSavedChanges || !user.featured"

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -6,7 +6,10 @@ import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Response, ResponseOptions } from '@angular/http';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MOCK_FULL_USER, MOCK_USER, USER_DATA, USER_EXTRA_INFO, USER_URL } from '../../tests/user.fixtures.spec';
+import {
+  MOCK_FULL_USER, MOCK_USER, USER_DATA, USER_EXTRA_INFO, USER_LOCATION_COORDINATES,
+  USER_URL
+} from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { HttpService } from '../core/http/http.service';
@@ -24,6 +27,7 @@ import { ProfileFormComponent } from '../shared/profile/profile-form/profile-for
 import { SwitchComponent } from './../shared/switch/switch.component';
 import { environment } from '../../environments/environment';
 import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
+import { LOCATION_MODAL_TIMEOUT } from '../shared/geolocation/location-select/location-select.component';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
@@ -37,6 +41,9 @@ describe('ProfileComponent', () => {
   let modalService: NgbModal;
   let privacyService: PrivacyService;
   let mockBackend: MockBackend;
+  const componentInstance: any = {
+    init: jasmine.createSpy('init')
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -52,6 +59,9 @@ describe('ProfileComponent', () => {
           user: MOCK_FULL_USER,
           me() {
             return Observable.of(MOCK_FULL_USER);
+          },
+          updateStoreLocation() {
+            return Observable.of({})
           }
         }
         },
@@ -70,6 +80,7 @@ describe('ProfileComponent', () => {
           provide: NgbModal, useValue: {
           open() {
             return {
+              componentInstance: componentInstance,
               result: Promise.resolve(true)
             };
           }
@@ -250,5 +261,64 @@ describe('ProfileComponent', () => {
 
       expect(modalService.open).toHaveBeenCalledWith(BecomeProModalComponent, {windowClass: 'become-pro'});
     });
+  });
+
+  describe('open', () => {
+    let element: any;
+    beforeEach(fakeAsync(() => {
+      element = {
+        blur() {
+        }
+      };
+      spyOn<any>(element, 'blur');
+    }));
+
+    describe('with no user values', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(modalService, 'open').and.returnValue({
+          componentInstance: componentInstance,
+          result: Promise.resolve(USER_LOCATION_COORDINATES)
+        });
+        spyOn(userService, 'updateStoreLocation').and.callThrough();
+        component.open(element);
+        tick(LOCATION_MODAL_TIMEOUT);
+      }));
+
+      it('should blur element', () => {
+        expect(element.blur).toHaveBeenCalled();
+      });
+
+      it('should open modal', () => {
+        expect(modalService.open).toHaveBeenCalled();
+      });
+
+      it('should set location', () => {
+        expect(component.profileForm.get('extra_info.address').value).toEqual(USER_LOCATION_COORDINATES.name);
+        expect(component.user.extraInfo.latitude).toEqual(USER_LOCATION_COORDINATES.latitude);
+        expect(component.user.extraInfo.longitude).toEqual(USER_LOCATION_COORDINATES.longitude);
+      });
+
+      it('should call init with no params', () => {
+        expect(componentInstance.init).toHaveBeenCalled();
+      });
+
+      it('should call updateStoreLocation', () => {
+        expect(userService.updateStoreLocation).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
+      });
+    });
+
+    describe('with user values', () => {
+      it('should set location on modal instance', fakeAsync(() => {
+        component.user.extraInfo.latitude = USER_LOCATION_COORDINATES.latitude;
+        component.user.extraInfo.longitude = USER_LOCATION_COORDINATES.longitude;
+        component.user.extraInfo.address = USER_LOCATION_COORDINATES.name;
+
+        component.open(element);
+        tick(LOCATION_MODAL_TIMEOUT);
+
+        expect(componentInstance.init).toHaveBeenCalledWith(USER_LOCATION_COORDINATES);
+      }));
+    });
+
   });
 });

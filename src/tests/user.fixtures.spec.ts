@@ -82,7 +82,8 @@ export const USER_URL = 'https://www.wallapop.com/user/webslug-l1kmzn82zn3p';
 export const USER_EXTRA_INFO: UserExtrainfo = {
   description: 'description',
   phone_number: 'phone_number',
-  link: 'link'
+  link: 'link',
+  address: USER_LOCATION.title
 };
 
 export const USER_DATA: UserResponse = {
