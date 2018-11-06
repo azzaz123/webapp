@@ -77,6 +77,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
+  private oldDeliveryValue: any;
   public isUrgent = false;
 
   constructor(private fb: FormBuilder,
@@ -123,6 +124,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
         delivery_info: this.getDeliveryInfo()
       });
       this.detectFormChanges();
+      this.oldDeliveryValue = this.getDeliveryInfo();
     }
   }
 
@@ -276,6 +278,15 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   public emitLocation(): void {
     this.locationSelected.emit(this.categoryId);
+  }
+
+  public onDeliveryChange(newDeliveryValue: any) {
+    if (newDeliveryValue === this.oldDeliveryValue) {
+      this.uploadForm.controls['delivery_info'].reset();
+      delete this.oldDeliveryValue;
+    } else {
+      this.oldDeliveryValue = newDeliveryValue;
+    }
   }
 
 }
