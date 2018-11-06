@@ -200,9 +200,10 @@ describe('UploadProductComponent', () => {
     });
   });
 
-  describe('ngAfterViewChecked', () => {
+  describe('ngAfterContentInit', () => {
 
     beforeEach(() => {
+      component['focused'] = false;
       component.titleField = {
         nativeElement: {
           focus() {
@@ -213,18 +214,18 @@ describe('UploadProductComponent', () => {
     });
 
     it('should set focus', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
+      component.ngAfterContentInit();
+
       expect(component.titleField.nativeElement.focus).toHaveBeenCalled();
-      expect(component['focused']).toBeTruthy();
+      expect(component['focused']).toBe(true);
     }));
 
-    it('should NOT set focus if update mode', fakeAsync(() => {
+    it('should NOT set focus if edit mode', fakeAsync(() => {
       component.item = MOCK_ITEM;
-      fixture.detectChanges();
-      tick();
+      component.ngAfterContentInit();
+
       expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();
-      expect(component['focused']).toBeFalsy();
+      expect(component['focused']).toBe(false);
     }));
   });
 

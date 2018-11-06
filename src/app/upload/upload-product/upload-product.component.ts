@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   Component,
   ElementRef,
   EventEmitter,
@@ -7,7 +6,8 @@ import {
   OnChanges,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  AfterContentInit
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -29,7 +29,7 @@ import { DeliveryInfo } from '../../core/item/item-response.interface';
   templateUrl: './upload-product.component.html',
   styleUrls: ['./upload-product.component.scss']
 })
-export class UploadProductComponent implements OnInit, AfterViewChecked, OnChanges {
+export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
 
   @Input() categoryId: string;
   @Input() item: Item;
@@ -175,20 +175,18 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     });
   }
 
-  ngAfterViewChecked() {
-    setTimeout(() => {
-      if (!this.item && this.titleField && !this.focused) {
-        this.titleField.nativeElement.focus();
-        this.focused = true;
-      }
-    });
+  ngAfterContentInit() {
+    if (!this.item && this.titleField && !this.focused) {
+      this.titleField.nativeElement.focus();
+      this.focused = true;
+    }
   }
 
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
-        this.uploadForm.value.sale_conditions.shipping_allowed = true;
+        this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm.value.delivery_info ? true : false;
       }
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
