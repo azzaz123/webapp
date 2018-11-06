@@ -11,12 +11,13 @@ import {
 } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
-import { ItemComponent, showWillisCategories, showKlincCategories } from './item.component';
+import { ItemComponent, showWillisCategories, showKlincCategories, showMapfreCategories, showVertiCategories, mapfreLinks, vertiLinks } from './item.component';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { Item } from '../../core/item/item';
-import {forEach} from "@angular/router/src/utils/collection";
+import { CookieService } from 'ngx-cookie';
+import { CATEGORY_IDS } from "../../core/category/category-ids";
 
 describe('Component: Item', () => {
 
@@ -25,6 +26,7 @@ describe('Component: Item', () => {
   let userService: UserService;
   let itemService: ItemService;
   let trackingService: TrackingService;
+  let cookieService: CookieService;
 
   const MOCK_CLICK_EVENT = {
     stopPropagation(){}
@@ -52,6 +54,19 @@ describe('Component: Item', () => {
           }
         }
         },
+        {
+          provide: CookieService, useValue: {
+          _value: {},
+          put(key, value) {
+            this._value[key] = value;
+            console.log("cookie put", key, value, this._value);
+          },
+          get(key) {
+            console.log("cookie get", key, this._value);
+            return this._value[key];
+          },
+        }
+        },
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: 'SUBDOMAIN', useValue: 'es'}],
       schemas: [NO_ERRORS_SCHEMA]
@@ -61,6 +76,7 @@ describe('Component: Item', () => {
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     trackingService = TestBed.get(TrackingService);
+    cookieService = TestBed.get(CookieService);
     appboy.initialize(environment.appboy);
   });
 
@@ -129,7 +145,7 @@ describe('Component: Item', () => {
   it('should track Willis Display when showWillisLink ',  () => {
     spyOn(trackingService, 'track');
 
-    Object.values(showWillisCategories).forEach((categoryId) => {
+    showWillisCategories.forEach((categoryId) => {
       component.item = { ...MOCK_ITEM, categoryId} as Item;
       component.ngOnChanges();
 
@@ -319,9 +335,127 @@ describe('Component: Item', () => {
     });
   });
 
+  describe('mapfre link', () => {
+    beforeEach(() => {
+      cookieService.put('device_access_token_id', '1');
+      component.ngOnInit();
+    });
+
+    it('should return mapfre link if device-access-token las num is even number', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE} as Item;
+
+      component.ngOnChanges();
+
+      expect(component.getMapfreOrVertiLink()).toEqual(mapfreLinks[CATEGORY_IDS.REAL_ESTATE]);
+    });
+
+    it('should not return mapfre link if device-access-token las num is even number', () => {
+      cookieService.put('device_access_token_id', '0');
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE} as Item;
+
+      component.ngOnInit();
+      component.ngOnChanges();
+
+      expect(component.getMapfreOrVertiLink()).not.toEqual(mapfreLinks[CATEGORY_IDS.REAL_ESTATE]);
+    });
+
+    it('should show when category car, real estate, motobike or bike', () => {
+      showMapfreCategories.forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+        console.log(categoryId);
+
+        component.ngOnChanges();
+
+        expect(component.getMapfreOrVertiLink()).toEqual(mapfreLinks[categoryId]);
+      });
+    });
+
+    it('should call track with mapfre display parameters', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE } as Item;
+      spyOn(trackingService, 'track').and.callThrough();
+
+      component.ngOnChanges();
+
+      expect(trackingService.track)
+        .toHaveBeenCalledWith(TrackingService.MAPFRE_LINK_DISPLAY, { item_id: component.item.id, category_id: component.item.categoryId });
+    });
+
+    it('when is clicked should sent MAPFRE_LINK_TAP tracking event', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE } as Item;
+      spyOn(trackingService, 'track').and.callThrough();
+
+      component.ngOnChanges();
+      component.clickMapfreOrVerti(MOCK_CLICK_EVENT);
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MAPFRE_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
+    });
+  });
+
+  describe('verti link', () => {
+    beforeEach(() => {
+      cookieService.put('device_access_token_id', '0');
+      component.ngOnInit();
+    });
+
+    it('should return verti link if device-access-token las num is odd number', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE} as Item;
+
+      component.ngOnChanges();
+
+      expect(component.getMapfreOrVertiLink()).toEqual(vertiLinks[CATEGORY_IDS.REAL_ESTATE]);
+    });
+
+    it('should not return verti link if device-access-token las num is odd number', () => {
+      cookieService.put('device_access_token_id', '1');
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE} as Item;
+
+      component.ngOnInit();
+      component.ngOnChanges();
+
+      expect(component.getMapfreOrVertiLink()).not.toEqual(vertiLinks[CATEGORY_IDS.REAL_ESTATE]);
+    });
+
+    it('should show when category car, real estate or motobike', () => {
+      showVertiCategories.forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+        console.log(categoryId);
+
+        component.ngOnChanges();
+
+        expect(component.getMapfreOrVertiLink()).toEqual(vertiLinks[categoryId]);
+      });
+    });
+
+    it('should call track with verti display parameters', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE } as Item;
+      spyOn(trackingService, 'track').and.callThrough();
+
+      component.ngOnChanges();
+
+      expect(trackingService.track)
+        .toHaveBeenCalledWith(TrackingService.VERTI_LINK_DISPLAY, { item_id: component.item.id, category_id: component.item.categoryId });
+    });
+
+    it('when is clicked should sent VERTI_LINK_TAP tracking event', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE } as Item;
+      spyOn(trackingService, 'track').and.callThrough();
+
+      component.ngOnChanges();
+      component.clickMapfreOrVerti(MOCK_CLICK_EVENT);
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.VERTI_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
+    });
+  });
+
   describe('showWillisLink', () => {
     it('should be true when item categoryId is 13100, 12545, or 12900', () => {
-      Object.values(showWillisCategories).forEach((categoryId) => {
+      showWillisCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
         component.ngOnChanges();
 
@@ -331,7 +465,7 @@ describe('Component: Item', () => {
 
     it('should be false when item categoryId is not 13100, 12545 or 12900', () => {
       const hideWillisCategories = [100, 14000];
-      Object.values(hideWillisCategories).forEach((categoryId) => {
+      hideWillisCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
         component.ngOnChanges();
 
@@ -342,7 +476,7 @@ describe('Component: Item', () => {
 
   describe('showKlincLink', () => {
     it('should be true when item categoryId is 15000, 16000', () => {
-      Object.values(showKlincCategories).forEach((categoryId) => {
+      showKlincCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
         component.ngOnChanges();
 
@@ -352,7 +486,7 @@ describe('Component: Item', () => {
 
     it('should be false when item categoryId is not 15000, 16000', () => {
       const hideWillisCategories = [100, 14000];
-      Object.values(hideWillisCategories).forEach((categoryId) => {
+      hideWillisCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
         component.ngOnChanges();
 
