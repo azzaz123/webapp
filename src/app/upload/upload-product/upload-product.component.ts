@@ -184,7 +184,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
-        this.uploadForm.value.sale_conditions.shipping_allowed = true;
+        this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm.value.delivery_info ? true : false;
       }
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
