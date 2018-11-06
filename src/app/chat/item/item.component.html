@@ -56,6 +56,12 @@
           <span i18n>Insure this product with Klinc by Zurich</span>
         </ng-template>
       </a>
+      <a (click)="clickMapfreOrVerti($event)"
+         *ngIf="showMapfreOrVertiLink"
+         [href]="getMapfreOrVertiLink()"
+         target="_blank" i18n>
+        Add Insurance
+      </a>
     </div>
   </div>
 </a>

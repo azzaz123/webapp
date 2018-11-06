@@ -6,16 +6,17 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
 import { User } from '../../core/user/user';
 import { CATEGORY_IDS } from '../../core/category/category-ids';
+import { CookieService } from 'ngx-cookie';
 
 export const showWillisCategories = [ CATEGORY_IDS.GAMES_CONSOLES, CATEGORY_IDS.TV_AUDIO_CAMERAS, CATEGORY_IDS.APPLIANCES];
 
 export const showKlincCategories = [ CATEGORY_IDS.COMPUTERS_ELECTRONICS, CATEGORY_IDS.CELL_PHONES_ACCESSORIES];
 
-export const vertiCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR];
+export const showVertiCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR];
 
-export const mapfreCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR, CATEGORY_IDS.BIKES];
+export const showMapfreCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR, CATEGORY_IDS.BIKES];
 
-const mapfreLinks = {
+export  const mapfreLinks = {
   [CATEGORY_IDS.CAR]: 'http://segurosdecoche.mapfre.es/wallapop?act=act_prosp_mapfre_es_wallapop_car_crossdevice_20180806_internal_wallapop&utm_source=wallapop&utm_medium=tpa&utm_campaign=act_prosp_mapfre_es_wallapop_car_crossdevice_20180806&utm_term=ficha_producto&utm_content=&utm_product=coche',
   [CATEGORY_IDS.MOTORBIKE]: 'https://segurosdemoto.mapfre.es/wallapop?&act=act_prosp_mapfre_es_wallapop_moto_crossdevice_20180806_internal_wallapop&utm_source=wallapop&utm_medium=tpa&utm_campaign=act_prosp_mapfre_es_wallapop_moto_crossdevice_20180806&utm_term=ficha_producto&utm_content=&utm_product=moto',
   [CATEGORY_IDS.REAL_ESTATE]: 'https://segurosdehogar.mapfre.es/wallapop?act=act_prosp_mapfre_es_wallapop_home_crossdevice_20180806_internal_wallapop&utm_source=wallapop&utm_medium=tpa&utm_campaign=act_prosp_mapfre_es_wallapop_home_crossdevice_20180806&utm_term=ficha_producto&utm_content=&utm_product=hogar',
@@ -23,7 +24,7 @@ const mapfreLinks = {
   [CATEGORY_IDS.BIKES]: 'http://segurosdebici.mapfre.es/wallapop?act=act_prosp_mapfre_es_wallapop_bike_crossdevice_20180806_internal_wallapop&utm_source=wallapop&utm_medium=tpa&utm_campaign=act_prosp_mapfre_es_wallapop_bike_crossdevice_20180806&utm_term=ficha_producto&utm_content=&utm_product=bici'
 };
 
-const vertiLinks = {
+export const vertiLinks = {
   [CATEGORY_IDS.CAR] : 'https://www.verti.es/ov/SNetPeticion?idPeticion=ISERV01&servicio=COTIZAVER&dps=1&producto=AU01&CANAL=AFFINITY&SUBCANAL=AF32&pid=722C0832A1&utm_source=Affinity&utm_medium=tpaff&utm_campaign=AF32',
   [CATEGORY_IDS.MOTORBIKE] : 'https://www.verti.es/ov/SNetPeticion?idPeticion=ISERV01&servicio=COTIZAVER&dps=1&producto=AU02&CANAL=AFFINITY&SUBCANAL=AF32&pid=722C0832A2&utm_source=Affinity&utm_medium=tpaff&utm_campaign=AF32',
   [CATEGORY_IDS.REAL_ESTATE] : 'https://www.verti.es/ov/SNetPeticion?idPeticion=ISERV01&servicio=COTIZAVER&producto=HG01&CANAL=AFFINITY&SUBCANAL=AF32&pid=722C0832H1&utm_source=Affinity&utm_medium=tpaff&utm_campaign=AF32',
@@ -44,13 +45,18 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   public isCarItem = false;
   public showKlincLink = false;
   public showWillisLink = false;
+  public showMapfreOrVertiLink = false;
   private active = true;
   private allowReserve: boolean;
   private myUserId: string;
+  private _headsOrTails = false; // true: mapfre, false: verti
+  private showMapfre = false;
+  private showVerti = false;
 
   constructor(private itemService: ItemService,
               private userService: UserService,
               private trackingService: TrackingService,
+              private cookieService: CookieService,
               @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
@@ -59,6 +65,8 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       (user: User) => {
         this.myUserId = user.id;
       });
+
+    this._headsOrTails = this.headsOrTails();
   }
 
   ngOnChanges(changes?: any) {
@@ -96,6 +104,25 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
         category_id: this.item.categoryId,
         item_id: this.item.id
       });
+    }
+
+    this.showMapfre = showMapfreCategories.includes(this.item.categoryId);
+    this.showVerti = showVertiCategories.includes(this.item.categoryId);
+    this.showMapfreOrVertiLink = this.showMapfre || this.showVerti;
+    if (this.showMapfreOrVertiLink) {
+      const showBoth = this.showVerti && this.showMapfre;
+      if (showBoth) {
+        this._headsOrTails ?
+          this.trackingService.track(TrackingService.MAPFRE_LINK_DISPLAY, { category_id: this.item.categoryId, item_id: this.item.id }) :
+          this.trackingService.track(TrackingService.VERTI_LINK_DISPLAY, { category_id: this.item.categoryId, item_id: this.item.id });
+      } else {
+        if (this.showMapfre) {
+          this.trackingService.track(TrackingService.MAPFRE_LINK_DISPLAY, { category_id: this.item.categoryId, item_id: this.item.id });
+        }
+        if (this.showVerti) {
+          this.trackingService.track(TrackingService.VERTI_LINK_DISPLAY, { category_id: this.item.categoryId, item_id: this.item.id });
+        }
+      }
     }
   }
 
@@ -154,5 +181,31 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       category_id: this.item.categoryId,
       item_id: this.item.id
     });
+  }
+
+  public clickMapfreOrVerti (event) {
+    event.stopPropagation();
+    this._headsOrTails ?
+      this.trackingService.track(TrackingService.MAPFRE_LINK_TAP, { category_id: this.item.categoryId, item_id: this.item.id }) :
+      this.trackingService.track(TrackingService.VERTI_LINK_TAP, { category_id: this.item.categoryId, item_id: this.item.id });
+  }
+
+  public getMapfreOrVertiLink() {
+    const categoryId = this.item.categoryId;
+    const mapfreLink = mapfreLinks[categoryId];
+    const vertiLink = vertiLinks[categoryId];
+    if (this.showMapfre && this.showVerti) {
+      return this._headsOrTails ? mapfreLink : vertiLink;
+    }
+    if (this.showMapfre) { return mapfreLink; }
+    if (this.showVerti)  { return vertiLink; }
+  }
+
+  private headsOrTails(): boolean {
+    const fingerPrint = this.cookieService.get('device_access_token_id');
+    if (fingerPrint) {
+      return Boolean(fingerPrint.charCodeAt(fingerPrint.length - 1) % 2);
+    }
+    return Boolean(Math.round(Math.random()) ? true : false);
   }
 }
