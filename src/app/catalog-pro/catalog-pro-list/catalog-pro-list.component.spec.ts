@@ -24,7 +24,7 @@ import {
 } from '../../../tests/item.fixtures.spec';
 import { USERS_STATS_RESPONSE } from '../../../tests/user.fixtures.spec';
 import { FINANCIAL_CARD } from '../../../tests/payments.fixtures.spec';
-import { CreditCardModalComponent } from '../../catalog/list/modals/credit-card-modal/credit-card-modal.component';
+import { CreditCardModalComponent } from './modals/credit-card-modal/credit-card-modal.component';
 
 describe('CatalogProListComponent', () => {
   let component: CatalogProListComponent;

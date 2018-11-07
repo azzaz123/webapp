@@ -7,6 +7,7 @@ import { ITEM_ID, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE } from '../.
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
+import { environment } from '../../../environments/environment';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
@@ -63,10 +64,19 @@ describe('CheckoutComponent', () => {
     paymentService = TestBed.get(PaymentService);
     route = TestBed.get(ActivatedRoute);
     spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
+    appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
+
+    it('should send appboy FeatureItems event', () => {
+      spyOn(appboy, 'logCustomEvent');
+
+      component.ngOnInit();
+
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('FeatureItems', {platform: 'web'});
+    });
 
     describe('no params', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {

@@ -172,10 +172,6 @@ describe('UploadProductComponent', () => {
         expect(component.uploadForm.get('category_id').value).toBe(REALESTATE_CATEGORY);
       });
 
-      it('should set form sale_conditions.shipping_allowed', () => {
-        expect(component.uploadForm.get('sale_conditions.shipping_allowed').value).toBe(false);
-      });
-
       it('should set form delivery_info', () => {
         expect(component.uploadForm.get('delivery_info').value).toBe(null);
       });
@@ -204,9 +200,10 @@ describe('UploadProductComponent', () => {
     });
   });
 
-  describe('ngAfterViewChecked', () => {
+  describe('ngAfterContentInit', () => {
 
     beforeEach(() => {
+      component['focused'] = false;
       component.titleField = {
         nativeElement: {
           focus() {
@@ -217,18 +214,18 @@ describe('UploadProductComponent', () => {
     });
 
     it('should set focus', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
+      component.ngAfterContentInit();
+
       expect(component.titleField.nativeElement.focus).toHaveBeenCalled();
-      expect(component['focused']).toBeTruthy();
+      expect(component['focused']).toBe(true);
     }));
 
-    it('should NOT set focus if update mode', fakeAsync(() => {
+    it('should NOT set focus if edit mode', fakeAsync(() => {
       component.item = MOCK_ITEM;
-      fixture.detectChanges();
-      tick();
+      component.ngAfterContentInit();
+
       expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();
-      expect(component['focused']).toBeFalsy();
+      expect(component['focused']).toBe(false);
     }));
   });
 
@@ -286,14 +283,6 @@ describe('UploadProductComponent', () => {
       component.uploadForm.get('sale_price').patchValue(9999999999);
 
       expect(component.uploadForm.valid).toBeFalsy();
-    });
-
-    it('should set delivery_info as required when shipping_allowed true', () => {
-      fixture.detectChanges();
-
-      expect(component.uploadForm.get('delivery_info').valid).toBeTruthy();
-      component.uploadForm.get('sale_conditions.shipping_allowed').patchValue(true);
-      expect(component.uploadForm.get('delivery_info').valid).toBeFalsy();
     });
   });
 
@@ -354,6 +343,18 @@ describe('UploadProductComponent', () => {
     });
   });
 
+  describe('onDeliveryChange', () => {
+    it('should reset selected delivery value if clicked twice', () => {
+      spyOn(component.uploadForm.controls['delivery_info'], 'reset');
+
+      component.onDeliveryChange(ITEM_DELIVERY_INFO);
+      component.onDeliveryChange(ITEM_DELIVERY_INFO);
+
+      expect(component['oldDeliveryValue']).toBeUndefined();
+      expect(component.uploadForm.controls['delivery_info'].reset).toHaveBeenCalled();
+    });
+  });
+
   describe('preview', () => {
     beforeEach(fakeAsync(() => {
       spyOn(modalService, 'open').and.callThrough();
@@ -393,8 +394,7 @@ describe('UploadProductComponent', () => {
         images: [{'image': true}],
         sale_conditions: {
           fix_price: false,
-          exchange_allowed: false,
-          shipping_allowed: false
+          exchange_allowed: false
         },
         delivery_info: null,
         location: {

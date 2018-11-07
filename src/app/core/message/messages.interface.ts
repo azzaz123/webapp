@@ -13,7 +13,6 @@ export interface MetaInfo {
 
 export interface MessagesData {
   data: Message[];
-  meta: MetaInfo;
 }
 
 export interface MessagesDataRecursive extends MessagesData {

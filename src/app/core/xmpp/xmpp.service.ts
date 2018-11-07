@@ -2,45 +2,34 @@ import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
-import { Observable, from } from 'rxjs';
-import { Observer } from 'rxjs/Observer';
+import { Observable } from 'rxjs';
 import { PersistencyService } from '../persistency/persistency.service';
-import { MessagesData, MetaInfo } from '../message/messages.interface';
 import { XmppBodyMessage, XMPPClient } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
-import { UserService } from '../user/user.service';
+import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 
 @Injectable()
 export class XmppService {
 
   private client: XMPPClient;
   private _clientConnected = false;
-  private confirmedMessages: string[] = [];
-  private firstMessageDate: string;
   private currentJid: string;
   private resource: string;
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
-  private unreadMessages = [];
-  public totalUnreadMessages = 0;
-  public receivedReceipts = [];
-  public sentReceipts = [];
-  public readReceipts = [];
-  private ownReadTimestamps = {};
-  private readTimestamps = {};
-  public convWithUnread = {};
   private reconnectAttempts = 5;
   private reconnectInterval: any;
   private reconnectedTimes = 0;
+  private messageQ: Array<XmppBodyMessage> = [];
+  private archiveFinishedLoaded = false;
 
   constructor(private eventService: EventService,
               private persistencyService: PersistencyService,
-              private userService: UserService,
               private trackingService: TrackingService) {
   }
 
@@ -80,11 +69,14 @@ export class XmppService {
           message_id: message.id });
         appboy.logCustomEvent('FirstMessage', {platform: 'web'});
       }
-      this.trackingService.track(TrackingService.MESSAGE_SENT, {
+      const trackEvent: TrackingEventData = {
+        eventData: TrackingService.MESSAGE_SENT,
+        attributes: {
         thread_id: message.thread,
-        message_id: message.id,
-        item_id: conversation.item.id
-      });
+        message_id: message.id
+        }
+      };
+      this.trackingService.addTrackingEvent(trackEvent, false);
       this.onNewMessage(_.clone(message), true);
     }
 
@@ -102,115 +94,6 @@ export class XmppService {
     });
   }
 
-  public searchHistory(thread?: string, refMessage?: string, start?: string): Observable<MessagesData> {
-    return Observable.create((observer: Observer<MessagesData>) => {
-      const queryId: string = this.client.nextId();
-      const options: any = {
-        from: this.currentJid,
-        type: 'get',
-        mam: {
-          thread: thread,
-          queryid: queryId,
-          start: start,
-          rsm: {
-            max: 50
-          }
-        }
-      };
-      if (!start) {
-        options.mam.rsm.before = refMessage || true;
-      } else {
-        options.mam.rsm.after = refMessage || true;
-      }
-      const query: Promise<any> = this.client.sendIq(options).then((response: any) => {
-        if (response.mam.rsm.count === 0) {
-          return observer.next({
-            data: [],
-            meta: {
-              first: null,
-              last: null,
-              end: true
-            }
-          });
-        }
-        return response;
-      }, (e) => {
-        console.log(options);
-        console.error(e);
-        return observer.next({
-          data: [],
-          meta: {
-            first: null,
-            last: null,
-            end: true
-          }
-        });
-      });
-      let messages: Message[] = [];
-      let messagesCount = 0;
-      setTimeout(() => {
-        if (messagesCount === 0) {
-            query.then(() => {
-            return observer.next({
-              data: [],
-              meta: {
-                first: null,
-                last: null,
-                end: true
-              }
-            });
-          });
-        }
-      }, 2000);
-      this.client.on('stream:data', (data: any) => {
-        if (data.xml.name === 'message' && data.xml.children[0].attrs.queryid === queryId) {
-          messagesCount++;
-          const message: any = this.xmlToMessage(data.xml);
-          if (message.body) {
-            const builtMessage: Message = this.buildMessage(message);
-            if (!message.payload || this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1) {
-              messages.push(builtMessage);
-              if (this.messageFromSelf(builtMessage) && builtMessage.status === null) {
-                builtMessage.status = messageStatus.SENT;
-              }
-            }
-            this.onNewMessage(message);
-          }
-          if (message.receivedId) {
-            this.confirmedMessages.push(message.receivedId);
-            this.receivedReceipts.push({id: message.receivedId, thread: message.thread});
-            this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, message.receivedId);
-          }
-          if (message.readTimestamp) {
-            this.readReceipts.push(message);
-            this.eventService.emit(EventService.MESSAGE_READ, message.thread);
-          }
-            query.then((response: any) => {
-            const meta: any = response.mam.rsm;
-            if (message.ref === meta.last) {
-              messages = this.checkReceivedMessages(messages);
-              messages = this.confirmNotConfirmedMessages(messages);
-              const metaObject: MetaInfo = {
-                first: meta.first,
-                last: meta.last,
-                end: start ? meta.count === +meta.firstIndex + messagesCount : meta.firstIndex === '0'
-              };
-              if (!start && meta.count === +meta.firstIndex + messagesCount) {
-                if (!this.firstMessageDate) {
-                  this.firstMessageDate = message.date;
-                }
-                this.persistencyService.saveMetaInformation({last: meta.last, start: this.firstMessageDate});
-              }
-              return observer.next({
-                data: messages,
-                meta: metaObject
-              });
-            }
-          });
-        }
-      });
-    });
-  }
 
   public isConnected(): Observable<boolean> {
     return this.clientConnected$.asObservable();
@@ -227,81 +110,6 @@ export class XmppService {
 
   public debug() {
     this.client.on('*', (k, v) => console.debug(k, v));
-  }
-
-  private messageFromSelf(message) {
-    return message.from.split('@')[0] === this.userService.user.id;
-  }
-
-  private checkReceivedMessages(messages: Message[]): Message[] {
-    messages.forEach((message: Message) => {
-      const index: number = this.confirmedMessages.indexOf(message.id);
-      if (index !== -1) {
-        if (this.messageFromSelf(message)) {
-          message.status = messageStatus.RECEIVED;
-        }
-        this.confirmedMessages.splice(index, 1);
-      }
-    });
-    return messages;
-  }
-
-  public getLastReadTimestamps() {
-    this.readReceipts.filter(receipt => this.messageFromSelf(receipt)).forEach((t) => {
-      if (!this.ownReadTimestamps[t.thread]) {
-        this.ownReadTimestamps[t.thread] = {
-          thread: t.thread,
-          timestamp: new Date(t.readTimestamp),
-        };
-      } else if (Date.parse(t.readTimestamp) > Date.parse(this.ownReadTimestamps[t.thread].timestamp))  {
-        this.ownReadTimestamps[t.thread].timestamp =  t.readTimestamp;
-      }
-    });
-    this.readReceipts.filter(receipt => !this.messageFromSelf(receipt)).forEach((t) => {
-      if (!this.readTimestamps[t.thread]) {
-        this.readTimestamps[t.thread] = {
-          thread: t.thread,
-          timestamp: new Date(t.readTimestamp),
-        };
-      } else if (Date.parse(t.readTimestamp) > Date.parse(this.readTimestamps[t.thread].timestamp))  {
-        this.readTimestamps[t.thread].timestamp =  t.readTimestamp;
-  }
-    });
-  }
-
-  private confirmNotConfirmedMessages(messages: Message[]) {
-    this.getLastReadTimestamps();
-    messages.forEach((message: Message) => {
-      if (!this.messageFromSelf(message)) {
-        this.sendMessageDeliveryReceipt(message.from, message.id, message.conversationId);
-        if (this.ownReadTimestamps[message.conversationId] &&
-            Date.parse(message.date.toString()) > Date.parse(this.ownReadTimestamps[message.conversationId].timestamp.toString())) {
-            const receiptProcessed = this.unreadMessages.filter(m => m.id === message.id).length;
-            if (!receiptProcessed) {
-              this.unreadMessages.push({id: message.id, thread: message.conversationId});
-              this.totalUnreadMessages++;
-            }
-          }
-      } else if (this.readTimestamps[message.conversationId] &&
-                 Date.parse(message.date.toString()) < Date.parse(this.readTimestamps[message.conversationId].timestamp)) {
-        message.status = messageStatus.READ;
-      }
-    });
-    return messages;
-  }
-
-  public addUnreadMessagesCounter(conversations) {
-    if (this.unreadMessages.length) {
-      for (let index = this.unreadMessages.length - 1; index >= 0; --index) {
-        const convWithUnread = conversations.find((c) => c.id === this.unreadMessages[index].thread);
-        if (convWithUnread) {
-          const i = _.findIndex(conversations, convWithUnread);
-          conversations[i].unreadMessages = conversations[i].unreadMessages ? ++conversations[i].unreadMessages : 1;
-          this.unreadMessages.splice(index, 1);
-        }
-      }
-    }
-    return conversations;
   }
 
   private createClient(accessToken: string): void {
@@ -333,11 +141,19 @@ export class XmppService {
   }
 
   private bindEvents(): void {
+    this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADING, () => {
+      this.archiveFinishedLoaded = false;
+    });
+    this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADED, () => {
+      this.archiveFinishedLoaded = true;
+      this.messageQ.map(m => this.onNewMessage(m));
+    });
+
     this.client.enableKeepAlive({
       interval: 30
     });
     this.client.on('message', (message: XmppBodyMessage) => {
-      this.onNewMessage(message);
+      this.archiveFinishedLoaded ? this.onNewMessage(message) : this.messageQ.push(message);
     });
     this.client.on('message:sent', (message: XmppBodyMessage) => {
       if (message.received) {
@@ -377,17 +193,25 @@ export class XmppService {
   }
 
   private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
-    if (message.body || message.timestamp || message.carbonSent || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
+    if (message.body || message.timestamp || message.carbonSent
+        || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
+      /* fromSelf: The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
+      logged in, but they should not be considered messages fromSelf */
+      builtMessage.fromSelf = (builtMessage.from.split('/')[0] === this.currentJid) && !builtMessage.payload;
       this.persistencyService.saveMetaInformation({
-          last: null,
-          start: builtMessage.date.toISOString()
+          start: builtMessage.date.toISOString(),
+          last: null
         }
       );
       const replaceTimestamp = !message.timestamp || message.carbonSent;
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp);
-      if (message.from !== this.currentJid && message.requestReceipt && !message.carbon) {
-        this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
+      if (message.requestReceipt && !builtMessage.fromSelf) {
+        this.persistencyService.findMessage(message.id).subscribe(() => {}, (error) => {
+          if (error.reason === 'missing') {
+            this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
+          }
+        });
       }
     }
   }
@@ -405,20 +229,20 @@ export class XmppService {
     if (markAsPending) {
       message.status = messageStatus.PENDING;
     }
-    if (message.timestamp && message.receipt && message.from.local !== message.to.local && !message.delay) {
+    if (message.timestamp && message.receipt && message.from.local !== message.to.local && !message.carbon) {
       messageId = message.receipt;
       message.status = messageStatus.RECEIVED;
       this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
     }
-    if (!message.carbon && message.sentReceipt && !message.delay) {
+    if (!message.carbon && message.sentReceipt) {
       message.status = messageStatus.SENT;
       messageId = message.sentReceipt.id;
-      this.sentReceipts.push({id: messageId, thread: message.thread});
       this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
     }
     if (!message.carbon && message.readReceipt) {
+      const timestamp = new Date(message.date).getTime();
       message.status = messageStatus.READ;
-      this.eventService.emit(EventService.MESSAGE_READ, message.thread);
+      this.eventService.emit(EventService.MESSAGE_READ, message.thread, timestamp);
     } else {
       messageId = message.id;
     }
@@ -426,9 +250,8 @@ export class XmppService {
                        new Date(message.date), (message.status || null), message.payload);
   }
 
-  private sendMessageDeliveryReceipt(to: string, id: string, thread: string) {
-    this.persistencyService.findMessage(id).subscribe(() => {}, (error) => {
-      if (error.reason === 'missing') {
+  public sendMessageDeliveryReceipt(to: string, id: string, thread: string) {
+    to = (to.indexOf('@') === -1) ? this.createJid(to) : to;
         this.client.sendMessage({
           to: to,
           type: 'chat',
@@ -439,8 +262,6 @@ export class XmppService {
           }
         });
       }
-    });
-  }
 
   private setDefaultPrivacyList(): Observable<any> {
     return Observable.from(this.client.sendIq({
@@ -703,36 +524,5 @@ export class XmppService {
   private getIdFromJid(jid: string): string {
     const splitted = jid.split('@');
     return splitted[0];
-  }
-
-  private xmlToMessage(xml: any) {
-    const forwarded: any = xml.children[0].children[0];
-    /* istanbul ignore else  */
-    if (forwarded) {
-      const delay: any = _.find(forwarded.children, {name: 'delay'});
-      const message: any = _.find(forwarded.children, {name: 'message'});
-      /* istanbul ignore else  */
-      if (message && delay) {
-        const body: any = _.find(message.children, {name: 'body'});
-        const thread: any = _.find(message.children, {name: 'thread'});
-        const received: any = _.find(message.children, {name: 'received'});
-        const read: any = _.find(message.children, {name: 'read'});
-        const sent: any = _.find(message.children, {name: 'sent'});
-        const payload: any = _.find(message.children, {name: 'payload'});
-        return {
-          id: message.attrs.id,
-          from: message.attrs.from,
-          to: message.attrs.to,
-          date: delay.attrs.stamp,
-          body: body ? body.children[0] : null,
-          thread: thread ? thread.children[0] : null,
-          ref: xml.children[0].attrs.id,
-          receivedId: received ? received.attrs.id : null,
-          readTimestamp: read ? read.parent.children[0].children[0] : null,
-          sent: sent ? sent.attrs : null,
-          payload: payload ? JSON.parse(payload.children[0]) : null
-        };
-      }
-    }
   }
 }

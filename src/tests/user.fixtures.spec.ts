@@ -10,7 +10,7 @@ import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';
 
 export const USER_ID = 'l1kmzn82zn3p';
-export const OTHE_USER_ID = 'qxkmav12tp8f';
+export const OTHER_USER_ID = 'qxkmav12tp8f';
 export const MICRO_NAME = 'String S.';
 export const ACCESS_TOKEN = 'bS7D7d26UordM5M0uy5o4IisuyrPz35mfxfpw7PLRqQfzouQGXGpQtyZWFRRDdRFFT5fJZ';
 export const USER_EMAIL = 'test@test.it';

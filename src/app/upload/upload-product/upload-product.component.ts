@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   Component,
   ElementRef,
   EventEmitter,
@@ -7,7 +6,8 @@ import {
   OnChanges,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  AfterContentInit
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -20,7 +20,7 @@ import { CategoryService } from '../../core/category/category.service';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
-import { Item } from '../../core/item/item';
+import { Item, ITEM_TYPES } from '../../core/item/item';
 import { DeliveryInfo } from '../../core/item/item-response.interface';
 
 @Component({
@@ -28,7 +28,7 @@ import { DeliveryInfo } from '../../core/item/item-response.interface';
   templateUrl: './upload-product.component.html',
   styleUrls: ['./upload-product.component.scss']
 })
-export class UploadProductComponent implements OnInit, AfterViewChecked, OnChanges {
+export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
 
   @Input() categoryId: string;
   @Input() item: Item;
@@ -37,6 +37,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @Output() onFormChanged: EventEmitter<boolean> = new EventEmitter();
   @Output() onCategorySelect = new EventEmitter<number>();
   @Output() locationSelected: EventEmitter<any> = new EventEmitter();
+  public itemTypes: any = ITEM_TYPES;
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
@@ -52,19 +53,19 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   }, {
     size: '30x40x50cm',
     value: {
-      min_weight_kg: 5.1,
+      min_weight_kg: 5,
       max_weight_kg: 10
     }
   }, {
     size: '40x50x60cm',
     value: {
-      min_weight_kg: 10.1,
+      min_weight_kg: 10,
       max_weight_kg: 20
     }
   }, {
     size: '50x60x60cm',
     value: {
-      min_weight_kg: 20.1,
+      min_weight_kg: 20,
       max_weight_kg: 30
     }
   }];
@@ -75,6 +76,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
+  private oldDeliveryValue: any;
   public isUrgent = false;
 
   constructor(private fb: FormBuilder,
@@ -94,8 +96,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       description: ['', [Validators.required]],
       sale_conditions: fb.group({
         fix_price: false,
-        exchange_allowed: false,
-        shipping_allowed: false
+        exchange_allowed: false
       }),
       delivery_info: [null],
       location: this.fb.group({
@@ -110,15 +111,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   }
 
   ngOnInit() {
-    this.uploadForm.get('sale_conditions.shipping_allowed').valueChanges.subscribe((value: boolean) => {
-      const deliveryInfoControl: AbstractControl = this.uploadForm.get('delivery_info');
-      if (value) {
-        deliveryInfoControl.setValidators([Validators.required]);
-      } else {
-        deliveryInfoControl.setValidators([]);
-      }
-      deliveryInfoControl.updateValueAndValidity();
-    });
     if (this.item) {
       this.uploadForm.patchValue({
         id: this.item.id,
@@ -131,6 +123,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         delivery_info: this.getDeliveryInfo()
       });
       this.detectFormChanges();
+      this.oldDeliveryValue = this.getDeliveryInfo();
     }
   }
 
@@ -168,7 +161,6 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
           this.uploadForm.get('category_id').patchValue(this.categoryId);
           const fixedCategory = _.find(categories, {value: this.categoryId});
           this.fixedCategory = fixedCategory ? fixedCategory.label : null;
-          this.uploadForm.get('sale_conditions.shipping_allowed').patchValue(false);
           this.uploadForm.get('delivery_info').patchValue(null);
         } else {
           this.fixedCategory = null;
@@ -182,18 +174,19 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     });
   }
 
-  ngAfterViewChecked() {
-    setTimeout(() => {
-      if (!this.item && this.titleField && !this.focused) {
-        this.titleField.nativeElement.focus();
-        this.focused = true;
-      }
-    });
+  ngAfterContentInit() {
+    if (!this.item && this.titleField && !this.focused) {
+      this.titleField.nativeElement.focus();
+      this.focused = true;
+    }
   }
 
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
+      if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
+        this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm.value.delivery_info ? true : false;
+      }
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
         values: this.uploadForm.value
@@ -284,6 +277,15 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   public emitLocation(): void {
     this.locationSelected.emit(this.categoryId);
+  }
+
+  public onDeliveryChange(newDeliveryValue: any) {
+    if (newDeliveryValue === this.oldDeliveryValue) {
+      this.uploadForm.controls['delivery_info'].reset();
+      delete this.oldDeliveryValue;
+    } else {
+      this.oldDeliveryValue = newDeliveryValue;
+    }
   }
 
 }

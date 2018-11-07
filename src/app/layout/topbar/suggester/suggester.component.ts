@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { SuggesterResponse } from './suggester-response.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/switchMap';
 import { SuggesterService } from './suggester.service';
 
@@ -11,7 +11,7 @@ import { SuggesterService } from './suggester.service';
 })
 export class SuggesterComponent implements OnInit {
 
-  private MIN_LENGTH = 0;
+  private MIN_LENGTH = 1;
   public focus: boolean;
   public model: any;
   @Output() public newSearch = new EventEmitter<SuggesterResponse>();

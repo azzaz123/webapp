@@ -198,7 +198,7 @@ describe('BuyProductModalComponent', () => {
       it('should set localStorage with transaction amount', () => {
         component.checkout();
 
-        expect(localStorage.setItem).toHaveBeenCalledWith('transactionSpent', '479');
+        expect(localStorage.setItem).toHaveBeenCalledWith('transactionSpent', '200');
       });
 
       it('should emit TOTAL_CREDITS_UPDATED event', () => {

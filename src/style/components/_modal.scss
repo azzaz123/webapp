@@ -164,6 +164,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   .modal-content {
     width: $modal-width !important;
     max-width: unset;
+    overflow: hidden;
   }
 }
 
@@ -202,7 +203,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.buy-wallacoins, .modal.buy-product, .modal.urgent-confirm, .modal.reactivate, .modal.reactivate-confirm {
+.modal.buy-wallacoins, .modal.buy-product, .modal.urgent-confirm, .modal.reactivate, .modal.reactivate-confirm, .modal.tutorial-wallacoins {
   .modal-dialog {
     max-width: unset;
   }

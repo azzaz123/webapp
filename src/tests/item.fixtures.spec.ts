@@ -57,7 +57,7 @@ export const ITEM_WEB_SLUG = 'webslug-9jd7ryx5odjk';
 export const ITEM_PUBLISHED_DATE = 1473784861894;
 export const ITEM_PUBLISHED_DATE2 = 1473784861898;
 export const ITEM_DELIVERY_INFO: DeliveryInfo = {
-  min_weight_kg: 5.1,
+  min_weight_kg: 5,
   max_weight_kg: 10
 };
 
@@ -89,8 +89,7 @@ export const ITEM_ACTIONS_ALLOWED: ItemActions = {
 
 export const ITEM_SALE_CONDITIONS: ItemSaleConditions = {
   'fix_price': false,
-  'exchange_allowed': false,
-  'shipping_allowed': false
+  'exchange_allowed': false
 };
 
 export const ITEM_MAIN_IMAGE: Image = {
@@ -209,10 +208,12 @@ export const ITEM_DATA3: ItemProResponse = {
 
 export const ITEM_VIEWS = 123;
 export const ITEM_FAVORITES = 456;
+export const ITEM_CONVERSATIONS = 100;
 
 export const ITEM_COUNTERS_DATA: ItemCounters = {
   'views': ITEM_VIEWS,
-  'favorites': ITEM_FAVORITES
+  'favorites': ITEM_FAVORITES,
+  'conversations': ITEM_CONVERSATIONS
 };
 
 export const MOCK_ITEM: Item = new Item(

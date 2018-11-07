@@ -42,6 +42,7 @@ export class UploadCarComponent implements OnInit {
   private oldFormValue: any;
   public isUrgent = false;
   public customMake = false;
+  public customVersion = false;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -163,6 +164,11 @@ export class UploadCarComponent implements OnInit {
 
   public getModels(brand: string, editMode: boolean = false) {
     this.carSuggestionsService.getModels(brand).subscribe((models: IOption[]) => {
+      if (models.length <= 0) {
+        this.customMake = true;
+      } else if (this.item) {
+        this.customMake = !_.find(models, {value: this.item.model});
+      }
       this.models = models;
       this.toggleField('model', 'enable', !editMode);
       if (!editMode) {
@@ -195,6 +201,9 @@ export class UploadCarComponent implements OnInit {
     ).subscribe((versions: IOption[]) => {
       this.versions = versions;
       this.toggleField('version', 'enable', !editMode);
+      if (this.item) {
+        this.customVersion = !_.find(this.versions, {value: this.item.version});
+      }
     });
     this.setTitle();
   }
@@ -261,7 +270,7 @@ export class UploadCarComponent implements OnInit {
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
     }
-    if (this.isUrgent) {
+    if (this.isUrgent && uploadEvent.action !== 'createdOnHold') {
       this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
@@ -353,6 +362,10 @@ export class UploadCarComponent implements OnInit {
       this.toggleField('year', 'disable');
       this.toggleField('version', 'disable');
     }
+  }
+
+  public toggleCustomVersionSelection() {
+      this.customVersion = !this.customVersion;
   }
 
 }

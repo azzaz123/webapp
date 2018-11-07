@@ -10,6 +10,7 @@ import { WallacoinsConfirmModalComponent } from './wallacoins-confirm-modal/wall
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { PackWallacoinsComponent } from './pack-wallacoins/pack-wallacoins.component';
 import { NguCarouselModule } from '@ngu/carousel';
+import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
 
 @NgModule({
   imports: [
@@ -20,14 +21,16 @@ import { NguCarouselModule } from '@ngu/carousel';
     FormsModule,
     MatIconModule,
     NguCarouselModule,
-    TrackingModule
+    TrackingModule,
+    NgbCarouselModule
   ],
   declarations: [
     wallacoinsRoutedComponents,
     BuyWallacoinsModalComponent,
     WallacoinsConfirmModalComponent,
-    PackWallacoinsComponent
+    PackWallacoinsComponent,
+    WallacoinsTutorialComponent
   ],
-  entryComponents: [BuyWallacoinsModalComponent, WallacoinsConfirmModalComponent]
+  entryComponents: [BuyWallacoinsModalComponent, WallacoinsConfirmModalComponent, WallacoinsTutorialComponent]
 })
 export class WallacoinsModule { }

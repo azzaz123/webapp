@@ -36,13 +36,10 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   files = [];
   placeholders: number[];
   options: NgUploaderOptions;
-  isSafari: boolean;
   item: Item;
 
   private setDragOver = _.throttle((dragOver: boolean) => {
-    if (!this.isSafari) {
-      this.dragOver = dragOver;
-    }
+    this.dragOver = dragOver;
   }, 100);
 
   propagateChange = (_: any) => {
@@ -52,7 +49,6 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
               public uploadService: UploadService,
               private itemService: ItemService,
               private modalService: NgbModal) {
-    this.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   }
 
   ngOnInit() {

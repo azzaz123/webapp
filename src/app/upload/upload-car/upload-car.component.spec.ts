@@ -233,6 +233,24 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('title').value).toBe('');
       expect(component.uploadForm.get('title').pristine).toBeTruthy();
     });
+
+    it('should set the car as custom if there are no models returned', () => {
+      spyOn(carSuggestionsService, 'getModels').and.returnValue(Observable.of([]));
+
+      component.getModels('Gaudi');
+
+      expect(component.models.length).toBe(0);
+      expect(component.customMake).toBe(true);
+    });
+
+    it('should set the car as custom if there are no matching models', () => {
+      spyOn(carSuggestionsService, 'getModels').and.returnValue(Observable.of(CAR_MODELS));
+      component.item = MOCK_CAR;
+
+      component.getModels('Gaudi');
+
+      expect(component.customMake).toBe(true);
+    });
   });
 
   describe('getYears', () => {
@@ -384,6 +402,21 @@ describe('UploadCarComponent', () => {
 
       expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {[uploadedEvent.action]: true, itemId: uploadedEvent.response.id, onHold: true}]);
     });
+
+    it('should set action as urgent if item is urgent and product not on hold', () => {
+      component.isUrgent = true;
+      const uploadedEvent = {
+        action: 'updated',
+        response: {
+          id: '1'
+        }
+      };
+      spyOn(router, 'navigate');
+
+      component.onUploaded(uploadedEvent);
+
+      expect(router.navigate).toHaveBeenCalledWith(['/catalog/list', {urgent: true, itemId: uploadedEvent.response.id}]);
+    });
   });
 
   describe('onError', () => {
@@ -502,6 +535,16 @@ describe('UploadCarComponent', () => {
       Object.keys(CAR_INFO).forEach((field) => {
         expect(component.uploadForm.get(field).value).toEqual(CAR_INFO[field]);
       })
+    });
+  });
+
+  describe('toggleCustomVersionSelection', () => {
+    it ('should toggle the version value', () => {
+      component.customVersion = true;
+
+      component.toggleCustomVersionSelection();
+
+      expect(component.customVersion).toBe(false);
     });
   });
 

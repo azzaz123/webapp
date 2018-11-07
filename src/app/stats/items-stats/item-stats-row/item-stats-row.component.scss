@@ -1,0 +1,176 @@
+@import "~style/common";
+
+.item {
+  padding: $spacing-XS 0 $spacing-XS $spacing-L;
+  border-bottom: 1px solid $grey-50;
+  &:hover:not(.active) {
+    background-color: $grey-50;
+    cursor: pointer;
+  }
+}
+
+.col-item-title {
+  display: flex;
+  align-items: center;
+  .price {
+    font-weight: bold;
+    font-size: $font-size-M;
+    width: 100px;
+  }
+}
+
+.col-date {
+  color: $grey-250;
+  font-size: $font-size-S;
+}
+
+*[class^='col-'] {
+  align-items: center;
+  display: flex;
+}
+
+.col-counters {
+  justify-content: center;
+  .counters {
+    font-size: $font-size-XS;
+    color: $grey-900;
+    display: flex;
+    flex-basis: 3em;
+    align-items: center;
+    mat-icon {
+      height: 17px;
+      width: 19px;
+      margin-right: $spacing-XS;
+    }
+  }
+}
+
+.col-arrow {
+  justify-content: space-around;
+  mat-icon {
+    width: 10px;
+    transition: all .5s ease;
+    .active & {
+      transform: rotate(180deg);
+      /deep/ g g {
+        stroke: $corporate;
+      }
+    }
+  }
+}
+
+.stats-expanded {
+  display: flex;
+  justify-content: space-between;
+  padding-right: $spacing-L;
+  .active & {
+    padding-top: $spacing-L;
+    padding-bottom: $spacing-2M;
+  }
+  .graphs-container {
+    width: 770px;
+    background-color: rgba($grey-50, .5);
+    padding: $spacing;
+    border-radius: 5px;
+    .charts-box {
+      background-color: $white;
+      border-radius: $border-radius;
+      padding-top: $spacing-XS;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      .header {
+        display: flex;
+        justify-content: space-between;
+        padding: $spacing-L;
+        padding-bottom: 0;
+        h2 {
+          font-size: $font-size-S;
+          font-weight: bold;
+        }
+        .legend {
+          ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            li {
+              display: inline;
+              margin-left: $spacing;
+              font-size: $font-size-XS;
+              color: $grey-500;
+              &:before {
+                content: '';
+                display: inline-block;
+                @include square(10px);
+                margin-right: $spacing-XS;
+              }
+              &.views {
+                &:before {
+                  background: $graph-views;
+                }
+              }
+              &.chats {
+                &:before {
+                  background: $graph-chats;
+                }
+              }
+              &.favorites {
+                &:before {
+                  background: $graph-favorites;
+                }
+              }
+              &.featured {
+                &:before {
+                  background: $graph-featured;
+                }
+              }
+            }
+          }
+        }
+      }
+      .charts {
+        display: flex;
+        justify-content: space-between;
+        tsl-item-stats-graph {
+          width:355px;
+          height: 250px;
+        }
+        .no-data {
+          width: 100%;
+          margin-top: 95px;
+          text-align: center;
+          margin-bottom: 110px;
+          color: $grey-500;
+        }
+      }
+    }
+  }
+  .graph-info {
+    width: 327px;
+    flex-direction: column;
+    background: rgba(236, 239, 241, 0.5) url(/assets/images/destacado.svg) no-repeat center 40px;
+    padding-top: 190px;
+    h2 {
+      font-size: $font-size-S;
+      font-weight: bold;
+      text-align: center;
+    }
+    .note, .bump-note {
+      color: $grey-500;
+      text-align: center;
+      font-size: $font-size-S;
+    }
+    .bump-note {
+      color: $corporate;
+      font-weight: bold;
+    }
+    tsl-button {
+      /deep/ {
+        .btn {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ import { ResourceService } from '../resource/resource.service';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
-  CarContent, CarInfo,
+  CarContent, CarInfo, CheapestProducts,
   ConversationUser,
   Duration,
   ItemBulkResponse,
@@ -483,6 +483,20 @@ export class ItemService extends ResourceService {
         };
       });
     });
+  }
+
+  public getCheapestProductPrice(ids: string[]): Observable<CheapestProducts> {
+    return this.http.get(this.API_URL_WEB + '/available-visibility-products', {
+      itemsIds: ids.join(',')
+    })
+      .map((r: Response) => r.json())
+      .map((res: ItemsWithAvailableProductsResponse[]) => {
+        let returnObj = {};
+        res.forEach((i: ItemsWithAvailableProductsResponse) => {
+          returnObj[i.content.id] = i.productList[0].durations[0].market_code;
+        });
+        return returnObj;
+      });
   }
 
   private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {

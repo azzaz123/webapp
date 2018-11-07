@@ -248,6 +248,10 @@ export interface ItemWithProducts {
   products: ProductDurations;
 }
 
+export interface CheapestProducts {
+  [itemId: string]: string;
+}
+
 export interface AllowedActionResponse {
   type: string;
   allowed: boolean;
@@ -287,12 +291,13 @@ export interface ItemActions {
 export interface ItemSaleConditions {
   fix_price: boolean;
   exchange_allowed: boolean;
-  shipping_allowed: boolean;
+  shipping_allowed?: boolean;
 }
 
 export interface ItemCounters {
   views: number;
   favorites: number;
+  conversations?: number;
 }
 
 export interface ItemBulkResponse {
