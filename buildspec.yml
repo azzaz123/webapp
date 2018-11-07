@@ -16,6 +16,7 @@ phases:
       - if [ "`echo $BRANCH | grep master`" != "" ]; then export ENV="prod"; fi
       - if [ "`echo $BRANCH | grep release/`" != "" ]; then export ENV="beta"; fi
       - if [ "`echo $BRANCH | grep hotfix/`" != "" ]; then export ENV="beta"; fi
+      - if [ "`echo $BRANCH | grep feature/`" != "" ]; then export ENV="beta"; fi
       - echo $ENV
 
       # LOAD YARN DEPENDENCIES
