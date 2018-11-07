@@ -30,6 +30,7 @@ import { Item } from '../../core/item/item';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
+import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -297,6 +298,19 @@ describe('ListComponent', () => {
         backdrop: 'static'
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
+    }));
+
+    it('should open the upgrade-plan modal if create is on hold', fakeAsync(() => {
+      route.params = Observable.of({
+        createdOnHold: true
+      });
+
+      component.ngOnInit();
+      tick();
+      
+      expect(modalService.open).toHaveBeenCalledWith(UpgradePlanModalComponent, {
+        windowClass: 'upload'
+      });
     }));
 
     it('should open the bump modal if transaction is set as bump', fakeAsync(() => {
