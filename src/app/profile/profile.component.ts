@@ -1,13 +1,6 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../core/user/user.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import * as moment from 'moment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
-import { CanComponentDeactivate } from '../shared/guards/can-component-deactivate.interface';
 import { User } from '../core/user/user';
-import { ProfileFormComponent } from '../shared/profile/profile-form/profile-form.component';
-import { PrivacyService, PRIVACY_STATUS } from '../core/privacy/privacy.service';
 import { MotorPlan, MotorPlanType } from '../core/user/user-response.interface';
 import { I18nService } from '../core/i18n/i18n.service';
 
@@ -18,7 +11,6 @@ import { I18nService } from '../core/i18n/i18n.service';
 })
 export class ProfileComponent implements OnInit {
 
-  public user: User;
   public userUrl: string;
   public motorPlan: MotorPlanType;
 
@@ -29,14 +21,15 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userService.me().subscribe((user: User) => {
-      this.user = user;
       if (user) {
         this.userUrl = user.getUrl(this.subdomain);
       }
     });
     this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
       const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
-      this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
+      if (motorPlan) {
+        this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
+      }
     });
   }
 

@@ -7,6 +7,7 @@ import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
 import { ProfileSubscriptionComponent } from './profile-subscription/profile-subscription.component';
+import { ProfileInfoComponent } from './profile-info/profile-info.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,16 @@ const routes: Routes = [
       }
     },
     children: [
+      { path: '', pathMatch: 'full', redirectTo: 'info' },
+      {
+        path: 'info',
+        component: ProfileInfoComponent,
+        canDeactivate: [ExitConfirmGuard],
+        data: {
+          isMyZone: true,
+          isProfile: true
+        }
+      },
       {
         path: 'subscription',
         component: ProfileSubscriptionComponent,

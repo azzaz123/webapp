@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
@@ -7,9 +7,7 @@ import { UnsubscribeModalComponent } from './../unsubscribe-modal/unsubscribe-mo
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 import { User } from '../../core/user/user';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
-import { PrivacyService, PRIVACY_STATUS } from '../../core/privacy/privacy.service';
-import { MotorPlan, MotorPlanType } from '../../core/user/user-response.interface';
-import { I18nService } from '../../core/i18n/i18n.service';
+import { PRIVACY_STATUS, PrivacyService } from '../../core/privacy/privacy.service';
 
 @Component({
   selector: 'tsl-profile-info',
@@ -19,7 +17,6 @@ import { I18nService } from '../../core/i18n/i18n.service';
 export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
 
   public user: User;
-  public userUrl: string;
   public profileForm: FormGroup;
   public settingsForm: FormGroup;
   public allowSegmentation: boolean;
@@ -28,8 +25,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   constructor(private userService: UserService,
               private fb: FormBuilder,
               private modalService: NgbModal,
-              private privacyService: PrivacyService,
-              @Inject('SUBDOMAIN') private subdomain: string) {
+              private privacyService: PrivacyService) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
@@ -51,7 +47,6 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     this.userService.me().subscribe((user: User) => {
       this.user = user;
       if (user) {
-        this.userUrl = user.getUrl(this.subdomain);
         this.setUserData();
       }
     });
@@ -87,11 +82,6 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
 
   public openUnsubscribeModal() {
     this.modalService.open(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
-  }
-
-  public logout($event: any) {
-    $event.preventDefault();
-    this.userService.logout();
   }
 
   public switchAllowSegmentation (value: boolean) {
