@@ -10,25 +10,21 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
 import * as _ from 'lodash';
 
-export function isNormalCatalogPermissions() {
-  return (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-    if (!route.params.itemId) {
-      return '/pro/catalog/checkout';
-    }
-    return {
-      navigationCommands: ['/pro/catalog/checkout/', { itemId: route.params.itemId }]
-    };
+export function isNormalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
+  if (!route.params.itemId) {
+    return '/pro/catalog/checkout';
+  }
+  return {
+    navigationCommands: ['/pro/catalog/checkout/', { itemId: route.params.itemId }]
   };
 }
 
-export function isNormalCheckoutPermissions() {
-  return (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-    if (!route.params.itemId) {
-      return '/pro/catalog/checkout';
-    }
-    return {
-      navigationCommands: ['/pro/catalog/checkout/', { itemId: route.params.itemId }]
-    };
+export function isNormalCheckoutPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
+  if (!route.params.itemId) {
+    return '/pro/catalog/checkout';
+  }
+  return {
+    navigationCommands: ['/pro/catalog/checkout/', { itemId: route.params.itemId }]
   };
 }
 

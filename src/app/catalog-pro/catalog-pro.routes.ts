@@ -7,16 +7,14 @@ import { CheckoutProComponent } from './checkout-pro/checkout-pro.component';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import * as _ from 'lodash';
 
-export function isProfessionalCatalogPermissions() {
-  return (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-    if (_.isEmpty(route.params)) {
-      return '/catalog/list';
-    } else {
-      return {
-        navigationCommands: ['/catalog/list', route.params]
-      };
-    }
-  };
+export function isProfessionalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
+  if (_.isEmpty(route.params)) {
+    return '/catalog/list';
+  } else {
+    return {
+      navigationCommands: ['/catalog/list', route.params]
+    };
+  }
 }
 
 export const routes: Routes = [
