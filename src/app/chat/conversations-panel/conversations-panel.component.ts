@@ -10,6 +10,7 @@ import { Conversation } from '../../core/conversation/conversation';
 import { Message } from '../../core/message/message';
 import { NewConversationResponse } from '../../core/conversation/conversation-response.interface';
 import { Observable } from 'rxjs/Observable';
+import { MessageService } from '../../core/message/message.service';
 
 @Component({
   selector: 'tsl-conversations-panel',
@@ -37,6 +38,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private trackingService: TrackingService,
               public userService: UserService,
+              private messageService: MessageService,
               private elRef: ElementRef) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
@@ -179,6 +181,10 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private createConversationAndSetItCurrent() {
     this.conversationService.createConversation(this.newConversationItemId).subscribe((newConversation: Conversation) => {
+      this.eventService.subscribe(EventService.REQUEST_PHONE, (requestType) => {
+        newConversation = this.messageService.addPhoneNumberRequestMessage(newConversation);
+      });
+
       this.conversationService.getSingleConversationMessages(newConversation).subscribe((newConversationWithMessages: Conversation) => {
         this.conversationService.addLead(newConversationWithMessages);
         this.setCurrentConversation(newConversationWithMessages);

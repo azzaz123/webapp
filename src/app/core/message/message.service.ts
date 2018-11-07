@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
+import { UUID } from 'angular2-uuid';
 import { XmppService } from '../xmpp/xmpp.service';
 import { MsgArchiveService } from './archive.service';
 import { Observable } from 'rxjs/Observable';
@@ -30,6 +31,7 @@ export class MessageService {
               private persistencyService: PersistencyService,
               private userService: UserService,
               private connectionService: ConnectionService,
+              private i18n: I18nService,
               private eventService: EventService) {
   }
 
@@ -181,6 +183,19 @@ export class MessageService {
     this.xmpp.sendMessage(conversation, message);
   }
 
+  public addPhoneNumberRequestMessage(conversation): Conversation {
+    let msg = new Message(UUID.UUID(),
+      conversation.id,
+      this.i18n.getTranslations('phoneRequestMessage'),
+      conversation.user.id,
+      new Date(),
+      messageStatus.READ);
+    msg = this.addUserInfo(conversation, msg);
+    msg.phoneRequest = this.phoneRequestState.pending;
+    conversation.messages.push(msg);
+    conversation.modifiedDate = new Date().getTime();
+    return conversation;
+  }
   public resetCache() {
     this.totalUnreadMessages = 0;
   }
