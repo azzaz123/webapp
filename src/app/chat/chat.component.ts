@@ -29,7 +29,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   public conversationsTotal: number;
   public connectionError: boolean;
   public firstLoad: boolean;
-  public chatLoaded: boolean;
   public userWebSlug: string;
   public isProfessional: boolean;
 
@@ -64,12 +63,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.USER_UNBLOCKED, (userId: string) => {
       this.userService.updateBlockStatus(userId, false);
     });
-    this.persistencyService.getMetaInformation().subscribe(() => {
-      this.firstLoad = false;
-      }, () => {
-        this.persistencyService.saveMetaInformation({last: null, start: '0'});
-        this.firstLoad = true;
-      });
+    this.eventService.subscribe(EventService.DB_READY, () => {
+      this.persistencyService.getMetaInformation().subscribe(() => {
+        this.firstLoad = false;
+        }, () => {
+          this.persistencyService.saveMetaInformation({start: '0', last: null});
+          this.firstLoad = true;
+        });
+    });
     }
 
   ngOnDestroy () {
@@ -92,9 +93,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   public onLoaded(event: any) {
-    this.conversationsLoaded = this.chatLoaded ? true : event.loaded;
+    this.conversationsLoaded = event.firstPage ? event.loaded : true;
     this.conversationsTotal = event.total;
-    this.chatLoaded = true;
   }
 
   public reportListingAction(): void {

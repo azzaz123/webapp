@@ -9,9 +9,12 @@ import { User } from '../../core/user/user';
 export const showWillisCategories = {
   'GAME': 13100,
   'TV_AUDIO_CAMERAS' : 12545,
-  'COMPUTERS_ELECTRONIC' : 15000,
-  'PHONES_ACCESSORIES' : 16000,
   'GAMES_CONSOLES' : 12900
+};
+
+export const showKlincCategories = {
+  'COMPUTERS_ELECTRONIC' : 15000,
+  'PHONES_ACCESSORIES' : 16000
 };
 
 @Component({
@@ -25,6 +28,8 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: User;
   public itemUrl: string;
   public isCarItem = false;
+  public showKlincLink = false;
+  public showWillisLink = false;
   private active = true;
   private allowReserve: boolean;
   private myUserId: string;
@@ -55,13 +60,28 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.item && this.item.categoryId === 100) {
       this.isCarItem = true;
-      this.trackingService.track(TrackingService.CARFAX_CHAT_DISPLAY);
+      this.trackingService.track(TrackingService.CARFAX_CHAT_DISPLAY, {
+        category_id: this.item.categoryId,
+        item_id: this.item.id
+      });
     } else {
       this.isCarItem = false;
     }
 
-    if (this.showWillisLink()) {
-      this.trackingService.track(TrackingService.WILLIS_LINK_DISPLAY);
+    this.showWillisLink = Object.values(showWillisCategories).includes(this.item.categoryId);
+    if (this.showWillisLink) {
+      this.trackingService.track(TrackingService.WILLIS_LINK_DISPLAY, {
+        category_id: this.item.categoryId,
+        item_id: this.item.id
+      });
+    }
+
+    this.showKlincLink = Object.values(showKlincCategories).includes(this.item.categoryId);
+    if (this.showKlincLink) {
+      this.trackingService.track(TrackingService.KLINC_LINK_DISPLAY, {
+        category_id: this.item.categoryId,
+        item_id: this.item.id
+      });
     }
   }
 
@@ -80,6 +100,10 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     return ((this.item.owner === this.myUserId) && !this.item.sold);
   }
 
+  public isMine() {
+    return (this.item.owner === this.myUserId);
+  }
+
   public toggleReserve() {
     this.itemService.reserveItem(this.item.id, !this.item.reserved).subscribe(() => {
       this.item.reserved = !this.item.reserved;
@@ -94,17 +118,27 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     appboy.logCustomEvent('Sold', {platform: 'web'});
   }
 
-  public showWillisLink(): boolean {
-    return Object.values(showWillisCategories).includes(this.item.categoryId);
-  }
-
   public clickCarfax(event) {
     event.stopPropagation();
-    this.trackingService.track(TrackingService.CARFAX_CHAT_TAP);
+    this.trackingService.track(TrackingService.CARFAX_CHAT_TAP, {
+      category_id: this.item.categoryId,
+      item_id: this.item.id
+    });
   }
 
   public clickWillis(event) {
     event.stopPropagation();
-    this.trackingService.track(TrackingService.WILLIS_LINK_TAP);
+    this.trackingService.track(TrackingService.WILLIS_LINK_TAP, {
+      category_id: this.item.categoryId,
+      item_id: this.item.id
+    });
+  }
+
+  public clickKlinc(event) {
+    event.stopPropagation();
+    this.trackingService.track(TrackingService.KLINC_LINK_TAP, {
+      category_id: this.item.categoryId,
+      item_id: this.item.id
+    });
   }
 }

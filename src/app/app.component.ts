@@ -26,7 +26,7 @@ import { MessageService } from './core/message/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
-import { Message } from './core/message/message';
+import { Message, messageStatus } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
 import { PrivacyService, PRIVACY_STATUS } from './core/privacy/privacy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -98,6 +98,7 @@ export class AppComponent implements OnInit {
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
     this.conversationService.firstLoad = true;
+    this.trackingService.trackAccumulatedEvents();
   }
 
   private updateUrlAndSendAnalytics() {
@@ -140,10 +141,13 @@ export class AppComponent implements OnInit {
 
   private subscribeChatSignals() {
     this.event.subscribe(EventService.MESSAGE_SENT_ACK, (conversationId, messageId) => {
-      this.conversationService.sendAck(TrackingService.MESSAGE_SENT_ACK, conversationId, messageId);
+      this.conversationService.markAs(messageStatus.SENT, messageId, conversationId);
     });
     this.event.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
-      this.conversationService.sendAck(TrackingService.MESSAGE_RECEIVED, conversationId, messageId);
+      this.conversationService.markAs(messageStatus.RECEIVED, messageId, conversationId);
+    });
+    this.event.subscribe(EventService.MESSAGE_READ, (conversationId, timestamp) => {
+      this.conversationService.markAllAsRead(conversationId, timestamp, true);
     });
   }
 
@@ -152,16 +156,18 @@ export class AppComponent implements OnInit {
       this.userService.me().subscribe(
         (user: User) => {
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
-          this.xmppService.connect(user.id, accessToken);
-          this.conversationService.init().subscribe(() => {
-            this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-              if (isProfessional) {
-                this.callService.init().subscribe(() => {
-                  this.conversationService.init(true).subscribe(() => {
-                    this.callService.init(true).subscribe();
+          this.event.subscribe(EventService.DB_READY, () => {
+            this.xmppService.connect(user.id, accessToken);
+            this.conversationService.init().subscribe(() => {
+              this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+                if (isProfessional) {
+                  this.callService.init().subscribe(() => {
+                    this.conversationService.init(true).subscribe(() => {
+                      this.callService.init(true).subscribe();
+                    });
                   });
-                });
-              }
+                }
+              });
             });
           });
           appboy.changeUser(user.id);
