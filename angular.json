@@ -73,6 +73,11 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
+            },
+            "es": {
+              "i18nFile": "src/locale/es.xtb",
+              "i18nFormat": "xtb",
+              "i18nLocale": "es"
             }
           }
         },
@@ -90,6 +95,9 @@
             },
             "production": {
               "browserTarget": "webapp:build:production"
+            },
+            "es": {
+              "browserTarget": "webapp:build:es"
             }
           }
         },
