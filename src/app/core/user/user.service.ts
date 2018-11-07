@@ -349,6 +349,11 @@ export class UserService extends ResourceService {
       });
     return this.motorPlanObservable;
   }
+
+  public getMotorPlans(): Observable<MotorPlan[]> {
+    return this.http.get(this.API_URL + '/me/profile-subscription-info')
+      .map((r: Response) => r.json())
+  }
 }
 
 

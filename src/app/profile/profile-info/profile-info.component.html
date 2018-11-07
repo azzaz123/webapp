@@ -1,0 +1,104 @@
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <tsl-picture-upload [user]="user"></tsl-picture-upload>
+  <tsl-profile-form [profileForm]="profileForm">
+    <div class="box profile-box">
+      <div class="box-content">
+        <div class="row">
+          <div class="col-10 offset-2">
+            <div class="form-group row">
+              <label for="first_name" class="col-3" i18n>First Name:</label>
+              <div class="col-5">
+                <input type="text" class="form-control" id="first_name" formControlName="first_name" tslRestrictInput maxlength="50" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="last_name" class="col-3" i18n>Last Name:</label>
+              <div class="col-5">
+                <input type="text" class="form-control" id="last_name" formControlName="last_name" tslRestrictInput maxlength="50" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="birth_date" class="col-3" i18n>Date of birth:</label>
+              <div class="col-5">
+                <input type="date" class="form-control" id="birth_date" formControlName="birth_date" />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-3" i18n>Gender:</label>
+              <div class="col-5">
+                <div ngbRadioGroup name="radioBasic" formControlName="gender">
+                  <label ngbButtonLabel class="btn select">
+                    <input ngbButton type="radio" value="M">
+                    <mat-icon svgIcon="male"></mat-icon>
+                    <div i18n>Male</div>
+                  </label>
+                  <label ngbButtonLabel class="btn select">
+                    <input ngbButton type="radio" value="F">
+                    <mat-icon svgIcon="female"></mat-icon>
+                    <div i18n>Female</div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-3" i18n>Product location:</label>
+              <div class="col-9">
+                <tsl-location-box [form]="profileForm" name="location"></tsl-location-box>
+              </div>
+            </div>
+            <div class="row">
+              <div class="offset-3 col-9">
+                <tsl-button [type]="'submit'" className="btn-primary btn-big" tslTrackEvent="MYPROFILE_SAVEBUTTON" [disabled]="!formComponent.hasNotSavedChanges"
+                            i18n>Save</tsl-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </tsl-profile-form>
+  <div class="box profile-box">
+    <div class="box-content">
+      <div class="row box-section">
+        <div class="col-10 offset-2">
+          <div class="form-group row">
+            <label class="col-3" i18n>Email:</label>
+            <div class="col-5">
+              <tsl-edit-email [email]="user?.email"></tsl-edit-email>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-3" i18n>Password:</label>
+            <div class="col-5">
+              <tsl-edit-password></tsl-edit-password>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 unsubscribe-section">
+          <a (click)="openUnsubscribeModal()" tslTrackEvent="MYPROFILE_UNSUBSCRIBE" i18n>Close account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box profile-settings">
+    <div class="box-content">
+      <div class="row">
+        <div class="col-10 offset-2">
+          <form [formGroup]="settingsForm">
+            <div class="form-group row">
+              <div class="col-3" >
+                <tsl-switch (onChange)="switchAllowSegmentation($event)" formControlName="allow_segmentation"></tsl-switch>
+              </div>
+              <div class="col-5" i18n>
+                In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<tsl-credit-card-info></tsl-credit-card-info>

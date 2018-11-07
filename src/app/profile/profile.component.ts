@@ -16,37 +16,15 @@ import { I18nService } from '../core/i18n/i18n.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, CanComponentDeactivate {
+export class ProfileComponent implements OnInit {
 
   public user: User;
   public userUrl: string;
-  public profileForm: FormGroup;
-  public settingsForm: FormGroup;
-  public allowSegmentation: boolean;
   public motorPlan: MotorPlanType;
-  @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
   constructor(private userService: UserService,
-    private fb: FormBuilder,
-    private modalService: NgbModal,
-    private privacyService: PrivacyService,
-    protected i18n: I18nService,
-    @Inject('SUBDOMAIN') private subdomain: string) {
-    this.profileForm = fb.group({
-      first_name: ['', [Validators.required]],
-      last_name: ['', [Validators.required]],
-      birth_date: ['', [Validators.required, this.dateValidator]],
-      gender: ['', [Validators.required]],
-      location: this.fb.group({
-        address: ['', [Validators.required]],
-        latitude: ['', [Validators.required]],
-        longitude: ['', [Validators.required]],
-      })
-    });
-
-    this.settingsForm = fb.group({
-      allow_segmentation: false
-    });
+              protected i18n: I18nService,
+              @Inject('SUBDOMAIN') private subdomain: string) {
   }
 
   ngOnInit() {
@@ -54,13 +32,7 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       this.user = user;
       if (user) {
         this.userUrl = user.getUrl(this.subdomain);
-        this.setUserData();
       }
-    });
-    this.privacyService.allowSegmentation$.subscribe((value: boolean) => {
-      const allowSegmentationState = this.privacyService.getPrivacyState('gdpr_display', '0');
-      this.allowSegmentation = allowSegmentationState === PRIVACY_STATUS.unknown ? false : value;
-      this.setSettingsData();
     });
     this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
       const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
@@ -68,50 +40,9 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
     });
   }
 
-  public canExit() {
-    return this.formComponent.canExit();
-  }
-
-  public onSubmit() {
-    return this.formComponent.onSubmit();
-  }
-
-  private setUserData() {
-    this.profileForm.patchValue({
-      first_name: this.user.firstName,
-      last_name: this.user.lastName,
-      birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
-      gender: this.user.gender.toUpperCase().substr(0, 1)
-    });
-  }
-
-  private setSettingsData() {
-    this.settingsForm.patchValue({
-      allow_segmentation: this.allowSegmentation
-    });
-  }
-
-  public openUnsubscribeModal() {
-    this.modalService.open(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
-  }
-
   public logout($event: any) {
     $event.preventDefault();
     this.userService.logout();
-  }
-
-  public switchAllowSegmentation (value: boolean) {
-    this.privacyService.updatePrivacy({
-        gdpr_display: {
-          version: '0',
-          allow: value
-        }
-      }).subscribe();
-  }
-
-  private dateValidator(c: FormControl) {
-    const dateRegEx = new RegExp(/^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/);
-    return dateRegEx.test(c.value) ? null : {date: true}
   }
 
 }

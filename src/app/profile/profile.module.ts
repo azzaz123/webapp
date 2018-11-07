@@ -6,6 +6,8 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { SharedModule } from '../shared/shared.module';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
+import { ProfileSubscriptionComponent } from './profile-subscription/profile-subscription.component';
+import { ProfileInfoComponent } from './profile-info/profile-info.component';
 
 @NgModule({
   imports: [
@@ -19,7 +21,9 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
   ],
   declarations: [
     profileRoutedComponents,
-    UnsubscribeModalComponent
+    UnsubscribeModalComponent,
+    ProfileSubscriptionComponent,
+    ProfileInfoComponent
   ],
   entryComponents: [
     UnsubscribeModalComponent

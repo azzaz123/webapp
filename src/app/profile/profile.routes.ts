@@ -6,6 +6,7 @@ import { ProfileComponent } from './profile.component';
 import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
+import { ProfileSubscriptionComponent } from './profile-subscription/profile-subscription.component';
 
 const routes: Routes = [
   {
@@ -20,7 +21,17 @@ const routes: Routes = [
         only: PERMISSIONS.normal,
         redirectTo: '/pro/profile'
       }
-    }
+    },
+    children: [
+      {
+        path: 'subscription',
+        component: ProfileSubscriptionComponent,
+        data: {
+          isMyZone: true,
+          isProfile: true
+        }
+      }
+    ]
   },
 ];
 
