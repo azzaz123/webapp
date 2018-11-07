@@ -1,0 +1,10 @@
+<div class="modal-body center-heading">
+  <div class="modal-close" (click)="activeModal.dismiss()">
+    <mat-icon svgIcon="cross"></mat-icon>
+  </div>
+  <h2 i18n>Leave your number</h2>
+  <input type="tel" class="form-control" id="phone" name="phone" tslRestrictInputNumber i18n-placeholder placeholder="Enter your phone..."
+    #phoneInput [(ngModel)]="phone" />
+  <tsl-button i18n (click)="activeModal.dismiss()">Cancel</tsl-button>
+  <tsl-button i18n (click)="createPhoneNumberMessage(phone)">Confirm</tsl-button>
+</div>
