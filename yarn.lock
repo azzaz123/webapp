@@ -222,9 +222,9 @@
   dependencies:
     tslib "^1.9.0"
 
-"@ng-bootstrap/ng-bootstrap@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-2.2.0.tgz#acd514e878a1412f39d50eff691095ecc0882bf3"
+"@ng-bootstrap/ng-bootstrap@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0.tgz#8f2ae70db2fe1dcbf5e0acb49dc2b1bbba2be8d2"
 
 "@ngtools/webpack@6.0.8":
   version "6.0.8"

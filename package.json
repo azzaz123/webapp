@@ -35,7 +35,7 @@
     "@angular/platform-server": "6.0.9",
     "@angular/router": "^6.0.9",
     "@beyerleinf/ngx-dnd": "^6.0.0-preview3",
-    "@ng-bootstrap/ng-bootstrap": "2.2.0",
+    "@ng-bootstrap/ng-bootstrap": "1.0.0",
     "@ngu/carousel": "^1.4.8",
     "@types/hammerjs": "^2.0.35",
     "@types/heremaps": "3.0.12",
