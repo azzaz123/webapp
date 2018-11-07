@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .header {
-  background-image: linear-gradient(to bottom, #b76bf9, #5f69fb);
+  background-image: linear-gradient(to bottom, $color-pro-super-light, $color-pro);
   height: 225px;
   display: flex;
   justify-content: center;
@@ -16,7 +16,7 @@
     .label {
       display: block;
       background-color: $white;
-      color: #5f69fb;
+      color: $color-pro;
       text-transform: uppercase;
       font-size: $font-size-S;
       border-radius: 20px;
@@ -33,7 +33,7 @@
   text-align: center;
   padding: $spacing-L $spacing-XL;
   h1, p {
-    color: #8e6afa;
+    color: $color-pro-light;
   }
   p {
     margin: 0;
@@ -58,7 +58,7 @@
     }
   }
   .btn {
-    background: #8e6afa;
+    background: $color-pro-light;
     border-radius: 100px;
     color: $white;
     width: 296px;

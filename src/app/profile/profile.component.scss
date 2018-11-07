@@ -16,7 +16,7 @@ $border: solid 1px $grey-50;
   }
   &.pro-box {
     .section-title {
-      color: #5f69fb;
+      color: $color-pro;
     }
   }
   .box-section {
@@ -178,10 +178,10 @@ $border: solid 1px $grey-50;
   &.disabled {
     .form-group {
       & > label {
-        color: #a7adfc;
+        color: $color-pro-faded;
       }
       input, textarea {
-        background: #eff0fe url(/assets/icons/disabled-lock.svg) no-repeat calc(100% - 15px) 10px;
+        background: $color-pro-light url(/assets/icons/disabled-lock.svg) no-repeat calc(100% - 15px) 10px;
       }
       .form-control:focus {
         border-color: transparent;
