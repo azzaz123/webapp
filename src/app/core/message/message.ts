@@ -9,6 +9,16 @@ export const messageStatus = {
   READ: 'read'
 };
 
+export const phoneRequestState = {
+  pending: 'pending',
+  answered: 'answered'
+};
+
+export const phoneMethod = {
+  chatMessage: 'bubble',
+  popUp: 'qa'
+};
+
 export const statusOrder = [messageStatus.PENDING, messageStatus.SENT, messageStatus.RECEIVED, messageStatus.READ];
 
 export class Message implements Model {
@@ -76,4 +86,6 @@ export class Message implements Model {
   get payload(): MessagePayload {
     return this._payload;
   }
+
+  public phoneRequest: string;
 }
