@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MotorPlan } from '../../core/user/user-response.interface';
+import {
+  MotorPlanType, ProfileSubscriptionInfo, UserProduct,
+} from '../../core/user/user-response.interface';
 import { UserService } from '../../core/user/user.service';
+import { I18nService } from '../../core/i18n/i18n.service';
 
 @Component({
   selector: 'tsl-profile-subscription',
@@ -9,11 +12,23 @@ import { UserService } from '../../core/user/user.service';
 })
 export class ProfileSubscriptionComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  public plans: UserProduct[];
+  public currentPlan: string;
+
+  constructor(private userService: UserService,
+              protected i18n: I18nService) { }
 
   ngOnInit() {
-    this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
-      console.log(motorPlan);
+    this.userService.getMotorPlans().subscribe((subscriptionInfo: ProfileSubscriptionInfo) => {
+      const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
+      this.plans = subscriptionInfo.product_group.user_products.map((plan: UserProduct) => {
+        const planType: MotorPlanType = motorPlanTypes.find((p: MotorPlanType) => p.subtype === plan.name);
+        plan.name = planType.shortLabel;
+        if (plan.active) {
+          this.currentPlan = planType.label;
+        }
+        return plan;
+      });
     });
   }
 
