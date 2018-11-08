@@ -184,6 +184,11 @@ export class MessageService {
   }
 
   public addPhoneNumberRequestMessage(conversation): Conversation {
+    this.eventService.subscribe(EventService.CONVERSATION_CEATED, (conv, message) => {
+      if (conversation.id === conv.id) {
+        this.persistencyService.saveMessages([message]);
+      }
+    });
     let msg = new Message(UUID.UUID(),
       conversation.id,
       this.i18n.getTranslations('phoneRequestMessage'),

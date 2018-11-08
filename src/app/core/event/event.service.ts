@@ -21,6 +21,7 @@ export class EventService {
   public static CLIENT_DISCONNECTED = 'clientDisconnected';
   public static CONVERSATION_ARCHIVED = 'conversationArchived';
   public static CONVERSATION_UNARCHIVED = 'conversationUnarchived';
+  public static CONVERSATION_CEATED = 'conversationCreated';
   public static LEAD_ARCHIVED = 'leadArchived';
   public static ITEM_SOLD = 'itemSold';
   public static ITEM_UPDATED = 'itemUpdated';
