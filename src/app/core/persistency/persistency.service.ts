@@ -105,7 +105,8 @@ export class PersistencyService {
       status: message.status,
       from: message.from.indexOf('@') > -1 ? message.from.split('@')[0] : message.from,
       conversationId: message.conversationId,
-      payload: message.payload
+      payload: message.payload,
+      phoneRequest: message.phoneRequest
     };
   }
 
