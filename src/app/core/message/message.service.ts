@@ -15,6 +15,7 @@ import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveResponse, ReceivedReceipt } from './archive.interface';
 import 'rxjs/add/operator/first';
 import { EventService } from '../event/event.service';
+import { I18nService } from '../i18n/i18n.service';
 
 @Injectable()
 export class MessageService {
