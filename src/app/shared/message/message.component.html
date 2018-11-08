@@ -4,9 +4,11 @@
 
 <tsl-user-avatar class="message-avatar" [user]="message.user" *ngIf="showUserInfo && !message.payload && (!message.user?.webLink || message.fromSelf)" [ngClass]="{'calls-panel': callsPanel, 'from-self': message.fromSelf}"></tsl-user-avatar>
 
-<div class="message-body" *ngIf="!message.payload" [ngClass]="{'without-avatar': !showUserInfo, 'calls-panel': callsPanel, 'from-self': message.fromSelf}">
+<div class="message-body" *ngIf="!message.payload" [ngClass]="{'without-avatar': !showUserInfo, 'calls-panel': callsPanel, 'from-self': message.fromSelf, 'phone-request': message.phoneRequest}">
   <p>
     <span *ngIf="!message.payload">{{message.message}}</span>
+    <button *ngIf="message.phoneRequest === phoneRequestState.pending" class="btn" (click)="openDialog()" i18n>Leave your number</button>
+    <span *ngIf="message.phoneRequest === 'answered'" class="new-line" i18n>Phone sent ;)</span>
     <small class="message-date">{{message.date | date:'shortTime'}}</small>
     <span *ngIf="message.fromSelf" class="message-status" [ngClass]="message.status"></span>
   </p>
