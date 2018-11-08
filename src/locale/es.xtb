@@ -554,7 +554,7 @@
   <translation id="5554592740021607017">Últimos 12 meses</translation>
   <translation id="3708302938863076299">Pago seguro con Banco Sabadell</translation>
   <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="3649443966888874108">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
+  <translation id="9195373106604759125">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
   <translation id="221922226324249098">Todas las categorías</translation>
   <translation id="7514254130085804538">Marcar como vendido</translation>
   <translation id="853408948668135550">Marcar como reservado</translation>
@@ -699,4 +699,10 @@
   <translation id="475161398925564146">Te estás dando de baja pero tienes activa una suscripción en wallapop. Para cancelarla, deberás hacerlo a través de la Play Store o la App Store.</translation>
   <translation id="1468205032926382389">Dame de baja y tramitaré la cancelación</translation>
   <translation id="6555865224397311626">Vale, me lo pienso mejor</translation>
+  <translation id="5339022467575859181">Plan actual: <ph name="INTERPOLATION"><ex>{{currentPlan}}</ex></ph></translation>
+  <translation id="6419964541223964219">Cada plan incluye la posibilidad de publicar un número máximo de coches, siempre podrás eliminar y elegir uno diferente. Cambia de plan desde la app.</translation>
+  <translation id="2359130262258320456">O contáctanos para que te hagamos un plan a tu medida que se adapte a tus necesidades.</translation>
+  <translation id="3898572555215935465">Email de comercial</translation>
+  <translation id="7178101913251976451">mes</translation>
+
 </translationbundle>
