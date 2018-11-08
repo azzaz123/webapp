@@ -141,6 +141,20 @@ export class PersistencyService {
     }));
   }
 
+  public setPhoneNumber(phone: string): Observable<any> {
+    return Observable.fromPromise(
+      this.upsert(this.messagesDb, 'phone', (doc: Document<any>) => {
+      if (!doc.phone || doc.phone !== phone) {
+        doc.phone = phone;
+        return doc;
+      }
+    }).catch(err => {}));
+  }
+
+  public getPhoneNumber(): Observable<any> {
+    return Observable.fromPromise(this.messagesDb.get('phone')).catch(() => Observable.of());
+  }
+
   public updateMessageDate(message: Message) {
     return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
         doc.date = message.date.toISOString();
