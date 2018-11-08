@@ -106,7 +106,9 @@
                 <div class="form-group row">
                   <label for="shop-address" class="col-3" i18n>Shop address:</label>
                   <div class="col-5">
-                    <input #input type="text" class="form-control" formControlName="address" id="shop-address" (focus)="open(input)" />
+                    <input *ngIf="user.featured" #input type="text" class="form-control" formControlName="address" id="shop-address" (focus)="open(input)" />
+                    <input *ngIf="!user.featured" type="text" class="form-control" formControlName="address" readonly="true"
+                           (click)="openBecomeProModal()" />
                   </div>
                 </div>
                 <div class="row">
