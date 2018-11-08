@@ -6,7 +6,7 @@ import { MsgArchiveService } from './archive.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Conversation } from '../conversation/conversation';
-import { Message, messageStatus } from './message';
+import { Message, messageStatus, phoneRequestState } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
@@ -196,7 +196,7 @@ export class MessageService {
       new Date(),
       messageStatus.READ);
     msg = this.addUserInfo(conversation, msg);
-    msg.phoneRequest = this.phoneRequestState.pending;
+    msg.phoneRequest = phoneRequestState.pending;
     conversation.messages.push(msg);
     conversation.modifiedDate = new Date().getTime();
     return conversation;
