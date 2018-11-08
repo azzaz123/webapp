@@ -43,6 +43,7 @@ export class ConversationService extends LeadService {
 
   public pendingPagesLoaded = 0;
   public processedPagesLoaded = 0;
+  private phoneRequestType;
   public ended = {
     pending: false,
     processed: false
@@ -424,8 +425,12 @@ export class ConversationService extends LeadService {
       const response: ConversationResponse = r.json();
       return Observable.forkJoin(
         this.userService.get(response.other_user_id),
-        this.itemService.get(itemId)
+        this.itemService.get(itemId),
+        this.userService.getPhoneInfo(response.other_user_id)
       ).map((data: any) => {
+        if (data[2]) {
+          this.phoneRequestType = data[2].phone_method;
+        }
         return new Conversation(
           response.conversation_id,
           null,
@@ -440,6 +445,9 @@ export class ConversationService extends LeadService {
   public getSingleConversationMessages(conversation: Conversation) {
     return this.messageService.getMessages(conversation, true).map((res: MessagesData) => {
       conversation.messages = res.data;
+      if (!conversation.messages.length && this.phoneRequestType) {
+        this.event.emit(EventService.REQUEST_PHONE, this.phoneRequestType);
+      }
       conversation.unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
       this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
         this.messageService.totalUnreadMessages + conversation.unreadMessages :
