@@ -206,6 +206,16 @@ export class MessageService {
     conversation.modifiedDate = new Date().getTime();
     return conversation;
   }
+
+  public createPhoneNumberMessage(conversation, phone) {
+    const message = this.i18n.getTranslations('phoneMessage') + phone;
+    this.xmpp.sendMessage(conversation, message);
+    const phoneRequestMsg = conversation.messages.find(m => m.phoneRequest);
+    phoneRequestMsg.phoneRequest = phoneRequestState.answered;
+    this.persistencyService.markPhoneRequestAnswered(phoneRequestMsg);
+    this.persistencyService.setPhoneNumber(phone);
+  }
+
   public resetCache() {
     this.totalUnreadMessages = 0;
   }

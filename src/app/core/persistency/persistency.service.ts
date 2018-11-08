@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Message, statusOrder } from '../message/message';
+import { Message, statusOrder, phoneRequestState } from '../message/message';
 import {
   StoredConversation,
   StoredMessage,
@@ -158,6 +158,13 @@ export class PersistencyService {
       if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
         this.saveMessages(message);
       }
+    }));
+  }
+
+  public markPhoneRequestAnswered(message: Message) {
+    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
+      doc.phoneRequest = phoneRequestState.answered;
+      return doc;
     }));
   }
 
