@@ -59,10 +59,8 @@ describe('Component: Item', () => {
           _value: {},
           put(key, value) {
             this._value[key] = value;
-            console.log("cookie put", key, value, this._value);
           },
           get(key) {
-            console.log("cookie get", key, this._value);
             return this._value[key];
           },
         }
@@ -341,7 +339,7 @@ describe('Component: Item', () => {
       component.ngOnInit();
     });
 
-    it('should return mapfre link if device-access-token las num is even number', () => {
+    it('should return mapfre link if device-access-token last num is even number', () => {
       component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE} as Item;
 
       component.ngOnChanges();
@@ -349,7 +347,7 @@ describe('Component: Item', () => {
       expect(component.getMapfreOrVertiLink()).toEqual(mapfreLinks[CATEGORY_IDS.REAL_ESTATE]);
     });
 
-    it('should not return mapfre link if device-access-token las num is even number', () => {
+    it('should not return mapfre link if device-access-token last num is even number', () => {
       cookieService.put('device_access_token_id', '0');
       component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE} as Item;
 
@@ -362,7 +360,6 @@ describe('Component: Item', () => {
     it('should show when category car, real estate, motobike or bike', () => {
       showMapfreCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
-        console.log(categoryId);
 
         component.ngOnChanges();
 
@@ -380,7 +377,7 @@ describe('Component: Item', () => {
         .toHaveBeenCalledWith(TrackingService.MAPFRE_LINK_DISPLAY, { item_id: component.item.id, category_id: component.item.categoryId });
     });
 
-    it('when is clicked should sent MAPFRE_LINK_TAP tracking event', () => {
+    it('should send MAPFRE_LINK_TAP tracking event when clicked', () => {
       component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE } as Item;
       spyOn(trackingService, 'track').and.callThrough();
 
@@ -421,7 +418,6 @@ describe('Component: Item', () => {
     it('should show when category car, real estate or motobike', () => {
       showVertiCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
-        console.log(categoryId);
 
         component.ngOnChanges();
 
@@ -439,7 +435,7 @@ describe('Component: Item', () => {
         .toHaveBeenCalledWith(TrackingService.VERTI_LINK_DISPLAY, { item_id: component.item.id, category_id: component.item.categoryId });
     });
 
-    it('when is clicked should sent VERTI_LINK_TAP tracking event', () => {
+    it('should send VERTI_LINK_TAP tracking event when clicked', () => {
       component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE } as Item;
       spyOn(trackingService, 'track').and.callThrough();
 
