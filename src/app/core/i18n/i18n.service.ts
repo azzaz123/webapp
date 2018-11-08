@@ -92,7 +92,9 @@ export class I18nService {
       deleteBillingInfoSuccess: 'Your billing info has been deleted',
       deleteBillingInfoError: 'There was a error deleting your billing info',
       packError: 'There was a error buying this pack',
-      alreadyFeatured: 'You are trying to feature an item that is already planned.'
+      alreadyFeatured: 'You are trying to feature an item that is already planned.',
+      phoneRequestMessage: 'Please contact us or leave us your phone number and we will contact you',
+      phoneMessage: 'My phone number is '
     },
     es: {
       daysMomentConfig: {
@@ -184,7 +186,9 @@ export class I18nService {
       deleteBillingInfoSuccess: 'Tu información de facturación ha sido borrada',
       deleteBillingInfoError: 'Hubo un error borrando tu información de facturación',
       packError: 'Hubo un error al comprar este paquete',
-      alreadyFeatured: '¡Ups! Estás intentando destacar un item que ya tiene planificados'
+      alreadyFeatured: '¡Ups! Estás intentando destacar un item que ya tiene planificados',
+      phoneRequestMessage: 'Por favor contáctanos o deja tu número de teléfono y te contactaremos',
+      phoneMessage: 'Mi número de teléfono es '
     }
   };
 
