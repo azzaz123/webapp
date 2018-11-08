@@ -3,7 +3,6 @@
 $right-gutter: 35px;
 
 /deep/ {
-
   .profile-box {
     .box-header {
       h1 {
@@ -36,6 +35,11 @@ $right-gutter: 35px;
         width: 100%;
       }
       .select {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        font-size: $font-size-S;
         height: 100px;
         width: calc(50% - #{$spacing / 2});
         border-radius: $border-radius;
@@ -52,14 +56,9 @@ $right-gutter: 35px;
         }
         mat-icon {
           @include square(42px);
-          margin-top: 25px;
           /deep/ path {
             transition: fill 0.2s ease-in-out;
           }
-        }
-        div {
-          margin-top: -22px;
-          font-size: $font-size-S;
         }
         &.active {
           background-color: $grey-300;

@@ -44,6 +44,9 @@ div {
 
 $sold-width: 32px;
 .sold, .reserved, .featured, .urgent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   @include square($sold-width);
   border-radius: 50%;
   display: flex;
@@ -51,7 +54,6 @@ $sold-width: 32px;
   margin: auto;
   z-index: 2;
   mat-icon {
-    margin: auto auto;
     @include square(21px);
   }
   .small & {
@@ -63,7 +65,13 @@ $sold-width: 32px;
   mat-icon {
     height: 17px;
     width: 12px;
-    vertical-align: sub;
+    margin-top: -8px;
+  }
+}
+
+.sold {
+  mat-icon {
+    margin-top: -5px;
   }
 }
 

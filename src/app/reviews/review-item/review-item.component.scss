@@ -39,13 +39,11 @@
   .review-credits {
     font-size: $font-size-S;
     color: $grey-300;
-    a {
-      color: red;
-    }
   }
   .review-microname {
     color: $color-grey-item;
     font-weight: bold;
+    margin: 0 3px;
   }
   &.row {
     margin-right: 0;

@@ -15,6 +15,7 @@ $vertical-padding: 10px;
   padding: $vertical-padding $spacing;
   border-radius: $button-border-radius;
   transition: all 0.2s ease-in-out, padding 0s;
+  line-height: 1.25;
   &:focus, &.focus {
     box-shadow: none;
   }
@@ -31,6 +32,9 @@ $vertical-padding: 10px;
     opacity: .8;
   }
   &.btn-primary {
+    background-color: $corporate;
+    border-color: $corporate;
+    line-height: 1.25;
     &.disabled, &:disabled {
       &:active {
         background-color: $corporate;
