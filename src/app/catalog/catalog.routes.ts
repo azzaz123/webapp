@@ -11,12 +11,13 @@ import { PERMISSIONS } from '../core/user/user';
 import * as _ from 'lodash';
 
 export function isNormalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
-  if (!route.params.itemId) {
-    return '/pro/catalog/checkout';
+  if (_.isEmpty(route.params)) {
+    return '/pro/catalog/list';
+  } else {
+    return {
+      navigationCommands: ['/pro/catalog/list', route.params]
+    };
   }
-  return {
-    navigationCommands: ['/pro/catalog/checkout/', { itemId: route.params.itemId }]
-  };
 }
 
 export function isNormalCheckoutPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
