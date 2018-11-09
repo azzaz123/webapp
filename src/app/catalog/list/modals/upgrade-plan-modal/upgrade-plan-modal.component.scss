@@ -1,0 +1,61 @@
+@import "~style/common";
+
+.header {
+  background: $corporate;
+  height: 127px;
+  border-top-left-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  color: $white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  .modal-close {
+    top: $spacing;
+    right: $spacing;
+    @include square(13px);
+    mat-icon {
+      @include square(13px);
+      line-height: unset;
+    }
+  }
+  h1 {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  p {
+    opacity: .8;
+    margin: 0;
+    margin-bottom: $spacing-L;
+    color: $white;
+    font-size: $font-size;
+  }
+}
+
+.modal-body {
+  text-align: center;
+  padding: 40px 70px;
+  p {
+    font-size: $font-size;
+    color: $grey-400;
+    margin-top: 10px;
+  }
+  .upgrade-plan {
+    float: left;
+    width: 100%;
+  }
+  .upgrade-plan-background {
+    background: url(/assets/images/upgrade-plan-background.svg) no-repeat;
+    width: 50%;
+    height: 161px;
+    float: left;
+  }
+  .upgrade-plan-content {
+    width: 50%;
+    float: right;
+  }
+}
+
+tsl-button {
+  margin: $spacing-L auto $spacing;
+}

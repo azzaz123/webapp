@@ -74,6 +74,10 @@ $feature-button-width: 170px;
       border-radius: $border-radius;
     }
   }
+  .onHold {
+    background-color: $white;
+    opacity: .4;
+  }
   .selected-veil {
     display: none;
   }
@@ -99,6 +103,11 @@ $feature-button-width: 170px;
   &.selected {
     background-color: rgba($corporate, 0.2);
     border: solid 1px $corporate;
+    .subscribe {
+      &.onHold {
+        opacity: 0.4;
+      }
+    }
   }
   a {
     color: $grey-900;
@@ -137,6 +146,9 @@ $feature-button-width: 170px;
   .title {
     width: 31%;
     @include text-truncate();
+    &.onHold {
+      width: 19%;
+    }
   }
   .visibility {
     flex-grow: 2;
@@ -150,6 +162,18 @@ $feature-button-width: 170px;
       margin-left: 10px;
     }
   }
+  .subscribe {
+    flex-grow: 2;
+    font-size: $font-size;
+    color: $sold-bg;
+    min-width: 115px;
+    &.onHold {
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      opacity: 1;
+    }
+  }
   .actions {
     margin-right: 24px;
     min-width: 400px;
@@ -159,6 +183,9 @@ $feature-button-width: 170px;
     button, tsl-button {
       margin-left: 12px;
       float: left;
+    }
+    .main-actions {
+      float: right;
     }
     button {
       @include square(40px);
@@ -264,6 +291,8 @@ $feature-button-width: 170px;
     }
   }
   .btn-pending {
+    background-color: $white;
+    cursor: default;
     z-index: 2;
     position: relative;
     font-size: $font-size-S;
@@ -274,11 +303,6 @@ $feature-button-width: 170px;
     height: 40px;
     mat-icon {
       margin-right: 34px;
-    }
-  }
-  .btn-pending {
-    cursor: default;
-    mat-icon {
       margin-left: 4px;
     }
   }

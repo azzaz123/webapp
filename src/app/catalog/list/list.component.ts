@@ -21,6 +21,7 @@ import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
+import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 
 @Component({
   selector: 'tsl-list',
@@ -43,6 +44,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public numberOfProducts: number;
   public isRedirect = false;
   private counters: Counters;
+  private upgradePlanModalRef: NgbModalRef;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -156,7 +158,13 @@ export class ListComponent implements OnInit, OnDestroy {
         } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.errorService.i18nError('productCreated', ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.');
+          this.upgradePlanModalRef = this.modalService.open(UpgradePlanModalComponent, {
+            windowClass: 'upload',
+          });
+          this.upgradePlanModalRef.result.then(() => {
+            this.upgradePlanModalRef = null;
+          }, () => {
+          });
         } else if (params && params.sold && params.itemId) {
           this.itemService.get(params.itemId).subscribe((item: Item) => {
             this.soldButton.item = item;
