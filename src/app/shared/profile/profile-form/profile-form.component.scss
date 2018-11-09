@@ -35,6 +35,10 @@ $right-gutter: 35px;
         width: 100%;
       }
       .select {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
         height: 100px;
         width: calc(50% - #{$spacing / 2});
         border-radius: $border-radius;
