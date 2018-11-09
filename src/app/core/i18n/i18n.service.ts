@@ -103,6 +103,15 @@ export class I18nService {
         {subtype: 'sub_pro', label: 'Medium Motor Plan', shortLabel: 'Medium'},
         {subtype: 'sub_premium', label: 'Super Motor Plan', shortLabel: 'Super'}
       ],
+      cars_subscription_tutorial_listinglimit5: 'Upload 5 cars.',
+      cars_subscription_tutorial_listinglimit9: 'Upload 9 cars.',
+      cars_subscription_tutorial_listinglimit15: 'Upload 15 cars.',
+      cars_subscription_tutorial_description2: 'Buyers can save your shop/profile as a favorite.',
+      pro_subscription_tutorial_extra_fields_phone_web: 'Buyers will be able to see your phone and website in your profile for easy contact.',
+      pro_subscription_tutorial_extra_fields_description_direction: 'You will have a description of your store or service and its location.',
+      cars_subscription_tutorial_description3: 'You will have a different design and will stand out!',
+      pro_subscription_tutorial_items_no_expire: 'Your items won\'t expire.',
+      cars_subscription_tutorial_phone_on_car: 'Your phone will appear in each car you have listed, so more buyers will contact you.'
     },
     es: {
       daysMomentConfig: {
@@ -205,6 +214,15 @@ export class I18nService {
         {subtype: 'sub_pro', label: 'Plan Motor Medio', shortLabel: 'Medio'},
         {subtype: 'sub_premium', label: 'Plan Motor Super', shortLabel: 'Super'}
       ],
+      cars_subscription_tutorial_listinglimit5: 'Publica hasta 5 coches.',
+      cars_subscription_tutorial_listinglimit9: 'Publica hasta 9 coches.',
+      cars_subscription_tutorial_listinglimit15: 'Publica hasta 15 coches.',
+      cars_subscription_tutorial_description2: 'Los compradores podrán guardar tu tienda / perfil como favorito.',
+      pro_subscription_tutorial_extra_fields_phone_web: 'Los compradores podrán ver en tu perfil el teléfono y web para contactar fácilmente.',
+      pro_subscription_tutorial_extra_fields_description_direction: 'Tendrás una descripción de tu tienda o servicio y su ubicación.',
+      cars_subscription_tutorial_description3: 'Tu perfil tendrá un diseño diferente y ¡destacará!',
+      pro_subscription_tutorial_items_no_expire: 'Tus productos no caducarán nunca.',
+      cars_subscription_tutorial_phone_on_car: 'Tu teléfono aparecerá en cada coche que tengas publicado, así más compradores te contactarán.'
     }
   };
 

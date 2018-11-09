@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  MotorPlanType, ProfileSubscriptionInfo, UserProduct,
+  MotorPlanType, ProfileSubscriptionInfo, UserProduct, UserProductFeature,
 } from '../../core/user/user-response.interface';
 import { UserService } from '../../core/user/user.service';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -24,6 +24,10 @@ export class ProfileSubscriptionComponent implements OnInit {
       this.plans = subscriptionInfo.product_group.user_products.map((plan: UserProduct) => {
         const planType: MotorPlanType = motorPlanTypes.find((p: MotorPlanType) => p.subtype === plan.name);
         plan.name = planType.shortLabel;
+        plan.durations[0].features = plan.durations[0].features.map((feature: UserProductFeature) => {
+          feature.name = this.i18n.getTranslations(feature.name);
+          return feature;
+        });
         if (plan.active) {
           this.currentPlan = planType.label;
         }
