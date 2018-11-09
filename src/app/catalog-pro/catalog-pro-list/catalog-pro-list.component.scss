@@ -200,9 +200,3 @@ tsl-select {
   background-color: $grey-200;
   margin: $spacing-XXS $spacing-S 0;
 }
-
-/deep/ {
-  .show > .dropdown-menu {
-    display: block;
-  }
-}

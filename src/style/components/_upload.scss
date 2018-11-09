@@ -61,9 +61,6 @@
       position: relative;
       text-align: center;
       white-space: normal;
-      input[type=checkbox] {
-        display: none;
-      }
       &.btn {
         padding: 0;
         border-radius: $border-radius !important;
