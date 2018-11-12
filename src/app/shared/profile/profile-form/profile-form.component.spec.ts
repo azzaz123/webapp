@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../core/user/user.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_DATA, USER_EDIT_DATA, USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
 import { ExitConfirmationModalComponent } from '../../exit-confirmation-modal/exit-confirmation-modal.component';
 
 describe('ProfileFormComponent', () => {
@@ -123,7 +123,7 @@ describe('ProfileFormComponent', () => {
         component.profileForm.get('location.longitude').patchValue(USER_LOCATION_COORDINATES.longitude);
         component['hasNotSavedChanges'] = true;
 
-        component.onSubmit();
+        component.onSubmit(MOCK_USER);
       });
 
       it('should call edit', () => {
@@ -148,7 +148,7 @@ describe('ProfileFormComponent', () => {
         component.profileForm.get('birth_date').patchValue('');
         component.profileForm.get('gender').patchValue('');
 
-        component.onSubmit();
+        component.onSubmit(MOCK_USER);
       });
 
       it('should set dirty invalid fields', () => {

@@ -204,6 +204,15 @@ export class UserService extends ResourceService {
       .map((r: Response) => r.json());
   }
 
+  public updateStoreLocation(coordinates: Coordinate): Observable<any> {
+    return this.http.post(this.API_URL + '/me/bumped-profile/store-location', {
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+      address: coordinates.name
+    })
+      .map((r: Response) => r.json());
+  }
+
   public getStats(): Observable<UserStatsResponse> {
     return this.http.get(this.API_URL + '/me/stats')
       .map((r: Response) => {
@@ -291,7 +300,9 @@ export class UserService extends ResourceService {
       data.last_name,
       data.birth_date,
       data.gender,
-      data.email
+      data.email,
+      data.featured,
+      data.extra_info
     );
   }
 
