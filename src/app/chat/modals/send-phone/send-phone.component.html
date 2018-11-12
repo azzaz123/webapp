@@ -1,5 +1,5 @@
 <div class="modal-body center-heading">
-  <div class="modal-close" (click)="activeModal.dismiss()">
+  <div class="modal-close" (click)="dismiss()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
   <h2 i18n>Leave your number</h2>
@@ -9,7 +9,7 @@
       #phoneInput formControlName="phone" required />
     </div>
     <div class="form-group">
-      <tsl-button i18n (click)="activeModal.dismiss()">Cancel</tsl-button>
+      <tsl-button i18n (click)="dismiss()">Cancel</tsl-button>
       <tsl-button i18n (click)="createPhoneNumberMessage(phone)">Confirm</tsl-button>
     </div>
   </form>
