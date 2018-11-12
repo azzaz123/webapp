@@ -5,6 +5,7 @@ import { Conversation } from '../../../core/conversation/conversation';
 import { PersistencyService } from '../../../core/persistency/persistency.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ErrorsService } from '../../../core/errors/errors.service';
+import { TrackingService } from '../../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -22,8 +23,10 @@ export class SendPhoneComponent implements OnInit, AfterContentInit {
     private messageService: MessageService,
     private persistencyService: PersistencyService,
     private errorsService: ErrorsService,
+    private trackingService: TrackingService,
     public activeModal: NgbActiveModal
   ) {
+    this.trackingService.trackAccumulatedEvents();
     this.sendPhoneForm = this.fb.group({
       phone: ['', [Validators.required]]
     });
@@ -41,13 +44,19 @@ export class SendPhoneComponent implements OnInit, AfterContentInit {
     this.phoneField.nativeElement.focus();
   }
 
-  public createPhoneNumberMessage() {
+  createPhoneNumberMessage() {
     if (this.sendPhoneForm.valid) {
       this.messageService.createPhoneNumberMessage(this.conversation, this.sendPhoneForm.value.phone);
+      this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
       this.activeModal.close();
     } else if (!this.sendPhoneForm.controls.phone.valid) {
       this.sendPhoneForm.controls.phone.markAsDirty();
       this.errorsService.i18nError('formErrors');
     }
+  }
+
+  dismiss() {
+    this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
+    this.activeModal.dismiss();
   }
 }

@@ -14,6 +14,7 @@ import { WindowRef } from '../window/window.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/bufferTime';
+import { Subscription } from 'rxjs/Subscription';
 
 const maxBatchSize = 1000;
 const sendInterval = 10000;
@@ -32,6 +33,7 @@ const CATEGORY_IDS: any = {
   Purchase: '53',
   Conversations: '7',
   Conversation: '76',
+  Message: '81',
   Menu: '41',
   ItemDetail: '103',
   UploadForm: '114',
@@ -68,7 +70,8 @@ const SCREENS_IDS: any = {
   Chat: '27',
   GDPR: '155',
   ReFishingGDPR: '159',
-  Credits: '166'
+  Credits: '166',
+  SharePhone: '92'
 };
 
 const TYPES_IDS: any = {
@@ -823,6 +826,27 @@ export class TrackingService {
     type: TYPES_IDS.Success
   };
 
+  public static CHAT_SHAREPHONE_OPENSHARING = {
+    name: '557',
+    category: CATEGORY_IDS.Message,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Tap
+  };
+
+  public static CHAT_SHAREPHONE_CANCELSHARING = {
+    name: '558',
+    category: CATEGORY_IDS.Message,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Tap
+  };
+
+  public static CHAT_SHAREPHONE_ACCEPTSHARING = {
+    name: '559',
+    category: CATEGORY_IDS.Message,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Tap
+  };
+
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
   private sessionStartTime: string = null;
   private sessionId: string = null;
@@ -833,6 +857,7 @@ export class TrackingService {
   private pendingTrackingEvents: Array<TrackingEventData> = [];
   private pendingTrackingEvents$ = this.trackingEvents$.bufferTime(sendInterval, null, maxBatchSize).filter((buffer) => buffer.length > 0);
   private sentEvents: Array<TrackingEventData> = [];
+  public trackAccumulatedEventsSubscription: Subscription;
 
   constructor(private navigatorService: NavigatorService,
               private http: HttpService,
@@ -876,10 +901,12 @@ export class TrackingService {
   }
 
   public trackAccumulatedEvents() {
-    this.pendingTrackingEvents$.subscribe((events: Array<TrackingEventData>) => {
+    if (!this.trackAccumulatedEventsSubscription) {
+      this.trackAccumulatedEventsSubscription = this.pendingTrackingEvents$.subscribe((events: Array<TrackingEventData>) => {
       this.sendMultipleEvents(events);
       this.pendingTrackingEvents = [];
     });
+  }
   }
 
   private checkIsUnique(event: TrackingEventData, checkInArray: TrackingEventData[]): boolean {

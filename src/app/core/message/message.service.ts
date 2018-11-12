@@ -16,6 +16,7 @@ import { MsgArchiveResponse, ReceivedReceipt } from './archive.interface';
 import 'rxjs/add/operator/first';
 import { EventService } from '../event/event.service';
 import { I18nService } from '../i18n/i18n.service';
+import { TrackingService } from '../tracking/tracking.service';
 
 @Injectable()
 export class MessageService {
@@ -33,6 +34,7 @@ export class MessageService {
               private userService: UserService,
               private connectionService: ConnectionService,
               private i18n: I18nService,
+              private trackingService: TrackingService,
               private eventService: EventService) {
   }
 
@@ -203,6 +205,7 @@ export class MessageService {
     msg = this.addUserInfo(conversation, msg);
     msg.phoneRequest = phoneRequestState.pending;
     conversation.messages.push(msg);
+    this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
     conversation.modifiedDate = new Date().getTime();
     return conversation;
   }
