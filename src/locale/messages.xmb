@@ -408,6 +408,9 @@
       </msg>
   <msg id="5131018503170911996"><source>app/chat/item/item.component.ts:53</source>Insure this mobile phone with Klinc by Zurich</msg>
   <msg id="6207187827275323934"><source>app/chat/item/item.component.ts:56</source>Insure this product with Klinc by Zurich</msg>
+  <msg id="5984580705945066559"><source>app/chat/item/item.component.ts:62,64</source>
+        Add insurance to this product
+      </msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="2020278898288143668"><source>app/chat/user-card/user-card.component.ts:37</source>Selling</msg>
   <msg id="4636699111573030980"><source>app/chat/user-card/user-card.component.ts:38</source>+<ph name="ITEMS_COUNT"><ex>{{user.itemsCount // i18n(ph=&quot;ITEMS_COUNT&quot;)}}</ex></ph> More</msg>
@@ -462,18 +465,18 @@
   <msg id="8012344910054029733"><source>app/profile/profile.component.ts:53</source>Male</msg>
   <msg id="5667840900782067941"><source>app/profile/profile.component.ts:58</source>Female</msg>
   <msg id="8134597337896146328"><source>app/profile/profile.component.ts:64</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:36</source>Product location:</msg>
-  <msg id="3768927257183755959"><source>app/profile/profile.component.ts:72</source><source>app/profile/profile.component.ts:115</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:44</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:69</source>Save</msg>
+  <msg id="3768927257183755959"><source>app/profile/profile.component.ts:72</source><source>app/profile/profile.component.ts:117</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:44</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:69</source>Save</msg>
   <msg id="6694781109624015458"><source>app/profile/profile.component.ts:82</source>PRO info</msg>
   <msg id="6996799422725544865"><source>app/profile/profile.component.ts:85</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:24</source>Description:</msg>
   <msg id="1205072394541462689"><source>app/profile/profile.component.ts:93</source>Phone number:</msg>
   <msg id="874465399775999813"><source>app/profile/profile.component.ts:100</source>Website:</msg>
   <msg id="8393150378980885613"><source>app/profile/profile.component.ts:107</source>Shop address:</msg>
-  <msg id="3004455960309356224"><source>app/profile/profile.component.ts:126</source>Account info</msg>
-  <msg id="6631334172623029500"><source>app/profile/profile.component.ts:129</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:57</source>Email:</msg>
-  <msg id="6865009229971482891"><source>app/profile/profile.component.ts:135</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:63</source>Password:</msg>
-  <msg id="2322688793988378029"><source>app/profile/profile.component.ts:144</source>Close account</msg>
-  <msg id="4930506384627295710"><source>app/profile/profile.component.ts:152</source>Settings</msg>
-  <msg id="3649443966888874108"><source>app/profile/profile.component.ts:159,161</source>
+  <msg id="3004455960309356224"><source>app/profile/profile.component.ts:128</source>Account info</msg>
+  <msg id="6631334172623029500"><source>app/profile/profile.component.ts:131</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:57</source>Email:</msg>
+  <msg id="6865009229971482891"><source>app/profile/profile.component.ts:137</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:63</source>Password:</msg>
+  <msg id="2322688793988378029"><source>app/profile/profile.component.ts:146</source>Close account</msg>
+  <msg id="4930506384627295710"><source>app/profile/profile.component.ts:154</source>Settings</msg>
+  <msg id="3649443966888874108"><source>app/profile/profile.component.ts:161,163</source>
                     In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.
                   </msg>
   <msg id="9032739290449539063"><source>app/profile-pro/profile-pro.component.ts:6</source>Your info</msg>
