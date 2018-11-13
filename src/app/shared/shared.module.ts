@@ -60,6 +60,7 @@ import { TrackingModule } from '../core/tracking/tracking.module';
 import { RouterModule } from '@angular/router';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { CountdownComponent } from './countdown/countdown.component';
+import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe';
 
 @NgModule({
   imports: [
@@ -122,7 +123,8 @@ import { CountdownComponent } from './countdown/countdown.component';
     CatalogStatusNavbarComponent,
     CartComponent,
     ExitConfirmationModalComponent,
-    CountdownComponent
+    CountdownComponent,
+    ThousandSuffixesPipe
   ],
   declarations: [
     AdComponent,
@@ -172,13 +174,15 @@ import { CountdownComponent } from './countdown/countdown.component';
     CatalogStatusNavbarComponent,
     CartComponent,
     ExitConfirmationModalComponent,
-    CountdownComponent
+    CountdownComponent,
+    ThousandSuffixesPipe
   ],
   providers: [
     DecimalPipe,
     ExitConfirmGuard,
     TutorialGuard,
-    CartService
+    CartService,
+    ThousandSuffixesPipe
   ],
   entryComponents: [
     ConfirmationModalComponent,
