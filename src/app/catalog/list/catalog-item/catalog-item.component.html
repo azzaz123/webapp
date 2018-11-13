@@ -17,7 +17,7 @@
     </a>
     <span class="listing-fee">
       <div *ngIf="showListingFee()">Listing Fee</div>
-      <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="listing-fee-countdown" [value]="item.listingFeeExpiringDate" format="listingFee"></tsl-countdown>
+      <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="subtitle" [ngClass]="{'few-days': listingFeeFewDays()}" [value]="item.listingFeeExpiringDate" format="listingFee"></tsl-countdown>
     </span>
     <span class="visibility">
       <div class="visibility-item">

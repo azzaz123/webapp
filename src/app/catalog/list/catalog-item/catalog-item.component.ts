@@ -142,4 +142,9 @@ export class CatalogItemComponent implements OnInit {
     return this.item.listingFeeExpiringDate > new Date().getTime();
   }
 
+  public listingFeeFewDays(): boolean {
+    const threeDaysTime = 3 * 24 * 60 * 60 * 1000;
+    return this.item.listingFeeExpiringDate - new Date().getTime() < threeDaysTime;
+  }
+
 }

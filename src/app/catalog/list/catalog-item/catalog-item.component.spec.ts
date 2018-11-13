@@ -368,4 +368,18 @@ describe('CatalogItemComponent', () => {
       expect(component.showListingFee()).toEqual(false);
     });
   });
+
+  describe('listingFeeFewDays', () => {
+    it('should return false when listing fee expiration is more than 3 days', () => {
+      component.item.listingFeeExpiringDate = moment().add(4, 'days').valueOf();
+
+      expect(component.listingFeeFewDays()).toEqual(false);
+    });
+
+    it('should return true when listing fee expiration is less than 3 days', () => {
+      component.item.listingFeeExpiringDate = moment().add(2, 'days').valueOf();
+
+      expect(component.listingFeeFewDays()).toEqual(true);
+    });
+  });
 });
