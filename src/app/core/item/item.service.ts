@@ -195,6 +195,7 @@ export class ItemService extends ResourceService {
       content.num_seats,
       content.condition,
       content.version,
+      content.publish_date,
       content.image
     );
   }
@@ -252,7 +253,7 @@ export class ItemService extends ResourceService {
       },
       content.images,
       content.web_slug,
-      content.modified_date,
+      content.publish_date,
       content.delivery_info
     );
   }
