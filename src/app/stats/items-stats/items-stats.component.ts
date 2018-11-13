@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CheapestProducts, ItemsData } from '../../core/item/item-response.interface';
 import { ItemService } from '../../core/item/item.service';
 import { Item } from '../../core/item/item';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -18,14 +17,14 @@ export class ItemsStatsComponent implements OnInit {
   public end: boolean;
   public opens: boolean[] = [];
   public prices: CheapestProducts;
-  @Input() onPaginate: Subject<boolean>;
+  @Input() paginate: Subject<boolean>;
   @Output() stopPagination = new EventEmitter <boolean>();
 
   constructor(private itemService: ItemService) { }
 
   ngOnInit() {
     this.getItems();
-    this.onPaginate.subscribe(event => {
+    this.paginate.subscribe(event => {
       this.getItems(true);
     });
   }

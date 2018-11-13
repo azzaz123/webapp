@@ -9,10 +9,10 @@ describe('StatsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StatsComponent ],
+      declarations: [StatsComponent],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -21,7 +21,20 @@ describe('StatsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  describe('loadMoreStats', () => {
+    it('should emit paginate event', () => {
+      spyOn(component.paginate, 'next');
+      component.loadMoreStats();
+
+      expect(component.paginate.next).toHaveBeenCalled();
+    });
+  });
+
+  describe('stopPagination', () => {
+    it('should stop stats pagination', () => {
+      component.stopPagination();
+
+      expect(component.pagination).toBe(false);
+    });
   });
 });
