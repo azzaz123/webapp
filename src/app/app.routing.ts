@@ -106,11 +106,11 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: 'app/login/login.module#LoginModule'
-  },
+  }/*,
   {
     path: 'stats',
     loadChildren: 'app/stats/stats.module#StatsModule'
-  }
+  }*/
 ];
 
 @NgModule({
