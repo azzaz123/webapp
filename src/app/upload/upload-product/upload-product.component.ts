@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   Component,
   ElementRef,
   EventEmitter,
@@ -7,7 +6,8 @@ import {
   OnChanges,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  AfterContentInit
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -29,7 +29,7 @@ import { DeliveryInfo } from '../../core/item/item-response.interface';
   templateUrl: './upload-product.component.html',
   styleUrls: ['./upload-product.component.scss']
 })
-export class UploadProductComponent implements OnInit, AfterViewChecked, OnChanges {
+export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
 
   @Input() categoryId: string;
   @Input() item: Item;
@@ -77,6 +77,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
+  private oldDeliveryValue: any;
   public isUrgent = false;
 
   constructor(private fb: FormBuilder,
@@ -123,6 +124,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         delivery_info: this.getDeliveryInfo()
       });
       this.detectFormChanges();
+      this.oldDeliveryValue = this.getDeliveryInfo();
     }
   }
 
@@ -173,13 +175,11 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     });
   }
 
-  ngAfterViewChecked() {
-    setTimeout(() => {
-      if (!this.item && this.titleField && !this.focused) {
-        this.titleField.nativeElement.focus();
-        this.focused = true;
-      }
-    });
+  ngAfterContentInit() {
+    if (!this.item && this.titleField && !this.focused) {
+      this.titleField.nativeElement.focus();
+      this.focused = true;
+    }
   }
 
   onSubmit() {
@@ -278,6 +278,15 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   public emitLocation(): void {
     this.locationSelected.emit(this.categoryId);
+  }
+
+  public onDeliveryChange(newDeliveryValue: any) {
+    if (newDeliveryValue === this.oldDeliveryValue) {
+      this.uploadForm.controls['delivery_info'].reset();
+      delete this.oldDeliveryValue;
+    } else {
+      this.oldDeliveryValue = newDeliveryValue;
+    }
   }
 
 }

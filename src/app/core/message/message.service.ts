@@ -147,7 +147,7 @@ export class MessageService {
 
             const updateMessagesByThread = _.groupBy(updatedMesages, 'conversationId');
             Object.keys(updateMessagesByThread).map((thread) => {
-              const unreadCount = updateMessagesByThread[thread].filter(m => m.status !== messageStatus.READ && !m.fromSelf).length;
+              const unreadCount = updateMessagesByThread[thread].filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
               const conv = conversations.find(c => c.id === thread);
               if (conv && !conv.archived) {
                 conv.unreadMessages = unreadCount;
@@ -171,7 +171,9 @@ export class MessageService {
     const other: User = conversation.user;
     const fromId: string = message.from.split('@')[0];
     message.user = (fromId === self.id) ? self : other;
-    message.fromSelf = fromId === self.id;
+    /* fromSelf: The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
+    logged in, but they should not be considered messages fromSelf */
+    message.fromSelf = fromId === self.id && !message.payload;
     return message;
   }
 

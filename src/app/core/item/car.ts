@@ -31,6 +31,7 @@ export class Car extends Item {
               private _numSeats?: number,
               private _condition?: string,
               private _version?: string,
+              publishedDate?: number,
               image?: any) {
     super(
       id,
@@ -56,7 +57,7 @@ export class Car extends Item {
       } : (images ? images[0] : null),
       images,
       webSlug,
-      null,
+      publishedDate,
       null,
       ITEM_TYPES.CARS
     );
@@ -121,6 +122,5 @@ export class Car extends Item {
   get version(): string {
     return this._version;
   }
-
 }
 

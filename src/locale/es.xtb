@@ -637,6 +637,8 @@
   <translation id="6181907632373133266">Chats</translation>
   <translation id="2123659921722214537">Visualizaciones</translation>
   <translation id="3537961834218859224">Te lo aseguramos</translation>
+  <translation id="5131018503170911996">Asegura este móvil con Klinc by Zurich</translation>
+  <translation id="6207187827275323934">Asegura este producto con Klinc by Zurich</translation>
   <translation id="6174997588475722860">Recuerda que tu saldo y los packs de ahorro solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Una vez cargado tu saldo, tiene un año de vigencia.</translation>
   <translation id="7356703231883565314">El uso de los wallacoins es exclusivo para la compra de Destacados. Recuerda que solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>No se puede intercambiar por Euros y tienen un año de vigencia.</translation>
   <translation id="2767524293310239820">Los wallacoins te ayudarán a comprar Destacados. Aquí podrás conseguirlos y ver tu saldo disponible.</translation>
@@ -693,4 +695,11 @@
     <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
     marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
   </translation>
+  <translation id="2908216965016905963">Has alcanzado el límite de coches publicados</translation>
+  <translation id="3910225099921883332">Para publicar este coche, contrata un nuevo Plan Motor desde nuestra app.</translation>
+  <translation id="7622938994831402105">Este anuncio NO está publicado.</translation>
+  <translation id="8858428396989821345">Quedará en tu catálogo archivado como Inactivo.</translation>
+  <translation id="5020391428854742815">Ve a la app de wallapop y suscríbete a un Plan Motor, o compra un anuncio extra para hacerlo público.</translation>
+  <translation id="5601530442010506564">Entendido</translation>
+  <translation id="703140349558791698">Suscríbete o publícalo desde la app</translation>
 </translationbundle>
