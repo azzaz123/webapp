@@ -22,11 +22,11 @@
     <span class="visibility">
       <div class="visibility-item">
         <mat-icon svgIcon="views"></mat-icon>
-        <span class="visibility-item-info">{{item.views}}</span>
+        <span class="visibility-item-info">{{item.views | thousandSuffixes : 1}}</span>
       </div>
       <div class="visibility-item">
         <mat-icon svgIcon="heart"></mat-icon>
-        <span class="visibility-item-info">{{item.favorites}}</span>
+        <span class="visibility-item-info">{{item.favorites | thousandSuffixes : 1}}</span>
       </div>
     </span>
     <span class="actions" *ngIf="!item.flags.pending">
