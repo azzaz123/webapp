@@ -1,6 +1,6 @@
 import { ThousandSuffixesPipe } from './thousand-suffixes.pipe';
 
-fdescribe('ThousandSuffixesPipe', () => {
+describe('ThousandSuffixesPipe', () => {
   let pipe: ThousandSuffixesPipe;
 
   beforeEach(() => {
