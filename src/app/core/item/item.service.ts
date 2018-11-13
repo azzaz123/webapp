@@ -343,9 +343,11 @@ export class ItemService extends ResourceService {
             if (purchase.purchase_name === 'countrybump') {
               itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
             }
-            itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
-            itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
-            itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
+            if ( purchase.visibility_flags ) {
+              itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
+              itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
+              itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
+            }
           }
         });
         return itemsData;
