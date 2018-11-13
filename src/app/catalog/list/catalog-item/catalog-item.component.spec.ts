@@ -24,6 +24,7 @@ import { Item } from '../../../core/item/item';
 import { EventService } from '../../../core/event/event.service';
 import { environment } from '../../../../environments/environment';
 import * as moment from 'moment';
+import { ThousandSuffixesPipe } from '../../../shared/number-conversion/thousand-suffixes.pipe';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -40,7 +41,7 @@ describe('CatalogItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CatalogItemComponent, CustomCurrencyPipe],
+      declarations: [CatalogItemComponent, CustomCurrencyPipe, ThousandSuffixesPipe],
       imports: [MomentModule],
       providers: [
         DecimalPipe,
