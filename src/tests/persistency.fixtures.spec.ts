@@ -1,5 +1,5 @@
 import { MESSAGE_MAIN } from './message.fixtures.spec';
-import { Message, messageStatus } from '../app/core/message/message';
+import { Message, messageStatus, phoneRequestState } from '../app/core/message/message';
 import { Observable } from 'rxjs/Observable';
 
 const currentDate = new Date();
@@ -23,6 +23,20 @@ export const MOCK_DB_FILTERED_RESPONSE: any = [
       'from': MESSAGE_MAIN.from,
       'date': MESSAGE_MAIN.date + 1,
       'status': messageStatus.READ
+    }
+  }
+];
+
+export const MOCK_DB_MSG_WITH_PHONEREQUEST: any = [
+  {
+    doc: {
+      '_id': MESSAGE_MAIN.id,
+      'conversationId': MESSAGE_MAIN.thread,
+      'message': MESSAGE_MAIN.body,
+      'from': MESSAGE_MAIN.from,
+      'date': MESSAGE_MAIN.date,
+      'status': messageStatus.READ,
+      'phoneRequest': phoneRequestState.pending
     }
   }
 ];
@@ -156,6 +170,10 @@ export class MockedPersistencyService {
   public findMessage(messageId: string) {
     return Observable.of({});
   }
+
+  public markPhoneRequestAnswered(message: Message) {}
+
+  public setPhoneNumber(phone: string) {}
 }
 
 /* istanbul ignore next */

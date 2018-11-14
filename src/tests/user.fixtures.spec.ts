@@ -202,6 +202,8 @@ export class MockedUserService {
   get user(): User {
     return new User(USER_ID);
   }
+
+  public getPhoneInfo(userId: string) {}
 }
 
 export const USER_INFO_RESPONSE: UserInfoResponse = {
