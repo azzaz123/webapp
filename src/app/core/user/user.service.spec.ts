@@ -503,6 +503,22 @@ describe('Service: User', () => {
     });
   });
 
+  describe('getPhoneInfo', () => {
+    it('should call endpoint and return response', () => {
+      const PHONE_METHOD_RESPONSE = { phone_method: 'bubble' };
+      const res: Response = new Response(new ResponseOptions({body: JSON.stringify(PHONE_METHOD_RESPONSE)}));
+      spyOn(http, 'get').and.returnValue(Observable.of(res));
+
+      let resp: any;
+      service.getPhoneInfo(USER_ID).subscribe((response: any) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/phone-method');
+      expect(resp).toEqual(PHONE_METHOD_RESPONSE);
+    });
+  });
+
   describe('edit', () => {
     it('should call endpoint, return user and set it', () => {
       const res: ResponseOptions = new ResponseOptions({body: USER_DATA});
