@@ -28,6 +28,7 @@ import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { Message } from '../../core/message/message';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { XmppService } from '../../core/xmpp/xmpp.service';
+import { MessageService } from '../../core/message/message.service';
 
 class MockedXmppService {
   receivedReceipts = [{id: '1', thread: 'a'}, {id: '2', thread: 'b'}];
@@ -45,6 +46,7 @@ describe('Component: ConversationsPanel', () => {
   let http: HttpService;
   let trackingService: TrackingService;
   let xmppService: XmppService;
+  let messageService: MessageService;
   let elRef: ElementRef;
 
   beforeEach(() => {
@@ -96,6 +98,9 @@ describe('Component: ConversationsPanel', () => {
           loadNotStoredMessages() {}
         }
         },
+        {provide: MessageService, useValue: {
+          addPhoneNumberRequestMessage() {}
+        }},
         EventService,
         {provide: UserService, useValue: {
           queryParams: {},
@@ -124,6 +129,7 @@ describe('Component: ConversationsPanel', () => {
       schemas: [NO_ERRORS_SCHEMA]
     });
     conversationService = TestBed.get(ConversationService);
+    messageService = TestBed.get(MessageService);
     eventService = TestBed.get(EventService);
     http = TestBed.get(HttpService);
     component = TestBed.createComponent(ConversationsPanelComponent).componentInstance;
@@ -574,6 +580,37 @@ describe('Component: ConversationsPanel', () => {
       expect(conversationService.getSingleConversationMessages).toHaveBeenCalledWith(SECOND_MOCK_CONVERSATION);
       expect(conversationService.addLead).toHaveBeenCalledWith(convWithMessages);
       expect(component.setCurrentConversation).toHaveBeenCalledWith(convWithMessages);
+    });
+
+    it('should subscribe to EventService.REQUEST_PHONE when called', () => {
+      const conversation = MOCK_CONVERSATION();
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      spyOn(eventService, 'subscribe');
+
+      (component as any).createConversationAndSetItCurrent();
+
+      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.REQUEST_PHONE);
+    });
+
+    it('should call messageService.addPhoneNumberRequestMessage when a REQUEST_PHONE event is triggered', () => {
+      const conversation = MOCK_CONVERSATION();
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      spyOn(messageService, 'addPhoneNumberRequestMessage');
+
+      (component as any).createConversationAndSetItCurrent();
+      eventService.emit(EventService.REQUEST_PHONE);
+
+      expect(messageService.addPhoneNumberRequestMessage).toHaveBeenCalled();
+    });
+
+    it('should NOT call messageService.addPhoneNumberRequestMessage when a REQUEST_PHONE event is NOT triggered', () => {
+      const conversation = MOCK_CONVERSATION();
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      spyOn(messageService, 'addPhoneNumberRequestMessage');
+
+      (component as any).createConversationAndSetItCurrent();
+
+      expect(messageService.addPhoneNumberRequestMessage).not.toHaveBeenCalled();
     });
   });
 
