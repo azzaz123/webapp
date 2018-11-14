@@ -94,8 +94,17 @@ describe('CountdownComponent', () => {
       discardPeriodicTasks();
     }));
 
-    it('should show 2 days left', () => {
+    it('should show 3 days left', () => {
       component.value = moment().add(2, 'days');
+      component.value.add(2, 'seconds');
+
+      component.ngOnInit();
+
+      expect(component.message).toEqual('3 days left');
+    });
+
+    it('should show 2 day left', () => {
+      component.value = moment().add(1, 'days');
       component.value.add(2, 'seconds');
 
       component.ngOnInit();
@@ -105,7 +114,6 @@ describe('CountdownComponent', () => {
 
     it('should show 1 day left', () => {
       component.value = moment().add(1, 'days');
-      component.value.add(2, 'seconds');
 
       component.ngOnInit();
 

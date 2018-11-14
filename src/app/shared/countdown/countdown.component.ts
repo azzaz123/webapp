@@ -78,7 +78,8 @@ export class CountdownComponent implements OnInit, OnDestroy {
     const durationHours = Math.floor(duration.asHours());
     const durationMinutes = Math.floor(duration.asMinutes());
     if (durationDays >= 1) {
-      timeText = `${durationDays} ${this.i18n.getTranslations('day')}${durationDays === 1 ? '' : 's' }`;
+      const durationDaysRound = Math.ceil(duration.asDays())
+      timeText = `${durationDaysRound} ${this.i18n.getTranslations('day')}${durationDaysRound === 1 ? '' : 's' }`;
     } else if (durationHours >= 1) {
       timeText = `${durationHours} ${this.i18n.getTranslations('hour')}${durationHours === 1 ? '' : 's' }`;
     } else {
