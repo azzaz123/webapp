@@ -8,7 +8,7 @@ import { User } from '../../core/user/user';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { By } from '@angular/platform-browser';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
-import { phoneRequestState } from '../../core/message/message';
+import { phoneRequestState, Message } from '../../core/message/message';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 
 const WEB_SLUG_USER = 'https://www.wallapop.com/user/';
@@ -60,8 +60,9 @@ describe('Component: Message', () => {
   describe('openDialog', () => {
     beforeEach(() => {
       spyOn(modalService, 'open').and.callThrough();
-      component.message.phoneRequest = phoneRequestState.pending;
       component.currentConversation = MOCK_CONVERSATION();
+      component.message = new Message('someId', MOCK_CONVERSATION().id, 'some text', USER_ID, new Date());
+      component.message.phoneRequest = phoneRequestState.pending;
       fixture.detectChanges();
       element = fixture.debugElement.queryAll(By.css('button.btn'))[0];
       component.ngOnInit();
