@@ -13,22 +13,12 @@
     </a>
     <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="published">
       <div i18n>Published</div>
-      <div class="subtitle"> {{ item.publishedDate | amDateFormat: 'DD/MM/YYYY hh:mm'}}</div>
+      <div class="subtitle"> {{ item.publishedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
     </a>
-    <span class="listing-fee">
-      <div *ngIf="showListingFee()">Listing Fee</div>
+    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="listing-fee">
+      <div *ngIf="showListingFee()" i18n>Active</div>
       <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="subtitle" [ngClass]="{'few-days': listingFeeFewDays()}" [value]="item.listingFeeExpiringDate" format="listingFee"></tsl-countdown>
-    </span>
-    <span class="visibility">
-      <div class="visibility-item">
-        <mat-icon svgIcon="views"></mat-icon>
-        <span class="visibility-item-info">{{item.views | thousandSuffixes : 1}}</span>
-      </div>
-      <div class="visibility-item">
-        <mat-icon svgIcon="heart"></mat-icon>
-        <span class="visibility-item-info">{{item.favorites | thousandSuffixes : 1}}</span>
-      </div>
-    </span>
+    </a>
     <span class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
         <span [hidden]="item.sold">
