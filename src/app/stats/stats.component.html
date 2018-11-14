@@ -1,4 +1,11 @@
-<div class="page-content">
+<div class="page-content"
+      infiniteScroll
+      [infiniteScrollDistance]="5"
+      [infiniteScrollThrottle]="100"
+      [scrollWindow]="false"
+      (scrolled)="loadMoreStats()"
+      [scrollTop]="scrollTop"
+      [infiniteScrollDisabled]="!pagination">
   <div class="container">
     <tsl-header>
       <div class="col-12">
@@ -10,6 +17,6 @@
         </div>
       </div>
     </tsl-header>
-    <router-outlet></router-outlet>
+    <tsl-items-stats (stopPagination)="stopPagination()" [paginate]="paginate"></tsl-items-stats>
   </div>
 </div>

@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material';
 import { ItemStatsGraphComponent } from './items-stats/item-stats-row/item-stats-graph/item-stats-graph.component';
 import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { ItemStatsService } from './items-stats/item-stats-row/item-stats-graph/item-stats.service';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { ItemStatsService } from './items-stats/item-stats-row/item-stats-graph/
     MomentModule,
     TrackingModule,
     MatIconModule,
-    AmChartsModule
+    AmChartsModule,
+    InfiniteScrollModule
   ],
   providers: [
     ItemStatsService
