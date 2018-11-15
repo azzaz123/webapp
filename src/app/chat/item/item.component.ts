@@ -49,7 +49,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   private active = true;
   private allowReserve: boolean;
   private myUserId: string;
-  private _headsOrTails = false; // true: mapfre, false: verti
+  private _headsOrTails: boolean; // true: mapfre, false: verti
   private showMapfre = false;
   private showVerti = false;
 
@@ -58,7 +58,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
               private trackingService: TrackingService,
               private cookieService: CookieService,
               @Inject('SUBDOMAIN') private subdomain: string) {
-    this._headsOrTails = this.headsOrTails();
   }
 
   ngOnInit() {
@@ -103,6 +102,10 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
         category_id: this.item.categoryId,
         item_id: this.item.id
       });
+    }
+
+    if (this._headsOrTails === undefined) {
+      this._headsOrTails = this.headsOrTails();
     }
 
     this.showMapfre = showMapfreCategories.includes(this.item.categoryId);
