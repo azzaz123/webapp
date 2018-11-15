@@ -37,4 +37,12 @@ describe('StatsComponent', () => {
       expect(component.pagination).toBe(false);
     });
   });
+
+  describe('setLoadingStatus', () => {
+    it('should set loading flag when fetching stats', () => {
+      component.setLoadingStatus(false);
+
+      expect(component.loading).toBe(false);
+    });
+  });
 });
