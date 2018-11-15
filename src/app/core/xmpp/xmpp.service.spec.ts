@@ -884,7 +884,6 @@ describe('Service: Xmpp', () => {
       });
 
       it('should not send event if the conversation is already created', () => {
-        console.log(MOCKED_CONVERSATIONS[0]);
         MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
         service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
 
