@@ -30,7 +30,7 @@
         {{item.favorites}}
       </div>
     </div>
-    <div class="card-external-link" *ngIf="isCarItem || (showWillisLink && !isMine()) || (showKlincLink && !isMine())">
+    <div class="card-external-link" *ngIf="!isMine() && (isCarItem || showWillisLink || showKlincLink || showMapfreOrVertiLink)">
       <hr>
       <a (click)="clickCarfax($event)"
          *ngIf="isCarItem"
@@ -55,6 +55,12 @@
         <ng-template #addInsuranceProduct>
           <span i18n>Insure this product with Klinc by Zurich</span>
         </ng-template>
+      </a>
+      <a (click)="clickMapfreOrVerti($event)"
+         *ngIf="showMapfreOrVertiLink"
+         [href]="getMapfreOrVertiLink()"
+         target="_blank" i18n>
+        Add insurance to this product
       </a>
     </div>
   </div>
