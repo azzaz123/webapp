@@ -156,7 +156,7 @@ export class I18nService {
       minute: 'minuto',
       hour: 'hora',
       day: 'día',
-      left: 'quedan',
+      left: 'Quedan',
       views: 'Visualizaciones',
       favorites: 'Favoritos',
       featured: 'Destacado',
