@@ -12,13 +12,13 @@ import { Subject } from 'rxjs/Subject';
 export class ItemsStatsComponent implements OnInit {
 
   public items: Item[] = [];
-  public loading = true;
   private init = 0;
   public end: boolean;
   public opens: boolean[] = [];
   public prices: CheapestProducts;
   @Input() paginate: Subject<boolean>;
   @Output() stopPagination = new EventEmitter <boolean>();
+  @Output() isLoading = new EventEmitter <boolean>();
 
   constructor(private itemService: ItemService) { }
 
@@ -30,7 +30,7 @@ export class ItemsStatsComponent implements OnInit {
   }
 
   private getItems(append?: boolean) {
-    this.loading = true;
+    this.isLoading.next(true);
     if (!append) {
       this.items = [];
     }
@@ -38,7 +38,7 @@ export class ItemsStatsComponent implements OnInit {
       const items = itemsData.data;
       this.init = itemsData.init;
       this.items = append ? this.items.concat(items) : items;
-      this.loading = false;
+      this.isLoading.next(false);
       this.end = !this.init;
       if (this.end) {
         this.stopPagination.next(true);
