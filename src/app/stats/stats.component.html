@@ -5,7 +5,7 @@
       [scrollWindow]="false"
       (scrolled)="loadMoreStats()"
       [scrollTop]="scrollTop"
-      [infiniteScrollDisabled]="!pagination">
+      [infiniteScrollDisabled]="!pagination || loading">
   <div class="container">
     <tsl-header>
       <div class="col-12">
@@ -17,6 +17,7 @@
         </div>
       </div>
     </tsl-header>
-    <tsl-items-stats (stopPagination)="stopPagination()" [paginate]="paginate"></tsl-items-stats>
+    <tsl-items-stats (stopPagination)="stopPagination()" (isLoading)="setLoadingStatus($event)" [paginate]="paginate"></tsl-items-stats>
   </div>
+  <tsl-spinner [hidden]="!loading"></tsl-spinner>
 </div>
