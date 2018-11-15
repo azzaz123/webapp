@@ -58,6 +58,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
               private trackingService: TrackingService,
               private cookieService: CookieService,
               @Inject('SUBDOMAIN') private subdomain: string) {
+    this._headsOrTails = this.headsOrTails();
   }
 
   ngOnInit() {
@@ -65,8 +66,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       (user: User) => {
         this.myUserId = user.id;
       });
-
-    this._headsOrTails = this.headsOrTails();
   }
 
   ngOnChanges(changes?: any) {
