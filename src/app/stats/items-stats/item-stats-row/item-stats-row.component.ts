@@ -75,7 +75,7 @@ export class ItemStatsRowComponent implements OnInit {
     this.link = this.item.getUrl(this.subdomain);
     this.itemStatsService.getStatistics(this.item.id).subscribe((response: ItemStatisticFullResponse) => {
       this.statsData = response;
-      this.noData = _.every(response.entries, (entry) => !entry.values || !entry.values.views);
+      this.noData = _.every(response.entries, (entry) => !entry.values || _.isEmpty(entry.values));
     });
     if (this.item.views === 0 || this.item.favorites === 0) {
       this.itemService.getCounters(this.item.id).subscribe((counters: ItemCounters) => {
