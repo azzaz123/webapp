@@ -2,7 +2,6 @@
   <div class="modal-close" (click)="dismiss()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <div *ngIf="requred">{{required}}</div>
   <p i18n>I am a professional seller and I would be happy to assist you personally. Will you leave me a contact phone
     number so we can chat?</p>
   <form [formGroup]="sendPhoneForm" (ngSubmit)="createPhoneNumberMessage()">
