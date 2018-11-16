@@ -29,7 +29,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 
 @Injectable()
@@ -166,7 +166,7 @@ export class ConversationService extends LeadService {
   }
 
   public openPhonePopup(conversation: Conversation, required = false) {
-    const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, {windowClass: 'phone-request'});
+    const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, {windowClass: 'phone-request', backdrop: 'static'});
     modalRef.componentInstance.conversation = conversation;
     modalRef.componentInstance.required = required;
   }
@@ -225,6 +225,7 @@ export class ConversationService extends LeadService {
     });
   }
 
+  // TODO - what does this do?
   public getConversationPage(id: string, archive?: boolean): number {
     const index: number = (archive ? this.archivedLeads : this.leads).findIndex((conversation: Conversation) => {
       return conversation.id === id;
