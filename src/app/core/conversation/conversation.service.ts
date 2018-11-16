@@ -170,6 +170,12 @@ export class ConversationService extends LeadService {
     const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
     modalRef.componentInstance.conversation = conversation;
     modalRef.componentInstance.required = required;
+    if (required) {
+      this.trackingService.addTrackingEvent({
+        eventData: TrackingService.ITEM_SHAREPHONE_SHOWFORM,
+        attributes: { item_id: conversation.item.id }
+      });
+    }
   }
 
   public checkIfLastPage(archive: boolean = false): Observable<any> {

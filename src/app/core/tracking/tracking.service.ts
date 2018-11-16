@@ -811,7 +811,6 @@ export class TrackingService {
     type: TYPES_IDS.Tap
   };
 
-
   public static CONVERSATION_FIRSTARCHIVE_OK = {
     name: '714',
     category: CATEGORY_IDS.Conversation,
@@ -844,6 +843,34 @@ export class TrackingService {
     name: '559',
     category: CATEGORY_IDS.Message,
     screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Tap
+  };
+
+  public static ITEM_SHAREPHONE_WRONGPHONE = {
+    name: '606',
+    category: CATEGORY_IDS.ProConversations,
+    screen: SCREENS_IDS.SharePhone,
+    type: TYPES_IDS.Error
+  };
+
+  public static ITEM_SHAREPHONE_SENDPHONE = {
+    name: '641',
+    category: CATEGORY_IDS.ProConversations,
+    screen: SCREENS_IDS.SharePhone,
+    type: TYPES_IDS.Tap
+  };
+
+  public static ITEM_SHAREPHONE_SHOWFORM = {
+    name: '642',
+    category: CATEGORY_IDS.ProConversations,
+    screen: SCREENS_IDS.SharePhone,
+    type: TYPES_IDS.Display
+  };
+
+  public static ITEM_SHAREPHONE_HIDEFORM = {
+    name: '362',
+    category: CATEGORY_IDS.ProConversations,
+    screen: SCREENS_IDS.SharePhone,
     type: TYPES_IDS.Tap
   };
 
@@ -903,10 +930,10 @@ export class TrackingService {
   public trackAccumulatedEvents() {
     if (!this.trackAccumulatedEventsSubscription) {
       this.trackAccumulatedEventsSubscription = this.pendingTrackingEvents$.subscribe((events: Array<TrackingEventData>) => {
-      this.sendMultipleEvents(events);
-      this.pendingTrackingEvents = [];
-    });
-  }
+        this.sendMultipleEvents(events);
+        this.pendingTrackingEvents = [];
+      });
+    }
   }
 
   private checkIsUnique(event: TrackingEventData, checkInArray: TrackingEventData[]): boolean {

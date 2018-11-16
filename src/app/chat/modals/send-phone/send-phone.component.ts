@@ -48,11 +48,20 @@ export class SendPhoneComponent implements AfterContentInit {
     if (this.sendPhoneForm.valid) {
       if (this.required) {
         this.messageService.addPhoneNumberRequestMessage(this.conversation);
+        this.trackingService.addTrackingEvent({
+          eventData: TrackingService.ITEM_SHAREPHONE_SENDPHONE,
+          attributes: { item_id: this.conversation.item.id }
+        });
+      } else {
+        this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
       }
       this.messageService.createPhoneNumberMessage(this.conversation, this.sendPhoneForm.value.phone);
-      this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
       this.activeModal.close();
     } else if (!this.sendPhoneForm.controls.phone.valid) {
+      this.trackingService.addTrackingEvent({
+        eventData: TrackingService.ITEM_SHAREPHONE_WRONGPHONE,
+        attributes: { item_id: this.conversation.item.id, phone_number: this.sendPhoneForm.controls.phone.value }
+      });
       this.sendPhoneForm.controls.phone.markAsDirty();
       this.errorsService.i18nError('formErrors');
     }
@@ -60,6 +69,7 @@ export class SendPhoneComponent implements AfterContentInit {
 
   dismiss() {
     if (this.required) {
+      this.trackingService.track(TrackingService.ITEM_SHAREPHONE_HIDEFORM, { item_id: this.conversation.item.id });
       window.location.href = environment.siteUrl + 'item/' + this.conversation.item.webSlug;
     } else {
       this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
