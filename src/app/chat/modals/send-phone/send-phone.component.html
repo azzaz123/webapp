@@ -1,16 +1,20 @@
-<div class="modal-body center-heading">
+<div class="modal-body">
   <div class="modal-close" (click)="dismiss()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <h2 i18n>Leave your number</h2>
+  <div *ngIf="requred">{{required}}</div>
+  <p i18n>I am a professional seller and I would be happy to assist you personally. Will you leave me a contact phone
+    number so we can chat?</p>
   <form [formGroup]="sendPhoneForm" (ngSubmit)="createPhoneNumberMessage()">
     <div class="form-group">
-      <input type="tel" class="form-control" id="phone" name="phone" tslRestrictInputNumber i18n-placeholder placeholder="Enter your phone..."
-      #phoneInput formControlName="phone" required />
-    </div>
-    <div class="form-group">
-      <tsl-button i18n (click)="dismiss()">Cancel</tsl-button>
-      <tsl-button i18n (click)="createPhoneNumberMessage()">Confirm</tsl-button>
+      <label for="phone" i18n>Let's talk:</label>
+      <input type="tel" class="form-control" id="phone" name="phone" tslRestrictInputNumber i18n-placeholder
+        placeholder="Enter your phone..." #phoneInput formControlName="phone" required />
+      <a id="send" (click)="createPhoneNumberMessage()" [ngClass]="{selected: sendPhoneForm.controls.phone.valid}">
+        <mat-icon svgIcon="send"></mat-icon>
+      </a>
     </div>
   </form>
+  <p class="small" i18n>Your data is protected and will not be used for missions of lorem ipsum dolorae arriquitaun
+    tiquitaun pimpam Organic Law on Data Protection 115/12 of the Spanish constitution that we gave to each other.</p>
 </div>
