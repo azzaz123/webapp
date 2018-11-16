@@ -29,6 +29,8 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -59,6 +61,7 @@ export class ConversationService extends LeadService {
               protected messageService: MessageService,
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,
+              private modalService: NgbModal,
               private zone: NgZone) {
     super(http, userService, itemService, event, xmpp, connectionService);
   }
@@ -160,6 +163,12 @@ export class ConversationService extends LeadService {
         };
       });
     });
+  }
+
+  public openPhonePopup(conversation: Conversation, required = false) {
+    const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, {windowClass: 'phone-request'});
+    modalRef.componentInstance.conversation = conversation;
+    modalRef.componentInstance.required = required;
   }
 
   public checkIfLastPage(archive: boolean = false): Observable<any> {

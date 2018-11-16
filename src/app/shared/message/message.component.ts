@@ -1,8 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Message, phoneRequestState } from '../../core/message/message';
-import { NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 import { Conversation } from '../../core/conversation/conversation';
+import { ConversationService } from '../../core/conversation/conversation.service';
 
 @Component({
   selector: 'tsl-message',
@@ -20,7 +19,7 @@ export class MessageComponent implements OnInit {
 
   constructor(@Inject('SUBDOMAIN')
     private subdomain: string,
-    private modalService: NgbModal) {
+    private conversationService: ConversationService) {
   }
 
   ngOnInit() {
@@ -28,7 +27,6 @@ export class MessageComponent implements OnInit {
   }
 
   openDialog() {
-    const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, {windowClass: 'phone-request'});
-    modalRef.componentInstance.conversation = this.currentConversation;
+    this.conversationService.openPhonePopup(this.currentConversation);
   }
 }
