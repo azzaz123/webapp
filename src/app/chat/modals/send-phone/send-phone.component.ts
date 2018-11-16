@@ -19,6 +19,7 @@ export class SendPhoneComponent implements AfterContentInit {
   @Input() required: boolean;
   @ViewChild('phoneInput') phoneField: ElementRef;
   public sendPhoneForm: FormGroup;
+  private phonePattern: RegExp = /^[+]*[(]{0,1}[-\s\./0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +30,7 @@ export class SendPhoneComponent implements AfterContentInit {
     public activeModal: NgbActiveModal) {
     this.trackingService.trackAccumulatedEvents();
     this.sendPhoneForm = this.fb.group({
-      phone: ['', [Validators.required]]
+      phone: ['', [Validators.required, Validators.pattern(this.phonePattern)]]
     });
 
     this.persistencyService.getPhoneNumber().subscribe((r) => {

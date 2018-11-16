@@ -7,7 +7,7 @@
   <form [formGroup]="sendPhoneForm" (ngSubmit)="createPhoneNumberMessage()">
     <div class="form-group">
       <label for="phone" i18n>Let's talk:</label>
-      <input type="number" class="form-control" id="phone" name="phone" tslRestrictInputNumber i18n-placeholder
+      <input type="text" class="form-control" id="phone" name="phone" tslRestrictInputNumber i18n-placeholder
         placeholder="Enter your phone..." #phoneInput formControlName="phone" required />
       <a id="send" (click)="createPhoneNumberMessage()" [ngClass]="{selected: sendPhoneForm.controls.phone.valid}">
         <mat-icon svgIcon="send"></mat-icon>
