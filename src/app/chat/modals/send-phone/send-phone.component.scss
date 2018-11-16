@@ -1,0 +1,51 @@
+@import "~style/common";
+$send-icon-size: 40px;
+
+p  {
+    font-size: $font-size;
+    margin-top: $spacing-3M;
+    padding: $spacing-2L 0;
+    color: $grey-900;
+}
+
+form {
+    position: relative;
+    input.form-control {
+        height: 30%;
+        padding: 0 0 5px;
+        border-width: 0 0 1px;
+        border-radius: 0px;
+    }
+    label {
+        font-size: $font-size;
+        color: $grey-900;
+    }
+}
+
+
+.small {
+    color: $grey-250;
+    font-size: $font-size-XXS;
+    padding: 0;
+}
+
+#send {
+    cursor: pointer;
+    position: absolute;
+    bottom: 7px;
+    right: 0;
+    border-radius: 50%;
+    background: $grey-100;
+    @include square($send-icon-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .15s ease all;
+    mat-icon {
+      width: 22px;
+      height: 23px;
+    }
+    &.selected {
+      background: $corporate;
+    }
+}
