@@ -6,6 +6,7 @@ import { PersistencyService } from '../../../core/persistency/persistency.servic
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -15,6 +16,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 export class SendPhoneComponent implements OnInit, AfterContentInit {
 
   @Input() conversation: Conversation;
+  @Input() required: boolean;
   @ViewChild('phoneInput') phoneField: ElementRef;
   public sendPhoneForm: FormGroup;
 
@@ -46,6 +48,9 @@ export class SendPhoneComponent implements OnInit, AfterContentInit {
 
   createPhoneNumberMessage() {
     if (this.sendPhoneForm.valid) {
+      if (this.required) {
+        this.messageService.addPhoneNumberRequestMessage(this.conversation);
+      }
       this.messageService.createPhoneNumberMessage(this.conversation, this.sendPhoneForm.value.phone);
       this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
       this.activeModal.close();
@@ -56,7 +61,11 @@ export class SendPhoneComponent implements OnInit, AfterContentInit {
   }
 
   dismiss() {
+    if (this.required) {
+      window.location.href = environment.siteUrl + 'item/' + this.conversation.item.webSlug;
+    } else {
     this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
     this.activeModal.dismiss();
   }
+}
 }
