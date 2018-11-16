@@ -166,7 +166,8 @@ export class ConversationService extends LeadService {
   }
 
   public openPhonePopup(conversation: Conversation, required = false) {
-    const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, {windowClass: 'phone-request', backdrop: 'static'});
+    const modalOptions: NgbModalOptions = {windowClass: 'phone-request', backdrop: 'static', keyboard: false};
+    const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
     modalRef.componentInstance.conversation = conversation;
     modalRef.componentInstance.required = required;
   }
@@ -225,7 +226,6 @@ export class ConversationService extends LeadService {
     });
   }
 
-  // TODO - what does this do?
   public getConversationPage(id: string, archive?: boolean): number {
     const index: number = (archive ? this.archivedLeads : this.leads).findIndex((conversation: Conversation) => {
       return conversation.id === id;
