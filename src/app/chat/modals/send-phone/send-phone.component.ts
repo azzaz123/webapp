@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterContentInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, AfterContentInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from '../../../core/message/message.service';
 import { Conversation } from '../../../core/conversation/conversation';
@@ -13,7 +13,7 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './send-phone.component.html',
   styleUrls: ['./send-phone.component.scss']
 })
-export class SendPhoneComponent implements OnInit, AfterContentInit {
+export class SendPhoneComponent implements AfterContentInit {
 
   @Input() conversation: Conversation;
   @Input() required: boolean;
@@ -26,15 +26,12 @@ export class SendPhoneComponent implements OnInit, AfterContentInit {
     private persistencyService: PersistencyService,
     private errorsService: ErrorsService,
     private trackingService: TrackingService,
-    public activeModal: NgbActiveModal
-  ) {
+    public activeModal: NgbActiveModal) {
     this.trackingService.trackAccumulatedEvents();
     this.sendPhoneForm = this.fb.group({
       phone: ['', [Validators.required]]
     });
-  }
 
-  ngOnInit() {
     this.persistencyService.getPhoneNumber().subscribe((r) => {
       this.sendPhoneForm.setValue({
         phone: r.phone,
@@ -64,8 +61,8 @@ export class SendPhoneComponent implements OnInit, AfterContentInit {
     if (this.required) {
       window.location.href = environment.siteUrl + 'item/' + this.conversation.item.webSlug;
     } else {
-    this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
-    this.activeModal.dismiss();
+      this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
+      this.activeModal.dismiss();
+    }
   }
-}
 }
