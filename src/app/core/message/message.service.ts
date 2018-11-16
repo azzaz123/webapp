@@ -190,7 +190,7 @@ export class MessageService {
     this.xmpp.sendMessage(conversation, message);
   }
 
-  public addPhoneNumberRequestMessage(conversation): Conversation {
+  public addPhoneNumberRequestMessage(conversation, withTracking = true): Conversation {
     this.eventService.subscribe(EventService.CONVERSATION_CEATED, (conv, message) => {
       if (conversation.id === conv.id) {
         this.persistencyService.saveMessages([message]);
@@ -205,7 +205,9 @@ export class MessageService {
     msg = this.addUserInfo(conversation, msg);
     msg.phoneRequest = phoneRequestState.pending;
     conversation.messages.push(msg);
-    this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    if (withTracking) {
+      this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    }
     conversation.modifiedDate = new Date().getTime();
     return conversation;
   }

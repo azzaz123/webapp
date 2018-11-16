@@ -47,7 +47,7 @@ export class SendPhoneComponent implements AfterContentInit {
   createPhoneNumberMessage() {
     if (this.sendPhoneForm.valid) {
       if (this.required) {
-        this.messageService.addPhoneNumberRequestMessage(this.conversation);
+        this.messageService.addPhoneNumberRequestMessage(this.conversation, false);
         this.trackingService.addTrackingEvent({
           eventData: TrackingService.ITEM_SHAREPHONE_SENDPHONE,
           attributes: { item_id: this.conversation.item.id }
