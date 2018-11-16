@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material';
 import { NgbDropdownModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CallsService } from './calls.service';
 import { CallStatusLabelPipe } from './call-status-label.pipe';
+import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -18,9 +20,12 @@ import { CallStatusLabelPipe } from './call-status-label.pipe';
     NgbTooltipModule,
     NgbDropdownModule,
     NgbModalModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
-  declarations: [CallStatusLabelPipe],
-  exports: [CallStatusLabelPipe]
+  declarations: [CallStatusLabelPipe, SendPhoneComponent],
+  exports: [CallStatusLabelPipe, SendPhoneComponent],
+  entryComponents: [SendPhoneComponent]
 })
 export class ConversationModule {
 
