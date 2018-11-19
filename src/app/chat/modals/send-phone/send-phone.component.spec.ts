@@ -10,6 +10,9 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { Observable } from 'rxjs/Observable';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
+import { WindowRef } from '../../../core/window/window.service';
+import { environment } from '../../../../environments/environment';
+import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
@@ -18,6 +21,7 @@ describe('SendPhoneComponent', () => {
   let trackingService: TrackingService;
   let persistencyService: PersistencyService;
   let errorsService: ErrorsService;
+  let windowRef: WindowRef;
   const phoneNumber = '555-3231';
 
   beforeEach(async(() => {
@@ -25,10 +29,20 @@ describe('SendPhoneComponent', () => {
       imports: [ReactiveFormsModule],
       providers: [NgbActiveModal,
         FormBuilder,
-        { provide: MessageService, useValue: { createPhoneNumberMessage() { } } },
+        { provide: MessageService, useValue: {
+          createPhoneNumberMessage() {},
+          addPhoneNumberRequestMessage() {}
+        } },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: PersistencyService, useValue: { getPhoneNumber() { return Observable.of({ phone: phoneNumber }); } } },
         { provide: ErrorsService, useValue: { i18nError() { } } },
+        { provide: WindowRef, useValue: {
+          nativeWindow: {
+            location: {
+              href: environment.siteUrl
+            }
+          }
+        }},
       ],
       declarations: [ SendPhoneComponent ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -37,29 +51,25 @@ describe('SendPhoneComponent', () => {
   }));
 
   beforeEach(() => {
+    persistencyService = TestBed.get(PersistencyService);
+    spyOn(persistencyService, 'getPhoneNumber').and.callThrough();
     fixture = TestBed.createComponent(SendPhoneComponent);
     component = fixture.componentInstance;
     messageService = TestBed.get(MessageService);
     trackingService = TestBed.get(TrackingService);
-    persistencyService = TestBed.get(PersistencyService);
     errorsService = TestBed.get(ErrorsService);
+    windowRef = TestBed.get(WindowRef);
     fixture.detectChanges();
   });
 
-  describe('ngOnInit', () => {
-    beforeEach(() => {
-      spyOn(persistencyService, 'getPhoneNumber').and.callThrough();
-      component.ngOnInit();
-    });
-
-    it('should call persistencyService.getPhoneNumber when component initialises', () => {
+  describe('constructor', () => {
+    it('should call persistencyService.getPhoneNumber when component is created', () => {
       expect(persistencyService.getPhoneNumber).toHaveBeenCalled();
     });
 
     it('should set the value of phone to the value returned by the persistencyService', () => {
       expect(component.sendPhoneForm.controls.phone.value).toBe(phoneNumber);
     });
-
   });
 
   describe('ngAfterContentInit', () => {
@@ -82,6 +92,51 @@ describe('SendPhoneComponent', () => {
 
   describe('createPhoneNumberMessage', () => {
     describe('when the form is valid', () => {
+      describe('and required is true', () => {
+        beforeEach(() => {
+          component.conversation = MOCK_CONVERSATION();
+          component.required = true;
+          fixture.detectChanges();
+        });
+
+        it('should call messageService.addPhoneNumberRequestMessage with the conversation and FALSE', () => {
+          spyOn(messageService, 'addPhoneNumberRequestMessage');
+
+          component.createPhoneNumberMessage();
+
+          expect(messageService.addPhoneNumberRequestMessage).toHaveBeenCalledWith(component.conversation, false);
+        });
+
+        it('should call trackingService.addTrackingEvent with ITEM_SHAREPHONE_SENDPHONE', () => {
+          spyOn(trackingService, 'addTrackingEvent');
+          const event = {
+            eventData: TrackingService.ITEM_SHAREPHONE_SENDPHONE,
+            attributes: { item_id: component.conversation.item.id }
+          };
+
+          component.createPhoneNumberMessage();
+
+          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event);
+        });
+
+      });
+
+      describe('and required is false', () => {
+        beforeEach(() => {
+          component.conversation = MOCK_CONVERSATION();
+          component.required = false;
+          fixture.detectChanges();
+        });
+
+        it('should call trackingService.addTrackingEvent with CHAT_SHAREPHONE_ACCEPTSHARING', () => {
+          spyOn(trackingService, 'addTrackingEvent');
+
+          component.createPhoneNumberMessage();
+
+          expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
+        });
+      });
+
       it('should call messageService.createPhoneNumberMessage with the conversation and phoneNumber', () => {
         spyOn(messageService, 'createPhoneNumberMessage');
         component.conversation = MOCK_CONVERSATION();
@@ -89,14 +144,6 @@ describe('SendPhoneComponent', () => {
         component.createPhoneNumberMessage();
 
         expect(messageService.createPhoneNumberMessage).toHaveBeenCalledWith(component.conversation, phoneNumber);
-      });
-
-      it('should call trackingService.addTrackingEvent with CHAT_SHAREPHONE_ACCEPTSHARING', () => {
-        spyOn(trackingService, 'addTrackingEvent');
-
-        component.createPhoneNumberMessage();
-
-        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
       });
 
       it('should close the modal', () => {
@@ -111,6 +158,19 @@ describe('SendPhoneComponent', () => {
     describe('when the phone field is empty', () => {
       beforeEach(() => {
         component.sendPhoneForm.get('phone').patchValue('');
+        component.conversation = MOCK_CONVERSATION();
+      });
+
+      it('should call trackingService.addTrackingEvent with ITEM_SHAREPHONE_WRONGPHONE', () => {
+        spyOn(trackingService, 'addTrackingEvent');
+        const event = {
+          eventData: TrackingService.ITEM_SHAREPHONE_WRONGPHONE,
+          attributes: { item_id: component.conversation.item.id, phone_number: component.sendPhoneForm.controls.phone.value }
+        };
+
+        component.createPhoneNumberMessage();
+
+        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event);
       });
 
       it('should call markAsDirty', () => {
@@ -121,7 +181,7 @@ describe('SendPhoneComponent', () => {
         expect(component.sendPhoneForm.controls.phone.markAsDirty).toHaveBeenCalled();
       });
 
-      it('should be invalid if the phone field is empty', () => {
+      it('should call errorsService.i18nError if the phone field is empty', () => {
         spyOn(errorsService, 'i18nError');
 
         component.createPhoneNumberMessage();
@@ -132,20 +192,51 @@ describe('SendPhoneComponent', () => {
   });
 
   describe('dismiss', () => {
-    it('should call trackingService.addTrackingEvent with CHAT_SHAREPHONE_CANCELSHARING', () => {
-      spyOn(trackingService, 'addTrackingEvent');
+    describe('when required is false', () => {
+      beforeEach(() => {
+        component.required = false;
+        fixture.detectChanges();
+      });
 
-      component.dismiss();
+      it('should call trackingService.addTrackingEvent with CHAT_SHAREPHONE_CANCELSHARING', () => {
+        spyOn(trackingService, 'addTrackingEvent');
 
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
+        component.dismiss();
+
+        expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
+      });
+
+      it('should call dismiss() on the active modal', () => {
+        spyOn(component.activeModal, 'dismiss');
+
+        component.dismiss();
+
+        expect(component.activeModal.dismiss).toHaveBeenCalled();
+      });
     });
 
-    it('should call dismiss() on the active modal', () => {
-      spyOn(component.activeModal, 'dismiss');
+    describe('when required is true', () => {
+      beforeEach(() => {
+        component.required = true;
+        component.conversation = MOCK_CONVERSATION();
+        component.conversation.item = MOCK_ITEM;
+        fixture.detectChanges();
+      });
 
-      component.dismiss();
+      it('should call trackingService.track with ITEM_SHAREPHONE_HIDEFORM', () => {
+        spyOn(trackingService, 'track');
 
-      expect(component.activeModal.dismiss).toHaveBeenCalled();
+        component.dismiss();
+
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.ITEM_SHAREPHONE_HIDEFORM,
+          { item_id: component.conversation.item.id });
+      });
+
+      it('should redirect to the item detail page', () => {
+        component.dismiss();
+
+        expect(windowRef.nativeWindow.location.href).toEqual(environment.siteUrl + 'item/' + component.conversation.item.webSlug);
+      });
     });
   });
 });
