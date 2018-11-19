@@ -565,7 +565,7 @@ describe('Service: Xmpp', () => {
       expect(service['onNewMessage']).toHaveBeenCalledWith(message, true);
     });
 
-    it('should emit a CONVERSATION_CEATED event when the first message is send, if a hasPhoneRequestMessage exists', () => {
+    it('should emit a CONVERSATION_CEATED event when the first message is sent, if a hasPhoneRequestMessage exists', () => {
       spyOn<any>(eventService, 'emit');
       const conv = MOCKED_CONVERSATIONS[0];
       const phoneRequestMsg = new Message('someId', conv.id, 'some text', USER_ID, new Date());
