@@ -1,0 +1,48 @@
+@import "~style/common";
+
+tsl-card {
+  cursor: pointer;
+  width: 220px;
+  border-radius: $border-radius;
+  box-shadow: 0 0 2px 0 rgba($black, .1);
+  transition: all .15s ease;
+  margin: 0 $spacing-S/2 $spacing-S $spacing-S/2;
+
+  & /deep/ tsl-card-image {
+    display: block;
+    padding: $spacing-XXS;
+  }
+
+  & /deep/ tsl-card-content {
+
+    padding-top: $spacing-S;
+
+    span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+      display:inline-block;
+    }
+  }
+
+  & /deep/ tsl-card-footer {
+    position: relative;
+
+    .cart-footer-icon {
+      position: absolute;
+      &.active g {
+        fill: $color-favorite-icon-fill;
+      }
+    }
+
+    .cart-footer-text {
+      text-align: center;
+    }
+
+    &:hover, &:focus {
+      cursor: pointer;
+      background: rgba($grey-100, .2);
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ItemService } from '../core/item/item.service';
 import { ItemsData } from '../core/item/item-response.interface';
 import { UserService } from '../core/user/user.service';
-import { UserStatsResponse } from '../core/user/user-stats.interface';
+import { UserStatsResponse, Counters } from '../core/user/user-stats.interface';
 import { Item } from '../core/item/item';
 
 @Component({
@@ -13,16 +13,25 @@ import { Item } from '../core/item/item';
 export class FavoritesComponent implements OnInit {
 
   public items: Item[] = [];
-  public selectedStatus = 'published';
+  public selectedStatus = 'products';
   public loading = false;
   public end = false;
   public numberOfFavorites: number;
+  private counters: Counters;
 
   constructor(public itemService: ItemService, private userService: UserService) { }
 
   ngOnInit() {
     this.getItems();
     this.getNumberOfFavorites();
+  }
+
+  public filterByStatus(status: string) {
+    if (status !== this.selectedStatus) {
+      this.selectedStatus = status;
+      this.getItems();
+      this.getNumberOfFavorites();
+    }
   }
 
   public getItems(append?: boolean) {
@@ -56,8 +65,17 @@ export class FavoritesComponent implements OnInit {
 
   public getNumberOfFavorites() {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
-      this.numberOfFavorites = userStats.counters.favorites;
+      this.counters = userStats.counters;
+      this.setNumberOfFavorites();
     });
+  }
+
+  private setNumberOfFavorites() {
+    if (this.selectedStatus === 'products') {
+      this.numberOfFavorites = this.counters.favorites;
+    } else if (this.selectedStatus === 'profiles') {
+      this.numberOfFavorites = this.counters.profile_favorited;
+    }
   }
 
 }
