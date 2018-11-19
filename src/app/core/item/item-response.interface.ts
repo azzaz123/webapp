@@ -56,6 +56,7 @@ export interface ItemContent {
   favorites?: number;
   views?: number;
   delivery_info?: DeliveryInfo;
+  publish_date?: number;
 }
 
 export interface ItemProResponse {
@@ -273,7 +274,7 @@ export interface ItemFlags {
   highlighted?: boolean;
   urgent?: boolean;
   bump_type?: string;
-  onhold?: boolean
+  onhold?: boolean;
 }
 
 export interface ItemActions {

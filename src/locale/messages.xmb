@@ -35,6 +35,7 @@
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:57</source>Reviews</msg>
   <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:65</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
   <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:72</source>Help</msg>
+  <msg id="4088311569349098646"><source>app/layout/sidebar/sidebar.component.ts:79</source><source>app/stats/stats.component.ts:13</source>Stats</msg>
   <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
         I accept the updated privacy policy in order to continue navigating.
       </msg>
@@ -113,7 +114,7 @@
   <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:29</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:6</source>Yes, I am sure</msg>
   <msg id="4468071625554558577"><source>app/shared/profile/credit-card-info/credit-card-info.component.ts:6</source>Payment method:</msg>
   <msg id="8037476586059399916"><source>app/shared/profile/credit-card-info/credit-card-info.component.ts:11</source>Expires</msg>
-  <msg id="1839186591621749773"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:17</source><source>app/catalog/list/catalog-item/catalog-item.component.ts:15</source>Publish Date</msg>
+  <msg id="1839186591621749773"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:17</source><source>app/catalog/list/catalog-item/catalog-item.component.ts:20</source>Publish Date</msg>
   <msg id="7239750919884229270"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:21</source>Updated</msg>
   <msg id="4338022632676445411"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:25</source><source>app/chat/item/item.component.ts:20</source><source>app/chat/item/item-sold/item-sold.component.ts:3</source>Sold</msg>
   <msg id="7166295046269696440"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:31,33</source>
@@ -132,7 +133,7 @@
   <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:62</source>Mark as sold</msg>
   <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:65</source>Mark as reserved</msg>
   <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:68</source>Edit</msg>
-  <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:76</source><source>app/calls/calls.component.ts:23</source><source>app/calls/calls.component.ts:51</source><source>app/catalog/list/catalog-item/catalog-item.component.ts:53</source><source>app/chat/conversations-panel/conversations-panel.component.ts:9</source><source>app/dashboard/dashboard.component.ts:17</source>Pending</msg>
+  <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:76</source><source>app/calls/calls.component.ts:23</source><source>app/calls/calls.component.ts:51</source><source>app/catalog/list/catalog-item/catalog-item.component.ts:69</source><source>app/chat/conversations-panel/conversations-panel.component.ts:9</source><source>app/dashboard/dashboard.component.ts:17</source>Pending</msg>
   <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:83</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:84</source>Do you really want to cancel the autorenew for this item?</msg>
   <msg id="2807800733729323332"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:88</source>Yes</msg>
@@ -277,6 +278,12 @@
   <msg id="5266269636016082386"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.ts:34</source>Pay with your wallacoins:</msg>
   <msg id="1381141590254425331"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.ts:73</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.ts:80</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.ts:41</source>We don&apos;t save details of this transaction. The purchase is made via Banco Sabadell.</msg>
   <msg id="349473182974314723"><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.ts:6</source>Your item is now reactivated and in the first positions!</msg>
+  <msg id="2908216965016905963"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:5</source>You have reached the limit of published cars.</msg>
+  <msg id="3910225099921883332"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:6</source>To publish this car, contract a new Motor Plan from our app.</msg>
+  <msg id="7622938994831402105"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:12</source>This car is NOT published.</msg>
+  <msg id="8858428396989821345"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:13</source>It will remain filled in your catalogue as Inactive.</msg>
+  <msg id="5020391428854742815"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:14</source>Go to the wallapop app and subscribe to a Motor Plan, or buy an extra ad to make it public.</msg>
+  <msg id="5601530442010506564"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:17</source>Got it</msg>
   <msg id="5433688037539750263"><source>app/catalog/list/list.component.ts:14</source>Your products</msg>
   <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:17</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
   <msg id="442085080206895883"><source>app/catalog/list/list.component.ts:29</source>products</msg>
@@ -296,9 +303,13 @@
       <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>wallacoins<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>of your credit<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph><ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph> and put it in the top positions.</msg>
   <msg id="5107282366152603486"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:9</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Get more visibility and sell it faster.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></msg>
   <msg id="3244863581909362906"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.ts:19</source>Only reactivate it, I don&apos;t want to sell it faster</msg>
-  <msg id="8204176479746810612"><source>app/catalog/list/catalog-item/catalog-item.component.ts:19</source>Active</msg>
-  <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:27</source>Feature Product</msg>
-  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:48</source>Reactivate</msg>
+  <msg id="8204176479746810612"><source>app/catalog/list/catalog-item/catalog-item.component.ts:24</source>Active</msg>
+  <msg id="703140349558791698"><source>app/catalog/list/catalog-item/catalog-item.component.ts:28,30</source>
+        Subscribe or publish it from the app
+    </msg>
+  <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.ts:36</source>Feature Product</msg>
+  <msg id="1859131936150262113"><source>app/catalog/list/catalog-item/catalog-item.component.ts:44</source><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:18</source>Inactive</msg>
+  <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.ts:64</source>Reactivate</msg>
   <msg id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart"><source>app/catalog/list/selected-items/selected-items.component.ts:28</source>Continue</msg>
   <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.ts:22</source>Not Available</msg>
   <msg id="3286725018134496844"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.ts:10</source>You already have your extra features and you can use them whenever you want.</msg>
@@ -321,7 +332,6 @@
   <msg id="3576739165178660027"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:3</source>your plan</msg>
   <msg id="8756155295186418998"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:6</source>Pro Plan</msg>
   <msg id="4154831356233082418"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:15</source>Free Space</msg>
-  <msg id="1859131936150262113"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:18</source>Inactive</msg>
   <msg id="7697915584663780042"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:22</source>visibility</msg>
   <msg id="5439433189125089418"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:26</source>City Plan</msg>
   <msg id="7392255340123577556"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.ts:29</source>You don&apos;t have a City Plan.</msg>
@@ -400,6 +410,9 @@
       </msg>
   <msg id="5131018503170911996"><source>app/chat/item/item.component.ts:53</source>Insure this mobile phone with Klinc by Zurich</msg>
   <msg id="6207187827275323934"><source>app/chat/item/item.component.ts:56</source>Insure this product with Klinc by Zurich</msg>
+  <msg id="5984580705945066559"><source>app/chat/item/item.component.ts:62,64</source>
+        Add insurance to this product
+      </msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.ts:3</source>Reserved</msg>
   <msg id="2020278898288143668"><source>app/chat/user-card/user-card.component.ts:37</source>Selling</msg>
   <msg id="4636699111573030980"><source>app/chat/user-card/user-card.component.ts:38</source>+<ph name="ITEMS_COUNT"><ex>{{user.itemsCount // i18n(ph=&quot;ITEMS_COUNT&quot;)}}</ex></ph> More</msg>
@@ -433,22 +446,39 @@
   <msg id="6908290931448223055"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:16</source>Can you tell us why you want to close your account? We won&apos;t tell anyone.</msg>
   <msg id="7818739675790737204"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:25</source>Tell us what happened...</msg>
   <msg id="6490688569532630280"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.ts:30</source>Send</msg>
+  <msg id="3163876998313048927"><source>app/profile/become-pro-modal/become-pro-modal.component.ts:12</source>Become a PRO</msg>
+  <msg id="2542747907081885378"><source>app/profile/become-pro-modal/become-pro-modal.component.ts:13</source>Go to the app for further details</msg>
+  <msg id="976362268569732073"><source>app/profile/become-pro-modal/become-pro-modal.component.ts:16</source>Your products will be seen more: they will be in the first position of the searches</msg>
+  <msg id="2615367215367851425"><source>app/profile/become-pro-modal/become-pro-modal.component.ts:17</source>Buyers can save your shop/profile as a favorite</msg>
+  <msg id="834481573787357193"><source>app/profile/become-pro-modal/become-pro-modal.component.ts:18</source>Buyers will be able to see your phone and website in your profile for easy contact</msg>
+  <msg id="9213743536713966070"><source>app/profile/become-pro-modal/become-pro-modal.component.ts:19</source>You will have a description of your store or service and its location</msg>
+  <msg id="4670889551195648197"><source>app/profile/become-pro-modal/become-pro-modal.component.ts:20</source>Your profile will have a different design and will stand out!</msg>
+  <msg id="7373818560498277711"><source>app/profile/become-pro-modal/become-pro-modal.component.ts:21</source>Your items won&apos;t expire</msg>
+  <msg id="5553776930806289663"><source>app/profile/become-pro-modal/become-pro-modal.component.ts:24</source>Ok, got it!</msg>
   <msg id="792930787826735850"><source>app/profile/profile.component.ts:7</source>Your profile</msg>
   <msg id="4532380494593950343"><source>app/profile/profile.component.ts:10</source>From here you can view and edit your profile</msg>
   <msg id="7022993325750262876"><source>app/profile/profile.component.ts:12</source><source>app/profile-pro/profile-pro.component.ts:11</source>View my public profile</msg>
   <msg id="3797778920049399855"><source>app/profile/profile.component.ts:17</source><source>app/profile-pro/profile-pro.component.ts:16</source>Logout</msg>
-  <msg id="529882100731018983"><source>app/profile/profile.component.ts:28</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:8</source>First Name:</msg>
-  <msg id="6335971540734973333"><source>app/profile/profile.component.ts:34</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:14</source>Last Name:</msg>
-  <msg id="7338814826142544882"><source>app/profile/profile.component.ts:40</source>Date of birth:</msg>
-  <msg id="6283914624769804238"><source>app/profile/profile.component.ts:46</source>Gender:</msg>
-  <msg id="8012344910054029733"><source>app/profile/profile.component.ts:52</source>Male</msg>
-  <msg id="5667840900782067941"><source>app/profile/profile.component.ts:57</source>Female</msg>
-  <msg id="8134597337896146328"><source>app/profile/profile.component.ts:63</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:36</source>Product location:</msg>
-  <msg id="3768927257183755959"><source>app/profile/profile.component.ts:71</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:44</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:69</source>Save</msg>
-  <msg id="6631334172623029500"><source>app/profile/profile.component.ts:84</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:57</source>Email:</msg>
-  <msg id="6865009229971482891"><source>app/profile/profile.component.ts:90</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:63</source>Password:</msg>
-  <msg id="2322688793988378029"><source>app/profile/profile.component.ts:99</source>Close account</msg>
-  <msg id="3649443966888874108"><source>app/profile/profile.component.ts:113,115</source>
+  <msg id="2618743771935093938"><source>app/profile/profile.component.ts:26</source>Personal info</msg>
+  <msg id="529882100731018983"><source>app/profile/profile.component.ts:29</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:8</source>First Name:</msg>
+  <msg id="6335971540734973333"><source>app/profile/profile.component.ts:35</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:14</source>Last Name:</msg>
+  <msg id="7338814826142544882"><source>app/profile/profile.component.ts:41</source>Date of birth:</msg>
+  <msg id="6283914624769804238"><source>app/profile/profile.component.ts:47</source>Gender:</msg>
+  <msg id="8012344910054029733"><source>app/profile/profile.component.ts:53</source>Male</msg>
+  <msg id="5667840900782067941"><source>app/profile/profile.component.ts:58</source>Female</msg>
+  <msg id="8134597337896146328"><source>app/profile/profile.component.ts:64</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:36</source>Product location:</msg>
+  <msg id="3768927257183755959"><source>app/profile/profile.component.ts:72</source><source>app/profile/profile.component.ts:117</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:44</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:69</source>Save</msg>
+  <msg id="6694781109624015458"><source>app/profile/profile.component.ts:82</source>PRO info</msg>
+  <msg id="6996799422725544865"><source>app/profile/profile.component.ts:85</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:24</source>Description:</msg>
+  <msg id="1205072394541462689"><source>app/profile/profile.component.ts:93</source>Phone number:</msg>
+  <msg id="874465399775999813"><source>app/profile/profile.component.ts:100</source>Website:</msg>
+  <msg id="8393150378980885613"><source>app/profile/profile.component.ts:107</source>Shop address:</msg>
+  <msg id="3004455960309356224"><source>app/profile/profile.component.ts:128</source>Account info</msg>
+  <msg id="6631334172623029500"><source>app/profile/profile.component.ts:131</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:57</source>Email:</msg>
+  <msg id="6865009229971482891"><source>app/profile/profile.component.ts:137</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:63</source>Password:</msg>
+  <msg id="2322688793988378029"><source>app/profile/profile.component.ts:146</source>Close account</msg>
+  <msg id="4930506384627295710"><source>app/profile/profile.component.ts:154</source>Settings</msg>
+  <msg id="3649443966888874108"><source>app/profile/profile.component.ts:161,163</source>
                     In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.
                   </msg>
   <msg id="9032739290449539063"><source>app/profile-pro/profile-pro.component.ts:6</source>Your info</msg>
@@ -457,7 +487,6 @@
   <msg id="7830707034534607415"><source>app/profile-pro/profile-pro.component.ts:23</source>Subscription</msg>
   <msg id="7658402240953727096"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:9</source>Name:</msg>
   <msg id="2595624684026123810"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:18</source>Telephone:</msg>
-  <msg id="6996799422725544865"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:24</source>Description:</msg>
   <msg id="138907429214820806"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:30</source>Opening Hours:</msg>
   <msg id="8458658926966860767"><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:2</source>Are you sure you want to delete billing information?</msg>
   <msg id="5359061492766571193"><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:20</source>Company Name:</msg>
@@ -509,8 +538,7 @@
   <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:32</source>Posted by</msg>
   <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.ts:34</source>a wallapop user</msg>
   <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:35</source>on</msg>
-  <msg id="4088311569349098646"><source>app/stats/stats.component.ts:6</source>Stats</msg>
-  <msg id="605166699517966750"><source>app/stats/stats.component.ts:9</source>Control the progress of your listings and improve your sales.</msg>
+  <msg id="605166699517966750"><source>app/stats/stats.component.ts:16</source>Control the progress of your listings and improve your sales.</msg>
   <msg id="7616770651914901276"><source>app/stats/items-stats/items-stats.component.ts:4</source>Product</msg>
   <msg id="2868602391152223921"><source>app/stats/items-stats/items-stats.component.ts:7</source>Listed on</msg>
   <msg id="292531598178810581"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:37</source>Weekly stats</msg>
