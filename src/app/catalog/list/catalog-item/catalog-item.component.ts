@@ -139,4 +139,13 @@ export class CatalogItemComponent implements OnInit {
     this.eventService.emit(EventService.ITEM_SOLD, item);
   }
 
+  public showListingFee(): boolean {
+    return this.item.listingFeeExpiringDate > new Date().getTime();
+  }
+
+  public listingFeeFewDays(): boolean {
+    const threeDaysTime = 3 * 24 * 60 * 60 * 1000;
+    return this.item.listingFeeExpiringDate - new Date().getTime() < threeDaysTime;
+  }
+
 }
