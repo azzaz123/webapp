@@ -15,8 +15,6 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { PersistencyService } from '../../core/persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { User } from '../../core/user/user';
@@ -59,7 +57,6 @@ describe('Component: ConversationsPanel', () => {
       ],
       declarations: [ConversationsPanelComponent, ConversationComponent],
       providers: [
-        {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: XmppService, useClass: MockedXmppService},
         ...TEST_HTTP_PROVIDERS,
