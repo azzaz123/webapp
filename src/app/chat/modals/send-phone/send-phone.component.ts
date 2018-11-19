@@ -7,6 +7,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { environment } from '../../../../environments/environment';
+import { WindowRef } from '../../../core/window/window.service';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -27,6 +28,7 @@ export class SendPhoneComponent implements AfterContentInit {
     private persistencyService: PersistencyService,
     private errorsService: ErrorsService,
     private trackingService: TrackingService,
+    private windowRef: WindowRef,
     public activeModal: NgbActiveModal) {
     this.trackingService.trackAccumulatedEvents();
     this.sendPhoneForm = this.fb.group({
@@ -70,7 +72,7 @@ export class SendPhoneComponent implements AfterContentInit {
   dismiss() {
     if (this.required) {
       this.trackingService.track(TrackingService.ITEM_SHAREPHONE_HIDEFORM, { item_id: this.conversation.item.id });
-      window.location.href = environment.siteUrl + 'item/' + this.conversation.item.webSlug;
+      this.windowRef.nativeWindow.location.href = environment.siteUrl + 'item/' + this.conversation.item.webSlug;
     } else {
       this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_CANCELSHARING });
       this.activeModal.dismiss();
