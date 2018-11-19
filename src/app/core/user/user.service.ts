@@ -21,6 +21,7 @@ import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
+import { PhoneMethodResponse } from './phone-method.interface';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -224,7 +225,7 @@ export class UserService extends ResourceService {
       });
   }
 
-  public getPhoneInfo(userId: string): Observable<any> {
+  public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
     return this.http.get(this.API_URL + '/' + userId + '/phone-method')
       .map((r: any) => r.json())
       .catch(e => Observable.of(null));

@@ -428,16 +428,19 @@ export class ConversationService extends LeadService {
         this.itemService.get(itemId),
         this.userService.getPhoneInfo(response.other_user_id)
       ).map((data: any) => {
-        if (data[2]) {
-          this.phoneRequestType = data[2].phone_method;
+        const userResponse = data[0];
+        const itemResponse = data[1];
+        const phoneMethodResponse = data[2];
+        if (phoneMethodResponse) {
+          this.phoneRequestType = phoneMethodResponse.phone_method;
         }
         return new Conversation(
           response.conversation_id,
           null,
           response.modified_date,
           false,
-          data[0],
-          data[1]);
+          userResponse,
+          itemResponse);
       });
     });
   }
