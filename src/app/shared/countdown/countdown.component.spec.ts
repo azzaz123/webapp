@@ -29,12 +29,13 @@ describe('CountdownComponent', () => {
 
   it('should accept moment format', () => {
     const lastTime = moment().add(2, 'hours');
-    const diffTime = lastTime.diff(moment());
-    const format = 'DDD HH:mm:ss';
+
     component.value = lastTime.valueOf();
     component.format = format;
     component.ngOnInit();
-    console.log(component.message);
+
+    const diffTime = lastTime.diff(moment());
+    const format = 'DDD HH:mm:ss';
     expect(component.message).toEqual(moment.utc(diffTime).format(format));
   });
 
