@@ -118,13 +118,13 @@ $avatar-size: 40px;
     width: auto;
     border-radius: 20px;
     color: $corporate;
-    margin: 20px auto 0; 
+    margin: $spacing auto 0;
   }
   span.new-line {
     display: block;
     color: $grey-250;
     text-align: center;
-    padding-bottom: 10px;
-    margin-top: 40px;
+    padding-bottom: $spacing-10;
+    margin-top: $spacing-40;
   }
 }
