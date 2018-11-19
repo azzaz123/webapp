@@ -20,7 +20,8 @@
       <div i18n>Publish Date</div>
       <div class="subtitle"> {{ item.publishedDate | amDateFormat: 'DD/MM/YYYY'}}</div>
     </a>
-    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="listing-fee">
+    <a href="{{link}}" target="_blank" tslTrackEvent="PRODUCT_VIEWED" [params]="{product_id: item.id}" class="listing-fee"
+       [ngClass]="{onHold: item.flags.onhold}">
       <div *ngIf="showListingFee()" i18n>Active</div>
       <tsl-countdown *ngIf="item.listingFeeExpiringDate" class="subtitle" [ngClass]="{'few-days': listingFeeFewDays()}"
                      [value]="item.listingFeeExpiringDate" format="listingFee"></tsl-countdown>

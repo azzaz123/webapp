@@ -177,10 +177,9 @@ $feature-button-width: 170px;
     }
   }
   .subscribe {
-    flex-grow: 2;
     font-size: $font-size;
     color: $sold-bg;
-    min-width: 115px;
+    min-width: 300px;
     &.onHold {
       align-self: stretch;
       display: flex;
@@ -330,7 +329,9 @@ $feature-button-width: 170px;
     flex: 1;
     min-width: 130px;
     font-size: $font-size-S;
-
+    &.onHold {
+      display: none;
+    }
     .few-days {
       color: $listing-fee-color;
     }
