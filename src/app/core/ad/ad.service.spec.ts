@@ -8,14 +8,12 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { PrivacyService } from '../privacy/privacy.service';
 
 let service: AdService;
 let http: HttpService;
 let userService: UserService;
 let mockBackend: MockBackend;
 let cookieService: CookieService;
-let privacyService: PrivacyService;
 
 const cookiesAdKeyWord = {
   brand: 'bmv',
@@ -94,15 +92,13 @@ describe('AdService', () => {
               delete this.cookies[key];
             }
           }
-        },
-        PrivacyService
+        }
       ],
     });
     http = TestBed.get(HttpService);
     userService = TestBed.get(UserService);
     mockBackend = TestBed.get(MockBackend);
     cookieService = TestBed.get(CookieService);
-    privacyService = TestBed.get(PrivacyService);
     spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
       callback(position);
     });
@@ -232,7 +228,6 @@ describe('AdService', () => {
 
       describe('when allowSegmentation is true', () => {
         beforeEach(() => {
-          privacyService.allowSegmentation$.next(true);
         });
 
         it('should send keyWords allowSegmentation with true value', fakeAsync(() => {
@@ -296,7 +291,6 @@ describe('AdService', () => {
 
       describe('when allowSegmentation is false', () => {
         beforeEach(() => {
-          privacyService.allowSegmentation$.next(false);
         });
 
         it('should send keyWords allowSegmentation with false value', fakeAsync(() => {

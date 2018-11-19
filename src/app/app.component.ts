@@ -28,9 +28,7 @@ import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
 import { Message, messageStatus } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
-import { PrivacyService, PRIVACY_STATUS } from './core/privacy/privacy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
@@ -72,7 +70,6 @@ export class AppComponent implements OnInit {
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
-              private privacyService: PrivacyService,
               private modalService: NgbModal,
               private connectionService: ConnectionService,
               private paymentService: PaymentService,
@@ -172,7 +169,6 @@ export class AppComponent implements OnInit {
           });
           appboy.changeUser(user.id);
           appboy.openSession();
-          this.initPrivacy();
           if (!this.cookieService.get('app_session_id')) {
             this.trackAppOpen();
             this.updateSessionCookie();
@@ -275,25 +271,6 @@ export class AppComponent implements OnInit {
           this.renderer.addClass(document.body, currentUrlSlug);
         }
         this.previousSlug = currentUrlSlug;
-      }
-    });
-  }
-
-  private initPrivacy() {
-    this.privacyService.getPrivacyList().subscribe(() => {
-      if (!sessionStorage.getItem('isGDPRShown') &&
-        this.privacyService.getPrivacyState('privacy_policy', '0') === PRIVACY_STATUS.unknown) {
-        sessionStorage.setItem('isGDPRShown', 'true');
-        const GdprModalRef = this.modalService.open(GdprModalComponent, {
-          beforeDismiss: () => {
-            if (GdprModalRef.componentInstance.showSecondGdrpScreen) {
-              this.trackingService.track(TrackingService.GDPR_CLOSE_TAP_SECOND_MODAL);
-            } else {
-              this.trackingService.track(TrackingService.GDPR_CLOSE_TAP_FIRST_MODAL);
-            }
-            return true;
-          }
-        });
       }
     });
   }

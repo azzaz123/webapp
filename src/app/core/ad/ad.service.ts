@@ -11,7 +11,6 @@ import { AdKeyWords } from './ad.interface';
 import * as moment from 'moment';
 import { HttpService } from '../http/http.service';
 import { User } from '../user/user';
-import { PrivacyService } from '../privacy/privacy.service';
 
 @Injectable()
 export class AdService {
@@ -26,8 +25,7 @@ export class AdService {
 
   constructor(private http: HttpService,
               private userService: UserService,
-              private cookieService: CookieService,
-              private privacyService: PrivacyService
+              private cookieService: CookieService
   ) {
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
@@ -136,10 +134,9 @@ export class AdService {
       return this.http.getNoBase(environment.siteUrl + this.ENDPOINT_REFRESH_RATE).map(res => res.json());
     }).flatMap((refreshRate: number) => {
       return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0);
-    }).flatMap(() => {
-      return this.privacyService.allowSegmentation$;
-    }).subscribe((allowSegmentation: boolean) => {
-      this.refreshAdWithKeyWords(allowSegmentation);
+    }).subscribe(() => {
+      // TODO
+      this.refreshAdWithKeyWords(false);
     });
   }
 
