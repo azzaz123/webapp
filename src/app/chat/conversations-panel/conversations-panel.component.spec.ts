@@ -25,7 +25,7 @@ import {
   SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Conversation } from '../../core/conversation/conversation';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
-import { Message } from '../../core/message/message';
+import { Message, phoneMethod } from '../../core/message/message';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { XmppService } from '../../core/xmpp/xmpp.service';
 import { MessageService } from '../../core/message/message.service';
@@ -95,7 +95,8 @@ describe('Component: ConversationsPanel', () => {
           },
           markAs() {},
           markAllAsRead() {},
-          loadNotStoredMessages() {}
+          loadNotStoredMessages() {},
+          openPhonePopup() {}
         }
         },
         {provide: MessageService, useValue: {
@@ -583,7 +584,7 @@ describe('Component: ConversationsPanel', () => {
     });
 
     it('should subscribe to EventService.REQUEST_PHONE when called', () => {
-      const conversation = MOCK_CONVERSATION();
+      const conversation = SECOND_MOCK_CONVERSATION;
       spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
       spyOn(eventService, 'subscribe');
 
@@ -593,7 +594,7 @@ describe('Component: ConversationsPanel', () => {
     });
 
     it('should call messageService.addPhoneNumberRequestMessage when a REQUEST_PHONE event is triggered', () => {
-      const conversation = MOCK_CONVERSATION();
+      const conversation = SECOND_MOCK_CONVERSATION;
       spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
       spyOn(messageService, 'addPhoneNumberRequestMessage');
 
@@ -604,13 +605,24 @@ describe('Component: ConversationsPanel', () => {
     });
 
     it('should NOT call messageService.addPhoneNumberRequestMessage when a REQUEST_PHONE event is NOT triggered', () => {
-      const conversation = MOCK_CONVERSATION();
+      const conversation = SECOND_MOCK_CONVERSATION;
       spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
       spyOn(messageService, 'addPhoneNumberRequestMessage');
 
       (component as any).createConversationAndSetItCurrent();
 
       expect(messageService.addPhoneNumberRequestMessage).not.toHaveBeenCalled();
+    });
+
+    it('should call conversationService.openPhonePopup when a REQUEST_PHONE event is triggered AND requestType is popup', () => {
+      const conversation = SECOND_MOCK_CONVERSATION;
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      spyOn(conversationService, 'openPhonePopup');
+
+      (component as any).createConversationAndSetItCurrent();
+      eventService.emit(EventService.REQUEST_PHONE, phoneMethod.popUp);
+
+      expect(conversationService.openPhonePopup).toHaveBeenCalledWith(conversation, true);
     });
   });
 
