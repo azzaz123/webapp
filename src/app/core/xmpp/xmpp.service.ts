@@ -63,7 +63,7 @@ export class XmppService {
 
     if (!resend) {
       if (!conversation.messages.filter(m => !m.phoneRequest).length) {
-        const hasPhoneRequestMessage = conversation.messages.find(m => m.hasOwnProperty('phoneRequest'));
+        const hasPhoneRequestMessage = conversation.messages.find(m => !!m.phoneRequest);
         if (hasPhoneRequestMessage) {
           this.eventService.emit(EventService.CONVERSATION_CEATED, conversation, hasPhoneRequestMessage);
         }

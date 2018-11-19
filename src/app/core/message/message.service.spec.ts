@@ -525,7 +525,7 @@ describe('Service: Message', () => {
     it('should call persistencyService.saveMessage and save the request msg when a CONVERSATION_CEATED event is triggered', () => {
       spyOn(persistencyService, 'saveMessages');
       service.addPhoneNumberRequestMessage(conversation);
-      const requestMessage = conversation.messages.find(m => m.hasOwnProperty('phoneRequest'));
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
 
       eventService.emit(EventService.CONVERSATION_CEATED, conversation, requestMessage);
 
@@ -535,16 +535,16 @@ describe('Service: Message', () => {
     it('should create a phoneRequest message with the phoneRequestState as PENDING', () => {
       service.addPhoneNumberRequestMessage(conversation);
       conversation.messages.push(new Message('123', conversation.id, 'test', USER_ID));
-      const requestMessage = conversation.messages.find(m => typeof m.phoneRequest === 'string');
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
 
       expect(requestMessage.phoneRequest).toBe(phoneRequestState.pending);
     });
 
     it('should add the phone request message to the conversation', () => {
-      const msgExistsBefore = conversation.messages.find(m => typeof m.phoneRequest === 'string');
+      const msgExistsBefore = conversation.messages.find(m => !!m.phoneRequest);
 
       service.addPhoneNumberRequestMessage(conversation);
-      const requestMessage = conversation.messages.find(m => typeof m.phoneRequest === 'string');
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
 
       expect(msgExistsBefore).toBeFalsy();
       expect(requestMessage instanceof Message).toBe(true);
@@ -577,7 +577,7 @@ describe('Service: Message', () => {
     });
 
     it('should set phoneRequestState to ANSWERED for the phoneRequest message', () => {
-      const requestMessage = conversation.messages.find(m => typeof m.phoneRequest === 'string');
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
 
       service.createPhoneNumberMessage(conversation, phone);
 
