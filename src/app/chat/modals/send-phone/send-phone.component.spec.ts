@@ -1,13 +1,11 @@
-import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SendPhoneComponent } from './send-phone.component';
 import { MessageService } from '../../../core/message/message.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
-import { PersistencyService } from '../../../core/persistency/persistency.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
-import { Observable } from 'rxjs/Observable';
 import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
 import { WindowRef } from '../../../core/window/window.service';
@@ -19,7 +17,6 @@ describe('SendPhoneComponent', () => {
   let fixture: ComponentFixture<SendPhoneComponent>;
   let messageService: MessageService;
   let trackingService: TrackingService;
-  let persistencyService: PersistencyService;
   let errorsService: ErrorsService;
   let windowRef: WindowRef;
   const phoneNumber = '555-3231';
@@ -34,7 +31,6 @@ describe('SendPhoneComponent', () => {
           addPhoneNumberRequestMessage() {}
         } },
         { provide: TrackingService, useClass: MockTrackingService },
-        { provide: PersistencyService, useValue: { getPhoneNumber() { return Observable.of({ phone: phoneNumber }); } } },
         { provide: ErrorsService, useValue: { i18nError() { } } },
         { provide: WindowRef, useValue: {
           nativeWindow: {
@@ -51,10 +47,9 @@ describe('SendPhoneComponent', () => {
   }));
 
   beforeEach(() => {
-    persistencyService = TestBed.get(PersistencyService);
-    spyOn(persistencyService, 'getPhoneNumber').and.callThrough();
     fixture = TestBed.createComponent(SendPhoneComponent);
     component = fixture.componentInstance;
+    component.phone = phoneNumber;
     messageService = TestBed.get(MessageService);
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
@@ -62,29 +57,21 @@ describe('SendPhoneComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('constructor', () => {
-    it('should call persistencyService.getPhoneNumber when component is created', () => {
-      expect(persistencyService.getPhoneNumber).toHaveBeenCalled();
-    });
+  describe('ngOnInit', () => {
+    it('should set the value of phone to the value of the phone input', () => {
+      component.ngOnInit();
 
-    it('should set the value of phone to the value returned by the persistencyService', () => {
       expect(component.sendPhoneForm.controls.phone.value).toBe(phoneNumber);
     });
-  });
 
-  describe('ngAfterContentInit', () => {
-    beforeEach(() => {
+    it('should set focus after 1 second', fakeAsync(() => {
       component.phoneField = {
-        nativeElement: {
-          focus() {
-          }
-        }
+        nativeElement: { focus() {} }
       };
       spyOn(component.phoneField.nativeElement, 'focus');
-    });
 
-    it('should set focus', fakeAsync(() => {
-      component.ngAfterContentInit();
+      component.ngOnInit();
+      tick(1000);
 
       expect(component.phoneField.nativeElement.focus).toHaveBeenCalled();
     }));

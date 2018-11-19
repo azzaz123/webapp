@@ -1,8 +1,7 @@
-import { Component, Input, AfterContentInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from '../../../core/message/message.service';
 import { Conversation } from '../../../core/conversation/conversation';
-import { PersistencyService } from '../../../core/persistency/persistency.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
@@ -14,10 +13,11 @@ import { WindowRef } from '../../../core/window/window.service';
   templateUrl: './send-phone.component.html',
   styleUrls: ['./send-phone.component.scss']
 })
-export class SendPhoneComponent implements AfterContentInit {
+export class SendPhoneComponent implements OnInit {
 
   @Input() conversation: Conversation;
   @Input() required: boolean;
+  @Input() phone: string;
   @ViewChild('phoneInput') phoneField: ElementRef;
   public sendPhoneForm: FormGroup;
   private phonePattern: RegExp = /^[+]*[(]{0,1}[-\s\./0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
@@ -25,7 +25,6 @@ export class SendPhoneComponent implements AfterContentInit {
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
-    private persistencyService: PersistencyService,
     private errorsService: ErrorsService,
     private trackingService: TrackingService,
     private windowRef: WindowRef,
@@ -34,16 +33,13 @@ export class SendPhoneComponent implements AfterContentInit {
     this.sendPhoneForm = this.fb.group({
       phone: ['', [Validators.required, Validators.pattern(this.phonePattern)]]
     });
-
-    this.persistencyService.getPhoneNumber().subscribe((r) => {
-      this.sendPhoneForm.setValue({
-        phone: r.phone,
-      });
-    });
   }
 
-  ngAfterContentInit() {
-    this.phoneField.nativeElement.focus();
+  ngOnInit() {
+    setTimeout(() => this.phoneField.nativeElement.focus(), 1000);
+    this.sendPhoneForm.setValue({
+      phone: this.phone
+    });
   }
 
   createPhoneNumberMessage() {
