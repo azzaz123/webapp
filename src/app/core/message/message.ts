@@ -32,7 +32,8 @@ export class Message implements Model {
               private _from: string,
               private _date?: Date,
               private _status?: string,
-              private _payload?: MessagePayload) {
+              private _payload?: MessagePayload,
+              private _phoneRequest?: string) {
   }
 
   get id(): string {
@@ -87,5 +88,11 @@ export class Message implements Model {
     return this._payload;
   }
 
-  public phoneRequest: string;
+  set phoneRequest(value: string) {
+    this._phoneRequest = value;
+  }
+
+  get phoneRequest(): string {
+    return this._phoneRequest;
+  }
 }

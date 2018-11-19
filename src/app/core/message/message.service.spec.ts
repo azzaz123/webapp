@@ -534,16 +534,17 @@ describe('Service: Message', () => {
 
     it('should create a phoneRequest message with the phoneRequestState as PENDING', () => {
       service.addPhoneNumberRequestMessage(conversation);
-      const requestMessage = conversation.messages.find(m => m.hasOwnProperty('phoneRequest'));
+      conversation.messages.push(new Message('123', conversation.id, 'test', USER_ID));
+      const requestMessage = conversation.messages.find(m => typeof m.phoneRequest === 'string');
 
       expect(requestMessage.phoneRequest).toBe(phoneRequestState.pending);
     });
 
     it('should add the phone request message to the conversation', () => {
-      const msgExistsBefore = conversation.messages.find(m => m.hasOwnProperty('phoneRequest'));
+      const msgExistsBefore = conversation.messages.find(m => typeof m.phoneRequest === 'string');
 
       service.addPhoneNumberRequestMessage(conversation);
-      const requestMessage = conversation.messages.find(m => m.hasOwnProperty('phoneRequest'));
+      const requestMessage = conversation.messages.find(m => typeof m.phoneRequest === 'string');
 
       expect(msgExistsBefore).toBeFalsy();
       expect(requestMessage instanceof Message).toBe(true);
@@ -576,7 +577,7 @@ describe('Service: Message', () => {
     });
 
     it('should set phoneRequestState to ANSWERED for the phoneRequest message', () => {
-      const requestMessage = conversation.messages.find(m => m.hasOwnProperty('phoneRequest'));
+      const requestMessage = conversation.messages.find(m => typeof m.phoneRequest === 'string');
 
       service.createPhoneNumberMessage(conversation, phone);
 

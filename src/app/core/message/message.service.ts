@@ -61,11 +61,8 @@ export class MessageService {
               message.doc.from,
               message.doc.date,
               message.doc.status,
-              message.doc.payload);
-
-            if (message.doc.phoneRequest) {
-              msg.phoneRequest = message.doc.phoneRequest;
-            }
+              message.doc.payload,
+              message.doc.phoneRequest);
 
             if (msg.status === messageStatus.PENDING) {
               const timeLimit = new Date().getTime() - (this.resendOlderThan * 24 * 60 * 60 * 1000);
