@@ -45,6 +45,7 @@ export class ConversationService extends LeadService {
 
   public pendingPagesLoaded = 0;
   public processedPagesLoaded = 0;
+  public storedPhoneNumber: string;
   private phoneRequestType;
   public ended = {
     pending: false,
@@ -170,6 +171,7 @@ export class ConversationService extends LeadService {
     const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
     modalRef.componentInstance.conversation = conversation;
     modalRef.componentInstance.required = required;
+      modalRef.componentInstance.phone = this.storedPhoneNumber;
     if (required) {
       this.trackingService.addTrackingEvent({
         eventData: TrackingService.ITEM_SHAREPHONE_SHOWFORM,
