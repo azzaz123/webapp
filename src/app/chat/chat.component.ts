@@ -70,8 +70,9 @@ export class ChatComponent implements OnInit, OnDestroy {
           this.persistencyService.saveMetaInformation({start: '0', last: null});
           this.firstLoad = true;
         });
+      this.persistencyService.getPhoneNumber().subscribe(r => this.conversationService.storedPhoneNumber = r.phone);
     });
-    }
+  }
 
   ngOnDestroy () {
     this.adService.stopAdsRefresh();
