@@ -168,10 +168,10 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
         'valueField': 'views',
         'fillColorsField': 'colorViews',
       });
-      this.chartOptions.chartCursor.categoryBalloonFunction = function(date) {
-        return date.toLocaleDateString(this.locale, { weekday: 'long', day: 'numeric' });
-      };
     }
+    this.chartOptions.chartCursor.categoryBalloonFunction = function(date) {
+      return date.toLocaleDateString(this.locale, { weekday: 'long', day: 'numeric' });
+    };
     if (this.locale === 'es') {
       this.AmCharts.dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
     }
@@ -179,6 +179,7 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
   }
 
   private loadStats() {
+    console.log('chart op ', this.chartOptions.chartCursor);
     this.chartOptions.dataProvider = [];
     this.statsData.entries.forEach((entry: ItemStatisticEntriesResponse) => {
       this.chartOptions.dataProvider.push({
