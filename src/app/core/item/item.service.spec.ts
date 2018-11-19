@@ -391,6 +391,7 @@ describe('Service: Item', () => {
       it('should set purchased data to featured items', () => {
         expect(resp.data[0].bumpExpiringDate).toBe(1510221655715);
         expect(resp.data[0].flags.highlighted).toBeTruthy();
+        expect(resp.data[0].listingFeeExpiringDate).toBe(1510221346789);
         expect(resp.data[2].bumpExpiringDate).toBe(1509874085135);
         expect(resp.data[2].flags.bumped).toBeTruthy();
       });
