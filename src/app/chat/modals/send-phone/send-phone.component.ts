@@ -37,9 +37,11 @@ export class SendPhoneComponent implements OnInit {
 
   ngOnInit() {
     setTimeout(() => this.phoneField.nativeElement.focus(), 1000);
-    this.sendPhoneForm.setValue({
-      phone: this.phone
-    });
+    if (this.phone) {
+      this.sendPhoneForm.setValue({
+        phone: this.phone
+      });
+    }
   }
 
   createPhoneNumberMessage() {
