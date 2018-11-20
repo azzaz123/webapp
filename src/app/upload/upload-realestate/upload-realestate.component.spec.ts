@@ -131,6 +131,7 @@ describe('UploadRealestateComponent', () => {
 
     it('should call getTypes when operation change', () => {
       spyOn(realestateKeysService, 'getTypes').and.callThrough();
+      component.ngOnInit();
 
       component.uploadForm.get('operation').setValue('operation');
 
@@ -140,6 +141,7 @@ describe('UploadRealestateComponent', () => {
 
     it('should call getExtras when type change', () => {
       spyOn(realestateKeysService, 'getExtras').and.callThrough();
+      component.ngOnInit();
 
       component.uploadForm.get('type').setValue('house');
 
@@ -186,7 +188,7 @@ describe('UploadRealestateComponent', () => {
         component.ngOnInit();
         component.uploadForm.get('images').patchValue([IMAGE]);
 
-        component.uploadForm.get('title').patchValue('new title')
+        component.uploadForm.get('title').patchValue('new title');
 
         expect(formChanged).toBe(true);
       });
