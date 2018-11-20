@@ -36,7 +36,7 @@
         <tsl-item-cart-favorite *ngFor="let item of items" [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-cart-favorite>
       </ng-container>
       <ng-container *ngIf="selectedStatus === 'profiles'">
-        <tsl-profile-card-favorite *ngFor="let profile of profiles" [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-profile-card-favorite>
+        <tsl-profile-card-favorite *ngFor="let item of items" [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-profile-card-favorite>
       </ng-container>
     </div>
   </div>

@@ -39,12 +39,22 @@ export class FavoritesComponent implements OnInit {
     if (!append) {
       this.items = [];
     }
-    this.itemService.myFavorites(this.items.length).subscribe((itemsData: ItemsData) => {
-      const items = itemsData.data;
-      this.items = this.items.concat(items);
-      this.loading = false;
-      this.end = !itemsData.init;
-    });
+    if (this.selectedStatus === 'products') {
+      this.itemService.myFavorites(this.items.length).subscribe((itemsData: ItemsData) => {
+        const items = itemsData.data;
+        this.items = this.items.concat(items);
+        this.loading = false;
+        this.end = !itemsData.init;
+      });
+    } else {
+      this.userService.myFavorites(this.items.length).subscribe((itemsData: any) => {
+        console.log('component ', itemsData);
+        const items = itemsData.data;
+        this.items = this.items.concat(items);
+        this.loading = false;
+        this.end = !itemsData.init;
+      });
+    }
   }
 
   public onFavoriteChange(item: Item) {

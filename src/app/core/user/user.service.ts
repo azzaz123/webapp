@@ -334,6 +334,13 @@ export class UserService extends ResourceService {
   public isProfessional(): Observable<boolean> {
     return this.hasPerm('professional');
   }
+
+  public myFavorites(init: number): Observable<any> {
+    return this.http.get(this.API_URL + '/me/users/favorites', init)
+      .map((r: Response) => {
+        console.log('service ', r);
+      });
+  }
 }
 
 
