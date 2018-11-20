@@ -28,7 +28,10 @@ describe('CountdownComponent', () => {
   });
 
   it('should accept moment format', () => {
-    const lastTime = moment().add(2, 'hours');
+    const lastTime = moment().add({
+      hours: 2,
+      seconds: 40
+    });
     const diffTime = lastTime.diff(moment());
     const format = 'DDD HH:mm';
 
