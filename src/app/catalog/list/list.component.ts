@@ -21,6 +21,8 @@ import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
+import { MotorPlan, MotorPlanType } from '../../core/user/user-response.interface';
+import { I18nService } from '../../core/i18n/i18n.service';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 
 @Component({
@@ -44,6 +46,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public numberOfProducts: number;
   public isRedirect = false;
   private counters: Counters;
+  public motorPlan: MotorPlanType;
   private upgradePlanModalRef: NgbModalRef;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
@@ -57,10 +60,15 @@ export class ListComponent implements OnInit, OnDestroy {
               private errorService: ErrorsService,
               private router: Router,
               private userService: UserService,
-              private eventService: EventService) {
+              private eventService: EventService,
+              protected i18n: I18nService) {
   }
 
   ngOnInit() {
+    this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
+      const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
+      this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
+    });
     this.getItems();
     this.getNumberOfProducts();
     setTimeout(() => {

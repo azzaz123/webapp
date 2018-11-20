@@ -8,6 +8,8 @@ import { CanComponentDeactivate } from '../shared/guards/can-component-deactivat
 import { User } from '../core/user/user';
 import { ProfileFormComponent } from '../shared/profile/profile-form/profile-form.component';
 import { PrivacyService, PRIVACY_STATUS } from '../core/privacy/privacy.service';
+import { MotorPlan, MotorPlanType } from '../core/user/user-response.interface';
+import { I18nService } from '../core/i18n/i18n.service';
 import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
 import { LocationModalComponent } from '../shared/geolocation/location-select/location-modal/location-modal.component';
 import { Coordinate } from '../core/geolocation/address-response.interface';
@@ -26,12 +28,14 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   public profileForm: FormGroup;
   public settingsForm: FormGroup;
   public allowSegmentation: boolean;
+  public motorPlan: MotorPlanType;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
   constructor(private userService: UserService,
     private fb: FormBuilder,
     private modalService: NgbModal,
     private privacyService: PrivacyService,
+    protected i18n: I18nService,
     @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
@@ -68,6 +72,10 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       const allowSegmentationState = this.privacyService.getPrivacyState('gdpr_display', '0');
       this.allowSegmentation = allowSegmentationState === PRIVACY_STATUS.unknown ? false : value;
       this.setSettingsData();
+    });
+    this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
+      const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
+      this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
     });
   }
 
