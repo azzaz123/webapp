@@ -421,28 +421,49 @@ describe('Service: Message', () => {
       conversation = MOCK_CONVERSATION('1', BUYER_ID);
     });
 
-    it('should add buyer user to message', () => {
+    it('should add the user info and set fromSelf to FALSE when the message.user is the same as conversation.user', () => {
       const message: Message = new Message(
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
         BUYER_ID + '@domain'
       );
+
       service.addUserInfo(conversation, message);
+
       expect(message.user).toEqual(conversation.user);
       expect(message.fromSelf).toBe(false);
     });
 
-    it('should add seller user to message', () => {
+    it('should add the user info and set fromSelf to TRUE when the message.user is the same as logged in user (userService.user)', () => {
       let message: Message = new Message(
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
         USER_ID + '@domain'
       );
+
       message = service.addUserInfo(conversation, message);
+
       expect(message.user).toEqual(userService.user);
       expect(message.fromSelf).toBe(true);
+    });
+
+    it('should add the user info and set fromSelf to FALSE when the message is a third voice (has payload)', () => {
+      let message: Message = new Message(
+        MESSAGE_MAIN.id,
+        MESSAGE_MAIN.thread,
+        MESSAGE_MAIN.body,
+        USER_ID + '@domain',
+        new Date(),
+        messageStatus.RECEIVED,
+        { text: 'someText', type: 'someType' }
+      );
+
+      message = service.addUserInfo(conversation, message);
+
+      expect(message.user).toEqual(userService.user);
+      expect(message.fromSelf).toBe(false);
     });
 
   });

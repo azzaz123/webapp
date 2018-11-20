@@ -478,6 +478,22 @@ describe('Service: User', () => {
     });
   });
 
+  describe('updateStoreLocation', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_LOCATION)});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      let resp: UserLocation;
+
+      service.updateStoreLocation(USER_LOCATION_COORDINATES).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/bumped-profile/store-location', {
+        latitude: USER_LOCATION_COORDINATES.latitude,
+        longitude: USER_LOCATION_COORDINATES.longitude,
+        address: USER_LOCATION_COORDINATES.name
+      });
+    });
+  });
+
   describe('getStats', () => {
     it('should call endpoint and return response', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USERS_STATS)});

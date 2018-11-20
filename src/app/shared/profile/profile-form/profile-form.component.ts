@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../core/user/user.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { ExitConfirmationModalComponent } from '../../exit-confirmation-modal/exit-confirmation-modal.component';
+import { User } from '../../../core/user/user';
 
 @Component({
   selector: 'tsl-profile-form',
@@ -56,9 +57,12 @@ export class ProfileFormComponent implements OnInit {
     }
   }
 
-  public onSubmit() {
+  public onSubmit(user: User) {
     if (this.profileForm.valid) {
       delete this.profileForm.value.location;
+      if (!user.featured) {
+        delete this.profileForm.value.extra_info;
+      }
       this.userService.edit(this.profileForm.value).subscribe(() => {
         this.errorsService.i18nSuccess('userEdited');
         this.hasNotSavedChanges = false;

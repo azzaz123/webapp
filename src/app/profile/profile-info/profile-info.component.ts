@@ -2,12 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { UnsubscribeModalComponent } from './../unsubscribe-modal/unsubscribe-modal.component';
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 import { User } from '../../core/user/user';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { PRIVACY_STATUS, PrivacyService } from '../../core/privacy/privacy.service';
+import { LocationModalComponent } from '../../shared/geolocation/location-select/location-modal/location-modal.component';
+import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
+import { Coordinate } from '../../core/geolocation/address-response.interface';
+import { LOCATION_MODAL_TIMEOUT } from '../../shared/geolocation/location-select/location-select.component';
 
 @Component({
   selector: 'tsl-profile-info',
@@ -35,7 +39,13 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
         longitude: ['', [Validators.required]],
-      })
+      }),
+      extra_info: this.fb.group({
+        description: '',
+        phone_number: '',
+        link: '',
+        address: ''
+      }),
     });
 
     this.settingsForm = fb.group({
@@ -62,7 +72,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   public onSubmit() {
-    return this.formComponent.onSubmit();
+    return this.formComponent.onSubmit(this.user);
   }
 
   private setUserData() {
@@ -72,6 +82,16 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       birth_date: moment(this.user.birthDate).format('YYYY-MM-DD'),
       gender: this.user.gender.toUpperCase().substr(0, 1)
     });
+    if (this.user.featured && this.user.extraInfo) {
+      this.profileForm.patchValue({
+        extra_info: {
+          description: this.user.extraInfo.description,
+          phone_number: this.user.extraInfo.phone_number,
+          link: this.user.extraInfo.link,
+          address: this.user.extraInfo.address
+        }
+      });
+    }
   }
 
   private setSettingsData() {
@@ -96,6 +116,40 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   private dateValidator(c: FormControl) {
     const dateRegEx = new RegExp(/^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/);
     return dateRegEx.test(c.value) ? null : {date: true}
+  }
+
+  public openBecomeProModal() {
+    if (!this.user.featured) {
+      this.modalService.open(BecomeProModalComponent, {windowClass: 'become-pro'});
+    }
+  }
+
+  public open(element: HTMLElement) {
+    setTimeout(() => {
+      element.blur();
+      const modal: NgbModalRef = this.modalService.open(LocationModalComponent, {
+        windowClass: 'location'
+      });
+      if (this.user.extraInfo) {
+        modal.componentInstance.init({
+          latitude: this.user.extraInfo.latitude,
+          longitude: this.user.extraInfo.longitude,
+          name: this.user.extraInfo.address
+        });
+      } else {
+        modal.componentInstance.init();
+      }
+      modal.result.then((result: Coordinate) => {
+        this.userService.updateStoreLocation(result).subscribe(() => {
+          this.profileForm.get('extra_info.address').setValue(result.name);
+          this.user.extraInfo.latitude = result.latitude;
+          this.user.extraInfo.longitude = result.longitude;
+          this.user.extraInfo.address = result.name;
+        });
+      }, () => {
+      });
+    }, LOCATION_MODAL_TIMEOUT);
+
   }
 
 }

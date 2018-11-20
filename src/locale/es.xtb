@@ -218,6 +218,7 @@
   <translation id="5107282366152603486"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Consigue más visibilidad y véndelo antes.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="2538912110902686738">Reactivar + visibilidad</translation>
   <translation id="3244863581909362906">Sólo reactivar que no quiero venderlo más rápido</translation>
+  <translation id="8204176479746810612">Activo</translation>
   <translation id="4416413576346763682">Pendiente</translation>
   <translation id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart">Continuar</translation>
   <translation id="8423596927659875793">No disponible</translation>
@@ -638,6 +639,7 @@
   <translation id="3537961834218859224">Te lo aseguramos</translation>
   <translation id="5131018503170911996">Asegura este móvil con Klinc by Zurich</translation>
   <translation id="6207187827275323934">Asegura este producto con Klinc by Zurich</translation>
+  <translation id="5984580705945066559">Calcula el seguro gratis </translation>
   <translation id="6174997588475722860">Recuerda que tu saldo y los packs de ahorro solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Una vez cargado tu saldo, tiene un año de vigencia.</translation>
   <translation id="7356703231883565314">El uso de los wallacoins es exclusivo para la compra de Destacados. Recuerda que solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>No se puede intercambiar por Euros y tienen un año de vigencia.</translation>
   <translation id="2767524293310239820">Los wallacoins te ayudarán a comprar Destacados. Aquí podrás conseguirlos y ver tu saldo disponible.</translation>
@@ -694,6 +696,29 @@
     <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
     marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
   </translation>
+  <translation id="3163876998313048927">Conviértete en PRO</translation>
+  <translation id="2542747907081885378">Más información desde la app</translation>
+  <translation id="976362268569732073">Tus productos se verán más porque estarán en las primeras posiciones de las búsquedas</translation>
+  <translation id="2615367215367851425">Los compradores podrán guardar tu tienda / perfil como favorito</translation>
+  <translation id="834481573787357193">Los compradores podrán ver en tu perfil el teléfono y web para contactar fácilmente</translation>
+  <translation id="9213743536713966070">Tendrás una descripción de tu tienda o servicio y su situación</translation>
+  <translation id="4670889551195648197">Tu perfil tendrá un diseño diferente y ¡destacará!</translation>
+  <translation id="7373818560498277711">Tus productos no caducarán nunca</translation>
+  <translation id="5553776930806289663">Entendido</translation>
+  <translation id="2618743771935093938">Información personal</translation>
+  <translation id="6694781109624015458">Información PRO</translation>
+  <translation id="3004455960309356224">Información cuenta</translation>
+  <translation id="4930506384627295710">Configuración</translation>
+  <translation id="1205072394541462689">Teléfono:</translation>
+  <translation id="874465399775999813">Web:</translation>
+  <translation id="8393150378980885613">Dirección tienda:</translation>
+  <translation id="2908216965016905963">Has alcanzado el límite de coches publicados</translation>
+  <translation id="3910225099921883332">Para publicar este coche, contrata un nuevo Plan Motor desde nuestra app.</translation>
+  <translation id="7622938994831402105">Este anuncio NO está publicado.</translation>
+  <translation id="8858428396989821345">Quedará en tu catálogo archivado como Inactivo.</translation>
+  <translation id="5020391428854742815">Ve a la app de wallapop y suscríbete a un Plan Motor, o compra un anuncio extra para hacerlo público.</translation>
+  <translation id="5601530442010506564">Entendido</translation>
+  <translation id="703140349558791698">Suscríbete o publícalo desde la app</translation>
   <translation id="548531554532991134">Tu perfil <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="7811210420459773233">¿Seguro que quieres darte de baja de wallapop?</translation>
   <translation id="475161398925564146">Te estás dando de baja pero tienes activa una suscripción en wallapop. Para cancelarla, deberás hacerlo a través de la Play Store o la App Store.</translation>

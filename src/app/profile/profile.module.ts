@@ -8,6 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ProfileSubscriptionComponent } from './profile-subscription/profile-subscription.component';
 import { ProfileInfoComponent } from './profile-info/profile-info.component';
+import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
 
 @NgModule({
   imports: [
@@ -21,12 +22,14 @@ import { ProfileInfoComponent } from './profile-info/profile-info.component';
   ],
   declarations: [
     profileRoutedComponents,
+    BecomeProModalComponent,
     UnsubscribeModalComponent,
     ProfileSubscriptionComponent,
     ProfileInfoComponent
   ],
   entryComponents: [
-    UnsubscribeModalComponent
+    UnsubscribeModalComponent,
+    BecomeProModalComponent
   ]
 })
 export class ProfileModule { }

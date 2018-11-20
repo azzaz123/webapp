@@ -30,7 +30,7 @@
         {{item.favorites}}
       </div>
     </div>
-    <div class="card-external-link" *ngIf="isCarItem || (showWillisLink && !isMine()) || (showKlincLink && !isMine())">
+    <div class="card-external-link" *ngIf="!isMine() && (isCarItem || showWillisLink || showKlincLink || showMapfreOrVertiLink)">
       <hr>
       <a (click)="clickCarfax($event)"
          *ngIf="isCarItem"
@@ -46,8 +46,8 @@
       </a>
       <a (click)="clickKlinc($event)"
          *ngIf="showKlincLink"
-         href="{{ item.categoryId === 16000 ? 'https://klinc.com/landing/seguro-on-demand?&utm_source=wallapop&utm_medium=desktop&utm_campaign=KLINC_SEP_18_Generic&utm_content=texlink' :
-           'https://klinc.com/landing/seguro-movil-on-demand?&utm_source=wallapop&utm_medium=desktop&utm_campaign=KLINC_SEP_18_Mobile_tablet&utm_content=texlink' }}"
+         href="{{ item.categoryId === 16000 ? 'https://klinc.com/landing/seguro-movil-on-demand?&utm_source=wallapop&utm_medium=desktop&utm_campaign=KLINC_SEP_18_Mobile_tablet&utm_content=texlink' :
+          'https://klinc.com/landing/seguro-on-demand?&utm_source=wallapop&utm_medium=desktop&utm_campaign=KLINC_SEP_18_Generic&utm_content=texlink'}}"
          target="_blank">
         <ng-container *ngIf="item.categoryId === 16000; else addInsuranceProduct">
           <span i18n>Insure this mobile phone with Klinc by Zurich</span>
@@ -55,6 +55,12 @@
         <ng-template #addInsuranceProduct>
           <span i18n>Insure this product with Klinc by Zurich</span>
         </ng-template>
+      </a>
+      <a (click)="clickMapfreOrVerti($event)"
+         *ngIf="showMapfreOrVertiLink"
+         [href]="getMapfreOrVertiLink()"
+         target="_blank" i18n>
+        Add insurance to this product
       </a>
     </div>
   </div>

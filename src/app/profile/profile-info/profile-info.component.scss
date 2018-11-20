@@ -8,6 +8,16 @@ $border: solid 1px $grey-50;
   margin-bottom: $spacing;
   .box-content {
     padding: $spacing-L $spacing-L + 10;
+    .section-title {
+      position: absolute;
+      font-size: $font-size-S;
+      font-weight: bold;
+    }
+  }
+  &.pro-box {
+    .section-title {
+      color: $color-pro;
+    }
   }
   .box-section {
     padding: 0 0 $spacing-L;
@@ -162,6 +172,20 @@ $border: solid 1px $grey-50;
       cursor: pointer;
       &:hover {
         text-decoration: none;
+      }
+    }
+  }
+
+  &.disabled {
+    .form-group {
+      & > label {
+        color: $color-pro-faded;
+      }
+      input, textarea {
+        background: $color-pro-faded-light url(/assets/icons/disabled-lock.svg) no-repeat calc(100% - 15px) 10px;
+      }
+      .form-control:focus {
+        border-color: transparent;
       }
     }
   }
