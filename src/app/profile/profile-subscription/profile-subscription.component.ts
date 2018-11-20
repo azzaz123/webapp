@@ -23,9 +23,9 @@ export class ProfileSubscriptionComponent implements OnInit {
       const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
       this.plans = subscriptionInfo.product_group.user_products.map((plan: UserProduct) => {
         const planType: MotorPlanType = motorPlanTypes.find((p: MotorPlanType) => p.subtype === plan.name);
-        plan.name = planType.shortLabel;
+        plan.label = planType.shortLabel;
         plan.durations[0].features = plan.durations[0].features.map((feature: UserProductFeature) => {
-          feature.name = this.i18n.getTranslations(feature.name);
+          feature.label = this.i18n.getTranslations(feature.name);
           return feature;
         });
         if (plan.active) {

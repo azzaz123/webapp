@@ -12,10 +12,10 @@
       </div>
       <div class="packs">
         <div class="pack" *ngFor="let plan of plans" [ngClass]="{'selected': plan.active}">
-          <div class="name">{{plan.name}}</div>
+          <div class="name">{{plan.label}}</div>
           <div class="price">{{plan.durations[0].market_code | customCurrency}}/<span i18n>month</span></div>
           <ul>
-            <li *ngFor="let feature of plan.durations[0].features" [class.disabled]="!feature.enable">{{feature.name}}</li>
+            <li *ngFor="let feature of plan.durations[0].features" [class.disabled]="!feature.enable">{{feature.label}}</li>
           </ul>
         </div>
       </div>
