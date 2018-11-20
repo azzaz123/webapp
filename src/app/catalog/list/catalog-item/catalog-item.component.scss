@@ -115,19 +115,6 @@ $feature-button-width: 170px;
       text-decoration: none;
     }
   }
-  .image {
-    padding: 4px;
-    padding-right: $spacing-M;
-    display: block;
-  }
-  .title, .price {
-    display: flex;
-    align-self: stretch;
-    align-items: center;
-    &:focus {
-      text-decoration: none;
-    }
-  }
   button, tsl-button /deep/ .btn-feature  {
     display: flex;
     align-items: center;
@@ -137,36 +124,62 @@ $feature-button-width: 170px;
   button {
     border: solid 1px rgba(207, 216, 220, 0.5);
   }
-  .price {
-    width: 130px;
-    font-weight: bold;
-    font-size: 18px;
-    @include text-truncate();
+  .image {
+    padding: 4px;
+    padding-right: $spacing-M;
+    display: block;
   }
-  .title {
-    width: 31%;
+  .subtitle {
+    color: $grey-250;
     @include text-truncate();
     &.onHold {
       width: 19%;
     }
   }
-  .visibility {
-    flex-grow: 2;
-    font-size: $font-size-XS;
-    color: $grey-500;
-    min-width: 115px;
-    mat-icon {
-      height: 17px;
-      width: 19px;
-      vertical-align: top;
-      margin-left: 10px;
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    margin-right: $spacing-S;
+    overflow: hidden;
+    flex-grow: 4;
+
+    .info-price {
+      font-weight: bold;
+      font-size: 18px;
+      width: 100%;
+      @include text-truncate();
+      &:focus {
+        text-decoration: none;
+      }
+    }
+
+    .info-title {
+      width: 100%;
+      @include text-truncate();
+    }
+  }
+
+  .published {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    width: 120px;
+    min-width: 120px;
+    padding-right: $spacing-S;
+    font-size: $font-size-S;
+
+    * > {
+      @include text-truncate();
     }
   }
   .subscribe {
-    flex-grow: 2;
     font-size: $font-size;
     color: $sold-bg;
-    min-width: 115px;
+    min-width: 300px;
     &.onHold {
       align-self: stretch;
       display: flex;
@@ -304,6 +317,23 @@ $feature-button-width: 170px;
     mat-icon {
       margin-right: 34px;
       margin-left: 4px;
+    }
+  }
+
+  .listing-fee {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    padding-right: $spacing-XS;
+    flex: 1;
+    min-width: 130px;
+    font-size: $font-size-S;
+    &.onHold {
+      display: none;
+    }
+    .few-days {
+      color: $listing-fee-color;
     }
   }
 }

@@ -218,6 +218,7 @@
   <translation id="5107282366152603486"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Consigue más visibilidad y véndelo antes.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="2538912110902686738">Reactivar + visibilidad</translation>
   <translation id="3244863581909362906">Sólo reactivar que no quiero venderlo más rápido</translation>
+  <translation id="8204176479746810612">Activo</translation>
   <translation id="4416413576346763682">Pendiente</translation>
   <translation id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart">Continuar</translation>
   <translation id="8423596927659875793">No disponible</translation>
@@ -639,6 +640,7 @@
   <translation id="3537961834218859224">Te lo aseguramos</translation>
   <translation id="5131018503170911996">Asegura este móvil con Klinc by Zurich</translation>
   <translation id="6207187827275323934">Asegura este producto con Klinc by Zurich</translation>
+  <translation id="5984580705945066559">Calcula el seguro gratis </translation>
   <translation id="6174997588475722860">Recuerda que tu saldo y los packs de ahorro solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Una vez cargado tu saldo, tiene un año de vigencia.</translation>
   <translation id="7356703231883565314">El uso de los wallacoins es exclusivo para la compra de Destacados. Recuerda que solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>No se puede intercambiar por Euros y tienen un año de vigencia.</translation>
   <translation id="2767524293310239820">Los wallacoins te ayudarán a comprar Destacados. Aquí podrás conseguirlos y ver tu saldo disponible.</translation>
