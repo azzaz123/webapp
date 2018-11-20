@@ -23,6 +23,7 @@ import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product
 import { ReactivateConfirmationModalComponent } from './modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { MotorPlan, MotorPlanType } from '../../core/user/user-response.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
+import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 
 @Component({
   selector: 'tsl-list',
@@ -46,6 +47,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public isRedirect = false;
   private counters: Counters;
   public motorPlan: MotorPlanType;
+  private upgradePlanModalRef: NgbModalRef;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -164,7 +166,13 @@ export class ListComponent implements OnInit, OnDestroy {
         } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
-          this.errorService.i18nError('productCreated', ' ¡Ojo! De acuerdo con tu plan no puedes activar más productos. Contacta con ventas.motor@wallapop.com si quieres aumentar tu plan o bien desactiva otro producto para poder activar este.');
+          this.upgradePlanModalRef = this.modalService.open(UpgradePlanModalComponent, {
+            windowClass: 'upload',
+          });
+          this.upgradePlanModalRef.result.then(() => {
+            this.upgradePlanModalRef = null;
+          }, () => {
+          });
         } else if (params && params.sold && params.itemId) {
           this.itemService.get(params.itemId).subscribe((item: Item) => {
             this.soldButton.item = item;

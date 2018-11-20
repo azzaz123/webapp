@@ -108,7 +108,7 @@
           }
         }
       }
-      &:hover:not(.active), &:focus-within:not(.active) {
+      &:hover:not(.active) {
         cursor: pointer;
         span {
           color: $grey-700;
@@ -141,6 +141,7 @@
       .selector {
         margin-left: 10px;
         margin-right: 40px;
+        cursor: pointer;
         mat-icon, svg {
           width: 30px;
           height: 34px;

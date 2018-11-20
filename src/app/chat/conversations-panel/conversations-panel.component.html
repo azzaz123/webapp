@@ -12,18 +12,18 @@
   <div class="separator"></div>
 </div>
 <div class="scroll-panel" #scrollPanel [ngClass]="{professional: isProfessional}">
-  <div id="conversations" [hidden]="loading && (archive ? !processedPagesLoaded : !pendingPagesLoaded)">
+  <div id="conversations" [hidden]="loading && (archive ? !conversationService.processedPagesLoaded : !conversationService.pendingPagesLoaded)"> 
     <tsl-conversation *ngFor="let conversation of conversations" [conversation]="conversation"
                       [ngClass]="{'active': conversation?.active}"
                       [hidden]="conversation.messages.length === 0 && conversation.item.owner === userService.user.id" 
                       (click)="setCurrentConversation(conversation)"></tsl-conversation>
   </div>
-  <div id="loader" [hidden]="!loading || (archive ? processedPagesLoaded : pendingPagesLoaded)">
+  <div id="loader" [hidden]="!loading || (archive ? conversationService.processedPagesLoaded : conversationService.pendingPagesLoaded)">
     <mat-icon svgIcon="conversations-mock"></mat-icon>
   </div>
-  <div class="load-more-container" *ngIf="conversations.length > 0 && !conversationService.ended">
+  <div class="load-more-container" *ngIf="conversations.length > 0 && archive ? !conversationService.ended.processed : !conversationService.ended.pending">
     <a class="load-more" (click)="loadMore()">
-      <mat-icon svgIcon="spinner" [hidden]="!loading || (archive ? !processedPagesLoaded : !pendingPagesLoaded)" class="spinner"></mat-icon>
+      <mat-icon svgIcon="spinner" [hidden]="!loading || (archive ? !conversationService.processedPagesLoaded : !conversationService.pendingPagesLoaded)" class="spinner"></mat-icon>
       <span [hidden]="loading" i18n>Load more</span>
     </a>
   </div>
