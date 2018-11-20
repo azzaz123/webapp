@@ -75,6 +75,7 @@ export class ItemService extends ResourceService {
     featured: []
   };
   public selectedItems: string[] = [];
+  private bumpTypes = ['countrybump', 'citybump', 'zonebump'];
 
   constructor(http: HttpService,
               private i18n: I18nService,
@@ -341,7 +342,7 @@ export class ItemService extends ResourceService {
             if (purchase.purchase_name === 'listingfee') {
               itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
             }
-            if (purchase.purchase_name === 'countrybump') {
+            if (this.bumpTypes.includes(purchase.purchase_name)) {
               itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
             }
             if ( purchase.visibility_flags ) {
