@@ -23,6 +23,8 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Item } from '../../../core/item/item';
 import { EventService } from '../../../core/event/event.service';
 import { environment } from '../../../../environments/environment';
+import * as moment from 'moment';
+import { ThousandSuffixesPipe } from '../../../shared/number-conversion/thousand-suffixes.pipe';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -39,7 +41,7 @@ describe('CatalogItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CatalogItemComponent, CustomCurrencyPipe],
+      declarations: [CatalogItemComponent, CustomCurrencyPipe, ThousandSuffixesPipe],
       imports: [MomentModule],
       providers: [
         DecimalPipe,
@@ -351,6 +353,34 @@ describe('CatalogItemComponent', () => {
       it('should emit ITEM_SOLD event', () => {
         expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
       });
+    });
+  });
+
+  describe('showListingFee', () => {
+    it('should return true when listing fee expiration is more than current time', () => {
+      component.item.listingFeeExpiringDate = moment().add(2, 'seconds').valueOf();
+
+      expect(component.showListingFee()).toEqual(true);
+    });
+
+    it('should return false when listing fee expiration is less than current time', () => {
+      component.item.listingFeeExpiringDate = moment().subtract(2, 'seconds').valueOf();
+
+      expect(component.showListingFee()).toEqual(false);
+    });
+  });
+
+  describe('listingFeeFewDays', () => {
+    it('should return false when listing fee expiration is more than 3 days', () => {
+      component.item.listingFeeExpiringDate = moment().add(4, 'days').valueOf();
+
+      expect(component.listingFeeFewDays()).toEqual(false);
+    });
+
+    it('should return true when listing fee expiration is less than 3 days', () => {
+      component.item.listingFeeExpiringDate = moment().add(2, 'days').valueOf();
+
+      expect(component.listingFeeFewDays()).toEqual(true);
     });
   });
 });

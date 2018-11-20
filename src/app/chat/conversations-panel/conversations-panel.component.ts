@@ -28,8 +28,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private _loading = false;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
-  private pendingPagesLoaded = 1;
-  private processedPagesLoaded = 1;
   private active = true;
   private newConversationItemId: string;
   public isProfessional: boolean;
@@ -50,7 +48,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.loaded.emit({
       loaded: !value,
       total: this.conversations ? this.conversations.length : 0,
-      firstPage: this.archive ? this.processedPagesLoaded === 1 : this.processedPagesLoaded === 1
+      firstPage: this.archive
+        ? this.conversationService.processedPagesLoaded === 0
+        : this.conversationService.pendingPagesLoaded === 0
     });
   }
 
@@ -68,7 +68,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, () => {
       if (this.archive) {
         this.archive = false;
-        this.processedPagesLoaded = 1;
         this.setCurrentConversation(null);
         this.getConversations();
       }
@@ -89,10 +88,10 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.loading = true;
     let observable: Observable<any>;
     if (this.archive) {
-      this.processedPagesLoaded++;
+      this.conversationService.processedPagesLoaded++;
       observable = this.conversationService.loadMoreArchived();
     } else {
-      this.pendingPagesLoaded++;
+      this.conversationService.pendingPagesLoaded++;
       observable = this.conversationService.loadMore();
     }
     observable.subscribe(() => {
@@ -104,7 +103,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (this.conversationsSubscription) {
       this.conversationsSubscription.unsubscribe();
     }
-    this.conversationsSubscription = this.conversationService.getPage(this.archive ? this.processedPagesLoaded : this.pendingPagesLoaded,
+    this.conversationsSubscription = this.conversationService.getPage(
+      this.archive ? this.conversationService.processedPagesLoaded || 1 : this.conversationService.pendingPagesLoaded || 1,
       this.archive).takeWhile(() => {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
@@ -128,6 +128,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       if (conversations && conversations.length > 0) {
         this.conversations = conversations;
         this.loading = false;
+        this.archive
+          ? this.conversationService.processedPagesLoaded = this.conversationService.processedPagesLoaded || 1
+          : this.conversationService.pendingPagesLoaded = this.conversationService.pendingPagesLoaded || 1;
         if (!this.currentConversationSet) {
           this.setCurrentConversationFromQueryParams();
         }
@@ -207,7 +210,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   public filterByArchived(archive: boolean) {
     this.archive = archive;
-    this.processedPagesLoaded = 1;
     this.loading = true;
     this.setCurrentConversation(null);
     this.getConversations();

@@ -36,9 +36,10 @@ export class CatalogItemComponent implements OnInit {
   }
 
   get showCheckbox() {
-    return (this.itemService.selectedAction !== 'feature' && this.itemService.selectedAction !== 'reserve') ||
-      (this.itemService.selectedAction === 'feature' && !this.item.featured) ||
-      (this.itemService.selectedAction === 'reserve' && !this.item.reserved);
+    return (this.itemService.selectedAction !== 'feature' && this.itemService.selectedAction !== 'reserve' && this.itemService.selectedAction !== 'delete') ||
+      (this.itemService.selectedAction === 'feature' && !this.item.featured && !this.item.flags.onhold && !this.item.flags.pending && !this.item.flags.expired) ||
+      (this.itemService.selectedAction === 'reserve' && !this.item.reserved && !this.item.flags.onhold && !this.item.flags.pending && !this.item.flags.expired) ||
+      (this.itemService.selectedAction === 'delete' && !this.item.flags.pending);
   }
 
   public deleteItem(item: Item): void {
@@ -136,6 +137,15 @@ export class CatalogItemComponent implements OnInit {
       action: 'sold'
     });
     this.eventService.emit(EventService.ITEM_SOLD, item);
+  }
+
+  public showListingFee(): boolean {
+    return this.item.listingFeeExpiringDate > new Date().getTime();
+  }
+
+  public listingFeeFewDays(): boolean {
+    const threeDaysTime = 3 * 24 * 60 * 60 * 1000;
+    return this.item.listingFeeExpiringDate - new Date().getTime() < threeDaysTime;
   }
 
 }

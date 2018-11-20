@@ -5,8 +5,8 @@ import { UserData, UserProData, UserProDataNotifications } from '../app/core/use
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
 
 import {
-  Image, UserLocation, UserResponse, UserStats, UserValidations,
-  MotorPlan
+  Image, UserExtrainfo, UserLocation, UserResponse, UserStats,
+  UserValidations, MotorPlan
 } from '../app/core/user/user-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { Item } from '../app/core/item/item';
@@ -79,6 +79,12 @@ export const USER_LAST_NAME = 'Ghidoli';
 export const USER_BIRTH_DATE = 1523560844000;
 export const USER_GENDER = 'male';
 export const USER_URL = 'https://www.wallapop.com/user/webslug-l1kmzn82zn3p';
+export const USER_EXTRA_INFO: UserExtrainfo = {
+  description: 'description',
+  phone_number: 'phone_number',
+  link: 'link',
+  address: USER_LOCATION.title
+};
 
 export const USER_DATA: UserResponse = {
   'legacy_id': 101,
@@ -99,7 +105,10 @@ export const USER_DATA: UserResponse = {
   'first_name': USER_FIRST_NAME,
   'last_name': USER_LAST_NAME,
   'birth_date': USER_BIRTH_DATE,
-  'gender': USER_GENDER
+  'gender': USER_GENDER,
+  'email': USER_EMAIL,
+  'featured': true,
+  'extra_info': USER_EXTRA_INFO
 };
 
 export const MOCK_USER_RESPONSE_BODY: any = {
@@ -160,7 +169,11 @@ export const MOCK_FULL_USER = new User(
   USER_DATA.first_name,
   USER_DATA.last_name,
   USER_DATA.birth_date,
-  USER_DATA.gender
+  USER_DATA.gender,
+  USER_DATA.email,
+  USER_DATA.featured,
+  USER_DATA.extra_info
+
 );
 
 export const MOCK_USER_PRO: User = new User(

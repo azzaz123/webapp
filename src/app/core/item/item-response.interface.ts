@@ -56,6 +56,7 @@ export interface ItemContent {
   favorites?: number;
   views?: number;
   delivery_info?: DeliveryInfo;
+  publish_date?: number;
 }
 
 export interface ItemProResponse {
@@ -128,6 +129,7 @@ export interface ConversationUser {
 export interface Purchase {
   expiration_date: number;
   item_id: string;
+  purchase_name?: 'listingfee' | 'countrybump';
   visibility_flags: {
     bumped: boolean;
     highlighted: boolean;
@@ -272,7 +274,7 @@ export interface ItemFlags {
   highlighted?: boolean;
   urgent?: boolean;
   bump_type?: string;
-  onhold?: boolean
+  onhold?: boolean;
 }
 
 export interface ItemActions {

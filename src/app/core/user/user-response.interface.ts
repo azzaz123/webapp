@@ -19,6 +19,8 @@ export interface UserResponse extends ApiResponse {
   birth_date?: number;
   gender?: string;
   email?: string;
+  featured?: boolean;
+  extra_info?: UserExtrainfo;
 }
 
 export interface Image {
@@ -82,4 +84,13 @@ export interface MotorPlan {
 export interface MotorPlanType {
   subtype: string,
   label: string
+}
+
+export interface UserExtrainfo {
+  description: string;
+  address?: string;
+  phone_number: string;
+  link: string;
+  latitude?: number;
+  longitude?: number;
 }

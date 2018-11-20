@@ -6,6 +6,7 @@ import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeolocationModule } from '../shared/geolocation/geolocation.module';
 import { SharedModule } from '../shared/shared.module';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
+import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
 
 @NgModule({
   imports: [
@@ -19,10 +20,12 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
   ],
   declarations: [
     profileRoutedComponents,
-    UnsubscribeModalComponent
+    UnsubscribeModalComponent,
+    BecomeProModalComponent
   ],
   entryComponents: [
-    UnsubscribeModalComponent
+    UnsubscribeModalComponent,
+    BecomeProModalComponent
   ]
 })
 export class ProfileModule { }
