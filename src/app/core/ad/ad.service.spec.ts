@@ -228,6 +228,7 @@ describe('AdService', () => {
 
       describe('when allowSegmentation is true', () => {
         beforeEach(() => {
+          service.allowSegmentation$.next(true);
         });
 
         it('should send keyWords allowSegmentation with true value', fakeAsync(() => {
@@ -291,6 +292,7 @@ describe('AdService', () => {
 
       describe('when allowSegmentation is false', () => {
         beforeEach(() => {
+          service.allowSegmentation$.next(false);
         });
 
         it('should send keyWords allowSegmentation with false value', fakeAsync(() => {
@@ -308,46 +310,6 @@ describe('AdService', () => {
           tick(refreshRate);
 
           expect(pubads.setRequestNonPersonalizedAds).toHaveBeenCalledWith(1);
-          discardPeriodicTasks();
-        }));
-
-        it('should not call amazon APS fetchBids', fakeAsync(() => {
-          spyOn(apstag, 'fetchBids');
-
-          service.startAdsRefresh();
-          tick(refreshRate);
-
-          expect(apstag.fetchBids).not.toHaveBeenCalled();
-          discardPeriodicTasks();
-        }));
-
-        it('should not call amazon APS setDisplayBids', fakeAsync(() => {
-          spyOn(apstag, 'setDisplayBids');
-
-          service.startAdsRefresh();
-          tick(refreshRate);
-
-          expect(apstag.setDisplayBids).not.toHaveBeenCalled();
-          discardPeriodicTasks();
-        }));
-
-        it('should not call Criteo SetLineItemRanges', fakeAsync(() => {
-          spyOn(Criteo, 'SetLineItemRanges');
-
-          service.startAdsRefresh();
-          tick(refreshRate);
-
-          expect(Criteo.SetLineItemRanges).not.toHaveBeenCalled();
-          discardPeriodicTasks();
-        }));
-
-        it('should not call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
-          spyOn(Criteo, 'SetDFPKeyValueTargeting');
-
-          service.startAdsRefresh();
-          tick(refreshRate);
-
-          expect(Criteo.SetDFPKeyValueTargeting).not.toHaveBeenCalled();
           discardPeriodicTasks();
         }));
       });
