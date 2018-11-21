@@ -335,5 +335,3 @@ export class UserService extends ResourceService {
     return this.hasPerm('professional');
   }
 }
-
-
