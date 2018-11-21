@@ -3,9 +3,10 @@ import { Coordinate } from '../app/core/geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from '../app/core/user/user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
-
-import { Image, UserExtrainfo,UserLocation, UserResponse, UserStats, UserValidations ,
-  MotorPlan} from '../app/core/user/user-response.interface';
+import {
+  Image, UserExtrainfo, UserLocation, UserResponse, UserStats,
+  UserValidations, MotorPlan
+} from '../app/core/user/user-response.interface';
 import { Observable } from 'rxjs/Observable';
 import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';

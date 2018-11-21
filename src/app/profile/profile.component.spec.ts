@@ -6,7 +6,10 @@ import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Response, ResponseOptions } from '@angular/http';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MOCK_FULL_USER, MOCK_USER,USER_DATA, USER_EXTRA_INFO, USER_LOCATION_COORDINATES,USER_URL , MOTORPLAN_DATA} from '../../tests/user.fixtures.spec';
+import {
+  MOCK_FULL_USER, MOCK_USER, USER_DATA, USER_EXTRA_INFO, USER_LOCATION_COORDINATES,
+  USER_URL, MOTORPLAN_DATA
+} from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { HttpService } from '../core/http/http.service';
@@ -40,7 +43,7 @@ describe('ProfileComponent', () => {
   let privacyService: PrivacyService;
   let mockBackend: MockBackend;
   const mockMotorPlan = {
-    type: 'motor_plan_pro',
+    type:    'motor_plan_pro',
     subtype: 'sub_premium'
   };
   const componentInstance: any = {

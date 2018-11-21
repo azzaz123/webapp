@@ -13,7 +13,6 @@ import { I18nService } from '../core/i18n/i18n.service';
 import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
 import { LocationModalComponent } from '../shared/geolocation/location-select/location-modal/location-modal.component';
 import { Coordinate } from '../core/geolocation/address-response.interface';
-import { UserLocation } from '../core/user/user-response.interface';
 import { LOCATION_MODAL_TIMEOUT } from '../shared/geolocation/location-select/location-select.component';
 
 @Component({
@@ -74,8 +73,10 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       this.setSettingsData();
     });
     this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
-      const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
-      this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
+      if (motorPlan) {
+        const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
+        this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
+      }
     });
   }
 
