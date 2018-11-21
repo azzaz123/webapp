@@ -17,7 +17,7 @@
         </div>
       </div>
     </tsl-header>
-    <nav class="nav filters-nav">
+    <nav class="nav filters-nav" *ngIf="motorPlan">
       <a class="nav-link" [routerLink]="['info']" routerLinkActive="active" i18n>Profile</a>
       <a class="nav-link" [routerLink]="['subscription']" routerLinkActive="active" i18n>Subscription</a>
     </nav>
