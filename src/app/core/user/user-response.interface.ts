@@ -76,6 +76,16 @@ export interface UserValidations {
   birthday: boolean;
 }
 
+export interface MotorPlan {
+  type: string,
+  subtype: string
+}
+
+export interface MotorPlanType {
+  subtype: string,
+  label: string
+}
+
 export interface UserExtrainfo {
   description: string;
   address?: string;

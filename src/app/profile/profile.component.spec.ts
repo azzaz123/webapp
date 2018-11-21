@@ -6,10 +6,7 @@ import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Response, ResponseOptions } from '@angular/http';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  MOCK_FULL_USER, MOCK_USER, USER_DATA, USER_EXTRA_INFO, USER_LOCATION_COORDINATES,
-  USER_URL
-} from '../../tests/user.fixtures.spec';
+import { MOCK_FULL_USER, MOCK_USER,USER_DATA, USER_EXTRA_INFO, USER_LOCATION_COORDINATES,USER_URL , MOTORPLAN_DATA} from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { HttpService } from '../core/http/http.service';
@@ -18,6 +15,7 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { ProfileFormComponent } from '../shared/profile/profile-form/profile-form.component';
 import { SwitchComponent } from './../shared/switch/switch.component';
 import { environment } from '../../environments/environment';
+import { I18nService } from '../core/i18n/i18n.service';
 import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
 import { LOCATION_MODAL_TIMEOUT } from '../shared/geolocation/location-select/location-select.component';
 
@@ -32,6 +30,10 @@ describe('ProfileComponent', () => {
   let http: HttpService;
   let modalService: NgbModal;
   let mockBackend: MockBackend;
+  const mockMotorPlan = {
+    type: 'motor_plan_pro',
+    subtype: 'sub_premium'
+  };
   const componentInstance: any = {
     init: jasmine.createSpy('init')
   };
@@ -45,11 +47,17 @@ describe('ProfileComponent', () => {
       ],
       providers: [
         ...TEST_HTTP_PROVIDERS,
+        I18nService,
         {
           provide: UserService, useValue: {
           user: MOCK_FULL_USER,
           me() {
             return Observable.of(MOCK_FULL_USER);
+          },
+          getMotorPlan() {
+            return Observable.of({
+              motorPlan: mockMotorPlan
+            });
           },
           updateStoreLocation() {
             return Observable.of({})
@@ -114,6 +122,82 @@ describe('ProfileComponent', () => {
       expect(component.profileForm.get('birth_date').value).toBe(USER_BIRTH_DATE);
       expect(component.profileForm.get('gender').value).toBe(USER_GENDER);
       expect(component.profileForm.get('extra_info').value).toEqual(USER_EXTRA_INFO);
+    });
+
+    it('should subscribe privacyService allowSegmentation$', () => {
+      spyOn(privacyService.allowSegmentation$, 'subscribe');
+
+      component.ngOnInit();
+
+      expect(privacyService.allowSegmentation$.subscribe).toHaveBeenCalled();
+    });
+
+    it('should change allowSegmentation value to false when gdrp_display is false', () => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_DISALLOW)});
+        connection.mockRespond(new Response(res));
+      });
+
+      component.ngOnInit();
+      privacyService.getPrivacyList().subscribe();
+
+      expect(component.allowSegmentation).toBe(false);
+    });
+
+    it('should change allowSegmentation value to true when gdrp_display is true', () => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_ALLOW)});
+        connection.mockRespond(new Response(res));
+      });
+
+      component.ngOnInit();
+      privacyService.getPrivacyList().subscribe();
+
+      expect(component.allowSegmentation).toBe(true);
+    });
+
+    it('should change allowSegmentation value to false when gdrp_display status is unknow, and value is true', () => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW_ALLOW)});
+        connection.mockRespond(new Response(res));
+      });
+
+      component.ngOnInit();
+      privacyService.getPrivacyList().subscribe();
+
+      expect(component.allowSegmentation).toBe(false);
+    });
+
+    it('should change allowSegmentation value to false when gdrp_display status is unknow, and value is false', () => {
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/privacy');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_PRIVACY_UNKNOW_DISALLOW)});
+        connection.mockRespond(new Response(res));
+      });
+
+      component.ngOnInit();
+      privacyService.getPrivacyList().subscribe();
+
+      expect(component.allowSegmentation).toBe(false);
+    });
+
+    it('should subscribe to getMotorPlan', () => {
+      spyOn(userService, 'getMotorPlan').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.getMotorPlan).toHaveBeenCalled();
+    });
+
+    it('should set the translated user motor plan', () => {
+      spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of(MOTORPLAN_DATA));
+
+      component.ngOnInit();
+
+      expect(component.motorPlan).toEqual({subtype: 'sub_premium', label: 'Super Motor Plan'});
     });
   });
 
