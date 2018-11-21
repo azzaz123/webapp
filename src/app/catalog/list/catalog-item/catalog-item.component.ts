@@ -19,6 +19,7 @@ import { EventService } from '../../../core/event/event.service';
 export class CatalogItemComponent implements OnInit {
 
   @Input() item: Item;
+  @Input() isPro: boolean;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
   public link: string;
 
@@ -36,7 +37,7 @@ export class CatalogItemComponent implements OnInit {
   }
 
   get showCheckbox() {
-    return (this.itemService.selectedAction !== 'feature' && this.itemService.selectedAction !== 'reserve' && this.itemService.selectedAction !== 'delete') ||
+    return this.isPro || (this.itemService.selectedAction !== 'feature' && this.itemService.selectedAction !== 'reserve' && this.itemService.selectedAction !== 'delete') ||
       (this.itemService.selectedAction === 'feature' && !this.item.featured && !this.item.flags.onhold && !this.item.flags.pending && !this.item.flags.expired) ||
       (this.itemService.selectedAction === 'reserve' && !this.item.reserved && !this.item.flags.onhold && !this.item.flags.pending && !this.item.flags.expired) ||
       (this.itemService.selectedAction === 'delete' && !this.item.flags.pending);

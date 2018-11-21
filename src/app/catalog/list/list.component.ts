@@ -69,10 +69,14 @@ export class ListComponent implements OnInit, OnDestroy {
       if (motorPlan) {
         const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
         this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
+        this.selectedStatus = 'cars';
+        this.getItems(false, 'cars');
+      } else {
+        this.getItems();
       }
+      this.getNumberOfProducts();
     });
-    this.getItems();
-    this.getNumberOfProducts();
+
     setTimeout(() => {
       this.router.events.takeWhile(() => this.active).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
@@ -208,10 +212,15 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public filterByStatus(status: string) {
+    this.deselect();
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
       this.init = 0;
-      this.getItems();
+      if (status === 'cars') {
+        this.getItems(false, 'cars');
+      } else {
+        this.getItems();
+      }
       this.getNumberOfProducts();
     }
   }
@@ -220,12 +229,13 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems(true);
   }
 
-  private getItems(append?: boolean) {
+  private getItems(append?: boolean, type?: string) {
     this.loading = true;
     if (!append) {
       this.items = [];
     }
-    this.itemService.mine(this.init, this.selectedStatus).subscribe((itemsData: ItemsData) => {
+    let status = this.selectedStatus === 'cars'? 'published' : this.selectedStatus;
+    this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
       const items = itemsData.data;
       if (this.selectedStatus === 'sold') {
         this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: items.length});

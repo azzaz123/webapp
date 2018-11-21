@@ -1,4 +1,4 @@
-<div [ngClass]="{resized: itemService.selectedItems.length}">
+<div [ngClass]="{resized: isPro || itemService.selectedItems.length}"  [class.pro]="isPro">
   <div class="checkbox">
     <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}" *ngIf="showCheckbox">
       <mat-icon svgIcon="check"></mat-icon>
@@ -49,13 +49,13 @@
           <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)" [item]="item">
             <mat-icon svgIcon="btn-sold"></mat-icon>
           </button>
-          <button class="btn-reserve" [hidden]="item.flags.onhold" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
+          <button class="btn-reserve" [hidden]="item.flags.onhold || isPro" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
             <mat-icon svgIcon="btn-reserved"></mat-icon>
           </button>
           <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">
             <mat-icon svgIcon="btn-edit"></mat-icon>
           </button>
-          <button class="btn-delete" (click)="deleteItem(item)">
+          <button class="btn-delete" (click)="deleteItem(item)" [hidden]="isPro">
             <mat-icon svgIcon="btn-delete"></mat-icon>
           </button>
         </div>

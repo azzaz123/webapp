@@ -31,16 +31,33 @@
         </p>
       </div>
     </tsl-header>
-    <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
+    <nav class="nav filters-nav">
+      <a (click)="filterByStatus('cars')" [ngClass]="{active: selectedStatus === 'cars'}" class="nav-link" i18n>Cars</a>
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
     </nav>
-    <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0" [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
-      <ng-container [ngPlural]="itemService.selectedItems.length">
-        <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
-        <ng-template ngPluralCase="other"><ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container></ng-template>
-      </ng-container>
-    </a>
+    <div>
+      <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0" [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
+        <ng-container [ngPlural]="itemService.selectedItems.length">
+          <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
+          <ng-template ngPluralCase="other"><ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container></ng-template>
+        </ng-container>
+      </a>
+      <span class="bulk-actions" [ngClass]="{disabled: !itemService.selectedItems.length}"  *ngIf="selectedStatus === 'cars'">
+        <button class="btn-reserve dark" (click)="reserve()" [disabled]="!itemService.selectedItems.length">
+          <mat-icon svgIcon="btn-reserved"></mat-icon>
+          <span i18n>Reserve</span>
+        </button>
+        <button class="btn-delete dark" (click)="delete()" [disabled]="!itemService.selectedItems.length">
+          <mat-icon svgIcon="delete"></mat-icon>
+          <span i18n>Delete</span>
+        </button>
+        <button class="btn-activate" (click)="activate()"
+                [disabled]="!itemService.selectedItems.length" i18n>Activate</button>
+        <button class="btn-delete dark" (click)="deactivate()"
+                [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
+      </span>
+    </div>
     <div class="row items">
       <a class="add-item col-md-12"
          [routerLink]="['/catalog/upload']"
@@ -70,7 +87,7 @@
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
         <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
       </div>
-      <tsl-catalog-item *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" class="col-md-12"></tsl-catalog-item>
+      <tsl-catalog-item *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" class="col-md-12" [isPro]="selectedStatus === 'cars'"></tsl-catalog-item>
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </div>
