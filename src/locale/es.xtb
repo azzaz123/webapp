@@ -721,4 +721,8 @@
   <translation id="5601530442010506564">Entendido</translation>
   <translation id="703140349558791698">Suscríbete o publícalo desde la app</translation>
   <translation id="989776066026256137">Tus productos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="7811210420459773233">¿Seguro que quieres darte de baja de wallapop?</translation>
+  <translation id="475161398925564146">Te estás dando de baja pero tienes activa una suscripción en wallapop. Para cancelarla, deberás hacerlo a través de la Play Store o la App Store.</translation>
+  <translation id="1468205032926382389">Dame de baja y tramitaré la cancelación</translation>
+  <translation id="6555865224397311626">Vale, me lo pienso mejor</translation>
 </translationbundle>

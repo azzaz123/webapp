@@ -317,7 +317,7 @@ describe('ListComponent', () => {
 
       component.ngOnInit();
       tick();
-      
+
       expect(modalService.open).toHaveBeenCalledWith(UpgradePlanModalComponent, {
         windowClass: 'upload'
       });
