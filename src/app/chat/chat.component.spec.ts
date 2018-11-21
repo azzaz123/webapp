@@ -233,7 +233,7 @@ describe('Component: Chat', () => {
   });
 
   describe('ngOnInit', () => {
-    const phone = '555-3231';
+    const phone = '+34912345678';
 
     it('should set connection error', () => {
       component.ngOnInit();

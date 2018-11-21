@@ -19,7 +19,7 @@ describe('SendPhoneComponent', () => {
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
   let windowRef: WindowRef;
-  const phoneNumber = '555-3231';
+  const phoneNumber = '+34912345678';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

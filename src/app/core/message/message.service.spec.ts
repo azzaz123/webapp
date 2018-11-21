@@ -575,7 +575,7 @@ describe('Service: Message', () => {
   });
 
   describe('createPhoneNumberMessage', () => {
-    const phone = '555-3437';
+    const phone = '+34912345678';
     const conversation = MOCK_CONVERSATION();
 
     beforeEach(() => {

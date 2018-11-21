@@ -189,7 +189,7 @@ describe('Service: Persistency', () => {
     }));
 
     it('should upsert the phone number information', fakeAsync(() => {
-      service.setPhoneNumber('555-3231').subscribe();
+      service.setPhoneNumber('+34912345678').subscribe();
       tick();
 
       expect((service as any).upsert).toHaveBeenCalled();
