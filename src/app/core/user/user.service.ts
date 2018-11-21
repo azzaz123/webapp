@@ -360,5 +360,3 @@ export class UserService extends ResourceService {
     return this.motorPlanObservable;
   }
 }
-
-
