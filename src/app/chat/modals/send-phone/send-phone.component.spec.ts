@@ -176,6 +176,38 @@ describe('SendPhoneComponent', () => {
         expect(errorsService.i18nError).toHaveBeenCalledWith('formErrors');
       });
     });
+
+    describe('phone number validation', () => {
+      beforeEach(() => {
+        component.conversation = MOCK_CONVERSATION();
+      });
+
+      it('should set controls.phone.valid as TRUE when an invalid input is provided', () => {
+        const validEntries = ['+34912345678', '0034912345678', '(34)912345678', '+(34)912345678', '912345678', '912-345678',
+        '912 345 678', '91234   5678', '912/345678'];
+
+        validEntries.map(input => {
+          component.sendPhoneForm.get('phone').patchValue(input);
+
+          component.createPhoneNumberMessage();
+
+          expect(component.sendPhoneForm.controls.phone.valid).toBe(true);
+        });
+      });
+
+      it('should set controls.phone.valid as FALSE when an invalid input is provided', () => {
+        const invalidEntries = ['+349-has-letters-223', '(349123)45678', '(912345678)', '912+345678', '912,345678',
+        '912*345678', '912?345678'];
+
+        invalidEntries.map(input => {
+          component.sendPhoneForm.get('phone').patchValue(input);
+
+          component.createPhoneNumberMessage();
+
+          expect(component.sendPhoneForm.controls.phone.valid).toBe(false);
+        });
+      });
+    });
   });
 
   describe('dismiss', () => {
