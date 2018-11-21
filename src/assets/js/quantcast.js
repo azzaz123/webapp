@@ -102,7 +102,11 @@ if (lang) {
     'No Option': false,
     'UI Layout': 'banner',
     'Display Persistent Consent Link': false,
-    'Default Value for Toggles': 'on'
+    'Default Value for Toggles': 'on',
+    'Publisher Purpose Legitimate Interest IDs': [1,2,3,4,5],
+    'Custom Links Displayed on Initial Screen': [
+      "[Cookies policy](http://es.wallapop.com/cookies)",
+    ]
   }
 } else {
   quancastOption = {
@@ -123,7 +127,11 @@ if (lang) {
     'Consent Scope Group URL': 'https://www.wallapop.com/',
     'No Option': false,
     'Display Persistent Consent Link': false,
-    'Default Value for Toggles': 'on'
+    'Default Value for Toggles': 'on',
+    'Publisher Purpose Legitimate Interest IDs': [1,2,3,4,5],
+    'Custom Links Displayed on Initial Screen': [
+      "[Cookies policy](http://uk.wallapop.com/cookies)",
+    ]
   }
 };
 
