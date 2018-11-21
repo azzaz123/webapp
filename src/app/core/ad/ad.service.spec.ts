@@ -117,6 +117,7 @@ describe('AdService', () => {
       cookieService.put(key, cookies[key]);
     });
     service = TestBed.get(AdService);
+    service.allowSegmentation$.next(false);
   });
 
   describe('should init google services', () => {
