@@ -876,7 +876,7 @@ export class TrackingService {
   public track(event: TrackingEventBase, attributes?: any) {
     this.createNewEvent(event, attributes)
       .flatMap((newEvent: TrackingEvent) => {
-        delete newEvent['sessions'][0]['window'];
+        delete newEvent.sessions[0].window;
         const stringifiedEvent: string = JSON.stringify(newEvent);
         const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
         return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body);
