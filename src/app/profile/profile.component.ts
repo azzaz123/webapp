@@ -13,6 +13,7 @@ export class ProfileComponent implements OnInit {
 
   public userUrl: string;
   public motorPlan: MotorPlanType;
+  public showSubscriptionTab: boolean;
 
   constructor(private userService: UserService,
               protected i18n: I18nService,
@@ -29,6 +30,7 @@ export class ProfileComponent implements OnInit {
       const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
       if (motorPlan) {
         this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
+        this.showSubscriptionTab = this.motorPlan.label.indexOf('Motor') !== -1;
       }
     });
   }
