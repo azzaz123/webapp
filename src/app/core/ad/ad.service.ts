@@ -37,7 +37,7 @@ export class AdService {
     __cmp('getConsentData', 1, () => {
       __cmp('getVendorConsents', [11], (ventorConsents) => {
         let allowSegmentation = false;
-        if (!ventorConsents.gdprApplies || (ventorConsents.purposeConsents[1] && ventorConsents.vendorConsents[11])) {
+        if (!ventorConsents.gdprApplies || ventorConsents.purposeConsents[2]) {
           allowSegmentation = ventorConsents.gdprApplies ? true : false;
         }
         this.allowSegmentation$.next(allowSegmentation);
