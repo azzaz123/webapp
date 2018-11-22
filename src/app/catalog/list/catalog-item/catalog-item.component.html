@@ -31,7 +31,7 @@
     </span>
     <span class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
-        <span [hidden]="item.sold" [hidden]="item.flags.onhold">
+        <span [hidden]="item.sold || item.flags.onhold">
           <tsl-button className="btn-feature" (click)="featureItem(item)" *ngIf="!item.bumpExpiringDate">
             <mat-icon svgIcon="feature"></mat-icon>
             <span i18n>Feature Product</span>
@@ -46,7 +46,7 @@
           </tsl-button>
         </span>
         <div class="main-actions">
-          <button class="btn-sold" [hidden]="item.sold" [hidden]="item.flags.onhold" tslItemSold (callback)="setSold(item)" [item]="item">
+          <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)" [item]="item">
             <mat-icon svgIcon="btn-sold"></mat-icon>
           </button>
           <button class="btn-reserve" [hidden]="item.flags.onhold" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">

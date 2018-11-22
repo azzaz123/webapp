@@ -365,5 +365,3 @@ export class UserService extends ResourceService {
       .map((r: Response) => r.json())
   }
 }
-
-
