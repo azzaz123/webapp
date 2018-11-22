@@ -696,6 +696,7 @@
     <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
     marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
   </translation>
+  <translation id="548531554532991134">Tu perfil <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="3163876998313048927">Conviértete en PRO</translation>
   <translation id="2542747907081885378">Más información desde la app</translation>
   <translation id="976362268569732073">Tus productos se verán más porque estarán en las primeras posiciones de las búsquedas</translation>
@@ -719,7 +720,7 @@
   <translation id="5020391428854742815">Ve a la app de wallapop y suscríbete a un Plan Motor, o compra un anuncio extra para hacerlo público.</translation>
   <translation id="5601530442010506564">Entendido</translation>
   <translation id="703140349558791698">Suscríbete o publícalo desde la app</translation>
-  <translation id="548531554532991134">Tu perfil <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="989776066026256137">Tus productos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="7811210420459773233">¿Seguro que quieres darte de baja de wallapop?</translation>
   <translation id="475161398925564146">Te estás dando de baja pero tienes activa una suscripción en wallapop. Para cancelarla, deberás hacerlo a través de la Play Store o la App Store.</translation>
   <translation id="1468205032926382389">Dame de baja y tramitaré la cancelación</translation>
