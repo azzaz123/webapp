@@ -15,8 +15,6 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { PersistencyService } from '../../core/persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { User } from '../../core/user/user';
@@ -25,7 +23,7 @@ import {
   SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Conversation } from '../../core/conversation/conversation';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
-import { Message } from '../../core/message/message';
+import { Message, phoneMethod } from '../../core/message/message';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { XmppService } from '../../core/xmpp/xmpp.service';
 import { MessageService } from '../../core/message/message.service';
@@ -59,7 +57,6 @@ describe('Component: ConversationsPanel', () => {
       ],
       declarations: [ConversationsPanelComponent, ConversationComponent],
       providers: [
-        {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: XmppService, useClass: MockedXmppService},
         ...TEST_HTTP_PROVIDERS,
@@ -95,7 +92,8 @@ describe('Component: ConversationsPanel', () => {
           },
           markAs() {},
           markAllAsRead() {},
-          loadNotStoredMessages() {}
+          loadNotStoredMessages() {},
+          openPhonePopup() {}
         }
         },
         {provide: MessageService, useValue: {
@@ -583,7 +581,7 @@ describe('Component: ConversationsPanel', () => {
     });
 
     it('should subscribe to EventService.REQUEST_PHONE when called', () => {
-      const conversation = MOCK_CONVERSATION();
+      const conversation = SECOND_MOCK_CONVERSATION;
       spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
       spyOn(eventService, 'subscribe');
 
@@ -593,7 +591,7 @@ describe('Component: ConversationsPanel', () => {
     });
 
     it('should call messageService.addPhoneNumberRequestMessage when a REQUEST_PHONE event is triggered', () => {
-      const conversation = MOCK_CONVERSATION();
+      const conversation = SECOND_MOCK_CONVERSATION;
       spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
       spyOn(messageService, 'addPhoneNumberRequestMessage');
 
@@ -604,13 +602,24 @@ describe('Component: ConversationsPanel', () => {
     });
 
     it('should NOT call messageService.addPhoneNumberRequestMessage when a REQUEST_PHONE event is NOT triggered', () => {
-      const conversation = MOCK_CONVERSATION();
+      const conversation = SECOND_MOCK_CONVERSATION;
       spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
       spyOn(messageService, 'addPhoneNumberRequestMessage');
 
       (component as any).createConversationAndSetItCurrent();
 
       expect(messageService.addPhoneNumberRequestMessage).not.toHaveBeenCalled();
+    });
+
+    it('should call conversationService.openPhonePopup when a REQUEST_PHONE event is triggered AND requestType is popup', () => {
+      const conversation = SECOND_MOCK_CONVERSATION;
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      spyOn(conversationService, 'openPhonePopup');
+
+      (component as any).createConversationAndSetItCurrent();
+      eventService.emit(EventService.REQUEST_PHONE, phoneMethod.popUp);
+
+      expect(conversationService.openPhonePopup).toHaveBeenCalledWith(conversation, true);
     });
   });
 

@@ -43,6 +43,8 @@ import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveService } from '../message/archive.service';
 import { I18nService } from '../i18n/i18n.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 
 let service: ConversationService;
 let http: HttpService;
@@ -55,6 +57,7 @@ let persistencyService: PersistencyService;
 let eventService: EventService;
 let trackingService: TrackingService;
 let connectionService: ConnectionService;
+let modalService: NgbModal;
 let archiveService: MsgArchiveService;
 let i18n: I18nService;
 
@@ -63,6 +66,7 @@ const EMPTY_RESPONSE: Response = new Response(new ResponseOptions({body: JSON.st
 const CONVERSATION_RESPONSE: Response = new Response(new ResponseOptions(
   {body: JSON.stringify(MOCKED_CONVERSATION_DATA)})
 );
+const componentInstance: any = { SendPhoneComponent: jasmine.createSpy('SendPhoneComponent') };
 
 class MockedXmppService {
   totalUnreadMessages = 42;
@@ -97,6 +101,16 @@ describe('Service: Conversation', () => {
         }
         },
         {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              result: Promise.resolve(),
+              componentInstance: componentInstance
+            };
+          }
+        }
+        },
+        {
           provide: ConnectionService, useValue: {}
         },
         MessageService,
@@ -117,6 +131,7 @@ describe('Service: Conversation', () => {
     trackingService = TestBed.get(TrackingService);
     connectionService = TestBed.get(ConnectionService);
     archiveService = TestBed.get(MsgArchiveService);
+    modalService = TestBed.get(NgbModal);
     i18n = TestBed.get(I18nService);
   });
 
@@ -572,6 +587,41 @@ describe('Service: Conversation', () => {
       expect(result.archivedPhonesShared).toBe(CONVERSATIONS_WITH_PHONE.length + 1);
       expect(result.archivedMeetings).toBe(1);
       expect(result.archivedMessages).toBe(NORMAL_CONVERSATIONS.length);
+    });
+  });
+
+  describe('openPhonePopup', () => {
+    const conversation = MOCK_CONVERSATION();
+    const modalOptions = {windowClass: 'phone-request', backdrop: 'static', keyboard: false};
+
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.callThrough();
+    });
+
+    it('should open phoneRequest modal when the button is clicked', () => {
+      service.openPhonePopup(conversation);
+
+      expect(modalService.open).toHaveBeenCalledWith(SendPhoneComponent, modalOptions);
+    });
+
+    it('should set the modal conversation to the currentConversation, when the modal is opened', () => {
+      service['modalRef'] = <any>{ componentInstance: componentInstance };
+
+      service.openPhonePopup(conversation);
+
+      expect(service['modalRef'].componentInstance.conversation).toBe(conversation);
+    });
+
+    it('should call trackingService.addTrackingEvent with ITEM_SHAREPHONE_SHOWFORM when called with required TRUE', () => {
+      spyOn(trackingService, 'addTrackingEvent');
+      const event = {
+        eventData: TrackingService.ITEM_SHAREPHONE_SHOWFORM,
+        attributes: { item_id: conversation.item.id }
+      };
+
+      service.openPhonePopup(conversation, true);
+
+      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event);
     });
   });
 

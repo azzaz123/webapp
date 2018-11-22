@@ -29,6 +29,8 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
+import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -43,6 +45,7 @@ export class ConversationService extends LeadService {
 
   public pendingPagesLoaded = 0;
   public processedPagesLoaded = 0;
+  public storedPhoneNumber: string;
   private phoneRequestType;
   public ended = {
     pending: false,
@@ -59,6 +62,7 @@ export class ConversationService extends LeadService {
               protected messageService: MessageService,
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,
+              private modalService: NgbModal,
               private zone: NgZone) {
     super(http, userService, itemService, event, xmpp, connectionService);
   }
@@ -160,6 +164,20 @@ export class ConversationService extends LeadService {
         };
       });
     });
+  }
+
+  public openPhonePopup(conversation: Conversation, required = false) {
+    const modalOptions: NgbModalOptions = {windowClass: 'phone-request', backdrop: 'static', keyboard: false};
+    const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
+    modalRef.componentInstance.conversation = conversation;
+    modalRef.componentInstance.required = required;
+      modalRef.componentInstance.phone = this.storedPhoneNumber;
+    if (required) {
+      this.trackingService.addTrackingEvent({
+        eventData: TrackingService.ITEM_SHAREPHONE_SHOWFORM,
+        attributes: { item_id: conversation.item.id }
+      });
+    }
   }
 
   public checkIfLastPage(archive: boolean = false): Observable<any> {

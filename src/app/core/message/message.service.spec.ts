@@ -550,17 +550,33 @@ describe('Service: Message', () => {
       expect(requestMessage instanceof Message).toBe(true);
     });
 
-    it('should track the CHAT_SHAREPHONE_OPENSHARING event', () => {
+    it('should track the CHAT_SHAREPHONE_OPENSHARING event when no second argument is passed', () => {
       spyOn(trackingService, 'addTrackingEvent');
 
       service.addPhoneNumberRequestMessage(conversation);
 
       expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
     });
+
+    it('should track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is true', () => {
+      spyOn(trackingService, 'addTrackingEvent');
+
+      service.addPhoneNumberRequestMessage(conversation, true);
+
+      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    });
+
+    it('should NOT track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is false', () => {
+      spyOn(trackingService, 'addTrackingEvent');
+
+      service.addPhoneNumberRequestMessage(conversation, false);
+
+      expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    });
   });
 
   describe('createPhoneNumberMessage', () => {
-    const phone = '555-3437';
+    const phone = '+34912345678';
     const conversation = MOCK_CONVERSATION();
 
     beforeEach(() => {

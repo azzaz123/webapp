@@ -5,20 +5,18 @@ import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { USER_ID, USER_WEB_SLUG } from '../../../tests/user.fixtures.spec';
 import { User } from '../../core/user/user';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { By } from '@angular/platform-browser';
-import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 import { phoneRequestState, Message } from '../../core/message/message';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { ConversationService } from '../../core/conversation/conversation.service';
 
 const WEB_SLUG_USER = 'https://www.wallapop.com/user/';
 
 describe('Component: Message', () => {
   let component: MessageComponent;
   let fixture: ComponentFixture<MessageComponent>;
-  let modalService: NgbModal;
+  let conversationService: ConversationService;
   let element: DebugElement;
-  const componentInstance: any = { SendPhoneComponent: jasmine.createSpy('SendPhoneComponent') };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,16 +24,9 @@ describe('Component: Message', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {provide: 'SUBDOMAIN', useValue: 'www'},
-        {
-          provide: NgbModal, useValue: {
-            open() {
-              return {
-                result: Promise.resolve(),
-                componentInstance: componentInstance
-              };
-            }
-          }
-        },
+        {provide: ConversationService, useValue: {
+          openPhonePopup() {}
+        }}
       ]
     })
     .compileComponents();
@@ -43,7 +34,7 @@ describe('Component: Message', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MessageComponent);
-    modalService = TestBed.get(NgbModal);
+    conversationService = TestBed.get(ConversationService);
     component = fixture.componentInstance;
     MOCK_MESSAGE.user = new User(USER_ID, null, null, null, null, null, null, null, null, null, null, null, null, USER_WEB_SLUG);
     component.message = MOCK_MESSAGE;
@@ -59,7 +50,6 @@ describe('Component: Message', () => {
 
   describe('openDialog', () => {
     beforeEach(() => {
-      spyOn(modalService, 'open').and.callThrough();
       component.currentConversation = MOCK_CONVERSATION();
       component.message = new Message('someId', MOCK_CONVERSATION().id, 'some text', USER_ID, new Date());
       component.message.phoneRequest = phoneRequestState.pending;
@@ -68,22 +58,12 @@ describe('Component: Message', () => {
       component.ngOnInit();
     });
 
-    it('should open phoneRequest modal when the button is clicked', () => {
-      element.triggerEventHandler('click', {});
-
-      expect(modalService.open).toHaveBeenCalledWith(SendPhoneComponent, {
-        windowClass: 'phone-request'
-      });
-    });
-
-    it('should set the modal conversation to the currentConversation, when the modal is opened by clicking the button', () => {
-      component['modalRef'] = <any>{
-        componentInstance: componentInstance
-      };
+    it('should call conversationService.openPhonePopup with the current conversation, when the button is clicked', () => {
+      spyOn(conversationService, 'openPhonePopup');
 
       element.triggerEventHandler('click', {});
 
-      expect(component['modalRef'].componentInstance.conversation).toBe(component.currentConversation);
+      expect(conversationService.openPhonePopup).toHaveBeenCalledWith(component.currentConversation);
     });
   });
 
