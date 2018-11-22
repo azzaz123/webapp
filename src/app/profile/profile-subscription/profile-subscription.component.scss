@@ -55,7 +55,7 @@ h2, .description {
     font-weight: bold;
   }
   .price {
-    font-size: 24px;
+    font-size: $font-size-LLL;
     color: $color-urgent;
     font-weight: bold;
     border-bottom: 2px solid $grey-50;

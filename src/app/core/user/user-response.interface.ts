@@ -109,8 +109,8 @@ export interface UserProductDuration {
   id: string;
   duration: number;
   market_code: string;
-  original_market_code?: string;
   features: UserProductFeature[];
+  original_market_code?: string;
 }
 
 export interface UserProductFeature {

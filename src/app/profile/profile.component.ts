@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
       const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
       if (motorPlan) {
         this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
-        this.showSubscriptionTab = this.motorPlan.label.indexOf('Motor') !== -1;
+        this.showSubscriptionTab = this.motorPlan ? this.motorPlan.label.indexOf('Motor') !== -1 : false;
       }
     });
   }
