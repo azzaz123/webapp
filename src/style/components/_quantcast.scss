@@ -105,14 +105,15 @@
   .qc-cmp-table {
     .qc-cmp-table-header {
       color: $grey-500;
-    }
-    .qc-cmp-table-header {
       background-color: $white;
       border-color: $grey-50;
     }
     .qc-cmp-table-row {
       background-color: $white;
       border-color: $grey-50;
+    }
+    .qc-cmp-purpose-description {
+      line-height: initial;
     }
   }
 }
