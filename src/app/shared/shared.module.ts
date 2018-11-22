@@ -29,7 +29,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { MessageComponent } from './message/message.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { SwitchComponent } from './switch/switch.component';
-import { GdprModalComponent } from './gdpr-modal/gdpr-modal.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ConversationComponent } from './conversation/conversation.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
@@ -100,7 +99,6 @@ import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
-    GdprModalComponent,
     MessageComponent,
     ReviewButtonComponent,
     ConversationComponent,
@@ -150,7 +148,6 @@ import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe
     ReviewButtonComponent,
     SwitchComponent,
     ReviewModalComponent,
-    GdprModalComponent,
     CheckboxComponent,
     ConversationComponent,
     ItemAvatarComponent,
@@ -188,7 +185,6 @@ import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe
     ConfirmationModalComponent,
     SoldModalComponent,
     ReviewModalComponent,
-    GdprModalComponent,
     TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
     EmailModalComponent,

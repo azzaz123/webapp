@@ -7,7 +7,6 @@ import { UnsubscribeModalComponent } from './../unsubscribe-modal/unsubscribe-mo
 import { CanComponentDeactivate } from '../../shared/guards/can-component-deactivate.interface';
 import { User } from '../../core/user/user';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
-import { PRIVACY_STATUS, PrivacyService } from '../../core/privacy/privacy.service';
 import { LocationModalComponent } from '../../shared/geolocation/location-select/location-modal/location-modal.component';
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
@@ -22,14 +21,12 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
 
   public user: User;
   public profileForm: FormGroup;
-  public settingsForm: FormGroup;
   public allowSegmentation: boolean;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
 
   constructor(private userService: UserService,
               private fb: FormBuilder,
-              private modalService: NgbModal,
-              private privacyService: PrivacyService) {
+              private modalService: NgbModal) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
@@ -47,10 +44,6 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
         address: ''
       }),
     });
-
-    this.settingsForm = fb.group({
-      allow_segmentation: false
-    });
   }
 
   ngOnInit() {
@@ -59,11 +52,6 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
       if (user) {
         this.setUserData();
       }
-    });
-    this.privacyService.allowSegmentation$.subscribe((value: boolean) => {
-      const allowSegmentationState = this.privacyService.getPrivacyState('gdpr_display', '0');
-      this.allowSegmentation = allowSegmentationState === PRIVACY_STATUS.unknown ? false : value;
-      this.setSettingsData();
     });
   }
 
@@ -94,23 +82,8 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     }
   }
 
-  private setSettingsData() {
-    this.settingsForm.patchValue({
-      allow_segmentation: this.allowSegmentation
-    });
-  }
-
   public openUnsubscribeModal() {
     this.modalService.open(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
-  }
-
-  public switchAllowSegmentation (value: boolean) {
-    this.privacyService.updatePrivacy({
-      gdpr_display: {
-        version: '0',
-        allow: value
-      }
-    }).subscribe();
   }
 
   private dateValidator(c: FormControl) {
