@@ -1,4 +1,5 @@
 import { ApiResponse } from '../resource/api-response.interface';
+import { User } from './user';
 
 export interface UserResponse extends ApiResponse {
   micro_name: string;
@@ -83,4 +84,29 @@ export interface UserExtrainfo {
   link: string;
   latitude?: number;
   longitude?: number;
+}
+
+export interface ProfileImage {
+  large: string;
+  medium: string;
+  original: string;
+  original_height: number;
+  original_width: number;
+  small: string;
+  xlarge: string;
+  xsmall: string;
+}
+
+export interface UserProfile extends User {
+  id: string
+  item_images: ProfileImage[]
+  micro_name: string
+  num_total_items: number
+  scoring_stars: number
+  user_image: ProfileImage
+}
+
+export interface ProfilesData {
+  data: UserProfile[];
+  init: number;
 }

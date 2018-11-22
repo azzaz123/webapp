@@ -4,6 +4,7 @@ import { ItemsData } from '../core/item/item-response.interface';
 import { UserService } from '../core/user/user.service';
 import { UserStatsResponse, Counters } from '../core/user/user-stats.interface';
 import { Item } from '../core/item/item';
+import { ProfilesData } from '../core/user/user-response.interface';
 
 @Component({
   selector: 'tsl-favorites',

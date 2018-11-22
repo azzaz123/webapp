@@ -8,7 +8,7 @@ import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
-import { UserLocation, UserResponse } from './user-response.interface';
+import { UserLocation, UserResponse, UserProfile, ProfilesData } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -21,6 +21,7 @@ import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
+import * as _ from 'lodash';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -335,10 +336,41 @@ export class UserService extends ResourceService {
     return this.hasPerm('professional');
   }
 
-  public myFavorites(init: number): Observable<any> {
-    return this.http.get(this.API_URL + '/me/users/favorites', init)
+  public getPaginationItems(url: string, init, status?): Observable<ProfilesData> {
+    return this.http.get(url, {
+        init: init,
+        expired: status
+      })
       .map((r: Response) => {
-        console.log('service ', r);
+          const res: any[] = r.json();
+          const nextPage: string = r.headers.get('x-nextpage');
+          const params = _.chain(nextPage).split('&')
+            .map(_.partial(_.split, _, '=', 2))
+            .fromPairs()
+            .value();
+          const nextInit: number = nextPage ? +params.init : null;
+          let data: UserProfile[] = [];
+          if (res.length > 0) {
+            data = res.map((i: any) => {
+              //const profile: User = this.mapRecordData(i);
+              return i;
+            });
+          }
+          return {
+            data: data,
+            init: nextInit
+          };
+        }
+      )
+  }
+
+  public myFavorites(init: number): Observable<ProfilesData> {
+    return this.getPaginationItems(this.API_URL + '/me/users/favorites', init)
+      .map((profilesData: ProfilesData) => {
+        profilesData.data = profilesData.data.map((profile: UserProfile) => {
+          return profile;
+        });
+        return profilesData;
       });
   }
 }
