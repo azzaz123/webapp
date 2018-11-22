@@ -7,7 +7,6 @@ import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal
 import { CanComponentDeactivate } from '../shared/guards/can-component-deactivate.interface';
 import { User } from '../core/user/user';
 import { ProfileFormComponent } from '../shared/profile/profile-form/profile-form.component';
-import { PrivacyService, PRIVACY_STATUS } from '../core/privacy/privacy.service';
 import { MotorPlan, MotorPlanType } from '../core/user/user-response.interface';
 import { I18nService } from '../core/i18n/i18n.service';
 import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
@@ -25,7 +24,6 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   public user: User;
   public userUrl: string;
   public profileForm: FormGroup;
-  public settingsForm: FormGroup;
   public allowSegmentation: boolean;
   public motorPlan: MotorPlanType;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
@@ -33,7 +31,6 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   constructor(private userService: UserService,
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private privacyService: PrivacyService,
     protected i18n: I18nService,
     @Inject('SUBDOMAIN') private subdomain: string) {
     this.profileForm = fb.group({
@@ -54,9 +51,6 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       }),
     });
 
-    this.settingsForm = fb.group({
-      allow_segmentation: false
-    });
   }
 
   ngOnInit() {
@@ -66,11 +60,6 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
         this.userUrl = user.getUrl(this.subdomain);
         this.setUserData();
       }
-    });
-    this.privacyService.allowSegmentation$.subscribe((value: boolean) => {
-      const allowSegmentationState = this.privacyService.getPrivacyState('gdpr_display', '0');
-      this.allowSegmentation = allowSegmentationState === PRIVACY_STATUS.unknown ? false : value;
-      this.setSettingsData();
     });
     this.userService.getMotorPlan().subscribe((motorPlan: MotorPlan) => {
       if (motorPlan) {
@@ -107,12 +96,6 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
     }
   }
 
-  private setSettingsData() {
-    this.settingsForm.patchValue({
-      allow_segmentation: this.allowSegmentation
-    });
-  }
-
   public openUnsubscribeModal() {
     this.modalService.open(UnsubscribeModalComponent, {windowClass: 'unsubscribe'});
   }
@@ -120,15 +103,6 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
   public logout($event: any) {
     $event.preventDefault();
     this.userService.logout();
-  }
-
-  public switchAllowSegmentation (value: boolean) {
-    this.privacyService.updatePrivacy({
-        gdpr_display: {
-          version: '0',
-          allow: value
-        }
-      }).subscribe();
   }
 
   private dateValidator(c: FormControl) {
@@ -167,7 +141,6 @@ export class ProfileComponent implements OnInit, CanComponentDeactivate {
       }, () => {
       });
     }, LOCATION_MODAL_TIMEOUT);
-
   }
 
 }
