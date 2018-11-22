@@ -12,6 +12,8 @@ import { TooManyItemsModalComponent } from '../modals/too-many-items-modal/too-m
 import { AlreadyFeaturedModalComponent } from '../modals/already-featured-modal/already-featured-modal.component';
 import { Router } from '@angular/router';
 import { EventService } from '../../../core/event/event.service';
+import { ActivateItemsModalComponent } from './activate-items-modal/activate-items-modal.component';
+import { DeactivateItemsModalComponent } from './deactivate-items-modal/deactivate-items-modal.component';
 
 @Component({
   selector:    'tsl-catalog-item-actions',
@@ -37,9 +39,9 @@ export class CatalogItemActionsComponent implements OnInit {
   ngOnInit() {
     this.resetSelectedItems();
   }
-  
-  public deactivate(deactivateItemsModal: any) {
-    this.modalService.open(deactivateItemsModal).result.then(() => {
+
+  public deactivate() {
+    this.modalService.open(DeactivateItemsModalComponent).result.then(() => {
       this.itemService.bulkSetDeactivate().takeWhile(() => {
         this.trackingService.track(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
         this.eventService.emit('itemChanged');
@@ -48,8 +50,8 @@ export class CatalogItemActionsComponent implements OnInit {
     });
   }
 
-  public activate(activateItemsModal: any) {
-    this.modalService.open(activateItemsModal).result.then(() => {
+  public activate() {
+    this.modalService.open(ActivateItemsModalComponent).result.then(() => {
       this.itemService.bulkSetActivate().takeWhile(() => {
         return this.active;
       }).subscribe((resp: any) => {

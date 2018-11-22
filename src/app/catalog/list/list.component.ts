@@ -24,6 +24,9 @@ import { ReactivateConfirmationModalComponent } from './modals/reactivate-confir
 import { MotorPlan, MotorPlanType } from '../../core/user/user-response.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
+import { ActivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
+import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 
 @Component({
   selector: 'tsl-list',
@@ -381,6 +384,31 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private getRedirectToTPV(): boolean {
     return localStorage.getItem('redirectToTPV') === 'true';
+  }
+
+  public deactivate() {
+    this.modalService.open(DeactivateItemsModalComponent).result.then(() => {
+      this.itemService.bulkSetDeactivate().takeWhile(() => {
+        this.trackingService.track(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
+        this.eventService.emit('itemChanged');
+        return this.active;
+      }).subscribe(() => this.getNumberOfProducts());
+    });
+  }
+
+  public activate() {
+    this.modalService.open(ActivateItemsModalComponent).result.then(() => {
+      this.itemService.bulkSetActivate().takeWhile(() => {
+        return this.active;
+      }).subscribe((resp: any) => {
+        this.getNumberOfProducts();
+        this.eventService.emit('itemChanged');
+        if (resp.status === 406) {
+          this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'})
+            .result.then(() => {}, () => {});
+        }
+      });
+    });
   }
 
 }

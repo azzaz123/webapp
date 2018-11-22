@@ -61,6 +61,8 @@ import { RouterModule } from '@angular/router';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { CountdownComponent } from './countdown/countdown.component';
 import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe';
+import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
+import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 
 @NgModule({
   imports: [
@@ -175,7 +177,9 @@ import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe
     CartComponent,
     ExitConfirmationModalComponent,
     CountdownComponent,
-    ThousandSuffixesPipe
+    ThousandSuffixesPipe,
+    ActivateItemsModalComponent,
+    DeactivateItemsModalComponent
   ],
   providers: [
     DecimalPipe,
@@ -193,7 +197,9 @@ import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe
     AlreadyFeaturedModalComponent,
     EmailModalComponent,
     PasswordModalComponent,
-    ExitConfirmationModalComponent
+    ExitConfirmationModalComponent,
+    ActivateItemsModalComponent,
+    DeactivateItemsModalComponent
   ]
 })
 export class SharedModule { }
