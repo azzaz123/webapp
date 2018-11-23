@@ -63,13 +63,15 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.USER_UNBLOCKED, (userId: string) => {
       this.userService.updateBlockStatus(userId, false);
     });
-    this.eventService.subscribe(EventService.DB_READY, () => {
+    this.eventService.subscribe(EventService.DB_READY, (dbName) => {
+      if (!dbName) {
       this.persistencyService.getMetaInformation().subscribe(() => {
         this.firstLoad = false;
         }, () => {
           this.persistencyService.saveMetaInformation({start: '0', last: null});
           this.firstLoad = true;
         });
+      }
     });
     }
 
