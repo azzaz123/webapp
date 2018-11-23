@@ -20,6 +20,7 @@ export class CatalogItemComponent implements OnInit {
 
   @Input() item: Item;
   @Output() itemChange: EventEmitter<ItemChangeEvent> = new EventEmitter<ItemChangeEvent>();
+  @Output() purchaseListingFee: EventEmitter<OrderEvent> = new EventEmitter<OrderEvent>();
   public link: string;
 
   constructor(private modalService: NgbModal,
@@ -146,6 +147,21 @@ export class CatalogItemComponent implements OnInit {
   public listingFeeFewDays(): boolean {
     const threeDaysTime = 3 * 24 * 60 * 60 * 1000;
     return this.item.listingFeeExpiringDate - new Date().getTime() < threeDaysTime;
+  }
+
+  public publishItem(): void {
+    this.itemService.getListingFeeInfo(this.item.id).subscribe((response: Product) => {
+      const order: Order[] = [{
+        item_id: this.item.id,
+        product_id: response.id
+      }];
+      const orderEvent: OrderEvent = {
+        order: order,
+        total: +response.durations[0].market_code
+      };
+      localStorage.setItem('transactionType', 'listing-fee');
+      this.purchaseListingFee.next(orderEvent);
+    });
   }
 
 }

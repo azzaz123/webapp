@@ -27,7 +27,7 @@
                      [value]="item.listingFeeExpiringDate" format="listingFee"></tsl-countdown>
     </a>
     <span class="subscribe" *ngIf="item.flags.onhold" [ngClass]="{onHold: item.flags.onhold}" i18n>
-        Subscribe or publish it from the app
+        Inactive
     </span>
     <span class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
@@ -41,8 +41,8 @@
           </button>
         </span>
         <span *ngIf="item.flags.onhold">
-          <tsl-button className="btn-inactive">
-            <span i18n>Inactive</span>
+          <tsl-button className="btn-primary btn-publish" (click)="publishItem()">
+            <span i18n>Publish</span>
           </tsl-button>
         </span>
         <div class="main-actions">
