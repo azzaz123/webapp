@@ -912,11 +912,12 @@ export class TrackingService {
 
   public addTrackingEvent(event: TrackingEventData, acceptDuplicates: boolean = true) {
     const checkInArray = this.sentEvents.concat(this.pendingTrackingEvents);
-
     if (acceptDuplicates || this.checkIsUnique(event, checkInArray)) {
+      event.id = event.id ? event.id : UUID.UUID();
       this.trackingEvents$.next(event);
       this.pendingTrackingEvents.push(event);
     }
+  }
   }
 
   public trackAccumulatedEvents() {
@@ -945,7 +946,6 @@ export class TrackingService {
       }
       delete ev.eventData;
       ev.attributes = ev.attributes;
-      ev.id = UUID.UUID();
       ev.timestamp = getTimestamp();
       return ev;
     });
