@@ -14,5 +14,6 @@
       <p i18n>Go to the wallapop app and subscribe to a Motor Plan, or buy an extra ad to make it public.</p>
     </div>
   </div>
-  <tsl-button className="btn-feature" (click)="activeModal.close()" i18n>Got it</tsl-button>
+  <tsl-button className="btn btn-primary" (click)="purchaseListingFee()" i18n>Publícalo ya por {{listingFeePrice | customCurrency}}</tsl-button>
+  <tsl-button className="btn btn-gray" (click)="activeModal.close()" i18n>No gracias (El coche permanecerá inactivo)</tsl-button>
 </div>

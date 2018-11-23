@@ -345,3 +345,9 @@ export interface CarInfo {
   num_seats: number;
   version: string;
 }
+
+export interface ListingFeeProductInfo {
+  limit_category: number;
+  limit_type: string;
+  product_group: AvailableProductsResponse;
+}

@@ -263,4 +263,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('coin', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/coin.svg'));
   matIconRegistry.addSvgIcon('slider-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/slider-arrow.svg'));
   matIconRegistry.addSvgIcon('up-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/up-arrow.svg'));
+  matIconRegistry.addSvgIcon('listing-fee-icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/listing-fee-icon.svg'));
 }

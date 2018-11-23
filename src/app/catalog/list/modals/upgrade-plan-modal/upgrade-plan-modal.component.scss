@@ -47,15 +47,22 @@
   .upgrade-plan-background {
     background: url(/assets/images/upgrade-plan-background.svg) no-repeat;
     width: 50%;
-    height: 161px;
+    height: 195px;
     float: left;
   }
   .upgrade-plan-content {
     width: 50%;
     float: right;
+    text-align: left;
   }
 }
 
-tsl-button {
-  margin: $spacing-L auto $spacing;
+tsl-button /deep/ {
+  .btn {
+    min-width: 370px;
+  }
+  .btn-primary {
+    margin: $spacing-L auto $spacing;
+  }
 }
+

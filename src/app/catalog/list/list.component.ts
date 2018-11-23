@@ -53,15 +53,15 @@ export class ListComponent implements OnInit, OnDestroy {
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
 
   constructor(public itemService: ItemService,
-              private trackingService: TrackingService,
-              private modalService: NgbModal,
-              private route: ActivatedRoute,
-              private paymentService: PaymentService,
-              private errorService: ErrorsService,
-              private router: Router,
-              private userService: UserService,
-              private eventService: EventService,
-              protected i18n: I18nService) {
+    private trackingService: TrackingService,
+    private modalService: NgbModal,
+    private route: ActivatedRoute,
+    private paymentService: PaymentService,
+    private errorService: ErrorsService,
+    private router: Router,
+    private userService: UserService,
+    private eventService: EventService,
+    protected i18n: I18nService) {
   }
 
   ngOnInit() {
@@ -158,21 +158,26 @@ export class ListComponent implements OnInit, OnDestroy {
           }, () => {
           });
         } else if (params && params.urgent) {
-            this.isUrgent = true;
-            this.isRedirect = !this.getRedirectToTPV();
-            if (!this.getRedirectToTPV()) {
-              setTimeout(() => {
-                this.getUrgentPrice(params.itemId);
-              }, 3000);
-            }
+          this.isUrgent = true;
+          this.isRedirect = !this.getRedirectToTPV();
+          if (!this.getRedirectToTPV()) {
+            setTimeout(() => {
+              this.getUrgentPrice(params.itemId);
+            }, 3000);
+          }
         } else if (params && params.updated) {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
           this.upgradePlanModalRef = this.modalService.open(UpgradePlanModalComponent, {
             windowClass: 'upload',
           });
-          this.upgradePlanModalRef.result.then(() => {
-            this.upgradePlanModalRef = null;
+          this.upgradePlanModalRef.componentInstance.itemId = params.itemId;
+          this.upgradePlanModalRef.result.then((orderEvent: OrderEvent) => {
+            if (orderEvent) {
+              this.purchaseListingFee(orderEvent);
+            } else {
+              this.upgradePlanModalRef = null;
+            }
           }, () => {
           });
         } else if (params && params.sold && params.itemId) {
@@ -228,11 +233,11 @@ export class ListComponent implements OnInit, OnDestroy {
     this.itemService.mine(this.init, this.selectedStatus).subscribe((itemsData: ItemsData) => {
       const items = itemsData.data;
       if (this.selectedStatus === 'sold') {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: items.length});
+        this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, { total_products: items.length });
       } else if (this.selectedStatus === 'published') {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {total_products: items.length});
+        this.trackingService.track(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: items.length });
       }
-      this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, {init: this.init});
+      this.trackingService.track(TrackingService.PRODUCT_LIST_LOADED, { init: this.init });
       this.init = itemsData.init;
       this.items = append ? this.items.concat(items) : items;
       this.loading = false;
@@ -256,10 +261,10 @@ export class ListComponent implements OnInit, OnDestroy {
       localStorage.setItem('transactionType', 'reactivate');
       this.feature($event.orderEvent, 'reactivate');
     } else if ($event.action === 'reactivated') {
-      const index: number = _.findIndex(this.items, {'_id': $event.item.id});
+      const index: number = _.findIndex(this.items, { '_id': $event.item.id });
       this.items[index].flags.expired = false;
     } else {
-      const index: number = _.findIndex(this.items, {'_id': $event.item.id});
+      const index: number = _.findIndex(this.items, { '_id': $event.item.id });
       this.items.splice(index, 1);
     }
   }
@@ -285,9 +290,9 @@ export class ListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.type = 1;
     modalRef.result.then(() => {
       this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {
-        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: response.updatedIds.join(', ')});
+        this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_DELETED, { product_ids: response.updatedIds.join(', ') });
         response.updatedIds.forEach((id: string) => {
-          const index: number = _.findIndex(this.items, {'id': id});
+          const index: number = _.findIndex(this.items, { 'id': id });
           this.items.splice(index, 1);
         });
         if (response.failedIds.length) {
@@ -303,9 +308,9 @@ export class ListComponent implements OnInit, OnDestroy {
   public reserve() {
     this.itemService.bulkReserve().subscribe((response: ItemBulkResponse) => {
       this.deselect();
-      this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: response.updatedIds.join(', ')});
+      this.trackingService.track(TrackingService.PRODUCT_LIST_BULK_RESERVED, { product_ids: response.updatedIds.join(', ') });
       response.updatedIds.forEach((id: string) => {
-        const index: number = _.findIndex(this.items, {'id': id});
+        const index: number = _.findIndex(this.items, { 'id': id });
         if (this.items[index]) {
           this.items[index].reserved = true;
           this.eventService.emit(EventService.ITEM_RESERVED, this.items[index]);
@@ -318,16 +323,16 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public feature(orderEvent: OrderEvent, type?: string) {
-    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, {windowClass: 'buy-product'});
+    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'buy-product' });
     modalRef.componentInstance.type = type;
     modalRef.componentInstance.orderEvent = orderEvent;
     modalRef.result.then((result: string) => {
       this.isUrgent = false;
       this.setRedirectToTPV(false);
       if (result === 'success') {
-        this.router.navigate(['catalog/list', {code: 200}]);
+        this.router.navigate(['catalog/list', { code: 200 }]);
       } else {
-        this.router.navigate(['catalog/list', {code: -1}]);
+        this.router.navigate(['catalog/list', { code: -1 }]);
       }
     }, () => {
       this.isUrgent = false;
@@ -339,6 +344,22 @@ export class ListComponent implements OnInit, OnDestroy {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
+    });
+  }
+
+  public purchaseListingFee(orderEvent: OrderEvent) {
+    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'buy-product' });
+    modalRef.componentInstance.type = 'listing-fee';
+    modalRef.componentInstance.orderEvent = orderEvent;
+    modalRef.result.then((result: string) => {
+      this.setRedirectToTPV(false);
+      if (result === 'success') {
+        this.router.navigate(['catalog/list', { code: 200 }]);
+      } else {
+        this.router.navigate(['catalog/list', { code: -1 }]);
+      }
+    }, () => {
+      this.setRedirectToTPV(false);
     });
   }
 
