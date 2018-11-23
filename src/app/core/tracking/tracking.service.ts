@@ -14,6 +14,8 @@ import { WindowRef } from '../window/window.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/bufferTime';
+import { PersistencyService } from '../persistency/persistency.service';
+import { EventService } from '../event/event.service';
 
 const maxBatchSize = 1000;
 const sendInterval = 10000;
@@ -867,10 +869,13 @@ export class TrackingService {
               private http: HttpService,
               private userService: UserService,
               private winRef: WindowRef,
+              private eventService: EventService,
+              private persistencyService: PersistencyService,
               private cookieService: CookieService) {
     this.setSessionStartTime();
     this.setSessionId(this.sessionIdCookieName);
     this.setDeviceAccessTokenId(this.deviceAccessTokenIdCookieName);
+    this.subscribeDbReady();
   }
 
   public track(event: TrackingEventBase, attributes?: any) {
@@ -886,13 +891,23 @@ export class TrackingService {
   private sendMultipleEvents(events: Array<TrackingEventData>) {
     const originalEvents = [];
     events.map(e => originalEvents.push(Object.assign({}, e)));
-    this.createMultipleEvents(events)
-    .flatMap((event: TrackingEvent) => {
-      delete event['sessions'][0]['window'];
-      const stringifiedEvent: string = JSON.stringify(event);
+    const eventsPackage: TrackingEvent = this.createMultipleEvents(events);
+    delete eventsPackage.sessions[0].window;
+    this.postPackagedEvents(eventsPackage, originalEvents);
+  }
+
+  private postPackagedEvents(eventsPackage: TrackingEvent, originalEvents?: Array<TrackingEventData>, del: number = 1000) {
+    this.persistencyService.storePackagedClickstreamEvents(eventsPackage);
+    const stringifiedEvent: string = JSON.stringify(eventsPackage);
       const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
-      return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body);
-    }).subscribe(() => this.sentEvents = this.sentEvents.concat(originalEvents));
+    return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body)
+    .subscribe(() => {
+      this.persistencyService.removePackagedClickstreamEvents(eventsPackage);
+      if (originalEvents) {
+        this.sentEvents = this.sentEvents.concat(originalEvents);
+  }
+    }, (err) => {
+    });
   }
 
   public addTrackingEvent(event: TrackingEventData, acceptDuplicates: boolean = true) {
@@ -1013,4 +1028,21 @@ export class TrackingService {
     this.cookieService.put(cookieName, value, cookieOptions);
   }
 
+  private subscribeDbReady() {
+    this.eventService.subscribe(EventService.DB_READY, (dbName) => {
+      if (dbName === this.persistencyService.clickstreamDbName) {
+        this.persistencyService.getPackagedClickstreamEvents().subscribe(pendingPackagedEvents => {
+          pendingPackagedEvents.map((eventsPackage) => {
+            this.postPackagedEvents(eventsPackage);
+          });
+        });
+
+        this.persistencyService.getClickstreamEvents().subscribe(pendingEvents => {
+            pendingEvents.map(e => {
+              this.addTrackingEvent(e);
+          });
+        });
+      }
+    });
+  }
 }
