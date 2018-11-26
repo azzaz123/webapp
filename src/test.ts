@@ -52,6 +52,8 @@ window['Criteo'] = {
   SetDFPKeyValueTargeting() {},
 };
 
+window['__cmp'] = function(arg1, arg2, callback) {};
+
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
