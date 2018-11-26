@@ -105,7 +105,8 @@ if (lang) {
     'Publisher Purpose Legitimate Interest IDs': [1,2,3,4,5],
     'Custom Links Displayed on Initial Screen': [
       "[Cookies policy](http://es.wallapop.com/cookies)",
-    ]
+    ],
+    "Cookie Domain": "wallapop.com"
   }
 } else {
   quancastOption = {
@@ -129,7 +130,8 @@ if (lang) {
     'Publisher Purpose Legitimate Interest IDs': [1,2,3,4,5],
     'Custom Links Displayed on Initial Screen': [
       "[Cookies policy](http://uk.wallapop.com/cookies)",
-    ]
+    ],
+    "Cookie Domain": "wallapop.com"
   }
 };
 
