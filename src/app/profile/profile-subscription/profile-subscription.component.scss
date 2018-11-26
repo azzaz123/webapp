@@ -1,0 +1,85 @@
+@import "~style/common";
+
+.box-content {
+  padding: $spacing-L 100px;
+}
+
+.packs {
+  display: flex;
+  width: 600px;
+  justify-content: center;
+}
+
+h2 {
+  font-size: $font-size-L;
+  font-weight: bold;
+  color: $corporate;
+  margin-top: 70px;
+}
+
+.description, .contact, .email {
+  font-size: $font-size-S;
+  line-height: 1.29;
+  color: $grey-250;
+}
+
+.contact {
+  font-weight: bold;
+  color: $color-urgent;
+}
+
+.email, .email a {
+  color: $grey-900;
+  font-weight: bold;
+}
+
+h2, .description {
+  margin-right: 80px;
+}
+
+.pack {
+  padding: $spacing $spacing-10;
+  border: solid 2px $grey-50;
+  border-radius: $border-radius;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: normal;
+  flex:1;
+  margin: $spacing / 2;
+  max-width: 186px;
+  .name {
+    color: $grey-900;
+    font-size: $font-size-M;
+    font-weight: bold;
+  }
+  .price {
+    font-size: $font-size-LLL;
+    color: $color-urgent;
+    font-weight: bold;
+    border-bottom: 2px solid $grey-50;
+    padding-bottom: $spacing-S;
+    margin-bottom: $spacing-M;
+  }
+  ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    margin-bottom: $spacing-S;
+    color: $grey-500;
+    list-style: none;
+    font-size: $font-size-S;
+    &.disabled {
+      color: $grey-50;
+    }
+  }
+  &.selected {
+    border-width: 3px;
+    border-color: $corporate;
+    .price {
+      border-color: $corporate-light;
+    }
+  }
+}

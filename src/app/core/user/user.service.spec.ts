@@ -36,7 +36,7 @@ import {
   USERS_STATS_RESPONSE,
   VALIDATIONS,
   VERIFICATION_LEVEL,
-  MOTORPLAN_DATA
+  MOTORPLAN_DATA, PROFILE_SUB_INFO
 } from '../../../tests/user.fixtures.spec';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { UserStatsResponse } from './user-stats.interface';
@@ -47,7 +47,7 @@ import { EventService } from '../event/event.service';
 import { PERMISSIONS, User } from './user';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from './login-response.interface';
-import { UserLocation, MotorPlan } from './user-response.interface';
+import { UserLocation, MotorPlan, ProfileSubscriptionInfo } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
@@ -690,6 +690,21 @@ describe('Service: User', () => {
       expect(http.get).toHaveBeenCalledTimes(1);
     });
 
+  });
+
+  describe('getMotorPlans', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PROFILE_SUB_INFO)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: ProfileSubscriptionInfo;
+
+      service.getMotorPlans().subscribe((response: ProfileSubscriptionInfo) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/profile-subscription-info');
+      expect(resp).toEqual(PROFILE_SUB_INFO);
+    });
   });
 
 });
