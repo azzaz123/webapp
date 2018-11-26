@@ -4,7 +4,7 @@
       <tsl-header>
         <div class="col-9">
           <div class="header-row">
-            <h1 class="header-title" i18n>Your profile</h1>
+            <h1 class="header-title" i18n>Your profile <span class="badge badge-pro motor">{{motorPlan && motorPlan.label}}</span></h1>
           </div>
           <div class="header-row header-row--margin">
             <h4 class="header-subtitle" i18n>From here you can view and edit your profile</h4>
@@ -144,25 +144,6 @@
           <div class="row">
             <div class="col-12 unsubscribe-section">
               <a (click)="openUnsubscribeModal()" tslTrackEvent="MYPROFILE_UNSUBSCRIBE" i18n>Close account</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="box profile-settings">
-        <div class="box-content">
-          <div class="row">
-            <h3 class="section-title" i18n>Settings</h3>
-            <div class="col-10 offset-2">
-              <form [formGroup]="settingsForm">
-                <div class="form-group row">
-                  <div class="col-3" >
-                    <tsl-switch (onChange)="switchAllowSegmentation($event)" formControlName="allow_segmentation"></tsl-switch>
-                  </div>
-                  <div class="col-5" i18n>
-                    In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.
-                  </div>
-                </div>
-              </form>
             </div>
           </div>
         </div>

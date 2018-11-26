@@ -10,13 +10,15 @@ import { CookieService } from 'ngx-cookie';
 import { AdKeyWords } from './ad.interface';
 import * as moment from 'moment';
 import { HttpService } from '../http/http.service';
-import { User } from '../user/user';
-import { PrivacyService } from '../privacy/privacy.service';
+import { User } from '../user/user';;
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AdService {
 
   private ENDPOINT_REFRESH_RATE = 'rest/ads/refreshRate';
+
+  public allowSegmentation$: BehaviorSubject<boolean> = new BehaviorSubject(null);
   public adKeyWords: AdKeyWords = {} as AdKeyWords;
   public adsRefreshSubscription: Subscription;
   private _adSlots = [
@@ -26,12 +28,21 @@ export class AdService {
 
   constructor(private http: HttpService,
               private userService: UserService,
-              private cookieService: CookieService,
-              private privacyService: PrivacyService
+              private cookieService: CookieService
   ) {
     this.initKeyWordsFromCookies();
     this.initPositionKeyWords();
     this.initGoogletagConfig();
+
+    __cmp('getConsentData', 1, () => {
+      __cmp('getVendorConsents', [11], (ventorConsents) => {
+        let allowSegmentation = false;
+        if (!ventorConsents.gdprApplies || ventorConsents.purposeConsents[2]) {
+          allowSegmentation = ventorConsents.gdprApplies ? true : false;
+        }
+        this.allowSegmentation$.next(allowSegmentation);
+      });
+    });
   }
 
   private initKeyWordsFromCookies() {
@@ -67,14 +78,10 @@ export class AdService {
   }
 
   public fetchHeaderBids(allowSegmentation = false) {
-    if (allowSegmentation) {
-      merge(this.requestBidAps(), this.requestBidCriteo())
-        .subscribe(null, null, () => {
-          this.sendAdServerRequest(allowSegmentation);
-        });
-    } else {
-      this.sendAdServerRequest(allowSegmentation);
-    }
+    merge(this.requestBidAps(), this.requestBidCriteo())
+      .subscribe(null, null, () => {
+        this.sendAdServerRequest(allowSegmentation);
+      });
   }
 
   public requestBidAps() {
@@ -109,10 +116,8 @@ export class AdService {
 
   public sendAdServerRequest(allowSegmentation = false) {
     googletag.cmd.push(() => {
-      if (allowSegmentation) {
-        apstag.setDisplayBids();
-        Criteo.SetDFPKeyValueTargeting();
-      }
+      apstag.setDisplayBids();
+      Criteo.SetDFPKeyValueTargeting();
       googletag.pubads().setRequestNonPersonalizedAds(allowSegmentation ? 0 : 1);
       googletag.pubads().refresh();
     });
@@ -137,7 +142,7 @@ export class AdService {
     }).flatMap((refreshRate: number) => {
       return refreshRate ? Observable.timer(0, refreshRate) : Observable.of(0);
     }).flatMap(() => {
-      return this.privacyService.allowSegmentation$;
+      return this.allowSegmentation$.filter((value) =>  value !== null);
     }).subscribe((allowSegmentation: boolean) => {
       this.refreshAdWithKeyWords(allowSegmentation);
     });

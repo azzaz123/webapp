@@ -3,9 +3,8 @@ import { Coordinate } from '../app/core/geolocation/address-response.interface';
 import { Counters, Ratings, UserStatsResponse } from '../app/core/user/user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
-
-import { Image, UserExtrainfo, UserLocation, UserResponse, UserStats, UserValidations } from '../app/core/user/user-response.interface';
-import { Observable, of } from 'rxjs';
+import { Image, UserExtrainfo, UserLocation, UserResponse, UserStats, UserValidations, MotorPlan } from '../app/core/user/user-response.interface';
+import { Observable } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';
 
@@ -347,3 +346,8 @@ export const REASONS: UnsubscribeReason[] = [{
 
 export const SELECTED_REASON = 1;
 export const CUSTOM_REASON = 'bye';
+
+export const MOTORPLAN_DATA: MotorPlan = {
+  'type': 'motor_plan_pro',
+  'subtype': 'sub_premium',
+};
