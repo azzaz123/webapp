@@ -159,7 +159,7 @@ export class CatalogItemComponent implements OnInit {
         order: order,
         total: +response.durations[0].market_code
       };
-      localStorage.setItem('transactionType', 'listing-fee');
+      localStorage.setItem('transactionType', 'purchaseListingFee');
       this.purchaseListingFee.next(orderEvent);
     });
   }

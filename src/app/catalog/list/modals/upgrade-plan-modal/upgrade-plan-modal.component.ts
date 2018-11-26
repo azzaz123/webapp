@@ -34,7 +34,7 @@ export class UpgradePlanModalComponent implements OnInit {
       order: order,
       total: this.listingFeePrice
     };
-    localStorage.setItem('transactionType', 'listing-fee');
+    localStorage.setItem('transactionType', 'purchaseListingFee');
     this.activeModal.close(orderEvent);
   }
 

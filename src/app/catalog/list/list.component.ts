@@ -122,8 +122,11 @@ export class ListComponent implements OnInit, OnDestroy {
               this.router.navigate(['wallacoins', { code: params.code }]);
               break;
             case 'purchaseListingFee':
+            case 'purchaseListingFeeWithCredit':
               modalType = 'listingfee';
               break;
+            default:
+              modalType = transactionType;
           }
 
           if (params.code === '-1') {

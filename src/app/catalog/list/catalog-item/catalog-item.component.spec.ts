@@ -46,57 +46,60 @@ describe('CatalogItemComponent', () => {
       providers: [
         DecimalPipe,
         EventService,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: ItemService, useValue: {
-          selectedItems: [],
-          selectItem() {
-          },
-          deselectItem() {
-          },
-          deleteItem() {
-            return Observable.of({});
-          },
-          reserveItem() {
-            return Observable.of({});
-          },
-          reactivateItem() {
-            return Observable.of({});
-          },
-          getAvailableReactivationProducts() {
-          },
-          canDoAction() {
-            return Observable.of(true);
+            selectedItems: [],
+            selectItem() {
+            },
+            deselectItem() {
+            },
+            deleteItem() {
+              return Observable.of({});
+            },
+            reserveItem() {
+              return Observable.of({});
+            },
+            reactivateItem() {
+              return Observable.of({});
+            },
+            getAvailableReactivationProducts() {
+            },
+            canDoAction() {
+              return Observable.of(true);
+            },
+            getListingFeeInfo() {
+              return Observable.of({});
+            }
           }
-        }
         },
         {
           provide: NgbModal, useValue: {
-          open() {
-            return {
-              result: Promise.resolve(),
-              componentInstance: componentInstance
-            };
+            open() {
+              return {
+                result: Promise.resolve(),
+                componentInstance: componentInstance
+              };
+            }
           }
-        }
         },
         {
           provide: ToastrService, useValue: {
-          error() {
+            error() {
+            }
           }
-        }
         },
         {
           provide: ErrorsService, useValue: {
-          i18nError() {
+            i18nError() {
+            }
           }
-        }
         },
-        {provide: 'SUBDOMAIN', useValue: 'es'}
+        { provide: 'SUBDOMAIN', useValue: 'es' }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -198,7 +201,7 @@ describe('CatalogItemComponent', () => {
       it('should track the ProductUnReserved event', () => {
         component.reserve(item);
 
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, {product_id: item.id});
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_UNRESERVED, { product_id: item.id });
       });
 
       it('should emit ITEM_RESERVED event', () => {
@@ -297,7 +300,7 @@ describe('CatalogItemComponent', () => {
     });
 
     it('should send appboy ReactivateItem event', () => {
-      expect(appboy.logCustomEvent).toHaveBeenCalledWith('ReactivateItem', {platform: 'web'});
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('ReactivateItem', { platform: 'web' });
     });
   });
 
@@ -347,7 +350,7 @@ describe('CatalogItemComponent', () => {
       });
 
       it('should track the DeleteItem event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_SOLD, { product_id: item.id });
       });
 
       it('should emit ITEM_SOLD event', () => {
@@ -381,6 +384,18 @@ describe('CatalogItemComponent', () => {
       component.item.listingFeeExpiringDate = moment().add(2, 'days').valueOf();
 
       expect(component.listingFeeFewDays()).toEqual(true);
+    });
+  });
+
+  describe('publishItem', () => {
+    const item: Item = MOCK_ITEM;
+
+    it('should get the listing fee information related to the item', () => {
+      spyOn(itemService, 'getListingFeeInfo').and.returnValue(Observable.of(PRODUCT_RESPONSE));
+
+      component.publishItem();
+
+      expect(itemService.getListingFeeInfo).toHaveBeenCalledWith(item.id);
     });
   });
 });
