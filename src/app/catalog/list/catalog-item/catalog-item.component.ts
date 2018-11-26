@@ -153,7 +153,7 @@ export class CatalogItemComponent implements OnInit {
     this.itemService.getListingFeeInfo(this.item.id).subscribe((response: Product) => {
       const order: Order[] = [{
         item_id: this.item.id,
-        product_id: response.id
+        product_id: response.durations[0].id
       }];
       const orderEvent: OrderEvent = {
         order: order,

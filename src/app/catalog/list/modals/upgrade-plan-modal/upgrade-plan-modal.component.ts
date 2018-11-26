@@ -28,7 +28,7 @@ export class UpgradePlanModalComponent implements OnInit {
   public purchaseListingFee(): void {
     const order: Order[] = [{
       item_id: this.itemId,
-      product_id: this.listingFeeProduct.id
+      product_id: this.listingFeeProduct.durations[0].id
     }];
     const orderEvent: OrderEvent = {
       order: order,
