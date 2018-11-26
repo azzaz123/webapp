@@ -24,6 +24,7 @@ import { ReactivateConfirmationModalComponent } from './modals/reactivate-confir
 import { MotorPlan, MotorPlanType } from '../../core/user/user-response.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 
 @Component({
   selector: 'tsl-list',
@@ -100,37 +101,45 @@ export class ListComponent implements OnInit, OnDestroy {
             reactivate: {
               component: ReactivateConfirmationModalComponent,
               windowClass: 'reactivate-confirm'
+            },
+            listingfee: {
+              component: ListingfeeConfirmationModalComponent,
+              windowClass: 'listingfee-confirm'
             }
           };
           const transactionType = localStorage.getItem('transactionType');
-          let modalType = transactionType === 'urgentWithCredits' ? 'urgent' : transactionType;
-          modalType = transactionType === 'reactivateWithCredits' ? 'reactivate' : transactionType;
-          let modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
+          let modalType;
+          let modal;
+
+          switch (transactionType) {
+            case 'urgentWithCredits':
+              modalType = 'urgent';
+              break;
+            case 'reactivateWithCredits':
+              modalType = 'reactivate';
+              break;
+            case 'wallapack':
+              this.router.navigate(['wallacoins', { code: params.code }]);
+              break;
+            case 'purchaseListingFee':
+              modalType = 'listingfee';
+              break;
+          }
 
           if (params.code === '-1') {
             modal = modals.bump;
+          } else {
+            modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
           }
-
-          if (modalType === 'wallapack') {
-            this.router.navigate(['wallacoins', { code: params.code }]);
-            return;
-          }
-
-          /*if (+localStorage.getItem('transactionSpent') > 0) {
-            setTimeout(() => {
-              this.paymentService.getCreditInfo(false).subscribe((creditInfo: CreditInfo) => {
-                this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED, creditInfo.credit );
-              });
-            }, 1000);
-          }*/
 
           let modalRef: NgbModalRef = this.modalService.open(modal.component, {
             windowClass: modal.windowClass,
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
-          modalRef.componentInstance.creditUsed = transactionType === 'bumpWithCredits' ||
-            transactionType === 'urgentWithCredits' || transactionType === 'reactivateWithCredits';
+          modalRef.componentInstance.creditUsed = transactionType === 'bumpWithCredits'
+            || transactionType === 'urgentWithCredits' || transactionType === 'reactivateWithCredits'
+            || transactionType === 'purchaseListingFeeWithCredits';
           modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
           modalRef.result.then(() => {
             modalRef = null;
@@ -351,6 +360,7 @@ export class ListComponent implements OnInit, OnDestroy {
     const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'buy-product' });
     modalRef.componentInstance.type = 'listing-fee';
     modalRef.componentInstance.orderEvent = orderEvent;
+    localStorage.setItem('transactionType', 'purchaseListingFee');
     modalRef.result.then((result: string) => {
       this.setRedirectToTPV(false);
       if (result === 'success') {

@@ -81,6 +81,8 @@ export class BuyProductModalComponent implements OnInit {
           localStorage.setItem('transactionType', 'urgentWithCredits');
         } else if (this.type === 'reactivate' && this.creditInfo.credit > 0) {
           localStorage.setItem('transactionType', 'reactivateWithCredits');
+        } else if (this.type === 'listing-fee' && this.creditInfo.credit > 0) {
+          localStorage.setItem('transactionType', 'purchaseListingFeeWithCredits');
         }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
