@@ -39,7 +39,8 @@ export class PersistencyService {
   ) {
     this.eventService.subscribe(EventService.USER_LOGIN, () => {
       this.userService.me().subscribe((user: User) => {
-        this.initClickstreamDb(this.clickstreamDbName, user.id);
+        this.initClickstreamDb(this.clickstreamDbName);
+        this.eventsStore = 'events-' + user.id;
         this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
         this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
           this.messagesDb.destroy().then(() => {
@@ -57,17 +58,23 @@ export class PersistencyService {
     this._messagesDb = value;
   }
 
-  private initClickstreamDb(dbName: string, userId: string) {
-    const request = window.indexedDB.open(dbName);
+  private initClickstreamDb(dbName: string, version?: number) {
+    const request = window.indexedDB.open(dbName, version);
     request.onsuccess = () => {
       this.clickstreamDb = request.result;
+      if (!request.result.objectStoreNames.contains(this.eventsStore)) {
+        const v = request.result.version;
+        request.result.close();
+        this.initClickstreamDb(dbName, v + 1);
+      } else {
+        this.eventService.emit(EventService.DB_READY, this.clickstreamDb.name);
+      }
     };
-
-    request.onupgradeneeded = () => {
-      this.eventsStore = 'events-' + userId;
+    request.onupgradeneeded = (e) => {
       request.result.createObjectStore(this.eventsStore, { keyPath: 'id' });
+      if (e.newVersion === 1) {
       request.result.createObjectStore(this.packagedEventsStore);
-      this.eventService.emit(EventService.DB_READY, this.clickstreamDb.name);
+      }
     };
   }
 
