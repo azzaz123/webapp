@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
 import { Observable } from 'rxjs';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MOCK_FULL_USER, USER_DATA, USER_EXTRA_INFO, USER_LOCATION_COORDINATES, MOTORPLAN_DATA } from '../../tests/user.fixtures.spec';
+import { MOCK_FULL_USER, USER_DATA, USER_EXTRA_INFO, USER_LOCATION_COORDINATES, MOTORPLAN_DATA, USER_WEB_SLUG } from '../../tests/user.fixtures.spec';
 import { UnsubscribeModalComponent } from './unsubscribe-modal/unsubscribe-modal.component';
 import { ErrorsService } from '../core/errors/errors.service';
 import { HttpService } from '../core/http/http.service';
@@ -16,6 +16,7 @@ import { SwitchComponent } from './../shared/switch/switch.component';
 import { I18nService } from '../core/i18n/i18n.service';
 import { BecomeProModalComponent } from './become-pro-modal/become-pro-modal.component';
 import { LOCATION_MODAL_TIMEOUT } from '../shared/geolocation/location-select/location-select.component';
+import { environment } from '../../environments/environment';
 
 const USER_BIRTH_DATE = '2018-04-12';
 const USER_GENDER = 'M';
