@@ -69,10 +69,8 @@ scpt.parentNode.insertBefore(elem, scpt);
 })();
 
 var lang = document.documentElement.lang;
-var quancastOption = {};
-
-if (lang === 'es') {
-  quancastOption = {
+var quancastOptions = {
+  es: {
     'Language': 'es',
     'Initial Screen Title Text': 'Tu privacidad es importante para nosotros',
     'Initial Screen Reject Button Text': 'No acepto',
@@ -107,9 +105,8 @@ if (lang === 'es') {
       "[Cookies policy](http://es.wallapop.com/cookies)",
     ],
     "Cookie Domain": "wallapop.com"
-  }
-} else {
-  quancastOption = {
+  },
+  en: {
     'Language': 'en',
     'Initial Screen Reject Button Text': 'I do not accept',
     'Initial Screen Accept Button Text': 'I accept',
@@ -134,5 +131,3 @@ if (lang === 'es') {
     "Cookie Domain": "wallapop.com"
   }
 };
-
-window.__cmp('init', quancastOption);
