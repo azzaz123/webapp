@@ -71,7 +71,7 @@ scpt.parentNode.insertBefore(elem, scpt);
 var lang = document.documentElement.lang;
 var quancastOption = {};
 
-if (lang) {
+if (lang === 'es') {
   quancastOption = {
     'Language': 'es',
     'Initial Screen Title Text': 'Tu privacidad es importante para nosotros',
