@@ -28,7 +28,7 @@
       <a (click)="filterByStatus('profiles')" [ngClass]="{active: selectedStatus === 'profiles'}" class="nav-link" i18n="tab|plural">Profiles</a>
     </nav>
     <div class="row items">
-      <div class="favorites-empty-state" *ngIf="!items.length && !loading">
+      <div class="favorites-empty-state" *ngIf="!items.length && !profiles.length && !loading">
         <mat-icon svgIcon="favorites-empty-state" class="image"></mat-icon>
         <div class="message" i18n>In this list you can see all the products you saved as favourite</div>
       </div>
@@ -36,7 +36,7 @@
         <tsl-item-cart-favorite *ngFor="let item of items" [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-cart-favorite>
       </ng-container>
       <ng-container *ngIf="selectedStatus === 'profiles'">
-        <tsl-profile-card-favorite *ngFor="let item of items" [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-profile-card-favorite>
+        <tsl-profile-card-favorite *ngFor="let profile of profiles" [profile]="profile" (onFavoriteProfileChange)="onFavoriteProfileChange($event)"> </tsl-profile-card-favorite>
       </ng-container>
     </div>
   </div>

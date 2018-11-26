@@ -368,10 +368,17 @@ export class UserService extends ResourceService {
     return this.getPaginationItems(this.API_URL + '/me/users/favorites', init)
       .map((profilesData: ProfilesData) => {
         profilesData.data = profilesData.data.map((profile: UserProfile) => {
+          profile.favorited = true;
           return profile;
         });
         return profilesData;
       });
+  }
+
+  public favoriteItem(id: string, favorited: boolean): Observable<any> {
+    return this.http.put(this.API_URL + '/' + id + '/favorite', {
+      favorited: favorited
+    });
   }
 }
 

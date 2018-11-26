@@ -2,19 +2,19 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { Item } from '../../core/item/item';
 import { WindowRef } from '../../core/window/window.service';
 import { UserService } from '../../core/user/user.service';
+import { UserProfile } from '../../core/user/user-response.interface';
 
 @Component({
   selector: 'tsl-profile-card-favorite',
   templateUrl: './profile-card-favorite.component.html',
   styleUrls: ['./profile-card-favorite.component.scss']
 })
-export class ProfileCardFavoriteComponent implements OnInit {
+export class ProfileCardFavoriteComponent {
 
-  @Input() item: Item;
-  @Output() onFavoriteChange: EventEmitter<Item> = new EventEmitter();
+  @Input() profile: UserProfile;
+  @Output() onFavoriteProfileChange: EventEmitter<UserProfile> = new EventEmitter();
 
   constructor(private userService: UserService,
               private modalService: NgbModal,
@@ -22,14 +22,6 @@ export class ProfileCardFavoriteComponent implements OnInit {
               private trackingService: TrackingService,
               @Inject('SUBDOMAIN') private subdomain: string
   ) {
-  }
-
-  ngOnInit() {
-  }
-
-  goToProfile() {
-    //const url = this.item.getUrl(this.subdomain);
-    //this.windowRef.nativeWindow.open(url);
   }
 
   removeFavoriteModal(e: Event) {
@@ -42,11 +34,11 @@ export class ProfileCardFavoriteComponent implements OnInit {
   }
 
   removeFavorite() {
-    /*this.itemService.favoriteItem(this.item.id, false).subscribe(() => {
-      this.item.favorited = false;
-      this.onFavoriteChange.emit(this.item);
-      this.trackingService.track(TrackingService.FAVOURITES_BUTTON_UNFAVORITE);
-    });*/
+    this.userService.favoriteItem(this.profile.id, false).subscribe(() => {
+      this.profile.favorited = false;
+      this.onFavoriteProfileChange.emit(this.profile);
+      //this.trackingService.track(TrackingService.PROFILE_FAVOURITES_BUTTON_UNFAVORITE);
+    });
   }
 
 }

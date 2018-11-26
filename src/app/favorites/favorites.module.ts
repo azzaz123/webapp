@@ -6,6 +6,7 @@ import { favoritesRoutedComponents, FavoritesRoutingModule } from './favorites.r
 import { SharedModule } from '../shared/shared.module';
 import { ItemCartFavoriteComponent } from './item-cart-favorite/item-cart-favorite.component';
 import { ProfileCardFavoriteComponent } from './profile-card-favorite/profile-card-favorite.component';
+import { ProfileAvatarComponent } from '../shared/profile-avatar/profile-avatar.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { ProfileCardFavoriteComponent } from './profile-card-favorite/profile-ca
   declarations: [
     favoritesRoutedComponents,
     ItemCartFavoriteComponent,
-    ProfileCardFavoriteComponent
+    ProfileCardFavoriteComponent,
+    ProfileAvatarComponent
   ]
 })
 export class FavoritesModule { }

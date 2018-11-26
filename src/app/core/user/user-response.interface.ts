@@ -98,12 +98,13 @@ export interface ProfileImage {
 }
 
 export interface UserProfile extends User {
-  id: string
-  item_images: ProfileImage[]
-  micro_name: string
-  num_total_items: number
-  scoring_stars: number
-  user_image: ProfileImage
+  id: string;
+  item_images: ProfileImage[];
+  micro_name: string;
+  num_total_items: number;
+  scoring_stars: number;
+  user_image: ProfileImage;
+  favorited: boolean;
 }
 
 export interface ProfilesData {
