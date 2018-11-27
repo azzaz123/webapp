@@ -922,7 +922,11 @@ export class TrackingService {
       event.id = event.id ? event.id : UUID.UUID();
       this.trackingEvents$.next(event);
       this.pendingTrackingEvents.push(event);
+      this.eventService.subscribe(EventService.DB_READY, (dbName) => {
+        if (dbName === this.persistencyService.clickstreamDbName) {
+          this.persistencyService.storeClickstreamEvent(event);
     }
+      });
   }
   }
 
