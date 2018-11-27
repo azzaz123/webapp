@@ -51,6 +51,7 @@ export class ListComponent implements OnInit, OnDestroy {
   private counters: Counters;
   public motorPlan: MotorPlanType;
   private upgradePlanModalRef: NgbModalRef;
+  public hasMotorPlan: boolean;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -72,11 +73,12 @@ export class ListComponent implements OnInit, OnDestroy {
       if (motorPlan) {
         const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
         this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
-        this.selectedStatus = 'cars';
-        this.getItems(false, 'cars');
-      } else {
-        this.getItems();
+        this.hasMotorPlan = motorPlan.type === 'motor_plan_pro';
+        if (this.hasMotorPlan) {
+          this.selectedStatus = 'cars';
+        }
       }
+      this.getItems();
       this.getNumberOfProducts();
     });
 
@@ -219,11 +221,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
       this.init = 0;
-      if (status === 'cars') {
-        this.getItems(false, 'cars');
-      } else {
-        this.getItems();
-      }
+      this.getItems();
       this.getNumberOfProducts();
     }
   }
@@ -232,12 +230,19 @@ export class ListComponent implements OnInit, OnDestroy {
     this.getItems(true);
   }
 
-  private getItems(append?: boolean, type?: string) {
+  private getItems(append?: boolean) {
     this.loading = true;
     if (!append) {
       this.items = [];
     }
-    let status = this.selectedStatus === 'cars'? 'published' : this.selectedStatus;
+    let status = this.selectedStatus;
+    if (this.hasMotorPlan) {
+      if (this.selectedStatus === 'cars') {
+        status = 'published/cars';
+      } else if (this.selectedStatus === 'published') {
+        status = 'published/notCars';
+      }
+    }
     this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
       const items = itemsData.data;
       if (this.selectedStatus === 'sold') {

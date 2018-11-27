@@ -32,7 +32,7 @@
       </div>
     </tsl-header>
     <nav class="nav filters-nav">
-      <a (click)="filterByStatus('cars')" [ngClass]="{active: selectedStatus === 'cars'}" class="nav-link" i18n>Cars</a>
+      <a (click)="filterByStatus('cars')" *ngIf="hasMotorPlan" [ngClass]="{active: selectedStatus === 'cars'}" class="nav-link" i18n>Cars</a>
       <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
     </nav>
