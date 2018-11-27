@@ -881,13 +881,11 @@ export class TrackingService {
   }
 
   public track(event: TrackingEventBase, attributes?: any) {
-    this.createNewEvent(event, attributes)
-      .flatMap((newEvent: TrackingEvent) => {
+    const newEvent = this.createNewEvent(event, attributes);
         delete newEvent.sessions[0].window;
         const stringifiedEvent: string = JSON.stringify(newEvent);
         const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
         return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body);
-      }).subscribe();
   }
 
   private sendMultipleEvents(events: Array<TrackingEventData>) {
@@ -941,7 +939,7 @@ export class TrackingService {
     this.sessionStartTime = getTimestamp();
   }
 
-  private createMultipleEvents(events: Array<TrackingEventData>): Observable<TrackingEvent> {
+  private createMultipleEvents(events: Array<TrackingEventData>): TrackingEvent {
     const transformedArr = events.map(ev => {
       for (const key in ev.eventData) {
         if (ev.eventData.hasOwnProperty(key)) {
@@ -951,18 +949,12 @@ export class TrackingService {
       delete ev.eventData;
       ev.attributes = ev.attributes;
       ev.timestamp = getTimestamp();
+      if (this.userService.user.type === 'professional') {
+        ev.attributes.professional = true;
+      }
       return ev;
     });
-    return this.userService.isProfessional()
-      .map((isProfessional: boolean) => {
-        if (isProfessional) {
-          transformedArr.forEach((e, index) => {
-            if (!e.attributes) {
-              transformedArr[index].attributes = {};
-            }
-            transformedArr[index].attributes.professional = true;
-          });
-        }
+
         const newEvent: TrackingEvent = new TrackingEvent(
           this.winRef.nativeWindow,
           this.userService.user.id,
@@ -975,10 +967,9 @@ export class TrackingService {
         );
         newEvent.setSessionId(this.sessionId);
         return newEvent;
-      });
   }
 
-  private createNewEvent(event: TrackingEventBase, attributes?: any): Observable<TrackingEvent> {
+  private createNewEvent(event: TrackingEventBase, attributes?: any): TrackingEvent {
     const newEvent: TrackingEvent = new TrackingEvent(
       this.winRef.nativeWindow,
       this.userService.user.id,
@@ -988,9 +979,7 @@ export class TrackingService {
       this.navigatorService.operativeSystemVersion, this.navigatorService.OSName, this.deviceAccessTokenId,
       this.navigatorService.browserName, this.navigatorService.fullVersion
     );
-    return this.userService.isProfessional()
-      .map((isProfessional: boolean) => {
-        if (isProfessional) {
+    if (this.userService.user.type === 'professional') {
           if (!attributes) {
             attributes = {};
           }
@@ -1001,7 +990,6 @@ export class TrackingService {
         }
         newEvent.setSessionId(this.sessionId);
         return newEvent;
-      });
   }
 
   private setSessionId(cookieName: string) {
