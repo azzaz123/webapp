@@ -160,6 +160,7 @@ export class CatalogItemComponent implements OnInit {
         total: +response.durations[0].market_code
       };
       localStorage.setItem('transactionType', 'purchaseListingFee');
+      this.trackingService.track(TrackingService.PURCHASE_LISTING_FEE_CATALOG, { item_id: this.item.id });
       this.purchaseListingFee.next(orderEvent);
     });
   }

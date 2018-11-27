@@ -69,7 +69,7 @@ describe('CatalogItemComponent', () => {
               return Observable.of(true);
             },
             getListingFeeInfo() {
-              return Observable.of({});
+              return Observable.of(PRODUCT_RESPONSE);
             }
           }
         },
@@ -396,6 +396,14 @@ describe('CatalogItemComponent', () => {
       component.publishItem();
 
       expect(itemService.getListingFeeInfo).toHaveBeenCalledWith(item.id);
+    });
+
+    it('should send PURCHASE_LISTING_FEE_CATALOG tracking event', () => {
+      spyOn(trackingService, 'track');
+
+      component.publishItem();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PURCHASE_LISTING_FEE_CATALOG, { item_id: item.id });
     });
   });
 });

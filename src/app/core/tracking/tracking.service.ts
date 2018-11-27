@@ -70,7 +70,8 @@ const SCREENS_IDS: any = {
   Chat: '27',
   GDPR: '155',
   ReFishingGDPR: '159',
-  Credits: '166'
+  Credits: '166',
+  PostUpload: '153'
 };
 
 const TYPES_IDS: any = {
@@ -850,6 +851,20 @@ export class TrackingService {
     category: CATEGORY_IDS.Verti,
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Display
+  };
+
+  public static PURCHASE_LISTING_FEE_CATALOG = {
+    name: '825',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+
+  public static PURCHASE_LISTING_FEE_MODAL = {
+    name: '826',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.PostUpload,
+    type: TYPES_IDS.Tap
   };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';

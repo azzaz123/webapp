@@ -9,18 +9,22 @@ import { Observable } from 'rxjs/Observable';
 import { Item } from '../../../../core/item/item';
 import { MOCK_ITEM, PRODUCT_RESPONSE, MOCK_LISTING_FEE_PRODUCT, MOCK_LISTING_FEE_ORDER } from '../../../../../tests/item.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
+import { TrackingService } from '../../../../core/tracking/tracking.service';
+import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 
 describe('ListingfeeConfirmationModalComponent', () => {
   let component: UpgradePlanModalComponent;
   let fixture: ComponentFixture<UpgradePlanModalComponent>;
   let itemService: ItemService;
   let activeModal: NgbActiveModal;
+  let trackingService: TrackingService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UpgradePlanModalComponent, CustomCurrencyPipe],
       providers: [
         DecimalPipe,
+        { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: NgbActiveModal, useValue: {
             close() {
@@ -47,6 +51,7 @@ describe('ListingfeeConfirmationModalComponent', () => {
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
     activeModal = TestBed.get(NgbActiveModal);
+    trackingService = TestBed.get(TrackingService);
     spyOn(itemService, 'getListingFeeInfo').and.returnValue(Observable.of(MOCK_LISTING_FEE_PRODUCT.product_group.products[0]));
     fixture.detectChanges();
   }));
@@ -63,6 +68,8 @@ describe('ListingfeeConfirmationModalComponent', () => {
   });
 
   describe('purchaseListingFee', () => {
+    const item: Item = MOCK_ITEM;
+
     it('should save transactionType in localStorage', () => {
       spyOn(localStorage, 'setItem');
 
@@ -78,6 +85,15 @@ describe('ListingfeeConfirmationModalComponent', () => {
       component.purchaseListingFee();
 
       expect(activeModal.close).toHaveBeenCalledWith(MOCK_LISTING_FEE_ORDER);
+    });
+
+    it('should send PURCHASE_LISTING_FEE_MODAL tracking event', () => {
+      component.itemId = MOCK_ITEM.id;
+      spyOn(trackingService, 'track');
+
+      component.purchaseListingFee();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PURCHASE_LISTING_FEE_MODAL, { item_id: item.id });
     });
   });
 

@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../../core/item/item.service';
 import { ListingFeeProductInfo, Product, Order } from '../../../../core/item/item-response.interface';
 import { OrderEvent } from '../../selected-items/selected-product.interface';
+import { TrackingService } from '../../../../core/tracking/tracking.service';
 
 @Component({
   selector: 'tsl-upgrade-plan-modal',
@@ -15,7 +16,7 @@ export class UpgradePlanModalComponent implements OnInit {
   public listingFeePrice: number;
   public listingFeeProduct: Product;
 
-  constructor(public activeModal: NgbActiveModal, private itemService: ItemService) {
+  constructor(public activeModal: NgbActiveModal, private itemService: ItemService, private trackingService: TrackingService) {
   }
 
   ngOnInit() {
@@ -35,6 +36,7 @@ export class UpgradePlanModalComponent implements OnInit {
       total: this.listingFeePrice
     };
     localStorage.setItem('transactionType', 'purchaseListingFee');
+    this.trackingService.track(TrackingService.PURCHASE_LISTING_FEE_MODAL, { item_id: this.itemId });
     this.activeModal.close(orderEvent);
   }
 
