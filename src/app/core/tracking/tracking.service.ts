@@ -864,6 +864,7 @@ export class TrackingService {
   private pendingTrackingEvents: Array<TrackingEventData> = [];
   private pendingTrackingEvents$ = this.trackingEvents$.bufferTime(sendInterval, null, maxBatchSize).filter((buffer) => buffer.length > 0);
   private sentEvents: Array<TrackingEventData> = [];
+  private sendFailed = false;
 
   constructor(private navigatorService: NavigatorService,
               private http: HttpService,
@@ -876,6 +877,7 @@ export class TrackingService {
     this.setSessionId(this.sessionIdCookieName);
     this.setDeviceAccessTokenId(this.deviceAccessTokenIdCookieName);
     this.subscribeDbReady();
+    this.subscribePostRequestFailed();
   }
 
   public track(event: TrackingEventBase, attributes?: any) {
@@ -893,11 +895,13 @@ export class TrackingService {
     events.map(e => originalEvents.push(Object.assign({}, e)));
     const eventsPackage: TrackingEvent = this.createMultipleEvents(events);
     delete eventsPackage.sessions[0].window;
+    this.persistencyService.storePackagedClickstreamEvents(eventsPackage);
+    if (!this.sendFailed) {
     this.postPackagedEvents(eventsPackage, originalEvents);
   }
+  }
 
-  private postPackagedEvents(eventsPackage: TrackingEvent, originalEvents?: Array<TrackingEventData>, del: number = 1000) {
-    this.persistencyService.storePackagedClickstreamEvents(eventsPackage);
+  private postPackagedEvents(eventsPackage: TrackingEvent, originalEvents?: Array<TrackingEventData>) {
     const stringifiedEvent: string = JSON.stringify(eventsPackage);
       const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
     return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body)
@@ -1036,6 +1040,14 @@ export class TrackingService {
             this.postPackagedEvents(eventsPackage);
           });
         });
+
+  private subscribePostRequestFailed() {
+    this.eventService.subscribe(EventService.HTTP_REQUEST_FAILED, (url) => {
+      if (url === environment.clickStreamURL) {
+        this.sendFailed = true;
+      }
+    });
+  }
 
         this.persistencyService.getClickstreamEvents().subscribe(pendingEvents => {
             pendingEvents.map(e => {

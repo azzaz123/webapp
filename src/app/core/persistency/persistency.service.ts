@@ -86,9 +86,8 @@ export class PersistencyService {
 
   public removePackagedClickstreamEvents(eventsPackage: TrackingEvent) {
     const storedWithKey = eventsPackage.sessions[0].events[0].id;
-    this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
-    .delete(storedWithKey).onsuccess = () => {
-    };
+    return this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
+    .delete(storedWithKey);
   }
 
   public getClickstreamEvents(): Observable<Array<TrackingEventData>> {
