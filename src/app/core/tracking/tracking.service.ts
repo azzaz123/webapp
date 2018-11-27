@@ -1032,14 +1032,13 @@ export class TrackingService {
     this.cookieService.put(cookieName, value, cookieOptions);
   }
 
-  private subscribeDbReady() {
-    this.eventService.subscribe(EventService.DB_READY, (dbName) => {
-      if (dbName === this.persistencyService.clickstreamDbName) {
+  private sendStoredPackagedEvents() {
         this.persistencyService.getPackagedClickstreamEvents().subscribe(pendingPackagedEvents => {
           pendingPackagedEvents.map((eventsPackage) => {
             this.postPackagedEvents(eventsPackage);
           });
         });
+  }
 
   private subscribePostRequestFailed() {
     this.eventService.subscribe(EventService.HTTP_REQUEST_FAILED, (url) => {
@@ -1048,6 +1047,11 @@ export class TrackingService {
       }
     });
   }
+
+  private subscribeDbReady() {
+    this.eventService.subscribe(EventService.DB_READY, (dbName) => {
+      if (dbName === this.persistencyService.clickstreamDbName) {
+        this.sendStoredPackagedEvents();
 
         this.persistencyService.getClickstreamEvents().subscribe(pendingEvents => {
             pendingEvents.map(e => {
