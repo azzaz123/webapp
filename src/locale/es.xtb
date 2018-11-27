@@ -730,5 +730,14 @@
   <translation id="2359130262258320456">O contáctanos para que te hagamos un plan a tu medida que se adapte a tus necesidades.</translation>
   <translation id="3898572555215935465">Email de comercial</translation>
   <translation id="7178101913251976451">mes</translation>
-
+  <translation id="6882407492533510017">Publícalo ya por <ph name="INTERPOLATION"><ex>{{listingFeePrice | customCurrency}}</ex></ph></translation>
+  <translation id="2481055964191445388">No gracias (El coche permanecerá inactivo)</translation>
+  <translation id="7436185668392720001">¡Enhorabuena!</translation>
+  <translation id="7588966777090643410">Tu coche esta publicado por 60 días. Lo encontrarás en tu catalogo.</translation>
+  <translation id="2368996742348144344">Inactivo</translation>
+  <translation id="2652477817167335614">Publica tu coche</translation>
+  <translation id="6187043371709683897">Paga una vez para publicar un coche adicional. Tu coche estará visibile durante 3 meses.</translation>
+  <translation id="8894478290897082527">O subscríbete desde la app</translation>
+  <translation id="8111614905369856788">Suscríbete a Plan Motor para publicar más de un coche</translation>
+  <translation id="1453507850957710766">Paga por un coche ahora o suscríbete al Plan Motor desde la app</translation>
 </translationbundle>
