@@ -6,11 +6,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './listingfee-confirmation-modal.component.html',
   styleUrls: ['./listingfee-confirmation-modal.component.scss']
 })
-export class ListingfeeConfirmationModalComponent implements OnInit {
+export class ListingfeeConfirmationModalComponent {
 
   constructor(public activeModal: NgbActiveModal) { }
-
-  ngOnInit() {
-  }
 
 }

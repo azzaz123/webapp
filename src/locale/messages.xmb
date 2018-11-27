@@ -38,7 +38,7 @@
   <msg id="4088311569349098646"><source>app/layout/sidebar/sidebar.component.ts:79</source><source>app/stats/stats.component.ts:13</source>Stats</msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
-  <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.ts:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.ts:5</source><source>app/dashboard/dashboard.component.ts:46</source>Congratulations!</msg>
+  <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.ts:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.ts:5</source><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.ts:7</source><source>app/dashboard/dashboard.component.ts:46</source>Congratulations!</msg>
   <msg id="8914444864521670589"><source>app/shared/modals/sold-modal/sold-modal.component.ts:7,8</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph>
     </msg>
   <msg id="2882903364152951366"><source>app/shared/modals/sold-modal/sold-modal.component.ts:10</source>Who bought this from you?</msg>
@@ -266,7 +266,6 @@
   <msg id="8111614905369856788"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:17</source>Subscribe to a Motor Plan to publish more than one car.</msg>
   <msg id="6882407492533510017"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:20</source>Publish it for <ph name="INTERPOLATION"><ex>{{listingFeePrice | customCurrency}}</ex></ph></msg>
   <msg id="2481055964191445388"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.ts:21</source>No thanks (The car will remain inactive)</msg>
-  <msg id="7436185668392720001"><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.ts:7</source>¡Congratulations!</msg>
   <msg id="7588966777090643410"><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.ts:8</source>Your car is published for 60 days. You can find it in your catalog.</msg>
   <msg id="989776066026256137"><source>app/catalog/list/list.component.ts:14</source>Your products <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:17</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>

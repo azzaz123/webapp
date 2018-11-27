@@ -28,9 +28,9 @@ export class BuyProductModalComponent implements OnInit {
   public creditInfo: CreditInfo;
 
   constructor(private itemService: ItemService,
-              public activeModal: NgbActiveModal,
-              private paymentService: PaymentService,
-              private eventService: EventService) { }
+    public activeModal: NgbActiveModal,
+    private paymentService: PaymentService,
+    private eventService: EventService) { }
 
   ngOnInit() {
     this.itemService.get(this.orderEvent.order[0].item_id).subscribe((item: Item) => {
@@ -77,12 +77,14 @@ export class BuyProductModalComponent implements OnInit {
         this.activeModal.close('error');
       } else {
         localStorage.setItem('transactionSpent', (creditsToPay).toString());
-        if (this.type === 'urgent' && this.creditInfo.credit > 0) {
-          localStorage.setItem('transactionType', 'urgentWithCredits');
-        } else if (this.type === 'reactivate' && this.creditInfo.credit > 0) {
-          localStorage.setItem('transactionType', 'reactivateWithCredits');
-        } else if (this.type === 'listing-fee' && this.creditInfo.credit > 0) {
-          localStorage.setItem('transactionType', 'purchaseListingFeeWithCredits');
+        if (this.creditInfo.credit > 0) {
+          if (this.type === 'urgent') {
+            localStorage.setItem('transactionType', 'urgentWithCredits');
+          } else if (this.type === 'reactivate') {
+            localStorage.setItem('transactionType', 'reactivateWithCredits');
+          } else if (this.type === 'listing-fee') {
+            localStorage.setItem('transactionType', 'purchaseListingFeeWithCredits');
+          }
         }
         this.eventService.emit(EventService.TOTAL_CREDITS_UPDATED);
         if (response.payment_needed) {
