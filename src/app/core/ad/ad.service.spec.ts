@@ -8,14 +8,12 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { PrivacyService } from '../privacy/privacy.service';
 
 let service: AdService;
 let http: HttpService;
 let userService: UserService;
 let mockBackend: MockBackend;
 let cookieService: CookieService;
-let privacyService: PrivacyService;
 
 const cookiesAdKeyWord = {
   brand: 'bmv',
@@ -94,15 +92,13 @@ describe('AdService', () => {
               delete this.cookies[key];
             }
           }
-        },
-        PrivacyService
+        }
       ],
     });
     http = TestBed.get(HttpService);
     userService = TestBed.get(UserService);
     mockBackend = TestBed.get(MockBackend);
     cookieService = TestBed.get(CookieService);
-    privacyService = TestBed.get(PrivacyService);
     spyOn(navigator.geolocation, 'getCurrentPosition').and.callFake(function(callback) {
       callback(position);
     });
@@ -121,6 +117,7 @@ describe('AdService', () => {
       cookieService.put(key, cookies[key]);
     });
     service = TestBed.get(AdService);
+    service.allowSegmentation$.next(false);
   });
 
   describe('should init google services', () => {
@@ -232,7 +229,7 @@ describe('AdService', () => {
 
       describe('when allowSegmentation is true', () => {
         beforeEach(() => {
-          privacyService.allowSegmentation$.next(true);
+          service.allowSegmentation$.next(true);
         });
 
         it('should send keyWords allowSegmentation with true value', fakeAsync(() => {
@@ -296,7 +293,7 @@ describe('AdService', () => {
 
       describe('when allowSegmentation is false', () => {
         beforeEach(() => {
-          privacyService.allowSegmentation$.next(false);
+          service.allowSegmentation$.next(false);
         });
 
         it('should send keyWords allowSegmentation with false value', fakeAsync(() => {
@@ -314,46 +311,6 @@ describe('AdService', () => {
           tick(refreshRate);
 
           expect(pubads.setRequestNonPersonalizedAds).toHaveBeenCalledWith(1);
-          discardPeriodicTasks();
-        }));
-
-        it('should not call amazon APS fetchBids', fakeAsync(() => {
-          spyOn(apstag, 'fetchBids');
-
-          service.startAdsRefresh();
-          tick(refreshRate);
-
-          expect(apstag.fetchBids).not.toHaveBeenCalled();
-          discardPeriodicTasks();
-        }));
-
-        it('should not call amazon APS setDisplayBids', fakeAsync(() => {
-          spyOn(apstag, 'setDisplayBids');
-
-          service.startAdsRefresh();
-          tick(refreshRate);
-
-          expect(apstag.setDisplayBids).not.toHaveBeenCalled();
-          discardPeriodicTasks();
-        }));
-
-        it('should not call Criteo SetLineItemRanges', fakeAsync(() => {
-          spyOn(Criteo, 'SetLineItemRanges');
-
-          service.startAdsRefresh();
-          tick(refreshRate);
-
-          expect(Criteo.SetLineItemRanges).not.toHaveBeenCalled();
-          discardPeriodicTasks();
-        }));
-
-        it('should not call Criteo SetDFPKeyValueTargeting', fakeAsync(() => {
-          spyOn(Criteo, 'SetDFPKeyValueTargeting');
-
-          service.startAdsRefresh();
-          tick(refreshRate);
-
-          expect(Criteo.SetDFPKeyValueTargeting).not.toHaveBeenCalled();
           discardPeriodicTasks();
         }));
       });

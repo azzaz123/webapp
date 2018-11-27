@@ -96,7 +96,17 @@ export class I18nService {
       deleteBillingInfoSuccess: 'Your billing info has been deleted',
       deleteBillingInfoError: 'There was a error deleting your billing info',
       packError: 'There was a error buying this pack',
-      alreadyFeatured: 'You are trying to feature an item that is already planned.'
+      alreadyFeatured: 'You are trying to feature an item that is already planned.',
+      motorPlanTypes: [
+        {subtype: 'sub_pro_basic', label: 'Pro'},
+        {subtype: 'cars_3_to_5', label: '3 to 5 cars Plan'},
+        {subtype: 'cars_6_to_7', label: '6 to 7 cars Plan'},
+        {subtype: 'cars_8_to_10', label: '8 to 10 cars Plan'},
+        {subtype: 'cars_11_to_15', label: '11 to 15 cars Plan'},
+        {subtype: 'sub_basic', label: 'Basic Motor Plan'},
+        {subtype: 'sub_pro', label: 'Medium Motor Plan'},
+        {subtype: 'sub_premium', label: 'Super Motor Plan'}
+      ],
     },
     es: {
       daysMomentConfig: {
@@ -192,7 +202,17 @@ export class I18nService {
       deleteBillingInfoSuccess: 'Tu información de facturación ha sido borrada',
       deleteBillingInfoError: 'Hubo un error borrando tu información de facturación',
       packError: 'Hubo un error al comprar este paquete',
-      alreadyFeatured: '¡Ups! Estás intentando destacar un item que ya tiene planificados'
+      alreadyFeatured: '¡Ups! Estás intentando destacar un item que ya tiene planificados',
+      motorPlanTypes: [
+        {subtype: 'sub_pro_basic', label: 'Pro'},
+        {subtype: 'cars_3_to_5', label: 'Plan de 3 a 5 coches'},
+        {subtype: 'cars_6_to_7', label: 'Plan de 6 a 7 coches'},
+        {subtype: 'cars_8_to_10', label: 'Plan de 8 a 10 coches'},
+        {subtype: 'cars_11_to_15', label: 'Plan de 11 a 15 coches'},
+        {subtype: 'sub_basic', label: 'Plan Motor Básico'},
+        {subtype: 'sub_pro', label: 'Plan Motor Medio'},
+        {subtype: 'sub_premium', label: 'Plan Motor Super'}
+      ],
     }
   };
 

@@ -12,8 +12,8 @@ export const PERMISSIONS = {
 };
 
 export class User implements Model {
-
   private _itemDistance: number;
+
   private _webLink: string;
 
   private _sellingItem: Item;
