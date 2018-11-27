@@ -904,7 +904,7 @@ export class TrackingService {
   private postPackagedEvents(eventsPackage: TrackingEvent, originalEvents?: Array<TrackingEventData>) {
     const stringifiedEvent: string = JSON.stringify(eventsPackage);
       const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
-    return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body)
+    return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body, null, true)
     .subscribe(() => {
       this.persistencyService.removePackagedClickstreamEvents(eventsPackage);
       if (originalEvents) {
