@@ -7,6 +7,8 @@ import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { environment } from '../../../../environments/environment';
 import { WindowRef } from '../../../core/window/window.service';
+import { HttpService } from '../../../core/http/http.service';
+import { format, AsYouType } from 'libphonenumber-js';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -20,11 +22,13 @@ export class SendPhoneComponent implements OnInit {
   @Input() phone: string;
   @ViewChild('phoneInput') phoneField: ElementRef;
   public sendPhoneForm: FormGroup;
-  private phonePattern: RegExp = /^[+]*[(]{0,1}[-\s\./0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+  private phonePattern: RegExp = /\s*(?:[0-9]\s*){9}$/;
+  protected API_URL = 'api/v3/conversations';
 
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
+    private http: HttpService,
     private errorsService: ErrorsService,
     private trackingService: TrackingService,
     private windowRef: WindowRef,
@@ -46,6 +50,7 @@ export class SendPhoneComponent implements OnInit {
 
   createPhoneNumberMessage() {
     if (this.sendPhoneForm.valid) {
+      const formattedPhoneNumber = format(this.sendPhoneForm.controls.phone.value.toString() , 'ES', 'International');
       if (this.required) {
         this.messageService.addPhoneNumberRequestMessage(this.conversation, false);
         this.trackingService.addTrackingEvent({
@@ -55,7 +60,10 @@ export class SendPhoneComponent implements OnInit {
       } else {
         this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
       }
-      this.messageService.createPhoneNumberMessage(this.conversation, this.sendPhoneForm.value.phone);
+      this.http.put(`${this.API_URL}/${this.conversation.id}/buyer-phone-number`, {
+        phone_number: formattedPhoneNumber
+      }).subscribe();
+      this.messageService.createPhoneNumberMessage(this.conversation, formattedPhoneNumber);
       this.activeModal.close();
     } else if (!this.sendPhoneForm.controls.phone.valid) {
       this.trackingService.addTrackingEvent({
@@ -65,6 +73,12 @@ export class SendPhoneComponent implements OnInit {
       this.sendPhoneForm.controls.phone.markAsDirty();
       this.errorsService.i18nError('formErrors');
     }
+  }
+
+  checkMaxLength(event: any) {
+    const numberOfDigits = event.target.value.split(' ').join('').length;
+    event.target.value = new AsYouType('ES').input(event.target.value);
+    event.target.onkeypress = () => !(numberOfDigits >= 9);
   }
 
   dismiss() {

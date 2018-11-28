@@ -7,7 +7,7 @@
     <div class="form-group">
       <label for="phone" i18n>Let's talk about it:</label>
       <input type="text" class="form-control" id="phone" name="phone" tslRestrictInputNumber i18n-placeholder
-        placeholder="Enter your phone..." #phoneInput formControlName="phone" required />
+        placeholder="Enter your phone..." #phoneInput formControlName="phone" required (keyup)="checkMaxLength($event)"/>
       <a id="send" (click)="createPhoneNumberMessage()" [ngClass]="{selected: sendPhoneForm.controls.phone.valid}">
         <mat-icon svgIcon="send"></mat-icon>
       </a>
