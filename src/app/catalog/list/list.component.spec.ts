@@ -387,7 +387,7 @@ describe('ListComponent', () => {
 
       component.ngOnInit();
 
-      expect(component.motorPlan).toEqual({subtype: 'sub_premium', label: 'Super Motor Plan'});
+      expect(component.motorPlan).toEqual({subtype: 'sub_premium', label: 'Super Motor Plan', shortLabel: 'Super'});
     });
   });
 

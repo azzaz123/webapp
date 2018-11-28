@@ -53,6 +53,7 @@ window['Criteo'] = {
 };
 
 window['__cmp'] = function(arg1, arg2, callback) {};
+window['quancastOptions'] =  {es: {}, en: {}};
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
