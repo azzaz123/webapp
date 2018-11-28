@@ -15,7 +15,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
-import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
+import { AvailableSlots, Counters, Ratings, UserStatsResponse } from './user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
@@ -362,6 +362,11 @@ export class UserService extends ResourceService {
 
   public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
     return this.http.get(this.API_URL + '/me/profile-subscription-info')
+      .map((r: Response) => r.json())
+  }
+
+  public getAvailableSlots(): Observable<AvailableSlots> {
+    return this.http.get(this.API_URL + '/me/items/slots-available')
       .map((r: Response) => r.json())
   }
 }

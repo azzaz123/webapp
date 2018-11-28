@@ -77,8 +77,10 @@ export interface UserValidations {
 }
 
 export interface MotorPlan {
-  type: string,
-  subtype: string
+  type: string;
+  subtype: string;
+  limit?: number;
+  user_can_manage?: boolean;
 }
 
 export interface MotorPlanType {

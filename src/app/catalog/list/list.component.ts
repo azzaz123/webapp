@@ -12,7 +12,7 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
+import { AvailableSlots, Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -52,6 +52,9 @@ export class ListComponent implements OnInit, OnDestroy {
   public motorPlan: MotorPlanType;
   private upgradePlanModalRef: NgbModalRef;
   public hasMotorPlan: boolean;
+  public carsLimit: number = 0;
+  public userCanDeactivate: boolean;
+  public availableSlots: number = 0;
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -76,6 +79,8 @@ export class ListComponent implements OnInit, OnDestroy {
         this.hasMotorPlan = motorPlan.type === 'motor_plan_pro';
         if (this.hasMotorPlan) {
           this.selectedStatus = 'cars';
+          this.carsLimit = motorPlan.limit;
+          this.userCanDeactivate = motorPlan.user_can_manage;
         }
       }
       this.getItems();
@@ -358,6 +363,15 @@ export class ListComponent implements OnInit, OnDestroy {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
     });
+    if (this.hasMotorPlan) {
+      this.userService.getAvailableSlots().subscribe((slots: AvailableSlots) => {
+        this.availableSlots = slots.num_slots_cars;
+      });
+    }
+  }
+
+  public get totalCars(): number {
+    return this.carsLimit - this.availableSlots;
   }
 
   private setNumberOfProducts() {
