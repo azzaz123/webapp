@@ -1,10 +1,9 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { WindowRef } from '../../core/window/window.service';
-import { UserService } from '../../core/user/user.service';
-import { UserProfile } from '../../core/user/user-response.interface';
+import { ProfileService } from '../../core/profile/profile.service';
+import { Profile } from '../../core/profile/profile';
 
 @Component({
   selector: 'tsl-profile-card-favorite',
@@ -13,15 +12,12 @@ import { UserProfile } from '../../core/user/user-response.interface';
 })
 export class ProfileCardFavoriteComponent {
 
-  @Input() profile: UserProfile;
-  @Output() onFavoriteProfileChange: EventEmitter<UserProfile> = new EventEmitter();
+  @Input() profile: Profile;
+  @Output() onFavoriteProfileChange: EventEmitter<Profile> = new EventEmitter();
 
-  constructor(private userService: UserService,
-              private modalService: NgbModal,
-              private windowRef: WindowRef,
+  constructor(private modalService: NgbModal,
               private trackingService: TrackingService,
-              @Inject('SUBDOMAIN') private subdomain: string
-  ) {
+              private profileService: ProfileService) {
   }
 
   removeFavoriteModal(e: Event) {
@@ -34,7 +30,7 @@ export class ProfileCardFavoriteComponent {
   }
 
   removeFavorite() {
-    this.userService.favoriteItem(this.profile.id, false).subscribe(() => {
+    this.profileService.favoriteItem(this.profile.id, false).subscribe(() => {
       this.profile.favorited = false;
       this.onFavoriteProfileChange.emit(this.profile);
       //this.trackingService.track(TrackingService.PROFILE_FAVOURITES_BUTTON_UNFAVORITE);

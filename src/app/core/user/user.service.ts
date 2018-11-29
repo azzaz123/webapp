@@ -8,7 +8,7 @@ import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
-import { UserLocation, UserResponse, UserProfile, ProfilesData } from './user-response.interface';
+import { UserLocation, UserResponse } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -335,51 +335,4 @@ export class UserService extends ResourceService {
   public isProfessional(): Observable<boolean> {
     return this.hasPerm('professional');
   }
-
-  public getPaginationItems(url: string, init, status?): Observable<ProfilesData> {
-    return this.http.get(url, {
-        init: init,
-        expired: status
-      })
-      .map((r: Response) => {
-          const res: any[] = r.json();
-          const nextPage: string = r.headers.get('x-nextpage');
-          const params = _.chain(nextPage).split('&')
-            .map(_.partial(_.split, _, '=', 2))
-            .fromPairs()
-            .value();
-          const nextInit: number = nextPage ? +params.init : null;
-          let data: UserProfile[] = [];
-          if (res.length > 0) {
-            data = res.map((i: any) => {
-              //const profile: User = this.mapRecordData(i);
-              return i;
-            });
-          }
-          return {
-            data: data,
-            init: nextInit
-          };
-        }
-      )
-  }
-
-  public myFavorites(init: number): Observable<ProfilesData> {
-    return this.getPaginationItems(this.API_URL + '/me/users/favorites', init)
-      .map((profilesData: ProfilesData) => {
-        profilesData.data = profilesData.data.map((profile: UserProfile) => {
-          profile.favorited = true;
-          return profile;
-        });
-        return profilesData;
-      });
-  }
-
-  public favoriteItem(id: string, favorited: boolean): Observable<any> {
-    return this.http.put(this.API_URL + '/' + id + '/favorite', {
-      favorited: favorited
-    });
-  }
 }
-
-

@@ -4,8 +4,9 @@ import { ItemsData } from '../core/item/item-response.interface';
 import { UserService } from '../core/user/user.service';
 import { UserStatsResponse, Counters } from '../core/user/user-stats.interface';
 import { Item } from '../core/item/item';
-import { ProfilesData, UserProfile } from '../core/user/user-response.interface';
-import { User } from '../core/user/user';
+import { ProfilesData } from '../core/profile/profile-response.interface';
+import { ProfileService } from '../core/profile/profile.service';
+import { Profile } from '../core/profile/profile';
 
 @Component({
   selector: 'tsl-favorites',
@@ -15,14 +16,16 @@ import { User } from '../core/user/user';
 export class FavoritesComponent implements OnInit {
 
   public items: Item[] = [];
-  public profiles: UserProfile[] = [];
+  public profiles: Profile[] = [];
   public selectedStatus = 'products';
   public loading = false;
   public end = false;
   public numberOfFavorites: number;
   private counters: Counters;
 
-  constructor(public itemService: ItemService, private userService: UserService) { }
+  constructor(public itemService: ItemService,
+              private userService: UserService,
+              private profileService: ProfileService) { }
 
   ngOnInit() {
     this.getItems();
@@ -55,7 +58,7 @@ export class FavoritesComponent implements OnInit {
     if (!append) {
       this.profiles = [];
     }
-    this.userService.myFavorites(this.items.length).subscribe((profilesData: ProfilesData) => {
+    this.profileService.myFavorites(this.profiles.length).subscribe((profilesData: ProfilesData) => {
       const profiles = profilesData.data;
       this.profiles = this.profiles.concat(profiles);
       this.loading = false;
@@ -67,11 +70,11 @@ export class FavoritesComponent implements OnInit {
     this.removeItem(item);
   }
 
-  public onFavoriteProfileChange(profile: UserProfile) {
+  public onFavoriteProfileChange(profile: Profile) {
     this.removeProfile(profile);
   }
 
-  public removeProfile(profile: UserProfile) {
+  public removeProfile(profile: Profile) {
     if (this.profiles.length) {
       const index = this.profiles.indexOf(profile);
       this.profiles.splice(index, 1);

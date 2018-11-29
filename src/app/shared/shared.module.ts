@@ -140,7 +140,6 @@ import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-c
     ArchivableComponent,
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
-    UserAvatarComponent,
     ReviewModalComponent,
     MessageComponent,
     ReviewButtonComponent,

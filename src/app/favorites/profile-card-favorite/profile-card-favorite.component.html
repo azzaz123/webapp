@@ -1,8 +1,8 @@
 <tsl-card>
   <tsl-card-image>
-    <tsl-profile-avatar *ngFor="let number of [0,1,2,3]" [profileImage]="profile.item_images[number]" size="profile"
+    <tsl-profile-images *ngFor="let number of [0,1,2,3]" [profileImage]="profile.item_images[number]" size="profile"
                         fallbackLight="true">
-    </tsl-profile-avatar>
+    </tsl-profile-images>
     <span class="featured"><mat-icon svgIcon="wing"></mat-icon></span>
   </tsl-card-image>
   <tsl-card-content>
