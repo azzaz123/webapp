@@ -8,7 +8,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { environment } from '../../../../environments/environment';
 import { WindowRef } from '../../../core/window/window.service';
 import { HttpService } from '../../../core/http/http.service';
-import { format, AsYouType } from 'libphonenumber-js';
+import { format, AsYouType, getCountryCallingCode } from 'libphonenumber-js';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -76,7 +76,7 @@ export class SendPhoneComponent implements OnInit {
   }
 
   formatNumber(event: any) {
-    const prefix = '+34';
+    const prefix = '+' + getCountryCallingCode('ES');
     const hasPrefix = event.target.value.indexOf(prefix) > -1;
     const numberOfDigits = hasPrefix ? event.target.value.split(prefix)[1].split(' ').join('').length
     : event.target.value.split(' ').join('').length;
