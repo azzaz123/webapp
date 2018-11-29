@@ -46,7 +46,8 @@ const CATEGORY_IDS: any = {
   Willis: '130',
   Klinc: '136',
   Mapfre: '137',
-  Verti: '138'
+  Verti: '138',
+  Solcredito: '139'
 };
 
 const SCREENS_IDS: any = {
@@ -850,6 +851,20 @@ export class TrackingService {
     category: CATEGORY_IDS.Verti,
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Display
+  };
+
+  public static SOLCREDITO_LINK_DISPLAY = {
+    name: '835',
+    category: CATEGORY_IDS.Solcredito,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Display
+  };
+
+  public static SOLCREDITO_LINK_TAP = {
+    name: '836',
+    category: CATEGORY_IDS.Solcredito,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Tap
   };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';
