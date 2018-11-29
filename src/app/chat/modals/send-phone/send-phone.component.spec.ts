@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SendPhoneComponent } from './send-phone.component';
 import { MessageService } from '../../../core/message/message.service';
@@ -11,6 +11,11 @@ import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec'
 import { WindowRef } from '../../../core/window/window.service';
 import { environment } from '../../../../environments/environment';
 import { MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import { HttpService } from '../../../core/http/http.service';
+import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
+import { By } from '@angular/platform-browser';
+import { format } from 'libphonenumber-js';
+import { Observable } from 'rxjs/Observable';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;
@@ -18,14 +23,18 @@ describe('SendPhoneComponent', () => {
   let messageService: MessageService;
   let trackingService: TrackingService;
   let errorsService: ErrorsService;
+  let http: HttpService;
   let windowRef: WindowRef;
-  const phoneNumber = '+34912345678';
+  let element: DebugElement;
+  const phoneNumber = format('+34912345678', 'ES', 'International');
+  const API_URL = 'api/v3/conversations';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
       providers: [NgbActiveModal,
         FormBuilder,
+        ...TEST_HTTP_PROVIDERS,
         { provide: MessageService, useValue: {
           createPhoneNumberMessage() {},
           addPhoneNumberRequestMessage() {}
@@ -48,11 +57,13 @@ describe('SendPhoneComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SendPhoneComponent);
+    element = fixture.debugElement.query(By.css('#phone'));
     component = fixture.componentInstance;
     component.phone = phoneNumber;
     messageService = TestBed.get(MessageService);
     trackingService = TestBed.get(TrackingService);
     errorsService = TestBed.get(ErrorsService);
+    http = TestBed.get(HttpService);
     windowRef = TestBed.get(WindowRef);
     fixture.detectChanges();
   });
@@ -124,6 +135,17 @@ describe('SendPhoneComponent', () => {
         });
       });
 
+      it('should PUT the phone numberto the relevant API', () => {
+        spyOn(http, 'put').and.returnValue(Observable.of(true));
+        component.conversation = MOCK_CONVERSATION();
+
+        component.createPhoneNumberMessage();
+
+        expect(http.put).toHaveBeenCalledWith(`${API_URL}/${component.conversation.id}/buyer-phone-number`, {
+          phone_number: phoneNumber
+        });
+      });
+
       it('should call messageService.createPhoneNumberMessage with the conversation and phoneNumber', () => {
         spyOn(messageService, 'createPhoneNumberMessage');
         component.conversation = MOCK_CONVERSATION();
@@ -135,6 +157,7 @@ describe('SendPhoneComponent', () => {
 
       it('should close the modal', () => {
         spyOn(component.activeModal, 'close');
+        component.conversation = MOCK_CONVERSATION();
 
         component.createPhoneNumberMessage();
 
@@ -183,8 +206,12 @@ describe('SendPhoneComponent', () => {
       });
 
       it('should set controls.phone.valid as TRUE when an invalid input is provided', () => {
-        const validEntries = ['+34912345678', '0034912345678', '(34)912345678', '+(34)912345678', '912345678', '912-345678',
-        '912 345 678', '91234   5678', '912/345678'];
+        /* validation patter inplements the following rules:
+         * starts with the country code '+34 '
+         * contains digis and spaces only, excluding the country code
+         * contains exactly 9 digits, excluding the country code and ignoring spaces
+         */
+        const validEntries = ['+34 912345678', '+34 612 345 678', '+34 612 345      678'];
 
         validEntries.map(input => {
           component.sendPhoneForm.get('phone').patchValue(input);
@@ -196,8 +223,7 @@ describe('SendPhoneComponent', () => {
       });
 
       it('should set controls.phone.valid as FALSE when an invalid input is provided', () => {
-        const invalidEntries = ['+349-has-letters-223', '(349123)45678', '(912345678)', '912+345678', '912,345678',
-        '912*345678', '912?345678'];
+        const invalidEntries = ['+349-has-letters-223', '(349123)45678', '912345678'];
 
         invalidEntries.map(input => {
           component.sendPhoneForm.get('phone').patchValue(input);
@@ -206,6 +232,49 @@ describe('SendPhoneComponent', () => {
 
           expect(component.sendPhoneForm.controls.phone.valid).toBe(false);
         });
+      });
+    });
+  });
+
+  describe('formatNumber', () => {
+    const validInputs = ['633333333', '+34 633333333', '123456789'];
+    const incompleteInputs = ['6333', '+34 63', '1234567'];
+
+    it('should format the number to Spanish International format when the input has 9 digits, excluding the prefix', () => {
+      validInputs.map((phoneValue) => {
+        element.nativeElement.value = phoneValue;
+        const expectedFormattedNumber = format(phoneValue, 'ES', 'International'); // e.g.: +34 633 33 33 33
+        element.triggerEventHandler('keyup', {
+          target: element.nativeElement
+        });
+
+        expect(element.nativeElement.value).toBe(expectedFormattedNumber);
+      });
+    });
+
+    it('should make onkeypress return FALSE (disable typing) when the number of digits excluding the prefix is 9', () => {
+      validInputs.map((phoneValue) => {
+        element.nativeElement.value = phoneValue;
+        element.triggerEventHandler('keyup', {
+          target: element.nativeElement
+        });
+
+        const onkeypressValue = element.nativeElement.onkeypress();
+
+        expect(onkeypressValue).toBe(false);
+      });
+    });
+
+    it('should make onkeypress return TRUE (enable typing) when the number of digits excluding the prefix is 9', () => {
+      incompleteInputs.map((phoneValue) => {
+        element.nativeElement.value = phoneValue;
+        element.triggerEventHandler('keyup', {
+          target: element.nativeElement
+        });
+
+        const onkeypressValue = element.nativeElement.onkeypress();
+
+        expect(onkeypressValue).toBe(true);
       });
     });
   });
