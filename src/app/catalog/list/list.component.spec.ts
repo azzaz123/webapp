@@ -32,6 +32,7 @@ import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { MOTORPLAN_DATA } from '../../../tests/user.fixtures.spec';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -72,7 +73,6 @@ describe('ListComponent', () => {
         {provide: TrackingService, useClass: MockTrackingService},
         {
           provide: ItemService, useValue: {
-          selectedItems: [],
           mine() {
             return Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: 20});
           },
@@ -90,7 +90,9 @@ describe('ListComponent', () => {
           },
           get() {
             return Observable.of(MOCK_ITEM_V3);
-          }
+          },
+          selectedItems$: new ReplaySubject(1),
+          selectedItems: []
         }
         },
         {
@@ -159,7 +161,10 @@ describe('ListComponent', () => {
               return Observable.of({
                 motorPlan: mockMotorPlan
               });
-            }
+            },
+          getAvailableSlots() {
+              return Observable.of({});
+          }
           }
         },
       ],

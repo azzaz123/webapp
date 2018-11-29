@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DeactivateItemsModalComponent } from './deactivate-items-modal.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('DeactivateItemsModalComponent', () => {
   let component: DeactivateItemsModalComponent;
@@ -8,7 +9,8 @@ describe('DeactivateItemsModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DeactivateItemsModalComponent ]
+      declarations: [ DeactivateItemsModalComponent ],
+      providers: [NgbActiveModal]
     })
     .compileComponents();
   }));

@@ -377,7 +377,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (this.hasMotorPlan) {
       this.userService.getAvailableSlots().subscribe((slots: AvailableSlots) => {
         this.availableSlots = slots.num_slots_cars;
-        this.userCanDeactivate = true; //slots.user_can_manage;
+        this.userCanDeactivate = slots.user_can_manage;
       });
     }
   }
