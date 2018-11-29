@@ -206,12 +206,8 @@ describe('SendPhoneComponent', () => {
       });
 
       it('should set controls.phone.valid as TRUE when an invalid input is provided', () => {
-        /* validation patter inplements the following rules:
-         * starts with the country code '+34 '
-         * contains digis and spaces only, excluding the country code
-         * contains exactly 9 digits, excluding the country code and ignoring spaces
-         */
-        const validEntries = ['+34 912345678', '+34 612 345 678', '+34 612 345      678'];
+        // validator uses isValidNumber provided by libphonenumber-js, validating numbers of ES format
+        const validEntries = ['+34 912345678', '+34 612 345 678'];
 
         validEntries.map(input => {
           component.sendPhoneForm.get('phone').patchValue(input);
@@ -223,7 +219,7 @@ describe('SendPhoneComponent', () => {
       });
 
       it('should set controls.phone.valid as FALSE when an invalid input is provided', () => {
-        const invalidEntries = ['+349-has-letters-223', '(349123)45678', '912345678'];
+        const invalidEntries = ['+349-has-letters-223', '(349123)45678', '123456789'];
 
         invalidEntries.map(input => {
           component.sendPhoneForm.get('phone').patchValue(input);
@@ -237,7 +233,7 @@ describe('SendPhoneComponent', () => {
   });
 
   describe('formatNumber', () => {
-    const validInputs = ['633333333', '+34 633333333', '123456789'];
+    const validInputs = ['633333333', '+34 633333333', '912345678'];
     const incompleteInputs = ['6333', '+34 63', '1234567'];
 
     it('should format the number to Spanish International format when the input has 9 digits, excluding the prefix', () => {

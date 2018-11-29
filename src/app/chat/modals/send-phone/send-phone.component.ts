@@ -2,13 +2,13 @@ import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from '../../../core/message/message.service';
 import { Conversation } from '../../../core/conversation/conversation';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { TrackingService } from '../../../core/tracking/tracking.service';
 import { environment } from '../../../../environments/environment';
 import { WindowRef } from '../../../core/window/window.service';
 import { HttpService } from '../../../core/http/http.service';
-import { format, AsYouType, getCountryCallingCode } from 'libphonenumber-js';
+import { format, AsYouType, getCountryCallingCode, isValidNumber } from 'libphonenumber-js';
 
 @Component({
   selector: 'tsl-send-phone',
@@ -22,7 +22,6 @@ export class SendPhoneComponent implements OnInit {
   @Input() phone: string;
   @ViewChild('phoneInput') phoneField: ElementRef;
   public sendPhoneForm: FormGroup;
-  private phonePattern: RegExp = /^\+34\ \s*(?:[0-9]\s*){9}$/;
   protected API_URL = 'api/v3/conversations';
 
   constructor(
@@ -35,7 +34,7 @@ export class SendPhoneComponent implements OnInit {
     public activeModal: NgbActiveModal) {
     this.trackingService.trackAccumulatedEvents();
     this.sendPhoneForm = this.fb.group({
-      phone: ['', [Validators.required, Validators.pattern(this.phonePattern)]]
+      phone: ['', [Validators.required, this.phoneNumberFormatValidator]]
     });
   }
 
@@ -46,6 +45,10 @@ export class SendPhoneComponent implements OnInit {
         phone: this.phone
       });
     }
+  }
+
+  private phoneNumberFormatValidator(control: FormControl) {
+    return isValidNumber(control.value, 'ES') ? null : { invalid: true };
   }
 
   createPhoneNumberMessage() {
