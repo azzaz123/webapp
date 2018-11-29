@@ -49,8 +49,8 @@ export class SendPhoneComponent implements OnInit {
   }
 
   createPhoneNumberMessage() {
+    const phoneNumber = this.sendPhoneForm.controls.phone.value;
     if (this.sendPhoneForm.valid) {
-      const formattedPhoneNumber = format(this.sendPhoneForm.controls.phone.value.toString() , 'ES', 'International');
       if (this.required) {
         this.messageService.addPhoneNumberRequestMessage(this.conversation, false);
         this.trackingService.addTrackingEvent({
@@ -61,14 +61,14 @@ export class SendPhoneComponent implements OnInit {
         this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_ACCEPTSHARING });
       }
       this.http.put(`${this.API_URL}/${this.conversation.id}/buyer-phone-number`, {
-        phone_number: formattedPhoneNumber
+        phone_number: phoneNumber
       }).subscribe();
-      this.messageService.createPhoneNumberMessage(this.conversation, formattedPhoneNumber);
+      this.messageService.createPhoneNumberMessage(this.conversation, phoneNumber);
       this.activeModal.close();
     } else if (!this.sendPhoneForm.controls.phone.valid) {
       this.trackingService.addTrackingEvent({
         eventData: TrackingService.ITEM_SHAREPHONE_WRONGPHONE,
-        attributes: { item_id: this.conversation.item.id, phone_number: this.sendPhoneForm.controls.phone.value }
+        attributes: { item_id: this.conversation.item.id, phone_number: phoneNumber }
       });
       this.sendPhoneForm.controls.phone.markAsDirty();
       this.errorsService.i18nError('formErrors');
@@ -89,6 +89,9 @@ export class SendPhoneComponent implements OnInit {
         event.target.value = format(event.target.value.toString() , 'ES', 'International');
       }
     }
+    this.sendPhoneForm.setValue({
+      phone: event.target.value
+    });
   }
 
   dismiss() {
