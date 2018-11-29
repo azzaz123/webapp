@@ -22,7 +22,7 @@ export class SendPhoneComponent implements OnInit {
   @Input() phone: string;
   @ViewChild('phoneInput') phoneField: ElementRef;
   public sendPhoneForm: FormGroup;
-  private phonePattern: RegExp = /\s*(?:[0-9]\s*){9}$/;
+  private phonePattern: RegExp = /^\+34\ \s*(?:[0-9]\s*){9}$/;
   protected API_URL = 'api/v3/conversations';
 
   constructor(
@@ -75,10 +75,20 @@ export class SendPhoneComponent implements OnInit {
     }
   }
 
-  checkMaxLength(event: any) {
-    const numberOfDigits = event.target.value.split(' ').join('').length;
+  formatNumber(event: any) {
+    const prefix = '+34';
+    const hasPrefix = event.target.value.indexOf(prefix) > -1;
+    const numberOfDigits = hasPrefix ? event.target.value.split(prefix)[1].split(' ').join('').length
+    : event.target.value.split(' ').join('').length;
     event.target.value = new AsYouType('ES').input(event.target.value);
     event.target.onkeypress = () => !(numberOfDigits >= 9);
+    if (numberOfDigits === 9) {
+      if (event.target.value.indexOf(prefix) === -1) {
+        event.target.value = prefix.concat(' ', event.target.value);
+      } else {
+        event.target.value = format(event.target.value.toString() , 'ES', 'International');
+      }
+    }
   }
 
   dismiss() {
