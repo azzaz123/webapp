@@ -36,26 +36,6 @@
   <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:65</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
   <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:72</source>Help</msg>
   <msg id="4088311569349098646"><source>app/layout/sidebar/sidebar.component.ts:79</source><source>app/stats/stats.component.ts:13</source>Stats</msg>
-  <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
-        I accept the updated privacy policy in order to continue navigating.
-      </msg>
-  <msg id="2027065996111573728"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:8,10</source>
-        Help us to maintain a safe community.
-      </msg>
-  <msg id="2058875714516120541"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:14</source> I accept to recieve customized content and ads. </msg>
-  <msg id="6053030049682367676"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:17</source>I accept the conditions for privacy.</msg>
-  <msg id="3621660718268535813"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:22,24</source>
-        I accept
-      </msg>
-  <msg id="2902767388086622493"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:30,32</source>
-        It seems that you don&apos;t want to you see the ads most relevant to you.
-      </msg>
-  <msg id="3511695773156847637"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:33,35</source>
-        You will still see the ads but they won&apos;t be chosen according to your preferences.
-      </msg>
-  <msg id="5630538151734871478"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:39,41</source>
-        Yes, I accept
-      </msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.ts:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.ts:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
   <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.ts:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.ts:5</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.ts:5</source><source>app/dashboard/dashboard.component.ts:46</source>Congratulations!</msg>
@@ -68,7 +48,7 @@
   <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.ts:39</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.ts:72</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.ts:79</source>Continue</msg>
   <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.ts:7</source><source>app/shared/process-all-button/process-all-button.component.ts:12</source><source>app/calls/calls.component.ts:28</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.ts:8</source>This will process all the elements in this page.</msg>
-  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.ts:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:31</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:42</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:53</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.ts:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:5</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source>Cancel</msg>
+  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.ts:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.ts:6</source><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.ts:6</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:31</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.ts:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:5</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source>Cancel</msg>
   <msg id="4749295647449765550"><source>app/shared/archivable/archivable.component.ts:6</source><source>app/calls/calls.component.ts:24</source><source>app/chat/conversations-panel/conversations-panel.component.ts:10</source>Processed</msg>
   <msg id="5847549463396300276"><source>app/shared/modals/review-modal/review-modal.component.ts:8</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{userName}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="4650730844441578299"><source>app/shared/modals/review-modal/review-modal.component.ts:9</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
@@ -108,8 +88,8 @@
   <msg id="3870268043917301466"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:16</source>The item will be removed from favorites.</msg>
   <msg id="773668064257926548"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:19</source><source>app/shared/profile/credit-card-info/credit-card-info.component.ts:15</source>Delete card</msg>
   <msg id="8843627277100451781"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source>Are you sure you want to delete the card saved?</msg>
-  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:26</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:32</source><source>app/catalog/list/selected-items/selected-items.component.ts:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
-  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:27</source><source>app/catalog/list/selected-items/selected-items.component.ts:19</source><source>app/chat/item/item.component.ts:17</source>Reserve</msg>
+  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:26</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:32</source><source>app/catalog/list/list.component.ts:53</source><source>app/catalog/list/selected-items/selected-items.component.ts:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
+  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:27</source><source>app/catalog/list/list.component.ts:49</source><source>app/catalog/list/selected-items/selected-items.component.ts:19</source><source>app/chat/item/item.component.ts:17</source>Reserve</msg>
   <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:28</source>Remove</msg>
   <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:29</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:6</source>Yes, I am sure</msg>
   <msg id="4468071625554558577"><source>app/shared/profile/credit-card-info/credit-card-info.component.ts:6</source>Payment method:</msg>
@@ -149,16 +129,16 @@
   <msg id="4701510938988860546"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:9</source>Go back and cancel bumps</msg>
   <msg id="4807588143683316694"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:12</source>Items that are already planned can&apos;t be featured again.</msg>
   <msg id="445243100567221931"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.ts:13</source>Ok, got it</msg>
-  <msg id="5262427597279775777"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:5</source><source>app/catalog/list/list.component.ts:40</source>1 item selected</msg>
+  <msg id="2299499307204911989"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.ts:2</source>Activate items</msg>
+  <msg id="3437651521808081039"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.ts:3</source>The selected items will be set all active.</msg>
+  <msg id="4759723562137600498"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.ts:7</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:19</source><source>app/catalog/list/list.component.ts:56</source>Activate</msg>
+  <msg id="5943346117221479516"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.ts:2</source>Deactivate items</msg>
+  <msg id="1888437309536533541"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.ts:3</source>The selected items will be set all pending.</msg>
+  <msg id="5322473252816589112"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.ts:7</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:17</source><source>app/catalog/list/list.component.ts:58</source>Deactivate</msg>
+  <msg id="5262427597279775777"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:5</source><source>app/catalog/list/list.component.ts:42</source>1 item selected</msg>
   <msg id="708449889891136724"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:6,7</source>
         <ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
-  <msg id="5322473252816589112"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:17</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:43</source>Deactivate</msg>
-  <msg id="4759723562137600498"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:19</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:54</source>Activate</msg>
   <msg id="13886945388572438" desc="selected-items-button" meaning="Continue to cart"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:22</source>Feature</msg>
-  <msg id="5943346117221479516"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:38</source>Deactivate items</msg>
-  <msg id="1888437309536533541"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:39</source>The selected items will be set all pending.</msg>
-  <msg id="2299499307204911989"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:49</source>Activate items</msg>
-  <msg id="3437651521808081039"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:50</source>The selected items will be set all active.</msg>
   <msg id="4464028962645674576"><source>app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.ts:2,3</source>Active
     <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>{{counters?.publish}}</ex></ph>/<ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION_1"><ex>{{subscriptionPlan || &apos;0&apos;}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="8497824097226681583"><source>app/shared/catalog/catalog-status-navbar/catalog-status-navbar.component.ts:4,5</source>Inactive
@@ -288,11 +268,14 @@
   <msg id="1953428607881051577"><source>app/catalog/list/list.component.ts:17</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
   <msg id="442085080206895883"><source>app/catalog/list/list.component.ts:29</source>products</msg>
   <msg id="776785241867401546"><source>app/catalog/list/list.component.ts:30</source>product</msg>
-  <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:35</source>Published</msg>
-  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:36</source>Sold</msg>
-  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:41</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
-  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:53</source>Upload an item to my catalog</msg>
-  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:54</source>Upload another item to my catalog</msg>
+  <msg id="954702980611036148"><source>app/catalog/list/list.component.ts:35</source>Cars</msg>
+  <msg id="4058575476871566236"><source>app/catalog/list/list.component.ts:36</source>Published</msg>
+  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.ts:37</source>Sold</msg>
+  <msg id="3618067650338827326"><source>app/catalog/list/list.component.ts:43</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
+  <msg id="8141228329244837517"><source>app/catalog/list/list.component.ts:70</source>Upload an item to my catalog</msg>
+  <msg id="6946649608831221934"><source>app/catalog/list/list.component.ts:71</source>Upload another item to my catalog</msg>
+  <msg id="6371997993047169675"><source>app/catalog/list/list.component.ts:72</source>You can upload one more car</msg>
+  <msg id="219922155027226932"><source>app/catalog/list/list.component.ts:73</source>You can upload <ph name="INTERPOLATION"><ex>{{availableSlots}}</ex></ph> cars more</msg>
   <msg id="8890553633144307762"><source>app/catalog/checkout/checkout.component.ts:3</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.ts:8</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.ts:3</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.ts:4</source>Back</msg>
   <msg id="833919813165214228"><source>app/catalog/checkout/checkout.component.ts:14</source>Feature it locally</msg>
   <msg id="4721342773618175343"><source>app/catalog/checkout/checkout.component.ts:15</source>Feature it provincially</msg>
@@ -468,8 +451,7 @@
   <msg id="2732498404411727211"><source>app/profile/profile-subscription/profile-subscription.component.ts:7</source><source>app/profile-pro/profile-pro-subscription/profile-pro-subscription.component.ts:9</source>You are not yet subscribed to any plan.</msg>
   <msg id="6419964541223964219"><source>app/profile/profile-subscription/profile-subscription.component.ts:9</source>Each plan includes the posibility to publish a max number of cars, you can always remove and choose a different. Go to the app to change the suscription.</msg>
   <msg id="2359130262258320456"><source>app/profile/profile-subscription/profile-subscription.component.ts:10</source>Contact us if you need a plan that suits you.</msg>
-  <msg id="3898572555215935465"><source>app/profile/profile-subscription/profile-subscription.component.ts:11</source>Email comercial</msg>
-  <msg id="7178101913251976451"><source>app/profile/profile-subscription/profile-subscription.component.ts:16</source>month</msg>
+  <msg id="7178101913251976451"><source>app/profile/profile-subscription/profile-subscription.component.ts:17</source>month</msg>
   <msg id="2618743771935093938"><source>app/profile/profile-info/profile-info.component.ts:7</source>Personal info</msg>
   <msg id="529882100731018983"><source>app/profile/profile-info/profile-info.component.ts:10</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:8</source>First Name:</msg>
   <msg id="6335971540734973333"><source>app/profile/profile-info/profile-info.component.ts:16</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.ts:14</source>Last Name:</msg>
@@ -488,10 +470,6 @@
   <msg id="6631334172623029500"><source>app/profile/profile-info/profile-info.component.ts:112</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:57</source>Email:</msg>
   <msg id="6865009229971482891"><source>app/profile/profile-info/profile-info.component.ts:118</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.ts:63</source>Password:</msg>
   <msg id="2322688793988378029"><source>app/profile/profile-info/profile-info.component.ts:127</source>Close account</msg>
-  <msg id="4930506384627295710"><source>app/profile/profile-info/profile-info.component.ts:135</source>Settings</msg>
-  <msg id="9195373106604759125"><source>app/profile/profile-info/profile-info.component.ts:142,144</source>
-                In order for the adverts I see to be of interest to me, I accept that wallapop may share any information gathered during my session with the companies with which they collaborate.
-              </msg>
   <msg id="9032739290449539063"><source>app/profile-pro/profile-pro.component.ts:6</source>Your info</msg>
   <msg id="4558593963938972556"><source>app/profile-pro/profile-pro.component.ts:9</source>Here you can see and manage the information related to your profile</msg>
   <msg id="690637757793763587"><source>app/profile-pro/profile-pro.component.ts:22</source>Billing information</msg>

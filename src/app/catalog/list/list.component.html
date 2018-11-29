@@ -69,7 +69,8 @@
             <text fill="#13C1AC" font-family="Wallie-Fit, Wallie" font-size="24">
               <tspan x="377" y="55" *ngIf="!items.length && (availableSlots === 0 || selectedStatus === 'published')" i18n>Upload an item to my catalog</tspan>
               <tspan x="377" y="55" *ngIf="items.length && (availableSlots === 0 || selectedStatus === 'published')" i18n>Upload another item to my catalog</tspan>
-              <tspan x="377" y="55" *ngIf="selectedStatus === 'cars' && availableSlots > 0" i18n>You can upload {{availableSlots}} cars more</tspan>
+              <tspan x="377" y="55" *ngIf="selectedStatus === 'cars' && availableSlots === 1" i18n>You can upload one more car</tspan>
+              <tspan x="377" y="55" *ngIf="selectedStatus === 'cars' && availableSlots > 1" i18n>You can upload {{availableSlots}} cars more</tspan>
             </text>
             <rect class="pic" width="72" height="72" x="8" y="8" fill="#13C1AC" rx="10"/>
             <path fill="#FFF" fill-rule="nonzero" d="M44 23.695c-11.214 0-20.305 9.09-20.305 20.305 0 11.214 9.09 20.305 20.305 20.305 11.214 0 20.305-9.09 20.305-20.305 0-11.214-9.09-20.305-20.305-20.305zm0-3.095c12.923 0 23.4 10.477 23.4 23.4 0 12.923-10.477 23.4-23.4 23.4-12.923 0-23.4-10.477-23.4-23.4 0-12.923 10.477-23.4 23.4-23.4z" opacity=".5"/>
