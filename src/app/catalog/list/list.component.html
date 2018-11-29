@@ -53,9 +53,9 @@
           <span i18n>Delete</span>
         </button>
         <button class="btn-activate" (click)="activate()"
-                [disabled]="!itemService.selectedItems.length" i18n>Activate</button>
-        <button class="btn-delete dark" (click)="deactivate()" *ngIf="userCanDeactivate"
-                [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
+                [disabled]="!itemService.selectedItems.length || !canActivate" i18n>Activate</button>
+        <button class="btn-deactivate dark" (click)="deactivate()" *ngIf="userCanDeactivate"
+                [disabled]="!itemService.selectedItems.length || !canDeactivate" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
       </span>
     </div>
     <div class="row items">

@@ -129,7 +129,7 @@ tsl-selected-items {
     button {
       cursor: auto;
       background-color: $grey-50;
-      &.btn-bump, &.btn-sold, &.btn-reserve, &.btn-delete {
+      &.btn-bump, &.btn-sold, &.btn-reserve, &.btn-delete, &.btn-activate, &.btn-deactivate {
         &:hover {
           background-color: $grey-50;
           border: solid 1px rgba($grey-100, 0.5);
@@ -149,7 +149,7 @@ tsl-selected-items {
     color: $grey-300;
     font-size: $font-size-S;
     border: solid 1px rgba($grey-100, 0.5);
-    &.btn-delete {
+    &.btn-delete, &.btn-deactivate {
       padding: 0 ($spacing / 2);
       mat-icon {
         height: 16px;
@@ -197,6 +197,13 @@ tsl-selected-items {
         border-color: transparent;
         color: $white;
       }
+      &:disabled {
+        background: $grey-50;
+        border-color: $grey-100;
+        color: $grey-300;
+      }
+    }
+    &.btn-deactivate {
       &:disabled {
         background: $grey-50;
         border-color: $grey-100;

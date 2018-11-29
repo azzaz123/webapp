@@ -2,7 +2,10 @@ import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import { ItemBulkResponse, ItemsData, Order, Product } from '../../core/item/item-response.interface';
+import {
+  ItemBulkResponse, ItemsData, Order, Product,
+  SelectedItemsAction
+} from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -55,6 +58,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public carsLimit: number = 0;
   public userCanDeactivate: boolean;
   public availableSlots: number = 0;
+  public selectedItems: Item[];
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -80,11 +84,18 @@ export class ListComponent implements OnInit, OnDestroy {
         if (this.hasMotorPlan) {
           this.selectedStatus = 'cars';
           this.carsLimit = motorPlan.limit;
-          this.userCanDeactivate = motorPlan.user_can_manage;
         }
       }
       this.getItems();
       this.getNumberOfProducts();
+    });
+
+    this.itemService.selectedItems$.takeWhile(() => {
+      return this.active;
+    }).subscribe((action: SelectedItemsAction) => {
+      this.selectedItems = this.itemService.selectedItems.map((id: string) => {
+        return <Item>_.find(this.items, {id: id});
+      });
     });
 
     setTimeout(() => {
@@ -366,6 +377,7 @@ export class ListComponent implements OnInit, OnDestroy {
     if (this.hasMotorPlan) {
       this.userService.getAvailableSlots().subscribe((slots: AvailableSlots) => {
         this.availableSlots = slots.num_slots_cars;
+        this.userCanDeactivate = true; //slots.user_can_manage;
       });
     }
   }
@@ -427,6 +439,18 @@ export class ListComponent implements OnInit, OnDestroy {
             .result.then(() => {}, () => {});
         }
       });
+    });
+  }
+
+  public get canActivate(): boolean {
+    return _.every(this.selectedItems, (item) => {
+      return item.flags.onhold;
+    });
+  }
+
+  public get canDeactivate(): boolean {
+    return _.every(this.selectedItems, (item) => {
+      return !item.flags.onhold;
     });
   }
 
