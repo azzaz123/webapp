@@ -264,4 +264,5 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('slider-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/slider-arrow.svg'));
   matIconRegistry.addSvgIcon('up-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/up-arrow.svg'));
   matIconRegistry.addSvgIcon('listing-fee-car-icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/listing-fee-icon.svg'));
+  matIconRegistry.addSvgIcon('listing-fee-car-icon-wings', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/listing-fee-icon-wings.svg'));
 }

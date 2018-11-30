@@ -331,8 +331,8 @@ describe('ListComponent', () => {
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
     }));
 
-    it('should open the listing fee modal if transaction is set as purchaseListingFeeWithCredit', fakeAsync(() => {
-      spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFeeWithCredit');
+    it('should open the listing fee modal if transaction is set as purchaseListingFeeWithCredits', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFeeWithCredits');
       spyOn(localStorage, 'removeItem');
       route.params = Observable.of({
         code: 200
