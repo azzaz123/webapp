@@ -226,7 +226,8 @@ export class ItemService extends ResourceService {
       content.terrace,
       content.elevator,
       content.pool,
-      content.garden
+      content.garden,
+      content.image
     );
   }
 
