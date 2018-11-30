@@ -26,6 +26,8 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 
+const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
+
 @Component({
   selector: 'tsl-list',
   templateUrl: './list.component.html',
@@ -140,9 +142,7 @@ export class ListComponent implements OnInit, OnDestroy {
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
-          modalRef.componentInstance.creditUsed = transactionType === 'bumpWithCredits'
-            || transactionType === 'urgentWithCredits' || transactionType === 'reactivateWithCredits'
-            || transactionType === 'purchaseListingFeeWithCredits';
+          modalRef.componentInstance.creditUsed = TRANSACTIONS_WITH_CREDITS.includes(transactionType);
           modalRef.componentInstance.spent = localStorage.getItem('transactionSpent');
           modalRef.result.then(() => {
             modalRef = null;
