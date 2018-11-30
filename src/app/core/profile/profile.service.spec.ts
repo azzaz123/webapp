@@ -13,7 +13,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import {
   PROFILE_DATA, PROFILE_ID, PROFILE_IMAGE, NUM_TOTAL_ITEMS,
-  FAVORITED, FAKE_PROFILE_NAME, MICRO_NAME, SCORING_STARS
+  FAVORITED, MICRO_NAME, SCORING_STARS, MOCK_PROFILE
 } from '../../../tests/profile.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { environment } from '../../../environments/environment';
@@ -66,10 +66,6 @@ describe('Service: Profile', () => {
     cookieService = TestBed.get(CookieService);
   });
 
-  it('should create an instance', () => {
-    expect(service).toBeTruthy();
-  });
-
   it('should return the profile', () => {
     const profile: Profile = new Profile(PROFILE_ID, [PROFILE_IMAGE], MICRO_NAME, NUM_TOTAL_ITEMS, SCORING_STARS, PROFILE_IMAGE, FAVORITED);
     service['_profile'] = profile;
@@ -91,15 +87,9 @@ describe('Service: Profile', () => {
         service.get(PROFILE_ID).subscribe((r: Profile) => {
           profile = r;
         });
-        
+
         expect(profile instanceof Profile).toBeTruthy();
-        expect(profile.id).toBe(PROFILE_ID);
-        expect(profile.item_images).toEqual([PROFILE_IMAGE]);
-        expect(profile.micro_name).toBe(MICRO_NAME);
-        expect(profile.num_total_items).toBe(NUM_TOTAL_ITEMS);
-        expect(profile.scoring_stars).toBe(SCORING_STARS);
-        expect(profile.user_image).toEqual(PROFILE_IMAGE);
-        expect(profile.favorited).toBe(FAVORITED);
+        expect(profile).toEqual(MOCK_PROFILE);
       }));
     });
   });

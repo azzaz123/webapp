@@ -21,7 +21,6 @@ import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
-import * as _ from 'lodash';
 
 @Injectable()
 export class UserService extends ResourceService {

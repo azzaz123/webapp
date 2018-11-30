@@ -91,11 +91,7 @@ export class FavoritesComponent implements OnInit {
   }
 
   public loadMore() {
-    if (this.selectedStatus === 'products') {
-      this.getItems(true);
-    } else if (this.selectedStatus === 'profiles') {
-      this.getProfiles(true);
-    }
+    this.selectedStatus === 'products' ? this.getItems(true) : this.getProfiles(true);
   }
 
   public getNumberOfFavorites() {
@@ -106,11 +102,7 @@ export class FavoritesComponent implements OnInit {
   }
 
   private setNumberOfFavorites() {
-    if (this.selectedStatus === 'products') {
-      this.numberOfFavorites = this.counters.favorites;
-    } else if (this.selectedStatus === 'profiles') {
-      this.numberOfFavorites = this.counters.profile_favorited;
-    }
+    this.numberOfFavorites = this.selectedStatus === 'products' ? this.counters.favorites : this.counters.profile_favorited;
   }
 
 }
