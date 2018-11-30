@@ -31,5 +31,8 @@ var apstag = window['apstag'] || {
 
 apstag.init({
   pubID: '3703',
-  adServer: 'googletag'
+  adServer: 'googletag',
+  gdpr: {
+    cmpTimeout: 1000
+  }
 });

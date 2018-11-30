@@ -8,7 +8,7 @@ import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
-import { UserLocation, UserResponse } from './user-response.interface';
+import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -33,6 +33,8 @@ export class UserService extends ResourceService {
   protected _user: User;
   private meObservable: Observable<User>;
   private presenceInterval: any;
+  protected _motorPlan: MotorPlan;
+  private motorPlanObservable: Observable<MotorPlan>;
 
   constructor(http: HttpService,
               protected event: EventService,
@@ -205,6 +207,15 @@ export class UserService extends ResourceService {
       .map((r: Response) => r.json());
   }
 
+  public updateStoreLocation(coordinates: Coordinate): Observable<any> {
+    return this.http.post(this.API_URL + '/me/bumped-profile/store-location', {
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
+      address: coordinates.name
+    })
+      .map((r: Response) => r.json());
+  }
+
   public getStats(): Observable<UserStatsResponse> {
     return this.http.get(this.API_URL + '/me/stats')
       .map((r: Response) => {
@@ -298,7 +309,9 @@ export class UserService extends ResourceService {
       data.last_name,
       data.birth_date,
       data.gender,
-      data.email
+      data.email,
+      data.featured,
+      data.extra_info
     );
   }
 
@@ -330,6 +343,32 @@ export class UserService extends ResourceService {
   public isProfessional(): Observable<boolean> {
     return this.hasPerm('professional');
   }
+
+  public getMotorPlan(): Observable<MotorPlan> {
+    if (this._motorPlan) {
+      return Observable.of(this._motorPlan);
+    } else if (this.motorPlanObservable) {
+      return this.motorPlanObservable;
+    }
+    this.motorPlanObservable = this.http.get(this.API_URL + '/me/profile-subscription-info/type')
+      .map((r: Response) => r.json())
+      .map((motorPlan: MotorPlan) => {
+        this._motorPlan = motorPlan;
+        return motorPlan;
+      })
+      .share()
+      .do(() => {
+        this.motorPlanObservable = null;
+      })
+      .catch(() => {
+        this.motorPlanObservable = null;
+        return Observable.of(null);
+      });
+    return this.motorPlanObservable;
+  }
+
+  public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
+    return this.http.get(this.API_URL + '/me/profile-subscription-info')
+      .map((r: Response) => r.json())
+  }
 }
-
-

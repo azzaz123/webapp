@@ -26,7 +26,8 @@ export class Realestate extends Item {
               private _terrace?: boolean,
               private _elevator?: boolean,
               private _pool?: boolean,
-              private _garden?: boolean) {
+              private _garden?: boolean,
+              image?: any) {
     super(
       id,
       0,
@@ -42,7 +43,13 @@ export class Realestate extends Item {
       flags,
       null,
       null,
-      images ? images[0] : null,
+      image ? {
+        id: '1',
+        original_width: image ? image.original_width : null,
+        original_height: image ? image.original_height : null,
+        average_hex_color: '',
+        urls_by_size: image
+      } : (images ? images[0] : null),
       images,
       webSlug,
       null,

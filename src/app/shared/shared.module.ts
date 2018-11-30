@@ -29,7 +29,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { MessageComponent } from './message/message.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { SwitchComponent } from './switch/switch.component';
-import { GdprModalComponent } from './gdpr-modal/gdpr-modal.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ConversationComponent } from './conversation/conversation.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
@@ -59,6 +58,8 @@ import { CartService } from './catalog/cart/cart.service';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { RouterModule } from '@angular/router';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
+import { CountdownComponent } from './countdown/countdown.component';
+import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe';
 
 @NgModule({
   imports: [
@@ -98,7 +99,6 @@ import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-c
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
-    GdprModalComponent,
     MessageComponent,
     ReviewButtonComponent,
     ConversationComponent,
@@ -120,7 +120,9 @@ import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-c
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
     CartComponent,
-    ExitConfirmationModalComponent
+    ExitConfirmationModalComponent,
+    CountdownComponent,
+    ThousandSuffixesPipe
   ],
   declarations: [
     AdComponent,
@@ -146,7 +148,6 @@ import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-c
     ReviewButtonComponent,
     SwitchComponent,
     ReviewModalComponent,
-    GdprModalComponent,
     CheckboxComponent,
     ConversationComponent,
     ItemAvatarComponent,
@@ -169,19 +170,21 @@ import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-c
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
     CartComponent,
-    ExitConfirmationModalComponent
+    ExitConfirmationModalComponent,
+    CountdownComponent,
+    ThousandSuffixesPipe
   ],
   providers: [
     DecimalPipe,
     ExitConfirmGuard,
     TutorialGuard,
-    CartService
+    CartService,
+    ThousandSuffixesPipe
   ],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,
     ReviewModalComponent,
-    GdprModalComponent,
     TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
     EmailModalComponent,

@@ -46,7 +46,9 @@ const CATEGORY_IDS: any = {
   Credits: '131',
   Navbar: '77',
   Willis: '130',
-  Klinc: '136'
+  Klinc: '136',
+  Mapfre: '137',
+  Verti: '138'
 };
 
 const SCREENS_IDS: any = {
@@ -753,13 +755,13 @@ export class TrackingService {
   public static WILLIS_LINK_DISPLAY = {
     name: '762',
     category: CATEGORY_IDS.Willis,
-    screen: SCREENS_IDS.ItemDetail,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Display
   };
   public static WILLIS_LINK_TAP = {
     name: '763',
     category: CATEGORY_IDS.Willis,
-    screen: SCREENS_IDS.ItemDetail,
+    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Tap
   };
   public static PURCHASE_PACK_CREDITS = {
@@ -872,6 +874,33 @@ export class TrackingService {
     category: CATEGORY_IDS.ProConversations,
     screen: SCREENS_IDS.SharePhone,
     type: TYPES_IDS.Tap
+  };
+
+  public static MAPFRE_LINK_TAP = {
+    name: '809',
+    category: CATEGORY_IDS.Mapfre,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Tap
+  };
+  public static MAPFRE_LINK_DISPLAY = {
+    name: '811',
+    category: CATEGORY_IDS.Mapfre,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Display
+  };
+
+  public static VERTI_LINK_TAP = {
+    name: '810',
+    category: CATEGORY_IDS.Verti,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Tap
+  };
+
+  public static VERTI_LINK_DISPLAY = {
+    name: '812',
+    category: CATEGORY_IDS.Verti,
+    screen: SCREENS_IDS.Chat,
+    type: TYPES_IDS.Display
   };
 
   private TRACKING_KEY = 'AgHqp1anWv7g3JGMA78CnlL7NuB7CdpYrOwlrtQV';

@@ -205,7 +205,6 @@ export class StatsGraphComponent implements OnInit, OnDestroy {
       this.chartOptions.categoryAxis.minPeriod = 'MM';
       this.chartOptions.categoryAxis.boldLabels = true;
       this.chartOptions.chartCursor.categoryBalloonDateFormat = 'MMM';
-      this.chartOptions.chartCursor.categoryBalloonDateFormat = 'MMM';
       this.chartOptions.graphs.push({
         ...columnGraphOptions,
         'id': 'city_bump',

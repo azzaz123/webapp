@@ -31,10 +31,7 @@ import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
-import { PrivacyService } from './core/privacy/privacy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
-import { MOCK_PRIVACY_ALLOW, MOCK_PRIVACY_UNKNOW_DISALLOW } from './core/privacy/privacy.fixtures.spec';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
@@ -56,7 +53,6 @@ let window: any;
 let conversationService: ConversationService;
 let callsService: CallsService;
 let cookieService: CookieService;
-let privacyService: PrivacyService;
 let modalService: NgbModal;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
@@ -199,7 +195,6 @@ describe('App', () => {
             }
         }
         },
-        PrivacyService,
         ...
           TEST_HTTP_PROVIDERS
       ],
@@ -220,7 +215,6 @@ describe('App', () => {
     conversationService = TestBed.get(ConversationService);
     callsService = TestBed.get(CallsService);
     cookieService = TestBed.get(CookieService);
-    privacyService = TestBed.get(PrivacyService);
     modalService = TestBed.get(NgbModal);
     connectionService = TestBed.get(ConnectionService);
     paymentService = TestBed.get(PaymentService);
@@ -368,58 +362,6 @@ describe('App', () => {
 
         expect(cookieService.get).toHaveBeenCalledWith('app_session_id');
         expect(component.updateSessionCookie).not.toHaveBeenCalled();
-      });
-
-      it('should call getPrivacyList method', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(privacyService.getPrivacyList).toHaveBeenCalled();
-      });
-
-      it('should open modal gdpr when privacy permission is unknow and sessionStorage isGDPRShown dont have value', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
-        spyOn(modalService, 'open');
-        sessionStorage.removeItem('isGDPRShown');
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent, {beforeDismiss: jasmine.any(Function)});
-      });
-
-      it('should open modal gdpr when privacy permission is unknow and sessionStorage isGDPRShown value is undefined', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
-        spyOn(modalService, 'open');
-        sessionStorage.removeItem('isGDPRShown');
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent, {beforeDismiss: jasmine.any(Function)});
-      });
-
-      it('should not open modal gdpr when privacy permission is allow', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
-        spyOn(modalService, 'open');
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(modalService.open).not.toHaveBeenCalledWith();
-      });
-
-      it('should open modal gdpr when sessionStorage isGDPRShown value is defined', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
-        spyOn(modalService, 'open');
-        sessionStorage.removeItem('isGDPRShown');
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(modalService.open).not.toHaveBeenCalledWith();
       });
 
       it('should call xmppService.clientReconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
