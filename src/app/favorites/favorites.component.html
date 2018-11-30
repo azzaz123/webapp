@@ -12,7 +12,8 @@
           <h1 class="header-title" i18n>Your favorites</h1>
         </div>
         <div class="header-row header-row--margin">
-          <h4 class="header-subtitle" i18n>These are the wallapop products that you like the most</h4>
+          <h4 class="header-subtitle" *ngIf="selectedStatus === 'products'" i18n>These are the wallapop products that you like the most</h4>
+          <h4 class="header-subtitle" *ngIf="selectedStatus === 'profiles'" i18n>These are the wallapop profiles that you like the most</h4>
         </div>
       </div>
       <div class="col-1 header-numbers">
@@ -30,7 +31,8 @@
     <div class="row items">
       <div class="favorites-empty-state" *ngIf="!items.length && !profiles.length && !loading">
         <mat-icon svgIcon="favorites-empty-state" class="image"></mat-icon>
-        <div class="message" i18n>In this list you can see all the products you saved as favourite</div>
+        <div class="message" *ngIf="selectedStatus === 'products'" i18n>In this list you can see all the products you saved as favourite</div>
+        <div class="message" *ngIf="selectedStatus === 'profiles'" i18n>In this list you can see all the profiles you saved as favourite</div>
       </div>
       <ng-container *ngIf="selectedStatus === 'products'">
         <tsl-item-cart-favorite *ngFor="let item of items" [item]="item" (onFavoriteChange)="onFavoriteChange($event)"> </tsl-item-cart-favorite>

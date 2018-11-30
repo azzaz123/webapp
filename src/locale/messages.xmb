@@ -29,12 +29,13 @@
   <msg id="6348395677948023023"><source>app/layout/topbar/topbar.component.ts:44</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.ts:31</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.ts:42</source>List a car</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.ts:7</source><source>app/profile-pro/profile-pro.component.ts:21</source>Profile</msg>
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.ts:15</source>Dashboard</msg>
-  <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:23</source>Products</msg>
+  <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.ts:23</source><source>app/favorites/favorites.component.ts:28</source>Products</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.ts:24</source>Catalog</msg>
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.ts:50</source><source>app/shared/catalog/catalog-card/catalog-card.component.ts:51</source><source>app/stats/items-stats/items-stats.component.ts:16</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:24</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:42</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.ts:57</source>Reviews</msg>
   <msg id="5762151072276461448"><source>app/layout/sidebar/sidebar.component.ts:65</source><source>app/dashboard/dashboard.component.ts:33</source>Phones</msg>
   <msg id="7911416166208830577"><source>app/layout/sidebar/sidebar.component.ts:72</source>Help</msg>
+  <msg id="4088311569349098646"><source>app/layout/sidebar/sidebar.component.ts:79</source><source>app/stats/stats.component.ts:13</source>Stats</msg>
   <msg id="8473542904579897463"><source>app/shared/gdpr-modal/gdpr-modal.component.ts:5,7</source>
         I accept the updated privacy policy in order to continue navigating.
       </msg>
@@ -67,7 +68,7 @@
   <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.ts:39</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.ts:72</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.ts:79</source>Continue</msg>
   <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.ts:7</source><source>app/shared/process-all-button/process-all-button.component.ts:12</source><source>app/calls/calls.component.ts:28</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.ts:8</source>This will process all the elements in this page.</msg>
-  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.ts:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:31</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:42</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:53</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.ts:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:5</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source>Cancel</msg>
+  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.ts:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.ts:32</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:31</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:42</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:53</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.ts:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:6</source><source>app/chat/modals/block-user/block-user.component.ts:6</source><source>app/chat/modals/unblock-user/unblock-user.component.ts:6</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:5</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:6</source>Cancel</msg>
   <msg id="4749295647449765550"><source>app/shared/archivable/archivable.component.ts:6</source><source>app/calls/calls.component.ts:24</source><source>app/chat/conversations-panel/conversations-panel.component.ts:10</source>Processed</msg>
   <msg id="5847549463396300276"><source>app/shared/modals/review-modal/review-modal.component.ts:8</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{userName}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="4650730844441578299"><source>app/shared/modals/review-modal/review-modal.component.ts:9</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
@@ -107,10 +108,14 @@
   <msg id="3870268043917301466"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:16</source>The item will be removed from favorites.</msg>
   <msg id="773668064257926548"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:19</source><source>app/shared/profile/credit-card-info/credit-card-info.component.ts:15</source>Delete card</msg>
   <msg id="8843627277100451781"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:20</source>Are you sure you want to delete the card saved?</msg>
-  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:26</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:32</source><source>app/catalog/list/selected-items/selected-items.component.ts:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
-  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:27</source><source>app/catalog/list/selected-items/selected-items.component.ts:19</source><source>app/chat/item/item.component.ts:17</source>Reserve</msg>
-  <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:28</source>Remove</msg>
-  <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:29</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:6</source>Yes, I am sure</msg>
+  <msg id="7078772344681242222"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:23</source>Remove featured profile from favorites</msg>
+  <msg id="5556202995949734730"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:24</source>The profile will be removed from favorites.</msg>
+  <msg id="968107342863651775"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:27</source>This profile is no longer featured</msg>
+  <msg id="1918694988070405915"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:28</source>If you remove it you won&apos;t be able to save it again.</msg>
+  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:34</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.ts:32</source><source>app/catalog/list/selected-items/selected-items.component.ts:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.ts:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.ts:7</source>Delete</msg>
+  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:35</source><source>app/catalog/list/selected-items/selected-items.component.ts:19</source><source>app/chat/item/item.component.ts:17</source>Reserve</msg>
+  <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:36</source>Remove</msg>
+  <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.ts:37</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.ts:6</source>Yes, I am sure</msg>
   <msg id="4468071625554558577"><source>app/shared/profile/credit-card-info/credit-card-info.component.ts:6</source>Payment method:</msg>
   <msg id="8037476586059399916"><source>app/shared/profile/credit-card-info/credit-card-info.component.ts:11</source>Expires</msg>
   <msg id="1839186591621749773"><source>app/shared/catalog/catalog-card/catalog-card.component.ts:17</source>Publish Date</msg>
@@ -425,10 +430,13 @@
   <msg id="5554592740021607017"><source>app/dashboard/stats-graph/stats-graph.component.ts:2</source>Last 12 months</msg>
   <msg id="6938753357996446484"><source>app/favorites/favorites.component.ts:12</source>Your favorites</msg>
   <msg id="2988941833994717815"><source>app/favorites/favorites.component.ts:15</source>These are the wallapop products that you like the most</msg>
-  <msg id="1339317612974362100"><source>app/favorites/favorites.component.ts:21</source>favorites</msg>
-  <msg id="6799485957303243139"><source>app/favorites/favorites.component.ts:22</source>favorite</msg>
-  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:28</source>In this list you can see all the products you saved as favourite</msg>
-  <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.ts:11</source> Remove </msg>
+  <msg id="9066909356179829078"><source>app/favorites/favorites.component.ts:16</source>These are the wallapop profiles that you like the most</msg>
+  <msg id="1339317612974362100"><source>app/favorites/favorites.component.ts:22</source>favorites</msg>
+  <msg id="6799485957303243139"><source>app/favorites/favorites.component.ts:23</source>favorite</msg>
+  <msg id="351850805832815905" desc="plural" meaning="tab"><source>app/favorites/favorites.component.ts:29</source>Profiles</msg>
+  <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:34</source>In this list you can see all the products you saved as favourite</msg>
+  <msg id="8888357426803887074"><source>app/favorites/favorites.component.ts:35</source>In this list you can see all the profiles you saved as favourite</msg>
+  <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.ts:11</source><source>app/favorites/profile-card-favorite/profile-card-favorite.component.ts:15</source> Remove </msg>
   <msg id="6806883447514569994"><source>app/help/help.component.ts:6</source>Your help center</msg>
   <msg id="7002268576514991178"><source>app/help/help.component.ts:9</source>We hope that you can find here the answers for all your questions</msg>
   <msg id="606929755258304715"><source>app/help/help.component.ts:53</source>Contact details</msg>
@@ -536,8 +544,7 @@
   <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.ts:32</source>Posted by</msg>
   <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.ts:34</source>a wallapop user</msg>
   <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.ts:35</source>on</msg>
-  <msg id="4088311569349098646"><source>app/stats/stats.component.ts:6</source>Stats</msg>
-  <msg id="605166699517966750"><source>app/stats/stats.component.ts:9</source>Control the progress of your listings and improve your sales.</msg>
+  <msg id="605166699517966750"><source>app/stats/stats.component.ts:16</source>Control the progress of your listings and improve your sales.</msg>
   <msg id="7616770651914901276"><source>app/stats/items-stats/items-stats.component.ts:4</source>Product</msg>
   <msg id="2868602391152223921"><source>app/stats/items-stats/items-stats.component.ts:7</source>Listed on</msg>
   <msg id="292531598178810581"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.ts:37</source>Weekly stats</msg>
