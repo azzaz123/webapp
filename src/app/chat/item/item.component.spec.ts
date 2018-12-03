@@ -11,7 +11,7 @@ import {
 } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
-import { ItemComponent, showWillisCategories, showKlincCategories, showMapfreCategories, showVertiCategories, mapfreLinks, vertiLinks } from './item.component';
+import { ItemComponent, showWillisCategories, showMapfreCategories, showVertiCategories, mapfreLinks, vertiLinks } from './item.component';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { environment } from '../../../environments/environment';
@@ -29,7 +29,7 @@ describe('Component: Item', () => {
   let cookieService: CookieService;
 
   const MOCK_CLICK_EVENT = {
-    stopPropagation(){}
+    stopPropagation() { }
   };
 
   beforeEach(() => {
@@ -470,27 +470,6 @@ describe('Component: Item', () => {
     });
   });
 
-  describe('showKlincLink', () => {
-    it('should be true when item categoryId is 15000, 16000', () => {
-      showKlincCategories.forEach((categoryId) => {
-        component.item = { ...MOCK_ITEM, categoryId} as Item;
-        component.ngOnChanges();
-
-        expect(component.showKlincLink).toEqual(true);
-      });
-    });
-
-    it('should be false when item categoryId is not 15000, 16000', () => {
-      const hideWillisCategories = [100, 14000];
-      hideWillisCategories.forEach((categoryId) => {
-        component.item = { ...MOCK_ITEM, categoryId} as Item;
-        component.ngOnChanges();
-
-        expect(component.showKlincLink).toEqual(false);
-      });
-    });
-  });
-
   describe('clickCarfax', () => {
     it('should track Carfax tap ', () => {
       spyOn(trackingService, 'track');
@@ -519,17 +498,4 @@ describe('Component: Item', () => {
     });
   });
 
-  describe('clickKlinc', () => {
-    it('should track klinc tap ', () => {
-      spyOn(trackingService, 'track');
-      component.item = MOCK_ITEM;
-
-      component.clickKlinc(MOCK_CLICK_EVENT);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.KLINC_LINK_TAP, {
-        category_id: component.item.categoryId,
-        item_id: component.item.id
-      });
-    });
-  });
 });

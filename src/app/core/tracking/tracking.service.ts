@@ -46,7 +46,6 @@ const CATEGORY_IDS: any = {
   Credits: '131',
   Navbar: '77',
   Willis: '130',
-  Klinc: '136',
   Mapfre: '137',
   Verti: '138'
 };
@@ -799,18 +798,6 @@ export class TrackingService {
     category: CATEGORY_IDS.Purchase,
     screen: SCREENS_IDS.Credits,
     type: TYPES_IDS.Error
-  };
-  public static KLINC_LINK_DISPLAY = {
-    name: '801',
-    category: CATEGORY_IDS.Klinc,
-    screen: SCREENS_IDS.ItemDetail,
-    type: TYPES_IDS.Display
-  };
-  public static KLINC_LINK_TAP = {
-    name: '802',
-    category: CATEGORY_IDS.Klinc,
-    screen: SCREENS_IDS.ItemDetail,
-    type: TYPES_IDS.Tap
   };
 
   public static CONVERSATION_FIRSTARCHIVE_OK = {
