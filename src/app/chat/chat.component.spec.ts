@@ -27,6 +27,7 @@ import { MOCK_CONVERSATION, SURVEY_RESPONSES } from '../../tests/conversation.fi
 import { NgxPermissionsModule } from 'ngx-permissions';
 
 class MockConversationService {
+  storedPhoneNumber: string;
 
   sendRead(conversation: Conversation) {
   }
@@ -99,7 +100,10 @@ describe('Component: Chat', () => {
           getMetaInformation() {
             return Observable.of({});
           },
-          saveMetaInformation() {}
+          saveMetaInformation() {},
+          getPhoneNumber() {
+            return Observable.of({});
+          }
         }
         },
         I18nService,
@@ -229,6 +233,8 @@ describe('Component: Chat', () => {
   });
 
   describe('ngOnInit', () => {
+    const phone = '+34912345678';
+
     it('should set connection error', () => {
       component.ngOnInit();
       eventService.emit(EventService.CONNECTION_ERROR);
@@ -271,6 +277,17 @@ describe('Component: Chat', () => {
 
       expect(component.firstLoad).toBe(true);
       expect(persistencyService.saveMetaInformation).toHaveBeenCalled();
+    });
+
+    it('should call persistencyService.getPhoneNumber and set the phone number in conversationService', () => {
+      spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw('err'));
+      spyOn(persistencyService, 'getPhoneNumber').and.returnValue(Observable.of({phone: phone}));
+
+      component.ngOnInit();
+      eventService.emit(EventService.DB_READY);
+
+      expect(persistencyService.getPhoneNumber).toHaveBeenCalled();
+      expect(conversationService.storedPhoneNumber).toBe(phone);
     });
   });
 

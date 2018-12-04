@@ -8,7 +8,7 @@ import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
-import { UserLocation, UserResponse, MotorPlan } from './user-response.interface';
+import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -21,6 +21,7 @@ import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
+import { PhoneMethodResponse } from './phone-method.interface';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -235,6 +236,12 @@ export class UserService extends ResourceService {
       });
   }
 
+  public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
+    return this.http.get(this.API_URL + '/' + userId + '/phone-method')
+      .map((r: any) => r.json())
+      .catch(e => Observable.of(null));
+  }
+
   public toRatingsStats(ratings): Ratings {
     return ratings.reduce(({}, rating) => {
       return {reviews: rating.value};
@@ -358,5 +365,10 @@ export class UserService extends ResourceService {
         return Observable.of(null);
       });
     return this.motorPlanObservable;
+  }
+
+  public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
+    return this.http.get(this.API_URL + '/me/profile-subscription-info')
+      .map((r: Response) => r.json())
   }
 }

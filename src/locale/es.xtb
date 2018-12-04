@@ -555,7 +555,7 @@
   <translation id="5554592740021607017">Últimos 12 meses</translation>
   <translation id="3708302938863076299">Pago seguro con Banco Sabadell</translation>
   <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="3649443966888874108">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
+  <translation id="9195373106604759125">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
   <translation id="221922226324249098">Todas las categorías</translation>
   <translation id="7514254130085804538">Marcar como vendido</translation>
   <translation id="853408948668135550">Marcar como reservado</translation>
@@ -696,6 +696,11 @@
     <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
     marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
   </translation>
+  <translation id="1900996506417052092">¡Vas a contactar con un Profesional! Para ofrecerte un servicio más personalizado, ¿podrías dejarnos un teléfono para que te llamemos?</translation>
+  <translation id="5694886960613125934">Vamos a hablarlo: </translation>
+  <translation id="305827802561975907">Lo que debes saber:</translation>
+  <translation id="807686572653733419">Únicamente en caso de que nos des tu consentimiento, compartiremos el teléfono que informes con un usuario profesional ajeno a nuestra plataforma (un concesionario interesarado). Los datos recabados serán utilizados mientras no te opongas a dicho tratamiento.</translation>
+  <translation id="7250390756093690890">Podrás ejercer sus derechos de acceso, rectificación, supresión, oposición, limitación al tratamiento y portabilidad de sus Datos, así como la revocación, en cualquier momento, de los consentimientos, en su caso, prestados ante Wallapop S.L., CIF nº B-66.04.9057, en la Avenida Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Para tu mayor comodidad, y sin perjuicio de que se deban cumplir con determinados requisitos formales establecidos por la LOPD, Wallapop S.L. le ofrece la posibilidad de ejercer los derechos antes referidos a través del correo electrónico: privacidad@wallapop.com.</translation>
   <translation id="548531554532991134">Tu perfil <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="3163876998313048927">Conviértete en PRO</translation>
   <translation id="2542747907081885378">Más información desde la app</translation>
@@ -720,9 +725,19 @@
   <translation id="5020391428854742815">Ve a la app de wallapop y suscríbete a un Plan Motor, o compra un anuncio extra para hacerlo público.</translation>
   <translation id="5601530442010506564">Entendido</translation>
   <translation id="703140349558791698">Suscríbete o publícalo desde la app</translation>
+  <translation id="3031881676351306386">Dejar mi teléfono</translation>
+  <translation id="3202305721451114390">Deja tu teléfono...</translation>
+  <translation id="9178182467454450952">Confirmar</translation>
+  <translation id="1214570422954613349">Teléfono enviado ;)</translation>
   <translation id="989776066026256137">Tus productos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="7811210420459773233">¿Seguro que quieres darte de baja de wallapop?</translation>
   <translation id="475161398925564146">Te estás dando de baja pero tienes activa una suscripción en wallapop. Para cancelarla, deberás hacerlo a través de la Play Store o la App Store.</translation>
   <translation id="1468205032926382389">Dame de baja y tramitaré la cancelación</translation>
   <translation id="6555865224397311626">Vale, me lo pienso mejor</translation>
+  <translation id="5339022467575859181">Plan actual: <ph name="INTERPOLATION"><ex>{{currentPlan}}</ex></ph></translation>
+  <translation id="6419964541223964219">Cada plan incluye la posibilidad de publicar un número máximo de coches, siempre podrás eliminar y elegir uno diferente. Cambia de plan desde la app.</translation>
+  <translation id="2359130262258320456">O contáctanos para que te hagamos un plan a tu medida que se adapte a tus necesidades.</translation>
+  <translation id="3898572555215935465">Email de comercial</translation>
+  <translation id="7178101913251976451">mes</translation>
+
 </translationbundle>
