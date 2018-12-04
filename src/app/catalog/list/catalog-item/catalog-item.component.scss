@@ -339,7 +339,7 @@ $feature-button-width: 170px;
   }
 }
 
-button, tsl-button /deep/ .btn-publish {
+tsl-button /deep/ .btn-publish {
   width: $feature-button-width;
   font-size: $font-size-S;
 }
