@@ -1,4 +1,4 @@
-<div class="wrapper photos-number-{{maxUploads}}" [ngClass]="{ 'is-drop-over': dragOver}" ngFileDrop (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadService.uploadInput" [options]="options">
+<div class="wrapper photos-number-{{maxUploads}}" [ngClass]="{ 'is-drop-over': dragOver}" tslFileDrop (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadService.uploadInput" [options]="options">
   <div class="drag-area">
     <ng-container *ngIf="files.length < options.maxUploads; else maxUploadsReached">
       <mat-icon svgIcon="upload-dnd"></mat-icon>
@@ -25,7 +25,7 @@
           <input
             *ngIf="!files[i]"
             type="file"
-            ngFileSelect
+            tslFileSelect
             [options]="options"
             multiple="true"/>
           <span i18n>Main photo</span>

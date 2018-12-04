@@ -49,7 +49,6 @@ import { EditPasswordComponent } from './profile/edit-password/edit-password.com
 import { PasswordModalComponent } from './profile/edit-password/password-modal/password-modal.component';
 import { PictureUploadComponent } from './profile/picture-upload/picture-upload.component';
 import { CreditCardInfoComponent } from './profile/credit-card-info/credit-card-info.component';
-import { NgUploaderModule } from 'ngx-uploader';
 import { CatalogCardComponent } from './catalog/catalog-card/catalog-card.component';
 import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/catalog-item-actions.component';
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
@@ -60,6 +59,7 @@ import { RouterModule } from '@angular/router';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
 import { CountdownComponent } from './countdown/countdown.component';
 import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe';
+import { UploaderModule } from './uploader/uploader.module';
 
 @NgModule({
   imports: [
@@ -73,13 +73,14 @@ import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe
     MomentModule,
     NgxPermissionsModule.forChild(),
     NgbDropdownModule,
-    NgUploaderModule,
     TrackingModule,
-    RouterModule
+    RouterModule,
+    UploaderModule
   ],
   exports: [
     CardModule,
     CommonModule,
+    UploaderModule,
     SpinnerComponent,
     AdComponent,
     CustomCurrencyPipe,

@@ -1,10 +1,10 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { UploadFile, UploadInput } from 'ngx-uploader';
 import { environment } from '../../../environments/environment';
 import { Headers, RequestOptions } from '@angular/http';
 import { HttpService } from '../../core/http/http.service';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
+import { UploadFile, UploadInput } from '../../shared/uploader/upload.interface';
 
 @Injectable()
 export class UploadService {

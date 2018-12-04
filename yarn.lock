@@ -5025,10 +5025,6 @@ ngx-toastr@8.1.1:
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-8.1.1.tgz#f34a57c8dfadf49392978bfb37019247700458b1"
 
-"ngx-uploader@https://github.com/Wallapop/ngx-uploader#3.2.4":
-  version "3.2.4"
-  resolved "https://github.com/Wallapop/ngx-uploader#78af1356193931939d225fd26a2a9ff5a23f2507"
-
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
