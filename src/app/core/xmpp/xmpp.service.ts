@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs';
+import 'rxjs/add/observable/from';
 import { PersistencyService } from '../persistency/persistency.service';
 import { XmppBodyMessage, XMPPClient } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
