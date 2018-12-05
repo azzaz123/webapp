@@ -3,7 +3,7 @@
 import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
-import { Message, messageStatus } from '../message/message';
+import { Message, messageStatus, phoneRequestState } from '../message/message';
 import { MOCK_USER, USER_ID, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { PersistencyService } from '../persistency/persistency.service';
 import { CONVERSATION_ID,
@@ -563,6 +563,19 @@ describe('Service: Xmpp', () => {
 
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(message);
       expect(service['onNewMessage']).toHaveBeenCalledWith(message, true);
+    });
+
+    it('should emit a CONVERSATION_CEATED event when the first message is sent, if a hasPhoneRequestMessage exists', () => {
+      spyOn<any>(eventService, 'emit');
+      const conv = MOCKED_CONVERSATIONS[0];
+      const phoneRequestMsg = new Message('someId', conv.id, 'some text', USER_ID, new Date());
+      phoneRequestMsg.phoneRequest = phoneRequestState.pending;
+      conv.messages.push(phoneRequestMsg);
+
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_CEATED, conv, phoneRequestMsg);
     });
 
     it('should track the conversationCreateNew event', () => {

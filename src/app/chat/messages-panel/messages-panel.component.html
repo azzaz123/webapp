@@ -5,6 +5,6 @@
     </h6>
     <tsl-message [message]="message" [showUserInfo]="
       currentConversation.messages[i-1]?.user.id !== message.user.id ||
-      showDate(currentConversation.messages[i-1], message)"></tsl-message>
+      showDate(currentConversation.messages[i-1], message)" [currentConversation]="message.phoneRequest ? currentConversation : null"></tsl-message>
   </div>
 </div>

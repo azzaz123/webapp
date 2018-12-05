@@ -27,7 +27,6 @@ import { ConnectionService } from './connection/connection.service';
 
 @NgModule({
   imports: [
-    CommonModule,
     CookieModule.forChild(),
     CommonModule,
     UserModule,

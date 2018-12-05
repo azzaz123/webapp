@@ -65,7 +65,10 @@ export class AdService {
   private initGoogletagConfig () {
     googletag.cmd.push(() => {
       this._adSlots.forEach((slot) => {
-        googletag.defineSlot(slot.name, slot.sizes, slot.id).addService(googletag.pubads());
+        googletag.defineSlot(slot.name, slot.sizes, slot.id)
+          .setTargeting('ad_group', Adomik.randomAdGroup())
+          .setTargeting('ad_h', (new Date).getUTCHours().toString())
+          .addService(googletag.pubads());
       });
       let publisherId = this.cookieService.get('publisherId');
       publisherId = publisherId ? publisherId : '-1' + Array(31).join('0');

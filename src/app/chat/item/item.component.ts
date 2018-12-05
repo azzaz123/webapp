@@ -31,7 +31,6 @@ export const vertiLinks = {
   [CATEGORY_IDS.REAL_ESTATE_OLD]: 'https://www.verti.es/ov/SNetPeticion?idPeticion=ISERV01&servicio=COTIZAVER&producto=HG01&CANAL=AFFINITY&SUBCANAL=AF32&pid=722C0832H1&utm_source=Affinity&utm_medium=tpaff&utm_campaign=AF32',
 };
 
-
 @Component({
   selector: 'tsl-item',
   templateUrl: './item.component.html',
@@ -46,6 +45,7 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   public showKlincLink = false;
   public showWillisLink = false;
   public showMapfreOrVertiLink = false;
+  public showSolcreditoLink = false;
   private active = true;
   private allowReserve: boolean;
   private myUserId: string;
@@ -126,6 +126,15 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     }
+
+    const { salePrice, categoryId} = this.item;
+    this.showSolcreditoLink = salePrice >= 50 && salePrice < 500 && ![CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.CAR].includes(categoryId);
+    if (this.showSolcreditoLink) {
+      this.trackingService.track(TrackingService.SOLCREDITO_LINK_DISPLAY, {
+        category_id: this.item.categoryId,
+        item_id: this.item.id
+      });
+    }
   }
 
   ngOnDestroy() {
@@ -190,6 +199,18 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     this._headsOrTails ?
       this.trackingService.track(TrackingService.MAPFRE_LINK_TAP, { category_id: this.item.categoryId, item_id: this.item.id }) :
       this.trackingService.track(TrackingService.VERTI_LINK_TAP, { category_id: this.item.categoryId, item_id: this.item.id });
+  }
+
+  public clickSolcredito (event) {
+    event.stopPropagation();
+    this.trackingService.track(TrackingService.SOLCREDITO_LINK_TAP, {
+      category_id: this.item.categoryId,
+      item_id: this.item.id
+    });
+  }
+
+  public getCategoryKeyById(value) {
+    return Object.keys(CATEGORY_IDS).find(key => CATEGORY_IDS[key] === value);
   }
 
   public getMapfreOrVertiLink() {
