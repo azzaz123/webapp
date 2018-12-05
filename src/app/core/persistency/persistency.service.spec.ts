@@ -13,7 +13,7 @@ import {
 import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from '../user/user.service';
-import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../event/event.service';
 
 let service: PersistencyService;
@@ -175,13 +175,13 @@ describe('Service: Persistency', () => {
 
     it('should be called with the new date when a NEW_MESSAGE event is emitted', () => {
       spyOn(service, 'saveMetaInformation');
-      const isoDate = (new Date(MOCK_MESSAGE.date)).toISOString();
+      const msg = new Message('someId', CONVERSATION_ID, 'test', OTHER_USER_ID, new Date());
       const newMeta = {
-        start: isoDate,
+        start: msg.date.toISOString(),
         last: null
       };
 
-      eventService.emit(EventService.NEW_MESSAGE, MOCK_MESSAGE);
+      eventService.emit(EventService.NEW_MESSAGE, msg);
 
       expect(service.saveMetaInformation).toHaveBeenCalledWith(newMeta);
     });
