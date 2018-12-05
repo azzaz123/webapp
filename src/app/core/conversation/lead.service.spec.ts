@@ -15,15 +15,12 @@ import { Item } from '../item/item';
 import { ConversationResponse } from './conversation-response.interface';
 import { EventService } from '../event/event.service';
 import { Lead } from './lead';
-import { XmppService } from '../xmpp/xmpp.service';
 import { MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
-import {
-  CONVERSATIONS_DATA, createConversationsArray,
-  MOCK_CONVERSATION
-} from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
+import { RealTimeService } from '../message/real-time.service';
 
 @Injectable()
 export class MockService extends LeadService {
@@ -35,9 +32,10 @@ export class MockService extends LeadService {
               userService: UserService,
               itemService: ItemService,
               event: EventService,
-              xmpp: XmppService,
+              realTime: RealTimeService,
+              blockService: BlockUserService,
               connectionService: ConnectionService) {
-    super(http, userService, itemService, event, xmpp, connectionService);
+    super(http, userService, itemService, event, realTime, blockService, connectionService);
   }
 
   protected getLeads(since?: number, concat?: boolean, archived?: boolean): Observable<Conversation[]> {
@@ -81,14 +79,7 @@ describe('LeadService', () => {
         ...TEST_HTTP_PROVIDERS,
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
-        {provide: XmppService, useValue: {
-          isConnected() {
-            return Observable.of(true);
-          },
-          isBlocked() {
-            return true;
-          }
-        }},
+        {provide: RealTimeService, useValue: {}},
         {
           provide: ConnectionService, useValue: {}
         }

@@ -17,8 +17,8 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
-import { XmppService } from '../xmpp/xmpp.service';
 import { ConnectionService } from '../connection/connection.service';
+import { RealTimeService } from '../message/real-time.service';
 
 @Injectable()
 export abstract class LeadService {
@@ -36,6 +36,7 @@ export abstract class LeadService {
               protected userService: UserService,
               protected itemService: ItemService,
               protected event: EventService,
+              protected realTime: RealTimeService,
               protected xmpp: XmppService,
               protected connectionService: ConnectionService) {
   }

@@ -6,7 +6,6 @@ import { Conversation } from './conversation';
 import { ConnectionService } from '../connection/connection.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
-import { XmppService } from '../xmpp/xmpp.service';
 import { MessageService } from '../message/message.service';
 import { Message, messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
@@ -31,6 +30,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
 import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
+import { RealTimeService } from '../message/real-time.service';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -56,7 +56,7 @@ export class ConversationService extends LeadService {
               userService: UserService,
               itemService: ItemService,
               event: EventService,
-              xmpp: XmppService,
+              realTime: RealTimeService,
               connectionService: ConnectionService,
               private persistencyService: PersistencyService,
               protected messageService: MessageService,
@@ -64,7 +64,7 @@ export class ConversationService extends LeadService {
               protected notificationService: NotificationService,
               private modalService: NgbModal,
               private zone: NgZone) {
-    super(http, userService, itemService, event, xmpp, connectionService);
+    super(http, userService, itemService, event, realTime, blockService, connectionService);
   }
 
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
@@ -348,7 +348,7 @@ export class ConversationService extends LeadService {
         this.markAllAsRead(conversation.id);
         this.readSubscription.unsubscribe();
       });
-      this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);
+      this.realTime.sendRead(conversation.user.id, conversation.id);
       this.messageService.totalUnreadMessages -= conversation.unreadMessages;
       conversation.unreadMessages = 0;
     }

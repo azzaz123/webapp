@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import { XmppService } from '../xmpp/xmpp.service';
 import { MsgArchiveService } from './archive.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -17,6 +16,7 @@ import 'rxjs/add/operator/first';
 import { EventService } from '../event/event.service';
 import { I18nService } from '../i18n/i18n.service';
 import { TrackingService } from '../tracking/tracking.service';
+import { RealTimeService } from './real-time.service';
 
 @Injectable()
 export class MessageService {
@@ -28,7 +28,7 @@ export class MessageService {
   /* The age (in days) of the messages we want to resend; if there are pending messages that are older than this, we won't resend them; */
   private resendOlderThan = 5;
 
-  constructor(private xmpp: XmppService,
+  constructor(private realTime: RealTimeService,
               private archiveService: MsgArchiveService,
               private persistencyService: PersistencyService,
               private userService: UserService,
@@ -67,7 +67,7 @@ export class MessageService {
             if (msg.status === messageStatus.PENDING) {
               const timeLimit = new Date().getTime() - (this.resendOlderThan * 24 * 60 * 60 * 1000);
               if (Date.parse(msg.date.toString()) > timeLimit) {
-                this.xmpp.sendMessage(conversation, msg.message, true, msg.id);
+                this.realTime.sendMessage(conversation, msg.message, true, msg.id);
               }
             }
             this.allMessages.push(msg);
@@ -108,7 +108,7 @@ export class MessageService {
     messages.filter(message => !message.fromSelf).map(message => {
       const msgAlreadyConfirmed = receivedReceipts.find(receipt => receipt.messageId === message.id);
       if (!msgAlreadyConfirmed) {
-        this.xmpp.sendMessageDeliveryReceipt(message.from, message.id, message.conversationId);
+        this.realTime.sendDeliveryReceipt(message.from, message.id, message.conversationId);
       }
     });
   }
@@ -184,7 +184,7 @@ export class MessageService {
   }
 
   public send(conversation: Conversation, message: string) {
-    this.xmpp.sendMessage(conversation, message);
+    this.realTime.sendMessage(conversation, message);
   }
 
   public addPhoneNumberRequestMessage(conversation, withTracking = true): Conversation {
@@ -211,7 +211,7 @@ export class MessageService {
 
   public createPhoneNumberMessage(conversation, phone) {
     const message = this.i18n.getTranslations('phoneMessage') + phone;
-    this.xmpp.sendMessage(conversation, message);
+    this.realTime.sendMessage(conversation, message);
     const phoneRequestMsg = conversation.messages.find(m => m.phoneRequest);
     phoneRequestMsg.phoneRequest = phoneRequestState.answered;
     this.persistencyService.markPhoneRequestAnswered(phoneRequestMsg);

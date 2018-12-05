@@ -21,7 +21,6 @@ import { TrackingService } from './core/tracking/tracking.service';
 import { MatIconRegistry } from '@angular/material';
 import { MessageService } from './core/message/message.service';
 import { NotificationService } from './core/notification/notification.service';
-import { XmppService } from './core/xmpp/xmpp.service';
 import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
@@ -38,13 +37,14 @@ import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
 import { PaymentService } from './core/payments/payment.service';
 import { MOCK_MESSAGE } from '../tests/message.fixtures.spec';
 import { messageStatus } from './core/message/message';
+import { RealTimeService } from './core/message/real-time.service';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
 let userService: UserService;
 let errorsService: ErrorsService;
 let eventService: EventService;
-let xmppService: XmppService;
+let realTime: RealTimeService;
 let notificationService: NotificationService;
 let messageService: MessageService;
 let titleService: Title;
@@ -88,10 +88,10 @@ describe('App', () => {
         }
         },
         {
-          provide: XmppService, useValue: {
+          provide: RealTimeService, useValue: {
           connect() {},
           disconnect() {},
-          reconnectClient() {}
+          reconnect() {}
           }
         },
         ErrorsService,
@@ -206,7 +206,7 @@ describe('App', () => {
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
     eventService = TestBed.get(EventService);
-    xmppService = TestBed.get(XmppService);
+    realTime = TestBed.get(RealTimeService);
     notificationService = TestBed.get(NotificationService);
     messageService = TestBed.get(MessageService);
     titleService = TestBed.get(Title);
@@ -276,13 +276,13 @@ describe('App', () => {
       });
 
       it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
-        spyOn(xmppService, 'connect').and.callThrough();
+        spyOn(realTime, 'connect').and.callThrough();
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
         eventService.emit(EventService.DB_READY);
 
-        expect(xmppService.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
+        expect(realTime.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
 
       it('should call conversationService.init', () => {
@@ -364,8 +364,8 @@ describe('App', () => {
         expect(component.updateSessionCookie).not.toHaveBeenCalled();
       });
 
-      it('should call xmppService.clientReconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
-        spyOn(xmppService, 'reconnectClient');
+      it('should call realTime.reconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
+        spyOn(realTime, 'reconnect');
         connectionService.isConnected = true;
         Object.defineProperty(userService, 'isLogged', {
           get() {
@@ -376,7 +376,7 @@ describe('App', () => {
         component.ngOnInit();
         eventService.emit(EventService.CLIENT_DISCONNECTED);
 
-        expect(xmppService.reconnectClient).toHaveBeenCalled();
+        expect(realTime.reconnect).toHaveBeenCalled();
       });
 
     });
@@ -415,13 +415,13 @@ describe('App', () => {
       expect(notificationService.init).toHaveBeenCalled();
     });
 
-    it('should call disconnect on logout', () => {
-      spyOn(xmppService, 'disconnect');
+    it('should call realTime.disconnect on logout', () => {
+      spyOn(realTime, 'disconnect');
 
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
 
-      expect(xmppService.disconnect).toHaveBeenCalled();
+      expect(realTime.disconnect).toHaveBeenCalled();
     });
 
     it('should delete payments cache', () => {

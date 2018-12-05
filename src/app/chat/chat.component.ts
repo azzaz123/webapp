@@ -14,7 +14,6 @@ import { ItemService } from '../core/item/item.service';
 import { I18nService } from '../core/i18n/i18n.service';
 import { UserService } from '../core/user/user.service';
 import { EventService } from '../core/event/event.service';
-import { XmppService } from '../core/xmpp/xmpp.service';
 import { PersistencyService } from '../core/persistency/persistency.service';
 
 @Component({

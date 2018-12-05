@@ -21,6 +21,7 @@ import { Conversation } from './conversation';
 import { createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { CallTotals } from './totals.interface';
 import { ConnectionService } from '../connection/connection.service';
+import { RealTimeService } from '../message/real-time.service';
 
 let service: CallsService;
 let userService: UserService;
@@ -34,6 +35,7 @@ describe('CallsService', () => {
       providers: [
         CallsService,
         XmppService,
+        RealTimeService,
         EventService,
         ...TEST_HTTP_PROVIDERS,
         {provide: UserService, useClass: MockedUserService},

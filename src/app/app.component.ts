@@ -18,7 +18,6 @@ import { CookieOptions, CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { EventService } from './core/event/event.service';
-import { XmppService } from './core/xmpp/xmpp.service';
 import { UserService } from './core/user/user.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { NotificationService } from './core/notification/notification.service';
@@ -33,6 +32,7 @@ import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
+import { RealTimeService } from './core/message/real-time.service';
 
 @Component({
   selector: 'tsl-root',
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
   private sendPresenceInterval = 240000;
 
   constructor(private event: EventService,
-              private xmppService: XmppService,
+              private realTime: RealTimeService,
               public userService: UserService,
               private errorsService: ErrorsService,
               private notificationService: NotificationService,
@@ -156,7 +156,7 @@ export class AppComponent implements OnInit {
         (user: User) => {
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
           this.event.subscribe(EventService.DB_READY, () => {
-            this.xmppService.connect(user.id, accessToken);
+            this.realTime.connect(user.id, accessToken);
             this.conversationService.init().subscribe(() => {
               this.userService.isProfessional().subscribe((isProfessional: boolean) => {
                 if (isProfessional) {
@@ -188,7 +188,7 @@ export class AppComponent implements OnInit {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
       this.paymentService.deleteCache();
       try {
-        this.xmppService.disconnect();
+        this.realTime.disconnect();
       } catch (err) {}
       this.loggingOut = true;
       if (redirectUrl) {
@@ -220,7 +220,7 @@ export class AppComponent implements OnInit {
   private subscribeEventClientDisconnect() {
     this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => {
       if (this.userService.isLogged && this.connectionService.isConnected) {
-        this.xmppService.reconnectClient();
+        this.realTime.reconnect();
       }
     });
   }

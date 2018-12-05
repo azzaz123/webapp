@@ -15,7 +15,6 @@ import { Conversation } from '../core/conversation/conversation';
 import { EventService } from '../core/event/event.service';
 import { ConversationService } from '../core/conversation/conversation.service';
 import { UserService } from '../core/user/user.service';
-import { XmppService } from '../core/xmpp/xmpp.service';
 import { PersistencyService } from '../core/persistency/persistency.service';
 import { ItemService } from '../core/item/item.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
