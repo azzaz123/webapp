@@ -36,6 +36,7 @@ export interface StoredMessage {
   from: string;
   conversationId: string;
   payload?: MessagePayload;
+  phoneRequest?: string;
 }
 
 export interface StoredMessageRow {

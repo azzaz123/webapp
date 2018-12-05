@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { MessageService } from './message.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
-import { Message, messageStatus } from './message';
+import { Message, messageStatus, phoneRequestState } from './message';
 import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
@@ -18,7 +18,8 @@ import {
   MOCK_DB_META,
   MockedPersistencyService,
   MOCK_DB_RESPONSE_WITH_PENDING,
-  MOCK_DB_RESPONSE_WITH_OLD_PENDING
+  MOCK_DB_RESPONSE_WITH_OLD_PENDING,
+  MOCK_DB_MSG_WITH_PHONEREQUEST
 } from '../../../tests/persistency.fixtures.spec';
 import { USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
@@ -28,6 +29,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveService } from './archive.service';
 import { HttpService } from '../http/http.service';
+import { I18nService } from '../i18n/i18n.service';
 
 describe('Service: Message', () => {
 
@@ -39,6 +41,7 @@ describe('Service: Message', () => {
   let archiveService: MsgArchiveService;
   let trackingService: TrackingService;
   let httpService: HttpService;
+  let i18n: I18nService;
   let eventService: EventService;
 
   beforeEach(() => {
@@ -47,6 +50,7 @@ describe('Service: Message', () => {
         MessageService,
         XmppService,
         EventService,
+        I18nService,
         MsgArchiveService,
         { provide: HttpService, useValue: { get() { } } },
         { provide: TrackingService, useClass: MockTrackingService },
@@ -64,6 +68,7 @@ describe('Service: Message', () => {
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     httpService = TestBed.get(HttpService);
+    i18n = TestBed.get(I18nService);
   });
 
   it('should instanciate', () => {
@@ -141,6 +146,31 @@ describe('Service: Message', () => {
 
         expect(service.addUserInfoToArray).toHaveBeenCalled();
         expect(response.data).toEqual(MESSAGES);
+      });
+    });
+
+    describe('when messages have a phoneRequest property', () => {
+      let response: any;
+      it('should add the phoneRequest property to the message if it exists in the Db doc', () => {
+        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_MSG_WITH_PHONEREQUEST));
+
+        service.getMessages(conversation).subscribe((data: any) => {
+          response = data;
+        });
+
+        expect(response.data[0].phoneRequest).toBeTruthy();
+      });
+
+      it('should NOT add the phoneRequest property to the message if it does NOT exists in the Db doc', () => {
+        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_FILTERED_RESPONSE));
+
+        service.getMessages(conversation).subscribe((data: any) => {
+          response = data;
+        });
+
+        response.data.forEach(m => {
+          expect(m.phoneRequest).toBeFalsy();
+        });
       });
     });
 
@@ -474,6 +504,108 @@ describe('Service: Message', () => {
       const conversation: Conversation = MOCK_CONVERSATION();
       service.send(conversation, 'text');
       expect(xmpp.sendMessage).toHaveBeenCalledWith(conversation, 'text');
+    });
+  });
+
+  describe('addPhoneNumberRequestMessage', () => {
+    let conversation: Conversation;
+
+    beforeEach(() => {
+      conversation = MOCK_CONVERSATION();
+    });
+
+    it('should subscribe to the EventService.CONVERSATION_CEATED event when called', () => {
+      spyOn(eventService, 'subscribe');
+
+      service.addPhoneNumberRequestMessage(conversation);
+
+      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.CONVERSATION_CEATED);
+    });
+
+    it('should call persistencyService.saveMessage and save the request msg when a CONVERSATION_CEATED event is triggered', () => {
+      spyOn(persistencyService, 'saveMessages');
+      service.addPhoneNumberRequestMessage(conversation);
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
+
+      eventService.emit(EventService.CONVERSATION_CEATED, conversation, requestMessage);
+
+      expect(persistencyService.saveMessages).toHaveBeenCalledWith([requestMessage]);
+    });
+
+    it('should create a phoneRequest message with the phoneRequestState as PENDING', () => {
+      service.addPhoneNumberRequestMessage(conversation);
+      conversation.messages.push(new Message('123', conversation.id, 'test', USER_ID));
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
+
+      expect(requestMessage.phoneRequest).toBe(phoneRequestState.pending);
+    });
+
+    it('should add the phone request message to the conversation', () => {
+      const msgExistsBefore = conversation.messages.find(m => !!m.phoneRequest);
+
+      service.addPhoneNumberRequestMessage(conversation);
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
+
+      expect(msgExistsBefore).toBeFalsy();
+      expect(requestMessage instanceof Message).toBe(true);
+    });
+
+    it('should track the CHAT_SHAREPHONE_OPENSHARING event when no second argument is passed', () => {
+      spyOn(trackingService, 'addTrackingEvent');
+
+      service.addPhoneNumberRequestMessage(conversation);
+
+      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    });
+
+    it('should track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is true', () => {
+      spyOn(trackingService, 'addTrackingEvent');
+
+      service.addPhoneNumberRequestMessage(conversation, true);
+
+      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    });
+
+    it('should NOT track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is false', () => {
+      spyOn(trackingService, 'addTrackingEvent');
+
+      service.addPhoneNumberRequestMessage(conversation, false);
+
+      expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    });
+  });
+
+  describe('createPhoneNumberMessage', () => {
+    const phone = '+34912345678';
+    const conversation = MOCK_CONVERSATION();
+
+    beforeEach(() => {
+      spyOn(xmpp, 'sendMessage');
+      service.addPhoneNumberRequestMessage(conversation);
+    });
+
+    it('should call xmpp.sendMessage with the new message', () => {
+      const phoneMsg: any = i18n.getTranslations('phoneMessage') + phone;
+
+      service.createPhoneNumberMessage(conversation, phone);
+
+      expect(xmpp.sendMessage).toHaveBeenCalledWith(conversation, phoneMsg);
+    });
+
+    it('should set phoneRequestState to ANSWERED for the phoneRequest message', () => {
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
+
+      service.createPhoneNumberMessage(conversation, phone);
+
+      expect(requestMessage.phoneRequest).toBe(phoneRequestState.answered);
+    });
+
+    it('should call persistencyService.setPhoneNumber with the phone numbered entered', () => {
+      spyOn(persistencyService, 'setPhoneNumber');
+
+      service.createPhoneNumberMessage(conversation, phone);
+
+      expect(persistencyService.setPhoneNumber).toHaveBeenCalledWith(phone);
     });
   });
 

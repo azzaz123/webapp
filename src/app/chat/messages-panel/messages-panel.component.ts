@@ -43,6 +43,8 @@ export class MessagesPanelComponent implements AfterViewChecked, OnChanges, OnIn
   }
 
   ngOnDestroy() {
-    this.newMessageSubscription.unsubscribe();
+    if (this.newMessageSubscription) {
+      this.newMessageSubscription.unsubscribe();
+    }
   }
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Observer, throwError } from 'rxjs';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Message, statusOrder } from '../message/message';
+import { Message, statusOrder, phoneRequestState } from '../message/message';
 import {
   StoredConversation,
   StoredMessage,
@@ -104,7 +104,8 @@ export class PersistencyService {
       status: message.status,
       from: message.from.indexOf('@') > -1 ? message.from.split('@')[0] : message.from,
       conversationId: message.conversationId,
-      payload: message.payload
+      payload: message.payload,
+      phoneRequest: message.phoneRequest
     };
   }
 
@@ -139,6 +140,20 @@ export class PersistencyService {
     }));
   }
 
+  public setPhoneNumber(phone: string): Observable<any> {
+    return Observable.fromPromise(
+      this.upsert(this.messagesDb, 'phone', (doc: Document<any>) => {
+      if (!doc.phone || doc.phone !== phone) {
+        doc.phone = phone;
+        return doc;
+      }
+    }).catch(err => {}));
+  }
+
+  public getPhoneNumber(): Observable<any> {
+    return Observable.fromPromise(this.messagesDb.get('phone')).catch(() => Observable.of({}));
+  }
+
   public updateMessageDate(message: Message) {
     return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
         doc.date = message.date.toISOString();
@@ -156,6 +171,13 @@ export class PersistencyService {
       if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
         this.saveMessages(message);
       }
+    }));
+  }
+
+  public markPhoneRequestAnswered(message: Message) {
+    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
+      doc.phoneRequest = phoneRequestState.answered;
+      return doc;
     }));
   }
 

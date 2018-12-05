@@ -97,6 +97,8 @@ export class I18nService {
       deleteBillingInfoError: 'There was a error deleting your billing info',
       packError: 'There was a error buying this pack',
       alreadyFeatured: 'You are trying to feature an item that is already planned.',
+      phoneRequestMessage: 'Please contact us or leave us your phone number and we will contact you',
+      phoneMessage: 'My phone number is ',
       motorPlanTypes: [
         {subtype: 'sub_pro_basic', label: 'Pro'},
         {subtype: 'cars_3_to_5', label: '3 to 5 cars Plan'},
@@ -212,6 +214,8 @@ export class I18nService {
       deleteBillingInfoError: 'Hubo un error borrando tu información de facturación',
       packError: 'Hubo un error al comprar este paquete',
       alreadyFeatured: '¡Ups! Estás intentando destacar un item que ya tiene planificados',
+      phoneRequestMessage: 'Por favor contáctanos o deja tu número de teléfono y te contactaremos',
+      phoneMessage: 'Mi número de teléfono es ',
       motorPlanTypes: [
         {subtype: 'sub_pro_basic', label: 'Pro'},
         {subtype: 'cars_3_to_5', label: 'Plan de 3 a 5 coches'},

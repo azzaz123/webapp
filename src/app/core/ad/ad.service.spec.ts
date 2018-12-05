@@ -61,7 +61,10 @@ const pubads = {
 };
 
 const defineSlot = {
-  addService() {}
+  addService() {},
+  setTargeting() {
+    return this;
+  }
 };
 
 describe('AdService', () => {

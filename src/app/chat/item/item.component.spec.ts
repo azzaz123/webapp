@@ -17,7 +17,7 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { Item } from '../../core/item/item';
 import { CookieService } from 'ngx-cookie';
-import { CATEGORY_IDS } from "../../core/category/category-ids";
+import { CATEGORY_IDS } from '../../core/category/category-ids';
 
 describe('Component: Item', () => {
 
@@ -144,6 +144,24 @@ describe('Component: Item', () => {
     spyOn(trackingService, 'track');
 
     showWillisCategories.forEach((categoryId) => {
+      component.item = { ...MOCK_ITEM, categoryId} as Item;
+      component.ngOnChanges();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
+    });
+  });
+
+  it('should track Solcredito Display when showSolcreditoLink is true',  () => {
+    spyOn(trackingService, 'track');
+    const showSolcreditoCategories = Object.values(CATEGORY_IDS).filter( (key) => {
+      if (![CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.CAR].includes(CATEGORY_IDS[key])) {
+        return CATEGORY_IDS[key];
+      }
+    });
+    showSolcreditoCategories.forEach((categoryId) => {
       component.item = { ...MOCK_ITEM, categoryId} as Item;
       component.ngOnChanges();
 
@@ -480,6 +498,37 @@ describe('Component: Item', () => {
     });
   });
 
+  describe('showSolcreditLink', () => {
+    it('should show item between 50€ - 499€', () => {
+      const showSolcreditoCategories = Object.values(CATEGORY_IDS).filter( (key) => {
+        if (![CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.CAR].includes(CATEGORY_IDS[key])) {
+          return CATEGORY_IDS[key];
+        }
+      });
+
+      showSolcreditoCategories.forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId, salePrice: 499 } as Item;
+        component.ngOnChanges();
+        expect(component.showSolcreditoLink).toEqual(true);
+
+        component.item = { ...MOCK_ITEM, salePrice: 50 } as Item;
+        component.ngOnChanges();
+        expect(component.showSolcreditoLink).toEqual(true);
+      });
+    });
+
+    it('should hide with car and real state category', () => {
+      const hideSolcreditoCategories = [CATEGORY_IDS.CAR, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.REAL_ESTATE_OLD];
+
+      hideSolcreditoCategories.forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+        component.ngOnChanges();
+
+        expect(component.showSolcreditoLink).toEqual(false);
+      });
+    });
+  });
+
   describe('clickCarfax', () => {
     it('should track Carfax tap ', () => {
       spyOn(trackingService, 'track');
@@ -516,6 +565,20 @@ describe('Component: Item', () => {
       component.clickKlinc(MOCK_CLICK_EVENT);
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.KLINC_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
+    });
+  });
+
+  describe('clickSolcredito', () => {
+    it('should track solcredito tap ', () => {
+      spyOn(trackingService, 'track');
+      component.item = MOCK_ITEM;
+
+      component.clickSolcredito(MOCK_CLICK_EVENT);
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SOLCREDITO_LINK_TAP, {
         category_id: component.item.categoryId,
         item_id: component.item.id
       });
