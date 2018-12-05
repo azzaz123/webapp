@@ -864,6 +864,7 @@ export class TrackingService {
   private pendingTrackingEvents$ = this.trackingEvents$.bufferTime(sendInterval, null, maxBatchSize).filter((buffer) => buffer.length > 0);
   private sentEvents: Array<TrackingEventData> = [];
   private sendFailed = false;
+  private dbReady = false;
 
   constructor(private navigatorService: NavigatorService,
     private http: HttpService,
@@ -921,12 +922,17 @@ export class TrackingService {
       event.id = event.id ? event.id : UUID.UUID();
       this.trackingEvents$.next(event);
       this.pendingTrackingEvents.push(event);
+      if (this.dbReady) {
+        this.persistencyService.storeClickstreamEvent(event);
+      } else {
       this.eventService.subscribe(EventService.DB_READY, (dbName) => {
         if (dbName === this.persistencyService.clickstreamDbName) {
+            this.dbReady = true;
           this.persistencyService.storeClickstreamEvent(event);
         }
       });
     }
+  }
   }
 
   public trackAccumulatedEvents() {
@@ -1046,6 +1052,7 @@ export class TrackingService {
   private subscribeDbReady() {
     this.eventService.subscribe(EventService.DB_READY, (dbName) => {
       if (dbName === this.persistencyService.clickstreamDbName) {
+        this.dbReady = true;
         this.sendStoredPackagedEvents();
 
         this.persistencyService.getClickstreamEvents().subscribe(pendingEvents => {
