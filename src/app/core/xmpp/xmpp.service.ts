@@ -243,16 +243,16 @@ export class XmppService {
 
   public sendMessageDeliveryReceipt(to: string, id: string, thread: string) {
     to = (to.indexOf('@') === -1) ? this.createJid(to) : to;
-        this.client.sendMessage({
-          to: to,
-          type: 'chat',
-          thread: thread,
-          received: {
-            xmlns: 'urn:xmpp:receipts',
-            id: id
-          }
-        });
+    this.client.sendMessage({
+      to: to,
+      type: 'chat',
+      thread: thread,
+      received: {
+        xmlns: 'urn:xmpp:receipts',
+        id: id
       }
+    });
+  }
 
   private setDefaultPrivacyList(): Observable<any> {
     return Observable.fromPromise(this.client.sendIq({
@@ -391,13 +391,13 @@ export class XmppService {
         }
       }
     };
-    stanzas.withMessage(function (Message: any) {
-      stanzas.extend(Message, read);
-      stanzas.extend(Message, timestamp);
-      stanzas.extend(Message, received);
-      stanzas.extend(Message, request);
-      stanzas.add(Message, 'sentReceipt', sentReceipt);
-      stanzas.add(Message, 'readReceipt', readReceipt);
+    stanzas.withMessage(function (message: any) {
+      stanzas.extend(message, read);
+      stanzas.extend(message, timestamp);
+      stanzas.extend(message, received);
+      stanzas.extend(message, request);
+      stanzas.add(message, 'sentReceipt', sentReceipt);
+      stanzas.add(message, 'readReceipt', readReceipt);
     });
   }
 
@@ -410,7 +410,8 @@ export class XmppService {
       fields: {
         jids: {
           get: function getList() {
-            let result = [], items;
+            const result = [];
+            let items;
             const list = this.xml.getElementsByTagName('list');
             if (list && list[0]) {
               items = list[0].getElementsByTagName('item');
@@ -503,8 +504,8 @@ export class XmppService {
         }
       }
     };
-    stanzas.withMessage(function (Message: any) {
-      stanzas.add(Message, 'payload', PAYLOAD);
+    stanzas.withMessage(function (message: any) {
+      stanzas.add(message, 'payload', PAYLOAD);
     });
   }
 
