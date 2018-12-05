@@ -4,12 +4,10 @@ import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/te
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
 import { Message, messageStatus, phoneRequestState } from '../message/message';
-import { MOCK_USER, USER_ID, MockedUserService } from '../../../tests/user.fixtures.spec';
-import { PersistencyService } from '../persistency/persistency.service';
+import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID,
   MOCKED_CONVERSATIONS,
   MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { XmppTimestampMessage, XmppBodyMessage } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
@@ -107,7 +105,6 @@ const JIDS = ['1@wallapop.com', '2@wallapop.com', '3@wallapop.com'];
 let service: XmppService;
 let eventService: EventService;
 let trackingService: TrackingService;
-let persistencyService: PersistencyService;
 let sendIqSpy: jasmine.Spy;
 let connectSpy: jasmine.Spy;
 
@@ -117,15 +114,11 @@ describe('Service: Xmpp', () => {
       providers: [
         XmppService,
         EventService,
-        {provide: TrackingService, useClass: MockTrackingService},
-        {provide: PersistencyService, useClass: MockedPersistencyService},
-        {provide: UserService, useClass: MockedUserService}]
+        {provide: TrackingService, useClass: MockTrackingService}]
     });
     service = TestBed.get(XmppService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
-    userService = TestBed.get(UserService);
-    persistencyService = TestBed.get(PersistencyService);
     spyOn(XMPP, 'createClient').and.returnValue(MOCKED_CLIENT);
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
@@ -395,30 +388,6 @@ describe('Service: Xmpp', () => {
       eventService.emit(EventService.CONNECTION_RESTORED);
 
       expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(1);
-    });
-
-    it('should send the message receipt when there is a new message', () => {
-      spyOn<any>(service, 'sendMessageDeliveryReceipt');
-      spyOn(persistencyService, 'findMessage').and.returnValue(Observable.throw({
-        reason: 'missing'
-      }));
-
-      eventService.emit('message', MOCKED_SERVER_MESSAGE);
-      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
-
-      expect(service['sendMessageDeliveryReceipt']).toHaveBeenCalledWith(
-        MOCKED_SERVER_MESSAGE.from.bare,
-        MOCKED_SERVER_MESSAGE.id,
-        MOCKED_SERVER_MESSAGE.thread);
-    });
-
-    it('should not call the message receipt if the new message is from the current user', () => {
-      spyOn<any>(service, 'sendMessageDeliveryReceipt');
-      service['currentJid'] = MOCKED_SERVER_MESSAGE.from;
-
-      eventService.emit('message', MOCKED_SERVER_MESSAGE);
-
-      expect(service['sendMessageDeliveryReceipt']).not.toHaveBeenCalled();
     });
 
     it('should emit a newMessage event on the message xmpp received if it is a carbon', fakeAsync(() => {

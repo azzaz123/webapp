@@ -173,9 +173,24 @@ describe('Service: Persistency', () => {
       tick();
     }));
 
+    it('should be called with the new date when a NEW_MESSAGE event is emitted', () => {
+      spyOn(service, 'saveMetaInformation');
+      const isoDate = (new Date(MOCK_MESSAGE.date)).toISOString();
+      const newMeta = {
+        start: isoDate,
+        last: null
+      };
+
+      eventService.emit(EventService.NEW_MESSAGE, MOCK_MESSAGE);
+
+      expect(service.saveMetaInformation).toHaveBeenCalledWith(newMeta);
+    });
+
     it('should upsert the meta information', fakeAsync(() => {
       service.saveMetaInformation(MOCK_SAVE_DATA).subscribe();
+
       tick();
+
       expect((service as any).upsert).toHaveBeenCalled();
       expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
       expect((service as any).upsert.calls.allArgs()[0][1]).toBe('meta');

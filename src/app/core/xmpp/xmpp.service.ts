@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
-import { PersistencyService } from '../persistency/persistency.service';
 import { XmppBodyMessage, XMPPClient } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -29,7 +28,6 @@ export class XmppService {
   private archiveFinishedLoaded = false;
 
   constructor(private eventService: EventService,
-              private persistencyService: PersistencyService,
               private trackingService: TrackingService) {
   }
 
@@ -204,20 +202,8 @@ export class XmppService {
       /* fromSelf: The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
       logged in, but they should not be considered messages fromSelf */
       builtMessage.fromSelf = (builtMessage.from.split('/')[0] === this.currentJid) && !builtMessage.payload;
-      this.persistencyService.saveMetaInformation({
-          start: builtMessage.date.toISOString(),
-          last: null
-        }
-      );
       const replaceTimestamp = !message.timestamp || message.carbonSent;
-      this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp);
-      if (message.requestReceipt && !builtMessage.fromSelf) {
-        this.persistencyService.findMessage(message.id).subscribe(() => {}, (error) => {
-          if (error.reason === 'missing') {
-            this.sendMessageDeliveryReceipt(message.from.bare, message.id, message.thread);
-          }
-        });
-      }
+      this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
     }
   }
 

@@ -44,6 +44,7 @@ export class PersistencyService {
         });
       });
     });
+    this.subscribeEventNewMessage();
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
@@ -125,6 +126,15 @@ export class PersistencyService {
         })
       );
     }
+  }
+
+  private subscribeEventNewMessage() {
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      this.saveMetaInformation({
+        start: message.date.toISOString(),
+        last: null
+      });
+    });
   }
 
   public saveMetaInformation(data: StoredMetaInfo): Observable<any> {
