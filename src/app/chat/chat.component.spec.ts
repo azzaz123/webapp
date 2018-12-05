@@ -24,6 +24,7 @@ import { Item } from '../core/item/item';
 import { ITEM_ID } from '../../tests/item.fixtures.spec';
 import { MOCK_CONVERSATION, SURVEY_RESPONSES } from '../../tests/conversation.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { BlockUserService } from '../core/conversation/block-user.service';
 
 class MockConversationService {
   storedPhoneNumber: string;
@@ -77,7 +78,7 @@ describe('Component: Chat', () => {
   let trackingService: TrackingService;
   let toastr: ToastrService;
   let modalService: NgbModal;
-  let xmppService: XmppService;
+  let blockService: BlockUserService;
   let persistencyService: PersistencyService;
   let adService: AdService;
 
@@ -108,7 +109,7 @@ describe('Component: Chat', () => {
         I18nService,
         EventService,
         {
-          provide: XmppService, useValue: {
+          provide: BlockUserService, useValue: {
           blockUser() {
           },
           unblockUser() {
@@ -135,7 +136,7 @@ describe('Component: Chat', () => {
     itemService = TestBed.get(ItemService);
     toastr = TestBed.get(ToastrService);
     modalService = TestBed.get(NgbModal);
-    xmppService = TestBed.get(XmppService);
+    blockService = TestBed.get(BlockUserService);
     persistencyService = TestBed.get(PersistencyService);
     adService = TestBed.get(AdService);
   });
@@ -421,13 +422,13 @@ describe('Component: Chat', () => {
 
     it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
-      spyOn(xmppService, 'blockUser').and.returnValue(Observable.of({}));
+      spyOn(blockService, 'blockUser').and.returnValue(Observable.of({}));
       spyOn(toastr, 'success').and.callThrough();
 
       component.blockUserAction();
       tick();
 
-      expect(xmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
+      expect(blockService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been blocked');
     }));
   });
@@ -441,13 +442,13 @@ describe('Component: Chat', () => {
 
     it('should close the modal, call unblockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
-      spyOn(xmppService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(blockService, 'unblockUser').and.returnValue(Observable.of({}));
       spyOn(toastr, 'success').and.callThrough();
 
       component.unblockUserAction();
       tick();
 
-      expect(xmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
+      expect(blockService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
     }));
   });

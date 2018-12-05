@@ -46,6 +46,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 import { RealTimeService } from '../message/real-time.service';
+import { BlockUserService } from './block-user.service';
 
 let service: ConversationService;
 let http: HttpService;
@@ -79,9 +80,9 @@ describe('Service: Conversation', () => {
         ...TEST_HTTP_PROVIDERS,
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
-        {provide: XmppService, useClass: MockedXmppService},
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: PersistencyService, useClass: MockedPersistencyService},
+        {provide: BlockUserService, useValue: { isBlocked() { return true; } }},
         {
           provide: NotificationService, useValue: {
           sendBrowserNotification() {

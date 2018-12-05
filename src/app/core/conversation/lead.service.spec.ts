@@ -21,6 +21,7 @@ import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/con
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 import { RealTimeService } from '../message/real-time.service';
+import { BlockUserService } from './block-user.service';
 
 @Injectable()
 export class MockService extends LeadService {
@@ -80,6 +81,7 @@ describe('LeadService', () => {
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
         {provide: RealTimeService, useValue: {}},
+        {provide: BlockUserService, useValue: { isBlocked() { return true; } }},
         {
           provide: ConnectionService, useValue: {}
         }

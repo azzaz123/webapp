@@ -31,6 +31,7 @@ import 'rxjs/add/observable/forkJoin';
 import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 import { RealTimeService } from '../message/real-time.service';
+import { BlockUserService } from './block-user.service';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -57,6 +58,7 @@ export class ConversationService extends LeadService {
               itemService: ItemService,
               event: EventService,
               realTime: RealTimeService,
+              blockService: BlockUserService,
               connectionService: ConnectionService,
               private persistencyService: PersistencyService,
               protected messageService: MessageService,
@@ -334,7 +336,7 @@ export class ConversationService extends LeadService {
         this.userService.get(conversation.other_user_id)
       ).map((data: any[]) => {
         conversation.user = data[1];
-        conversation.user.blocked = this.xmpp.isBlocked(conversation.user.id);
+        conversation.user.blocked = this.blockService.isBlocked(conversation.user.id);
         conversation = <ConversationResponse>this.setItem(conversation, data[0]);
         return conversation;
       });

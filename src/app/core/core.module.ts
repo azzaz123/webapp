@@ -25,6 +25,7 @@ import { PushNotificationsModule } from 'ng-push';
 import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
 import { RealTimeService } from './message/real-time.service';
+import { BlockUserService } from './conversation/block-user.service';
 
 @NgModule({
   imports: [
@@ -65,6 +66,7 @@ export class CoreModule {
         WindowRef,
         XmppService,
         RealTimeService,
+        BlockUserService,
         ReviewService,
         AdService,
         ConnectionService
