@@ -16,13 +16,11 @@ import { MOCK_PAYLOAD_KO,
   MOCK_PAYLOAD_OK,
   MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import { UserService } from '../user/user.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 
 const mamFirstIndex = '1899';
 const mamCount = 1900;
 const queryId = 'abcdef';
-let userService: UserService;
 const LAST_MESSAGE = 'second';
 const FIRST_MESSAGE = 'first';
 const MESSAGE_ID = 'messageId';
