@@ -270,6 +270,40 @@ describe('Service: Xmpp', () => {
       expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.full);
     }));
 
+    it(`should emit a newMessage event with withDeliveryReceipt TRUE when the message includes
+      a delivery receipt request`, fakeAsync(() => {
+      let expectedVal;
+      eventService.emit('session:started', null);
+      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message, updateTimestamp: boolean, withDeliveryReceipt: boolean) => {
+        expectedVal = withDeliveryReceipt;
+      });
+
+      eventService.emit('message', MOCKED_SERVER_MESSAGE);
+      tick();
+
+      expect(MOCKED_SERVER_MESSAGE.requestReceipt).toBe(true);
+      expect(expectedVal).toBe(true);
+    }));
+
+    it(`should emit a newMessage event with withDeliveryReceipt FALSE when the message does not include
+    a delivery receipt request`, fakeAsync(() => {
+      let expectedVal;
+      const msg = JSON.parse(JSON.stringify(MOCKED_SERVER_MESSAGE));
+      msg.requestReceipt = false;
+      eventService.emit('session:started', null);
+      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+      eventService.subscribe(EventService.NEW_MESSAGE, (message: Message, updateTimestamp: boolean, withDeliveryReceipt: boolean) => {
+        expectedVal = withDeliveryReceipt;
+      });
+
+      eventService.emit('message', msg);
+      tick();
+
+      expect(msg.requestReceipt).toBe(false);
+      expect(expectedVal).toBe(false);
+    }));
+
     it('should NOT emit a newMessage event if there is no body', () => {
       let msg: Message;
       (service as any).bindEvents();
