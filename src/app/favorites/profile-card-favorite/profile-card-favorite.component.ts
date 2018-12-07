@@ -23,7 +23,7 @@ export class ProfileCardFavoriteComponent {
   removeFavoriteModal(e: Event) {
     e.stopPropagation();
     const modalRef = this.modalService.open(ConfirmationModalComponent);
-    modalRef.componentInstance.type = 3;
+    modalRef.componentInstance.type = this.profile.isProfessional ? 5 : 6;
     modalRef.result.then(() => {
       this.removeFavorite();
     }, () => {});

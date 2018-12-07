@@ -6,6 +6,7 @@ export const MICRO_NAME = 'String S.';
 export const NUM_TOTAL_ITEMS = 2;
 export const SCORING_STARS = 4;
 export const FAVORITED = true;
+export const IS_PROFESSIONAL = true;
 export const FAKE_PROFILE_NAME = 'No disponible';
 
 export const PROFILE_IMAGE: ProfileImage = {
@@ -27,6 +28,7 @@ export const PROFILE_DATA: ProfileResponse = {
   'scoring_stars': SCORING_STARS,
   'user_image': PROFILE_IMAGE,
   'favorited': FAVORITED,
+  'isProfessional': IS_PROFESSIONAL
 };
 
 export const MOCK_PROFILE: Profile = new Profile(
@@ -36,6 +38,7 @@ export const MOCK_PROFILE: Profile = new Profile(
   PROFILE_DATA.num_total_items,
   PROFILE_DATA.scoring_stars,
   PROFILE_DATA.user_image,
-  PROFILE_DATA.favorited
+  PROFILE_DATA.favorited,
+  PROFILE_DATA.isProfessional
 );
 

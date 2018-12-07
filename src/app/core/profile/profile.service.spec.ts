@@ -13,7 +13,7 @@ import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import {
   PROFILE_DATA, PROFILE_ID, PROFILE_IMAGE, NUM_TOTAL_ITEMS,
-  FAVORITED, MICRO_NAME, SCORING_STARS, MOCK_PROFILE
+  FAVORITED, MICRO_NAME, SCORING_STARS, MOCK_PROFILE, IS_PROFESSIONAL
 } from '../../../tests/profile.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { environment } from '../../../environments/environment';
@@ -67,7 +67,8 @@ describe('Service: Profile', () => {
   });
 
   it('should return the profile', () => {
-    const profile: Profile = new Profile(PROFILE_ID, [PROFILE_IMAGE], MICRO_NAME, NUM_TOTAL_ITEMS, SCORING_STARS, PROFILE_IMAGE, FAVORITED);
+    const profile: Profile = new Profile(PROFILE_ID, [PROFILE_IMAGE], MICRO_NAME, NUM_TOTAL_ITEMS, SCORING_STARS,
+      PROFILE_IMAGE, FAVORITED, IS_PROFESSIONAL);
     service['_profile'] = profile;
     expect(service.profile).toBe(profile);
   });

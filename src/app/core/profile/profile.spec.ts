@@ -1,13 +1,16 @@
 /* tslint:disable:no-unused-variable */
 
 import { Profile } from './profile';
-import { PROFILE_ID, MICRO_NAME, PROFILE_IMAGE, NUM_TOTAL_ITEMS, FAVORITED } from '../../../tests/profile.fixtures.spec';
+import {
+  PROFILE_ID, MICRO_NAME, PROFILE_IMAGE, NUM_TOTAL_ITEMS, FAVORITED, IS_PROFESSIONAL
+} from '../../../tests/profile.fixtures.spec';
 import { SCORING_STARS } from '../../../tests/user.fixtures.spec';
 
 describe('Profile', () => {
 
   it('should create an instance', () => {
-    expect(new Profile(PROFILE_ID, [PROFILE_IMAGE], MICRO_NAME, NUM_TOTAL_ITEMS, SCORING_STARS, PROFILE_IMAGE, FAVORITED)).toBeTruthy();
+    expect(new Profile(PROFILE_ID, [PROFILE_IMAGE], MICRO_NAME, NUM_TOTAL_ITEMS, SCORING_STARS, PROFILE_IMAGE, FAVORITED,
+      IS_PROFESSIONAL)).toBeTruthy();
   });
 
   it('should set the profile data through the constructor', () => {
@@ -18,7 +21,8 @@ describe('Profile', () => {
       NUM_TOTAL_ITEMS,
       SCORING_STARS,
       PROFILE_IMAGE,
-      FAVORITED
+      FAVORITED,
+      IS_PROFESSIONAL
     );
 
     expect(profile.id).toBe(PROFILE_ID);
@@ -28,6 +32,7 @@ describe('Profile', () => {
     expect(profile.scoring_stars).toBe(SCORING_STARS);
     expect(profile.user_image).toBe(PROFILE_IMAGE);
     expect(profile.favorited).toBe(FAVORITED);
+    expect(profile.isProfessional).toBe(IS_PROFESSIONAL);
   });
 
 });

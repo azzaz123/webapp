@@ -13,7 +13,8 @@ export class Profile implements Model {
               private _num_total_items: number,
               private _scoring_stars: number,
               private _user_image: ProfileImage,
-              private _favorited: boolean) {
+              private _favorited: boolean,
+              private _isProfessional: boolean) {
   }
   get id(): string {
     return this._id;
@@ -45,6 +46,10 @@ export class Profile implements Model {
 
   set favorited(value: any) {
     this._favorited = value;
+  }
+
+  get isProfessional(): any {
+    return this._isProfessional;
   }
 
 }

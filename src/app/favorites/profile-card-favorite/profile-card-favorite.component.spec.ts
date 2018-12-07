@@ -100,8 +100,8 @@ describe('ProfileCardFavoriteComponent', () => {
       expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
     });
 
-    it('should set modal type "3" ', () => {
-      expect(modalRef.componentInstance.type).toEqual(3);
+    it('should set modal type "5" if profile is featured', () => {
+      expect(modalRef.componentInstance.type).toEqual(5);
     });
 
     it('should call removeFavorite method ', fakeAsync(() => {
