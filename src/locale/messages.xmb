@@ -435,7 +435,7 @@
   <msg id="6799485957303243139"><source>app/favorites/favorites.component.ts:23</source>favorite</msg>
   <msg id="351850805832815905" desc="plural" meaning="tab"><source>app/favorites/favorites.component.ts:29</source>Profiles</msg>
   <msg id="2027740642468122404"><source>app/favorites/favorites.component.ts:34</source>In this list you can see all the products you saved as favourite</msg>
-  <msg id="8888357426803887074"><source>app/favorites/favorites.component.ts:35</source>In this list you can see all the profiles you saved as favourite</msg>
+  <msg id="8888357426803887074"><source>app/favorites/favorites.component.ts:38</source>In this list you can see all the profiles you saved as favourite</msg>
   <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.ts:11</source><source>app/favorites/profile-card-favorite/profile-card-favorite.component.ts:15</source> Remove </msg>
   <msg id="6806883447514569994"><source>app/help/help.component.ts:6</source>Your help center</msg>
   <msg id="7002268576514991178"><source>app/help/help.component.ts:9</source>We hope that you can find here the answers for all your questions</msg>
