@@ -79,7 +79,8 @@ export class ProfileService extends ResourceService {
       data.scoring_stars,
       data.user_image,
       data.favorited,
-      data.isProfessional
+      data.is_professional,
+      data.screen_name
     );
   }
 

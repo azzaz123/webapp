@@ -2,7 +2,7 @@
 
 import { Profile } from './profile';
 import {
-  PROFILE_ID, MICRO_NAME, PROFILE_IMAGE, NUM_TOTAL_ITEMS, FAVORITED, IS_PROFESSIONAL
+  PROFILE_ID, MICRO_NAME, PROFILE_IMAGE, NUM_TOTAL_ITEMS, FAVORITED, IS_PROFESSIONAL, SCREEN_NAME
 } from '../../../tests/profile.fixtures.spec';
 import { SCORING_STARS } from '../../../tests/user.fixtures.spec';
 
@@ -10,7 +10,7 @@ describe('Profile', () => {
 
   it('should create an instance', () => {
     expect(new Profile(PROFILE_ID, [PROFILE_IMAGE], MICRO_NAME, NUM_TOTAL_ITEMS, SCORING_STARS, PROFILE_IMAGE, FAVORITED,
-      IS_PROFESSIONAL)).toBeTruthy();
+      IS_PROFESSIONAL, SCREEN_NAME)).toBeTruthy();
   });
 
   it('should set the profile data through the constructor', () => {
@@ -22,7 +22,8 @@ describe('Profile', () => {
       SCORING_STARS,
       PROFILE_IMAGE,
       FAVORITED,
-      IS_PROFESSIONAL
+      IS_PROFESSIONAL,
+      SCREEN_NAME
     );
 
     expect(profile.id).toBe(PROFILE_ID);
@@ -32,7 +33,8 @@ describe('Profile', () => {
     expect(profile.scoring_stars).toBe(SCORING_STARS);
     expect(profile.user_image).toBe(PROFILE_IMAGE);
     expect(profile.favorited).toBe(FAVORITED);
-    expect(profile.isProfessional).toBe(IS_PROFESSIONAL);
+    expect(profile.is_professional).toBe(IS_PROFESSIONAL);
+    expect(profile.screen_name).toBe(SCREEN_NAME);
   });
 
 });

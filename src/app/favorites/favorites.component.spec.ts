@@ -64,6 +64,7 @@ describe('FavoritesComponent', () => {
 
     beforeEach(fakeAsync(() => {
       spyOn(component, 'getItems').and.callThrough();
+      spyOn(component, 'getProfiles').and.callThrough();
       itemServiceSpy = spyOn(itemService, 'myFavorites').and.callThrough();
       profileServiceSpy = spyOn(profileService, 'myFavorites').and.callThrough();
     }));
@@ -72,6 +73,7 @@ describe('FavoritesComponent', () => {
       component.ngOnInit();
 
       expect(component.getItems).toHaveBeenCalled();
+      expect(component.getProfiles).toHaveBeenCalled();
     });
 
     it('if append argument is false should clear item array', () => {

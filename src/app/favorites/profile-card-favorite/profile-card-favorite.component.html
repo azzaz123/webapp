@@ -1,9 +1,9 @@
-<tsl-card>
+<tsl-card (click)="goToProfileDetail()">
   <tsl-card-image>
     <tsl-profile-images *ngFor="let number of [0,1,2,3]" [profileImage]="profile?.item_images[number]" size="profile"
                         fallbackLight="true">
     </tsl-profile-images>
-    <span class="featured" *ngIf="profile?.isProfessional"><mat-icon svgIcon="wing"></mat-icon></span>
+    <span class="featured" *ngIf="profile?.is_professional"><mat-icon svgIcon="wing"></mat-icon></span>
   </tsl-card-image>
   <tsl-card-content>
     <h5 class="tsl-card-title"> {{profile.micro_name}} </h5>

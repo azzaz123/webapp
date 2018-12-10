@@ -8,6 +8,7 @@ export const SCORING_STARS = 4;
 export const FAVORITED = true;
 export const IS_PROFESSIONAL = true;
 export const FAKE_PROFILE_NAME = 'No disponible';
+export const SCREEN_NAME = 'fake-user-24234';
 
 export const PROFILE_IMAGE: ProfileImage = {
   'original_height': 100,
@@ -28,7 +29,8 @@ export const PROFILE_DATA: ProfileResponse = {
   'scoring_stars': SCORING_STARS,
   'user_image': PROFILE_IMAGE,
   'favorited': FAVORITED,
-  'isProfessional': IS_PROFESSIONAL
+  'is_professional': IS_PROFESSIONAL,
+  'screen_name': SCREEN_NAME
 };
 
 export const MOCK_PROFILE: Profile = new Profile(
@@ -39,6 +41,7 @@ export const MOCK_PROFILE: Profile = new Profile(
   PROFILE_DATA.scoring_stars,
   PROFILE_DATA.user_image,
   PROFILE_DATA.favorited,
-  PROFILE_DATA.isProfessional
+  PROFILE_DATA.is_professional,
+  PROFILE_DATA.screen_name
 );
 

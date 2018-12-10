@@ -6,6 +6,7 @@ export const FAKE_ITEM_IMAGE_SMALL_BASE_PATH = '../../../assets/images/fake-item
 export const FAKE_ITEM_IMAGE_SMALL_LIGHT_BASE_PATH = '../../../assets/images/fake-item-s-l.png';
 
 export class Profile implements Model {
+  private _webLink: string;
 
   constructor(private _id: string,
               private _item_images: ProfileImage[],
@@ -14,7 +15,9 @@ export class Profile implements Model {
               private _scoring_stars: number,
               private _user_image: ProfileImage,
               private _favorited: boolean,
-              private _isProfessional: boolean) {
+              private _is_professional: boolean,
+              private _screen_name: string) {
+    this._webLink = PROFILE_BASE_PATH + _screen_name;
   }
   get id(): string {
     return this._id;
@@ -48,8 +51,12 @@ export class Profile implements Model {
     this._favorited = value;
   }
 
-  get isProfessional(): any {
-    return this._isProfessional;
+  get is_professional(): any {
+    return this._is_professional;
+  }
+
+  get screen_name(): any {
+    return this._screen_name;
   }
 
 }

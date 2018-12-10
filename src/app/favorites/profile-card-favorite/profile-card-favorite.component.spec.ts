@@ -13,14 +13,17 @@ import { Observable } from 'rxjs/Observable';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { ProfileService } from '../../core/profile/profile.service';
 import { MOCK_PROFILE } from '../../../tests/profile.fixtures.spec';
+import { environment } from '../../../environments/environment';
+import { WindowRef } from '../../core/window/window.service';
 
 describe('ProfileCardFavoriteComponent', () => {
   let component: ProfileCardFavoriteComponent;
   let fixture: ComponentFixture<ProfileCardFavoriteComponent>;
   let element: HTMLElement;
-  
   let modalService: NgbModal;
   let profileService: ProfileService;
+  let windowRef: WindowRef;
+  let subdomain: string;
 
   const modalRef: any = {
     result: Promise.resolve({
@@ -37,6 +40,12 @@ describe('ProfileCardFavoriteComponent', () => {
       declarations: [ ProfileCardFavoriteComponent, CustomCurrencyPipe ],
       providers: [
         DecimalPipe,
+        { provide: WindowRef, useValue: {
+          nativeWindow: {
+            open: () => {}
+          }
+        }
+        },
         { provide: NgbModal, useValue: {
             open() {
               return modalRef;
@@ -50,6 +59,7 @@ describe('ProfileCardFavoriteComponent', () => {
           }
         },
         {provide: TrackingService, useClass: MockTrackingService},
+        { provide: 'SUBDOMAIN', useValue: 'www'}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -62,7 +72,9 @@ describe('ProfileCardFavoriteComponent', () => {
     component.profile = MOCK_PROFILE;
     profileService = TestBed.get(ProfileService);
     element = fixture.nativeElement;
+    windowRef = TestBed.get(WindowRef);
     modalService = TestBed.get(NgbModal);
+    subdomain = TestBed.get('SUBDOMAIN');
 
     fixture.detectChanges();
   });
@@ -108,6 +120,15 @@ describe('ProfileCardFavoriteComponent', () => {
       tick();
       expect(component.removeFavorite).toHaveBeenCalled();
     }));
+  });
+
+  describe('goToProfileDetail', () => {
+    it('should change window url', () => {
+      spyOn(windowRef.nativeWindow, 'open');
+      const MOCK_PROFILE_URL: string = environment.siteUrl.replace('es', subdomain) + 'user/' + MOCK_PROFILE.screen_name;
+      component.goToProfileDetail();
+      expect(windowRef.nativeWindow.open).toHaveBeenCalledWith(MOCK_PROFILE_URL);
+    });
   });
 
 });

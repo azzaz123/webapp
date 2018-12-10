@@ -9,7 +9,8 @@ export interface ProfileResponse extends ApiResponse {
   scoring_stars: number;
   user_image: ProfileImage;
   favorited: boolean;
-  isProfessional: boolean;
+  is_professional: boolean;
+  screen_name: string
 }
 
 export interface ProfileImage {
