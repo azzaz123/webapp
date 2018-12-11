@@ -73,7 +73,6 @@ describe('FavoritesComponent', () => {
       component.ngOnInit();
 
       expect(component.getItems).toHaveBeenCalled();
-      expect(component.getProfiles).toHaveBeenCalled();
     });
 
     it('if append argument is false should clear item array', () => {

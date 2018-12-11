@@ -29,7 +29,6 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit() {
     this.getItems();
-    this.getProfiles();
     this.getNumberOfFavorites();
   }
 

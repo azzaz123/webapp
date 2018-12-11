@@ -29,11 +29,11 @@
       <a (click)="filterByStatus('profiles')" [ngClass]="{active: selectedStatus === 'profiles'}" class="nav-link" i18n="tab|plural">Profiles</a>
     </nav>
     <div class="row items">
-      <div class="favorites-empty-state" *ngIf="!items.length && !loading">
+      <div class="favorites-empty-state" *ngIf="!items.length && !loading && selectedStatus === 'products'">
         <mat-icon svgIcon="favorites-empty-state" class="image"></mat-icon>
         <div class="message" *ngIf="selectedStatus === 'products'" i18n>In this list you can see all the products you saved as favourite</div>
       </div>
-      <div class="favorites-empty-state" *ngIf="!profiles.length && !loading">
+      <div class="favorites-empty-state" *ngIf="!profiles.length && !loading && selectedStatus === 'profiles'">
         <mat-icon svgIcon="favorites-empty-state" class="image"></mat-icon>
         <div class="message" *ngIf="selectedStatus === 'profiles'" i18n>In this list you can see all the profiles you saved as favourite</div>
       </div>
