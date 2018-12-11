@@ -3,6 +3,21 @@
 var googletag = googletag || {};
 googletag.cmd = googletag.cmd || [];
 
+/* Adomik */
+window.Adomik = window.Adomik || {};
+
+Adomik.randomAdGroup = function () {
+  var rand = Math.random();
+  switch (false) {
+    case !(rand < 0.09):
+      return "ad_ex" + (Math.floor(100 * rand));
+    case !(rand < 0.10):
+      return "ad_bc";
+    default:
+      return "ad_opt";
+  }
+};
+
 /* Criteo */
 window.Criteo = window.Criteo || {};
 window.Criteo.events = window.Criteo.events || [];
