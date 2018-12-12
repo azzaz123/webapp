@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
-import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from 'ngx-uploader';
 import { User } from '../../../core/user/user';
 import { HttpService } from '../../../core/http/http.service';
 import { ErrorsService } from '../../../core/errors/errors.service';
 import { UserService } from '../../../core/user/user.service';
 import { environment } from '../../../../environments/environment';
+import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from '../../uploader/upload.interface';
 
 
 @Component({

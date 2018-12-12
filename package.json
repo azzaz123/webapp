@@ -58,7 +58,6 @@
     "ngx-infinite-scroll": "^6.0.1",
     "ngx-permissions": "^5.0.0",
     "ngx-toastr": "8.1.1",
-    "ngx-uploader": "https://github.com/Wallapop/ngx-uploader#3.2.4",
     "pouchdb": "7.0.0",
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.2.2",
@@ -84,13 +83,13 @@
     "karma-coverage-istanbul-reporter": "^2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-phantomjs-launcher": "^1.0.4",
-    "karma-spec-reporter": "^0.0.32",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "2.7.2",
-    "puppeteer": "^1.8.0"
+    "puppeteer": "^1.8.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-spec-reporter": "^0.0.32"
   },
   "resolutions": {
     "**/rxjs": "6.3.2"

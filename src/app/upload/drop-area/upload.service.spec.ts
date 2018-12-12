@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { UploadFile, UploadInput } from 'ngx-uploader';
 import { UploadService } from './upload.service';
 import { environment } from '../../../environments/environment';
 import { CAR_ID, UPLOAD_FILE, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
@@ -10,6 +9,7 @@ import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../../core/item/item-categories';
 import { ITEM_TYPES } from '../../core/item/item';
+import { UploadInput } from '../../shared/uploader/upload.interface';
 
 describe('UploadService', () => {
 

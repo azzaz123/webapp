@@ -7,8 +7,8 @@
     <p i18n>Your item has been uploaded and it's marked as urgent.</p>
     <p *ngIf="creditUsed"><b>
       <span i18n>You have used</span>
-      <span *ngIf="withCoins">{{spent * creditInfo?.factor | number}} wallacoins</span>
-      <span *ngIf="!withCoins">{{spent | customCurrency}}</span>
+      <span *ngIf="withCoins"> {{spent * creditInfo?.factor | number}} wallacoins</span>
+      <span *ngIf="!withCoins"> {{spent | customCurrency}}</span>
       <span *ngIf="withCoins" i18n>and you have {{creditInfo?.credit | number}} wallacoins left</span>
       <span *ngIf="!withCoins" i18n>and you have {{creditInfo?.credit | customCurrency}} credit</span>
     </b></p>
