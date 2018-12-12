@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/te
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
 import { Message, messageStatus, phoneRequestState } from '../message/message';
-import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID,
   MOCKED_CONVERSATIONS,
   MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
@@ -14,7 +14,8 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { MOCK_PAYLOAD_KO,
   MOCK_PAYLOAD_OK,
-  MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
+  MOCK_MESSAGE,
+  MOCK_MESSAGE_FROM_OTHER} from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 
@@ -646,6 +647,32 @@ describe('Service: Xmpp', () => {
       eventService.emit('message', MOCKED_SERVER_TIMESTAMP_MESSAGE, true);
 
       expect(service['onNewMessage']).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('resendMessage', () => {
+    it('should call client.sendMessage with an XmppBodyMessage', () => {
+      spyOn<any>(service, 'createJid').and.returnValues(
+        OTHER_USER_ID + '@' + environment.xmppDomain,
+        USER_ID + '@' + environment.xmppDomain);
+
+      const pendingMessage = MOCK_MESSAGE_FROM_OTHER;
+      const expectedXmppMsg: XmppBodyMessage = {
+        id: MOCK_MESSAGE_FROM_OTHER.id,
+        to: USER_ID + '@' + environment.xmppDomain,
+        from: OTHER_USER_ID + '@' + environment.xmppDomain,
+        thread: MOCK_CONVERSATION().id,
+        type: 'chat',
+        request: {
+          xmlns: 'urn:xmpp:receipts',
+        },
+        body: MOCK_MESSAGE_FROM_OTHER.message
+      };
+
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      service.resendMessage(MOCK_CONVERSATION(), pendingMessage);
+
+      expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith(expectedXmppMsg);
     });
   });
 
