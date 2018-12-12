@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { ConversationsPanelComponent } from './conversations-panel.component';
 import { ConversationComponent } from '../../shared/conversation/conversation.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConversationService } from '../../core/conversation/conversation.service';

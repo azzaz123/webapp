@@ -6,7 +6,7 @@ import { I18nService } from '../../core/i18n/i18n.service';
 import { HttpService } from '../../core/http/http.service';
 import { Key } from './key.interface';
 import { ResponseOptions, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 
 describe('RealestateKeysService', () => {

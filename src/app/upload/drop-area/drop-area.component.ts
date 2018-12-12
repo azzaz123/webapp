@@ -33,7 +33,7 @@ export class DropAreaComponent implements OnInit, ControlValueAccessor {
   @Input() itemId: string;
   @Input() type: string;
   dragOver: boolean;
-  files: UploadFile[] = [];
+  files = [];
   placeholders: number[];
   options: NgUploaderOptions;
   item: Item;

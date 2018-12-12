@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { HttpService } from '../../../../core/http/http.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { StatisticFullResponse } from '../../../../dashboard/stats-graph/statistic-response.interface';
 import { ItemStatisticFullResponse } from './item-stats-response.interface';
 

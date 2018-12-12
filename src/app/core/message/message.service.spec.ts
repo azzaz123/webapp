@@ -5,7 +5,7 @@ import { MessageService } from './message.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
 import { Message, messageStatus, phoneRequestState } from './message';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import {

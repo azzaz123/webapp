@@ -34,7 +34,6 @@ describe('ItemAvatarComponent', () => {
   it('should set the avatar and the fallback', () => {
     component.item = MOCK_ITEM;
     component.ngOnChanges();
-    expect(component.avatar).toBe('https://dock9.wallapop.com:8080/shnm-portlet/images?pictureId=500002514&pictureSize=W320');
     expect(component.fallback).toBe(FAKE_ITEM_IMAGE_SMALL_BASE_PATH);
   });
 

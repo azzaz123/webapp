@@ -388,6 +388,7 @@
 .main-header-credits {
   b {
     color: $corporate;
+    margin-right: $spacing-XXS;
   }
   .topbar-icon {
     @include square(38px);

@@ -14,7 +14,7 @@ import {
 } from '../../../tests/upload.fixtures.spec';
 import { UploadFile, UploadStatus } from 'ngx-uploader';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 import { ITEM_ID, PICTURE_ID } from '../../../tests/item.fixtures.spec';

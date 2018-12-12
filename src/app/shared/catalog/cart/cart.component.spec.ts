@@ -5,7 +5,7 @@ import { CustomCurrencyPipe } from '../../custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CartService } from './cart.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Cart } from './cart';
 import { CartChange } from './cart-item.interface';
 import {
@@ -261,11 +261,13 @@ describe('CartComponent', () => {
 
               it('should redirect to code 200', () => {
                 expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
+                expect(paymentService.pay).toHaveBeenCalledWith('UUID');
               });
 
               it('should call deselectItems', () => {
                 expect(itemService.deselectItems).toHaveBeenCalled();
                 expect(itemService.selectedAction).toBeNull();
+                expect(paymentService.pay).toHaveBeenCalledWith('UUID');
               });
             });
 
@@ -278,11 +280,6 @@ describe('CartComponent', () => {
 
               it('should redirect to code -1', () => {
                 expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
-              });
-            });
-
-            afterEach(() => {
-              it('should call pay', () => {
                 expect(paymentService.pay).toHaveBeenCalledWith('UUID');
               });
             });
@@ -306,25 +303,20 @@ describe('CartComponent', () => {
 
         it('should redirect to code 200', () => {
           expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
+          expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
+            selected_products: CART_ORDER_TRACK
+          });
         });
 
         it('should call deselectItems', () => {
           expect(itemService.deselectItems).toHaveBeenCalled();
           expect(itemService.selectedAction).toBeNull();
-        });
-      });
-
-      afterEach(() => {
-        it('should call purchaseProducts', () => {
-          expect(itemService.purchaseProducts).toHaveBeenCalledWith(CART_ORDER, 'UUID');
-        });
-
-        it('should call track', () => {
           expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PURCHASE_CHECKOUTCART, {
             selected_products: CART_ORDER_TRACK
           });
         });
       });
+
     });
 
     describe('error', () => {

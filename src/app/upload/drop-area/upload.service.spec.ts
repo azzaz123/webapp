@@ -306,7 +306,7 @@ describe('UploadService', () => {
 
   describe('updateOrder', () => {
     it('should emit uploadFile event', () => {
-      const FILES: UploadFile[] = [UPLOAD_FILE, UPLOAD_FILE, UPLOAD_FILE];
+      const FILES = [UPLOAD_FILE, UPLOAD_FILE, UPLOAD_FILE];
       service.updateOrder(FILES);
       expect(response).toEqual({
         type: 'updateOrder',
@@ -317,7 +317,7 @@ describe('UploadService', () => {
 
   describe('setInitialImages', () => {
     it('should emit initialImages event', () => {
-      const FILES: UploadFile[] = [UPLOAD_FILE, UPLOAD_FILE, UPLOAD_FILE];
+      const FILES = [UPLOAD_FILE, UPLOAD_FILE, UPLOAD_FILE];
 
       service.setInitialImages(FILES);
 

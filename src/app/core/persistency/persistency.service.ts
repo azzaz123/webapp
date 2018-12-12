@@ -1,7 +1,6 @@
-import * as PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer, throwError } from 'rxjs';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Message, statusOrder, phoneRequestState } from '../message/message';
@@ -152,7 +151,7 @@ export class PersistencyService {
   }
 
   public getPhoneNumber(): Observable<any> {
-    return Observable.fromPromise(this.messagesDb.get('phone')).catch(() => Observable.of());
+    return Observable.fromPromise(this.messagesDb.get('phone')).catch(() => Observable.of({}));
   }
 
   public updateMessageDate(message: Message) {
@@ -220,7 +219,7 @@ export class PersistencyService {
 
   private upsert(db, docId, diffFun) {
     if (typeof docId !== 'string') {
-      return Promise.reject(new Error('doc id is required'));
+      return throwError(new Error("doc id is required"));
     }
 
     return db.get(docId)

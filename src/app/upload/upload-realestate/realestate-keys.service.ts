@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../../core/http/http.service';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 import { Key } from './key.interface';
 import { IOption } from 'ng-select';

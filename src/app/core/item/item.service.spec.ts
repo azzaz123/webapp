@@ -30,7 +30,7 @@ import {
   PURCHASES, ITEM_PUBLISHED_DATE, ITEM_SALE_PRICE, ITEM_DATA_V4, ITEM_DATA_V5
 } from '../../../tests/item.fixtures.spec';
 import { Item, ITEM_BASE_PATH, ITEM_TYPES } from './item';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {
   CarInfo, CheapestProducts,
   ConversationUser,
@@ -349,6 +349,7 @@ describe('Service: Item', () => {
         service.mine(0, 'published').subscribe((data: ItemsData) => {
           resp = data;
         });
+
         expect(resp.data.length).toBe(4);
         const item = resp.data[0];
         expect(item.id).toBe(ITEMS_DATA_V3[0].id);
