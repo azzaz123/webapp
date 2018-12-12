@@ -46,9 +46,41 @@ export class XmppService {
     }
   }
 
-  public sendMessage(conversation: Conversation, body: string, resend = false, messageId?: string) {
+  public sendMessage(conversation: Conversation, body: string) {
+    const message = this.createXmppMessage(conversation, this.client.nextId(), body);
+    if (!conversation.messages.filter(m => !m.phoneRequest).length) {
+      const hasPhoneRequestMessage = conversation.messages.find(m => !!m.phoneRequest);
+      if (hasPhoneRequestMessage) {
+        this.eventService.emit(EventService.CONVERSATION_CEATED, conversation, hasPhoneRequestMessage);
+      }
+
+      this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
+        item_id: conversation.item.id,
+        thread_id: message.thread,
+        message_id: message.id
+      });
+      appboy.logCustomEvent('FirstMessage', { platform: 'web' });
+    }
+    const trackEvent: TrackingEventData = {
+      eventData: TrackingService.MESSAGE_SENT,
+      attributes: {
+        thread_id: message.thread,
+        message_id: message.id
+      }
+    };
+    this.trackingService.addTrackingEvent(trackEvent, false);
+    this.onNewMessage(_.clone(message), true);
+    this.client.sendMessage(message);
+  }
+
+  public resendMessage(conversation: Conversation, message: Message) {
+    const msg: XmppBodyMessage = this.createXmppMessage(conversation, message.id, message.message);
+    this.client.sendMessage(msg);
+  }
+
+  private createXmppMessage(conversation: Conversation, id: string, body: string): XmppBodyMessage {
     const message: XmppBodyMessage = {
-      id: resend ? messageId : this.client.nextId(),
+      id: id,
       to: this.createJid(conversation.user.id),
       from: this.currentJid,
       thread: conversation.id,
@@ -58,32 +90,7 @@ export class XmppService {
       },
       body: body
     };
-
-    if (!resend) {
-      if (!conversation.messages.filter(m => !m.phoneRequest).length) {
-        const hasPhoneRequestMessage = conversation.messages.find(m => !!m.phoneRequest);
-        if (hasPhoneRequestMessage) {
-          this.eventService.emit(EventService.CONVERSATION_CEATED, conversation, hasPhoneRequestMessage);
-        }
-
-        this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
-          item_id: conversation.item.id,
-          thread_id: message.thread,
-          message_id: message.id });
-        appboy.logCustomEvent('FirstMessage', {platform: 'web'});
-      }
-      const trackEvent: TrackingEventData = {
-        eventData: TrackingService.MESSAGE_SENT,
-        attributes: {
-        thread_id: message.thread,
-        message_id: message.id
-        }
-      };
-      this.trackingService.addTrackingEvent(trackEvent, false);
-      this.onNewMessage(_.clone(message), true);
-    }
-
-    this.client.sendMessage(message);
+    return message;
   }
 
   public sendConversationStatus(userId: string, conversationId: string) {
