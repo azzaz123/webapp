@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 
 import { BlockUserService } from './block-user.service';
 import { XmppService } from '../xmpp/xmpp.service';
@@ -6,6 +6,11 @@ import { EventService } from '../event/event.service';
 import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
+import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { Observable } from 'rxjs/Observable';
+
+let service: BlockUserService;
+let xmppService: XmppService;
 
 describe('BlockUserService', () => {
   beforeEach(() => {
@@ -18,9 +23,39 @@ describe('BlockUserService', () => {
         {provide: TrackingService, useValue: {}}
       ]
     });
+    service = TestBed.get(BlockUserService);
+    xmppService = TestBed.get(XmppService);
   });
 
-  it('should be created', inject([BlockUserService], (service: BlockUserService) => {
-    expect(service).toBeTruthy();
-  }));
+
+  describe('blockUser', () => {
+    it('should call xmpp.blockUser when called', () => {
+      spyOn(xmppService, 'blockUser').and.returnValue(Observable.of(true));
+
+      service.blockUser(MOCK_USER).subscribe();
+
+      expect(xmppService.blockUser).toHaveBeenCalledWith(MOCK_USER);
+    });
+  });
+
+  describe('unblockUser', () => {
+    it('should call xmpp.unblockUser when called', () => {
+      spyOn(xmppService, 'unblockUser').and.returnValue(Observable.of(true));
+
+      service.unblockUser(MOCK_USER).subscribe();
+
+      expect(xmppService.unblockUser).toHaveBeenCalledWith(MOCK_USER);
+    });
+  });
+
+  describe('isBlocked', () => {
+    it('should call xmpp.isBlocked when called', () => {
+      spyOn(xmppService, 'isBlocked');
+
+      service.isBlocked(MOCK_USER.id);
+
+      expect(xmppService.isBlocked).toHaveBeenCalledWith(MOCK_USER.id);
+
+    });
+  });
 });
