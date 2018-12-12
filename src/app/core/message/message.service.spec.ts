@@ -182,7 +182,7 @@ describe('Service: Message', () => {
 
       it('should resend messages that have the status PENDING and is newer than 5 days', () => {
         spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_PENDING));
-        spyOn(realTime, 'sendMessage');
+        spyOn(realTime, 'resendMessage');
         const pendingMsgCount = MOCK_DB_RESPONSE_WITH_PENDING.filter(m => m.doc.status === messageStatus.PENDING).length;
 
 
@@ -191,19 +191,19 @@ describe('Service: Message', () => {
           pendingMsg = response.data[0];
         });
 
-        expect(realTime.sendMessage).toHaveBeenCalledTimes(pendingMsgCount);
-        expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, pendingMsg.message, true, pendingMsg.id);
+        expect(realTime.resendMessage).toHaveBeenCalledTimes(pendingMsgCount);
+        expect(realTime.resendMessage).toHaveBeenCalledWith(conversation, pendingMsg);
       });
 
       it('should not resend messages that have the status PENDING and are older than 5 days', () => {
         spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_OLD_PENDING));
-        spyOn(realTime, 'sendMessage');
+        spyOn(realTime, 'resendMessage');
 
         service.getMessages(conversation).subscribe((data: any) => {
           response = data;
         });
 
-        expect(realTime.sendMessage).not.toHaveBeenCalled();
+        expect(realTime.resendMessage).not.toHaveBeenCalled();
       });
     });
 

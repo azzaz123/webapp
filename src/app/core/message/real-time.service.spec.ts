@@ -8,11 +8,13 @@ import { TrackingService } from '../tracking/tracking.service';
 import { Observable } from 'rxjs/Observable';
 import { Message } from './message';
 import { USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
-import { CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATION_ID, MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 
 let service: RealTimeService;
 let persistencyService: PersistencyService;
 let eventService: EventService;
+let xmppService: XmppService;
 
 describe('RealTimeService', () => {
   beforeEach(() => {
@@ -29,6 +31,27 @@ describe('RealTimeService', () => {
     service = TestBed.get(RealTimeService);
     eventService = TestBed.get(EventService);
     persistencyService = TestBed.get(PersistencyService);
+    xmppService = TestBed.get(XmppService);
+  });
+
+  describe('sendMessage', () => {
+    it('should call xmpp.sendMessage', () => {
+      spyOn(xmppService, 'sendMessage');
+
+      service.sendMessage(MOCK_CONVERSATION(), MOCK_MESSAGE.message);
+
+      expect(xmppService.sendMessage).toHaveBeenCalledWith(MOCK_CONVERSATION(), MOCK_MESSAGE.message);
+    });
+  });
+
+  describe('resendMessage', () => {
+    it('should call xmpp.resendMessage', () => {
+      spyOn(xmppService, 'resendMessage');
+
+      service.resendMessage(MOCK_CONVERSATION(), MOCK_MESSAGE);
+
+      expect(xmppService.resendMessage).toHaveBeenCalledWith(MOCK_CONVERSATION(), MOCK_MESSAGE);
+    });
   });
 
   describe('sendReceivedReceipt', () => {
