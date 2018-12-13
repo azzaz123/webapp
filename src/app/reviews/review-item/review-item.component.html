@@ -23,8 +23,9 @@
       <span *ngIf="this.review.isBought" i18n>Bought:</span>
     </div>
     <div class="review-title">
-      <a *ngIf="review.item?.id || category?.title" href="{{ itemWebLink }}" target="_blank"> {{ review.item.title || category.title }} </a>
-      <span *ngIf="!this.review.item?.id && ! category?.title" i18n>A wallapop item</span>
+      <a *ngIf="review.item?.id" href="{{ itemWebLink }}" target="_blank"> {{ review.item.title }} </a>
+      <span *ngIf="!review.item?.id && category?.title"> {{ category.title }} </span>
+      <span *ngIf="!review.item?.id && ! category?.title" i18n>A wallapop item</span>
     </div>
     <tsl-stars class="review-rating" [stars]="this.review.scoring" [normalized]="false"></tsl-stars>
     <p class="review-comment">{{ this.review.comments }}</p>
