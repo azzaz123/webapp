@@ -26,8 +26,12 @@ export class RealTimeService {
     this.xmpp.reconnectClient();
   }
 
-  public sendMessage(conversation: Conversation, body: string, resend = false, messageId?: string) {
-    this.xmpp.sendMessage(conversation, body, resend, messageId);
+  public sendMessage(conversation: Conversation, body: string) {
+    this.xmpp.sendMessage(conversation, body);
+  }
+
+  public resendMessage(conversation: Conversation, message: Message) {
+    this.xmpp.resendMessage(conversation, message);
   }
 
   public sendDeliveryReceipt(to: string, id: string, conversationId: string) {

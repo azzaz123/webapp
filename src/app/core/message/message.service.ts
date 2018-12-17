@@ -67,7 +67,7 @@ export class MessageService {
             if (msg.status === messageStatus.PENDING) {
               const timeLimit = new Date().getTime() - (this.resendOlderThan * 24 * 60 * 60 * 1000);
               if (Date.parse(msg.date.toString()) > timeLimit) {
-                this.realTime.sendMessage(conversation, msg.message, true, msg.id);
+                this.realTime.resendMessage(conversation, msg);
               }
             }
             this.allMessages.push(msg);
