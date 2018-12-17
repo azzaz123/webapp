@@ -67,11 +67,11 @@ export class UploadCarComponent implements OnInit {
       version: [{value: '', disabled: true}, [Validators.required]],
       num_seats: ['', [this.min(0), this.max(99)]],
       num_doors: ['', [this.min(0), this.max(99)]],
-      body_type: '',
+      body_type: null,
       km: ['', [this.min(0), this.max(999999999)]],
       storytelling: '',
-      engine: '',
-      gearbox: '',
+      engine: null,
+      gearbox: null,
       horsepower: ['', [this.min(0), this.max(999)]],
       sale_conditions: fb.group({
         fix_price: false,
@@ -242,6 +242,7 @@ export class UploadCarComponent implements OnInit {
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
+      console.log(this.uploadForm.value);
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
         values: this.uploadForm.value
