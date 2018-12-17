@@ -15,6 +15,7 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { AccessTokenService } from './access-token.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs/Observable';
 
 describe('Service: Http', () => {
 
@@ -833,6 +834,7 @@ describe('Service: Http', () => {
         expect(headers.get('DeviceID')).toBe('postman_santi');
       }));
   });
+
   describe('postNoBase', () => {
     it('should return a post with the prepended url',
       fakeAsync(() => {
@@ -866,6 +868,21 @@ describe('Service: Http', () => {
         expect(headers.has('Authorization')).toBeTruthy();
         expect(headers.get('Authorization')).toBe('stringAuthorization');
       }));
+
+    describe('with retry strategy', () => {
+      it('should not retry when it encounters an error that is not present in the retryOnStatuses array (throw the encoutnered error)', () => {
+        const testErrorCode = 404;
+        const testError = {status: testErrorCode};
+        expect(httpService['retryOnStatuses'].indexOf(testErrorCode)).toBe(-1);
+        spyOn(http, 'post').and.returnValue(Observable.throw(testError));
+
+        httpService.postNoBase(TEST_URL, TEST_BODY, 'stringAuthorization', null, true).subscribe(() => {},
+        (err) => {
+          expect(err).toBe(testError);
+        });
+      });
+    });
+
   });
 
   describe('postUrlEncoded', () => {
