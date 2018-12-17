@@ -241,7 +241,6 @@ export class UploadCarComponent implements OnInit {
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
-      console.log(this.uploadForm.value);
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
         values: this.uploadForm.value
