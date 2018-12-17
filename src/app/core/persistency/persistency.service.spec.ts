@@ -48,6 +48,16 @@ describe('Service: Persistency', () => {
     expect(service.localDbVersionUpdate).toHaveBeenCalled();
   });
 
+  describe('init clickstream DB', () => {
+    it('should open a new indexedDb', () => {
+      spyOn(window.indexedDB, 'open').and.callThrough();
+      spyOn(userService, 'me').and.returnValue(Observable.of(MOCK_USER));
+
+      eventService.emit(EventService.USER_LOGIN);
+
+      expect(window.indexedDB.open).toHaveBeenCalled();
+    });
+  });
   describe('getMessages', () => {
 
     let observableResponse: any;
