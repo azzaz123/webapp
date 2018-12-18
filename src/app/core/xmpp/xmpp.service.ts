@@ -515,15 +515,6 @@ export class XmppService {
     });
   }
 
-  // TODO - remove after new methods are confirmed to work as expected
-  // private old_createJid(userId: string): string {
-  //   return userId + '@' + environment.xmppDomain;
-  // }
-
-  // private old_getIdFromJid(jid: string): string {
-  //   const splitted = jid.split('@');
-  //   return splitted[0];
-  // }
 
   private createJid(userId: string): JID {
     const jid = new JID(userId, environment.xmppDomain, this.resource);
