@@ -208,7 +208,7 @@ export class XmppService {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
       /* fromSelf: The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
       logged in, but they should not be considered messages fromSelf */
-      builtMessage.fromSelf = (builtMessage.from.split('/')[0] === this.currentJid) && !builtMessage.payload;
+      builtMessage.fromSelf = (builtMessage.from === this.self.local) && !builtMessage.payload;
       const replaceTimestamp = !message.timestamp || message.carbonSent;
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
     }
@@ -244,7 +244,7 @@ export class XmppService {
     } else {
       messageId = message.id;
     }
-    return new Message(messageId, message.thread, message.body, (message.from.full || message.from),
+    return new Message(messageId, message.thread, message.body, message.from.local,
                        new Date(message.date), (message.status || null), message.payload);
   }
 
