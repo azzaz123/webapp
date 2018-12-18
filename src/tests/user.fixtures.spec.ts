@@ -8,7 +8,7 @@ import {
   Image, UserExtrainfo, UserLocation, UserResponse, UserStats, UserValidations,
   MotorPlan, ProfileSubscriptionInfo
 } from '../app/core/user/user-response.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';
 
@@ -218,6 +218,8 @@ export class MockedUserService {
   get user(): User {
     return new User(USER_ID);
   }
+
+  public getPhoneInfo(userId: string) {}
 }
 
 export const USER_INFO_RESPONSE: UserInfoResponse = {

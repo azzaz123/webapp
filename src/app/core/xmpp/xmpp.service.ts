@@ -2,7 +2,8 @@ import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import 'rxjs/add/observable/from';
 import { PersistencyService } from '../persistency/persistency.service';
 import { XmppBodyMessage, XMPPClient } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
@@ -62,7 +63,12 @@ export class XmppService {
     };
 
     if (!resend) {
-      if (!conversation.messages.length) {
+      if (!conversation.messages.filter(m => !m.phoneRequest).length) {
+        const hasPhoneRequestMessage = conversation.messages.find(m => !!m.phoneRequest);
+        if (hasPhoneRequestMessage) {
+          this.eventService.emit(EventService.CONVERSATION_CEATED, conversation, hasPhoneRequestMessage);
+        }
+
         this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
           item_id: conversation.item.id,
           thread_id: message.thread,
@@ -264,7 +270,7 @@ export class XmppService {
       }
 
   private setDefaultPrivacyList(): Observable<any> {
-    return Observable.fromPromise(this.client.sendIq({
+    return Observable.from(this.client.sendIq({
       type: 'set',
       privacy: {
         default: {
@@ -276,7 +282,7 @@ export class XmppService {
   }
 
   private getPrivacyList(): Observable<any> {
-    return Observable.fromPromise(this.client.sendIq({
+    return Observable.from(this.client.sendIq({
       type: 'get',
       privacy: {
         list: {
@@ -337,7 +343,7 @@ export class XmppService {
   }
 
   private setPrivacyList(jids: string[]): Observable<any> {
-    return Observable.fromPromise(this.client.sendIq({
+    return Observable.from(this.client.sendIq({
       type: 'set',
       privacy: {
         list: {

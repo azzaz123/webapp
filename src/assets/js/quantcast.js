@@ -69,10 +69,8 @@ scpt.parentNode.insertBefore(elem, scpt);
 })();
 
 var lang = document.documentElement.lang;
-var quancastOption = {};
-
-if (lang) {
-  quancastOption = {
+var quancastOptions = {
+  es: {
     'Language': 'es',
     'Initial Screen Title Text': 'Tu privacidad es importante para nosotros',
     'Initial Screen Reject Button Text': 'No acepto',
@@ -97,8 +95,6 @@ if (lang) {
     'Publisher Name': 'Wallapop',
     'Publisher Purpose IDs': [1, 2, 3, 4, 5],
     'Publisher Logo': '/images/logos/quantcast-logo.png',
-    'Post Consent Page': 'https://www.wallapop.com/',
-    'Consent Scope Group URL': 'https://www.wallapop.com/',
     'No Option': false,
     'UI Layout': 'banner',
     'Display Persistent Consent Link': false,
@@ -106,10 +102,10 @@ if (lang) {
     'Publisher Purpose Legitimate Interest IDs': [1,2,3,4,5],
     'Custom Links Displayed on Initial Screen': [
       "[Cookies policy](http://es.wallapop.com/cookies)",
-    ]
-  }
-} else {
-  quancastOption = {
+    ],
+    "Cookie Domain": "wallapop.com"
+  },
+  en: {
     'Language': 'en',
     'Initial Screen Reject Button Text': 'I do not accept',
     'Initial Screen Accept Button Text': 'I accept',
@@ -123,16 +119,13 @@ if (lang) {
     'Publisher Name': 'Wallapop',
     'Publisher Purpose IDs': [1,2,3,4,5],
     'Publisher Logo': '/images/logos/quantcast-logo.png',
-    'Post Consent Page': 'https://www.wallapop.com/',
-    'Consent Scope Group URL': 'https://www.wallapop.com/',
     'No Option': false,
     'Display Persistent Consent Link': false,
     'Default Value for Toggles': 'on',
     'Publisher Purpose Legitimate Interest IDs': [1,2,3,4,5],
     'Custom Links Displayed on Initial Screen': [
       "[Cookies policy](http://uk.wallapop.com/cookies)",
-    ]
+    ],
+    "Cookie Domain": "wallapop.com"
   }
 };
-
-window.__cmp('init', quancastOption);

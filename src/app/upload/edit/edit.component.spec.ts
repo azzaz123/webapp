@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExitConfirmationModalComponent } from '../../shared/exit-confirmation-modal/exit-confirmation-modal.component';
 import { MOCK_ITEM, PRODUCT_RESPONSE, ITEM_DATA_V3, ITEM_ID } from '../../../tests/item.fixtures.spec';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { UserService } from '../../core/user/user.service';
 
 describe('EditComponent', () => {

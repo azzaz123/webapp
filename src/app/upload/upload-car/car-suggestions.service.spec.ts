@@ -7,7 +7,7 @@ import {
   CAR_BRANDS, CAR_BRANDS_RESPONSE, CAR_MODELS, CAR_MODELS_RESPONSE, CAR_VERSIONS, CAR_VERSIONS_RESPONSE, CAR_YEARS,
   CAR_YEARS_RESPONSE
 } from '../../../tests/car.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 

@@ -12,7 +12,6 @@ import {
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryOption } from '../../core/category/category-response.interface';
@@ -250,7 +249,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private min(min: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-      if (isPresent(Validators.required(control))) {
+      if (Validators.required(control)) {
         return null;
       }
       const v: number = Number(control.value);
@@ -260,7 +259,7 @@ export class UploadProductComponent implements OnInit, AfterContentInit, OnChang
 
   private max(max: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-      if (isPresent(Validators.required(control))) {
+      if (Validators.required(control)) {
         return null;
       }
       const v: number = Number(control.value);

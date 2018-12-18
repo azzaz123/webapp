@@ -3,17 +3,17 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { PersistencyService } from './persistency.service';
 import { createMessagesArray, MESSAGE_MAIN, MOCK_MESSAGE, MOCK_PAYLOAD_OK } from '../../../tests/message.fixtures.spec';
-import { Message, messageStatus } from '../message/message';
+import { Message, messageStatus, phoneRequestState } from '../message/message';
 import {
   MOCK_DB_FILTERED_RESPONSE,
   MOCK_DB_RESPONSE,
   MockedConversationsDb,
   MockedMessagesDb
 } from '../../../tests/persistency.fixtures.spec';
-import { CONVERSATION_DATE_ISO } from '../../../tests/conversation.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
+import { Observable } from 'rxjs';
 import { UserService } from '../user/user.service';
-import { MOCK_USER } from '../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../event/event.service';
 
 let service: PersistencyService;
@@ -110,7 +110,8 @@ describe('Service: Persistency', () => {
         status: MOCK_MESSAGE.status,
         from: MOCK_MESSAGE.from.split('@')[0],
         conversationId: MOCK_MESSAGE.conversationId,
-        payload: undefined
+        payload: undefined,
+        phoneRequest: undefined
       });
     });
     it('should return the object message with payload that will be saved on the database', () => {
@@ -130,7 +131,8 @@ describe('Service: Persistency', () => {
         status: MOCK_MESSAGE.status,
         from: MOCK_MESSAGE.from.split('@')[0],
         conversationId: MOCK_MESSAGE.conversationId,
-        payload: MOCK_PAYLOAD_OK
+        payload: MOCK_PAYLOAD_OK,
+        phoneRequest: undefined
       });
     });
   });
@@ -180,6 +182,32 @@ describe('Service: Persistency', () => {
     }));
   });
 
+  describe('setPhoneNumber', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
+      tick();
+    }));
+
+    it('should upsert the phone number information', fakeAsync(() => {
+      service.setPhoneNumber('+34912345678').subscribe();
+      tick();
+
+      expect((service as any).upsert).toHaveBeenCalled();
+      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[0][1]).toBe('phone');
+    }));
+  });
+
+  describe('getPhoneNumber', () => {
+    it('should return the phone number from the database', () => {
+      spyOn(service.messagesDb, 'get').and.returnValue('test');
+
+      service.getPhoneNumber();
+
+      expect(service.messagesDb.get).toHaveBeenCalledWith('phone');
+    });
+  });
+
   describe('updateMessageDate', () => {
     beforeEach(fakeAsync(() => {
       spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
@@ -189,6 +217,7 @@ describe('Service: Persistency', () => {
     it('should update the date of an existing message', fakeAsync(() => {
       service.updateMessageDate(MOCK_MESSAGE).subscribe();
       tick();
+
       expect((service as any).upsert).toHaveBeenCalled();
       expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
       expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
@@ -197,8 +226,10 @@ describe('Service: Persistency', () => {
 
   describe('getMetaInformation', () => {
     it('should return the meta information from the database', () => {
-      spyOn(service.messagesDb, 'get');
+      spyOn(service.messagesDb, 'get').and.returnValue(Promise.resolve({}));
+
       service.getMetaInformation();
+
       expect(service.messagesDb.get).toHaveBeenCalledWith('meta');
     });
   });
@@ -209,6 +240,25 @@ describe('Service: Persistency', () => {
       tick();
 
       service.updateMessageStatus(MOCK_MESSAGE, messageStatus.READ).subscribe();
+      tick();
+
+      expect((service as any).upsert).toHaveBeenCalled();
+      expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
+      expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
+    }));
+  });
+
+  describe('markPhoneRequestAnswered', () => {
+    beforeEach(fakeAsync(() => {
+      spyOn<any>(service, 'upsert').and.returnValue(Promise.resolve({}));
+      tick();
+    }));
+
+    it('should update the status of an existing phoneRequest message', fakeAsync(() => {
+      const phoneRequestMsg = new Message(MOCK_MESSAGE.id, CONVERSATION_ID, 'some text', USER_ID, new Date());
+      phoneRequestMsg.phoneRequest = phoneRequestState.pending;
+
+      service.markPhoneRequestAnswered(phoneRequestMsg).subscribe();
       tick();
 
       expect((service as any).upsert).toHaveBeenCalled();
@@ -270,7 +320,7 @@ describe('Service: Persistency', () => {
 
   describe('findMessage', () => {
     it('should return the message if found in the database', () => {
-      spyOn(service.messagesDb, 'get');
+      spyOn(service.messagesDb, 'get').and.returnValue(Promise.resolve({}));
 
       service.findMessage('someId');
 

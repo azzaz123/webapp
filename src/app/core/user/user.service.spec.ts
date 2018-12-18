@@ -8,7 +8,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
 import {
   CUSTOM_REASON,
@@ -356,7 +356,7 @@ describe('Service: User', () => {
     });
 
     it('should call endpoint', () => {
-      expect(http.postNoBase).toHaveBeenCalledWith('https://www.wallapop.com/rest/logout', undefined, undefined, true);
+      expect(http.postNoBase).toHaveBeenCalledWith(environment.siteUrl.replace('es', 'www') + 'rest/logout', undefined, undefined, true);
     });
 
     it('should call deleteAccessToken', () => {
@@ -521,6 +521,22 @@ describe('Service: User', () => {
 
       expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/stats');
       expect(resp).toEqual(USERS_STATS_RESPONSE);
+    });
+  });
+
+  describe('getPhoneInfo', () => {
+    it('should call endpoint and return response', () => {
+      const PHONE_METHOD_RESPONSE = { phone_method: 'bubble' };
+      const res: Response = new Response(new ResponseOptions({body: JSON.stringify(PHONE_METHOD_RESPONSE)}));
+      spyOn(http, 'get').and.returnValue(Observable.of(res));
+
+      let resp: any;
+      service.getPhoneInfo(USER_ID).subscribe((response: any) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/phone-method');
+      expect(resp).toEqual(PHONE_METHOD_RESPONSE);
     });
   });
 

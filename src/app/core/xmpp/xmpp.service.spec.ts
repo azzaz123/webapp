@@ -3,7 +3,7 @@
 import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
-import { Message, messageStatus } from '../message/message';
+import { Message, messageStatus, phoneRequestState } from '../message/message';
 import { MOCK_USER, USER_ID, MockedUserService } from '../../../tests/user.fixtures.spec';
 import { PersistencyService } from '../persistency/persistency.service';
 import { CONVERSATION_ID,
@@ -13,7 +13,7 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { XmppTimestampMessage, XmppBodyMessage } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MOCK_PAYLOAD_KO,
   MOCK_PAYLOAD_OK,
   MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
@@ -565,6 +565,19 @@ describe('Service: Xmpp', () => {
       expect(service['onNewMessage']).toHaveBeenCalledWith(message, true);
     });
 
+    it('should emit a CONVERSATION_CEATED event when the first message is sent, if a hasPhoneRequestMessage exists', () => {
+      spyOn<any>(eventService, 'emit');
+      const conv = MOCKED_CONVERSATIONS[0];
+      const phoneRequestMsg = new Message('someId', conv.id, 'some text', USER_ID, new Date());
+      phoneRequestMsg.phoneRequest = phoneRequestState.pending;
+      conv.messages.push(phoneRequestMsg);
+
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_CEATED, conv, phoneRequestMsg);
+    });
+
     it('should track the conversationCreateNew event', () => {
       spyOn(trackingService, 'track');
       const newConversation = MOCK_CONVERSATION('newId');
@@ -740,7 +753,7 @@ describe('Service: Xmpp', () => {
       service.blockUser(MOCK_USER).subscribe();
 
       expect(service['blockedUsers'].length).toBe(4);
-      expect(service['blockedUsers'][3]).toBe(USER_ID + '@wallapop.com');
+      expect(service['blockedUsers'][3]).toBe(USER_ID + '@' + environment.xmppDomain);
       expect(MOCKED_CLIENT.sendIq).toHaveBeenCalledWith({
         type: 'set',
         privacy: {
@@ -758,7 +771,7 @@ describe('Service: Xmpp', () => {
       tick();
 
       expect(service['blockedUsers'].length).toBe(1);
-      expect(service['blockedUsers'][0]).toBe(USER_ID + '@wallapop.com');
+      expect(service['blockedUsers'][0]).toBe(USER_ID + '@' + environment.xmppDomain);
       expect(MOCKED_CLIENT.sendIq['calls'].allArgs()).toEqual([[{
         type: 'set',
         privacy: {
@@ -803,10 +816,11 @@ describe('Service: Xmpp', () => {
     beforeEach(() => {
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
     });
-    it('should remove user from blocked list and call sendIq', () => {
-      service['blockedUsers'] = [...JIDS, USER_ID + '@wallapop.com'];
+    it('should remove user from blocked list and call sendIq', fakeAsync(() => {
+      service['blockedUsers'] = [...JIDS, USER_ID + '@' + environment['xmppDomain']];
 
       service.unblockUser(MOCK_USER).subscribe();
+      tick();
 
       expect(service['blockedUsers'].length).toBe(3);
       expect(MOCKED_CLIENT.sendIq).toHaveBeenCalledWith({
@@ -818,9 +832,9 @@ describe('Service: Xmpp', () => {
           }
         }
       });
-    });
+    }));
     it('should set user.blocked', fakeAsync(() => {
-      service['blockedUsers'] = [USER_ID + '@wallapop.com'];
+      service['blockedUsers'] = [USER_ID + '@' + environment['xmppDomain']];
       MOCK_USER.blocked = true;
 
       service.unblockUser(MOCK_USER).subscribe();
@@ -844,12 +858,11 @@ describe('Service: Xmpp', () => {
 
   describe('isBlocked', () => {
     it('should return true if user is in the blockedList', () => {
-      service['blockedUsers'] = JIDS;
-
+      service['blockedUsers'] = ['1@' + environment['xmppDomain'], '2@' + environment['xmppDomain'], '3@' + environment['xmppDomain']];
       expect(service.isBlocked('2')).toBe(true);
     });
     it('should return false if user is NOT in the blockedList', () => {
-      service['blockedUsers'] = JIDS;
+      service['blockedUsers'] = [USER_ID + '@' + environment['xmppDomain']];
 
       expect(service.isBlocked('5')).toBe(false);
     });

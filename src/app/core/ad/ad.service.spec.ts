@@ -3,7 +3,7 @@ import { AdService } from './ad.service';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
@@ -61,7 +61,10 @@ const pubads = {
 };
 
 const defineSlot = {
-  addService() {}
+  addService() {},
+  setTargeting() {
+    return this;
+  }
 };
 
 describe('AdService', () => {

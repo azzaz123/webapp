@@ -5,7 +5,7 @@ import { HttpService } from '../http/http.service';
 import { Response, ResponseOptions, Headers } from '@angular/http';
 import { MockedUserService, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { createMockMessageEvents, createMockReceivedEvents, createMockReadEvents } from '../../../tests/archive.fixture.spec';
 import { MsgArchiveResponse } from './archive.interface';
 import { Message, messageStatus } from './message';

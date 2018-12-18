@@ -10,8 +10,6 @@ import { CookieService } from 'ngx-cookie';
 
 export const showWillisCategories = [ CATEGORY_IDS.GAMES_CONSOLES, CATEGORY_IDS.TV_AUDIO_CAMERAS, CATEGORY_IDS.APPLIANCES];
 
-export const showKlincCategories = [ CATEGORY_IDS.COMPUTERS_ELECTRONICS, CATEGORY_IDS.CELL_PHONES_ACCESSORIES];
-
 export const showVertiCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR];
 
 export const showMapfreCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR, CATEGORY_IDS.BIKES];
@@ -31,7 +29,6 @@ export const vertiLinks = {
   [CATEGORY_IDS.REAL_ESTATE_OLD]: 'https://www.verti.es/ov/SNetPeticion?idPeticion=ISERV01&servicio=COTIZAVER&producto=HG01&CANAL=AFFINITY&SUBCANAL=AF32&pid=722C0832H1&utm_source=Affinity&utm_medium=tpaff&utm_campaign=AF32',
 };
 
-
 @Component({
   selector: 'tsl-item',
   templateUrl: './item.component.html',
@@ -43,9 +40,9 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: User;
   public itemUrl: string;
   public isCarItem = false;
-  public showKlincLink = false;
   public showWillisLink = false;
   public showMapfreOrVertiLink = false;
+  public showSolcreditoLink = false;
   private active = true;
   private allowReserve: boolean;
   private myUserId: string;
@@ -96,14 +93,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
       });
     }
 
-    this.showKlincLink = showKlincCategories.includes(this.item.categoryId);
-    if (this.showKlincLink) {
-      this.trackingService.track(TrackingService.KLINC_LINK_DISPLAY, {
-        category_id: this.item.categoryId,
-        item_id: this.item.id
-      });
-    }
-
     if (this._headsOrTails === undefined) {
       this._headsOrTails = this.headsOrTails();
     }
@@ -125,6 +114,15 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
           this.trackingService.track(TrackingService.VERTI_LINK_DISPLAY, { category_id: this.item.categoryId, item_id: this.item.id });
         }
       }
+    }
+
+    const { salePrice, categoryId} = this.item;
+    this.showSolcreditoLink = salePrice >= 50 && salePrice < 500 && ![CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.CAR].includes(categoryId);
+    if (this.showSolcreditoLink) {
+      this.trackingService.track(TrackingService.SOLCREDITO_LINK_DISPLAY, {
+        category_id: this.item.categoryId,
+        item_id: this.item.id
+      });
     }
   }
 
@@ -177,19 +175,23 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  public clickKlinc(event) {
-    event.stopPropagation();
-    this.trackingService.track(TrackingService.KLINC_LINK_TAP, {
-      category_id: this.item.categoryId,
-      item_id: this.item.id
-    });
-  }
-
   public clickMapfreOrVerti (event) {
     event.stopPropagation();
     this._headsOrTails ?
       this.trackingService.track(TrackingService.MAPFRE_LINK_TAP, { category_id: this.item.categoryId, item_id: this.item.id }) :
       this.trackingService.track(TrackingService.VERTI_LINK_TAP, { category_id: this.item.categoryId, item_id: this.item.id });
+  }
+
+  public clickSolcredito (event) {
+    event.stopPropagation();
+    this.trackingService.track(TrackingService.SOLCREDITO_LINK_TAP, {
+      category_id: this.item.categoryId,
+      item_id: this.item.id
+    });
+  }
+
+  public getCategoryKeyById(value) {
+    return Object.keys(CATEGORY_IDS).find(key => CATEGORY_IDS[key] === value);
   }
 
   public getMapfreOrVertiLink() {

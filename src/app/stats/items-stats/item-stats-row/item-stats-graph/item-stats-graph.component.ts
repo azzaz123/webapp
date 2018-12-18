@@ -179,7 +179,6 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
   }
 
   private loadStats() {
-    console.log('chart op ', this.chartOptions.chartCursor);
     this.chartOptions.dataProvider = [];
     this.statsData.entries.forEach((entry: ItemStatisticEntriesResponse) => {
       this.chartOptions.dataProvider.push({

@@ -6,7 +6,7 @@ import { HttpService } from '../http/http.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { Conversation } from './conversation';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Response, ResponseOptions } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';

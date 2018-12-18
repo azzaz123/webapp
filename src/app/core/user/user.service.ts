@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { PERMISSIONS, User } from './user';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { ResourceService } from '../resource/resource.service';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
@@ -21,6 +21,7 @@ import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
+import { PhoneMethodResponse } from './phone-method.interface';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -233,6 +234,12 @@ export class UserService extends ResourceService {
           counters: this.toCountersStats(r.json().counters)
         };
       });
+  }
+
+  public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
+    return this.http.get(this.API_URL + '/' + userId + '/phone-method')
+      .map((r: any) => r.json())
+      .catch(e => Observable.of(null));
   }
 
   public toRatingsStats(ratings): Ratings {

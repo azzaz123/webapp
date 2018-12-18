@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { SuggesterResponse } from './suggester-response.interface';
 import { HttpService } from '../../../core/http/http.service';

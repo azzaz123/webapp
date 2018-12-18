@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { Order, Product } from '../../../../core/item/item-response.interface';
 import { OrderEvent } from '../../selected-items/selected-product.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ItemService } from '../../../../core/item/item.service';
 import { Item } from '../../../../core/item/item';
 import { WindowRef } from '../../../../core/window/window.service';

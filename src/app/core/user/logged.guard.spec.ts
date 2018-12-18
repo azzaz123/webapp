@@ -7,7 +7,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 import { UserService } from './user.service';
 import { User } from './user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 class MockWindow {
   public nativeWindow = {
