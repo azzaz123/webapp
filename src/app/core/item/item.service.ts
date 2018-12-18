@@ -75,7 +75,7 @@ export class ItemService extends ResourceService {
     featured: []
   };
   public selectedItems: string[] = [];
-  private bumpTypes = ['countrybump', 'citybump', 'zonebump'];
+  private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
 
   constructor(http: HttpService,
               private i18n: I18nService,
