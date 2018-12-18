@@ -97,6 +97,8 @@ describe('ListComponent', () => {
           },
           bulkSetDeactivate() {
           },
+          activate() {},
+          deactivate() {},
           selectedItems$: new ReplaySubject(1),
           selectedItems: []
         }
@@ -792,11 +794,14 @@ describe('ListComponent', () => {
     beforeEach(() => {
       component.selectedStatus = 'active';
       component.items = createItemsArray(TOTAL);
+      itemService.selectedItems = ['1'];
+      component.items[0].flags['onhold'] = true;
+      component.items[0].selected = true;
     });
 
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkSetActivate').and.returnValue(Observable.of('200'));
+        spyOn(itemService, 'activate').and.returnValue(Observable.of('200'));
 
         component.activate();
         tick();
@@ -804,7 +809,12 @@ describe('ListComponent', () => {
 
       it('should call modal and activate', () => {
         expect(modalService.open).toHaveBeenCalled();
-        expect(itemService.bulkSetActivate).toHaveBeenCalled();
+        expect(itemService.activate).toHaveBeenCalled();
+      });
+
+      it('should reset item selection', () => {
+        expect(component.items[0].flags['onhold']).toBe(false);
+        expect(component.items[0].selected).toBe(false);
       });
 
     });
@@ -816,11 +826,14 @@ describe('ListComponent', () => {
     beforeEach(() => {
       component.selectedStatus = 'active';
       component.items = createItemsArray(TOTAL);
+      itemService.selectedItems = ['1'];
+      component.items[0].flags['onhold'] = false;
+      component.items[0].selected = true;
     });
 
     describe('success', () => {
       beforeEach(fakeAsync(() => {
-        spyOn(itemService, 'bulkSetDeactivate').and.returnValue(Observable.of('200'));
+        spyOn(itemService, 'deactivate').and.returnValue(Observable.of('200'));
 
         component.deactivate();
         tick();
@@ -828,11 +841,12 @@ describe('ListComponent', () => {
 
       it('should call modal and deactivate', () => {
         expect(modalService.open).toHaveBeenCalled();
-        expect(itemService.bulkSetDeactivate).toHaveBeenCalled();
+        expect(itemService.deactivate).toHaveBeenCalled();
       });
 
-      it('should send a tracking event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
+      it('should reset item selection', () => {
+        expect(component.items[0].flags['onhold']).toBe(true);
+        expect(component.items[0].selected).toBe(false);
       });
 
     });

@@ -672,6 +672,13 @@ export class ItemService extends ResourceService {
       });
   }
 
+  public activate(): Observable<any> {
+    return this.http.put(this.API_URL + '/activate', {
+      ids: this.selectedItems
+    })
+      .do(() => this.deselectItems());
+  }
+
   public bulkSetDeactivate(): Observable<any> {
     return this.http.post(this.API_URL_PROTOOL + '/changeItemStatus', {
         itemIds: this.selectedItems,
@@ -690,6 +697,13 @@ export class ItemService extends ResourceService {
         this.eventService.emit('itemChangeStatus', this.selectedItems);
         this.deselectItems();
       });
+  }
+
+  public deactivate(): Observable<any> {
+    return this.http.put(this.API_URL + '/inactivate', {
+      ids: this.selectedItems
+    })
+      .do(() => this.deselectItems());
   }
 
   public setSold(id: number): Observable<any> {

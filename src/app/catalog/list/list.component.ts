@@ -418,39 +418,47 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public deactivate() {
+    const items = this.itemService.selectedItems;
     this.modalService.open(DeactivateItemsModalComponent).result.then(() => {
-      this.itemService.bulkSetDeactivate().takeWhile(() => {
-        this.trackingService.track(TrackingService.MYCATALOG_PRO_MODAL_DEACTIVATE);
+      this.itemService.deactivate().subscribe(() => {
+        items.forEach((id: string) => {
+          let item: Item = _.find(this.items, {'id': id});
+          item.flags['onhold'] = true;
+          item.selected = false;
+        });
+        this.getNumberOfProducts();
         this.eventService.emit('itemChanged');
-        return this.active;
-      }).subscribe(() => this.getNumberOfProducts());
+      });
     });
   }
 
   public activate() {
+    const items = this.itemService.selectedItems;
     this.modalService.open(ActivateItemsModalComponent).result.then(() => {
-      this.itemService.bulkSetActivate().takeWhile(() => {
-        return this.active;
-      }).subscribe((resp: any) => {
+      this.itemService.activate().subscribe((resp: any) => {
+        items.forEach((id: string) => {
+          let item: Item = _.find(this.items, {'id': id});
+          item.flags['onhold'] = false;
+          item.selected = false;
+        });
         this.getNumberOfProducts();
         this.eventService.emit('itemChanged');
-        if (resp.status === 406) {
-          this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'})
-            .result.then(() => {}, () => {});
-        }
+      }, () => {
+        this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'})
+          .result.then(() => {}, () => {});
       });
     });
   }
 
   public get canActivate(): boolean {
     return _.every(this.selectedItems, (item) => {
-      return item.flags.onhold;
+      return item.flags && item.flags.onhold;
     });
   }
 
   public get canDeactivate(): boolean {
     return _.every(this.selectedItems, (item) => {
-      return !item.flags.onhold;
+      return item.flags && !item.flags.onhold;
     });
   }
 
