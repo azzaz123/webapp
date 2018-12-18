@@ -84,20 +84,15 @@ const MOCKED_SERVER_MESSAGE: any = {
   thread: 'thread',
   body: 'body',
   requestReceipt: true,
-  from: {
-    full: 'from',
-    bare: 'from-bare'
-  },
+  from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
   fromSelf: false,
   id: 'id'
 };
 const MOCKED_SERVER_TIMESTAMP_MESSAGE: XmppTimestampMessage = {
   receipt: 'thread',
-  to: 'random',
+  to: new XMPP.JID(USER_ID, environment.xmppDomain),
+  from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
   timestamp: {body: '2017-03-23T12:24:19.844620Z'},
-  from: {
-    full: 'from'
-  },
   id: 'id'
 };
 const JIDS = ['1@wallapop.com', '2@wallapop.com', '3@wallapop.com'];
@@ -139,9 +134,10 @@ describe('Service: Xmpp', () => {
   });
   it('should create the client', () => {
     service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+    const selfJid = new XMPP.JID(MOCKED_LOGIN_USER, environment.xmppDomain, service['resource']);
 
     expect(XMPP.createClient).toHaveBeenCalledWith({
-      jid: MOCKED_LOGIN_USER + '@' + environment['xmppDomain'],
+      jid: selfJid,
       resource: service['resource'],
       password: MOCKED_LOGIN_PASSWORD,
       transport: 'websocket',
@@ -268,7 +264,7 @@ describe('Service: Xmpp', () => {
 
       expect(msg.conversationId).toEqual('thread');
       expect(msg.message).toEqual('body');
-      expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.full);
+      expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
     }));
 
     it(`should emit a newMessage event with withDeliveryReceipt TRUE when the message includes
@@ -290,7 +286,7 @@ describe('Service: Xmpp', () => {
     it(`should emit a newMessage event with withDeliveryReceipt FALSE when the message does not include
     a delivery receipt request`, fakeAsync(() => {
       let expectedVal;
-      const msg = JSON.parse(JSON.stringify(MOCKED_SERVER_MESSAGE));
+      const msg = MOCKED_SERVER_MESSAGE;
       msg.requestReceipt = false;
       eventService.emit('session:started', null);
       eventService.emit(EventService.MSG_ARCHIVE_LOADED);
@@ -314,7 +310,7 @@ describe('Service: Xmpp', () => {
 
       eventService.emit('message', {
         thread: 'thread',
-        from: 'from',
+        from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
         id: 'id'
       });
 
@@ -330,7 +326,7 @@ describe('Service: Xmpp', () => {
 
       eventService.emit('message', {
         thread: 'thread',
-        from: 'from',
+        from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
         id: 'id',
         payload: MOCK_PAYLOAD_KO
       });
@@ -354,7 +350,7 @@ describe('Service: Xmpp', () => {
 
       expect(msg.conversationId).toEqual('thread');
       expect(msg.message).toEqual('body');
-      expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.full);
+      expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
       expect(msg.payload.type).toEqual('review');
       expect(msg.payload.text).toEqual('text');
     }));
@@ -442,7 +438,7 @@ describe('Service: Xmpp', () => {
 
       expect(msg.conversationId).toEqual('thread');
       expect(msg.message).toEqual('body');
-      expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.full);
+      expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
     }));
 
     it('should call client.connect when a CONNECTION_ERROR event is emitted', () => {
@@ -454,8 +450,10 @@ describe('Service: Xmpp', () => {
     it('should send the read message', () => {
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendConversationStatus(USER_ID, MESSAGE_ID);
+      const jid = new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']);
+
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
-        to: USER_ID + '@' + environment['xmppDomain'],
+        to: jid,
         read: {
           xmlns: 'wallapop:thread:status'
         },
@@ -555,8 +553,8 @@ describe('Service: Xmpp', () => {
       service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
       const message: any = {
         id: queryId,
-        to: service['createJid'](USER_ID),
-        from: service['currentJid'],
+        to: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
+        from: service['self'],
         thread: CONVERSATION_ID,
         type: 'chat',
         request: {xmlns: 'urn:xmpp:receipts'},
@@ -589,8 +587,8 @@ describe('Service: Xmpp', () => {
       service.sendMessage(newConversation, MESSAGE_BODY);
       const message: any = {
         id: queryId,
-        to: service['createJid'](USER_ID),
-        from: service['currentJid'],
+        to: new XMPP.JID(USER_ID, environment.xmppDomain),
+        from: service['self'],
         thread: newConversation.id,
         type: 'chat',
         request: {xmlns: 'urn:xmpp:receipts'},
@@ -610,8 +608,8 @@ describe('Service: Xmpp', () => {
       service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
       const message: any = {
         id: queryId,
-        to: service['createJid'](USER_ID),
-        from: service['currentJid'],
+        to: new XMPP.JID(USER_ID, environment.xmpp),
+        from: service['self'],
         thread: CONVERSATION_ID,
         type: 'chat',
         request: {xmlns: 'urn:xmpp:receipts'},
@@ -653,14 +651,14 @@ describe('Service: Xmpp', () => {
   describe('resendMessage', () => {
     it('should call client.sendMessage with an XmppBodyMessage', () => {
       spyOn<any>(service, 'createJid').and.returnValues(
-        OTHER_USER_ID + '@' + environment.xmppDomain,
-        USER_ID + '@' + environment.xmppDomain);
+        new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
+        new XMPP.JID(USER_ID, environment.xmppDomain));
 
       const pendingMessage = MOCK_MESSAGE_FROM_OTHER;
       const expectedXmppMsg: XmppBodyMessage = {
         id: MOCK_MESSAGE_FROM_OTHER.id,
-        to: USER_ID + '@' + environment.xmppDomain,
-        from: OTHER_USER_ID + '@' + environment.xmppDomain,
+        to: new XMPP.JID(USER_ID, environment.xmppDomain),
+        from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
         thread: MOCK_CONVERSATION().id,
         type: 'chat',
         request: {
@@ -684,11 +682,11 @@ describe('Service: Xmpp', () => {
     it('should emit a messageReceived event if the message has a receipt', () => {
       spyOn(eventService, 'emit');
       const message: XmppBodyMessage = {
-        from: {local: 'from'},
+        from: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
         body: 'bla',
         timestamp: {body: 'timestamp'},
         thread: 'thread',
-        to: {local: 'to'},
+        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
         id: 'someId',
         receipt: 'received'
       };
@@ -702,11 +700,11 @@ describe('Service: Xmpp', () => {
     it('should emit a messageSentAck event if the message has a sentReceipt', () => {
       spyOn(eventService, 'emit');
       const message: XmppBodyMessage = {
-        from: {local: 'from'},
+        from: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
         body: 'bla',
         timestamp: {body: 'timestamp'},
         thread: 'thread',
-        to: {local: 'to'},
+        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
         id: 'someId',
         sentReceipt: {id: 'someId'}
       };
@@ -721,11 +719,11 @@ describe('Service: Xmpp', () => {
     it('should emit a messageRead event if the message has a readReceipt', () => {
       spyOn(eventService, 'emit');
       const message: XmppBodyMessage = {
-        from: {local: 'from'},
+        from: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
         body: 'bla',
         timestamp: {body: 'timestamp'},
         thread: 'thread',
-        to: {local: 'to'},
+        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
         id: 'someId',
         readReceipt: {id: 'someId'}
       };
@@ -759,7 +757,7 @@ describe('Service: Xmpp', () => {
       service.sendMessageDeliveryReceipt(MOCK_MESSAGE.from, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
 
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
-        to: MOCK_MESSAGE.from,
+        to: new XMPP.JID(MOCK_MESSAGE.from, environment.xmppDomain, service['resource']),
         type: 'chat',
         thread: MOCK_MESSAGE.conversationId,
         received: {
