@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
-import { XmppBodyMessage, XMPPClient } from './xmpp.interface';
+import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
@@ -16,7 +16,7 @@ export class XmppService {
 
   private client: XMPPClient;
   private _clientConnected = false;
-  private currentJid: string;
+  private self: JID;
   private resource: string;
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   private blockedUsers: string[];
@@ -32,8 +32,8 @@ export class XmppService {
   }
 
   public connect(userId: string, accessToken: string): void {
-    this.currentJid = this.createJid(userId);
     this.resource = 'WEB_' + Math.floor(Math.random() * 100000000000000);
+    this.self = this.createJid(userId);
     this.createClient(accessToken);
     this.bindEvents();
     this.client.connect();
@@ -82,7 +82,7 @@ export class XmppService {
     const message: XmppBodyMessage = {
       id: id,
       to: this.createJid(conversation.user.id),
-      from: this.currentJid,
+      from: this.self,
       thread: conversation.id,
       type: 'chat',
       request: {
@@ -124,7 +124,7 @@ export class XmppService {
 
   private createClient(accessToken: string): void {
     this.client = XMPP.createClient({
-      jid: this.currentJid,
+      jid: this.self,
       resource: this.resource,
       password: accessToken,
       transport: 'websocket',
@@ -248,10 +248,9 @@ export class XmppService {
                        new Date(message.date), (message.status || null), message.payload);
   }
 
-  public sendMessageDeliveryReceipt(to: string, id: string, thread: string) {
-    to = (to.indexOf('@') === -1) ? this.createJid(to) : to;
+  public sendMessageDeliveryReceipt(toId: string, id: string, thread: string) {
     this.client.sendMessage({
-      to: to,
+      to: this.createJid(toId),
       type: 'chat',
       thread: thread,
       received: {
@@ -289,8 +288,8 @@ export class XmppService {
   }
 
   public blockUser(user: User): Observable<any> {
-    const jid: string = this.createJid(user.id);
-    this.blockedUsers.push(jid);
+    const jidBare = this.createJid(user.id).bare;
+    this.blockedUsers.push(jidBare);
     return this.setPrivacyList(this.blockedUsers)
     .flatMap(() => {
       if (this.blockedUsers.length === 1) {
@@ -303,33 +302,33 @@ export class XmppService {
   }
 
   public unblockUser(user: User): Observable<any> {
-    const jid: string = this.createJid(user.id);
-    _.remove(this.blockedUsers, (userId) => userId === jid);
+    const jidBare = this.createJid(user.id).bare;
+    _.remove(this.blockedUsers, (userId) => userId === jidBare);
     return this.setPrivacyList(this.blockedUsers)
     .do(() => user.blocked = false)
     .do(() => this.eventService.emit(EventService.USER_UNBLOCKED, user.id));
   }
 
   public isBlocked(userId: string): boolean {
-    const jid: string = this.createJid(userId);
-    return this.blockedUsers ? this.blockedUsers.indexOf(jid) !== -1 : false;
+    const jidBare = this.createJid(userId).bare;
+    return this.blockedUsers ? this.blockedUsers.indexOf(jidBare) !== -1 : false;
   }
 
   private onPrivacyListChange(iq: any) {
     if (iq.type === 'set' && iq.privacy) {
-      this.getPrivacyList().subscribe((jids: string[]) => {
-        if (jids.length > this.blockedUsers.length) {
-          const blockedUsers: string[] = _.difference(jids, this.blockedUsers);
-          blockedUsers.forEach((jid: string) => {
-            this.eventService.emit(EventService.USER_BLOCKED, this.getIdFromJid(jid));
+      this.getPrivacyList().subscribe((jidBares: string[]) => {
+        if (jidBares.length > this.blockedUsers.length) {
+          const blockedUsers: string[] = _.difference(jidBares, this.blockedUsers);
+          blockedUsers.forEach((jidBare: string) => {
+            this.eventService.emit(EventService.USER_BLOCKED, this.getIdFromBare(jidBare));
           });
         } else {
-          const unblockedUsers: string[] = _.difference(this.blockedUsers, jids);
-          unblockedUsers.forEach((jid: string) => {
-            this.eventService.emit(EventService.USER_UNBLOCKED, this.getIdFromJid(jid));
+          const unblockedUsers: string[] = _.difference(this.blockedUsers, jidBares);
+          unblockedUsers.forEach((jidBare: string) => {
+            this.eventService.emit(EventService.USER_UNBLOCKED, this.getIdFromBare(jidBare));
           });
         }
-        this.blockedUsers = jids;
+        this.blockedUsers = jidBares;
       });
     }
   }
@@ -516,12 +515,22 @@ export class XmppService {
     });
   }
 
-  private createJid(userId: string): string {
-    return userId + '@' + environment.xmppDomain;
+  // TODO - remove after new methods are confirmed to work as expected
+  // private old_createJid(userId: string): string {
+  //   return userId + '@' + environment.xmppDomain;
+  // }
+
+  // private old_getIdFromJid(jid: string): string {
+  //   const splitted = jid.split('@');
+  //   return splitted[0];
+  // }
+
+  private createJid(userId: string): JID {
+    const jid = new JID(userId, environment.xmppDomain, this.resource);
+    return jid;
   }
 
-  private getIdFromJid(jid: string): string {
-    const splitted = jid.split('@');
-    return splitted[0];
+  private getIdFromBare(bare: string): string {
+    return bare.split('@')[0];
   }
 }
