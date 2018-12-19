@@ -2,7 +2,7 @@ import { TestBed, async, inject } from '@angular/core/testing';
 
 import { TutorialGuard } from './tutorial.guard';
 import { TutorialService } from '../../core/tutorial/tutorial.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 describe('TutorialGuard', () => {

@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CallsService } from '../../core/conversation/calls.service';
 
 @Component({

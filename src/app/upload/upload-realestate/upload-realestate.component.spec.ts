@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { RealestateKeysService } from './realestate-keys.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { Router } from '@angular/router';
 import { Key } from './key.interface';
@@ -101,13 +101,13 @@ describe('UploadRealestateComponent', () => {
     realestateKeysService = TestBed.get(RealestateKeysService);
     modalService = TestBed.get(NgbModal);
     itemService = TestBed.get(ItemService);
+    fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
     it('should call getOperations and set it', () => {
       spyOn(realestateKeysService, 'getOperations').and.callThrough();
-
-      fixture.detectChanges();
+      component.ngOnInit();
 
       expect(realestateKeysService.getOperations).toHaveBeenCalled();
       expect(component.operations).toEqual(RESPONSE);
@@ -115,8 +115,7 @@ describe('UploadRealestateComponent', () => {
 
     it('should call getConditions and set it', () => {
       spyOn(realestateKeysService, 'getConditions').and.callThrough();
-
-      fixture.detectChanges();
+      component.ngOnInit();
 
       expect(realestateKeysService.getConditions).toHaveBeenCalled();
       expect(component.conditions).toEqual(RESPONSE_OPTION);
@@ -124,8 +123,7 @@ describe('UploadRealestateComponent', () => {
 
     it('should call getTypes and set it', () => {
       spyOn(realestateKeysService, 'getTypes').and.callThrough();
-
-      fixture.detectChanges();
+      component.ngOnInit();
 
       expect(realestateKeysService.getTypes).toHaveBeenCalledWith('rent');
       expect(component.types).toEqual(RESPONSE);
@@ -133,7 +131,7 @@ describe('UploadRealestateComponent', () => {
 
     it('should call getTypes when operation change', () => {
       spyOn(realestateKeysService, 'getTypes').and.callThrough();
-      fixture.detectChanges();
+      component.ngOnInit();
 
       component.uploadForm.get('operation').setValue('operation');
 
@@ -143,7 +141,7 @@ describe('UploadRealestateComponent', () => {
 
     it('should call getExtras when type change', () => {
       spyOn(realestateKeysService, 'getExtras').and.callThrough();
-      fixture.detectChanges();
+      component.ngOnInit();
 
       component.uploadForm.get('type').setValue('house');
 
@@ -191,7 +189,6 @@ describe('UploadRealestateComponent', () => {
         component.uploadForm.get('images').patchValue([IMAGE]);
 
         component.uploadForm.get('title').patchValue('new title');
-        fixture.detectChanges();
 
         expect(formChanged).toBe(true);
       });
@@ -242,6 +239,7 @@ describe('UploadRealestateComponent', () => {
   describe('onUploaded', () => {
     it('should redirect', () => {
       component.item = MOCK_REALESTATE;
+      component.item.flags.onhold = null;
       const uploadedEvent = {
         action: 'updated',
         response: {

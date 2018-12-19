@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserDetailComponent } from './user-detail.component';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MOCK_USER, RESPONSE_RATE, SCORING_STARS, USER_INFO_RESPONSE } from '../../../tests/user.fixtures.spec';
 
 class MockUserService {

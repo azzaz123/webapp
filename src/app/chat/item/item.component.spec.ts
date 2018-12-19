@@ -2,7 +2,7 @@
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 import { ItemService } from '../../core/item/item.service';
 import {
@@ -179,19 +179,8 @@ describe('Component: Item', () => {
 
       component.ngOnChanges();
 
-      expect(component.item.views).toBe(ITEM_VIEWS);
-      expect(component.item.favorites).toBe(ITEM_FAVORITES);
-    });
-
-    it('should not add item counters', () => {
-      component.item = MOCK_ITEM;
-      component.item.views = 1000;
-      component.item.favorites = 1000;
-
-      component.ngOnChanges();
-
-      expect(component.item.views).toBe(1000);
-      expect(component.item.favorites).toBe(1000);
+      expect(component.item.views).toBe(123);
+      expect(component.item.favorites).toBe(456);
     });
 
   });
@@ -201,7 +190,7 @@ describe('Component: Item', () => {
 
     component.ngOnChanges();
 
-    expect(component.itemUrl).toBe('https://es.wallapop.com/item/' + ITEM_WEB_SLUG);
+    expect(component.itemUrl).toBe(environment.siteUrl + 'item/' + ITEM_WEB_SLUG);
   });
 
   describe('prevent', () => {

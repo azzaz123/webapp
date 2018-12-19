@@ -34,7 +34,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -226,7 +226,8 @@ export class ItemService extends ResourceService {
       content.elevator,
       content.pool,
       content.garden,
-      content.image
+      content.image,
+      content.publish_date
     );
   }
 

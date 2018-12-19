@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Response } from '@angular/http';
 import { LeadResponse } from './lead-response.interface';

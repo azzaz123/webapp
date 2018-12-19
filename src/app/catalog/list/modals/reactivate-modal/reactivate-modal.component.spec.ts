@@ -7,7 +7,7 @@ import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-cu
 import { DecimalPipe } from '@angular/common';
 import { MOCK_ITEM } from '../../../../../tests/item.fixtures.spec';
 import { PaymentService } from '../../../../core/payments/payment.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 
 describe('ReactivateModalComponent', () => {

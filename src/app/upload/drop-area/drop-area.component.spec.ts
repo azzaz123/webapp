@@ -12,9 +12,8 @@ import {
   UPLOADED_FILE_FIRST_ITEM,
   UPLOADED_FILE_OTHER, UPLOADED_RESPONSE
 } from '../../../tests/upload.fixtures.spec';
-import { UploadFile, UploadStatus } from 'ngx-uploader';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RemoveConfirmModalComponent } from './remove-confirm-modal/remove-confirm-modal.component';
 import { ITEM_ID, PICTURE_ID } from '../../../tests/item.fixtures.spec';
@@ -22,6 +21,7 @@ import { ErrorsService } from '../../core/errors/errors.service';
 import { IMAGE } from '../../../tests/user.fixtures.spec';
 import { UploadedEvent } from '../upload-event.interface';
 import { ITEM_TYPES } from '../../core/item/item';
+import { UploadFile, UploadStatus } from '../../shared/uploader/upload.interface';
 
 describe('DropAreaComponent', () => {
   let component: DropAreaComponent;

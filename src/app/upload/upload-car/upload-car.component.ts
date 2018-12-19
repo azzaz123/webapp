@@ -5,7 +5,6 @@ import { IOption } from 'ng-select';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import { UploadEvent } from '../upload-event.interface';
-import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
@@ -323,7 +322,7 @@ export class UploadCarComponent implements OnInit {
 
   private min(min: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-      if (isPresent(Validators.required(control))) {
+      if (Validators.required(control)) {
         return null;
       }
       const v: number = Number(control.value);
@@ -333,7 +332,7 @@ export class UploadCarComponent implements OnInit {
 
   private max(max: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-      if (isPresent(Validators.required(control))) {
+      if (Validators.required(control)) {
         return null;
       }
       const v: number = Number(control.value);

@@ -190,7 +190,6 @@ describe('Service: Http', () => {
           headers = connection.request.headers;
         });
         httpService.get(TEST_URL).subscribe();
-        console.log(headers.keys());
         expect(headers.keys().length).toBe(1);
         expect(headers.has('Authorization')).toBeTruthy();
         expect(headers.get('Authorization')).toBe('Bearer thetoken');

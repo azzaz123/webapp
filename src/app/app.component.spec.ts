@@ -9,7 +9,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/throw';
 import { ConversationService } from './core/conversation/conversation.service';
@@ -228,6 +228,7 @@ describe('App', () => {
 
   describe('set cookie', () => {
     it('should create a cookie', () => {
+      jasmine.clock().uninstall();
       spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');
       jasmine.clock().install();

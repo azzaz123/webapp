@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { UploadFile, UploadInput } from 'ngx-uploader';
 import { PictureUploadComponent } from './picture-upload.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpService } from '../../../core/http/http.service';
@@ -9,6 +8,7 @@ import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { MOCK_USER } from '../../../../tests/user.fixtures.spec';
 import { UPLOAD_FILE, UPLOAD_FILE_ID, UPLOAD_FILE_NAME } from '../../../../tests/upload.fixtures.spec';
 import { environment } from '../../../../environments/environment';
+import { UploadFile, UploadInput } from '../../uploader/upload.interface';
 
 describe('PictureUploadComponent', () => {
   let component: PictureUploadComponent;

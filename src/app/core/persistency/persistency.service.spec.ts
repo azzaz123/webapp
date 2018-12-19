@@ -11,7 +11,7 @@ import {
   MockedMessagesDb
 } from '../../../tests/persistency.fixtures.spec';
 import { CONVERSATION_DATE_ISO, CONVERSATION_ID } from '../../../tests/conversation.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../event/event.service';
@@ -200,7 +200,7 @@ describe('Service: Persistency', () => {
 
   describe('getPhoneNumber', () => {
     it('should return the phone number from the database', () => {
-      spyOn(service.messagesDb, 'get');
+      spyOn(service.messagesDb, 'get').and.returnValue('test');
 
       service.getPhoneNumber();
 
@@ -217,6 +217,7 @@ describe('Service: Persistency', () => {
     it('should update the date of an existing message', fakeAsync(() => {
       service.updateMessageDate(MOCK_MESSAGE).subscribe();
       tick();
+
       expect((service as any).upsert).toHaveBeenCalled();
       expect((service as any).upsert.calls.allArgs()[0][0]).toBe(service.messagesDb);
       expect((service as any).upsert.calls.allArgs()[0][1]).toBe(MOCK_MESSAGE.id);
@@ -225,8 +226,10 @@ describe('Service: Persistency', () => {
 
   describe('getMetaInformation', () => {
     it('should return the meta information from the database', () => {
-      spyOn(service.messagesDb, 'get');
+      spyOn(service.messagesDb, 'get').and.returnValue(Promise.resolve({}));
+
       service.getMetaInformation();
+
       expect(service.messagesDb.get).toHaveBeenCalledWith('meta');
     });
   });
@@ -317,7 +320,7 @@ describe('Service: Persistency', () => {
 
   describe('findMessage', () => {
     it('should return the message if found in the database', () => {
-      spyOn(service.messagesDb, 'get');
+      spyOn(service.messagesDb, 'get').and.returnValue(Promise.resolve({}));
 
       service.findMessage('someId');
 

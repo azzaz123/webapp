@@ -2,9 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProfileComponent } from './profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserService } from '../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
-import { MOCK_USER, MOTORPLAN_DATA, USER_URL } from '../../tests/user.fixtures.spec';
+import { Observable } from 'rxjs';
+import { MOCK_USER, MOTORPLAN_DATA, USER_WEB_SLUG } from '../../tests/user.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
+import { environment } from '../../environments/environment';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -58,7 +59,7 @@ describe('ProfileComponent', () => {
     });
 
     it('should set userUrl', () => {
-      expect(component.userUrl).toBe(USER_URL);
+      expect(component.userUrl).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + USER_WEB_SLUG);
     });
 
     it('should subscribe to getMotorPlan', () => {
