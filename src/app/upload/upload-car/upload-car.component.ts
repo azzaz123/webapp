@@ -199,6 +199,9 @@ export class UploadCarComponent implements OnInit {
     ).subscribe((versions: IOption[]) => {
       this.versions = versions;
       this.toggleField('version', 'enable', !editMode);
+      if (this.item) {
+        this.customVersion = !_.find(this.versions, {value: this.item.version});
+      }
     });
     this.setTitle();
   }
