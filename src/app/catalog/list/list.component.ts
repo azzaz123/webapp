@@ -380,6 +380,11 @@ export class ListComponent implements OnInit, OnDestroy {
           this.setNumberOfProducts();
         });
       });
+    } else {
+      this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+        this.counters = userStats.counters;
+        this.setNumberOfProducts();
+      });
     }
   }
 

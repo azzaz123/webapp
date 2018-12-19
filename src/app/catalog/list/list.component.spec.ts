@@ -779,6 +779,27 @@ describe('ListComponent', () => {
 
       expect(component.numberOfProducts).toEqual(mockCounters.sold);
     });
+
+    it('should set numberOfProducts correclty when hasMotorPlan and published filter', () => {
+      component.hasMotorPlan = true;
+      component.carsLimit = 5;
+      component.availableSlots = 3;
+
+      component.getNumberOfProducts();
+      component.filterByStatus('published');
+
+      expect(component.numberOfProducts).toEqual(mockCounters.publish - 2);
+    });
+
+    it('should set numberOfProducts correclty when cars filter', () => {
+      component.carsLimit = 5;
+      component.availableSlots = 3;
+
+      component.getNumberOfProducts();
+      component.filterByStatus('cars');
+
+      expect(component.numberOfProducts).toEqual(2);
+    });
   });
 
   describe('totalCars', () => {
