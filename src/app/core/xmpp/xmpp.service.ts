@@ -214,6 +214,7 @@ export class XmppService {
     } else if (!message.date) {
         message.date = new Date().getTime();
       }
+    this.eventService.emit(EventService.CHAT_LAST_RECEIVED_TS, message.date);
 
     if (message.receipt || message.sentReceipt || message.readReceipt) {
       this.buildChatSignal(message);
@@ -232,8 +233,6 @@ export class XmppService {
   }
 
   private buildChatSignal(message: XmppBodyMessage) {
-    this.eventService.emit(EventService.CHAT_LAST_RECEIVED_TS, message.date);
-    }
     let signal: ChatSignal;
     if (message.timestamp && message.receipt && message.from.bare !== message.to.bare && !message.carbon) {
       signal = new ChatSignal(chatSignalType.RECEIVED, message.thread, message.date, message.receipt);
@@ -249,7 +248,6 @@ export class XmppService {
     }
 
   private buildMessage(message: XmppBodyMessage, markAsPending = false) {
-    this.eventService.emit(EventService.CHAT_LAST_RECEIVED_TS, message.date);
     message.status = markAsPending ? messageStatus.PENDING : null;
     return new Message(message.id, message.thread, message.body, message.from.local,
       new Date(message.date), message.status, message.payload);
