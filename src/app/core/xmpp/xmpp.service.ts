@@ -520,7 +520,6 @@ export class XmppService {
     });
   }
 
-
   private createJid(userId: string): JID {
     const jid = new JID(userId, environment.xmppDomain, this.resource);
     return jid;

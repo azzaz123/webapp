@@ -30,15 +30,7 @@ export interface XmppMessage {
   readReceipt?: any;
   delay?: any;
 }
-export interface XmppTimestampMessage {
-  id: string;
-  receipt: string;
-  to: JID;
-  from: JID;
-  timestamp?: {
-    body: string;
-  };
-}
+
 export interface XmppBodyMessage extends XmppMessage {
   from: JID;
   body: string;
