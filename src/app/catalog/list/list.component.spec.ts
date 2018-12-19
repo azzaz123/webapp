@@ -16,7 +16,8 @@ import {
   MOCK_ITEM,
   MOCK_ITEM_V3,
   ORDER_EVENT,
-  PRODUCT_RESPONSE
+  PRODUCT_RESPONSE,
+  MOCK_LISTING_FEE_ORDER
 } from '../../../tests/item.fixtures.spec';
 import { Subject } from 'rxjs/Subject';
 import { UploadConfirmationModalComponent } from './modals/upload-confirmation-modal/upload-confirmation-modal.component';
@@ -35,6 +36,8 @@ import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-p
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { AvailableSlots } from '../../core/user/user-stats.interface';
 import { ItemFlags } from '../../core/item/item-response.interface';
+import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
+import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -72,9 +75,10 @@ describe('ListComponent', () => {
       providers: [
         I18nService,
         EventService,
-        {provide: TrackingService, useClass: MockTrackingService},
+        { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: ItemService, useValue: {
+
           mine() {
             return Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: 20});
           },
@@ -93,55 +97,54 @@ describe('ListComponent', () => {
           get() {
             return Observable.of(MOCK_ITEM_V3);
           },
-          bulkSetActivate() {
+        bulkSetActivate() {
           },
           bulkSetDeactivate() {
           },
           activate() {},
           deactivate() {},
           selectedItems$: new ReplaySubject(1),
-          selectedItems: []
-        }
+          selectedItems: []}
         },
         {
           provide: NgbModal, useValue: {
-          open() {
-            return {
-              result: Promise.resolve(),
-              componentInstance: componentInstance
-            };
+            open() {
+              return {
+                result: Promise.resolve(),
+                componentInstance: componentInstance
+              };
+            }
           }
-        }
         },
         {
           provide: ToastrService, useValue: {
-          error() {
-          },
-          success() {
+            error() {
+            },
+            success() {
+            }
           }
-        }
         },
         {
           provide: ActivatedRoute, useValue: {
-          params: Observable.of({
-            code: 200
-          })
-        }
+            params: Observable.of({
+              code: 200
+            })
+          }
         },
         {
           provide: PaymentService, useValue: {
-          getFinancialCard() {
-          },
-          pay() {
-            return Observable.of('');
-          },
-          getCreditInfo() {
-            return Observable.of({
-              currencyName: CURRENCY,
-              credit: CREDITS
-            });
+            getFinancialCard() {
+            },
+            pay() {
+              return Observable.of('');
+            },
+            getCreditInfo() {
+              return Observable.of({
+                currencyName: CURRENCY,
+                credit: CREDITS
+              });
+            }
           }
-        }
         }, {
           provide: ErrorsService, useValue: {
             show() {
@@ -178,7 +181,7 @@ describe('ListComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -258,7 +261,7 @@ describe('ListComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, {windowClass: 'upload'});
+      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, { windowClass: 'upload' });
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
       expect(component.isUrgent).toBe(false);
       expect(component.isRedirect).toBe(false);
@@ -318,6 +321,42 @@ describe('ListComponent', () => {
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
       expect(modalService.open).toHaveBeenCalledWith(UrgentConfirmationModalComponent, {
         windowClass: 'urgent-confirm',
+        backdrop: 'static'
+      });
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
+    }));
+
+    it('should open the listing fee modal if transaction is set as purchaseListingFee', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFee');
+      spyOn(localStorage, 'removeItem');
+      route.params = Observable.of({
+        code: 200
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
+      expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
+        windowClass: 'listingfee-confirm',
+        backdrop: 'static'
+      });
+      expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
+    }));
+
+    it('should open the listing fee modal if transaction is set as purchaseListingFeeWithCredits', fakeAsync(() => {
+      spyOn(localStorage, 'getItem').and.returnValue('purchaseListingFeeWithCredits');
+      spyOn(localStorage, 'removeItem');
+      route.params = Observable.of({
+        code: 200
+      });
+
+      component.ngOnInit();
+      tick();
+
+      expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
+      expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
+        windowClass: 'listingfee-confirm',
         backdrop: 'static'
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
@@ -449,25 +488,25 @@ describe('ListComponent', () => {
     });
 
     it('should track the ProductListLoaded event', () => {
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, {init: 0});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, { init: 0 });
     });
     it('should track the ProductListSoldViewed if the selectedStatus is sold', () => {
       component['selectedStatus'] = 'sold';
       trackingServiceSpy.calls.reset();
       component.ngOnInit();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_SOLD_VIEWED, {total_products: 2});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_SOLD_VIEWED, { total_products: 2 });
     });
     it('should track the ProductListActiveViewed if the selectedStatus is published', () => {
       component['selectedStatus'] = 'published';
       trackingServiceSpy.calls.reset();
       component.ngOnInit();
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, {total_products: 2});
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_ACTIVE_VIEWED, { total_products: 2 });
     });
     it('should set init', () => {
       expect(component['init']).toBe(20);
     });
     it('should set end true if no init', () => {
-      itemerviceSpy.and.returnValue(Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: null}));
+      itemerviceSpy.and.returnValue(Observable.of({ data: [MOCK_ITEM, MOCK_ITEM], init: null }));
       component.ngOnInit();
       expect(component['end']).toBeTruthy();
     });
@@ -524,7 +563,7 @@ describe('ListComponent', () => {
       });
 
       expect(component.items.length).toBe(TOTAL - 1);
-      expect(_.find(component.items, {'id': item.id})).toBeFalsy();
+      expect(_.find(component.items, { 'id': item.id })).toBeFalsy();
     });
 
     it('should call feature if event is reactivatedWithBump', () => {
@@ -593,12 +632,12 @@ describe('ListComponent', () => {
       });
       it('should remove deleted items', () => {
         expect(component.items.length).toBe(TOTAL - 3);
-        expect(_.find(component.items, {'id': '1'})).toBeFalsy();
-        expect(_.find(component.items, {'id': '3'})).toBeFalsy();
-        expect(_.find(component.items, {'id': '5'})).toBeFalsy();
+        expect(_.find(component.items, { 'id': '1' })).toBeFalsy();
+        expect(_.find(component.items, { 'id': '3' })).toBeFalsy();
+        expect(_.find(component.items, { 'id': '5' })).toBeFalsy();
       });
       it('should track the ProductListbulkDeleted event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_DELETED, {product_ids: '1, 3, 5'});
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_DELETED, { product_ids: '1, 3, 5' });
       });
       it('should call getNumberOfProducts', () => {
         expect(component.getNumberOfProducts).toHaveBeenCalled();
@@ -642,7 +681,7 @@ describe('ListComponent', () => {
       }));
 
       it('should call the ProductListBulkReserved tracking event', () => {
-        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_RESERVED, {product_ids: '1, 3, 5'});
+        expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_BULK_RESERVED, { product_ids: '1, 3, 5' });
       });
 
       it('should set items as reserved', () => {
@@ -704,7 +743,7 @@ describe('ListComponent', () => {
         tick();
 
         expect(component.isUrgent).toBe(false);
-        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: 200}]);
+        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: 200 }]);
       }));
     });
 
@@ -720,7 +759,7 @@ describe('ListComponent', () => {
         tick();
 
         expect(component.isUrgent).toBe(false);
-        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', {code: -1}]);
+        expect(router.navigate).toHaveBeenCalledWith(['catalog/list', { code: -1 }]);
       }));
     });
 
@@ -927,5 +966,14 @@ describe('ListComponent', () => {
     });
   });
 
+  describe('purchaseListingFee', () => {
+    it('should open buy listing fee product modal', () => {
+      component.purchaseListingFee(MOCK_LISTING_FEE_ORDER);
+
+      expect(modalService.open).toHaveBeenCalledWith(BuyProductModalComponent, {
+        windowClass: 'buy-product',
+      });
+    });
+  });
 
 });

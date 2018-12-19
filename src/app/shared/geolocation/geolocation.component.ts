@@ -17,6 +17,7 @@ export class GeolocationComponent implements OnInit, OnChanges {
   @Output() public newCoordinate = new EventEmitter<Coordinate>();
   @Input() value: string;
   @Input() updateLocation = true;
+  @Input() fromCookie = true;
   public model: any = {description: ''};
   @ViewChild('pacInputHeader') searchInputEl: ElementRef;
 
@@ -24,7 +25,7 @@ export class GeolocationComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     const searchPosName = this.cookieService.get('searchPosName');
-    if (searchPosName) {
+    if (this.fromCookie && searchPosName) {
       this.model.description = searchPosName;
     }
     this.searchInputEl.nativeElement.focus();

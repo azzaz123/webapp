@@ -9,9 +9,13 @@
     <div>
       <h2 *ngIf="type === 'urgent'" i18n>Mark as urgent</h2>
       <h2 *ngIf="type === 'reactivate'" i18n>Reactivate + visibility</h2>
-      <div class="box">
-        <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
-        <div class="title">{{item?.title}}</div>
+      <h2 *ngIf="type === 'listing-fee'" i18n>Publish your car</h2>
+      <div class="box" *ngIf="type !== 'listing-fee'">
+          <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
+          <div class="title">{{item?.title}}</div>
+      </div>
+      <div class="buy-product-modal-icon" *ngIf="type === 'listing-fee'">
+        <mat-icon svgIcon="listing-fee-car-icon"></mat-icon>
       </div>
     </div>
     <div class="price">
