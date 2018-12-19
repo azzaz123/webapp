@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UpgradePlanModalComponent } from './upgrade-plan-modal.component';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
 import { ItemService } from '../../../../core/item/item.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Item } from '../../../../core/item/item';
 import { MOCK_ITEM, PRODUCT_RESPONSE, MOCK_LISTING_FEE_PRODUCT, MOCK_LISTING_FEE_ORDER } from '../../../../../tests/item.fixtures.spec';
 import { DecimalPipe } from '@angular/common';
