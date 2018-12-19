@@ -26,7 +26,6 @@ export class LocationSelectComponent implements OnChanges {
   private approximatedLocation: AbstractControl;
 
   constructor(private modalService: NgbModal,
-              private cookieService: CookieService,
               private userService: UserService) {
   }
 
@@ -49,21 +48,11 @@ export class LocationSelectComponent implements OnChanges {
       const modal: NgbModalRef = this.modalService.open(LocationModalComponent, {
         windowClass: 'location'
       });
-      const lat: string = this.cookieService.get('searchLat');
-      const lng: string = this.cookieService.get('searchLng');
-      const name: string = this.cookieService.get('searchPosName');
       if (this.control.value) {
         modal.componentInstance.init({
           latitude: this.latitudeControl.value,
           longitude: this.longitudeControl.value,
           name: this.control.value,
-          approximated_location: this.approximatedLocation ? this.approximatedLocation.value : null
-        }, this.updateLocation);
-      } else if (lat && lng) {
-        modal.componentInstance.init({
-          latitude: lat,
-          longitude: lng,
-          name: name,
           approximated_location: this.approximatedLocation ? this.approximatedLocation.value : null
         }, this.updateLocation);
       } else {
