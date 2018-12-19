@@ -49,7 +49,7 @@
           <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)" [item]="item">
             <mat-icon svgIcon="btn-sold"></mat-icon>
           </button>
-          <button class="btn-reserve" [hidden]="item.flags.onhold || isPro" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
+          <button class="btn-reserve" [hidden]="item.flags.onhold" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
             <mat-icon svgIcon="btn-reserved"></mat-icon>
           </button>
           <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">

@@ -44,10 +44,6 @@
         </ng-container>
       </a>
       <span class="bulk-actions" [ngClass]="{disabled: !itemService.selectedItems.length}"  *ngIf="selectedStatus === 'cars'">
-        <button class="btn-reserve dark" (click)="reserve()" [disabled]="!itemService.selectedItems.length">
-          <mat-icon svgIcon="btn-reserved"></mat-icon>
-          <span i18n>Reserve</span>
-        </button>
         <button class="btn-delete dark" (click)="delete()" [disabled]="!itemService.selectedItems.length">
           <mat-icon svgIcon="delete"></mat-icon>
           <span i18n>Delete</span>
