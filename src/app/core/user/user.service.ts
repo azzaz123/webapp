@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { PERMISSIONS, User } from './user';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { ResourceService } from '../resource/resource.service';
 import { GeoCoord, HaversineService } from 'ng2-haversine';

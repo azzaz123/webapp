@@ -2,9 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileProComponent } from './profile-pro.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MOCK_USER, USER_URL } from '../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_URL, USER_WEB_SLUG } from '../../tests/user.fixtures.spec';
 import { UserService } from '../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 describe('ProfileProComponent', () => {
   let component: ProfileProComponent;
@@ -48,7 +49,7 @@ describe('ProfileProComponent', () => {
     });
 
     it('should set userUrl', () => {
-      expect(component.userUrl).toBe(USER_URL);
+      expect(component.userUrl).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + USER_WEB_SLUG);
     });
   });
 

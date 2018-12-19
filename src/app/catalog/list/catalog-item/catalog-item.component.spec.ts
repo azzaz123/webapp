@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
@@ -15,7 +15,7 @@ import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-
 import {
   ITEM_ID,
   MOCK_ITEM, ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE,
-  PRODUCT_RESPONSE
+  PRODUCT_RESPONSE, ITEM_WEB_SLUG
 } from '../../../../tests/item.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorsService } from '../../../core/errors/errors.service';
@@ -121,7 +121,7 @@ describe('CatalogItemComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set link', () => {
-      expect(component.link).toBe('https://es.wallapop.com/item/webslug-9jd7ryx5odjk');
+      expect(component.link).toBe(environment.siteUrl + 'item/' + ITEM_WEB_SLUG);
     });
   });
 

@@ -35,7 +35,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -76,7 +76,7 @@ export class ItemService extends ResourceService {
     featured: []
   };
   public selectedItems: string[] = [];
-  private bumpTypes = ['countrybump', 'citybump', 'zonebump'];
+  private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
 
   constructor(http: HttpService,
               private i18n: I18nService,
@@ -227,7 +227,8 @@ export class ItemService extends ResourceService {
       content.elevator,
       content.pool,
       content.garden,
-      content.image
+      content.image,
+      content.publish_date
     );
   }
 

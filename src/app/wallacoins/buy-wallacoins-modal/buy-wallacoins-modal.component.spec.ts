@@ -6,7 +6,7 @@ import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency
 import { DecimalPipe } from '@angular/common';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { PaymentService } from '../../core/payments/payment.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pack } from '../../core/payments/pack';
 import { UUID } from 'angular2-uuid';

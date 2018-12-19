@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ReviewResponse, ReviewsData } from './review-response.interface';
 import { Response } from '@angular/http';
 import { Review } from './review';

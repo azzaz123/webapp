@@ -4,7 +4,7 @@ import { FeatureFlagResponse, FeatureflagService } from './featureflag.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { HttpService } from '../http/http.service';
 import { ResponseOptions, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 describe('FeatureflagService', () => {
 

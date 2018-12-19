@@ -5,7 +5,7 @@ import { DecimalPipe } from '@angular/common';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomCurrencyPipe } from '../../../../shared/custom-currency/custom-currency.pipe';
 import { PaymentService } from '../../../../core/payments/payment.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CreditInfo } from '../../../../core/payments/payment.interface';
 import { EventService } from '../../../../core/event/event.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

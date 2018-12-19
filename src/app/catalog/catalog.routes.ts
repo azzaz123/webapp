@@ -10,7 +10,26 @@ import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
 import * as _ from 'lodash';
 
-const routes: Routes = [
+export function isNormalCatalogPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
+  if (_.isEmpty(route.params)) {
+    return '/pro/catalog/list';
+  } else {
+    return {
+      navigationCommands: ['/pro/catalog/list', route.params]
+    };
+  }
+}
+
+export function isNormalCheckoutPermissions(rejectedPermissionName: string, route: ActivatedRouteSnapshot) {
+  if (!route.params.itemId) {
+    return '/pro/catalog/checkout';
+  }
+  return {
+    navigationCommands: ['/pro/catalog/checkout/', { itemId: route.params.itemId }]
+  };
+}
+
+export const routes: Routes = [
   {
     path: '',
     canActivate: [LoggedGuard, TutorialGuard],
@@ -30,15 +49,7 @@ const routes: Routes = [
           permissions: {
             only: PERMISSIONS.normal,
             redirectTo: {
-              isNormal: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-                if (_.isEmpty(route.params)) {
-                  return '/pro/catalog/list';
-                } else {
-                  return {
-                    navigationCommands: ['/pro/catalog/list', route.params]
-                  };
-                }
-              }
+              isNormal: isNormalCatalogPermissions
             }
           }
         }
@@ -52,14 +63,7 @@ const routes: Routes = [
           permissions: {
             only: PERMISSIONS.normal,
             redirectTo: {
-              isNormal: (rejectedPermissionName: string, route: ActivatedRouteSnapshot) => {
-                if (!route.params.itemId) {
-                  return '/pro/catalog/checkout';
-                }
-                return {
-                  navigationCommands: ['/pro/catalog/checkout/', {itemId: route.params.itemId}]
-                };
-              }
+              isNormal: isNormalCheckoutPermissions
             }
           }
         }

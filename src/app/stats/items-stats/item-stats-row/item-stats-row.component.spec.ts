@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemStatsRowComponent } from './item-stats-row.component';
 import { ItemStatsService } from './item-stats-graph/item-stats.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CustomCurrencyPipe } from '../../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
@@ -17,6 +17,7 @@ import {
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemService } from '../../../core/item/item.service';
 import { ITEM_STATISTIC_RESPONSE } from '../../../../tests/statistics.fixtures.spec';
+import { environment } from '../../../../environments/environment';
 
 describe('ItemStatsRowComponent', () => {
   let component: ItemStatsRowComponent;
@@ -64,7 +65,7 @@ describe('ItemStatsRowComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set link', () => {
-      expect(component.link).toBe('https://es.wallapop.com/item/toyota-yaris-1-3-99cv-500008657');
+      expect(component.link).toBe(environment.siteUrl + 'item/toyota-yaris-1-3-99cv-500008657');
     });
 
     it('should call getStatistics and set it', () => {
@@ -72,7 +73,7 @@ describe('ItemStatsRowComponent', () => {
 
       component.ngOnInit();
 
-      expect(itemStatsService.getStatistics).toHaveBeenCalledWith(MOCK_ITEM_V3.id)
+      expect(itemStatsService.getStatistics).toHaveBeenCalledWith(MOCK_ITEM_V3.id);
       expect(component.statsData).toEqual(ITEM_STATISTIC_RESPONSE);
     });
 

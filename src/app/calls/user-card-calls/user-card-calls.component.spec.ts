@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserCardCallsComponent } from './user-card-calls.component';
 import { ItemService } from '../../core/item/item.service';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { USER_INFO_RESPONSE, USERS_STATS_RESPONSE,
   MOCK_USER, USER_ID, SCORING_STARS, USER_REPORTS_RECEIVED } from '../../../tests/user.fixtures.spec';
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';

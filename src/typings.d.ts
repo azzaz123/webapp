@@ -20,3 +20,4 @@ declare let __cmp: any;
 declare let quancastOptions: {es: {}, en: {}};
 declare let H: any;
 declare let Taplytics: any;
+declare let Adomik: any;

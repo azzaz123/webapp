@@ -7,12 +7,10 @@
     "types": []
   },
   "include": [
-    "../node_modules/ngx-uploader/src/ngx-uploader",
     "./"
   ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts",
-    "../node_modules/ngx-uploader/src/ngx-uploader/**/*.ngfactory.ts"
   ]
 }

@@ -4,7 +4,7 @@ import { ProfileSubscriptionComponent } from './profile-subscription.component';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { PROFILE_SUB_INFO } from '../../../tests/user.fixtures.spec';
 

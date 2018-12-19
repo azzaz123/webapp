@@ -113,7 +113,8 @@ $border: solid 1px $grey-50;
       }
       mat-icon {
         @include square(42px);
-        margin-top: 25px;
+        margin-top: 28px;
+        margin-bottom: 14px;
         /deep/ path {
           transition: fill 0.2s ease-in-out;
         }

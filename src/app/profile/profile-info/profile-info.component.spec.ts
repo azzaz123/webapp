@@ -9,7 +9,7 @@ import { MockBackend } from '@angular/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {
   MOCK_FULL_USER,
   USER_DATA,
@@ -56,7 +56,7 @@ describe('ProfileInfoComponent', () => {
             return Observable.of(MOCK_FULL_USER);
           },
           updateStoreLocation() {
-            return Observable.of({})
+            return Observable.of({});
           }
         }
         },
