@@ -27,7 +27,8 @@ export class Realestate extends Item {
               private _elevator?: boolean,
               private _pool?: boolean,
               private _garden?: boolean,
-              image?: any) {
+              image?: any,
+              publishedDate?: number) {
     super(
       id,
       0,
@@ -52,7 +53,7 @@ export class Realestate extends Item {
       } : (images ? images[0] : null),
       images,
       webSlug,
-      null,
+      publishedDate,
       null,
       ITEM_TYPES.REAL_ESTATE
     );
