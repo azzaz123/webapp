@@ -1,11 +1,12 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
+import { UUID } from 'angular2-uuid';
 import { XmppService } from '../xmpp/xmpp.service';
+import { Observable } from 'rxjs';
 import { MsgArchiveService } from './archive.service';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Conversation } from '../conversation/conversation';
-import { Message, messageStatus } from './message';
+import { Message, messageStatus, phoneRequestState } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
@@ -14,6 +15,8 @@ import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveResponse, ReceivedReceipt } from './archive.interface';
 import 'rxjs/add/operator/first';
 import { EventService } from '../event/event.service';
+import { I18nService } from '../i18n/i18n.service';
+import { TrackingService } from '../tracking/tracking.service';
 
 @Injectable()
 export class MessageService {
@@ -30,6 +33,8 @@ export class MessageService {
               private persistencyService: PersistencyService,
               private userService: UserService,
               private connectionService: ConnectionService,
+              private i18n: I18nService,
+              private trackingService: TrackingService,
               private eventService: EventService) {
   }
 
@@ -56,7 +61,8 @@ export class MessageService {
               message.doc.from,
               message.doc.date,
               message.doc.status,
-              message.doc.payload);
+              message.doc.payload,
+              message.doc.phoneRequest);
 
             if (msg.status === messageStatus.PENDING) {
               const timeLimit = new Date().getTime() - (this.resendOlderThan * 24 * 60 * 60 * 1000);
@@ -179,6 +185,37 @@ export class MessageService {
 
   public send(conversation: Conversation, message: string) {
     this.xmpp.sendMessage(conversation, message);
+  }
+
+  public addPhoneNumberRequestMessage(conversation, withTracking = true): Conversation {
+    this.eventService.subscribe(EventService.CONVERSATION_CEATED, (conv, message) => {
+      if (conversation.id === conv.id) {
+        this.persistencyService.saveMessages([message]);
+      }
+    });
+    let msg = new Message(UUID.UUID(),
+      conversation.id,
+      this.i18n.getTranslations('phoneRequestMessage'),
+      conversation.user.id,
+      new Date(),
+      messageStatus.READ);
+    msg = this.addUserInfo(conversation, msg);
+    msg.phoneRequest = phoneRequestState.pending;
+    conversation.messages.push(msg);
+    if (withTracking) {
+      this.trackingService.addTrackingEvent({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    }
+    conversation.modifiedDate = new Date().getTime();
+    return conversation;
+  }
+
+  public createPhoneNumberMessage(conversation, phone) {
+    const message = this.i18n.getTranslations('phoneMessage') + phone;
+    this.xmpp.sendMessage(conversation, message);
+    const phoneRequestMsg = conversation.messages.find(m => m.phoneRequest);
+    phoneRequestMsg.phoneRequest = phoneRequestState.answered;
+    this.persistencyService.markPhoneRequestAnswered(phoneRequestMsg);
+    this.persistencyService.setPhoneNumber(phone);
   }
 
   public resetCache() {

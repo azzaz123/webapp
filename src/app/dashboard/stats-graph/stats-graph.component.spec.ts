@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatsGraphComponent } from './stats-graph.component';
 import { AmChartsService } from '@amcharts/amcharts3-angular';
 import { StatisticsService } from './statistics.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { STATISTICS_RESPONSE } from '../../../tests/statistics.fixtures.spec';

@@ -25,7 +25,7 @@ import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';
 
@@ -775,10 +775,17 @@ export const CONVERSATION_USERS: ConversationUser[] = [{
 export const PURCHASES: Purchase[] = [{
   'item_id': '1',
   'expiration_date': 1510221655715,
+  'purchase_name': 'countrybump',
+  'visibility_flags': {'bumped': false, 'highlighted': true, 'urgent': false}
+}, {
+  'item_id': '1',
+  'expiration_date': 1510221346789,
+  'purchase_name': 'listingfee',
   'visibility_flags': {'bumped': false, 'highlighted': true, 'urgent': false}
 }, {
   'item_id': '3',
   'expiration_date': 1509874085135,
+  'purchase_name': 'countrybump',
   'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
 }];
 

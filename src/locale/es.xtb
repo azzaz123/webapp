@@ -218,6 +218,7 @@
   <translation id="5107282366152603486"><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Consigue más visibilidad y véndelo antes.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></translation>
   <translation id="2538912110902686738">Reactivar + visibilidad</translation>
   <translation id="3244863581909362906">Sólo reactivar que no quiero venderlo más rápido</translation>
+  <translation id="8204176479746810612">Activo</translation>
   <translation id="4416413576346763682">Pendiente</translation>
   <translation id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart">Continuar</translation>
   <translation id="8423596927659875793">No disponible</translation>
@@ -311,7 +312,6 @@
   <translation id="5327426729320041573">Nadie ha opinado sobre ti porque todavía no has comprado ni vendido nada ¡Espabila!</translation>
   <translation id="6707361102856436710">Productos</translation>
   <translation id="2027740642468122404">En esta lista podrás ver todos los productos que has guardado como favoritos</translation>
-  <translation id="792930787826735850">Tu perfil</translation>
   <translation id="4818441514225396186">Subir producto</translation>
   <translation id="6763447295092579753">Destacando tus productos los harás más visibles para el resto de la comunidad, gracias a sus funciones especiales. ¿Qué te aportará eso? Básicamente que te contacten más personas y lo vendas más rápido. Mira a continuación cuál encaja mejor con tu tipo de productos:</translation>
   <translation id="3358820219972327972">Destácalo en tu barrio</translation>
@@ -555,7 +555,7 @@
   <translation id="5554592740021607017">Últimos 12 meses</translation>
   <translation id="3708302938863076299">Pago seguro con Banco Sabadell</translation>
   <translation id="466090356732378705">Destacados <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>(<ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph>)<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
-  <translation id="3649443966888874108">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
+  <translation id="9195373106604759125">Para que los anuncios que voy a ver sean de mi interés, acepto que wallapop comparta con empresas con las que colaboramos información recabada durante la sesión.</translation>
   <translation id="221922226324249098">Todas las categorías</translation>
   <translation id="7514254130085804538">Marcar como vendido</translation>
   <translation id="853408948668135550">Marcar como reservado</translation>
@@ -637,9 +637,8 @@
   <translation id="6181907632373133266">Chats</translation>
   <translation id="2123659921722214537">Visualizaciones</translation>
   <translation id="3537961834218859224">Te lo aseguramos</translation>
-  <translation id="5131018503170911996">Asegura este móvil con Klinc by Zurich</translation>
-  <translation id="6207187827275323934">Asegura este producto con Klinc by Zurich</translation>
   <translation id="5984580705945066559">Calcula el seguro gratis </translation>
+  <translation id="5856234352867328880">Financia esta compra</translation>
   <translation id="6174997588475722860">Recuerda que tu saldo y los packs de ahorro solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Una vez cargado tu saldo, tiene un año de vigencia.</translation>
   <translation id="7356703231883565314">El uso de los wallacoins es exclusivo para la compra de Destacados. Recuerda que solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>No se puede intercambiar por Euros y tienen un año de vigencia.</translation>
   <translation id="2767524293310239820">Los wallacoins te ayudarán a comprar Destacados. Aquí podrás conseguirlos y ver tu saldo disponible.</translation>
@@ -696,6 +695,12 @@
     <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex></ph>de tu saldo<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph>
     marca tu producto como "Urgente" durante 7 días para diferenciarte en el muro de los demás productos y que seas más fácil de encontrar mediante el filtro urge.
   </translation>
+  <translation id="1900996506417052092">¡Vas a contactar con un Profesional! Para ofrecerte un servicio más personalizado, ¿podrías dejarnos un teléfono para que te llamemos?</translation>
+  <translation id="5694886960613125934">Vamos a hablarlo: </translation>
+  <translation id="305827802561975907">Lo que debes saber:</translation>
+  <translation id="807686572653733419">Únicamente en caso de que nos des tu consentimiento, compartiremos el teléfono que informes con un usuario profesional ajeno a nuestra plataforma (un concesionario interesarado). Los datos recabados serán utilizados mientras no te opongas a dicho tratamiento.</translation>
+  <translation id="7250390756093690890">Podrás ejercer sus derechos de acceso, rectificación, supresión, oposición, limitación al tratamiento y portabilidad de sus Datos, así como la revocación, en cualquier momento, de los consentimientos, en su caso, prestados ante Wallapop S.L., CIF nº B-66.04.9057, en la Avenida Meridiana 89 Planta 6º, 08026, Barcelona (España), adjuntando fotocopia de tu DNI o documento identificativo válido equivalente. Para tu mayor comodidad, y sin perjuicio de que se deban cumplir con determinados requisitos formales establecidos por la LOPD, Wallapop S.L. le ofrece la posibilidad de ejercer los derechos antes referidos a través del correo electrónico: privacidad@wallapop.com.</translation>
+  <translation id="548531554532991134">Tu perfil <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
   <translation id="3163876998313048927">Conviértete en PRO</translation>
   <translation id="2542747907081885378">Más información desde la app</translation>
   <translation id="976362268569732073">Tus productos se verán más porque estarán en las primeras posiciones de las búsquedas</translation>
@@ -719,6 +724,20 @@
   <translation id="5020391428854742815">Ve a la app de wallapop y suscríbete a un Plan Motor, o compra un anuncio extra para hacerlo público.</translation>
   <translation id="5601530442010506564">Entendido</translation>
   <translation id="703140349558791698">Suscríbete o publícalo desde la app</translation>
+  <translation id="3031881676351306386">Dejar mi teléfono</translation>
+  <translation id="3202305721451114390">Deja tu teléfono...</translation>
+  <translation id="9178182467454450952">Confirmar</translation>
+  <translation id="1214570422954613349">Teléfono enviado ;)</translation>
+  <translation id="989776066026256137">Tus productos <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></translation>
+  <translation id="7811210420459773233">¿Seguro que quieres darte de baja de wallapop?</translation>
+  <translation id="475161398925564146">Te estás dando de baja pero tienes activa una suscripción en wallapop. Para cancelarla, deberás hacerlo a través de la Play Store o la App Store.</translation>
+  <translation id="1468205032926382389">Dame de baja y tramitaré la cancelación</translation>
+  <translation id="6555865224397311626">Vale, me lo pienso mejor</translation>
+  <translation id="5339022467575859181">Plan actual: <ph name="INTERPOLATION"><ex>{{currentPlan}}</ex></ph></translation>
+  <translation id="6419964541223964219">Cada plan incluye la posibilidad de publicar un número máximo de coches, siempre podrás eliminar y elegir uno diferente. Cambia de plan desde la app.</translation>
+  <translation id="2359130262258320456">O contáctanos para que te hagamos un plan a tu medida que se adapte a tus necesidades.</translation>
+  <translation id="3898572555215935465">Email de comercial</translation>
+  <translation id="7178101913251976451">mes</translation>
   <translation id="351850805832815905">Perfiles</translation>
   <translation id="8888357426803887074">En este listado puedes ver todos los perfiles que has favoriteado.</translation>
   <translation id="9066909356179829078">Estos son los perfiles de wallapop que más te gustan.</translation>

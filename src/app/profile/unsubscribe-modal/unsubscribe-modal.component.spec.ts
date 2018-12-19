@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnsubscribeModalComponent } from './unsubscribe-modal.component';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CUSTOM_REASON, REASONS, SELECTED_REASON } from '../../../tests/user.fixtures.spec';
+import { CUSTOM_REASON, MOCK_USER, REASONS, SELECTED_REASON } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
 import { environment } from '../../../environments/environment';
 import { AccessTokenService } from '../../core/http/access-token.service';
@@ -29,6 +29,12 @@ describe('UnsubscribeModalComponent', () => {
           },
           unsubscribe() {
             return Observable.of({});
+          },
+          me() {
+            return Observable.of(MOCK_USER);
+          },
+          getMotorPlan() {
+            return Observable.of();
           }
         }
         },
@@ -74,6 +80,27 @@ describe('UnsubscribeModalComponent', () => {
 
       expect(userService.getUnsubscribeReasons).toHaveBeenCalled();
       expect(component.reasons).toEqual(REASONS);
+    });
+
+    it('should call me and set hasSubscription to false', () => {
+      spyOn(userService, 'me').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.me).toHaveBeenCalled();
+      expect(component.hasSubscription).toBe(false);
+    });
+
+    it('should call getMotorPlan and set hasSubscription to true', () => {
+      spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of({
+        type: 'type',
+        subtype: 'subtype'
+      }));
+
+      component.ngOnInit();
+
+      expect(userService.getMotorPlan).toHaveBeenCalled();
+      expect(component.hasSubscription).toBe(true);
     });
   });
 

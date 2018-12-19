@@ -21,7 +21,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { MatIconModule } from '@angular/material';
 import { NgbButtonsModule, NgbCarouselModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { TrackingModule } from '../core/tracking/tracking.module';
-import { NgUploaderModule } from 'ngx-uploader';
 import { DndModule } from 'ng2-dnd';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -40,7 +39,6 @@ import { GeolocationModule } from '../shared/geolocation/geolocation.module';
     MatIconModule,
     NgbPopoverModule,
     TrackingModule,
-    NgUploaderModule,
     DndModule,
     NgbCarouselModule,
     SelectModule,

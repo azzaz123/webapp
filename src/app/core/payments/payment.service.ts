@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import {
   BillingInfoResponse, CreditInfo,

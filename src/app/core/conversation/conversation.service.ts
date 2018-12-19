@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Injectable, NgZone } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { Conversation } from './conversation';
 import { ConnectionService } from '../connection/connection.service';
@@ -29,6 +29,8 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
+import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -43,6 +45,8 @@ export class ConversationService extends LeadService {
 
   public pendingPagesLoaded = 0;
   public processedPagesLoaded = 0;
+  public storedPhoneNumber: string;
+  private phoneRequestType;
   public ended = {
     pending: false,
     processed: false
@@ -58,6 +62,7 @@ export class ConversationService extends LeadService {
               protected messageService: MessageService,
               protected trackingService: TrackingService,
               protected notificationService: NotificationService,
+              private modalService: NgbModal,
               private zone: NgZone) {
     super(http, userService, itemService, event, xmpp, connectionService);
   }
@@ -161,6 +166,20 @@ export class ConversationService extends LeadService {
     });
   }
 
+  public openPhonePopup(conversation: Conversation, required = false) {
+    const modalOptions: NgbModalOptions = {windowClass: 'phone-request', backdrop: 'static', keyboard: false};
+    const modalRef: NgbModalRef = this.modalService.open(SendPhoneComponent, modalOptions);
+    modalRef.componentInstance.conversation = conversation;
+    modalRef.componentInstance.required = required;
+      modalRef.componentInstance.phone = this.storedPhoneNumber;
+    if (required) {
+      this.trackingService.addTrackingEvent({
+        eventData: TrackingService.ITEM_SHAREPHONE_SHOWFORM,
+        attributes: { item_id: conversation.item.id }
+      });
+    }
+  }
+
   public checkIfLastPage(archive: boolean = false): Observable<any> {
     const lastDate: number = archive ? this.getLastDate(this.archivedLeads) : this.getLastDate(this.leads);
     if (lastDate) {
@@ -234,9 +253,6 @@ export class ConversationService extends LeadService {
   private addMessage(conversation: Conversation, message: Message): boolean {
     if (!this.findMessage(conversation.messages, message)) {
       conversation.messages.push(message);
-      conversation.messages.sort((a, b) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      });
       conversation.modifiedDate = new Date().getTime();
       if (!message.fromSelf) {
         this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {
@@ -424,15 +440,22 @@ export class ConversationService extends LeadService {
       const response: ConversationResponse = r.json();
       return Observable.forkJoin(
         this.userService.get(response.other_user_id),
-        this.itemService.get(itemId)
+        this.itemService.get(itemId),
+        this.userService.getPhoneInfo(response.other_user_id)
       ).map((data: any) => {
+        const userResponse = data[0];
+        const itemResponse = data[1];
+        const phoneMethodResponse = data[2];
+        if (phoneMethodResponse) {
+          this.phoneRequestType = phoneMethodResponse.phone_method;
+        }
         return new Conversation(
           response.conversation_id,
           null,
           response.modified_date,
           false,
-          data[0],
-          data[1]);
+          userResponse,
+          itemResponse);
       });
     });
   }
@@ -440,6 +463,9 @@ export class ConversationService extends LeadService {
   public getSingleConversationMessages(conversation: Conversation) {
     return this.messageService.getMessages(conversation, true).map((res: MessagesData) => {
       conversation.messages = res.data;
+      if (!conversation.messages.length && this.phoneRequestType) {
+        this.event.emit(EventService.REQUEST_PHONE, this.phoneRequestType);
+      }
       conversation.unreadMessages = res.data.filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
       this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
         this.messageService.totalUnreadMessages + conversation.unreadMessages :

@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/te
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { TrackingService } from '../core/tracking/tracking.service';
@@ -25,8 +25,10 @@ import { Item } from '../core/item/item';
 import { ITEM_ID } from '../../tests/item.fixtures.spec';
 import { MOCK_CONVERSATION, SURVEY_RESPONSES } from '../../tests/conversation.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { environment } from '../../environments/environment';
 
 class MockConversationService {
+  storedPhoneNumber: string;
 
   sendRead(conversation: Conversation) {
   }
@@ -99,7 +101,10 @@ describe('Component: Chat', () => {
           getMetaInformation() {
             return Observable.of({});
           },
-          saveMetaInformation() {}
+          saveMetaInformation() {},
+          getPhoneNumber() {
+            return Observable.of({});
+          }
         }
         },
         I18nService,
@@ -181,8 +186,7 @@ describe('Component: Chat', () => {
 
     it('should set userWebSlug', () => {
       component.onCurrentConversationChange(conversation);
-
-      expect(component.userWebSlug).toBe(WEB_SLUG_USER + USER_WEB_SLUG);
+      expect(component.userWebSlug).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + USER_WEB_SLUG);
     });
   });
 
@@ -229,6 +233,8 @@ describe('Component: Chat', () => {
   });
 
   describe('ngOnInit', () => {
+    const phone = '+34912345678';
+
     it('should set connection error', () => {
       component.ngOnInit();
       eventService.emit(EventService.CONNECTION_ERROR);
@@ -271,6 +277,17 @@ describe('Component: Chat', () => {
 
       expect(component.firstLoad).toBe(true);
       expect(persistencyService.saveMetaInformation).toHaveBeenCalled();
+    });
+
+    it('should call persistencyService.getPhoneNumber and set the phone number in conversationService', () => {
+      spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw('err'));
+      spyOn(persistencyService, 'getPhoneNumber').and.returnValue(Observable.of({phone: phone}));
+
+      component.ngOnInit();
+      eventService.emit(EventService.DB_READY);
+
+      expect(persistencyService.getPhoneNumber).toHaveBeenCalled();
+      expect(conversationService.storedPhoneNumber).toBe(phone);
     });
   });
 

@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MsgArchiveResponse, ReceivedReceipt, ReadReceipt, ArchiveMetrics } from './archive.interface';
 import { HttpService } from '../http/http.service';
 import { Message, messageStatus } from './message';

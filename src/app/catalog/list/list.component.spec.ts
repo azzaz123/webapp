@@ -1,7 +1,7 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ListComponent } from './list.component';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import * as _ from 'lodash';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
@@ -30,6 +30,7 @@ import { Item } from '../../core/item/item';
 import { UrgentConfirmationModalComponent } from './modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
 import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
+import { MOTORPLAN_DATA } from '../../../tests/user.fixtures.spec';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
 
 describe('ListComponent', () => {
@@ -56,6 +57,10 @@ describe('ListComponent', () => {
   const mockCounters = {
     sold: 7,
     publish: 12
+  };
+  const mockMotorPlan = {
+    type: 'motor_plan_pro',
+    subtype: 'sub_premium'
   };
 
   beforeEach(async(() => {
@@ -148,6 +153,11 @@ describe('ListComponent', () => {
             getStats() {
               return Observable.of({
                 counters: mockCounters
+              });
+            },
+            getMotorPlan() {
+              return Observable.of({
+                motorPlan: mockMotorPlan
               });
             }
           }
@@ -307,7 +317,7 @@ describe('ListComponent', () => {
 
       component.ngOnInit();
       tick();
-      
+
       expect(modalService.open).toHaveBeenCalledWith(UpgradePlanModalComponent, {
         windowClass: 'upload'
       });
@@ -363,6 +373,22 @@ describe('ListComponent', () => {
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionSpent');
     }));
+
+    it('should subscribe to getMotorPlan', () => {
+      spyOn(userService, 'getMotorPlan').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.getMotorPlan).toHaveBeenCalled();
+    });
+
+    it('should set the translated user motor plan', () => {
+      spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of(MOTORPLAN_DATA));
+
+      component.ngOnInit();
+
+      expect(component.motorPlan).toEqual({subtype: 'sub_premium', label: 'Super Motor Plan', shortLabel: 'Super'});
+    });
   });
 
   describe('getItems', () => {

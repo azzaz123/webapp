@@ -3,7 +3,7 @@ import { SuggesterService } from './suggester.service';
 import { SuggesterResponse } from './suggester-response.interface';
 import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures.spec';
 import { ResponseOptions, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { HttpService } from '../../../core/http/http.service';
 

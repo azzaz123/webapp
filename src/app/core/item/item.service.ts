@@ -34,7 +34,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -75,6 +75,7 @@ export class ItemService extends ResourceService {
     featured: []
   };
   public selectedItems: string[] = [];
+  private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
 
   constructor(http: HttpService,
               private i18n: I18nService,
@@ -224,7 +225,9 @@ export class ItemService extends ResourceService {
       content.terrace,
       content.elevator,
       content.pool,
-      content.garden
+      content.garden,
+      content.image,
+      content.publish_date
     );
   }
 
@@ -338,10 +341,17 @@ export class ItemService extends ResourceService {
         purchases.forEach((purchase: Purchase) => {
           const index: number = _.findIndex(itemsData.data, {id: purchase.item_id});
           if (index !== -1) {
-            itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
-            itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
-            itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
-            itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
+            if (purchase.purchase_name === 'listingfee') {
+              itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
+            }
+            if (this.bumpTypes.includes(purchase.purchase_name)) {
+              itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
+            }
+            if ( purchase.visibility_flags ) {
+              itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
+              itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
+              itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
+            }
           }
         });
         return itemsData;

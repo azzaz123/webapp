@@ -10,7 +10,7 @@ import { MessageService } from '../../core/message/message.service';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CreditInfo } from '../../core/payments/payment.interface';
 import { EventService } from '../../core/event/event.service';
-import { CookieService } from 'ngx-cookie/index';
+import { CookieService } from 'ngx-cookie';
 
 @Component({
   selector: 'tsl-topbar',

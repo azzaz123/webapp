@@ -18,8 +18,8 @@
     <span *ngIf="creditUsed">
     <b>
       <span i18n>You have used</span>
-      <span *ngIf="withCoins">{{spent | number}} wallacoins</span>
-      <span *ngIf="!withCoins">{{spent | customCurrency}}</span>
+      <span *ngIf="withCoins"> {{spent | number}} wallacoins</span>
+      <span *ngIf="!withCoins"> {{spent | customCurrency}}</span>
     </b><br />
     <b>
       <span *ngIf="withCoins" i18n>You have {{creditInfo?.credit | number}} wallacoins left</span>

@@ -9,7 +9,7 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { ProfileService } from '../../core/profile/profile.service';
 import { MOCK_PROFILE } from '../../../tests/profile.fixtures.spec';

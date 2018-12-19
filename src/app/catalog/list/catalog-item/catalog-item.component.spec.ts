@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 
 import { CatalogItemComponent } from './catalog-item.component';
 import { ItemChangeEvent } from './item-change.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../../core/item/item.service';
@@ -15,7 +15,7 @@ import { ReactivateModalComponent } from '../modals/reactivate-modal/reactivate-
 import {
   ITEM_ID,
   MOCK_ITEM, ORDER_EVENT, PRODUCT_DURATION_MARKET_CODE,
-  PRODUCT_RESPONSE
+  PRODUCT_RESPONSE, ITEM_WEB_SLUG
 } from '../../../../tests/item.fixtures.spec';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorsService } from '../../../core/errors/errors.service';
@@ -23,6 +23,8 @@ import { MockTrackingService } from '../../../../tests/tracking.fixtures.spec';
 import { Item } from '../../../core/item/item';
 import { EventService } from '../../../core/event/event.service';
 import { environment } from '../../../../environments/environment';
+import * as moment from 'moment';
+import { ThousandSuffixesPipe } from '../../../shared/number-conversion/thousand-suffixes.pipe';
 
 describe('CatalogItemComponent', () => {
   let component: CatalogItemComponent;
@@ -39,7 +41,7 @@ describe('CatalogItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CatalogItemComponent, CustomCurrencyPipe],
+      declarations: [CatalogItemComponent, CustomCurrencyPipe, ThousandSuffixesPipe],
       imports: [MomentModule],
       providers: [
         DecimalPipe,
@@ -116,7 +118,7 @@ describe('CatalogItemComponent', () => {
 
   describe('ngOnInit', () => {
     it('should set link', () => {
-      expect(component.link).toBe('https://es.wallapop.com/item/webslug-9jd7ryx5odjk');
+      expect(component.link).toBe(environment.siteUrl + 'item/' + ITEM_WEB_SLUG);
     });
   });
 
@@ -351,6 +353,34 @@ describe('CatalogItemComponent', () => {
       it('should emit ITEM_SOLD event', () => {
         expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
       });
+    });
+  });
+
+  describe('showListingFee', () => {
+    it('should return true when listing fee expiration is more than current time', () => {
+      component.item.listingFeeExpiringDate = moment().add(2, 'seconds').valueOf();
+
+      expect(component.showListingFee()).toEqual(true);
+    });
+
+    it('should return false when listing fee expiration is less than current time', () => {
+      component.item.listingFeeExpiringDate = moment().subtract(2, 'seconds').valueOf();
+
+      expect(component.showListingFee()).toEqual(false);
+    });
+  });
+
+  describe('listingFeeFewDays', () => {
+    it('should return false when listing fee expiration is more than 3 days', () => {
+      component.item.listingFeeExpiringDate = moment().add(4, 'days').valueOf();
+
+      expect(component.listingFeeFewDays()).toEqual(false);
+    });
+
+    it('should return true when listing fee expiration is less than 3 days', () => {
+      component.item.listingFeeExpiringDate = moment().add(2, 'days').valueOf();
+
+      expect(component.listingFeeFewDays()).toEqual(true);
     });
   });
 });

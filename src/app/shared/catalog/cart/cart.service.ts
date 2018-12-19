@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CartChange, CartItem, CartProItem, CartProExtrasPack } from './cart-item.interface';
 import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CartBase } from './cart-base';
 
 @Injectable()
