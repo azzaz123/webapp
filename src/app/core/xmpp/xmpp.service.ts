@@ -219,8 +219,16 @@ export class XmppService {
       this.buildChatSignal(message);
     } else if (message.body || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
       const builtMessage: Message = this.buildMessage(message, markAsPending);
+      builtMessage.fromSelf = this.isFromSelf(message);
       this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
     }
+  }
+
+  private isFromSelf(message: XmppBodyMessage): boolean {
+    /* The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
+    logged in, but they should not be considered messages fromSelf */
+    const fromSelf = (message.from.local === this.self.local) && !message.payload;
+    return fromSelf;
   }
 
   private buildChatSignal(message: XmppBodyMessage) {
