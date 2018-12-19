@@ -232,6 +232,7 @@ export class XmppService {
   }
 
   private buildChatSignal(message: XmppBodyMessage) {
+    this.eventService.emit(EventService.CHAT_LAST_RECEIVED_TS, message.date);
     }
     let signal: ChatSignal;
     if (message.timestamp && message.receipt && message.from.bare !== message.to.bare && !message.carbon) {

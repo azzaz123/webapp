@@ -12,6 +12,7 @@ export class EventService {
   public static MESSAGE_READ = 'messageRead'; // TODO - remove after xmpp-ols.service is removed
   public static MESSAGE_RECEIVED = 'messageReceive'; // TODO - remove after xmpp-ols.service is removed
   public static CHAT_SIGNAL = 'chatSignal';
+  public static CHAT_LAST_RECEIVED_TS = 'chatSignal';
   public static MESSAGE_READ_ACK = 'messageReadAck';
   public static MESSAGE_SENT_ACK = 'messageSentAck'; // TODO - remove after xmpp-ols.service is removed
   public static MESSAGE_RECEIVED_ACK = 'messageReceivedAck';

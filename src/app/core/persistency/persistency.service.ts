@@ -129,9 +129,9 @@ export class PersistencyService {
   }
 
   private subscribeEventNewMessage() {
-    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+    this.eventService.subscribe(EventService.CHAT_LAST_RECEIVED_TS, (timestamp: number) => {
       this.saveMetaInformation({
-        start: message.date.toISOString(),
+        start: new Date(timestamp).toISOString(),
         last: null
       });
     });
