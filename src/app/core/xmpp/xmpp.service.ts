@@ -239,7 +239,7 @@ export class XmppService {
     } else if (!message.carbon && message.sentReceipt) {
       signal = new ChatSignal(chatSignalType.SENT, message.thread, message.date, message.sentReceipt.id);
     } else if (!message.carbon && message.readReceipt) {
-      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date); // or new Date(message.date).getTime() ?
+      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date);
     }
 
     if (signal) {
