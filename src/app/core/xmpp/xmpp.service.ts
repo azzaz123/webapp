@@ -204,49 +204,46 @@ export class XmppService {
   }
 
   private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
-    if (message.body || message.timestamp || message.carbonSent
-        || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
-      const builtMessage: Message = this.buildMessage(message, markAsPending);
-      /* fromSelf: The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
-      logged in, but they should not be considered messages fromSelf */
-      builtMessage.fromSelf = (builtMessage.from === this.self.local) && !builtMessage.payload;
       const replaceTimestamp = !message.timestamp || message.carbonSent;
-      this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
-    }
-  }
-
-  private buildMessage(message: XmppBodyMessage, markAsPending = false) {
     if (message.carbonSent) {
       message = message.carbonSent.forwarded.message;
     }
+
     if (message.timestamp) {
       message.date = new Date(message.timestamp.body).getTime();
     } else if (!message.date) {
         message.date = new Date().getTime();
       }
-    let messageId: string = null;
-    if (markAsPending) {
-      message.status = messageStatus.PENDING;
+
+    if (message.receipt || message.sentReceipt || message.readReceipt) {
+      this.buildChatSignal(message);
+    } else if (message.body || (message.payload && this.thirdVoiceEnabled.indexOf(message.payload.type) !== -1)) {
+      const builtMessage: Message = this.buildMessage(message, markAsPending);
+      this.eventService.emit(EventService.NEW_MESSAGE, builtMessage, replaceTimestamp, message.requestReceipt);
     }
-    if (message.timestamp && message.receipt && message.from.local !== message.to.local && !message.carbon) {
-      messageId = message.receipt;
-      message.status = messageStatus.RECEIVED;
-      this.eventService.emit(EventService.MESSAGE_RECEIVED, message.thread, messageId);
+  }
+
+  private buildChatSignal(message: XmppBodyMessage) {
     }
-    if (!message.carbon && message.sentReceipt) {
-      message.status = messageStatus.SENT;
-      messageId = message.sentReceipt.id;
-      this.eventService.emit(EventService.MESSAGE_SENT_ACK, message.thread, messageId);
+    let signal: ChatSignal;
+    if (message.timestamp && message.receipt && message.from.bare !== message.to.bare && !message.carbon) {
+      signal = new ChatSignal(chatSignalType.RECEIVED, message.thread, message.date, message.receipt);
+    } else if (!message.carbon && message.sentReceipt) {
+      signal = new ChatSignal(chatSignalType.SENT, message.thread, message.date, message.sentReceipt.id);
+    } else if (!message.carbon && message.readReceipt) {
+      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date); // or new Date(message.date).getTime() ?
     }
-    if (!message.carbon && message.readReceipt) {
-      const timestamp = new Date(message.date).getTime();
-      message.status = messageStatus.READ;
-      this.eventService.emit(EventService.MESSAGE_READ, message.thread, timestamp);
-    } else {
-      messageId = message.id;
+
+    if (signal) {
+      this.eventService.emit(EventService.CHAT_SIGNAL, signal);
     }
-    return new Message(messageId, message.thread, message.body, message.from.local,
-                       new Date(message.date), (message.status || null), message.payload);
+    }
+
+  private buildMessage(message: XmppBodyMessage, markAsPending = false) {
+    this.eventService.emit(EventService.CHAT_LAST_RECEIVED_TS, message.date);
+    message.status = markAsPending ? messageStatus.PENDING : null;
+    return new Message(message.id, message.thread, message.body, message.from.local,
+      new Date(message.date), message.status, message.payload);
   }
 
   public sendMessageDeliveryReceipt(toId: string, id: string, thread: string) {
