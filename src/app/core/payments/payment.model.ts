@@ -80,9 +80,9 @@ export class PerksModel implements Perks {
     this.subscription.listing.createDate = listingPerk.create_date;
   }
   setWallacoins(wallacoinsPerk: PerkResponse) {
-    this.wallacoins.quantity = wallacoinsPerk.quantity;
+    this.wallacoins.quantity += wallacoinsPerk.quantity;
   }
   setWallacredits(wallacreditsPerk: PerkResponse) {
-    this.wallacredits.quantity = wallacreditsPerk.quantity;
+    this.wallacredits.quantity += wallacreditsPerk.quantity;
   }
 }
