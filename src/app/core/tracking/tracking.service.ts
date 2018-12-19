@@ -73,6 +73,7 @@ const SCREENS_IDS: any = {
   GDPR: '155',
   ReFishingGDPR: '159',
   Credits: '166',
+  PostUpload: '153',
   SharePhone: '92'
 };
 
@@ -889,6 +890,20 @@ export class TrackingService {
     category: CATEGORY_IDS.Verti,
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Display
+  };
+
+  public static PURCHASE_LISTING_FEE_CATALOG = {
+    name: '825',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+
+  public static PURCHASE_LISTING_FEE_MODAL = {
+    name: '826',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.PostUpload,
+    type: TYPES_IDS.Tap
   };
 
   public static SOLCREDITO_LINK_DISPLAY = {

@@ -177,9 +177,10 @@ $feature-button-width: 170px;
     }
   }
   .subscribe {
-    font-size: $font-size;
+    font-size: $font-size-S;
     color: $sold-bg;
-    min-width: 300px;
+    min-width: 250px;
+    font-weight: bold;
     &.onHold {
       align-self: stretch;
       display: flex;
@@ -336,4 +337,9 @@ $feature-button-width: 170px;
       color: $listing-fee-color;
     }
   }
+}
+
+tsl-button /deep/ .btn-publish {
+  width: $feature-button-width;
+  font-size: $font-size-S;
 }

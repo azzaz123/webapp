@@ -147,3 +147,18 @@
     margin-bottom: 0;
   }
 }
+
+.buy-product-modal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 160px;
+  background-color: $white;
+  border-radius: 50%;
+  margin-bottom: $spacing;
+  mat-icon {
+    width: 95px;
+    height: 70px;
+  }
+}

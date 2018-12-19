@@ -19,6 +19,7 @@ import { TrackingModule } from '../core/tracking/tracking.module';
 import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
 import { UpgradePlanModalComponent } from './list/modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { ListingfeeConfirmationModalComponent } from './list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { UpgradePlanModalComponent } from './list/modals/upgrade-plan-modal/upgr
     UrgentConfirmationModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
-    UpgradePlanModalComponent
+    UpgradePlanModalComponent,
+    ListingfeeConfirmationModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -56,7 +58,8 @@ import { UpgradePlanModalComponent } from './list/modals/upgrade-plan-modal/upgr
     UrgentConfirmationModalComponent,
     BuyProductModalComponent,
     ReactivateConfirmationModalComponent,
-    UpgradePlanModalComponent
+    UpgradePlanModalComponent,
+    ListingfeeConfirmationModalComponent
   ]
 })
 export class CatalogModule {

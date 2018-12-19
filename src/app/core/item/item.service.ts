@@ -26,7 +26,8 @@ import {
   ProductDurations,
   Purchase, PurchaseProductsWithCreditsResponse,
   RealestateContent,
-  SelectedItemsAction
+  SelectedItemsAction,
+  ListingFeeProductInfo
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
@@ -737,6 +738,10 @@ export class ItemService extends ResourceService {
       .map((r: Response) => r.json());
   }
 
+  public getListingFeeInfo(itemId: string): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/' + itemId + '/listing-fee-info')
+      .map((r: Response) => r.json())
+      .map((response: ListingFeeProductInfo) => response.product_group.products[0]);
+  }
+
 }
-
-
