@@ -10,6 +10,7 @@ import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
+import { ChatSignal, chatSignalType } from '../message/messages.interface';
 
 @Injectable()
 export class XmppService {

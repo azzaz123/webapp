@@ -9,10 +9,11 @@ export class EventService {
   public static USER_LOGOUT = 'logoutEvent';
   public static NEW_MESSAGE = 'newMessage';
   public static MESSAGE_ADDED = 'messageAdded';
-  public static MESSAGE_READ = 'messageRead';
-  public static MESSAGE_RECEIVED = 'messageReceive';
+  public static MESSAGE_READ = 'messageRead'; // TODO - remove after xmpp-ols.service is removed
+  public static MESSAGE_RECEIVED = 'messageReceive'; // TODO - remove after xmpp-ols.service is removed
+  public static CHAT_SIGNAL = 'chatSignal';
   public static MESSAGE_READ_ACK = 'messageReadAck';
-  public static MESSAGE_SENT_ACK = 'messageSentAck';
+  public static MESSAGE_SENT_ACK = 'messageSentAck'; // TODO - remove after xmpp-ols.service is removed
   public static MESSAGE_RECEIVED_ACK = 'messageReceivedAck';
   public static MSG_ARCHIVE_LOADED = 'archiveLoaded';
   public static MSG_ARCHIVE_LOADING = 'archiveLoading';
