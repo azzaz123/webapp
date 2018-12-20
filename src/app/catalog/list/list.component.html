@@ -22,18 +22,20 @@
         <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
       </div>
       <div class="col-1 header-numbers">
-        <p class="header-numbers-top">
-          <span>{{numberOfProducts}}</span>
-        </p>
-        <p class="header-numbers-bottom">
-          <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
-          <span *ngIf="numberOfProducts === 1" i18n>product</span>
-        </p>
+        <ng-container *ngIf="!hasMotorPlan || selectedStatus === 'sold'">
+          <p class="header-numbers-top">
+            <span>{{numberOfProducts}}</span>
+          </p>
+          <p class="header-numbers-bottom">
+            <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
+            <span *ngIf="numberOfProducts === 1" i18n>product</span>
+          </p>
+        </ng-container>
       </div>
     </tsl-header>
     <nav class="nav filters-nav">
       <a (click)="filterByStatus('cars')" *ngIf="hasMotorPlan" [ngClass]="{active: selectedStatus === 'cars'}" class="nav-link"><span i18n>Cars</span> ({{totalCars}}/{{carsLimit}})</a>
-      <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
+      <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Products</a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
     </nav>
     <div>

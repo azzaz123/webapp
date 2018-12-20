@@ -388,19 +388,14 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public getNumberOfProducts() {
+    this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
+      this.counters = userStats.counters;
+      this.setNumberOfProducts();
+    });
     if (this.hasMotorPlan) {
       this.userService.getAvailableSlots().subscribe((slots: AvailableSlots) => {
         this.availableSlots = slots.num_slots_cars;
         this.userCanDeactivate = slots.user_can_manage;
-        this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
-          this.counters = userStats.counters;
-          this.setNumberOfProducts();
-        });
-      });
-    } else {
-      this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
-        this.counters = userStats.counters;
-        this.setNumberOfProducts();
       });
     }
   }
@@ -427,14 +422,10 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private setNumberOfProducts() {
-    if (this.hasMotorPlan && this.selectedStatus === 'published') {
-      this.numberOfProducts = this.counters.publish - this.totalCars;
-    } else if (this.selectedStatus === 'sold') {
+    if (this.selectedStatus === 'sold') {
       this.numberOfProducts = this.counters.sold;
     } else if (this.selectedStatus === 'published') {
       this.numberOfProducts = this.counters.publish;
-    } else if (this.selectedStatus === 'cars') {
-      this.numberOfProducts = this.totalCars;
     }
   }
 

@@ -800,15 +800,9 @@ describe('ListComponent', () => {
   });
 
   describe('setNumberOfProducts', () => {
-    const SLOTS: AvailableSlots = {
-      num_slots_cars: 3,
-      user_can_manage: true
-    };
-
     beforeEach(() => {
       spyOn(component, 'getNumberOfProducts').and.callThrough();
       spyOn(userService, 'getStats').and.callThrough();
-      spyOn(userService, 'getAvailableSlots').and.returnValue(Observable.of(SLOTS));
     });
 
     it('should set numberOfProducts to the numberOfPublishedProducts when published filter is selected', () => {
@@ -823,26 +817,6 @@ describe('ListComponent', () => {
       component.filterByStatus('sold');
 
       expect(component.numberOfProducts).toEqual(mockCounters.sold);
-    });
-
-    it('should set numberOfProducts correclty when hasMotorPlan and published filter', () => {
-      component.hasMotorPlan = true;
-      component.carsLimit = 5;
-
-      component.getNumberOfProducts();
-      component.filterByStatus('published');
-
-      expect(component.numberOfProducts).toEqual(mockCounters.publish - (component.carsLimit - SLOTS.num_slots_cars));
-    });
-
-    it('should set numberOfProducts correclty when cars filter', () => {
-      component.carsLimit = 5;
-      component.availableSlots = 3;
-
-      component.getNumberOfProducts();
-      component.filterByStatus('cars');
-
-      expect(component.numberOfProducts).toEqual(2);
     });
   });
 
