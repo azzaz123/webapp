@@ -51,7 +51,7 @@ export class XmppService {
     if (!conversation.messages.filter(m => !m.phoneRequest).length) {
       const hasPhoneRequestMessage = conversation.messages.find(m => !!m.phoneRequest);
       if (hasPhoneRequestMessage) {
-        this.eventService.emit(EventService.CONVERSATION_CEATED, conversation, hasPhoneRequestMessage);
+        this.eventService.emit(EventService.CONV_WITH_PHONE_CREATED, conversation, hasPhoneRequestMessage);
       }
 
       this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {

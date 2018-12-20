@@ -188,7 +188,7 @@ export class MessageService {
   }
 
   public addPhoneNumberRequestMessage(conversation, withTracking = true): Conversation {
-    this.eventService.subscribe(EventService.CONVERSATION_CEATED, (conv, message) => {
+    this.eventService.subscribe(EventService.CONV_WITH_PHONE_CREATED, (conv: Conversation, message: Message) => {
       if (conversation.id === conv.id) {
         this.persistencyService.saveMessages([message]);
       }
