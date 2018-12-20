@@ -437,7 +437,7 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public createConversation(itemId): Observable<Conversation> {
+  public createConversation(itemId: string): Observable<Conversation> {
     const options = new RequestOptions();
     options.headers = new Headers();
     options.headers.append('Content-Type', 'application/json');
