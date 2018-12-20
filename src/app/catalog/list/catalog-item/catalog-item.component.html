@@ -1,4 +1,4 @@
-<div [ngClass]="{resized: isPro || itemService.selectedItems.length}"  [class.pro]="isPro">
+<div [ngClass]="{resized: isPro || itemService.selectedItems.length, pro: isPro}">
   <div class="checkbox">
     <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}" *ngIf="showCheckbox">
       <mat-icon svgIcon="check"></mat-icon>
