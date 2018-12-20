@@ -213,6 +213,33 @@ describe('CartProComponent', () => {
       });
     });
 
+    describe('success with no balance', () => {
+      beforeEach(() => {
+        spyOn(errorService, 'i18nError');
+        spyOn(router, 'navigate');
+      });
+
+      it('should navigate to pro list if no citybump balance', () => {
+        component.cart.citybump.total = 1;
+        component.balance.citybump = -1;
+
+        component.applyBumps();
+
+        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 202 }]);
+        expect(errorService.i18nError).not.toHaveBeenCalled();
+      });
+
+      it('should navigate to pro list if no countrybump balance', () => {
+        component.cart.countrybump.total = 1;
+        component.balance.countrybump = -1;
+
+        component.applyBumps();
+
+        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 202 }]);
+        expect(errorService.i18nError).not.toHaveBeenCalled();
+      });
+    });
+
     describe('error', () => {
       beforeEach(() => {
         spyOn(errorService, 'i18nError');

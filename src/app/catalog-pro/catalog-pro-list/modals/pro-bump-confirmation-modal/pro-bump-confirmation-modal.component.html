@@ -17,7 +17,13 @@
   <tsl-button (click)="activeModal.close()" i18n>Start selling</tsl-button>
 </div>
 
-<div *ngIf="code !== '200' && code !== '201'">
+<div *ngIf="code === '202'">
+  <h1 i18n>At the moment you do not have enough credit for this action.</h1>
+  <p i18n>If at the time of the scheduled bump you still do not have enough, it will not be applied.</p>
+  <tsl-button (click)="activeModal.close()" i18n>Buy Extras</tsl-button>
+</div>
+
+<div *ngIf="code !== '200' && code !== '201' && code !== '202'">
   <h1 class="fail" i18n>Something happened...</h1>
   <p i18n>Your extra features have not been done because something went wrong with your credit card. Please check and try again</p>
   <tsl-button (click)="activeModal.close()" i18n>Fine!</tsl-button>

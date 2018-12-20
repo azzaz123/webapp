@@ -79,7 +79,7 @@ export class CartProComponent implements OnInit {
       } else {
         this.itemService.deselectItems();
         this.trackingService.track(TrackingService.BUMP_PRO_APPLY, { selected_products: order });
-        this.router.navigate(['/pro/catalog/list', { code: 201 }]);
+        this.router.navigate(['/pro/catalog/list', { code: this.isFutureOrderWithNoBalance() ? 202 : 201 }]);
       }
     }, (error) => {
       if (error.text()) {
@@ -88,6 +88,12 @@ export class CartProComponent implements OnInit {
         this.errorService.i18nError('bumpError');
       }
     });
+  }
+
+  private isFutureOrderWithNoBalance(): boolean {
+    const cityOrder: boolean = this.cart.citybump.total > 0 && this.balance.citybump <= 0;
+    const countryOrder: boolean = this.cart.countrybump.total > 0 && this.balance.countrybump <= 0;
+    return cityOrder || countryOrder;
   }
 
 }
