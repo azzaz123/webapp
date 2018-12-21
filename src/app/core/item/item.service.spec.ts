@@ -1240,6 +1240,34 @@ describe('Service: Item', () => {
     });
   });
 
+  describe('activate', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      spyOn(service, 'deselectItems');
+      const IDS = ['1', '2'];
+      service.selectedItems = IDS;
+
+      service.activate().subscribe();
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/activate', {ids: IDS});
+      expect(service.deselectItems).toHaveBeenCalled();
+    });
+  });
+
+  describe('deactivate', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      spyOn(service, 'deselectItems');
+      const IDS = ['1', '2'];
+      service.selectedItems = IDS;
+
+      service.deactivate().subscribe();
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/inactivate', {ids: IDS});
+      expect(service.deselectItems).toHaveBeenCalled();
+    });
+  });
+
   describe('getListingFeeInfo', () => {
     it('should call endpoint', () => {
       const itemId = 'p4w67gxww6xq';

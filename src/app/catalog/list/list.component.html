@@ -22,36 +22,53 @@
         <a (click)="bumpTutorial.show()" i18n>What can features do for you?</a>
       </div>
       <div class="col-1 header-numbers">
-        <p class="header-numbers-top">
-          <span>{{numberOfProducts}}</span>
-        </p>
-        <p class="header-numbers-bottom">
-          <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
-          <span *ngIf="numberOfProducts === 1" i18n>product</span>
-        </p>
+        <ng-container *ngIf="!hasMotorPlan || selectedStatus === 'sold'">
+          <p class="header-numbers-top">
+            <span>{{numberOfProducts}}</span>
+          </p>
+          <p class="header-numbers-bottom">
+            <span *ngIf="numberOfProducts > 1 || numberOfProducts === 0" i18n>products</span>
+            <span *ngIf="numberOfProducts === 1" i18n>product</span>
+          </p>
+        </ng-container>
       </div>
     </tsl-header>
-    <nav class="nav filters-nav" [hidden]="itemService.selectedItems.length">
-      <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Published</a>
+    <nav class="nav filters-nav">
+      <a (click)="filterByStatus('cars')" *ngIf="hasMotorPlan" [ngClass]="{active: selectedStatus === 'cars'}" class="nav-link"><span i18n>Cars</span> ({{totalCars}}/{{carsLimit}})</a>
+      <a (click)="filterByStatus('published')" [ngClass]="{active: selectedStatus === 'published'}" class="nav-link" i18n>Products</a>
       <a (click)="filterByStatus('sold')" [ngClass]="{active: selectedStatus === 'sold'}" class="nav-link" i18n="tab|plural">Sold</a>
     </nav>
-    <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0" [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
-      <ng-container [ngPlural]="itemService.selectedItems.length">
-        <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
-        <ng-template ngPluralCase="other"><ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container></ng-template>
-      </ng-container>
-    </a>
+    <div>
+      <a id="total-selected" class="filtered" [hidden]="itemService.selectedItems.length === 0" [ngClass]="{'show': itemService.selectedItems.length}" (click)="deselect()">
+        <ng-container [ngPlural]="itemService.selectedItems.length">
+          <ng-template ngPluralCase="=1"><ng-container i18n>1 item selected</ng-container></ng-template>
+          <ng-template ngPluralCase="other"><ng-container i18n>{{itemService.selectedItems.length // i18n(ph="TOTAL_SELECTED")}} items selected</ng-container></ng-template>
+        </ng-container>
+      </a>
+      <span class="bulk-actions" [ngClass]="{disabled: !itemService.selectedItems.length}"  *ngIf="selectedStatus === 'cars'">
+        <button class="btn-delete dark" (click)="delete()" [disabled]="!itemService.selectedItems.length">
+          <mat-icon svgIcon="delete"></mat-icon>
+          <span i18n>Delete</span>
+        </button>
+        <button class="btn-activate" (click)="activate()"
+                [disabled]="!itemService.selectedItems.length || !canActivate" i18n>Activate</button>
+        <button class="btn-deactivate dark" (click)="deactivate()" *ngIf="userCanDeactivate"
+                [disabled]="!itemService.selectedItems.length || !canDeactivate" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
+      </span>
+    </div>
     <div class="row items">
       <a class="add-item col-md-12"
          [routerLink]="['/catalog/upload']"
-         *ngIf="(!loading || (loading && items.length)) && selectedStatus === 'published'"
+         *ngIf="(!loading || (loading && items.length)) && selectedStatus === 'published' || selectedStatus === 'cars'"
          tslTrackEvent="MYCATALOG_UPLOADPRODUCT">
         <svg xmlns="http://www.w3.org/2000/svg" width="1181" height="88" viewBox="0 0 1181 88">
           <g fill="none" fill-rule="evenodd" transform="translate(.668 .023)">
             <path fill="#FFF" d="M11.484 1.589h1157.001c5.523 0 10 4.477 10 10v64.885c0 5.523-4.477 10-10 10h-1157c-5.524 0-10-4.477-10-10V11.59c0-5.523 4.476-10 10-10z"/>
             <text fill="#13C1AC" font-family="Wallie-Fit, Wallie" font-size="24">
-              <tspan x="377" y="55" *ngIf="!items.length" i18n>Upload an item to my catalog</tspan>
-              <tspan x="377" y="55" *ngIf="items.length" i18n>Upload another item to my catalog</tspan>
+              <tspan x="377" y="55" *ngIf="!items.length && (availableSlots === 0 || selectedStatus === 'published')" i18n>Upload an item to my catalog</tspan>
+              <tspan x="377" y="55" *ngIf="items.length && (availableSlots === 0 || selectedStatus === 'published')" i18n>Upload another item to my catalog</tspan>
+              <tspan x="377" y="55" *ngIf="selectedStatus === 'cars' && availableSlots === 1" i18n>You can upload one more car</tspan>
+              <tspan x="377" y="55" *ngIf="selectedStatus === 'cars' && availableSlots > 1" i18n>You can upload {{availableSlots}} cars more</tspan>
             </text>
             <rect class="pic" width="72" height="72" x="8" y="8" fill="#13C1AC" rx="10"/>
             <path fill="#FFF" fill-rule="nonzero" d="M44 23.695c-11.214 0-20.305 9.09-20.305 20.305 0 11.214 9.09 20.305 20.305 20.305 11.214 0 20.305-9.09 20.305-20.305 0-11.214-9.09-20.305-20.305-20.305zm0-3.095c12.923 0 23.4 10.477 23.4 23.4 0 12.923-10.477 23.4-23.4 23.4-12.923 0-23.4-10.477-23.4-23.4 0-12.923 10.477-23.4 23.4-23.4z" opacity=".5"/>
@@ -70,7 +87,7 @@
       <div  id="catalog-empty-state" *ngIf="!items.length && !loading">
         <mat-icon svgIcon="items-empty-state" class="image"></mat-icon>
       </div>
-      <tsl-catalog-item *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" (purchaseListingFee)="purchaseListingFee($event)" class="col-md-12"></tsl-catalog-item>
+      <tsl-catalog-item *ngFor="let item of items" [item]="item" (itemChange)="itemChanged($event)" (purchaseListingFee)="purchaseListingFee($event)" class="col-md-12" [isPro]="selectedStatus === 'cars'"></tsl-catalog-item>
       <tsl-spinner [hidden]="!loading"></tsl-spinner>
     </div>
   </div>
