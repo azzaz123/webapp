@@ -24,6 +24,8 @@ import { XmppService } from './xmpp/xmpp.service';
 import { PushNotificationsModule } from 'ng-push';
 import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
+import { ProfileModule } from './profile/profile.module';
+import { ProfileService } from './profile/profile.service';
 
 @NgModule({
   imports: [
@@ -33,13 +35,15 @@ import { ConnectionService } from './connection/connection.service';
     ItemModule,
     TrackingModule,
     ConversationModule.forRoot(),
-    PushNotificationsModule
+    PushNotificationsModule,
+    ProfileModule
   ],
   exports: [
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule
+    TrackingModule,
+    ProfileModule
   ]
 })
 export class CoreModule {
@@ -65,7 +69,8 @@ export class CoreModule {
         XmppService,
         ReviewService,
         AdService,
-        ConnectionService
+        ConnectionService,
+        ProfileService
       ]
     };
   }

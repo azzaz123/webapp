@@ -371,4 +371,5 @@ export class UserService extends ResourceService {
     return this.http.get(this.API_URL + '/me/profile-subscription-info')
       .map((r: Response) => r.json())
   }
+
 }

@@ -21,7 +21,7 @@
 <!ELEMENT ex (#PCDATA)>
 ]>
 <messagebundle>
-  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:26</source><source>app/layout/sidebar/sidebar.component.html:42</source><source>app/shared/catalog/cart/cart.component.html:71</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:39</source><source>app/wallacoins/wallacoins.component.html:27</source>credit</msg>
+  <msg id="1660800252915157371"><source>app/layout/topbar/topbar.component.html:26</source><source>app/layout/sidebar/sidebar.component.html:42</source><source>app/shared/catalog/cart/cart.component.html:71</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:43</source><source>app/wallacoins/wallacoins.component.html:27</source>credit</msg>
   <msg id="6452372740127749380"><source>app/layout/topbar/topbar.component.html:32</source><source>app/layout/sidebar/sidebar.component.html:33</source><source>app/dashboard/dashboard.component.html:24</source>Messages</msg>
   <msg id="4053902008669548465"><source>app/layout/topbar/topbar.component.html:37</source>My Zone</msg>
   <msg id="3983509092263971640"><source>app/layout/topbar/topbar.component.html:38</source>My Pro Zone</msg>
@@ -29,7 +29,7 @@
   <msg id="6348395677948023023"><source>app/layout/topbar/topbar.component.html:44</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:31</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:42</source>List a car</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.html:7</source><source>app/profile/profile.component.html:21</source><source>app/profile-pro/profile-pro.component.html:21</source>Profile</msg>
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.html:15</source>Dashboard</msg>
-  <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.html:23</source>Products</msg>
+  <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.html:23</source><source>app/favorites/favorites.component.html:28</source>Products</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.html:24</source>Catalog</msg>
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.html:50</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:51</source><source>app/stats/items-stats/items-stats.component.html:16</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:24</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:42</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.html:57</source>Reviews</msg>
@@ -44,23 +44,23 @@
   <msg id="7250390756093690890"><source>app/chat/modals/send-phone/send-phone.component.html:19</source>You can exercise your rights on access, rectification, suppression, opposition, limitation to data processing and portability and revocation of consents provided to Wallapop SL, tax ID number B-66.04.9057, Avenida Meridiana 89 6th floor, 08026, Barcelona (Spain), attaching a photocopy of your ID number or an equivalent valid identification document. For your convenience, and without prejudice to the fulfilment of certain formal requirements established by the law, Wallapop SL offers the possibility of exercising the aforementioned rights through this email: privacidad@wallapop.com.</msg>
   <msg id="3894950702316166331"><source>app/shared/spinner/spinner.component.html:4</source>Loading...</msg>
   <msg id="8998211649643752990"><source>app/shared/spinner/spinner.component.html:5</source>We are loading all your messages for the first time. They will be available before the Sagrada Familia work has been finished.</msg>
-  <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.html:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.html:5</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:5</source><source>app/dashboard/dashboard.component.html:46</source>Congratulations!</msg>
+  <msg id="3762527362373672599"><source>app/shared/modals/sold-modal/sold-modal.component.html:6</source><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.html:5</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:5</source><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:7</source><source>app/dashboard/dashboard.component.html:46</source>Congratulations!</msg>
   <msg id="8914444864521670589"><source>app/shared/modals/sold-modal/sold-modal.component.html:7,8</source>You sold <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{item.title}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph>
     </msg>
   <msg id="2882903364152951366"><source>app/shared/modals/sold-modal/sold-modal.component.html:10</source>Who bought this from you?</msg>
   <msg id="1337808500533761318"><source>app/shared/modals/sold-modal/sold-modal.component.html:25</source>I didn&apos;t sell this on wallapop</msg>
   <msg id="2286494898080570401"><source>app/shared/modals/sold-modal/sold-modal.component.html:37</source>Thanks</msg>
   <msg id="2928844379959000123"><source>app/shared/modals/sold-modal/sold-modal.component.html:38</source>Your feedback is important for the<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Wallapop community.</msg>
-  <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.html:39</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:72</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:79</source>Continue</msg>
+  <msg id="6962699013778688473"><source>app/shared/modals/sold-modal/sold-modal.component.html:39</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:76</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:83</source>Continue</msg>
   <msg id="8753092784115704500"><source>app/shared/process-all-button/process-all-button.component.html:7</source><source>app/shared/process-all-button/process-all-button.component.html:12</source><source>app/calls/calls.component.html:28</source>Process all</msg>
   <msg id="4965764680155209445"><source>app/shared/process-all-button/process-all-button.component.html:8</source>This will process all the elements in this page.</msg>
-  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.html:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.html:24</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:31</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:42</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:53</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:6</source><source>app/chat/modals/block-user/block-user.component.html:6</source><source>app/chat/modals/unblock-user/unblock-user.component.html:6</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:6</source>Cancel</msg>
+  <msg id="2159130950882492111"><source>app/shared/process-all-button/process-all-button.component.html:11</source><source>app/shared/confirmation-modal/confirmation-modal.component.html:32</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:31</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:42</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:53</source><source>app/catalog-pro/checkout-pro/range-datepicker/range-datepicker.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:6</source><source>app/chat/modals/block-user/block-user.component.html:6</source><source>app/chat/modals/unblock-user/unblock-user.component.html:6</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:5</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:6</source>Cancel</msg>
   <msg id="4749295647449765550"><source>app/shared/archivable/archivable.component.html:6</source><source>app/calls/calls.component.html:24</source><source>app/chat/conversations-panel/conversations-panel.component.html:10</source>Processed</msg>
   <msg id="5847549463396300276"><source>app/shared/modals/review-modal/review-modal.component.html:8</source>Rate your experience with <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{userName}}</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></msg>
   <msg id="4650730844441578299"><source>app/shared/modals/review-modal/review-modal.component.html:9</source>Click on the stars to leave your review. The more stars, the better your experience.</msg>
   <msg id="3113301792677314615"><source>app/shared/modals/review-modal/review-modal.component.html:12</source>I sold this for:</msg>
   <msg id="8149407802234183277"><source>app/shared/modals/review-modal/review-modal.component.html:17</source>Leave a review...</msg>
-  <msg id="7430416142942514215"><source>app/shared/modals/review-modal/review-modal.component.html:23</source>Publish</msg>
+  <msg id="7430416142942514215"><source>app/shared/modals/review-modal/review-modal.component.html:23</source><source>app/catalog/list/catalog-item/catalog-item.component.html:45</source>Publish</msg>
   <msg id="3031881676351306386"><source>app/shared/message/message.component.html:10</source>Leave your number</msg>
   <msg id="1214570422954613349"><source>app/shared/message/message.component.html:11</source>Phone sent ;)</msg>
   <msg id="7992914064106893139"><source>app/shared/message/review-button/review-button.component.html:1</source>Review now</msg>
@@ -96,10 +96,14 @@
   <msg id="3870268043917301466"><source>app/shared/confirmation-modal/confirmation-modal.component.html:16</source>The item will be removed from favorites.</msg>
   <msg id="773668064257926548"><source>app/shared/confirmation-modal/confirmation-modal.component.html:19</source><source>app/shared/profile/credit-card-info/credit-card-info.component.html:15</source>Delete card</msg>
   <msg id="8843627277100451781"><source>app/shared/confirmation-modal/confirmation-modal.component.html:20</source>Are you sure you want to delete the card saved?</msg>
-  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.html:26</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:32</source><source>app/catalog/list/selected-items/selected-items.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:7</source>Delete</msg>
-  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.html:27</source><source>app/catalog/list/selected-items/selected-items.component.html:19</source><source>app/chat/item/item.component.html:17</source>Reserve</msg>
-  <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.html:28</source>Remove</msg>
-  <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.html:29</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:6</source>Yes, I am sure</msg>
+  <msg id="7078772344681242222"><source>app/shared/confirmation-modal/confirmation-modal.component.html:23</source>Remove featured profile from favorites</msg>
+  <msg id="5556202995949734730"><source>app/shared/confirmation-modal/confirmation-modal.component.html:24</source>The profile will be removed from favorites.</msg>
+  <msg id="968107342863651775"><source>app/shared/confirmation-modal/confirmation-modal.component.html:27</source>This profile is no longer featured</msg>
+  <msg id="1918694988070405915"><source>app/shared/confirmation-modal/confirmation-modal.component.html:28</source>If you remove it you won&apos;t be able to save it again.</msg>
+  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.html:34</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:32</source><source>app/catalog/list/selected-items/selected-items.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:7</source>Delete</msg>
+  <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.html:35</source><source>app/catalog/list/selected-items/selected-items.component.html:19</source><source>app/chat/item/item.component.html:17</source>Reserve</msg>
+  <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.html:36</source>Remove</msg>
+  <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.html:37</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:6</source>Yes, I am sure</msg>
   <msg id="4468071625554558577"><source>app/shared/profile/credit-card-info/credit-card-info.component.html:6</source>Payment method:</msg>
   <msg id="8037476586059399916"><source>app/shared/profile/credit-card-info/credit-card-info.component.html:11</source>Expires</msg>
   <msg id="1839186591621749773"><source>app/shared/catalog/catalog-card/catalog-card.component.html:17</source><source>app/catalog/list/catalog-item/catalog-item.component.html:20</source>Publish Date</msg>
@@ -166,12 +170,12 @@
   <msg id="2314075913167237221"><source>app/shared/catalog/cart/cart.component.html:45</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:14</source><source>app/catalog-pro/checkout-extras-pro/billing-info/billing-info.component.html:60</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:31</source>City</msg>
   <msg id="516176798986294299"><source>app/shared/catalog/cart/cart.component.html:46</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:17</source><source>app/catalog-pro/checkout-extras-pro/billing-info/billing-info.component.html:66</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:32</source>Country</msg>
   <msg id="7036284206110282007"><source>app/shared/catalog/cart/cart.component.html:48</source><source>app/catalog/checkout/checkout-item/checkout-item.component.html:8</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:34</source>days</msg>
-  <msg id="3448462145758383019"><source>app/shared/catalog/cart/cart.component.html:62</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:18</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:45</source>Total</msg>
-  <msg id="5269877616047992907"><source>app/shared/catalog/cart/cart.component.html:75</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:43</source>spending</msg>
-  <msg id="7484614059925376312"><source>app/shared/catalog/cart/cart.component.html:86</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:54</source>missing</msg>
-  <msg id="6315786827665033981"><source>app/shared/catalog/cart/cart.component.html:97</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:62</source>Total to pay</msg>
+  <msg id="3448462145758383019"><source>app/shared/catalog/cart/cart.component.html:62</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:22</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:45</source>Total</msg>
+  <msg id="5269877616047992907"><source>app/shared/catalog/cart/cart.component.html:75</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:47</source>spending</msg>
+  <msg id="7484614059925376312"><source>app/shared/catalog/cart/cart.component.html:86</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:58</source>missing</msg>
+  <msg id="6315786827665033981"><source>app/shared/catalog/cart/cart.component.html:97</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:66</source>Total to pay</msg>
   <msg id="7274286978511770772"><source>app/shared/catalog/cart/cart.component.html:104</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:53</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:58</source>Continue to Checkout</msg>
-  <msg id="3708302938863076299"><source>app/shared/catalog/cart/cart.component.html:107</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:26</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:61</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:27</source>Secure payment through Sabadell</msg>
+  <msg id="3708302938863076299"><source>app/shared/catalog/cart/cart.component.html:107</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:30</source><source>app/catalog-pro/checkout-extras-pro/cart-extras-pro/cart-extras-pro.component.html:61</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:27</source>Secure payment through Sabadell</msg>
   <msg id="8720977247725652816"><source>app/shared/geolocation/location-select/location-modal/location-modal.component.html:4</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:52</source><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:58</source>Ok</msg>
   <msg id="4359291232904891489"><source>app/shared/geolocation/location-select/location-select.component.html:3</source>Set a location</msg>
   <msg id="5371960677736303052"><source>app/shared/geolocation/geolocation.component.html:9</source>Where?</msg>
@@ -260,18 +264,21 @@
   <msg id="3938280541945338173"><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.html:13</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:12</source>and you have <ph name="INTERPOLATION"><ex>{{creditInfo?.credit | customCurrency}}</ex></ph> credit</msg>
   <msg id="8329528856479718352"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:10</source>Mark as urgent</msg>
   <msg id="2538912110902686738"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:11</source><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.html:15</source>Reactivate + visibility</msg>
-  <msg id="708817521397622777"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:29</source>Pay with your credit and credit card:</msg>
-  <msg id="3743194622120127205"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:30</source>Pay with your wallacoins and credit card:</msg>
-  <msg id="3549265484659972037"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:33</source>Pay with your credit:</msg>
-  <msg id="5266269636016082386"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:34</source>Pay with your wallacoins:</msg>
-  <msg id="1381141590254425331"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:73</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:80</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:41</source>We don&apos;t save details of this transaction. The purchase is made via Banco Sabadell.</msg>
+  <msg id="2652477817167335614"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:12</source><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:12</source>Publish your car</msg>
+  <msg id="708817521397622777"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:33</source>Pay with your credit and credit card:</msg>
+  <msg id="3743194622120127205"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:34</source>Pay with your wallacoins and credit card:</msg>
+  <msg id="3549265484659972037"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:37</source>Pay with your credit:</msg>
+  <msg id="5266269636016082386"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:38</source>Pay with your wallacoins:</msg>
+  <msg id="1381141590254425331"><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:77</source><source>app/catalog/list/modals/buy-product-modal/buy-product-modal.component.html:84</source><source>app/wallacoins/buy-wallacoins-modal/buy-wallacoins-modal.component.html:41</source>We don&apos;t save details of this transaction. The purchase is made via Banco Sabadell.</msg>
   <msg id="349473182974314723"><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:6</source>Your item is now reactivated and in the first positions!</msg>
-  <msg id="2908216965016905963"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:5</source>You have reached the limit of published cars.</msg>
-  <msg id="3910225099921883332"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:6</source>To publish this car, contract a new Motor Plan from our app.</msg>
-  <msg id="7622938994831402105"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:12</source>This car is NOT published.</msg>
-  <msg id="8858428396989821345"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:13</source>It will remain filled in your catalogue as Inactive.</msg>
-  <msg id="5020391428854742815"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:14</source>Go to the wallapop app and subscribe to a Motor Plan, or buy an extra ad to make it public.</msg>
-  <msg id="5601530442010506564"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:17</source>Got it</msg>
+  <msg id="4091832869609459263"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:5</source>You&apos;ve reached your limit of cars that you can upload!</msg>
+  <msg id="6806942206216024293"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:6</source>Pay for a car or buy the Motor Plan</msg>
+  <msg id="2897665268516763020"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:13</source>Pay once for your additional car and your car will be listed for 2 months.</msg>
+  <msg id="374197079522695707"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:16</source>Or save money with the Motor Plan</msg>
+  <msg id="7757467827697449768"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:17</source>Sign up to our Motor plan and advertise more cars</msg>
+  <msg id="2297887953957049730"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:20</source>Upload it now for <ph name="INTERPOLATION"><ex>{{listingFeePrice | customCurrency}}</ex></ph></msg>
+  <msg id="140684299515781998"><source>app/catalog/list/modals/upgrade-plan-modal/upgrade-plan-modal.component.html:21</source>No thanks (keep this car inactive)</msg>
+  <msg id="7588966777090643410"><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:8</source>Your car is published for 60 days. You can find it in your catalog.</msg>
   <msg id="989776066026256137"><source>app/catalog/list/list.component.html:14</source>Your products <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="1953428607881051577"><source>app/catalog/list/list.component.html:17</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
   <msg id="442085080206895883"><source>app/catalog/list/list.component.html:29</source>products</msg>
@@ -292,11 +299,10 @@
   <msg id="5107282366152603486"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.html:9</source><ph name="START_BOLD_TEXT"><ex>&lt;b&gt;</ex></ph>Get more visibility and sell it faster.<ph name="CLOSE_BOLD_TEXT"><ex>&lt;/b&gt;</ex></ph></msg>
   <msg id="3244863581909362906"><source>app/catalog/list/modals/reactivate-modal/reactivate-modal.component.html:19</source>Only reactivate it, I don&apos;t want to sell it faster</msg>
   <msg id="8204176479746810612"><source>app/catalog/list/catalog-item/catalog-item.component.html:25</source>Active</msg>
-  <msg id="703140349558791698"><source>app/catalog/list/catalog-item/catalog-item.component.html:29,31</source>
-        Subscribe or publish it from the app
+  <msg id="2368996742348144344"><source>app/catalog/list/catalog-item/catalog-item.component.html:29,31</source>
+        Inactive
     </msg>
   <msg id="578471405917460767"><source>app/catalog/list/catalog-item/catalog-item.component.html:37</source>Feature Product</msg>
-  <msg id="1859131936150262113"><source>app/catalog/list/catalog-item/catalog-item.component.html:45</source><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:18</source>Inactive</msg>
   <msg id="596181013964941327"><source>app/catalog/list/catalog-item/catalog-item.component.html:65</source>Reactivate</msg>
   <msg id="1947523775983327947" desc="selected-items-button" meaning="Continue to cart"><source>app/catalog/list/selected-items/selected-items.component.html:28</source>Continue</msg>
   <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:22</source>Not Available</msg>
@@ -320,6 +326,7 @@
   <msg id="3576739165178660027"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:3</source>your plan</msg>
   <msg id="8756155295186418998"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:6</source>Pro Plan</msg>
   <msg id="4154831356233082418"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:15</source>Free Space</msg>
+  <msg id="1859131936150262113"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:18</source>Inactive</msg>
   <msg id="7697915584663780042"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:22</source>visibility</msg>
   <msg id="5439433189125089418"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:26</source>City Plan</msg>
   <msg id="7392255340123577556"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:29</source>You don&apos;t have a City Plan.</msg>
@@ -416,10 +423,13 @@
   <msg id="5554592740021607017"><source>app/dashboard/stats-graph/stats-graph.component.html:2</source>Last 12 months</msg>
   <msg id="6938753357996446484"><source>app/favorites/favorites.component.html:12</source>Your favorites</msg>
   <msg id="2988941833994717815"><source>app/favorites/favorites.component.html:15</source>These are the wallapop products that you like the most</msg>
-  <msg id="1339317612974362100"><source>app/favorites/favorites.component.html:21</source>favorites</msg>
-  <msg id="6799485957303243139"><source>app/favorites/favorites.component.html:22</source>favorite</msg>
-  <msg id="2027740642468122404"><source>app/favorites/favorites.component.html:28</source>In this list you can see all the products you saved as favourite</msg>
-  <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.html:11</source> Remove </msg>
+  <msg id="9066909356179829078"><source>app/favorites/favorites.component.html:16</source>These are the wallapop profiles that you like the most</msg>
+  <msg id="1339317612974362100"><source>app/favorites/favorites.component.html:22</source>favorites</msg>
+  <msg id="6799485957303243139"><source>app/favorites/favorites.component.html:23</source>favorite</msg>
+  <msg id="351850805832815905" desc="plural" meaning="tab"><source>app/favorites/favorites.component.html:29</source>Profiles</msg>
+  <msg id="2027740642468122404"><source>app/favorites/favorites.component.html:34</source>In this list you can see all the products you saved as favourite</msg>
+  <msg id="8888357426803887074"><source>app/favorites/favorites.component.html:38</source>In this list you can see all the profiles you saved as favourite</msg>
+  <msg id="8212177249756365917"><source>app/favorites/item-cart-favorite/item-cart-favorite.component.html:11</source><source>app/favorites/profile-card-favorite/profile-card-favorite.component.html:15</source> Remove </msg>
   <msg id="6806883447514569994"><source>app/help/help.component.html:6</source>Your help center</msg>
   <msg id="7002268576514991178"><source>app/help/help.component.html:9</source>We hope that you can find here the answers for all your questions</msg>
   <msg id="606929755258304715"><source>app/help/help.component.html:53</source>Contact details</msg>
@@ -527,10 +537,10 @@
   <msg id="5327426729320041573"><source>app/reviews/reviews.component.html:32</source>Nobody has written a review about you because you didn&apos;t buy or sell anything yet. Wake up!</msg>
   <msg id="5653113390991708232"><source>app/reviews/review-item/review-item.component.html:22</source>Sold:</msg>
   <msg id="4179349933130995178"><source>app/reviews/review-item/review-item.component.html:23</source>Bought:</msg>
-  <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.html:27</source>A wallapop item</msg>
-  <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.html:32</source>Posted by</msg>
-  <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.html:34</source>a wallapop user</msg>
-  <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.html:35</source>on</msg>
+  <msg id="3188298240836661570"><source>app/reviews/review-item/review-item.component.html:28</source>A wallapop item</msg>
+  <msg id="6629130724635125976"><source>app/reviews/review-item/review-item.component.html:33</source>Posted by</msg>
+  <msg id="5941682960252754908"><source>app/reviews/review-item/review-item.component.html:35</source>a wallapop user</msg>
+  <msg id="4101941266124151376"><source>app/reviews/review-item/review-item.component.html:36</source>on</msg>
   <msg id="605166699517966750"><source>app/stats/stats.component.html:16</source>Control the progress of your listings and improve your sales.</msg>
   <msg id="7616770651914901276"><source>app/stats/items-stats/items-stats.component.html:4</source>Product</msg>
   <msg id="2868602391152223921"><source>app/stats/items-stats/items-stats.component.html:7</source>Listed on</msg>

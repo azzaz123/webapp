@@ -143,7 +143,6 @@ import { UploaderModule } from './uploader/uploader.module';
     ArchivableComponent,
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
-    UserAvatarComponent,
     ReviewModalComponent,
     MessageComponent,
     ReviewButtonComponent,
