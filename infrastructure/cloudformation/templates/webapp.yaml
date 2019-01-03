@@ -62,7 +62,7 @@ Resources:
         ViewerCertificate:
           !If
           - IsProdEnv
-          - IamCertificateId: 'ASCAJHGNNZ3LDFECH7X46'
+          - AcmCertificateArn: 'arn:aws:acm:us-east-1:745640521341:certificate/f7eb823b-c9de-49b3-8ac0-0d3f6cceeaec'
             SslSupportMethod: 'sni-only'
           - AcmCertificateArn: !FindInMap ["Certificates", "Wildcard", "default"]
             SslSupportMethod: 'sni-only'
