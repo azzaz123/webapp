@@ -3,21 +3,18 @@
 import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
-import { Message, phoneRequestState } from '../message/message';
+import { Message } from '../message/message';
 import { MOCK_USER, USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID,
   MOCKED_CONVERSATIONS,
   MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { XmppBodyMessage } from './xmpp.interface';
-import { TrackingService } from '../tracking/tracking.service';
-import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
 import { MOCK_PAYLOAD_KO,
   MOCK_PAYLOAD_OK,
   MOCK_MESSAGE,
   MOCK_MESSAGE_FROM_OTHER} from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
-import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { ChatSignal, chatSignalType } from '../message/messages.interface';
 
 const mamFirstIndex = '1899';
@@ -101,7 +98,6 @@ const MOCKED_SERVER_RECEIVED_RECEIPT: XmppBodyMessage = {
 const JIDS = ['1@wallapop.com', '2@wallapop.com', '3@wallapop.com'];
 let service: XmppService;
 let eventService: EventService;
-let trackingService: TrackingService;
 let sendIqSpy: jasmine.Spy;
 let connectSpy: jasmine.Spy;
 
@@ -110,12 +106,10 @@ describe('Service: Xmpp', () => {
     TestBed.configureTestingModule({
       providers: [
         XmppService,
-        EventService,
-        {provide: TrackingService, useClass: MockTrackingService}]
+        EventService]
     });
     service = TestBed.get(XmppService);
     eventService = TestBed.get(EventService);
-    trackingService = TestBed.get(TrackingService);
     spyOn(XMPP, 'createClient').and.returnValue(MOCKED_CLIENT);
     spyOn(MOCKED_CLIENT, 'on').and.callFake((event, callback) => {
       eventService.subscribe(event, callback);
@@ -568,66 +562,13 @@ describe('Service: Xmpp', () => {
       expect(service['onNewMessage']).toHaveBeenCalledWith(message, true);
     });
 
-    it('should emit a CONVERSATION_CEATED event when the first message is sent, if a hasPhoneRequestMessage exists', () => {
-      spyOn<any>(eventService, 'emit');
-      const conv = MOCKED_CONVERSATIONS[0];
-      const phoneRequestMsg = new Message('someId', conv.id, 'some text', USER_ID, new Date());
-      phoneRequestMsg.phoneRequest = phoneRequestState.pending;
-      conv.messages.push(phoneRequestMsg);
+    it('should emit a MESSAGE_SENT event when called', () => {
+      spyOn(eventService, 'emit');
 
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CONVERSATION_CEATED, conv, phoneRequestMsg);
-    });
-
-    it('should track the conversationCreateNew event', () => {
-      spyOn(trackingService, 'track');
-      const newConversation = MOCK_CONVERSATION('newId');
-
-      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-
-      service.sendMessage(newConversation, MESSAGE_BODY);
-      const message: any = {
-        id: queryId,
-        to: new XMPP.JID(USER_ID, environment.xmppDomain),
-        from: service['self'],
-        thread: newConversation.id,
-        type: 'chat',
-        request: {xmlns: 'urn:xmpp:receipts'},
-        body: MESSAGE_BODY
-      };
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CONVERSATION_CREATE_NEW,
-        { thread_id: message.thread,
-          message_id: message.id,
-          item_id: MOCKED_CONVERSATIONS[0].item.id });
-    });
-
-    it('should add MessageSent event in the pendingTrackingEvents queue', () => {
-      spyOn(trackingService, 'addTrackingEvent');
-      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-
-      service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
-      const message: any = {
-        id: queryId,
-        to: new XMPP.JID(USER_ID, environment.xmpp),
-        from: service['self'],
-        thread: CONVERSATION_ID,
-        type: 'chat',
-        request: {xmlns: 'urn:xmpp:receipts'},
-        body: MESSAGE_BODY
-      };
-
-      const expectedEvent: TrackingEventData = {
-        eventData: TrackingService.MESSAGE_SENT,
-        attributes: {
-          thread_id: message.thread,
-          message_id: message.id
-        }
-      };
-
-      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(expectedEvent, false);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], queryId);
     });
 
     it('should send a new message with the true updateDate parameter', () => {
@@ -905,37 +846,4 @@ describe('Service: Xmpp', () => {
       expect(service.isBlocked('5')).toBe(false);
     });
   });
-
-  describe('sendMessage', () => {
-
-    describe('Appboy FirstMessage event', () => {
-      beforeEach(() => {
-        service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-        MOCKED_CONVERSATIONS[0].messages = [];
-        spyOn(appboy, 'logCustomEvent');
-      });
-
-      it('should send event if is the first message', () => {
-        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
-
-        expect(appboy.logCustomEvent).toHaveBeenCalledWith('FirstMessage', {platform: 'web'});
-      });
-
-      it('should not send event if the conversation is already created', () => {
-        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
-        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
-
-        expect(appboy.logCustomEvent).not.toHaveBeenCalled();
-      });
-
-      it('should send event once if more than one message is sended', () => {
-        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
-        MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
-        service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
-
-        expect(appboy.logCustomEvent).toHaveBeenCalledTimes(1);
-      });
-    });
-  });
-
 });
