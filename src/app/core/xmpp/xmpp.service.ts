@@ -4,12 +4,10 @@ import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { Observable } from 'rxjs/Observable';
 import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
-import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
 import { environment } from '../../../environments/environment';
 import { Conversation } from '../conversation/conversation';
-import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { ChatSignal, chatSignalType } from '../message/messages.interface';
 
 @Injectable()
@@ -28,8 +26,7 @@ export class XmppService {
   private messageQ: Array<XmppBodyMessage> = [];
   private archiveFinishedLoaded = false;
 
-  constructor(private eventService: EventService,
-              private trackingService: TrackingService) {
+  constructor(private eventService: EventService) {
   }
 
   public connect(userId: string, accessToken: string): void {
@@ -49,29 +46,9 @@ export class XmppService {
 
   public sendMessage(conversation: Conversation, body: string) {
     const message = this.createXmppMessage(conversation, this.client.nextId(), body);
-    if (!conversation.messages.filter(m => !m.phoneRequest).length) {
-      const hasPhoneRequestMessage = conversation.messages.find(m => !!m.phoneRequest);
-      if (hasPhoneRequestMessage) {
-        this.eventService.emit(EventService.CONVERSATION_CEATED, conversation, hasPhoneRequestMessage);
-      }
-
-      this.trackingService.track(TrackingService.CONVERSATION_CREATE_NEW, {
-        item_id: conversation.item.id,
-        thread_id: message.thread,
-        message_id: message.id
-      });
-      appboy.logCustomEvent('FirstMessage', { platform: 'web' });
-    }
-    const trackEvent: TrackingEventData = {
-      eventData: TrackingService.MESSAGE_SENT,
-      attributes: {
-        thread_id: message.thread,
-        message_id: message.id
-      }
-    };
-    this.trackingService.addTrackingEvent(trackEvent, false);
     this.onNewMessage(_.clone(message), true);
     this.client.sendMessage(message);
+    this.eventService.emit(EventService.MESSAGE_SENT, conversation, message.id);
   }
 
   public resendMessage(conversation: Conversation, message: Message) {
