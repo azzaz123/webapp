@@ -5,12 +5,6 @@ import DocumentId = PouchDB.Core.DocumentId;
 import DocumentKey = PouchDB.Core.DocumentKey;
 import RevisionId = PouchDB.Core.RevisionId;
 
-export const chatSignalType = {
-  SENT: 'sent',
-  RECEIVED: 'received',
-  READ: 'read'
-};
-
 export interface MetaInfo {
   first: string;
   last: string;
@@ -61,29 +55,4 @@ export interface StoredConversation {
 export interface MessagePayload {
   text: string;
   type: string;
-}
-
-export class ChatSignal {
-  constructor(
-    private _type: string,
-    private _thread: string,
-    private _timestamp: number,
-    private _messageId?: string) {
-  }
-
-  get type(): string {
-    return this._type;
-  }
-
-  get thread(): string {
-    return this._thread;
-  }
-
-  get timestamp(): number {
-    return this._timestamp;
-  }
-
-  get messageId(): string {
-    return this._messageId;
-  }
 }

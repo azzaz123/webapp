@@ -38,7 +38,7 @@ import { PaymentService } from './core/payments/payment.service';
 import { MOCK_MESSAGE } from '../tests/message.fixtures.spec';
 import { messageStatus } from './core/message/message';
 import { RealTimeService } from './core/message/real-time.service';
-import { ChatSignal, chatSignalType } from './core/message/messages.interface';
+import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;

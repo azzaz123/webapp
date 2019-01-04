@@ -18,7 +18,7 @@ import { MOCK_PAYLOAD_KO,
   MOCK_MESSAGE_FROM_OTHER} from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
-import { ChatSignal, chatSignalType } from '../message/messages.interface';
+import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 
 const mamFirstIndex = '1899';
 const mamCount = 1900;

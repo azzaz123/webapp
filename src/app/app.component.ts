@@ -33,7 +33,7 @@ import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
-import { ChatSignal, chatSignalType } from './core/message/messages.interface';
+import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 
 @Component({
   selector: 'tsl-root',
