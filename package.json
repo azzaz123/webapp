@@ -58,6 +58,7 @@
     "ngx-uploader": "https://github.com/Wallapop/ngx-uploader#3.2.4",
     "pouchdb": "6.1.0",
     "rxjs": "^5.5.6",
+    "shelving-mock-indexeddb": "^1.0.8",
     "stanza.io": "https://github.com/Wallapop/stanza.io#v8.0.4",
     "visibilityjs": "^1.2.4",
     "web-animations-js": "^2.3.1",

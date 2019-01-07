@@ -15,11 +15,15 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from '../user/user.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { EventService } from '../event/event.service';
+import { TrackingService } from '../tracking/tracking.service';
+import { TrackingEventData } from '../tracking/tracking-event-base.interface';
+import { TRACKING_EVENT } from '../../../tests/tracking.fixtures.spec';
 
 let service: PersistencyService;
 let userService: UserService;
 let eventService: EventService;
 const MOCK_SAVE_DATA: any = {last: 'asdas', start: CONVERSATION_DATE_ISO};
+const { IDBFactory, reset } = require('shelving-mock-indexeddb');
 
 describe('Service: Persistency', () => {
 
@@ -58,6 +62,85 @@ describe('Service: Persistency', () => {
       expect(window.indexedDB.open).toHaveBeenCalled();
     });
   });
+
+  describe('indexedDb operations for clickstream events', () => {
+    let eventsStoreName, db, clickstreamDbName, request, packagedEventsStoreName;
+    beforeEach(() => {
+      reset();
+      eventsStoreName = 'events-' + MOCK_USER.id;
+      packagedEventsStoreName = service['packagedEventsStore'];
+      clickstreamDbName = service.clickstreamDbName;
+      service['eventsStore'] = eventsStoreName;
+
+      db = new IDBFactory();
+      request = db.open(clickstreamDbName, 1);
+
+      request.addEventListener('upgradeneeded', () => {
+        request.result.createObjectStore(eventsStoreName, { keyPath: 'id' });
+        request.result.createObjectStore(packagedEventsStoreName, { autoIncrement: true });
+      });
+    });
+    afterEach(() => reset());
+
+
+    it('should store the new event in the indexedBb when storeClickstreamEvent is called', (done) => {
+      const mockTrackEvent: TrackingEventData = {
+        eventData: TrackingService.MESSAGE_SENT,
+        id: '123',
+        attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id }
+      };
+
+      request.addEventListener('success', () => {
+        service['clickstreamDb'] = request.result;
+        service.storeClickstreamEvent(mockTrackEvent);
+        request.result.transaction([eventsStoreName], 'readwrite').objectStore(eventsStoreName);
+        const getTransaction = request.result.transaction([eventsStoreName], 'readonly');
+        const getStore = getTransaction.objectStore(eventsStoreName);
+        getStore.get(mockTrackEvent.id).addEventListener('success', (event) => {
+          expect(event.target.result).toEqual(mockTrackEvent);
+          done();
+        });
+      });
+    });
+
+    it('should store the packaged clickstream events in the indexedBb when storePackagedClickstreamEvents is called', (done) => {
+      const mockPackagedEvents = JSON.parse(JSON.stringify(TRACKING_EVENT));
+
+      request.addEventListener('success', () => {
+        service['clickstreamDb'] = request.result;
+        service.storePackagedClickstreamEvents(mockPackagedEvents);
+        const getTransaction = request.result.transaction([packagedEventsStoreName], 'readonly');
+        const getStore = getTransaction.objectStore(packagedEventsStoreName);
+        getStore.get(TRACKING_EVENT.sessions[0].events[0].id).addEventListener('success', (event) => {
+          expect(event.target.result).toEqual(mockPackagedEvents);
+          done();
+        });
+      });
+    });
+
+    it('should remove the packaged events from the indexedBb, when removePackagedClickstreamEvents is called', (done) => {
+      const mockPackagedEvents = TRACKING_EVENT;
+      const storedKey = mockPackagedEvents.sessions[0].events[0].id;
+
+      request.addEventListener('success', () => {
+        service['clickstreamDb'] = request.result;
+        const addTransaction = request.result.transaction([packagedEventsStoreName], 'readwrite');
+        const addStore = addTransaction.objectStore(packagedEventsStoreName);
+        addStore.add(JSON.parse(JSON.stringify(mockPackagedEvents)), storedKey);
+        addStore.get(storedKey).addEventListener('success', (ev) => expect(ev.target.result).not.toBeFalsy());
+
+        service.removePackagedClickstreamEvents(mockPackagedEvents).addEventListener('success', () => {
+          const getTransaction = request.result.transaction([packagedEventsStoreName], 'readonly');
+          const getStore = getTransaction.objectStore(packagedEventsStoreName);
+          getStore.get(storedKey).addEventListener('success', (event) => {
+            expect(event.target.result).toBeFalsy();
+            done();
+          });
+        });
+      });
+    });
+  });
+
   describe('getMessages', () => {
 
     let observableResponse: any;
