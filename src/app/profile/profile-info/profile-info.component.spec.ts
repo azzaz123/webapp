@@ -145,7 +145,7 @@ describe('ProfileInfoComponent', () => {
       });
     });
 
-    it('should not call submit  when have competitors link', () => {
+    it('should throw error toast when have competitors link', () => {
       spyOn(errorsService, 'i18nError');
 
       competitorLinks.forEach(competitorLink => {
