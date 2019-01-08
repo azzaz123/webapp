@@ -18,15 +18,6 @@ export class ProfileFormComponent implements OnInit {
   private oldFormValue: any;
   public hasNotSavedChanges: boolean;
 
-  private competitorLinks = [
-    'coches.net',
-    'autoscout24.es',
-    'autocasión.com',
-    'vibbo.com',
-    'milanuncios.com',
-    'motor.es'
-  ];
-
   constructor(private modalService: NgbModal,
               private userService: UserService,
               private errorsService: ErrorsService) { }
