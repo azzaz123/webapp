@@ -516,20 +516,20 @@ describe('Service: Message', () => {
       conversation = MOCK_CONVERSATION();
     });
 
-    it('should subscribe to the EventService.CONVERSATION_CEATED event when called', () => {
+    it('should subscribe to the EventService.CONV_WITH_PHONE_CREATED event when called', () => {
       spyOn(eventService, 'subscribe');
 
       service.addPhoneNumberRequestMessage(conversation);
 
-      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.CONVERSATION_CEATED);
+      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.CONV_WITH_PHONE_CREATED);
     });
 
-    it('should call persistencyService.saveMessage and save the request msg when a CONVERSATION_CEATED event is triggered', () => {
+    it('should call persistencyService.saveMessage and save the request msg when a CONV_WITH_PHONE_CREATED event is triggered', () => {
       spyOn(persistencyService, 'saveMessages');
       service.addPhoneNumberRequestMessage(conversation);
       const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
 
-      eventService.emit(EventService.CONVERSATION_CEATED, conversation, requestMessage);
+      eventService.emit(EventService.CONV_WITH_PHONE_CREATED, conversation, requestMessage);
 
       expect(persistencyService.saveMessages).toHaveBeenCalledWith([requestMessage]);
     });
