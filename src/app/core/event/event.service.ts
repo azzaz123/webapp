@@ -12,7 +12,6 @@ export class EventService {
   public static MESSAGE_READ = 'messageRead'; // TODO - remove after xmpp-old.service is removed
   public static MESSAGE_RECEIVED = 'messageReceive'; // TODO - remove after xmpp-old.service is removed
   public static MESSAGE_SENT_ACK = 'messageSentAck'; // TODO - remove after xmpp-old.service is removed
-  public static CONVERSATION_CEATED = 'conversationCreated'; // TODO - remove after xmpp-old.service is removed
   public static CHAT_SIGNAL = 'chatSignal';
   public static CHAT_LAST_RECEIVED_TS = 'chatLastReceivedTs';
   public static MESSAGE_READ_ACK = 'messageReadAck';
