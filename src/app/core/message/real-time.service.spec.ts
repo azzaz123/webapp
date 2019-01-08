@@ -7,7 +7,7 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Message, phoneRequestState } from './message';
 import { USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';

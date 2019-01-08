@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { XmppBodyMessage, XMPPClient } from './xmpp-old.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';

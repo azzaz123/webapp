@@ -7,7 +7,7 @@ import { MockedPersistencyService } from '../../../tests/persistency.fixtures.sp
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 let service: BlockUserService;
 let xmppService: XmppService;
