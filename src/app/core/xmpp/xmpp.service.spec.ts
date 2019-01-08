@@ -3,12 +3,12 @@
 import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { XmppService } from './xmpp.service';
 import { EventService } from '../event/event.service';
-import { Message, messageStatus, phoneRequestState } from '../message/message';
+import { Message, phoneRequestState } from '../message/message';
 import { MOCK_USER, USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID,
   MOCKED_CONVERSATIONS,
   MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { XmppTimestampMessage, XmppBodyMessage } from './xmpp.interface';
+import { XmppBodyMessage } from './xmpp.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { Observable } from 'rxjs/Observable';
@@ -18,6 +18,7 @@ import { MOCK_PAYLOAD_KO,
   MOCK_MESSAGE_FROM_OTHER} from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
+import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 
 const mamFirstIndex = '1899';
 const mamCount = 1900;
@@ -88,8 +89,10 @@ const MOCKED_SERVER_MESSAGE: any = {
   fromSelf: false,
   id: 'id'
 };
-const MOCKED_SERVER_TIMESTAMP_MESSAGE: XmppTimestampMessage = {
-  receipt: 'thread',
+const MOCKED_SERVER_RECEIVED_RECEIPT: XmppBodyMessage = {
+  body: '',
+  thread: 'thread',
+  receipt: 'receipt',
   to: new XMPP.JID(USER_ID, environment.xmppDomain),
   from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
   timestamp: {body: '2017-03-23T12:24:19.844620Z'},
@@ -632,9 +635,9 @@ describe('Service: Xmpp', () => {
 
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       eventService.emit(EventService.MSG_ARCHIVE_LOADED);
-      eventService.emit('message', MOCKED_SERVER_TIMESTAMP_MESSAGE, true);
+      eventService.emit('message', MOCKED_SERVER_RECEIVED_RECEIPT, true);
 
-      expect(service['onNewMessage']).toHaveBeenCalledWith(MOCKED_SERVER_TIMESTAMP_MESSAGE);
+      expect(service['onNewMessage']).toHaveBeenCalledWith(MOCKED_SERVER_RECEIVED_RECEIPT);
     });
 
     it('should not process new incoming messages if the message archive is loading', () => {
@@ -642,7 +645,7 @@ describe('Service: Xmpp', () => {
 
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       eventService.emit(EventService.MSG_ARCHIVE_LOADING);
-      eventService.emit('message', MOCKED_SERVER_TIMESTAMP_MESSAGE, true);
+      eventService.emit('message', MOCKED_SERVER_RECEIVED_RECEIPT, true);
 
       expect(service['onNewMessage']).not.toHaveBeenCalled();
     });
@@ -676,64 +679,73 @@ describe('Service: Xmpp', () => {
 
   describe('buildMessage', () => {
     it('should set the date of the message using the timestamp if it exists', () => {
-      expect((service as any).buildMessage(MOCKED_SERVER_TIMESTAMP_MESSAGE).date).toEqual(new Date(MOCKED_SERVER_TIMESTAMP_MESSAGE.timestamp.body));
+      expect((service as any).buildMessage(MOCKED_SERVER_RECEIVED_RECEIPT).date).toEqual(new Date(MOCKED_SERVER_RECEIVED_RECEIPT.timestamp.body));
+    });
+  });
+
+  describe('onNewMessage', () => {
+    it('should emit a CHAT_LAST_RECEIVED_TS event when a new message or chat signal is processed', () => {
+      spyOn(eventService, 'emit');
+      const expectedTimestamp = new Date(MOCKED_SERVER_RECEIVED_RECEIPT.timestamp.body).getTime();
+
+      service['onNewMessage'](MOCKED_SERVER_RECEIVED_RECEIPT);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_LAST_RECEIVED_TS, expectedTimestamp);
     });
 
-    it('should emit a messageReceived event if the message has a receipt', () => {
+    it('should emit a CHAT_SIGNAL event if the message has a receipt', () => {
+      spyOn(eventService, 'emit');
+
+      const message: XmppBodyMessage = {
+        from: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
+        body: 'bla',
+        timestamp: { body: 'timestamp' },
+        thread: 'thread',
+        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
+        id: 'someId',
+        receipt: 'receipt'
+      };
+      const expectedSignal = new ChatSignal(chatSignalType.RECEIVED, message.thread, new Date(message.date).getTime(), message.receipt);
+
+      service['onNewMessage'](message);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
+    });
+
+    it('should emit a CHAT_SIGNAL event if the message has a sentReceipt', () => {
       spyOn(eventService, 'emit');
       const message: XmppBodyMessage = {
         from: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
         body: 'bla',
-        timestamp: {body: 'timestamp'},
+        timestamp: { body: 'timestamp' },
         thread: 'thread',
         to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
         id: 'someId',
-        receipt: 'received'
+        sentReceipt: { id: 'someId' }
       };
+      const expectedSignal = new ChatSignal(chatSignalType.SENT, message.thread, new Date(message.date).getTime(), message.sentReceipt.id);
 
-      const builtMessage = service['buildMessage'](message);
+      service['onNewMessage'](message);
 
-      expect(builtMessage.status).toBe(messageStatus.RECEIVED);
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_RECEIVED, message.thread, message.receipt);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
     });
 
-    it('should emit a messageSentAck event if the message has a sentReceipt', () => {
+    it('should emit a CHAT_SIGNAL event if the message has a readReceipt', () => {
       spyOn(eventService, 'emit');
       const message: XmppBodyMessage = {
         from: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
         body: 'bla',
-        timestamp: {body: 'timestamp'},
+        timestamp: { body: 'timestamp' },
         thread: 'thread',
         to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
         id: 'someId',
-        sentReceipt: {id: 'someId'}
+        readReceipt: { id: 'someId' }
       };
+      const expectedSignal = new ChatSignal(chatSignalType.READ, message.thread, new Date(message.date).getTime());
 
-      const builtMessage = service['buildMessage'](message);
+      service['onNewMessage'](message);
 
-      expect(builtMessage.status).toBe(messageStatus.SENT);
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_SENT_ACK, message.thread, message.sentReceipt.id);
-      expect(eventService.emit).toHaveBeenCalledTimes(1);
-    });
-
-    it('should emit a messageRead event if the message has a readReceipt', () => {
-      spyOn(eventService, 'emit');
-      const message: XmppBodyMessage = {
-        from: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
-        body: 'bla',
-        timestamp: {body: 'timestamp'},
-        thread: 'thread',
-        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
-        id: 'someId',
-        readReceipt: {id: 'someId'}
-      };
-
-      const builtMessage = service['buildMessage'](message);
-      const timestamp = new Date(message.date).getTime();
-
-      expect(builtMessage.status).toBe(messageStatus.READ);
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.MESSAGE_READ, message.thread, timestamp);
-      expect(eventService.emit).toHaveBeenCalledTimes(1);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
     });
   });
 

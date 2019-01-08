@@ -33,6 +33,7 @@ import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
+import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 
 @Component({
   selector: 'tsl-root',
@@ -139,14 +140,18 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeChatSignals() {
-    this.event.subscribe(EventService.MESSAGE_SENT_ACK, (conversationId, messageId) => {
-      this.conversationService.markAs(messageStatus.SENT, messageId, conversationId);
-    });
-    this.event.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
-      this.conversationService.markAs(messageStatus.RECEIVED, messageId, conversationId);
-    });
-    this.event.subscribe(EventService.MESSAGE_READ, (conversationId, timestamp) => {
-      this.conversationService.markAllAsRead(conversationId, timestamp, true);
+    this.event.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
+      switch (signal.type) {
+        case chatSignalType.SENT:
+          this.conversationService.markAs(messageStatus.SENT, signal.messageId, signal.thread);
+          break;
+        case chatSignalType.RECEIVED:
+          this.conversationService.markAs(messageStatus.RECEIVED, signal.messageId, signal.thread);
+          break;
+        case chatSignalType.READ:
+          this.conversationService.markAllAsRead(signal.thread, signal.timestamp, true);
+          break;
+      }
     });
   }
 

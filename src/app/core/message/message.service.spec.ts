@@ -458,7 +458,7 @@ describe('Service: Message', () => {
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
-        BUYER_ID + '@domain'
+        BUYER_ID
       );
 
       service.addUserInfo(conversation, message);
@@ -472,7 +472,7 @@ describe('Service: Message', () => {
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
-        USER_ID + '@domain'
+        USER_ID
       );
 
       message = service.addUserInfo(conversation, message);
@@ -486,7 +486,7 @@ describe('Service: Message', () => {
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
-        USER_ID + '@domain',
+        USER_ID,
         new Date(),
         messageStatus.RECEIVED,
         { text: 'someText', type: 'someType' }

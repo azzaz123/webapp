@@ -175,7 +175,7 @@ export class MessageService {
   public addUserInfo(conversation: Conversation, message: Message): Message {
     const self: User = this.userService.user;
     const other: User = conversation.user;
-    const fromId: string = message.from.split('@')[0];
+    const fromId: string = message.from;
     message.user = (fromId === self.id) ? self : other;
     /* fromSelf: The second part of condition is used to exclude 3rd voice messages, where 'from' = the id of the user
     logged in, but they should not be considered messages fromSelf */

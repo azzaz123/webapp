@@ -38,6 +38,7 @@ import { PaymentService } from './core/payments/payment.service';
 import { MOCK_MESSAGE } from '../tests/message.fixtures.spec';
 import { messageStatus } from './core/message/message';
 import { RealTimeService } from './core/message/real-time.service';
+import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -265,14 +266,12 @@ describe('App', () => {
         expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.USER_LOGIN);
       });
 
-      it('should call the eventService.subscribe passing the chat tracking funnel events', () => {
+      it('should call the eventService.subscribe passing the CHAT_SIGNAL event', () => {
         spyOn(eventService, 'subscribe').and.callThrough();
 
         component.ngOnInit();
 
-        expect(eventService.subscribe['calls'].argsFor(7)[0]).toBe(EventService.MESSAGE_SENT_ACK);
-        expect(eventService.subscribe['calls'].argsFor(8)[0]).toBe(EventService.MESSAGE_RECEIVED);
-        expect(eventService.subscribe['calls'].argsFor(9)[0]).toBe(EventService.MESSAGE_READ);
+        expect(eventService.subscribe['calls'].argsFor(7)[0]).toBe(EventService.CHAT_SIGNAL);
       });
 
       it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
@@ -480,6 +479,7 @@ describe('App', () => {
   });
 
   describe('process chat signals', () => {
+    const timestamp = new Date(MOCK_MESSAGE.date).getTime();
     beforeEach(() => {
       spyOn(conversationService, 'markAs');
       spyOn(conversationService, 'markAllAsRead');
@@ -487,21 +487,22 @@ describe('App', () => {
       component.ngOnInit();
     });
 
-    it('should call the conversationService.markAs method when a MESSAGE_SENT_ACK event is triggered', () => {
-      eventService.emit(EventService.MESSAGE_SENT_ACK, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
+    it('should call the conversationService.markAs method when a CHAT_SIGNAL event is triggered with a SENT signal', () => {
+      eventService.emit(EventService.CHAT_SIGNAL,
+        new ChatSignal(chatSignalType.SENT, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id));
 
       expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.SENT, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
     });
 
-    it('should call the conversationService.markAs method when a MESSAGE_RECEIVED event is triggered', () => {
-      eventService.emit(EventService.MESSAGE_RECEIVED, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
+    it('should call the conversationService.markAs method when a CHAT_SIGNAL event is triggered with a RECEIVED signal', () => {
+      eventService.emit(EventService.CHAT_SIGNAL,
+        new ChatSignal(chatSignalType.RECEIVED, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id));
 
       expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.RECEIVED, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
     });
 
-    it('should call the conversationService.markAllAsRead method when a MESSAGE_READ event is triggered', () => {
-      const timestamp = new Date().getTime();
-      eventService.emit(EventService.MESSAGE_READ, MOCK_MESSAGE.conversationId, timestamp);
+    it('should call the conversationService.markAllAsRead method when a a CHAT_SIGNAL event is triggered with a READ signal', () => {
+      eventService.emit(EventService.CHAT_SIGNAL, new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.conversationId, timestamp));
 
       expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp, true);
     });
