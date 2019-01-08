@@ -6,7 +6,7 @@ import { ItemService } from '../item/item.service';
 import { EventService } from '../event/event.service';
 import { ConversationService } from './conversation.service';
 import { LeadService } from './lead.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { Lead } from './lead';
 import { Conversation } from './conversation';

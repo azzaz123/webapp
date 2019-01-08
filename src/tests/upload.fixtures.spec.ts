@@ -1,6 +1,6 @@
-import { UploadFile, UploadStatus } from 'ngx-uploader';
 import { IMAGE } from './user.fixtures.spec';
 import { ITEM_ID } from './item.fixtures.spec';
+import { UploadFile, UploadStatus } from '../app/shared/uploader/upload.interface';
 
 
 export const UPLOAD_FILE_NAME = 'file.jpg';

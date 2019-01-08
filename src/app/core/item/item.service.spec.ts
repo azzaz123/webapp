@@ -27,10 +27,10 @@ import {
   ORDER,
   PRODUCT_RESPONSE,
   PRODUCTS_RESPONSE,
-  PURCHASES, ITEM_PUBLISHED_DATE, ITEM_SALE_PRICE, ITEM_DATA_V4, ITEM_DATA_V5
+  PURCHASES, ITEM_PUBLISHED_DATE, ITEM_SALE_PRICE, ITEM_DATA_V4, ITEM_DATA_V5, MOCK_LISTING_FEE_PRODUCT
 } from '../../../tests/item.fixtures.spec';
 import { Item, ITEM_BASE_PATH, ITEM_TYPES } from './item';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {
   CarInfo, CheapestProducts,
   ConversationUser,
@@ -349,6 +349,7 @@ describe('Service: Item', () => {
         service.mine(0, 'published').subscribe((data: ItemsData) => {
           resp = data;
         });
+
         expect(resp.data.length).toBe(4);
         const item = resp.data[0];
         expect(item.id).toBe(ITEMS_DATA_V3[0].id);
@@ -1236,6 +1237,50 @@ describe('Service: Item', () => {
         version: VERSION
       });
       expect(resp).toEqual(CAR_INFO);
+    });
+  });
+
+  describe('activate', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      spyOn(service, 'deselectItems');
+      const IDS = ['1', '2'];
+      service.selectedItems = IDS;
+
+      service.activate().subscribe();
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/activate', {ids: IDS});
+      expect(service.deselectItems).toHaveBeenCalled();
+    });
+  });
+
+  describe('deactivate', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      spyOn(service, 'deselectItems');
+      const IDS = ['1', '2'];
+      service.selectedItems = IDS;
+
+      service.deactivate().subscribe();
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/inactivate', {ids: IDS});
+      expect(service.deselectItems).toHaveBeenCalled();
+    });
+  });
+
+  describe('getListingFeeInfo', () => {
+    it('should call endpoint', () => {
+      const itemId = 'p4w67gxww6xq';
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_LISTING_FEE_PRODUCT)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: Product;
+
+      service.getListingFeeInfo(itemId).subscribe((r: Product) => {
+        resp = r;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/p4w67gxww6xq/listing-fee-info');
+      expect(resp).toEqual(MOCK_LISTING_FEE_PRODUCT.product_group.products[0]);
     });
   });
 

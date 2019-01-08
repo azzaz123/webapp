@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
+import { Observable } from 'rxjs';
 import { MsgArchiveService } from './archive.service';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Conversation } from '../conversation/conversation';
 import { Message, messageStatus, phoneRequestState } from './message';

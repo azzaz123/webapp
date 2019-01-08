@@ -2,7 +2,7 @@ import { fakeAsync, TestBed } from '@angular/core/testing';
 
 import { CarKeysService } from './car-keys.service';
 import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 import { CAR_BODY_TYPES, CAR_BODY_TYPES_RESPONSE } from '../../../tests/car.fixtures.spec';
 import { HttpService } from '../../core/http/http.service';

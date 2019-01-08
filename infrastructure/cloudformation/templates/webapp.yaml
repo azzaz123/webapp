@@ -28,7 +28,7 @@ Conditions:
 Mappings:
   Certificates:
     Wildcard:
-      default: "arn:aws:acm:us-east-1:745640521341:certificate/34cb22eb-e316-4600-abcf-11803c69f764"
+      default: "arn:aws:acm:us-east-1:745640521341:certificate/e7ed6a3d-db7c-4fae-9daf-a9daea4cc02d"
 
 Resources:
   WebEsDistribution:
@@ -62,7 +62,7 @@ Resources:
         ViewerCertificate:
           !If
           - IsProdEnv
-          - IamCertificateId: 'ASCAJHGNNZ3LDFECH7X46'
+          - AcmCertificateArn: 'arn:aws:acm:us-east-1:745640521341:certificate/f7eb823b-c9de-49b3-8ac0-0d3f6cceeaec'
             SslSupportMethod: 'sni-only'
           - AcmCertificateArn: !FindInMap ["Certificates", "Wildcard", "default"]
             SslSupportMethod: 'sni-only'

@@ -3,7 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TopbarComponent } from './topbar.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { EventService } from '../../core/event/event.service';
 import { CATEGORY_DATA_WEB } from '../../../tests/category.fixtures.spec';
 import { environment } from '../../../environments/environment';
@@ -17,7 +17,7 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { PaymentService } from '../../core/payments/payment.service';
 import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 import { DecimalPipe } from '@angular/common';
-import { CookieService } from 'ngx-cookie/index';
+import { CookieService } from 'ngx-cookie';
 
 const MOCK_USER = new User(
   USER_DATA.id,
@@ -165,7 +165,7 @@ describe('TopbarComponent', () => {
 
     it('should set the credits cookies', () => {
       spyOn(cookieService, 'put');
-      const cookieOptions = {domain: '.wallapop.com'};
+      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
 
       component.ngOnInit();
 
@@ -233,7 +233,7 @@ describe('TopbarComponent', () => {
       component.category = CATEGORY_DATA_WEB[1].categoryId;
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&kws=' + '&verticalId=');
+      .toEqual(environment.siteUrl.replace('es', 'www') + 'search?catIds=15245' + '&kws=' + '&verticalId=');
     });
 
     it('should redirect to the web when category is not set', () => {
@@ -244,14 +244,14 @@ describe('TopbarComponent', () => {
       };
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('https://www.wallapop.com/search?catIds=15245' + '&kws=' + '&verticalId=');
+      .toEqual(environment.siteUrl.replace('es', 'www')  + 'search?catIds=15245' + '&kws=' + '&verticalId=');
     });
 
     it('should submit the search form for cars', () => {
       component.category = CATEGORY_DATA_WEB[0].categoryId;
       component.submitForm();
       expect(windowRef.nativeWindow.location.href)
-      .toEqual('https://www.wallapop.com/search?catIds=100' + '&kws=' + '&verticalId=100');
+      .toEqual(environment.siteUrl.replace('es', 'www')  + 'search?catIds=100' + '&kws=' + '&verticalId=100');
     });
   });
 

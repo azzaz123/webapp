@@ -58,7 +58,7 @@
   <translation id="5847549463396300276">Valora tu experiencia con <ph name="START_TAG_STRONG"><ex>&lt;strong&gt;</ex></ph><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph><ph name="CLOSE_TAG_STRONG"><ex>&lt;/strong&gt;</ex></ph></translation>
   <translation id="4650730844441578299">Haz clic en las estrellas para dejar tu valoración. A más estrellas, mejor experiencia.</translation>
   <translation id="8149407802234183277">Comenta la valoración</translation>
-  <translation id="7430416142942514215">Publicar</translation>
+  <translation id="7430416142942514215">Publícalo</translation>
   <translation id="7992914064106893139">Valorar ahora</translation>
   <translation id="2506703378559967461">Gracias por tu valoración</translation>
   <translation id="8449883832889120108">¡Súbelo, súbe _ _ !</translation>
@@ -477,7 +477,7 @@
   <translation id="291347435854981703">Seguro que quieres cancelar el autorenovado para este producto?</translation>
   <translation id="2807800733729323332">Sí</translation>
   <translation id="7803839229714588038">Mensaje de error</translation>
-  <translation id="6127871861896654127"> contacta con nosotros</translation>
+  <translation id="1531212547408073567">contacta con nosotros</translation>
   <translation id="5849506438355710291">para administrar tu plan.</translation>
   <translation id="7851668152562197014">Estás intentando activar más coches de los que te permite tu plan.</translation>
   <translation id="8898651038129346696">Por favor deselecciona algunos productos, llama al o</translation>
@@ -637,8 +637,6 @@
   <translation id="6181907632373133266">Chats</translation>
   <translation id="2123659921722214537">Visualizaciones</translation>
   <translation id="3537961834218859224">Te lo aseguramos</translation>
-  <translation id="5131018503170911996">Asegura este móvil con Klinc by Zurich</translation>
-  <translation id="6207187827275323934">Asegura este producto con Klinc by Zurich</translation>
   <translation id="5984580705945066559">Calcula el seguro gratis </translation>
   <translation id="5856234352867328880">Financia esta compra</translation>
   <translation id="6174997588475722860">Recuerda que tu saldo y los packs de ahorro solo están (por el momento) disponibles en web.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Una vez cargado tu saldo, tiene un año de vigencia.</translation>
@@ -740,5 +738,24 @@
   <translation id="2359130262258320456">O contáctanos para que te hagamos un plan a tu medida que se adapte a tus necesidades.</translation>
   <translation id="3898572555215935465">Email de comercial</translation>
   <translation id="7178101913251976451">mes</translation>
-
+  <translation id="6371997993047169675">Puedes publicar un coche más</translation>
+  <translation id="219922155027226932">Puedes publicar <ph name="INTERPOLATION"><ex>{{availableSlots}}</ex></ph> coches más</translation>
+  <translation id="954702980611036148">Coches</translation>
+  <translation id="351850805832815905">Perfiles</translation>
+  <translation id="8888357426803887074">En este listado puedes ver todos los perfiles que has favoriteado.</translation>
+  <translation id="9066909356179829078">Estos son los perfiles de wallapop que más te gustan.</translation>
+  <translation id="5556202995949734730">El perfil será eliminado de los favoritos.</translation>
+  <translation id="968107342863651775">Este perfil ya no está destacado.</translation>
+  <translation id="1918694988070405915">Si lo eliminas no lo podrás favoritear de nuevo.</translation>
+  <translation id="7078772344681242222">Elimina el perfil destacado de los favoritos.</translation>
+  <translation id="4091832869609459263">¡Has llegado al límite de coches publicados!</translation>
+  <translation id="6806942206216024293">Paga por un coche ahora o suscríbete al Plan Motor a través de la app</translation>
+  <translation id="2897665268516763020">Paga una vez para publicar un coche adicional. Tu coche estará publicado durante dos meses.</translation>
+  <translation id="374197079522695707">O suscríbete a un Plan Motor</translation>
+  <translation id="7757467827697449768">Desde la app suscríbete a un plan de Motor para publicar más de un coche</translation>
+  <translation id="2297887953957049730">Publícalo ya por <ph name="INTERPOLATION"><ex>{{listingFeePrice | customCurrency}}</ex></ph></translation>
+  <translation id="140684299515781998">No gracias (El coche permanecerá inactivo)</translation>
+  <translation id="2652477817167335614">Publica tu coche</translation>
+  <translation id="7588966777090643410">Tu coche esta publicado por 60 días. Lo encontrarás en tu catálogo.</translation>
+  <translation id="2368996742348144344">Inactivo</translation>
 </translationbundle>

@@ -8,7 +8,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
 import {
   CUSTOM_REASON,
@@ -39,7 +39,7 @@ import {
   MOTORPLAN_DATA, PROFILE_SUB_INFO
 } from '../../../tests/user.fixtures.spec';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
-import { UserStatsResponse } from './user-stats.interface';
+import { AvailableSlots, UserStatsResponse } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { AccessTokenService } from '../http/access-token.service';
@@ -356,7 +356,7 @@ describe('Service: User', () => {
     });
 
     it('should call endpoint', () => {
-      expect(http.postNoBase).toHaveBeenCalledWith('https://www.wallapop.com/rest/logout', undefined, undefined, true);
+      expect(http.postNoBase).toHaveBeenCalledWith(environment.siteUrl.replace('es', 'www') + 'rest/logout', undefined, undefined, true);
     });
 
     it('should call deleteAccessToken', () => {
@@ -720,6 +720,25 @@ describe('Service: User', () => {
 
       expect(http.get).toHaveBeenCalledWith('api/v3/users/me/profile-subscription-info');
       expect(resp).toEqual(PROFILE_SUB_INFO);
+    });
+  });
+
+  describe('getAvailableSlots', () => {
+    it('should call endpoint and return response', () => {
+      const SLOTS: AvailableSlots = {
+        num_slots_cars: 3,
+        user_can_manage: true
+      };
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(SLOTS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: AvailableSlots;
+
+      service.getAvailableSlots().subscribe((response: AvailableSlots) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/slots-available');
+      expect(resp).toEqual(SLOTS);
     });
   });
 

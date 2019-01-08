@@ -26,6 +26,8 @@ import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
 import { RealTimeService } from './message/real-time.service';
 import { BlockUserService } from './conversation/block-user.service';
+import { ProfileModule } from './profile/profile.module';
+import { ProfileService } from './profile/profile.service';
 
 @NgModule({
   imports: [
@@ -35,13 +37,15 @@ import { BlockUserService } from './conversation/block-user.service';
     ItemModule,
     TrackingModule,
     ConversationModule.forRoot(),
-    PushNotificationsModule
+    PushNotificationsModule,
+    ProfileModule
   ],
   exports: [
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule
+    TrackingModule,
+    ProfileModule
   ]
 })
 export class CoreModule {
@@ -69,7 +73,8 @@ export class CoreModule {
         BlockUserService,
         ReviewService,
         AdService,
-        ConnectionService
+        ConnectionService,
+        ProfileService
       ]
     };
   }

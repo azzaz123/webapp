@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ItemService } from '../core/item/item.service';
 import { ItemsData } from '../core/item/item-response.interface';
 import { UserService } from '../core/user/user.service';
-import { UserStatsResponse } from '../core/user/user-stats.interface';
+import { UserStatsResponse, Counters } from '../core/user/user-stats.interface';
 import { Item } from '../core/item/item';
+import { ProfilesData } from '../core/profile/profile-response.interface';
+import { ProfileService } from '../core/profile/profile.service';
+import { Profile } from '../core/profile/profile';
 
 @Component({
   selector: 'tsl-favorites',
@@ -13,16 +16,28 @@ import { Item } from '../core/item/item';
 export class FavoritesComponent implements OnInit {
 
   public items: Item[] = [];
-  public selectedStatus = 'published';
+  public profiles: Profile[] = [];
+  public selectedStatus = 'products';
   public loading = false;
   public end = false;
   public numberOfFavorites: number;
+  private counters: Counters;
 
-  constructor(public itemService: ItemService, private userService: UserService) { }
+  constructor(public itemService: ItemService,
+              private userService: UserService,
+              private profileService: ProfileService) { }
 
   ngOnInit() {
     this.getItems();
     this.getNumberOfFavorites();
+  }
+
+  public filterByStatus(status: string) {
+    if (status !== this.selectedStatus) {
+      this.selectedStatus = status;
+      this.selectedStatus === 'products' ? this.getItems() : this.getProfiles();
+      this.getNumberOfFavorites();
+    }
   }
 
   public getItems(append?: boolean) {
@@ -38,8 +53,33 @@ export class FavoritesComponent implements OnInit {
     });
   }
 
+  public getProfiles(append?: boolean) {
+    this.loading = true;
+    if (!append) {
+      this.profiles = [];
+    }
+    this.profileService.myFavorites(this.profiles.length).subscribe((profilesData: ProfilesData) => {
+      const profiles = profilesData.data;
+      this.profiles = this.profiles.concat(profiles);
+      this.loading = false;
+      this.end = !profilesData.init;
+    });
+  }
+
   public onFavoriteChange(item: Item) {
     this.removeItem(item);
+  }
+
+  public onFavoriteProfileChange(profile: Profile) {
+    this.removeProfile(profile);
+  }
+
+  public removeProfile(profile: Profile) {
+    if (this.profiles.length) {
+      const index = this.profiles.indexOf(profile);
+      this.profiles.splice(index, 1);
+      this.numberOfFavorites--;
+    }
   }
 
   public removeItem(item: Item) {
@@ -51,13 +91,18 @@ export class FavoritesComponent implements OnInit {
   }
 
   public loadMore() {
-    this.getItems(true);
+    this.selectedStatus === 'products' ? this.getItems(true) : this.getProfiles(true);
   }
 
   public getNumberOfFavorites() {
     this.userService.getStats().subscribe((userStats: UserStatsResponse) => {
-      this.numberOfFavorites = userStats.counters.favorites;
+      this.counters = userStats.counters;
+      this.setNumberOfFavorites();
     });
+  }
+
+  private setNumberOfFavorites() {
+    this.numberOfFavorites = this.selectedStatus === 'products' ? this.counters.favorites : this.counters.profile_favorited;
   }
 
 }

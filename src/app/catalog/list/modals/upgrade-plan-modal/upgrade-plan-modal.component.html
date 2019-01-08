@@ -2,17 +2,21 @@
   <div class="modal-close light" (click)="activeModal.close()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <h1 i18n>You have reached the limit of published cars.</h1>
-  <p i18n>To publish this car, contract a new Motor Plan from our app.</p>
+  <h1 i18n>You've reached your limit of cars that you can upload!</h1>
+  <p i18n>Pay for a car or buy the Motor Plan</p>
 </div>
 <div class="modal-body">
   <div class="upgrade-plan">
     <div class="upgrade-plan-background"></div>
     <div class="upgrade-plan-content">
-      <h2 i18n>This car is NOT published.</h2>
-      <p i18n>It will remain filled in your catalogue as Inactive.</p>
-      <p i18n>Go to the wallapop app and subscribe to a Motor Plan, or buy an extra ad to make it public.</p>
+      <h2 i18n>Publish your car</h2>
+      <p i18n>Pay once for your additional car and your car will be listed for 2 months.</p>
+    </div>
+    <div class="upgrade-plan-content">
+      <h2 i18n>Or save money with the Motor Plan</h2>
+      <p i18n>Sign up to our Motor plan and advertise more cars</p>
     </div>
   </div>
-  <tsl-button className="btn-feature" (click)="activeModal.close()" i18n>Got it</tsl-button>
+  <tsl-button className="btn btn-primary" (click)="purchaseListingFee()" i18n>Upload it now for {{listingFeePrice | customCurrency}}</tsl-button>
+  <tsl-button className="btn btn-gray" (click)="activeModal.close()" i18n>No thanks (keep this car inactive)</tsl-button>
 </div>

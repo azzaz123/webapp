@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ReviewService } from './review.service';
 import { HttpService } from '../http/http.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/observable/throw';
 import { REVIEW_DATA_BUYER, REVIEW_DATA_SELLER } from '../../../tests/review.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';

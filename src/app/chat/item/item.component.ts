@@ -10,8 +10,6 @@ import { CookieService } from 'ngx-cookie';
 
 export const showWillisCategories = [ CATEGORY_IDS.GAMES_CONSOLES, CATEGORY_IDS.TV_AUDIO_CAMERAS, CATEGORY_IDS.APPLIANCES];
 
-export const showKlincCategories = [ CATEGORY_IDS.COMPUTERS_ELECTRONICS, CATEGORY_IDS.CELL_PHONES_ACCESSORIES];
-
 export const showVertiCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR];
 
 export const showMapfreCategories = [CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.MOTORBIKE, CATEGORY_IDS.CAR, CATEGORY_IDS.BIKES];
@@ -42,7 +40,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() user: User;
   public itemUrl: string;
   public isCarItem = false;
-  public showKlincLink = false;
   public showWillisLink = false;
   public showMapfreOrVertiLink = false;
   public showSolcreditoLink = false;
@@ -91,14 +88,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     this.showWillisLink = showWillisCategories.includes(this.item.categoryId);
     if (this.showWillisLink) {
       this.trackingService.track(TrackingService.WILLIS_LINK_DISPLAY, {
-        category_id: this.item.categoryId,
-        item_id: this.item.id
-      });
-    }
-
-    this.showKlincLink = showKlincCategories.includes(this.item.categoryId);
-    if (this.showKlincLink) {
-      this.trackingService.track(TrackingService.KLINC_LINK_DISPLAY, {
         category_id: this.item.categoryId,
         item_id: this.item.id
       });
@@ -181,14 +170,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
   public clickWillis(event) {
     event.stopPropagation();
     this.trackingService.track(TrackingService.WILLIS_LINK_TAP, {
-      category_id: this.item.categoryId,
-      item_id: this.item.id
-    });
-  }
-
-  public clickKlinc(event) {
-    event.stopPropagation();
-    this.trackingService.track(TrackingService.KLINC_LINK_TAP, {
       category_id: this.item.categoryId,
       item_id: this.item.id
     });

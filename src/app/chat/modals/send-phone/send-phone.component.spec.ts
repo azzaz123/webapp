@@ -15,7 +15,7 @@ import { HttpService } from '../../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../../tests/utils.spec';
 import { By } from '@angular/platform-browser';
 import { format } from 'libphonenumber-js';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 describe('SendPhoneComponent', () => {
   let component: SendPhoneComponent;

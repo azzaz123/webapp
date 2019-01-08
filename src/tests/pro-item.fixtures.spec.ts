@@ -13,6 +13,12 @@ export const MOCK_PROITEM2: CartProItem = {
     selectedDates: MOCK_SELECTED_DATES
 };
 
+export const MOCK_PROITEM3: CartProItem = {
+    item: MOCK_ITEM_V3,
+    selectedDates: MOCK_SELECTED_DATES,
+    bumpType: 'citybump'
+};
+
 export const CART_ORDER_PRO: OrderPro[] = [
     {
         item_id: MOCK_PROITEM.item.id,

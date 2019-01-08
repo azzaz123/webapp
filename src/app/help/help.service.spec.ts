@@ -4,7 +4,7 @@ import { HelpService } from './help.service';
 import { HttpService } from '../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../tests/utils.spec';
 import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { FAQ_FEATURES, FAQS } from '../../tests/faq.fixtures.spec';
 
 let service: HelpService;

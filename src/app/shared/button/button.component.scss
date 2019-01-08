@@ -75,6 +75,10 @@ $vertical-padding: 10px;
       color: $white;
     }
   }
+  &.btn-gray {
+    background-color: $grey-50;
+    color: $grey-250;
+  }
 }
 
 

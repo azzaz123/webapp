@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ProcessAllButtonComponent } from './process-all-button.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { TrackingService } from '../../core/tracking/tracking.service';

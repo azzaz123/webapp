@@ -8,7 +8,7 @@ import {
   Image, UserExtrainfo, UserLocation, UserResponse, UserStats, UserValidations,
   MotorPlan, ProfileSubscriptionInfo
 } from '../app/core/user/user-response.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';
 
@@ -356,6 +356,7 @@ export const CUSTOM_REASON = 'bye';
 export const MOTORPLAN_DATA: MotorPlan = {
   'type': 'motor_plan_pro',
   'subtype': 'sub_premium',
+  'limit': 5
 };
 
 

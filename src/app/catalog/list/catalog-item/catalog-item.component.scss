@@ -100,6 +100,11 @@ $feature-button-width: 170px;
       }
     }
   }
+  .pro & {
+    .selected-veil {
+      display: none;
+    }
+  }
   &.selected {
     background-color: rgba($corporate, 0.2);
     border: solid 1px $corporate;
@@ -177,9 +182,10 @@ $feature-button-width: 170px;
     }
   }
   .subscribe {
-    font-size: $font-size;
+    font-size: $font-size-S;
     color: $sold-bg;
-    min-width: 300px;
+    min-width: 250px;
+    font-weight: bold;
     &.onHold {
       align-self: stretch;
       display: flex;
@@ -190,8 +196,11 @@ $feature-button-width: 170px;
   .actions {
     margin-right: 24px;
     min-width: 400px;
-    .resized & {
+    .resized:not(.pro) & {
       display: none;
+    }
+    .pro & {
+      min-width: 338px;
     }
     button, tsl-button {
       margin-left: 12px;
@@ -336,4 +345,9 @@ $feature-button-width: 170px;
       color: $listing-fee-color;
     }
   }
+}
+
+tsl-button /deep/ .btn-publish {
+  width: $feature-button-width;
+  font-size: $font-size-S;
 }

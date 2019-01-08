@@ -16,7 +16,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Call } from './calls';
 import { createCallsArray, CALLS_DATA } from '../../../tests/call.fixtures';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Conversation } from './conversation';
 import { createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { CallTotals } from './totals.interface';

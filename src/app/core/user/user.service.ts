@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { PERMISSIONS, User } from './user';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { ResourceService } from '../resource/resource.service';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
@@ -15,7 +15,7 @@ import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
-import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
+import { AvailableSlots, Counters, Ratings, UserStatsResponse } from './user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
@@ -369,6 +369,11 @@ export class UserService extends ResourceService {
 
   public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
     return this.http.get(this.API_URL + '/me/profile-subscription-info')
+      .map((r: Response) => r.json())
+  }
+
+  public getAvailableSlots(): Observable<AvailableSlots> {
+    return this.http.get(this.API_URL + '/me/items/slots-available')
       .map((r: Response) => r.json())
   }
 }

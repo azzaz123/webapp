@@ -34,21 +34,23 @@ describe('AccessTokenService', () => {
     it('should call setItem and store token with suffix if is not production', () => {
       environment.production = false;
       environment.cookieSuffix = 'Beta';
+      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
       spyOn(cookieService, 'put');
 
       service.storeAccessToken(aToken);
 
-      expect(cookieService.put).toHaveBeenCalledWith(cookieName + environment.cookieSuffix, aToken, { domain: '.wallapop.com' });
+      expect(cookieService.put).toHaveBeenCalledWith(cookieName + environment.cookieSuffix, aToken, cookieOptions);
       expect(service['_accessToken']).toEqual(aToken);
     });
 
     it('should call setItem and store token without suffix if is production', () => {
       environment.production = true;
       spyOn(cookieService, 'put');
+      const cookieOptions = environment.name === 'local' ? { domain: 'localhost' } : { domain: '.wallapop.com' };
 
       service.storeAccessToken(aToken);
 
-      expect(cookieService.put).toHaveBeenCalledWith(cookieName, aToken, { domain: '.wallapop.com' });
+      expect(cookieService.put).toHaveBeenCalledWith(cookieName, aToken, cookieOptions);
       expect(service['_accessToken']).toEqual(aToken);
     });
   });

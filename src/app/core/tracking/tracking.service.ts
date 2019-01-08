@@ -7,11 +7,11 @@ import { TrackingEventBase, TrackingEventData } from './tracking-event-base.inte
 import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { getTimestamp } from './getTimestamp.func';
-import { CookieService } from 'ngx-cookie/index';
+import { CookieService } from 'ngx-cookie';
 import { HttpService } from '../http/http.service';
 import { NavigatorService } from './navigator.service';
 import { WindowRef } from '../window/window.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/bufferTime';
 import { Subscription } from 'rxjs/Subscription';
@@ -46,7 +46,6 @@ const CATEGORY_IDS: any = {
   Credits: '131',
   Navbar: '77',
   Willis: '130',
-  Klinc: '136',
   Mapfre: '137',
   Verti: '138',
   Solcredito: '139'
@@ -74,6 +73,7 @@ const SCREENS_IDS: any = {
   GDPR: '155',
   ReFishingGDPR: '159',
   Credits: '166',
+  PostUpload: '153',
   SharePhone: '92'
 };
 
@@ -801,18 +801,6 @@ export class TrackingService {
     screen: SCREENS_IDS.Credits,
     type: TYPES_IDS.Error
   };
-  public static KLINC_LINK_DISPLAY = {
-    name: '801',
-    category: CATEGORY_IDS.Klinc,
-    screen: SCREENS_IDS.ItemDetail,
-    type: TYPES_IDS.Display
-  };
-  public static KLINC_LINK_TAP = {
-    name: '802',
-    category: CATEGORY_IDS.Klinc,
-    screen: SCREENS_IDS.ItemDetail,
-    type: TYPES_IDS.Tap
-  };
 
   public static CONVERSATION_FIRSTARCHIVE_OK = {
     name: '714',
@@ -902,6 +890,20 @@ export class TrackingService {
     category: CATEGORY_IDS.Verti,
     screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Display
+  };
+
+  public static PURCHASE_LISTING_FEE_CATALOG = {
+    name: '825',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.MyCatalog,
+    type: TYPES_IDS.Tap
+  };
+
+  public static PURCHASE_LISTING_FEE_MODAL = {
+    name: '826',
+    category: CATEGORY_IDS.Purchase,
+    screen: SCREENS_IDS.PostUpload,
+    type: TYPES_IDS.Tap
   };
 
   public static SOLCREDITO_LINK_DISPLAY = {

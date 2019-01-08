@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Injectable, NgZone } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpService } from '../http/http.service';
 import { Conversation } from './conversation';
 import { ConnectionService } from '../connection/connection.service';
@@ -255,9 +255,6 @@ export class ConversationService extends LeadService {
   private addMessage(conversation: Conversation, message: Message): boolean {
     if (!this.findMessage(conversation.messages, message)) {
       conversation.messages.push(message);
-      conversation.messages.sort((a, b) => {
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      });
       conversation.modifiedDate = new Date().getTime();
       if (!message.fromSelf) {
         this.event.subscribe(EventService.MESSAGE_RECEIVED_ACK, () => {

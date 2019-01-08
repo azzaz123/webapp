@@ -9,7 +9,7 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { Conversation } from '../../core/conversation/conversation';
 import { Message, phoneMethod } from '../../core/message/message';
 import { NewConversationResponse } from '../../core/conversation/conversation-response.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MessageService } from '../../core/message/message.service';
 
 @Component({

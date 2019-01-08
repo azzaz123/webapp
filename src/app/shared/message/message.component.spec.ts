@@ -9,6 +9,7 @@ import { By } from '@angular/platform-browser';
 import { phoneRequestState, Message } from '../../core/message/message';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { ConversationService } from '../../core/conversation/conversation.service';
+import { environment } from '../../../environments/environment';
 
 const WEB_SLUG_USER = 'https://www.wallapop.com/user/';
 
@@ -43,7 +44,7 @@ describe('Component: Message', () => {
 
   describe('ngOnInit', () => {
     it('should set userWebSlug', () => {
-      expect(component.userWebSlug).toBe(WEB_SLUG_USER + USER_WEB_SLUG);
+      expect(component.userWebSlug).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + USER_WEB_SLUG);
     });
   });
 

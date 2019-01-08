@@ -1,4 +1,4 @@
-<div [ngClass]="{resized: itemService.selectedItems.length}">
+<div [ngClass]="{resized: isPro || itemService.selectedItems.length, pro: isPro}">
   <div class="checkbox">
     <button class="select" (click)="select(item)" [ngClass]="{selected: item.selected}" *ngIf="showCheckbox">
       <mat-icon svgIcon="check"></mat-icon>
@@ -27,7 +27,7 @@
                      [value]="item.listingFeeExpiringDate" format="listingFee"></tsl-countdown>
     </a>
     <span class="subscribe" *ngIf="item.flags.onhold" [ngClass]="{onHold: item.flags.onhold}" i18n>
-        Subscribe or publish it from the app
+        Inactive
     </span>
     <span class="actions" *ngIf="!item.flags.pending">
       <span *ngIf="!item.flags.expired">
@@ -36,13 +36,13 @@
             <mat-icon svgIcon="feature"></mat-icon>
             <span i18n>Feature Product</span>
           </tsl-button>
-          <button class="btn-featured" *ngIf="item.bumpExpiringDate">
-            {{item.bumpExpiringDate | amCountdown}}
-          </button>
         </span>
+        <button class="btn-featured" *ngIf="item.bumpExpiringDate">
+          {{item.bumpExpiringDate | amCountdown}}
+        </button>
         <span *ngIf="item.flags.onhold">
-          <tsl-button className="btn-inactive">
-            <span i18n>Inactive</span>
+          <tsl-button className="btn-primary btn-publish" (click)="publishItem()">
+            <span i18n>Publish</span>
           </tsl-button>
         </span>
         <div class="main-actions">
@@ -55,7 +55,7 @@
           <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">
             <mat-icon svgIcon="btn-edit"></mat-icon>
           </button>
-          <button class="btn-delete" (click)="deleteItem(item)">
+          <button class="btn-delete" (click)="deleteItem(item)" [hidden]="isPro">
             <mat-icon svgIcon="btn-delete"></mat-icon>
           </button>
         </div>
