@@ -13,6 +13,15 @@ import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { LOCATION_MODAL_TIMEOUT } from '../../shared/geolocation/location-select/location-select.component';
 import { ErrorsService } from '../../core/errors/errors.service';
 
+export const competitorLinks = [
+  'coches.net',
+  'autoscout24.es',
+  'autocasión.com',
+  'vibbo.com',
+  'milanuncios.com',
+  'motor.es'
+];
+
 @Component({
   selector: 'tsl-profile-info',
   templateUrl: './profile-info.component.html',
@@ -24,15 +33,6 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   public profileForm: FormGroup;
   public allowSegmentation: boolean;
   @ViewChild(ProfileFormComponent) formComponent: ProfileFormComponent;
-
-  private competitorLinks = [
-    'coches.net',
-    'autoscout24.es',
-    'autocasión.com',
-    'vibbo.com',
-    'milanuncios.com',
-    'motor.es'
-  ];
 
   constructor(private userService: UserService,
               private fb: FormBuilder,
@@ -74,7 +74,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     const extraInfoControl = this.profileForm.get('extra_info');
     const linkControl = extraInfoControl.get('link');
     if (extraInfoControl.value && linkControl.value ) {
-      this.competitorLinks.forEach(competitor  => {
+      competitorLinks.forEach(competitor  => {
         if (competitor.toUpperCase() === linkControl.value.toUpperCase()) {
           linkControl.setErrors({incorrect: true});
         }

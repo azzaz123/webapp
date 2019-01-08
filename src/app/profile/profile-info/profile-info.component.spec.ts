@@ -1,6 +1,6 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { ProfileInfoComponent } from './profile-info.component';
+import { competitorLinks, ProfileInfoComponent } from './profile-info.component';
 import { NgbButtonsModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpService } from '../../core/http/http.service';
 import { ErrorsService } from '../../core/errors/errors.service';
@@ -132,6 +132,28 @@ describe('ProfileInfoComponent', () => {
       component.onSubmit();
 
       expect(component.formComponent.onSubmit).toHaveBeenCalledWith(MOCK_FULL_USER);
+    });
+
+    it('should not call submit  when have competitors link', () => {
+      spyOn(component.formComponent, 'onSubmit');
+
+      competitorLinks.forEach(competitorLink => {
+        component.profileForm.get('extra_info').get('link').setValue(competitorLink);
+        component.onSubmit();
+
+        expect(component.formComponent.onSubmit).not.toHaveBeenCalled();
+      });
+    });
+
+    it('should not call submit  when have competitors link', () => {
+      spyOn(errorsService, 'i18nError');
+
+      competitorLinks.forEach(competitorLink => {
+        component.profileForm.get('extra_info').get('link').setValue(competitorLink);
+        component.onSubmit();
+
+        expect(errorsService.i18nError).toHaveBeenCalledWith('linkError');
+      });
     });
   });
 
