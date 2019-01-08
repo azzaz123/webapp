@@ -75,7 +75,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
     const linkControl = extraInfoControl.get('link');
     if (extraInfoControl.value && linkControl.value ) {
       competitorLinks.forEach(competitor  => {
-        if (competitor.toUpperCase() === linkControl.value.toUpperCase()) {
+        if (linkControl.value.toUpperCase().includes(competitor.toUpperCase())) {
           linkControl.setErrors({incorrect: true});
         }
       });
