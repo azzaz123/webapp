@@ -151,6 +151,8 @@ export class AppComponent implements OnInit {
         case chatSignalType.READ:
           this.conversationService.markAllAsRead(signal.thread, signal.timestamp, true);
           break;
+        default:
+          break;
       }
     });
   }
