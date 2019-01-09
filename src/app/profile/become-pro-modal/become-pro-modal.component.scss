@@ -18,43 +18,12 @@
     margin: 0;
     font-size: $font-size;
   }
-  .pro {
-    background: url(/assets/images/pro-aura.svg);
-    @include square(180px);
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    .label {
-      display: block;
-      background-color: $white;
-      color: $color-pro;
-      text-transform: uppercase;
-      font-size: $font-size-S;
-      border-radius: 20px;
-      font-weight: bold;
-      position: absolute;
-      bottom: 42px;
-      padding: 3px 11px;
-    }
-  }
 }
 
 .modal-body {
   width: 580px;
   text-align: center;
   padding: $spacing-L $spacing-XL;
-  h1, p {
-    color: $color-pro-light;
-  }
-  p {
-    margin: 0;
-    font-size: $font-size;
-  }
-  h1 {
-    font-size: 24px;
-    margin-bottom: $spacing-XXS;
-  }
   ul {
     margin-bottom: $spacing-L;
     padding: 0;
