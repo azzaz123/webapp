@@ -14,8 +14,8 @@
       <button class="btn btn-price"
               (click)="select(type)"
               [ngClass]="{selected: type === selectedType && duration === selectedDuration}">
-        <s *ngIf="itemWithProducts.products[duration][type]?.original_market_code">{{itemWithProducts.products[duration][type]?.original_market_code * creditInfo.factor | customCurrency:creditInfo.currencyName}}<tsl-wallacoin [currency]="creditInfo.currencyName" color="strike"></tsl-wallacoin></s>
-         {{itemWithProducts.products[duration][type]?.market_code * creditInfo.factor | customCurrency:creditInfo.currencyName}}<tsl-wallacoin [currency]="creditInfo.currencyName"></tsl-wallacoin>
+        <s *ngIf="itemWithProducts.products[duration][type]?.original_market_code">{{itemWithProducts.products[duration][type]?.original_market_code * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}<tsl-wallacoin [currency]="creditInfo?.currencyName" color="strike"></tsl-wallacoin></s>
+         {{itemWithProducts.products[duration][type]?.market_code * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}<tsl-wallacoin [currency]="creditInfo?.currencyName"></tsl-wallacoin>
       </button>
     </ng-container>
     <ng-template #notAvailable>
