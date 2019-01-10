@@ -17,7 +17,7 @@ export interface XMPPClient {
 
 export interface XmppMessage {
   id?: string;
-  to: JID;
+  to: string | any;
   thread: string;
   read?: any;
   status?: string;
@@ -30,9 +30,17 @@ export interface XmppMessage {
   readReceipt?: any;
   delay?: any;
 }
-
+export interface XmppTimestampMessage {
+  id: string;
+  receipt: string;
+  to: string;
+  from: string | any;
+  timestamp?: {
+    body: string;
+  };
+}
 export interface XmppBodyMessage extends XmppMessage {
-  from: JID;
+  from: string | any;
   body: string;
   timestamp?: {
     body: string;
@@ -45,21 +53,4 @@ export interface XmppBodyMessage extends XmppMessage {
   };
   carbon?: boolean;
   payload?: MessagePayload;
-}
-
-export class JID {
-  constructor(
-    private _userId: string,
-    private _domain: string,
-    private _resource: string) {
-      return new XMPP.JID(this._userId, this._domain, this._resource);
-  }
-
-  get bare(): string {
-    return this.bare;
-  }
-
-  get local(): string {
-    return this.local;
-  }
 }

@@ -24,6 +24,8 @@ import { XmppService } from './xmpp/xmpp.service';
 import { PushNotificationsModule } from 'ng-push';
 import { ReviewService } from './review/review.service';
 import { ConnectionService } from './connection/connection.service';
+import { RealTimeService } from './message/real-time.service';
+import { BlockUserService } from './conversation/block-user.service';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
 
@@ -67,6 +69,8 @@ export class CoreModule {
         PersistencyService,
         WindowRef,
         XmppService,
+        RealTimeService,
+        BlockUserService,
         ReviewService,
         AdService,
         ConnectionService,
