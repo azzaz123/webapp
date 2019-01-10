@@ -16,6 +16,7 @@ import { AccessTokenService } from './access-token.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
+import { EventService } from '../event/event.service';
 
 describe('Service: Http', () => {
 
@@ -27,10 +28,12 @@ describe('Service: Http', () => {
   let mockBackend: MockBackend;
   let http: Http;
   let accessTokenService: AccessTokenService;
+  let eventService: EventService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        EventService,
         ...TEST_HTTP_PROVIDERS,
         {
           provide: Http, useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => {
@@ -40,6 +43,7 @@ describe('Service: Http', () => {
       ]
     });
     httpService = TestBed.get(HttpService);
+    eventService = TestBed.get(EventService);
     mockBackend = TestBed.get(MockBackend);
     accessTokenService = TestBed.get(AccessTokenService);
     http = TestBed.get(Http);
@@ -879,6 +883,24 @@ describe('Service: Http', () => {
         httpService.postNoBase(TEST_URL, TEST_BODY, 'stringAuthorization', null, true).subscribe(() => {},
         (err) => {
           expect(err).toBe(testError);
+        });
+      });
+
+      it(`should emit the quitRetryMsg after retrying mockMaxRetries times,
+      when it encounters an error that is present in the retryOnStatuses array`, (done) => {
+        spyOn(eventService, 'emit');
+        httpService.mockDelay = 1;
+        httpService.mockMaxRetries = 3;
+        const testErrorCode = httpService['retryOnStatuses'][0];
+        const testError = {status: testErrorCode};
+        spyOn(Http.prototype, 'post').and.returnValues(Observable.throw(testError), null);
+
+
+        httpService.postNoBase(TEST_URL, TEST_BODY, 'stringAuthorization', null, true).subscribe(() => {},
+        (err) => {
+          expect(eventService.emit).toHaveBeenCalledWith(EventService.HTTP_REQUEST_FAILED, TEST_URL);
+          expect(err).toEqual({message: httpService.quitRetryMsg, url: TEST_URL});
+          done();
         });
       });
     });
