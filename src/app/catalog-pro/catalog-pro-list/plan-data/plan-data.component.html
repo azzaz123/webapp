@@ -46,7 +46,7 @@
           <span class="number">{{(status?.purchased?.citybump || 0) + (status?.purchased?.zonebump || 0)}}</span>
           <span class="text grey" i18n>In Use</span>
           <div class="extras">
-            <span class="grey" i18n>({{(status?.items_scheduled_purchases?.citybump || 0) + (status?.items_scheduled_purchases?.zonebump || 0)}} planned)</span>
+            <span class="grey" i18n>({{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}} planned)</span>
           </div>
         </div>
       </div>
@@ -76,7 +76,7 @@
           <span class="number">{{status?.purchased?.countrybump || '0'}}</span>
           <span class="text grey" i18n>In Use</span>
           <div class="extras">
-            <span class="grey" i18n>({{status?.items_scheduled_purchases?.countrybump || '0'}} planned)</span>
+            <span class="grey" i18n>({{status?.autorenew_scheduled?.countrybump || '0'}} planned)</span>
           </div>
         </div>
       </div>

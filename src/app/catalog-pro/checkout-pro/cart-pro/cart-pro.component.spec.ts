@@ -29,6 +29,10 @@ describe('CartProComponent', () => {
   let trackingService: TrackingService;
   let paymentsService: PaymentService;
   const perksModel: PerksModel = new PerksModel();
+  perksModel.subscription.bump.quantity = 10;
+  perksModel.extra.bump.quantity = 3;
+  perksModel.subscription.national.quantity = 20;
+  perksModel.extra.national.quantity = 4;
 
   const CART = new CartPro();
   const CART_CHANGE: CartChange = {
@@ -41,7 +45,7 @@ describe('CartProComponent', () => {
   const MOCK_STATUS: ScheduledStatus = {
     active: true,
     autorenew_alert: 0,
-    autorenew_scheduled: { citybump: 16, countrybump: 21 }
+    autorenew_scheduled: { citybump: 3, countrybump: 4 }
   };
 
   beforeEach(async(() => {
@@ -142,15 +146,17 @@ describe('CartProComponent', () => {
     });
 
     it('should calculate balance for city cart', () => {
+      CART['citybump'].total = 10;
       component.ngOnInit();
 
-      expect(component.balance['citybump']).toBe(-16);
+      expect(component.balance['citybump']).toBe(3);
     });
 
     it('should calculate balance for country cart', () => {
+      CART['countrybump'].total = 10;
       component.ngOnInit();
 
-      expect(component.balance['countrybump']).toBe(-21);
+      expect(component.balance['countrybump']).toBe(14);
     });
   });
 
@@ -192,6 +198,9 @@ describe('CartProComponent', () => {
         spyOn(errorService, 'i18nError');
         spyOn(router, 'navigate');
         spyOn(trackingService, 'track');
+        component.cart.countrybump.total = 0;
+        component.cart.citybump.total = 0;
+
         component.applyBumps();
       });
 
@@ -221,7 +230,8 @@ describe('CartProComponent', () => {
 
       it('should navigate to pro list if no citybump balance', () => {
         component.cart.citybump.total = 1;
-        component.balance.citybump = -1;
+        perksModel.subscription.bump.quantity = 0;
+        perksModel.extra.bump.quantity = 0;
 
         component.applyBumps();
 
@@ -231,7 +241,8 @@ describe('CartProComponent', () => {
 
       it('should navigate to pro list if no countrybump balance', () => {
         component.cart.countrybump.total = 1;
-        component.balance.countrybump = -1;
+        perksModel.subscription.national.quantity = 0;
+        perksModel.extra.national.quantity = 0;
 
         component.applyBumps();
 
