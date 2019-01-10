@@ -881,9 +881,7 @@ describe('Service: Http', () => {
         spyOn(http, 'post').and.returnValue(Observable.throw(testError));
 
         httpService.postNoBase(TEST_URL, TEST_BODY, 'stringAuthorization', null, true).subscribe(() => {},
-        (err) => {
-          expect(err).toBe(testError);
-        });
+        (err) => expect(err).toBe(testError));
       });
 
       it(`should emit the quitRetryMsg after retrying mockMaxRetries times,
