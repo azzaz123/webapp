@@ -11,6 +11,16 @@ import { LocationModalComponent } from '../../shared/geolocation/location-select
 import { BecomeProModalComponent } from '../become-pro-modal/become-pro-modal.component';
 import { Coordinate } from '../../core/geolocation/address-response.interface';
 import { LOCATION_MODAL_TIMEOUT } from '../../shared/geolocation/location-select/location-select.component';
+import { ErrorsService } from '../../core/errors/errors.service';
+
+export const competitorLinks = [
+  'coches.net',
+  'autoscout24.es',
+  'autocasión.com',
+  'vibbo.com',
+  'milanuncios.com',
+  'motor.es'
+];
 
 @Component({
   selector: 'tsl-profile-info',
@@ -26,6 +36,7 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
 
   constructor(private userService: UserService,
               private fb: FormBuilder,
+              private errorsService: ErrorsService,
               private modalService: NgbModal) {
     this.profileForm = fb.group({
       first_name: ['', [Validators.required]],
@@ -60,6 +71,19 @@ export class ProfileInfoComponent implements OnInit, CanComponentDeactivate {
   }
 
   public onSubmit() {
+    const extraInfoControl = this.profileForm.get('extra_info');
+    const linkControl = extraInfoControl.get('link');
+    if (extraInfoControl.value && linkControl.value ) {
+      competitorLinks.forEach(competitor  => {
+        if (linkControl.value.toUpperCase().includes(competitor.toUpperCase())) {
+          linkControl.setErrors({incorrect: true});
+        }
+      });
+      if (!linkControl.valid) {
+        this.errorsService.i18nError('linkError');
+        return;
+      }
+    }
     return this.formComponent.onSubmit(this.user);
   }
 
