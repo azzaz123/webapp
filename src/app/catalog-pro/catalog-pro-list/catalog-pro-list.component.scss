@@ -140,16 +140,20 @@ tsl-selected-items {
       color: $corporate;
       text-decoration: underline;
       cursor: pointer;
+      margin-left: $spacing-XXS;
       &:hover {
         color: $corporate-dark;
       }
     }
-    tsl-button /deep/ button {
-      color: $corporate;
-      text-decoration: underline;
-      cursor: pointer;
-      font-weight: normal;
-      padding: 0;
+    tsl-button {
+      margin-left: $spacing-XXS;
+      /deep/ button {
+        color: $corporate;
+        text-decoration: underline;
+        cursor: pointer;
+        font-weight: normal;
+        padding: 0;
+      }
     }
   }
 }
