@@ -6,7 +6,6 @@ import { Conversation } from './conversation';
 import { ConnectionService } from '../connection/connection.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
-import { XmppService } from '../xmpp/xmpp.service';
 import { MessageService } from '../message/message.service';
 import { Message, messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
@@ -31,6 +30,8 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/observable/forkJoin';
 import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
+import { RealTimeService } from '../message/real-time.service';
+import { BlockUserService } from './block-user.service';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -56,7 +57,8 @@ export class ConversationService extends LeadService {
               userService: UserService,
               itemService: ItemService,
               event: EventService,
-              xmpp: XmppService,
+              realTime: RealTimeService,
+              blockService: BlockUserService,
               connectionService: ConnectionService,
               private persistencyService: PersistencyService,
               protected messageService: MessageService,
@@ -64,7 +66,7 @@ export class ConversationService extends LeadService {
               protected notificationService: NotificationService,
               private modalService: NgbModal,
               private zone: NgZone) {
-    super(http, userService, itemService, event, xmpp, connectionService);
+    super(http, userService, itemService, event, realTime, blockService, connectionService);
   }
 
   public getLeads(since?: number, archived?: boolean): Observable<Conversation[]> {
@@ -331,7 +333,7 @@ export class ConversationService extends LeadService {
         this.userService.get(conversation.other_user_id)
       ).map((data: any[]) => {
         conversation.user = data[1];
-        conversation.user.blocked = this.xmpp.isBlocked(conversation.user.id);
+        conversation.user.blocked = this.blockService.isBlocked(conversation.user.id);
         conversation = <ConversationResponse>this.setItem(conversation, data[0]);
         return conversation;
       });
@@ -345,7 +347,7 @@ export class ConversationService extends LeadService {
         this.markAllAsRead(conversation.id);
         this.readSubscription.unsubscribe();
       });
-      this.xmpp.sendConversationStatus(conversation.user.id, conversation.id);
+      this.realTime.sendRead(conversation.user.id, conversation.id);
       this.messageService.totalUnreadMessages -= conversation.unreadMessages;
       conversation.unreadMessages = 0;
     }
@@ -432,7 +434,7 @@ export class ConversationService extends LeadService {
     });
   }
 
-  public createConversation(itemId): Observable<Conversation> {
+  public createConversation(itemId: string): Observable<Conversation> {
     const options = new RequestOptions();
     options.headers = new Headers();
     options.headers.append('Content-Type', 'application/json');

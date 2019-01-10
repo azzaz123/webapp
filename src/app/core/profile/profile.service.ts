@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { Profile } from './profile';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { Response } from '@angular/http';
 import { ProfilesData, ProfileResponse } from './profile-response.interface';
@@ -50,7 +50,7 @@ export class ProfileService extends ResourceService {
             init: nextInit
           };
         }
-      )
+      );
   }
 
   public myFavorites(init: number): Observable<ProfilesData> {

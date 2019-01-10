@@ -8,7 +8,7 @@ export const MESSAGE_MAIN: any = {
   'lang': 'en',
   'requestReceipt': true,
   'thread': 'w67dl03g3w6x',
-  'from': USER_ID + '@host',
+  'from': USER_ID,
   'date': new Date('2016-12-12 13:00').getTime()
 };
 export const MESSAGE_MAIN_UPDATED: any = {
@@ -18,7 +18,7 @@ export const MESSAGE_MAIN_UPDATED: any = {
   'lang': 'en',
   'requestReceipt': true,
   'thread': 'w67dl03g3w6x',
-  'from': USER_ID + '@host',
+  'from': USER_ID,
   'date': new Date('2016-12-12 13:02').getTime()
 };
 
@@ -62,7 +62,7 @@ export const MOCK_MESSAGE_FROM_OTHER: Message = new Message(
   'other-id',
   MESSAGE_MAIN.thread,
   MESSAGE_MAIN.body,
-  OTHER_USER_ID + '@host',
+  OTHER_USER_ID,
   MESSAGE_MAIN.date,
   null
 );
