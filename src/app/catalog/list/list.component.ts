@@ -2,7 +2,10 @@ import { Component, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/
 import { ItemService } from '../../core/item/item.service';
 import { ItemChangeEvent } from './catalog-item/item-change.interface';
 import * as _ from 'lodash';
-import { ItemBulkResponse, ItemsData, Order, Product } from '../../core/item/item-response.interface';
+import {
+  ItemBulkResponse, ItemsData, Order, Product,
+  SelectedItemsAction
+} from '../../core/item/item-response.interface';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../shared/confirmation-modal/confirmation-modal.component';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
@@ -12,7 +15,7 @@ import { UploadConfirmationModalComponent } from './modals/upload-confirmation-m
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { UserService } from '../../core/user/user.service';
-import { Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
+import { AvailableSlots, Counters, UserStatsResponse } from '../../core/user/user-stats.interface';
 import { BumpTutorialComponent } from '../checkout/bump-tutorial/bump-tutorial.component';
 import { Item } from '../../core/item/item';
 import { PaymentService } from '../../core/payments/payment.service';
@@ -24,6 +27,9 @@ import { ReactivateConfirmationModalComponent } from './modals/reactivate-confir
 import { MotorPlan, MotorPlanType } from '../../core/user/user-response.interface';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { TooManyItemsModalComponent } from '../../shared/catalog/modals/too-many-items-modal/too-many-items-modal.component';
+import { ActivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
+import { DeactivateItemsModalComponent } from '../../shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 
 const TRANSACTIONS_WITH_CREDITS = ['bumpWithCredits', 'urgentWithCredits', 'reactivateWithCredits', 'purchaseListingFeeWithCredits'];
@@ -51,6 +57,11 @@ export class ListComponent implements OnInit, OnDestroy {
   private counters: Counters;
   public motorPlan: MotorPlanType;
   private upgradePlanModalRef: NgbModalRef;
+  public hasMotorPlan: boolean;
+  public carsLimit: number = 0;
+  public userCanDeactivate: boolean;
+  public availableSlots: number = 0;
+  public selectedItems: Item[];
 
   @ViewChild(ItemSoldDirective) soldButton: ItemSoldDirective;
   @ViewChild(BumpTutorialComponent) bumpTutorial: BumpTutorialComponent;
@@ -72,10 +83,24 @@ export class ListComponent implements OnInit, OnDestroy {
       if (motorPlan) {
         const motorPlanTypes = this.i18n.getTranslations('motorPlanTypes');
         this.motorPlan = motorPlanTypes.filter((p: MotorPlanType) => p.subtype === motorPlan.subtype)[0];
+        this.hasMotorPlan = motorPlan.type === 'motor_plan_pro';
+        if (this.hasMotorPlan) {
+          this.selectedStatus = 'cars';
+          this.carsLimit = motorPlan.limit;
+        }
       }
+      this.getItems();
+      this.getNumberOfProducts();
     });
-    this.getItems();
-    this.getNumberOfProducts();
+
+    this.itemService.selectedItems$.takeWhile(() => {
+      return this.active;
+    }).subscribe((action: SelectedItemsAction) => {
+      this.selectedItems = this.itemService.selectedItems.map((id: string) => {
+        return <Item>_.find(this.items, {id: id});
+      });
+    });
+
     setTimeout(() => {
       this.router.events.takeWhile(() => this.active).subscribe((evt) => {
         if (!(evt instanceof NavigationEnd)) {
@@ -225,6 +250,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public filterByStatus(status: string) {
+    this.deselect();
     if (status !== this.selectedStatus) {
       this.selectedStatus = status;
       this.init = 0;
@@ -242,7 +268,15 @@ export class ListComponent implements OnInit, OnDestroy {
     if (!append) {
       this.items = [];
     }
-    this.itemService.mine(this.init, this.selectedStatus).subscribe((itemsData: ItemsData) => {
+    let status = this.selectedStatus;
+    if (this.hasMotorPlan) {
+      if (this.selectedStatus === 'cars') {
+        status = 'published/cars';
+      } else if (this.selectedStatus === 'published') {
+        status = 'published/notCars';
+      }
+    }
+    this.itemService.mine(this.init, status).subscribe((itemsData: ItemsData) => {
       const items = itemsData.data;
       if (this.selectedStatus === 'sold') {
         this.trackingService.track(TrackingService.PRODUCT_LIST_SOLD_VIEWED, { total_products: items.length });
@@ -278,6 +312,7 @@ export class ListComponent implements OnInit, OnDestroy {
     } else {
       const index: number = _.findIndex(this.items, { '_id': $event.item.id });
       this.items.splice(index, 1);
+      this.getNumberOfProducts();
     }
   }
 
@@ -357,6 +392,16 @@ export class ListComponent implements OnInit, OnDestroy {
       this.counters = userStats.counters;
       this.setNumberOfProducts();
     });
+    if (this.hasMotorPlan) {
+      this.userService.getAvailableSlots().subscribe((slots: AvailableSlots) => {
+        this.availableSlots = slots.num_slots_cars;
+        this.userCanDeactivate = slots.user_can_manage;
+      });
+    }
+  }
+
+  public get totalCars(): number {
+    return this.carsLimit - this.availableSlots;
   }
 
   public purchaseListingFee(orderEvent: OrderEvent) {
@@ -405,6 +450,51 @@ export class ListComponent implements OnInit, OnDestroy {
 
   private getRedirectToTPV(): boolean {
     return localStorage.getItem('redirectToTPV') === 'true';
+  }
+
+  public deactivate() {
+    const items = this.itemService.selectedItems;
+    this.modalService.open(DeactivateItemsModalComponent).result.then(() => {
+      this.itemService.deactivate().subscribe(() => {
+        items.forEach((id: string) => {
+          let item: Item = _.find(this.items, {'id': id});
+          item.flags['onhold'] = true;
+          item.selected = false;
+        });
+        this.getNumberOfProducts();
+        this.eventService.emit('itemChanged');
+      });
+    });
+  }
+
+  public activate() {
+    const items = this.itemService.selectedItems;
+    this.modalService.open(ActivateItemsModalComponent).result.then(() => {
+      this.itemService.activate().subscribe((resp: any) => {
+        items.forEach((id: string) => {
+          let item: Item = _.find(this.items, {'id': id});
+          item.flags['onhold'] = false;
+          item.selected = false;
+        });
+        this.getNumberOfProducts();
+        this.eventService.emit('itemChanged');
+      }, () => {
+        this.modalService.open(TooManyItemsModalComponent, {windowClass: 'bump'})
+          .result.then(() => {}, () => {});
+      });
+    });
+  }
+
+  public get canActivate(): boolean {
+    return _.every(this.selectedItems, (item) => {
+      return item.flags && item.flags.onhold;
+    });
+  }
+
+  public get canDeactivate(): boolean {
+    return _.every(this.selectedItems, (item) => {
+      return item.flags && !item.flags.onhold;
+    });
   }
 
 }

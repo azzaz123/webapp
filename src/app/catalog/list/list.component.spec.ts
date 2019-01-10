@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BumpConfirmationModalComponent } from './modals/bump-confirmation-modal/bump-confirmation-modal.component';
 import {
-  createItemsArray,
+  createItemsArray, ITEM_FLAGS,
   ITEMS_BULK_RESPONSE,
   ITEMS_BULK_RESPONSE_FAILED,
   MOCK_ITEM,
@@ -33,6 +33,9 @@ import { EventService } from '../../core/event/event.service';
 import { ItemSoldDirective } from '../../shared/modals/sold-modal/item-sold.directive';
 import { MOTORPLAN_DATA } from '../../../tests/user.fixtures.spec';
 import { UpgradePlanModalComponent } from './modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { AvailableSlots } from '../../core/user/user-stats.interface';
+import { ItemFlags } from '../../core/item/item-response.interface';
 import { ListingfeeConfirmationModalComponent } from './modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 import { BuyProductModalComponent } from './modals/buy-product-modal/buy-product-modal.component';
 
@@ -75,26 +78,33 @@ describe('ListComponent', () => {
         { provide: TrackingService, useClass: MockTrackingService },
         {
           provide: ItemService, useValue: {
-            selectedItems: [],
-            mine() {
-              return Observable.of({ data: [MOCK_ITEM, MOCK_ITEM], init: 20 });
-            },
-            deselectItems() {
-            },
-            bulkDelete() {
-            },
-            bulkReserve() {
-            },
-            purchaseProducts() {
-            },
-            selectItem() {
-            },
-            getUrgentProducts() {
-            },
-            get() {
-              return Observable.of(MOCK_ITEM_V3);
-            }
-          }
+
+          mine() {
+            return Observable.of({data: [MOCK_ITEM, MOCK_ITEM], init: 20});
+          },
+          deselectItems() {
+          },
+          bulkDelete() {
+          },
+          bulkReserve() {
+          },
+          purchaseProducts() {
+          },
+          selectItem() {
+          },
+          getUrgentProducts() {
+          },
+          get() {
+            return Observable.of(MOCK_ITEM_V3);
+          },
+        bulkSetActivate() {
+          },
+          bulkSetDeactivate() {
+          },
+          activate() {},
+          deactivate() {},
+          selectedItems$: new ReplaySubject(1),
+          selectedItems: []}
         },
         {
           provide: NgbModal, useValue: {
@@ -162,7 +172,10 @@ describe('ListComponent', () => {
               return Observable.of({
                 motorPlan: mockMotorPlan
               });
-            }
+            },
+          getAvailableSlots() {
+              return Observable.of({});
+          }
           }
         },
       ],
@@ -421,12 +434,32 @@ describe('ListComponent', () => {
       expect(userService.getMotorPlan).toHaveBeenCalled();
     });
 
-    it('should set the translated user motor plan', () => {
+    it('should set the translated user motor plan, selectedStatus and carsLimit', () => {
       spyOn(userService, 'getMotorPlan').and.returnValue(Observable.of(MOTORPLAN_DATA));
 
       component.ngOnInit();
 
       expect(component.motorPlan).toEqual({subtype: 'sub_premium', label: 'Super Motor Plan', shortLabel: 'Super'});
+      expect(component.hasMotorPlan).toBe(true);
+      expect(component.selectedStatus).toBe('cars');
+      expect(component.carsLimit).toBe(MOTORPLAN_DATA.limit);
+    });
+
+    it('should set selectedItems with items', () => {
+      const anId = '1';
+      const anotherId = '2';
+      itemService.selectedAction = 'feature';
+      const ITEMS = createItemsArray(5);
+      component.items = ITEMS;
+      itemService.selectedItems = [anId, anotherId];
+      fixture.detectChanges();
+
+      itemService.selectedItems$.next({
+        id: anId,
+        action: 'selected'
+      });
+
+      expect(component.selectedItems).toEqual([ITEMS[0], ITEMS[1]]);
     });
   });
 
@@ -435,6 +468,25 @@ describe('ListComponent', () => {
       expect(itemService.mine).toHaveBeenCalledWith(0, 'published');
       expect(component.items.length).toBe(2);
     });
+
+    it('should call mine with cars status', () => {
+      component.hasMotorPlan = true;
+      component.selectedStatus = 'cars';
+
+      component['getItems']();
+
+      expect(itemService.mine).toHaveBeenCalledWith(20, 'published/cars');
+    });
+
+    it('should call mine with not cars status', () => {
+      component.hasMotorPlan = true;
+      component.selectedStatus = 'published';
+
+      component['getItems']();
+
+      expect(itemService.mine).toHaveBeenCalledWith(20, 'published/notCars');
+    });
+
     it('should track the ProductListLoaded event', () => {
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.PRODUCT_LIST_LOADED, { init: 0 });
     });
@@ -732,6 +784,19 @@ describe('ListComponent', () => {
 
       expect(component.getNumberOfProducts).toHaveBeenCalled();
     });
+    it('should call getAvailableSlots and set it', () => {
+      component.hasMotorPlan = true;
+      const SLOTS: AvailableSlots = {
+        num_slots_cars: 3,
+        user_can_manage: true
+      };
+      spyOn(userService, 'getAvailableSlots').and.returnValue(Observable.of(SLOTS));
+
+      component.getNumberOfProducts();
+
+      expect(component.availableSlots).toBe(SLOTS.num_slots_cars);
+      expect(component.userCanDeactivate).toBe(SLOTS.user_can_manage);
+    });
   });
 
   describe('setNumberOfProducts', () => {
@@ -752,6 +817,126 @@ describe('ListComponent', () => {
       component.filterByStatus('sold');
 
       expect(component.numberOfProducts).toEqual(mockCounters.sold);
+    });
+  });
+
+  describe('totalCars', () => {
+    it('should return totalCars', () => {
+      component.carsLimit = 5;
+      component.availableSlots = 3;
+      expect(component.totalCars).toBe(2);
+    });
+  });
+
+  describe('activate', () => {
+    const TOTAL: number = 5;
+    beforeEach(() => {
+      component.selectedStatus = 'active';
+      component.items = createItemsArray(TOTAL);
+      itemService.selectedItems = ['1'];
+      component.items[0].flags['onhold'] = true;
+      component.items[0].selected = true;
+    });
+
+    describe('success', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(itemService, 'activate').and.returnValue(Observable.of('200'));
+
+        component.activate();
+        tick();
+      }));
+
+      it('should call modal and activate', () => {
+        expect(modalService.open).toHaveBeenCalled();
+        expect(itemService.activate).toHaveBeenCalled();
+      });
+
+      it('should reset item selection', () => {
+        expect(component.items[0].flags['onhold']).toBe(false);
+        expect(component.items[0].selected).toBe(false);
+      });
+
+    });
+
+  });
+
+  describe('deactivate', () => {
+    const TOTAL: number = 5;
+    beforeEach(() => {
+      component.selectedStatus = 'active';
+      component.items = createItemsArray(TOTAL);
+      itemService.selectedItems = ['1'];
+      component.items[0].flags['onhold'] = false;
+      component.items[0].selected = true;
+    });
+
+    describe('success', () => {
+      beforeEach(fakeAsync(() => {
+        spyOn(itemService, 'deactivate').and.returnValue(Observable.of('200'));
+
+        component.deactivate();
+        tick();
+      }));
+
+      it('should call modal and deactivate', () => {
+        expect(modalService.open).toHaveBeenCalled();
+        expect(itemService.deactivate).toHaveBeenCalled();
+      });
+
+      it('should reset item selection', () => {
+        expect(component.items[0].flags['onhold']).toBe(true);
+        expect(component.items[0].selected).toBe(false);
+      });
+
+    });
+
+  });
+
+  describe('canActivate', () => {
+    it('should return true if all items are onHold', () => {
+      const flags = ITEM_FLAGS;
+      flags.onhold = true;
+      const item1 = new Item('1', 1, '1', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
+      const item2 = new Item('2', 2, '2', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
+      component.selectedItems = [item1, item2];
+
+      expect(component.canActivate).toBe(true);
+    });
+
+    it('should return false if not all items are onHold', () => {
+      const flags = <ItemFlags>{...ITEM_FLAGS};
+      flags.onhold = true;
+      const item1 = new Item('1', 1, '1', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
+      const flags2 = <ItemFlags>{...ITEM_FLAGS};
+      flags2.onhold = false;
+      const item2 = new Item('2', 2, '2', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags2);
+      component.selectedItems = [item1, item2];
+
+      expect(component.canActivate).toBe(false);
+    });
+  });
+
+  describe('canDeactivate', () => {
+    it('should return true if all items are not onHold', () => {
+      const flags = ITEM_FLAGS;
+      flags.onhold = false;
+      const item1 = new Item('1', 1, '1', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
+      const item2 = new Item('2', 2, '2', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
+      component.selectedItems = [item1, item2];
+
+      expect(component.canDeactivate).toBe(true);
+    });
+
+    it('should return false if all items onHold', () => {
+      const flags = <ItemFlags>{...ITEM_FLAGS};
+      flags.onhold = true;
+      const item1 = new Item('1', 1, '1', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags);
+      const flags2 = <ItemFlags>{...ITEM_FLAGS};
+      flags2.onhold = true;
+      const item2 = new Item('2', 2, '2', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, flags2);
+      component.selectedItems = [item1, item2];
+
+      expect(component.canDeactivate).toBe(false);
     });
   });
 

@@ -242,15 +242,6 @@ describe('UploadCarComponent', () => {
       expect(component.models.length).toBe(0);
       expect(component.customMake).toBe(true);
     });
-
-    it('should set the car as custom if there are no matching models', () => {
-      spyOn(carSuggestionsService, 'getModels').and.returnValue(Observable.of(CAR_MODELS));
-      component.item = MOCK_CAR;
-
-      component.getModels('Gaudi');
-
-      expect(component.customMake).toBe(true);
-    });
   });
 
   describe('getYears', () => {

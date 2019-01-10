@@ -477,7 +477,7 @@
   <translation id="291347435854981703">Seguro que quieres cancelar el autorenovado para este producto?</translation>
   <translation id="2807800733729323332">Sí</translation>
   <translation id="7803839229714588038">Mensaje de error</translation>
-  <translation id="6127871861896654127"> contacta con nosotros</translation>
+  <translation id="1531212547408073567">contacta con nosotros</translation>
   <translation id="5849506438355710291">para administrar tu plan.</translation>
   <translation id="7851668152562197014">Estás intentando activar más coches de los que te permite tu plan.</translation>
   <translation id="8898651038129346696">Por favor deselecciona algunos productos, llama al o</translation>
@@ -738,6 +738,9 @@
   <translation id="2359130262258320456">O contáctanos para que te hagamos un plan a tu medida que se adapte a tus necesidades.</translation>
   <translation id="3898572555215935465">Email de comercial</translation>
   <translation id="7178101913251976451">mes</translation>
+  <translation id="6371997993047169675">Puedes publicar un coche más</translation>
+  <translation id="219922155027226932">Puedes publicar <ph name="INTERPOLATION"><ex>{{availableSlots}}</ex></ph> coches más</translation>
+  <translation id="954702980611036148">Coches</translation>
   <translation id="351850805832815905">Perfiles</translation>
   <translation id="8888357426803887074">En este listado puedes ver todos los perfiles que has favoriteado.</translation>
   <translation id="9066909356179829078">Estos son los perfiles de wallapop que más te gustan.</translation>

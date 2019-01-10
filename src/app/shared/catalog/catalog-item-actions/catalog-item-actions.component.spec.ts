@@ -182,12 +182,12 @@ describe('CatalogItemActionsComponent', () => {
       beforeEach(fakeAsync(() => {
         spyOn(itemService, 'bulkSetActivate').and.returnValue(Observable.of('200'));
 
-        component.activate(modal);
+        component.activate();
         tick();
       }));
 
       it('should call modal and activate', () => {
-        expect(modalService.open).toHaveBeenCalledWith(modal);
+        expect(modalService.open).toHaveBeenCalled();
         expect(itemService.bulkSetActivate).toHaveBeenCalled();
       });
 
@@ -208,12 +208,12 @@ describe('CatalogItemActionsComponent', () => {
         spyOn(trackingService, 'track').and.callThrough();
         spyOn(itemService, 'bulkSetDeactivate').and.returnValue(Observable.of('200'));
 
-        component.deactivate(modal);
+        component.deactivate();
         tick();
       }));
 
       it('should call modal and deactivate', () => {
-        expect(modalService.open).toHaveBeenCalledWith(modal);
+        expect(modalService.open).toHaveBeenCalled();
         expect(itemService.bulkSetDeactivate).toHaveBeenCalled();
       });
 
