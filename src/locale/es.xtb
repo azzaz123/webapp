@@ -452,12 +452,12 @@
   <translation id="5439433189125089418">Plan Ciudad</translation>
   <translation id="3955868613858648955">Disponibles</translation>
   <translation id="6211554071012062130"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Plan</translation>
-  <translation id="2882470259260755892"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
+  <translation id="2882470259260755892"> <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
   <translation id="5092371717305178267">Plan País</translation>
   <translation id="4772127996106888369">No tienes un Plan País</translation>
   <translation id="1466012768716286509">Apúntate</translation>
   <translation id="766927465251603474"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> Plan</translation>
-  <translation id="6463509780873643723"><ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
+  <translation id="6463509780873643723"> <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph> extra</translation>
   <translation id="9054202731560341408">En uso</translation>
   <translation id="4065372059698851857">Quedan <ph name="INTERPOLATION"><ex>INTERPOLATION</ex></ph></translation>
   <translation id="3286725018134496844">Ya tienes tus destacados extras disponibles para que los puedas utilizar.</translation>
@@ -493,7 +493,7 @@
   <translation id="city">ciudad</translation>
   <translation id="3598887185953670111">país</translation>
   <translation id="9157216793820090491">Aplicar destacados</translation>
-  <translation id="2920017199919975554">Has seleccionado</translation>
+  <translation id="2920017199919975554">Has seleccionado </translation>
   <translation id="4380053465886000543">destacado</translation>
   <translation id="5043856462494495753">destacados</translation>
   <translation id="888341446683346521">Fecha de inicio</translation>
