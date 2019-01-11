@@ -9,14 +9,17 @@
       </label>
     </div>
   </form>
-  <ng-container *ngFor="let type of types">
-    <div *ngIf="itemWithProducts.products[duration][type]" class="price border-l" [ngClass]="type">
+  <div *ngFor="let type of types" class="price border-l" [ngClass]="type">
+    <ng-container *ngIf="itemWithProducts.products[duration][type]; else notAvailable">
       <button class="btn btn-price"
               (click)="select(type)"
               [ngClass]="{selected: type === selectedType && duration === selectedDuration}">
         <s *ngIf="itemWithProducts.products[duration][type]?.original_market_code">{{itemWithProducts.products[duration][type]?.original_market_code * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}<tsl-wallacoin [currency]="creditInfo?.currencyName" color="strike"></tsl-wallacoin></s>
         {{itemWithProducts.products[duration][type]?.market_code * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}<tsl-wallacoin [currency]="creditInfo?.currencyName"></tsl-wallacoin>
       </button>
-    </div>
-  </ng-container>
+    </ng-container>
+    <ng-template #notAvailable>
+      <span class="not-available" i18n>Not Available</span>
+    </ng-template>
+  </div>
 </div>
