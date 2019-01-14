@@ -84,10 +84,15 @@ export class PersistencyService {
     });
   }
 
-  public removePackagedClickstreamEvents(eventsPackage: TrackingEvent) {
+  public removePackagedClickstreamEvents(eventsPackage: TrackingEvent): Observable<boolean> {
     const storedWithKey = eventsPackage.sessions[0].events[0].id;
-    return this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
-    .delete(storedWithKey);
+    return Observable.create(
+      (observer: Observer<boolean>) => {
+        this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
+        .delete(storedWithKey).onsuccess = () => {
+          observer.next(true);
+        };
+      });
   }
 
   public getClickstreamEvents(): Observable<Array<TrackingEventData>> {

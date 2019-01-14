@@ -904,12 +904,12 @@ export class TrackingService {
     const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
     return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body, null, true)
       .subscribe(() => {
-        this.persistencyService.removePackagedClickstreamEvents(eventsPackage).onsuccess = () => {
+        this.persistencyService.removePackagedClickstreamEvents(eventsPackage).subscribe(() => {
           if (this.sendFailed) {
             this.sendStoredPackagedEvents();
             this.sendFailed = false;
           }
-        };
+        });
         if (originalEvents) {
           this.sentEvents = this.sentEvents.concat(originalEvents);
         }
