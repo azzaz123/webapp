@@ -80,7 +80,7 @@ export class PersistencyService {
 
   private removeClickstreamEvents(sentEvents: Array<TrackingEventData>) {
     sentEvents.map(event => {
-      this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore).delete(event.id);
+      this.clickstreamDb.transaction([this.eventsStore], 'readwrite').objectStore(this.eventsStore).delete(event.id);
     });
   }
 
