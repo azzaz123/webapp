@@ -118,27 +118,51 @@ describe('Service: Persistency', () => {
       });
     });
 
-    it('should remove the packaged events from the indexedBb, when removePackagedClickstreamEvents is called', (done) => {
-      const mockPackagedEvents = TRACKING_EVENT;
-      const storedKey = mockPackagedEvents.sessions[0].events[0].id;
+    it('should get all the clickstream events from the indexedBb when getClickstreamEvents is called', (done) => {
+      const mockTrackEvents: TrackingEventData[] = [
+        { eventData: TrackingService.MESSAGE_SENT,
+          id: '1',
+          attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id + '1' }},
+        { eventData: TrackingService.MESSAGE_RECEIVED,
+          id: '2',
+          attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id  + '2' }},
+        { eventData: TrackingService.MESSAGE_READ,
+          id: '3',
+          attributes: { thread_id: MOCK_MESSAGE.conversationId, message_id: MOCK_MESSAGE.id + '3' }}
+      ];
 
       request.addEventListener('success', () => {
         service['clickstreamDb'] = request.result;
-        const addTransaction = request.result.transaction([packagedEventsStoreName], 'readwrite');
-        const addStore = addTransaction.objectStore(packagedEventsStoreName);
-        addStore.add(JSON.parse(JSON.stringify(mockPackagedEvents)), storedKey);
-        addStore.get(storedKey).addEventListener('success', (ev) => expect(ev.target.result).not.toBeFalsy());
+        service.storeClickstreamEvent(mockTrackEvents[0]);
+        service.storeClickstreamEvent(mockTrackEvents[1]);
+        service.storeClickstreamEvent(mockTrackEvents[2]);
 
-        service.removePackagedClickstreamEvents(mockPackagedEvents).addEventListener('success', () => {
-          const getTransaction = request.result.transaction([packagedEventsStoreName], 'readonly');
-          const getStore = getTransaction.objectStore(packagedEventsStoreName);
-          getStore.get(storedKey).addEventListener('success', (event) => {
-            expect(event.target.result).toBeFalsy();
+        service.getClickstreamEvents().subscribe(r => {
+          expect(r).toEqual(mockTrackEvents);
             done();
           });
         });
       });
+
+    it('should get all the packaged clickstream events from the indexedBb when getPackagedClickstreamEvents is called', (done) => {
+      const firstEventPack = JSON.parse(JSON.stringify(TRACKING_EVENT));
+      const secondEventPack = JSON.parse(JSON.stringify(TRACKING_EVENT));
+      const expectedResult = [firstEventPack, secondEventPack];
+
+      request.addEventListener('success', () => {
+        service['clickstreamDb'] = request.result;
+        const putTransaction = request.result.transaction([packagedEventsStoreName], 'readwrite');
+        const putStore = putTransaction.objectStore(packagedEventsStoreName);
+        putStore.put(firstEventPack);
+        putStore.put(secondEventPack);
+
+        service.getPackagedClickstreamEvents().subscribe(r => {
+          expect(r).toEqual(expectedResult);
+          done();
     });
+  });
+    });
+
   });
 
   describe('getMessages', () => {
