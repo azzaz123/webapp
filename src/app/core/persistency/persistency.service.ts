@@ -119,9 +119,8 @@ export class PersistencyService {
 
   public storePackagedClickstreamEvents(eventsPackage: any) {
     const storedKey = eventsPackage.sessions[0].events[0].id;
-    const addEvents = this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
-    .add(eventsPackage, storedKey);
-    addEvents.onsuccess = () => {
+    this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
+    .add(eventsPackage, storedKey).onsuccess = () => {
       this.removeClickstreamEvents(eventsPackage.sessions[0].events);
     };
   }
