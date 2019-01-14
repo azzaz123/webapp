@@ -139,10 +139,10 @@ describe('Service: Persistency', () => {
 
         service.getClickstreamEvents().subscribe(r => {
           expect(r).toEqual(mockTrackEvents);
-            done();
-          });
+          done();
         });
       });
+    });
 
     it('should get all the packaged clickstream events from the indexedBb when getPackagedClickstreamEvents is called', (done) => {
       const firstEventPack = JSON.parse(JSON.stringify(TRACKING_EVENT));
@@ -159,10 +159,27 @@ describe('Service: Persistency', () => {
         service.getPackagedClickstreamEvents().subscribe(r => {
           expect(r).toEqual(expectedResult);
           done();
-    });
-  });
+        });
+      });
     });
 
+    it('should remove the packaged clickstream events when removePackagedClickstreamEvents is caled', (done) => {
+      const firstEventPack = JSON.parse(JSON.stringify(TRACKING_EVENT));
+      const storedWithKey = firstEventPack.sessions[0].events[0].id;
+      request.addEventListener('success', () => {
+        service['clickstreamDb'] = request.result;
+        const transaction = request.result.transaction([packagedEventsStoreName], 'readwrite');
+        const store = transaction.objectStore(packagedEventsStoreName);
+        store.put(firstEventPack, storedWithKey);
+
+        service.removePackagedClickstreamEvents(firstEventPack).subscribe(() => {
+          service.getPackagedClickstreamEvents().subscribe(r => {
+            expect(r).not.toContain(firstEventPack);
+            done();
+          });
+        });
+      });
+    });
   });
 
   describe('getMessages', () => {
