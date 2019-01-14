@@ -64,8 +64,17 @@ export class CartProComponent implements OnInit {
   }
 
   private calculateBalance() {
-    this.balance['citybump'] = this.perks.getBumpCounter() - this.cart['citybump'].total;
-    this.balance['countrybump'] = this.perks.getNationalBumpCounter() - this.cart['countrybump'].total;
+    const autorenewCitybump = (this.status.autorenew_scheduled.citybump || 0) + (this.status.autorenew_scheduled.zonebump || 0);
+    if (autorenewCitybump) {
+      this.balance['citybump'] = (this.perks.getBumpCounter() - autorenewCitybump) - this.cart['citybump'].total;
+    } else {
+      this.balance['citybump'] = this.perks.getBumpCounter() - this.cart['citybump'].total;
+    }
+    if (this.status.autorenew_scheduled.countrybump) {
+      this.balance['countrybump'] = (this.perks.getNationalBumpCounter() - this.status.autorenew_scheduled.countrybump) - this.cart['countrybump'].total;
+    } else {
+      this.balance['countrybump'] = this.perks.getNationalBumpCounter() - this.cart['countrybump'].total;
+    }
   }
 
   private getBalanceWithScheduled(): Balance {

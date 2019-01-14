@@ -45,7 +45,7 @@ describe('CartProComponent', () => {
   const MOCK_STATUS: ScheduledStatus = {
     active: true,
     autorenew_alert: 0,
-    autorenew_scheduled: { citybump: 3, countrybump: 4 }
+    autorenew_scheduled: { citybump: 16, countrybump: 21 }
   };
 
   beforeEach(async(() => {
@@ -149,14 +149,14 @@ describe('CartProComponent', () => {
       CART['citybump'].total = 10;
       component.ngOnInit();
 
-      expect(component.balance['citybump']).toBe(3);
+      expect(component.balance['citybump']).toBe(-13);
     });
 
     it('should calculate balance for country cart', () => {
       CART['countrybump'].total = 10;
       component.ngOnInit();
 
-      expect(component.balance['countrybump']).toBe(14);
+      expect(component.balance['countrybump']).toBe(-7);
     });
   });
 
@@ -230,8 +230,7 @@ describe('CartProComponent', () => {
 
       it('should navigate to pro list if no citybump balance', () => {
         component.cart.citybump.total = 1;
-        perksModel.subscription.bump.quantity = 0;
-        perksModel.extra.bump.quantity = 0;
+        component.balance.countrybump = -1;
 
         component.applyBumps();
 
@@ -241,8 +240,7 @@ describe('CartProComponent', () => {
 
       it('should navigate to pro list if no countrybump balance', () => {
         component.cart.countrybump.total = 1;
-        perksModel.subscription.national.quantity = 0;
-        perksModel.extra.national.quantity = 0;
+        component.balance.countrybump = -1;
 
         component.applyBumps();
 
