@@ -11,6 +11,7 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { CartChange, CartProItem } from '../../../shared/catalog/cart/cart-item.interface';
 import { OrderPro } from '../../../core/item/item-response.interface';
+import * as _ from 'lodash';
 
 export interface Balance {
   citybump: number;
@@ -95,13 +96,20 @@ export class CartProComponent implements OnInit {
 
   applyBumps() {
     const order: OrderPro[] = this.cart.prepareOrder();
+    const startsToday: boolean = _.some(order, (item: OrderPro) => {
+       return (new Date(item.start_date)).toDateString() === (new Date).toDateString();
+    });
     this.itemService.bumpProItems(order).subscribe((failedProducts: string[]) => {
       if (failedProducts && failedProducts.length) {
         this.errorService.i18nError('bumpError');
       } else {
         this.itemService.deselectItems();
         this.trackingService.track(TrackingService.BUMP_PRO_APPLY, { selected_products: order });
-        this.router.navigate(['/pro/catalog/list', { code: this.isFutureOrderWithNoBalance() ? 202 : 201 }]);
+        let code = 201;
+        if (this.isFutureOrderWithNoBalance()) {
+          code = startsToday ? 203 : 202;
+        }
+        this.router.navigate(['/pro/catalog/list', { code:  code }]);
       }
     }, (error) => {
       if (error.text()) {
