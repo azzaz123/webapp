@@ -181,7 +181,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private createConversationAndSetItCurrent() {
     this.conversationService.createConversation(this.newConversationItemId).subscribe((newConversation: Conversation) => {
-      this.eventService.subscribe(EventService.REQUEST_PHONE, (requestType) => {
+      this.eventService.subscribe(EventService.REQUEST_PHONE, (requestType: string) => {
         if (requestType === phoneMethod.popUp) {
           this.conversationService.openPhonePopup(newConversation, true);
         } else {

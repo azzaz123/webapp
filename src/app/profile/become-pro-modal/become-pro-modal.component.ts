@@ -9,8 +9,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class BecomeProModalComponent {
 
-  @Input() user: User;
-
   constructor(public activeModal: NgbActiveModal) { }
 
 }

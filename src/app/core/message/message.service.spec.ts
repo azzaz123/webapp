@@ -30,10 +30,11 @@ import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveService } from './archive.service';
 import { HttpService } from '../http/http.service';
 import { I18nService } from '../i18n/i18n.service';
+import { RealTimeService } from './real-time.service';
 
 describe('Service: Message', () => {
 
-  let xmpp: XmppService;
+  let realTime: RealTimeService;
   let service: MessageService;
   let persistencyService: PersistencyService;
   let userService: UserService;
@@ -52,6 +53,7 @@ describe('Service: Message', () => {
         EventService,
         I18nService,
         MsgArchiveService,
+        RealTimeService,
         { provide: HttpService, useValue: { get() { } } },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConnectionService, useValue: {} },
@@ -59,7 +61,7 @@ describe('Service: Message', () => {
         { provide: UserService, useValue: { user: new User(USER_ID) } }
       ]
     });
-    xmpp = TestBed.get(XmppService);
+    realTime = TestBed.get(RealTimeService);
     service = TestBed.get(MessageService);
     persistencyService = TestBed.get(PersistencyService);
     userService = TestBed.get(UserService);
@@ -96,7 +98,7 @@ describe('Service: Message', () => {
     const nanoTimestamp = (new Date(MOCK_DB_META.data.start).getTime() / 1000) + '000';
 
     beforeEach(() => {
-      spyOn(xmpp, 'sendMessageDeliveryReceipt');
+      spyOn(realTime, 'sendDeliveryReceipt');
       conversation = MOCK_CONVERSATION();
     });
 
@@ -180,7 +182,7 @@ describe('Service: Message', () => {
 
       it('should resend messages that have the status PENDING and is newer than 5 days', () => {
         spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_PENDING));
-        spyOn(xmpp, 'sendMessage');
+        spyOn(realTime, 'resendMessage');
         const pendingMsgCount = MOCK_DB_RESPONSE_WITH_PENDING.filter(m => m.doc.status === messageStatus.PENDING).length;
 
 
@@ -189,19 +191,19 @@ describe('Service: Message', () => {
           pendingMsg = response.data[0];
         });
 
-        expect(xmpp.sendMessage).toHaveBeenCalledTimes(pendingMsgCount);
-        expect(xmpp.sendMessage).toHaveBeenCalledWith(conversation, pendingMsg.message, true, pendingMsg.id);
+        expect(realTime.resendMessage).toHaveBeenCalledTimes(pendingMsgCount);
+        expect(realTime.resendMessage).toHaveBeenCalledWith(conversation, pendingMsg);
       });
 
       it('should not resend messages that have the status PENDING and are older than 5 days', () => {
         spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_OLD_PENDING));
-        spyOn(xmpp, 'sendMessage');
+        spyOn(realTime, 'resendMessage');
 
         service.getMessages(conversation).subscribe((data: any) => {
           response = data;
         });
 
-        expect(xmpp.sendMessage).not.toHaveBeenCalled();
+        expect(realTime.resendMessage).not.toHaveBeenCalled();
       });
     });
 
@@ -258,7 +260,7 @@ describe('Service: Message', () => {
     const messagesArray: Array<Message> = createMessagesArray(5);
     beforeEach(() => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of(MOCK_DB_META));
-      spyOn(xmpp, 'sendMessageDeliveryReceipt');
+      spyOn(realTime, 'sendDeliveryReceipt');
     });
     describe('with connection', () => {
       beforeEach(() => {
@@ -340,12 +342,12 @@ describe('Service: Message', () => {
           });
         });
 
-        it(`should sendMessageDeliveryReceipt for messages from the response, that don't have a corresponding receivedReceipt`, () => {
+        it(`should sendDeliveryReceipt for messages from the response, that don't have a corresponding receivedReceipt`, () => {
           service.getNotSavedMessages(conversations, false).subscribe();
 
-          expect(xmpp.sendMessageDeliveryReceipt).toHaveBeenCalledTimes(messagesArray.length);
+          expect(realTime.sendDeliveryReceipt).toHaveBeenCalledTimes(messagesArray.length);
           messagesArray.map(msg => {
-            expect(xmpp.sendMessageDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.conversationId);
+            expect(realTime.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.conversationId);
           });
         });
 
@@ -456,7 +458,7 @@ describe('Service: Message', () => {
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
-        BUYER_ID + '@domain'
+        BUYER_ID
       );
 
       service.addUserInfo(conversation, message);
@@ -470,7 +472,7 @@ describe('Service: Message', () => {
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
-        USER_ID + '@domain'
+        USER_ID
       );
 
       message = service.addUserInfo(conversation, message);
@@ -484,7 +486,7 @@ describe('Service: Message', () => {
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
-        USER_ID + '@domain',
+        USER_ID,
         new Date(),
         messageStatus.RECEIVED,
         { text: 'someText', type: 'someType' }
@@ -500,10 +502,10 @@ describe('Service: Message', () => {
 
   describe('send', () => {
     it('should call the send message', () => {
-      spyOn(xmpp, 'sendMessage');
+      spyOn(realTime, 'sendMessage');
       const conversation: Conversation = MOCK_CONVERSATION();
       service.send(conversation, 'text');
-      expect(xmpp.sendMessage).toHaveBeenCalledWith(conversation, 'text');
+      expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, 'text');
     });
   });
 
@@ -514,20 +516,20 @@ describe('Service: Message', () => {
       conversation = MOCK_CONVERSATION();
     });
 
-    it('should subscribe to the EventService.CONVERSATION_CEATED event when called', () => {
+    it('should subscribe to the EventService.CONV_WITH_PHONE_CREATED event when called', () => {
       spyOn(eventService, 'subscribe');
 
       service.addPhoneNumberRequestMessage(conversation);
 
-      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.CONVERSATION_CEATED);
+      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.CONV_WITH_PHONE_CREATED);
     });
 
-    it('should call persistencyService.saveMessage and save the request msg when a CONVERSATION_CEATED event is triggered', () => {
+    it('should call persistencyService.saveMessage and save the request msg when a CONV_WITH_PHONE_CREATED event is triggered', () => {
       spyOn(persistencyService, 'saveMessages');
       service.addPhoneNumberRequestMessage(conversation);
       const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
 
-      eventService.emit(EventService.CONVERSATION_CEATED, conversation, requestMessage);
+      eventService.emit(EventService.CONV_WITH_PHONE_CREATED, conversation, requestMessage);
 
       expect(persistencyService.saveMessages).toHaveBeenCalledWith([requestMessage]);
     });
@@ -580,16 +582,16 @@ describe('Service: Message', () => {
     const conversation = MOCK_CONVERSATION();
 
     beforeEach(() => {
-      spyOn(xmpp, 'sendMessage');
+      spyOn(realTime, 'sendMessage');
       service.addPhoneNumberRequestMessage(conversation);
     });
 
-    it('should call xmpp.sendMessage with the new message', () => {
+    it('should call realTime.sendMessage with the new message', () => {
       const phoneMsg: any = i18n.getTranslations('phoneMessage') + phone;
 
       service.createPhoneNumberMessage(conversation, phone);
 
-      expect(xmpp.sendMessage).toHaveBeenCalledWith(conversation, phoneMsg);
+      expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, phoneMsg);
     });
 
     it('should set phoneRequestState to ANSWERED for the phoneRequest message', () => {

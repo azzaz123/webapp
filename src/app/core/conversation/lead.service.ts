@@ -17,8 +17,9 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/do';
-import { XmppService } from '../xmpp/xmpp.service';
 import { ConnectionService } from '../connection/connection.service';
+import { RealTimeService } from '../message/real-time.service';
+import { BlockUserService } from './block-user.service';
 
 @Injectable()
 export abstract class LeadService {
@@ -36,7 +37,8 @@ export abstract class LeadService {
               protected userService: UserService,
               protected itemService: ItemService,
               protected event: EventService,
-              protected xmpp: XmppService,
+              protected realTime: RealTimeService,
+              protected blockService: BlockUserService,
               protected connectionService: ConnectionService) {
   }
 
@@ -112,7 +114,7 @@ export abstract class LeadService {
     return this.userService.get(conversation.other_user_id)
     .map((user: User) => {
       conversation.user = user;
-      conversation.user.blocked = this.xmpp.isBlocked(conversation.user.id);
+      conversation.user.blocked = this.blockService.isBlocked(conversation.user.id);
       return conversation;
     });
   }
