@@ -29,6 +29,10 @@ describe('CartProComponent', () => {
   let trackingService: TrackingService;
   let paymentsService: PaymentService;
   const perksModel: PerksModel = new PerksModel();
+  perksModel.subscription.bump.quantity = 10;
+  perksModel.extra.bump.quantity = 3;
+  perksModel.subscription.national.quantity = 20;
+  perksModel.extra.national.quantity = 4;
 
   const CART = new CartPro();
   const CART_CHANGE: CartChange = {
@@ -142,15 +146,17 @@ describe('CartProComponent', () => {
     });
 
     it('should calculate balance for city cart', () => {
+      CART['citybump'].total = 10;
       component.ngOnInit();
 
-      expect(component.balance['citybump']).toBe(-16);
+      expect(component.balance['citybump']).toBe(-13);
     });
 
     it('should calculate balance for country cart', () => {
+      CART['countrybump'].total = 10;
       component.ngOnInit();
 
-      expect(component.balance['countrybump']).toBe(-21);
+      expect(component.balance['countrybump']).toBe(-7);
     });
   });
 
@@ -192,6 +198,9 @@ describe('CartProComponent', () => {
         spyOn(errorService, 'i18nError');
         spyOn(router, 'navigate');
         spyOn(trackingService, 'track');
+        component.cart.countrybump.total = 0;
+        component.cart.citybump.total = 0;
+
         component.applyBumps();
       });
 
@@ -209,6 +218,33 @@ describe('CartProComponent', () => {
 
       it('should navigate to pro list', () => {
         expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 201 }]);
+        expect(errorService.i18nError).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('success with no balance', () => {
+      beforeEach(() => {
+        spyOn(errorService, 'i18nError');
+        spyOn(router, 'navigate');
+      });
+
+      it('should navigate to pro list if no citybump balance', () => {
+        component.cart.citybump.total = 1;
+        component.balance.countrybump = -1;
+
+        component.applyBumps();
+
+        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 202 }]);
+        expect(errorService.i18nError).not.toHaveBeenCalled();
+      });
+
+      it('should navigate to pro list if no countrybump balance', () => {
+        component.cart.countrybump.total = 1;
+        component.balance.countrybump = -1;
+
+        component.applyBumps();
+
+        expect(router.navigate).toHaveBeenCalledWith(['/pro/catalog/list', { code: 202 }]);
         expect(errorService.i18nError).not.toHaveBeenCalled();
       });
     });
