@@ -32,7 +32,7 @@ export class HttpService extends Http {
     private eventService: EventService) {
       super(backend, defaultOptions);
     }
-    private retryOnStatuses = [408, 429, 500, 502, 503, 504];
+    private retryOnStatuses = [0, 408, 429, 500, 502, 503, 504];
     private initialRetryInterval = 5 * 1000;
     private maxRetryInterval = 5 * 60 * 1000;
     public quitRetryMsg = 'Quit retrying';
