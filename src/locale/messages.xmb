@@ -450,15 +450,15 @@
   <msg id="7022993325750262876"><source>app/profile/profile.component.html:11</source><source>app/profile-pro/profile-pro.component.html:11</source>View my public profile</msg>
   <msg id="3797778920049399855"><source>app/profile/profile.component.html:16</source><source>app/profile-pro/profile-pro.component.html:16</source>Logout</msg>
   <msg id="7830707034534607415"><source>app/profile/profile.component.html:22</source><source>app/profile-pro/profile-pro.component.html:23</source>Subscription</msg>
-  <msg id="3163876998313048927"><source>app/profile/become-pro-modal/become-pro-modal.component.html:12</source>Become a PRO</msg>
-  <msg id="2542747907081885378"><source>app/profile/become-pro-modal/become-pro-modal.component.html:13</source>Go to the app for further details</msg>
-  <msg id="976362268569732073"><source>app/profile/become-pro-modal/become-pro-modal.component.html:16</source>Your products will be seen more: they will be in the first position of the searches</msg>
-  <msg id="2615367215367851425"><source>app/profile/become-pro-modal/become-pro-modal.component.html:17</source>Buyers can save your shop/profile as a favorite</msg>
-  <msg id="834481573787357193"><source>app/profile/become-pro-modal/become-pro-modal.component.html:18</source>Buyers will be able to see your phone and website in your profile for easy contact</msg>
-  <msg id="9213743536713966070"><source>app/profile/become-pro-modal/become-pro-modal.component.html:19</source>You will have a description of your store or service and its location</msg>
-  <msg id="4670889551195648197"><source>app/profile/become-pro-modal/become-pro-modal.component.html:20</source>Your profile will have a different design and will stand out!</msg>
-  <msg id="7373818560498277711"><source>app/profile/become-pro-modal/become-pro-modal.component.html:21</source>Your items won&apos;t expire</msg>
-  <msg id="5553776930806289663"><source>app/profile/become-pro-modal/become-pro-modal.component.html:24</source>Ok, got it!</msg>
+  <msg id="3163876998313048927"><source>app/profile/become-pro-modal/become-pro-modal.component.html:5</source>Become a PRO</msg>
+  <msg id="2542747907081885378"><source>app/profile/become-pro-modal/become-pro-modal.component.html:6</source>Go to the app for further details</msg>
+  <msg id="976362268569732073"><source>app/profile/become-pro-modal/become-pro-modal.component.html:10</source>Your products will be seen more: they will be in the first position of the searches</msg>
+  <msg id="2615367215367851425"><source>app/profile/become-pro-modal/become-pro-modal.component.html:11</source>Buyers can save your shop/profile as a favorite</msg>
+  <msg id="834481573787357193"><source>app/profile/become-pro-modal/become-pro-modal.component.html:12</source>Buyers will be able to see your phone and website in your profile for easy contact</msg>
+  <msg id="9213743536713966070"><source>app/profile/become-pro-modal/become-pro-modal.component.html:13</source>You will have a description of your store or service and its location</msg>
+  <msg id="4670889551195648197"><source>app/profile/become-pro-modal/become-pro-modal.component.html:14</source>Your profile will have a different design and will stand out!</msg>
+  <msg id="7373818560498277711"><source>app/profile/become-pro-modal/become-pro-modal.component.html:15</source>Your items won&apos;t expire</msg>
+  <msg id="5553776930806289663"><source>app/profile/become-pro-modal/become-pro-modal.component.html:18</source>Ok, got it!</msg>
   <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.html:5</source>Are you sure you want to close your account?</msg>
   <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.html:6</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
   <msg id="859827593140377121"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.html:7</source>Yes, I do want to close my account</msg>
@@ -558,9 +558,11 @@
   <msg id="6818764209697915477"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:57</source>Feature it now from <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></msg>
   <msg id="2323764505157256373"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:60</source>Reactivate your product</msg>
   <msg id="5501995834284128332"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:61</source>Reactivate your product to see your stats and so that other users can contact you.</msg>
-  <msg id="6821183586555063962"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:64</source>This product is Featured</msg>
-  <msg id="3879651736105644738"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:65</source>You will get more views, chats and more interested people.</msg>
-  <msg id="916352071278248935"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:66</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amDateFormat:momentConfig}}</ex></ph></msg>
+  <msg id="4469663920044009823"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:64</source>Publish your product</msg>
+  <msg id="5448941415082762589"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:65</source>Publish your product to see your stats and so that other users can contact you.</msg>
+  <msg id="6821183586555063962"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:68</source>This product is Featured</msg>
+  <msg id="3879651736105644738"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:69</source>You will get more views, chats and more interested people.</msg>
+  <msg id="916352071278248935"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:70</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amDateFormat:momentConfig}}</ex></ph></msg>
   <msg id="8775411328776279097"><source>app/tutorial/tutorial.component.html:6</source>Introducing our new webpage!</msg>
   <msg id="6002580040961562985"><source>app/tutorial/tutorial.component.html:7</source>You&apos;re in the zone to access all of the features of the app.</msg>
   <msg id="2137505802700728396"><source>app/tutorial/tutorial.component.html:11</source>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</msg>
