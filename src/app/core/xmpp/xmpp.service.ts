@@ -159,7 +159,7 @@ export class XmppService {
       this.getPrivacyList().subscribe((jids: string[]) => {
         const blockedIds = [];
         jids.map(jid => blockedIds.push(jid.split('@')[0]));
-        this.blockedUsers = jids;
+        this.blockedUsers = blockedIds;
         if (blockedIds.length) {
           this.eventService.emit(EventService.PRIVACY_LIST_READY, blockedIds);
         }
@@ -271,13 +271,16 @@ export class XmppService {
     })
     .catch(() => {}))
     .map((response: any) => {
-      return response && response.privacy && response.privacy.jids ? response.privacy.jids : [];
+      const blockedIds = [];
+        if (response && response.privacy && response.privacy.jids) {
+          response.privacy.jids.map((jid: string) => blockedIds.push(jid.split('@')[0]));
+        }
+      return blockedIds;
     });
   }
 
   public blockUser(user: User): Observable<any> {
-    const jidBare = this.createJid(user.id).bare;
-    this.blockedUsers.push(jidBare);
+    this.blockedUsers.push(user.id);
     return this.setPrivacyList(this.blockedUsers)
     .flatMap(() => {
       if (this.blockedUsers.length === 1) {
@@ -290,38 +293,34 @@ export class XmppService {
   }
 
   public unblockUser(user: User): Observable<any> {
-    const jidBare = this.createJid(user.id).bare;
-    _.remove(this.blockedUsers, (userId) => userId === jidBare);
+    _.remove(this.blockedUsers, (userId) => userId === user.id);
     return this.setPrivacyList(this.blockedUsers)
     .do(() => user.blocked = false)
     .do(() => this.eventService.emit(EventService.USER_UNBLOCKED, user.id));
   }
 
-  public isBlocked(userId: string): boolean {
-    const jidBare = this.createJid(userId).bare;
-    return this.blockedUsers ? this.blockedUsers.indexOf(jidBare) !== -1 : false;
-  }
-
   private onPrivacyListChange(iq: any) {
     if (iq.type === 'set' && iq.privacy) {
-      this.getPrivacyList().subscribe((jidBares: string[]) => {
-        if (jidBares.length > this.blockedUsers.length) {
-          const blockedUsers: string[] = _.difference(jidBares, this.blockedUsers);
-          blockedUsers.forEach((jidBare: string) => {
-            this.eventService.emit(EventService.USER_BLOCKED, this.getIdFromBare(jidBare));
+      this.getPrivacyList().subscribe((ids: string[]) => {
+        if (ids.length > this.blockedUsers.length) {
+          const blockedUsers: string[] = _.difference(ids, this.blockedUsers);
+          blockedUsers.forEach((id: string) => {
+            this.eventService.emit(EventService.USER_BLOCKED, id);
           });
         } else {
-          const unblockedUsers: string[] = _.difference(this.blockedUsers, jidBares);
-          unblockedUsers.forEach((jidBare: string) => {
-            this.eventService.emit(EventService.USER_UNBLOCKED, this.getIdFromBare(jidBare));
+          const unblockedUsers: string[] = _.difference(this.blockedUsers, ids);
+          unblockedUsers.forEach((id: string) => {
+            this.eventService.emit(EventService.USER_UNBLOCKED, id);
           });
         }
-        this.blockedUsers = jidBares;
+        this.blockedUsers = ids;
       });
     }
   }
 
-  private setPrivacyList(jids: string[]): Observable<any> {
+  private setPrivacyList(ids: string[]): Observable<any> {
+    const jids = [];
+    ids.map(id => jids.push(this.createJid(id).bare));
     return Observable.from(this.client.sendIq({
       type: 'set',
       privacy: {
@@ -506,9 +505,5 @@ export class XmppService {
   private createJid(userId: string): JID {
     const jid = new JID(userId, environment.xmppDomain, this.resource);
     return jid;
-  }
-
-  private getIdFromBare(bare: string): string {
-    return bare.split('@')[0];
   }
 }
