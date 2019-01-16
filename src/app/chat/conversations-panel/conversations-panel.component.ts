@@ -141,6 +141,13 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
       this.conversationService.checkIfLastPage(this.archive).subscribe();
+      this.eventService.subscribe(EventService.PRIVACY_LIST_READY, (blockedUsers) => {
+        this.conversations.map(conv => {
+          if (blockedUsers.indexOf(conv.user.id) !== -1) {
+            conv.user.blocked = true;
+          }
+        });
+      });
     });
   }
 

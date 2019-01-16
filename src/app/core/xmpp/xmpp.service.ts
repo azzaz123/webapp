@@ -157,7 +157,12 @@ export class XmppService {
       this.client.enableCarbons();
       this.setDefaultPrivacyList().subscribe();
       this.getPrivacyList().subscribe((jids: string[]) => {
+        const blockedIds = [];
+        jids.map(jid => blockedIds.push(jid.split('@')[0]));
         this.blockedUsers = jids;
+        if (blockedIds.length) {
+          this.eventService.emit(EventService.PRIVACY_LIST_READY, blockedIds);
+        }
         this.clientConnected = true;
       });
     });
