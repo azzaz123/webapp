@@ -1,4 +1,6 @@
+$modal-standard-width: 600px;
 $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
+
 .modal-backdrop.in {
   opacity: .7;
 }
@@ -11,7 +13,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   flex-direction: column;
 }
 .modal-content {
-  max-width: 400px;
+  max-width: $modal-standard-width;
   margin: 0 auto;
   box-shadow: $modal-box-shadow;
   border: 0;
@@ -36,11 +38,6 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     }
     &:hover mat-icon /deep/ path {
       fill: $grey-900;
-    }
-    .modal.bump-confirm & {
-      mat-icon /deep/ path {
-        fill: $grey-200;
-      }
     }
     &.light {
       mat-icon /deep/ path {
@@ -145,17 +142,6 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.bump-confirm {
-  $modal-width: 448px;
-  .modal-dialog {
-    max-width: $modal-width;
-  }
-  .modal-content {
-   width: $modal-width !important;
-    max-width: unset;
-  }
-}
-
 .modal.preview, .modal.location  {
   $modal-width: 700px;
   .modal-dialog {
@@ -239,6 +225,22 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     top: $spacing-1M;
     mat-icon {
       @include square($spacing-1M);
+    }
+  }
+}
+
+.modal.modal-standard {
+  $modal-width: 600px;
+  .modal-dialog {
+    max-width: $modal-width;
+  }
+  .modal-content {
+    width: $modal-width !important;
+    max-width: unset;
+    .modal-close {
+      mat-icon /deep/ path {
+        fill: $grey-200;
+      }
     }
   }
 }

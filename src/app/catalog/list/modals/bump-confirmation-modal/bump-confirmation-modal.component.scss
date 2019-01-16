@@ -1,13 +1,7 @@
 @import "~style/common";
 
-:host {
-  padding: $spacing-L;
-  text-align: center;
-}
 .modal-close {
   @include square(13px);
-  top: 10px;
-  right: 10px;
   mat-icon {
     @include square(13px);
     line-height: initial;
@@ -22,14 +16,16 @@ img {
 }
 p {
   max-width: 300px;
-  margin: 0 auto $spacing-L auto;
+  margin: 0 auto $spacing-3M auto;
   font-size: $font-size;
   color: $grey-500;
+  &.credit-info {
+    color: $corporate;
+  }
 }
 h1 {
   font-weight: bold;
-  color: $corporate;
-  font-size: $font-size-LL;
+  font-size: $font-size-L;
   margin-bottom: $spacing-S;
   &.fail {
     color: $warn;
@@ -38,8 +34,35 @@ h1 {
 
 .link {
   color: $grey-250 !important;
+  margin-top: $spacing-S;
+  display: inline-block;
   &:hover {
     text-decoration: underline;
     cursor: pointer;
   }
+}
+
+.success-content {
+  display: flex;
+  .image-col {
+    background-color: $grey-250;
+    min-width: 280px;
+    border-top-left-radius: 0.3rem;
+    border-bottom-left-radius: 0.3rem;
+    display: flex;
+    justify-content: center;
+    img {
+      width: 200px;
+    }
+  }
+  .content-col {
+    text-align: center;
+    padding: 52px $spacing-40;
+  }
+}
+
+.error-content {
+  background: url(/assets/images/bump-ko.svg) no-repeat 112px;
+  padding: $spacing-40;
+  padding-left: 260px;
 }

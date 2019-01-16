@@ -123,7 +123,7 @@ export class ListComponent implements OnInit, OnDestroy {
             },
             bump: {
               component: BumpConfirmationModalComponent,
-              windowClass: 'bump-confirm'
+              windowClass: 'modal-standard'
             },
             reactivate: {
               component: ReactivateConfirmationModalComponent,
