@@ -4,15 +4,8 @@
   background: url(/assets/images/urgent-background.svg) no-repeat 90px 47px;
   background-size: 130px;
   padding: $spacing-40 $spacing-40 $spacing-M 260px;
-  h1 {
-    font-weight: bold;
-    font-size: $font-size-L;
-    margin-bottom: $spacing-S;
-  }
   p {
     margin: 0 auto $spacing-3M auto;
-    font-size: $font-size;
-    color: $grey-500;
     &.credit-info {
       margin-bottom: 0;
     }

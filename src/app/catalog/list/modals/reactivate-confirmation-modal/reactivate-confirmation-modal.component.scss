@@ -5,17 +5,7 @@
   display: flex;
 }
 
-.image-col {
-  background-color: $grey-250;
-  min-width: 280px;
-  border-top-left-radius: 0.3rem;
-  border-bottom-left-radius: 0.3rem;
-  display: flex;
-  justify-content: center;
-  img {
-    width: 200px;
-  }
-}
+
 .content-col {
   text-align: center;
   padding: 52px $spacing-40;
@@ -29,12 +19,6 @@ p {
   &.credit-info {
     color: $corporate;
   }
-}
-
-h1 {
-  font-weight: bold;
-  font-size: $font-size-L;
-  margin-bottom: $spacing-S;
 }
 
 .link {

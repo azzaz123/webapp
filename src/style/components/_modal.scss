@@ -242,5 +242,28 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
         fill: $grey-200;
       }
     }
+    .image-col {
+      background-color: $grey-250;
+      min-width: 280px;
+      border-top-left-radius: 0.3rem;
+      border-bottom-left-radius: 0.3rem;
+      display: flex;
+      justify-content: center;
+      img {
+        width: 200px;
+      }
+    }
+    .modal-title {
+      font-weight: bold;
+      font-size: $font-size-L;
+      margin-bottom: $spacing-S;
+      &.fail {
+        color: $warn;
+      }
+    }
+    .modal-text {
+      font-size: $font-size;
+      color: $grey-500;
+    }
   }
 }

@@ -2,9 +2,9 @@
   <mat-icon svgIcon="cross"></mat-icon>
 </div>
 <div class="content-col">
-  <h1 i18n>Congratulations</h1>
-  <p i18n>Your item has been uploaded and it's marked as urgent.</p>
-  <p class="credit-info" *ngIf="creditUsed"><b>
+  <h1 class="modal-title" i18n>Congratulations</h1>
+  <p class="modal-text" i18n>Your item has been uploaded and it's marked as urgent.</p>
+  <p class="credit-info modal-text" *ngIf="creditUsed"><b>
     <span i18n>You have used</span>
     <span *ngIf="withCoins"> {{spent * creditInfo?.factor | number}} wallacoins</span>
     <span *ngIf="!withCoins"> {{spent | customCurrency}}</span>&nbsp;
