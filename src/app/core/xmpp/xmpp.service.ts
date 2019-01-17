@@ -312,17 +312,7 @@ export class XmppService {
   private onPrivacyListChange(iq: any) {
     if (iq.type === 'set' && iq.privacy) {
       this.getPrivacyList().subscribe((ids: string[]) => {
-        if (ids.length > this.blockedUsers.length) {
-          const blockedUsers: string[] = _.difference(ids, this.blockedUsers);
-          blockedUsers.forEach((id: string) => {
-            this.eventService.emit(EventService.USER_BLOCKED, id);
-          });
-        } else {
-          const unblockedUsers: string[] = _.difference(this.blockedUsers, ids);
-          unblockedUsers.forEach((id: string) => {
-            this.eventService.emit(EventService.USER_UNBLOCKED, id);
-          });
-        }
+        this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, ids);
         this.blockedUsers = ids;
       });
     }

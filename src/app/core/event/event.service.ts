@@ -41,7 +41,7 @@ export class EventService {
   public static FOUND_MESSAGES_IN_DB = 'foundMessagesInDb';
   public static CONVERSATION_BUMPED = 'conversationBumped';
   public static REQUEST_PHONE = 'requestPhone';
-  public static PRIVACY_LIST_READY = 'privacyListRead';
+  public static PRIVACY_LIST_UPDATED = 'privacyListRead';
 
   private subjects: any = {};
 
