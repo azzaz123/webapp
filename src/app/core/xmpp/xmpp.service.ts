@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
-import { Observable } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import 'rxjs/add/observable/from';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
@@ -30,13 +30,14 @@ export class XmppService {
   constructor(private eventService: EventService) {
   }
 
-  public connect(userId: string, accessToken: string): void {
+  public connect(userId: string, accessToken: string): Observable<boolean> {
     this.resource = 'WEB_' + Math.floor(Math.random() * 100000000000000);
     this.self = this.createJid(userId);
     this.createClient(accessToken);
     this.bindEvents();
     this.client.connect();
     this.clientConnected = true;
+    return this.sessionConnected();
   }
 
   public disconnect() {
@@ -152,20 +153,6 @@ export class XmppService {
         this.eventService.emit(EventService.MESSAGE_READ_ACK);
       }
     });
-    this.client.on('session:started', () => {
-      this.client.sendPresence();
-      this.client.enableCarbons();
-      this.setDefaultPrivacyList().subscribe();
-      this.getPrivacyList().subscribe((jids: string[]) => {
-        const blockedIds = [];
-        jids.map(jid => blockedIds.push(jid.split('@')[0]));
-        this.blockedUsers = blockedIds;
-        if (blockedIds.length) {
-          this.eventService.emit(EventService.PRIVACY_LIST_READY, blockedIds);
-        }
-        this.clientConnected = true;
-      });
-    });
 
     this.client.on('disconnected', () => {
       console.warn('Client disconnected');
@@ -184,6 +171,29 @@ export class XmppService {
     });
 
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
+  }
+
+  private sessionConnected(): Observable<boolean> {
+    return Observable.create((observer: Observer<any>) => {
+      this.client.on('session:started', () => {
+        this.client.sendPresence();
+        this.client.enableCarbons();
+        this.getBlockedUsers().subscribe(() => {
+          observer.next(true);
+        });
+      });
+    });
+  }
+
+  private getBlockedUsers(): Observable<boolean> {
+    return Observable.create((observer: Observer<boolean>) => {
+      this.setDefaultPrivacyList().subscribe();
+      this.getPrivacyList().subscribe((blockedIds: string[]) => {
+        this.blockedUsers = blockedIds;
+        this.clientConnected = true;
+        observer.next(true);
+      });
+    });
   }
 
   private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
