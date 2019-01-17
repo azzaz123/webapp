@@ -16,4 +16,7 @@ export class BlockUserService {
     return this.xmpp.unblockUser(user);
   }
 
+  public getBlockedUsers(): Array<string> {
+    return this.xmpp.blockedUsers;
+  }
 }

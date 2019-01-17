@@ -119,6 +119,7 @@ export class ConversationService extends LeadService {
         if (filters) {
           return this.filter(conversations, filters);
         }
+        conversations = this.markBlockedUsers(conversations);
         return conversations;
       })
       .map((filteredConversations: Conversation[]) => {
@@ -127,6 +128,12 @@ export class ConversationService extends LeadService {
       .map((sortedConversations: Conversation[]) => {
         return sortedConversations.slice(0, end);
       });
+  }
+
+  private markBlockedUsers(conversations: Conversation[]): Conversation[] {
+    const blockedUsers = this.blockService.getBlockedUsers();
+    conversations.filter(conv => blockedUsers.indexOf(conv.user.id) !== -1).map(conv => conv.user.blocked = true);
+    return conversations;
   }
 
   private filter(conversations: Conversation[], filters: Filter[]): Conversation[] {

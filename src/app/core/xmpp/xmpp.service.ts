@@ -19,7 +19,7 @@ export class XmppService {
   private self: JID;
   private resource: string;
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
-  private blockedUsers: string[];
+  public blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private reconnectAttempts = 5;
   private reconnectInterval: any;
