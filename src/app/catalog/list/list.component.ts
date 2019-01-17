@@ -127,7 +127,7 @@ export class ListComponent implements OnInit, OnDestroy {
             },
             reactivate: {
               component: ReactivateConfirmationModalComponent,
-              windowClass: 'reactivate-confirm'
+              windowClass: 'modal-standard'
             },
             listingfee: {
               component: ListingfeeConfirmationModalComponent,
