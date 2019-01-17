@@ -340,7 +340,6 @@ export class ConversationService extends LeadService {
         this.userService.get(conversation.other_user_id)
       ).map((data: any[]) => {
         conversation.user = data[1];
-        conversation.user.blocked = this.blockService.isBlocked(conversation.user.id);
         conversation = <ConversationResponse>this.setItem(conversation, data[0]);
         return conversation;
       });
