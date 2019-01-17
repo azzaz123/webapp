@@ -119,7 +119,7 @@ export class ListComponent implements OnInit, OnDestroy {
           const modals = {
             urgent: {
               component: UrgentConfirmationModalComponent,
-              windowClass: 'urgent-confirm',
+              windowClass: 'modal-standard',
             },
             bump: {
               component: BumpConfirmationModalComponent,
