@@ -117,22 +117,10 @@ export class ListComponent implements OnInit, OnDestroy {
         }
         if (params && params.code) {
           const modals = {
-            urgent: {
-              component: UrgentConfirmationModalComponent,
-              windowClass: 'modal-standard',
-            },
-            bump: {
-              component: BumpConfirmationModalComponent,
-              windowClass: 'modal-standard'
-            },
-            reactivate: {
-              component: ReactivateConfirmationModalComponent,
-              windowClass: 'modal-standard'
-            },
-            listingfee: {
-              component: ListingfeeConfirmationModalComponent,
-              windowClass: 'modal-standard'
-            }
+            urgent: UrgentConfirmationModalComponent,
+            bump: BumpConfirmationModalComponent,
+            reactivate: ReactivateConfirmationModalComponent,
+            listingfee: ListingfeeConfirmationModalComponent
           };
           const transactionType = localStorage.getItem('transactionType');
           let modalType;
@@ -162,8 +150,8 @@ export class ListComponent implements OnInit, OnDestroy {
             modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
           }
 
-          let modalRef: NgbModalRef = this.modalService.open(modal.component, {
-            windowClass: modal.windowClass,
+          let modalRef: NgbModalRef = this.modalService.open(modal, {
+            windowClass: 'modal-standard',
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
