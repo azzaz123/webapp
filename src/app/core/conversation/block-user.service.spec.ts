@@ -47,15 +47,4 @@ describe('BlockUserService', () => {
       expect(xmppService.unblockUser).toHaveBeenCalledWith(MOCK_USER);
     });
   });
-
-  describe('isBlocked', () => {
-    it('should call xmpp.isBlocked when called', () => {
-      spyOn(xmppService, 'isBlocked');
-
-      service.isBlocked(MOCK_USER.id);
-
-      expect(xmppService.isBlocked).toHaveBeenCalledWith(MOCK_USER.id);
-
-    });
-  });
 });
