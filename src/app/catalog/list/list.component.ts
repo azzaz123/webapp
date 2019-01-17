@@ -131,7 +131,7 @@ export class ListComponent implements OnInit, OnDestroy {
             },
             listingfee: {
               component: ListingfeeConfirmationModalComponent,
-              windowClass: 'listingfee-confirm'
+              windowClass: 'modal-standard'
             }
           };
           const transactionType = localStorage.getItem('transactionType');
