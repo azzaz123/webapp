@@ -163,16 +163,17 @@ export class AppComponent implements OnInit {
         (user: User) => {
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
           this.event.subscribe(EventService.DB_READY, () => {
-            this.realTime.connect(user.id, accessToken);
-            this.conversationService.init().subscribe(() => {
-              this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-                if (isProfessional) {
-                  this.callService.init().subscribe(() => {
-                    this.conversationService.init(true).subscribe(() => {
-                      this.callService.init(true).subscribe();
+            this.realTime.connect(user.id, accessToken).subscribe(() => {
+              this.conversationService.init().subscribe(() => {
+                this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+                  if (isProfessional) {
+                    this.callService.init().subscribe(() => {
+                      this.conversationService.init(true).subscribe(() => {
+                        this.callService.init(true).subscribe();
+                      });
                     });
-                  });
-                }
+                  }
+                });
               });
             });
           });
