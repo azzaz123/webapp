@@ -411,6 +411,14 @@ describe('Component: ConversationsPanel', () => {
       expect(component['getConversations']).toHaveBeenCalled();
     });
 
+    it('should subscribe to the PRIVACY_LIST_CHANGED event', () => {
+      spyOn(eventService, 'subscribe');
+
+      component.ngOnInit();
+
+      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.PRIVACY_LIST_UPDATED);
+    });
+
     it('should call sendRead on MESSAGE_ADDED event', () => {
       spyOn<any>(component, 'sendRead');
       component.ngOnInit();
@@ -634,6 +642,33 @@ describe('Component: ConversationsPanel', () => {
       expect(component.archive).toBe(false);
       expect(component['getConversations']).toHaveBeenCalled();
       expect(conversationService.getPage).toHaveBeenCalledWith(1, false);
+    });
+  });
+
+  describe('update the blocked status of users in conversations, when a PRIVACY_LIST_CHANGED event is triggered', () => {
+    let userId;
+    beforeEach(() => {
+      component.ngOnInit();
+      component.conversations = createConversationsArray(1);
+      userId = component.conversations[0].user.id;
+    });
+
+    it(`should update blocked to true when an unblocked user's ID is present in the updated blockedIds array`, () => {
+      const blockedIds = [userId];
+      component.conversations[0].user.blocked = false;
+
+      eventService.emit(EventService.PRIVACY_LIST_UPDATED, blockedIds);
+
+      expect(component.conversations[0].user.blocked).toBe(true);
+    });
+
+    it(`should update blocked to false when a blocked user's id is not present in the updated blockedIds array`, () => {
+      const blockedIds = ['some-other-user-id'];
+      component.conversations[0].user.blocked = true;
+
+      eventService.emit(EventService.PRIVACY_LIST_UPDATED, blockedIds);
+
+      expect(component.conversations[0].user.blocked).toBe(false);
     });
   });
 
