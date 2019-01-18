@@ -23,7 +23,6 @@ describe('Component: Input', () => {
   let component: InputComponent;
   let messageService: MessageService;
   let fixture: ComponentFixture<InputComponent>;
-  let eventService: EventService;
   let trackingService: TrackingService;
   let xmppService: XmppService;
   let connectionService: ConnectionService;
@@ -43,39 +42,19 @@ describe('Component: Input', () => {
         EventService,
         {provide: TrackingService, useValue: {
           track() {}
-        }},
-        EventService
+        }}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(InputComponent);
     component = TestBed.createComponent(InputComponent).componentInstance;
     messageService = TestBed.get(MessageService);
-    eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
     xmppService = TestBed.get(XmppService);
     connectionService = TestBed.get(ConnectionService);
     spyOn(messageService, 'send');
   });
 
-  describe('ngOnInit', () => {
-    it('should disable input when USER_BLOCKED', () => {
-      component.currentConversation = MOCK_CONVERSATION();
-
-      component.ngOnInit();
-      eventService.emit(EventService.USER_BLOCKED, USER_ID);
-
-      expect(component.disable).toBe(true);
-    });
-    it('should disable input when USER_UNBLOCKED', () => {
-      component.currentConversation = MOCK_CONVERSATION();
-
-      component.ngOnInit();
-      eventService.emit(EventService.USER_UNBLOCKED, USER_ID);
-
-      expect(component.disable).toBe(false);
-    });
-  });
 
   describe('sendMessage', () => {
 

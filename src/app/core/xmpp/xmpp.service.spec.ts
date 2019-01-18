@@ -777,18 +777,6 @@ describe('Service: Xmpp', () => {
 
       expect(MOCK_USER.blocked).toBe(true);
     }));
-    it('should emit USER_BLOCKED event', fakeAsync(() => {
-      let eventEmitted: boolean;
-      service['blockedUsers'] = [];
-      eventService.subscribe(EventService.USER_BLOCKED, () => {
-        eventEmitted = true;
-      });
-
-      service.blockUser(MOCK_USER).subscribe();
-      tick();
-
-      expect(eventEmitted).toBe(true);
-    }));
   });
 
   describe('unblockUser', () => {
@@ -821,19 +809,7 @@ describe('Service: Xmpp', () => {
 
       expect(MOCK_USER.blocked).toBe(false);
     }));
-    it('should emit USER_UNBLOCKED event', fakeAsync(() => {
-      let eventEmitted: boolean;
-      service['blockedUsers'] = [];
-      eventService.subscribe(EventService.USER_UNBLOCKED, () => {
-        eventEmitted = true;
-      });
-
-      service.unblockUser(MOCK_USER).subscribe();
-      tick();
-
-      expect(eventEmitted).toBe(true);
-    }));
-  });
+    });
 
   describe('isBlocked', () => {
     it('should return true if user is in the blockedList', () => {
