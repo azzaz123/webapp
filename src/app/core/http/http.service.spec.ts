@@ -874,7 +874,7 @@ describe('Service: Http', () => {
       }));
 
     describe('with retry strategy', () => {
-      it('should not retry when it encounters an error that is not present in the retryOnStatuses array (throw the encoutnered error)', () => {
+      it('should not retry when it encounters an error that is not present in the retryOnStatuses array (throw the encountered error)', () => {
         const testErrorCode = 404;
         const testError = {status: testErrorCode};
         expect(httpService['retryOnStatuses'].indexOf(testErrorCode)).toBe(-1);
