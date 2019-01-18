@@ -25,14 +25,7 @@ import { Conversation } from '../../core/conversation/conversation';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { Message, phoneMethod } from '../../core/message/message';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { XmppService } from '../../core/xmpp/xmpp.service';
 import { MessageService } from '../../core/message/message.service';
-
-class MockedXmppService {
-  receivedReceipts = [{id: '1', thread: 'a'}, {id: '2', thread: 'b'}];
-  sentReceipts = [{id: '1', thread: 'a'}, {id: '2', thread: 'b'}];
-  readReceipts = [{id: 'x', thread: 'threadX'}];
-}
 
 describe('Component: ConversationsPanel', () => {
 
@@ -43,7 +36,6 @@ describe('Component: ConversationsPanel', () => {
   let route: ActivatedRoute;
   let http: HttpService;
   let trackingService: TrackingService;
-  let xmppService: XmppService;
   let messageService: MessageService;
   let elRef: ElementRef;
 
@@ -58,7 +50,6 @@ describe('Component: ConversationsPanel', () => {
       declarations: [ConversationsPanelComponent, ConversationComponent],
       providers: [
         {provide: TrackingService, useClass: MockTrackingService},
-        {provide: XmppService, useClass: MockedXmppService},
         ...TEST_HTTP_PROVIDERS,
         {
           provide: ConversationService, useValue: {
@@ -135,7 +126,6 @@ describe('Component: ConversationsPanel', () => {
     userService['_user'] = new User(USER_ID);
     route = TestBed.get(ActivatedRoute);
     trackingService = TestBed.get(TrackingService);
-    xmppService = TestBed.get(XmppService);
     elRef = TestBed.get(ElementRef);
   });
 
