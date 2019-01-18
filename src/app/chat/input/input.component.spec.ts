@@ -7,10 +7,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
-import { XmppService } from '../../core/xmpp/xmpp.service';
 import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { ConnectionService } from '../../core/connection/connection.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 
 class MockMessageService {
@@ -24,21 +21,12 @@ describe('Component: Input', () => {
   let messageService: MessageService;
   let fixture: ComponentFixture<InputComponent>;
   let trackingService: TrackingService;
-  let xmppService: XmppService;
-  let connectionService: ConnectionService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
       providers: [
         {provide: MessageService, useClass: MockMessageService},
-        {provide: XmppService, useValue: {
-          isBlocked() {
-          }
-        }},
-        {provide: ConnectionService, useValue: {
-          isConnected: true
-        }},
         EventService,
         {provide: TrackingService, useValue: {
           track() {}
@@ -50,8 +38,6 @@ describe('Component: Input', () => {
     component = TestBed.createComponent(InputComponent).componentInstance;
     messageService = TestBed.get(MessageService);
     trackingService = TestBed.get(TrackingService);
-    xmppService = TestBed.get(XmppService);
-    connectionService = TestBed.get(ConnectionService);
     spyOn(messageService, 'send');
   });
 

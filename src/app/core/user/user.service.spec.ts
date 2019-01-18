@@ -64,11 +64,6 @@ describe('Service: User', () => {
   let cookieService: CookieService;
   let permissionService: NgxPermissionsService;
   let featureflagService: FeatureflagService;
-  const DATA: any = {
-    emailAddress: 'test@test.it',
-    installationType: 'ANDROID',
-    password: 'test'
-  };
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'

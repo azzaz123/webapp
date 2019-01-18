@@ -1,9 +1,6 @@
 import { Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
-import { EventService } from '../../core/event/event.service';
-import { XmppService } from '../../core/xmpp/xmpp.service';
-import { ConnectionService } from '../../core/connection/connection.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 
 @Component({
@@ -18,7 +15,6 @@ export class InputComponent implements OnChanges {
   public disable: boolean;
 
   constructor(private messageService: MessageService,
-              private connectionService: ConnectionService,
               private trackingService: TrackingService,
               ) {
   }
