@@ -47,4 +47,14 @@ describe('BlockUserService', () => {
       expect(xmppService.unblockUser).toHaveBeenCalledWith(MOCK_USER);
     });
   });
+
+  describe('getBlockedUsers', () => {
+    it('should return the list of blockedUsers', () => {
+      xmppService['blockedUsers'] = ['1', '2', '3'];
+
+      const blockedUsers = service.getBlockedUsers();
+
+      expect(blockedUsers).toEqual(xmppService['blockedUsers']);
+    });
+  });
 });

@@ -21,6 +21,12 @@ export class InputComponent implements OnChanges, OnInit {
               ) {
   }
 
+  ngOnInit() {
+    this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
+      this.disable = userIds.indexOf(this.currentConversation.user.id) !== -1;
+    });
+  }
+
   sendMessage(messageArea: HTMLInputElement, $event: Event) {
     $event.preventDefault();
     if (!this.disable) {
@@ -33,12 +39,6 @@ export class InputComponent implements OnChanges, OnInit {
       }
       messageArea.value = '';
     }
-  }
-
-  ngOnInit() {
-    this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
-      this.disable = userIds.indexOf(this.currentConversation.user.id) !== -1;
-    });
   }
 
   ngOnChanges(changes?: any) {

@@ -9,7 +9,7 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { Observable } from 'rxjs';
 import { Message, phoneRequestState } from './message';
-import { USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
+import { USER_ID, OTHER_USER_ID, MOCK_USER, ACCESS_TOKEN } from '../../../tests/user.fixtures.spec';
 import { CONVERSATION_ID, MOCK_CONVERSATION, MOCKED_CONVERSATIONS } from '../../../tests/conversation.fixtures.spec';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment.docker';
@@ -38,6 +38,16 @@ describe('RealTimeService', () => {
     xmppService = TestBed.get(XmppService);
     trackingService = TestBed.get(TrackingService);
     appboy.initialize(environment.appboy);
+  });
+
+  describe('connect', () => {
+    it('should call xmpp.connect', () => {
+      spyOn(xmppService, 'connect');
+
+      service.connect(MOCK_USER.id, ACCESS_TOKEN);
+
+      expect(xmppService.connect).toHaveBeenCalledWith(MOCK_USER.id, ACCESS_TOKEN);
+    });
   });
 
   describe('sendMessage', () => {
