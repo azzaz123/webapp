@@ -15,7 +15,7 @@ import { Item } from '../item/item';
 import { ConversationResponse } from './conversation-response.interface';
 import { EventService } from '../event/event.service';
 import { Lead } from './lead';
-import { MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
+import { MockedUserService, USER_ID, USER_ITEM_DISTANCE, MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
 import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
@@ -81,7 +81,7 @@ describe('LeadService', () => {
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
         {provide: RealTimeService, useValue: {}},
-        {provide: BlockUserService, useValue: { isBlocked() { return true; } }},
+        {provide: BlockUserService, useValue: { getBlockedUsers() { return ['1', '2', '3']; } }},
         {
           provide: ConnectionService, useValue: {}
         }
@@ -255,7 +255,7 @@ describe('LeadService', () => {
             expect(userService.get).toHaveBeenCalledTimes(2);
             expect(conversations[0].user instanceof User).toBeTruthy();
             expect(conversations[1].user instanceof User).toBeTruthy();
-            expect(conversations[0].user.blocked).toBeTruthy();
+            expect(conversations[0].user.blocked).toBe(MOCK_USER.blocked);
           });
           it('should get and map the Item', () => {
             expect(itemService.get).toHaveBeenCalledWith(ITEM_ID);
