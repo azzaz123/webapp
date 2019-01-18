@@ -95,11 +95,23 @@ const MOCKED_SERVER_RECEIVED_RECEIPT: XmppBodyMessage = {
   timestamp: {body: '2017-03-23T12:24:19.844620Z'},
   id: 'id'
 };
-const JIDS = ['1@wallapop.com', '2@wallapop.com', '3@wallapop.com'];
 let service: XmppService;
 let eventService: EventService;
 let sendIqSpy: jasmine.Spy;
 let connectSpy: jasmine.Spy;
+
+function getUserIdsFromJids(jids: string[]) {
+  const ids = [];
+  jids.map(jid => ids.push(jid.split('@')[0]));
+  return ids;
+}
+
+function getJidsFromUserIds(ids: string[]) {
+  const jids = [];
+  ids.map(id => jids.push(id + '@' + environment.xmppDomain));
+  return jids;
+}
+const JIDS = getJidsFromUserIds(['1', '2', '3']);
 
 describe('Service: Xmpp', () => {
   beforeEach(() => {
@@ -145,7 +157,7 @@ describe('Service: Xmpp', () => {
   });
 
   it('should call bindEvents', () => {
-    service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+    service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD).subscribe();
     expect(MOCKED_CLIENT.on).toHaveBeenCalled();
 
     eventService.emit('session:started', null);
@@ -164,7 +176,7 @@ describe('Service: Xmpp', () => {
   describe('bindEvents', () => {
 
     beforeEach(() => {
-      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD).subscribe();
     });
 
     describe('setDefaultPrivacyList', () => {
@@ -188,32 +200,18 @@ describe('Service: Xmpp', () => {
         type: 'set',
         privacy: {}
       };
-      let blockedUser: string;
-      let unblockedUser: string;
       beforeEach(() => {
-        service['blockedUsers'] = ['1@wallapop.com', '2@wallapop.com'];
-        eventService.subscribe(EventService.USER_BLOCKED, (userId: string) => {
-          blockedUser = userId;
-        });
-        eventService.subscribe(EventService.USER_UNBLOCKED, (userId: string) => {
-          unblockedUser = userId;
-        });
+        service['blockedUsers'] = ['1', '2'];
       });
       it('should emit USER_BLOCKED event if there are new users in list', () => {
-        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of([...service['blockedUsers'], '3@wallapop.com']));
+        const expectedValue = service['blockedUsers'].concat('3');
+        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of(expectedValue));
+        spyOn(eventService, 'emit').and.callThrough();
 
         eventService.emit('iq', iq);
 
         expect(service['getPrivacyList']).toHaveBeenCalled();
-        expect(blockedUser).toBe('3');
-      });
-      it('should emit USER_UNBLOCKED event if there are new users in list', () => {
-        spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of(['1@wallapop.com']));
-
-        eventService.emit('iq', iq);
-
-        expect(service['getPrivacyList']).toHaveBeenCalled();
-        expect(unblockedUser).toBe('2');
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.PRIVACY_LIST_UPDATED, expectedValue);
       });
       it('should set blockedUsers with the new list', () => {
         spyOn<any>(service, 'getPrivacyList').and.returnValue(Observable.of(['1@wallapop.com']));
@@ -244,7 +242,10 @@ describe('Service: Xmpp', () => {
         });
       });
       it('should set blockedUsers', () => {
-        expect(service['blockedUsers']).toEqual(JIDS);
+        const blockedUserIds = [];
+        JIDS.map(jid => blockedUserIds.push(jid.split('@')[0]));
+
+        expect(service['blockedUsers']).toEqual(blockedUserIds);
       });
     });
 
@@ -727,18 +728,18 @@ describe('Service: Xmpp', () => {
     });
 
     it('should add user to blocked list and call sendIq', () => {
-      service['blockedUsers'] = [...JIDS];
+      service['blockedUsers'] = getUserIdsFromJids(JIDS);
 
       service.blockUser(MOCK_USER).subscribe();
 
       expect(service['blockedUsers'].length).toBe(4);
-      expect(service['blockedUsers'][3]).toBe(USER_ID + '@' + environment.xmppDomain);
+      expect(service['blockedUsers'][3]).toBe(USER_ID);
       expect(MOCKED_CLIENT.sendIq).toHaveBeenCalledWith({
         type: 'set',
         privacy: {
           list: {
             name: 'public',
-            jids: service['blockedUsers']
+            jids: getJidsFromUserIds(service['blockedUsers'])
           }
         }
       });
@@ -750,13 +751,13 @@ describe('Service: Xmpp', () => {
       tick();
 
       expect(service['blockedUsers'].length).toBe(1);
-      expect(service['blockedUsers'][0]).toBe(USER_ID + '@' + environment.xmppDomain);
+      expect(service['blockedUsers'][0]).toBe(USER_ID);
       expect(MOCKED_CLIENT.sendIq['calls'].allArgs()).toEqual([[{
         type: 'set',
         privacy: {
           list: {
             name: 'public',
-            jids: service['blockedUsers']
+            jids: getJidsFromUserIds(service['blockedUsers'])
           }
         }
       }], [{
@@ -784,7 +785,7 @@ describe('Service: Xmpp', () => {
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
     });
     it('should remove user from blocked list and call sendIq', fakeAsync(() => {
-      service['blockedUsers'] = [...JIDS, USER_ID + '@' + environment['xmppDomain']];
+      service['blockedUsers'] = getUserIdsFromJids(JIDS).concat(USER_ID);
 
       service.unblockUser(MOCK_USER).subscribe();
       tick();
@@ -795,7 +796,7 @@ describe('Service: Xmpp', () => {
         privacy: {
           list: {
             name: 'public',
-            jids: service['blockedUsers']
+            jids: getJidsFromUserIds(service['blockedUsers'])
           }
         }
       });
@@ -809,17 +810,6 @@ describe('Service: Xmpp', () => {
 
       expect(MOCK_USER.blocked).toBe(false);
     }));
-    });
-
-  describe('isBlocked', () => {
-    it('should return true if user is in the blockedList', () => {
-      service['blockedUsers'] = ['1@' + environment['xmppDomain'], '2@' + environment['xmppDomain'], '3@' + environment['xmppDomain']];
-      expect(service.isBlocked('2')).toBe(true);
-    });
-    it('should return false if user is NOT in the blockedList', () => {
-      service['blockedUsers'] = [USER_ID + '@' + environment['xmppDomain']];
-
-      expect(service.isBlocked('5')).toBe(false);
-    });
   });
+
 });
