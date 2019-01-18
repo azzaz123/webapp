@@ -8,6 +8,7 @@ import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
 import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
+import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 
 class MockMessageService {
@@ -20,6 +21,7 @@ describe('Component: Input', () => {
   let component: InputComponent;
   let messageService: MessageService;
   let fixture: ComponentFixture<InputComponent>;
+  let eventService: EventService;
   let trackingService: TrackingService;
 
   beforeEach(() => {
@@ -30,15 +32,36 @@ describe('Component: Input', () => {
         EventService,
         {provide: TrackingService, useValue: {
           track() {}
-        }}
+        }},
+        EventService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(InputComponent);
     component = TestBed.createComponent(InputComponent).componentInstance;
     messageService = TestBed.get(MessageService);
+    eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
     spyOn(messageService, 'send');
+  });
+
+  describe('ngOnInit', () => {
+    it('should disable input when the user has been blocked', () => {
+      component.currentConversation = MOCK_CONVERSATION();
+
+      component.ngOnInit();
+      eventService.emit(EventService.PRIVACY_LIST_UPDATED, [USER_ID]);
+
+      expect(component.disable).toBe(true);
+    });
+    it('should disable input when the user has been unblocked', () => {
+      component.currentConversation = MOCK_CONVERSATION();
+
+      component.ngOnInit();
+      eventService.emit(EventService.PRIVACY_LIST_UPDATED, []);
+
+      expect(component.disable).toBe(false);
+    });
   });
 
 

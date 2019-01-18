@@ -1,6 +1,7 @@
-import { Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
+import { EventService } from '../../core/event/event.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 
 @Component({
@@ -8,14 +9,15 @@ import { TrackingService } from '../../core/tracking/tracking.service';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })
-export class InputComponent implements OnChanges {
+export class InputComponent implements OnChanges, OnInit {
 
   @Input() currentConversation: Conversation;
   @ViewChild('messageArea') messageArea: ElementRef;
   public disable: boolean;
 
   constructor(private messageService: MessageService,
-              private trackingService: TrackingService,
+              private eventService: EventService,
+              private trackingService: TrackingService
               ) {
   }
 
@@ -31,6 +33,12 @@ export class InputComponent implements OnChanges {
       }
       messageArea.value = '';
     }
+  }
+
+  ngOnInit() {
+    this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
+      this.disable = userIds.indexOf(this.currentConversation.user.id) !== -1;
+    });
   }
 
   ngOnChanges(changes?: any) {
