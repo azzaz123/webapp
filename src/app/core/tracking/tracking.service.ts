@@ -15,7 +15,8 @@ import 'rxjs/add/operator/bufferTime';
 import { PersistencyService } from '../persistency/persistency.service';
 import { EventService } from '../event/event.service';
 import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs';
+import 'rxjs/add/operator/bufferTime';
+import { Subscription } from 'rxjs/Subscription';
 
 const maxBatchSize = 1000;
 const sendInterval = 10000;
