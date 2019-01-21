@@ -295,6 +295,9 @@ $modal-border-radius: 0.3rem;
     .modal-text {
       font-size: $font-size;
       color: $grey-500;
+      &.green {
+        color: $corporate;
+      }
     }
     .link {
       color: $grey-250 !important;
