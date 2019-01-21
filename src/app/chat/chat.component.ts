@@ -14,8 +14,8 @@ import { ItemService } from '../core/item/item.service';
 import { I18nService } from '../core/i18n/i18n.service';
 import { UserService } from '../core/user/user.service';
 import { EventService } from '../core/event/event.service';
-import { XmppService } from '../core/xmpp/xmpp.service';
 import { PersistencyService } from '../core/persistency/persistency.service';
+import { BlockUserService } from '../core/conversation/block-user.service';
 
 @Component({
   selector: 'tsl-chat',
@@ -40,7 +40,7 @@ export class ChatComponent implements OnInit, OnDestroy {
               private i18n: I18nService,
               public userService: UserService,
               private eventService: EventService,
-              public xmppService: XmppService,
+              public blockService: BlockUserService,
               private persistencyService: PersistencyService,
               private adService: AdService,
               @Inject('SUBDOMAIN') private subdomain: string) {
@@ -65,15 +65,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     });
     this.eventService.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
-      this.persistencyService.getMetaInformation().subscribe(() => {
-        this.firstLoad = false;
+        this.persistencyService.getMetaInformation().subscribe(() => {
+          this.firstLoad = false;
         }, () => {
-          this.persistencyService.saveMetaInformation({start: '0', last: null});
+          this.persistencyService.saveMetaInformation({ start: '0', last: null });
           this.firstLoad = true;
         });
+        this.persistencyService.getPhoneNumber().subscribe(r => this.conversationService.storedPhoneNumber = r.phone);
       }
     });
-    }
+  }
 
   ngOnDestroy () {
     this.adService.stopAdsRefresh();
@@ -151,7 +152,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public blockUserAction() {
     this.modalService.open(BlockUserComponent).result.then(() => {
-      this.xmppService.blockUser(this.currentConversation.user).subscribe(() => {
+      this.blockService.blockUser(this.currentConversation.user).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('blockUserSuccess'));
       });
     }, () => {
@@ -160,7 +161,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public unblockUserAction() {
     this.modalService.open(UnblockUserComponent).result.then(() => {
-      this.xmppService.unblockUser(this.currentConversation.user).subscribe(() => {
+      this.blockService.unblockUser(this.currentConversation.user).subscribe(() => {
         this.toastr.success(this.i18n.getTranslations('unblockUserSuccess'));
       });
     }, () => {

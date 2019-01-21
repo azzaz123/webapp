@@ -26,7 +26,8 @@ import {
   ProductDurations,
   Purchase, PurchaseProductsWithCreditsResponse,
   RealestateContent,
-  SelectedItemsAction
+  SelectedItemsAction,
+  ListingFeeProductInfo
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
@@ -34,7 +35,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -75,7 +76,7 @@ export class ItemService extends ResourceService {
     featured: []
   };
   public selectedItems: string[] = [];
-  private bumpTypes = ['countrybump', 'citybump', 'zonebump'];
+  private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
 
   constructor(http: HttpService,
               private i18n: I18nService,
@@ -225,7 +226,9 @@ export class ItemService extends ResourceService {
       content.terrace,
       content.elevator,
       content.pool,
-      content.garden
+      content.garden,
+      content.image,
+      content.publish_date
     );
   }
 
@@ -671,6 +674,13 @@ export class ItemService extends ResourceService {
       });
   }
 
+  public activate(): Observable<any> {
+    return this.http.put(this.API_URL + '/activate', {
+      ids: this.selectedItems
+    })
+      .do(() => this.deselectItems());
+  }
+
   public bulkSetDeactivate(): Observable<any> {
     return this.http.post(this.API_URL_PROTOOL + '/changeItemStatus', {
         itemIds: this.selectedItems,
@@ -689,6 +699,13 @@ export class ItemService extends ResourceService {
         this.eventService.emit('itemChangeStatus', this.selectedItems);
         this.deselectItems();
       });
+  }
+
+  public deactivate(): Observable<any> {
+    return this.http.put(this.API_URL + '/inactivate', {
+      ids: this.selectedItems
+    })
+      .do(() => this.deselectItems());
   }
 
   public setSold(id: number): Observable<any> {
@@ -735,6 +752,10 @@ export class ItemService extends ResourceService {
       .map((r: Response) => r.json());
   }
 
+  public getListingFeeInfo(itemId: string): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/' + itemId + '/listing-fee-info')
+      .map((r: Response) => r.json())
+      .map((response: ListingFeeProductInfo) => response.product_group.products[0]);
+  }
+
 }
-
-

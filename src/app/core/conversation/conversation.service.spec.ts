@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ConversationService } from './conversation.service';
 import { HttpService } from '../http/http.service';
 import { Response, ResponseOptions, RequestOptions, Headers } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Conversation } from './conversation';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
@@ -13,7 +13,7 @@ import { Item } from '../item/item';
 import { XmppService } from '../xmpp/xmpp.service';
 import { MessageService } from '../message/message.service';
 import { PersistencyService } from '../persistency/persistency.service';
-import { Message, messageStatus } from '../message/message';
+import { Message, messageStatus, phoneMethod } from '../message/message';
 import { EventService } from '../event/event.service';
 import * as _ from 'lodash';
 import { NotificationService } from '../notification/notification.service';
@@ -42,6 +42,11 @@ import {
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveService } from '../message/archive.service';
+import { I18nService } from '../i18n/i18n.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
+import { RealTimeService } from '../message/real-time.service';
+import { BlockUserService } from './block-user.service';
 
 let service: ConversationService;
 let http: HttpService;
@@ -49,48 +54,48 @@ let userService: UserService;
 let itemService: ItemService;
 let messageService: MessageService;
 let notificationService: NotificationService;
-let xmpp: XmppService;
+let realTime: RealTimeService;
 let persistencyService: PersistencyService;
 let eventService: EventService;
 let trackingService: TrackingService;
 let connectionService: ConnectionService;
+let modalService: NgbModal;
 let archiveService: MsgArchiveService;
+let i18n: I18nService;
 
 const MOCKED_CONVERSATION_DATA: any = CONVERSATIONS_DATA[0];
 const EMPTY_RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify([])}));
 const CONVERSATION_RESPONSE: Response = new Response(new ResponseOptions(
   {body: JSON.stringify(MOCKED_CONVERSATION_DATA)})
 );
-
-class MockedXmppService {
-  totalUnreadMessages = 42;
-
-  sendConversationStatus(userId: string, conversationId: string) {
-  }
-
-  isConnected(): Observable<any> {
-    return Observable.of(true);
-  }
-
-  isBlocked() {
-    return true;
-  }
-}
+const componentInstance: any = { SendPhoneComponent: jasmine.createSpy('SendPhoneComponent') };
 
 describe('Service: Conversation', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ConversationService,
+        RealTimeService,
+        XmppService,
         ...TEST_HTTP_PROVIDERS,
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
-        {provide: XmppService, useClass: MockedXmppService},
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: PersistencyService, useClass: MockedPersistencyService},
+        {provide: BlockUserService, useValue: { isBlocked() { return true; } }},
         {
           provide: NotificationService, useValue: {
           sendBrowserNotification() {
+          }
+        }
+        },
+        {
+          provide: NgbModal, useValue: {
+          open() {
+            return {
+              result: Promise.resolve(),
+              componentInstance: componentInstance
+            };
           }
         }
         },
@@ -99,7 +104,8 @@ describe('Service: Conversation', () => {
         },
         MessageService,
         EventService,
-        MsgArchiveService
+        MsgArchiveService,
+        I18nService
       ]
     });
     service = TestBed.get(ConversationService);
@@ -107,13 +113,15 @@ describe('Service: Conversation', () => {
     itemService = TestBed.get(ItemService);
     messageService = TestBed.get(MessageService);
     http = TestBed.get(HttpService);
-    xmpp = TestBed.get(XmppService);
+    realTime = TestBed.get(RealTimeService);
     persistencyService = TestBed.get(PersistencyService);
     notificationService = TestBed.get(NotificationService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
     connectionService = TestBed.get(ConnectionService);
     archiveService = TestBed.get(MsgArchiveService);
+    modalService = TestBed.get(NgbModal);
+    i18n = TestBed.get(I18nService);
   });
 
   it('should instantiate the service', () => {
@@ -571,6 +579,41 @@ describe('Service: Conversation', () => {
     });
   });
 
+  describe('openPhonePopup', () => {
+    const conversation = MOCK_CONVERSATION();
+    const modalOptions = {windowClass: 'phone-request', backdrop: 'static', keyboard: false};
+
+    beforeEach(() => {
+      spyOn(modalService, 'open').and.callThrough();
+    });
+
+    it('should open phoneRequest modal when the button is clicked', () => {
+      service.openPhonePopup(conversation);
+
+      expect(modalService.open).toHaveBeenCalledWith(SendPhoneComponent, modalOptions);
+    });
+
+    it('should set the modal conversation to the currentConversation, when the modal is opened', () => {
+      service['modalRef'] = <any>{ componentInstance: componentInstance };
+
+      service.openPhonePopup(conversation);
+
+      expect(service['modalRef'].componentInstance.conversation).toBe(conversation);
+    });
+
+    it('should call trackingService.addTrackingEvent with ITEM_SHAREPHONE_SHOWFORM when called with required TRUE', () => {
+      spyOn(trackingService, 'addTrackingEvent');
+      const event = {
+        eventData: TrackingService.ITEM_SHAREPHONE_SHOWFORM,
+        attributes: { item_id: conversation.item.id }
+      };
+
+      service.openPhonePopup(conversation, true);
+
+      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(event);
+    });
+  });
+
   describe('checkIfLastPage', () => {
     it('should call endpoint with lastDate', () => {
       const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify(createConversationsArray(2))}));
@@ -698,7 +741,6 @@ describe('Service: Conversation', () => {
         });
         convWithMessages = [];
         connectionService.isConnected = true;
-        xmpp.clientConnected = true;
         conversations = createConversationsArray(5);
       });
 
@@ -979,7 +1021,7 @@ describe('Service: Conversation', () => {
     let conversation: Conversation;
 
     beforeEach(() => {
-      spyOn(xmpp, 'sendConversationStatus');
+      spyOn(realTime, 'sendRead');
       spyOn(trackingService, 'track');
       conversation = MOCK_CONVERSATION();
       service.leads = [conversation];
@@ -997,12 +1039,12 @@ describe('Service: Conversation', () => {
       expect(service.markAllAsRead['calls'].argsFor(0)[0]).toEqual(conversation.id);
     });
 
-    it('should call the SendConversationStatus', () => {
+    it('should call realTime.sendRead', () => {
       conversation.unreadMessages = 2;
 
       service.sendRead(conversation);
 
-      expect(xmpp.sendConversationStatus).toHaveBeenCalledWith(USER_ID, CONVERSATION_ID);
+      expect(realTime.sendRead).toHaveBeenCalledWith(USER_ID, CONVERSATION_ID);
     });
 
     it('should set conversation.unreadMessages to 0', () => {
@@ -1036,14 +1078,14 @@ describe('Service: Conversation', () => {
       expect(messageService.totalUnreadMessages).toBe(0);
     });
 
-    it('should NOT call sendConversationStatus and markAllAsRead if conversation.unreadMessages is 0', () => {
+    it('should NOT call realTime.sendRead, NOR markAllAsRead if conversation.unreadMessages is 0', () => {
       spyOn(service, 'markAllAsRead');
       conversation.unreadMessages = 0;
 
       service.sendRead(conversation);
       eventService.emit(EventService.MESSAGE_READ_ACK);
 
-      expect(xmpp.sendConversationStatus).not.toHaveBeenCalled();
+      expect(realTime.sendRead).not.toHaveBeenCalled();
       expect(service.markAllAsRead).not.toHaveBeenCalled();
     });
 
@@ -1092,6 +1134,19 @@ describe('Service: Conversation', () => {
 
       expect(http.post).toHaveBeenCalledWith('api/v3/conversations', JSON.stringify({item_id: MOCK_CONVERSATION().item.id}), options);
     });
+
+    it('should call userService.getPhoneInfo with the other_user_id of the conversations', fakeAsync(() => {
+      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify(MOCK_CONVERSATION())}));
+      spyOn(http, 'post').and.returnValue(Observable.of(RESPONSE));
+      spyOn(userService, 'get').and.returnValue(Observable.of({}));
+      spyOn(itemService, 'get').and.returnValue(Observable.of({}));
+      spyOn(userService, 'getPhoneInfo').and.returnValue(Observable.of({}));
+
+      service.createConversation(MOCK_CONVERSATION().item.id).subscribe();
+      tick();
+
+      expect(userService.getPhoneInfo).toHaveBeenCalledWith(MOCK_CONVERSATION().other_user_id);
+    }));
   });
 
   describe('handleNewMessages', () => {
@@ -1471,6 +1526,23 @@ describe('Service: Conversation', () => {
       expect(messageService.getMessages).toHaveBeenCalled();
       expect(conversation).toEqual(expectedConversation);
       expect(eventService.emit).toHaveBeenCalledWith(EventService.MSG_ARCHIVE_LOADED);
+    }));
+
+    it('should emit a REQUEST_PHONE event when the conversation has no messages AND getPhoneInfo returns a phone method type', fakeAsync(() => {
+      const RESPONSE: Response = new Response(new ResponseOptions({body: JSON.stringify(MOCK_CONVERSATION())}));
+      spyOn(http, 'post').and.returnValue(Observable.of(RESPONSE));
+      spyOn(userService, 'get').and.returnValue(Observable.of({}));
+      spyOn(itemService, 'get').and.returnValue(Observable.of({}));
+      spyOn(userService, 'getPhoneInfo').and.returnValue(Observable.of({ phone_method: phoneMethod.chatMessage }));
+      spyOn(messageService, 'getMessages').and.returnValue(Observable.of({data: []}));
+      spyOn(eventService, 'emit');
+      let conversation = MOCK_CONVERSATION();
+
+      service.createConversation(MOCK_CONVERSATION().item.id).subscribe();
+      service.getSingleConversationMessages(conversation).subscribe(response => conversation = response);
+      tick();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.REQUEST_PHONE, phoneMethod.chatMessage);
     }));
   });
 

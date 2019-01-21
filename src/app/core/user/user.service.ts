@@ -1,26 +1,27 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { PERMISSIONS, User } from './user';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { ResourceService } from '../resource/resource.service';
 import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
-import { UserLocation, UserResponse } from './user-response.interface';
+import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
 import { environment } from '../../../environments/environment';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
 import { Coordinate } from '../geolocation/address-response.interface';
-import { Counters, Ratings, UserStatsResponse } from './user-stats.interface';
+import { AvailableSlots, Counters, Ratings, UserStatsResponse } from './user-stats.interface';
 import { UserData, UserProData, UserProDataNotifications } from './user-data.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { FeatureflagService } from './featureflag.service';
+import { PhoneMethodResponse } from './phone-method.interface';
 
 @Injectable()
 export class UserService extends ResourceService {
@@ -32,6 +33,8 @@ export class UserService extends ResourceService {
   protected _user: User;
   private meObservable: Observable<User>;
   private presenceInterval: any;
+  protected _motorPlan: MotorPlan;
+  private motorPlanObservable: Observable<MotorPlan>;
 
   constructor(http: HttpService,
               protected event: EventService,
@@ -233,6 +236,12 @@ export class UserService extends ResourceService {
       });
   }
 
+  public getPhoneInfo(userId: string): Observable<PhoneMethodResponse> {
+    return this.http.get(this.API_URL + '/' + userId + '/phone-method')
+      .map((r: any) => r.json())
+      .catch(e => Observable.of(null));
+  }
+
   public toRatingsStats(ratings): Ratings {
     return ratings.reduce(({}, rating) => {
       return {reviews: rating.value};
@@ -334,6 +343,37 @@ export class UserService extends ResourceService {
   public isProfessional(): Observable<boolean> {
     return this.hasPerm('professional');
   }
+
+  public getMotorPlan(): Observable<MotorPlan> {
+    if (this._motorPlan) {
+      return Observable.of(this._motorPlan);
+    } else if (this.motorPlanObservable) {
+      return this.motorPlanObservable;
+    }
+    this.motorPlanObservable = this.http.get(this.API_URL + '/me/profile-subscription-info/type')
+      .map((r: Response) => r.json())
+      .map((motorPlan: MotorPlan) => {
+        this._motorPlan = motorPlan;
+        return motorPlan;
+      })
+      .share()
+      .do(() => {
+        this.motorPlanObservable = null;
+      })
+      .catch(() => {
+        this.motorPlanObservable = null;
+        return Observable.of(null);
+      });
+    return this.motorPlanObservable;
+  }
+
+  public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
+    return this.http.get(this.API_URL + '/me/profile-subscription-info')
+      .map((r: Response) => r.json())
+  }
+
+  public getAvailableSlots(): Observable<AvailableSlots> {
+    return this.http.get(this.API_URL + '/me/items/slots-available')
+      .map((r: Response) => r.json())
+  }
 }
-
-

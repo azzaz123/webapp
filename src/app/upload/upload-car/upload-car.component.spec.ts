@@ -4,7 +4,7 @@ import { UploadCarComponent } from './upload-car.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import {
@@ -242,15 +242,6 @@ describe('UploadCarComponent', () => {
       expect(component.models.length).toBe(0);
       expect(component.customMake).toBe(true);
     });
-
-    it('should set the car as custom if there are no matching models', () => {
-      spyOn(carSuggestionsService, 'getModels').and.returnValue(Observable.of(CAR_MODELS));
-      component.item = MOCK_CAR;
-
-      component.getModels('Gaudi');
-
-      expect(component.customMake).toBe(true);
-    });
   });
 
   describe('getYears', () => {
@@ -373,6 +364,7 @@ describe('UploadCarComponent', () => {
   describe('onUploaded', () => {
     it('should redirect', () => {
       component.item = <Car>MOCK_ITEM_V3;
+      component.item.flags.onhold = null;
       const uploadedEvent = {
         action: 'updated',
         response: {

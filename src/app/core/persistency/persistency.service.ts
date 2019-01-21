@@ -1,10 +1,9 @@
-import * as PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer, throwError } from 'rxjs';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Message, statusOrder } from '../message/message';
+import { Message, statusOrder, phoneRequestState } from '../message/message';
 import {
   StoredConversation,
   StoredMessage,
@@ -52,6 +51,7 @@ export class PersistencyService {
         });
       });
     });
+    this.subscribeEventNewMessage();
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
@@ -178,9 +178,10 @@ export class PersistencyService {
       date: message.date,
       message: message.message,
       status: message.status,
-      from: message.from.indexOf('@') > -1 ? message.from.split('@')[0] : message.from,
+      from: message.from,
       conversationId: message.conversationId,
-      payload: message.payload
+      payload: message.payload,
+      phoneRequest: message.phoneRequest
     };
   }
 
@@ -201,6 +202,15 @@ export class PersistencyService {
     }
   }
 
+  private subscribeEventNewMessage() {
+    this.eventService.subscribe(EventService.CHAT_LAST_RECEIVED_TS, (timestamp: number) => {
+      this.saveMetaInformation({
+        start: new Date(timestamp).toISOString(),
+        last: null
+      });
+    });
+  }
+
   public saveMetaInformation(data: StoredMetaInfo): Observable<any> {
     const newMoment = (data.start.indexOf('.') === 10 || data.start === '0')
       ? moment.unix(Number(data.start)) // handle cases: '0' (from firstArchive) OR nanotimestamp (from server response)
@@ -213,6 +223,20 @@ export class PersistencyService {
       }
       return doc;
     }));
+  }
+
+  public setPhoneNumber(phone: string): Observable<any> {
+    return Observable.fromPromise(
+      this.upsert(this.messagesDb, 'phone', (doc: Document<any>) => {
+      if (!doc.phone || doc.phone !== phone) {
+        doc.phone = phone;
+        return doc;
+      }
+    }).catch(err => {}));
+  }
+
+  public getPhoneNumber(): Observable<any> {
+    return Observable.fromPromise(this.messagesDb.get('phone')).catch(() => Observable.of({}));
   }
 
   public updateMessageDate(message: Message) {
@@ -232,6 +256,13 @@ export class PersistencyService {
       if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
         this.saveMessages(message);
       }
+    }));
+  }
+
+  public markPhoneRequestAnswered(message: Message) {
+    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
+      doc.phoneRequest = phoneRequestState.answered;
+      return doc;
     }));
   }
 
@@ -273,7 +304,7 @@ export class PersistencyService {
 
   private upsert(db, docId, diffFun) {
     if (typeof docId !== 'string') {
-      return Promise.reject(new Error('doc id is required'));
+      return throwError(new Error("doc id is required"));
     }
 
     return db.get(docId)

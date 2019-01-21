@@ -9,7 +9,7 @@ import {
   Response,
   URLSearchParams
 } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AccessTokenService } from './access-token.service';
 import * as CryptoJS from 'crypto-js';
 import { environment } from '../../../environments/environment';

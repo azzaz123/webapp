@@ -108,3 +108,23 @@ $avatar-size: 40px;
   padding: $spacing-M;
   font-size: $font-size-S;
 }
+
+.phone-request {
+  position: relative;
+  flex-direction: column;
+  max-width: 323px;
+  .btn {
+    display: block;
+    width: auto;
+    border-radius: 20px;
+    color: $corporate;
+    margin: $spacing auto 0;
+  }
+  span.new-line {
+    display: block;
+    color: $grey-250;
+    text-align: center;
+    padding-bottom: $spacing-10;
+    margin-top: $spacing-40;
+  }
+}

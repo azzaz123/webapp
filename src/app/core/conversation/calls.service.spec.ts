@@ -16,11 +16,13 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Call } from './calls';
 import { createCallsArray, CALLS_DATA } from '../../../tests/call.fixtures';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Conversation } from './conversation';
 import { createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { CallTotals } from './totals.interface';
 import { ConnectionService } from '../connection/connection.service';
+import { BlockUserService } from './block-user.service';
+import { RealTimeService } from '../message/real-time.service';
 
 let service: CallsService;
 let userService: UserService;
@@ -34,6 +36,8 @@ describe('CallsService', () => {
       providers: [
         CallsService,
         XmppService,
+        RealTimeService,
+        BlockUserService,
         EventService,
         ...TEST_HTTP_PROVIDERS,
         {provide: UserService, useClass: MockedUserService},
@@ -167,7 +171,7 @@ describe('CallsService', () => {
     const TOTAL_PHONES = 4;
     const TOTAL_CALLS = 3;
     const MIXED_CONVERSATIONS: Conversation[] = [...createConversationsArray(6), ...createConversationsArray(TOTAL_PHONES, true)];
-    
+
     describe('no archive', () => {
       describe('with conversations with phone and calls', () => {
         it('should return conversations with phone converted to calls and concat with calls', () => {
@@ -191,7 +195,7 @@ describe('CallsService', () => {
             result = r;
           });
           service.stream$.next(createCallsArray(TOTAL_CALLS));
-          
+
           conversationService.stream$.next(MIXED_CONVERSATIONS);
         });
 
@@ -204,7 +208,7 @@ describe('CallsService', () => {
           service.getPage(1).subscribe((r: Call[]) => {
             result = r;
           });
-          
+
           conversationService.stream$.next(MIXED_CONVERSATIONS);
         });
 
@@ -213,7 +217,7 @@ describe('CallsService', () => {
           service.getPage(1).subscribe((r: Call[]) => {
             result = r;
           });
-          
+
           service.stream$.next(createCallsArray(TOTAL_CALLS));
         });
 
@@ -227,10 +231,10 @@ describe('CallsService', () => {
           service.getPage(1).subscribe((r: Call[]) => {
             result = r;
           });
-          
+
           conversationService.stream$.next(MIXED_CONVERSATIONS);
           service.stream$.next([]);
-          
+
           expect(result.length).toBe(TOTAL_PHONES);
         });
       });
@@ -240,10 +244,10 @@ describe('CallsService', () => {
           service.getPage(1).subscribe((r: Call[]) => {
             result = r;
           });
-          
+
           conversationService.stream$.next(createConversationsArray(6));
           service.stream$.next(createCallsArray(TOTAL_CALLS));
-          
+
           expect(result.length).toBe(TOTAL_CALLS);
         });
       });

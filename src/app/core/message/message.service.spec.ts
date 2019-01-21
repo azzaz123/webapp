@@ -4,8 +4,8 @@ import { TestBed } from '@angular/core/testing';
 import { MessageService } from './message.service';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
-import { Message, messageStatus } from './message';
-import { Observable } from 'rxjs/Observable';
+import { Message, messageStatus, phoneRequestState } from './message';
+import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
 import { PersistencyService } from '../persistency/persistency.service';
 import {
@@ -18,7 +18,8 @@ import {
   MOCK_DB_META,
   MockedPersistencyService,
   MOCK_DB_RESPONSE_WITH_PENDING,
-  MOCK_DB_RESPONSE_WITH_OLD_PENDING
+  MOCK_DB_RESPONSE_WITH_OLD_PENDING,
+  MOCK_DB_MSG_WITH_PHONEREQUEST
 } from '../../../tests/persistency.fixtures.spec';
 import { USER_ID, OTHER_USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
@@ -28,10 +29,12 @@ import { TrackingService } from '../tracking/tracking.service';
 import { ConnectionService } from '../connection/connection.service';
 import { MsgArchiveService } from './archive.service';
 import { HttpService } from '../http/http.service';
+import { I18nService } from '../i18n/i18n.service';
+import { RealTimeService } from './real-time.service';
 
 describe('Service: Message', () => {
 
-  let xmpp: XmppService;
+  let realTime: RealTimeService;
   let service: MessageService;
   let persistencyService: PersistencyService;
   let userService: UserService;
@@ -39,6 +42,7 @@ describe('Service: Message', () => {
   let archiveService: MsgArchiveService;
   let trackingService: TrackingService;
   let httpService: HttpService;
+  let i18n: I18nService;
   let eventService: EventService;
 
   beforeEach(() => {
@@ -47,7 +51,9 @@ describe('Service: Message', () => {
         MessageService,
         XmppService,
         EventService,
+        I18nService,
         MsgArchiveService,
+        RealTimeService,
         { provide: HttpService, useValue: { get() { } } },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: ConnectionService, useValue: {} },
@@ -55,7 +61,7 @@ describe('Service: Message', () => {
         { provide: UserService, useValue: { user: new User(USER_ID) } }
       ]
     });
-    xmpp = TestBed.get(XmppService);
+    realTime = TestBed.get(RealTimeService);
     service = TestBed.get(MessageService);
     persistencyService = TestBed.get(PersistencyService);
     userService = TestBed.get(UserService);
@@ -64,6 +70,7 @@ describe('Service: Message', () => {
     trackingService = TestBed.get(TrackingService);
     eventService = TestBed.get(EventService);
     httpService = TestBed.get(HttpService);
+    i18n = TestBed.get(I18nService);
   });
 
   it('should instanciate', () => {
@@ -91,7 +98,7 @@ describe('Service: Message', () => {
     const nanoTimestamp = (new Date(MOCK_DB_META.data.start).getTime() / 1000) + '000';
 
     beforeEach(() => {
-      spyOn(xmpp, 'sendMessageDeliveryReceipt');
+      spyOn(realTime, 'sendDeliveryReceipt');
       conversation = MOCK_CONVERSATION();
     });
 
@@ -144,13 +151,38 @@ describe('Service: Message', () => {
       });
     });
 
+    describe('when messages have a phoneRequest property', () => {
+      let response: any;
+      it('should add the phoneRequest property to the message if it exists in the Db doc', () => {
+        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_MSG_WITH_PHONEREQUEST));
+
+        service.getMessages(conversation).subscribe((data: any) => {
+          response = data;
+        });
+
+        expect(response.data[0].phoneRequest).toBeTruthy();
+      });
+
+      it('should NOT add the phoneRequest property to the message if it does NOT exists in the Db doc', () => {
+        spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_FILTERED_RESPONSE));
+
+        service.getMessages(conversation).subscribe((data: any) => {
+          response = data;
+        });
+
+        response.data.forEach(m => {
+          expect(m.phoneRequest).toBeFalsy();
+        });
+      });
+    });
+
     describe('when messages with the status PENDING exist in the localDb', () => {
       let response: any;
       let pendingMsg;
 
       it('should resend messages that have the status PENDING and is newer than 5 days', () => {
         spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_PENDING));
-        spyOn(xmpp, 'sendMessage');
+        spyOn(realTime, 'resendMessage');
         const pendingMsgCount = MOCK_DB_RESPONSE_WITH_PENDING.filter(m => m.doc.status === messageStatus.PENDING).length;
 
 
@@ -159,19 +191,19 @@ describe('Service: Message', () => {
           pendingMsg = response.data[0];
         });
 
-        expect(xmpp.sendMessage).toHaveBeenCalledTimes(pendingMsgCount);
-        expect(xmpp.sendMessage).toHaveBeenCalledWith(conversation, pendingMsg.message, true, pendingMsg.id);
+        expect(realTime.resendMessage).toHaveBeenCalledTimes(pendingMsgCount);
+        expect(realTime.resendMessage).toHaveBeenCalledWith(conversation, pendingMsg);
       });
 
       it('should not resend messages that have the status PENDING and are older than 5 days', () => {
         spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(MOCK_DB_RESPONSE_WITH_OLD_PENDING));
-        spyOn(xmpp, 'sendMessage');
+        spyOn(realTime, 'resendMessage');
 
         service.getMessages(conversation).subscribe((data: any) => {
           response = data;
         });
 
-        expect(xmpp.sendMessage).not.toHaveBeenCalled();
+        expect(realTime.resendMessage).not.toHaveBeenCalled();
       });
     });
 
@@ -228,7 +260,7 @@ describe('Service: Message', () => {
     const messagesArray: Array<Message> = createMessagesArray(5);
     beforeEach(() => {
       spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.of(MOCK_DB_META));
-      spyOn(xmpp, 'sendMessageDeliveryReceipt');
+      spyOn(realTime, 'sendDeliveryReceipt');
     });
     describe('with connection', () => {
       beforeEach(() => {
@@ -310,12 +342,12 @@ describe('Service: Message', () => {
           });
         });
 
-        it(`should sendMessageDeliveryReceipt for messages from the response, that don't have a corresponding receivedReceipt`, () => {
+        it(`should sendDeliveryReceipt for messages from the response, that don't have a corresponding receivedReceipt`, () => {
           service.getNotSavedMessages(conversations, false).subscribe();
 
-          expect(xmpp.sendMessageDeliveryReceipt).toHaveBeenCalledTimes(messagesArray.length);
+          expect(realTime.sendDeliveryReceipt).toHaveBeenCalledTimes(messagesArray.length);
           messagesArray.map(msg => {
-            expect(xmpp.sendMessageDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.conversationId);
+            expect(realTime.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.conversationId);
           });
         });
 
@@ -426,7 +458,7 @@ describe('Service: Message', () => {
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
-        BUYER_ID + '@domain'
+        BUYER_ID
       );
 
       service.addUserInfo(conversation, message);
@@ -440,7 +472,7 @@ describe('Service: Message', () => {
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
-        USER_ID + '@domain'
+        USER_ID
       );
 
       message = service.addUserInfo(conversation, message);
@@ -454,7 +486,7 @@ describe('Service: Message', () => {
         MESSAGE_MAIN.id,
         MESSAGE_MAIN.thread,
         MESSAGE_MAIN.body,
-        USER_ID + '@domain',
+        USER_ID,
         new Date(),
         messageStatus.RECEIVED,
         { text: 'someText', type: 'someType' }
@@ -470,10 +502,112 @@ describe('Service: Message', () => {
 
   describe('send', () => {
     it('should call the send message', () => {
-      spyOn(xmpp, 'sendMessage');
+      spyOn(realTime, 'sendMessage');
       const conversation: Conversation = MOCK_CONVERSATION();
       service.send(conversation, 'text');
-      expect(xmpp.sendMessage).toHaveBeenCalledWith(conversation, 'text');
+      expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, 'text');
+    });
+  });
+
+  describe('addPhoneNumberRequestMessage', () => {
+    let conversation: Conversation;
+
+    beforeEach(() => {
+      conversation = MOCK_CONVERSATION();
+    });
+
+    it('should subscribe to the EventService.CONV_WITH_PHONE_CREATED event when called', () => {
+      spyOn(eventService, 'subscribe');
+
+      service.addPhoneNumberRequestMessage(conversation);
+
+      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.CONV_WITH_PHONE_CREATED);
+    });
+
+    it('should call persistencyService.saveMessage and save the request msg when a CONV_WITH_PHONE_CREATED event is triggered', () => {
+      spyOn(persistencyService, 'saveMessages');
+      service.addPhoneNumberRequestMessage(conversation);
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
+
+      eventService.emit(EventService.CONV_WITH_PHONE_CREATED, conversation, requestMessage);
+
+      expect(persistencyService.saveMessages).toHaveBeenCalledWith([requestMessage]);
+    });
+
+    it('should create a phoneRequest message with the phoneRequestState as PENDING', () => {
+      service.addPhoneNumberRequestMessage(conversation);
+      conversation.messages.push(new Message('123', conversation.id, 'test', USER_ID));
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
+
+      expect(requestMessage.phoneRequest).toBe(phoneRequestState.pending);
+    });
+
+    it('should add the phone request message to the conversation', () => {
+      const msgExistsBefore = conversation.messages.find(m => !!m.phoneRequest);
+
+      service.addPhoneNumberRequestMessage(conversation);
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
+
+      expect(msgExistsBefore).toBeFalsy();
+      expect(requestMessage instanceof Message).toBe(true);
+    });
+
+    it('should track the CHAT_SHAREPHONE_OPENSHARING event when no second argument is passed', () => {
+      spyOn(trackingService, 'addTrackingEvent');
+
+      service.addPhoneNumberRequestMessage(conversation);
+
+      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    });
+
+    it('should track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is true', () => {
+      spyOn(trackingService, 'addTrackingEvent');
+
+      service.addPhoneNumberRequestMessage(conversation, true);
+
+      expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    });
+
+    it('should NOT track the CHAT_SHAREPHONE_OPENSHARING event when the second argument is false', () => {
+      spyOn(trackingService, 'addTrackingEvent');
+
+      service.addPhoneNumberRequestMessage(conversation, false);
+
+      expect(trackingService.addTrackingEvent).not.toHaveBeenCalledWith({ eventData: TrackingService.CHAT_SHAREPHONE_OPENSHARING });
+    });
+  });
+
+  describe('createPhoneNumberMessage', () => {
+    const phone = '+34912345678';
+    const conversation = MOCK_CONVERSATION();
+
+    beforeEach(() => {
+      spyOn(realTime, 'sendMessage');
+      service.addPhoneNumberRequestMessage(conversation);
+    });
+
+    it('should call realTime.sendMessage with the new message', () => {
+      const phoneMsg: any = i18n.getTranslations('phoneMessage') + phone;
+
+      service.createPhoneNumberMessage(conversation, phone);
+
+      expect(realTime.sendMessage).toHaveBeenCalledWith(conversation, phoneMsg);
+    });
+
+    it('should set phoneRequestState to ANSWERED for the phoneRequest message', () => {
+      const requestMessage = conversation.messages.find(m => !!m.phoneRequest);
+
+      service.createPhoneNumberMessage(conversation, phone);
+
+      expect(requestMessage.phoneRequest).toBe(phoneRequestState.answered);
+    });
+
+    it('should call persistencyService.setPhoneNumber with the phone numbered entered', () => {
+      spyOn(persistencyService, 'setPhoneNumber');
+
+      service.createPhoneNumberMessage(conversation, phone);
+
+      expect(persistencyService.setPhoneNumber).toHaveBeenCalledWith(phone);
     });
   });
 

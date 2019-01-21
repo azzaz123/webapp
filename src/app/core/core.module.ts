@@ -23,25 +23,29 @@ import { WindowRef } from './window/window.service';
 import { XmppService } from './xmpp/xmpp.service';
 import { PushNotificationsModule } from 'ng-push';
 import { ReviewService } from './review/review.service';
-import { PrivacyService } from './privacy/privacy.service';
 import { ConnectionService } from './connection/connection.service';
+import { RealTimeService } from './message/real-time.service';
+import { BlockUserService } from './conversation/block-user.service';
+import { ProfileModule } from './profile/profile.module';
+import { ProfileService } from './profile/profile.service';
 
 @NgModule({
   imports: [
-    CommonModule,
     CookieModule.forChild(),
     CommonModule,
     UserModule,
     ItemModule,
     TrackingModule,
     ConversationModule.forRoot(),
-    PushNotificationsModule
+    PushNotificationsModule,
+    ProfileModule
   ],
   exports: [
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule
+    TrackingModule,
+    ProfileModule
   ]
 })
 export class CoreModule {
@@ -65,10 +69,12 @@ export class CoreModule {
         PersistencyService,
         WindowRef,
         XmppService,
+        RealTimeService,
+        BlockUserService,
         ReviewService,
         AdService,
-        PrivacyService,
-        ConnectionService
+        ConnectionService,
+        ProfileService
       ]
     };
   }

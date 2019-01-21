@@ -84,7 +84,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     margin-bottom: 0;
     font-size: $font-size-S;
   }
-  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.custom-radio) {
+  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio) {
     color: $grey-800;
     background-color: transparent;
     outline: 0;
@@ -203,7 +203,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.buy-wallacoins, .modal.buy-product, .modal.urgent-confirm, .modal.reactivate, .modal.reactivate-confirm, .modal.tutorial-wallacoins, .modal.become-pro {
+.modal.buy-wallacoins, .modal.buy-product, .modal.urgent-confirm, .modal.reactivate, .modal.reactivate-confirm, .modal.tutorial-wallacoins, .modal.become-pro, .modal.listingfee-confirm {
   .modal-dialog {
     max-width: unset;
   }
@@ -221,5 +221,24 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   .modal-content {
     width: $modal-width !important;
     max-width: unset;
+  }
+}
+
+.modal.phone-request {
+  $modal-width: 572px;
+  .modal-body {
+    border-radius: 20px;
+    padding: $spacing-S $spacing-40 $spacing-2M;
+  }
+  .modal-dialog, .modal-content {
+    max-width: $modal-width;
+    border-radius: $button-border-radius;
+  }
+  .modal-close {
+    left: $spacing-1M;
+    top: $spacing-1M;
+    mat-icon {
+      @include square($spacing-1M);
+    }
   }
 }

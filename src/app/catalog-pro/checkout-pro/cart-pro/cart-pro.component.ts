@@ -11,6 +11,12 @@ import { TrackingService } from '../../../core/tracking/tracking.service';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { CartChange, CartProItem } from '../../../shared/catalog/cart/cart-item.interface';
 import { OrderPro } from '../../../core/item/item-response.interface';
+import * as _ from 'lodash';
+
+export interface Balance {
+  citybump: number;
+  countrybump: number;
+}
 
 @Component({
   selector: 'tsl-cart-pro',
@@ -23,7 +29,7 @@ export class CartProComponent implements OnInit {
   public types: string[] = BUMP_PRO_TYPES;
   public perks: PerksModel;
   public status: ScheduledStatus;
-  public balance = { citybump: 0, countrybump: 0 };
+  public balance: Balance = { citybump: 0, countrybump: 0 };
 
   constructor(
     private cartService: CartService,
@@ -59,8 +65,9 @@ export class CartProComponent implements OnInit {
   }
 
   private calculateBalance() {
-    if (this.status.autorenew_scheduled.citybump) {
-      this.balance['citybump'] = (this.perks.getBumpCounter() - this.status.autorenew_scheduled.citybump) - this.cart['citybump'].total;
+    const autorenewCitybump = (this.status.autorenew_scheduled.citybump || 0) + (this.status.autorenew_scheduled.zonebump || 0);
+    if (autorenewCitybump) {
+      this.balance['citybump'] = (this.perks.getBumpCounter() - autorenewCitybump) - this.cart['citybump'].total;
     } else {
       this.balance['citybump'] = this.perks.getBumpCounter() - this.cart['citybump'].total;
     }
@@ -71,15 +78,38 @@ export class CartProComponent implements OnInit {
     }
   }
 
+  private getBalanceWithScheduled(): Balance {
+    const autorenewCitybump = (this.status.autorenew_scheduled.citybump || 0) + (this.status.autorenew_scheduled.zonebump || 0);
+    let balance: Balance = { citybump: 0, countrybump: 0 };
+    if (autorenewCitybump) {
+      balance['citybump'] = (this.perks.getBumpCounter() - autorenewCitybump) - this.cart['citybump'].total;
+    } else {
+      balance['citybump'] = this.perks.getBumpCounter() - this.cart['citybump'].total;
+    }
+    if (this.status.autorenew_scheduled.countrybump) {
+      balance['countrybump'] = (this.perks.getNationalBumpCounter() - this.status.autorenew_scheduled.countrybump) - this.cart['countrybump'].total;
+    } else {
+      balance['countrybump'] = this.perks.getNationalBumpCounter() - this.cart['countrybump'].total;
+    }
+    return balance;
+  }
+
   applyBumps() {
     const order: OrderPro[] = this.cart.prepareOrder();
+    const startsToday: boolean = _.some(order, (item: OrderPro) => {
+       return (new Date(item.start_date)).toDateString() === (new Date).toDateString();
+    });
     this.itemService.bumpProItems(order).subscribe((failedProducts: string[]) => {
       if (failedProducts && failedProducts.length) {
         this.errorService.i18nError('bumpError');
       } else {
         this.itemService.deselectItems();
         this.trackingService.track(TrackingService.BUMP_PRO_APPLY, { selected_products: order });
-        this.router.navigate(['/pro/catalog/list', { code: 201 }]);
+        let code = 201;
+        if (this.isFutureOrderWithNoBalance()) {
+          code = startsToday ? 203 : 202;
+        }
+        this.router.navigate(['/pro/catalog/list', { code:  code }]);
       }
     }, (error) => {
       if (error.text()) {
@@ -88,6 +118,13 @@ export class CartProComponent implements OnInit {
         this.errorService.i18nError('bumpError');
       }
     });
+  }
+
+  private isFutureOrderWithNoBalance(): boolean {
+    const balanceWithScheduled: Balance = this.getBalanceWithScheduled();
+    const cityOrder: boolean = this.cart.citybump.total > 0 && balanceWithScheduled.citybump <= 0;
+    const countryOrder: boolean = this.cart.countrybump.total > 0 && balanceWithScheduled.countrybump <= 0;
+    return cityOrder || countryOrder;
   }
 
 }

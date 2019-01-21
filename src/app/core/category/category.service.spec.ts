@@ -6,7 +6,7 @@ import {
 } from '../../../tests/category.fixtures.spec';
 import { CategoryResponse } from './category-response.interface';
 import { ResponseOptions, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { IOption } from 'ng-select';
 import { HttpService } from '../http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';

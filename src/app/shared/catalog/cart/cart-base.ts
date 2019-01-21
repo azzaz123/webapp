@@ -2,6 +2,7 @@ import { BumpGroup, CartItem, CartProItem, CartProExtrasPack } from './cart-item
 import { UUID } from 'angular2-uuid';
 
 export const BUMP_TYPES = ['zonebump', 'citybump', 'countrybump'];
+export const BUMP_PROVINCIAL_TYPES = ['zonebump', 'countrybump'];
 export const BUMP_PRO_TYPES = ['citybump', 'countrybump'];
 
 export abstract class CartBase {

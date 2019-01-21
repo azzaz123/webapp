@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/te
 import { ChatComponent } from './chat.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { TrackingService } from '../core/tracking/tracking.service';
@@ -15,7 +15,6 @@ import { Conversation } from '../core/conversation/conversation';
 import { EventService } from '../core/event/event.service';
 import { ConversationService } from '../core/conversation/conversation.service';
 import { UserService } from '../core/user/user.service';
-import { XmppService } from '../core/xmpp/xmpp.service';
 import { PersistencyService } from '../core/persistency/persistency.service';
 import { ItemService } from '../core/item/item.service';
 import { MockTrackingService } from '../../tests/tracking.fixtures.spec';
@@ -25,8 +24,11 @@ import { Item } from '../core/item/item';
 import { ITEM_ID } from '../../tests/item.fixtures.spec';
 import { MOCK_CONVERSATION, SURVEY_RESPONSES } from '../../tests/conversation.fixtures.spec';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import { BlockUserService } from '../core/conversation/block-user.service';
+import { environment } from '../../environments/environment';
 
 class MockConversationService {
+  storedPhoneNumber: string;
 
   sendRead(conversation: Conversation) {
   }
@@ -77,7 +79,7 @@ describe('Component: Chat', () => {
   let trackingService: TrackingService;
   let toastr: ToastrService;
   let modalService: NgbModal;
-  let xmppService: XmppService;
+  let blockService: BlockUserService;
   let persistencyService: PersistencyService;
   let adService: AdService;
 
@@ -99,13 +101,16 @@ describe('Component: Chat', () => {
           getMetaInformation() {
             return Observable.of({});
           },
-          saveMetaInformation() {}
+          saveMetaInformation() {},
+          getPhoneNumber() {
+            return Observable.of({});
+          }
         }
         },
         I18nService,
         EventService,
         {
-          provide: XmppService, useValue: {
+          provide: BlockUserService, useValue: {
           blockUser() {
           },
           unblockUser() {
@@ -132,7 +137,7 @@ describe('Component: Chat', () => {
     itemService = TestBed.get(ItemService);
     toastr = TestBed.get(ToastrService);
     modalService = TestBed.get(NgbModal);
-    xmppService = TestBed.get(XmppService);
+    blockService = TestBed.get(BlockUserService);
     persistencyService = TestBed.get(PersistencyService);
     adService = TestBed.get(AdService);
   });
@@ -181,8 +186,7 @@ describe('Component: Chat', () => {
 
     it('should set userWebSlug', () => {
       component.onCurrentConversationChange(conversation);
-
-      expect(component.userWebSlug).toBe(WEB_SLUG_USER + USER_WEB_SLUG);
+      expect(component.userWebSlug).toBe(environment.siteUrl.replace('es', 'www') + 'user/' + USER_WEB_SLUG);
     });
   });
 
@@ -229,6 +233,8 @@ describe('Component: Chat', () => {
   });
 
   describe('ngOnInit', () => {
+    const phone = '+34912345678';
+
     it('should set connection error', () => {
       component.ngOnInit();
       eventService.emit(EventService.CONNECTION_ERROR);
@@ -271,6 +277,17 @@ describe('Component: Chat', () => {
 
       expect(component.firstLoad).toBe(true);
       expect(persistencyService.saveMetaInformation).toHaveBeenCalled();
+    });
+
+    it('should call persistencyService.getPhoneNumber and set the phone number in conversationService', () => {
+      spyOn(persistencyService, 'getMetaInformation').and.returnValue(Observable.throw('err'));
+      spyOn(persistencyService, 'getPhoneNumber').and.returnValue(Observable.of({phone: phone}));
+
+      component.ngOnInit();
+      eventService.emit(EventService.DB_READY);
+
+      expect(persistencyService.getPhoneNumber).toHaveBeenCalled();
+      expect(conversationService.storedPhoneNumber).toBe(phone);
     });
   });
 
@@ -405,13 +422,13 @@ describe('Component: Chat', () => {
 
     it('should close the modal, call blockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
-      spyOn(xmppService, 'blockUser').and.returnValue(Observable.of({}));
+      spyOn(blockService, 'blockUser').and.returnValue(Observable.of({}));
       spyOn(toastr, 'success').and.callThrough();
 
       component.blockUserAction();
       tick();
 
-      expect(xmppService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
+      expect(blockService.blockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been blocked');
     }));
   });
@@ -425,13 +442,13 @@ describe('Component: Chat', () => {
 
     it('should close the modal, call unblockUser and show the toast', fakeAsync(() => {
       component.currentConversation = MOCK_CONVERSATION();
-      spyOn(xmppService, 'unblockUser').and.returnValue(Observable.of({}));
+      spyOn(blockService, 'unblockUser').and.returnValue(Observable.of({}));
       spyOn(toastr, 'success').and.callThrough();
 
       component.unblockUserAction();
       tick();
 
-      expect(xmppService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
+      expect(blockService.unblockUser).toHaveBeenCalledWith(component.currentConversation.user);
       expect(toastr.success).toHaveBeenCalledWith('The user has been unblocked');
     }));
   });

@@ -9,7 +9,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/throw';
 import { ConversationService } from './core/conversation/conversation.service';
@@ -21,7 +21,6 @@ import { TrackingService } from './core/tracking/tracking.service';
 import { MatIconRegistry } from '@angular/material';
 import { MessageService } from './core/message/message.service';
 import { NotificationService } from './core/notification/notification.service';
-import { XmppService } from './core/xmpp/xmpp.service';
 import { EventService } from './core/event/event.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { UserService } from './core/user/user.service';
@@ -31,23 +30,22 @@ import { I18nService } from './core/i18n/i18n.service';
 import { MockTrackingService } from '../tests/tracking.fixtures.spec';
 import { WindowRef } from './core/window/window.service';
 import { TEST_HTTP_PROVIDERS } from '../tests/utils.spec';
-import { PrivacyService } from './core/privacy/privacy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
-import { MOCK_PRIVACY_ALLOW, MOCK_PRIVACY_UNKNOW_DISALLOW } from './core/privacy/privacy.fixtures.spec';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
 import { PaymentService } from './core/payments/payment.service';
 import { MOCK_MESSAGE } from '../tests/message.fixtures.spec';
 import { messageStatus } from './core/message/message';
+import { RealTimeService } from './core/message/real-time.service';
+import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
 let userService: UserService;
 let errorsService: ErrorsService;
 let eventService: EventService;
-let xmppService: XmppService;
+let realTime: RealTimeService;
 let notificationService: NotificationService;
 let messageService: MessageService;
 let titleService: Title;
@@ -56,7 +54,6 @@ let window: any;
 let conversationService: ConversationService;
 let callsService: CallsService;
 let cookieService: CookieService;
-let privacyService: PrivacyService;
 let modalService: NgbModal;
 let connectionService: ConnectionService;
 let paymentService: PaymentService;
@@ -92,10 +89,10 @@ describe('App', () => {
         }
         },
         {
-          provide: XmppService, useValue: {
+          provide: RealTimeService, useValue: {
           connect() {},
           disconnect() {},
-          reconnectClient() {}
+          reconnect() {}
           }
         },
         ErrorsService,
@@ -199,7 +196,6 @@ describe('App', () => {
             }
         }
         },
-        PrivacyService,
         ...
           TEST_HTTP_PROVIDERS
       ],
@@ -211,7 +207,7 @@ describe('App', () => {
     userService = TestBed.get(UserService);
     errorsService = TestBed.get(ErrorsService);
     eventService = TestBed.get(EventService);
-    xmppService = TestBed.get(XmppService);
+    realTime = TestBed.get(RealTimeService);
     notificationService = TestBed.get(NotificationService);
     messageService = TestBed.get(MessageService);
     titleService = TestBed.get(Title);
@@ -220,7 +216,6 @@ describe('App', () => {
     conversationService = TestBed.get(ConversationService);
     callsService = TestBed.get(CallsService);
     cookieService = TestBed.get(CookieService);
-    privacyService = TestBed.get(PrivacyService);
     modalService = TestBed.get(NgbModal);
     connectionService = TestBed.get(ConnectionService);
     paymentService = TestBed.get(PaymentService);
@@ -234,6 +229,7 @@ describe('App', () => {
 
   describe('set cookie', () => {
     it('should create a cookie', () => {
+      jasmine.clock().uninstall();
       spyOn(UUID, 'UUID').and.returnValue('1-2-3');
       spyOn(cookieService, 'put');
       jasmine.clock().install();
@@ -271,34 +267,32 @@ describe('App', () => {
         expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.USER_LOGIN);
       });
 
-      it('should call the eventService.subscribe passing the chat tracking funnel events', () => {
+      it('should call the eventService.subscribe passing the CHAT_SIGNAL event', () => {
         spyOn(eventService, 'subscribe').and.callThrough();
 
         component.ngOnInit();
 
-        expect(eventService.subscribe['calls'].argsFor(7)[0]).toBe(EventService.MESSAGE_SENT_ACK);
-        expect(eventService.subscribe['calls'].argsFor(8)[0]).toBe(EventService.MESSAGE_RECEIVED);
-        expect(eventService.subscribe['calls'].argsFor(9)[0]).toBe(EventService.MESSAGE_READ);
+        expect(eventService.subscribe['calls'].argsFor(7)[0]).toBe(EventService.CHAT_SIGNAL);
       });
 
-      it('should perform a xmpp connect when the login event is triggered and the DB_READY event is triggered without a dbName', () => {
-        spyOn(xmppService, 'connect').and.callThrough();
+      it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
+        spyOn(realTime, 'connect').and.callThrough();
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
         eventService.emit(EventService.DB_READY);
 
-        expect(xmppService.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
+        expect(realTime.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
       });
 
       it('should NOT perform a xmpp connect when the DB_READY event is triggered with a dbName', () => {
-        spyOn(xmppService, 'connect').and.callThrough();
+        spyOn(realTime, 'connect').and.callThrough();
 
         component.ngOnInit();
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
         eventService.emit(EventService.DB_READY, 'some-db-name');
 
-        expect(xmppService.connect).not.toHaveBeenCalled();
+        expect(realTime.connect).not.toHaveBeenCalled();
       });
 
       it('should call conversationService.init', () => {
@@ -380,60 +374,8 @@ describe('App', () => {
         expect(component.updateSessionCookie).not.toHaveBeenCalled();
       });
 
-      it('should call getPrivacyList method', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(privacyService.getPrivacyList).toHaveBeenCalled();
-      });
-
-      it('should open modal gdpr when privacy permission is unknow and sessionStorage isGDPRShown dont have value', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
-        spyOn(modalService, 'open');
-        sessionStorage.removeItem('isGDPRShown');
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent, {beforeDismiss: jasmine.any(Function)});
-      });
-
-      it('should open modal gdpr when privacy permission is unknow and sessionStorage isGDPRShown value is undefined', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
-        spyOn(modalService, 'open');
-        sessionStorage.removeItem('isGDPRShown');
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(modalService.open).toHaveBeenCalledWith(GdprModalComponent, {beforeDismiss: jasmine.any(Function)});
-      });
-
-      it('should not open modal gdpr when privacy permission is allow', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_ALLOW));
-        spyOn(modalService, 'open');
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(modalService.open).not.toHaveBeenCalledWith();
-      });
-
-      it('should open modal gdpr when sessionStorage isGDPRShown value is defined', () => {
-        spyOn(privacyService, 'getPrivacyList').and.returnValue(Observable.of(MOCK_PRIVACY_UNKNOW_DISALLOW));
-        spyOn(modalService, 'open');
-        sessionStorage.removeItem('isGDPRShown');
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-
-        expect(modalService.open).not.toHaveBeenCalledWith();
-      });
-
-      it('should call xmppService.clientReconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
-        spyOn(xmppService, 'reconnectClient');
+      it('should call realTime.reconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
+        spyOn(realTime, 'reconnect');
         connectionService.isConnected = true;
         Object.defineProperty(userService, 'isLogged', {
           get() {
@@ -444,7 +386,7 @@ describe('App', () => {
         component.ngOnInit();
         eventService.emit(EventService.CLIENT_DISCONNECTED);
 
-        expect(xmppService.reconnectClient).toHaveBeenCalled();
+        expect(realTime.reconnect).toHaveBeenCalled();
       });
 
     });
@@ -483,13 +425,13 @@ describe('App', () => {
       expect(notificationService.init).toHaveBeenCalled();
     });
 
-    it('should call disconnect on logout', () => {
-      spyOn(xmppService, 'disconnect');
+    it('should call realTime.disconnect on logout', () => {
+      spyOn(realTime, 'disconnect');
 
       component.ngOnInit();
       eventService.emit(EventService.USER_LOGOUT);
 
-      expect(xmppService.disconnect).toHaveBeenCalled();
+      expect(realTime.disconnect).toHaveBeenCalled();
     });
 
     it('should delete payments cache', () => {
@@ -548,6 +490,7 @@ describe('App', () => {
   });
 
   describe('process chat signals', () => {
+    const timestamp = new Date(MOCK_MESSAGE.date).getTime();
     beforeEach(() => {
       spyOn(conversationService, 'markAs');
       spyOn(conversationService, 'markAllAsRead');
@@ -555,21 +498,22 @@ describe('App', () => {
       component.ngOnInit();
     });
 
-    it('should call the conversationService.markAs method when a MESSAGE_SENT_ACK event is triggered', () => {
-      eventService.emit(EventService.MESSAGE_SENT_ACK, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
+    it('should call the conversationService.markAs method when a CHAT_SIGNAL event is triggered with a SENT signal', () => {
+      eventService.emit(EventService.CHAT_SIGNAL,
+        new ChatSignal(chatSignalType.SENT, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id));
 
       expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.SENT, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
     });
 
-    it('should call the conversationService.markAs method when a MESSAGE_RECEIVED event is triggered', () => {
-      eventService.emit(EventService.MESSAGE_RECEIVED, MOCK_MESSAGE.conversationId, MOCK_MESSAGE.id);
+    it('should call the conversationService.markAs method when a CHAT_SIGNAL event is triggered with a RECEIVED signal', () => {
+      eventService.emit(EventService.CHAT_SIGNAL,
+        new ChatSignal(chatSignalType.RECEIVED, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id));
 
       expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.RECEIVED, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
     });
 
-    it('should call the conversationService.markAllAsRead method when a MESSAGE_READ event is triggered', () => {
-      const timestamp = new Date().getTime();
-      eventService.emit(EventService.MESSAGE_READ, MOCK_MESSAGE.conversationId, timestamp);
+    it('should call the conversationService.markAllAsRead method when a a CHAT_SIGNAL event is triggered with a READ signal', () => {
+      eventService.emit(EventService.CHAT_SIGNAL, new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.conversationId, timestamp));
 
       expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp, true);
     });

@@ -4,16 +4,17 @@ import { HttpService } from '../http/http.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { EventService } from '../event/event.service';
-import { XmppService } from '../xmpp/xmpp.service';
 import { ConversationService } from './conversation.service';
 import { LeadService } from './lead.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { Lead } from './lead';
 import { Conversation } from './conversation';
 import { CallTotals } from './totals.interface';
 import { CallResponse } from './call-response.interface';
 import { ConnectionService } from '../connection/connection.service';
+import { RealTimeService } from '../message/real-time.service';
+import { BlockUserService } from './block-user.service';
 
 @Injectable()
 export class CallsService extends LeadService {
@@ -28,10 +29,11 @@ export class CallsService extends LeadService {
               userService: UserService,
               itemService: ItemService,
               event: EventService,
-              xmpp: XmppService,
+              realTime: RealTimeService,
+              blockService: BlockUserService,
               connectionService: ConnectionService,
               private conversationService: ConversationService ) {
-    super(http, userService, itemService, event, xmpp, connectionService);
+    super(http, userService, itemService, event, realTime, blockService, connectionService);
   }
 
   protected getLeads(since?: number, archived?: boolean): Observable<Call[]> {

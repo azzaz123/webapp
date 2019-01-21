@@ -2,7 +2,7 @@
 
 import { TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { TrackingService } from './tracking.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { UserService } from '../user/user.service';
 import { CookieService } from 'ngx-cookie';
 import { HttpService } from '../http/http.service';
@@ -166,10 +166,8 @@ describe('Service: Tracking', () => {
     it('should do a post to clickstream', () => {
       spyOn(http, 'postNoBase').and.returnValue(Observable.of({}));
       spyOn<any>(service, 'createNewEvent').and.callThrough();
-
-      service.track(TrackingService.NOTIFICATION_RECEIVED, { conversation_id: 'conversation' });
-
-      expect(http.postNoBase['calls'].argsFor(0)[0]).toBe('https://collector.wallapop.com/clickstream.json/sendEvents');
+      service.track(TrackingService.NOTIFICATION_RECEIVED, {conversation_id: 'conversation'});
+      expect(http.postNoBase['calls'].argsFor(0)[0]).toBe(environment.clickStreamURL);
     });
 
     it('should set the attribute professional to TRUE when the user.type is professional', () => {

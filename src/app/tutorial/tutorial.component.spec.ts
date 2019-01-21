@@ -7,7 +7,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { UserService } from '../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 describe('TutorialComponent', () => {
   let component: TutorialComponent;

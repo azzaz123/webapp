@@ -15,7 +15,7 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { AccessTokenService } from './access-token.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { EventService } from '../event/event.service';
 
 describe('Service: Http', () => {
@@ -195,7 +195,6 @@ describe('Service: Http', () => {
           headers = connection.request.headers;
         });
         httpService.get(TEST_URL).subscribe();
-        console.log(headers.keys());
         expect(headers.keys().length).toBe(1);
         expect(headers.has('Authorization')).toBeTruthy();
         expect(headers.get('Authorization')).toBe('Bearer thetoken');

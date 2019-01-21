@@ -6,7 +6,7 @@ import { RequestOptions, XHRBackend } from '@angular/http';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { UserService } from './core/user/user.service';
 import { User } from './core/user/user';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { EventService } from './core/event/event.service';
 
 export const PROVIDERS: Provider[] = [
