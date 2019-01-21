@@ -20,7 +20,6 @@ import 'rxjs/add/operator/retryWhen';
 import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/delay';
-import { type } from 'os';
 
 export const SECRET = 'UTI5dVozSmhkSE1zSUhsdmRTZDJaU0JtYjNWdVpDQnBkQ0VnUVhKbElIbHZkU0J5WldGa2VTQjBieUJxYjJsdUlIVnpQeUJxYjJKelFIZGhiR3hoY0c5d0xtTnZiUT09';
 
