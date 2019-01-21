@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { ConversationsPanelComponent } from './conversations-panel.component';
 import { ConversationComponent } from '../../shared/conversation/conversation.component';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConversationService } from '../../core/conversation/conversation.service';
@@ -411,12 +411,25 @@ describe('Component: ConversationsPanel', () => {
       expect(component['getConversations']).toHaveBeenCalled();
     });
 
-    it('should subscribe to the PRIVACY_LIST_CHANGED event', () => {
+    it('should subscribe to the PRIVACY_LIST_CHANGED event if a previous subscription does not exits', () => {
       spyOn(eventService, 'subscribe');
+      const eventsSubscribed = [];
 
       component.ngOnInit();
 
-      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.PRIVACY_LIST_UPDATED);
+      eventService.subscribe['calls'].allArgs().map(arg => eventsSubscribed.push(arg[0]));
+      expect(eventsSubscribed).toContain(EventService.PRIVACY_LIST_UPDATED);
+    });
+
+    it('should NOT subscribe to the PRIVACY_LIST_CHANGED event if a previous subscription exits', () => {
+      spyOn(eventService, 'subscribe');
+      const eventsSubscribed = [];
+      component['privacyListChangeSubscription'] = new Subscription;
+
+      component.ngOnInit();
+
+      eventService.subscribe['calls'].allArgs().map(arg => eventsSubscribed.push(arg[0]));
+      expect(eventsSubscribed).not.toContain(EventService.PRIVACY_LIST_UPDATED);
     });
 
     it('should call sendRead on MESSAGE_ADDED event', () => {
