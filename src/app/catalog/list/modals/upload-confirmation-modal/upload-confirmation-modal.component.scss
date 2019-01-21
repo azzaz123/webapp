@@ -2,38 +2,6 @@
 
 $border-radius: 0.3rem;
 
-.header {
-  background: $corporate;
-  height: 100px;
-  border-top-left-radius: $border-radius;
-  border-top-right-radius: $border-radius;
-  color: $white;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  .modal-close {
-    top: $spacing;
-    right: $spacing;
-    @include square(13px);
-    mat-icon {
-      @include square(13px);
-      line-height: unset;
-    }
-  }
-  h1 {
-    font-size: 18px;
-    font-weight: bold;
-  }
-  p {
-    opacity: .8;
-    margin: 0;
-    margin-bottom: $spacing-L;
-    color: $white;
-    font-size: $font-size;
-  }
-}
-
 .content-col {
   background: url(/assets/images/urgent-background.svg) no-repeat 90px 47px;
   background-size: 130px;

@@ -1,5 +1,6 @@
 $modal-standard-width: 600px;
 $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
+$modal-border-radius: 0.3rem;
 
 .modal-backdrop.in {
   opacity: .7;
@@ -119,7 +120,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.review, .modal.sold, .modal.profile, .modal.upload {
+.modal.review, .modal.sold, .modal.profile {
   $modal-width: 600px;
   .modal-dialog {
     max-width: $modal-width;
@@ -234,6 +235,36 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   .modal-dialog {
     max-width: $modal-width;
   }
+  .header {
+    background: $corporate;
+    height: 100px;
+    border-top-left-radius: $modal-border-radius;
+    border-top-right-radius: $modal-border-radius;
+    color: $white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .modal-close {
+      top: $spacing;
+      right: $spacing;
+      @include square(13px);
+      mat-icon {
+        @include square(13px);
+        line-height: unset;
+      }
+    }
+    h1 {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    p {
+      opacity: .8;
+      margin: 0;
+      color: $white;
+      font-size: $font-size;
+    }
+  }
   .modal-content {
     width: $modal-width !important;
     max-width: unset;
@@ -245,8 +276,8 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     .image-col {
       background-color: $grey-250;
       min-width: 280px;
-      border-top-left-radius: 0.3rem;
-      border-bottom-left-radius: 0.3rem;
+      border-top-left-radius: $modal-border-radius;
+      border-bottom-left-radius: $modal-border-radius;
       display: flex;
       justify-content: center;
       img {
@@ -264,6 +295,14 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     .modal-text {
       font-size: $font-size;
       color: $grey-500;
+    }
+    .link {
+      color: $grey-250 !important;
+      margin-top: $spacing-M;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
     .share {
       text-align: center;

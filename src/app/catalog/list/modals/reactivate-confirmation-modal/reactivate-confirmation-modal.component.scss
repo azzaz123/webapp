@@ -20,12 +20,3 @@ p {
     color: $corporate;
   }
 }
-
-.link {
-  color: $grey-250 !important;
-  margin-top: $spacing-M;
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-}

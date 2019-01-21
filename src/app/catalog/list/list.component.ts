@@ -194,7 +194,7 @@ export class ListComponent implements OnInit, OnDestroy {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
           this.upgradePlanModalRef = this.modalService.open(UpgradePlanModalComponent, {
-            windowClass: 'upload',
+            windowClass: 'modal-standard',
           });
           this.upgradePlanModalRef.componentInstance.itemId = params.itemId;
           this.upgradePlanModalRef.result.then((orderEvent: OrderEvent) => {
