@@ -1,15 +1,17 @@
 @import "~style/common";
 
+$border-radius: 0.3rem;
+
 .header {
   background: $corporate;
-  height: 127px;
+  height: 100px;
   border-top-left-radius: $border-radius;
   border-top-right-radius: $border-radius;
   color: $white;
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   .modal-close {
     top: $spacing;
     right: $spacing;
@@ -32,46 +34,15 @@
   }
 }
 
-.modal-body {
-  text-align: center;
-  padding: 40px 70px;
+.content-col {
+  background: url(/assets/images/urgent-background.svg) no-repeat 90px 47px;
+  background-size: 130px;
+  padding: $spacing-40 $spacing-40 $spacing-M 260px;
+  margin-bottom: $spacing;
   p {
-    font-size: $font-size;
-    color: $grey-400;
-    margin-top: 10px;
-  }
-  .urgent-background {
-    background: url(/assets/images/urgent-background.svg);
-    width: 138px;
-    height: 152px;
-    margin: $spacing-S auto;
-  }
-}
-
-tsl-button {
-  margin: $spacing-L auto $spacing;
-}
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background-color: $grey-50;
-    @include square(34px);
-    margin: 6px;
-    cursor: pointer;
-    mat-icon {
-      @include square(18px);
-    }
-    &:hover {
-      background-color: $color-social-background;
-      mat-icon /deep/ path {
-        fill: $color-social-fill;
-      }
+    margin: 0 auto $spacing-3M auto;
+    &.credit-info {
+      margin-bottom: 0;
     }
   }
 }

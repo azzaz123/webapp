@@ -171,7 +171,7 @@ export class ListComponent implements OnInit, OnDestroy {
         }
         if (params && params.created) {
           this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
-            windowClass: 'upload',
+            windowClass: 'modal-standard',
           });
           this.uploadModalRef.result.then((orderEvent: OrderEvent) => {
             this.uploadModalRef = null;

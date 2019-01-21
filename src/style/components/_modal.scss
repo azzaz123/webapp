@@ -237,7 +237,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   .modal-content {
     width: $modal-width !important;
     max-width: unset;
-    .modal-close {
+    .modal-close:not(.light) {
       mat-icon /deep/ path {
         fill: $grey-200;
       }
@@ -264,6 +264,35 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     .modal-text {
       font-size: $font-size;
       color: $grey-500;
+    }
+    .share {
+      text-align: center;
+      font-size: $font-size;
+      color: $grey-250;
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        margin-bottom: $spacing;
+        a {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50%;
+          background-color: $grey-50;
+          @include square(34px);
+          margin: 6px;
+          cursor: pointer;
+          mat-icon {
+            @include square(18px);
+          }
+          &:hover {
+            background-color: $color-social-background;
+            mat-icon /deep/ path {
+              fill: $color-social-fill;
+            }
+          }
+        }
+      }
     }
   }
 }
