@@ -32,7 +32,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private active = true;
   private newConversationItemId: string;
   public isProfessional: boolean;
-  private privacyListChangeSubscripton: Subscription;
+  private privacyListChangeSubscription: Subscription;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
@@ -85,8 +85,10 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.setCurrentConversation(null);
-    this.privacyListChangeSubscripton.unsubscribe();
     this.active = false;
+    if (this.privacyListChangeSubscription) {
+      this.privacyListChangeSubscription.unsubscribe();
+    }
   }
 
   public loadMore() {
@@ -148,8 +150,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   }
 
   private subscribePrivacyListChanges() {
-    if (!this.privacyListChangeSubscripton) {
-      this.privacyListChangeSubscripton = this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
+    if (!this.privacyListChangeSubscription) {
+      this.privacyListChangeSubscription = this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
         blockedUsers.map(id => {
           this.conversations.filter(conv => conv.user.id === id && !conv.user.blocked)
           .map(conv => conv.user.blocked = true);
