@@ -887,8 +887,7 @@ describe('Service: Http', () => {
       it(`should emit the quitRetryMsg after retrying mockMaxRetries times,
       when it encounters an error that is present in the retryOnStatuses array`, (done) => {
         spyOn(eventService, 'emit');
-        httpService.mockDelay = 1;
-        httpService.mockMaxRetries = 3;
+        httpService['initialRetryInterval'] = 0;
         const testErrorCode = httpService['retryOnStatuses'][0];
         const testError = {status: testErrorCode};
         spyOn(Http.prototype, 'post').and.returnValues(Observable.throw(testError), null);

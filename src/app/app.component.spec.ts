@@ -281,7 +281,7 @@ describe('App', () => {
         expect(eventService.subscribe['calls'].argsFor(9)[0]).toBe(EventService.MESSAGE_READ);
       });
 
-      it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
+      it('should perform a xmpp connect when the login event is triggered and the DB_READY event is triggered without a dbName', () => {
         spyOn(xmppService, 'connect').and.callThrough();
 
         component.ngOnInit();
@@ -289,6 +289,16 @@ describe('App', () => {
         eventService.emit(EventService.DB_READY);
 
         expect(xmppService.connect).toHaveBeenCalledWith(USER_ID, ACCESS_TOKEN);
+      });
+
+      it('should NOT perform a xmpp connect when the DB_READY event is triggered with a dbName', () => {
+        spyOn(xmppService, 'connect').and.callThrough();
+
+        component.ngOnInit();
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        eventService.emit(EventService.DB_READY, 'some-db-name');
+
+        expect(xmppService.connect).not.toHaveBeenCalled();
       });
 
       it('should call conversationService.init', () => {

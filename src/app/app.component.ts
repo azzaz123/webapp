@@ -158,18 +158,18 @@ export class AppComponent implements OnInit {
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
           this.event.subscribe(EventService.DB_READY, (dbName) => {
             if (!dbName) {
-            this.xmppService.connect(user.id, accessToken);
-            this.conversationService.init().subscribe(() => {
-              this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-                if (isProfessional) {
-                  this.callService.init().subscribe(() => {
-                    this.conversationService.init(true).subscribe(() => {
-                      this.callService.init(true).subscribe();
+              this.xmppService.connect(user.id, accessToken);
+              this.conversationService.init().subscribe(() => {
+                this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+                  if (isProfessional) {
+                    this.callService.init().subscribe(() => {
+                      this.conversationService.init(true).subscribe(() => {
+                        this.callService.init(true).subscribe();
+                      });
                     });
-                  });
-                }
+                  }
+                });
               });
-            });
             }
           });
           appboy.changeUser(user.id);

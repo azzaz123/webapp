@@ -36,8 +36,6 @@ export class HttpService extends Http {
     private initialRetryInterval = 5 * 1000;
     private maxRetryInterval = 5 * 60 * 1000;
     public quitRetryMsg = 'Quit retrying';
-    public mockDelay = null; // used to pass a very low delay interval in unit test
-    public mockMaxRetries = null; // used to pass a lower retries count in unit test
 
   public request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
     return super.request(url, options);
@@ -79,16 +77,16 @@ export class HttpService extends Http {
     newOptions.withCredentials = passCookies;
     return super.post(url, body, newOptions).retryWhen(error => {
       return error.flatMap((err: HttpErrorResponse, index: number) => {
-        const delay = this.mockDelay || Math.min(this.initialRetryInterval * Math.pow(2, index), this.maxRetryInterval);
+        const delay = Math.min(this.initialRetryInterval * Math.pow(2, index), this.maxRetryInterval);
         if (this.retryOnStatuses.indexOf(err.status) !== -1 && withDelayedRetry) {
           if (index === 0) {
             this.eventService.emit(EventService.HTTP_REQUEST_FAILED, url);
           }
-          return Observable.of(err.status).delay(this.mockDelay || delay);
+          return Observable.of(err.status).delay(delay);
         }
         return Observable.throw(err);
       })
-      .take(this.mockMaxRetries || 100)
+      .take(100)
       .concat(Observable.throw({ message: this.quitRetryMsg, url: url })
       );
     });
