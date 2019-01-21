@@ -32,6 +32,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private active = true;
   private newConversationItemId: string;
   public isProfessional: boolean;
+  private privacyListChangeSubscripton: Subscription;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
@@ -84,6 +85,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.setCurrentConversation(null);
+    this.privacyListChangeSubscripton.unsubscribe();
     this.active = false;
   }
 
@@ -146,14 +148,16 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   }
 
   private subscribePrivacyListChanges() {
-    this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
-      blockedUsers.map(id => {
-        this.conversations.filter(conv => conv.user.id === id && !conv.user.blocked)
-        .map(conv => conv.user.blocked = true);
+    if (!this.privacyListChangeSubscripton) {
+      this.privacyListChangeSubscripton = this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
+        blockedUsers.map(id => {
+          this.conversations.filter(conv => conv.user.id === id && !conv.user.blocked)
+          .map(conv => conv.user.blocked = true);
+        });
+        this.conversations.filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+        .map(conv => conv.user.blocked = false);
       });
-      this.conversations.filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
-      .map(conv => conv.user.blocked = false);
-    });
+    }
   }
 
   private setCurrentConversationFromQueryParams() {
