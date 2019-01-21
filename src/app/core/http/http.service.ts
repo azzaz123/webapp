@@ -20,6 +20,7 @@ import 'rxjs/add/operator/retryWhen';
 import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/delay';
+import { type } from 'os';
 
 export const SECRET = 'UTI5dVozSmhkSE1zSUhsdmRTZDJaU0JtYjNWdVpDQnBkQ0VnUVhKbElIbHZkU0J5WldGa2VTQjBieUJxYjJsdUlIVnpQeUJxYjJKelFIZGhiR3hoY0c5d0xtTnZiUT09';
 
@@ -79,7 +80,7 @@ export class HttpService extends Http {
       return error.flatMap((err: HttpErrorResponse, index: number) => {
         const delay = Math.min(this.initialRetryInterval * Math.pow(2, index), this.maxRetryInterval);
         if (this.retryOnStatuses.indexOf(err.status) !== -1 && withDelayedRetry) {
-          if (JSON.parse(JSON.stringify(body)).sessions) { // TODO - remove after QA testing
+          if (typeof body === 'string') { // TODO - remove after QA testing
             console.log('%cPACK  post retry FAILED: ' + JSON.parse(body).sessions[0].events[0].id, 'color: DarkMagenta');
           }
           if (index === 0) {
