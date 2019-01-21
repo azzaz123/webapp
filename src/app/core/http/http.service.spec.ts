@@ -891,7 +891,6 @@ describe('Service: Http', () => {
         const testError = {status: testErrorCode};
         spyOn(Http.prototype, 'post').and.returnValues(Observable.throw(testError), null);
 
-
         httpService.postNoBase(TEST_URL, TEST_BODY, 'stringAuthorization', null, true).subscribe(() => {},
         (err) => {
           expect(eventService.emit).toHaveBeenCalledWith(EventService.HTTP_REQUEST_FAILED, TEST_URL);
