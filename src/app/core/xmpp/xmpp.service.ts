@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Message, messageStatus } from '../message/message';
 import { EventService } from '../event/event.service';
 import { XmppBodyMessage, XMPPClient, JID } from './xmpp.interface';
-import { Observable, Observer, Subscription } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import 'rxjs/add/observable/from';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { User } from '../user/user';
@@ -26,7 +26,6 @@ export class XmppService {
   private reconnectedTimes = 0;
   private messageQ: Array<XmppBodyMessage> = [];
   private archiveFinishedLoaded = false;
-  private privacyListSubscriber: Subscription;
 
   constructor(private eventService: EventService) {
   }
@@ -309,8 +308,8 @@ export class XmppService {
   }
 
   private onPrivacyListChange(iq: any) {
-    if (iq.type === 'set' && iq.privacy && !this.privacyListSubscriber) {
-      this.privacyListSubscriber = this.getPrivacyList().subscribe((ids: string[]) => {
+    if (iq.type === 'set' && iq.privacy) {
+      this.getPrivacyList().subscribe((ids: string[]) => {
         this.eventService.emit(EventService.PRIVACY_LIST_UPDATED, ids);
         this.blockedUsers = ids;
       });
