@@ -969,10 +969,13 @@ export class TrackingService {
   }
 
   private postPackagedEvents(eventsPackage: TrackingEvent, originalEvents?: Array<TrackingEventData>) {
+    console.log('%cPACK  try post: ' + eventsPackage.sessions[0].events[0].id + ' with '
+    + eventsPackage.sessions[0].events.length + ' event(s)', 'color: orange'); // TODO - remove after QA testing
     const stringifiedEvent: string = JSON.stringify(eventsPackage);
     const sha1Body: string = CryptoJS.SHA1(stringifiedEvent + this.TRACKING_KEY);
     return this.http.postNoBase(environment.clickStreamURL, stringifiedEvent, sha1Body, null, true)
       .subscribe(() => {
+        console.log('%cPACK  post OK: ' + eventsPackage.sessions[0].events[0].id, 'color: LightSeaGreen'); // TODO - remove after QA testing
         this.persistencyService.removePackagedClickstreamEvents(eventsPackage).subscribe(() => {
           if (this.sendFailed) {
             this.sendStoredPackagedEvents();
@@ -1107,6 +1110,7 @@ export class TrackingService {
   private sendStoredPackagedEvents() {
     this.persistencyService.getPackagedClickstreamEvents().subscribe(pendingPackagedEvents => {
       pendingPackagedEvents.map((eventsPackage) => {
+        console.log('%cPACK  send previously stored pack:' + eventsPackage.sessions[0].events[0].id, 'color: grey'); // TODO - remove after QA testing
         this.postPackagedEvents(eventsPackage);
       });
     });

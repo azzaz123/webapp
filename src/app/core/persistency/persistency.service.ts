@@ -80,16 +80,19 @@ export class PersistencyService {
 
   private removeClickstreamEvents(sentEvents: Array<TrackingEventData>) {
     sentEvents.map(event => {
+      console.log('%cEVENT removed: ' + event.id, 'color: red'); // TODO - remove after QA testing
       this.clickstreamDb.transaction([this.eventsStore], 'readwrite').objectStore(this.eventsStore).delete(event.id);
     });
   }
 
   public removePackagedClickstreamEvents(eventsPackage: TrackingEvent): Observable<boolean> {
     const storedWithKey = eventsPackage.sessions[0].events[0].id;
+    const count = eventsPackage.sessions[0].events.length; // TODO - remove after QA test
     return Observable.create(
       (observer: Observer<boolean>) => {
         this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
         .delete(storedWithKey).onsuccess = () => {
+          console.log('%cPACK  removed: ' + storedWithKey + ' with ' + count + ' event(s)', 'color: red'); // TODO - remove after QA testing
           observer.next(true);
         };
       });
@@ -114,13 +117,16 @@ export class PersistencyService {
   }
 
   public storeClickstreamEvent(clickstreamEvent: TrackingEventData | any) {
+    console.log('%cEVENT stored: ' + clickstreamEvent.id, 'color: green'); // TODO - remove after QA testing
     this.clickstreamDb.transaction([this.eventsStore], 'readwrite').objectStore(this.eventsStore).add(clickstreamEvent);
   }
 
   public storePackagedClickstreamEvents(eventsPackage: any) {
     const storedKey = eventsPackage.sessions[0].events[0].id;
+    const count = eventsPackage.sessions[0].events.length; // TODO - remove after QA test
     this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
     .add(eventsPackage, storedKey).onsuccess = () => {
+      console.log('%cPACK  stored: ' + storedKey + ' with ' + count + ' event(s)', 'color: green'); // TODO - remove after QA testing
       this.removeClickstreamEvents(eventsPackage.sessions[0].events);
     };
   }
@@ -304,7 +310,7 @@ export class PersistencyService {
 
   private upsert(db, docId, diffFun) {
     if (typeof docId !== 'string') {
-      return throwError(new Error("doc id is required"));
+      return throwError(new Error('doc id is required'));
     }
 
     return db.get(docId)
