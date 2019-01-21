@@ -79,9 +79,6 @@ export class HttpService extends Http {
       return error.flatMap((err: HttpErrorResponse, index: number) => {
         const delay = Math.min(this.initialRetryInterval * Math.pow(2, index), this.maxRetryInterval);
         if (this.retryOnStatuses.indexOf(err.status) !== -1 && withDelayedRetry) {
-          if (typeof body === 'string') { // TODO - remove after QA testing
-            console.log('%cPACK  post retry FAILED: ' + JSON.parse(body).sessions[0].events[0].id, 'color: DarkMagenta');
-          }
           if (index === 0) {
             this.eventService.emit(EventService.HTTP_REQUEST_FAILED, url);
           }
