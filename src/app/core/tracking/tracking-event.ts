@@ -4,7 +4,7 @@ import { getTimestamp } from './getTimestamp.func';
 import * as _ from 'lodash';
 
 export class TrackingEvent {
-  private sessions: any[] = [{
+  sessions: any[] = [{
     id: null,
     startTimestamp: null,
     userId: '',
