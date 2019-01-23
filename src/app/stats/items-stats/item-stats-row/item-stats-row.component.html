@@ -51,10 +51,18 @@
         </div>
       </div>
     </div>
-    <div class="graphs-container graph-info" *ngIf="!item.featured">
+    <div class="graphs-container graph-info" *ngIf="!item.featured && !item.flags.expired && !item.flags.onhold">
       <h2 i18n>Get your listing in shape</h2>
       <p class="note" i18n>Improve the stats of your listing. The more visits you get, the more you sell!</p>
       <tsl-button className="btn-primary btn-block" *ngIf="price" [routerLink]="['/catalog/checkout', {itemId: item.id}]" i18n>Feature it now from {{price | customCurrency}}</tsl-button>
+    </div>
+    <div class="graphs-container graph-info reactivate" *ngIf="item.flags.expired">
+      <h2 i18n>Reactivate your product</h2>
+      <p class="note" i18n>Reactivate your product to see your stats and so that other users can contact you.</p>
+    </div>
+    <div class="graphs-container graph-info reactivate" *ngIf="item.flags.onhold">
+      <h2 i18n>Publish your product</h2>
+      <p class="note" i18n>Publish your product to see your stats and so that other users can contact you.</p>
     </div>
     <div class="graphs-container graph-info" *ngIf="item.featured">
       <h2 i18n>This product is Featured</h2>

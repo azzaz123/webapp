@@ -6,7 +6,8 @@ import { RequestOptions, XHRBackend } from '@angular/http';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { UserService } from './core/user/user.service';
 import { User } from './core/user/user';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { EventService } from './core/event/event.service';
 
 export const PROVIDERS: Provider[] = [
   {
@@ -17,7 +18,7 @@ export const PROVIDERS: Provider[] = [
   {
     provide: HttpService,
     useFactory: httpFactory,
-    deps: [XHRBackend, RequestOptions, AccessTokenService]
+    deps: [XHRBackend, RequestOptions, AccessTokenService, EventService]
   },
   {
     provide: APP_INITIALIZER,
@@ -34,8 +35,9 @@ export function subdomainFactory(cookieService: CookieService) {
 
 export function httpFactory(backend: XHRBackend,
                             defaultOptions: RequestOptions,
-                            accessTokenService: AccessTokenService) {
-  return new HttpService(backend, defaultOptions, accessTokenService);
+                            accessTokenService: AccessTokenService,
+                            eventService: EventService) {
+  return new HttpService(backend, defaultOptions, accessTokenService, eventService);
 }
 
 export function permissionFactory(userService: UserService) {
@@ -55,5 +57,5 @@ export function permissionFactory(userService: UserService) {
         }
       })
       .toPromise();
-  }
+  };
 }

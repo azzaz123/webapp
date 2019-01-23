@@ -119,7 +119,11 @@ export class CatalogProListComponent implements OnInit {
           modalRef.result.then(() => {
             modalRef = null;
             localStorage.removeItem('transactionType');
-            this.router.navigate(['pro/catalog/list']);
+            if (params.code === '202') {
+              this.router.navigate(['pro/catalog/checkout-extras']);
+            } else {
+              this.router.navigate(['pro/catalog/list']);
+            }
           }, () => {
           });
         }

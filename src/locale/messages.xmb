@@ -29,7 +29,7 @@
   <msg id="6348395677948023023"><source>app/layout/topbar/topbar.component.html:44</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:31</source><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:42</source>List a car</msg>
   <msg id="4915431133669985304"><source>app/layout/sidebar/sidebar.component.html:7</source><source>app/profile/profile.component.html:21</source><source>app/profile-pro/profile-pro.component.html:21</source>Profile</msg>
   <msg id="6570363013146073520"><source>app/layout/sidebar/sidebar.component.html:15</source>Dashboard</msg>
-  <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.html:23</source><source>app/favorites/favorites.component.html:28</source>Products</msg>
+  <msg id="6707361102856436710"><source>app/layout/sidebar/sidebar.component.html:23</source><source>app/catalog/list/list.component.html:38</source><source>app/favorites/favorites.component.html:28</source>Products</msg>
   <msg id="4588618843305891254"><source>app/layout/sidebar/sidebar.component.html:24</source>Catalog</msg>
   <msg id="4085930761302974863"><source>app/layout/sidebar/sidebar.component.html:50</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:51</source><source>app/stats/items-stats/items-stats.component.html:16</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:24</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:42</source>Favorites</msg>
   <msg id="9029286143304711365"><source>app/layout/sidebar/sidebar.component.html:57</source>Reviews</msg>
@@ -100,7 +100,7 @@
   <msg id="5556202995949734730"><source>app/shared/confirmation-modal/confirmation-modal.component.html:24</source>The profile will be removed from favorites.</msg>
   <msg id="968107342863651775"><source>app/shared/confirmation-modal/confirmation-modal.component.html:27</source>This profile is no longer featured</msg>
   <msg id="1918694988070405915"><source>app/shared/confirmation-modal/confirmation-modal.component.html:28</source>If you remove it you won&apos;t be able to save it again.</msg>
-  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.html:34</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:32</source><source>app/catalog/list/list.component.html:49</source><source>app/catalog/list/selected-items/selected-items.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:7</source>Delete</msg>
+  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.html:34</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:32</source><source>app/catalog/list/list.component.html:51</source><source>app/catalog/list/selected-items/selected-items.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:7</source>Delete</msg>
   <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.html:35</source><source>app/catalog/list/selected-items/selected-items.component.html:19</source><source>app/chat/item/item.component.html:17</source>Reserve</msg>
   <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.html:36</source>Remove</msg>
   <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.html:37</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:6</source>Yes, I am sure</msg>
@@ -143,11 +143,11 @@
   <msg id="445243100567221931"><source>app/shared/catalog/modals/already-featured-modal/already-featured-modal.component.html:13</source>Ok, got it</msg>
   <msg id="2299499307204911989"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:2</source>Activate items</msg>
   <msg id="3437651521808081039"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:3</source>The selected items will be set all active.</msg>
-  <msg id="4759723562137600498"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:7</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:19</source><source>app/catalog/list/list.component.html:52</source>Activate</msg>
+  <msg id="4759723562137600498"><source>app/shared/catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component.html:7</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:19</source><source>app/catalog/list/list.component.html:54</source>Activate</msg>
   <msg id="5943346117221479516"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:2</source>Deactivate items</msg>
   <msg id="1888437309536533541"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:3</source>The selected items will be set all pending.</msg>
-  <msg id="5322473252816589112"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:7</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:17</source><source>app/catalog/list/list.component.html:54</source>Deactivate</msg>
-  <msg id="5262427597279775777"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:5</source><source>app/catalog/list/list.component.html:42</source>1 item selected</msg>
+  <msg id="5322473252816589112"><source>app/shared/catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component.html:7</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:17</source><source>app/catalog/list/list.component.html:56</source>Deactivate</msg>
+  <msg id="5262427597279775777"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:5</source><source>app/catalog/list/list.component.html:44</source>1 item selected</msg>
   <msg id="708449889891136724"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:6,7</source>
         <ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
   <msg id="13886945388572438" desc="selected-items-button" meaning="Continue to cart"><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:22</source>Feature</msg>
@@ -214,7 +214,7 @@
   <msg id="5378722151309930038"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:31</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:15</source><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.html:11</source>Buy more Wallacoins</msg>
   <msg id="5880798667461104338"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:32</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:16</source><source>app/wallacoins/wallacoins-confirm-modal/wallacoins-confirm-modal.component.html:12</source>Buy more credit</msg>
   <msg id="8191075807274604024"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:34</source><source>app/catalog/list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component.html:18</source>Go to my catalogue</msg>
-  <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:38</source><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:21</source>Something happened...</msg>
+  <msg id="3174905759883607970"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:38</source><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:33</source>Something happened...</msg>
   <msg id="3979232265698800722"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:39</source>Your item(s) have not been featured because something went wrong with your credit card.<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>Please check and try again.</msg>
   <msg id="3275068756845590930"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:40</source>Let’s go</msg>
   <msg id="2502391471711660975"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:44</source>Hmmm…</msg>
@@ -226,7 +226,7 @@
   <msg id="5578025610796640405"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:57</source>There has been an unexpected error in the paying system. Why not trying again later?</msg>
   <msg id="8766840274158243690"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:62</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.html:17</source><source>app/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.html:10</source>Oops!</msg>
   <msg id="2785911750257412726"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:63</source><source>app/catalog/list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component.html:18</source><source>app/catalog-pro/catalog-pro-list/modals/pro-urgent-confirmation-modal/pro-urgent-confirmation-modal.component.html:11</source>We are trying to figure out what happened. Try again later.</msg>
-  <msg id="880177930328984754"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:64</source><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:23</source>Fine!</msg>
+  <msg id="880177930328984754"><source>app/catalog/list/modals/bump-confirmation-modal/bump-confirmation-modal.component.html:64</source><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:35</source>Fine!</msg>
   <msg id="868815663264397508"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.html:6</source>Your item is now on Wallapop</msg>
   <msg id="3258601590058086652"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.html:9</source>Want to sell ASAP?</msg>
   <msg id="4495547321385209565"><source>app/catalog/list/modals/upload-confirmation-modal/upload-confirmation-modal.component.html:10</source>Stand out on the wall during 7 days and be easy to find with the filter ASAP</msg>
@@ -281,16 +281,15 @@
   <msg id="7588966777090643410"><source>app/catalog/list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component.html:8</source>Your car is published for 60 days. You can find it in your catalog.</msg>
   <msg id="989776066026256137"><source>app/catalog/list/list.component.html:14</source>Your products <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="INTERPOLATION"><ex>{{motorPlan &amp;&amp; motorPlan.label}}</ex></ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="1953428607881051577"><source>app/catalog/list/list.component.html:17</source>Here you can list items, manage the ones you already have and featured to sell them faster</msg>
-  <msg id="442085080206895883"><source>app/catalog/list/list.component.html:29</source>products</msg>
-  <msg id="776785241867401546"><source>app/catalog/list/list.component.html:30</source>product</msg>
-  <msg id="954702980611036148"><source>app/catalog/list/list.component.html:35</source>Cars</msg>
-  <msg id="4058575476871566236"><source>app/catalog/list/list.component.html:36</source>Published</msg>
-  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.html:37</source>Sold</msg>
-  <msg id="3618067650338827326"><source>app/catalog/list/list.component.html:43</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
-  <msg id="8141228329244837517"><source>app/catalog/list/list.component.html:66</source>Upload an item to my catalog</msg>
-  <msg id="6946649608831221934"><source>app/catalog/list/list.component.html:67</source>Upload another item to my catalog</msg>
-  <msg id="6371997993047169675"><source>app/catalog/list/list.component.html:68</source>You can upload one more car</msg>
-  <msg id="219922155027226932"><source>app/catalog/list/list.component.html:69</source>You can upload <ph name="INTERPOLATION"><ex>{{availableSlots}}</ex></ph> cars more</msg>
+  <msg id="442085080206895883"><source>app/catalog/list/list.component.html:30</source>products</msg>
+  <msg id="776785241867401546"><source>app/catalog/list/list.component.html:31</source>product</msg>
+  <msg id="954702980611036148"><source>app/catalog/list/list.component.html:37</source>Cars</msg>
+  <msg id="5529951643694823242" desc="plural" meaning="tab"><source>app/catalog/list/list.component.html:39</source>Sold</msg>
+  <msg id="3618067650338827326"><source>app/catalog/list/list.component.html:45</source><ph name="TOTAL_SELECTED"><ex>{{itemService.selectedItems.length // i18n(ph=&quot;TOTAL_SELECTED&quot;)}}</ex></ph> items selected</msg>
+  <msg id="8141228329244837517"><source>app/catalog/list/list.component.html:68</source>Upload an item to my catalog</msg>
+  <msg id="6946649608831221934"><source>app/catalog/list/list.component.html:69</source>Upload another item to my catalog</msg>
+  <msg id="6371997993047169675"><source>app/catalog/list/list.component.html:70</source>You can upload one more car</msg>
+  <msg id="219922155027226932"><source>app/catalog/list/list.component.html:71</source>You can upload <ph name="INTERPOLATION"><ex>{{availableSlots}}</ex></ph> cars more</msg>
   <msg id="8890553633144307762"><source>app/catalog/checkout/checkout.component.html:3</source><source>app/catalog-pro/checkout-pro/checkout-pro.component.html:8</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:3</source><source>app/catalog-pro/checkout-extras-pro/checkout-extras-pro.component.html:4</source>Back</msg>
   <msg id="833919813165214228"><source>app/catalog/checkout/checkout.component.html:14</source>Feature it locally</msg>
   <msg id="4721342773618175343"><source>app/catalog/checkout/checkout.component.html:15</source>Feature it provincially</msg>
@@ -311,7 +310,12 @@
   <msg id="8423596927659875793"><source>app/catalog/checkout/checkout-item/checkout-item.component.html:22</source>Not Available</msg>
   <msg id="3286725018134496844"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:10</source>You already have your extra features and you can use them whenever you want.</msg>
   <msg id="1034935109316471792"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:16</source>You featured your products.</msg>
-  <msg id="7542752854018206709"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:22</source>Your extra features have not been done because something went wrong with your credit card. Please check and try again</msg>
+  <msg id="495907666381542902"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:21</source>At the moment you do not have enough credit for this action.</msg>
+  <msg id="397588615020669463"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:22</source>If at the time of the scheduled bump you still do not have enough, it will not be applied.</msg>
+  <msg id="7912483235847223622"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:23</source><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:29</source>Buy Extras</msg>
+  <msg id="2600789092654025484"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:27</source>Your product has been successfully bumped for the day.</msg>
+  <msg id="4472894989449368622"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:28</source>We will run a daily check to make sure you have enough credits for your scheduled bumps.</msg>
+  <msg id="7542752854018206709"><source>app/catalog-pro/catalog-pro-list/modals/pro-bump-confirmation-modal/pro-bump-confirmation-modal.component.html:34</source>Your extra features have not been done because something went wrong with your credit card. Please check and try again</msg>
   <msg id="6686102860613242031"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:11</source>Use this card:</msg>
   <msg id="2005530248451232459"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:15</source>Add a new card</msg>
   <msg id="4699023020194351074"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:17</source>Feature for <ph name="INTERPOLATION"><ex>{{total | number:&apos;1.2-2&apos;}}</ex></ph> Euros</msg>
@@ -338,7 +342,7 @@
   <msg id="4862629622121675984"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:40</source><ph name="INTERPOLATION"><ex>{{perks?.subscription.bump.quantity}}</ex></ph> plan</msg>
   <msg id="2882470259260755892"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:41</source> <ph name="INTERPOLATION"><ex>{{perks?.extra.bump.quantity}}</ex></ph> extra</msg>
   <msg id="9054202731560341408"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:47</source><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:77</source>In Use</msg>
-  <msg id="5681895899318476927"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:49</source>(<ph name="INTERPOLATION"><ex>{{status?.autorenew_scheduled?.citybump || &apos;0&apos;}}</ex></ph> planned)</msg>
+  <msg id="8871965642938314035"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:49</source>(<ph name="INTERPOLATION"><ex>{{(status?.autorenew_scheduled?.citybump || 0) + (status?.autorenew_scheduled?.zonebump || 0)}}</ex></ph> planned)</msg>
   <msg id="5092371717305178267"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:56</source>Country Plan</msg>
   <msg id="4772127996106888369"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:59</source>You don&apos;t have a Country Plan</msg>
   <msg id="3780659623990720220"><source>app/catalog-pro/catalog-pro-list/plan-data/plan-data.component.html:70</source><ph name="INTERPOLATION"><ex>{{perks?.subscription.national.quantity}}</ex></ph> plan</msg>
@@ -446,15 +450,15 @@
   <msg id="7022993325750262876"><source>app/profile/profile.component.html:11</source><source>app/profile-pro/profile-pro.component.html:11</source>View my public profile</msg>
   <msg id="3797778920049399855"><source>app/profile/profile.component.html:16</source><source>app/profile-pro/profile-pro.component.html:16</source>Logout</msg>
   <msg id="7830707034534607415"><source>app/profile/profile.component.html:22</source><source>app/profile-pro/profile-pro.component.html:23</source>Subscription</msg>
-  <msg id="3163876998313048927"><source>app/profile/become-pro-modal/become-pro-modal.component.html:12</source>Become a PRO</msg>
-  <msg id="2542747907081885378"><source>app/profile/become-pro-modal/become-pro-modal.component.html:13</source>Go to the app for further details</msg>
-  <msg id="976362268569732073"><source>app/profile/become-pro-modal/become-pro-modal.component.html:16</source>Your products will be seen more: they will be in the first position of the searches</msg>
-  <msg id="2615367215367851425"><source>app/profile/become-pro-modal/become-pro-modal.component.html:17</source>Buyers can save your shop/profile as a favorite</msg>
-  <msg id="834481573787357193"><source>app/profile/become-pro-modal/become-pro-modal.component.html:18</source>Buyers will be able to see your phone and website in your profile for easy contact</msg>
-  <msg id="9213743536713966070"><source>app/profile/become-pro-modal/become-pro-modal.component.html:19</source>You will have a description of your store or service and its location</msg>
-  <msg id="4670889551195648197"><source>app/profile/become-pro-modal/become-pro-modal.component.html:20</source>Your profile will have a different design and will stand out!</msg>
-  <msg id="7373818560498277711"><source>app/profile/become-pro-modal/become-pro-modal.component.html:21</source>Your items won&apos;t expire</msg>
-  <msg id="5553776930806289663"><source>app/profile/become-pro-modal/become-pro-modal.component.html:24</source>Ok, got it!</msg>
+  <msg id="3163876998313048927"><source>app/profile/become-pro-modal/become-pro-modal.component.html:5</source>Become a PRO</msg>
+  <msg id="2542747907081885378"><source>app/profile/become-pro-modal/become-pro-modal.component.html:6</source>Go to the app for further details</msg>
+  <msg id="976362268569732073"><source>app/profile/become-pro-modal/become-pro-modal.component.html:10</source>Your products will be seen more: they will be in the first position of the searches</msg>
+  <msg id="2615367215367851425"><source>app/profile/become-pro-modal/become-pro-modal.component.html:11</source>Buyers can save your shop/profile as a favorite</msg>
+  <msg id="834481573787357193"><source>app/profile/become-pro-modal/become-pro-modal.component.html:12</source>Buyers will be able to see your phone and website in your profile for easy contact</msg>
+  <msg id="9213743536713966070"><source>app/profile/become-pro-modal/become-pro-modal.component.html:13</source>You will have a description of your store or service and its location</msg>
+  <msg id="4670889551195648197"><source>app/profile/become-pro-modal/become-pro-modal.component.html:14</source>Your profile will have a different design and will stand out!</msg>
+  <msg id="7373818560498277711"><source>app/profile/become-pro-modal/become-pro-modal.component.html:15</source>Your items won&apos;t expire</msg>
+  <msg id="5553776930806289663"><source>app/profile/become-pro-modal/become-pro-modal.component.html:18</source>Ok, got it!</msg>
   <msg id="2921056091899795948"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.html:5</source>Are you sure you want to close your account?</msg>
   <msg id="6787712303097193375"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.html:6</source>It&apos;s never too late to change your mind, you know?<ph name="LINE_BREAK"><ex>&lt;br&gt;</ex></ph>The team will be sad to see you go :(</msg>
   <msg id="859827593140377121"><source>app/profile/unsubscribe-modal/unsubscribe-modal.component.html:7</source>Yes, I do want to close my account</msg>
@@ -552,9 +556,13 @@
   <msg id="7201983182105391783"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:55</source>Get your listing in shape</msg>
   <msg id="8983319195885091038"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:56</source>Improve the stats of your listing. The more visits you get, the more you sell!</msg>
   <msg id="6818764209697915477"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:57</source>Feature it now from <ph name="INTERPOLATION"><ex>{{price | customCurrency}}</ex></ph></msg>
-  <msg id="6821183586555063962"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:60</source>This product is Featured</msg>
-  <msg id="3879651736105644738"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:61</source>You will get more views, chats and more interested people.</msg>
-  <msg id="916352071278248935"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:62</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amDateFormat:momentConfig}}</ex></ph></msg>
+  <msg id="2323764505157256373"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:60</source>Reactivate your product</msg>
+  <msg id="5501995834284128332"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:61</source>Reactivate your product to see your stats and so that other users can contact you.</msg>
+  <msg id="4469663920044009823"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:64</source>Publish your product</msg>
+  <msg id="5448941415082762589"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:65</source>Publish your product to see your stats and so that other users can contact you.</msg>
+  <msg id="6821183586555063962"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:68</source>This product is Featured</msg>
+  <msg id="3879651736105644738"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:69</source>You will get more views, chats and more interested people.</msg>
+  <msg id="916352071278248935"><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:70</source>Your feature ends on <ph name="INTERPOLATION"><ex>{{item.bumpExpiringDate | amDateFormat:momentConfig}}</ex></ph></msg>
   <msg id="8775411328776279097"><source>app/tutorial/tutorial.component.html:6</source>Introducing our new webpage!</msg>
   <msg id="6002580040961562985"><source>app/tutorial/tutorial.component.html:7</source>You&apos;re in the zone to access all of the features of the app.</msg>
   <msg id="2137505802700728396"><source>app/tutorial/tutorial.component.html:11</source>From here you can view and edit your profile; set your location and the location of your items, change your photo and password and edit your email address.</msg>

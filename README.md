@@ -48,4 +48,3 @@ yarn buildprod-en
 ## Documentation
 
 Chat sequence diagrams avaiable at: https://confluence.wallapop.com/display/ROV/Chat+sequence+diagrams 
- 

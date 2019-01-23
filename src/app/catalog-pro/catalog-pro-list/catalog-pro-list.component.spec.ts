@@ -186,6 +186,25 @@ describe('CatalogProListComponent', () => {
       expect(component['modalRef'].componentInstance.extras).toBe(true);
     }));
 
+    it('should open bump confirmation modal and redirect to extras if code is 202', fakeAsync(() => {
+      spyOn(router, 'navigate');
+      spyOn(localStorage, 'getItem').and.returnValue('bump');
+      route.params = Observable.of({
+        code: '202',
+      });
+      component['modalRef'] = <any>{
+        componentInstance: componentInstance
+      };
+      component.ngOnInit();
+      tick();
+      expect(modalService.open).toHaveBeenCalledWith(ProBumpConfirmationModalComponent, {
+        windowClass: 'bump-confirm',
+        backdrop: 'static'
+      });
+      expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/checkout-extras']);
+      expect(component['modalRef'].componentInstance.code).toBe('202');
+    }));
+
     it('should reset page on router event', fakeAsync(() => {
       spyOn<any>(component, 'getItems');
       component['init'] = 40;
