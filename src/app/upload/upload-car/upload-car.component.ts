@@ -202,8 +202,8 @@ export class UploadCarComponent implements OnInit {
       if (this.item) {
         this.customVersion = !_.find(this.versions, {value: this.item.version});
       }
+      this.setTitle();
     });
-    this.setTitle();
   }
 
   public getInfo(version: string) {
@@ -219,21 +219,17 @@ export class UploadCarComponent implements OnInit {
   }
 
   private setTitle() {
-    if (!this.item) {
-      this.uploadForm.get('title').patchValue(
-        this.uploadForm.get('brand').value + ' ' +
-        this.uploadForm.get('model').value + ' ' +
-        this.uploadForm.get('year').value
-      );
-      this.uploadForm.get('title').markAsDirty();
-    }
+    this.uploadForm.get('title').patchValue(
+      this.uploadForm.get('brand').value + ' ' +
+      this.uploadForm.get('model').value + ' ' +
+      this.uploadForm.get('year').value
+    );
+    this.uploadForm.get('title').markAsDirty();
   }
 
   private resetTitle() {
-    if (!this.item) {
-      this.uploadForm.get('title').patchValue('');
-      this.uploadForm.get('title').markAsPristine();
-    }
+    this.uploadForm.get('title').patchValue('');
+    this.uploadForm.get('title').markAsPristine();
   }
 
   onSubmit() {
