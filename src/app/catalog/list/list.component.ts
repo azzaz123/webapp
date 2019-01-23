@@ -321,7 +321,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public delete() {
-    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
+      windowClass: 'modal-prompt'
+    });
     modalRef.componentInstance.type = 1;
     modalRef.result.then(() => {
       this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {

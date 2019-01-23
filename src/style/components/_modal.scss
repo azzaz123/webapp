@@ -230,10 +230,50 @@ $modal-border-radius: 0.3rem;
   }
 }
 
-.modal.modal-standard {
-  $modal-width: 600px;
+.modal.modal-prompt {
   .modal-dialog {
-    max-width: $modal-width;
+    max-width: $modal-standard-width;
+  }
+  .modal-content {
+    width: $modal-standard-width !important;
+    max-width: unset;
+    .modal-body {
+      text-align: center;
+      margin-top: $spacing-2L;
+      h2 {
+        font-size: $font-size-L;
+      }
+      p {
+        font-size: $font-size;
+        color: $grey-600;
+      }
+    }
+    .modal-footer {
+      justify-content: center;
+      padding-bottom: $spacing-40;
+      .btn {
+        width: 170px;
+        height: 40px;
+        line-height: 40px;
+        background-color: $grey-50 !important;
+        color: $grey-500 !important;
+        border: 0 !important;
+        border-radius: 20px !important;
+        &.btn-warn {
+          background-color: $warn !important;
+          color: $white !important;;
+        }
+        &:hover {
+          opacity: .8;
+        }
+      }
+    }
+  }
+}
+
+.modal.modal-standard {
+  .modal-dialog {
+    max-width: $modal-standard-width;
   }
   .header {
     background: $corporate;
@@ -266,7 +306,7 @@ $modal-border-radius: 0.3rem;
     }
   }
   .modal-content {
-    width: $modal-width !important;
+    width: $modal-standard-width !important;
     max-width: unset;
     .modal-close:not(.light) {
       mat-icon /deep/ path {

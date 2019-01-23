@@ -26,10 +26,12 @@ export class ProfileCardFavoriteComponent {
     const url = environment.siteUrl.replace('es', this.subdomain) + 'user/' + this.profile.screen_name;
     this.windowRef.nativeWindow.open(url);
   }
-  
+
   removeFavoriteModal(e: Event) {
     e.stopPropagation();
-    const modalRef = this.modalService.open(ConfirmationModalComponent);
+    const modalRef = this.modalService.open(ConfirmationModalComponent, {
+      windowClass: 'modal-prompt'
+    });
     modalRef.componentInstance.type = this.profile.is_professional ? 5 : 6;
     modalRef.result.then(() => {
       this.removeFavorite();
