@@ -20,6 +20,8 @@ export class ReviewButtonComponent implements OnInit {
   public showButton: boolean;
   private item: Item;
   private storageKey: string;
+  private conversationUser: ConversationUser;
+  private isSeller: boolean;
 
   constructor(private conversationService: ConversationService,
               private reviewService: ReviewService,
@@ -29,6 +31,15 @@ export class ReviewButtonComponent implements OnInit {
 
   ngOnInit() {
     this.item = this.conversationService.getItemFromConvId(this.message.conversationId);
+    this.conversationService.get(this.message.conversationId).subscribe((conv) => {
+      this.conversationUser = {
+        id: conv.user.id,
+        micro_name: conv.user.microName,
+        last_message: _.last(conv.messages.filter(msg => msg.from === conv.user.id)),
+        image: conv.user.image
+      };
+      this.isSeller = this.item.owner !== this.conversationUser.id;
+    });
     this.storageKey = this.userService.user.id + '.item.' + this.item.id + '.reviewed';
     const alreadyReviewed: string = localStorage.getItem(this.storageKey);
     if (!alreadyReviewed) {
