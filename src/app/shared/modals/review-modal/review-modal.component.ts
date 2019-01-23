@@ -2,11 +2,9 @@ import { Component, Input, OnChanges, OnInit, EventEmitter, Output } from '@angu
 import { User } from '../../../core/user/user';
 import { ConversationUser } from '../../../core/item/item-response.interface';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ReviewDataSeller } from '../../../core/review/review.interface';
+import { ReviewDataSeller, ReviewDataBuyer } from '../../../core/review/review.interface';
 import { Item } from '../../../core/item/item';
 import { ReviewService } from '../../../core/review/review.service';
-import { UserService } from '../../../core/user/user.service';
-import { ReviewModalResult } from './review-modal-result.interface';
 
 @Component({
   selector: 'tsl-review-modal',
@@ -19,6 +17,7 @@ export class ReviewModalComponent implements OnInit, OnChanges {
   @Input() item: Item;
   @Input() isSeller?: boolean;
   @Input() canChooseBuyer: boolean;
+  @Input() thread?: string;
   @Output() finishedReview = new EventEmitter();
   @Output() backPress = new EventEmitter();
 
@@ -30,16 +29,11 @@ export class ReviewModalComponent implements OnInit, OnChanges {
   public reviewCommentLength = 0;
 
   constructor(public activeModal: NgbActiveModal,
-              private reviewService: ReviewService,
-              private userService: UserService) { }
+              private reviewService: ReviewService) { }
 
 
   ngOnInit() {
-    if (!this.isSeller) {
-      this.userService.get(this.item.owner).subscribe((user: User) => {
-        this.seller = user;
-        this.userName = this.seller.microName;
-      });
+    this.setUsername();
     }
 
   ngOnChanges() {
@@ -69,12 +63,14 @@ export class ReviewModalComponent implements OnInit, OnChanges {
         this.finishedReview.emit(null);
       });
     } else {
-      const result: ReviewModalResult = {
-        score: this.score,
+      const data: ReviewDataBuyer = {
+        to_user_id: this.userToReview.id,
+        item_id: this.item.id,
         comments: this.comments,
-        userId: this.seller.id
+        score: this.score * 20,
+        conversation_id: this.thread
       };
-      this.activeModal.close(result);
+      this.reviewService.createAsBuyer(data).subscribe((r) => this.activeModal.close(r));
     }
   }
 

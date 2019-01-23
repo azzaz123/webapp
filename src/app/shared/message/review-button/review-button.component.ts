@@ -1,13 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import * as _ from 'lodash';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewModalComponent } from '../../../shared/modals/review-modal/review-modal.component';
-import { ReviewModalResult } from '../../../shared/modals/review-modal/review-modal-result.interface';
 import { Message } from '../../../core/message/message';
 import { Item } from '../../../core/item/item';
 import { ConversationService } from '../../../core/conversation/conversation.service';
 import { UserService } from '../../../core/user/user.service';
 import { ReviewService } from '../../../core/review/review.service';
-import { ReviewDataBuyer } from '../../../core/review/review.interface';
+import { SoldModalComponent } from '../../modals/sold-modal/sold-modal.component';
+import { ConversationUser } from '../../../core/item/item-response.interface';
 
 @Component({
   selector: 'tsl-review-button',
@@ -17,6 +18,7 @@ import { ReviewDataBuyer } from '../../../core/review/review.interface';
 export class ReviewButtonComponent implements OnInit {
 
   @Input() message: Message;
+  @Output() finishedReview = new EventEmitter();
   public showButton: boolean;
   private item: Item;
   private storageKey: string;
@@ -57,24 +59,29 @@ export class ReviewButtonComponent implements OnInit {
   }
 
   public openDialog() {
-    const modalRef: NgbModalRef = this.modalService.open(ReviewModalComponent, {windowClass: 'review'});
-    modalRef.componentInstance.item = this.item;
-    modalRef.result.then((result: ReviewModalResult) => {
-      const data: ReviewDataBuyer = {
-        conversation_id: this.message.conversationId,
-        to_user_id: result.userId,
-        item_id: this.item.id,
-        comments: result.comments,
-        score: result.score * 20
-      };
-      this.reviewService.createAsBuyer(data).subscribe(() => this.reviewSent());
-    }, () => {
-    });
+    this.isSeller ? this.reviewAsSeller() : this.reviewAsBuyer();
   }
 
   private reviewSent() {
     this.showButton = false;
     localStorage.setItem(this.storageKey, 'true');
+  }
+
+  private reviewAsBuyer() {
+    const modalRef: NgbModalRef = this.modalService.open(ReviewModalComponent, {windowClass: 'review'});
+    modalRef.componentInstance.item = this.item;
+    modalRef.componentInstance.userToReview = this.conversationUser;
+    modalRef.componentInstance.thread = this.message.conversationId;
+    modalRef.result.then(() => this.reviewSent(), () => {});
+  }
+
+  private reviewAsSeller() {
+    const modalRef: NgbModalRef = this.modalService.open(SoldModalComponent, {windowClass: 'review'});
+    modalRef.componentInstance.item = this.item;
+    modalRef.componentInstance.userToReview = this.conversationUser;
+    modalRef.componentInstance.isSeller = this.isSeller;
+    modalRef.componentInstance.canChooseBuyer = false;
+    modalRef.result.then(() => this.showButton = false, () => {});
   }
 
 }
