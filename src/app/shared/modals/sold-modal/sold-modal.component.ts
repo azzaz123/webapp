@@ -18,6 +18,7 @@ export class SoldModalComponent implements OnInit {
   public price: number;
   public thanks = false;
   public canChooseBuyer: boolean;
+  public userName: string;
 
   constructor(public activeModal: NgbActiveModal,
               private itemService: ItemService) {
