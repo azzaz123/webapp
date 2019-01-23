@@ -18,13 +18,19 @@ import Document = PouchDB.Core.Document;
 import { UserService } from '../user/user.service';
 import { User } from '../user/user';
 import { EventService } from '../event/event.service';
+import { TrackingEventData } from '../tracking/tracking-event-base.interface';
+import { TrackingEvent } from '../tracking/tracking-event';
 
 @Injectable()
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private _conversationsDb: Database<StoredConversation>;
+  private clickstreamDb: any;
   private storedMessages: AllDocsResponse<StoredMessage>;
   private latestVersion = 2.0;
+  public clickstreamDbName = 'clickstreamEvents';
+  private eventsStore;
+  private packagedEventsStore = 'packagedEvents';
 
   constructor(
     private userService: UserService,
@@ -32,6 +38,8 @@ export class PersistencyService {
   ) {
     this.eventService.subscribe(EventService.USER_LOGIN, () => {
       this.userService.me().subscribe((user: User) => {
+        this.initClickstreamDb(this.clickstreamDbName);
+        this.eventsStore = 'events-' + user.id;
         this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
         this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
           this.messagesDb.destroy().then(() => {
@@ -48,6 +56,73 @@ export class PersistencyService {
 
   set messagesDb(value: PouchDB.Database<any>) {
     this._messagesDb = value;
+  }
+
+  private initClickstreamDb(dbName: string, version?: number) {
+    const request = window.indexedDB.open(dbName, version);
+    request.onsuccess = () => {
+      this.clickstreamDb = request.result;
+      if (!request.result.objectStoreNames.contains(this.eventsStore)) {
+        const v = request.result.version;
+        request.result.close();
+        this.initClickstreamDb(dbName, v + 1);
+      } else {
+        this.eventService.emit(EventService.DB_READY, this.clickstreamDb.name);
+      }
+    };
+    request.onupgradeneeded = (e) => {
+      request.result.createObjectStore(this.eventsStore, { keyPath: 'id' });
+      if (e.newVersion === 1) {
+      request.result.createObjectStore(this.packagedEventsStore);
+      }
+    };
+  }
+
+  private removeClickstreamEvents(sentEvents: Array<TrackingEventData>) {
+    sentEvents.map(event => {
+      this.clickstreamDb.transaction([this.eventsStore], 'readwrite').objectStore(this.eventsStore).delete(event.id);
+    });
+  }
+
+  public removePackagedClickstreamEvents(eventsPackage: TrackingEvent): Observable<boolean> {
+    const storedWithKey = eventsPackage.sessions[0].events[0].id;
+    return Observable.create(
+      (observer: Observer<boolean>) => {
+        this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
+        .delete(storedWithKey).onsuccess = () => {
+          observer.next(true);
+        };
+      });
+  }
+
+  public getClickstreamEvents(): Observable<Array<TrackingEventData>> {
+    return Observable.create(
+    (observer: Observer<Array<TrackingEventData>>) => {
+      this.clickstreamDb.transaction([this.eventsStore]).objectStore(this.eventsStore).getAll().onsuccess = (event) => {
+        observer.next(event.target.result);
+      };
+    });
+  }
+
+  public getPackagedClickstreamEvents(): Observable<Array<TrackingEvent>> {
+    return Observable.create(
+    (observer: Observer<Array<TrackingEventData>>) => {
+      this.clickstreamDb.transaction([this.packagedEventsStore]).objectStore(this.packagedEventsStore).getAll().onsuccess = (event) => {
+        observer.next(event.target.result);
+      };
+    });
+  }
+
+  public storeClickstreamEvent(clickstreamEvent: TrackingEventData | any) {
+    this.clickstreamDb.transaction([this.eventsStore], 'readwrite').objectStore(this.eventsStore).add(clickstreamEvent);
+  }
+
+  public storePackagedClickstreamEvents(eventsPackage: any) {
+    const storedKey = eventsPackage.sessions[0].events[0].id;
+    this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
+    .add(eventsPackage, storedKey).onsuccess = () => {
+      this.removeClickstreamEvents(eventsPackage.sessions[0].events);
+    };
   }
 
   set conversationsDb(value: PouchDB.Database<any>) {
@@ -229,7 +304,7 @@ export class PersistencyService {
 
   private upsert(db, docId, diffFun) {
     if (typeof docId !== 'string') {
-      return throwError(new Error("doc id is required"));
+      return throwError(new Error('doc id is required'));
     }
 
     return db.get(docId)
