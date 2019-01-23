@@ -230,7 +230,7 @@ describe('ListComponent', () => {
       component.ngOnInit();
       tick();
       expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
-        windowClass: 'bump-confirm',
+        windowClass: 'modal-standard',
         backdrop: 'static'
       });
       expect(router.navigate).toHaveBeenCalledWith(['catalog/list']);
@@ -261,7 +261,7 @@ describe('ListComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, { windowClass: 'upload' });
+      expect(modalService.open).toHaveBeenCalledWith(UploadConfirmationModalComponent, { windowClass: 'modal-standard' });
       expect(component.feature).toHaveBeenCalledWith(ORDER_EVENT);
       expect(component.isUrgent).toBe(false);
       expect(component.isRedirect).toBe(false);
@@ -320,7 +320,7 @@ describe('ListComponent', () => {
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
       expect(modalService.open).toHaveBeenCalledWith(UrgentConfirmationModalComponent, {
-        windowClass: 'urgent-confirm',
+        windowClass: 'modal-standard',
         backdrop: 'static'
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
@@ -338,7 +338,7 @@ describe('ListComponent', () => {
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
       expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
-        windowClass: 'listingfee-confirm',
+        windowClass: 'modal-standard',
         backdrop: 'static'
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
@@ -356,7 +356,7 @@ describe('ListComponent', () => {
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
       expect(modalService.open).toHaveBeenCalledWith(ListingfeeConfirmationModalComponent, {
-        windowClass: 'listingfee-confirm',
+        windowClass: 'modal-standard',
         backdrop: 'static'
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
@@ -371,7 +371,7 @@ describe('ListComponent', () => {
       tick();
 
       expect(modalService.open).toHaveBeenCalledWith(UpgradePlanModalComponent, {
-        windowClass: 'upload'
+        windowClass: 'modal-standard'
       });
     }));
 
@@ -387,7 +387,7 @@ describe('ListComponent', () => {
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
       expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
-        windowClass: 'bump-confirm',
+        windowClass: 'modal-standard',
         backdrop: 'static'
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
@@ -419,7 +419,7 @@ describe('ListComponent', () => {
 
       expect(localStorage.getItem).toHaveBeenCalledWith('transactionType');
       expect(modalService.open).toHaveBeenCalledWith(BumpConfirmationModalComponent, {
-        windowClass: 'bump-confirm',
+        windowClass: 'modal-standard',
         backdrop: 'static'
       });
       expect(localStorage.removeItem).toHaveBeenCalledWith('transactionType');
@@ -627,7 +627,7 @@ describe('ListComponent', () => {
         tick();
       }));
       it('should call modal and bulkDelete', () => {
-        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+        expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
         expect(itemService.bulkDelete).toHaveBeenCalledWith('active');
       });
       it('should remove deleted items', () => {
