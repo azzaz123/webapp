@@ -18,6 +18,7 @@ export class ReviewModalComponent implements OnInit, OnChanges {
   @Input() userToReview: ConversationUser;
   @Input() item: Item;
   @Input() isSeller?: boolean;
+  @Input() canChooseBuyer: boolean;
   @Output() finishedReview = new EventEmitter();
   @Output() backPress = new EventEmitter();
 

@@ -26,7 +26,7 @@
   </div>
 </div>
 <div id="second-step" [hidden]="!userToReview || thanks">
-  <tsl-review-modal [userToReview]="userToReview" [item]="item" (finishedReview)="onFinishedReview()" (backPress)="onBackPress()" [isSeller]="true"></tsl-review-modal>
+  <tsl-review-modal [userToReview]="userToReview" [item]="item" (finishedReview)="onFinishedReview()" (backPress)="onBackPress()" [isSeller]="true"  [canChooseBuyer]="canChooseBuyer"></tsl-review-modal>
 </div>
 <div id="thanks" [hidden]="!thanks">
   <div class="modal-body center-heading">
