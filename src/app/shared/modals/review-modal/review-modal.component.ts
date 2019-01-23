@@ -15,7 +15,7 @@ import { ReviewModalResult } from './review-modal-result.interface';
 })
 export class ReviewModalComponent implements OnInit, OnChanges {
 
-  @Input() buyer: ConversationUser;
+  @Input() userToReview: ConversationUser;
   @Input() item: Item;
   @Input() isSeller?: boolean;
   @Output() finishedReview = new EventEmitter();
@@ -40,11 +40,14 @@ export class ReviewModalComponent implements OnInit, OnChanges {
         this.userName = this.seller.microName;
       });
     }
-  }
 
   ngOnChanges() {
-    if (this.buyer) {
-      this.userName = this.buyer.micro_name;
+    this.setUsername();
+  }
+
+  private setUsername() {
+    if (this.userToReview) {
+      this.userName = this.userToReview.micro_name;
      }
   }
 
@@ -55,7 +58,7 @@ export class ReviewModalComponent implements OnInit, OnChanges {
   public sumbitReview() {
     if (this.isSeller) {
       const data: ReviewDataSeller = {
-        to_user_id: this.buyer.id,
+        to_user_id: this.userToReview.id,
         item_id: this.item.id,
         comments: this.comments,
         score: this.score * 20,

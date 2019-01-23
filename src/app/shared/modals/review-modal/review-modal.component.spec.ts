@@ -93,7 +93,7 @@ describe('ReviewModalComponent', () => {
 
   describe('ngOnChanges', () => {
     it('should set the userName when buyer exists', () => {
-      component.buyer = CONVERSATION_USERS[0];
+      component.userToReview = CONVERSATION_USERS[0];
 
       component.ngOnChanges();
 
@@ -135,7 +135,7 @@ describe('ReviewModalComponent', () => {
 
   describe('sumbitReview', () => {
     beforeEach(() => {
-      component.buyer = CONVERSATION_USERS[0];
+      component.userToReview = CONVERSATION_USERS[0];
       component.item = MOCK_ITEM;
       component.comments = 'comments';
       component.score = 4;

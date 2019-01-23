@@ -14,7 +14,7 @@ export class SoldModalComponent implements OnInit {
 
   public item: Item;
   public conversationUsers: ConversationUser[] = [];
-  public buyer: ConversationUser;
+  public userToReview: ConversationUser;
   public price: number;
   public thanks = false;
 
@@ -34,11 +34,11 @@ export class SoldModalComponent implements OnInit {
   }
 
   public onBackPress() {
-    delete this.buyer;
+    delete this.userToReview;
   }
 
   public chooseUser(user: ConversationUser) {
-    this.buyer = user;
+    this.userToReview = user;
   }
 
   public setSoldOutside() {

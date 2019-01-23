@@ -68,7 +68,7 @@ describe('SoldModalComponent', () => {
     it('should set selectedUser', () => {
       component.chooseUser(CONVERSATION_USERS[0]);
 
-      expect(component.buyer).toEqual(CONVERSATION_USERS[0]);
+      expect(component.userToReview).toEqual(CONVERSATION_USERS[0]);
     });
   });
 
@@ -103,7 +103,7 @@ describe('SoldModalComponent', () => {
       component.chooseUser(CONVERSATION_USERS[0]);
       component.onBackPress();
 
-      expect(component.buyer).toBe(undefined);
+      expect(component.userToReview).toBe(undefined);
     });
   });
 

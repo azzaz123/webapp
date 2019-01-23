@@ -1,4 +1,4 @@
-<div id="first-step" [hidden]="buyer">
+<div id="first-step" [hidden]="userToReview">
   <div class="modal-body">
     <div class="modal-close" (click)="activeModal.dismiss()">
       <mat-icon svgIcon="cross"></mat-icon>
@@ -25,8 +25,8 @@
     <a href="" (click)="setSoldOutside(); $event.preventDefault()" i18n>I didn't sell this on wallapop</a>
   </div>
 </div>
-<div id="second-step" [hidden]="!buyer || thanks">
-  <tsl-review-modal [buyer]="buyer" [item]="item" (finishedReview)="onFinishedReview()" (backPress)="onBackPress()" [isSeller]="true"></tsl-review-modal>
+<div id="second-step" [hidden]="!userToReview || thanks">
+  <tsl-review-modal [userToReview]="userToReview" [item]="item" (finishedReview)="onFinishedReview()" (backPress)="onBackPress()" [isSeller]="true"></tsl-review-modal>
 </div>
 <div id="thanks" [hidden]="!thanks">
   <div class="modal-body center-heading">
