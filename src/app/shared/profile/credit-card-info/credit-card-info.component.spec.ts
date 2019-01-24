@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
+import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 
 describe('CreditCardInfoComponent', () => {
   let component: CreditCardInfoComponent;
