@@ -138,6 +138,8 @@ describe('CatalogCardComponent', () => {
         spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         spyOn(appboy, 'logCustomEvent');
+        // @ts-ignore
+        spyOn(window, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
@@ -159,7 +161,11 @@ describe('CatalogCardComponent', () => {
       });
 
       it('should emit ITEM_SOLD event', () => {
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item)
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
+      });
+
+      it('should emit ITEM_SOLD event', () => {
+        expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode});
       });
 
       it('should send appboy Sold event', () => {
