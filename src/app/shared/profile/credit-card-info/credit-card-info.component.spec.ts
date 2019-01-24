@@ -73,7 +73,9 @@ describe('CreditCardInfoComponent', () => {
     }));
 
     it('should open modal', () => {
-      expect(modalService.open).toHaveBeenCalled();
+      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
+        windowClass: 'modal-prompt'
+      });
       expect(componentInstance.type).toBe(4);
     });
 
