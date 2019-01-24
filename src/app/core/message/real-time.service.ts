@@ -102,6 +102,11 @@ export class RealTimeService {
         message_id: messageId
       }
     }, false);
+
+    fbq('track', 'InitiateCheckout', {
+      value: conversation.item.salePrice,
+      currency:  conversation.item.currencyCode,
+    });
   }
 
 }
