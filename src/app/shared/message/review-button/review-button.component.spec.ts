@@ -6,16 +6,24 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ReviewModalComponent } from '../../../shared/modals/review-modal/review-modal.component';
 import { ReviewService } from '../../../core/review/review.service';
-import { MOCK_USER, USER_ID } from '../../../../tests/user.fixtures.spec';
+import { MOCK_USER, USER_ID, OTHER_USER_ID } from '../../../../tests/user.fixtures.spec';
 import { ConversationService } from '../../../core/conversation/conversation.service';
-import { ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import { ITEM_ID, ITEM_LEGACY_ID } from '../../../../tests/item.fixtures.spec';
 import { UserService } from '../../../core/user/user.service';
 import { MOCK_MESSAGE } from '../../../../tests/message.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
 import { SoldModalComponent } from '../../modals/sold-modal/sold-modal.component';
 import { ConversationUser } from '../../../core/item/item-response.interface';
+import { Item } from '../../../core/item/item';
 
-const conv = MOCK_CONVERSATION();
+const mockConversation = MOCK_CONVERSATION();
+const mockItem = new Item(ITEM_ID, ITEM_LEGACY_ID, USER_ID);
+const mockConversationsUser: ConversationUser = {
+  id: mockConversation.user.id,
+  micro_name: mockConversation.user.microName,
+  last_message: _.last(mockConversation.messages.filter(msg => msg.from === mockConversation.user.id)),
+  image: mockConversation.user.image
+};
 
 describe('ReviewButtonComponent', () => {
   let component: ReviewButtonComponent;
@@ -38,10 +46,10 @@ describe('ReviewButtonComponent', () => {
         {
           provide: ConversationService, useValue: {
           getItemFromConvId() {
-            return MOCK_ITEM;
+            return mockItem;
           },
           get() {
-            return Observable.of(conv);
+            return Observable.of(mockConversation);
            }
         }
         },
@@ -85,49 +93,76 @@ describe('ReviewButtonComponent', () => {
   describe('ngOnInit', () => {
     it('should set item', () => {
       component.ngOnInit();
-      expect(component['item']).toEqual(MOCK_ITEM);
+
+      expect(component['item']).toEqual(mockItem);
     });
+
     it('should set storageKey', () => {
       component.ngOnInit();
-      expect(component['storageKey']).toEqual(USER_ID + '.item.' + ITEM_ID + '.reviewed');
+
+      expect(component['storageKey']).toEqual(USER_ID + '.item.' + mockItem.id + '.reviewed');
     });
+
+    it('should set conversationUser', () => {
+      component.ngOnInit();
+
+      expect(component['conversationUser']).toEqual(mockConversationsUser);
+    });
+
+    it('should set isSeller to TRUE of the item.owner and conversationUser.id are different', () => {
+      mockItem.owner = OTHER_USER_ID;
+
+      component.ngOnInit();
+
+      expect(component['isSeller']).toBe(true);
+    });
+
+    it('should set isSeller to FALSE of the item.owner and conversationUser.id are the same', () => {
+      mockItem.owner = USER_ID;
+
+      component.ngOnInit();
+
+      expect(component['isSeller']).toBe(false);
+    });
+
     describe('has local storage', () => {
       it('should set show button false without calling check', () => {
         spyOn(localStorage, 'getItem').and.returnValue(true);
         spyOn(reviewService, 'check');
+
         component.ngOnInit();
+
         expect(reviewService.check).not.toHaveBeenCalled();
         expect(component.showButton).toBeFalsy();
       });
     });
+
     describe('does NOT have local storage', () => {
       it('should set show button false and call check', () => {
         spyOn(localStorage, 'getItem').and.returnValue(undefined);
         spyOn(localStorage, 'setItem');
         spyOn(reviewService, 'check').and.returnValue(Observable.of(true));
+
         component.ngOnInit();
-        expect(reviewService.check).toHaveBeenCalledWith(ITEM_ID);
+
+        expect(reviewService.check).toHaveBeenCalledWith(mockItem.id);
         expect(component.showButton).toBeFalsy();
-        expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '.item.' + ITEM_ID + '.reviewed', 'true');
+        expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '.item.' + mockItem.id + '.reviewed', 'true');
       });
+
       it('should set show button true and call check', () => {
         spyOn(localStorage, 'getItem').and.returnValue(undefined);
         spyOn(reviewService, 'check').and.returnValue(Observable.of(false));
+
         component.ngOnInit();
-        expect(reviewService.check).toHaveBeenCalledWith(ITEM_ID);
+
+        expect(reviewService.check).toHaveBeenCalledWith(mockItem.id);
         expect(component.showButton).toBeTruthy();
       });
     });
   });
 
   describe('openDialog', () => {
-    const expectedConversationsUser: ConversationUser = {
-      id: conv.user.id,
-      micro_name: conv.user.microName,
-      last_message: _.last(conv.messages.filter(msg => msg.from === conv.user.id)),
-      image: conv.user.image
-    };
-
     beforeEach(() => {
       spyOn(modalService, 'open').and.callThrough();
       spyOn(localStorage, 'setItem');
@@ -145,11 +180,11 @@ describe('ReviewButtonComponent', () => {
       });
 
       it('should set item in the modal component', () => {
-        expect(modalRef.componentInstance.item).toEqual(MOCK_ITEM);
+        expect(modalRef.componentInstance.item).toEqual(mockItem);
       });
 
       it('should set userToReview in the modal component', () => {
-        expect(modalRef.componentInstance.userToReview).toEqual(expectedConversationsUser);
+        expect(modalRef.componentInstance.userToReview).toEqual(mockConversationsUser);
       });
 
       it('should set thread in the modal component', () => {
@@ -161,7 +196,7 @@ describe('ReviewButtonComponent', () => {
       });
 
       it('should set local storage', () => {
-        expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '.item.' + ITEM_ID + '.reviewed', 'true');
+        expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '.item.' + mockItem.id + '.reviewed', 'true');
       });
     });
 
@@ -177,11 +212,11 @@ describe('ReviewButtonComponent', () => {
       }));
 
       it('should set item in the modal component', () => {
-        expect(modalRef.componentInstance.item).toEqual(MOCK_ITEM);
+        expect(modalRef.componentInstance.item).toEqual(mockItem);
       });
 
       it('should set userToReview in the modal component', () => {
-        expect(modalRef.componentInstance.userToReview).toEqual(expectedConversationsUser);
+        expect(modalRef.componentInstance.userToReview).toEqual(mockConversationsUser);
       });
 
       it('should set isSeller to true in the modal component', () => {
