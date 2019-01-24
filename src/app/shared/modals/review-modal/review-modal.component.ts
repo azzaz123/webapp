@@ -34,7 +34,7 @@ export class ReviewModalComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.setUsername();
-    }
+  }
 
   ngOnChanges() {
     this.setUsername();
@@ -43,7 +43,7 @@ export class ReviewModalComponent implements OnInit, OnChanges {
   private setUsername() {
     if (this.userToReview) {
       this.userName = this.userToReview.micro_name;
-     }
+    }
   }
 
   public countChars(event) {

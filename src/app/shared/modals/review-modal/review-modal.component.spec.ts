@@ -4,18 +4,16 @@ import { ReviewModalComponent } from './review-modal.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { UserService } from '../../../core/user/user.service';
-import { MOCK_USER, USER_ID } from '../../../../tests/user.fixtures.spec';
-import { CONVERSATION_USERS, ITEM_ID, ITEM_SALE_PRICE, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
+import { CONVERSATION_USERS, ITEM_ID, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 import { ReviewService } from '../../../core/review/review.service';
 import { ItemService } from '../../../core/item/item.service';
+import { MOCKED_CONVERSATIONS } from '../../../../tests/conversation.fixtures.spec';
 
 
 describe('ReviewModalComponent', () => {
   let component: ReviewModalComponent;
   let fixture: ComponentFixture<ReviewModalComponent>;
   let activeModal: NgbActiveModal;
-  let userService: UserService;
   let reviewService: ReviewService;
   let itemService: ItemService;
 
@@ -40,15 +38,11 @@ describe('ReviewModalComponent', () => {
           }
         },
         {
-          provide: UserService, useValue: {
-            get() {
-              return Observable.of(MOCK_USER);
-            }
-          }
-        },
-        {
           provide: ReviewService, useValue: {
             createAsSeller() {
+              return Observable.of([]);
+            },
+            createAsBuyer() {
               return Observable.of([]);
             }
           }
@@ -64,7 +58,6 @@ describe('ReviewModalComponent', () => {
     component = fixture.componentInstance;
     component.item = MOCK_ITEM;
     itemService = TestBed.get(ItemService);
-    userService = TestBed.get(UserService);
     activeModal = TestBed.get(NgbActiveModal);
     reviewService = TestBed.get(ReviewService);
     spyOn(itemService, 'getConversationUsers').and.callThrough();
@@ -72,32 +65,38 @@ describe('ReviewModalComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should get and set the seller when isSeller is false', () => {
-      spyOn(userService, 'get').and.callThrough();
-      component.isSeller = false;
+    it('should set the userName when userToReview exists', () => {
+      component.userToReview = CONVERSATION_USERS[0];
 
       component.ngOnInit();
 
-      expect(userService.get).toHaveBeenCalledWith(USER_ID);
-      expect(component.seller).toEqual(MOCK_USER);
+      expect(component.userName).toBe(CONVERSATION_USERS[0].micro_name);
     });
 
-    it('should set the userName when isSeller is false', () => {
-      component.isSeller = false;
+    it('should NOT set the userName when userToReview does not exists', () => {
+      component.userToReview = null;
 
       component.ngOnInit();
 
-      expect(component.userName).toEqual(MOCK_USER.microName);
+      expect(component.userName).toBeFalsy();
     });
   });
 
   describe('ngOnChanges', () => {
-    it('should set the userName when buyer exists', () => {
+    it('should set the userName when userToReview exists', () => {
       component.userToReview = CONVERSATION_USERS[0];
 
       component.ngOnChanges();
 
       expect(component.userName).toEqual(CONVERSATION_USERS[0].micro_name);
+    });
+
+    it('should NOT set the userName when userToReview does not exists', () => {
+      component.userToReview = null;
+
+      component.ngOnChanges();
+
+      expect(component.userName).toBeFalsy();
     });
   });
 
@@ -120,7 +119,6 @@ describe('ReviewModalComponent', () => {
     });
 
     it('should set reviewCommentLength', () => {
-      const fakeTextArea = fixture.nativeElement.querySelector('textarea');
       const fakeEvent = {
         target: {
           value: 'abc'
@@ -169,17 +167,29 @@ describe('ReviewModalComponent', () => {
       expect(called).toBe(true);
     });
 
+    it('should call createAsBuyer when isSeller is false', () => {
+      spyOn(reviewService, 'createAsBuyer').and.callThrough();
+      component.isSeller = false;
+      component.thread = MOCKED_CONVERSATIONS[0].id;
+
+      component.sumbitReview();
+
+      expect(reviewService.createAsBuyer).toHaveBeenCalledWith({
+        to_user_id: '1',
+        item_id: ITEM_ID,
+        comments: 'comments',
+        score: 4 * 20,
+        conversation_id: component.thread
+      });
+    });
+
     it('should call close when isSeller is false', () => {
       spyOn(activeModal, 'close');
       component.isSeller = false;
 
       component.sumbitReview();
 
-      expect(activeModal.close).toHaveBeenCalledWith({
-        score: 4,
-        comments: 'comments',
-        userId: USER_ID
-      });
+      expect(activeModal.close).toHaveBeenCalled();
     });
   });
 });
