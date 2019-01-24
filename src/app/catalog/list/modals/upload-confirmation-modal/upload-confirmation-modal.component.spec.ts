@@ -115,6 +115,22 @@ describe('UploadConfirmationModalComponent', () => {
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_SUCCESS, {categoryId: component.item.categoryId});
     });
+
+    it('should send facebook AddToCart tracking', () => {
+      // @ts-ignore
+      spyOn(window, 'fbq');
+
+      component.item = MOCK_ITEM;
+      component.trackUploaded();
+      const event = {
+        value: component.item.salePrice,
+        currency: component.item.currencyCode,
+        content_ids: component.item.id,
+        content_type: component.item.categoryId,
+      };
+
+      expect(window['fbq']).toHaveBeenCalledWith('track', 'AddToCart', event);
+    });
   });
 
 });

@@ -85,6 +85,12 @@ export class UploadConfirmationModalComponent implements OnInit {
 
   public trackUploaded(): void {
     this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS, {categoryId: this.item.categoryId});
+    fbq('track', 'AddToCart', {
+      value: this.item.salePrice,
+      currency: this.item.currencyCode,
+      content_ids: this.item.id,
+      content_type: this.item.categoryId,
+    });
   }
 
 }
