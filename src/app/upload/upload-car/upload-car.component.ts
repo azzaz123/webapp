@@ -207,15 +207,13 @@ export class UploadCarComponent implements OnInit {
   }
 
   public getInfo(version: string) {
-    if (!this.item) {
-      this.itemService.getCarInfo(
-        this.uploadForm.get('brand').value,
-        this.uploadForm.get('model').value,
-        version
-      ).subscribe((carInfo: CarInfo) => {
-        this.uploadForm.patchValue(carInfo);
-      });
-    }
+    this.itemService.getCarInfo(
+      this.uploadForm.get('brand').value,
+      this.uploadForm.get('model').value,
+      version
+    ).subscribe((carInfo: CarInfo) => {
+      this.uploadForm.patchValue(carInfo);
+    });
   }
 
   private setTitle() {
