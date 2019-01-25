@@ -35,7 +35,6 @@ export class UploadConfirmationModalComponent implements OnInit {
   ngOnInit() {
     ga('send', 'event', 'Item', 'upload');
     gtag('event', 'conversion', {'send_to': 'AW-829909973/7aOVCJvxvHsQ1dfdiwM'});
-    fbq('track', '567634953582843', {});
     twq('track', 'Purchase', {
       value: '0',
       currency: 'EUR',
