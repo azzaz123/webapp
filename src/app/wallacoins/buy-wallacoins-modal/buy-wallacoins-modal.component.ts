@@ -56,6 +56,8 @@ export class BuyWallacoinsModalComponent {
   }
 
   private buy(orderId: string) {
+    fbq('track', 'StartTrial');
+
     if (!this.hasFinancialCard || this.hasFinancialCard && this.cardType === 'new') {
       localStorage.setItem('transactionType', 'wallapack');
       localStorage.setItem('pack', JSON.stringify(this.pack));
