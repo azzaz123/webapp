@@ -163,7 +163,7 @@ describe('CatalogCardComponent', () => {
         expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
       });
 
-      it('should emit ITEM_SOLD event', () => {
+      it('should send facebook CompleteRegistrations tracking', () => {
         expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode});
       });
 
