@@ -118,15 +118,15 @@ describe('UploadConfirmationModalComponent', () => {
 
     it('should send facebook AddToCart tracking', () => {
       spyOn(window, 'fbq');
-
-      component.item = MOCK_ITEM;
-      component.trackUploaded();
       const event = {
         value: component.item.salePrice,
         currency: component.item.currencyCode,
         content_ids: component.item.id,
         content_type: component.item.categoryId,
       };
+
+      component.item = MOCK_ITEM;
+      component.trackUploaded();
 
       expect(window['fbq']).toHaveBeenCalledWith('track', 'AddToCart', event);
     });
