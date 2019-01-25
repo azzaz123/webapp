@@ -340,7 +340,6 @@ describe('Component: Item', () => {
     });
 
     it('should emit ITEM_SOLD event', () => {
-      // @ts-ignore
       spyOn(window, 'fbq');
 
       component.trackSoldEvent(MOCK_ITEM);

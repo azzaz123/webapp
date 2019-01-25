@@ -117,7 +117,6 @@ describe('UploadConfirmationModalComponent', () => {
     });
 
     it('should send facebook AddToCart tracking', () => {
-      // @ts-ignore
       spyOn(window, 'fbq');
 
       component.item = MOCK_ITEM;

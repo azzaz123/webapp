@@ -150,7 +150,6 @@ describe('RealTimeService', () => {
     });
 
     it('should call addTrackingEvent with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
-      // @ts-ignore
       spyOn(window, 'fbq');
       const newConversation = MOCK_CONVERSATION('newId');
       const event = {

@@ -138,7 +138,6 @@ describe('CatalogCardComponent', () => {
         spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
         spyOn(appboy, 'logCustomEvent');
-        // @ts-ignore
         spyOn(window, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
