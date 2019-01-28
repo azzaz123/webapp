@@ -40,6 +40,7 @@ export class EventService {
   public static DB_READY = 'dbReady';
   public static FOUND_MESSAGES_IN_DB = 'foundMessagesInDb';
   public static CONVERSATION_BUMPED = 'conversationBumped';
+  public static HTTP_REQUEST_FAILED = 'httpRequestFailed';
   public static REQUEST_PHONE = 'requestPhone';
   public static PRIVACY_LIST_UPDATED = 'privacyListUpdated';
 

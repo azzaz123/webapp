@@ -57,14 +57,16 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.connectionError = false;
     });
-    this.eventService.subscribe(EventService.DB_READY, () => {
-      this.persistencyService.getMetaInformation().subscribe(() => {
-        this.firstLoad = false;
+    this.eventService.subscribe(EventService.DB_READY, (dbName) => {
+      if (!dbName) {
+        this.persistencyService.getMetaInformation().subscribe(() => {
+          this.firstLoad = false;
         }, () => {
-          this.persistencyService.saveMetaInformation({start: '0', last: null});
+          this.persistencyService.saveMetaInformation({ start: '0', last: null });
           this.firstLoad = true;
         });
-      this.persistencyService.getPhoneNumber().subscribe(r => this.conversationService.storedPhoneNumber = r.phone);
+        this.persistencyService.getPhoneNumber().subscribe(r => this.conversationService.storedPhoneNumber = r.phone);
+      }
     });
   }
 
