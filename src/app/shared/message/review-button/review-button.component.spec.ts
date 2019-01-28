@@ -100,7 +100,7 @@ describe('ReviewButtonComponent', () => {
     it('should set storageKey', () => {
       component.ngOnInit();
 
-      expect(component['storageKey']).toEqual(USER_ID + '.item.' + mockItem.id + '.reviewed');
+      expect(component['storageKey']).toEqual(`${USER_ID}.item.${mockItem.id}.reviewed`);
     });
 
     it('should set conversationUser', () => {
@@ -147,7 +147,7 @@ describe('ReviewButtonComponent', () => {
 
         expect(reviewService.check).toHaveBeenCalledWith(mockItem.id);
         expect(component.showButton).toBeFalsy();
-        expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '.item.' + mockItem.id + '.reviewed', 'true');
+        expect(localStorage.setItem).toHaveBeenCalledWith(`${USER_ID}.item.${mockItem.id}.reviewed`, 'true');
       });
 
       it('should set show button true and call check', () => {
@@ -196,7 +196,7 @@ describe('ReviewButtonComponent', () => {
       });
 
       it('should set local storage', () => {
-        expect(localStorage.setItem).toHaveBeenCalledWith(USER_ID + '.item.' + mockItem.id + '.reviewed', 'true');
+        expect(localStorage.setItem).toHaveBeenCalledWith(`${USER_ID}.item.${mockItem.id}.reviewed`, 'true');
       });
     });
 
