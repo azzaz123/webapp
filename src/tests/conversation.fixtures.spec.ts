@@ -55,11 +55,13 @@ export const NEW_CONVERSATION_RESPONSE = {
 export const CONVERSATIONS_DATA: ConversationResponse[] = [{
   'conversation_id': 'qjwy8gw0e4zo',
   'other_user_id': USER_ID,
+  'user_id': USER_ID,
   'item_id': ITEM_ID,
   'modified_date': 1521110544000
 }, {
   'conversation_id': '9jd7q10222jk',
   'other_user_id': USER_ID,
+  'user_id': USER_ID,
   'item_id': ITEM_ID,
   'modified_date': 1521037322000
 }];
