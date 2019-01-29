@@ -314,7 +314,7 @@ $modal-border-radius: 0.3rem;
       }
     }
     .image-col {
-      background-color: $grey-250;
+      background-color: $grey-100;
       min-width: 280px;
       border-top-left-radius: $modal-border-radius;
       border-bottom-left-radius: $modal-border-radius;
@@ -322,6 +322,7 @@ $modal-border-radius: 0.3rem;
       justify-content: center;
       img {
         width: 200px;
+        margin: 0;
       }
     }
     .modal-title {

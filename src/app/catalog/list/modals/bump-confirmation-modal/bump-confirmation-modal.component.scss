@@ -30,7 +30,7 @@ img {
   display: flex;
   .content-col {
     text-align: center;
-    padding: 52px $spacing-40;
+    padding: $spacing-40;
     .modal-text {
       max-width: 300px;
       margin: 0 auto $spacing-3M auto;
@@ -45,4 +45,7 @@ img {
   background: url(/assets/images/bump-ko.svg) no-repeat 112px;
   padding: $spacing-40;
   padding-left: 260px;
+  .modal-text {
+    margin-bottom: $spacing;
+  }
 }
