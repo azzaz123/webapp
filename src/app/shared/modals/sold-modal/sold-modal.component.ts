@@ -14,7 +14,6 @@ export class SoldModalComponent implements OnInit {
   public item: Item;
   public conversationUsers: ConversationUser[] = [];
   public userToReview: ConversationUser;
-  public price: number;
   public thanks = false;
   public canChooseBuyer: boolean;
   public userName: string;
@@ -25,7 +24,6 @@ export class SoldModalComponent implements OnInit {
 
   ngOnInit() {
     this.canChooseBuyer = !this.userToReview;
-    this.price = this.item.salePrice;
     this.itemService.getConversationUsers(this.item.id).subscribe((conversationUsers: ConversationUser[]) => {
       this.conversationUsers = conversationUsers;
     });

@@ -65,6 +65,10 @@ describe('ReviewModalComponent', () => {
   });
 
   describe('ngOnInit', () => {
+    it('should set price', () => {
+      expect(component.price).toBe(component.item.salePrice);
+    });
+
     it('should set the userName when userToReview exists', () => {
       component.userToReview = CONVERSATION_USERS[0];
 

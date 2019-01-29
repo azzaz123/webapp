@@ -34,6 +34,7 @@ export class ReviewModalComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.setUsername();
+    this.price = this.item.salePrice;
   }
 
   ngOnChanges() {

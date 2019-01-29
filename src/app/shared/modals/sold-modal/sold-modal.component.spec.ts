@@ -51,10 +51,6 @@ describe('SoldModalComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set price', () => {
-      expect(component.price).toBe(ITEM_SALE_PRICE);
-    });
-
     it('should call getConversationUsers', () => {
       expect(itemService.getConversationUsers).toHaveBeenCalledWith(ITEM_ID);
     });
