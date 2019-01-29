@@ -111,7 +111,7 @@ export abstract class LeadService {
   }
 
   protected getUser(conversation: LeadResponse): Observable<LeadResponse> {
-    return this.userService.get(conversation.other_user_id || conversation.user_id)
+    return this.userService.get(conversation.user_id)
     .map((user: User) => {
       conversation.user = user;
       conversation.user.blocked = this.blockService.isBlocked(conversation.user.id);
