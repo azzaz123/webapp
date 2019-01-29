@@ -82,7 +82,7 @@ describe('Service: Conversation', () => {
         {provide: ItemService, useClass: MockedItemService},
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: PersistencyService, useClass: MockedPersistencyService},
-        {provide: BlockUserService, useValue: { isBlocked() { return true; } }},
+        {provide: BlockUserService, useValue: { getBlockedUsers() { return ['1', '2', '3']; } }},
         {
           provide: NotificationService, useValue: {
           sendBrowserNotification() {
@@ -999,7 +999,7 @@ describe('Service: Conversation', () => {
       expect(mappedResponse.item instanceof Item).toBe(true);
       expect(mappedResponse.user instanceof User).toBe(true);
       expect(mappedResponse.user.itemDistance).toBe(USER_ITEM_DISTANCE);
-      expect(mappedResponse.user.blocked).toBe(true);
+      expect(mappedResponse.user.blocked).toEqual(MOCK_USER.blocked);
     });
 
     it('should return an empty array if no data', () => {

@@ -114,7 +114,6 @@ export abstract class LeadService {
     return this.userService.get(conversation.user_id)
     .map((user: User) => {
       conversation.user = user;
-      conversation.user.blocked = this.blockService.isBlocked(conversation.user.id);
       return conversation;
     });
   }

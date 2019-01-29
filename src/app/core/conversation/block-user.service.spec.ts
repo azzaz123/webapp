@@ -48,14 +48,13 @@ describe('BlockUserService', () => {
     });
   });
 
-  describe('isBlocked', () => {
-    it('should call xmpp.isBlocked when called', () => {
-      spyOn(xmppService, 'isBlocked');
+  describe('getBlockedUsers', () => {
+    it('should return the list of blockedUsers', () => {
+      xmppService['blockedUsers'] = ['1', '2', '3'];
 
-      service.isBlocked(MOCK_USER.id);
+      const blockedUsers = service.getBlockedUsers();
 
-      expect(xmppService.isBlocked).toHaveBeenCalledWith(MOCK_USER.id);
-
+      expect(blockedUsers).toEqual(xmppService['blockedUsers']);
     });
   });
 });
