@@ -134,6 +134,7 @@ export class CatalogItemComponent implements OnInit {
   public setSold(item: Item) {
     this.trackingService.track(TrackingService.PRODUCT_SOLD, { product_id: item.id });
     appboy.logCustomEvent('Sold', {platform: 'web'});
+    fbq('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode});
     this.itemChange.emit({
       item: item,
       action: 'sold'
