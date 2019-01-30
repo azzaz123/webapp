@@ -145,6 +145,7 @@ describe('RealTimeService', () => {
     it('should call addTrackingEvent with the conversationCreateNew event when the MESSAGE_SENT event is triggered', () => {
       spyOn(trackingService, 'addTrackingEvent');
       const newConversation = MOCK_CONVERSATION('newId');
+      newConversation.messages.push(MOCK_MESSAGE);
       const expectedEvent: TrackingEventData = {
         eventData: TrackingService.CONVERSATION_CREATE_NEW,
         attributes: {
@@ -177,25 +178,16 @@ describe('RealTimeService', () => {
 
     it('should call appboy.logCustomEvent if this is the first message message sent', () => {
       spyOn(appboy, 'logCustomEvent');
-      MOCKED_CONVERSATIONS[0].messages = [];
+      MOCKED_CONVERSATIONS[0].messages.push(MOCK_MESSAGE);
 
       eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
 
       expect(appboy.logCustomEvent).toHaveBeenCalledWith('FirstMessage', {platform: 'web'});
     });
 
-    it('should not call appboy.logCustomEvent if the conversation is already created', () => {
-      spyOn(appboy, 'logCustomEvent');
-      MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
-
-      eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
-
-      expect(appboy.logCustomEvent).not.toHaveBeenCalled();
-    });
-
     it('should not call appboy.logCustomEvent if the conversation is not empty (has messages)', () => {
       spyOn(appboy, 'logCustomEvent');
-      MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE];
+      MOCKED_CONVERSATIONS[0].messages = [MOCK_MESSAGE, MOCK_MESSAGE];
 
       eventService.emit(EventService.MESSAGE_SENT, MOCKED_CONVERSATIONS[0], 'newMsgId');
 
