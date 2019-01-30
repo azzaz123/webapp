@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { ConversationsPanelComponent } from './conversations-panel.component';
 import { ConversationComponent } from '../../shared/conversation/conversation.component';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConversationService } from '../../core/conversation/conversation.service';
@@ -25,14 +25,7 @@ import { Conversation } from '../../core/conversation/conversation';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
 import { Message, phoneMethod } from '../../core/message/message';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { XmppService } from '../../core/xmpp/xmpp.service';
 import { MessageService } from '../../core/message/message.service';
-
-class MockedXmppService {
-  receivedReceipts = [{id: '1', thread: 'a'}, {id: '2', thread: 'b'}];
-  sentReceipts = [{id: '1', thread: 'a'}, {id: '2', thread: 'b'}];
-  readReceipts = [{id: 'x', thread: 'threadX'}];
-}
 
 describe('Component: ConversationsPanel', () => {
 
@@ -43,7 +36,6 @@ describe('Component: ConversationsPanel', () => {
   let route: ActivatedRoute;
   let http: HttpService;
   let trackingService: TrackingService;
-  let xmppService: XmppService;
   let messageService: MessageService;
   let elRef: ElementRef;
 
@@ -58,7 +50,6 @@ describe('Component: ConversationsPanel', () => {
       declarations: [ConversationsPanelComponent, ConversationComponent],
       providers: [
         {provide: TrackingService, useClass: MockTrackingService},
-        {provide: XmppService, useClass: MockedXmppService},
         ...TEST_HTTP_PROVIDERS,
         {
           provide: ConversationService, useValue: {
@@ -135,7 +126,6 @@ describe('Component: ConversationsPanel', () => {
     userService['_user'] = new User(USER_ID);
     route = TestBed.get(ActivatedRoute);
     trackingService = TestBed.get(TrackingService);
-    xmppService = TestBed.get(XmppService);
     elRef = TestBed.get(ElementRef);
   });
 
@@ -421,6 +411,27 @@ describe('Component: ConversationsPanel', () => {
       expect(component['getConversations']).toHaveBeenCalled();
     });
 
+    it('should subscribe to the PRIVACY_LIST_CHANGED event if a previous subscription does not exits', () => {
+      spyOn(eventService, 'subscribe');
+      const eventsSubscribed = [];
+
+      component.ngOnInit();
+
+      eventService.subscribe['calls'].allArgs().map(arg => eventsSubscribed.push(arg[0]));
+      expect(eventsSubscribed).toContain(EventService.PRIVACY_LIST_UPDATED);
+    });
+
+    it('should NOT subscribe to the PRIVACY_LIST_CHANGED event if a previous subscription exits', () => {
+      spyOn(eventService, 'subscribe');
+      const eventsSubscribed = [];
+      component['privacyListChangeSubscription'] = new Subscription;
+
+      component.ngOnInit();
+
+      eventService.subscribe['calls'].allArgs().map(arg => eventsSubscribed.push(arg[0]));
+      expect(eventsSubscribed).not.toContain(EventService.PRIVACY_LIST_UPDATED);
+    });
+
     it('should call sendRead on MESSAGE_ADDED event', () => {
       spyOn<any>(component, 'sendRead');
       component.ngOnInit();
@@ -644,6 +655,33 @@ describe('Component: ConversationsPanel', () => {
       expect(component.archive).toBe(false);
       expect(component['getConversations']).toHaveBeenCalled();
       expect(conversationService.getPage).toHaveBeenCalledWith(1, false);
+    });
+  });
+
+  describe('update the blocked status of users in conversations, when a PRIVACY_LIST_CHANGED event is triggered', () => {
+    let userId;
+    beforeEach(() => {
+      component.ngOnInit();
+      component.conversations = createConversationsArray(1);
+      userId = component.conversations[0].user.id;
+    });
+
+    it(`should update blocked to true when an unblocked user's ID is present in the updated blockedIds array`, () => {
+      const blockedIds = [userId];
+      component.conversations[0].user.blocked = false;
+
+      eventService.emit(EventService.PRIVACY_LIST_UPDATED, blockedIds);
+
+      expect(component.conversations[0].user.blocked).toBe(true);
+    });
+
+    it(`should update blocked to false when a blocked user's id is not present in the updated blockedIds array`, () => {
+      const blockedIds = ['some-other-user-id'];
+      component.conversations[0].user.blocked = true;
+
+      eventService.emit(EventService.PRIVACY_LIST_UPDATED, blockedIds);
+
+      expect(component.conversations[0].user.blocked).toBe(false);
     });
   });
 

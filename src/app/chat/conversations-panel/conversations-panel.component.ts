@@ -32,6 +32,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private active = true;
   private newConversationItemId: string;
   public isProfessional: boolean;
+  private privacyListChangeSubscription: Subscription;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
@@ -63,6 +64,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.getConversations();
+    this.subscribePrivacyListChanges();
     this.eventService.subscribe(EventService.LEAD_ARCHIVED, () => this.setCurrentConversation(null));
     this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
     this.eventService.subscribe(EventService.FIND_CONVERSATION,
@@ -84,6 +86,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.setCurrentConversation(null);
     this.active = false;
+    if (this.privacyListChangeSubscription) {
+      this.privacyListChangeSubscription.unsubscribe();
+    }
   }
 
   public loadMore() {
@@ -131,8 +136,8 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
         this.conversations = conversations;
         this.loading = false;
         this.archive
-          ? this.conversationService.processedPagesLoaded = this.conversationService.processedPagesLoaded || 1
-          : this.conversationService.pendingPagesLoaded = this.conversationService.pendingPagesLoaded || 1;
+        ? this.conversationService.processedPagesLoaded = this.conversationService.processedPagesLoaded || 1
+        : this.conversationService.pendingPagesLoaded = this.conversationService.pendingPagesLoaded || 1;
         if (!this.currentConversationSet) {
           this.setCurrentConversationFromQueryParams();
         }
@@ -142,6 +147,19 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       }
       this.conversationService.checkIfLastPage(this.archive).subscribe();
     });
+  }
+
+  private subscribePrivacyListChanges() {
+    if (!this.privacyListChangeSubscription) {
+      this.privacyListChangeSubscription = this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
+        blockedUsers.map(id => {
+          this.conversations.filter(conv => conv.user.id === id && !conv.user.blocked)
+          .map(conv => conv.user.blocked = true);
+        });
+        this.conversations.filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+        .map(conv => conv.user.blocked = false);
+      });
+    }
   }
 
   private setCurrentConversationFromQueryParams() {

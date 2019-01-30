@@ -64,11 +64,6 @@ describe('Service: User', () => {
   let cookieService: CookieService;
   let permissionService: NgxPermissionsService;
   let featureflagService: FeatureflagService;
-  const DATA: any = {
-    emailAddress: 'test@test.it',
-    installationType: 'ANDROID',
-    password: 'test'
-  };
   const mockMotorPlan = {
     type: 'motor_plan_pro',
     subtype: 'sub_premium'
@@ -301,18 +296,6 @@ describe('Service: User', () => {
 
   });
 
-  describe('updateBlockStatus', () => {
-    it('should set user as blocked', () => {
-      service['store'][USER_ID] = MOCK_USER;
-      service.updateBlockStatus(USER_ID, true);
-      expect(service['store'][USER_ID].blocked).toBeTruthy();
-    });
-    it('should set user as not blocked', () => {
-      service['store'][USER_ID] = MOCK_USER;
-      service.updateBlockStatus(USER_ID, false);
-      expect(service['store'][USER_ID].blocked).toBeFalsy();
-    });
-  });
 
   describe('login', () => {
     let response: LoginResponse;

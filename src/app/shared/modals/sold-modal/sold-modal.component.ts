@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
 import { ConversationUser } from '../../../core/item/item-response.interface';
@@ -14,16 +13,17 @@ export class SoldModalComponent implements OnInit {
 
   public item: Item;
   public conversationUsers: ConversationUser[] = [];
-  public buyer: ConversationUser;
-  public price: number;
+  public userToReview: ConversationUser;
   public thanks = false;
+  public canChooseBuyer: boolean;
+  public userName: string;
 
   constructor(public activeModal: NgbActiveModal,
               private itemService: ItemService) {
   }
 
   ngOnInit() {
-    this.price = this.item.salePrice;
+    this.canChooseBuyer = !this.userToReview;
     this.itemService.getConversationUsers(this.item.id).subscribe((conversationUsers: ConversationUser[]) => {
       this.conversationUsers = conversationUsers;
     });
@@ -34,11 +34,11 @@ export class SoldModalComponent implements OnInit {
   }
 
   public onBackPress() {
-    delete this.buyer;
+    delete this.userToReview;
   }
 
   public chooseUser(user: ConversationUser) {
-    this.buyer = user;
+    this.userToReview = user;
   }
 
   public setSoldOutside() {
