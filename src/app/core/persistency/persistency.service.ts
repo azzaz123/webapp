@@ -1,4 +1,5 @@
 import PouchDB from 'pouchdb';
+import 'indexeddb-getall-shim';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, throwError } from 'rxjs';
 import * as _ from 'lodash';
@@ -38,7 +39,7 @@ export class PersistencyService {
   ) {
     this.eventService.subscribe(EventService.USER_LOGIN, () => {
       this.userService.me().subscribe((user: User) => {
-        this.initClickstreamDb(this.clickstreamDbName);
+        this.initClickstreamDb(this.clickstreamDbName, 1);
         this.eventsStore = 'events-' + user.id;
         this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
         this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
