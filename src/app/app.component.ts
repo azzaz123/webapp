@@ -162,13 +162,9 @@ export class AppComponent implements OnInit {
       this.userService.me().subscribe(
         (user: User) => {
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
-          console.log('subscribe db ready');
           this.event.subscribe(EventService.DB_READY, (dbName) => {
-            console.log('triggered db ready, dbName:', dbName);
             if (!dbName) {
-              console.log('connecting realtime');
               this.realTime.connect(user.id, accessToken).subscribe(() => {
-                console.log('realtime connected!');
                 this.conversationService.init().subscribe(() => {
                   this.userService.isProfessional().subscribe((isProfessional: boolean) => {
                     if (isProfessional) {

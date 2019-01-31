@@ -33,13 +33,10 @@ export class XmppService {
   public connect(userId: string, accessToken: string): Observable<boolean> {
     this.resource = 'WEB_' + Math.floor(Math.random() * 100000000000000);
     this.self = this.createJid(userId);
-    console.log('xmpp: creating client');
     this.createClient(accessToken);
     this.bindEvents();
-    console.log('xmpp: connecting');
     this.client.connect();
     this.clientConnected = true;
-    console.log('xmpp: creating session');
     return this.sessionConnected();
   }
 
@@ -179,7 +176,6 @@ export class XmppService {
   private sessionConnected(): Observable<boolean> {
     return Observable.create((observer: Observer<any>) => {
       this.client.on('session:started', () => {
-        console.log('session started');
         this.client.sendPresence();
         this.client.enableCarbons();
         this.getBlockedUsers().subscribe(() => {
