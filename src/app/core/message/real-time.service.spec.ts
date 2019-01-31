@@ -163,6 +163,7 @@ describe('RealTimeService', () => {
     it('should call addTrackingEvent with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
       spyOn(window, 'fbq');
       const newConversation = MOCK_CONVERSATION('newId');
+      newConversation.messages.push(MOCK_MESSAGE);
       const event = {
         value: newConversation.item.salePrice,
         currency:  newConversation.item.currencyCode,
