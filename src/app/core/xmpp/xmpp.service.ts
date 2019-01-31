@@ -39,7 +39,7 @@ export class XmppService {
     console.log('xmpp: connecting');
     this.client.connect();
     this.clientConnected = true;
-    console.log('xmpp: creating sesstion and returning');
+    console.log('xmpp: creating session');
     return this.sessionConnected();
   }
 
@@ -158,15 +158,15 @@ export class XmppService {
     });
 
     this.client.on('disconnected', () => {
-      console.warn('Client disconnected');
       this.clientConnected = false;
       this.eventService.emit(EventService.CLIENT_DISCONNECTED);
+      console.warn('Client disconnected');
     });
 
     this.client.on('connected', () => {
       this.clientConnected = true;
-      console.warn('Client connected');
       clearInterval(this.reconnectInterval);
+      console.warn('Client connected');
     });
 
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
@@ -179,6 +179,7 @@ export class XmppService {
   private sessionConnected(): Observable<boolean> {
     return Observable.create((observer: Observer<any>) => {
       this.client.on('session:started', () => {
+        console.log('session started');
         this.client.sendPresence();
         this.client.enableCarbons();
         this.getBlockedUsers().subscribe(() => {
