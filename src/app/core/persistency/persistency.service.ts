@@ -38,7 +38,7 @@ export class PersistencyService {
   ) {
     this.eventService.subscribe(EventService.USER_LOGIN, () => {
       this.userService.me().subscribe((user: User) => {
-        this.initClickstreamDb(this.clickstreamDbName, 1);
+        this.initClickstreamDb(this.clickstreamDbName);
         this.eventsStore = 'events-' + user.id;
         this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
         this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
@@ -59,7 +59,7 @@ export class PersistencyService {
   }
 
   private initClickstreamDb(dbName: string, version?: number) {
-    const request = window.indexedDB.open(dbName, version);
+    const request = version ? window.indexedDB.open(dbName, version) : window.indexedDB.open(dbName);
     request.onsuccess = () => {
       this.clickstreamDb = request.result;
       if (!request.result.objectStoreNames.contains(this.eventsStore)) {
