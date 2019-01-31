@@ -338,6 +338,14 @@ describe('Component: Item', () => {
 
       expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {platform: 'web'});
     });
+
+    it('should emit ITEM_SOLD event', () => {
+      spyOn(window, 'fbq');
+
+      component.trackSoldEvent(MOCK_ITEM);
+
+      expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', { value: MOCK_ITEM.salePrice, currency: MOCK_ITEM.currencyCode});
+    });
   });
 
   describe('mapfre link', () => {

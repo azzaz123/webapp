@@ -164,6 +164,14 @@ describe('BuyWallacoinsModalComponent', () => {
               expect(errorService.i18nError).toHaveBeenCalledWith('packError');
             });
           });
+
+          it('should call Facebook tracking with StartTrail', () => {
+            spyOn(window, 'fbq');
+
+            component.checkout();
+
+            expect(window['fbq']).toHaveBeenCalledWith('track', 'StartTrial');
+          });
         });
       });
 

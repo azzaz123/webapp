@@ -9,6 +9,10 @@ import {
 
 declare const require: any;
 
+declare global {
+  interface Window { fbq: any; }
+}
+
 window['ga'] = function() {};
 window['googletag'] = {
   cmd: {

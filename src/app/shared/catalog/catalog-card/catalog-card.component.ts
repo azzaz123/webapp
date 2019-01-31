@@ -47,6 +47,7 @@ export class CatalogCardComponent implements OnInit {
 
   public setSold(item: Item) {
     this.trackingService.track(TrackingService.PRODUCT_SOLD, {product_id: item.id});
+    fbq('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode});
     appboy.logCustomEvent('Sold', {platform: 'web'});
     this.eventService.emit('itemChanged');
     this.itemChange.emit({

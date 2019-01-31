@@ -160,6 +160,20 @@ describe('RealTimeService', () => {
       expect(trackingService.addTrackingEvent).toHaveBeenCalledWith(expectedEvent, false);
     });
 
+    it('should call addTrackingEvent with the facebook InitiateCheckout event when the MESSAGE_SENT event is triggered', () => {
+      spyOn(window, 'fbq');
+      const newConversation = MOCK_CONVERSATION('newId');
+      newConversation.messages.push(MOCK_MESSAGE);
+      const event = {
+        value: newConversation.item.salePrice,
+        currency:  newConversation.item.currencyCode,
+      };
+
+      eventService.emit(EventService.MESSAGE_SENT, newConversation, MOCK_MESSAGE.id);
+
+      expect(window['fbq']).toHaveBeenCalledWith('track', 'InitiateCheckout', event);
+    });
+
     it('should add MessageSent event in the pendingTrackingEvents queue when the MESSAGE_SENT event is triggered', () => {
       spyOn(trackingService, 'addTrackingEvent');
       const conv = MOCK_CONVERSATION('newId');
