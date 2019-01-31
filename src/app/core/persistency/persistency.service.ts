@@ -1,5 +1,4 @@
 import PouchDB from 'pouchdb';
-import 'indexeddb-getall-shim';
 import { Injectable } from '@angular/core';
 import { Observable, Observer, throwError } from 'rxjs';
 import * as _ from 'lodash';

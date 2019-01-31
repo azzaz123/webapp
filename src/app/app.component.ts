@@ -1,3 +1,4 @@
+import 'indexeddb-getall-shim';
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { DOCUMENT, DomSanitizer, Title } from '@angular/platform-browser';
 import { configMoment } from './config/moment.config';
