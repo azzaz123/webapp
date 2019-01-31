@@ -29,8 +29,8 @@ export class EventService {
   public static ITEM_SOLD = 'itemSold';
   public static ITEM_UPDATED = 'itemUpdated';
   public static ITEM_RESERVED = 'itemReserved';
-  public static USER_BLOCKED = 'userBlocked';
-  public static USER_UNBLOCKED = 'userUnblocked';
+  public static USER_BLOCKED = 'userBlocked'; // TODO - remove after xmpp-old.service is removed
+  public static USER_UNBLOCKED = 'userUnblocked'; // TODO - remove after xmpp-old.service is removed
   public static FIND_CONVERSATION = 'findConversation';
   public static UPDATE_COORDINATE = 'updateCoordinate';
   public static UPDATE_CATEGORY = 'updateCategory';
@@ -42,6 +42,7 @@ export class EventService {
   public static CONVERSATION_BUMPED = 'conversationBumped';
   public static HTTP_REQUEST_FAILED = 'httpRequestFailed';
   public static REQUEST_PHONE = 'requestPhone';
+  public static PRIVACY_LIST_UPDATED = 'privacyListUpdated';
 
   private subjects: any = {};
 

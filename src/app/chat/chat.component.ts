@@ -57,12 +57,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
       this.connectionError = false;
     });
-    this.eventService.subscribe(EventService.USER_BLOCKED, (userId: string) => {
-      this.userService.updateBlockStatus(userId, true);
-    });
-    this.eventService.subscribe(EventService.USER_UNBLOCKED, (userId: string) => {
-      this.userService.updateBlockStatus(userId, false);
-    });
     this.eventService.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
         this.persistencyService.getMetaInformation().subscribe(() => {

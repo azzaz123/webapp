@@ -14,7 +14,6 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/throw';
 import { ConversationService } from './core/conversation/conversation.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import createSpy = jasmine.createSpy;
 import { CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
@@ -90,7 +89,9 @@ describe('App', () => {
         },
         {
           provide: RealTimeService, useValue: {
-          connect() {},
+          connect() {
+            return Observable.of(true);
+          },
           disconnect() {},
           reconnect() {}
           }
