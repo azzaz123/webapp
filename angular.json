@@ -37,6 +37,7 @@
               "node_modules/stanza.io/build/stanzaio.bundle.js",
               "node_modules/visibilityjs/lib/visibility.core.js",
               "node_modules/appboy-web-sdk/appboy.min.js",
+              "node_modules/indexeddb-getall-shim/IndexedDB-getAll-shim.js",
               "src/assets/js/adsConfig.js",
               "src/assets/js/quantcast.js"
             ]

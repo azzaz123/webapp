@@ -81,8 +81,8 @@ describe('UploadConfirmationModalComponent', () => {
   describe('urgentPrice', () => {
     it('should call urgentPrice', () => {
       spyOn(itemService, 'getUrgentProducts').and.returnValue(Observable.of(PRODUCT_RESPONSE));
-
       component.item = MOCK_ITEM;
+
       component.urgentPrice();
 
       expect(itemService.getUrgentProducts).toHaveBeenCalledWith(MOCK_ITEM.id);
@@ -109,11 +109,26 @@ describe('UploadConfirmationModalComponent', () => {
   describe('trackUploaded', () => {
     it('should send the uploaded tracking', () => {
       spyOn(trackingService, 'track');
-
       component.item = MOCK_ITEM;
+
       component.trackUploaded();
 
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_SUCCESS, {categoryId: component.item.categoryId});
+    });
+
+    it('should send facebook AddToCart tracking', () => {
+      spyOn(window, 'fbq');
+      component.item = MOCK_ITEM;
+      const event = {
+        value: component.item.salePrice,
+        currency: component.item.currencyCode,
+        content_ids: component.item.id,
+        content_type: component.item.categoryId,
+      };
+
+      component.trackUploaded();
+
+      expect(window['fbq']).toHaveBeenCalledWith('track', 'AddToCart', event);
     });
   });
 
