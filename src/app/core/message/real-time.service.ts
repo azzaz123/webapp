@@ -20,6 +20,7 @@ export class RealTimeService {
       this.subscribeConnectionRestored();
   }
 
+    private ongoingRetry: boolean;
   public connect(userId: string, accessToken: string): Observable<boolean> {
     return this.xmpp.connect(userId, accessToken);
   }
@@ -28,8 +29,31 @@ export class RealTimeService {
     this.xmpp.disconnect();
   }
 
-  public reconnect() {
+  public reconnect(recursivly = true) {
+    if (!recursivly) {
+      this.xmpp.reconnectClient();
+    } else if (!this.ongoingRetry) {
+      this.recursiveReconnect();
+    }
+  }
+
+  private recursiveReconnect() {
+    this.ongoingRetry = true;
+    const operation = retry.operation({
+      minTimeout: 5 * 1 * 1000,
+      maxTimeout: 5 * 60 * 1000,
+      forever: true
+    });
+    operation.attempt(() => {
     this.xmpp.reconnectClient();
+      this.xmpp.throwErrorOnDisconnect().subscribe(
+        () => this.ongoingRetry = false,
+        (err) => {
+          if (operation.retry(err)) {
+            return;
+          }
+        });
+    });
   }
 
   public sendMessage(conversation: Conversation, body: string) {
