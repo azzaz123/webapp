@@ -1,3 +1,4 @@
+import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
