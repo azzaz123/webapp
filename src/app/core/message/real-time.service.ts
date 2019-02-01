@@ -16,6 +16,7 @@ export class RealTimeService {
               private trackingService: TrackingService) {
     this.subscribeEventNewMessage();
     this.subscribeEventMessageSent();
+      this.subscribeConnectionRestored();
   }
 
   public connect(userId: string, accessToken: string): Observable<boolean> {
@@ -72,6 +73,11 @@ export class RealTimeService {
     });
   }
 
+  private subscribeConnectionRestored() {
+    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
+      this.reconnect(false);
+    });
+  }
 
   private isFirstMessage(conversation: Conversation): boolean {
     const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);

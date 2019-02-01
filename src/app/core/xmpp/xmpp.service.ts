@@ -166,10 +166,6 @@ export class XmppService {
       console.warn('Client connected');
     });
 
-    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      this.reconnectClient();
-    });
-
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
   }
 
