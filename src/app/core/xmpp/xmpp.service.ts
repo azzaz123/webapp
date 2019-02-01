@@ -43,13 +43,6 @@ export class XmppService {
     }
   }
 
-  public throwErrorOnDisconnect(): Observable<boolean> {
-    if (!this.clientConnected) {
-      return Observable.throw({});
-    }
-    return Observable.of(true);
-  }
-
   public sendMessage(conversation: Conversation, body: string) {
     const message = this.createXmppMessage(conversation, this.client.nextId(), body);
     this.onNewMessage(_.clone(message), true);
@@ -91,6 +84,13 @@ export class XmppService {
 
   public isConnected(): Observable<boolean> {
     return this.clientConnected$.asObservable();
+  }
+
+  public disconnectError(): Observable<boolean> {
+    if (!this.clientConnected) {
+      return Observable.throw({});
+    }
+    return Observable.of(true);
   }
 
   get clientConnected(): boolean {
