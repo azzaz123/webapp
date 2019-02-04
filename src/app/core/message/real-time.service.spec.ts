@@ -142,6 +142,26 @@ describe('RealTimeService', () => {
   });
 
   describe('sendReceivedReceipt', () => {
+    it('should call xmpp.sendMessageDeliveryReceipt when called', () => {
+      spyOn(xmppService, 'sendMessageDeliveryReceipt');
+
+      service.sendDeliveryReceipt(MOCK_USER.id, MOCK_MESSAGE.id, MOCK_CONVERSATION().id);
+
+      expect(xmppService.sendMessageDeliveryReceipt).toHaveBeenCalledWith(MOCK_USER.id, MOCK_MESSAGE.id, MOCK_CONVERSATION().id);
+    });
+  });
+
+  describe('sendRead', () => {
+    it('should call xmpp.sendConversationStatus when called', () => {
+      spyOn(xmppService, 'sendConversationStatus');
+
+      service.sendRead(MOCK_USER.id, MOCK_CONVERSATION().id);
+
+      expect(xmppService.sendConversationStatus).toHaveBeenCalledWith(MOCK_USER.id, MOCK_CONVERSATION().id);
+    });
+  });
+
+  describe('subscribeEventNewMessage', () => {
     it(`should call sendDeliveryReceipt when a NEW_MESSAGE event is emitted for a message that requests the delivery
     and is NOT fromSelf`, () => {
         spyOn(service, 'sendDeliveryReceipt');
