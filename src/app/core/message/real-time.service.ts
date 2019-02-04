@@ -40,7 +40,7 @@ export class RealTimeService {
   private recursiveReconnect() {
     this.ongoingRetry = true;
     const operation = retry.operation({
-      minTimeout: 5 * 1 * 1000,
+      minTimeout: 5 * 1000,
       maxTimeout: 5 * 60 * 1000,
       forever: true
     });
