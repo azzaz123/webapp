@@ -23,6 +23,7 @@ export class XmppService {
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
   private messageQ: Array<XmppBodyMessage> = [];
   private archiveFinishedLoaded = false;
+  private xmppError = { mesasge: 'XMPP disconnected' };
 
   constructor(private eventService: EventService) {
   }

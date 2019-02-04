@@ -376,9 +376,9 @@ describe('Service: Xmpp', () => {
         service.clientConnected = false;
 
         service.reconnectClient();
-        tick(5000);
+        tick();
 
-        expect(MOCKED_CLIENT.connect).toHaveBeenCalledTimes(1);
+        expect(MOCKED_CLIENT.connect).toHaveBeenCalled();
         discardPeriodicTasks();
       }));
     });
@@ -531,6 +531,30 @@ describe('Service: Xmpp', () => {
       expect(clientConnected).toBe(false);
     }));
 
+  });
+
+  describe('disconnectError', () => {
+    it('should throw an error if clientConnected is false', fakeAsync(() => {
+      let error: any, response: any;
+      service['clientConnected'] = false;
+
+      service.disconnectError().subscribe(r => response = r, err => error = err);
+      tick();
+
+      expect(error).toEqual(service['xmppError']);
+      expect(response).toBeFalsy();
+    }));
+
+    it('should throw return true clientConnected is true', fakeAsync(() => {
+      let error: any, response: any;
+      service['clientConnected'] = true;
+
+      service.disconnectError().subscribe(r => response = r, err => error = err);
+      tick();
+
+      expect(error).toBeFalsy();
+      expect(response).toBe(true);
+    }));
   });
 
   describe('send Message', () => {
