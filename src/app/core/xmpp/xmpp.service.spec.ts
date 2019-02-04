@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 import { MOCK_PAYLOAD_KO,
   MOCK_PAYLOAD_OK,
   MOCK_MESSAGE,
-  MOCK_MESSAGE_FROM_OTHER} from '../../../tests/message.fixtures.spec';
+  MOCK_MESSAGE_FROM_OTHER } from '../../../tests/message.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 
@@ -46,7 +46,10 @@ class MockedClient {
   use(plugin: Function): void {
   }
 
-  getTime(userId: string): void {
+  getTime(userId: string): Promise<any> {
+    return new Promise((resolve: Function) => {
+      resolve({});
+    });
   }
 
   sendMessage(options?: any): void {
@@ -73,6 +76,8 @@ class MockedClient {
       });
     });
   }
+
+  getRoster() { }
 }
 
 const MOCKED_CLIENT: MockedClient = new MockedClient();
@@ -92,7 +97,7 @@ const MOCKED_SERVER_RECEIVED_RECEIPT: XmppBodyMessage = {
   receipt: 'receipt',
   to: new XMPP.JID(USER_ID, environment.xmppDomain),
   from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
-  timestamp: {body: '2017-03-23T12:24:19.844620Z'},
+  timestamp: { body: '2017-03-23T12:24:19.844620Z' },
   id: 'id'
 };
 let service: XmppService;
@@ -131,7 +136,7 @@ describe('Service: Xmpp', () => {
     spyOn(MOCKED_CLIENT, 'sendMessage');
     spyOn(MOCKED_CLIENT, 'enableCarbons');
     spyOn(MOCKED_CLIENT, 'getTime').and.returnValue(new Promise((resolve: Function) => {
-      resolve({time: {utc: MOCK_SERVER_DATE}});
+      resolve({ time: { utc: MOCK_SERVER_DATE } });
     }));
     sendIqSpy = spyOn(MOCKED_CLIENT, 'sendIq').and.callThrough();
     service = TestBed.get(XmppService);
@@ -371,14 +376,27 @@ describe('Service: Xmpp', () => {
     }));
 
     describe('reconnectClient', () => {
-      it('should call client connect if it is disconnected', fakeAsync(() => {
-        connectSpy.calls.reset();
+      it('should call client connect if it is disconnected and client exists', fakeAsync(() => {
+        service['client'] = MOCKED_CLIENT;
         service.clientConnected = false;
+        connectSpy.calls.reset();
 
         service.reconnectClient();
         tick();
 
         expect(MOCKED_CLIENT.connect).toHaveBeenCalled();
+        discardPeriodicTasks();
+      }));
+
+      it('should NOT call client connect if it is disconnected and client does nor exist', fakeAsync(() => {
+        service['client'] = null;
+        service.clientConnected = false;
+        connectSpy.calls.reset();
+
+        service.reconnectClient();
+        tick();
+
+        expect(MOCKED_CLIENT.connect).not.toHaveBeenCalled();
         discardPeriodicTasks();
       }));
     });
@@ -570,7 +588,7 @@ describe('Service: Xmpp', () => {
         from: service['self'],
         thread: CONVERSATION_ID,
         type: 'chat',
-        request: {xmlns: 'urn:xmpp:receipts'},
+        request: { xmlns: 'urn:xmpp:receipts' },
         body: MESSAGE_BODY
       };
 

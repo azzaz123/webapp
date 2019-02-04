@@ -124,7 +124,7 @@ export class XmppService {
   }
 
   public reconnectClient() {
-    if (!this.clientConnected) {
+    if (this.client && !this.clientConnected) {
       this.client.connect();
     }
   }

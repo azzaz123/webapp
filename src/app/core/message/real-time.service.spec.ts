@@ -78,7 +78,7 @@ describe('RealTimeService', () => {
     });
 
 
-    describe('recursive reconnect', () => {
+    describe('recursivly', () => {
       it('should call xmpp.reconnectClient if ongoingRetry is FALSE, and set ongoingRetry to TRUE', () => {
         spyOn(xmppService, 'reconnectClient');
         service['ongoingRetry'] = false;
