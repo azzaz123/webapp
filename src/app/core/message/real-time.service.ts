@@ -12,15 +12,15 @@ import { Observable } from 'rxjs';
 export class RealTimeService {
 
   constructor(private xmpp: XmppService,
-              private eventService: EventService,
-              private persistencyService: PersistencyService,
-              private trackingService: TrackingService) {
+    private eventService: EventService,
+    private persistencyService: PersistencyService,
+    private trackingService: TrackingService) {
     this.subscribeEventNewMessage();
     this.subscribeEventMessageSent();
-      this.subscribeConnectionRestored();
+    this.subscribeConnectionRestored();
   }
 
-    private ongoingRetry: boolean;
+  private ongoingRetry: boolean;
   public connect(userId: string, accessToken: string): Observable<boolean> {
     return this.xmpp.connect(userId, accessToken);
   }
@@ -45,7 +45,7 @@ export class RealTimeService {
       forever: true
     });
     operation.attempt(() => {
-    this.xmpp.reconnectClient();
+      this.xmpp.reconnectClient();
       this.xmpp.disconnectError().subscribe(
         () => this.ongoingRetry = false,
         (err) => {
@@ -134,7 +134,7 @@ export class RealTimeService {
 
     fbq('track', 'InitiateCheckout', {
       value: conversation.item.salePrice,
-      currency:  conversation.item.currencyCode,
+      currency: conversation.item.currencyCode,
     });
   }
 
