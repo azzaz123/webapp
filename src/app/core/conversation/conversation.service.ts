@@ -286,21 +286,24 @@ export class ConversationService extends LeadService {
     const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
     if (conversation) {
       const unreadMessages = conversation.messages.filter(message => (message.status === messageStatus.RECEIVED ||
-        message.status === messageStatus.SENT) && ( fromSelf ? message.fromSelf &&
-        new Date(message.date).getTime() <= timestamp : !message.fromSelf ));
+        message.status === messageStatus.SENT) && (fromSelf ? message.fromSelf &&
+        new Date(message.date).getTime() <= timestamp : !message.fromSelf));
       unreadMessages.map((message) => {
-          message.status = messageStatus.READ;
-          this.persistencyService.updateMessageStatus(message, messageStatus.READ);
-          const eventAttributes = {
-            thread_id: message.conversationId,
-            message_id: message.id
-          };
-          this.trackingService.addTrackingEvent({
-            eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
-            attributes: eventAttributes
-          }, false);
-        });
-  }
+        message.status = messageStatus.READ;
+        this.persistencyService.updateMessageStatus(message, messageStatus.READ);
+        const eventAttributes = {
+          thread_id: message.conversationId,
+          message_id: message.id
+        };
+        this.trackingService.addTrackingEvent({
+          eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
+          attributes: eventAttributes
+        }, false);
+      });
+      if (!fromSelf) {
+        conversation.unreadMessages = Math.max(conversation.unreadMessages - unreadMessages.length, 0);
+      }
+    }
   }
 
   public markAs(newStatus: string, messageId: string, thread: string) {
