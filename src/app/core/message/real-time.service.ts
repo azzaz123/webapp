@@ -47,6 +47,7 @@ export class RealTimeService {
     operation.attempt(() => {
     this.xmpp.reconnectClient();
       this.xmpp.disconnectError().subscribe(
+        () => this.ongoingRetry = false,
         (err) => {
           if (operation.retry(err)) {
             return;
