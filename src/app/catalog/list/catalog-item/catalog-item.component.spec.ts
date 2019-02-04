@@ -333,6 +333,7 @@ describe('CatalogItemComponent', () => {
         item = MOCK_ITEM;
         spyOn(trackingService, 'track');
         spyOn(eventService, 'emit');
+        spyOn(window, 'fbq');
         component.itemChange.subscribe(($event: ItemChangeEvent) => {
           event = $event;
         });
@@ -355,6 +356,12 @@ describe('CatalogItemComponent', () => {
 
       it('should emit ITEM_SOLD event', () => {
         expect(eventService.emit).toHaveBeenCalledWith(EventService.ITEM_SOLD, item);
+      });
+
+      it('should emit facebook ITEM_SOLD event', () => {
+        const facebookEvent = { value: MOCK_ITEM.salePrice, currency: MOCK_ITEM.currencyCode};
+
+        expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', facebookEvent);
       });
     });
   });

@@ -177,10 +177,6 @@ export class UserService extends ResourceService {
     return this.http.post(this.API_URL + '/me/report/user/' + userId, data);
   }
 
-  public updateBlockStatus(userId: string, blocked: boolean) {
-    this.store[userId].blocked = blocked;
-  }
-
   public getInfo(id: string): Observable<UserInfoResponse> {
     return this.http.get(this.API_URL + '/' + id + '/extra-info')
       .map((r: Response) => r.json());
@@ -369,11 +365,11 @@ export class UserService extends ResourceService {
 
   public getMotorPlans(): Observable<ProfileSubscriptionInfo> {
     return this.http.get(this.API_URL + '/me/profile-subscription-info')
-      .map((r: Response) => r.json())
+      .map((r: Response) => r.json());
   }
 
   public getAvailableSlots(): Observable<AvailableSlots> {
     return this.http.get(this.API_URL + '/me/items/slots-available')
-      .map((r: Response) => r.json())
+      .map((r: Response) => r.json());
   }
 }

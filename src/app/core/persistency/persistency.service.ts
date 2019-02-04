@@ -59,7 +59,7 @@ export class PersistencyService {
   }
 
   private initClickstreamDb(dbName: string, version?: number) {
-    const request = window.indexedDB.open(dbName, version);
+    const request = version ? window.indexedDB.open(dbName, version) : window.indexedDB.open(dbName);
     request.onsuccess = () => {
       this.clickstreamDb = request.result;
       if (!request.result.objectStoreNames.contains(this.eventsStore)) {

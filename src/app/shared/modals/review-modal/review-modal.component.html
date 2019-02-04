@@ -1,5 +1,5 @@
 <div class="modal-body center-heading">
-  <div class="modal-back" (click)="backPress.emit(null)" *ngIf="isSeller">
+  <div class="modal-back" (click)="backPress.emit(null)" *ngIf="isSeller && canChooseBuyer">
     <mat-icon svgIcon="back-arrow"></mat-icon>
   </div>
   <div class="modal-close" (click)="activeModal.dismiss()">

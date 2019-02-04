@@ -51,10 +51,6 @@ describe('SoldModalComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set price', () => {
-      expect(component.price).toBe(ITEM_SALE_PRICE);
-    });
-
     it('should call getConversationUsers', () => {
       expect(itemService.getConversationUsers).toHaveBeenCalledWith(ITEM_ID);
     });
@@ -68,7 +64,7 @@ describe('SoldModalComponent', () => {
     it('should set selectedUser', () => {
       component.chooseUser(CONVERSATION_USERS[0]);
 
-      expect(component.buyer).toEqual(CONVERSATION_USERS[0]);
+      expect(component.userToReview).toEqual(CONVERSATION_USERS[0]);
     });
   });
 
@@ -103,7 +99,7 @@ describe('SoldModalComponent', () => {
       component.chooseUser(CONVERSATION_USERS[0]);
       component.onBackPress();
 
-      expect(component.buyer).toBe(undefined);
+      expect(component.userToReview).toBe(undefined);
     });
   });
 

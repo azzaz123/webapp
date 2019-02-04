@@ -5,6 +5,7 @@ import { EventService } from '../event/event.service';
 import { Message } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class RealTimeService {
@@ -17,8 +18,8 @@ export class RealTimeService {
     this.subscribeEventMessageSent();
   }
 
-  public connect(userId: string, accessToken: string) {
-    this.xmpp.connect(userId, accessToken);
+  public connect(userId: string, accessToken: string): Observable<boolean> {
+    return this.xmpp.connect(userId, accessToken);
   }
 
   public disconnect() {
@@ -59,7 +60,7 @@ export class RealTimeService {
 
   private subscribeEventMessageSent() {
     this.eventService.subscribe(EventService.MESSAGE_SENT, (conversation: Conversation, messageId: string) => {
-      if (this.conversationIsEmpty(conversation)) {
+      if (this.isFirstMessage(conversation)) {
         this.trackConversationCreated(conversation, messageId);
         appboy.logCustomEvent('FirstMessage', { platform: 'web' });
         const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
@@ -72,15 +73,12 @@ export class RealTimeService {
   }
 
 
-  private conversationIsEmpty(conversation: Conversation): boolean {
+  private isFirstMessage(conversation: Conversation): boolean {
     const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
-    let hasMessages: boolean;
-    if (!conversation.messages.length || (phoneRequestMsg && conversation.messages.length === 1)) {
-      hasMessages = false;
-    } else {
-      hasMessages = true;
+    if (conversation.messages.length === 1 || (phoneRequestMsg && conversation.messages.length === 2)) {
+      return true;
     }
-    return !hasMessages;
+    return false;
   }
 
   private trackMessageSent(conversationId: string, messageId: string) {
@@ -102,6 +100,11 @@ export class RealTimeService {
         message_id: messageId
       }
     }, false);
+
+    fbq('track', 'InitiateCheckout', {
+      value: conversation.item.salePrice,
+      currency:  conversation.item.currencyCode,
+    });
   }
 
 }

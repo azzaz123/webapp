@@ -47,8 +47,6 @@ class MockUserService {
     return Observable.of({});
   }
 
-  public updateBlockStatus() {
-  }
 
   public isProfessional() {
     return Observable.of(true);
@@ -243,23 +241,6 @@ describe('Component: Chat', () => {
       expect(component.conversationsLoaded).toBeTruthy();
     });
 
-    it('should call updateBlockStatus on USER_BLOCKED', () => {
-      spyOn(userService, 'updateBlockStatus');
-
-      component.ngOnInit();
-      eventService.emit(EventService.USER_BLOCKED, '1');
-
-      expect(userService.updateBlockStatus).toHaveBeenCalledWith('1', true);
-    });
-
-    it('should call updateBlockStatus on USER_UNBLOCKED', () => {
-      spyOn(userService, 'updateBlockStatus');
-
-      component.ngOnInit();
-      eventService.emit(EventService.USER_UNBLOCKED, '2');
-
-      expect(userService.updateBlockStatus).toHaveBeenCalledWith('2', false);
-    });
 
     it('should set firstLoad to false after DB_READY event triggered, and if getMetaInformation return meta', () => {
       component.ngOnInit();
