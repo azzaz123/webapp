@@ -301,7 +301,7 @@ export class ConversationService extends LeadService {
         }, false);
       });
       if (!fromSelf) {
-        conversation.unreadMessages = Math.max(conversation.unreadMessages - unreadMessages.length, 0);
+        conversation.unreadMessages -= unreadMessages.length;
         this.messageService.totalUnreadMessages -= unreadMessages.length;
       }
     }
