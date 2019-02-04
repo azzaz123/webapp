@@ -63,6 +63,10 @@ export class BuyProductModalComponent implements OnInit {
     }
   }
 
+  get creditSpent(): number {
+    return Math.min(this.creditInfo.credit, this.orderEvent.total * this.creditInfo.factor) * -1;
+  }
+
   public hasCard(hasCard: boolean) {
     this.hasFinancialCard = hasCard;
     this.mainLoading = false;

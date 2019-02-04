@@ -945,7 +945,7 @@ describe('ListComponent', () => {
       component.purchaseListingFee(MOCK_LISTING_FEE_ORDER);
 
       expect(modalService.open).toHaveBeenCalledWith(BuyProductModalComponent, {
-        windowClass: 'buy-product',
+        windowClass: 'modal-standard',
       });
     });
   });

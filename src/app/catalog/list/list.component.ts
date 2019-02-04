@@ -360,7 +360,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public feature(orderEvent: OrderEvent, type?: string) {
-    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'buy-product' });
+    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
     modalRef.componentInstance.type = type;
     modalRef.componentInstance.orderEvent = orderEvent;
     modalRef.result.then((result: string) => {
@@ -395,7 +395,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public purchaseListingFee(orderEvent: OrderEvent) {
-    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'buy-product' });
+    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
     modalRef.componentInstance.type = 'listing-fee';
     modalRef.componentInstance.orderEvent = orderEvent;
     localStorage.setItem('transactionType', 'purchaseListingFee');
