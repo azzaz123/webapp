@@ -285,9 +285,10 @@ export class ConversationService extends LeadService {
   public markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = false) {
     const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
     if (conversation) {
-      conversation.messages.filter((message) => (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT)
-        && ( fromSelf ? message.fromSelf && new Date(message.date).getTime() <= timestamp : !message.fromSelf ))
-        .map((message) => {
+      const unreadMessages = conversation.messages.filter(message => (message.status === messageStatus.RECEIVED ||
+        message.status === messageStatus.SENT) && ( fromSelf ? message.fromSelf &&
+        new Date(message.date).getTime() <= timestamp : !message.fromSelf ));
+      unreadMessages.map((message) => {
           message.status = messageStatus.READ;
           this.persistencyService.updateMessageStatus(message, messageStatus.READ);
           const eventAttributes = {
@@ -299,7 +300,7 @@ export class ConversationService extends LeadService {
             attributes: eventAttributes
           }, false);
         });
-    }
+  }
   }
 
   public markAs(newStatus: string, messageId: string, thread: string) {

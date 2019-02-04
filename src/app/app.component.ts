@@ -149,7 +149,7 @@ export class AppComponent implements OnInit {
           this.conversationService.markAs(messageStatus.RECEIVED, signal.messageId, signal.thread);
           break;
         case chatSignalType.READ:
-          this.conversationService.markAllAsRead(signal.thread, signal.timestamp, true);
+          this.conversationService.markAllAsRead(signal.thread, signal.timestamp, signal.fromSelf);
           break;
         default:
           break;

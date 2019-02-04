@@ -231,14 +231,14 @@ export class XmppService {
       signal = new ChatSignal(chatSignalType.RECEIVED, message.thread, message.date, message.receipt);
     } else if (!message.carbon && message.sentReceipt) {
       signal = new ChatSignal(chatSignalType.SENT, message.thread, message.date, message.sentReceipt.id);
-    } else if (!message.carbon && message.readReceipt) {
-      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date);
+    } else if (message.readReceipt) {
+      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date, null, !this.isFromSelf(message));
     }
 
     if (signal) {
       this.eventService.emit(EventService.CHAT_SIGNAL, signal);
     }
-    }
+  }
 
   private buildMessage(message: XmppBodyMessage, markAsPending = false) {
     message.status = markAsPending ? messageStatus.PENDING : null;
