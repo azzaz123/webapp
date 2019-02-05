@@ -21,11 +21,9 @@ export class XmppService {
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   public blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
-  private reconnectAttempts = 5;
-  private reconnectInterval: any;
-  private reconnectedTimes = 0;
   private messageQ: Array<XmppBodyMessage> = [];
   private archiveFinishedLoaded = false;
+  private xmppError = { mesasge: 'XMPP disconnected' };
 
   constructor(private eventService: EventService) {
   }
@@ -89,6 +87,13 @@ export class XmppService {
     return this.clientConnected$.asObservable();
   }
 
+  public disconnectError(): Observable<boolean> {
+    if (!this.clientConnected) {
+      return Observable.throw(this.xmppError);
+    }
+    return Observable.of(true);
+  }
+
   get clientConnected(): boolean {
     return this._clientConnected;
   }
@@ -119,15 +124,9 @@ export class XmppService {
   }
 
   public reconnectClient() {
-    this.reconnectInterval = setInterval(() => {
-      if (!this.clientConnected && this.reconnectedTimes < this.reconnectAttempts) {
+    if (this.client && !this.clientConnected) {
       this.client.connect();
-        this.reconnectedTimes++;
-      } else {
-        clearInterval(this.reconnectInterval);
-        this.reconnectedTimes = 0;
     }
-    }, 5000);
   }
 
   private bindEvents(): void {
@@ -162,12 +161,7 @@ export class XmppService {
 
     this.client.on('connected', () => {
       this.clientConnected = true;
-      clearInterval(this.reconnectInterval);
       console.warn('Client connected');
-    });
-
-    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      this.reconnectClient();
     });
 
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
