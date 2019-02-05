@@ -672,18 +672,40 @@ describe('Service: Xmpp', () => {
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
     });
 
-    it('should emit a CHAT_SIGNAL event if the message has a readReceipt', () => {
+    it('should emit a CHAT_SIGNAL event if the message is a readReceipt from the other user to self', () => {
       spyOn(eventService, 'emit');
+      const self = new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']);
+      service['self'] = self;
       const message: XmppBodyMessage = {
-        from: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
+        from: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
         body: 'bla',
         timestamp: { body: 'timestamp' },
         thread: 'thread',
-        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
+        to: self,
         id: 'someId',
         readReceipt: { id: 'someId' }
       };
-      const expectedSignal = new ChatSignal(chatSignalType.READ, message.thread, new Date(message.date).getTime());
+      const expectedSignal = new ChatSignal(chatSignalType.READ, message.thread, new Date(message.date).getTime(), null, true);
+
+      service['onNewMessage'](message);
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
+    });
+
+    it('should emit a CHAT_SIGNAL event if the message is a readReceipt from self to the ortehr user', () => {
+      spyOn(eventService, 'emit');
+      const self = new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']);
+      service['self'] = self;
+      const message: XmppBodyMessage = {
+        from: self,
+        body: 'bla',
+        timestamp: { body: 'timestamp' },
+        thread: 'thread',
+        to: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
+        id: 'someId',
+        readReceipt: { id: 'someId' }
+      };
+      const expectedSignal = new ChatSignal(chatSignalType.READ, message.thread, new Date(message.date).getTime(), null, false);
 
       service['onNewMessage'](message);
 
