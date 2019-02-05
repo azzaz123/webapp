@@ -77,10 +77,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this.item && this.item.categoryId === 100) {
       this.isCarItem = true;
-      this.trackingService.track(TrackingService.CARFAX_CHAT_DISPLAY, {
-        category_id: this.item.categoryId,
-        item_id: this.item.id
-      });
     } else {
       this.isCarItem = false;
     }
@@ -158,14 +154,6 @@ export class ItemComponent implements OnInit, OnChanges, OnDestroy {
     this.trackingService.track(TrackingService.CHAT_PRODUCT_SOLD, {item_id: item.id});
     fbq('track', 'CompleteRegistration', { value: item.salePrice, currency: item.currencyCode});
     appboy.logCustomEvent('Sold', {platform: 'web'});
-  }
-
-  public clickCarfax(event) {
-    event.stopPropagation();
-    this.trackingService.track(TrackingService.CARFAX_CHAT_TAP, {
-      category_id: this.item.categoryId,
-      item_id: this.item.id
-    });
   }
 
   public clickWillis(event) {
