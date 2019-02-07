@@ -6,15 +6,14 @@ $grid-gutter-width-base: 20px;
 $brand-primary: $walla-main;
 
 $brand-success: $positive-main;
-$brand-info: #5bc0de;
+$brand-info: $softblue-main;
 $brand-warning: $yellow-dark;
-$brand-danger: #d9534f;
+$brand-danger: $negative-dark;
 
-$color-grey-lighter:  #f2f2f2;
-$color-grey-light: #ddd;
-$color-grey-dark: #999;
+$color-grey-lighter:  $blue-grey-5;
+$color-grey-light: $blue-grey-4;
+$color-grey-dark: $blue-grey-3;
 
-$body-bg: $walla-main;
 $link-color: $walla-main;
 
 $border-radius: 10px;
@@ -24,3 +23,4 @@ $button-border-radius: 20px;
 @import 'spacings';
 @import 'fonts';
 @import 'layout';
+
