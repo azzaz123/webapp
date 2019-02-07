@@ -13,12 +13,12 @@ $filters-nav-height: 36px;
       margin-right: $spacing;
       cursor: pointer;
       height: 100%;
-      color: $grey-300;
+      color: $blue-grey-2;
       text-transform: uppercase;
       font-weight: bold;
       padding: 0;
       &:hover {
-        color: $grey-600;
+        color: darken($blue-grey-2, 10%);
       }
       &.active {
         color: $walla-main;

@@ -4,7 +4,7 @@
   p.text {
     font-size: $font-size;
     text-align: center;
-    color: $grey-700;
+    color: $blue-grey-2;
   }
 }
 
@@ -55,7 +55,7 @@ h1 {
             color: $blue-grey-1;
           }
           &.message {
-            color: $grey-300;
+            color: $blue-grey-2;
             @include text-truncate();
           }
         }
@@ -68,7 +68,7 @@ h1 {
         height: 42px;
         transition: right ease .2s;
         /deep/ svg path {
-          fill: $grey-200;
+          fill: $blue-grey-3;
         }
       }
       &:hover {

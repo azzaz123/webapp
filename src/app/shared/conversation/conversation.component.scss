@@ -136,7 +136,7 @@ $menu-width-and-spacing: 10px;
   .message-row {
     line-height: $font-size-S;
     p.message {
-      color: $grey-600;
+      color: $blue-grey-2;
     }
     mat-icon {
       height: 15px;
@@ -148,7 +148,7 @@ $menu-width-and-spacing: 10px;
 
 .message-date {
   font-size: $font-size-XS;
-  color: $grey-300;
+  color: $blue-grey-2;
   text-transform: uppercase;
   font-weight: bold;
 }
