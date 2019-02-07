@@ -100,10 +100,10 @@
     &.zonebump {
       .btn-price {
         &:hover {
-          background-color: $walla-main;
+          background-color: $zone-bump;
         }
         &.selected {
-          background-color: $walla-dark;
+          background-color: $zone-bump-dark;
         }
       }
     }

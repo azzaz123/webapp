@@ -73,7 +73,7 @@ $sold-width: 32px;
     @include square(25px);
   }
   &.zonebump {
-    background-color: $walla-main
+    background-color: $zone-bump;
   }
   &.citybump {
     background-color: $city-bump;
