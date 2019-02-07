@@ -13,14 +13,14 @@
 h2 {
   font-size: $font-size-L;
   font-weight: bold;
-  color: $corporate;
+  color: $walla-main;
   margin-top: 70px;
 }
 
 .description, .contact, .email {
   font-size: $font-size-S;
   line-height: 1.29;
-  color: $grey-250;
+  color: $blue-grey-3;
 }
 
 .contact {
@@ -29,7 +29,7 @@ h2 {
 }
 
 .email, .email a {
-  color: $grey-900;
+  color: $blue-grey-1;
   font-weight: bold;
 }
 
@@ -39,7 +39,7 @@ h2, .description {
 
 .pack {
   padding: $spacing $spacing-10;
-  border: solid 2px $grey-50;
+  border: solid 2px $blue-grey-5;
   border-radius: $border-radius;
   text-align: center;
   display: flex;
@@ -50,7 +50,7 @@ h2, .description {
   margin: $spacing / 2;
   max-width: 186px;
   .name {
-    color: $grey-900;
+    color: $blue-grey-1;
     font-size: $font-size-M;
     font-weight: bold;
   }
@@ -58,7 +58,7 @@ h2, .description {
     font-size: $font-size-LLL;
     color: $color-urgent;
     font-weight: bold;
-    border-bottom: 2px solid $grey-50;
+    border-bottom: 2px solid $blue-grey-5;
     padding-bottom: $spacing-S;
     margin-bottom: $spacing-M;
   }
@@ -68,16 +68,16 @@ h2, .description {
   }
   li {
     margin-bottom: $spacing-S;
-    color: $grey-500;
+    color: $blue-grey-2;
     list-style: none;
     font-size: $font-size-S;
     &.disabled {
-      color: $grey-50;
+      color: $blue-grey-5;
     }
   }
   &.selected {
     border-width: 3px;
-    border-color: $corporate;
+    border-color: $walla-main;
     .price {
       border-color: $corporate-light;
     }

@@ -11,11 +11,11 @@ $height: 40px;
   &.disabled {
     button {
       cursor: auto;
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       &.btn-bump, &.btn-sold, &.btn-reserve, &.btn-delete {
         &:hover {
-          background-color: $grey-50;
-          border: solid 1px rgba($grey-100, 0.5);
+          background-color: $blue-grey-5;
+          border: solid 1px rgba($blue-grey-4, 0.5);
           color: $grey-300;
         }
       }
@@ -31,7 +31,7 @@ $height: 40px;
     background: $white;
     color: $grey-300;
     font-size: $font-size-S;
-    border: solid 1px rgba($grey-100, 0.5);
+    border: solid 1px rgba($blue-grey-4, 0.5);
     &.btn-delete {
       padding: 0 ($spacing / 2);
       mat-icon {
@@ -60,13 +60,13 @@ $height: 40px;
     }
     &.btn-activate {
       &:hover {
-        background: $corporate;
+        background: $walla-main;
         border-color: transparent;
         color: $white;
       }
       &:disabled {
-        background: $grey-50;
-        border-color: $grey-100;
+        background: $blue-grey-5;
+        border-color: $blue-grey-4;
         color: $grey-300;
       }
     }
@@ -89,13 +89,13 @@ $height: 40px;
     height: $height;
     line-height: $height;
     border-radius: $border-radius;
-    color: $grey-900;
+    color: $blue-grey-1;
     font-size: $font-size-S;
     display: inline-block;
     padding: 0 $spacing;
     cursor: pointer;
-    background-color: rgba($corporate, 0.2);
-    border: solid 1px $corporate;
+    background-color: rgba($walla-main, 0.2);
+    border: solid 1px $walla-main;
     &:after {
       display: inline-block;
       content: ' ';

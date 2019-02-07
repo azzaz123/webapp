@@ -8,7 +8,7 @@
   & {
     border: none;
     width: 190px - 36px;
-    color: $grey-900;
+    color: $blue-grey-1;
     -webkit-transition-property: width;
     transition-property: width;
     transition-duration: 0.2s;
@@ -22,7 +22,7 @@
     width: 250px - 36px;
   }
   &::-webkit-input-placeholder {
-    color: $corporate;
+    color: $walla-main;
     opacity: 0.9;
   }
   &::-moz-placeholder {
@@ -53,8 +53,8 @@
   & {
     background-color: transparent;
     cursor: pointer;
-    color: $grey-900;
-    border-bottom: 1px solid $grey-50;
+    color: $blue-grey-1;
+    border-bottom: 1px solid $blue-grey-5;
     padding: 8px 20px;
     transition: all .15s linear;
     & .suggestion {
@@ -64,12 +64,12 @@
         font-size: $font-size;
       }
       & .category {
-        color: $corporate;
+        color: $walla-main;
         font-size: $font-size-S;
       }
     }
   }
 }
 :host /deep/ .dropdown-item.active {
-  background-color: $grey-50;
+  background-color: $blue-grey-5;
 }

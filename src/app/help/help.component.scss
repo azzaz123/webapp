@@ -3,10 +3,10 @@
 .box-left {
   padding: 56px 100px;
   a {
-    color: $grey-900;
+    color: $blue-grey-1;
     &:hover, &:active, &:focus {
       text-decoration: none;
-      color: $corporate;
+      color: $walla-main;
     }
   }
 }
@@ -45,7 +45,7 @@ a {
     display:flex;
   }
   a.featured {
-    border: solid 1px $grey-50;
+    border: solid 1px $blue-grey-5;
     display: block;
     border-radius: 5px;
     text-align: center;
@@ -57,13 +57,13 @@ a {
       padding: 0 $spacing-S;
     }
     .desc {
-      color: $grey-250;
+      color: $blue-grey-3;
     }
   }
 }
 
 .summary {
-  border-bottom: solid 1px $grey-50;
+  border-bottom: solid 1px $blue-grey-5;
   margin-bottom: $spacing-L;
   .section {
     margin-bottom: $spacing-L;
@@ -85,11 +85,11 @@ a {
     margin-bottom: $spacing-M;
     padding-top: $spacing;
     &.active {
-      color: $corporate;
+      color: $walla-main;
     }
   }
   .answer {
-    color: $grey-250;
+    color: $blue-grey-3;
     font-size: $font-size-S;
     margin-bottom: $spacing-2M;
   }
@@ -101,7 +101,7 @@ a {
     margin-bottom: $spacing-S;
   }
   .grey {
-    color: $grey-250;
+    color: $blue-grey-3;
   }
   a {
     font-weight: bold;
@@ -114,7 +114,7 @@ a {
 
 .arrow-scroll-top {
   @include square(34px);
-  background-color: $corporate;
+  background-color: $walla-main;
   position: fixed;
   bottom: 50px;
   right: 70px;

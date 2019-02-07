@@ -17,9 +17,9 @@ form {
     outline: none;
     resize: none;
     overflow: hidden;
-    border: 2px solid $grey-50;
+    border: 2px solid $blue-grey-5;
     &:focus {
-      border-color: $grey-100;
+      border-color: $blue-grey-4;
     }
     &::-webkit-input-placeholder {
       color: $grey-200;
@@ -31,7 +31,7 @@ form {
       }
     }
     &.selected {
-      border: 2px solid $corporate;
+      border: 2px solid $walla-main;
     }
   }
   #send {
@@ -40,7 +40,7 @@ form {
     right: 25px;
     top: 5px;
     border-radius: 50%;
-    background: $grey-100;
+    background: $blue-grey-4;
     @include square($send-icon-size);
     display: flex;
     justify-content: center;
@@ -51,7 +51,7 @@ form {
       height: 23px;
     }
     &.selected {
-      background: $corporate;
+      background: $walla-main;
     }
   }
 

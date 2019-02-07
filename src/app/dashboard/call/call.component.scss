@@ -9,7 +9,7 @@ $check-width-and-spacing: 50px;
   border-left: 2px solid transparent;
   transition: $transition-time ease background-color,
   $transition-time ease border;
-  border-top: 1px solid $grey-50;
+  border-top: 1px solid $blue-grey-5;
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -17,7 +17,7 @@ $check-width-and-spacing: 50px;
     border-top: 0;
   }
   &.active {
-    background-color: rgba($grey-100, .4);
+    background-color: rgba($blue-grey-4, .4);
   }
   tsl-archive-button, tsl-unarchive-button {
     @include hide();
@@ -50,7 +50,7 @@ tsl-user-avatar {
   justify-content: space-between;
   margin-left: $item-avatar-space;
   max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
-  color: $grey-900;
+  color: $blue-grey-1;
   p {
     font-size: $font-size-S;
     margin-bottom: 0;

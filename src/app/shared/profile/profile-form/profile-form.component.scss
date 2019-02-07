@@ -26,7 +26,7 @@ $right-gutter: 35px;
       label {
         text-align: right;
         line-height: 27px;
-        color: $grey-900;
+        color: $blue-grey-1;
         font-size: $font-size;
         padding-right: $right-gutter;
         margin: 0;
@@ -42,7 +42,7 @@ $right-gutter: 35px;
         height: 100px;
         width: calc(50% - #{$spacing / 2});
         border-radius: $border-radius;
-        border: solid 2px $grey-50;
+        border: solid 2px $blue-grey-5;
         cursor: pointer;
         padding: 0;
         text-align: center;

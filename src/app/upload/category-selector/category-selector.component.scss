@@ -5,7 +5,7 @@
     margin-bottom: $spacing-XS;
   }
   p {
-    color: $grey-250;
+    color: $blue-grey-3;
     margin-bottom: $spacing;
   }
 }
@@ -17,7 +17,7 @@
   font-size: $font-size-XXS;
   .type {
     display: block;
-    color: $grey-500;
+    color: $blue-grey-2;
     text-transform: uppercase;
     font-weight: bold;
     text-align: center;
@@ -25,7 +25,7 @@
     .square {
       @include square(90px);
       border-radius: 15px;
-      background: $grey-50;
+      background: $blue-grey-5;
       border: solid 2px transparent;
       display: flex;
       align-items: center;
@@ -56,9 +56,9 @@
       }
     }
     &.active {
-      color: $corporate;
+      color: $walla-main;
       .square {
-        background-color: $corporate;
+        background-color: $walla-main;
         mat-icon {
           opacity: 1;
           /deep/ {

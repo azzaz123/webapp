@@ -20,7 +20,7 @@ $card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
 :host {
   background: $white;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   display: block;
   height: $cart-height;
   width: 280px;
@@ -38,7 +38,7 @@ h1 {
 
 .cart-wrapper {
   height: $scroll-panel-height;
-  background-color: rgba($grey-50, 0.3);
+  background-color: rgba($blue-grey-5, 0.3);
   border-radius: 5px;
   position: relative;
   .with-credits & {
@@ -75,7 +75,7 @@ h1 {
 .discounted-total {
   text-align: right;
   font-size: $font-size-L;
-  color: $grey-250;
+  color: $blue-grey-3;
   margin-top: $spacing-M;
   padding-right: $spacing-XS;
   margin-bottom: -7px;
@@ -95,7 +95,7 @@ h1 {
 }
 
 .walla-total {
-  color: $grey-500;
+  color: $blue-grey-2;
   line-height: 25px;
   margin-top: $spacing-XS;
   .price {
@@ -118,7 +118,7 @@ h1 {
 }
 
 .credit {
-  color: $corporate;
+  color: $walla-main;
   height: $credit-total-height;
   .price {
     font-size: $font-size-S;
@@ -135,14 +135,14 @@ h1 {
 }
 
 .missing {
-  border-top: solid 1px $grey-50;
+  border-top: solid 1px $blue-grey-5;
   margin: 6px 6px 0 8px;
   padding: 3px 2px 0 0;
   .label {
-    color: $grey-250;
+    color: $blue-grey-3;
   }
   .price {
-    color: $grey-500;
+    color: $blue-grey-2;
     font-size: $font-size-L;
   }
 }
@@ -167,7 +167,7 @@ ul, li {
     border-radius: 5px;
     background-color: $white;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    border: solid 0.5px $grey-100;
+    border: solid 0.5px $blue-grey-4;
     margin-bottom: $spacing-XS;
     display: flex;
     justify-content: space-between;
@@ -194,11 +194,11 @@ ul, li {
     }
   }
   .price {
-    color: $grey-500;
+    color: $blue-grey-2;
     font-weight: bold;
   }
   .zonebump {
-    color: $zone-bump;
+    color: $walla-main
   }
   .citybump {
     color: $city-bump;
@@ -239,7 +239,7 @@ ul, li {
   right: $spacing-10;
   font-size: $font-size-XS;
   a {
-    color: $grey-500;
+    color: $blue-grey-2;
     cursor: pointer;
   }
 }
@@ -264,6 +264,6 @@ tsl-button {
   }
   span {
     font-size: $font-size-XS;
-    color: $grey-250;
+    color: $blue-grey-3;
   }
 }

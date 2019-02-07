@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .modal-body {
-  color: $grey-900;
+  color: $blue-grey-1;
   height: calc(100vh - #{$spacing-40 * 2});
   overflow: scroll;
 }
@@ -67,7 +67,7 @@ h1 {
       margin: 0 auto;
       margin-bottom: $spacing-S;
       & /deep/ path {
-        fill: $grey-900;
+        fill: $blue-grey-1;
       }
     }
   }

@@ -33,7 +33,7 @@ $vertical-padding: 10px;
   &.btn-primary {
     &.disabled, &:disabled {
       &:active {
-        background-color: $corporate;
+        background-color: $walla-main;
         border-color: transparent;
       }
     }
@@ -56,7 +56,7 @@ $vertical-padding: 10px;
     background: $grey-700;
     border-color: transparent;
     &:hover {
-      background: $corporate;
+      background: $walla-main;
     }
   }
   &.btn-inactive {
@@ -70,14 +70,14 @@ $vertical-padding: 10px;
     width: 170px;
   }
   &.btn-outline-primary {
-    color: $corporate;
+    color: $walla-main;
     &:hover {
       color: $white;
     }
   }
   &.btn-gray {
-    background-color: $grey-50;
-    color: $grey-250;
+    background-color: $blue-grey-5;
+    color: $blue-grey-3;
   }
 }
 

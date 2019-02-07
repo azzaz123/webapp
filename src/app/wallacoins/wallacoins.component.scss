@@ -12,7 +12,7 @@ tsl-header {
       text-transform: capitalize;
     }
     .total-credits {
-      color: $grey-250;
+      color: $blue-grey-3;
       text-align: center;
       .credits {
         font-size: $font-size-L;
@@ -40,12 +40,12 @@ h3 {
 }
 
 h2, h3 {
-  color: $grey-900;
+  color: $blue-grey-1;
   font-weight: bold;
 }
 
 p {
-  color: $grey-250;
+  color: $blue-grey-3;
 }
 
 ngu-carousel {
@@ -62,7 +62,7 @@ ngu-carousel {
       &:hover {
         /deep/ {
           path {
-            fill: $corporate;
+            fill: $walla-main;
           }
         }
       }
@@ -99,7 +99,7 @@ ngu-carousel {
     }
     h4 {
       font-size: $font-size;
-      color: $corporate;
+      color: $walla-main;
       font-weight: bold;
     }
   }

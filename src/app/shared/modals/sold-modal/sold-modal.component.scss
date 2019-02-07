@@ -9,7 +9,7 @@
 }
 
 h1 {
-  color: $corporate;
+  color: $walla-main;
   font-size: $font-size-L;
   font-weight: bold;
   text-align: center;
@@ -52,7 +52,7 @@ h1 {
           font-size: $font-size;
           &.name {
             font-weight: bold;
-            color: $grey-900;
+            color: $blue-grey-1;
           }
           &.message {
             color: $grey-300;
@@ -74,12 +74,12 @@ h1 {
       &:hover {
         text-decoration: none;
         div p.name {
-          color: $corporate;
+          color: $walla-main;
         }
         .arrow-icon {
           right: -10px;
           /deep/ svg path {
-            fill: $corporate;
+            fill: $walla-main;
           }
         }
       }

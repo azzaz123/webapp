@@ -6,7 +6,7 @@
   position: fixed;
   top: 0;
   border-bottom: 1px solid;
-  border-color: transparentize($color-grey-separator, 0.5);
+  border-color: transparentize($blue-grey-4, 0.5);
   padding: 0 8px 0 11px;
   width: 100%;
   display: flex;
@@ -16,7 +16,7 @@
   box-shadow: 0 2px 4px 0 rgba(37,50,56,0.03);
   z-index: 100;
   & a {
-    color: $grey-900;
+    color: $blue-grey-1;
     font-size: $font-size-S;
     text-decoration: none;
   }
@@ -27,13 +27,13 @@
   }
   span {
     font-size: $font-size-S;
-    color: $grey-900;
+    color: $blue-grey-1;
     margin-right: $spacing-XXS;
     margin-left: $spacing-S;
   }
   &.active {
     span {
-      color: $corporate;
+      color: $walla-main;
     }
   }
 }
@@ -44,7 +44,7 @@
   vertical-align: middle;
   &.search-glass {
     &.active {
-      color: $corporate;
+      color: $walla-main;
     }
   }
 }
@@ -77,7 +77,7 @@
       color: $white;
       &.active {
         padding: 0 $spacing-S;
-        color: $corporate;
+        color: $walla-main;
         background-color: $white;
       }
     }
@@ -112,7 +112,7 @@
     float: left;
   }
   form {
-    border-right: 1px solid $grey-100;
+    border-right: 1px solid $blue-grey-4;
     align-items: center;
     display: flex;
   }
@@ -121,7 +121,7 @@
     border-bottom-left-radius: 10px;
     -webkit-border-top-left-radius: 10px;
     -webkit-border-bottom-left-radius: 10px;
-    border: 1px solid $grey-100;
+    border: 1px solid $blue-grey-4;
     border-right: 0;
     box-shadow: 0 2px 4px 0 rgba(37, 50, 56, 0.05);
     display: flex;
@@ -132,7 +132,7 @@
       padding-left: 12px;
       width: 190px;
       height: 100%;
-      color: $grey-900;
+      color: $blue-grey-1;
       font-size: $font-size-S;
       opacity: 1;
       border: none;
@@ -145,7 +145,7 @@
     }
 
     &::-webkit-input-placeholder {
-      color: $corporate;
+      color: $walla-main;
       opacity: 0.9;
     }
 
@@ -166,7 +166,7 @@
   }
   .search-btn {
     width: 41px;
-    background: $grey-50;
+    background: $blue-grey-5;
     padding: 0;
     border-top-right-radius: 9px;
     border-bottom-right-radius: 9px;
@@ -174,15 +174,15 @@
     -webkit-border-bottom-right-radius: 9px;
     cursor: pointer;
     box-shadow: 0 2px 4px 0 rgba(37, 50, 56, 0.05);
-    border: 1px solid $grey-100;
+    border: 1px solid $blue-grey-4;
     border-left: 0;
     mat-icon /deep/ svg path{
       fill: $grey-600
     }
     &:hover {
-      background: $corporate;
+      background: $walla-main;
       color: $white;
-      border-color: $corporate;
+      border-color: $walla-main;
       mat-icon /deep/ svg path{
         fill: $white;
       }
@@ -222,13 +222,13 @@
     }
     &.active {
       font-weight: bold;
-      color: $corporate;
+      color: $walla-main;
       & .horizontal-line {
         display: block;
-        border-color: $corporate;
+        border-color: $walla-main;
       }
       & .topbar-icon {
-        color: $corporate;
+        color: $walla-main;
       }
     }
     & span {
@@ -249,7 +249,7 @@
     }
     .horizontal-line {
       display: none;
-      border-bottom: 3px solid $grey-900;
+      border-bottom: 3px solid $blue-grey-1;
       width: 100%;
       margin-left: $spacing-XS;
       position: absolute;
@@ -270,7 +270,7 @@
     align-items: center;
     font-size: 16px;
     & span {
-      background-color: $corporate;
+      background-color: $walla-main;
       color: $white;
       border-radius: 20px;
       margin-left: 12px;
@@ -288,7 +288,7 @@
   .main-header-chat {
     &.active {
       mat-icon /deep/ svg g g {
-        fill: $corporate;
+        fill: $walla-main;
       }
     }
   }
@@ -311,7 +311,7 @@
     &:active {
       & .horizontal-line {
         display: block;
-        border-color: $corporate;
+        border-color: $walla-main;
       }
     }
     i {
@@ -332,7 +332,7 @@
     }
     .horizontal-line {
       display: none;
-      border-bottom: 3px solid $grey-900;
+      border-bottom: 3px solid $blue-grey-1;
       width: 91%;
       margin-left: 0;
       position: absolute;
@@ -361,7 +361,7 @@
         #plus {
           rect {
             transition: all 0.2s ease-in-out;
-            fill: $corporate;
+            fill: $walla-main;
           }
         }
       }
@@ -387,7 +387,7 @@
 
 .main-header-credits {
   b {
-    color: $corporate;
+    color: $walla-main;
     margin-right: $spacing-XXS;
   }
   .topbar-icon {

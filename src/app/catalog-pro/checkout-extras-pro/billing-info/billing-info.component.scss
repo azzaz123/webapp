@@ -11,7 +11,7 @@
 h1 {
     font-size: $font-size-S;
     height: 100%;
-    color: $corporate;
+    color: $walla-main;
     text-transform: uppercase;
     font-weight: bold;
     padding: 0;
@@ -22,7 +22,7 @@ form {
     .form-group {
         padding: 0 10px;
         label {
-            color: $grey-900;
+            color: $blue-grey-1;
         }
         input {
             border-radius: $border-radius;

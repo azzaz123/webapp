@@ -21,14 +21,14 @@ img {
   }
 }
 p {
-  color: $grey-250;
+  color: $blue-grey-3;
   font-size: $font-size;
   max-width: 300px;
   margin: 0 auto $spacing-S auto;
 }
 h1 {
   font-weight: bold;
-  color: $grey-900;
+  color: $blue-grey-1;
   font-size: $spacing;
   margin-bottom: $spacing-2M;
   &.fail {

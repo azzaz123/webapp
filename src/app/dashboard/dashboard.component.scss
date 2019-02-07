@@ -11,7 +11,7 @@ $v-container-spacing: 40px;
   width: calc(100% - #{$sidebar-width} - #{$stats-sidebar-width} - (2 * #{$h-container-spacing}));
   box-sizing: content-box;
   height: calc(100vh - #{$topbar-height} - #{$v-container-spacing * 2});
-  background-color: $grey-50;
+  background-color: $blue-grey-5;
   margin: 0;
   margin-left: $sidebar-width;
   margin-top: $topbar-height;
@@ -58,7 +58,7 @@ $sidebar-title: 64px;
       right: $spacing;
     }
     &.calls-container {
-      border-top: 1px solid $grey-50;
+      border-top: 1px solid $blue-grey-5;
     }
   }
   .scroll-panel {
@@ -82,7 +82,7 @@ $sidebar-title: 64px;
     padding-right: $spacing-S;
     a {
       float: right;
-      color: $corporate;
+      color: $walla-main;
       font-size: $font-size-XS;
       text-decoration: none;
       text-transform: uppercase;

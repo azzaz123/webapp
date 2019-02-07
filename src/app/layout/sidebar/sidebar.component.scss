@@ -6,7 +6,7 @@
   left: 0;
   top: $topbar-height;
   bottom: 0;
-  background-color: $grey-900;
+  background-color: $blue-grey-1;
   padding-top: $spacing-M;
   height: calc(100vh - #{$topbar-height});
   z-index: 99;
@@ -34,7 +34,7 @@ $sidebar-section-circle-size-small: 32px;
   background-color: rgba($grey-800, .5);
   transition: width 0.75s, height 0.75s;
   .active & {
-    background-color: $corporate !important;
+    background-color: $walla-main !important;
   }
   border-radius: 50%;
   .profile-item & {

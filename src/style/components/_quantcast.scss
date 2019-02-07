@@ -6,7 +6,7 @@
   }
 
   .qc-cmp-button {
-    background-color: $corporate;
+    background-color: $walla-main;
     border: none;
     font-family: $wallie;
     color: $white;
@@ -26,20 +26,20 @@
     }
 
     &.qc-cmp-secondary-button {
-      border: 1px solid $corporate;
+      border: 1px solid $walla-main;
       background-color: $white;
-      color: $corporate;
+      color: $walla-main;
     }
 
     &.qc-cmp-secondary-button:hover {
-      background-color: $corporate;
+      background-color: $walla-main;
       color: $white;
     }
   }
 
   .qc-cmp-alt-action,
   .qc-cmp-link {
-    color: $corporate !important;
+    color: $walla-main !important;
     text-decoration: none;
     margin-top: $spacing-XS;
   }
@@ -54,13 +54,13 @@
     width: 36px;
     transition: .4s;
     border: none;
-    background-color: $corporate;
+    background-color: $walla-main;
 
     &.qc-cmp-toggle-off {
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
 
       &:hover {
-        background-color: $grey-100;
+        background-color: $blue-grey-4;
       }
     }
 
@@ -87,10 +87,10 @@
   .qc-cmp-table,
   .qc-cmp-vendor-list,
   .qc-cmp-vendor-list-title {
-    color: $grey-900 ;
+    color: $blue-grey-1 ;
   }
   .qc-cmp-toggle-status{
-    color: $grey-500 ;
+    color: $blue-grey-2 ;
     font-weight: normal;
   }
 
@@ -101,17 +101,17 @@
   }
 
   .qc-cmp-scrolling-section {
-    border: thin solid $grey-50 !important;
+    border: thin solid $blue-grey-5 !important;
   }
   .qc-cmp-table {
     .qc-cmp-table-header {
-      color: $grey-500;
+      color: $blue-grey-2;
       background-color: $white;
-      border-color: $grey-50;
+      border-color: $blue-grey-5;
     }
     .qc-cmp-table-row {
       background-color: $white;
-      border-color: $grey-50;
+      border-color: $blue-grey-5;
     }
     .qc-cmp-purpose-description {
       line-height: initial;
@@ -146,17 +146,17 @@
   justify-content: center;
   font-size: $font-size-S;
   background-color: $white;
-  border: thin solid $corporate;
+  border: thin solid $walla-main;
   padding: 0 $spacing !important;
   height: 42px;
-  color: $corporate !important;
+  color: $walla-main !important;
   text-decoration: none;
   cursor: pointer;
   line-height: $spacing-L;
   border-radius: 22px;
 
   &:hover {
-    background-color: $corporate;
+    background-color: $walla-main;
     text-decoration: none !important;
     color: $white !important;
   }

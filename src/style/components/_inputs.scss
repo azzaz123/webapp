@@ -9,17 +9,17 @@ $form-control-height: 50px;
   }
   label {
     font-size: $font-size-S;
-    color: $grey-500;
+    color: $blue-grey-2;
   }
   .form-control, select.form-control:not([size]):not([multiple]) {
     display: block;
     height: $form-control-height;
     width: 100%;
     font-size: $font-size;
-    border-color: $grey-50;
+    border-color: $blue-grey-5;
     border-radius: 6px;
     &:hover {
-      border-color: $grey-100;
+      border-color: $blue-grey-4;
     }
     &.ng-dirty {
       &.ng-valid {
@@ -28,7 +28,7 @@ $form-control-height: 50px;
           border-color: $grey-200 !important;
         }
         & > div.focus {
-          border-color: $corporate !important;
+          border-color: $walla-main !important;
         }
       }
       &.ng-invalid {
@@ -42,7 +42,7 @@ $form-control-height: 50px;
       }
     }
     &:focus, &.ng-dirty.ng-invalid:focus, &.ng-dirty.ng-valid:focus {
-      border-color: $corporate;
+      border-color: $walla-main;
       color: $grey-800;
       outline: none;
       box-shadow: none;
@@ -55,7 +55,7 @@ $form-control-height: 50px;
   select.form-control {
     -webkit-appearance: none;
     option {
-      background: $grey-900;
+      background: $blue-grey-1;
       color: $white;
     }
   }
@@ -75,10 +75,10 @@ ng-select {
   padding: 0 !important;
   border: 0 !important;
   &[aria-describedby] {
-    border-color: $corporate !important;
+    border-color: $walla-main !important;
   }
   & > div {
-    border: 1px solid $grey-50 !important;
+    border: 1px solid $blue-grey-5 !important;
     border-radius: 6px;
     height: $form-control-height;
     margin-left: -1px;
@@ -86,7 +86,7 @@ ng-select {
       background-color: transparent !important;
     }
     &.focus {
-      border-color: $corporate !important;
+      border-color: $walla-main !important;
     }
     & > div.single {
       height: $form-control-height;
@@ -122,7 +122,7 @@ ng-select {
 select-dropdown{
   & > div {
     box-shadow: 0 1px 4px 0 rgba(37, 50, 56, 0.05);
-    border: solid 1px $grey-50 !important;
+    border: solid 1px $blue-grey-5 !important;
     border-radius: 6px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -131,7 +131,7 @@ select-dropdown{
       overflow-x: hidden !important;
       ul li {
         padding: $spacing-S !important;
-        border-top: 1px solid $grey-50;
+        border-top: 1px solid $blue-grey-5;
         line-height: 24px;
         mat-icon {
           @include square(38px);
@@ -140,13 +140,13 @@ select-dropdown{
           margin-top: -6px;
           margin-bottom: -6px;
           g g {
-            fill: $grey-900;
+            fill: $blue-grey-1;
           }
         }
         &.selected {
           mat-icon {
             g g {
-              fill: $corporate;
+              fill: $walla-main;
             }
           }
           &.highlighted {
@@ -160,7 +160,7 @@ select-dropdown{
       }
     }
     .filter {
-      border-bottom: 1px solid $grey-50;
+      border-bottom: 1px solid $blue-grey-5;
       input {
         background: transparent;
         border: 0 !important;
@@ -169,15 +169,15 @@ select-dropdown{
     }
   }
   .highlighted {
-    background-color: $grey-50 !important;
+    background-color: $blue-grey-5 !important;
     color: $grey-800 !important;
   }
   .selected {
     background-color: transparent !important;
-    color: $corporate;
+    color: $walla-main;
   }
   .selected.highlighted {
-    background-color: $grey-50 !important;
+    background-color: $blue-grey-5 !important;
     color: $grey-800 !important;
   }
 }

@@ -23,7 +23,7 @@
     .calls-block {
       background-color: $white;
       border-radius: $border-radius;
-      border: solid 1px $grey-50;
+      border: solid 1px $blue-grey-5;
       margin-top: 17px;
       .calls-header {
         margin: 0;
@@ -39,7 +39,7 @@
     }
   }
   .empty-state-phones {
-    border-top: 1px solid $grey-50;
+    border-top: 1px solid $blue-grey-5;
     margin: 20px 10px;
     padding-top: 20px;
     width: 100%;
@@ -52,7 +52,7 @@
     }
     & .message {
       width: 45%;
-      color: $grey-500;
+      color: $blue-grey-2;
       font-size: $font-size-LL;
       position: absolute;
       margin: 0 auto;

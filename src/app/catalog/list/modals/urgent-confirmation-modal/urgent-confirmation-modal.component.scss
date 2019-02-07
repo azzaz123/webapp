@@ -7,7 +7,7 @@ $feature-button-width: 170px;
 }
 
 .header {
-  background: $corporate;
+  background: $walla-main;
   height: 177px;
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
@@ -62,7 +62,7 @@ $feature-button-width: 170px;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background-color: $grey-50;
+    background-color: $blue-grey-5;
     @include square(34px);
     margin: 6px;
     cursor: pointer;

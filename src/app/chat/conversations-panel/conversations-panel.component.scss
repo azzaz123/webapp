@@ -15,7 +15,7 @@ h2 {
 }
 
 .header {
-  border-bottom: 1px solid $grey-50;
+  border-bottom: 1px solid $blue-grey-5;
 }
 
 .scroll-panel {
@@ -54,7 +54,7 @@ tsl-process-all-button {
   height: $load-more-container-height;
   text-align: center;
   .load-more {
-    color: $corporate;
+    color: $walla-main;
     position: relative;
     text-transform: uppercase;
     font-size: $font-size-XS;

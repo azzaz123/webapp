@@ -23,11 +23,11 @@
       mat-icon /deep/ {
         float: left;
         svg g g, svg path {
-          fill: $grey-500;
+          fill: $blue-grey-2;
         }
       }
       &:hover, &.active {
-        background: $edit-bg;
+        background: $blue-grey-2;
         border-color: transparent;
         mat-icon /deep/ {
           svg g g, svg path {
@@ -90,7 +90,7 @@
       flex-direction: row;
       .price {
         font-size: $font-size;
-        color: $grey-900;
+        color: $blue-grey-1;
         flex-grow: 1;
       }
       .stats {
@@ -113,7 +113,7 @@
       hr {
         border: 0;
         margin: $spacing-S 0;
-        border-top: 1px solid $grey-50;
+        border-top: 1px solid $blue-grey-5;
         height: 1px;
       }
       a {

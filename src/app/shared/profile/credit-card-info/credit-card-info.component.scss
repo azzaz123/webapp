@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .credit-card-field {
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   height: 53px;
   padding: 0 $spacing;
   display: flex;
@@ -16,7 +16,7 @@
     flex: 1;
   }
   .date {
-    color: $grey-250;
+    color: $blue-grey-3;
     span {
       font-size: $font-size-XS;
     }
@@ -26,7 +26,7 @@
 .delete-link {
   text-align: right;
   font-size: $font-size-S;
-  color: $grey-250;
+  color: $blue-grey-3;
   cursor: pointer;
   &:hover {
     text-decoration: underline;

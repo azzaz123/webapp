@@ -15,11 +15,11 @@ ngb-carousel {
       width: 68px;
       margin: 0;
       li {
-        background-color: $grey-100;
+        background-color: $blue-grey-4;
         @include square(10px);
         max-width: 10px;
         &:hover, &.active {
-          background-color: $corporate;
+          background-color: $walla-main;
         }
       }
     }
@@ -48,7 +48,7 @@ h2 {
 }
 
 p {
-  color: $grey-500;
+  color: $blue-grey-2;
   font-size: $font-size;
 }
 

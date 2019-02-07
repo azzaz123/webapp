@@ -9,7 +9,7 @@ $menu-width-and-spacing: 10px;
   box-sizing: border-box;
   transition: $transition-time ease background-color,
   $transition-time ease border;
-  border-top: 1px solid $grey-50;
+  border-top: 1px solid $blue-grey-5;
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -17,7 +17,7 @@ $menu-width-and-spacing: 10px;
     border-top: 0;
   }
   &.active {
-    background-color: rgba($grey-100, .4);
+    background-color: rgba($blue-grey-4, .4);
   }
   tsl-archive-button, tsl-unarchive-button {
     @include hide();
@@ -26,7 +26,7 @@ $menu-width-and-spacing: 10px;
     right: $spacing-S;
   }
   &:hover {
-    background-color: rgba($grey-100, .2);
+    background-color: rgba($blue-grey-4, .2);
   }
   &.professional {
     &:hover {
@@ -61,7 +61,7 @@ $menu-width-and-spacing: 10px;
   height: $item-avatar-size;
   margin-left: $item-avatar-space;
   max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
-  color: $grey-900;
+  color: $blue-grey-1;
   p {
     font-size: $font-size-S;
     margin-bottom: 0;
@@ -124,7 +124,7 @@ $menu-width-and-spacing: 10px;
       font-size: 12px;
     }
     .user-name {
-      color: $grey-900;
+      color: $blue-grey-1;
     }
     &.has-phone {
       $phone-icon-size: 10px;

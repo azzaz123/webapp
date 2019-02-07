@@ -5,7 +5,7 @@ p  {
     font-size: $font-size;
     margin-top: $spacing-3M;
     padding: $spacing-2L 0;
-    color: $grey-900;
+    color: $blue-grey-1;
 }
 
 form {
@@ -18,13 +18,13 @@ form {
     }
     label {
         font-size: $font-size;
-        color: $grey-900;
+        color: $blue-grey-1;
     }
 }
 
 
 .small p {
-    color: $grey-250;
+    color: $blue-grey-3;
     margin-top: $spacing-XXS;
     padding: 0;
     font-size: $font-size-XXS;
@@ -36,7 +36,7 @@ form {
     bottom: 7px;
     right: 0;
     border-radius: 50%;
-    background: $grey-100;
+    background: $blue-grey-4;
     @include square($send-icon-size);
     display: flex;
     justify-content: center;
@@ -47,6 +47,6 @@ form {
       height: 23px;
     }
     &.selected {
-      background: $corporate;
+      background: $walla-main;
     }
 }

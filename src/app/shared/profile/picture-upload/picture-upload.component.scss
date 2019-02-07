@@ -4,7 +4,7 @@
   h2 {
     font-size: $font-size;
     font-weight: normal;
-    color: $grey-900;
+    color: $blue-grey-1;
   }
   p {
     font-size: $font-size-S;
@@ -20,8 +20,8 @@
     margin-right: $spacing;
   }
   .btn-upload {
-    background-color: $grey-50;
-    border: solid 1px $grey-100;
+    background-color: $blue-grey-5;
+    border: solid 1px $blue-grey-4;
     color: $grey-600;
     font-size: $font-size-S;
     padding: $spacing-S $spacing;
@@ -29,7 +29,7 @@
     cursor: pointer;
     border-radius: $button-border-radius;
     &:hover:not(.disabled) {
-      background-color: $grey-100;
+      background-color: $blue-grey-4;
     }
     input {
       display: none;

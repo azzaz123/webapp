@@ -44,20 +44,20 @@ h2 {
 tsl-button /deep/ .btn-logout  {
   padding: 10px 18px;
   background-color: transparent;
-  border: solid 1px $grey-100;
+  border: solid 1px $blue-grey-4;
   color: $grey-600;
   font-size: $font-size-S;
   border-radius: $button-border-radius;
   &:hover {
-    background-color: $corporate;
+    background-color: $walla-main;
     color: $white;
-    border: solid 1px $corporate;
+    border: solid 1px $walla-main;
   }
 }
 
 tsl-button /deep/ .simple  {
   background-color: transparent;
-  color: $corporate;
+  color: $walla-main;
   font-size: $font-size;
   font-weight: bold;
   text-decoration: underline;
@@ -80,14 +80,14 @@ tsl-spinner {
   font-size: $font-size-S;
   mat-icon {
     /deep/ svg path {
-      fill: $corporate;
+      fill: $walla-main;
     }
     margin-right: $spacing-S;
   }
   a {
     text-decoration: underline;
     cursor: pointer;
-    color: $corporate;
+    color: $walla-main;
     &:hover {
       text-decoration: none;
     }
@@ -137,7 +137,7 @@ tsl-selected-items {
     text-align: center;
     margin-top: $spacing * 2;
     .link {
-      color: $corporate;
+      color: $walla-main;
       text-decoration: underline;
       cursor: pointer;
       margin-left: $spacing-XXS;
@@ -148,7 +148,7 @@ tsl-selected-items {
     tsl-button {
       margin-left: $spacing-XXS;
       /deep/ button {
-        color: $corporate;
+        color: $walla-main;
         text-decoration: underline;
         cursor: pointer;
         font-weight: normal;
@@ -187,14 +187,14 @@ tsl-select {
 
 .intro {
   font-size: $font-size-S;
-  color: $grey-500;
+  color: $blue-grey-2;
   display: flex;
   flex-direction: row;
   align-self: center;
   justify-content: start;
   margin: 0 0 $spacing-M;
   a {
-    color: $corporate;
+    color: $walla-main;
   }
 }
 

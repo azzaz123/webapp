@@ -12,7 +12,7 @@
   height: 100%;
   z-index: 4;
   .datepicker-overlay {
-    background-color: rgba($grey-900, 0.5);
+    background-color: rgba($blue-grey-1, 0.5);
     position: absolute;
     top: 0;
     left: 0;
@@ -31,7 +31,7 @@
 .datepicker-btn-wrapper {
     display: flex;
     justify-content: space-between;
-    border-top: solid 1px $grey-50;
+    border-top: solid 1px $blue-grey-5;
     padding-top: $spacing;    
     .datepicker-btn {
       -webkit-appearance: none;
@@ -39,14 +39,14 @@
       border: 0;
       font-size: $font-size-S;
       &.cancel {
-        color: $grey-250;
+        color: $blue-grey-3;
       }
       &.apply {
         font-weight: bold;
-        color: $corporate;
+        color: $walla-main;
       }
       &.citybump {
-        color: $zone-bump;
+        color: $walla-main;
       }
       &.countrybump {
         color: $country-bump;
@@ -79,7 +79,7 @@
     .ngb-dp-weekday {
       font-weight: bold;
       font-style: normal;
-      color: $grey-500;
+      color: $blue-grey-2;
       margin: $spacing-S 0;
       width: 2.5rem;
       text-transform: lowercase;
@@ -112,7 +112,7 @@
     font-size: $font-size-S;
     margin: $spacing 0;
     &.citybump {
-      color: $zone-bump;
+      color: $walla-main;
     }
     &.countrybump {
       color: $country-bump;
@@ -135,7 +135,7 @@
       color: white;
       font-weight: bold;
       &.citybump {
-        background-color: $zone-bump;
+        background-color: $walla-main;
       }
       &.countrybump {
         background-color: $country-bump;
@@ -150,9 +150,9 @@
       border-bottom-right-radius: $spacing;
     }
     &.disabled {
-      color: $grey-250;
+      color: $blue-grey-3;
       &:hover {
-        color: $grey-250;
+        color: $blue-grey-3;
         background-color: transparent;
         cursor: not-allowed; 
       }
@@ -160,7 +160,7 @@
     &.faded {
       color: white;
       &.citybump {
-        background-color: rgba($zone-bump, 0.7);
+        background-color: rgba($walla-main, 0.7);
       }
       &.countrybump {
         background-color: rgba($country-bump, 0.7);
