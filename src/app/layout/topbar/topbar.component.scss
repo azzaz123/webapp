@@ -40,7 +40,7 @@
 .topbar-icon {
   height: 36px;
   width: 36px;
-  color: $grey-200;
+  color: $blue-grey-3;
   vertical-align: middle;
   &.search-glass {
     &.active {
@@ -150,17 +150,17 @@
     }
 
     &::-moz-placeholder {
-      color: $grey-300;
+      color: $blue-grey-2;
       opacity: 0.9;
     }
 
     &::-ms-placeholder {
-      color: $grey-300;
+      color: $blue-grey-2;
       opacity: 0.9;
     }
 
     &::placeholder {
-      color: $grey-300;
+      color: $blue-grey-2;
       opacity: 0.9;
     }
   }
@@ -177,7 +177,7 @@
     border: 1px solid $blue-grey-4;
     border-left: 0;
     mat-icon /deep/ svg path{
-      fill: $grey-600
+      fill: $blue-grey-2
     }
     &:hover {
       background: $walla-main;

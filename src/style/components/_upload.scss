@@ -76,7 +76,7 @@
       span {
         display: block;
         text-transform: uppercase;
-        color: $grey-300;
+        color: $blue-grey-2;
         font-weight: bold;
         font-size: 9px;
         letter-spacing: .4px;
@@ -111,12 +111,12 @@
       &:hover:not(.active) {
         cursor: pointer;
         span {
-          color: $grey-700;
+          color: $blue-grey-2;
         }
         mat-icon {
           /deep/ {
             svg g, svg path {
-              fill: $grey-700;
+              fill: $blue-grey-2;
             }
           }
         }

@@ -12,7 +12,7 @@
 
   h1 {
     font-size: $font-size-L;
-    color: $grey-800;
+    color: $blue-grey-1;
     margin-bottom: $spacing-L;
   }
 
@@ -34,12 +34,12 @@
       top: 50%;
       transform: translateX(-50%) translateY(-50%);
       /deep/ g g {
-        fill: $grey-800;
+        fill: $blue-grey-1;
       }
     }
     .label {
       font-size: $font-size;
-      color: $grey-700;
+      color: $blue-grey-2;
     }
     &:hover .ban-reason-icon-container {
       border-color: $blue-grey-4;
@@ -68,7 +68,7 @@
     min-height: 120px;
     margin-top: $spacing;
     &::-webkit-input-placeholder {
-      color: $grey-200;
+      color: $blue-grey-3;
     }
   }
 

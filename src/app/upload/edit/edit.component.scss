@@ -10,7 +10,7 @@
   mat-icon {
     @include square(12px);
     /deep/ path {
-      fill: $grey-600;
+      fill: $blue-grey-2;
 
     }
   }

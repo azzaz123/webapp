@@ -23,9 +23,9 @@ $form-control-height: 50px;
     }
     &.ng-dirty {
       &.ng-valid {
-        border-color: $grey-200;
+        border-color: $blue-grey-3;
         & > div {
-          border-color: $grey-200 !important;
+          border-color: $blue-grey-3 !important;
         }
         & > div.focus {
           border-color: $walla-main !important;
@@ -43,13 +43,13 @@ $form-control-height: 50px;
     }
     &:focus, &.ng-dirty.ng-invalid:focus, &.ng-dirty.ng-valid:focus {
       border-color: $walla-main;
-      color: $grey-800;
+      color: $blue-grey-1;
       outline: none;
       box-shadow: none;
       background-color: transparent;
     }
     &::placeholder {
-      color: $grey-200;
+      color: $blue-grey-3;
     }
   }
   select.form-control {
@@ -110,7 +110,7 @@ ng-select {
         }
       }
       & > div.placeholder {
-        color: $grey-200 !important;
+        color: $blue-grey-3 !important;
         height: $form-control-height;
         line-height: $form-control-height !important;
         padding-left: 12px !important;
@@ -152,7 +152,7 @@ select-dropdown{
           &.highlighted {
             mat-icon {
               g g {
-                fill: $grey-800 ;
+                fill: $blue-grey-1 ;
               }
             }
           }
@@ -164,13 +164,13 @@ select-dropdown{
       input {
         background: transparent;
         border: 0 !important;
-        color: $grey-800 !important;
+        color: $blue-grey-1 !important;
       }
     }
   }
   .highlighted {
     background-color: $blue-grey-5 !important;
-    color: $grey-800 !important;
+    color: $blue-grey-1 !important;
   }
   .selected {
     background-color: transparent !important;
@@ -178,7 +178,7 @@ select-dropdown{
   }
   .selected.highlighted {
     background-color: $blue-grey-5 !important;
-    color: $grey-800 !important;
+    color: $blue-grey-1 !important;
   }
 }
 
@@ -266,7 +266,7 @@ input::-webkit-calendar-picker-indicator{
 
 .chars-counter {
   font-size: $font-size-XS;
-  color: $grey-200;
+  color: $blue-grey-3;
   float: right;
   margin-top: $spacing-XXS;
   margin-bottom: $spacing-XS;

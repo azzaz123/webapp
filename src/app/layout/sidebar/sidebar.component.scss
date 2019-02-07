@@ -31,7 +31,7 @@ $sidebar-section-circle-size-small: 32px;
   margin: 0 auto $spacing-S auto;
   width: $sidebar-section-circle-size;
   height: $sidebar-section-circle-size;
-  background-color: rgba($grey-800, .5);
+  background-color: rgba($blue-grey-1, .5);
   transition: width 0.75s, height 0.75s;
   .active & {
     background-color: $walla-main !important;
@@ -88,7 +88,7 @@ h2 {
   }
   &:hover {
     .sidebar-section-circle {
-      background-color: $grey-800;
+      background-color: $blue-grey-1;
     }
     h2 {
       color: $white;

@@ -38,9 +38,9 @@
     }
     &:hover:not(.active) {
       text-decoration: none;
-      color: $grey-800;
+      color: $blue-grey-1;
       .square {
-        border: solid 2px $grey-300;
+        border: solid 2px $blue-grey-2;
         mat-icon {
           opacity: 1;
         }

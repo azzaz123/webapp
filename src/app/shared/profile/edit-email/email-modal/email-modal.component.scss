@@ -6,13 +6,13 @@
 
 h1 {
   font-size: $font-size-M;
-  color: $grey-800;
+  color: $blue-grey-1;
   font-weight: bold;
 }
 
 p {
   font-size: $font-size-S;
-  color: $grey-300;
+  color: $blue-grey-2;
   margin: 0 0 $spacing-XL;
   &.note {
     color: $blue-grey-3;

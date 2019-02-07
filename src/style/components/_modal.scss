@@ -17,7 +17,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   border: 0;
   background-color: $white;
   h2,p {
-    color: $grey-800;
+    color: $blue-grey-1;
   }
   .modal-close {
     @include square(30px);
@@ -31,7 +31,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
       height: 15px;
       line-height: 30px;
       /deep/ path {
-        fill: $grey-700;
+        fill: $blue-grey-2;
       }
     }
     &:hover mat-icon /deep/ path {
@@ -39,7 +39,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     }
     .modal.bump-confirm & {
       mat-icon /deep/ path {
-        fill: $grey-200;
+        fill: $blue-grey-3;
       }
     }
     &.light {
@@ -60,7 +60,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     text-align: center;
     h2 {
       font-size: $font-size-L;
-      color: $grey-800;
+      color: $blue-grey-1;
     }
   }
   .modal-body, .modal-footer {
@@ -85,7 +85,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     font-size: $font-size-S;
   }
   .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio) {
-    color: $grey-800;
+    color: $blue-grey-1;
     background-color: transparent;
     outline: 0;
     border-left: 1px solid $blue-grey-4;

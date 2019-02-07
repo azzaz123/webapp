@@ -26,7 +26,7 @@ $check-width-and-spacing: 50px;
     right: $spacing-S;
   }
   &:hover {
-    background-color: rgba($grey-600, .1);
+    background-color: rgba($blue-grey-2, .1);
     tsl-archive-button {
       opacity: 1;
       visibility: visible;
@@ -103,7 +103,7 @@ tsl-user-avatar {
       @include square($phone-icon-adjusted-size);
     }
     .call-item-title {
-      color: $grey-600;
+      color: $blue-grey-2;
     }
     &.has-phone {
       $phone-icon-size: 10px;
@@ -115,13 +115,13 @@ tsl-user-avatar {
   .call-date {
     font-size: $font-size-XS;
     font-weight: bold;
-    color: $grey-300;
+    color: $blue-grey-2;
     text-transform: uppercase;
   }
   .call-data-row {
     line-height: $font-size-S;
     p{
-      color: $grey-600;
+      color: $blue-grey-2;
       margin: 10px 0;
       &:last-child {
         margin-bottom: 0;
