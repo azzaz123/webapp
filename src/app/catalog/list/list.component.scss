@@ -181,7 +181,7 @@ tsl-selected-items {
         vertical-align: text-bottom;
       }
       &:hover:not(:disabled) {
-        background: $reserve-bg;
+        background: $skyblue-dark;
         border-color: transparent;
         color: $white;
         mat-icon /deep/ {
