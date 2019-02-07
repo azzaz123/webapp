@@ -158,7 +158,7 @@ tsl-selected-items {
         margin-right: $spacing-XS;
       }
       &:hover {
-        background: $delete-bg;
+        background: $magenta-main;
         border-color: transparent;
         color: $white;
         mat-icon /deep/ {

@@ -25,7 +25,7 @@ $vertical-padding: 10px;
     background-color: $reserve-bg;
   }
   &.btn-delete {
-    background-color: $delete-bg;
+    background-color: $magenta-main;
   }
   &:not([disabled]):not(.btn-primary):hover {
     opacity: .8;

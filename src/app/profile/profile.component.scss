@@ -15,9 +15,9 @@
   font-size: $font-size-S;
   border-radius: $button-border-radius;
   &:hover {
-    background-color: $delete-bg;
+    background-color: $magenta-main;
     color: $white;
-    border: solid 1px $delete-bg;
+    border: solid 1px $magenta-main;
   }
 }
 
