@@ -15,7 +15,7 @@ $height: 40px;
       }
     }
     &:hover {
-      $hover-color: #0f9989;
+      $hover-color: $walla-dark;
       text-decoration: none;
       svg {
         .dashed-border {

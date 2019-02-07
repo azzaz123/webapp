@@ -22,7 +22,7 @@ h2 {
       }
     }
     &:hover {
-      $hover-color: $zone-bump-dark;
+      $hover-color: $walla-dark;
       text-decoration: none;
       svg {
         .dashed-border {
@@ -63,7 +63,7 @@ tsl-button /deep/ .simple  {
   text-decoration: underline;
   &:hover {
     background-color: transparent;
-    color: $corporate-dark;
+    color: $walla-dark;
   }
 }
 
@@ -142,7 +142,7 @@ tsl-selected-items {
       cursor: pointer;
       margin-left: $spacing-XXS;
       &:hover {
-        color: $corporate-dark;
+        color: $walla-dark;
       }
     }
     tsl-button {

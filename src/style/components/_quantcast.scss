@@ -21,7 +21,7 @@
     font-weight: normal;
 
     &:hover {
-      background-color: $corporate-dark;
+      background-color: $walla-dark;
       color: white;
     }
 
@@ -46,7 +46,7 @@
 
   .qc-cmp-alt-action:hover,
   .qc-cmp-link:hover {
-    color: $corporate-dark;
+    color: $walla-dark;
   }
 
   .qc-cmp-toggle {
@@ -161,7 +161,7 @@
     color: $white !important;
   }
   &:focus {
-    background-color: $corporate-dark;
+    background-color: $walla-dark;
     text-decoration: none;
     color: $white !important;
   }
