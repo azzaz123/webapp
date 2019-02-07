@@ -15,9 +15,9 @@
   font-size: $font-size-S;
   border-radius: $button-border-radius;
   &:hover {
-    background-color: $magenta-main;
+    background-color: $negative-main;
     color: $white;
-    border: solid 1px $magenta-main;
+    border: solid 1px $negative-main;
   }
 }
 
