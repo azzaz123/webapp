@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { CategoryConsumerGoodsResponse, CategoryOption, CategoryResponse } from './category-response.interface';
 import { IOption } from 'ng-select';
@@ -12,7 +12,7 @@ export class CategoryService {
   private API_URL = 'api/v3/categories';
   private uploadCategories: CategoryOption[];
   private categories: CategoryResponse[];
-  private heroCategoriesIds = [100, 13200, 13000];
+  private heroCategoriesIds = [100, 13200, 13000, 21000];
 
   constructor(private http: HttpService,
               private i18n: I18nService) {

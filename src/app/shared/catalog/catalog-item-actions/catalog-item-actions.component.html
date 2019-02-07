@@ -12,10 +12,10 @@
     <mat-icon svgIcon="delete"></mat-icon>
     <span i18n>Delete</span>
   </button>
-  <button class="btn-delete dark" (click)="deactivate(deactivateItemsModal)" *ngIf="selectedStatus === 'active'
+  <button class="btn-delete dark" (click)="deactivate()" *ngIf="selectedStatus === 'active'
   || selectedStatus === 'featured'"
           [disabled]="!itemService.selectedItems.length" tslTrackEvent="MYCATALOG_PRO_DEACTIVATE" i18n>Deactivate</button>
-  <button class="btn-activate" (click)="activate(activateItemsModal)" *ngIf="selectedStatus === 'pending'"
+  <button class="btn-activate" (click)="activate()" *ngIf="selectedStatus === 'pending'"
           [disabled]="!itemService.selectedItems.length" i18n>Activate</button>
   <tsl-button [hidden]="selectedStatus !== 'active'" [disabled]="!itemService.selectedItems.length"
               className="btn-primary btn-big btn-feat" (click)="feature()" tslTrackEvent="MYCATALOG_PRO_FEATURE"
@@ -30,27 +30,5 @@
   <div class="modal-footer">
     <button type="button" class="btn" i18n (click)="d()">Cancel</button>
     <button type="button" class="btn btn-warn" i18n (click)="c()">Delete</button>
-  </div>
-</ng-template>
-
-<ng-template ngbModalContainer #deactivateItemsModal let-c="close" let-d="dismiss">
-  <div class="modal-body">
-    <h2 i18n>Deactivate items</h2>
-    <p i18n>The selected items will be set all pending.</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
-    <button type="button" class="btn btn-warn" i18n (click)="c()">Deactivate</button>
-  </div>
-</ng-template>
-
-<ng-template ngbModalContainer #activateItemsModal let-c="close" let-d="dismiss">
-  <div class="modal-body">
-    <h2 i18n>Activate items</h2>
-    <p i18n>The selected items will be set all active.</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn" i18n (click)="d()">Cancel</button>
-    <button type="button" class="btn btn-warn" i18n (click)="c()">Activate</button>
   </div>
 </ng-template>

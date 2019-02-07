@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ItemService } from '../../../../core/item/item.service';
 
 @Component({
   selector: 'tsl-already-featured-modal',
@@ -8,7 +9,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AlreadyFeaturedModalComponent implements OnInit {
 
-  constructor(public activeModal: NgbActiveModal) { }
+  constructor(public activeModal: NgbActiveModal,
+              public itemService: ItemService) {
+  }
 
   ngOnInit() {
   }

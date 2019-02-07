@@ -1,0 +1,99 @@
+@import "~style/common";
+
+:host {
+  border-radius: $border-radius;
+  border: solid 2px $grey-50;
+  width: 234px;
+  height: 386px;
+  margin: 0 $spacing-M;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px $spacing $spacing-L;
+  position: relative;
+  &.credits {
+    height: 320px;
+  }
+  .featured {
+    $height: 28px;
+    height: $height;
+    background-color: $corporate-light;
+    color: $corporate;
+    text-transform: uppercase;
+    font-size: $font-size-XS;
+    line-height: $height;
+    font-weight: bold;
+    text-align: center;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 175px;
+    border-radius: 14px;
+  }
+  .icon {
+    @include square(120px);
+    border-radius: 50%;
+    background: rgba($grey-50, .3) no-repeat center;
+    &.icon-1 {
+      background-image: url(/assets/images/wallacoins-1.svg);
+    }
+    &.icon-2 {
+      background-image: url(/assets/images/wallacoins-2.svg);
+    }
+    &.icon-3 {
+      background-image: url(/assets/images/wallacoins-3.svg);
+    }
+    &.icon-4 {
+      background-image: url(/assets/images/wallacoins-4.svg);
+    }
+    &.icon-5 {
+      background-image: url(/assets/images/wallacoins-5.svg);
+    }
+    &.icon-6 {
+      background-image: url(/assets/images/wallacoins-6.svg);
+    }
+  }
+  .quantity {
+    font-size: 40px;
+    font-weight: bold;
+    color: $grey-900;
+    line-height: 30px;
+    margin-top: $spacing-S;
+  }
+  .label {
+    font-size: $font-size-L;
+    color: $grey-900;
+  }
+  .for-free {
+    color: $corporate;
+    font-size: $font-size;
+    font-weight: bold;
+    flex-grow: 1;
+  }
+  &.credits {
+    .icon {
+      @include square(150px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: $spacing-S;
+      .quantity {
+        font-size: $font-size-XXL;
+      }
+    }
+  }
+  tsl-button {
+    display: block;
+    width: 100%;
+    /deep/ {
+      button {
+        &.btn-grey {
+          background-color: $grey-250;
+        }
+        b {
+          margin-left: $spacing-XXS;
+        }
+      }
+    }
+  }
+}

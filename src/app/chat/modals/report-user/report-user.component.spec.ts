@@ -4,7 +4,7 @@ import { ReportUserComponent } from './report-user.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { UserService } from '../../../core/user/user.service';
 import { BanReason } from '../../../core/item/ban-reason.interface';
 

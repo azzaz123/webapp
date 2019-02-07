@@ -5,7 +5,7 @@ import { ResourceService } from '../resource/resource.service';
 import {
   AllowedActionResponse,
   AvailableProductsResponse,
-  CarContent,
+  CarContent, CarInfo, CheapestProducts,
   ConversationUser,
   Duration,
   ItemBulkResponse,
@@ -24,9 +24,10 @@ import {
   OrderPro,
   Product,
   ProductDurations,
-  Purchase,
+  Purchase, PurchaseProductsWithCreditsResponse,
   RealestateContent,
-  SelectedItemsAction
+  SelectedItemsAction,
+  ListingFeeProductInfo
 } from './item-response.interface';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import * as _ from 'lodash';
@@ -34,7 +35,7 @@ import { I18nService } from '../i18n/i18n.service';
 import { BanReason } from './ban-reason.interface';
 import { TrackingService } from '../tracking/tracking.service';
 import { EventService } from '../event/event.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
@@ -75,6 +76,7 @@ export class ItemService extends ResourceService {
     featured: []
   };
   public selectedItems: string[] = [];
+  private bumpTypes = ['countrybump', 'citybump', 'zonebump', 'urgent'];
 
   constructor(http: HttpService,
               private i18n: I18nService,
@@ -195,6 +197,7 @@ export class ItemService extends ResourceService {
       content.num_seats,
       content.condition,
       content.version,
+      content.publish_date,
       content.image
     );
   }
@@ -223,7 +226,9 @@ export class ItemService extends ResourceService {
       content.terrace,
       content.elevator,
       content.pool,
-      content.garden
+      content.garden,
+      content.image,
+      content.publish_date
     );
   }
 
@@ -252,7 +257,7 @@ export class ItemService extends ResourceService {
       },
       content.images,
       content.web_slug,
-      content.modified_date,
+      content.publish_date,
       content.delivery_info
     );
   }
@@ -337,10 +342,17 @@ export class ItemService extends ResourceService {
         purchases.forEach((purchase: Purchase) => {
           const index: number = _.findIndex(itemsData.data, {id: purchase.item_id});
           if (index !== -1) {
-            itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
-            itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
-            itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
-            itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
+            if (purchase.purchase_name === 'listingfee') {
+              itemsData.data[index].listingFeeExpiringDate = purchase.expiration_date;
+            }
+            if (this.bumpTypes.includes(purchase.purchase_name)) {
+              itemsData.data[index].bumpExpiringDate = purchase.expiration_date;
+            }
+            if ( purchase.visibility_flags ) {
+              itemsData.data[index].flags.bumped = purchase.visibility_flags.bumped;
+              itemsData.data[index].flags.highlighted = purchase.visibility_flags.highlighted;
+              itemsData.data[index].flags.urgent = purchase.visibility_flags.urgent;
+            }
           }
         });
         return itemsData;
@@ -430,6 +442,10 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json());
   }
 
+  public purchaseProductsWithCredits(orderParams: Order[], orderId: string): Observable<PurchaseProductsWithCreditsResponse> {
+    return this.http.post(this.API_URL_WEB + '/purchase/products/credit/' + orderId, orderParams)
+      .map((r: Response) => r.json());
+  }
   public update(item: any, itemType: string): Observable<any> {
     let url: string = this.API_URL + '/';
     if (itemType === ITEM_TYPES.CARS) {
@@ -479,6 +495,20 @@ export class ItemService extends ResourceService {
         };
       });
     });
+  }
+
+  public getCheapestProductPrice(ids: string[]): Observable<CheapestProducts> {
+    return this.http.get(this.API_URL_WEB + '/available-visibility-products', {
+      itemsIds: ids.join(',')
+    })
+      .map((r: Response) => r.json())
+      .map((res: ItemsWithAvailableProductsResponse[]) => {
+        let returnObj = {};
+        res.forEach((i: ItemsWithAvailableProductsResponse) => {
+          returnObj[i.content.id] = i.productList[0].durations[0].market_code;
+        });
+        return returnObj;
+      });
   }
 
   private getActionsAllowed(id: string): Observable<AllowedActionResponse[]> {
@@ -644,6 +674,13 @@ export class ItemService extends ResourceService {
       });
   }
 
+  public activate(): Observable<any> {
+    return this.http.put(this.API_URL + '/activate', {
+      ids: this.selectedItems
+    })
+      .do(() => this.deselectItems());
+  }
+
   public bulkSetDeactivate(): Observable<any> {
     return this.http.post(this.API_URL_PROTOOL + '/changeItemStatus', {
         itemIds: this.selectedItems,
@@ -662,6 +699,13 @@ export class ItemService extends ResourceService {
         this.eventService.emit('itemChangeStatus', this.selectedItems);
         this.deselectItems();
       });
+  }
+
+  public deactivate(): Observable<any> {
+    return this.http.put(this.API_URL + '/inactivate', {
+      ids: this.selectedItems
+    })
+      .do(() => this.deselectItems());
   }
 
   public setSold(id: number): Observable<any> {
@@ -699,6 +743,19 @@ export class ItemService extends ResourceService {
     .map((r: Response) => r.json());
   }
 
+  public getCarInfo(brand: string, model: string, version: string): Observable<CarInfo> {
+    return this.http.get(this.API_URL + '/cars/info', {
+      brand: brand,
+      model: model,
+      version: version
+    })
+      .map((r: Response) => r.json());
+  }
+
+  public getListingFeeInfo(itemId: string): Observable<Product> {
+    return this.http.get(this.API_URL_WEB + '/' + itemId + '/listing-fee-info')
+      .map((r: Response) => r.json())
+      .map((response: ListingFeeProductInfo) => response.product_group.products[0]);
+  }
+
 }
-
-

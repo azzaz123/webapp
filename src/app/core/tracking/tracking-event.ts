@@ -4,7 +4,7 @@ import { getTimestamp } from './getTimestamp.func';
 import * as _ from 'lodash';
 
 export class TrackingEvent {
-  private sessions: any[] = [{
+  sessions: any[] = [{
     id: null,
     startTimestamp: null,
     userId: '',
@@ -27,13 +27,17 @@ export class TrackingEvent {
     window: null
   }];
 
-  constructor(window: any, userId: string, sessionStartTime: string, event?: TrackingEventBase) {
-    this.sessions[0].events[0] = event;
-    this.sessions[0].events[0].id = UUID.UUID();
+  constructor(window: any, userId: string, sessionStartTime: string, event?: TrackingEventBase, events?: Array<any>) {
+    if (events) {
+      this.sessions[0].events = events;
+    } else {
+      this.sessions[0].events[0] = event;
+      this.sessions[0].events[0].id = UUID.UUID();
+      this.sessions[0].events[0].timestamp = getTimestamp();
+    }
     this.sessions[0].userId = userId;
     this.sessions[0].window = window;
     this.sessions[0].startTimestamp = sessionStartTime;
-    this.sessions[0].events[0].timestamp = getTimestamp();
   }
 
   public setDeviceInfo(operativeSystemVersion: string, OSName: string, deviceAccessTokenId: string, browserName: string, browserVersion: string) {

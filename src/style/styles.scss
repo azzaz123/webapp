@@ -13,6 +13,10 @@ body {
   font-family: $wallie;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  & > iframe {
+    display: none;
+  }
 }
 
 :focus {
@@ -55,7 +59,7 @@ body {
   > .container {
     padding: $spacing-L 10px;
     @-moz-document url-prefix() { // Firefox hack
-      padding: 70px 10px;
+      padding: $spacing-L 10px;
     }
   }
 }

@@ -6,14 +6,12 @@ import { ProfileComponent } from './profile.component';
 import { ExitConfirmGuard } from '../shared/guards/exit-confirm.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { PERMISSIONS } from '../core/user/user';
-import { ProfileProInfoComponent } from './profile-pro/profile-pro-info/profile-pro-info.component';
-import { ProfileProComponent } from './profile-pro/profile-pro.component';
-import { ProfileProBillingComponent } from './profile-pro/profile-pro-billing/profile-pro-billing.component';
-import { ProfileProSubscriptionComponent } from './profile-pro/profile-pro-subscription/profile-pro-subscription.component';
+import { ProfileSubscriptionComponent } from './profile-subscription/profile-subscription.component';
+import { ProfileInfoComponent } from './profile-info/profile-info.component';
 
 const routes: Routes = [
   {
-    path: 'profile',
+    path: '',
     component: ProfileComponent,
     canActivate: [LoggedGuard, NgxPermissionsGuard],
     canDeactivate: [ExitConfirmGuard],
@@ -24,54 +22,28 @@ const routes: Routes = [
         only: PERMISSIONS.normal,
         redirectTo: '/pro/profile'
       }
-    }
-  },
-  { path: 'pro/profile', pathMatch: 'full', redirectTo: 'pro/profile/info' },
-  {
-    path: 'pro',
-    canActivate: [LoggedGuard],
+    },
     children: [
+      { path: '', pathMatch: 'full', redirectTo: 'info' },
       {
-        path: 'profile',
-        component: ProfileProComponent,
-        canActivate: [NgxPermissionsGuard],
+        path: 'info',
+        component: ProfileInfoComponent,
+        canDeactivate: [ExitConfirmGuard],
         data: {
-          permissions: {
-            only: PERMISSIONS.professional,
-            redirectTo: '/profile'
-          }
-        },
-        children: [
-          {
-            path: 'info',
-            component: ProfileProInfoComponent,
-            canDeactivate: [ExitConfirmGuard],
-            data: {
-              isMyZone: true,
-              isProfile: true
-            }
-          },
-          {
-            path: 'billing',
-            component: ProfileProBillingComponent,
-            canDeactivate: [ExitConfirmGuard],
-            data: {
-              isMyZone: true,
-              isProfile: true
-            }
-          },
-          {
-            path: 'subscription',
-            component: ProfileProSubscriptionComponent,
-            data: {
-              isMyZone: true,
-              isProfile: true
-            }
-          }
-        ]
+          isMyZone: true,
+          isProfile: true
+        }
       },
+      {
+        path: 'subscription',
+        component: ProfileSubscriptionComponent,
+        data: {
+          isMyZone: true,
+          isProfile: true
+        }
+      }
     ]
-  }
+  },
 ];
 
 @NgModule({
@@ -82,9 +54,5 @@ export class ProfileRoutingModule {
 }
 
 export const profileRoutedComponents = [
-  ProfileComponent,
-  ProfileProComponent,
-  ProfileProInfoComponent,
-  ProfileProBillingComponent,
-  ProfileProSubscriptionComponent
+  ProfileComponent
 ];

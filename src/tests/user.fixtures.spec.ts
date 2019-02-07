@@ -4,13 +4,16 @@ import { Counters, Ratings, UserStatsResponse } from '../app/core/user/user-stat
 import { UserData, UserProData, UserProDataNotifications } from '../app/core/user/user-data.interface';
 import { UnsubscribeReason } from '../app/core/user/unsubscribe-reason.interface';
 
-import { Image, UserLocation, UserResponse, UserStats, UserValidations } from '../app/core/user/user-response.interface';
-import { Observable } from 'rxjs/Observable';
+import {
+  Image, UserExtrainfo, UserLocation, UserResponse, UserStats, UserValidations,
+  MotorPlan, ProfileSubscriptionInfo
+} from '../app/core/user/user-response.interface';
+import { Observable } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { User } from '../app/core/user/user';
 
 export const USER_ID = 'l1kmzn82zn3p';
-export const OTHE_USER_ID = 'qxkmav12tp8f';
+export const OTHER_USER_ID = 'qxkmav12tp8f';
 export const MICRO_NAME = 'String S.';
 export const ACCESS_TOKEN = 'bS7D7d26UordM5M0uy5o4IisuyrPz35mfxfpw7PLRqQfzouQGXGpQtyZWFRRDdRFFT5fJZ';
 export const USER_EMAIL = 'test@test.it';
@@ -76,6 +79,12 @@ export const USER_LAST_NAME = 'Ghidoli';
 export const USER_BIRTH_DATE = 1523560844000;
 export const USER_GENDER = 'male';
 export const USER_URL = 'https://www.wallapop.com/user/webslug-l1kmzn82zn3p';
+export const USER_EXTRA_INFO: UserExtrainfo = {
+  description: 'description',
+  phone_number: 'phone_number',
+  link: 'link',
+  address: USER_LOCATION.title
+};
 
 export const USER_DATA: UserResponse = {
   'legacy_id': 101,
@@ -96,7 +105,10 @@ export const USER_DATA: UserResponse = {
   'first_name': USER_FIRST_NAME,
   'last_name': USER_LAST_NAME,
   'birth_date': USER_BIRTH_DATE,
-  'gender': USER_GENDER
+  'gender': USER_GENDER,
+  'email': USER_EMAIL,
+  'featured': true,
+  'extra_info': USER_EXTRA_INFO
 };
 
 export const MOCK_USER_RESPONSE_BODY: any = {
@@ -157,7 +169,11 @@ export const MOCK_FULL_USER = new User(
   USER_DATA.first_name,
   USER_DATA.last_name,
   USER_DATA.birth_date,
-  USER_DATA.gender
+  USER_DATA.gender,
+  USER_DATA.email,
+  USER_DATA.featured,
+  USER_DATA.extra_info
+
 );
 
 export const MOCK_USER_PRO: User = new User(
@@ -202,6 +218,8 @@ export class MockedUserService {
   get user(): User {
     return new User(USER_ID);
   }
+
+  public getPhoneInfo(userId: string) {}
 }
 
 export const USER_INFO_RESPONSE: UserInfoResponse = {
@@ -334,3 +352,103 @@ export const REASONS: UnsubscribeReason[] = [{
 
 export const SELECTED_REASON = 1;
 export const CUSTOM_REASON = 'bye';
+
+export const MOTORPLAN_DATA: MotorPlan = {
+  'type': 'motor_plan_pro',
+  'subtype': 'sub_premium',
+  'limit': 5
+};
+
+
+export const PROFILE_SUB_INFO: ProfileSubscriptionInfo = {
+  'status': 'PURCHASE_ACTIVE',
+  'product_group': {
+    'default_user_product_id': 'g9kp615z5l32',
+    'user_products': [{
+      'id': 'g9kp615z5l32',
+      'name': 'sub_basic',
+      'active': true,
+      'default_duration_index': 0,
+      'durations': [{
+        'id': 'g9kp615z5l32',
+        'duration': 720,
+        'market_code': '10',
+        'features': [{
+          'name': 'cars_subscription_tutorial_listinglimit5',
+          'enable': true
+        }, {
+          'name': 'cars_subscription_tutorial_description2',
+          'enable': true
+        }, {
+          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
+          'enable': true
+        }, {
+          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
+          'enable': true
+        }, {
+          'name': 'cars_subscription_tutorial_description3',
+          'enable': true
+        }, {'name': 'pro_subscription_tutorial_items_no_expire', 'enable': true}]
+      }]
+    }, {
+      'id': 'dwlqzmo6vm94',
+      'name': 'sub_pro',
+      'active': false,
+      'default_duration_index': 0,
+      'durations': [{
+        'id': 'dwlqzmo6vm94',
+        'duration': 720,
+        'market_code': '15',
+        'features': [{
+          'name': 'cars_subscription_tutorial_listinglimit9',
+          'enable': true
+        }, {
+          'name': 'cars_subscription_tutorial_description2',
+          'enable': true
+        }, {
+          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
+          'enable': true
+        }, {
+          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
+          'enable': true
+        }, {
+          'name': 'cars_subscription_tutorial_description3',
+          'enable': true
+        }, {
+          'name': 'pro_subscription_tutorial_items_no_expire',
+          'enable': true
+        }, {'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true}]
+      }]
+    }, {
+      'id': 'd1mxzo7j9yq2',
+      'name': 'sub_premium',
+      'active': false,
+      'default_duration_index': 0,
+      'durations': [{
+        'id': 'd1mxzo7j9yq2',
+        'duration': 720,
+        'market_code': '20',
+        'features': [{
+          'name': 'cars_subscription_tutorial_listinglimit15',
+          'enable': true
+        }, {
+          'name': 'cars_subscription_tutorial_description2',
+          'enable': true
+        }, {
+          'name': 'pro_subscription_tutorial_extra_fields_phone_web',
+          'enable': true
+        }, {
+          'name': 'pro_subscription_tutorial_extra_fields_description_direction',
+          'enable': true
+        }, {
+          'name': 'cars_subscription_tutorial_description3',
+          'enable': true
+        }, {
+          'name': 'pro_subscription_tutorial_items_no_expire',
+          'enable': true
+        }, {'name': 'cars_subscription_tutorial_phone_on_car', 'enable': true}]
+      }]
+    }],
+    'type': 'motor_plan_pro'
+  }
+};

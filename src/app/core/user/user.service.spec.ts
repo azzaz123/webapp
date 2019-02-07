@@ -1,6 +1,6 @@
 /* tslint:disable:no-unused-variable */
 
-import { fakeAsync, TestBed, discardPeriodicTasks, tick } from '@angular/core/testing';
+import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { UserService } from './user.service';
 import { HttpService } from '../http/http.service';
 import { MockBackend, MockConnection } from '@angular/http/testing';
@@ -8,30 +8,49 @@ import { Response, ResponseOptions } from '@angular/http';
 import { HaversineService } from 'ng2-haversine';
 import { ITEM_LOCATION, MOCK_ITEM } from '../../../tests/item.fixtures.spec';
 import { Item } from '../item/item';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
 import {
-  CUSTOM_REASON, MICRO_NAME, MOCK_USER, MOCK_USER_RESPONSE_BODY, ONLINE,
-  REASONS, RESPONSE_RATE, SCORING_STARS, SCORING_STARTS,
-  SELECTED_REASON, STATS, USER_DATA,
-  USER_EDIT_DATA, USER_EMAIL, USER_ID,
-  USER_INFO_RESPONSE, USER_LOCATION,
-  USER_LOCATION_COORDINATES, USER_PRO_DATA, USER_PRO_INFO_NOTIFICATIONS, USER_PRO_INFO_RESPONSE,
+  CUSTOM_REASON,
+  MICRO_NAME,
+  MOCK_USER,
+  MOCK_USER_RESPONSE_BODY,
+  ONLINE,
+  REASONS,
+  RESPONSE_RATE,
+  SCORING_STARS,
+  SCORING_STARTS,
+  SELECTED_REASON,
+  STATS,
+  USER_DATA,
+  USER_EDIT_DATA,
+  USER_EMAIL,
+  USER_ID,
+  USER_INFO_RESPONSE,
+  USER_LOCATION,
+  USER_LOCATION_COORDINATES,
+  USER_PRO_DATA,
+  USER_PRO_INFO_NOTIFICATIONS,
+  USER_PRO_INFO_RESPONSE,
   USERS_STATS,
-  USERS_STATS_RESPONSE, VALIDATIONS, VERIFICATION_LEVEL
+  USERS_STATS_RESPONSE,
+  VALIDATIONS,
+  VERIFICATION_LEVEL,
+  MOTORPLAN_DATA, PROFILE_SUB_INFO
 } from '../../../tests/user.fixtures.spec';
 import { UserInfoResponse, UserProInfo } from './user-info.interface';
-import { UserStatsResponse } from './user-stats.interface';
+import { AvailableSlots, UserStatsResponse } from './user-stats.interface';
 import { UnsubscribeReason } from './unsubscribe-reason.interface';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { AccessTokenService } from '../http/access-token.service';
 import { EventService } from '../event/event.service';
-import { User, PERMISSIONS } from './user';
+import { PERMISSIONS, User } from './user';
 import { environment } from '../../../environments/environment';
 import { LoginResponse } from './login-response.interface';
-import { UserLocation } from './user-response.interface';
+import { UserLocation, MotorPlan, ProfileSubscriptionInfo } from './user-response.interface';
 import { CookieService } from 'ngx-cookie';
 import { NgxPermissionsService } from 'ngx-permissions';
+import { FeatureflagService } from './featureflag.service';
 
 describe('Service: User', () => {
 
@@ -44,11 +63,10 @@ describe('Service: User', () => {
   let event: EventService;
   let cookieService: CookieService;
   let permissionService: NgxPermissionsService;
-
-  const DATA: any = {
-    emailAddress: 'test@test.it',
-    installationType: 'ANDROID',
-    password: 'test'
+  let featureflagService: FeatureflagService;
+  const mockMotorPlan = {
+    type: 'motor_plan_pro',
+    subtype: 'sub_premium'
   };
 
   beforeEach(() => {
@@ -81,6 +99,13 @@ describe('Service: User', () => {
             flushPermissions() {},
             hasPermission() {}
           }
+        },
+        {
+          provide: FeatureflagService, useValue: {
+          getFlag() {
+            return Observable.of(true);
+          }
+        }
         }
       ]
     });
@@ -93,6 +118,7 @@ describe('Service: User', () => {
     event = TestBed.get(EventService);
     cookieService = TestBed.get(CookieService);
     permissionService = TestBed.get(NgxPermissionsService);
+    featureflagService = TestBed.get(FeatureflagService);
   });
 
   it('should create an instance', () => {
@@ -270,18 +296,6 @@ describe('Service: User', () => {
 
   });
 
-  describe('updateBlockStatus', () => {
-    it('should set user as blocked', () => {
-      service['store'][USER_ID] = MOCK_USER;
-      service.updateBlockStatus(USER_ID, true);
-      expect(service['store'][USER_ID].blocked).toBeTruthy();
-    });
-    it('should set user as not blocked', () => {
-      service['store'][USER_ID] = MOCK_USER;
-      service.updateBlockStatus(USER_ID, false);
-      expect(service['store'][USER_ID].blocked).toBeFalsy();
-    });
-  });
 
   describe('login', () => {
     let response: LoginResponse;
@@ -325,7 +339,7 @@ describe('Service: User', () => {
     });
 
     it('should call endpoint', () => {
-      expect(http.postNoBase).toHaveBeenCalledWith('https://www.wallapop.com/rest/logout', undefined, undefined, true);
+      expect(http.postNoBase).toHaveBeenCalledWith(environment.siteUrl.replace('es', 'www') + 'rest/logout', undefined, undefined, true);
     });
 
     it('should call deleteAccessToken', () => {
@@ -447,6 +461,22 @@ describe('Service: User', () => {
     });
   });
 
+  describe('updateStoreLocation', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USER_LOCATION)});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      let resp: UserLocation;
+
+      service.updateStoreLocation(USER_LOCATION_COORDINATES).subscribe();
+
+      expect(http.post).toHaveBeenCalledWith('api/v3/users/me/bumped-profile/store-location', {
+        latitude: USER_LOCATION_COORDINATES.latitude,
+        longitude: USER_LOCATION_COORDINATES.longitude,
+        address: USER_LOCATION_COORDINATES.name
+      });
+    });
+  });
+
   describe('getStats', () => {
     it('should call endpoint and return response', () => {
       const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(USERS_STATS)});
@@ -474,6 +504,22 @@ describe('Service: User', () => {
 
       expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/stats');
       expect(resp).toEqual(USERS_STATS_RESPONSE);
+    });
+  });
+
+  describe('getPhoneInfo', () => {
+    it('should call endpoint and return response', () => {
+      const PHONE_METHOD_RESPONSE = { phone_method: 'bubble' };
+      const res: Response = new Response(new ResponseOptions({body: JSON.stringify(PHONE_METHOD_RESPONSE)}));
+      spyOn(http, 'get').and.returnValue(Observable.of(res));
+
+      let resp: any;
+      service.getPhoneInfo(USER_ID).subscribe((response: any) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/' + USER_ID + '/phone-method');
+      expect(resp).toEqual(PHONE_METHOD_RESPONSE);
     });
   });
 
@@ -561,6 +607,22 @@ describe('Service: User', () => {
     });
   });
 
+  describe('setCoinsFeatureFlag', () => {
+    it('should call getFlag and add permission if active', () => {
+      spyOn(featureflagService, 'getFlag').and.callThrough();
+      spyOn(permissionService, 'addPermission');
+      let resp: boolean;
+
+      service.setCoinsFeatureFlag().subscribe((r: boolean) => {
+        resp = r;
+      });
+
+      expect(featureflagService.getFlag).toHaveBeenCalledWith('coinsTypeUser');
+      expect(permissionService.addPermission).toHaveBeenCalledWith(PERMISSIONS.coins);
+      expect(resp).toBe(true);
+    });
+  });
+
   describe('isProfessional', () => {
     let val: boolean;
 
@@ -585,4 +647,82 @@ describe('Service: User', () => {
       expect(val).toBe(true);
     });
   });
+
+  describe('getMotorPlan', () => {
+
+    it('should retrieve and return the Motor plan object', fakeAsync(() => {
+      spyOn(http, 'get').and.callThrough();
+      mockBackend.connections.subscribe((connection: MockConnection) => {
+        expect(connection.request.url).toBe(environment.baseUrl + 'api/v3/users/me/profile-subscription-info/type');
+        const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOTORPLAN_DATA)});
+        connection.mockRespond(new Response(res));
+      });
+      let motorPlan: MotorPlan;
+
+      service.getMotorPlan().subscribe((r: MotorPlan) => {
+        motorPlan = r;
+      });
+
+      expect(http.get).toHaveBeenCalled();
+      expect(motorPlan.subtype).toEqual('sub_premium');
+    }));
+
+    it('should return the MotorPlan object if present', fakeAsync(() => {
+      let motorPlan: MotorPlan;
+      spyOn(http, 'get');
+
+      service['_motorPlan'] = mockMotorPlan;
+      service.getMotorPlan().subscribe((r: MotorPlan) => {
+        motorPlan = r;
+      });
+
+      expect(motorPlan.subtype).toBe('sub_premium');
+      expect(http.get).not.toHaveBeenCalled();
+    }));
+
+    it('should call http only once', () => {
+      spyOn(http, 'get').and.callThrough();
+
+      service.getMotorPlan().subscribe();
+      service.getMotorPlan().subscribe();
+
+      expect(http.get).toHaveBeenCalledTimes(1);
+    });
+
+  });
+
+  describe('getMotorPlans', () => {
+    it('should call endpoint and return response', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(PROFILE_SUB_INFO)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: ProfileSubscriptionInfo;
+
+      service.getMotorPlans().subscribe((response: ProfileSubscriptionInfo) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/profile-subscription-info');
+      expect(resp).toEqual(PROFILE_SUB_INFO);
+    });
+  });
+
+  describe('getAvailableSlots', () => {
+    it('should call endpoint and return response', () => {
+      const SLOTS: AvailableSlots = {
+        num_slots_cars: 3,
+        user_can_manage: true
+      };
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(SLOTS)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: AvailableSlots;
+
+      service.getAvailableSlots().subscribe((response: AvailableSlots) => {
+        resp = response;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/users/me/items/slots-available');
+      expect(resp).toEqual(SLOTS);
+    });
+  });
+
 });

@@ -7,7 +7,7 @@ import { PERMISSIONS } from '../core/user/user';
 
 const routes: Routes = [
   {
-    path: 'reviews',
+    path: '',
     component: ReviewsComponent,
     canActivate: [LoggedGuard, NgxPermissionsGuard],
     data: {

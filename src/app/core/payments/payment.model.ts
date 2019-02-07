@@ -47,6 +47,12 @@ export class PerksModel implements Perks {
       quantity: 0
     }
   };
+  wallacoins = {
+    quantity: 0
+  };
+  wallacredits = {
+    quantity: 0
+  };
   getBumpCounter(): number {
     return this.subscription.bump.quantity + this.extra.bump.quantity;
   }
@@ -72,5 +78,11 @@ export class PerksModel implements Perks {
   setListingSubscription(listingPerk: PerkResponse) {
     this.subscription.listing.quantity = listingPerk.quantity;
     this.subscription.listing.createDate = listingPerk.create_date;
+  }
+  setWallacoins(wallacoinsPerk: PerkResponse) {
+    this.wallacoins.quantity += wallacoinsPerk.quantity;
+  }
+  setWallacredits(wallacreditsPerk: PerkResponse) {
+    this.wallacredits.quantity += wallacreditsPerk.quantity;
   }
 }

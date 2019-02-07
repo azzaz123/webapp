@@ -7,10 +7,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
-import { XmppService } from '../../core/xmpp/xmpp.service';
 import { MOCK_CONVERSATION, SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
-import { ConnectionService } from '../../core/connection/connection.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 
 class MockMessageService {
@@ -25,21 +23,12 @@ describe('Component: Input', () => {
   let fixture: ComponentFixture<InputComponent>;
   let eventService: EventService;
   let trackingService: TrackingService;
-  let xmppService: XmppService;
-  let connectionService: ConnectionService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [InputComponent],
       providers: [
         {provide: MessageService, useClass: MockMessageService},
-        {provide: XmppService, useValue: {
-          isBlocked() {
-          }
-        }},
-        {provide: ConnectionService, useValue: {
-          isConnected: true
-        }},
         EventService,
         {provide: TrackingService, useValue: {
           track() {}
@@ -53,29 +42,28 @@ describe('Component: Input', () => {
     messageService = TestBed.get(MessageService);
     eventService = TestBed.get(EventService);
     trackingService = TestBed.get(TrackingService);
-    xmppService = TestBed.get(XmppService);
-    connectionService = TestBed.get(ConnectionService);
     spyOn(messageService, 'send');
   });
 
   describe('ngOnInit', () => {
-    it('should disable input when USER_BLOCKED', () => {
+    it('should disable input when the user has been blocked', () => {
       component.currentConversation = MOCK_CONVERSATION();
 
       component.ngOnInit();
-      eventService.emit(EventService.USER_BLOCKED, USER_ID);
+      eventService.emit(EventService.PRIVACY_LIST_UPDATED, [USER_ID]);
 
       expect(component.disable).toBe(true);
     });
-    it('should disable input when USER_UNBLOCKED', () => {
+    it('should disable input when the user has been unblocked', () => {
       component.currentConversation = MOCK_CONVERSATION();
 
       component.ngOnInit();
-      eventService.emit(EventService.USER_UNBLOCKED, USER_ID);
+      eventService.emit(EventService.PRIVACY_LIST_UPDATED, []);
 
       expect(component.disable).toBe(false);
     });
   });
+
 
   describe('sendMessage', () => {
 
@@ -198,28 +186,10 @@ describe('Component: Input', () => {
       expect(component.disable).toBe(true);
     });
 
-    it('should disable input if the browser is disconnected', () => {
-      component.currentConversation = MOCK_CONVERSATION();
-      connectionService.isConnected = false;
-
-      component.ngOnChanges();
-
-      expect(component.disable).toBe(true);
-    });
-
     it('should enable input if user is blocked', () => {
       component.disable = true;
       component.currentConversation = MOCK_CONVERSATION();
       component.currentConversation.user.blocked = false;
-
-      component.ngOnChanges();
-
-      expect(component.disable).toBe(false);
-    });
-
-    it('should enable input if the browser is connected', () => {
-      component.currentConversation = MOCK_CONVERSATION();
-      connectionService.isConnected = true;
 
       component.ngOnChanges();
 

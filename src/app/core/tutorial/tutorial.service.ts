@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { User } from '../user/user';
 
 @Injectable()
 export class TutorialService {
 
   private _step = 0;
-  public maxSteps = 6;
+  public maxSteps;
   localStorageName = '-tutorial';
 
   constructor(private userService: UserService) {
+    userService.isProfessional().subscribe((isPro: boolean) => {
+      this.maxSteps = isPro ? 6 : 7;
+    });
   }
 
   get step(): number {

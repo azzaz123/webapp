@@ -4,7 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemService } from '../../../core/item/item.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CONVERSATION_USERS, ITEM_ID, ITEM_SALE_PRICE, MOCK_ITEM } from '../../../../tests/item.fixtures.spec';
 
 
@@ -51,10 +51,6 @@ describe('SoldModalComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set price', () => {
-      expect(component.price).toBe(ITEM_SALE_PRICE);
-    });
-
     it('should call getConversationUsers', () => {
       expect(itemService.getConversationUsers).toHaveBeenCalledWith(ITEM_ID);
     });
@@ -68,7 +64,7 @@ describe('SoldModalComponent', () => {
     it('should set selectedUser', () => {
       component.chooseUser(CONVERSATION_USERS[0]);
 
-      expect(component.buyer).toEqual(CONVERSATION_USERS[0]);
+      expect(component.userToReview).toEqual(CONVERSATION_USERS[0]);
     });
   });
 
@@ -103,7 +99,7 @@ describe('SoldModalComponent', () => {
       component.chooseUser(CONVERSATION_USERS[0]);
       component.onBackPress();
 
-      expect(component.buyer).toBe(undefined);
+      expect(component.userToReview).toBe(undefined);
     });
   });
 

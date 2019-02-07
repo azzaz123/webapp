@@ -2,7 +2,7 @@ import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testi
 
 import { CatalogStatusNavbarComponent } from './catalog-status-navbar.component';
 import { PaymentService } from '../../../core/payments/payment.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ScheduledStatus } from '../../../core/payments/payment.interface';
 import { EventService } from '../../../core/event/event.service';
 
@@ -14,14 +14,15 @@ describe('CatalogStatusNavbarComponent', () => {
   const MOCK_STATUS: ScheduledStatus = {
     active: true,
     autorenew_alert: 0,
-    autorenew_scheduled: { citybump: 16, countrybump: 21 },
-    purchased: { citybump: 1, countrybump: 2 }
+    autorenew_scheduled: {},
+    items_scheduled_purchases: { citybump: 2, countrybump: 3, zonebump: 1 },
+    purchased: { citybump: 1, countrybump: 2, urgent: 1, zonebump: 1 }
   };
 
   const MOCK_STATUS_CITY: ScheduledStatus = {
     active: true,
     autorenew_alert: 0,
-    autorenew_scheduled: { citybump: 16, countrybump: 21 },
+    autorenew_scheduled: {},
     purchased: { citybump: 1 }
   };
 
@@ -50,13 +51,13 @@ describe('CatalogStatusNavbarComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should set the bumps counter for both bump types', () => {
+    it('should set the bumps counter for all bump types', () => {
       spyOn(paymentService, 'getStatus').and.returnValue(Observable.of(MOCK_STATUS));
 
       component.ngOnInit();
 
       expect(paymentService.getStatus).toHaveBeenCalled();
-      expect(component.bumpsCounter).toBe(3);
+      expect(component.bumpsCounter).toBe(11);
     });
 
     it('should set the bumps counter when only 1 bump type is present', () => {
@@ -90,7 +91,7 @@ describe('CatalogStatusNavbarComponent', () => {
     it('should set the new status selected', () => {
       expect(component.selectedStatus).toBe(status);
     });
-    
+
     it('should emit an event', () => {
       expect(component.filterByStatus.emit).toHaveBeenCalledWith(status);
     });

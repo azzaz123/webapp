@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SidebarComponent } from './sidebar.component';
 import { UserService } from '../../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TutorialService } from '../../core/tutorial/tutorial.service';
 import { User } from '../../core/user/user';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
@@ -31,6 +31,9 @@ describe('SidebarComponent', () => {
             return Observable.of(MOCK_USER);
           },
           isProfessional() {
+            return Observable.of(true);
+          },
+          hasPerm() {
             return Observable.of(true);
           }
         },
@@ -69,6 +72,15 @@ describe('SidebarComponent', () => {
 
       expect(userService.isProfessional).toHaveBeenCalled();
       expect(component.isProfessional).toBe(true);
+    });
+
+    it('should call hasPerm and set the attribute', () => {
+      spyOn(userService, 'hasPerm').and.callThrough();
+
+      component.ngOnInit();
+
+      expect(userService.hasPerm).toHaveBeenCalledWith('coins');
+      expect(component.withCoins).toBe(true);
     });
   });
 

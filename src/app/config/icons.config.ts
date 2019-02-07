@@ -94,6 +94,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('navigation_dashboard', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_dashboard.svg'));
   matIconRegistry.addSvgIcon('navigation_phones', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_phones.svg'));
   matIconRegistry.addSvgIcon('navigation_help', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_help.svg'));
+  matIconRegistry.addSvgIcon('navigation_wallacoins', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/navigation_wallacoins.svg'));
   matIconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/delete.svg'));
   matIconRegistry.addSvgIcon('clock', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/clock.svg'));
   matIconRegistry.addSvgIcon('back-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/back-arrow.svg'));
@@ -123,6 +124,7 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('herocat-consumer-goods', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-consumer-goods.svg'));
   matIconRegistry.addSvgIcon('herocat-real-estate', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-real-estate.svg'));
   matIconRegistry.addSvgIcon('herocat-services', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-services.svg'));
+  matIconRegistry.addSvgIcon('herocat-jobs', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/herocat-jobs.svg'));
   matIconRegistry.addSvgIcon('cm-camera', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-camera.svg'));
   matIconRegistry.addSvgIcon('cm-drag', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-drag.svg'));
   matIconRegistry.addSvgIcon('cm-speaker', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/cm-speaker.svg'));
@@ -257,5 +259,10 @@ export function configIcons(matIconRegistry: MatIconRegistry, sanitizer: DomSani
   matIconRegistry.addSvgIcon('faq-features-1', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-features-1.svg'));
   matIconRegistry.addSvgIcon('faq-features-2', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-features-2.svg'));
   matIconRegistry.addSvgIcon('faq-features-3', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/faq-features-3.svg'));
-
+  matIconRegistry.addSvgIcon('wallacoins-nav', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/wallacoins-nav.svg'));
+  matIconRegistry.addSvgIcon('coin', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/coin.svg'));
+  matIconRegistry.addSvgIcon('slider-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/slider-arrow.svg'));
+  matIconRegistry.addSvgIcon('up-arrow', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/up-arrow.svg'));
+  matIconRegistry.addSvgIcon('listing-fee-car-icon', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/listing-fee-icon.svg'));
+  matIconRegistry.addSvgIcon('listing-fee-car-icon-wings', sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/listing-fee-icon-wings.svg'));
 }

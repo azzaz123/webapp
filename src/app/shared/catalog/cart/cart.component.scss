@@ -1,0 +1,269 @@
+@import "~style/common";
+
+$cart-height: calc(100vh - #{$topbar-height + $spacing-L * 1.2});
+$title-height: 42px;
+$main-total-height: 46px;
+$credit-total-height: 21px;
+$missing-total-height: 43px;
+$totals-margins: 0px;
+$total-height: $main-total-height + $totals-margins + $credit-total-height + $missing-total-height;
+$discounted-total-height: 30px;
+$button-height: 42px;
+$button-margin: $spacing - $spacing-XS;
+$button-space: $button-height + $spacing;
+$secure-label-height: 25px;
+$extra-height: 15px;
+$scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $discounted-total-height + $button-space + $secure-label-height});
+$clear-cart-height: 38px;
+$card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
+
+:host {
+  background: $white;
+  border-radius: $border-radius;
+  border: solid 1px $grey-50;
+  display: block;
+  height: $cart-height;
+  width: 280px;
+  position: fixed;
+  padding: 0 $spacing-XS;
+}
+
+h1 {
+  height: $title-height;
+  line-height: $title-height;
+  font-size: $font-size;
+  text-align: left;
+  margin: 0;
+}
+
+.cart-wrapper {
+  height: $scroll-panel-height;
+  background-color: rgba($grey-50, 0.3);
+  border-radius: 5px;
+  position: relative;
+  .with-credits & {
+    height: calc(#{$scroll-panel-height} + #{$missing-total-height});
+    &.no-discount {
+      height: calc(#{$scroll-panel-height} + #{$missing-total-height} + #{$discounted-total-height});
+      margin-bottom: 9px;
+    }
+  }
+  &.has-financial-card {
+    height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$extra-height} + #{$extra-height * 1.5});
+    .with-credits & {
+      height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$missing-total-height} + #{$extra-height * 1.5});
+      &.no-discount {
+        height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$missing-total-height} + #{$extra-height * 1.5} + #{$discounted-total-height});
+        margin-bottom: 9px;
+      }
+    }
+  }
+  &.no-credit {
+    height: calc(#{$scroll-panel-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
+  }
+  &.has-financial-card.no-credit {
+    height: calc(#{$scroll-panel-height} - #{$card-select-height} + #{$credit-total-height} + #{$missing-total-height} + #{$totals-margins / 2} + #{$discounted-total-height});
+  }
+}
+
+.scroll-panel {
+  overflow: auto;
+  padding: $spacing-XS;
+  height: 100%;
+}
+
+.discounted-total {
+  text-align: right;
+  font-size: $font-size-L;
+  color: $grey-250;
+  margin-top: $spacing-M;
+  padding-right: $spacing-XS;
+  margin-bottom: -7px;
+  height: $discounted-total-height;
+}
+
+.walla-total, .credit, .total, .missing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: $font-size-XS;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0 $spacing-XS;
+  overflow: hidden;
+  clear: both;
+}
+
+.walla-total {
+  color: $grey-500;
+  line-height: 25px;
+  margin-top: $spacing-XS;
+  .price {
+    font-size: $font-size-L;
+  }
+  .with-credits & {
+    .price {
+      font-size: $font-size;
+    }
+  }
+}
+
+.credit, .missing {
+  .label {
+    tsl-wallacoin {
+      vertical-align: sub;
+      margin-right: 5px;
+    }
+  }
+}
+
+.credit {
+  color: $corporate;
+  height: $credit-total-height;
+  .price {
+    font-size: $font-size-S;
+  }
+  .with-credits & {
+    font-size: $font-size;
+    .price {
+      font-size: $font-size;
+    }
+    .label span span {
+      font-size: $font-size-XS;
+    }
+  }
+}
+
+.missing {
+  border-top: solid 1px $grey-50;
+  margin: 6px 6px 0 8px;
+  padding: 3px 2px 0 0;
+  .label {
+    color: $grey-250;
+  }
+  .price {
+    color: $grey-500;
+    font-size: $font-size-L;
+  }
+}
+
+.total {
+  height: $main-total-height;
+  line-height: $main-total-height;
+  .price {
+    font-size: $font-size-XL;
+  }
+}
+
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.items-list {
+  font-size: $font-size-XS;
+  .cart-box {
+    border-radius: 5px;
+    background-color: $white;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: solid 0.5px $grey-100;
+    margin-bottom: $spacing-XS;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  }
+  .type-total {
+    padding: 10px;
+    cursor: pointer;
+    .wing-icon {
+      width: 51px;
+      height: 30px;
+      margin-right: $spacing-XS;
+    }
+    .arrow-icon {
+      transform: rotate(-90deg) scale(.8);
+      width: 9px;
+      height: 13px;
+    }
+    &.collapsed {
+      .arrow-icon {
+        transform: rotate(90deg) scale(.8);
+      }
+    }
+  }
+  .price {
+    color: $grey-500;
+    font-weight: bold;
+  }
+  .zonebump {
+    color: $zone-bump;
+  }
+  .citybump {
+    color: $city-bump;
+  }
+  .countrybump {
+    color: $country-bump;
+  }
+  .type {
+    flex: 1;
+  }
+  .close-icon {
+    @include square(16px);
+    margin-bottom: $spacing-XS;
+    margin-right: $spacing-XS;
+    cursor: pointer;
+  }
+  .cart-item {
+    display: flex;
+    align-items: center;
+    .cart-box {
+      padding: $spacing-XXXS;
+      flex: 1;
+    }
+    .price {
+      margin-right: $spacing-XS;
+    }
+    tsl-item-avatar {
+      /deep/ div {
+        @include square(32px);
+      }
+    }
+  }
+}
+
+.clean-cart {
+  position: absolute;
+  top: 13px;
+  right: $spacing-10;
+  font-size: $font-size-XS;
+  a {
+    color: $grey-500;
+    cursor: pointer;
+  }
+}
+
+tsl-button {
+  display: block;
+  /deep/ .btn {
+    width: calc(100% - #{$button-margin * 2});
+    margin: $button-margin;
+    margin-top: 0;
+  }
+}
+
+.secure-payment {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  mat-icon {
+    width: 21px;
+    height: 15.5px;
+  }
+  span {
+    font-size: $font-size-XS;
+    color: $grey-250;
+  }
+}

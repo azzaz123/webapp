@@ -7,10 +7,10 @@ import { ConversationService } from '../../core/conversation/conversation.servic
 import { UserService } from '../../core/user/user.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { Conversation } from '../../core/conversation/conversation';
-import { Message, messageStatus } from '../../core/message/message';
+import { Message, phoneMethod } from '../../core/message/message';
 import { NewConversationResponse } from '../../core/conversation/conversation-response.interface';
-import { Observable } from 'rxjs/Observable';
-import { XmppService } from '../../core/xmpp/xmpp.service';
+import { Observable } from 'rxjs';
+import { MessageService } from '../../core/message/message.service';
 
 @Component({
   selector: 'tsl-conversations-panel',
@@ -29,19 +29,17 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   private _loading = false;
   private conversationsSubscription: Subscription;
   private currentConversationSet = false;
-  public page = 1;
   private active = true;
   private newConversationItemId: string;
   public isProfessional: boolean;
-  private receivedMessages = [];
-  private readMessages = [];
+  private privacyListChangeSubscription: Subscription;
 
   constructor(public conversationService: ConversationService,
               private eventService: EventService,
               private route: ActivatedRoute,
               private trackingService: TrackingService,
               public userService: UserService,
-              private xmppService: XmppService,
+              private messageService: MessageService,
               private elRef: ElementRef) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
@@ -52,7 +50,10 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this._loading = value;
     this.loaded.emit({
       loaded: !value,
-      total: this.conversations ? this.conversations.length : 0
+      total: this.conversations ? this.conversations.length : 0,
+      firstPage: this.archive
+        ? this.conversationService.processedPagesLoaded === 0
+        : this.conversationService.pendingPagesLoaded === 0
     });
   }
 
@@ -63,7 +64,7 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.getConversations();
-    this.subscribeChatSignals();
+    this.subscribePrivacyListChanges();
     this.eventService.subscribe(EventService.LEAD_ARCHIVED, () => this.setCurrentConversation(null));
     this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
     this.eventService.subscribe(EventService.FIND_CONVERSATION,
@@ -71,59 +72,33 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, () => {
       if (this.archive) {
         this.archive = false;
-        this.page = 1;
         this.setCurrentConversation(null);
         this.getConversations();
       }
     });
+
+    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
+      this.conversationService.loadNotStoredMessages(this.conversations, this.archive);
+    });
+    this.eventService.subscribe(EventService.CONVERSATION_BUMPED, (leads) => this.conversations = leads);
   }
 
   ngOnDestroy() {
     this.setCurrentConversation(null);
     this.active = false;
-  }
-
-  private subscribeChatSignals() {
-    this.eventService.subscribe(EventService.MESSAGE_SENT_ACK, (conversationId, messageId) => {
-      if (this.conversations.length) {
-        this.updateMessageStatus(messageStatus.SENT, conversationId, messageId);
-      }
-    });
-    this.eventService.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
-      const conversationLoaded = this.conversations.find(c => c.id === conversationId);
-      this.conversations.length && conversationLoaded ?
-        this.updateMessageStatus(messageStatus.RECEIVED, conversationId, messageId) :
-        this.receivedMessages = this.xmppService.receivedReceipts;
-    });
-    this.eventService.subscribe(EventService.MESSAGE_READ, (conversationId) => {
-      const conversationLoaded = this.conversations.find(c => c.id === conversationId);
-      this.conversations.length && conversationLoaded ?
-        this.updateMessageStatus(messageStatus.READ, conversationId) :
-        this.readMessages = this.xmppService.readReceipts;
-    });
-  }
-
-  private updateMessageStatus(newStatus: string, conversationId: string, messageId?: string) {
-    const conversation = this.conversations.find((c: Conversation) => c.id === conversationId);
-    if (conversation) {
-      if (messageId) {
-        const message = conversation.messages.find((m: Message) => m.id === messageId);
-        if (message && message.status !== newStatus) {
-          this.conversationService.markAs(newStatus, message, conversation);
-        }
-      } else {
-        this.conversationService.markAllAsRead(conversation);
-      }
+    if (this.privacyListChangeSubscription) {
+      this.privacyListChangeSubscription.unsubscribe();
     }
   }
 
   public loadMore() {
-    this.page++;
     this.loading = true;
     let observable: Observable<any>;
     if (this.archive) {
+      this.conversationService.processedPagesLoaded++;
       observable = this.conversationService.loadMoreArchived();
     } else {
+      this.conversationService.pendingPagesLoaded++;
       observable = this.conversationService.loadMore();
     }
     observable.subscribe(() => {
@@ -135,7 +110,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
     if (this.conversationsSubscription) {
       this.conversationsSubscription.unsubscribe();
     }
-    this.conversationsSubscription = this.conversationService.getPage(this.page, this.archive).takeWhile(() => {
+    this.conversationsSubscription = this.conversationService.getPage(
+      this.archive ? this.conversationService.processedPagesLoaded || 1 : this.conversationService.pendingPagesLoaded || 1,
+      this.archive).takeWhile(() => {
       return this.active;
     }).subscribe((conversations: Conversation[]) => {
       if (this.archive) {
@@ -158,18 +135,9 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       if (conversations && conversations.length > 0) {
         this.conversations = conversations;
         this.loading = false;
-        if (this.receivedMessages.length) {
-          this.receivedMessages.forEach(m => {
-            this.updateMessageStatus(messageStatus.RECEIVED, m.thread, m.id);
-          });
-          this.receivedMessages = [];
-        }
-        if (this.readMessages.length) {
-          this.readMessages.forEach(m => {
-            this.updateMessageStatus(messageStatus.READ, m.thread, m.id);
-          });
-          this.readMessages = [];
-        }
+        this.archive
+        ? this.conversationService.processedPagesLoaded = this.conversationService.processedPagesLoaded || 1
+        : this.conversationService.pendingPagesLoaded = this.conversationService.pendingPagesLoaded || 1;
         if (!this.currentConversationSet) {
           this.setCurrentConversationFromQueryParams();
         }
@@ -179,6 +147,19 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
       }
       this.conversationService.checkIfLastPage(this.archive).subscribe();
     });
+  }
+
+  private subscribePrivacyListChanges() {
+    if (!this.privacyListChangeSubscription) {
+      this.privacyListChangeSubscription = this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (blockedUsers: string[]) => {
+        blockedUsers.map(id => {
+          this.conversations.filter(conv => conv.user.id === id && !conv.user.blocked)
+          .map(conv => conv.user.blocked = true);
+        });
+        this.conversations.filter(conv => conv.user.blocked && blockedUsers.indexOf(conv.user.id) === -1)
+        .map(conv => conv.user.blocked = false);
+      });
+    }
   }
 
   private setCurrentConversationFromQueryParams() {
@@ -218,6 +199,14 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   private createConversationAndSetItCurrent() {
     this.conversationService.createConversation(this.newConversationItemId).subscribe((newConversation: Conversation) => {
+      this.eventService.subscribe(EventService.REQUEST_PHONE, (requestType: string) => {
+        if (requestType === phoneMethod.popUp) {
+          this.conversationService.openPhonePopup(newConversation, true);
+        } else {
+        newConversation = this.messageService.addPhoneNumberRequestMessage(newConversation);
+        }
+      });
+
       this.conversationService.getSingleConversationMessages(newConversation).subscribe((newConversationWithMessages: Conversation) => {
         this.conversationService.addLead(newConversationWithMessages);
         this.setCurrentConversation(newConversationWithMessages);
@@ -249,7 +238,6 @@ export class ConversationsPanelComponent implements OnInit, OnDestroy {
 
   public filterByArchived(archive: boolean) {
     this.archive = archive;
-    this.page = 1;
     this.loading = true;
     this.setCurrentConversation(null);
     this.getConversations();

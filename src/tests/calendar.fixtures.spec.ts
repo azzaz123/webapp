@@ -1,4 +1,4 @@
-import { CalendarDates } from '../app/catalog/checkout/checkout-pro/range-datepicker/calendar-dates';
+import { CalendarDates } from '../app/catalog-pro/checkout-pro/range-datepicker/calendar-dates';
 
 export const MOCK_DATE = { year: 2018, month: 5, day: 8 };
 export const MOCK_DATE2 = { year: 2018, month: 5, day: 24 };

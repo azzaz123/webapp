@@ -10,7 +10,6 @@ export interface XMPPClient {
   enableCarbons(): void;
   use(plugin: Function): void;
   sendIq(options: any): Promise<any>;
-  searchHistory(options: any): void;
   getTime(userId: string): Promise<any>;
   nextId(): string;
   enableKeepAlive(opts: any): void;
@@ -18,7 +17,7 @@ export interface XMPPClient {
 
 export interface XmppMessage {
   id?: string;
-  to: string | any;
+  to: JID;
   thread: string;
   read?: any;
   status?: string;
@@ -29,18 +28,11 @@ export interface XmppMessage {
   requestReceipt?: boolean;
   sentReceipt?: any;
   readReceipt?: any;
+  delay?: any;
 }
-export interface XmppTimestampMessage {
-  id: string;
-  receipt: string;
-  to: string;
-  from: string | any;
-  timestamp?: {
-    body: string;
-  };
-}
+
 export interface XmppBodyMessage extends XmppMessage {
-  from: string | any;
+  from: JID;
   body: string;
   timestamp?: {
     body: string;
@@ -53,4 +45,21 @@ export interface XmppBodyMessage extends XmppMessage {
   };
   carbon?: boolean;
   payload?: MessagePayload;
+}
+
+export class JID {
+  constructor(
+    private _userId: string,
+    private _domain: string,
+    private _resource: string) {
+      return new XMPP.JID(this._userId, this._domain, this._resource);
+  }
+
+  get bare(): string {
+    return this.bare;
+  }
+
+  get local(): string {
+    return this.local;
+  }
 }

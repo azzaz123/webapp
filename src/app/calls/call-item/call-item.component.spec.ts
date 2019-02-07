@@ -12,7 +12,7 @@ import { MomentModule } from 'angular2-moment';
 import { CallStatusLabelPipe } from '../../core/conversation/call-status-label.pipe';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MOCK_CALL, CALL_ID } from '../../../tests/call.fixtures';
 import { createMessagesArray } from '../../../tests/message.fixtures.spec';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';

@@ -18,7 +18,6 @@ import { CookieOptions, CookieService } from 'ngx-cookie';
 import { UUID } from 'angular2-uuid';
 import { TrackingService } from './core/tracking/tracking.service';
 import { EventService } from './core/event/event.service';
-import { XmppService } from './core/xmpp/xmpp.service';
 import { UserService } from './core/user/user.service';
 import { ErrorsService } from './core/errors/errors.service';
 import { NotificationService } from './core/notification/notification.service';
@@ -26,14 +25,15 @@ import { MessageService } from './core/message/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
-import { Message } from './core/message/message';
+import { Message, messageStatus } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
-import { PrivacyService, PRIVACY_STATUS } from './core/privacy/privacy.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GdprModalComponent } from './shared/gdpr-modal/gdpr-modal.component';
 import { ConnectionService } from './core/connection/connection.service';
 import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
+import { PaymentService } from './core/payments/payment.service';
+import { RealTimeService } from './core/message/real-time.service';
+import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 
 @Component({
   selector: 'tsl-root',
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
   private sendPresenceInterval = 240000;
 
   constructor(private event: EventService,
-              private xmppService: XmppService,
+              private realTime: RealTimeService,
               public userService: UserService,
               private errorsService: ErrorsService,
               private notificationService: NotificationService,
@@ -71,31 +71,34 @@ export class AppComponent implements OnInit {
               private renderer: Renderer2,
               @Inject(DOCUMENT) private document: Document,
               private cookieService: CookieService,
-              private privacyService: PrivacyService,
               private modalService: NgbModal,
               private connectionService: ConnectionService,
+              private paymentService: PaymentService,
               private callService: CallsService) {
     this.config();
   }
 
   ngOnInit() {
+    appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
+    appboy.display.automaticallyShowNewInAppMessages();
+    appboy.registerAppboyPushMessages();
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
     this.subscribeUnreadMessages();
     this.subscribeEventNewMessage();
     this.subscribeEventClientDisconnect();
     this.subscribeEventItemUpdated();
-    // this.subscribeChatSignals();
+    this.subscribeChatSignals();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
     this.setBodyClass();
     this.updateUrlAndSendAnalytics();
     this.connectionService.checkConnection();
-    appboy.initialize(environment.appboy, {enableHtmlInAppMessages: true});
-    appboy.display.automaticallyShowNewInAppMessages();
-    appboy.registerAppboyPushMessages();
     this.conversationService.firstLoad = true;
+    this.trackingService.trackAccumulatedEvents();
+
+    __cmp('init', quancastOptions[this.i18n.locale]);
   }
 
   private updateUrlAndSendAnalytics() {
@@ -137,11 +140,20 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeChatSignals() {
-    this.event.subscribe(EventService.MESSAGE_SENT_ACK, (conversationId, messageId) => {
-      this.conversationService.sendAck(TrackingService.MESSAGE_SENT_ACK, conversationId, messageId);
-    });
-    this.event.subscribe(EventService.MESSAGE_RECEIVED, (conversationId, messageId) => {
-      this.conversationService.sendAck(TrackingService.MESSAGE_RECEIVED, conversationId, messageId);
+    this.event.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
+      switch (signal.type) {
+        case chatSignalType.SENT:
+          this.conversationService.markAs(messageStatus.SENT, signal.messageId, signal.thread);
+          break;
+        case chatSignalType.RECEIVED:
+          this.conversationService.markAs(messageStatus.RECEIVED, signal.messageId, signal.thread);
+          break;
+        case chatSignalType.READ:
+          this.conversationService.markAllAsRead(signal.thread, signal.timestamp, true);
+          break;
+        default:
+          break;
+      }
     });
   }
 
@@ -150,22 +162,25 @@ export class AppComponent implements OnInit {
       this.userService.me().subscribe(
         (user: User) => {
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
-          this.xmppService.connect(user.id, accessToken);
-          this.userService.setPermission(user.type);
-          this.conversationService.init().subscribe(() => {
-            this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-              if (isProfessional) {
-                this.callService.init().subscribe(() => {
-                  this.conversationService.init(true).subscribe(() => {
-                    this.callService.init(true).subscribe();
+          this.event.subscribe(EventService.DB_READY, (dbName) => {
+            if (!dbName) {
+              this.realTime.connect(user.id, accessToken).subscribe(() => {
+                this.conversationService.init().subscribe(() => {
+                  this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+                    if (isProfessional) {
+                      this.callService.init().subscribe(() => {
+                        this.conversationService.init(true).subscribe(() => {
+                          this.callService.init(true).subscribe();
+                        });
+                      });
+                    }
                   });
                 });
-              }
-            });
+              });
+            }
           });
           appboy.changeUser(user.id);
           appboy.openSession();
-          this.initPrivacy();
           if (!this.cookieService.get('app_session_id')) {
             this.trackAppOpen();
             this.updateSessionCookie();
@@ -181,8 +196,9 @@ export class AppComponent implements OnInit {
   private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {
       this.trackingService.track(TrackingService.MY_PROFILE_LOGGED_OUT);
+      this.paymentService.deleteCache();
       try {
-        this.xmppService.disconnect();
+        this.realTime.disconnect();
       } catch (err) {}
       this.loggingOut = true;
       if (redirectUrl) {
@@ -214,9 +230,8 @@ export class AppComponent implements OnInit {
   private subscribeEventClientDisconnect() {
     this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => {
       if (this.userService.isLogged && this.connectionService.isConnected) {
-        this.xmppService.reconnectClient();
+        this.realTime.reconnect();
       }
-      this.conversationService.resetCache();
     });
   }
 
@@ -268,25 +283,6 @@ export class AppComponent implements OnInit {
           this.renderer.addClass(document.body, currentUrlSlug);
         }
         this.previousSlug = currentUrlSlug;
-      }
-    });
-  }
-
-  private initPrivacy() {
-    this.privacyService.getPrivacyList().subscribe(() => {
-      if (!sessionStorage.getItem('isGDPRShown') &&
-        this.privacyService.getPrivacyState('privacy_policy', '0') === PRIVACY_STATUS.unknown) {
-        sessionStorage.setItem('isGDPRShown', 'true');
-        const GdprModalRef = this.modalService.open(GdprModalComponent, {
-          beforeDismiss: () => {
-            if (GdprModalRef.componentInstance.showSecondGdrpScreen) {
-              this.trackingService.track(TrackingService.GDPR_CLOSE_TAP_SECOND_MODAL);
-            } else {
-              this.trackingService.track(TrackingService.GDPR_CLOSE_TAP_FIRST_MODAL);
-            }
-            return true;
-          }
-        });
       }
     });
   }

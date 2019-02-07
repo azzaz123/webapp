@@ -1,0 +1,59 @@
+@import "~style/common";
+
+.modal-body {
+  width: 436px;
+  padding: $spacing-40;
+  text-align: center;
+}
+
+ngb-carousel {
+  /deep/ {
+    .carousel-control-prev, .carousel-control-next {
+      display: none;
+    }
+    .carousel-indicators {
+      width: 68px;
+      margin: 0;
+      li {
+        background-color: $grey-100;
+        @include square(10px);
+        max-width: 10px;
+        &:hover, &.active {
+          background-color: $corporate;
+        }
+      }
+    }
+    .carousel-item {
+      height: 430px;
+    }
+  }
+}
+
+.step {
+  padding-top: 230px;
+  background: no-repeat top center;
+  &.step-1 {
+    background-image: url(/assets/images/wallacoins-tutorial-1.svg);
+  }
+  &.step-2 {
+    background-image: url(/assets/images/wallacoins-tutorial-2.svg);
+  }
+  &.step-3 {
+    background-image: url(/assets/images/wallacoins-tutorial-3.svg);
+  }
+}
+
+h2 {
+  font-size: $font-size-M;
+}
+
+p {
+  color: $grey-500;
+  font-size: $font-size;
+}
+
+tsl-button {
+  position: absolute;
+  bottom: 35px;
+  right: 50px;
+}

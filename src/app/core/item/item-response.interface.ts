@@ -56,6 +56,7 @@ export interface ItemContent {
   favorites?: number;
   views?: number;
   delivery_info?: DeliveryInfo;
+  publish_date?: number;
 }
 
 export interface ItemProResponse {
@@ -128,6 +129,7 @@ export interface ConversationUser {
 export interface Purchase {
   expiration_date: number;
   item_id: string;
+  purchase_name?: 'listingfee' | 'countrybump';
   visibility_flags: {
     bumped: boolean;
     highlighted: boolean;
@@ -199,11 +201,13 @@ export interface CarUploadForm extends ItemUploadForm {
   year: string;
   version: string;
   num_seats: number;
+  num_doors: number;
   body_type: string;
   km: number;
   storytelling: string;
   engine: string;
   gearbox: string;
+  horsepower: number;
   id?: string;
 }
 
@@ -246,6 +250,10 @@ export interface ItemWithProducts {
   products: ProductDurations;
 }
 
+export interface CheapestProducts {
+  [itemId: string]: string;
+}
+
 export interface AllowedActionResponse {
   type: string;
   allowed: boolean;
@@ -266,7 +274,7 @@ export interface ItemFlags {
   highlighted?: boolean;
   urgent?: boolean;
   bump_type?: string;
-  onhold?: boolean
+  onhold?: boolean;
 }
 
 export interface ItemActions {
@@ -285,12 +293,13 @@ export interface ItemActions {
 export interface ItemSaleConditions {
   fix_price: boolean;
   exchange_allowed: boolean;
-  shipping_allowed: boolean;
+  shipping_allowed?: boolean;
 }
 
 export interface ItemCounters {
   views: number;
   favorites: number;
+  conversations?: number;
 }
 
 export interface ItemBulkResponse {
@@ -318,4 +327,27 @@ export interface ItemDataResponse {
 export interface LatestItemResponse {
   count: number;
   items: ItemResponse[];
+}
+
+export interface PurchaseProductsWithCreditsResponse {
+  payment_needed: boolean;
+  items_failed: string[];
+}
+
+export interface CarInfo {
+  body_type: string;
+  brand: string;
+  engine: string;
+  gearbox: string;
+  horsepower: number;
+  model: string;
+  num_doors: number;
+  num_seats: number;
+  version: string;
+}
+
+export interface ListingFeeProductInfo {
+  limit_category: number;
+  limit_type: string;
+  product_group: AvailableProductsResponse;
 }

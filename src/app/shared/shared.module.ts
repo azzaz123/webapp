@@ -29,7 +29,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { MessageComponent } from './message/message.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { SwitchComponent } from './switch/switch.component';
-import { GdprModalComponent } from './gdpr-modal/gdpr-modal.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ConversationComponent } from './conversation/conversation.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
@@ -40,6 +39,29 @@ import { SelectComponent } from './select/select.component';
 import { TooManyItemsModalComponent } from './catalog/modals/too-many-items-modal/too-many-items-modal.component';
 import { AlreadyFeaturedModalComponent } from './catalog/modals/already-featured-modal/already-featured-modal.component';
 import { RestrictInputNumberDirective } from './restrict-input-number/restrict-input-number.directive';
+import { CardSelectionComponent } from './payments/card-selection/card-selection.component';
+import { SabadellComponent } from './payments/sabadell/sabadell.component';
+import { WallacoinComponent } from './payments/wallacoin/wallacoin.component';
+import { ProfileFormComponent } from './profile/profile-form/profile-form.component';
+import { EditEmailComponent } from './profile/edit-email/edit-email.component';
+import { EmailModalComponent } from './profile/edit-email/email-modal/email-modal.component';
+import { EditPasswordComponent } from './profile/edit-password/edit-password.component';
+import { PasswordModalComponent } from './profile/edit-password/password-modal/password-modal.component';
+import { PictureUploadComponent } from './profile/picture-upload/picture-upload.component';
+import { CreditCardInfoComponent } from './profile/credit-card-info/credit-card-info.component';
+import { CatalogCardComponent } from './catalog/catalog-card/catalog-card.component';
+import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/catalog-item-actions.component';
+import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
+import { CartComponent } from './catalog/cart/cart.component';
+import { CartService } from './catalog/cart/cart.service';
+import { TrackingModule } from '../core/tracking/tracking.module';
+import { RouterModule } from '@angular/router';
+import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
+import { CountdownComponent } from './countdown/countdown.component';
+import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe';
+import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
+import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
+import { UploaderModule } from './uploader/uploader.module';
 
 @NgModule({
   imports: [
@@ -51,12 +73,16 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
     FormsModule,
     GeolocationModule,
     MomentModule,
-    NgxPermissionsModule,
-    NgbDropdownModule
+    NgxPermissionsModule.forChild(),
+    NgbDropdownModule,
+    TrackingModule,
+    RouterModule,
+    UploaderModule
   ],
   exports: [
     CardModule,
     CommonModule,
+    UploaderModule,
     SpinnerComponent,
     AdComponent,
     CustomCurrencyPipe,
@@ -76,14 +102,30 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
-    GdprModalComponent,
     MessageComponent,
     ReviewButtonComponent,
     ConversationComponent,
     ItemAvatarComponent,
     SearchInputComponent,
     SelectComponent,
-    RestrictInputNumberDirective
+    RestrictInputNumberDirective,
+    CardSelectionComponent,
+    SabadellComponent,
+    WallacoinComponent,
+    EditEmailComponent,
+    EmailModalComponent,
+    EditPasswordComponent,
+    PasswordModalComponent,
+    PictureUploadComponent,
+    ProfileFormComponent,
+    CreditCardInfoComponent,
+    CatalogCardComponent,
+    CatalogItemActionsComponent,
+    CatalogStatusNavbarComponent,
+    CartComponent,
+    ExitConfirmationModalComponent,
+    CountdownComponent,
+    ThousandSuffixesPipe
   ],
   declarations: [
     AdComponent,
@@ -103,13 +145,11 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
     ArchivableComponent,
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
-    UserAvatarComponent,
     ReviewModalComponent,
     MessageComponent,
     ReviewButtonComponent,
     SwitchComponent,
     ReviewModalComponent,
-    GdprModalComponent,
     CheckboxComponent,
     ConversationComponent,
     ItemAvatarComponent,
@@ -117,20 +157,45 @@ import { RestrictInputNumberDirective } from './restrict-input-number/restrict-i
     SearchInputComponent,
     TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
-    RestrictInputNumberDirective
+    RestrictInputNumberDirective,
+    CardSelectionComponent,
+    SabadellComponent,
+    WallacoinComponent,
+    EditEmailComponent,
+    EmailModalComponent,
+    EditPasswordComponent,
+    PasswordModalComponent,
+    PictureUploadComponent,
+    ProfileFormComponent,
+    CreditCardInfoComponent,
+    CatalogCardComponent,
+    CatalogItemActionsComponent,
+    CatalogStatusNavbarComponent,
+    CartComponent,
+    ExitConfirmationModalComponent,
+    CountdownComponent,
+    ThousandSuffixesPipe,
+    ActivateItemsModalComponent,
+    DeactivateItemsModalComponent
   ],
   providers: [
     DecimalPipe,
     ExitConfirmGuard,
-    TutorialGuard
+    TutorialGuard,
+    CartService,
+    ThousandSuffixesPipe
   ],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,
     ReviewModalComponent,
-    GdprModalComponent,
     TooManyItemsModalComponent,
-    AlreadyFeaturedModalComponent
+    AlreadyFeaturedModalComponent,
+    EmailModalComponent,
+    PasswordModalComponent,
+    ExitConfirmationModalComponent,
+    ActivateItemsModalComponent,
+    DeactivateItemsModalComponent
   ]
 })
 export class SharedModule { }

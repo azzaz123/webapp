@@ -3,6 +3,7 @@ import { IOption } from 'ng-select';
 import { Car } from '../app/core/item/car';
 import { CAR_ID } from './upload.fixtures.spec';
 import { CARS_CATEGORY } from '../app/core/item/item-categories';
+import { CarInfo } from '../app/core/item/item-response.interface';
 
 export const CAR_BODY_TYPES_RESPONSE: any = [{
   'id': 'small_car',
@@ -90,7 +91,7 @@ export const CAR_CONTENT_DATA = {
   'modified_date': 1429186498000,
   'images': [],
   'url': 'http://dock112.wallapop.com/i/514?_pid=wi&_uid=101',
-  'title': 'SEAT Ibiza 9 seats',
+  'title': 'SEAT Ibiza 2015',
   'brand': 'SEAT',
   'model': 'Ibiza',
   'year': 2015,
@@ -154,3 +155,14 @@ export const MOCK_CAR: Car = new Car(
   CAR_DATA.content.version
 );
 
+export const CAR_INFO: CarInfo = {
+  body_type: 'body_type',
+  brand: 'brand',
+  engine: 'engine',
+  gearbox: 'gearbox',
+  horsepower: 123,
+  model: 'model',
+  num_doors: 2,
+  num_seats: 2,
+  version: 'version'
+};

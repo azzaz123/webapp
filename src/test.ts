@@ -9,6 +9,10 @@ import {
 
 declare const require: any;
 
+declare global {
+  interface Window { fbq: any; }
+}
+
 window['ga'] = function() {};
 window['googletag'] = {
   cmd: {
@@ -51,6 +55,9 @@ window['Criteo'] = {
   RequestBids(adunit, callback, timeout) { callback(); },
   SetDFPKeyValueTargeting() {},
 };
+
+window['__cmp'] = function(arg1, arg2, callback) {};
+window['quancastOptions'] =  {es: {}, en: {}};
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(

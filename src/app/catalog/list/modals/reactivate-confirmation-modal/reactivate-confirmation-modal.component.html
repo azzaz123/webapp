@@ -1,0 +1,19 @@
+<div class="modal-body">
+  <div class="modal-close" (click)="activeModal.dismiss()">
+    <mat-icon svgIcon="cross"></mat-icon>
+  </div>
+  <h1 i18n>Congratulations!</h1>
+  <p i18n>Your item is now reactivated and in the first positions!</p>
+  <p *ngIf="creditUsed"><b>
+    <span i18n>You have used</span>
+    <span *ngIf="withCoins"> {{spent * creditInfo?.factor | number}} wallacoins</span>
+    <span *ngIf="!withCoins"> {{spent | customCurrency}}</span>
+    <span *ngIf="withCoins" i18n>and you have {{creditInfo?.credit | number}} wallacoins left</span>
+    <span *ngIf="!withCoins" i18n>and you have {{creditInfo?.credit | customCurrency}} credit</span>
+  </b></p>
+  <tsl-button (click)="activeModal.dismiss()">
+    <span *ngIf="withCoins" i18n>Buy more Wallacoins</span>
+    <span *ngIf="!withCoins" i18n>Buy more credit</span>
+  </tsl-button><br />
+  <a class="link" (click)="activeModal.close()" i18n>Go to my catalogue</a>
+</div>

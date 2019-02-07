@@ -1,9 +1,9 @@
-import * as PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer, throwError } from 'rxjs';
 import * as _ from 'lodash';
-import { Message } from '../message/message';
+import * as moment from 'moment';
+import { Message, statusOrder, phoneRequestState } from '../message/message';
 import {
   StoredConversation,
   StoredMessage,
@@ -15,19 +15,114 @@ import 'rxjs/add/observable/fromPromise';
 import Database = PouchDB.Database;
 import AllDocsResponse = PouchDB.Core.AllDocsResponse;
 import Document = PouchDB.Core.Document;
+import { UserService } from '../user/user.service';
+import { User } from '../user/user';
+import { EventService } from '../event/event.service';
+import { TrackingEventData } from '../tracking/tracking-event-base.interface';
+import { TrackingEvent } from '../tracking/tracking-event';
 
 @Injectable()
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private _conversationsDb: Database<StoredConversation>;
+  private clickstreamDb: any;
   private storedMessages: AllDocsResponse<StoredMessage>;
-  constructor() {
-    this._messagesDb = new PouchDB('messages', {auto_compaction: true});
-    this._conversationsDb = new PouchDB('conversations', {auto_compaction: true});
+  private latestVersion = 2.0;
+  public clickstreamDbName = 'clickstreamEvents';
+  private eventsStore;
+  private packagedEventsStore = 'packagedEvents';
+
+  constructor(
+    private userService: UserService,
+    private eventService: EventService
+  ) {
+    this.eventService.subscribe(EventService.USER_LOGIN, () => {
+      this.userService.me().subscribe((user: User) => {
+        this.initClickstreamDb(this.clickstreamDbName);
+        this.eventsStore = 'events-' + user.id;
+        this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
+        this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
+          this.messagesDb.destroy().then(() => {
+            this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
+            this.saveDbVersion(this.messagesDb, this.latestVersion);
+            this.eventService.emit(EventService.DB_READY);
+          });
+          this.destroyDbs('messages', 'conversations', 'conversations-' + user.id);
+        });
+      });
+    });
+    this.subscribeEventNewMessage();
   }
 
   set messagesDb(value: PouchDB.Database<any>) {
     this._messagesDb = value;
+  }
+
+  private initClickstreamDb(dbName: string, version?: number) {
+    const request = version ? window.indexedDB.open(dbName, version) : window.indexedDB.open(dbName);
+    request.onsuccess = () => {
+      this.clickstreamDb = request.result;
+      if (!request.result.objectStoreNames.contains(this.eventsStore)) {
+        const v = request.result.version;
+        request.result.close();
+        this.initClickstreamDb(dbName, v + 1);
+      } else {
+        this.eventService.emit(EventService.DB_READY, this.clickstreamDb.name);
+      }
+    };
+    request.onupgradeneeded = (e) => {
+      request.result.createObjectStore(this.eventsStore, { keyPath: 'id' });
+      if (e.newVersion === 1) {
+      request.result.createObjectStore(this.packagedEventsStore);
+      }
+    };
+  }
+
+  private removeClickstreamEvents(sentEvents: Array<TrackingEventData>) {
+    sentEvents.map(event => {
+      this.clickstreamDb.transaction([this.eventsStore], 'readwrite').objectStore(this.eventsStore).delete(event.id);
+    });
+  }
+
+  public removePackagedClickstreamEvents(eventsPackage: TrackingEvent): Observable<boolean> {
+    const storedWithKey = eventsPackage.sessions[0].events[0].id;
+    return Observable.create(
+      (observer: Observer<boolean>) => {
+        this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
+        .delete(storedWithKey).onsuccess = () => {
+          observer.next(true);
+        };
+      });
+  }
+
+  public getClickstreamEvents(): Observable<Array<TrackingEventData>> {
+    return Observable.create(
+    (observer: Observer<Array<TrackingEventData>>) => {
+      this.clickstreamDb.transaction([this.eventsStore]).objectStore(this.eventsStore).getAll().onsuccess = (event) => {
+        observer.next(event.target.result);
+      };
+    });
+  }
+
+  public getPackagedClickstreamEvents(): Observable<Array<TrackingEvent>> {
+    return Observable.create(
+    (observer: Observer<Array<TrackingEventData>>) => {
+      this.clickstreamDb.transaction([this.packagedEventsStore]).objectStore(this.packagedEventsStore).getAll().onsuccess = (event) => {
+        observer.next(event.target.result);
+      };
+    });
+  }
+
+  public storeClickstreamEvent(clickstreamEvent: TrackingEventData | any) {
+    this.clickstreamDb.transaction([this.eventsStore], 'readwrite').objectStore(this.eventsStore).add(clickstreamEvent);
+  }
+
+  public storePackagedClickstreamEvents(eventsPackage: any) {
+    const storedKey = eventsPackage.sessions[0].events[0].id;
+    this.clickstreamDb.transaction([this.packagedEventsStore], 'readwrite').objectStore(this.packagedEventsStore)
+    .add(eventsPackage, storedKey).onsuccess = () => {
+      this.removeClickstreamEvents(eventsPackage.sessions[0].events);
+    };
   }
 
   set conversationsDb(value: PouchDB.Database<any>) {
@@ -40,6 +135,12 @@ export class PersistencyService {
 
   get conversationsDb(): PouchDB.Database<any> {
     return this._conversationsDb;
+  }
+
+  private destroyDbs(...dbs: Array<Database>) {
+    dbs.forEach((db) => {
+      new PouchDB(db).destroy().catch(() => {});
+    });
   }
 
   public getMessages(conversationId: string): Observable<StoredMessageRow[]> {
@@ -79,16 +180,16 @@ export class PersistencyService {
       status: message.status,
       from: message.from,
       conversationId: message.conversationId,
-      payload: message.payload
+      payload: message.payload,
+      phoneRequest: message.phoneRequest
     };
   }
 
   public saveMessages(messages: Array<Message> | Message): Observable<any> {
     if (Array.isArray(messages)) {
       const messagesToSave: StoredMessage[] = messages.map((message: Message) => {
-          return this.buildResponse(message);
-        }
-      );
+        return this.buildResponse(message);
+      });
       return Observable.fromPromise(this.messagesDb.bulkDocs(
         messagesToSave
       ));
@@ -101,13 +202,41 @@ export class PersistencyService {
     }
   }
 
+  private subscribeEventNewMessage() {
+    this.eventService.subscribe(EventService.CHAT_LAST_RECEIVED_TS, (timestamp: number) => {
+      this.saveMetaInformation({
+        start: new Date(timestamp).toISOString(),
+        last: null
+      });
+    });
+  }
+
   public saveMetaInformation(data: StoredMetaInfo): Observable<any> {
+    const newMoment = (data.start.indexOf('.') === 10 || data.start === '0')
+      ? moment.unix(Number(data.start)) // handle cases: '0' (from firstArchive) OR nanotimestamp (from server response)
+      : moment(data.start);             // handle ISO format (from localDb meta doc)
+    data.start = newMoment.toISOString();
     return Observable.fromPromise(
       this.upsert(this.messagesDb, 'meta', (doc: Document<any>) => {
+      if (!doc.data || !doc.data.start || newMoment.isAfter(moment(doc.data.start))) {
         doc.data = data;
+      }
+      return doc;
+    }));
+  }
+
+  public setPhoneNumber(phone: string): Observable<any> {
+    return Observable.fromPromise(
+      this.upsert(this.messagesDb, 'phone', (doc: Document<any>) => {
+      if (!doc.phone || doc.phone !== phone) {
+        doc.phone = phone;
         return doc;
-      })
-    );
+      }
+    }).catch(err => {}));
+  }
+
+  public getPhoneNumber(): Observable<any> {
+    return Observable.fromPromise(this.messagesDb.get('phone')).catch(() => Observable.of({}));
   }
 
   public updateMessageDate(message: Message) {
@@ -122,12 +251,18 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get(messageId));
   }
 
-  public updateMessageStatus(messageId: string, newStatus: string) {
-    return Observable.fromPromise(this.upsert(this.messagesDb, messageId, (doc: Document<any>) => {
-      if (doc.status !== newStatus) {
-        doc.status = newStatus;
-        return doc;
+  public updateMessageStatus(message: Message, newStatus: string) {
+    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
+      if (!doc.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(doc.status) || doc.status === null) {
+        this.saveMessages(message);
       }
+    }));
+  }
+
+  public markPhoneRequestAnswered(message: Message) {
+    return Observable.fromPromise(this.upsert(this.messagesDb, message.id, (doc: Document<any>) => {
+      doc.phoneRequest = phoneRequestState.answered;
+      return doc;
     }));
   }
 
@@ -135,58 +270,33 @@ export class PersistencyService {
     return Observable.fromPromise(this.messagesDb.get('meta'));
   }
 
-  private getDbVersion(): Observable<any> {
-    return Observable.fromPromise(this.messagesDb.get('version'));
+  private getDbVersion(localDb): Observable<any> {
+    return Observable.fromPromise(localDb.get('version'));
   }
 
-  private saveDbVersion(data: any): Observable<any> {
+  private saveDbVersion(localDb, newVersion: number): Observable<any> {
     return Observable.fromPromise(
-      this.upsert(this.messagesDb, 'version', (doc: Document<any>) => {
-        doc.version = data;
+      this.upsert(localDb, 'version', (doc: Document<any>) => {
+        doc.version = newVersion;
         return doc;
-      })
-    );
+      }).catch((err) => {}));
   }
 
   /* This method is used to update data in the local database when the schema is changed, and we want
      these changes to be applied to existing (already stored) data. */
-  public localDbVersionUpdate(newVersion: number, callback: Function) {
-    this.getDbVersion().subscribe((response) => {
+  public localDbVersionUpdate(localDb, newVersion: number, callback: Function) {
+    this.getDbVersion(localDb).subscribe((response) => {
       if (response.version < newVersion) {
         callback();
-        this.saveDbVersion(newVersion);
+        this.saveDbVersion(localDb, newVersion);
+      } else {
+        this.eventService.emit(EventService.DB_READY);
       }
     }, (error) => {
       if (error.reason === 'missing') {
         callback();
-        this.saveDbVersion(newVersion);
+        this.saveDbVersion(localDb, newVersion);
       }
-    });
-  }
-
-  public saveUnreadMessages(conversationId: string, unreadMessages: number): Observable<any> {
-    return Observable.fromPromise(
-      this.upsert(this.conversationsDb, conversationId, (doc: StoredConversation) => {
-        doc.unreadMessages = unreadMessages;
-        return doc;
-      })
-    );
-  }
-
-  public getUnreadMessages(conversationId: string): Observable<StoredConversation> {
-    return Observable.create((observer: Observer<StoredConversation>) => {
-      this.conversationsDb.get(conversationId).then((data: StoredConversation) => {
-        if (!data.unreadMessages) {
-          data.unreadMessages = 0;
-        }
-        observer.next(data);
-        observer.complete();
-      }, (data) => {
-        observer.next({
-          unreadMessages: 0
-        });
-        observer.complete();
-      });
     });
   }
 
@@ -194,15 +304,17 @@ export class PersistencyService {
 
   private upsert(db, docId, diffFun) {
     if (typeof docId !== 'string') {
-      return Promise.reject(new Error('doc id is required'));
+      return throwError(new Error('doc id is required'));
     }
 
-    return db.get(docId)['catch']((err) => {
+    return db.get(docId)
+    .catch((err) => {
       if (err.status !== 404) {
         throw err;
       }
       return {};
-    }).then((doc) => {
+    })
+    .then((doc) => {
       const docRev = doc._rev;
       const newDoc = diffFun(doc);
       if (!newDoc) {

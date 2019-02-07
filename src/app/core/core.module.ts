@@ -15,34 +15,37 @@ import { HttpService } from './http/http.service';
 import { ConversationModule } from './conversation/conversation.module';
 import { DebugService } from './debug/debug.service';
 import { MessageService } from './message/message.service';
+import { MsgArchiveService } from './message/archive.service';
 import { NotificationService } from './notification/notification.service';
 import { PaymentService } from './payments/payment.service';
 import { PersistencyService } from './persistency/persistency.service';
 import { WindowRef } from './window/window.service';
 import { XmppService } from './xmpp/xmpp.service';
 import { PushNotificationsModule } from 'ng-push';
-import { ToastrModule } from 'ngx-toastr';
 import { ReviewService } from './review/review.service';
-import { PrivacyService } from './privacy/privacy.service';
 import { ConnectionService } from './connection/connection.service';
+import { RealTimeService } from './message/real-time.service';
+import { BlockUserService } from './conversation/block-user.service';
+import { ProfileModule } from './profile/profile.module';
+import { ProfileService } from './profile/profile.service';
 
 @NgModule({
   imports: [
-    CommonModule,
     CookieModule.forChild(),
-    ToastrModule.forRoot(),
     CommonModule,
     UserModule,
     ItemModule,
     TrackingModule,
-    ConversationModule,
-    PushNotificationsModule
+    ConversationModule.forRoot(),
+    PushNotificationsModule,
+    ProfileModule
   ],
   exports: [
     CommonModule,
     UserModule,
     ItemModule,
-    TrackingModule
+    TrackingModule,
+    ProfileModule
   ]
 })
 export class CoreModule {
@@ -60,15 +63,18 @@ export class CoreModule {
         HttpService,
         DebugService,
         MessageService,
+        MsgArchiveService,
         NotificationService,
         PaymentService,
         PersistencyService,
         WindowRef,
         XmppService,
+        RealTimeService,
+        BlockUserService,
         ReviewService,
         AdService,
-        PrivacyService,
-        ConnectionService
+        ConnectionService,
+        ProfileService
       ]
     };
   }

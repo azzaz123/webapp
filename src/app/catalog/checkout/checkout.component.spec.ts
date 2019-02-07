@@ -2,15 +2,19 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutComponent } from './checkout.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ItemService } from '../../core/item/item.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ITEM_ID, ITEMS_WITH_PRODUCTS, ITEMS_WITH_PRODUCTS_PROVINCE } from '../../../tests/item.fixtures.spec';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PaymentService } from '../../core/payments/payment.service';
+import { CreditInfo } from '../../core/payments/payment.interface';
+import { environment } from '../../../environments/environment';
 
 describe('CheckoutComponent', () => {
   let component: CheckoutComponent;
   let fixture: ComponentFixture<CheckoutComponent>;
   let itemService: ItemService;
   let router: Router;
+  let paymentService: PaymentService;
   let spyCall;
   let route: ActivatedRoute;
 
@@ -35,6 +39,13 @@ describe('CheckoutComponent', () => {
         }
         },
         {
+          provide: PaymentService, useValue: {
+          getCreditInfo() {
+            return Observable.of({});
+          }
+        }
+        },
+        {
           provide: ActivatedRoute, useValue: {
             params: Observable.of({})
         }
@@ -50,12 +61,22 @@ describe('CheckoutComponent', () => {
     component = fixture.componentInstance;
     itemService = TestBed.get(ItemService);
     router = TestBed.get(Router);
+    paymentService = TestBed.get(PaymentService);
     route = TestBed.get(ActivatedRoute);
     spyCall = spyOn(itemService, 'getItemsWithAvailableProducts').and.callThrough();
+    appboy.initialize(environment.appboy);
     fixture.detectChanges();
   });
 
   describe('ngOnInit', () => {
+
+    it('should send appboy FeatureItems event', () => {
+      spyOn(appboy, 'logCustomEvent');
+
+      component.ngOnInit();
+
+      expect(appboy.logCustomEvent).toHaveBeenCalledWith('FeatureItems', {platform: 'web'});
+    });
 
     describe('no params', () => {
       it('should call getItemsWithAvailableProducts and set it', () => {
@@ -112,6 +133,36 @@ describe('CheckoutComponent', () => {
 
         expect(itemService.getItemsWithAvailableProducts).toHaveBeenCalledWith([ITEM_ID]);
         expect(router.navigate).toHaveBeenCalledWith(['pro/catalog/list', {alreadyFeatured: true}])
+      });
+    });
+
+    it('should call getCreditInfo and set it', () => {
+      const creditInfo: CreditInfo = {
+        currencyName: 'wallacoins',
+        credit: 2000,
+        factor: 100
+      };
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+
+      component.ngOnInit();
+
+      expect(component.creditInfo).toEqual(creditInfo);
+    });
+
+    it('should call getCreditInfo and set it with wallacredits if credit is 0', () => {
+      const creditInfo: CreditInfo = {
+        currencyName: 'wallacoins',
+        credit: 0,
+        factor: 100
+      };
+      spyOn(paymentService, 'getCreditInfo').and.returnValue(Observable.of(creditInfo));
+
+      component.ngOnInit();
+
+      expect(component.creditInfo).toEqual({
+        currencyName: 'wallacredits',
+        credit: 0,
+        factor: 1
       });
     });
   });

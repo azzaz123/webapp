@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuggesterComponent } from './suggester.component';
 import { SuggesterService } from './suggester.service';
 import { SUGGESTER_DATA_WEB } from '../../../../tests/suggester.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { EventService } from '../../../core/event/event.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -45,10 +45,10 @@ describe('SuggesterComponent', () => {
       component.suggest(Observable.of(input)).subscribe();
       expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });
-    it('should NOT search for suggestions from input < 3', () => {
+    it('should search for suggestions from input < 3', () => {
       const input = 'me';
       component.suggest(Observable.of(input)).subscribe();
-      expect(suggesterService.getSuggestions).not.toHaveBeenCalled();
+      expect(suggesterService.getSuggestions).toHaveBeenCalled();
     });
   });
 

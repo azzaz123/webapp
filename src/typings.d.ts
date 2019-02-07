@@ -16,5 +16,8 @@ declare let twq: Function;
 declare let googletag: any;
 declare let Criteo: any;
 declare let apstag: any;
+declare let __cmp: any;
+declare let quancastOptions: {es: {}, en: {}};
 declare let H: any;
 declare let Taplytics: any;
+declare let Adomik: any;

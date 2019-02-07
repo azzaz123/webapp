@@ -4,9 +4,8 @@ import { LOCATION_MODAL_TIMEOUT, LocationSelectComponent } from './location-sele
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MOCK_USER, USER_LOCATION, USER_LOCATION_COORDINATES } from '../../../../tests/user.fixtures.spec';
-import { CookieService } from 'ngx-cookie';
 import { UserService } from '../../../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 describe('LocationSelectComponent', () => {
   let component: LocationSelectComponent;
@@ -16,7 +15,6 @@ describe('LocationSelectComponent', () => {
   const componentInstance: any = {
     init: jasmine.createSpy('init')
   };
-  let cookieService: CookieService;
   let userService: UserService;
 
   beforeEach(async(() => {
@@ -32,12 +30,6 @@ describe('LocationSelectComponent', () => {
               componentInstance: componentInstance,
               result: Promise.resolve(USER_LOCATION_COORDINATES)
             };
-          }
-        }
-        },
-        {
-          provide: CookieService, useValue: {
-          get() {
           }
         }
         },
@@ -70,7 +62,6 @@ describe('LocationSelectComponent', () => {
         approximated_location: false
       })
     });
-    cookieService = TestBed.get(CookieService);
     userService = TestBed.get(UserService);
     component.name = 'location';
     fixture.detectChanges();
@@ -229,21 +220,5 @@ describe('LocationSelectComponent', () => {
       }));
     });
 
-    describe('with cookies', () => {
-      it('should set coordinates from cookie', fakeAsync(() => {
-        spyOn(cookieService, 'get').and.returnValues(
-          USER_LOCATION_COORDINATES.latitude,
-          USER_LOCATION_COORDINATES.longitude,
-          USER_LOCATION_COORDINATES.name);
-
-        component.open(element);
-        tick(LOCATION_MODAL_TIMEOUT);
-
-        expect(componentInstance.init).toHaveBeenCalledWith({
-          ...USER_LOCATION_COORDINATES,
-          approximated_location: false
-        }, true);
-      }));
-    });
   });
 });

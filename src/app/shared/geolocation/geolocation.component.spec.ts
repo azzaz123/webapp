@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeolocationComponent } from './geolocation.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
 import { COORDINATE_DATA_WEB } from '../../../tests/address.fixtures.spec';
 import { EventService } from '../../core/event/event.service';
@@ -88,6 +88,7 @@ describe('GeolocationComponent', () => {
     });
 
     it('should emit an event with the selected item', (done) => {
+      jasmine.clock().uninstall();
       jasmine.clock().install();
       const currentDate = new Date();
       const expirationDate = new Date(currentDate.getTime() + ( 15 * 60 * 1000));

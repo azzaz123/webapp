@@ -27,17 +27,18 @@ import {
   ORDER,
   PRODUCT_RESPONSE,
   PRODUCTS_RESPONSE,
-  PURCHASES, ITEM_PUBLISHED_DATE, ITEM_SALE_PRICE, ITEM_DATA_V4, ITEM_DATA_V5
+  PURCHASES, ITEM_PUBLISHED_DATE, ITEM_SALE_PRICE, ITEM_DATA_V4, ITEM_DATA_V5, MOCK_LISTING_FEE_PRODUCT
 } from '../../../tests/item.fixtures.spec';
 import { Item, ITEM_BASE_PATH, ITEM_TYPES } from './item';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {
+  CarInfo, CheapestProducts,
   ConversationUser,
   ItemBulkResponse,
   ItemCounters, ItemDataResponse,
   ItemsData,
   ItemWithProducts,
-  Product
+  Product, PurchaseProductsWithCreditsResponse
 } from './item-response.interface';
 import { MOCK_USER, USER_ID } from '../../../tests/user.fixtures.spec';
 import { HttpService } from '../http/http.service';
@@ -50,7 +51,7 @@ import { UserService } from '../user/user.service';
 import { environment } from '../../../environments/environment';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { CAR_ID, UPLOAD_FILE_ID } from '../../../tests/upload.fixtures.spec';
-import { CAR_DATA, CAR_DATA_FORM, MOCK_CAR } from '../../../tests/car.fixtures.spec';
+import { CAR_DATA, CAR_DATA_FORM, CAR_INFO, MOCK_CAR } from '../../../tests/car.fixtures.spec';
 import { Car } from './car';
 import { CART_ORDER_PRO } from '../../../tests/pro-item.fixtures.spec';
 import * as _ from 'lodash';
@@ -348,6 +349,7 @@ describe('Service: Item', () => {
         service.mine(0, 'published').subscribe((data: ItemsData) => {
           resp = data;
         });
+
         expect(resp.data.length).toBe(4);
         const item = resp.data[0];
         expect(item.id).toBe(ITEMS_DATA_V3[0].id);
@@ -389,6 +391,7 @@ describe('Service: Item', () => {
       it('should set purchased data to featured items', () => {
         expect(resp.data[0].bumpExpiringDate).toBe(1510221655715);
         expect(resp.data[0].flags.highlighted).toBeTruthy();
+        expect(resp.data[0].listingFeeExpiringDate).toBe(1510221346789);
         expect(resp.data[2].bumpExpiringDate).toBe(1509874085135);
         expect(resp.data[2].flags.bumped).toBeTruthy();
       });
@@ -529,6 +532,23 @@ describe('Service: Item', () => {
     });
   });
 
+  describe('purchaseProductsWithCredits', () => {
+    it('should call endpoint', () => {
+      const RESP: PurchaseProductsWithCreditsResponse = {
+        payment_needed: true,
+        items_failed: []
+      };
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(RESP)});
+      spyOn(http, 'post').and.returnValue(Observable.of(new Response(res)));
+      let resp: PurchaseProductsWithCreditsResponse;
+      service.purchaseProductsWithCredits([ORDER], 'UUID').subscribe((r: PurchaseProductsWithCreditsResponse) => {
+        resp = r;
+      });
+      expect(http.post).toHaveBeenCalledWith('api/v3/web/items/purchase/products/credit/UUID', [ORDER]);
+      expect(resp).toEqual(RESP);
+    });
+  });
+
   describe('update', () => {
 
     const options: RequestOptions = new RequestOptions({headers: new Headers({'X-DeviceOS': '0'})});
@@ -662,6 +682,23 @@ describe('Service: Item', () => {
         itemsIds: '1,2'
       });
       expect(response).toEqual(ITEMS_WITH_PRODUCTS);
+    });
+  });
+
+  describe('getCheapestProductPrice', () => {
+    it('should call get', () => {
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(ITEMS_WITH_AVAILABLE_PRODUCTS_RESPONSE)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let response: CheapestProducts;
+
+      service.getCheapestProductPrice(['1', '2']).subscribe((r: CheapestProducts) => {
+        response = r;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/available-visibility-products', {
+        itemsIds: '1,2'
+      });
+      expect(response).toEqual({ 1: '3.19', 2: '3.19' });
     });
   });
 
@@ -1178,6 +1215,72 @@ describe('Service: Item', () => {
       service['items']['active'][0].bumpExpiringDate = 1234;
       service.resetAllPurchaseInfo();
       expect(service['items']['active'][0].bumpExpiringDate).toBeNull();
+    });
+  });
+
+  describe('getCarInfo', () => {
+    it('should call endpoint', () => {
+      let resp: CarInfo;
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(CAR_INFO)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      const BRAND = 'brand';
+      const MODEL = 'model';
+      const VERSION = 'version';
+
+      service.getCarInfo(BRAND, MODEL, VERSION).subscribe((r: CarInfo) => {
+        resp = r;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/items/cars/info', {
+        brand: BRAND,
+        model: MODEL,
+        version: VERSION
+      });
+      expect(resp).toEqual(CAR_INFO);
+    });
+  });
+
+  describe('activate', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      spyOn(service, 'deselectItems');
+      const IDS = ['1', '2'];
+      service.selectedItems = IDS;
+
+      service.activate().subscribe();
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/activate', {ids: IDS});
+      expect(service.deselectItems).toHaveBeenCalled();
+    });
+  });
+
+  describe('deactivate', () => {
+    it('should call endpoint', () => {
+      spyOn(http, 'put').and.returnValue(Observable.of({}));
+      spyOn(service, 'deselectItems');
+      const IDS = ['1', '2'];
+      service.selectedItems = IDS;
+
+      service.deactivate().subscribe();
+
+      expect(http.put).toHaveBeenCalledWith('api/v3/items/inactivate', {ids: IDS});
+      expect(service.deselectItems).toHaveBeenCalled();
+    });
+  });
+
+  describe('getListingFeeInfo', () => {
+    it('should call endpoint', () => {
+      const itemId = 'p4w67gxww6xq';
+      const res: ResponseOptions = new ResponseOptions({body: JSON.stringify(MOCK_LISTING_FEE_PRODUCT)});
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let resp: Product;
+
+      service.getListingFeeInfo(itemId).subscribe((r: Product) => {
+        resp = r;
+      });
+
+      expect(http.get).toHaveBeenCalledWith('api/v3/web/items/p4w67gxww6xq/listing-fee-info');
+      expect(resp).toEqual(MOCK_LISTING_FEE_PRODUCT.product_group.products[0]);
     });
   });
 

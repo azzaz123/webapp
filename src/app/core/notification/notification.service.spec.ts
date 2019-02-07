@@ -2,7 +2,7 @@
 
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NOTIFICATION_DURATION, NotificationService } from './notification.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TrackingService } from '../tracking/tracking.service';
 import { I18nService } from '../i18n/i18n.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
@@ -112,7 +112,6 @@ describe('Service: Notification', () => {
         tick(NOTIFICATION_DURATION + 1000);
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.NOTIFICATION_RECEIVED,
           { thread_id: MOCK_MESSAGE.conversationId,
-            item_id: MOCK_ITEM.id,
             message_id: MOCK_MESSAGE.id });
       }));
     });

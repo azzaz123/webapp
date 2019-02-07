@@ -7,4 +7,8 @@
     padding: 4px 7px;
     margin-left: 10px;
   }
+  &.motor {
+    background-color: $badge-left;
+    background-image: linear-gradient(to left, $badge-left, $badge-right);
+  }
 }

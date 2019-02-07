@@ -1,0 +1,23 @@
+<div class="page-content"
+      infiniteScroll
+      [infiniteScrollDistance]="5"
+      [infiniteScrollThrottle]="100"
+      [scrollWindow]="false"
+      (scrolled)="loadMoreStats()"
+      [scrollTop]="scrollTop"
+      [infiniteScrollDisabled]="!pagination || loading">
+  <div class="container">
+    <tsl-header>
+      <div class="col-12">
+        <div class="header-row">
+          <h1 class="header-title" i18n>Stats</h1>
+        </div>
+        <div class="header-row header-row--margin">
+          <h4 class="header-subtitle" i18n>Control the progress of your listings and improve your sales.</h4>
+        </div>
+      </div>
+    </tsl-header>
+    <tsl-items-stats (stopPagination)="stopPagination()" (isLoading)="setLoadingStatus($event)" [paginate]="paginate"></tsl-items-stats>
+  </div>
+  <tsl-spinner [hidden]="!loading"></tsl-spinner>
+</div>

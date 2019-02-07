@@ -103,23 +103,49 @@
     top: $spacing;
   }
   &.step-2, &.step-2-pro {
-    top: 110px;
+    top: 120px;
   }
   &.step-3 {
-    top: 205px;
+    top: 215px;
     width: 820px;
   }
   &.step-3-pro {
     top: 225px;
   }
   &.step-4, &.step-4-pro {
-    top: 305px;
+    top: 315px;
   }
   &.step-5 {
-    top: 405px;
+    top: 415px;
   }
   &.step-5-pro {
     top: 420px;
+  }
+  &.step-6 {
+    top: 520px;
+  }
+}
+
+@media screen and (max-height: 678px) {
+  .step {
+    &.step-2, &.step-2-pro {
+      top: 105px;
+    }
+    &.step-3, &.step-3-pro {
+      top: 180px;
+    }
+    &.step-4, &.step-4-pro {
+      top: 260px;
+    }
+    &.step-5 {
+      top: 340px;
+    }
+    &.step-5-pro {
+      top: 350px;
+    }
+    &.step-6 {
+      top: 425px;
+    }
   }
 }
 

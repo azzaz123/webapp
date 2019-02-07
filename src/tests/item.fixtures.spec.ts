@@ -18,14 +18,14 @@ import {
   Order,
   Product,
   ProductDurations,
-  Purchase, ItemProResponse, ItemProContent, RealEstateUploadForm
+  Purchase, ItemProResponse, ItemProContent, RealEstateUploadForm, ListingFeeProductInfo
 } from '../app/core/item/item-response.interface';
 import { OrderEvent } from '../app/catalog/list/selected-items/selected-product.interface';
-import { CartItem } from '../app/catalog/checkout/cart/cart-item.interface';
+import { CartItem } from '../app/shared/catalog/cart/cart-item.interface';
 import { USER_ID, USER_LOCATION } from './user.fixtures.spec';
 import { Image, UserLocation } from '../app/core/user/user-response.interface';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Item } from '../app/core/item/item';
 import { CARS_CATEGORY, REALESTATE_CATEGORY } from '../app/core/item/item-categories';
 
@@ -57,7 +57,7 @@ export const ITEM_WEB_SLUG = 'webslug-9jd7ryx5odjk';
 export const ITEM_PUBLISHED_DATE = 1473784861894;
 export const ITEM_PUBLISHED_DATE2 = 1473784861898;
 export const ITEM_DELIVERY_INFO: DeliveryInfo = {
-  min_weight_kg: 5.1,
+  min_weight_kg: 5,
   max_weight_kg: 10
 };
 
@@ -89,8 +89,7 @@ export const ITEM_ACTIONS_ALLOWED: ItemActions = {
 
 export const ITEM_SALE_CONDITIONS: ItemSaleConditions = {
   'fix_price': false,
-  'exchange_allowed': false,
-  'shipping_allowed': false
+  'exchange_allowed': false
 };
 
 export const ITEM_MAIN_IMAGE: Image = {
@@ -192,8 +191,8 @@ export const ITEM_DATA3: ItemProResponse = {
       }
     }],
     'web_slug': ITEM_WEB_SLUG,
-    'conversations':      0,
-    'publish_date':       ITEM_PUBLISHED_DATE2,
+    'conversations': 0,
+    'publish_date': ITEM_PUBLISHED_DATE2,
     'seller_id': '1',
     'purchases': {
       'bump_type': 'citybump',
@@ -209,10 +208,12 @@ export const ITEM_DATA3: ItemProResponse = {
 
 export const ITEM_VIEWS = 123;
 export const ITEM_FAVORITES = 456;
+export const ITEM_CONVERSATIONS = 100;
 
 export const ITEM_COUNTERS_DATA: ItemCounters = {
   'views': ITEM_VIEWS,
-  'favorites': ITEM_FAVORITES
+  'favorites': ITEM_FAVORITES,
+  'conversations': ITEM_CONVERSATIONS
 };
 
 export const MOCK_ITEM: Item = new Item(
@@ -269,11 +270,11 @@ export function getMockItem(id: string, legacyId: number) {
 export function getMockItemWithPurchases() {
   const item: Item = _.clone(MOCK_ITEM);
   item.purchases = {
-      bump_type: 'citybump',
-      expiration_date: 1526375664070,
-      scheduled_bump_type: 'citybump',
-      scheduled_end_date: 1526515200000,
-      scheduled_start_date: 1526256000000
+    bump_type: 'citybump',
+    expiration_date: 1526375664070,
+    scheduled_bump_type: 'citybump',
+    scheduled_end_date: 1526515200000,
+    scheduled_start_date: 1526256000000
   };
   return item;
 }
@@ -332,7 +333,7 @@ export const ITEM_DATA_V3: ItemResponse = {
     'description': 'The description',
     'category_id': 12545,
     'seller_id': 'l1kmzn82zn3p',
-    'flags': {'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false},
+    'flags': { 'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false },
     'sale_price': 123.45,
     'currency_code': 'EUR',
     'modified_date': 1500545785245,
@@ -350,7 +351,7 @@ export const ITEM_DATA_V3: ItemResponse = {
         'xlarge': 'http://dock2.wallapop.com:8080/shnm-portlet/images?pictureId=500002511&pictureSize=W320'
       }
     }],
-    'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
+    'sale_conditions': { 'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false },
     'web_slug': 'raton-134690716'
   }
 };
@@ -364,7 +365,7 @@ export const ITEM_DATA_V4: ItemProResponse = {
     'description': 'The description',
     'category_id': 12545,
     'seller_id': 'l1kmzn82zn3p',
-    'flags': {'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false},
+    'flags': { 'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false },
     'sale_price': 123.45,
     'price': 123.45,
     'currency_code': 'EUR',
@@ -393,7 +394,7 @@ export const ITEM_DATA_V4: ItemProResponse = {
       'original_height': 100,
       'original_width': 62
     },
-    'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
+    'sale_conditions': { 'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false },
     'web_slug': 'raton-134690716',
     'views': 0,
     'conversations': 0,
@@ -416,7 +417,7 @@ export const ITEM_DATA_V5: ItemProResponse = {
     'description': 'The description',
     'category_id': 12545,
     'seller_id': 'l1kmzn82zn3p',
-    'flags': {'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false},
+    'flags': { 'pending': false, 'sold': false, 'reserved': false, 'banned': false, 'expired': false },
     'sale_price': 123.45,
     'price': 123.45,
     'currency_code': 'EUR',
@@ -445,7 +446,7 @@ export const ITEM_DATA_V5: ItemProResponse = {
       'original_height': 100,
       'original_width': 62
     },
-    'sale_conditions': {'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false},
+    'sale_conditions': { 'fix_price': false, 'exchange_allowed': false, 'shipping_allowed': false },
     'web_slug': 'raton-134690716',
     'views': 0,
     'conversations': 0,
@@ -774,11 +775,18 @@ export const CONVERSATION_USERS: ConversationUser[] = [{
 export const PURCHASES: Purchase[] = [{
   'item_id': '1',
   'expiration_date': 1510221655715,
-  'visibility_flags': {'bumped': false, 'highlighted': true, 'urgent': false}
+  'purchase_name': 'countrybump',
+  'visibility_flags': { 'bumped': false, 'highlighted': true, 'urgent': false }
+}, {
+  'item_id': '1',
+  'expiration_date': 1510221346789,
+  'purchase_name': 'listingfee',
+  'visibility_flags': { 'bumped': false, 'highlighted': true, 'urgent': false }
 }, {
   'item_id': '3',
   'expiration_date': 1509874085135,
-  'visibility_flags': {'bumped': true, 'highlighted': false, 'urgent': false}
+  'purchase_name': 'countrybump',
+  'visibility_flags': { 'bumped': true, 'highlighted': false, 'urgent': false }
 }];
 
 export const PRODUCT_DURATION_ID = 'l1kmzngg6n3p';
@@ -805,7 +813,7 @@ export const PRODUCT2_RESPONSE: Product = {
   'id': 'd9ke65mjox1m',
   'name': 'WEB-MARKET',
   'default_duration_index': 0,
-  'durations': [{'id': 'g24g2jhg4jh24', 'duration': 168, 'market_code': '7.29', 'original_market_code': '5.99'}]
+  'durations': [{ 'id': 'g24g2jhg4jh24', 'duration': 168, 'market_code': '7.29', 'original_market_code': '5.99' }]
 };
 
 export const ORDER: Order = {
@@ -832,7 +840,7 @@ export const UPLOAD_FORM_ITEM_VALUES: ItemUploadForm = {
     exchange_allowed: false,
     shipping_allowed: false
   },
-  images: [{'image': true}]
+  images: [{ 'image': true }]
 };
 
 export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
@@ -844,10 +852,12 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
   year: 'year',
   version: 'version',
   num_seats: 4,
+  num_doors: 3,
   body_type: 'body_type',
   km: 1000,
   engine: 'engine',
   gearbox: 'gearbox',
+  horsepower: 100,
   category_id: CARS_CATEGORY,
   sale_price: 123.45,
   currency_code: 'EUR',
@@ -856,7 +866,7 @@ export const UPLOAD_FORM_CAR_VALUES: CarUploadForm = {
     exchange_allowed: false,
     shipping_allowed: false
   },
-  images: [{'image': true}],
+  images: [{ 'image': true }],
   location: {
     address: USER_LOCATION.title,
     latitude: USER_LOCATION.approximated_latitude,
@@ -882,7 +892,7 @@ export const UPLOAD_FORM_REALESTATE_VALUES: RealEstateUploadForm = {
   elevator: false,
   pool: false,
   garden: false,
-  images: [{'image': true}],
+  images: [{ 'image': true }],
   location: {
     address: USER_LOCATION.title,
     latitude: USER_LOCATION.approximated_latitude,
@@ -1052,19 +1062,19 @@ export const CART_ITEM_COUNTRYBUMP2: CartItem = {
 };
 
 export const CART_ORDER: Order[] = [
-  {'item_id': CART_ITEM_ZONEBUMP.item.id, 'product_id': CART_ITEM_ZONEBUMP.duration.id},
-  {'item_id': CART_ITEM_CITYBUMP.item.id, 'product_id': CART_ITEM_CITYBUMP.duration.id},
-  {'item_id': CART_ITEM_CITYBUMP2.item.id, 'product_id': CART_ITEM_CITYBUMP2.duration.id},
-  {'item_id': CART_ITEM_COUNTRYBUMP.item.id, 'product_id': CART_ITEM_COUNTRYBUMP.duration.id},
-  {'item_id': CART_ITEM_COUNTRYBUMP2.item.id, 'product_id': CART_ITEM_COUNTRYBUMP2.duration.id}
+  { 'item_id': CART_ITEM_ZONEBUMP.item.id, 'product_id': CART_ITEM_ZONEBUMP.duration.id },
+  { 'item_id': CART_ITEM_CITYBUMP.item.id, 'product_id': CART_ITEM_CITYBUMP.duration.id },
+  { 'item_id': CART_ITEM_CITYBUMP2.item.id, 'product_id': CART_ITEM_CITYBUMP2.duration.id },
+  { 'item_id': CART_ITEM_COUNTRYBUMP.item.id, 'product_id': CART_ITEM_COUNTRYBUMP.duration.id },
+  { 'item_id': CART_ITEM_COUNTRYBUMP2.item.id, 'product_id': CART_ITEM_COUNTRYBUMP2.duration.id }
 ];
 
 export const CART_ORDER_TRACK: any[] = [
-  {'item_id': CART_ITEM_ZONEBUMP.item.id, 'bump_type': CART_ITEM_ZONEBUMP.duration.id},
-  {'item_id': CART_ITEM_CITYBUMP.item.id, 'bump_type': CART_ITEM_CITYBUMP.duration.id},
-  {'item_id': CART_ITEM_CITYBUMP2.item.id, 'bump_type': CART_ITEM_CITYBUMP2.duration.id},
-  {'item_id': CART_ITEM_COUNTRYBUMP.item.id, 'bump_type': CART_ITEM_COUNTRYBUMP.duration.id},
-  {'item_id': CART_ITEM_COUNTRYBUMP2.item.id, 'bump_type': CART_ITEM_COUNTRYBUMP2.duration.id}
+  { 'item_id': CART_ITEM_ZONEBUMP.item.id, 'bump_type': CART_ITEM_ZONEBUMP.duration.id },
+  { 'item_id': CART_ITEM_CITYBUMP.item.id, 'bump_type': CART_ITEM_CITYBUMP.duration.id },
+  { 'item_id': CART_ITEM_CITYBUMP2.item.id, 'bump_type': CART_ITEM_CITYBUMP2.duration.id },
+  { 'item_id': CART_ITEM_COUNTRYBUMP.item.id, 'bump_type': CART_ITEM_COUNTRYBUMP.duration.id },
+  { 'item_id': CART_ITEM_COUNTRYBUMP2.item.id, 'bump_type': CART_ITEM_COUNTRYBUMP2.duration.id }
 ];
 
 export const ACTIONS_ALLOWED_CAN_MARK_SOLD_RESPONSE: AllowedActionResponse[] = [{
@@ -1131,3 +1141,27 @@ export const ACTIONS_ALLOWED_CANNOT_MARK_SOLD_RESPONSE: AllowedActionResponse[] 
   'allowed': false,
   'cause': 'item_not_expired'
 }];
+
+export const MOCK_LISTING_FEE_ORDER: OrderEvent = {
+  order: [{ item_id: 'p4w67gxww6xq', product_id: '5p4w67dy6xqo' }],
+  total: 14.99
+};
+
+export const MOCK_LISTING_FEE_PRODUCT: ListingFeeProductInfo = {
+  limit_category: 100,
+  limit_type: 'no_sub',
+  product_group: {
+    default_product_id: 'elqnzxe6201v',
+    products: [{
+      default_duration_index: 0,
+      id: 'elqnzxe6201v',
+      name: 'listingfee',
+      durations: [{
+        duration: 1440,
+        id: '5p4w67dy6xqo',
+        market_code: '14.99',
+        original_market_code: '14.99'
+      }]
+    }]
+  }
+};
