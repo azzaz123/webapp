@@ -213,7 +213,7 @@
       color: $blue-grey-2;
       cursor: pointer;
       &.selected {
-        color: $color-urgent;
+        color: $yellow-dark;
       }
     }
     .select {
@@ -232,7 +232,7 @@
         width: 12px;
       }
       &.selected {
-        background: $color-urgent;
+        background: $yellow-dark;
         border-color: transparent;
         mat-icon {
           display: flex;
@@ -242,7 +242,7 @@
         }
       }
       &:hover {
-        border-color: $color-urgent;
+        border-color: $yellow-dark;
       }
     }
     &.checkbox-corporate {

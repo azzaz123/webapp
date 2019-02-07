@@ -375,10 +375,10 @@
     .main-header-my-zone {
       &.active {
         .horizontal-line {
-          border-color: $color-urgent;
+          border-color: $yellow-dark;
         }
         span {
-          color: $color-urgent;
+          color: $yellow-dark;
         }
       }
     }

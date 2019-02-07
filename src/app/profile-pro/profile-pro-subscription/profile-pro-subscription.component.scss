@@ -179,7 +179,7 @@ h2, .description {
 
 .listings {
   h2 {
-    color: $color-urgent;
+    color: $yellow-dark;
   }
   .name {
     font-weight: bold;
@@ -198,9 +198,9 @@ h2, .description {
     flex-grow: 1;
   }
   .pack.selected {
-    border-color: $color-urgent;
+    border-color: $yellow-dark;
     .name {
-      border-color: rgba($color-urgent, .1);
+      border-color: rgba($yellow-dark, .1);
     }
   }
   .pack.personal {
@@ -210,12 +210,12 @@ h2, .description {
   }
   .btn {
     &:hover {
-      background-color: $color-urgent;
+      background-color: $yellow-dark;
       color: $white;
     }
   }
   .expire {
-    color: $color-urgent;
+    color: $yellow-dark;
   }
 }
 
