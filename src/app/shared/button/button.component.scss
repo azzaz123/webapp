@@ -61,8 +61,8 @@ $vertical-padding: 10px;
   }
   &.btn-inactive {
     background-color: $white;
-    border: 2px dashed $sold-bg;
-    color: $sold-bg;
+    border: 2px dashed $magenta-main;
+    color: $magenta-main;
     cursor: default;
     font-size: $font-size-S;
     font-weight: bold;

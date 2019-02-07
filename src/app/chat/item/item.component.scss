@@ -70,9 +70,9 @@
       padding-top: 4.5px;
       padding-bottom: 4.5px;
       width: 100%;
-      background-color: $sold-bg;
+      background-color: $magenta-main;
       &:hover {
-        background-color: lighten($sold-bg, 3%);
+        background-color: lighten($magenta-main, 3%);
       }
     }
   }

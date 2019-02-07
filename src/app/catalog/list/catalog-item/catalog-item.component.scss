@@ -183,7 +183,7 @@ $feature-button-width: 170px;
   }
   .subscribe {
     font-size: $font-size-S;
-    color: $sold-bg;
+    color: $magenta-main;
     min-width: 250px;
     font-weight: bold;
     &.onHold {
@@ -236,7 +236,7 @@ $feature-button-width: 170px;
       }
       &.btn-sold {
         &:hover {
-          background: $sold-bg;
+          background: $magenta-main;
           border-color: transparent;
         }
       }
@@ -265,7 +265,7 @@ $feature-button-width: 170px;
         color: $white;
         text-align: center;
         padding: 0 $spacing 0 $spacing*2;
-        background-color: $reactivate-bg;
+        background-color: $magenta-main;
         border-color: transparent;
         border-radius: 20px;
         font-size: $font-size-S;
@@ -342,7 +342,7 @@ $feature-button-width: 170px;
       display: none;
     }
     .few-days {
-      color: $listing-fee-color;
+      color: $magenta-main;
     }
   }
 }
