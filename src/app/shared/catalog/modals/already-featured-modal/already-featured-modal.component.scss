@@ -33,7 +33,7 @@ h1 {
   margin-bottom: $spacing-2M;
   margin-top: $spacing-XL;
   &.fail {
-    color: $warn;
+    color: $negative-main;
   }
 }
 tsl-button {

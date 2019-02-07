@@ -116,7 +116,7 @@ $menu-width-and-spacing: 10px;
       @include square($phone-icon-adjusted-size);
     }
     .badge-pill {
-      background-color: $warn;
+      background-color: $negative-main;
       height: $spacing;
       width: $spacing;
       padding: 0;

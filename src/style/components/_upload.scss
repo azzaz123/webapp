@@ -127,9 +127,9 @@
     }
     .ng-dirty.ng-invalid {
       .selector {
-        border: 1px solid $warn;
+        border: 1px solid $negative-main;
         span {
-          color: $warn;
+          color: $negative-main;
         }
       }
     }

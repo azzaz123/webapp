@@ -32,12 +32,12 @@ $form-control-height: 50px;
         }
       }
       &.ng-invalid {
-        border-color: $warn;
+        border-color: $negative-main;
         label {
-          color: $warn;
+          color: $negative-main;
         }
         & > div {
-          border-color: $warn !important;
+          border-color: $negative-main !important;
         }
       }
     }
@@ -66,7 +66,7 @@ $form-control-height: 50px;
 }
 
 h2.ng-invalid {
-  color: $warn !important;
+  color: $negative-main !important;
 }
 
 /* ng-select */

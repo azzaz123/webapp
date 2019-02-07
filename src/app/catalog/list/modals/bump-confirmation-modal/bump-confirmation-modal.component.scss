@@ -32,7 +32,7 @@ h1 {
   font-size: $font-size-LL;
   margin-bottom: $spacing-S;
   &.fail {
-    color: $warn;
+    color: $negative-main;
   }
 }
 

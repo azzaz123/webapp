@@ -43,7 +43,7 @@
     }
     .denied-icon {
       display: inline-block;
-      border: solid 2px $warn;
+      border: solid 2px $negative-main;
       @include square(32px);
       border-radius: 50%;
       line-height: 30px;

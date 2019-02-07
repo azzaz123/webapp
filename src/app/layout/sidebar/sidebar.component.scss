@@ -18,7 +18,7 @@
   right: $spacing;
   width: 10px;
   height: 10px;
-  background-color: $warn;
+  background-color: $negative-main;
   border-radius: 100%;
   transform: translateX(100%);
 }
@@ -116,7 +116,7 @@ h2 {
     }
     &:hover {
       .sidebar-section-circle {
-        background-color: $warn;
+        background-color: $negative-main;
       }
     }
   }

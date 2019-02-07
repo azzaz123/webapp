@@ -32,6 +32,6 @@ h1 {
   font-size: $spacing;
   margin-bottom: $spacing-2M;
   &.fail {
-    color: $warn;
+    color: $negative-main;
   }
 }
