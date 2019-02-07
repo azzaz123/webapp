@@ -19,7 +19,7 @@ p {
 }
 
 h1 {
-  border-bottom: 1px solid $preview-border-color;
+  border-bottom: 1px solid $blue-grey-6;
   padding-bottom: $spacing;
   margin-bottom: 0;
 }
@@ -35,7 +35,7 @@ h1 {
   font-size: $font-size;
   padding: $spacing 0;
   &:not(.last){
-    border-bottom: 1px solid $preview-border-color;
+    border-bottom: 1px solid $blue-grey-6;
     margin-bottom: $spacing;
   }
   &.last {
@@ -72,7 +72,7 @@ h1 {
     }
   }
   &.car-extras {
-    border-bottom: 1px solid $preview-border-color;
+    border-bottom: 1px solid $blue-grey-6;
     padding-bottom: $spacing;
     margin-bottom: $spacing;
     &.last {
