@@ -6,7 +6,7 @@
   h1 {
     font-size: $font-size-LL;
     font-weight: bold;
-    margin-bottom: $spacing-2M;
+    margin-bottom: $spacing-ms * 2;
     &.red {
       color: $warn;
     }

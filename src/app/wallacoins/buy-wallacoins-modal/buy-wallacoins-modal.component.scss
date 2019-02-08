@@ -29,6 +29,7 @@
       @include square(160px);
       border-radius: 50%;
       margin-top: 18px;
+      margin-bottom: $spacing-l;
       background: $white no-repeat center;
       &.icon-1 {
         background-image: url(/assets/images/wallacoins-1.svg);
@@ -109,12 +110,12 @@
   .right, .bottom {
     tsl-card-selection {
       width: 100%;
-      margin-bottom: $spacing-2M;
+      margin-bottom: $spacing-l;
     }
   }
   .bottom {
     width: 330px;
-    padding: $spacing-2M;
+    padding: $spacing-l;
     text-align: center;
     p {
       color: $grey-250;

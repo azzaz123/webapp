@@ -228,7 +228,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   $modal-width: 572px;
   .modal-body {
     border-radius: 20px;
-    padding: $spacing-ms $spacing-40 $spacing-2M;
+    padding: $spacing-ms $spacing-40 $spacing-l;
   }
   .modal-dialog, .modal-content {
     max-width: $modal-width;

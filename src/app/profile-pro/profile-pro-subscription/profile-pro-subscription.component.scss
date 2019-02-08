@@ -189,12 +189,12 @@ h2, .description {
     margin-bottom: $spacing-ms;
     border-bottom: 2px solid $grey-50;
     width: 100%;
-    margin-top: $spacing-2M;
+    margin-top: $spacing-l;
   }
   .desc {
     font-size: $font-size-S;
     color: $grey-500;
-    margin-bottom: $spacing-2M;
+    margin-bottom: $spacing-l;
     flex-grow: 1;
   }
   .pack.selected {
