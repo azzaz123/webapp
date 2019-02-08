@@ -17,14 +17,14 @@
     }
 
     .header-row-margin {
-        margin-bottom: $spacing;
+        margin-bottom: $spacing-ml;
     }
 
     .header-subtitle {
         font-size: $font-size-S;
         color: $grey-300;
         margin-bottom: 0;
-        line-height: $spacing;
+        line-height: $spacing-ml;
     }
 
     .header-separator {

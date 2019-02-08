@@ -15,7 +15,7 @@
     font-size: $font-size-XS;
     font-weight: bold;
     text-transform: uppercase;
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
   }
 }
 
@@ -25,11 +25,11 @@
   border: solid 1px $grey-50;
   display: flex;
   flex-direction: column;
-  padding: $spacing-2M $spacing-L;
+  padding: $spacing-2M $spacing-xl;
 }
 
 .car {
-  margin-right: $spacing;
+  margin-right: $spacing-ml;
   width: 30%;
 }
 
@@ -101,7 +101,7 @@
 
 .no-plan {
   line-height: 14px;
-  margin-top: $spacing-S;
+  margin-top: $spacing-ms;
   width: 35%;
 }
 

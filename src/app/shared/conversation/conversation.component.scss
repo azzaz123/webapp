@@ -5,7 +5,7 @@ $check-width-and-spacing: 50px;
 $menu-width-and-spacing: 10px;
 :host {
   display: block;
-  padding: $spacing $spacing-S $spacing $spacing;
+  padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
   transition: $transition-time ease background-color,
   $transition-time ease border;
@@ -23,7 +23,7 @@ $menu-width-and-spacing: 10px;
     @include hide();
     position: absolute;
     top: 43px;
-    right: $spacing-S;
+    right: $spacing-ms;
   }
   &:hover {
     background-color: rgba($grey-100, .2);
@@ -87,7 +87,7 @@ $menu-width-and-spacing: 10px;
     }
     .conversation-item-meta {
       flex: none;
-      margin-left: $spacing-XXS;
+      margin-left: $spacing-xs;
     }
   }
   .user-name-row {

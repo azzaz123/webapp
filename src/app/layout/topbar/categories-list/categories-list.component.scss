@@ -38,13 +38,13 @@ $dropdown-width: 900px;
     width: $dropdown-width;
     box-sizing: content-box;
     overflow: hidden;
-    padding: $spacing 0 0 0;
+    padding: $spacing-ml 0 0 0;
     li {
       background-color: transparent;
       padding: 0;
       position: relative;
       width: $dropdown-width/6;
-      margin-bottom: $spacing;
+      margin-bottom: $spacing-ml;
       height: 80px;
       a {
         display: flex;

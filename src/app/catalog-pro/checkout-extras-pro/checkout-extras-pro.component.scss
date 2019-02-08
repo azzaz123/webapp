@@ -9,7 +9,7 @@ $offset: 7px;
   cursor: pointer;
   mat-icon {
     vertical-align: middle;
-    margin-right: $spacing-S;
+    margin-right: $spacing-ms;
     width: 17px;
     height: 17px;
   }
@@ -38,7 +38,7 @@ $offset: 7px;
       /deep/ svg path {
         fill: $corporate;
       }
-      margin-right: $spacing-S;
+      margin-right: $spacing-ms;
     }
     a {
       text-decoration: underline;
@@ -63,7 +63,7 @@ $offset: 7px;
     text-align: center;
     display: flex;
     align-items: center;
-    padding: $spacing-M;
+    padding: $spacing-m;
     font-size: $font-size-S;
     justify-content: center;
     flex-direction: column;

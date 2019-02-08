@@ -11,7 +11,7 @@ h2 {
 }
 
 .items {
-  margin-top: $spacing;
+  margin-top: $spacing-ml;
   margin-bottom: $spacing-XL * 2;
   .add-item {
     width: 100%;
@@ -82,7 +82,7 @@ tsl-spinner {
     /deep/ svg path {
       fill: $corporate;
     }
-    margin-right: $spacing-S;
+    margin-right: $spacing-ms;
   }
   a {
     text-decoration: underline;
@@ -135,18 +135,18 @@ tsl-selected-items {
     width: 100%;
     margin-right: auto;
     text-align: center;
-    margin-top: $spacing * 2;
+    margin-top: $spacing-ml * 2;
     .link {
       color: $corporate;
       text-decoration: underline;
       cursor: pointer;
-      margin-left: $spacing-XXS;
+      margin-left: $spacing-xs;
       &:hover {
         color: $corporate-dark;
       }
     }
     tsl-button {
-      margin-left: $spacing-XXS;
+      margin-left: $spacing-xs;
       /deep/ button {
         color: $corporate;
         text-decoration: underline;
@@ -161,13 +161,13 @@ tsl-selected-items {
 .banner {
   width: 100%;
   height: auto;
-  margin-bottom: $spacing;
-  margin-top: -$spacing-L;
+  margin-bottom: $spacing-ml;
+  margin-top: -$spacing-xl;
 }
 
 tsl-search-input {
   vertical-align: bottom;
-  margin-right: $spacing;
+  margin-right: $spacing-ml;
 }
 
 tsl-search-input, .nav {
@@ -192,7 +192,7 @@ tsl-select {
   flex-direction: row;
   align-self: center;
   justify-content: start;
-  margin: 0 0 $spacing-M;
+  margin: 0 0 $spacing-m;
   a {
     color: $corporate;
   }
@@ -202,5 +202,5 @@ tsl-select {
   width: $spacing-XXXS;
   height: $spacing-S;
   background-color: $grey-200;
-  margin: $spacing-XXS $spacing-S 0;
+  margin: $spacing-xs $spacing-ms 0;
 }

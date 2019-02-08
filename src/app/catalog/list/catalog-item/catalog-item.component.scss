@@ -22,8 +22,8 @@ $feature-button-width: 170px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: $spacing;
-    margin-top: $spacing-L;
+    margin-right: $spacing-ml;
+    margin-top: $spacing-xl;
     cursor: pointer;
     mat-icon {
       display: none;
@@ -50,7 +50,7 @@ $feature-button-width: 170px;
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $grey-50;
-  margin-bottom: $spacing-XS;
+  margin-bottom: $spacing-s;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,7 +82,7 @@ $feature-button-width: 170px;
     display: none;
   }
   .resized & {
-    margin-left: $checkbox-width + $spacing;
+    margin-left: $checkbox-width + $spacing-ml;
     .selected-veil {
       display: block;
       position: absolute;
@@ -131,7 +131,7 @@ $feature-button-width: 170px;
   }
   .image {
     padding: 4px;
-    padding-right: $spacing-M;
+    padding-right: $spacing-m;
     display: block;
   }
   .subtitle {
@@ -147,7 +147,7 @@ $feature-button-width: 170px;
     flex-direction: column;
     justify-content: center;
     align-self: stretch;
-    margin-right: $spacing-S;
+    margin-right: $spacing-ms;
     overflow: hidden;
     flex-grow: 4;
     max-width: 700px;
@@ -174,7 +174,7 @@ $feature-button-width: 170px;
     align-self: stretch;
     width: 120px;
     min-width: 120px;
-    padding-right: $spacing-S;
+    padding-right: $spacing-ms;
     font-size: $font-size-S;
 
     * > {
@@ -264,7 +264,7 @@ $feature-button-width: 170px;
         width: $feature-button-width;
         color: $white;
         text-align: center;
-        padding: 0 $spacing 0 $spacing*2;
+        padding: 0 $spacing-ml 0 $spacing-ml*2;
         background-color: $reactivate-bg;
         border-color: transparent;
         border-radius: 20px;
@@ -296,7 +296,7 @@ $feature-button-width: 170px;
       /deep/ .btn-feature {
         width: $feature-button-width;
         height: 40px;
-        padding: 0 $spacing;
+        padding: 0 $spacing-ml;
         padding-left: 12px;
         font-size: $font-size-S;
         mat-icon {
@@ -334,7 +334,7 @@ $feature-button-width: 170px;
     flex-direction: column;
     justify-content: center;
     align-self: stretch;
-    padding-right: $spacing-XS;
+    padding-right: $spacing-s;
     flex: 1;
     min-width: 130px;
     font-size: $font-size-S;

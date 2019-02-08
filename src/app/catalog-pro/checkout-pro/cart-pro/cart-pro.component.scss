@@ -11,7 +11,7 @@
     width: 280px;
     height: calc(100vh - 150px);
     position: fixed;
-    padding: 0 $spacing-XS;
+    padding: 0 $spacing-s;
     overflow: hidden;
 }
 
@@ -25,7 +25,7 @@
 .cancel-icon {
     cursor: pointer;
     width: 12px;
-    margin-right: $spacing-XS;    
+    margin-right: $spacing-s;    
     &.disabled {
         cursor: not-allowed;
         opacity: 0.5;
@@ -34,7 +34,7 @@
 
 .cart-content {
     overflow: auto;
-    padding: $spacing-2M * 2 0 $spacing * 4 0;
+    padding: $spacing-2M * 2 0 $spacing-ml * 4 0;
     .cart-header {
         position: absolute;
         top: 0;
@@ -44,7 +44,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: $spacing-M - 2px $spacing-M 0 $spacing-M;
+        padding: $spacing-m - 2px $spacing-m 0 $spacing-m;
         background-color: $white;
         z-index: 1;
         .btn-clear {
@@ -66,7 +66,7 @@
     margin: 0;
     .cart-box {
         overflow: hidden;
-        margin-top: $spacing-S;
+        margin-top: $spacing-ms;
         border-radius: 5px;
         background-color: $white;
         box-shadow: 0 1px 2px 0 rgba($black, 0.05);
@@ -92,7 +92,7 @@
         .wing-icon {
             width: 51px;
             height: 30px;
-            margin-right: $spacing-XS;
+            margin-right: $spacing-s;
             &.citybump {
                 /deep/ svg g {
                     fill: $zone-bump;
@@ -113,11 +113,11 @@
     }
     .type-wrapper {
         background-color: rgba($grey-50, 0.3);
-        padding: $spacing-XS;
+        padding: $spacing-s;
         border-radius: 5px;
-        margin-bottom: $spacing-S;
+        margin-bottom: $spacing-ms;
         ul {
-            padding-left: $spacing-S;
+            padding-left: $spacing-ms;
         }
     }
     .price {
@@ -141,18 +141,18 @@
     }
     .close-icon {
         @include square(16px);
-        margin: $spacing $spacing-XS $spacing-XS 0;
+        margin: $spacing-ml $spacing-s $spacing-s 0;
         cursor: pointer;
     }
     .cart-item {
         display: flex;
         align-items: center;
         .cart-box {
-        padding: $spacing-XXXS;
+        padding: $spacing-xxs;
         flex: 1;
         }
         .price {
-        margin-right: $spacing-XS;
+        margin-right: $spacing-s;
         }
         tsl-item-avatar {
             /deep/ div {
@@ -181,7 +181,7 @@
     width: 100%;
     height: 1px;
     background-color: $grey-50;
-    margin: $spacing-S 0;
+    margin: $spacing-ms 0;
 }
 
 .btn-wrapper { 
@@ -189,7 +189,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: $spacing;
+    padding: $spacing-ml;
     background-color: $white;
     tsl-button {
         display: block;

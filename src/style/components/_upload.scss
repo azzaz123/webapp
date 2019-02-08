@@ -4,14 +4,14 @@
     border-radius: $border-radius;
     background-color: $white;
     border: solid 1px $grey-50;
-    padding: $spacing;
-    margin-bottom: $spacing;
+    padding: $spacing-ml;
+    margin-bottom: $spacing-ml;
     h2 {
       font-weight: bold;
       text-transform: uppercase;
       color: $corporate;
       font-size: $font-size-S;
-      margin-bottom: $spacing;
+      margin-bottom: $spacing-ml;
     }
     p {
       color: $grey-500;
@@ -38,7 +38,7 @@
   }
 
   .selector-container {
-    margin: 5px 0 $spacing-L;
+    margin: 5px 0 $spacing-xl;
     &.terms-options {
       margin-bottom: 23px;
     }
@@ -56,7 +56,7 @@
       border-radius: $border-radius;
       display: inline-block;
       @include square($spacing-XL);
-      margin-right: $spacing-S;
+      margin-right: $spacing-ms;
       line-height: $spacing-XL;
       position: relative;
       text-align: center;
@@ -81,7 +81,7 @@
         font-size: 9px;
         letter-spacing: .4px;
         line-height: $font-size-S;
-        margin-top: $spacing-XXS;
+        margin-top: $spacing-xs;
       }
       mat-icon {
         height: 26px;
@@ -136,7 +136,7 @@
     &.shipping-options {
       margin-bottom: 15px;
       h2 {
-        margin-bottom: $spacing-S;
+        margin-bottom: $spacing-ms;
       }
       .selector {
         margin-left: 10px;
@@ -166,7 +166,7 @@
   .real-estate-form {
     .selector-container {
       .selector {
-        margin-right: $spacing;
+        margin-right: $spacing-ml;
         line-height: 35px;
         mat-icon {
           @include square(48px);
@@ -185,7 +185,7 @@
   .btn-primary, .btn-link {
     padding: 14px 50px;
     margin-bottom: 65px;
-    margin-top: $spacing-L - $spacing;
+    margin-top: $spacing-xl - $spacing-ml;
   }
   .btn-link {
     color: $corporate;
@@ -222,7 +222,7 @@
       border-radius: 6px;
       padding: 0;
       background: transparent;
-      margin-right: $spacing-S;
+      margin-right: $spacing-ms;
       cursor: pointer;
       display: flex;
       justify-content: center;

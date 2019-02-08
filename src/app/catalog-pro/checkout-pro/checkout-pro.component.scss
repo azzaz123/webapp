@@ -9,7 +9,7 @@
   z-index: 1000;
   mat-icon {
     vertical-align: middle;
-    margin-right: $spacing-S;
+    margin-right: $spacing-ms;
     width: 17px;
   }
   &:hover {
@@ -65,7 +65,7 @@
     color: $white;
     font-weight: bold;
     text-align: center;
-    padding: $spacing-M;
+    padding: $spacing-m;
     font-size: $font-size-S;
     line-height: 17px;
     &.city {

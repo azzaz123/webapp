@@ -12,7 +12,7 @@
   bottom: 0;
   display: block;
   overflow-y: scroll;
-  padding: $spacing;
+  padding: $spacing-ml;
   width: 100%;
 }
 
@@ -20,7 +20,7 @@ h6 {
   display: block;
   width: 100%;
   text-align: center;
-  margin: $spacing 0;
+  margin: $spacing-ml 0;
   text-transform: uppercase;
   color: $grey-300;
   font-weight: bold;

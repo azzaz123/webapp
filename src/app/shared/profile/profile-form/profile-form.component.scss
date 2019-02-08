@@ -40,7 +40,7 @@ $right-gutter: 35px;
         justify-content: center;
         flex-direction: column;
         height: 100px;
-        width: calc(50% - #{$spacing / 2});
+        width: calc(50% - #{$spacing-ml / 2});
         border-radius: $border-radius;
         border: solid 2px $grey-50;
         cursor: pointer;

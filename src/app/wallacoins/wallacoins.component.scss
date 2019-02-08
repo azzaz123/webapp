@@ -81,10 +81,10 @@ ngu-carousel {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: $spacing-L $spacing;
+  margin: $spacing-xl $spacing-ml;
   div {
     width: 33%;
-    padding: 130px $spacing-M 0;
+    padding: 130px $spacing-m 0;
     background: no-repeat top;
     &.info-1 {
       background-image: url(/assets/images/wallacoins-info-1.svg);

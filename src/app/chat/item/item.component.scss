@@ -38,7 +38,7 @@
     }
     .image-bottom {
       position: absolute;
-      bottom: $spacing;
+      bottom: $spacing-ml;
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -77,10 +77,10 @@
     }
   }
   .card-block {
-    padding: $spacing;
+    padding: $spacing-ml;
     .card-title {
       font-size: $font-size;
-      margin-bottom: $spacing-S;
+      margin-bottom: $spacing-ms;
       line-height: 1.4;
       max-height: 44px;
       overflow: hidden;
@@ -101,7 +101,7 @@
         mat-icon {
           height: 14px;
           width: 17px;
-          margin: 0 $spacing-XS;
+          margin: 0 $spacing-s;
           margin-right: 2px;
           display: inline-flex;
           vertical-align: sub;
@@ -112,7 +112,7 @@
     .card-external-link{
       hr {
         border: 0;
-        margin: $spacing-S 0;
+        margin: $spacing-ms 0;
         border-top: 1px solid $grey-50;
         height: 1px;
       }

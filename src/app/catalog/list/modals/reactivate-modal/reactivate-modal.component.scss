@@ -15,20 +15,20 @@
   h1 {
     font-size: $font-size-L;
     font-weight: bold;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
   }
   p {
     color: $grey-500;
-    margin: 0 0 $spacing;
+    margin: 0 0 $spacing-ml;
   }
   .line {
     background-color: $grey-50;
     width: 176px;
-    margin: $spacing auto $spacing-S;
+    margin: $spacing-ml auto $spacing-ms;
     height: 2px;
   }
   tsl-button {
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
     /deep/ {
       button {
         padding: 14px 114px;

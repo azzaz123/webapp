@@ -11,7 +11,7 @@
     margin: 0;
     background: transparent;
     .list-group-flush .list-group-item {
-      padding: 0 0 $spacing 0;
+      padding: 0 0 $spacing-ml 0;
     }
     .list-group {
       padding: 0;
@@ -20,10 +20,10 @@
   .card-block {
     text-align: center;
     tsl-user-avatar {
-      margin-bottom: $spacing-XS;
+      margin-bottom: $spacing-s;
     }
     .card-title {
-      margin-bottom: $spacing-XS;
+      margin-bottom: $spacing-s;
       line-height: 16px;
       margin-top: -6px;
     }
@@ -32,12 +32,12 @@
     }
   }
   .list-group-flush {
-    padding: $spacing 0;
+    padding: $spacing-ml 0;
     border-top: 1px solid $grey-50;
     .list-group-item {
       border: 0;
       font-size: $font-size-S;
-      padding: 0 $spacing $spacing-S $spacing;
+      padding: 0 $spacing-ml $spacing-ms $spacing-ml;
       display: flex;
       background: transparent;
       &:last-child {
@@ -46,7 +46,7 @@
       mat-icon {
         height: 16px;
         width: 16px;
-        margin-right: $spacing-S;
+        margin-right: $spacing-ms;
         margin-top: 1px;
       }
     }
@@ -67,7 +67,7 @@
         font-weight: bold;
         font-size: $font-size-XS;
         text-transform: uppercase;
-        margin-right: $spacing-XXS;
+        margin-right: $spacing-xs;
       }
       h2 {
         font-size: $font-size-S;

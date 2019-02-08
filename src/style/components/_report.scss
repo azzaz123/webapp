@@ -2,24 +2,24 @@
   .scroll {
     height: 400px;
     overflow-y: auto;
-    padding: $spacing-S;
+    padding: $spacing-ms;
   }
   .modal-content {
     .modal-body {
-      padding: $spacing 50px;
+      padding: $spacing-ml 50px;
     }
   }
 
   h1 {
     font-size: $font-size-L;
     color: $grey-800;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
 
   .report-ban-reason {
     position: relative;
     cursor: pointer;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
     .ban-reason-icon-container {
       @include square(60px);
       position: relative;
@@ -62,17 +62,17 @@
 
   .report-listing-textarea {
     width: 100%;
-    padding: $spacing-S $spacing-M;
+    padding: $spacing-ms $spacing-m;
     border: 1px solid $grey-50;
     border-radius: 10px;
     min-height: 120px;
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
     &::-webkit-input-placeholder {
       color: $grey-200;
     }
   }
 
   tsl-button {
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
   }
 }

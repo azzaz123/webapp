@@ -14,7 +14,7 @@
   h1 {
     font-size: $font-size-XL;
     color: $white;
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
   }
   h2 {
     font-size: $font-size;
@@ -24,7 +24,7 @@
   }
   .form-group {
     position: relative;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
     .form-control {
       width: 340px;
       border: 0;

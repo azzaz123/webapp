@@ -11,8 +11,8 @@
   flex-direction: column;
   justify-content: flex-end;
   .modal-close {
-    top: $spacing;
-    right: $spacing;
+    top: $spacing-ml;
+    right: $spacing-ml;
     @include square(13px);
     mat-icon {
       @include square(13px);
@@ -26,7 +26,7 @@
   p {
     opacity: .8;
     margin: 0;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
     color: $white;
     font-size: $font-size;
   }
@@ -44,12 +44,12 @@
     background: url(/assets/images/urgent-background.svg);
     width: 138px;
     height: 152px;
-    margin: $spacing-S auto;
+    margin: $spacing-ms auto;
   }
 }
 
 tsl-button {
-  margin: $spacing-L auto $spacing;
+  margin: $spacing-xl auto $spacing-ml;
 }
 
 .social-icons {

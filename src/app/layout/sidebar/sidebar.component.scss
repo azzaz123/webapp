@@ -7,15 +7,15 @@
   top: $topbar-height;
   bottom: 0;
   background-color: $grey-900;
-  padding-top: $spacing-M;
+  padding-top: $spacing-m;
   height: calc(100vh - #{$topbar-height});
   z-index: 99;
 }
 
 .chat-notification-pending {
   position: absolute;
-  top: $spacing;
-  right: $spacing;
+  top: $spacing-ml;
+  right: $spacing-ml;
   width: 10px;
   height: 10px;
   background-color: $warn;
@@ -28,7 +28,7 @@ $sidebar-section-circle-size-small: 32px;
 
 .sidebar-section-circle {
   position: relative;
-  margin: 0 auto $spacing-S auto;
+  margin: 0 auto $spacing-ms auto;
   width: $sidebar-section-circle-size;
   height: $sidebar-section-circle-size;
   background-color: rgba($grey-800, .5);
@@ -81,7 +81,7 @@ h2 {
 .sidebar-section {
   position: relative;
   display: block;
-  padding: $spacing-S 0;
+  padding: $spacing-ms 0;
   text-align: center;
   &:focus, &:hover {
     text-decoration: none;
@@ -108,8 +108,8 @@ h2 {
   }
   &.logout-item {
     position: absolute;
-    bottom: $spacing;
-    left: $spacing;
+    bottom: $spacing-ml;
+    left: $spacing-ml;
     padding: 0;
     h2 {
       width: $sidebar-section-circle-size;
@@ -126,7 +126,7 @@ h2 {
   .sidebar-section-circle {
     width: $sidebar-section-circle-size-small;
     height: $sidebar-section-circle-size-small;
-    margin: 0 auto $spacing-XS auto;
+    margin: 0 auto $spacing-s auto;
   }
   .sidebar-section {
     mat-icon {

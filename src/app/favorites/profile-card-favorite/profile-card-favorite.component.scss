@@ -6,21 +6,21 @@ tsl-card {
   border-radius: $border-radius;
   box-shadow: 0 0 2px 0 rgba($black, .1);
   transition: all .15s ease;
-  margin: 0 $spacing-S/2 $spacing-S $spacing-S/2;
+  margin: 0 $spacing-ms/2 $spacing-ms $spacing-ms/2;
 
   & /deep/ tsl-card-image {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    padding: $spacing-XXS;
+    padding: $spacing-xs;
     position: relative;
     
     .featured {
       position: absolute;
-      right: $spacing-XS;
-      top: $spacing-XS;
-      width: $spacing-L;
-      height: $spacing-L;
+      right: $spacing-s;
+      top: $spacing-s;
+      width: $spacing-xl;
+      height: $spacing-xl;
       border-radius: 50%;
       display: flex;
       background-image: linear-gradient(to bottom, $color-pro-super-light, $color-pro);
@@ -33,7 +33,7 @@ tsl-card {
   }
 
   & /deep/ tsl-card-content {
-    padding-top: $spacing-S;
+    padding-top: $spacing-ms;
     position: relative;
 
     span {

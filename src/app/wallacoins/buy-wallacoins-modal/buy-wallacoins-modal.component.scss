@@ -79,12 +79,12 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin-bottom: $spacing-S;
+      margin-bottom: $spacing-ms;
       .quantity {
         font-size: $font-size-XXL;
         font-weight: bold;
         line-height: 30px;
-        margin-top: $spacing-S;
+        margin-top: $spacing-ms;
       }
       .label {
         font-size: $font-size-M;
@@ -92,7 +92,7 @@
       }
     }
     .for-free {
-      margin-top: -$spacing-XS;
+      margin-top: -$spacing-s;
       margin-bottom: $spacing-1S;
     }
   }
@@ -102,9 +102,9 @@
     justify-content: center;
     align-items: center;
     width: 360px;
-    padding: $spacing-L;
+    padding: $spacing-xl;
     p {
-      margin-bottom: $spacing-L;
+      margin-bottom: $spacing-xl;
     }
   }
   .right, .bottom {

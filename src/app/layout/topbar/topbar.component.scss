@@ -23,13 +23,13 @@
 }
 .main-header-my-zone {
   tsl-user-avatar {
-    margin-left: $spacing-XS;
+    margin-left: $spacing-s;
   }
   span {
     font-size: $font-size-S;
     color: $grey-900;
-    margin-right: $spacing-XXS;
-    margin-left: $spacing-S;
+    margin-right: $spacing-xs;
+    margin-left: $spacing-ms;
   }
   &.active {
     span {
@@ -63,20 +63,19 @@
 }
 .topbar-menu {
   position: absolute;
-  right: $spacing-S;
+  right: $spacing-ms;
   top: 50%;
   transform: translateY(-50%);
   .topbar-sections {
     display: inline-block;
     a {
       display: inline-block;
-      margin-right: $spacing;
-      line-height: $spacing-L;
+      margin-right: $spacing-ml;
       text-decoration: none;
       border-radius: 100px;
       color: $white;
       &.active {
-        padding: 0 $spacing-S;
+        padding: 0 $spacing-ms;
         color: $corporate;
         background-color: $white;
       }
@@ -210,7 +209,7 @@
     & {
       color: $color-grey-item;
       height: 65px;
-      margin-right: $spacing;
+      margin-right: $spacing-ml;
       position: relative;
       display: flex;
       align-items: center;
@@ -251,7 +250,7 @@
       display: none;
       border-bottom: 3px solid $grey-900;
       width: 100%;
-      margin-left: $spacing-XS;
+      margin-left: $spacing-s;
       position: absolute;
       bottom: 0;
       left: 0;
@@ -343,13 +342,13 @@
     /deep/ button {
       font-weight: bold;
       font-size: $font-size-S;
-      padding-left: $spacing-XS;
+      padding-left: $spacing-s;
       padding-top: 7px;
       padding-bottom: 7px;
     }
     /deep/ mat-icon {
       vertical-align: middle;
-      margin-right: $spacing-XXS;
+      margin-right: $spacing-xs;
       @include square(26px);
     }
     &:hover {
@@ -388,7 +387,7 @@
 .main-header-credits {
   b {
     color: $corporate;
-    margin-right: $spacing-XXS;
+    margin-right: $spacing-xs;
   }
   .topbar-icon {
     @include square(38px);

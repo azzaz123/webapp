@@ -2,7 +2,7 @@
 
 .modal-body {
   text-align: center;
-  padding: 76px $spacing $spacing-L;
+  padding: 76px $spacing-ml $spacing-xl;
   h1 {
     font-size: $font-size-LL;
     font-weight: bold;
@@ -20,8 +20,8 @@
     }
   }
   tsl-button {
-    margin-top: $spacing;
-    margin-bottom: $spacing-S;
+    margin-top: $spacing-ml;
+    margin-bottom: $spacing-ms;
     /deep/ {
       .btn {
         width: 350px;

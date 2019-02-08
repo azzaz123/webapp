@@ -5,9 +5,9 @@ $border: solid 1px $grey-50;
   background-color: $white;
   border-radius: $border-radius;
   border: $border;
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
   .box-content {
-    padding: $spacing-L $spacing-L + 10;
+    padding: $spacing-xl $spacing-xl + 10;
     .section-title {
       position: absolute;
       font-size: $font-size-S;
@@ -20,7 +20,7 @@ $border: solid 1px $grey-50;
     }
   }
   .box-section {
-    padding: 0 0 $spacing-L;
+    padding: 0 0 $spacing-xl;
     border-bottom: $border;
   }
   .box-header {
@@ -57,14 +57,14 @@ $border: solid 1px $grey-50;
       align-items: center;
     }
     tsl-user-avatar {
-      margin-right: $spacing;
+      margin-right: $spacing-ml;
     }
     .btn-upload {
       background-color: $grey-50;
       border: solid 1px $grey-100;
       color: $grey-600;
       font-size: $font-size-S;
-      padding: $spacing-S $spacing;
+      padding: $spacing-ms $spacing-ml;
       margin-left: 43px;
       cursor: pointer;
       border-radius: $button-border-radius;
@@ -76,7 +76,7 @@ $border: solid 1px $grey-50;
       }
       .spinner {
         @include square(15px);
-        margin-right: $spacing-XS;
+        margin-right: $spacing-s;
         vertical-align: bottom;
       }
     }
@@ -98,7 +98,7 @@ $border: solid 1px $grey-50;
     }
     .select {
       height: 100px;
-      width: calc(50% - #{$spacing / 2});
+      width: calc(50% - #{$spacing-ml / 2});
       border-radius: $border-radius;
       border: solid 2px $grey-50;
       cursor: pointer;
@@ -164,7 +164,7 @@ $border: solid 1px $grey-50;
     }
   }
   .unsubscribe-section {
-    padding-top: $spacing-L;
+    padding-top: $spacing-xl;
     text-align: center;
     a {
       text-decoration: underline;

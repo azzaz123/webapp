@@ -26,7 +26,7 @@
   justify-content: space-between;
   h2 {
     font-size: $font-size-M;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
   .box {
     display: flex;
@@ -65,10 +65,10 @@
   flex-direction: column;
   align-items: center;
   width: 360px;
-  padding: $spacing-L;
+  padding: $spacing-xl;
   justify-content: space-between;
   p {
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
   .totals {
     width: 100%;
@@ -92,7 +92,7 @@
   }
   .credit {
     color: $corporate;
-    margin-bottom: $spacing-XS;
+    margin-bottom: $spacing-s;
     padding-right: 2px;
     .price {
       font-size: $font-size;
@@ -107,7 +107,7 @@
   .missing {
     border-top: solid 1px $grey-50;
     padding: 3px 2px 0 0;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
     .label {
       color: $grey-250;
     }
@@ -117,7 +117,7 @@
     }
   }
   .total {
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
     .price {
       font-size: $font-size-3L;
     }
@@ -127,7 +127,7 @@
     margin-bottom: $spacing-2M;
   }
   tsl-button {
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
   }
   .credit-card {
     width: 100%;
@@ -156,7 +156,7 @@
   height: 160px;
   background-color: $white;
   border-radius: 50%;
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
   mat-icon {
     width: 95px;
     height: 70px;

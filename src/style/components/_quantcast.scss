@@ -41,7 +41,7 @@
   .qc-cmp-link {
     color: $corporate !important;
     text-decoration: none;
-    margin-top: $spacing-XS;
+    margin-top: $spacing-s;
   }
 
   .qc-cmp-alt-action:hover,
@@ -147,7 +147,7 @@
   font-size: $font-size-S;
   background-color: $white;
   border: thin solid $corporate;
-  padding: 0 $spacing !important;
+  padding: 0 $spacing-ml !important;
   height: 42px;
   color: $corporate !important;
   text-decoration: none;

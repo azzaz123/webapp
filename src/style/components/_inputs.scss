@@ -3,7 +3,7 @@
 $form-control-height: 50px;
 
 .form-group {
-  margin-bottom: $spacing-L;
+  margin-bottom: $spacing-xl;
   &.last {
     margin-bottom: 0;
   }
@@ -130,7 +130,7 @@ select-dropdown{
     .options {
       overflow-x: hidden !important;
       ul li {
-        padding: $spacing-S !important;
+        padding: $spacing-ms !important;
         border-top: 1px solid $grey-50;
         line-height: 24px;
         mat-icon {
@@ -268,8 +268,8 @@ input::-webkit-calendar-picker-indicator{
   font-size: $font-size-XS;
   color: $grey-200;
   float: right;
-  margin-top: $spacing-XXS;
-  margin-bottom: $spacing-XS;
+  margin-top: $spacing-xs;
+  margin-bottom: $spacing-s;
 }
 
 .custom-radio {
@@ -280,7 +280,7 @@ input::-webkit-calendar-picker-indicator{
   [svgIcon="radio-button"] {
     @include square(18px);
     vertical-align: text-top;
-    margin-right: $spacing-XS;
+    margin-right: $spacing-s;
   }
   &:not(.active) {
     [svgIcon="radio-button"] #bullet {

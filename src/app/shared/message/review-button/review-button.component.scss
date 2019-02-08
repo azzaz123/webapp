@@ -6,15 +6,15 @@
 
 tsl-button {
   font-size: $font-size-S;
-  margin-top: $spacing-S;
+  margin-top: $spacing-ms;
 }
 
 .thanks {
-  margin-top: $spacing-M;
+  margin-top: $spacing-m;
   mat-icon {
     width: 16px;
     height: 12px;
-    margin-right: $spacing-XXS;
+    margin-right: $spacing-xs;
   }
   span {
     font-weight: bold;

@@ -23,16 +23,16 @@
 .modal-body {
   width: 580px;
   text-align: center;
-  padding: $spacing-L $spacing-XL;
+  padding: $spacing-xl $spacing-XL;
   ul {
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
     padding: 0;
     li {
       color: $grey-500;
       text-align: left;
       font-size: $font-size-S;
       list-style: none;
-      margin-bottom: $spacing-S;
+      margin-bottom: $spacing-ms;
       background: url(/assets/icons/check-purple.svg) no-repeat left center;
       padding-left: 50px;
       background-size: 20px;

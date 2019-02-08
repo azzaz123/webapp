@@ -9,20 +9,20 @@
 
   p {
     max-width: 435px;
-    margin: 0 auto $spacing auto;
+    margin: 0 auto $spacing-ml auto;
     font-size: $font-size;
     color: $grey-500;
   }
   h1 {
     font-weight: bold;
     font-size: $font-size-LL;
-    margin-top: $spacing-L;
-    margin-bottom: $spacing-L;
+    margin-top: $spacing-xl;
+    margin-bottom: $spacing-xl;
   }
 
   tsl-button {
-    margin-bottom: $spacing-S;
-    margin-top: $spacing-L;
+    margin-bottom: $spacing-ms;
+    margin-top: $spacing-xl;
     /deep/ {
       button {
         padding: 14px 114px;

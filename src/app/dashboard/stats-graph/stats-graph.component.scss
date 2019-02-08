@@ -8,7 +8,7 @@
 .chart {
   background-color: $white;
   border-radius: $border-radius;
-  padding: $spacing $spacing-S;
+  padding: $spacing-ml $spacing-ms;
   @media (max-width: 1420px) {
     padding-top: 70px;
   }

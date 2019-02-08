@@ -23,12 +23,12 @@ h2, h3 {
 
 h2 {
   font-size: $font-size-M;
-  margin-bottom: $spacing-L;
+  margin-bottom: $spacing-xl;
 }
 
 h3 {
   font-size: $font-size;
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
 }
 
 a {
@@ -49,12 +49,12 @@ a {
     display: block;
     border-radius: 5px;
     text-align: center;
-    padding: $spacing-L $spacing-S $spacing-S;
+    padding: $spacing-xl $spacing-ms $spacing-ms;
     font-size: $font-size-S;
     .title {
       font-weight: bold;
-      margin-bottom: $spacing-XS;
-      padding: 0 $spacing-S;
+      margin-bottom: $spacing-s;
+      padding: 0 $spacing-ms;
     }
     .desc {
       color: $grey-250;
@@ -64,9 +64,9 @@ a {
 
 .summary {
   border-bottom: solid 1px $grey-50;
-  margin-bottom: $spacing-L;
+  margin-bottom: $spacing-xl;
   .section {
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
   .question {
     font-size: $font-size-S;
@@ -79,11 +79,11 @@ a {
 
 .faqs {
   .section {
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
   h3 {
-    margin-bottom: $spacing-M;
-    padding-top: $spacing;
+    margin-bottom: $spacing-m;
+    padding-top: $spacing-ml;
     &.active {
       color: $corporate;
     }
@@ -98,7 +98,7 @@ a {
 .contacts {
   padding: 56px 42px;
   h2 {
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
   }
   .grey {
     color: $grey-250;

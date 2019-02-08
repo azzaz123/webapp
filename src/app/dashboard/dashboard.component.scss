@@ -24,7 +24,7 @@ h2 {
 
 .list-group-item {
   padding-left: 0;
-  padding-bottom: $spacing;
+  padding-bottom: $spacing-ml;
   padding-right: 0;
 }
 
@@ -38,7 +38,7 @@ $sidebar-title: 64px;
 .stats-sidebar {
   h2 {
     font-size: $font-size-M;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
   }
   h2, h3 {
     padding: 0 18px;
@@ -49,13 +49,13 @@ $sidebar-title: 64px;
   position: absolute;
   top: $topbar-height;
   right: 0;
-  padding: $spacing 0;
+  padding: $spacing-ml 0;
   .stats-sidebar-container {
     position: relative;
     .check-corporate {
       position: absolute;
-      bottom: $spacing;
-      right: $spacing;
+      bottom: $spacing-ml;
+      right: $spacing-ml;
     }
     &.calls-container {
       border-top: 1px solid $grey-50;
@@ -76,10 +76,10 @@ $sidebar-title: 64px;
     font-size: $spacing-S;
     font-weight: bold;
     color: $grey-300;
-    margin-top: $spacing;
-    margin-bottom: $spacing-S;
+    margin-top: $spacing-ml;
+    margin-bottom: $spacing-ms;
     text-transform: uppercase;
-    padding-right: $spacing-S;
+    padding-right: $spacing-ms;
     a {
       float: right;
       color: $corporate;
@@ -93,7 +93,7 @@ $sidebar-title: 64px;
   }
   .calls-container {
     h3 {
-      margin-bottom: $spacing;
+      margin-bottom: $spacing-ml;
     }
   }
 }
@@ -101,7 +101,7 @@ $sidebar-title: 64px;
   display: block;
   width: 400px;
   height: auto;
-  margin: $spacing-L 0;
+  margin: $spacing-xl 0;
 }
 
 .stats-sidebar-completed {
@@ -117,7 +117,7 @@ $sidebar-title: 64px;
     margin-bottom: $spacing-XL;
   }
   h2 {
-    margin-bottom: $spacing-XS;
+    margin-bottom: $spacing-s;
   }
   p {
     padding: 0 $spacing-XL;
@@ -126,5 +126,5 @@ $sidebar-title: 64px;
 }
 
 tsl-stats-graph {
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
 }

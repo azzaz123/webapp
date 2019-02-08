@@ -22,7 +22,7 @@
   }  
   .datepicker-wrapper {
     border-radius: $border-radius;
-    padding: $spacing $spacing-L;
+    padding: $spacing-ml $spacing-xl;
     background-color: $white;
     z-index: 1;
   }
@@ -32,7 +32,7 @@
     display: flex;
     justify-content: space-between;
     border-top: solid 1px $grey-50;
-    padding-top: $spacing;    
+    padding-top: $spacing-ml;    
     .datepicker-btn {
       -webkit-appearance: none;
       background-color: transparent;
@@ -80,7 +80,7 @@
       font-weight: bold;
       font-style: normal;
       color: $grey-500;
-      margin: $spacing-S 0;
+      margin: $spacing-ms 0;
       width: 2.5rem;
       text-transform: lowercase;
     }
@@ -99,7 +99,7 @@
     .ngb-dp-month-name {
       font-size: $font-size;
       font-weight: bold;
-      margin: 0 $spacing-M;
+      margin: 0 $spacing-m;
     }
     .right {
       .ngb-dp-navigation-chevron {
@@ -110,7 +110,7 @@
 
   .selected-text {
     font-size: $font-size-S;
-    margin: $spacing 0;
+    margin: $spacing-ml 0;
     &.citybump {
       color: $zone-bump;
     }

@@ -2,8 +2,7 @@
 
 :host {
   display: block;
-  margin-bottom: $spacing-XS;
-  line-height: $spacing;
+  margin-bottom: $spacing-s;
   overflow: hidden;
 
 }
@@ -17,15 +16,15 @@ h5 {
 $avatar-size: 40px;
 .message-avatar {
   color: $grey-700;
-  margin-right: $spacing;
+  margin-right: $spacing-ml;
 }
 
 .message-avatar {
   float: left;
-  margin: $spacing 0 0;
+  margin: $spacing-ml 0 0;
   &.from-self {
     float: right;
-    margin: $spacing 0 0;
+    margin: $spacing-ml 0 0;
   }
 }
 
@@ -34,13 +33,13 @@ $avatar-size: 40px;
 }
 .message-body {
   color: $grey-700;
-  margin: $spacing $spacing-XL 0 $spacing-XL;
+  margin: $spacing-ml $spacing-XL 0 $spacing-XL;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   &.without-avatar {
     margin-top: 0;
-    margin-left: #{$spacing + $avatar-size};
+    margin-left: #{$spacing-ml + $avatar-size};
   }
   &.calls-panel {
     margin-top: 0;
@@ -51,7 +50,7 @@ $avatar-size: 40px;
   p {
     flex: 0 0 auto;
     width: fit-content;
-    padding: $spacing-XS $spacing-S;
+    padding: $spacing-s $spacing-ms;
     border-radius: 20px;
     background-color: $grey-40;
     margin-bottom: 0;
@@ -60,7 +59,7 @@ $avatar-size: 40px;
     position: relative;
     flex-direction: row-reverse;
     p {
-      padding-right :$spacing-L;
+      padding-right :$spacing-xl;
       background-color: $corporate-light;
       float: right;
     }
@@ -70,9 +69,7 @@ $avatar-size: 40px;
 .message-status {
   position: absolute;
   bottom: $spacing-1S;
-  right: $spacing-S;
-  width: $spacing;
-  height: $spacing;
+  right: $spacing-ms;
   background: right bottom no-repeat;
   &.pending { background-image: url(/assets/icons/status-pending.svg); }
   &.sent { background-image: url(/assets/icons/status-sent.svg); }
@@ -84,7 +81,7 @@ $avatar-size: 40px;
   float: right;
   font-size: $font-size-XXS;
   white-space: pre;
-  margin: 0 $spacing-XXS 0 $spacing-XS;
+  margin: 0 $spacing-xs 0 $spacing-s;
   color: $grey-250;
   position: relative;
   bottom: -2px;
@@ -102,10 +99,10 @@ $avatar-size: 40px;
 
 .third-voice {
   text-align: center;
-  margin: $spacing-S 112px;
+  margin: $spacing-ms 112px;
   border: 1px solid $grey-50;
   border-radius: $border-radius;
-  padding: $spacing-M;
+  padding: $spacing-m;
   font-size: $font-size-S;
 }
 
@@ -118,7 +115,7 @@ $avatar-size: 40px;
     width: auto;
     border-radius: 20px;
     color: $corporate;
-    margin: $spacing auto 0;
+    margin: $spacing-ml auto 0;
   }
   span.new-line {
     display: block;

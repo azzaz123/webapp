@@ -45,7 +45,7 @@ $feature-button-width: 170px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: $spacing;
+    margin-right: $spacing-ml;
     margin-top: 42px;
     cursor: pointer;
     mat-icon {
@@ -73,8 +73,8 @@ $feature-button-width: 170px;
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $grey-50;
-  margin-bottom: $spacing;
-  margin-left: $spacing-L;
+  margin-bottom: $spacing-ml;
+  margin-left: $spacing-xl;
   display: flex;
   align-items: center;
   position: relative;
@@ -133,7 +133,7 @@ $feature-button-width: 170px;
   }
   .image {
     padding: 4px;
-    padding-right: $spacing-M;
+    padding-right: $spacing-m;
     display: block;
   }
   .title, .price {
@@ -226,12 +226,12 @@ $feature-button-width: 170px;
     }
   }
   .actions {
-    margin-right: $spacing-L;
+    margin-right: $spacing-xl;
     .resized & {
       display: none;
     }
     button, tsl-button {
-      margin-left: $spacing-S;
+      margin-left: $spacing-ms;
       float: left;
       background-color: transparent;
     }
@@ -281,9 +281,9 @@ $feature-button-width: 170px;
     tsl-button {
       /deep/ .btn-feature {
         width: $feature-button-width;
-        height: $spacing * 2;
-        padding: 0 $spacing;
-        padding-left: $spacing-S;
+        height: $spacing-ml * 2;
+        padding: 0 $spacing-ml;
+        padding-left: $spacing-ms;
         font-size: $font-size-S;
         mat-icon {
           width: 19px;
@@ -302,15 +302,15 @@ $feature-button-width: 170px;
     z-index: 2;
     position: relative;
     font-size: $font-size-S;
-    padding-right: $spacing-L * 2;
+    padding-right: $spacing-xl * 2;
     margin-right: $spacing-2M;
     border-radius: $border-radius;
     color: $grey-900;
-    height: $spacing * 2;
+    height: $spacing-ml * 2;
     cursor: default;
     mat-icon {
       margin-right: 34px;
-      margin-left: $spacing-XXS;
+      margin-left: $spacing-xs;
     }
   }
 }

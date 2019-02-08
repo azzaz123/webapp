@@ -50,7 +50,7 @@
         .bump-info {
           display: flex;
           flex-direction: row;
-          margin: $spacing-L 0 0 0;
+          margin: $spacing-xl 0 0 0;
           .col {
             flex-direction: column;
             align-items: center;
@@ -63,7 +63,7 @@
             h2 {
               font-size: $font-size-LL;
               font-weight: bold;
-              margin: $spacing 0 $spacing-S;
+              margin: $spacing-ml 0 $spacing-ms;
               width: 80%;
             }
             p {
@@ -153,8 +153,8 @@
       }
       #controls {
         position: absolute;
-        right: $spacing-M;
-        bottom: $spacing-M;
+        right: $spacing-m;
+        bottom: $spacing-m;
         .btn-next {
           color: $corporate;
           padding: 10px 48px;
@@ -166,7 +166,7 @@
         }
         .dots {
           text-align: center;
-          margin-bottom: $spacing;
+          margin-bottom: $spacing-ml;
           .dot {
             display: inline-block;
             @include square(7.6px);
@@ -184,7 +184,7 @@
       }
       #close {
         position: absolute;
-        right: $spacing;
+        right: $spacing-ml;
         top: 50px;
         color: $white;
         text-align: center;

@@ -1,6 +1,6 @@
 @import "~style/common";
 
-$cart-height: calc(100vh - #{$topbar-height + $spacing-L * 1.2});
+$cart-height: calc(100vh - #{$topbar-height + $spacing-xl * 1.2});
 $title-height: 42px;
 $main-total-height: 46px;
 $credit-total-height: 21px;
@@ -9,13 +9,13 @@ $totals-margins: 0px;
 $total-height: $main-total-height + $totals-margins + $credit-total-height + $missing-total-height;
 $discounted-total-height: 30px;
 $button-height: 42px;
-$button-margin: $spacing - $spacing-XS;
-$button-space: $button-height + $spacing;
+$button-margin: $spacing-ml - $spacing-s;
+$button-space: $button-height + $spacing-ml;
 $secure-label-height: 25px;
 $extra-height: 15px;
 $scroll-panel-height: calc(#{$cart-height} - #{$title-height + $total-height + $discounted-total-height + $button-space + $secure-label-height});
 $clear-cart-height: 38px;
-$card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
+$card-select-height: (50px + $spacing-s) * 2 + $spacing-xs;
 
 :host {
   background: $white;
@@ -25,7 +25,7 @@ $card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
   height: $cart-height;
   width: 280px;
   position: fixed;
-  padding: 0 $spacing-XS;
+  padding: 0 $spacing-s;
 }
 
 h1 {
@@ -68,7 +68,7 @@ h1 {
 
 .scroll-panel {
   overflow: auto;
-  padding: $spacing-XS;
+  padding: $spacing-s;
   height: 100%;
 }
 
@@ -76,8 +76,8 @@ h1 {
   text-align: right;
   font-size: $font-size-L;
   color: $grey-250;
-  margin-top: $spacing-M;
-  padding-right: $spacing-XS;
+  margin-top: $spacing-m;
+  padding-right: $spacing-s;
   margin-bottom: -7px;
   height: $discounted-total-height;
 }
@@ -89,7 +89,7 @@ h1 {
   font-size: $font-size-XS;
   font-weight: bold;
   text-transform: uppercase;
-  padding: 0 $spacing-XS;
+  padding: 0 $spacing-s;
   overflow: hidden;
   clear: both;
 }
@@ -97,7 +97,7 @@ h1 {
 .walla-total {
   color: $grey-500;
   line-height: 25px;
-  margin-top: $spacing-XS;
+  margin-top: $spacing-s;
   .price {
     font-size: $font-size-L;
   }
@@ -168,7 +168,7 @@ ul, li {
     background-color: $white;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     border: solid 0.5px $grey-100;
-    margin-bottom: $spacing-XS;
+    margin-bottom: $spacing-s;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -180,7 +180,7 @@ ul, li {
     .wing-icon {
       width: 51px;
       height: 30px;
-      margin-right: $spacing-XS;
+      margin-right: $spacing-s;
     }
     .arrow-icon {
       transform: rotate(-90deg) scale(.8);
@@ -211,19 +211,19 @@ ul, li {
   }
   .close-icon {
     @include square(16px);
-    margin-bottom: $spacing-XS;
-    margin-right: $spacing-XS;
+    margin-bottom: $spacing-s;
+    margin-right: $spacing-s;
     cursor: pointer;
   }
   .cart-item {
     display: flex;
     align-items: center;
     .cart-box {
-      padding: $spacing-XXXS;
+      padding: $spacing-xxs;
       flex: 1;
     }
     .price {
-      margin-right: $spacing-XS;
+      margin-right: $spacing-s;
     }
     tsl-item-avatar {
       /deep/ div {

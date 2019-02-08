@@ -1,7 +1,7 @@
 @import "~style/common";
 
 :host {
-  padding: $spacing-L;
+  padding: $spacing-xl;
   text-align: center;
 }
 .modal-close {
@@ -14,8 +14,8 @@
   }
 }
 img {
-  margin-bottom: $spacing-L;
-  margin-top: $spacing-L;
+  margin-bottom: $spacing-xl;
+  margin-top: $spacing-xl;
   &.fail {
     width: 173px;
   }
@@ -24,7 +24,7 @@ p {
   color: $grey-250;
   font-size: $font-size;
   max-width: 300px;
-  margin: 0 auto $spacing-S auto;
+  margin: 0 auto $spacing-ms auto;
 }
 h1 {
   font-weight: bold;

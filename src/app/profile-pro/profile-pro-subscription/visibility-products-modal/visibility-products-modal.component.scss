@@ -30,7 +30,7 @@ h1 {
 
 h2 {
   font-size: 24px;
-  margin-bottom: $spacing-S;
+  margin-bottom: $spacing-ms;
 }
 
 .city, .country {
@@ -53,6 +53,6 @@ h2 {
 .btn {
   border-radius: $button-border-radius;
   font-weight: bold;
-  margin-top: $spacing-L;
+  margin-top: $spacing-xl;
   padding: 10px 30px;
 }

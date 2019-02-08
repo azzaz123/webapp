@@ -1,20 +1,20 @@
 @import "~style/common";
 
 .modal-body {
-    padding: $spacing-L;
+    padding: $spacing-xl;
 }
 
 .modal-body {
     padding-top: $spacing-XL;
-    padding-left: $spacing-L;
-    padding-right: $spacing-L;
+    padding-left: $spacing-xl;
+    padding-right: $spacing-xl;
 }
 
 h1 {
     font-size: $font-size-LL;
     color: $corporate;
     font-weight: bold;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
 }
 
 h2 {
@@ -29,14 +29,14 @@ h2 {
 p {
     font-size: $font-size-S;
     color: $grey-500;
-    margin-top: $spacing-XS;
+    margin-top: $spacing-s;
     &.text {
         color: $grey-900;
     }
 }
 
 tsl-stars-rate {
-    margin: $spacing 0;
+    margin: $spacing-ml 0;
 }
 
 #price {
@@ -46,7 +46,7 @@ tsl-stars-rate {
     display: inline;
     text-align: right;
     padding: 0;
-    margin-right: $spacing-S;
+    margin-right: $spacing-ms;
 }
 
 #price, .currency {
@@ -56,5 +56,5 @@ tsl-stars-rate {
 textarea {
     height: 230px;
     margin-top: $spacing-XL;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
 }

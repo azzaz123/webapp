@@ -13,8 +13,8 @@ $feature-button-width: 170px;
   flex-direction: column;
   justify-content: flex-end;
   .modal-close {
-    top: $spacing;
-    right: $spacing;
+    top: $spacing-ml;
+    right: $spacing-ml;
     @include square(13px);
     mat-icon {
       @include square(13px);
@@ -28,16 +28,16 @@ $feature-button-width: 170px;
   p {
     opacity: .8;
     margin: 0;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
     color: $white;
     font-size: $font-size;
-    padding: 0 $spacing-L;
+    padding: 0 $spacing-xl;
   }
 }
 
 .modal-body {
   text-align: center;
-  padding: $spacing-L 70px 40px;
+  padding: $spacing-xl 70px 40px;
   p {
     font-size: $font-size;
     color: $grey-400;
@@ -47,7 +47,7 @@ $feature-button-width: 170px;
     background: url(/assets/images/urgent-background.svg);
     width: 138px;
     height: 152px;
-    margin: $spacing-S auto $spacing-L;
+    margin: $spacing-ms auto $spacing-xl;
   }
 }
 

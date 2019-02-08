@@ -5,7 +5,7 @@
   border-radius: $border-radius;
   border: solid 1px $grey-50;
   margin-bottom: 8px;
-  padding: $spacing-XS 0 $spacing-XS $spacing-M;
+  padding: $spacing-s 0 $spacing-s $spacing-m;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,7 +37,7 @@
       text-align: center;
     }
     .title {
-      padding-left: $spacing-S;
+      padding-left: $spacing-ms;
       flex: 1;
     }
   }
@@ -68,8 +68,8 @@
         font-weight: normal;
       }
       .action {
-        margin-left: $spacing-M;
-        min-width: $spacing * 5;
+        margin-left: $spacing-m;
+        min-width: $spacing-ml * 5;
         .btn-price {
           background-color: $grey-50;
           border-radius: $button-border-radius;
