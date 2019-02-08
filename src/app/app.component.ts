@@ -34,6 +34,7 @@ import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
+import { InboxService } from './chat-with-inbox/inbox/inbox.service';
 
 @Component({
   selector: 'tsl-root',
@@ -54,6 +55,7 @@ export class AppComponent implements OnInit {
 
   constructor(private event: EventService,
               private realTime: RealTimeService,
+              private inboxService: InboxService,
               public userService: UserService,
               private errorsService: ErrorsService,
               private notificationService: NotificationService,
@@ -162,23 +164,8 @@ export class AppComponent implements OnInit {
       this.userService.me().subscribe(
         (user: User) => {
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
-          this.event.subscribe(EventService.DB_READY, (dbName) => {
-            if (!dbName) {
-              this.realTime.connect(user.id, accessToken).subscribe(() => {
-                this.conversationService.init().subscribe(() => {
-                  this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-                    if (isProfessional) {
-                      this.callService.init().subscribe(() => {
-                        this.conversationService.init(true).subscribe(() => {
-                          this.callService.init(true).subscribe();
-                        });
-                      });
-                    }
-                  });
-                });
-              });
-            }
-          });
+          this.initOldChat(user, accessToken);
+          this.initChatWithInbox(user, accessToken);
           appboy.changeUser(user.id);
           appboy.openSession();
           if (!this.cookieService.get('app_session_id')) {
@@ -190,6 +177,48 @@ export class AppComponent implements OnInit {
           this.userService.logout();
           this.errorsService.show(error, true);
         });
+    });
+  }
+
+  private initOldChat(user: User, accessToken: string) {
+    this.event.subscribe(EventService.DB_READY, (dbName) => {
+      if (!dbName) {
+        this.realTime.connect(user.id, accessToken).subscribe(() => {
+          this.conversationService.init().subscribe(() => {
+            this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+              if (isProfessional) {
+                this.callService.init().subscribe(() => {
+                  this.conversationService.init(true).subscribe(() => {
+                    this.callService.init(true).subscribe();
+                  });
+                });
+              }
+            });
+          });
+        });
+      }
+    });
+  }
+
+  private initChatWithInbox(user: User, accessToken: string) {
+    this.event.subscribe(EventService.DB_READY, (dbName) => {
+      if (!dbName) {
+        this.realTime.connect(user.id, accessToken).subscribe(() => {
+          this.inboxService.getInbox().subscribe(r => console.log('here!', r));
+
+          // this.conversationService.init().subscribe(() => {
+          //   this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+          //     if (isProfessional) {
+          //       this.callService.init().subscribe(() => {
+          //         this.conversationService.init(true).subscribe(() => {
+          //           this.callService.init(true).subscribe();
+          //         });
+          //       });
+          //     }
+          //   });
+          // });
+        });
+      }
     });
   }
 

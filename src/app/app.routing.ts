@@ -59,6 +59,10 @@ const routes: Routes = [
   },
   {
     path: 'chat',
+    loadChildren: 'app/chat-with-inbox/chat.module#ChatModule'
+  },
+  {
+    path: 'old-chat',
     loadChildren: 'app/chat/chat.module#ChatModule'
   },
   {
