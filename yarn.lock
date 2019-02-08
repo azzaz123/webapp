@@ -7957,10 +7957,6 @@ web-animations-js@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/web-animations-js/-/web-animations-js-2.3.1.tgz#3a6d9bc15196377a90f8e2803fa5262165b04510"
 
-"web-styleguide@https://github.com/Wallapop/web-styleguide#0.2.0":
-  version "0.2.0"
-  resolved "https://github.com/Wallapop/web-styleguide#a65ae4761563521dcc604cd585e7498dc992eb3a"
-
 webassemblyjs@1.4.3:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/webassemblyjs/-/webassemblyjs-1.4.3.tgz#0591893efb8fbde74498251cbe4b2d83df9239cb"
