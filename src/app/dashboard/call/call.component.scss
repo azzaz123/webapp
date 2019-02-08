@@ -57,7 +57,7 @@ tsl-user-avatar {
     @include text-truncate();
   }
   .call-user-row {
-    line-height: $spacing-M;
+    line-height: 16px;
     display: flex;
     flex-direction: row;
     vertical-align: super;

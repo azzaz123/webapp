@@ -68,7 +68,7 @@ $menu-width-and-spacing: 10px;
     @include text-truncate();
   }
   .item-title-row {
-    line-height: $spacing-M;
+    line-height: 16px;
     display: flex;
     flex-direction: row;
     vertical-align: super;
@@ -117,10 +117,10 @@ $menu-width-and-spacing: 10px;
     }
     .badge-pill {
       background-color: $warn;
-      height: $spacing;
-      width: $spacing;
+      height: $spacing-ml;
+      width: $spacing-ml;
       padding: 0;
-      line-height: $spacing;
+      line-height: $spacing-ml;
       font-size: 12px;
     }
     .user-name {

@@ -142,12 +142,12 @@
       }
     }
     &.start {
-      border-top-left-radius: $spacing;
-      border-bottom-left-radius: $spacing;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
     }
     &.end {
-      border-top-right-radius: $spacing;
-      border-bottom-right-radius: $spacing;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
     }
     &.disabled {
       color: $grey-250;

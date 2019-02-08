@@ -3,6 +3,7 @@
 :host {
   display: block;
   margin-bottom: $spacing-s;
+  line-height: $spacing-ml;
   overflow: hidden;
 
 }
@@ -70,6 +71,8 @@ $avatar-size: 40px;
   position: absolute;
   bottom: $spacing-1S;
   right: $spacing-ms;
+  width: 20px;
+  height: 20px;
   background: right bottom no-repeat;
   &.pending { background-image: url(/assets/icons/status-pending.svg); }
   &.sent { background-image: url(/assets/icons/status-sent.svg); }
