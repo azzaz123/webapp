@@ -1,0 +1,19 @@
+@import "~style/common";
+
+$sold-height: 38px;
+
+.reserved {
+  background-color: $white;
+  border-radius: 100px;
+  color: $reserve-bg;
+  font-size: $font-size-S;
+  height: $sold-height;
+  line-height: $sold-height;
+  text-align: center;
+  padding: 0 $spacing;
+  mat-icon {
+    vertical-align: middle;
+    width: 15px;
+    margin-right: 7px;
+  }
+}

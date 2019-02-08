@@ -38,6 +38,7 @@ export class EventService {
   public static CLOSE_EXPANDED_CALLS = 'closeExpandedCalls';
   public static TOTAL_CREDITS_UPDATED = 'packBought';
   public static DB_READY = 'dbReady';
+  public static INBOX_DB_READY = 'inboxDbReady';
   public static FOUND_MESSAGES_IN_DB = 'foundMessagesInDb';
   public static CONVERSATION_BUMPED = 'conversationBumped';
   public static HTTP_REQUEST_FAILED = 'httpRequestFailed';

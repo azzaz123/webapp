@@ -20,11 +20,13 @@ import { User } from '../user/user';
 import { EventService } from '../event/event.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TrackingEvent } from '../tracking/tracking-event';
+import { Conversation } from '../conversation/conversation';
 
 @Injectable()
 export class PersistencyService {
   private _messagesDb: Database<StoredMessage>;
   private _conversationsDb: Database<StoredConversation>;
+  private _inboxDb: Database<any>;
   private clickstreamDb: any;
   private storedMessages: AllDocsResponse<StoredMessage>;
   private latestVersion = 2.0;
@@ -41,6 +43,7 @@ export class PersistencyService {
         this.initClickstreamDb(this.clickstreamDbName);
         this.eventsStore = 'events-' + user.id;
         this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
+        this.initInboxDb(user.id);
         this.localDbVersionUpdate(this.messagesDb, this.latestVersion, () => {
           this.messagesDb.destroy().then(() => {
             this._messagesDb = new PouchDB('messages-' + user.id, { auto_compaction: true });
@@ -56,6 +59,36 @@ export class PersistencyService {
 
   set messagesDb(value: PouchDB.Database<any>) {
     this._messagesDb = value;
+  }
+
+  set inboxDb(value: PouchDB.Database<any>) {
+    this._inboxDb = value;
+  }
+
+  public initInboxDb(userId: string) {
+    this.inboxDb = new PouchDB('inbox-' + userId, { auto_compaction: true });
+  }
+
+  public updateInbox(conversations: Conversation[]): Observable<any> {
+    console.log('destroying...');
+    return this.inboxDb.destroy().then(() => {
+      console.log('destroyed! recreating...');
+      this.inboxDb = new PouchDB('inbox-' + this.userService.user.id, { auto_compaction: true });
+      const inboxToSave = conversations.map((conversation: Conversation) => {
+        return this.buildInboxResponse(conversation);
+      });
+      console.log('adding convs...');
+      return Observable.fromPromise(this.inboxDb.bulkDocs(
+        inboxToSave
+      ));
+    });
+  }
+
+  private buildInboxResponse(conversation) {
+    return {
+      _id: conversation.conversation_hash,
+      conversation: conversation
+    };
   }
 
   private initClickstreamDb(dbName: string, version?: number) {
@@ -131,6 +164,10 @@ export class PersistencyService {
 
   get messagesDb(): PouchDB.Database<any> {
     return this._messagesDb;
+  }
+
+  get inboxDb(): PouchDB.Database<any> {
+    return this._inboxDb;
   }
 
   get conversationsDb(): PouchDB.Database<any> {
