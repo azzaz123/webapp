@@ -65,7 +65,7 @@ tsl-process-all-button {
       svg {
         position: absolute;
         top: 0;
-        left: -#{$spacing + 5px};
+        left: -#{$spacing-l};
       }
     }
     &:hover {

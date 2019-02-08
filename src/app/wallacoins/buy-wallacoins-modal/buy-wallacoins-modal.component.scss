@@ -28,8 +28,7 @@
     .icon {
       @include square(160px);
       border-radius: 50%;
-      margin-top: $spacing-1M;
-      margin-bottom: $spacing-2M;
+      margin-top: 18px;
       background: $white no-repeat center;
       &.icon-1 {
         background-image: url(/assets/images/wallacoins-1.svg);

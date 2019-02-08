@@ -235,10 +235,10 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     border-radius: $button-border-radius;
   }
   .modal-close {
-    left: $spacing-1M;
-    top: $spacing-1M;
+    left: $spacing-m;
+    top: $spacing-m;
     mat-icon {
-      @include square($spacing-1M);
+      @include square($spacing-m);
     }
   }
 }
