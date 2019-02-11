@@ -513,10 +513,18 @@ describe('App', () => {
       expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.RECEIVED, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
     });
 
-    it('should call the conversationService.markAllAsRead method when a a CHAT_SIGNAL event is triggered with a READ signal', () => {
-      eventService.emit(EventService.CHAT_SIGNAL, new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.conversationId, timestamp));
+    it(`should call the conversationService.markAllAsRead method with fromSelf TRUE when a a CHAT_SIGNAL event is triggered with
+      a READ signal fromSelf`, () => {
+      eventService.emit(EventService.CHAT_SIGNAL, new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.conversationId, timestamp, null, true));
 
       expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp, true);
+    });
+
+    it(`should call the conversationService.markAllAsRead method with fromSelf FALSE when a a CHAT_SIGNAL event is triggered with
+      a READ signal NOT fromSelf`, () => {
+      eventService.emit(EventService.CHAT_SIGNAL, new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.conversationId, timestamp, null, false));
+
+      expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp, false);
     });
   });
 

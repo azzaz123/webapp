@@ -285,20 +285,25 @@ export class ConversationService extends LeadService {
   public markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = false) {
     const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
     if (conversation) {
-      conversation.messages.filter((message) => (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT)
-        && ( fromSelf ? message.fromSelf && new Date(message.date).getTime() <= timestamp : !message.fromSelf ))
-        .map((message) => {
-          message.status = messageStatus.READ;
-          this.persistencyService.updateMessageStatus(message, messageStatus.READ);
-          const eventAttributes = {
-            thread_id: message.conversationId,
-            message_id: message.id
-          };
-          this.trackingService.addTrackingEvent({
-            eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
-            attributes: eventAttributes
-          }, false);
-        });
+      const unreadMessages = conversation.messages.filter(message => (message.status === messageStatus.RECEIVED ||
+        message.status === messageStatus.SENT) && (fromSelf ? message.fromSelf &&
+        new Date(message.date).getTime() <= timestamp : !message.fromSelf));
+      unreadMessages.map((message) => {
+        message.status = messageStatus.READ;
+        this.persistencyService.updateMessageStatus(message, messageStatus.READ);
+        const eventAttributes = {
+          thread_id: message.conversationId,
+          message_id: message.id
+        };
+        this.trackingService.addTrackingEvent({
+          eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
+          attributes: eventAttributes
+        }, false);
+      });
+      if (!fromSelf) {
+        conversation.unreadMessages -= unreadMessages.length;
+        this.messageService.totalUnreadMessages -= unreadMessages.length;
+      }
     }
   }
 
