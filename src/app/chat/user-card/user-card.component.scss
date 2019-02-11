@@ -36,7 +36,7 @@
     border-top: 1px solid $grey-50;
     .list-group-item {
       border: 0;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       padding: 0 $spacing $spacing-S $spacing;
       display: flex;
       background: transparent;
@@ -65,18 +65,18 @@
       .selling-label {
         color: $grey-300;
         font-weight: bold;
-        font-size: $font-size-XS;
+        font-size: $font-size-xs;
         text-transform: uppercase;
         margin-right: $spacing-XXS;
       }
       h2 {
-        font-size: $font-size-S;
+        font-size: $font-size-s;
         line-height: 1.57;
         max-height: 40px;
         overflow: hidden;
       }
       .items-count {
-        font-size: $font-size-XS;
+        font-size: $font-size-xs;
         color: $corporate;
         font-weight: bold;
       }

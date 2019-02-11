@@ -20,7 +20,7 @@
     background-color: $corporate-light;
     color: $corporate;
     text-transform: uppercase;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     line-height: $height;
     font-weight: bold;
     text-align: center;
@@ -61,12 +61,12 @@
     margin-top: $spacing-S;
   }
   .label {
-    font-size: $font-size-L;
+    font-size: $font-size-l;
     color: $grey-900;
   }
   .for-free {
     color: $corporate;
-    font-size: $font-size;
+    font-size: $font-size-m;
     font-weight: bold;
     flex-grow: 1;
   }
@@ -78,7 +78,7 @@
       justify-content: center;
       margin-bottom: $spacing-S;
       .quantity {
-        font-size: $font-size-XXL;
+        font-size: $font-size-xxl;
       }
     }
   }

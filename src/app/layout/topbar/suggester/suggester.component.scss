@@ -16,7 +16,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
   }
   &.active {
     width: 250px - 36px;
@@ -59,13 +59,13 @@
     transition: all .15s linear;
     & .suggestion {
       display: grid;
-      line-height: $font-size-L;
+      line-height: $font-size-l;
       & .title {
-        font-size: $font-size;
+        font-size: $font-size-m;
       }
       & .category {
         color: $corporate;
-        font-size: $font-size-S;
+        font-size: $font-size-s;
       }
     }
   }

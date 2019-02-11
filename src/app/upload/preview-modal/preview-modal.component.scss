@@ -15,7 +15,7 @@ p {
 }
 
 .price, h1 {
-  font-size: $font-size-XL;
+  font-size: $font-size-xl;
 }
 
 h1 {
@@ -26,13 +26,13 @@ h1 {
 
 .price {
   font-weight: bold;
-  line-height: $font-size-XL;
+  line-height: $font-size-xl;
   margin-bottom: $spacing-S;
   margin-top: $spacing;
 }
 
 .description, .car-info {
-  font-size: $font-size;
+  font-size: $font-size-m;
   padding: $spacing 0;
   &:not(.last){
     border-bottom: 1px solid $preview-border-color;
@@ -57,7 +57,7 @@ h1 {
   overflow: hidden;
   div {
     float: left;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     text-align: center;
     width: 75px;
     margin: 0 $spacing;

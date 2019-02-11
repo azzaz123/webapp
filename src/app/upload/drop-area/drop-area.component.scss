@@ -39,7 +39,7 @@
     p {
       margin: 0;
       color: $grey-500;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
     }
     .denied-icon {
       display: inline-block;
@@ -133,7 +133,7 @@
   span {
     $offset: 10px;
     position: absolute;
-    font-size: $font-size-XXS;
+    font-size: $font-size-xxs;
     left: -#{$offset/2};
     right: 0;
     bottom: -40px;
@@ -147,7 +147,7 @@
     }
     .photos-number-10 & {
       bottom: -16px;
-      font-size: $font-size-XXS - 1;
+      font-size: $font-size-xxs;
     }
   }
   input {

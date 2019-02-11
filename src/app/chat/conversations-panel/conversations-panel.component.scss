@@ -6,7 +6,7 @@ $filters-nav-height: 38px;
 h2 {
   margin: $spacing;
   font-weight: bold;
-  font-size: $font-size-LL;
+  font-size: $font-size-ll;
   letter-spacing: $letter-spacing;
   .badge {
     margin-left: 10px;
@@ -57,7 +57,7 @@ tsl-process-all-button {
     color: $corporate;
     position: relative;
     text-transform: uppercase;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     font-weight: bold;
     .spinner {
       height: $spinner-size;

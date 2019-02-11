@@ -17,7 +17,7 @@
   z-index: 100;
   & a {
     color: $grey-900;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     text-decoration: none;
   }
 }
@@ -26,7 +26,7 @@
     margin-left: $spacing-XS;
   }
   span {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     color: $grey-900;
     margin-right: $spacing-XXS;
     margin-left: $spacing-S;
@@ -133,7 +133,7 @@
       width: 190px;
       height: 100%;
       color: $grey-900;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       opacity: 1;
       border: none;
       transition-property: width;
@@ -232,8 +232,8 @@
       }
     }
     & span {
-      font-size: $font-size-S;
-      line-height: $font-size-S;
+      font-size: $font-size-s;
+      line-height: $font-size-s;
     }
     .news-badge {
       height: 8px;
@@ -299,7 +299,7 @@
       justify-content: center;
       cursor: pointer;
       color: $color-grey-item;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       height: 65px;
       position: relative;
     }
@@ -342,7 +342,7 @@
   tsl-button {
     /deep/ button {
       font-weight: bold;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       padding-left: $spacing-XS;
       padding-top: 7px;
       padding-bottom: 7px;

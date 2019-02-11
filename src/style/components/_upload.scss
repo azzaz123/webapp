@@ -10,12 +10,12 @@
       font-weight: bold;
       text-transform: uppercase;
       color: $corporate;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       margin-bottom: $spacing;
     }
     p {
       color: $grey-500;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       line-height: 1.29;
     }
     &.urgent {
@@ -48,7 +48,7 @@
       }
     }
     h3 {
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       color: $grey-500;
     }
     .selector {
@@ -80,7 +80,7 @@
         font-weight: bold;
         font-size: 9px;
         letter-spacing: .4px;
-        line-height: $font-size-S;
+        line-height: $font-size-s;
         margin-top: $spacing-XXS;
       }
       mat-icon {
@@ -149,7 +149,7 @@
         span {
           text-transform: none;
           font-weight: normal;
-          font-size: $font-size-XS;
+          font-size: $font-size-xs;
           letter-spacing: .6px;
           line-height: 17px;
           margin-left: -10px;

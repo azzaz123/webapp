@@ -2,7 +2,7 @@
 
 /deep/ {
     .header-title {
-        font-size: $font-size-LL;
+        font-size: $font-size-ll;
         color: $grey-900;
         font-weight: bold;
         .badge {
@@ -21,7 +21,7 @@
     }
 
     .header-subtitle {
-        font-size: $font-size-S;
+        font-size: $font-size-s;
         color: $grey-300;
         margin-bottom: 0;
         line-height: $spacing;
@@ -33,7 +33,7 @@
     }
 
     .header-link {
-        font-size: $font-size-S;
+        font-size: $font-size-s;
     }
 
     .header-numbers {

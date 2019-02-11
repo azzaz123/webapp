@@ -10,8 +10,8 @@
     margin: 0 0 0 $spacing + 4px;
   }
   .review-type {
-    font-size: $font-size-S;
-    line-height: $font-size-S;
+    font-size: $font-size-s;
+    line-height: $font-size-s;
     color: $grey-250;
   }
   .review-title {
@@ -37,7 +37,7 @@
     text-overflow: ellipsis;
   }
   .review-credits {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     color: $grey-300;
   }
   .review-microname {

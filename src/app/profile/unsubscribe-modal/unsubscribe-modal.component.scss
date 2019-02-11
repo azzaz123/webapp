@@ -21,7 +21,7 @@ $modal-border-radius: 20px;
     margin: 0;
     margin-bottom: 25px;
     color: $grey-300;
-    font-size: $font-size;
+    font-size: $font-size-m;
   }
   .btn {
     padding: $spacing-S $spacing;
@@ -45,13 +45,13 @@ $modal-border-radius: 20px;
   }
 
   .custom-reason {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     margin-bottom: $spacing-S;
     overflow: hidden;
     margin-top: $spacing-L;
   }
   .counter {
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
   }
   textarea {
     border-radius: $border-radius;

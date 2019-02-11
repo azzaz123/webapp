@@ -2,7 +2,7 @@
 $send-icon-size: 40px;
 
 p  {
-    font-size: $font-size;
+    font-size: $font-size-m;
     margin-top: $spacing-3M;
     padding: $spacing-2L 0;
     color: $grey-900;
@@ -17,7 +17,7 @@ form {
         border-radius: 0px;
     }
     label {
-        font-size: $font-size;
+        font-size: $font-size-m;
         color: $grey-900;
     }
 }
@@ -27,7 +27,7 @@ form {
     color: $grey-250;
     margin-top: $spacing-XXS;
     padding: 0;
-    font-size: $font-size-XXS;
+    font-size: $font-size-xxs;
 }
 
 #send {

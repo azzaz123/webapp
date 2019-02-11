@@ -79,7 +79,7 @@
   .card-block {
     padding: $spacing;
     .card-title {
-      font-size: $font-size;
+      font-size: $font-size-m;
       margin-bottom: $spacing-S;
       line-height: 1.4;
       max-height: 44px;
@@ -89,12 +89,12 @@
       display: flex;
       flex-direction: row;
       .price {
-        font-size: $font-size;
+        font-size: $font-size-m;
         color: $grey-900;
         flex-grow: 1;
       }
       .stats {
-        font-size: $font-size-XS;
+        font-size: $font-size-xs;
         color: $grey-300;
         line-height: 24px;
         flex-grow: 0;

@@ -2,7 +2,7 @@
 
 .user-average, .user-number-reviews {
   p {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     color: $grey-250;
     margin-bottom: 0;
   }
@@ -44,7 +44,7 @@
   & .message {
     width: 45%;
     color: $grey-500;
-    font-size: $font-size-LL;
+    font-size: $font-size-ll;
     position: absolute;
     margin: 0 auto;
     left: 0;

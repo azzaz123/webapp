@@ -16,7 +16,7 @@
   margin-left: $sidebar-width;
   background-color: $corporate;
   color: $grey-50;
-  font-size: $font-size-L;
+  font-size: $font-size-l;
 }
 
 #close {
@@ -27,7 +27,7 @@
   text-align: center;
   span {
     opacity: 0.6;
-    font-size: $font-size;
+    font-size: $font-size-m;
   }
   mat-icon {
     /deep/ path {
@@ -85,7 +85,7 @@
   flex-direction: column;
   background: url(/assets/images/welcome.svg) no-repeat top center;
   h1 {
-    font-size: $font-size-XXXXL;
+    font-size: $font-size-xxxxl;
     margin-bottom: 40px;
     font-family: $wallieSkinny;
   }

@@ -8,11 +8,11 @@ $right-gutter: 35px;
       h1 {
         font-weight: bold;
         color: $grey-700;
-        font-size: $font-size-LL;
+        font-size: $font-size-ll;
         letter-spacing: 0.6px;
       }
       .public-profile {
-        font-size: $font-size-S;
+        font-size: $font-size-s;
       }
       .btn-primary {
         float: right;
@@ -27,7 +27,7 @@ $right-gutter: 35px;
         text-align: right;
         line-height: 27px;
         color: $grey-900;
-        font-size: $font-size;
+        font-size: $font-size-m;
         padding-right: $right-gutter;
         margin: 0;
       }
@@ -88,7 +88,7 @@ $right-gutter: 35px;
             display: none;
           }
           p {
-            font-size: $font-size-S;
+            font-size: $font-size-s;
           }
           .form-group .form-control {
             width: calc(100%);

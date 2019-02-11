@@ -8,14 +8,14 @@ $form-control-height: 50px;
     margin-bottom: 0;
   }
   label {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     color: $grey-500;
   }
   .form-control, select.form-control:not([size]):not([multiple]) {
     display: block;
     height: $form-control-height;
     width: 100%;
-    font-size: $font-size;
+    font-size: $font-size-m;
     border-color: $grey-50;
     border-radius: 6px;
     &:hover {
@@ -265,7 +265,7 @@ input::-webkit-calendar-picker-indicator{
 }
 
 .chars-counter {
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   color: $grey-200;
   float: right;
   margin-top: $spacing-XXS;

@@ -59,7 +59,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   .center-heading {
     text-align: center;
     h2 {
-      font-size: $font-size-L;
+      font-size: $font-size-l;
       color: $grey-800;
     }
   }
@@ -75,14 +75,14 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
   h2 {
     font-weight: bold;
-    font-size: $font-size;
+    font-size: $font-size-m;
     margin-bottom: 0;
     line-height: 20px;
   }
   p {
     margin-top: $spacing-M;
     margin-bottom: 0;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
   }
   .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio) {
     color: $grey-800;

@@ -44,7 +44,7 @@ tsl-spinner {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   mat-icon {
     /deep/ svg path {
       fill: $corporate;
@@ -89,7 +89,7 @@ tsl-spinner {
   border-radius: $border-radius;
   background: $white;
   color: $grey-900;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   height: $height;
   line-height: $height;
   display: inline-block;
@@ -147,7 +147,7 @@ tsl-selected-items {
     border-radius: $border-radius;
     background: $white;
     color: $grey-300;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     border: solid 1px rgba($grey-100, 0.5);
     &.btn-delete, &.btn-deactivate {
       padding: 0 ($spacing / 2);

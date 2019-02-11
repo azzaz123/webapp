@@ -33,7 +33,7 @@ $offset: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     mat-icon {
       /deep/ svg path {
         fill: $corporate;
@@ -64,7 +64,7 @@ $offset: 7px;
     display: flex;
     align-items: center;
     padding: $spacing-M;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     justify-content: center;
     flex-direction: column;
     line-height: 17px;

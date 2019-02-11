@@ -27,7 +27,7 @@ $expanded-horizontal-padding: 25px;
 }
 
 span {
-  font-size: $font-size-S;
+  font-size: $font-size-s;
 }
 
 [class^='col-'] {
@@ -100,7 +100,7 @@ tsl-user-avatar {
   p {
     margin: -10px 0 0 0;
     line-height: 0;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     color: $grey-250;
   }
 }
@@ -141,7 +141,7 @@ tsl-user-avatar {
       border-top: 1px solid $grey-50;
       text-transform: uppercase;
       text-align: center;
-      font-size: $font-size-XS;
+      font-size: $font-size-xs;
       font-weight: bold;
       &:hover {
         text-decoration: none;
@@ -158,7 +158,7 @@ tsl-user-avatar {
       }
       p {
         color: $grey-400;
-        font-size: $font-size-S;
+        font-size: $font-size-s;
       }
     }
   }

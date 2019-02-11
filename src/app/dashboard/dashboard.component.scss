@@ -18,7 +18,7 @@ $v-container-spacing: 40px;
 }
 
 h2 {
-  font-size: $font-size-XXL;
+  font-size: $font-size-xxl;
   font-weight: bold;
 }
 
@@ -30,7 +30,7 @@ h2 {
 
 .nav.filters-nav {
   font-weight: normal;
-  font-size: $font-size-L;
+  font-size: $font-size-l;
   text-transform: none;
 }
 
@@ -83,7 +83,7 @@ $sidebar-title: 64px;
     a {
       float: right;
       color: $corporate;
-      font-size: $font-size-XS;
+      font-size: $font-size-xs;
       text-decoration: none;
       text-transform: uppercase;
       &:hover {

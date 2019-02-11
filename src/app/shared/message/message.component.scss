@@ -10,7 +10,7 @@
 
 h5 {
   font-weight: bold;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   color: $white;
 }
 
@@ -82,7 +82,7 @@ $avatar-size: 40px;
 
 .message-date {
   float: right;
-  font-size: $font-size-XXS;
+  font-size: $font-size-xxs;
   white-space: pre;
   margin: 0 $spacing-XXS 0 $spacing-XS;
   color: $grey-250;
@@ -106,7 +106,7 @@ $avatar-size: 40px;
   border: 1px solid $grey-50;
   border-radius: $border-radius;
   padding: $spacing-M;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
 }
 
 .phone-request {
