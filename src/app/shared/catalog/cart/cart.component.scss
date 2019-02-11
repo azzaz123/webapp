@@ -236,7 +236,7 @@ ul, li {
 .clean-cart {
   position: absolute;
   top: 13px;
-  right: $spacing-10;
+  right: $spacing-ml / 2;
   font-size: $font-size-XS;
   a {
     color: $grey-500;

@@ -9,7 +9,7 @@
     display: flex;
     font-size: $font-size-XS;
     align-items: center;
-    height: $spacing-40;
+    height: $spacing-ml * 2;
     color: $grey-250;
     &.active {
       border-color: $corporate;

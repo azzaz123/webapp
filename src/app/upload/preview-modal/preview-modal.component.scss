@@ -2,7 +2,7 @@
 
 .modal-body {
   color: $grey-900;
-  height: calc(100vh - #{$spacing-40 * 2});
+  height: calc(100vh - #{$spacing-ml * 4});
   overflow: scroll;
 }
 
