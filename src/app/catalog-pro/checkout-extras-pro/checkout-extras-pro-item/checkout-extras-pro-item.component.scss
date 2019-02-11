@@ -69,7 +69,7 @@
       }
       .action {
         margin-left: $spacing-m;
-        min-width: $spacing-ml * 5;
+        min-width: 100px;
         .btn-price {
           background-color: $grey-50;
           border-radius: $button-border-radius;

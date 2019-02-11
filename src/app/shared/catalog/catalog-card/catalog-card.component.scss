@@ -281,7 +281,7 @@ $feature-button-width: 170px;
     tsl-button {
       /deep/ .btn-feature {
         width: $feature-button-width;
-        height: $spacing-ml * 2;
+        height: 40px;
         padding: 0 $spacing-ml;
         padding-left: $spacing-ms;
         font-size: $font-size-S;
@@ -306,7 +306,7 @@ $feature-button-width: 170px;
     margin-right: $spacing-ms * 2;
     border-radius: $border-radius;
     color: $grey-900;
-    height: $spacing-ml * 2;
+    height: 40px;
     cursor: default;
     mat-icon {
       margin-right: 34px;

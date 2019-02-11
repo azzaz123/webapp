@@ -153,8 +153,8 @@
       }
       #controls {
         position: absolute;
-        right: $spacing-m;
-        bottom: $spacing-m;
+        right: 16px;
+        bottom: 16px;
         .btn-next {
           color: $corporate;
           padding: 10px 48px;
@@ -184,7 +184,7 @@
       }
       #close {
         position: absolute;
-        right: $spacing-ml;
+        right: 20px;
         top: 50px;
         color: $white;
         text-align: center;

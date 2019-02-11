@@ -14,8 +14,8 @@
 
 .chat-notification-pending {
   position: absolute;
-  top: $spacing-ml;
-  right: $spacing-ml;
+  top: 20px;
+  right: 20px;
   width: 10px;
   height: 10px;
   background-color: $warn;
@@ -108,8 +108,8 @@ h2 {
   }
   &.logout-item {
     position: absolute;
-    bottom: $spacing-ml;
-    left: $spacing-ml;
+    bottom: 20px;
+    left: 20px;
     padding: 0;
     h2 {
       width: $sidebar-section-circle-size;

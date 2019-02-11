@@ -13,8 +13,8 @@ tsl-here-maps {
   padding: 0;
   tsl-geolocation {
     position: absolute;
-    top: $spacing-ml;
-    left: $spacing-ml;
+    top: 20px;
+    left: 20px;
     z-index: 100;
     width: calc(100% + #{-$spacing-ml * 2 - $btn-width - $spacing-ms});
     display: block;
@@ -32,8 +32,8 @@ tsl-here-maps {
   }
   .btn {
     position: absolute;
-    top: $spacing-ml;
-    right: $spacing-ml;
+    top: 20px;
+    right: 20px;
     height: $btn-height;
     line-height: $btn-height;
     padding: 0 $spacing-m;

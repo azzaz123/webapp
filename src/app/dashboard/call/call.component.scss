@@ -23,7 +23,7 @@ $check-width-and-spacing: 50px;
     @include hide();
     position: absolute;
     top: 43px;
-    right: $spacing-ms;
+    right: 12px;
   }
   &:hover {
     background-color: rgba($grey-600, .1);

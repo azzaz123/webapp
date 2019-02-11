@@ -135,9 +135,9 @@ ul, li {
         color: $grey-500;
         background-color: $grey-50;
         border-radius: 4px;
-        min-width: $spacing-xl;
+        min-width: 32px;
         text-align: center;
-        height: $spacing-xl;
+        height: 32px;
         margin-right: $spacing-s;
         display: flex;
         justify-content: center;
@@ -152,8 +152,8 @@ ul, li {
 
 .clean-cart {
   position: absolute;
-  top: $spacing-m;
-  right: $spacing-ml / 2;
+  top: 17px;
+  right: 10px;
   font-size: $font-size-XS;
   a {
     color: $grey-500;

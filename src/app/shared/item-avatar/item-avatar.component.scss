@@ -22,8 +22,8 @@ div {
     padding-top: 100%;
     span {
       position: absolute;
-      top: $spacing-ms;
-      left: $spacing-ms;
+      top: 12px;
+      left: 12px;
       &.overlay {
         background: none;
       }

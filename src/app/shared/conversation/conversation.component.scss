@@ -23,7 +23,7 @@ $menu-width-and-spacing: 10px;
     @include hide();
     position: absolute;
     top: 43px;
-    right: $spacing-ms;
+    right: 12px;
   }
   &:hover {
     background-color: rgba($grey-100, .2);

@@ -21,7 +21,7 @@
 
 #close {
   position: absolute;
-  right: $spacing-ml;;
+  right: 20px;
   top: 50px;
   color: $white;
   text-align: center;
@@ -44,8 +44,8 @@
 
 #controls {
   position: absolute;
-  right: $spacing-ml;;
-  bottom: $spacing-ml;
+  right: 20px;
+  bottom: 20px;
   .btn-next {
     color: $corporate;
     padding: 10px 48px;
@@ -100,7 +100,7 @@
   left: 67px;
   width: 770px;
   &.step-1, &.step-1-pro {
-    top: $spacing-ml;
+    top: 20px;
   }
   &.step-2, &.step-2-pro {
     top: 120px;

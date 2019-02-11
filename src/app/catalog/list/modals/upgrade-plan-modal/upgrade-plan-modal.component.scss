@@ -11,8 +11,8 @@
   flex-direction: column;
   justify-content: flex-end;
   .modal-close {
-    top: $spacing-ml;
-    right: $spacing-ml;
+    top: 20px;
+    right: 20px;
     @include square(13px);
     mat-icon {
       @include square(13px);

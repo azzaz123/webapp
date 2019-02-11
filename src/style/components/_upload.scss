@@ -55,9 +55,9 @@
       background-color: $grey-50;
       border-radius: $border-radius;
       display: inline-block;
-      @include square($spacing-xxxl);
+      @include square(60px);
       margin-right: $spacing-ms;
-      line-height: $spacing-xxxl;
+      line-height: 60px;
       position: relative;
       text-align: center;
       white-space: normal;

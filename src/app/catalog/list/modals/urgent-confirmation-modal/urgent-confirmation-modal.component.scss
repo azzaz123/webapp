@@ -17,8 +17,8 @@ $feature-button-width: 170px;
   flex-direction: column;
   justify-content: center;
   .modal-close {
-    top: $spacing-ml;
-    right: $spacing-ml;
+    top: 20px;
+    right: 20px;
     @include square(13px);
     mat-icon {
       @include square(13px);
