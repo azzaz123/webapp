@@ -267,7 +267,7 @@ $feature-button-width: 170px;
         padding: 0 $spacing-ml 0 $spacing-xxl;
         background-color: $reactivate-bg;
         border-color: transparent;
-        border-radius: 20px;
+        border-radius: $button-border-radius;
         font-size: $font-size-S;
         font-weight: bold;
         mat-icon {

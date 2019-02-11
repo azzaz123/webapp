@@ -272,7 +272,7 @@
     & span {
       background-color: $corporate;
       color: $white;
-      border-radius: 20px;
+      border-radius: $button-border-radius;
       margin-left: $spacing-ms;
       margin-right: $spacing-ms;
       padding: $spacing-s $spacing-ml;
