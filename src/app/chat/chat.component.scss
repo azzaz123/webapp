@@ -82,7 +82,7 @@
       }
     }
     .dropdown-item {
-      padding: ($spacing-ml /2) $spacing-ml;
+      padding: $spacing-ms $spacing-ml;
       cursor: pointer;
       &.warn {
         color: $warn;

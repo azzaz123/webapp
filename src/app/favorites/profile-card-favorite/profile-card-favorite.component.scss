@@ -6,7 +6,7 @@ tsl-card {
   border-radius: $border-radius;
   box-shadow: 0 0 2px 0 rgba($black, .1);
   transition: all .15s ease;
-  margin: 0 $spacing-ms/2 $spacing-ms $spacing-ms/2;
+  margin: 0 $spacing-s $spacing-ms $spacing-s;
 
   & /deep/ tsl-card-image {
     display: flex;

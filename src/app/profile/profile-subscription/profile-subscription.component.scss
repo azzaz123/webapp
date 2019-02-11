@@ -38,7 +38,7 @@ h2, .description {
 }
 
 .pack {
-  padding: $spacing-ml $spacing-ml / 2;
+  padding: $spacing-ml $spacing-ms;
   border: solid 2px $grey-50;
   border-radius: $border-radius;
   text-align: center;
@@ -47,7 +47,7 @@ h2, .description {
   align-items: center;
   line-height: normal;
   flex:1;
-  margin: $spacing-ml / 2;
+  margin: $spacing-ms;
   max-width: 186px;
   .name {
     color: $grey-900;

@@ -9,10 +9,10 @@
     line-height: normal;
     border-radius: $border-radius;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.07);
-    padding: ($spacing-ml /2) 0;
+    padding: $spacing-ms 0;
     margin-top: 5px;
     .dropdown-item {
-      padding: ($spacing-ml /2) $spacing-ml;
+      padding: $spacing-ms $spacing-ml;
       cursor: pointer;
       &:hover {
         color: $grey-900;
