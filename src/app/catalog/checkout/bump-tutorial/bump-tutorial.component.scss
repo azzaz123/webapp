@@ -157,7 +157,7 @@
         bottom: 16px;
         .btn-next {
           color: $corporate;
-          padding: 10px 48px;
+          padding: $spacing-ms $spacing-xxl;
           border-radius: 100px;
           background: $white;
           &:hover {
@@ -173,7 +173,7 @@
             opacity: 0.3;
             background-color: $white;
             border-radius: 50%;
-            margin: 0 4px;
+            margin: 0 $spacing-xs;
             vertical-align: middle;
             &.active {
               @include square(10.8px);

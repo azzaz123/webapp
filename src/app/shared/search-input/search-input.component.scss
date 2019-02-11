@@ -31,7 +31,7 @@ div {
     display: block;
     position: relative;
     width: 100%;
-    padding: 0 18px 0 28px;
+    padding: 0 $spacing-ml 0 $spacing-l;
   }
   &.active {
     width: 204px;

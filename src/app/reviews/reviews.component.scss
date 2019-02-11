@@ -32,8 +32,8 @@
 
 .reviews-empty-state {
   border-top: 1px solid $grey-50;
-  margin: 20px 10px;
-  padding-top: 20px;
+  margin: $spacing-ml $spacing-ms;
+  padding-top: $spacing-ml;
   width: 100%;
   display: flex;
   align-items: center;

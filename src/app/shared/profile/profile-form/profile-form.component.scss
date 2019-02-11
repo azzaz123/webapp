@@ -16,7 +16,7 @@ $right-gutter: 35px;
       }
       .btn-primary {
         float: right;
-        padding: 10px 30px;
+        padding: $spacing-ms $spacing-xl;
       }
     }
     .form-group {
@@ -51,7 +51,7 @@ $right-gutter: 35px;
           display: none;
         }
         &:first-of-type {
-          margin-right: 15px;
+          margin-right: $spacing-m;
         }
         mat-icon {
           @include square(42px);

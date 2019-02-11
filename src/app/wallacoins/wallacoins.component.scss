@@ -3,7 +3,7 @@
 $pack-width: 234px;
 
 .page-content {
-  padding-bottom: 65px;
+  padding-bottom: $spacing-xxxl;
 }
 
 tsl-header {
@@ -32,7 +32,7 @@ tsl-header {
 
 h2 {
   font-size: $font-size-XL;
-  margin-bottom: $spacing-ms * 2;
+  margin-bottom: $spacing-ml;
 }
 
 h3 {

@@ -1,6 +1,6 @@
 @import "~style/common";
 
-$vertical-padding: 10px;
+$vertical-padding: $spacing-ms;
 
 :host {
   display: inline-block;
@@ -45,12 +45,12 @@ $vertical-padding: 10px;
     }
   }
   &.loading {
-    padding-top: 7px;
-    padding-bottom: 4px;
+    padding-top: $spacing-s;
+    padding-bottom: $spacing-xs;
   }
   &.btn-big {
-    padding-left: 75px;
-    padding-right: 75px;
+    padding-left: $spacing-xxxl;
+    padding-right: $spacing-xxxl;
   }
   &.btn-feature {
     background: $grey-700;

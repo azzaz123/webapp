@@ -25,10 +25,10 @@
     .card-title {
       margin-bottom: $spacing-s;
       line-height: 16px;
-      margin-top: -6px;
+      margin-top: -$spacing-s;
     }
     tsl-stars {
-      margin-bottom: -7px;
+      margin-bottom: -$spacing-s;
     }
   }
   .list-group-flush {
@@ -47,7 +47,7 @@
         height: 16px;
         width: 16px;
         margin-right: $spacing-ms;
-        margin-top: 1px;
+        margin-top: $spacing-xxs;
       }
     }
   }

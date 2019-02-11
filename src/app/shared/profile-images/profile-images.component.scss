@@ -2,7 +2,7 @@
 
 div {
   @include square-avatar($item-avatar-size);
-  margin: 1px;
+  margin: $spacing-xxs;
   display: flex;
   position: relative;
   &.small {

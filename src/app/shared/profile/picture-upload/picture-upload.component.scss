@@ -25,7 +25,7 @@
     color: $grey-600;
     font-size: $font-size-S;
     padding: $spacing-ms $spacing-ml;
-    margin-left: 43px;
+    margin-left: $spacing-xxl;
     cursor: pointer;
     border-radius: $button-border-radius;
     &:hover:not(.disabled) {

@@ -108,10 +108,10 @@ $offset: 7px;
 .price-table {
   z-index: 4;
   position: relative;
-  margin-bottom: 65px;
+  margin-bottom: $spacing-xxxl;
 }
 
 .cart {
   width: 280px;
-  padding: 0 10px;
+  padding: 0 $spacing-ms;
 }

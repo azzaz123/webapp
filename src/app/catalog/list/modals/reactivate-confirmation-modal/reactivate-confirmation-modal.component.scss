@@ -25,7 +25,7 @@
     margin-top: $spacing-xl;
     /deep/ {
       button {
-        padding: 14px 114px;
+        padding: $spacing-m 114px;
         font-weight: bold;
       }
     }

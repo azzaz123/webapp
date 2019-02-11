@@ -34,7 +34,7 @@
 
 form {
   padding: $spacing-ml;
-  padding-top: 10px;
+  padding-top: $spacing-ms;
   label {
     display: block;
     font-size: $font-size-S;
@@ -44,7 +44,7 @@ form {
     }
     strong {
       font-size: $font-size;
-      margin-left: 30px;
+      margin-left: $spacing-xl;
     }
   }
   tsl-button {

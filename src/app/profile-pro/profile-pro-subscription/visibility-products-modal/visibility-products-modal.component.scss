@@ -24,8 +24,8 @@ h1, h2 {
 
 h1 {
   font-size: 26px;
-  margin-top: 50px;
-  margin-bottom: 40px;
+  margin-top: $spacing-xxl;
+  margin-bottom: $spacing-xxl;
 }
 
 h2 {
@@ -54,5 +54,5 @@ h2 {
   border-radius: $button-border-radius;
   font-weight: bold;
   margin-top: $spacing-xl;
-  padding: 10px 30px;
+  padding: $spacing-ms $spacing-xl;
 }

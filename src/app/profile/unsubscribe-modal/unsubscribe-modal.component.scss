@@ -19,7 +19,7 @@ $modal-border-radius: 20px;
   }
   p {
     margin: 0;
-    margin-bottom: 25px;
+    margin-bottom: $spacing-l;
     color: $grey-300;
     font-size: $font-size;
   }
@@ -30,7 +30,7 @@ $modal-border-radius: 20px;
       background-color: $grey-50;
       color: $grey-500;
       margin: 0 $spacing-xs;
-      margin-bottom: 10px;
+      margin-bottom: $spacing-ms;
       &:hover, &.selected {
         background-color: $grey-100;
       }

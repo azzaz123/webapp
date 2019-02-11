@@ -18,7 +18,7 @@
 .left {
   background-color: $grey-50;
   text-align: center;
-  padding: 49px 30px 28px;
+  padding: $spacing-xxl $spacing-xl $spacing-l;
   min-width: 294px;
   display: flex;
   flex-direction: column;
@@ -57,7 +57,7 @@
   }
   .vertical & {
     max-width: 330px;
-    padding: 49px 50px 28px;
+    padding: $spacing-xxl $spacing-xxl $spacing-l;
   }
 }
 .right {
@@ -86,14 +86,14 @@
     .label {
       tsl-wallacoin {
         vertical-align: sub;
-        margin-right: 5px;
+        margin-right: $spacing-xs;
       }
     }
   }
   .credit {
     color: $corporate;
     margin-bottom: $spacing-s;
-    padding-right: 2px;
+    padding-right: $spacing-xxs;
     .price {
       font-size: $font-size;
     }
@@ -106,7 +106,7 @@
   }
   .missing {
     border-top: solid 1px $grey-50;
-    padding: 3px 2px 0 0;
+    padding: $spacing-xs $spacing-xxs 0 0;
     margin-bottom: $spacing-xl;
     .label {
       color: $grey-250;

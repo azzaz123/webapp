@@ -81,7 +81,7 @@ ng-select {
     border: 1px solid $grey-50 !important;
     border-radius: 6px;
     height: $form-control-height;
-    margin-left: -1px;
+    margin-left: -$spacing-xxs;
     &.disabled {
       background-color: transparent !important;
     }
@@ -103,7 +103,7 @@ ng-select {
       }
       & > div.value {
         height: $form-control-height;
-        padding-left: 12px !important;
+        padding-left: $spacing-ms !important;
         line-height: $form-control-height !important;
         mat-icon {
           display: none;
@@ -113,7 +113,7 @@ ng-select {
         color: $grey-200 !important;
         height: $form-control-height;
         line-height: $form-control-height !important;
-        padding-left: 12px !important;
+        padding-left: $spacing-ms !important;
       }
     }
   }
@@ -136,9 +136,9 @@ select-dropdown{
         mat-icon {
           @include square(38px);
           vertical-align: middle;
-          margin-right: 5px;
-          margin-top: -6px;
-          margin-bottom: -6px;
+          margin-right: $spacing-xs;
+          margin-top: -$spacing-s;
+          margin-bottom: -$spacing-s;
           g g {
             fill: $grey-900;
           }
@@ -196,7 +196,7 @@ ng-select, select-dropdown {
           li {
             background-repeat: no-repeat;
             background-position: 18px;
-            padding-left: 60px !important;
+            padding-left: $spacing-xxxl !important;
             &:nth-child(1) {
               background-image: url(/assets/icons/small_car.svg);
             }
@@ -236,7 +236,7 @@ ng-select, select-dropdown {
           li {
             background-repeat: no-repeat;
             background-position: 8px;
-            padding-left: 60px !important;
+            padding-left: $spacing-xxxl !important;
             &:nth-child(1) {
               background-image: url(/assets/icons/new_construction.svg);
             }

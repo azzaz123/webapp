@@ -3,8 +3,8 @@
 $avatar-size: 50px;
 $view-more-height: 49px;
 $expanded-height: 240px;
-$expanded-vertical-padding: 30px;
-$expanded-horizontal-padding: 25px;
+$expanded-vertical-padding: $spacing-xl;
+$expanded-horizontal-padding: $spacing-l;
 :host {
   cursor: pointer;
   user-select: none;
@@ -98,7 +98,7 @@ tsl-user-avatar {
     vertical-align: baseline;
   }
   p {
-    margin: -10px 0 0 0;
+    margin: -$spacing-ms 0 0 0;
     line-height: 0;
     font-size: $font-size-XS;
     color: $grey-250;
@@ -106,7 +106,7 @@ tsl-user-avatar {
 }
 
 .call-expanded {
-  padding: $spacing-ml $spacing-ml * 2;
+  padding: $spacing-ml $spacing-xxl;
   .call-expanded-user-info,
   .call-expanded-messages {
     height: $expanded-height;

@@ -13,7 +13,7 @@
   .left {
     background-color: $grey-50;
     text-align: center;
-    padding: 49px 30px 28px;
+    padding: $spacing-xxl $spacing-xl $spacing-l;
     min-width: 294px;
     display: flex;
     flex-direction: column;
@@ -28,7 +28,7 @@
     .icon {
       @include square(160px);
       border-radius: 50%;
-      margin-top: 18px;
+      margin-top: $spacing-ml;
       margin-bottom: $spacing-l;
       background: $white no-repeat center;
       &.icon-1 {
@@ -71,7 +71,7 @@
     flex-direction: column;
     .left {
       max-width: 330px;
-      padding: 49px 50px 28px;
+      padding: $spacing-xxl $spacing-xxl $spacing-l;
     }
   }
   &.credits {

@@ -1,4 +1,4 @@
-$coachmark-left-margin: 33px;
+$coachmark-left-margin: $spacing-xl;
 
 .popover {
   border-radius: 6px;
@@ -11,7 +11,7 @@ $coachmark-left-margin: 33px;
   z-index: 99 !important;
   font-family: $wallie;
   &.popover-right {
-    margin-left: 40px;
+    margin-left: $spacing-xxl;
   }
   &::before, &::after {
     content: none;
@@ -19,13 +19,13 @@ $coachmark-left-margin: 33px;
   .popover-body{
     width: 220px;
     display: flex;
-    padding: 15px;
+    padding: $spacing-m;
     mat-icon {
       @include square(26px);
       margin-right: $spacing-ms;
       display: inline-table;
-      margin-top: -5px;
-      margin-left: -4px;
+      margin-top: -$spacing-xs;
+      margin-left: -$spacing-xs;
     }
     div {
       width: 100%;

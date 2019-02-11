@@ -38,9 +38,9 @@
   }
 
   .selector-container {
-    margin: 5px 0 $spacing-xl;
+    margin: $spacing-xs 0 $spacing-xl;
     &.terms-options {
-      margin-bottom: 23px;
+      margin-bottom: $spacing-l;
     }
     &.features-options {
       label:not(.selector) {
@@ -134,13 +134,13 @@
       }
     }
     &.shipping-options {
-      margin-bottom: 15px;
+      margin-bottom: $spacing-m;
       h2 {
         margin-bottom: $spacing-ms;
       }
       .selector {
-        margin-left: 10px;
-        margin-right: 40px;
+        margin-left: $spacing-ms;
+        margin-right: $spacing-xxl;
         cursor: pointer;
         mat-icon, svg {
           width: 30px;
@@ -152,8 +152,8 @@
           font-size: $font-size-XS;
           letter-spacing: .6px;
           line-height: 17px;
-          margin-left: -10px;
-          margin-right: -10px;
+          margin-left: -$spacing-ms;
+          margin-right: -$spacing-ms;
           margin-top: 0;
           strong {
             font-weight: bold;
@@ -170,7 +170,7 @@
         line-height: 35px;
         mat-icon {
           @include square(48px);
-          margin-top: 5px;
+          margin-top: $spacing-xs;
           /deep/ svg {
             @include square(48px);
           }
@@ -183,8 +183,8 @@
   }
 
   .btn-primary, .btn-link {
-    padding: 14px 50px;
-    margin-bottom: 65px;
+    padding: $spacing-m $spacing-xxl;
+    margin-bottom: $spacing-xxxl;
     margin-top: $spacing-xl - $spacing-ml;
   }
   .btn-link {

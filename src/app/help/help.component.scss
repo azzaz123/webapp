@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .box-left {
-  padding: 56px 100px;
+  padding: $spacing-xxxl 100px;
   a {
     color: $grey-900;
     &:hover, &:active, &:focus {
@@ -36,7 +36,7 @@ a {
 }
 
 .features {
-  margin-bottom: 50px;
+  margin-bottom: $spacing-xxl;
   mat-icon {
     width: 60px;
     height: 40px;
@@ -96,7 +96,7 @@ a {
 }
 
 .contacts {
-  padding: 56px 42px;
+  padding: $spacing-xxxl $spacing-xxl;
   h2 {
     margin-bottom: $spacing-ms;
   }

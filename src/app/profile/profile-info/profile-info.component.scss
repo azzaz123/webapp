@@ -37,7 +37,7 @@ $border: solid 1px $grey-50;
     }
     .btn-primary {
       float: right;
-      padding: 10px 30px;
+      padding: $spacing-ms $spacing-xl;
     }
   }
   .profile-pic {
@@ -65,7 +65,7 @@ $border: solid 1px $grey-50;
       color: $grey-600;
       font-size: $font-size-S;
       padding: $spacing-ms $spacing-ml;
-      margin-left: 43px;
+      margin-left: $spacing-xxl;
       cursor: pointer;
       border-radius: $button-border-radius;
       &:hover:not(.disabled) {
@@ -90,7 +90,7 @@ $border: solid 1px $grey-50;
       line-height: 27px;
       color: $grey-900;
       font-size: $font-size;
-      padding-right: 69px;
+      padding-right: $spacing-xxxl;
       margin: 0;
     }
     .btn-group {
@@ -109,18 +109,18 @@ $border: solid 1px $grey-50;
         display: none;
       }
       &:first-of-type {
-        margin-right: 15px;
+        margin-right: $spacing-m;
       }
       mat-icon {
         @include square(42px);
-        margin-top: 28px;
-        margin-bottom: 14px;
+        margin-top: $spacing-l;
+        margin-bottom: $spacing-m;
         /deep/ path {
           transition: fill 0.2s ease-in-out;
         }
       }
       div {
-        margin-top: -22px;
+        margin-top: -$spacing-ms;
         font-size: $font-size-S;
       }
       &.active {
@@ -158,7 +158,7 @@ $border: solid 1px $grey-50;
           width: calc(100% - 13px);
         }
         tsl-here-maps {
-          margin-right: 13px;
+          margin-right: $spacing-ms;
         }
       }
     }

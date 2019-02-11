@@ -130,7 +130,7 @@ $feature-button-width: 170px;
     border: solid 1px rgba(207, 216, 220, 0.5);
   }
   .image {
-    padding: 4px;
+    padding: $spacing-xs;
     padding-right: $spacing-m;
     display: block;
   }
@@ -194,7 +194,7 @@ $feature-button-width: 170px;
     }
   }
   .actions {
-    margin-right: 24px;
+    margin-right: $spacing-l;
     min-width: 400px;
     .resized:not(.pro) & {
       display: none;
@@ -203,7 +203,7 @@ $feature-button-width: 170px;
       min-width: 338px;
     }
     button, tsl-button {
-      margin-left: 12px;
+      margin-left: $spacing-ms;
       float: left;
     }
     .main-actions {
@@ -297,12 +297,12 @@ $feature-button-width: 170px;
         width: $feature-button-width;
         height: 40px;
         padding: 0 $spacing-ml;
-        padding-left: 12px;
+        padding-left: $spacing-ms;
         font-size: $font-size-S;
         mat-icon {
           width: 19px;
           height: 21px;
-          margin-right: 9px;
+          margin-right: $spacing-s;
         }
       }
     }
@@ -318,14 +318,14 @@ $feature-button-width: 170px;
     z-index: 2;
     position: relative;
     font-size: $font-size-S;
-    padding-right: 64px;
-    margin-right: 24px;
+    padding-right: $spacing-xxxl;
+    margin-right: $spacing-l;
     border-radius: $border-radius;
     color: $grey-900;
     height: 40px;
     mat-icon {
-      margin-right: 34px;
-      margin-left: 4px;
+      margin-right: $spacing-xl;
+      margin-left: $spacing-xs;
     }
   }
 

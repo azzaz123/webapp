@@ -19,7 +19,7 @@
       justify-content: center;
       cursor: pointer;
       background-color: white;
-      padding: 1px 7px 2px;
+      padding: $spacing-xxs $spacing-s $spacing-xxs;
       mat-icon /deep/ {
         float: left;
         svg g g, svg path {
@@ -49,26 +49,26 @@
   }
   .actions-block {
     width: 100%;
-    padding: 10px 20px 0;
+    padding: $spacing-ms $spacing-ml 0;
 
     tsl-button {
       &:first-of-type {
-      margin-right: 10px;
+      margin-right: $spacing-ms;
       }
       width: calc(50% - 10px);
     }
     /deep/
     .btn-reserve {
       font-size: 0.75rem;
-      padding-top: 4.5px;
-      padding-bottom: 4.5px;
+      padding-top: $spacing-xs;
+      padding-bottom: $spacing-xs;
       width: 100%;
     }
     /deep/
     .btn-sold {
       font-size: 0.75rem;
-      padding-top: 4.5px;
-      padding-bottom: 4.5px;
+      padding-top: $spacing-xs;
+      padding-bottom: $spacing-xs;
       width: 100%;
       background-color: $sold-bg;
       &:hover {
@@ -102,7 +102,7 @@
           height: 14px;
           width: 17px;
           margin: 0 $spacing-s;
-          margin-right: 2px;
+          margin-right: $spacing-xxs;
           display: inline-flex;
           vertical-align: sub;
         }

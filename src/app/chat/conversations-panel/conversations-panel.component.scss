@@ -9,7 +9,7 @@ h2 {
   font-size: $font-size-LL;
   letter-spacing: $letter-spacing;
   .badge {
-    margin-left: 10px;
+    margin-left: $spacing-ms;
     vertical-align: middle;
   }
 }
@@ -35,7 +35,7 @@ h2 {
 
 tsl-process-all-button {
   float: right;
-  margin-top: 10px;
+  margin-top: $spacing-ms;
   margin-right: $spacing-ms;
 }
 

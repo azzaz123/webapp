@@ -5,14 +5,14 @@ $transition: all .5s ease;
 $feature-button-width: 170px;
 
 :host /deep/ ngb-tooltip-window {
-  margin-top: -12px;
+  margin-top: -$spacing-ms;
   &.show {
     opacity: 1;
   }
   .tooltip-inner {
     background-color: $grey-500;
     font-family: $wallie;
-    padding: 10px 15px;
+    padding: $spacing-ms $spacing-m;
     border-radius: $border-radius / 2;
     font-size: $font-size-S;
     &:after {
@@ -20,7 +20,7 @@ $feature-button-width: 170px;
       position: absolute;
       top: 100%;
       left: 50%;
-      margin-left: -5px;
+      margin-left: -$spacing-xs;
       border-width: 5px;
       border-style: solid;
       border-color: $grey-500 transparent transparent transparent;
@@ -46,7 +46,7 @@ $feature-button-width: 170px;
     align-items: center;
     justify-content: center;
     margin-right: $spacing-ml;
-    margin-top: 42px;
+    margin-top: $spacing-xxl;
     cursor: pointer;
     mat-icon {
       display: none;
@@ -132,7 +132,7 @@ $feature-button-width: 170px;
     }
   }
   .image {
-    padding: 4px;
+    padding: $spacing-xs;
     padding-right: $spacing-m;
     display: block;
   }
@@ -158,7 +158,7 @@ $feature-button-width: 170px;
     flex-shrink: 0;
     flex-basis: 20em;
     max-width: 17em;
-    margin-right: 1em;
+    margin-right: $spacing-m;
   }
   .price {
     font-weight: bold;
@@ -189,7 +189,7 @@ $feature-button-width: 170px;
     .cancel-bump {
       text-decoration: underline;
       cursor: pointer;
-      margin-left: 5px;
+      margin-left: $spacing-xs;
       &:hover {
         text-decoration: none;
       }
@@ -288,7 +288,7 @@ $feature-button-width: 170px;
         mat-icon {
           width: 19px;
           height: 21px;
-          margin-right: 9px;
+          margin-right: $spacing-s;
         }
       }
     }
@@ -309,7 +309,7 @@ $feature-button-width: 170px;
     height: 40px;
     cursor: default;
     mat-icon {
-      margin-right: 34px;
+      margin-right: $spacing-xl;
       margin-left: $spacing-xs;
     }
   }

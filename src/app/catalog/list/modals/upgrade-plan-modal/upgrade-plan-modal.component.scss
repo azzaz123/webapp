@@ -34,11 +34,11 @@
 
 .modal-body {
   text-align: center;
-  padding: 40px 70px;
+  padding: $spacing-xxl $spacing-xxxl;
   p {
     font-size: $font-size;
     color: $grey-400;
-    margin-top: 10px;
+    margin-top: $spacing-ms;
   }
   .upgrade-plan {
     float: left;

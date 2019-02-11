@@ -35,7 +35,7 @@
         display: none;
       }
       h5 {
-        margin-top: -25px;
+        margin-top: -$spacing-l;
       }
     }
 
@@ -63,7 +63,7 @@
 
       tsl-stars{
         height: 17px;
-        padding-top: 2px;
+        padding-top: $spacing-xxs;
       }
     }
 
@@ -76,7 +76,7 @@
     height: 24px;
     mat-icon {
       cursor: pointer;
-      padding: 0 3px;
+      padding: 0 $spacing-xs;
       /deep/ #MVP {
         fill: $grey-300;
       }

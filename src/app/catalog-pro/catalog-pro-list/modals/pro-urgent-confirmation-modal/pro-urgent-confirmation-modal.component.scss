@@ -37,11 +37,11 @@ $feature-button-width: 170px;
 
 .modal-body {
   text-align: center;
-  padding: $spacing-xl 70px 40px;
+  padding: $spacing-xl 70px $spacing-xxl;
   p {
     font-size: $font-size;
     color: $grey-400;
-    margin-top: 10px;
+    margin-top: $spacing-ms;
   }
   .urgent-background {
     background: url(/assets/images/urgent-background.svg);

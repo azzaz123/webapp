@@ -4,7 +4,7 @@
   .container {
     h1 {
       .badge {
-        margin-left: 10px;
+        margin-left: $spacing-ms;
         vertical-align: middle;
       }
     }
@@ -24,10 +24,10 @@
       background-color: $white;
       border-radius: $border-radius;
       border: solid 1px $grey-50;
-      margin-top: 17px;
+      margin-top: $spacing-m;
       .calls-header {
         margin: 0;
-        padding: 29px 24px 24px;
+        padding: $spacing-xl $spacing-l $spacing-l;
         h3 {
           color: $grey-300;
         }
@@ -40,8 +40,8 @@
   }
   .empty-state-phones {
     border-top: 1px solid $grey-50;
-    margin: 20px 10px;
-    padding-top: 20px;
+    margin: $spacing-ml $spacing-ms;
+    padding-top: $spacing-ml;
     width: 100%;
     display: flex;
     align-items: center;

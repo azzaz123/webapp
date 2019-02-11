@@ -10,7 +10,7 @@
   border-radius: $border-radius;
   padding: $spacing-ml $spacing-ms;
   @media (max-width: 1420px) {
-    padding-top: 70px;
+    padding-top: $spacing-xxxl;
   }
 }
 
@@ -36,19 +36,19 @@
 
 .title, ng-select {
   position: absolute;
-  margin-left: 25px;
+  margin-left: $spacing-l;
   width: 205px;
   z-index: 1;
 }
 
 .title {
-  margin-top: 28px;
+  margin-top: $spacing-l;
 }
 
 ng-select {
   $height: 38px;
   height: $height;
-  margin-top: 22px;
+  margin-top: $spacing-ml;
   /deep/ {
     & > div {
       height: $height !important;

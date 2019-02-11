@@ -41,7 +41,7 @@ $sidebar-title: 64px;
     margin-bottom: $spacing-ml;
   }
   h2, h3 {
-    padding: 0 18px;
+    padding: 0 $spacing-ml;
   }
   height: calc(100vh - #{$topbar-height});
   background-color: $white;

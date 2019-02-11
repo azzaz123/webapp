@@ -34,11 +34,11 @@
 
 .modal-body {
   text-align: center;
-  padding: 40px 70px;
+  padding: $spacing-xxl $spacing-xxxl;
   p {
     font-size: $font-size;
     color: $grey-400;
-    margin-top: 10px;
+    margin-top: $spacing-ms;
   }
   .urgent-background {
     background: url(/assets/images/urgent-background.svg);
@@ -62,7 +62,7 @@ tsl-button {
     border-radius: 50%;
     background-color: $grey-50;
     @include square(34px);
-    margin: 6px;
+    margin: $spacing-s;
     cursor: pointer;
     mat-icon {
       @include square(18px);

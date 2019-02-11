@@ -24,7 +24,7 @@
     border-top-left-radius: calc(.25rem - 1px);
     float: left;
     margin-right: $spacing-ml;
-    margin-bottom: -1.25em;
+    margin-bottom: -$spacing-ml;
   }
   .card-header, .card-footer {
     background: transparent;

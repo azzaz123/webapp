@@ -5,7 +5,7 @@ $height: 40px;
 
 .items {
   margin-top: $spacing-ml;
-  margin-bottom: 120px;
+  margin-bottom: $spacing-xxxl * 2;
   .add-item {
     width: 100%;
     svg {
@@ -34,8 +34,8 @@ tsl-spinner {
 }
 
 .nav {
-  margin-bottom: 10px;
-  margin-top: -6px;
+  margin-bottom: $spacing-ms;
+  margin-top: -$spacing-s;
 }
 
 .info {
@@ -71,9 +71,9 @@ tsl-spinner {
     background-size: $icon-size $icon-size;
     height: $icon-size;
     width: $icon-size;
-    margin-left: 10px;
+    margin-left: $spacing-ms;
     vertical-align: middle;
-    margin-top: -2px;
+    margin-top: -$spacing-xxs;
   }
   &.show {
     animation: fadeInFromNone 0.5s ease-in-out;
@@ -93,7 +93,7 @@ tsl-spinner {
   height: $height;
   line-height: $height;
   display: inline-block;
-  margin-bottom: 2px;
+  margin-bottom: $spacing-xxs;
 }
 
 tsl-selected-items {
@@ -105,7 +105,7 @@ tsl-selected-items {
 }
 
 #catalog-empty-state {
-  padding: 0 10px;
+  padding: 0 $spacing-ms;
   width: 100%;
   mat-icon {
     width: 100%;
@@ -123,7 +123,7 @@ tsl-selected-items {
 .bulk-actions {
   align-self: center;
   & > * {
-    margin: 0 9px 0 0;
+    margin: 0 $spacing-s 0 0;
   }
   &.disabled {
     button {

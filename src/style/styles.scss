@@ -57,9 +57,9 @@ body {
   background: rgba(236, 239, 241, 0.6);
   padding: 0 $spacing-xl;
   > .container {
-    padding: $spacing-xl 10px;
+    padding: $spacing-xl $spacing-ms;
     @-moz-document url-prefix() { // Firefox hack
-      padding: $spacing-xl 10px;
+      padding: $spacing-xl $spacing-ms;
     }
   }
 }

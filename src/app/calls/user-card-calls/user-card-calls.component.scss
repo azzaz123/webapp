@@ -23,17 +23,17 @@
   .user-info-extra {
     margin-top: $spacing-ml;
     border-top: 1px solid $grey-50;
-    padding: 5px 0 0 0;
+    padding: $spacing-xs 0 0 0;
     .list-group-item {
       border: 0;
       background-color: transparent;
-      padding: 0.45rem 0;
+      padding: $spacing-s 0;
       font-size: $font-size-S;
       color: $grey-900;
       mat-icon {
         width: 16px;
         height: 16px;
-        margin-right: 23px;
+        margin-right: $spacing-ml;
       }
       a {
         &:hover, &:active {

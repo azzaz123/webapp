@@ -2,8 +2,8 @@
 
 
 .modal-body {
-  background: url(/assets/images/reactivate.svg) no-repeat 90px 70px;
-  padding-top: 70px;
+  background: url(/assets/images/reactivate.svg) no-repeat 90px $spacing-xxxl;
+  padding-top: $spacing-xxxl;
   width: 660px;
   text-align: center;
   .content {
@@ -31,7 +31,7 @@
     margin-bottom: $spacing-ms;
     /deep/ {
       button {
-        padding: 14px 114px;
+        padding: $spacing-m 114px;
         font-weight: bold;
       }
     }

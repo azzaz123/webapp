@@ -4,7 +4,7 @@
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $grey-50;
-  margin-bottom: 8px;
+  margin-bottom: $spacing-s;
   padding: $spacing-s 0 $spacing-s $spacing-m;
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@
         font-weight: bold;
       }
       .discount {
-        margin-bottom: -18px;
+        margin-bottom: -$spacing-ml;
         color: $zone-bump;
         font-size: $font-size-XS;
         font-weight: normal;

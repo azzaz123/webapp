@@ -122,7 +122,7 @@ tsl-user-avatar {
     line-height: $font-size-S;
     p{
       color: $grey-600;
-      margin: 10px 0;
+      margin: $spacing-ms 0;
       &:last-child {
         margin-bottom: 0;
       }

@@ -6,7 +6,7 @@ $height: 40px;
 .bulk-actions {
   align-self: center;
   & > * {
-    margin: 0 9px 0 0;
+    margin: 0 $spacing-s 0 0;
   }
   &.disabled {
     button {
@@ -103,9 +103,9 @@ $height: 40px;
       background-size: $icon-size $icon-size;
       height: $icon-size;
       width: $icon-size;
-      margin-left: 10px;
+      margin-left: $spacing-ms;
       vertical-align: middle;
-      margin-top: -2px;
+      margin-top: -$spacing-xxs;
     }
     &.show {
       animation: fadeInFromNone 0.5s ease-in-out;
