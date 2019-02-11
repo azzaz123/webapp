@@ -34,7 +34,7 @@ $avatar-size: 40px;
 }
 .message-body {
   color: $grey-700;
-  margin: $spacing-ml $spacing-XL 0 $spacing-XL;
+  margin: $spacing-ml $spacing-xxxl 0 $spacing-xxxl;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -124,7 +124,7 @@ $avatar-size: 40px;
     display: block;
     color: $grey-250;
     text-align: center;
-    padding-bottom: $spacing-10;
+    padding-bottom: $spacing-ms;
     margin-top: $spacing-40;
   }
 }

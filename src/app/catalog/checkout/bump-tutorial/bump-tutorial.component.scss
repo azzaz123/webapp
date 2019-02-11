@@ -123,14 +123,14 @@
         .advantages {
           display: flex;
           flex-direction: row;
-          margin-top: $spacing-XL;
+          margin-top: $spacing-xxxl;
           justify-content: space-between;
           .content {
             display: flex;
             flex-direction: column;
             text-align: left;
             width: 50%;
-            margin-right: $spacing-XL;
+            margin-right: $spacing-xxxl;
             h2 {
               font-size: $font-size-LL;
               font-weight: bold;
