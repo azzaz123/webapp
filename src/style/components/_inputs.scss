@@ -60,7 +60,7 @@ $form-control-height: 50px;
     }
   }
   textarea.form-control {
-    line-height: 1.49;
+    line-height: $line-height-l;
     min-height: 140px;
   }
 }
@@ -104,7 +104,7 @@ ng-select {
       & > div.value {
         height: $form-control-height;
         padding-left: 12px !important;
-        line-height: $form-control-height !important;
+        line-height: $line-height-xxl !important;
         mat-icon {
           display: none;
         }
@@ -112,7 +112,7 @@ ng-select {
       & > div.placeholder {
         color: $grey-200 !important;
         height: $form-control-height;
-        line-height: $form-control-height !important;
+        line-height: $line-height-xxl !important;
         padding-left: 12px !important;
       }
     }
@@ -132,7 +132,7 @@ select-dropdown{
       ul li {
         padding: $spacing-S !important;
         border-top: 1px solid $grey-50;
-        line-height: 24px;
+        line-height: $line-height-l;
         mat-icon {
           @include square(38px);
           vertical-align: middle;

@@ -24,7 +24,7 @@
         font-size: $font-size-s;
         color: $grey-300;
         margin-bottom: 0;
-        line-height: $spacing;
+        line-height: $line-height-ml;
     }
 
     .header-separator {
@@ -45,7 +45,7 @@
         .header-numbers-top {
             font-size: $font-size-l;
             font-weight: 700;
-            line-height: 1.1;
+            line-height: $line-height-ml;
             margin-bottom: 0;
             overflow: hidden;
             text-overflow: ellipsis;

@@ -57,7 +57,7 @@ tsl-user-avatar {
     @include text-truncate();
   }
   .call-user-row {
-    line-height: $spacing-M;
+    line-height: $line-height-m;
     display: flex;
     flex-direction: row;
     vertical-align: super;
@@ -78,9 +78,8 @@ tsl-user-avatar {
     }
   }
   .call-item-row {
-    $phone-icon-size: 18px;
     $phone-icon-adjusted-size: 15px;
-    line-height: $phone-icon-size;
+    line-height: $line-height-ml;
     overflow: hidden;
     font-size: $font-size-xs;
     display: flex;
@@ -119,7 +118,7 @@ tsl-user-avatar {
     text-transform: uppercase;
   }
   .call-data-row {
-    line-height: $font-size-s;
+    line-height: $line-height-m;
     p{
       color: $grey-600;
       margin: 10px 0;

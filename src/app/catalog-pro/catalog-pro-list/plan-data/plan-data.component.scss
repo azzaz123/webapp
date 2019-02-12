@@ -45,7 +45,7 @@
     display: flex;
     flex-direction: column;
     align-self: center;
-    line-height: $font-size-M;
+    line-height: $line-height-ml;
   }
 }
 
@@ -100,11 +100,11 @@
 }
 
 .no-plan {
-  line-height: 14px;
+  line-height: $line-height-m;
   margin-top: $spacing-S;
   width: 35%;
 }
 
 .extras {
-  line-height: 8px;
+  line-height: $line-height-s;
 }

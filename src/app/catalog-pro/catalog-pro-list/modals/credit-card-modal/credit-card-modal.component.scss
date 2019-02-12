@@ -38,7 +38,7 @@ form {
   label {
     display: block;
     font-size: $font-size-s;
-    line-height: 25px;
+    line-height: $line-height-l;
     input {
       margin-right: $spacing-S;
     }

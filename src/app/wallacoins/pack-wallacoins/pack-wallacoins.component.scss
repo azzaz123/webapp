@@ -15,13 +15,12 @@
     height: 320px;
   }
   .featured {
-    $height: 28px;
-    height: $height;
+    height: 28px;
     background-color: $corporate-light;
     color: $corporate;
     text-transform: uppercase;
     font-size: $font-size-xs;
-    line-height: $height;
+    line-height: $line-height-l;
     font-weight: bold;
     text-align: center;
     position: absolute;
@@ -57,7 +56,7 @@
     font-size: $font-size-xxl;
     font-weight: bold;
     color: $grey-900;
-    line-height: 30px;
+    line-height: $line-height-xl;
     margin-top: $spacing-S;
   }
   .label {

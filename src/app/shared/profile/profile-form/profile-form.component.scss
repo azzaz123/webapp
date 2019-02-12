@@ -25,7 +25,7 @@ $right-gutter: 35px;
       }
       label {
         text-align: right;
-        line-height: 27px;
+        line-height: $line-height-l;
         color: $grey-900;
         font-size: $font-size-m;
         padding-right: $right-gutter;
@@ -46,7 +46,7 @@ $right-gutter: 35px;
         cursor: pointer;
         padding: 0;
         text-align: center;
-        line-height: 42px;
+        line-height: $line-height-xxl;
         [ngbButton] {
           display: none;
         }

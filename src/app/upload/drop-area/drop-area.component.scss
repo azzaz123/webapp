@@ -46,7 +46,7 @@
       border: solid 2px $warn;
       @include square(32px);
       border-radius: 50%;
-      line-height: 30px;
+      line-height: $line-height-xl;
       margin-bottom: $spacing-XS;
       mat-icon {
         @include square(11px);
@@ -103,7 +103,7 @@
     right: -10px;
     border-radius: 50%;
     text-align: center;
-    line-height: 18px;
+    line-height: $line-height-ml;
     mat-icon {
       width: 7px;
       height: 9px;

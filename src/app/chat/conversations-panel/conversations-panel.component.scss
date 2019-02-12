@@ -50,7 +50,7 @@ tsl-process-all-button {
 .load-more-container {
   $load-more-container-height: 48px;
   $spinner-size: 14px;
-  line-height: $load-more-container-height;
+  line-height: $line-height-xxl;
   height: $load-more-container-height;
   text-align: center;
   .load-more {

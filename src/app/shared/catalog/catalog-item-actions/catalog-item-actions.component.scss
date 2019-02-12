@@ -22,9 +22,8 @@ $height: 40px;
     }
   }
   button {
-    $height: 42px;
-    height: $height;
-    line-height: $height;
+    height: 42px;
+    line-height: $line-height-xxl;
     padding: 0 $spacing;
     cursor: pointer;
     border-radius: $border-radius;
@@ -85,9 +84,8 @@ $height: 40px;
   }
 
   #total-selected {
-    $height: 42px;
-    height: $height;
-    line-height: $height;
+    height: 42;
+    line-height: $line-height-xxl;
     border-radius: $border-radius;
     color: $grey-900;
     font-size: $font-size-s;

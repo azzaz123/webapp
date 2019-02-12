@@ -91,7 +91,7 @@ tsl-spinner {
   color: $grey-900;
   font-size: $font-size-s;
   height: $height;
-  line-height: $height;
+  line-height: $line-height-xxl;
   display: inline-block;
   margin-bottom: 2px;
 }
@@ -139,9 +139,8 @@ tsl-selected-items {
     }
   }
   button {
-    $height: 42px;
-    height: $height;
-    line-height: $height;
+    height: 42px;
+    line-height: $line-height-xxl;
     padding: 0 $spacing;
     cursor: pointer;
     border-radius: $border-radius;

@@ -71,7 +71,7 @@
     a {
       display: inline-block;
       margin-right: $spacing;
-      line-height: $spacing-L;
+      line-height: $line-height-xl;
       text-decoration: none;
       border-radius: 100px;
       color: $white;
@@ -94,7 +94,7 @@
 .input-search {
   & {
     display: flex;
-    line-height: $spacing-L;
+    line-height: $line-height-xl;
     height: 42px;
     z-index: 100;
     overflow: visible;
@@ -233,7 +233,7 @@
     }
     & span {
       font-size: $font-size-s;
-      line-height: $font-size-s;
+      line-height: $line-height-m;
     }
     .news-badge {
       height: 8px;

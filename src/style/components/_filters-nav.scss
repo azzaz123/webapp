@@ -1,12 +1,10 @@
 @import "~style/common";
 
-$filters-nav-height: 36px;
-
 .nav {
   &.filters-nav {
     display: inline-block;
-    height: $filters-nav-height + 2;
-    line-height: $filters-nav-height;
+    height: 38px;
+    line-height: $line-height-xl;
     a {
       display: inline-block;
       font-size: $font-size-xs;

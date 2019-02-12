@@ -59,7 +59,7 @@
     transition: all .15s linear;
     & .suggestion {
       display: grid;
-      line-height: $font-size-l;
+      line-height: $line-height-ml;
       & .title {
         font-size: $font-size-m;
       }

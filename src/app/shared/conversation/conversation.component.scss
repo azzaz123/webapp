@@ -68,7 +68,7 @@ $menu-width-and-spacing: 10px;
     @include text-truncate();
   }
   .item-title-row {
-    line-height: $spacing-M;
+    line-height: $line-height-m;
     display: flex;
     flex-direction: row;
     vertical-align: super;
@@ -93,7 +93,7 @@ $menu-width-and-spacing: 10px;
   .user-name-row {
     $phone-icon-size: 18px;
     $phone-icon-adjusted-size: 15px;
-    line-height: $phone-icon-size;
+    line-height: $line-height-ml;
     overflow: hidden;
     font-size: $font-size-xs;
     display: flex;

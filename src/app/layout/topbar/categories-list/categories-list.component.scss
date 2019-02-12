@@ -103,7 +103,7 @@ $dropdown-width: 900px;
 .categories {
   color: $grey-900;
   font-size: $font-size-s;
-  line-height: 14px;
+  line-height: $line-height-m;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

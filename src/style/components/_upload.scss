@@ -16,7 +16,7 @@
     p {
       color: $grey-500;
       font-size: $font-size-s;
-      line-height: 1.29;
+      line-height: $line-height-ml;
     }
     &.urgent {
       display: flex;
@@ -57,7 +57,7 @@
       display: inline-block;
       @include square($spacing-XL);
       margin-right: $spacing-S;
-      line-height: $spacing-XL;
+      line-height: $line-height-xxxl;
       position: relative;
       text-align: center;
       white-space: normal;
@@ -80,7 +80,7 @@
         font-weight: bold;
         font-size: $font-size-xxs;
         letter-spacing: .4px;
-        line-height: $font-size-s;
+        line-height: $line-height-m;
         margin-top: $spacing-XXS;
       }
       mat-icon {
@@ -151,7 +151,7 @@
           font-weight: normal;
           font-size: $font-size-xs;
           letter-spacing: .6px;
-          line-height: 17px;
+          line-height: $line-height-m;
           margin-left: -10px;
           margin-right: -10px;
           margin-top: 0;

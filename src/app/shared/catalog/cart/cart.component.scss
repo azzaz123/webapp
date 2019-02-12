@@ -30,7 +30,7 @@ $card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
 
 h1 {
   height: $title-height;
-  line-height: $title-height;
+  line-height: $line-height-xxl;
   font-size: $font-size-m;
   text-align: left;
   margin: 0;
@@ -96,7 +96,7 @@ h1 {
 
 .walla-total {
   color: $grey-500;
-  line-height: 25px;
+  line-height: $line-height-xxl;
   margin-top: $spacing-XS;
   .price {
     font-size: $font-size-l;
@@ -149,7 +149,7 @@ h1 {
 
 .total {
   height: $main-total-height;
-  line-height: $main-total-height;
+  line-height: $line-height-xxl;
   .price {
     font-size: $font-size-xl;
   }

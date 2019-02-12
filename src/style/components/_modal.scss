@@ -29,7 +29,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     text-align: left;
     mat-icon {
       height: 15px;
-      line-height: 30px;
+      line-height: $line-height-xl;
       /deep/ path {
         fill: $grey-700;
       }
@@ -77,7 +77,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     font-weight: bold;
     font-size: $font-size-m;
     margin-bottom: 0;
-    line-height: 20px;
+    line-height: $line-height-ml;
   }
   p {
     margin-top: $spacing-M;
@@ -102,7 +102,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   .btn-corporate {
     background-color: $corporate;
     color: $white;
-    line-height: 44px;
+    line-height: $line-height-xxl;
     min-width: 140px;
     transition: background-color .25s ease;
     &:hover {

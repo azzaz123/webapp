@@ -19,7 +19,7 @@ h2 {
 
 .description, .contact, .email {
   font-size: $font-size-s;
-  line-height: 1.29;
+  line-height: $line-height-ml;
   color: $grey-250;
 }
 

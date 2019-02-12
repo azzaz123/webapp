@@ -5,7 +5,7 @@ $coachmark-left-margin: 33px;
   background-color: rgba($corporate-light, .5);
   border: none;
   font-size: $font-size-xs;
-  line-height: 1.33;
+  line-height: $line-height-m;
   color: $grey-700;
   left: calc((100vw - #{$upload-form-width} + #{$sidebar-width}) / 2 + #{$upload-form-width}) !important;
   z-index: 99 !important;

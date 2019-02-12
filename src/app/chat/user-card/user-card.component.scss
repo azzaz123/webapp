@@ -24,7 +24,7 @@
     }
     .card-title {
       margin-bottom: $spacing-XS;
-      line-height: 16px;
+      line-height: $line-height-m;
       margin-top: -6px;
     }
     tsl-stars {
@@ -59,7 +59,7 @@
     overflow: hidden;
     .item-details {
       color: $grey-700;
-      line-height: 20px;
+      line-height: $line-height-ml;
       margin-bottom: 0;
       align-self: center;
       .selling-label {
@@ -71,7 +71,7 @@
       }
       h2 {
         font-size: $font-size-s;
-        line-height: 1.57;
+        line-height: $font-size-ll;
         max-height: 40px;
         overflow: hidden;
       }

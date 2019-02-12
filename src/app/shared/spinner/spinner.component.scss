@@ -16,7 +16,7 @@ $spinner-size: 24px;
     h2 {
       font-size: $font-size-m;
       color: $grey-500;
-      line-height: 24px;
+      line-height: $line-height-l;
     }
   }
 }
