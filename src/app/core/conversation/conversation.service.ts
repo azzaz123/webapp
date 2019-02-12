@@ -309,7 +309,13 @@ export class ConversationService extends LeadService {
 
   public markAs(newStatus: string, messageId: string, thread: string) {
     const conversation = this.leads.find(c => c.id === thread) || this.archivedLeads.find(c => c.id === thread);
+    if (!conversation) {
+      return;
+    }
     const message = conversation.messages.find(m => m.id === messageId);
+    if (!message) {
+      return;
+    }
 
     if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
       message.status = newStatus;
