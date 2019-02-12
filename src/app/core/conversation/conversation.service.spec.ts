@@ -924,6 +924,20 @@ describe('Service: Conversation', () => {
       mockedConversation.unreadMessages = unreadCount;
     });
 
+    describe('when the signal ID does not match any message ID in the conversation', () => {
+      it('should NOT call trackingService.addTrackingEvent', () => {
+        service.markAllAsRead('non-existant-conv-id');
+
+        expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
+      });
+
+      it('should NOT call persistencyService.updateMessageStatus', () => {
+        service.markAllAsRead('non-existant-conv-id');
+
+        expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
+      });
+    });
+
     describe('when called with fromSelf = true', () => {
       it(`should update status to READ and push tracking event MESSAGE_READ for messages fromSelf and status RECEIVED`, () => {
         mockedConversation.messages.map((m, index) => {
@@ -1079,11 +1093,47 @@ describe('Service: Conversation', () => {
   });
 
   describe('markAs', () => {
-    it(`should update message status and add a tracking event ONLY for messages that meet the criteria:
-        message status is missing OR message status is NULL OR the new status order is greater than the current status order`, () => {
+    const mockedConversation = MOCK_CONVERSATION();
+    beforeEach(() => {
       spyOn(persistencyService, 'updateMessageStatus');
       spyOn(trackingService, 'addTrackingEvent');
-      const mockedConversation = MOCK_CONVERSATION();
+      service.leads.push(mockedConversation);
+    });
+
+    describe('when called with a thread that does not match any conversation ID', () => {
+      mockedConversation.messages = [MOCK_MESSAGE];
+
+      it('should NOT call trackingService.addTrackingEvent', () => {
+        service.markAs(messageStatus.SENT, MOCK_MESSAGE.id, 'non-existant-thread');
+
+        expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
+      });
+
+      it('should NOT call persistencyService.updateMessageStatus', () => {
+        service.markAs(messageStatus.SENT, MOCK_MESSAGE.id, 'non-existant-thread');
+
+        expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when called with a messageId does not match any message ID in the conversation', () => {
+      mockedConversation.messages = [MOCK_MESSAGE];
+
+      it('should NOT call trackingService.addTrackingEvent', () => {
+        service.markAs(messageStatus.SENT, 'non-existant-id', mockedConversation.id);
+
+        expect(trackingService.addTrackingEvent).not.toHaveBeenCalled();
+      });
+
+      it('should NOT call persistencyService.updateMessageStatus', () => {
+        service.markAs(messageStatus.RECEIVED, 'non-existant-id', mockedConversation.id);
+
+        expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
+      });
+    });
+
+    it(`should update message status and add a tracking event ONLY for messages that meet the criteria:
+        message status is missing OR message status is NULL OR the new status order is greater than the current status order`, () => {
       mockedConversation.messages = [MOCK_RANDOM_MESSAGE, MOCK_MESSAGE, MOCK_MESSAGE_FROM_OTHER];
       mockedConversation.messages[0].status = messageStatus.SENT;
       mockedConversation.messages[1].status = null;
