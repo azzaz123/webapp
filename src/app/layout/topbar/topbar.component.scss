@@ -203,7 +203,7 @@
     text-decoration: none;
   }
   i {
-    font-size: 40px;
+    font-size: $font-size-xxl;
     vertical-align: middle;
   }
   .menu-link {
@@ -268,7 +268,7 @@
   .main-header-login-sign-in {
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: $font-size-m;
     & span {
       background-color: $corporate;
       color: $white;

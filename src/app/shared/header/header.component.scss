@@ -43,7 +43,7 @@
         flex-direction: column;
         align-self: flex-end;
         .header-numbers-top {
-            font-size: 20px;
+            font-size: $font-size-l;
             font-weight: 700;
             line-height: 1.1;
             margin-bottom: 0;
@@ -51,7 +51,7 @@
             text-overflow: ellipsis;
         }
         .header-numbers-bottom {
-            font-size: 14px;
+            font-size: $font-size-s;
             margin-bottom: 0;
         }
     }

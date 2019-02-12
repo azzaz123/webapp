@@ -27,7 +27,7 @@ p {
 h1 {
   font-weight: bold;
   color: $corporate;
-  font-size: $spacing;
+  font-size: $font-size-l;
   margin-bottom: $spacing-S;
   &.fail {
     color: $warn;
