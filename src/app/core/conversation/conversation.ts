@@ -1,5 +1,5 @@
-import { User } from '../user/user';
-import { Item } from '../item/item';
+import { User, InboxUser } from '../user/user';
+import { Item, InboxItem } from '../item/item';
 import { Message } from '../message/message';
 import { Lead } from './lead';
 import { SurveyResponse } from './lead-response.interface';
@@ -27,14 +27,13 @@ export class InboxConversation {
 
   constructor(private _id: string,
               private _modifiedDate: number,
-              private _user?: User,
-              private _item?: Item,
+              private _user?: InboxUser,
+              private _item?: InboxItem,
               private _lastMessage?: any,
               private _messages: Array<Message> = [],
               private _unreadCounter: number = 0,
               private _archived: boolean = false,
-              private _phone?: string,
-              private _surveyResponses: SurveyResponse[] = []) {
+              private _phone?: string) {
   }
 
   get id(): string {
@@ -57,15 +56,11 @@ export class InboxConversation {
     this._archived = value;
   }
 
-  get user(): User {
+  get user(): InboxUser {
     return this._user;
   }
 
-  set item(item: Item) {
-    this._item = item;
-  }
-
-  get item(): Item {
+  get item(): InboxItem {
     return this._item;
   }
 
@@ -100,13 +95,4 @@ export class InboxConversation {
   get phone(): string {
     return this._phone;
   }
-
-  set surveyResponses(value: SurveyResponse[]) {
-    this._surveyResponses = value;
-  }
-
-  get surveyResponses(): SurveyResponse[] {
-    return this._surveyResponses;
-  }
-
 }
