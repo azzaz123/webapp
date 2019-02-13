@@ -1,5 +1,5 @@
 import { Model } from '../resource/model.interface';
-import { UserExtrainfo, UserLocation, UserStats, UserValidations } from './user-response.interface';
+import { UserExtrainfo, UserLocation, UserStats, UserValidations, InboxUserLocation } from './user-response.interface';
 import { Item } from '../item/item';
 import { environment } from '../../../environments/environment';
 
@@ -210,6 +210,62 @@ export class User implements Model {
 
   get extraInfo(): UserExtrainfo {
     return this._extraInfo;
+  }
+
+  getUrl(subdomain: string) {
+    return environment.siteUrl.replace('es', subdomain) + 'user/' + this.webSlug;
+  }
+}
+
+export class InboxUser implements Model {
+  private _itemDistance: number;
+  private _webLink: string;
+
+  private _blocked: boolean;
+  constructor(private _id: string,
+              private _microName?: string,
+              private _image?: any,
+              private _location?: InboxUserLocation,
+              private _scoringStars?: number,
+              private _responseRate?: string,
+              private webSlug?: string) {
+
+    this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
+  }
+  get id(): string {
+    return this._id;
+  }
+
+  get microName(): string {
+    return this._microName;
+  }
+
+  get image(): any {
+    return this._image;
+  }
+
+  get location(): InboxUserLocation {
+    return this._location;
+  }
+
+  get scoringStars(): number {
+    return this._scoringStars;
+  }
+
+  get responseRate(): string {
+    return this._responseRate;
+  }
+
+  get itemDistance(): number {
+    return this._itemDistance;
+  }
+
+  get webLink(): string {
+    return this._webLink;
+  }
+
+  get blocked(): boolean {
+    return this._blocked;
   }
 
   getUrl(subdomain: string) {

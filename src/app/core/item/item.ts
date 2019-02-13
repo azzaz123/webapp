@@ -270,3 +270,45 @@ export class Item implements Model {
     return this._itemType;
   }
 }
+
+
+export class InboxItem implements Model {
+  constructor(private _id: string,
+              private _title?: string,
+              private _flags?: ItemFlags,
+              private _mainImage?: Image) {
+  }
+
+  get id(): string {
+    return this._id;
+  }
+
+  get title(): string {
+    return this._title;
+  }
+
+  get flags(): ItemFlags {
+    return this._flags;
+  }
+
+  get mainImage(): Image {
+    return this._mainImage;
+  }
+
+  public setFakeImage(image: string) {
+    this._mainImage = {
+      id: '',
+      legacy_id: 0,
+      original_width: 0,
+      original_height: 0,
+      average_hex_color: '',
+      urls_by_size: {
+        original: '',
+        small: '',
+        medium: '',
+        large: '',
+        xlarge: ''
+      }
+    };
+  }
+}
