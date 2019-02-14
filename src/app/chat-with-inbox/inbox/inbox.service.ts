@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { PersistencyService } from '../../core/persistency/persistency.service';
 import { InboxConversation } from '../../core/conversation/conversation';
 import { InboxItem } from '../../core/item/item';
-import { User } from '../../core/user/user';
-import { Message, messageStatus } from '../../core/message/message';
+import { InboxUser } from '../../core/user/user';
+import { InboxImage } from '../../core/user/user-response.interface';
 
 @Injectable()
 
@@ -18,15 +18,12 @@ export class InboxService {
   private API_URL = 'api/v3/instant-messaging/archive/inboxes/mine';
 
   public getInbox(): Observable<any> {
-    console.log('getting!');
-    // return Observable.of(this.mockResponse).map(r => {
-    //   console.log(r.conversations);
-    //   this.saveInbox(r);
-    //   return r.conversations.map(conv => {
-    //     return this.buildConversation(conv);
-    //   });
-    // });
-    return this.http.get(this.API_URL);
+    return this.http.get(this.API_URL).map(res => {
+      const r = res.json();
+      return r.conversations.map(conv => {
+        return this.buildConversation(conv);
+      });
+    });
   }
 
   public saveInbox(inboxData) {
@@ -34,13 +31,28 @@ export class InboxService {
   }
 
   private buildConversation(conv): InboxConversation {
-    console.log(conv);
-    const user = new User(conv.from_user_hash);
-    user.blocked = false;
-    const dateModified = new Date(conv.last_message.timestamp).getTime();
-    const item = new Item('abc', 123, conv.from_user_hash);
-    const conversation = new InboxConversation(conv.conversation_hash, dateModified, user, item, conv.last_message, [],
-      conv.number_of_unread_messages);
+    const lastMessage = conv.messages[conv.messages.length - 1];
+    lastMessage.fromSelf = lastMessage.from === 'self';
+    const user = this.buildInboxUser(conv.with_user);
+    const item = this.buildInboxItem(conv.item);
+    const dateModified = new Date(lastMessage.timestamp).getTime();
+    const conversation = new InboxConversation(conv.conversation_hash, dateModified, user, item, lastMessage,
+      conv.messages, conv.unread_messages, conv.phone_shared);
     return conversation;
+  }
+
+  private buildInboxUser(user: any) {
+    const r = new InboxUser(user.id, user.name, user.blocked, user.avatar_url, user.location,
+      user.scoring, user.response_rate, user.slug);
+      return r;
+  }
+
+  private buildInboxItem(item) {
+    const image: InboxImage = {
+      urls_by_size: {
+        small: item.image_url
+      }
+    };
+    return new InboxItem(item.hash, item.title, image, item.status);
   }
 }
