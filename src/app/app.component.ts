@@ -204,19 +204,7 @@ export class AppComponent implements OnInit {
     this.event.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
         this.realTime.connect(user.id, accessToken).subscribe(() => {
-          this.inboxService.getInbox().subscribe(r => console.log('here!', r));
-
-          // this.conversationService.init().subscribe(() => {
-          //   this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-          //     if (isProfessional) {
-          //       this.callService.init().subscribe(() => {
-          //         this.conversationService.init(true).subscribe(() => {
-          //           this.callService.init(true).subscribe();
-          //         });
-          //       });
-          //     }
-          //   });
-          // });
+          this.inboxService.getInbox().subscribe();
         });
       }
     });
