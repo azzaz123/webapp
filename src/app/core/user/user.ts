@@ -221,9 +221,9 @@ export class InboxUser implements Model {
   private _itemDistance: number;
   private _webLink: string;
 
-  private _blocked: boolean;
   constructor(private _id: string,
               private _microName?: string,
+              private _blocked?: boolean,
               private _image?: any,
               private _location?: InboxUserLocation,
               private _scoringStars?: number,
@@ -266,6 +266,10 @@ export class InboxUser implements Model {
 
   get blocked(): boolean {
     return this._blocked;
+  }
+
+  set blocked(value: boolean) {
+    this._blocked = value;
   }
 
   getUrl(subdomain: string) {

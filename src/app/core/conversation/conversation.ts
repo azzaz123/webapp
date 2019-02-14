@@ -33,7 +33,7 @@ export class InboxConversation {
               private _messages: Array<Message> = [],
               private _unreadCounter: number = 0,
               private _archived: boolean = false,
-              private _phone?: string) {
+              private _phoneShared?: boolean) {
   }
 
   get id(): string {
@@ -88,11 +88,11 @@ export class InboxConversation {
     return this._unreadCounter;
   }
 
-  set phone(value: string) {
-    this._phone = value;
+  set phoneShared(value: boolean) {
+    this._phoneShared = value;
   }
 
-  get phone(): string {
-    return this._phone;
+  get phoneShared(): boolean {
+    return this._phoneShared;
   }
 }

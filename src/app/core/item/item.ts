@@ -1,5 +1,5 @@
 import { Model } from '../resource/model.interface';
-import { Image, UserLocation } from '../user/user-response.interface';
+import { Image, UserLocation, InboxImage } from '../user/user-response.interface';
 import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
@@ -275,8 +275,8 @@ export class Item implements Model {
 export class InboxItem implements Model {
   constructor(private _id: string,
               private _title?: string,
-              private _flags?: ItemFlags,
-              private _mainImage?: Image) {
+              private _mainImage?: InboxImage,
+              private _flags?: ItemFlags) {
   }
 
   get id(): string {
@@ -291,23 +291,14 @@ export class InboxItem implements Model {
     return this._flags;
   }
 
-  get mainImage(): Image {
+  get mainImage(): InboxImage {
     return this._mainImage;
   }
 
   public setFakeImage(image: string) {
     this._mainImage = {
-      id: '',
-      legacy_id: 0,
-      original_width: 0,
-      original_height: 0,
-      average_hex_color: '',
       urls_by_size: {
-        original: '',
         small: '',
-        medium: '',
-        large: '',
-        xlarge: ''
       }
     };
   }
