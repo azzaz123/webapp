@@ -18,7 +18,7 @@ $v-container-spacing: 40px;
 }
 
 h2 {
-  font-size: $font-size-XXL;
+  font-size: $font-size-xxl;
   font-weight: bold;
 }
 
@@ -30,14 +30,14 @@ h2 {
 
 .nav.filters-nav {
   font-weight: normal;
-  font-size: $font-size-L;
+  font-size: $font-size-l;
   text-transform: none;
 }
 
 $sidebar-title: 64px;
 .stats-sidebar {
   h2 {
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     margin-bottom: $spacing;
   }
   h2, h3 {
@@ -73,7 +73,7 @@ $sidebar-title: 64px;
     }
   }
   h3 {
-    font-size: $spacing-S;
+    font-size: $font-size-xs;
     font-weight: bold;
     color: $blue-grey-2;
     margin-top: $spacing;
@@ -83,7 +83,7 @@ $sidebar-title: 64px;
     a {
       float: right;
       color: $walla-main;
-      font-size: $font-size-XS;
+      font-size: $font-size-xs;
       text-decoration: none;
       text-transform: uppercase;
       &:hover {

@@ -2,13 +2,13 @@
 
 .profile-pic {
   h2 {
-    font-size: $font-size;
+    font-size: $font-size-m;
     font-weight: normal;
     color: $blue-grey-1;
   }
   p {
-    font-size: $font-size-S;
-    line-height: 1.29;
+    font-size: $font-size-s;
+    line-height: $line-height-ml;
     color: $blue-grey-2;
     margin-bottom: 0;
   }
@@ -23,7 +23,7 @@
     background-color: $blue-grey-5;
     border: solid 1px $blue-grey-4;
     color: $blue-grey-2;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     padding: $spacing-S $spacing;
     margin-left: 43px;
     cursor: pointer;

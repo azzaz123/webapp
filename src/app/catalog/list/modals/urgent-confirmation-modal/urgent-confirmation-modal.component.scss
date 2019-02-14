@@ -26,14 +26,14 @@ $feature-button-width: 170px;
     }
   }
   h1 {
-    font-size: $font-size-LL;
+    font-size: $font-size-ll;
     font-weight: bold;
     margin-bottom: $spacing-M;
   }
   p {
     margin: 0;
     color: $white;
-    font-size: $font-size;
+    font-size: $font-size-m;
     padding: 0 $spacing-L;
   }
 }
@@ -42,7 +42,7 @@ $feature-button-width: 170px;
   text-align: center;
   padding: $spacing-L 70px 40px;
   p {
-    font-size: $font-size;
+    font-size: $font-size-m;
     color: $blue-grey-2;
     margin-top: 10px;
   }

@@ -14,14 +14,14 @@
   align-items: center;
   .price {
     font-weight: bold;
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     width: 100px;
   }
 }
 
 .col-date {
   color: $blue-grey-3;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
 }
 
 *[class^='col-'] {
@@ -32,7 +32,7 @@
 .col-counters {
   justify-content: center;
   .counters {
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     color: $blue-grey-1;
     display: flex;
     flex-basis: 3em;
@@ -85,7 +85,7 @@
         padding: $spacing-L;
         padding-bottom: 0;
         h2 {
-          font-size: $font-size-S;
+          font-size: $font-size-s;
           font-weight: bold;
         }
         .legend {
@@ -97,7 +97,7 @@
             li {
               display: inline;
               margin-left: $spacing;
-              font-size: $font-size-XS;
+              font-size: $font-size-xs;
               color: $blue-grey-2;
               &:before {
                 content: '';
@@ -156,14 +156,14 @@
       background-size: 120px;
     }
     h2 {
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       font-weight: bold;
       text-align: center;
     }
     .note, .bump-note {
       color: $blue-grey-2;
       text-align: center;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
     }
     .bump-note {
       color: $walla-main;

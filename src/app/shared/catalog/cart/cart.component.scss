@@ -30,8 +30,8 @@ $card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
 
 h1 {
   height: $title-height;
-  line-height: $title-height;
-  font-size: $font-size;
+  line-height: $line-height-xxl;
+  font-size: $font-size-m;
   text-align: left;
   margin: 0;
 }
@@ -74,7 +74,7 @@ h1 {
 
 .discounted-total {
   text-align: right;
-  font-size: $font-size-L;
+  font-size: $font-size-l;
   color: $blue-grey-3;
   margin-top: $spacing-M;
   padding-right: $spacing-XS;
@@ -86,7 +86,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   font-weight: bold;
   text-transform: uppercase;
   padding: 0 $spacing-XS;
@@ -96,14 +96,14 @@ h1 {
 
 .walla-total {
   color: $blue-grey-2;
-  line-height: 25px;
+  line-height: $line-height-xxl;
   margin-top: $spacing-XS;
   .price {
-    font-size: $font-size-L;
+    font-size: $font-size-l;
   }
   .with-credits & {
     .price {
-      font-size: $font-size;
+      font-size: $font-size-m;
     }
   }
 }
@@ -121,15 +121,15 @@ h1 {
   color: $walla-main;
   height: $credit-total-height;
   .price {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
   }
   .with-credits & {
-    font-size: $font-size;
+    font-size: $font-size-m;
     .price {
-      font-size: $font-size;
+      font-size: $font-size-m;
     }
     .label span span {
-      font-size: $font-size-XS;
+      font-size: $font-size-xs;
     }
   }
 }
@@ -143,15 +143,15 @@ h1 {
   }
   .price {
     color: $blue-grey-2;
-    font-size: $font-size-L;
+    font-size: $font-size-l;
   }
 }
 
 .total {
   height: $main-total-height;
-  line-height: $main-total-height;
+  line-height: $line-height-xxl;
   .price {
-    font-size: $font-size-XL;
+    font-size: $font-size-xl;
   }
 }
 
@@ -162,7 +162,7 @@ ul, li {
 }
 
 .items-list {
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   .cart-box {
     border-radius: 5px;
     background-color: $white;
@@ -237,7 +237,7 @@ ul, li {
   position: absolute;
   top: 13px;
   right: $spacing-10;
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   a {
     color: $blue-grey-2;
     cursor: pointer;
@@ -263,7 +263,7 @@ tsl-button {
     height: 15.5px;
   }
   span {
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     color: $blue-grey-3;
   }
 }

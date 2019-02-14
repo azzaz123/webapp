@@ -39,14 +39,14 @@
     p {
       margin: 0;
       color: $blue-grey-2;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
     }
     .denied-icon {
       display: inline-block;
       border: solid 2px $negative-main;
       @include square(32px);
       border-radius: 50%;
-      line-height: 30px;
+      line-height: $line-height-xl;
       margin-bottom: $spacing-XS;
       mat-icon {
         @include square(11px);
@@ -103,7 +103,7 @@
     right: -10px;
     border-radius: 50%;
     text-align: center;
-    line-height: 18px;
+    line-height: $line-height-ml;
     mat-icon {
       width: 7px;
       height: 9px;
@@ -133,7 +133,7 @@
   span {
     $offset: 10px;
     position: absolute;
-    font-size: $font-size-XXS;
+    font-size: $font-size-xxs;
     left: -#{$offset/2};
     right: 0;
     bottom: -40px;
@@ -147,7 +147,7 @@
     }
     .photos-number-10 & {
       bottom: -16px;
-      font-size: $font-size-XXS - 1;
+      font-size: $font-size-xxs;
     }
   }
   input {

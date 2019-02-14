@@ -16,7 +16,7 @@
 }
 
 .cart-pro-title {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     color: $blue-grey-1;
     font-weight: bold;
     margin: 0;
@@ -49,7 +49,7 @@
         z-index: 1;
         .btn-clear {
             cursor: pointer;
-            font-size: $font-size-XXS;
+            font-size: $font-size-xxs;
             color: $blue-grey-2;
             &.disabled {
                 cursor: not-allowed;
@@ -60,7 +60,7 @@
 }
 
 .items-list {
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -169,11 +169,11 @@
     color: $blue-grey-1;
     font-weight: bold;
     .cart-balance-title {
-        font-size: $font-size-XS;
+        font-size: $font-size-xs;
         text-transform: uppercase;
     }
     .cart-balance-number {
-        font-size: $font-size-XL;
+        font-size: $font-size-xl;
     }
 }
 

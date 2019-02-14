@@ -8,14 +8,14 @@ $form-control-height: 50px;
     margin-bottom: 0;
   }
   label {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     color: $blue-grey-2;
   }
   .form-control, select.form-control:not([size]):not([multiple]) {
     display: block;
     height: $form-control-height;
     width: 100%;
-    font-size: $font-size;
+    font-size: $font-size-m;
     border-color: $blue-grey-5;
     border-radius: 6px;
     &:hover {
@@ -60,7 +60,7 @@ $form-control-height: 50px;
     }
   }
   textarea.form-control {
-    line-height: 1.49;
+    line-height: $line-height-l;
     min-height: 140px;
   }
 }
@@ -104,7 +104,7 @@ ng-select {
       & > div.value {
         height: $form-control-height;
         padding-left: 12px !important;
-        line-height: $form-control-height !important;
+        line-height: $line-height-xxl !important;
         mat-icon {
           display: none;
         }
@@ -112,7 +112,7 @@ ng-select {
       & > div.placeholder {
         color: $blue-grey-3 !important;
         height: $form-control-height;
-        line-height: $form-control-height !important;
+        line-height: $line-height-xxl !important;
         padding-left: 12px !important;
       }
     }
@@ -132,7 +132,7 @@ select-dropdown{
       ul li {
         padding: $spacing-S !important;
         border-top: 1px solid $blue-grey-5;
-        line-height: 24px;
+        line-height: $line-height-l;
         mat-icon {
           @include square(38px);
           vertical-align: middle;
@@ -265,7 +265,7 @@ input::-webkit-calendar-picker-indicator{
 }
 
 .chars-counter {
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   color: $blue-grey-3;
   float: right;
   margin-top: $spacing-XXS;

@@ -63,18 +63,18 @@ $menu-width-and-spacing: 10px;
   max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
   color: $blue-grey-1;
   p {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     margin-bottom: 0;
     @include text-truncate();
   }
   .item-title-row {
-    line-height: $spacing-M;
+    line-height: $line-height-m;
     display: flex;
     flex-direction: row;
     vertical-align: super;
     .conversation-item-title {
       font-weight: bold;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       display: flex;
     }
     .conversation-item-title {
@@ -93,9 +93,9 @@ $menu-width-and-spacing: 10px;
   .user-name-row {
     $phone-icon-size: 18px;
     $phone-icon-adjusted-size: 15px;
-    line-height: $phone-icon-size;
+    line-height: $line-height-ml;
     overflow: hidden;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     display: flex;
     flex-direction: row;
     .user-name-row-left {
@@ -121,7 +121,7 @@ $menu-width-and-spacing: 10px;
       width: $spacing;
       padding: 0;
       line-height: $spacing;
-      font-size: 12px;
+      font-size: $font-size-xs;
     }
     .user-name {
       color: $blue-grey-1;
@@ -134,7 +134,7 @@ $menu-width-and-spacing: 10px;
     }
   }
   .message-row {
-    line-height: $font-size-S;
+    line-height: $font-size-s;
     p.message {
       color: $blue-grey-2;
     }
@@ -147,7 +147,7 @@ $menu-width-and-spacing: 10px;
 }
 
 .message-date {
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   color: $blue-grey-2;
   text-transform: uppercase;
   font-weight: bold;

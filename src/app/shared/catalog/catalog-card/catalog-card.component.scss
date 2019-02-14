@@ -14,7 +14,7 @@ $feature-button-width: 170px;
     font-family: $wallie;
     padding: 10px 15px;
     border-radius: $border-radius / 2;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     &:after {
       content: " ";
       position: absolute;
@@ -162,7 +162,7 @@ $feature-button-width: 170px;
   }
   .price {
     font-weight: bold;
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     @include text-truncate();
   }
   .title {
@@ -170,7 +170,7 @@ $feature-button-width: 170px;
   }
   .published, .updated, .sold, .bumped {
     & {
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       display: flex;
       flex-direction: column;
       align-self: auto;
@@ -211,7 +211,7 @@ $feature-button-width: 170px;
     display: flex;
     flex-basis: 6em;
     flex-grow: 1;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     color: $blue-grey-2;
     .counters {
       display: flex;
@@ -256,7 +256,7 @@ $feature-button-width: 170px;
         border: 1px solid $walla-main;
         color: $walla-main;
         cursor: default;
-        font-size: $font-size-S;
+        font-size: $font-size-s;
         font-weight: bold;
       }
       &.btn-sold {
@@ -284,7 +284,7 @@ $feature-button-width: 170px;
         height: $spacing * 2;
         padding: 0 $spacing;
         padding-left: $spacing-S;
-        font-size: $font-size-S;
+        font-size: $font-size-s;
         mat-icon {
           width: 19px;
           height: 21px;
@@ -301,7 +301,7 @@ $feature-button-width: 170px;
   .btn-pending {
     z-index: 2;
     position: relative;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     padding-right: $spacing-L * 2;
     margin-right: $spacing-2M;
     border-radius: $border-radius;

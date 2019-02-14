@@ -7,7 +7,7 @@
   display: flex;
   border-radius: 6px;
   align-items: center;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   .card-icon {
     flex: 0 0 34px;
     margin-right: $spacing-M;
@@ -18,14 +18,14 @@
   .date {
     color: $blue-grey-3;
     span {
-      font-size: $font-size-XS;
+      font-size: $font-size-xs;
     }
   }
 }
 
 .delete-link {
   text-align: right;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   color: $blue-grey-3;
   cursor: pointer;
   &:hover {

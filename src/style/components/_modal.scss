@@ -29,7 +29,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     text-align: left;
     mat-icon {
       height: 15px;
-      line-height: 30px;
+      line-height: $line-height-xl;
       /deep/ path {
         fill: $blue-grey-2;
       }
@@ -59,7 +59,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   .center-heading {
     text-align: center;
     h2 {
-      font-size: $font-size-L;
+      font-size: $font-size-l;
       color: $blue-grey-1;
     }
   }
@@ -75,14 +75,14 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
   h2 {
     font-weight: bold;
-    font-size: $font-size;
+    font-size: $font-size-m;
     margin-bottom: 0;
-    line-height: 20px;
+    line-height: $line-height-ml;
   }
   p {
     margin-top: $spacing-M;
     margin-bottom: 0;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
   }
   .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio) {
     color: $blue-grey-1;
@@ -102,7 +102,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   .btn-corporate {
     background-color: $walla-main;
     color: $white;
-    line-height: 44px;
+    line-height: $line-height-xxl;
     min-width: 140px;
     transition: background-color .25s ease;
     &:hover {

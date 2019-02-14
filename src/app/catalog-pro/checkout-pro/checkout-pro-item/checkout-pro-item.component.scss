@@ -53,7 +53,7 @@
   }
   .title {
     margin: 0;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     color: $blue-grey-3;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -100,7 +100,7 @@
     }
   }
   .label-date {
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     color: $blue-grey-3;
   }
   .input-date {
@@ -108,7 +108,7 @@
     width: 120px;
     height: 32px;
     border-radius: 5px;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     &.ng-valid {
       color: $blue-grey-2;
       font-weight: bold;

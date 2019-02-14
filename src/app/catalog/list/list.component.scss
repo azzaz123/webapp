@@ -44,7 +44,7 @@ tsl-spinner {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   mat-icon {
     /deep/ svg path {
       fill: $walla-main;
@@ -89,9 +89,9 @@ tsl-spinner {
   border-radius: $border-radius;
   background: $white;
   color: $blue-grey-1;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   height: $height;
-  line-height: $height;
+  line-height: $line-height-xxl;
   display: inline-block;
   margin-bottom: 2px;
 }
@@ -139,16 +139,15 @@ tsl-selected-items {
     }
   }
   button {
-    $height: 42px;
-    height: $height;
-    line-height: $height;
+    height: 42px;
+    line-height: $line-height-xxl;
     padding: 0 $spacing;
     cursor: pointer;
     border-radius: $border-radius;
     background: $white;
     color: $blue-grey-2;
-    font-size: $font-size-S;
     border: solid 1px rgba($blue-grey-4, 0.5);
+    font-size: $font-size-s;
     &.btn-delete, &.btn-deactivate {
       padding: 0 ($spacing / 2);
       mat-icon {

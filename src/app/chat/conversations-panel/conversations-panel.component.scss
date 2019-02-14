@@ -6,7 +6,7 @@ $filters-nav-height: 38px;
 h2 {
   margin: $spacing;
   font-weight: bold;
-  font-size: $font-size-LL;
+  font-size: $font-size-ll;
   letter-spacing: $letter-spacing;
   .badge {
     margin-left: 10px;
@@ -50,14 +50,14 @@ tsl-process-all-button {
 .load-more-container {
   $load-more-container-height: 48px;
   $spinner-size: 14px;
-  line-height: $load-more-container-height;
+  line-height: $line-height-xxl;
   height: $load-more-container-height;
   text-align: center;
   .load-more {
     color: $walla-main;
     position: relative;
     text-transform: uppercase;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     font-weight: bold;
     .spinner {
       height: $spinner-size;

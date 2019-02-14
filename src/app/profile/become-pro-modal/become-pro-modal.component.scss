@@ -11,12 +11,12 @@
     color: $white;
   }
   h1 {
-    font-size: $font-size-LLL;
+    font-size: $font-size-lll;
     font-weight: bold;
   }
   p {
     margin: 0;
-    font-size: $font-size;
+    font-size: $font-size-m;
   }
 }
 
@@ -30,7 +30,7 @@
     li {
       color: $blue-grey-2;
       text-align: left;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       list-style: none;
       margin-bottom: $spacing-S;
       background: url(/assets/icons/check-purple.svg) no-repeat left center;

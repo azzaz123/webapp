@@ -10,7 +10,7 @@
   .user-info-rating-block {
     display: flex;
     h3 {
-      font-size: $font-size-XS;
+      font-size: $font-size-xs;
       color: $blue-grey-2;
       text-transform: uppercase;
       font-weight: bold;
@@ -28,7 +28,7 @@
       border: 0;
       background-color: transparent;
       padding: 0.45rem 0;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       color: $blue-grey-1;
       mat-icon {
         width: 16px;
@@ -48,12 +48,12 @@
     left: 0;
     right: 0;
     color: $walla-main;
-    line-height: 48px;
+    line-height: $line-height-xxl;
     height: 48px;
     border-top: 1px solid $blue-grey-5;
     text-transform: uppercase;
     text-align: center;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     font-weight: bold;
     &:hover, &:active {
       text-decoration: none;

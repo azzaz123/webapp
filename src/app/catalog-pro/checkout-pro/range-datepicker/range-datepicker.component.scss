@@ -37,7 +37,7 @@
       -webkit-appearance: none;
       background-color: transparent;
       border: 0;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       &.cancel {
         color: $blue-grey-3;
       }
@@ -97,7 +97,7 @@
       }
     }
     .ngb-dp-month-name {
-      font-size: $font-size;
+      font-size: $font-size-m;
       font-weight: bold;
       margin: 0 $spacing-M;
     }
@@ -109,7 +109,7 @@
   }
 
   .selected-text {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     margin: $spacing 0;
     &.citybump {
       color: $walla-main;
@@ -130,7 +130,7 @@
     text-align: center;
     height: 2rem;
     width: 100%;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     &.range, &:hover {
       color: white;
       font-weight: bold;

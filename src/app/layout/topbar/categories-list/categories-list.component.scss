@@ -65,7 +65,7 @@ $dropdown-width: 900px;
         }
         span {
           width: 70%;
-          font-size: $font-size-XS;
+          font-size: $font-size-xs;
           white-space: normal;
           text-align: center;
         }
@@ -102,8 +102,8 @@ $dropdown-width: 900px;
 
 .categories {
   color: $blue-grey-1;
-  font-size: $font-size-S;
-  line-height: 14px;
+  font-size: $font-size-s;
+  line-height: $line-height-m;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
