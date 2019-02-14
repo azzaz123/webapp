@@ -144,7 +144,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   background-color: $white;
   border: thin solid $corporate;
   padding: 0 $spacing !important;
@@ -152,7 +152,7 @@
   color: $corporate !important;
   text-decoration: none;
   cursor: pointer;
-  line-height: $spacing-L;
+  line-height: $line-height-xl;
   border-radius: 22px;
 
   &:hover {

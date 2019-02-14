@@ -20,7 +20,7 @@
         height: calc(100vh - #{$topbar-height});
         margin-left: $sidebar-width;
         color: $grey-50;
-        font-size: $font-size-L;
+        font-size: $font-size-l;
         background-color: rgba(37,50,56,0.95);
         justify-content: center;
         overflow-y: scroll;
@@ -36,7 +36,7 @@
           font-family: $wallieSkinny;
         }
         p, span {
-          font-size: $font-size;
+          font-size: $font-size-m;
         }
         &.step-1 {
           display: flex;
@@ -61,13 +61,13 @@
               border-right: none;
             }
             h2 {
-              font-size: $font-size-LL;
+              font-size: $font-size-ll;
               font-weight: bold;
               margin: $spacing 0 $spacing-S;
               width: 80%;
             }
             p {
-              font-size: $font-size-S;
+              font-size: $font-size-s;
               color: $grey-250;
               max-width: 350px;
             }
@@ -81,10 +81,10 @@
                 margin: 0;
               }
               .price {
-                font-size: $font-size-XXXL;
+                font-size: $font-size-xxxl;
                 font-weight: bold;
                 color: $white;
-                line-height: 3rem;
+                line-height: $line-height-xxl;
               }
               .from-price {
                 text-transform: uppercase;
@@ -132,7 +132,7 @@
             width: 50%;
             margin-right: $spacing-XL;
             h2 {
-              font-size: $font-size-LL;
+              font-size: $font-size-ll;
               font-weight: bold;
             }
             p {
@@ -191,7 +191,7 @@
         cursor: pointer;
         span {
           opacity: 0.6;
-          font-size: $font-size;
+          font-size: $font-size-m;
         }
         mat-icon {
           /deep/ path {

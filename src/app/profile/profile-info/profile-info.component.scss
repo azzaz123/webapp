@@ -10,7 +10,7 @@ $border: solid 1px $grey-50;
     padding: $spacing-L $spacing-L + 10;
     .section-title {
       position: absolute;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       font-weight: bold;
     }
   }
@@ -29,11 +29,11 @@ $border: solid 1px $grey-50;
     h1 {
       font-weight: bold;
       color: $grey-700;
-      font-size: $font-size-LL;
+      font-size: $font-size-ll;
       letter-spacing: 0.6px;
     }
     .public-profile {
-      font-size: $font-size-S;
+      font-size: $font-size-s;
     }
     .btn-primary {
       float: right;
@@ -42,13 +42,13 @@ $border: solid 1px $grey-50;
   }
   .profile-pic {
     h2 {
-      font-size: $font-size;
+      font-size: $font-size-m;
       font-weight: normal;
       color: $grey-900;
     }
     p {
-      font-size: $font-size-S;
-      line-height: 1.29;
+      font-size: $font-size-s;
+      line-height: $line-height-ml;
       color: $grey-300;
       margin-bottom: 0;
     }
@@ -63,7 +63,7 @@ $border: solid 1px $grey-50;
       background-color: $grey-50;
       border: solid 1px $grey-100;
       color: $grey-600;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       padding: $spacing-S $spacing;
       margin-left: 43px;
       cursor: pointer;
@@ -87,9 +87,9 @@ $border: solid 1px $grey-50;
     }
     > label, > div:first-child {
       text-align: right;
-      line-height: 27px;
+      line-height: $line-height-l;
       color: $grey-900;
-      font-size: $font-size;
+      font-size: $font-size-m;
       padding-right: 69px;
       margin: 0;
     }
@@ -104,7 +104,7 @@ $border: solid 1px $grey-50;
       cursor: pointer;
       padding: 0;
       text-align: center;
-      line-height: 42px;
+      line-height: $line-height-xxl;
       [ngbButton] {
         display: none;
       }
@@ -121,7 +121,7 @@ $border: solid 1px $grey-50;
       }
       div {
         margin-top: -22px;
-        font-size: $font-size-S;
+        font-size: $font-size-s;
       }
       &.active {
         background-color: $grey-300;
@@ -152,7 +152,7 @@ $border: solid 1px $grey-50;
           display: none;
         }
         p {
-          font-size: $font-size-S;
+          font-size: $font-size-s;
         }
         .form-group .form-control {
           width: calc(100% - 13px);
@@ -169,7 +169,7 @@ $border: solid 1px $grey-50;
     a {
       text-decoration: underline;
       color: $grey-100;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       cursor: pointer;
       &:hover {
         text-decoration: none;

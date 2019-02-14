@@ -24,8 +24,8 @@ $card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
 
 h1 {
   height: $title-height;
-  line-height: $title-height;
-  font-size: $font-size;
+  line-height: $line-height-xxl;
+  font-size: $font-size-m;
   text-align: left;
   margin: 0;
 }
@@ -52,12 +52,12 @@ h1 {
 .total {
   height: $total-height;
   line-height: $total-height;
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   font-weight: bold;
   padding: 0 $spacing-XS;
   text-transform: uppercase;
   .price {
-    font-size: $font-size-XL;
+    font-size: $font-size-xl;
   }
 }
 
@@ -68,7 +68,7 @@ ul, li {
 }
 
 .items-list {
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   .cart-box {
     border-radius: 5px;
     background-color: $white;
@@ -130,7 +130,7 @@ ul, li {
       padding: $spacing-XXXS;
       flex: 1;
       .quantity {
-        font-size: $font-size;
+        font-size: $font-size-m;
         font-weight: bold;
         color: $grey-500;
         background-color: $grey-50;
@@ -154,7 +154,7 @@ ul, li {
   position: absolute;
   top: 17px;
   right: $spacing-10;
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   a {
     color: $grey-500;
     cursor: pointer;
@@ -180,7 +180,7 @@ tsl-button {
     height: 15.5px;
   }
   span {
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     color: $grey-250;
   }
 }

@@ -31,7 +31,7 @@
     background: $white;
     text-align: center;
     font-weight: bold;
-    line-height: $item-avatar-size-small;
+    line-height: $line-height-xxl;
   }
 }
 
@@ -43,7 +43,7 @@
     .address {
       position: absolute;
       bottom: -$spacing-S;
-      font-size: $font-size-XXXS;
+      font-size: $font-size-xxxs;
       color: $grey-250;
     }
   }

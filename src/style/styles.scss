@@ -1,3 +1,4 @@
+@import '~web-styleguide/scss/text';
 @import 'fonts-import';
 @import 'variables/variables';
 @import './animations';
@@ -7,6 +8,7 @@
 
 html, body {
   overflow: hidden;
+  font-size: $font-size-base;
 }
 
 body {

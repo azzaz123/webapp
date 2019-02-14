@@ -4,7 +4,7 @@
   text-align: center;
   padding: 76px $spacing $spacing-L;
   h1 {
-    font-size: $font-size-LL;
+    font-size: $font-size-ll;
     font-weight: bold;
     margin-bottom: $spacing-2M;
     &.red {
@@ -12,7 +12,7 @@
     }
   }
   p {
-    font-size: $font-size;
+    font-size: $font-size-m;
     color: $grey-500;
     margin-bottom: $spacing-1M;
     .green {

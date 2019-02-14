@@ -7,7 +7,7 @@
     padding: $spacing;
   }
   .card-title {
-    font-size: $font-size;
+    font-size: $font-size-m;
     color: $grey-800;
     font-weight: bold;
   }
@@ -34,6 +34,6 @@
   .card-header {
     font-weight: bold;
     text-transform: uppercase;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
   }
 }

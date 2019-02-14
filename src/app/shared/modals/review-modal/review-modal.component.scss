@@ -11,14 +11,14 @@
 }
 
 h1 {
-    font-size: $font-size-LL;
+    font-size: $font-size-ll;
     color: $corporate;
     font-weight: bold;
     margin-bottom: $spacing-L;
 }
 
 h2 {
-    font-size: $font-size-L;
+    font-size: $font-size-l;
     color: $grey-900;
     font-weight: normal;
     strong {
@@ -27,7 +27,7 @@ h2 {
 }
 
 p {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     color: $grey-500;
     margin-top: $spacing-XS;
     &.text {
@@ -50,7 +50,7 @@ tsl-stars-rate {
 }
 
 #price, .currency {
-    font-size: $font-size-L;
+    font-size: $font-size-l;
 }
 
 textarea {

@@ -14,9 +14,9 @@ $spinner-size: 24px;
       margin-bottom: $spacing;
     }
     h2 {
-      font-size: $font-size;
+      font-size: $font-size-m;
       color: $grey-500;
-      line-height: 24px;
+      line-height: $line-height-l;
     }
   }
 }

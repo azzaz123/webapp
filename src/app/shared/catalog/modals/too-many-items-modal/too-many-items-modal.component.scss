@@ -22,14 +22,14 @@ img {
 }
 p {
   color: $grey-250;
-  font-size: $font-size;
+  font-size: $font-size-m;
   max-width: 300px;
   margin: 0 auto $spacing-S auto;
 }
 h1 {
   font-weight: bold;
   color: $grey-900;
-  font-size: $spacing;
+  font-size: $font-size-xs;
   margin-bottom: $spacing-2M;
   &.fail {
     color: $warn;

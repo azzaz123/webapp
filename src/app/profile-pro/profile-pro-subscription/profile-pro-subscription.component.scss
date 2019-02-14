@@ -11,7 +11,7 @@
 }
 
 h2 {
-  font-size: $font-size-L;
+  font-size: $font-size-l;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -22,8 +22,8 @@ h2 {
 }
 
 .description, .contact {
-  font-size: $font-size-S;
-  line-height: 1.29;
+  font-size: $font-size-s;
+  line-height: $line-height-ml;
   color: $grey-250;
 }
 
@@ -63,12 +63,12 @@ h2, .description {
       @include square($height);
       line-height: $height;
       font-weight: bold;
-      font-size: $font-size-XL;
+      font-size: $font-size-xl;
       color: $grey-500;
       letter-spacing: -1.5px;
     }
     .quantity-time {
-      font-size: $font-size-XS;
+      font-size: $font-size-xs;
       color: $grey-250;
       position: absolute;
       top: $spacing;
@@ -76,19 +76,19 @@ h2, .description {
     }
   }
   .type {
-    font-size: $font-size;
+    font-size: $font-size-m;
     color: $grey-250;
     text-transform: uppercase;
     margin-top: $spacing;
   }
   .price {
-    font-size: $font-size;
+    font-size: $font-size-m;
     color: $grey-500;
     font-weight: bold;
     flex-grow: 1;
   }
   .discount {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     margin-bottom: $spacing;
   }
   .btn {
@@ -98,7 +98,7 @@ h2, .description {
   }
   .expire {
     display: none;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     font-weight: bold;
   }
   &.selected {
@@ -183,7 +183,7 @@ h2, .description {
   }
   .name {
     font-weight: bold;
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     color: $grey-900;
     padding-bottom: $spacing-S;
     margin-bottom: $spacing-S;
@@ -192,7 +192,7 @@ h2, .description {
     margin-top: $spacing-2M;
   }
   .desc {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     color: $grey-500;
     margin-bottom: $spacing-2M;
     flex-grow: 1;
@@ -222,7 +222,7 @@ h2, .description {
 .open-visibility {
   font-weight: bold;
   color: $grey-500;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   text-decoration: underline;
   &:hover {
     text-decoration: none;

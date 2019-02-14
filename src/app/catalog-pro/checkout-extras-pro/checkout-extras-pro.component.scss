@@ -33,7 +33,7 @@ $offset: 7px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     mat-icon {
       /deep/ svg path {
         fill: $corporate;
@@ -64,10 +64,10 @@ $offset: 7px;
     display: flex;
     align-items: center;
     padding: $spacing-M;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     justify-content: center;
     flex-direction: column;
-    line-height: 17px;
+    line-height: $line-height-m;
     &.city {
       background-image: linear-gradient(206deg, #2be2d6, #2be2d6, #2ae1d5, #2ae0d4 1%, $zone-bump);
       z-index: 3;

@@ -7,7 +7,7 @@
     border-radius: $border-radius;
     border: 1px solid rgba($grey-50, .5);
     display: flex;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     align-items: center;
     height: $spacing-40;
     color: $grey-250;
@@ -30,7 +30,7 @@
       color: $grey-250;
     }
     &.new-card {
-      font-size: $font-size-S;
+      font-size: $font-size-s;
     }
     &:not(.active) {
       .card-icon {

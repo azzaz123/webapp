@@ -20,7 +20,7 @@
     }
   }
   h1 {
-    font-size: 18px;
+    font-size: $font-size-l;
     font-weight: bold;
   }
   p {
@@ -28,7 +28,7 @@
     margin: 0;
     margin-bottom: $spacing-L;
     color: $white;
-    font-size: $font-size;
+    font-size: $font-size-m;
   }
 }
 
@@ -36,7 +36,7 @@
   text-align: center;
   padding: 40px 70px;
   p {
-    font-size: $font-size;
+    font-size: $font-size-m;
     color: $grey-400;
     margin-top: 10px;
   }

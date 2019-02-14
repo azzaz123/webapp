@@ -22,7 +22,7 @@ $feature-button-width: 170px;
     }
   }
   h1 {
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     font-weight: bold;
   }
   p {
@@ -30,7 +30,7 @@ $feature-button-width: 170px;
     margin: 0;
     margin-bottom: $spacing-L;
     color: $white;
-    font-size: $font-size;
+    font-size: $font-size-m;
     padding: 0 $spacing-L;
   }
 }
@@ -39,7 +39,7 @@ $feature-button-width: 170px;
   text-align: center;
   padding: $spacing-L 70px 40px;
   p {
-    font-size: $font-size;
+    font-size: $font-size-m;
     color: $grey-400;
     margin-top: 10px;
   }

@@ -10,13 +10,13 @@
       font-weight: bold;
       text-transform: uppercase;
       color: $corporate;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       margin-bottom: $spacing;
     }
     p {
       color: $grey-500;
-      font-size: $font-size-S;
-      line-height: 1.29;
+      font-size: $font-size-s;
+      line-height: $line-height-ml;
     }
     &.urgent {
       display: flex;
@@ -48,7 +48,7 @@
       }
     }
     h3 {
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       color: $grey-500;
     }
     .selector {
@@ -57,7 +57,7 @@
       display: inline-block;
       @include square($spacing-XL);
       margin-right: $spacing-S;
-      line-height: $spacing-XL;
+      line-height: $line-height-xxxl;
       position: relative;
       text-align: center;
       white-space: normal;
@@ -78,9 +78,9 @@
         text-transform: uppercase;
         color: $grey-300;
         font-weight: bold;
-        font-size: 9px;
+        font-size: $font-size-xxs;
         letter-spacing: .4px;
-        line-height: $font-size-S;
+        line-height: $line-height-m;
         margin-top: $spacing-XXS;
       }
       mat-icon {
@@ -149,9 +149,9 @@
         span {
           text-transform: none;
           font-weight: normal;
-          font-size: $font-size-XS;
+          font-size: $font-size-xs;
           letter-spacing: .6px;
-          line-height: 17px;
+          line-height: $line-height-m;
           margin-left: -10px;
           margin-right: -10px;
           margin-top: 0;

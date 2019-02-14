@@ -10,13 +10,13 @@
     margin: 0 0 0 $spacing + 4px;
   }
   .review-type {
-    font-size: $font-size-S;
-    line-height: $font-size-S;
+    font-size: $font-size-s;
+    line-height: $line-height-m;
     color: $grey-250;
   }
   .review-title {
     font-weight: bold;
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -37,7 +37,7 @@
     text-overflow: ellipsis;
   }
   .review-credits {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     color: $grey-300;
   }
   .review-microname {

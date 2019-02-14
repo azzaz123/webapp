@@ -11,15 +11,15 @@
 }
 
 h2 {
-  font-size: $font-size-L;
+  font-size: $font-size-l;
   font-weight: bold;
   color: $corporate;
   margin-top: 70px;
 }
 
 .description, .contact, .email {
-  font-size: $font-size-S;
-  line-height: 1.29;
+  font-size: $font-size-s;
+  line-height: $line-height-ml;
   color: $grey-250;
 }
 
@@ -51,11 +51,11 @@ h2, .description {
   max-width: 186px;
   .name {
     color: $grey-900;
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     font-weight: bold;
   }
   .price {
-    font-size: $font-size-LLL;
+    font-size: $font-size-lll;
     color: $color-urgent;
     font-weight: bold;
     border-bottom: 2px solid $grey-50;
@@ -70,7 +70,7 @@ h2, .description {
     margin-bottom: $spacing-S;
     color: $grey-500;
     list-style: none;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     &.disabled {
       color: $grey-50;
     }
