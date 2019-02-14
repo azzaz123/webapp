@@ -1,21 +1,14 @@
-<tsl-archivable>
+<tsl-archivable [ngClass]="{'blocked': conversation.user.blocked}">
   <tsl-item-avatar [item]="conversation?.item"></tsl-item-avatar>
   <div class="conversation-info" *ngIf="conversation">
-    <div class="item-title-row">
-      <div class="conversation-item-title">
-        <span>{{conversation.item.title}}</span>
-      </div>
-      <div class="conversation-item-meta">
-        <span class="message-date">{{conversation?.modifiedDate| amCalendar:momentConfig }}
-        </span>
-      </div>
-    </div>
-
     <div class="user-name-row" [ngClass]="{'has-phone': true}">
       <div class="user-name-row-left">
         <p class="user-name">
           <span *ngIf="conversation.phone">
             <mat-icon svgIcon="call-shared"></mat-icon>
+          </span>
+          <span *ngIf="conversation.user.blocked">
+            <mat-icon svgIcon="blocked" class="blocked"></mat-icon>
           </span>
           <span>
             {{conversation.user.microName}}
@@ -23,22 +16,31 @@
         </p>
       </div>
       <div class="user-name-row-right">
+        <span class="message-date">{{conversation?.modifiedDate| amCalendar:momentConfig }}</span>
+      </div>
+    </div>
+
+    <div class="item-title-row">
+      <div class="conversation-item-title">
+        <span>{{conversation.item.title}}</span>
+      </div>
+      <div class="conversation-item-meta">
         <span [hidden]="conversation.unreadCounter === 0" class="badge badge-primary badge-pill">
           {{conversation.unreadCounter}}
         </span>
-        <mat-icon svgIcon="blocked" class="blocked" *ngIf="conversation.user.blocked"></mat-icon>
       </div>
-
     </div>
 
-    <div class="message-row">
+    <div class="message-row" [ngClass]="{'showStatus': conversation.lastMessage.fromSelf && conversation.lastMessage.status }">
+      <div class="message-status" [ngClass]="conversation.lastMessage.status" *ngIf="conversation.lastMessage.fromSelf && conversation.lastMessage.status"></div>
       <p class="message">
         {{conversation.lastMessage.text}}
       </p>
     </div>
   </div>
   <div *ngxPermissionsOnly="['isProfessional']">
-    <tsl-archive-button [lead]="conversation" [hidden]="conversation.archived" (click)="archived = true"></tsl-archive-button>
+    <tsl-archive-button [lead]="conversation" [hidden]="conversation.archived" (click)="archived = true">
+    </tsl-archive-button>
     <tsl-unarchive-button [lead]="conversation" [hidden]="!conversation.archived"></tsl-unarchive-button>
   </div>
 </tsl-archivable>
