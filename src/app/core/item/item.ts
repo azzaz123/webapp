@@ -276,7 +276,7 @@ export class InboxItem implements Model {
   constructor(private _id: string,
               private _title?: string,
               private _mainImage?: InboxImage,
-              private _flags?: ItemFlags) {
+              private _status?: string) {
   }
 
   get id(): string {
@@ -287,8 +287,8 @@ export class InboxItem implements Model {
     return this._title;
   }
 
-  get flags(): ItemFlags {
-    return this._flags;
+  get status(): string {
+    return this._status;
   }
 
   get mainImage(): InboxImage {
