@@ -1,5 +1,17 @@
 @import "~style/common";
 
+// TODO -- remove these vars after webstyuleguide is merged
+$blue-grey-1:#253238;
+$blue-grey-3:#90A4AE;
+$negative-main: $warn;
+
+$font-size-s: 0.875rem;
+$font-size-m: 1rem;
+
+$spacing-xxs: 2px;
+$spacing-ms: 12px;
+// TODO -- end
+
 $transition-time: .15s;
 $check-width-and-spacing: 50px;
 $menu-width-and-spacing: 10px;
@@ -61,7 +73,8 @@ $menu-width-and-spacing: 10px;
   height: $item-avatar-size;
   margin-left: $item-avatar-space;
   max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
-  color: $grey-900;
+  color: $blue-grey-1;
+
   p {
     font-size: $font-size-S;
     margin-bottom: 0;
@@ -74,7 +87,7 @@ $menu-width-and-spacing: 10px;
     vertical-align: super;
     .conversation-item-title {
       font-weight: bold;
-      font-size: $font-size-S;
+      font-size: $font-size-m;
       display: flex;
     }
     .conversation-item-title {
@@ -86,16 +99,27 @@ $menu-width-and-spacing: 10px;
       }
     }
     .conversation-item-meta {
-      flex: none;
-      margin-left: $spacing-XXS;
+      position: absolute;
+      right: $spacing-ms;
+      .badge-pill {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        background-color: $warn;
+        height: 24px;
+        width: 24px;
+        font-size: $font-size-xs;
+      }
     }
+
   }
   .user-name-row {
     $phone-icon-size: 18px;
     $phone-icon-adjusted-size: 15px;
+    color: $blue-grey-3;
     line-height: $phone-icon-size;
     overflow: hidden;
-    font-size: $font-size-XS;
     display: flex;
     flex-direction: row;
     .user-name-row-left {
@@ -115,16 +139,14 @@ $menu-width-and-spacing: 10px;
     mat-icon {
       @include square($phone-icon-adjusted-size);
     }
-    .badge-pill {
-      background-color: $warn;
-      height: $spacing;
-      width: $spacing;
-      padding: 0;
-      line-height: $spacing;
-      font-size: 12px;
+
+    mat-icon.blocked {
+      @include square(10px);
+      position: relative;
+      bottom: 4px;
     }
     .user-name {
-      color: $grey-900;
+      font-size: $font-size-xs;
     }
     &.has-phone {
       $phone-icon-size: 10px;
@@ -134,25 +156,57 @@ $menu-width-and-spacing: 10px;
     }
   }
   .message-row {
+    position: relative;
     line-height: $font-size-S;
     p.message {
-      color: $grey-600;
+      font-size: $font-size-s;
+      color: $blue-grey-3;
     }
     mat-icon {
       height: 15px;
       width: 15px;
       vertical-align: bottom;
     }
+    &.showStatus {
+      $status-width: 20px;
+      p.message {
+        float: left;
+        width: calc(100% - #{$status-width});
+        padding-left: $spacing-xxs;
+      }
+      .message-status {
+        float: left;
+        width: $status-width;
+        height: 14px;
+        background: center center no-repeat;
+        &.pending { background-image: url(/assets/icons/status-pending.svg); }
+        &.sent { background-image: url(/assets/icons/status-sent.svg); }
+        &.received { background-image: url(/assets/icons/status-received.svg); }
+        &.read { background-image: url(/assets/icons/status-read-wallaColor.svg); }
+      }
+    }
   }
+
 }
 
 .message-date {
-  font-size: $font-size-XS;
-  color: $grey-300;
+  font-size: $font-size-xs;
+  color: $blue-grey-3;
   text-transform: uppercase;
-  font-weight: bold;
 }
 
 a {
   cursor: pointer;
+}
+
+.blocked {
+  tsl-item-avatar, .conversation-item-meta.badge-pill {
+    opacity: 0.6;
+  }
+  .item-title-row {
+    color: $blue-grey-3;
+  }
+  .user-name-row .user-name {
+    color: $negative-main;
+  }
 }
