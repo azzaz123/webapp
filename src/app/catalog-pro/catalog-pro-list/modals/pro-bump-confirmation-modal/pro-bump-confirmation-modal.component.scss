@@ -26,10 +26,10 @@ p {
 }
 h1 {
   font-weight: bold;
-  color: $corporate;
+  color: $walla-main;
   font-size: $font-size-l;
   margin-bottom: $spacing-S;
   &.fail {
-    color: $warn;
+    color: $negative-main;
   }
 }

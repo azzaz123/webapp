@@ -15,7 +15,7 @@ $feature-button-width: 170px;
   }
   .select {
     @include square($checkbox-width);
-    border: 2px solid $grey-100;
+    border: 2px solid $blue-grey-4;
     border-radius: 6px;
     padding: 0;
     background: transparent;
@@ -31,7 +31,7 @@ $feature-button-width: 170px;
       width: 12px;
     }
     &.selected {
-      background: $corporate;
+      background: $walla-main;
       border-color: transparent;
       mat-icon {
         display: flex;
@@ -41,7 +41,7 @@ $feature-button-width: 170px;
       }
     }
     &:hover {
-      border-color: $corporate;
+      border-color: $walla-main;
     }
   }
 }
@@ -49,7 +49,7 @@ $feature-button-width: 170px;
 .item {
   background: $white;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   margin-bottom: $spacing-XS;
   display: flex;
   align-items: center;
@@ -96,7 +96,7 @@ $feature-button-width: 170px;
     }
     &:not(.selected):hover {
       .selected-veil {
-        border: solid 1px $corporate;
+        border: solid 1px $walla-main;
       }
     }
   }
@@ -106,8 +106,8 @@ $feature-button-width: 170px;
     }
   }
   &.selected {
-    background-color: rgba($corporate, 0.2);
-    border: solid 1px $corporate;
+    background-color: rgba($walla-main, 0.2);
+    border: solid 1px $walla-main;
     .subscribe {
       &.onHold {
         opacity: 0.4;
@@ -115,7 +115,7 @@ $feature-button-width: 170px;
     }
   }
   a {
-    color: $grey-900;
+    color: $blue-grey-1;
     &:hover {
       text-decoration: none;
     }
@@ -135,7 +135,7 @@ $feature-button-width: 170px;
     display: block;
   }
   .subtitle {
-    color: $grey-250;
+    color: $blue-grey-3;
     @include text-truncate();
     &.onHold {
       width: 19%;
@@ -183,7 +183,7 @@ $feature-button-width: 170px;
   }
   .subscribe {
     font-size: $font-size-s;
-    color: $sold-bg;
+    color: $magenta-main;
     min-width: 250px;
     font-weight: bold;
     &.onHold {
@@ -216,7 +216,7 @@ $feature-button-width: 170px;
       background-color: $white;
       mat-icon /deep/ {
         svg g g, svg path {
-          fill: $grey-500;
+          fill: $blue-grey-2;
         }
       }
       &:hover, &.active {
@@ -228,33 +228,33 @@ $feature-button-width: 170px;
       }
       &.btn-featured {
         width: $feature-button-width;
-        border: 1px solid $corporate;
-        color: $corporate;
+        border: 1px solid $walla-main;
+        color: $walla-main;
         cursor: default;
         font-size: $font-size-s;
         font-weight: bold;
       }
       &.btn-sold {
         &:hover {
-          background: $sold-bg;
+          background: $magenta-main;
           border-color: transparent;
         }
       }
       &.btn-reserve {
         &:hover, &.active {
-          background: $reserve-bg;
+          background: $skyblue-dark;
           border-color: transparent;
         }
       }
       &.btn-delete {
         &:hover {
-          background: $delete-bg;
+          background: $negative-main;
           border-color: transparent;
         }
       }
       &.btn-edit {
         &:hover {
-          background: $edit-bg;
+          background: $blue-grey-2;
           border-color: transparent;
         }
       }
@@ -265,7 +265,7 @@ $feature-button-width: 170px;
         color: $white;
         text-align: center;
         padding: 0 $spacing 0 $spacing*2;
-        background-color: $reactivate-bg;
+        background-color: $magenta-main;
         border-color: transparent;
         border-radius: 20px;
         font-size: $font-size-s;
@@ -281,12 +281,12 @@ $feature-button-width: 170px;
         }
         &:hover {
           background-color: transparent;
-          border-color: $grey-900;
-          color: $grey-900;
+          border-color: $blue-grey-1;
+          color: $blue-grey-1;
           border: solid 1px rgba(207, 216, 220, 0.5);
           mat-icon /deep/ {
             svg g g, svg path {
-              fill: $grey-900;
+              fill: $blue-grey-1;
             }
           }
         }
@@ -321,7 +321,7 @@ $feature-button-width: 170px;
     padding-right: 64px;
     margin-right: 24px;
     border-radius: $border-radius;
-    color: $grey-900;
+    color: $blue-grey-1;
     height: 40px;
     mat-icon {
       margin-right: 34px;
@@ -342,7 +342,7 @@ $feature-button-width: 170px;
       display: none;
     }
     .few-days {
-      color: $listing-fee-color;
+      color: $magenta-main;
     }
   }
 }

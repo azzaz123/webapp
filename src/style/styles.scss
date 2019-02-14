@@ -1,9 +1,7 @@
-@import '~web-styleguide/scss/text';
+@import "~style/common";
 @import 'fonts-import';
-@import 'variables/variables';
 @import './animations';
 @import '~bootstrap/scss/bootstrap';
-@import './mixins/mixins';
 @import './components/components';
 
 html, body {

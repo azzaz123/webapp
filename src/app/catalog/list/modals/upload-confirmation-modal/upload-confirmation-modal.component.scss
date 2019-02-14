@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .header {
-  background: $corporate;
+  background: $walla-main;
   height: 127px;
   border-top-left-radius: $border-radius;
   border-top-right-radius: $border-radius;
@@ -37,7 +37,7 @@
   padding: 40px 70px;
   p {
     font-size: $font-size-m;
-    color: $grey-400;
+    color: $blue-grey-2;
     margin-top: 10px;
   }
   .urgent-background {
@@ -60,7 +60,7 @@ tsl-button {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background-color: $grey-50;
+    background-color: $blue-grey-5;
     @include square(34px);
     margin: 6px;
     cursor: pointer;

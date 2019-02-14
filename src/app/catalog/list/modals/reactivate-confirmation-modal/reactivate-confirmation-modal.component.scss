@@ -11,7 +11,7 @@
     max-width: 435px;
     margin: 0 auto $spacing auto;
     font-size: $font-size-m;
-    color: $grey-500;
+    color: $blue-grey-2;
   }
   h1 {
     font-weight: bold;
@@ -32,7 +32,7 @@
   }
 
   .link {
-    color: $grey-250 !important;
+    color: $blue-grey-3 !important;
     &:hover {
       text-decoration: underline;
       cursor: pointer;

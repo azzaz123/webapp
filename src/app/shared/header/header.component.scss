@@ -3,7 +3,7 @@
 /deep/ {
     .header-title {
         font-size: $font-size-ll;
-        color: $grey-900;
+        color: $blue-grey-1;
         font-weight: bold;
         .badge {
           margin-left: 10px;
@@ -22,13 +22,13 @@
 
     .header-subtitle {
         font-size: $font-size-s;
-        color: $grey-300;
+        color: $blue-grey-2;
         margin-bottom: 0;
         line-height: $line-height-ml;
     }
 
     .header-separator {
-        color: $grey-300;
+        color: $blue-grey-2;
         margin: 0 15px;
     }
 
@@ -37,7 +37,7 @@
     }
 
     .header-numbers {
-        color: $grey-250;
+        color: $blue-grey-3;
         text-align: center;
         display: flex;
         flex-direction: column;

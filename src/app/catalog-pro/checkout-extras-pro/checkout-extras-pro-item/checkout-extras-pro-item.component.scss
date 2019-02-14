@@ -3,7 +3,7 @@
 .item {
   background: $white;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   margin-bottom: 8px;
   padding: $spacing-XS 0 $spacing-XS $spacing-M;
   display: flex;
@@ -20,20 +20,20 @@
       content: '';
       height: 100%;
       width: 1px;
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       position: absolute;
       top: 0;
       right: 0;
     }
     .quantity {
       $height: 70px;
-      background-color: transparentize($grey-50, 0.35);
+      background-color: transparentize($blue-grey-5, 0.35);
       border-radius: 50%;
       @include square($height);
       line-height: $height;
       font-weight: bold;
       font-size: $font-size-xl;
-      color: $grey-500;
+      color: $blue-grey-2;
       text-align: center;
     }
     .title {
@@ -63,7 +63,7 @@
       }
       .discount {
         margin-bottom: -$spacing-1M;
-        color: $zone-bump;
+        color: $walla-main;
         font-size: $font-size-xs;
         font-weight: normal;
       }
@@ -71,7 +71,7 @@
         margin-left: $spacing-M;
         min-width: $spacing * 5;
         .btn-price {
-          background-color: $grey-50;
+          background-color: $blue-grey-5;
           border-radius: $button-border-radius;
           font-size: $font-size-m;
           text-align: center;
@@ -98,7 +98,7 @@
         .btn-price {
           &:hover {
             color: $white;
-            background-color: $zone-bump;
+            background-color: $walla-main;
           }
         }
       }
@@ -106,7 +106,7 @@
         content: '';
         height: 100%;
         width: 1px;
-        background-color: $grey-50;
+        background-color: $blue-grey-5;
         position: absolute;
         top: 0;
         right: 0;

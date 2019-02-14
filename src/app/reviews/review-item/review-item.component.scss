@@ -12,7 +12,7 @@
   .review-type {
     font-size: $font-size-s;
     line-height: $line-height-m;
-    color: $grey-250;
+    color: $blue-grey-3;
   }
   .review-title {
     font-weight: bold;
@@ -21,7 +21,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     a {
-      color: $grey-900;
+      color: $blue-grey-1;
     }
   }
   .review-rating {
@@ -38,10 +38,10 @@
   }
   .review-credits {
     font-size: $font-size-s;
-    color: $grey-300;
+    color: $blue-grey-2;
   }
   .review-microname {
-    color: $color-grey-item;
+    color: $blue-grey-1;
     font-weight: bold;
     margin: 0 $spacing-XXS;
   }
@@ -74,7 +74,7 @@
     .review-image {
       width: 80px;
       height: 80px;
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       border-radius: $border-radius;
       display: flex;
       align-items: center;

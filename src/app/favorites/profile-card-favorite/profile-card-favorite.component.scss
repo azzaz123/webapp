@@ -23,7 +23,7 @@ tsl-card {
       height: $spacing-L;
       border-radius: 50%;
       display: flex;
-      background-image: linear-gradient(to bottom, $color-pro-super-light, $color-pro);
+      background-image: linear-gradient(to bottom, $color-pro-super-light, $skyblue-main);
       margin: auto;
       z-index: 2;
       mat-icon {
@@ -72,7 +72,7 @@ tsl-card {
 
     &:hover, &:focus {
       cursor: pointer;
-      background: rgba($grey-100, .2);
+      background: rgba($blue-grey-4, .2);
     }
   }
 }

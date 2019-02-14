@@ -2,7 +2,7 @@
 
 #alert {
   $alert-height: 50px;
-  background: $warn;
+  background: $negative-main;
   color: $white;
   text-align: center;
   height: $alert-height;
@@ -10,6 +10,6 @@
   font-size: $font-size-m;
   padding-left: $spacing-S;
   &.connected {
-    background: $success;
+    background: $positive-main;
   }
 }

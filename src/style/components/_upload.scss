@@ -3,18 +3,18 @@
   .box, .main-box {
     border-radius: $border-radius;
     background-color: $white;
-    border: solid 1px $grey-50;
+    border: solid 1px $blue-grey-5;
     padding: $spacing;
     margin-bottom: $spacing;
     h2 {
       font-weight: bold;
       text-transform: uppercase;
-      color: $corporate;
+      color: $walla-main;
       font-size: $font-size-s;
       margin-bottom: $spacing;
     }
     p {
-      color: $grey-500;
+      color: $blue-grey-2;
       font-size: $font-size-s;
       line-height: $line-height-ml;
     }
@@ -49,10 +49,10 @@
     }
     h3 {
       font-size: $font-size-s;
-      color: $grey-500;
+      color: $blue-grey-2;
     }
     .selector {
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       border-radius: $border-radius;
       display: inline-block;
       @include square($spacing-XL);
@@ -76,7 +76,7 @@
       span {
         display: block;
         text-transform: uppercase;
-        color: $grey-300;
+        color: $blue-grey-2;
         font-weight: bold;
         font-size: $font-size-xxs;
         letter-spacing: .4px;
@@ -91,14 +91,14 @@
           width: 26px;
           height: 26px;
           g, path {
-            fill: $grey-250;
+            fill: $blue-grey-3;
           }
         }
       }
       &.active {
-        background-color: $corporate;
+        background-color: $walla-main;
         span {
-          color: $corporate;
+          color: $walla-main;
         }
         mat-icon {
           /deep/ {
@@ -111,12 +111,12 @@
       &:hover:not(.active) {
         cursor: pointer;
         span {
-          color: $grey-700;
+          color: $blue-grey-2;
         }
         mat-icon {
           /deep/ {
             svg g, svg path {
-              fill: $grey-700;
+              fill: $blue-grey-2;
             }
           }
         }
@@ -127,9 +127,9 @@
     }
     .ng-dirty.ng-invalid {
       .selector {
-        border: 1px solid $warn;
+        border: 1px solid $negative-main;
         span {
-          color: $warn;
+          color: $negative-main;
         }
       }
     }
@@ -188,7 +188,7 @@
     margin-top: $spacing-L - $spacing;
   }
   .btn-link {
-    color: $corporate;
+    color: $walla-main;
     &[disabled] {
       opacity: .5;
     }
@@ -210,15 +210,15 @@
       opacity: 1;
     }
     span {
-      color: $grey-500;
+      color: $blue-grey-2;
       cursor: pointer;
       &.selected {
-        color: $color-urgent;
+        color: $yellow-dark;
       }
     }
     .select {
       @include square($checkbox-width);
-      border: 2px solid $grey-100;
+      border: 2px solid $blue-grey-4;
       border-radius: 6px;
       padding: 0;
       background: transparent;
@@ -232,7 +232,7 @@
         width: 12px;
       }
       &.selected {
-        background: $color-urgent;
+        background: $yellow-dark;
         border-color: transparent;
         mat-icon {
           display: flex;
@@ -242,19 +242,19 @@
         }
       }
       &:hover {
-        border-color: $color-urgent;
+        border-color: $yellow-dark;
       }
     }
     &.checkbox-corporate {
       .select {
         &.selected {
-          background: $corporate;
+          background: $walla-main;
           mat-icon {
             display: block;
           }
         }
         &:hover {
-          border-color: $corporate;
+          border-color: $walla-main;
         }
       }
     }

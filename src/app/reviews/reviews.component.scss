@@ -3,14 +3,14 @@
 .user-average, .user-number-reviews {
   p {
     font-size: $font-size-s;
-    color: $grey-250;
+    color: $blue-grey-3;
     margin-bottom: 0;
   }
 }
 
 .user-average {
   p {
-    color: $grey-500;
+    color: $blue-grey-2;
   }
 }
 
@@ -31,7 +31,7 @@
 }
 
 .reviews-empty-state {
-  border-top: 1px solid $grey-50;
+  border-top: 1px solid $blue-grey-5;
   margin: 20px 10px;
   padding-top: 20px;
   width: 100%;
@@ -43,7 +43,7 @@
   }
   & .message {
     width: 45%;
-    color: $grey-500;
+    color: $blue-grey-2;
     font-size: $font-size-ll;
     position: absolute;
     margin: 0 auto;

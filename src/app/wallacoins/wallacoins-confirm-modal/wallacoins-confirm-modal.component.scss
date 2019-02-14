@@ -8,15 +8,15 @@
     font-weight: bold;
     margin-bottom: $spacing-2M;
     &.red {
-      color: $warn;
+      color: $negative-main;
     }
   }
   p {
     font-size: $font-size-m;
-    color: $grey-500;
+    color: $blue-grey-2;
     margin-bottom: $spacing-1M;
     .green {
-      color: $corporate;
+      color: $walla-main;
     }
   }
   tsl-button {
@@ -29,7 +29,7 @@
     }
   }
   .link {
-    color: $grey-250;
+    color: $blue-grey-3;
     &:hover {
       text-decoration: underline;
       cursor: pointer;

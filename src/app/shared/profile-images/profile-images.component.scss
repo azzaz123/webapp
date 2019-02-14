@@ -33,7 +33,7 @@ div {
 }
 
 .overlay {
-  background-color: $grey-900;
+  background-color: $blue-grey-1;
   position: absolute;
   @include square-avatar(100%);
   opacity: .5;

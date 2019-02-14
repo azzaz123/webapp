@@ -3,7 +3,7 @@
 .item {
   background: $white;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   margin-bottom: $spacing-XS;
   padding: $spacing-XXS;
   display: flex;
@@ -54,7 +54,7 @@
   .title {
     margin: 0;
     font-size: $font-size-s;
-    color: $grey-250;
+    color: $blue-grey-3;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     overflow: hidden;
@@ -68,7 +68,7 @@
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background-color: $grey-50;
+    background-color: $blue-grey-5;
     transition: background-color 0.2s ease-in-out;
     cursor: pointer;
     mat-icon {
@@ -77,7 +77,7 @@
     }
     &.citybump {
       &:hover, &.selected {
-        background-color: $corporate;
+        background-color: $walla-main;
         mat-icon {
           /deep/ svg path {
             fill: $white;
@@ -101,7 +101,7 @@
   }
   .label-date {
     font-size: $font-size-xs;
-    color: $grey-250;
+    color: $blue-grey-3;
   }
   .input-date {
     font-family: Wallie;
@@ -110,12 +110,12 @@
     border-radius: 5px;
     font-size: $font-size-s;
     &.ng-valid {
-      color: $grey-500;
+      color: $blue-grey-2;
       font-weight: bold;
     }
     &.citybump {
       &:hover, &:focus {
-        border-color: $corporate;
+        border-color: $walla-main;
       }
     }
     &.countrybump {
@@ -125,16 +125,16 @@
     }
     &:disabled {
       background-color: $white;
-      border-color: $grey-50;  
-      color: $grey-50;
+      border-color: $blue-grey-5;  
+      color: $blue-grey-5;
       &::placeholder {
-        color: $grey-50;
+        color: $blue-grey-5;
       }
     }
   }
   .item-separator {
     width: 1px;
     height: 61px;
-    background-color: $grey-50;
+    background-color: $blue-grey-5;
   }
 }

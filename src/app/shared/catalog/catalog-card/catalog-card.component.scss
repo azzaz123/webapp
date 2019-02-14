@@ -10,7 +10,7 @@ $feature-button-width: 170px;
     opacity: 1;
   }
   .tooltip-inner {
-    background-color: $grey-500;
+    background-color: $blue-grey-2;
     font-family: $wallie;
     padding: 10px 15px;
     border-radius: $border-radius / 2;
@@ -23,7 +23,7 @@ $feature-button-width: 170px;
       margin-left: -5px;
       border-width: 5px;
       border-style: solid;
-      border-color: $grey-500 transparent transparent transparent;
+      border-color: $blue-grey-2 transparent transparent transparent;
     }
   }
 }
@@ -38,7 +38,7 @@ $feature-button-width: 170px;
   }
   .select {
     @include square($checkbox-width);
-    border: 2px solid $grey-100;
+    border: 2px solid $blue-grey-4;
     border-radius: 6px;
     padding: 0;
     background: transparent;
@@ -54,7 +54,7 @@ $feature-button-width: 170px;
       width: 12px;
     }
     &.selected {
-      background: $corporate;
+      background: $walla-main;
       border-color: transparent;
       mat-icon {
         display: flex;
@@ -64,7 +64,7 @@ $feature-button-width: 170px;
       }
     }
     &:hover {
-      border-color: $corporate;
+      border-color: $walla-main;
     }
   }
 }
@@ -72,7 +72,7 @@ $feature-button-width: 170px;
 .item {
   background: $white;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   margin-bottom: $spacing;
   margin-left: $spacing-L;
   display: flex;
@@ -117,16 +117,16 @@ $feature-button-width: 170px;
     }
     &:not(.selected):hover {
       .selected-veil {
-        border: solid 1px $corporate;
+        border: solid 1px $walla-main;
       }
     }
   }
   &.selected {
-    background-color: rgba($corporate, 0.2);
-    border: solid 1px $corporate;
+    background-color: rgba($walla-main, 0.2);
+    border: solid 1px $walla-main;
   }
   a {
-    color: $grey-900;
+    color: $blue-grey-1;
     &:hover {
       text-decoration: none;
     }
@@ -148,7 +148,7 @@ $feature-button-width: 170px;
     cursor: pointer;
   }
   button {
-    border: solid 1px rgba($grey-100, 0.5);
+    border: solid 1px rgba($blue-grey-4, 0.5);
   }
   .info {
     display: flex;
@@ -179,7 +179,7 @@ $feature-button-width: 170px;
       flex-basis: 12em;
     }
     .date {
-      color: $grey-250;
+      color: $blue-grey-3;
     }
   }
   .sold, .bumped {
@@ -205,14 +205,14 @@ $feature-button-width: 170px;
     color: $country-bump;
   }
   .citybump {
-    color: $zone-bump;
+    color: $walla-main
   }
   .visibility {
     display: flex;
     flex-basis: 6em;
     flex-grow: 1;
     font-size: $font-size-xs;
-    color: $grey-500;
+    color: $blue-grey-2;
     .counters {
       display: flex;
       flex-direction: column;
@@ -241,7 +241,7 @@ $feature-button-width: 170px;
       transition: all .2s ease;
       mat-icon /deep/ {
         svg g g, svg path {
-          fill: $grey-500;
+          fill: $blue-grey-2;
         }
       }
       &:hover, &.active {
@@ -253,27 +253,27 @@ $feature-button-width: 170px;
       }
       &.btn-featured {
         width: $feature-button-width;
-        border: 1px solid $corporate;
-        color: $corporate;
+        border: 1px solid $walla-main;
+        color: $walla-main;
         cursor: default;
         font-size: $font-size-s;
         font-weight: bold;
       }
       &.btn-sold {
         &:hover, &.active {
-          background: $sold-bg;
+          background: $magenta-main;
           border-color: transparent;
         }
       }
       &.btn-edit {
         &:hover {
-          background: $edit-bg;
+          background: $blue-grey-2;
           border-color: transparent;
         }
       }
       &.btn-reserve {
         &:hover, &.active {
-          background: $reserve-bg;
+          background: $skyblue-dark;
           border-color: transparent;
         }
       }
@@ -305,7 +305,7 @@ $feature-button-width: 170px;
     padding-right: $spacing-L * 2;
     margin-right: $spacing-2M;
     border-radius: $border-radius;
-    color: $grey-900;
+    color: $blue-grey-1;
     height: $spacing * 2;
     cursor: default;
     mat-icon {

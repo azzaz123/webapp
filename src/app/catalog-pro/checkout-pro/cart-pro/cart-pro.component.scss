@@ -7,7 +7,7 @@
     justify-content: space-between;
     background: $white;
     border-radius: $border-radius;
-    border: solid 1px $grey-50;
+    border: solid 1px $blue-grey-5;
     width: 280px;
     height: calc(100vh - 150px);
     position: fixed;
@@ -17,7 +17,7 @@
 
 .cart-pro-title {
     font-size: $font-size-s;
-    color: $grey-900;
+    color: $blue-grey-1;
     font-weight: bold;
     margin: 0;
 }
@@ -50,7 +50,7 @@
         .btn-clear {
             cursor: pointer;
             font-size: $font-size-xxs;
-            color: $grey-500;
+            color: $blue-grey-2;
             &.disabled {
                 cursor: not-allowed;
                 opacity: 0.5;
@@ -70,7 +70,7 @@
         border-radius: 5px;
         background-color: $white;
         box-shadow: 0 1px 2px 0 rgba($black, 0.05);
-        border: solid 0.5px $grey-100;
+        border: solid 0.5px $blue-grey-4;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -95,7 +95,7 @@
             margin-right: $spacing-XS;
             &.citybump {
                 /deep/ svg g {
-                    fill: $zone-bump;
+                    fill: $walla-main
                 }
             }
         }
@@ -112,7 +112,7 @@
         }
     }
     .type-wrapper {
-        background-color: rgba($grey-50, 0.3);
+        background-color: rgba($blue-grey-5, 0.3);
         padding: $spacing-XS;
         border-radius: 5px;
         margin-bottom: $spacing-S;
@@ -121,11 +121,11 @@
         }
     }
     .price {
-        color: $grey-500;
+        color: $blue-grey-2;
         font-weight: bold;
     }
     .citybump {
-        color: $zone-bump;
+        color: $walla-main
     }
     .countrybump {
         color: $country-bump;
@@ -137,7 +137,7 @@
     }
     .planned-label {
         font-weight: bold;
-        color: $grey-500;
+        color: $blue-grey-2;
     }
     .close-icon {
         @include square(16px);
@@ -166,7 +166,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: $grey-900;
+    color: $blue-grey-1;
     font-weight: bold;
     .cart-balance-title {
         font-size: $font-size-xs;
@@ -180,7 +180,7 @@
 .cart-separator {
     width: 100%;
     height: 1px;
-    background-color: $grey-50;
+    background-color: $blue-grey-5;
     margin: $spacing-S 0;
 }
 

@@ -24,12 +24,12 @@ h2 {
 .description, .contact {
   font-size: $font-size-s;
   line-height: $line-height-ml;
-  color: $grey-250;
+  color: $blue-grey-3;
 }
 
 .contact {
   font-weight: bold;
-  color: $grey-500;
+  color: $blue-grey-2;
 }
 
 h2, .description {
@@ -38,7 +38,7 @@ h2, .description {
 
 .pack {
   padding: $spacing $spacing-L;
-  border: solid 2px $grey-50;
+  border: solid 2px $blue-grey-5;
   border-radius: $border-radius;
   text-align: center;
   display: flex;
@@ -58,18 +58,18 @@ h2, .description {
     position: relative;
     .quantity {
       $height: 86px;
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       border-radius: 50%;
       @include square($height);
       line-height: $height;
       font-weight: bold;
       font-size: $font-size-xl;
-      color: $grey-500;
+      color: $blue-grey-2;
       letter-spacing: -1.5px;
     }
     .quantity-time {
       font-size: $font-size-xs;
-      color: $grey-250;
+      color: $blue-grey-3;
       position: absolute;
       top: $spacing;
       right: -30px;
@@ -77,13 +77,13 @@ h2, .description {
   }
   .type {
     font-size: $font-size-m;
-    color: $grey-250;
+    color: $blue-grey-3;
     text-transform: uppercase;
     margin-top: $spacing;
   }
   .price {
     font-size: $font-size-m;
-    color: $grey-500;
+    color: $blue-grey-2;
     font-weight: bold;
     flex-grow: 1;
   }
@@ -92,8 +92,8 @@ h2, .description {
     margin-bottom: $spacing;
   }
   .btn {
-    background-color: $grey-50;
-    color: $grey-500;
+    background-color: $blue-grey-5;
+    color: $blue-grey-2;
     border-radius: $button-border-radius;
   }
   .expire {
@@ -119,31 +119,31 @@ h2, .description {
 
 .city-bumps {
   h2 {
-    color: $corporate;
+    color: $walla-main;
     mat-icon {
       width: 51px;
     }
   }
   .discount {
-    color: $corporate;
+    color: $walla-main;
   }
   .btn {
     &:hover {
-      background-color: $corporate;
+      background-color: $walla-main;
       color: $white;
     }
   }
   .pack.selected {
-    border-color: $corporate;
+    border-color: $walla-main;
     .quantity-container {
       .quantity {
-        background-color: $corporate;
+        background-color: $walla-main;
         color: $white;
       }
     }
   }
   .expire {
-    color: $corporate;
+    color: $walla-main;
   }
 }
 
@@ -179,28 +179,28 @@ h2, .description {
 
 .listings {
   h2 {
-    color: $color-urgent;
+    color: $yellow-dark;
   }
   .name {
     font-weight: bold;
+    color: $blue-grey-1;
     font-size: $font-size-l;
-    color: $grey-900;
     padding-bottom: $spacing-S;
     margin-bottom: $spacing-S;
-    border-bottom: 2px solid $grey-50;
+    border-bottom: 2px solid $blue-grey-5;
     width: 100%;
     margin-top: $spacing-2M;
   }
   .desc {
+    color: $blue-grey-2;
     font-size: $font-size-s;
-    color: $grey-500;
     margin-bottom: $spacing-2M;
     flex-grow: 1;
   }
   .pack.selected {
-    border-color: $color-urgent;
+    border-color: $yellow-dark;
     .name {
-      border-color: rgba($color-urgent, .1);
+      border-color: rgba($yellow-dark, .1);
     }
   }
   .pack.personal {
@@ -210,18 +210,18 @@ h2, .description {
   }
   .btn {
     &:hover {
-      background-color: $color-urgent;
+      background-color: $yellow-dark;
       color: $white;
     }
   }
   .expire {
-    color: $color-urgent;
+    color: $yellow-dark;
   }
 }
 
 .open-visibility {
   font-weight: bold;
-  color: $grey-500;
+  color: $blue-grey-2;
   font-size: $font-size-s;
   text-decoration: underline;
   &:hover {

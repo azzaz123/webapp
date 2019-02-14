@@ -3,7 +3,7 @@
 .item {
   background: $white;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   margin-bottom: $spacing-XS;
   padding: $spacing-XXS;
   display: flex;
@@ -30,7 +30,7 @@
       content: '';
       height: 60px;
       width: 1px;
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       position: absolute;
       top: 11px;
       left: 0;
@@ -41,8 +41,8 @@
     padding-left: $spacing;
     label {
       display: block;
+      color: $blue-grey-3;
       font-size: $font-size-xs;
-      color: $grey-250;
       margin: 6px 0;
       &.btn {
         border: 0;
@@ -52,7 +52,7 @@
         text-align: left;
       }
       &.active {
-        color: $grey-900;
+        color: $blue-grey-1;
         font-weight: bold;
       }
     }
@@ -64,16 +64,16 @@
       flex: 0 0 $duration-table-col-width;
     }
     .btn-price {
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       border-radius: $button-border-radius;
       font-size: $font-size-m;
       text-align: center;
       width: 100%;
-      color: $grey-900;
+      color: $blue-grey-1;
       font-weight: bold;
       s {
         font-weight: normal;
-        color: $grey-250;
+        color: $blue-grey-3;
       }
       &:hover, &.selected {
         color: $white;
@@ -83,10 +83,10 @@
           }
         }
         s {
-          color: $grey-100;
+          color: $blue-grey-4;
           tsl-wallacoin {
             /deep/ svg path {
-              fill: $grey-100;
+              fill: $blue-grey-4;
             }
           }
         }

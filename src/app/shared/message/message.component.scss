@@ -16,7 +16,7 @@ h5 {
 
 $avatar-size: 40px;
 .message-avatar {
-  color: $grey-700;
+  color: $blue-grey-2;
   margin-right: $spacing;
 }
 
@@ -30,10 +30,10 @@ $avatar-size: 40px;
 }
 
 .message-name {
-  color: $grey-900;
+  color: $blue-grey-1;
 }
 .message-body {
-  color: $grey-700;
+  color: $blue-grey-1;
   margin: $spacing $spacing-XL 0 $spacing-XL;
   display: flex;
   flex-direction: row;
@@ -53,7 +53,7 @@ $avatar-size: 40px;
     width: fit-content;
     padding: $spacing-XS $spacing-S;
     border-radius: 20px;
-    background-color: $grey-40;
+    background-color: $blue-grey-6;
     margin-bottom: 0;
   }
   &.from-self {
@@ -61,7 +61,7 @@ $avatar-size: 40px;
     flex-direction: row-reverse;
     p {
       padding-right :$spacing-L;
-      background-color: $corporate-light;
+      background-color: $walla-soft;
       float: right;
     }
   }
@@ -85,7 +85,7 @@ $avatar-size: 40px;
   font-size: $font-size-xxs;
   white-space: pre;
   margin: 0 $spacing-XXS 0 $spacing-XS;
-  color: $grey-250;
+  color: $blue-grey-3;
   position: relative;
   bottom: -2px;
 }
@@ -103,7 +103,7 @@ $avatar-size: 40px;
 .third-voice {
   text-align: center;
   margin: $spacing-S 112px;
-  border: 1px solid $grey-50;
+  border: 1px solid $blue-grey-5;
   border-radius: $border-radius;
   padding: $spacing-M;
   font-size: $font-size-s;
@@ -117,12 +117,12 @@ $avatar-size: 40px;
     display: block;
     width: auto;
     border-radius: 20px;
-    color: $corporate;
+    color: $walla-main;
     margin: $spacing auto 0;
   }
   span.new-line {
     display: block;
-    color: $grey-250;
+    color: $blue-grey-3;
     text-align: center;
     padding-bottom: $spacing-10;
     margin-top: $spacing-40;

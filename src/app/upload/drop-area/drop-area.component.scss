@@ -17,7 +17,7 @@
   position: relative;
   height: 100px;
   width: 100%;
-  border: 2px dashed $grey-100;
+  border: 2px dashed $blue-grey-4;
   border-radius: $border-radius;
   display: flex;
   justify-content: center;
@@ -38,12 +38,12 @@
     }
     p {
       margin: 0;
-      color: $grey-500;
+      color: $blue-grey-2;
       font-size: $font-size-s;
     }
     .denied-icon {
       display: inline-block;
-      border: solid 2px $warn;
+      border: solid 2px $negative-main;
       @include square(32px);
       border-radius: 50%;
       line-height: $line-height-xl;
@@ -78,7 +78,7 @@
   }
   &.placeholder {
     background-image: url(/assets/icons/camera.svg);
-    border: 2px dashed $grey-100;
+    border: 2px dashed $blue-grey-4;
     background-size: 26px;
     .photos-number-4 & {
       background-size: 51px;
@@ -87,17 +87,17 @@
       background-size: 40px;
     }
     &:hover {
-      border-color: $corporate;
+      border-color: $walla-main;
     }
     &:first-of-type {
       background-image: url(/assets/icons/camera-green.svg);
-      border-color: $corporate;
+      border-color: $walla-main;
     }
   }
   a {
     display: none;
     @include square(19px);
-    background: $grey-100;
+    background: $blue-grey-4;
     position: absolute;
     top: -10px;
     right: -10px;
@@ -138,7 +138,7 @@
     right: 0;
     bottom: -40px;
     font-weight: bold;
-    color: $grey-400;
+    color: $blue-grey-2;
     text-transform: uppercase;
     width: calc(100% + #{$offset});
     display: none;

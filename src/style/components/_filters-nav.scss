@@ -11,16 +11,16 @@
       margin-right: $spacing;
       cursor: pointer;
       height: 100%;
-      color: $grey-300;
+      color: $blue-grey-2;
       text-transform: uppercase;
       font-weight: bold;
       padding: 0;
       &:hover {
-        color: $grey-400;
+        color: darken($blue-grey-2, 10%);
       }
       &.active {
-        color: $corporate;
-        border-bottom: 2px solid $corporate;
+        color: $walla-main;
+        border-bottom: 2px solid $walla-main;
       }
     }
   }

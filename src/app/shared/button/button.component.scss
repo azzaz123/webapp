@@ -22,10 +22,10 @@ $vertical-padding: 10px;
     cursor: pointer;
   }
   &.btn-reserve {
-    background-color: $reserve-bg;
+    background-color: $skyblue-dark;
   }
   &.btn-delete {
-    background-color: $delete-bg;
+    background-color: $negative-main;
   }
   &:not([disabled]):not(.btn-primary):hover {
     opacity: .8;
@@ -33,13 +33,13 @@ $vertical-padding: 10px;
   &.btn-primary {
     &.disabled, &:disabled {
       &:active {
-        background-color: $corporate;
+        background-color: $walla-main;
         border-color: transparent;
       }
     }
     &:not([disabled]) {
       &:hover {
-        background-color: $corporate-dark;
+        background-color: $walla-dark;
         border-color: transparent;
       }
     }
@@ -53,16 +53,16 @@ $vertical-padding: 10px;
     padding-right: 75px;
   }
   &.btn-feature {
-    background: $grey-700;
+    background: $blue-grey-2;
     border-color: transparent;
     &:hover {
-      background: $corporate;
+      background: $walla-main;
     }
   }
   &.btn-inactive {
     background-color: $white;
-    border: 2px dashed $sold-bg;
-    color: $sold-bg;
+    border: 2px dashed $magenta-main;
+    color: $magenta-main;
     cursor: default;
     font-size: $font-size-s;
     font-weight: bold;
@@ -70,14 +70,14 @@ $vertical-padding: 10px;
     width: 170px;
   }
   &.btn-outline-primary {
-    color: $corporate;
+    color: $walla-main;
     &:hover {
       color: $white;
     }
   }
   &.btn-gray {
-    background-color: $grey-50;
-    color: $grey-250;
+    background-color: $blue-grey-5;
+    color: $blue-grey-3;
   }
 }
 

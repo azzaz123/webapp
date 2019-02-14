@@ -14,8 +14,8 @@
   margin-top: $topbar-height;
   height: calc(100vh - #{$topbar-height});
   margin-left: $sidebar-width;
-  background-color: $corporate;
-  color: $grey-50;
+  background-color: $walla-main;
+  color: $blue-grey-5;
   font-size: $font-size-l;
 }
 
@@ -47,12 +47,12 @@
   right: $spacing;;
   bottom: $spacing;
   .btn-next {
-    color: $corporate;
+    color: $walla-main;
     padding: 10px 48px;
     border-radius: 100px;
     background: $white;
     &:hover {
-      color: $corporate-dark;
+      color: $walla-dark;
     }
   }
   .dots {

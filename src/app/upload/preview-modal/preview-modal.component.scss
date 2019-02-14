@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .modal-body {
-  color: $grey-900;
+  color: $blue-grey-1;
   height: calc(100vh - #{$spacing-40 * 2});
   overflow: scroll;
 }
@@ -19,7 +19,7 @@ p {
 }
 
 h1 {
-  border-bottom: 1px solid $preview-border-color;
+  border-bottom: 1px solid $blue-grey-6;
   padding-bottom: $spacing;
   margin-bottom: 0;
 }
@@ -35,7 +35,7 @@ h1 {
   font-size: $font-size-m;
   padding: $spacing 0;
   &:not(.last){
-    border-bottom: 1px solid $preview-border-color;
+    border-bottom: 1px solid $blue-grey-6;
     margin-bottom: $spacing;
   }
   &.last {
@@ -67,12 +67,12 @@ h1 {
       margin: 0 auto;
       margin-bottom: $spacing-S;
       & /deep/ path {
-        fill: $grey-900;
+        fill: $blue-grey-1;
       }
     }
   }
   &.car-extras {
-    border-bottom: 1px solid $preview-border-color;
+    border-bottom: 1px solid $blue-grey-6;
     padding-bottom: $spacing;
     margin-bottom: $spacing;
     &.last {

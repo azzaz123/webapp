@@ -6,7 +6,7 @@
 }
 
 #login-box {
-  background-color: $grey-900;
+  background-color: $blue-grey-1;
   padding: $spacing-XL;
   @include border-radius(10px);
   @include in-the-middle();
@@ -17,8 +17,8 @@
     margin-bottom: $spacing-S;
   }
   h2 {
+    color: $blue-grey-3;
     font-size: $font-size-m;
-    color: $grey-200;
     margin-bottom: 50px;
     font-weight: normal;
   }
@@ -28,19 +28,19 @@
     .form-control {
       width: 340px;
       border: 0;
-      border-bottom: 1px solid $grey-800;
+      border-bottom: 1px solid $blue-grey-1;
       @include border-radius(0);
       background: transparent;
       color: $white;
       &::-webkit-input-placeholder {
-        color: $grey-600;
+        color: $blue-grey-2;
       }
       &:focus {
         border-color: $white;
       }
       &.green {
-        color: $corporate;
-        border-color: $corporate;
+        color: $walla-main;
+        border-color: $walla-main;
       }
     }
   }
@@ -51,7 +51,7 @@
     width: 200px;
     height: 50px;
     .loading {
-      color: $grey-100;
+      color: $blue-grey-4;
     }
   }
 }

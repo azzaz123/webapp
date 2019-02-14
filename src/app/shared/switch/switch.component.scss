@@ -21,13 +21,13 @@ $switch-slider-diameter: 15px;
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       transition: .4s;
       border-radius: $switch-height/2
     }
 
     .slider:hover {
-      background-color: $grey-100;
+      background-color: $blue-grey-4;
     }
 
     .slider:before {
@@ -43,15 +43,15 @@ $switch-slider-diameter: 15px;
     }
 
     input:checked + .slider {
-      background-color: $corporate;
+      background-color: $walla-main;
     }
 
     input:checked:hover + .slider {
-      background-color: $corporate-dark;
+      background-color: $walla-dark;
     }
 
     input:disabled + .slider, input:disabled:hover + .slider {
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
     }
 
     input:checked + .slider:before {

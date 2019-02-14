@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .header {
-  background: $corporate;
+  background: $walla-main;
   height: 127px;
   border-top-left-radius: $border-radius;
   border-top-right-radius: $border-radius;
@@ -37,7 +37,7 @@
   padding: 40px 70px;
   p {
     font-size: $font-size-m;
-    color: $grey-400;
+    color: $blue-grey-2;
     margin-top: 10px;
   }
   .upgrade-plan {

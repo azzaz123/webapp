@@ -2,7 +2,7 @@
 
 :host {
   border-radius: $border-radius;
-  border: solid 2px $grey-50;
+  border: solid 2px $blue-grey-5;
   width: 234px;
   height: 386px;
   margin: 0 $spacing-M;
@@ -16,8 +16,8 @@
   }
   .featured {
     height: 28px;
-    background-color: $corporate-light;
-    color: $corporate;
+    background-color: $walla-soft;
+    color: $walla-main;
     text-transform: uppercase;
     font-size: $font-size-xs;
     line-height: $line-height-l;
@@ -32,7 +32,7 @@
   .icon {
     @include square(120px);
     border-radius: 50%;
-    background: rgba($grey-50, .3) no-repeat center;
+    background: rgba($blue-grey-5, .3) no-repeat center;
     &.icon-1 {
       background-image: url(/assets/images/wallacoins-1.svg);
     }
@@ -55,16 +55,16 @@
   .quantity {
     font-size: $font-size-xxl;
     font-weight: bold;
-    color: $grey-900;
+    color: $blue-grey-1;
     line-height: $line-height-xl;
     margin-top: $spacing-S;
   }
   .label {
     font-size: $font-size-l;
-    color: $grey-900;
+    color: $blue-grey-1;
   }
   .for-free {
-    color: $corporate;
+    color: $walla-main;
     font-size: $font-size-m;
     font-weight: bold;
     flex-grow: 1;
@@ -87,7 +87,7 @@
     /deep/ {
       button {
         &.btn-grey {
-          background-color: $grey-250;
+          background-color: $blue-grey-3;
         }
         b {
           margin-left: $spacing-XXS;

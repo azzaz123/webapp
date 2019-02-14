@@ -3,7 +3,7 @@
 $modal-border-radius: 20px;
 
 .header {
-  background: $corporate url(/assets/images/unsubscribe.svg) no-repeat center;
+  background: $walla-main url(/assets/images/unsubscribe.svg) no-repeat center;
   height: 230px;
   border-top-left-radius: $modal-border-radius;
   border-top-right-radius: $modal-border-radius;
@@ -20,19 +20,19 @@ $modal-border-radius: 20px;
   p {
     margin: 0;
     margin-bottom: 25px;
-    color: $grey-300;
+    color: $blue-grey-2;
     font-size: $font-size-m;
   }
   .btn {
     padding: $spacing-S $spacing;
     &.btn-secondary {
       border: 0;
-      background-color: $grey-50;
-      color: $grey-500;
+      background-color: $blue-grey-5;
+      color: $blue-grey-2;
       margin: 0 $spacing-XXS;
       margin-bottom: 10px;
       &:hover, &.selected {
-        background-color: $grey-100;
+        background-color: $blue-grey-4;
       }
       &.btn-reason {
         margin: 0;

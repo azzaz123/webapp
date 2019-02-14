@@ -22,7 +22,7 @@
 .car, .visibility {
   background: $white;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   display: flex;
   flex-direction: column;
   padding: $spacing-2M $spacing-L;
@@ -72,11 +72,11 @@
 }
 
 .gold {
-  color: $color-urgent;
+  color: $yellow-dark;
 }
 
 .city {
-  color: $zone-bump;
+  color: $walla-main
 }
 
 .country {
@@ -84,19 +84,19 @@
 }
 
 .grey {
-  color: $grey-250;
+  color: $blue-grey-3;
 }
 
 .border {
   width: 1px;
   height: 49px;
-  border: dashed 1px $grey-50;
+  border: dashed 1px $blue-grey-5;
 }
 
 .border-full {
   width: 3px;
   height: 49px;
-  background-color: $grey-50;
+  background-color: $blue-grey-5;
 }
 
 .no-plan {

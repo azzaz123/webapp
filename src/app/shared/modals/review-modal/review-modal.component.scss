@@ -12,14 +12,14 @@
 
 h1 {
     font-size: $font-size-ll;
-    color: $corporate;
+    color: $walla-main;
     font-weight: bold;
     margin-bottom: $spacing-L;
 }
 
 h2 {
     font-size: $font-size-l;
-    color: $grey-900;
+    color: $blue-grey-1;
     font-weight: normal;
     strong {
         font-weight: bold;
@@ -28,10 +28,10 @@ h2 {
 
 p {
     font-size: $font-size-s;
-    color: $grey-500;
+    color: $blue-grey-2;
     margin-top: $spacing-XS;
     &.text {
-        color: $grey-900;
+        color: $blue-grey-1;
     }
 }
 
@@ -41,7 +41,7 @@ tsl-stars-rate {
 
 #price {
     border: 0;
-    border-bottom: 1px solid $grey-100;
+    border-bottom: 1px solid $blue-grey-4;
     border-radius: 0;
     display: inline;
     text-align: right;

@@ -28,7 +28,7 @@
     padding: $spacing-S;
     .tsl-card-title {
       font-size: $font-size-l;
-      color: $grey-800;
+      color: $blue-grey-1;
       font-weight: bold;
     }
   }
@@ -36,6 +36,6 @@
   /deep/ tsl-card-footer {
     display: block;
     padding: $spacing-S;
-    border-top: $grey-50 solid thin;
+    border-top: $blue-grey-5 solid thin;
   }
 }

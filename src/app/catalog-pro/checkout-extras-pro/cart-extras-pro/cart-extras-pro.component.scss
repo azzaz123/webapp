@@ -14,7 +14,7 @@ $card-select-height: (50px + $spacing-XS) * 2 + $spacing-XXS;
 :host {
   background: $white;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   display: block;
   height: $cart-height;
   width: 280px;
@@ -32,7 +32,7 @@ h1 {
 
 .cart-wrapper {
   height: $scroll-panel-height;
-  background-color: rgba($grey-50, 0.3);
+  background-color: rgba($blue-grey-5, 0.3);
   border-radius: 5px;
   position: relative;
   &.has-financial-card {
@@ -73,7 +73,7 @@ ul, li {
     border-radius: 5px;
     background-color: $white;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    border: solid 0.5px $grey-100;
+    border: solid 0.5px $blue-grey-4;
     margin-bottom: $spacing-XS;
     display: flex;
     justify-content: space-between;
@@ -100,14 +100,14 @@ ul, li {
     }
   }
   .price {
-    color: $grey-500;
+    color: $blue-grey-2;
     font-weight: bold;
   }
   .citybump {
-    color: $zone-bump;
+    color: $walla-main;
     .wing-icon {
       /deep/ path {
-        fill: $zone-bump;
+        fill: $walla-main;
       }
     }
   }
@@ -132,8 +132,8 @@ ul, li {
       .quantity {
         font-size: $font-size-m;
         font-weight: bold;
-        color: $grey-500;
-        background-color: $grey-50;
+        color: $blue-grey-2;
+        background-color: $blue-grey-5;
         border-radius: 4px;
         min-width: $spacing-L;
         text-align: center;
@@ -156,7 +156,7 @@ ul, li {
   right: $spacing-10;
   font-size: $font-size-xs;
   a {
-    color: $grey-500;
+    color: $blue-grey-2;
     cursor: pointer;
   }
 }
@@ -181,6 +181,6 @@ tsl-button {
   }
   span {
     font-size: $font-size-xs;
-    color: $grey-250;
+    color: $blue-grey-3;
   }
 }
