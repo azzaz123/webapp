@@ -20,7 +20,7 @@ import { User } from '../user/user';
 import { EventService } from '../event/event.service';
 import { TrackingEventData } from '../tracking/tracking-event-base.interface';
 import { TrackingEvent } from '../tracking/tracking-event';
-import { Conversation } from '../conversation/conversation';
+import { InboxConversation } from '../conversation/conversation';
 
 @Injectable()
 export class PersistencyService {
@@ -69,15 +69,12 @@ export class PersistencyService {
     this.inboxDb = new PouchDB('inbox-' + userId, { auto_compaction: true });
   }
 
-  public updateInbox(conversations: Conversation[]): Observable<any> {
-    console.log('destroying...');
+  public updateInbox(conversations: InboxConversation[]): Observable<any> {
     return this.inboxDb.destroy().then(() => {
-      console.log('destroyed! recreating...');
       this.inboxDb = new PouchDB('inbox-' + this.userService.user.id, { auto_compaction: true });
-      const inboxToSave = conversations.map((conversation: Conversation) => {
+      const inboxToSave = conversations.map((conversation: InboxConversation) => {
         return this.buildInboxResponse(conversation);
       });
-      console.log('adding convs...');
       return Observable.fromPromise(this.inboxDb.bulkDocs(
         inboxToSave
       ));
@@ -86,7 +83,7 @@ export class PersistencyService {
 
   private buildInboxResponse(conversation) {
     return {
-      _id: conversation.conversation_hash,
+      _id: conversation.hash,
       conversation: conversation
     };
   }

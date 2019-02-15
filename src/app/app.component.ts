@@ -35,6 +35,7 @@ import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
+import { InboxConversation } from './core/conversation/conversation';
 
 @Component({
   selector: 'tsl-root',
@@ -204,7 +205,8 @@ export class AppComponent implements OnInit {
     this.event.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
         this.realTime.connect(user.id, accessToken).subscribe(() => {
-          this.inboxService.getInbox().subscribe();
+          this.inboxService.getInbox().subscribe((conversations: InboxConversation[]) => {
+            this.inboxService.saveInbox(conversations);
         });
       }
     });
