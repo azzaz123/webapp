@@ -21,10 +21,10 @@ export class InboxComponent implements OnInit {
 
   set loading(value: boolean) {
     this._loading = value;
-    this.loaded.emit({
+    this.loaded.emit({ //  TODO
       loaded: !value,
       total: this.conversations ? this.conversations.length : 0,
-      firstPage: true // TODO
+      firstPage: true
     });
   }
 
