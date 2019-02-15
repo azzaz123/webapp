@@ -23,7 +23,6 @@ import { ItemSoldComponent } from './item/item-sold/item-sold.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { UserResponseRateComponent } from './user-response-rate/user-response-rate.component';
 import { TrackingModule } from '../core/tracking/tracking.module';
-import { InboxService } from './inbox/inbox.service';
 
 @NgModule({
   imports: [
@@ -63,8 +62,7 @@ import { InboxService } from './inbox/inbox.service';
     ReportUserComponent,
     BlockUserComponent,
     UnblockUserComponent
-  ],
-  providers: [InboxService]
+  ]
 })
 export class ChatModule {
 }

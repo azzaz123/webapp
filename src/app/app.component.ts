@@ -34,7 +34,7 @@ import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
-import { InboxService } from './chat-with-inbox/inbox/inbox.service';
+import { InboxService } from './core/inbox/inbox.service';
 
 @Component({
   selector: 'tsl-root',
