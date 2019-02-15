@@ -207,6 +207,8 @@ export class AppComponent implements OnInit {
         this.realTime.connect(user.id, accessToken).subscribe(() => {
           this.inboxService.getInbox().subscribe((conversations: InboxConversation[]) => {
             this.inboxService.saveInbox(conversations);
+            this.event.emit(EventService.INBOX_LOADED, conversations);
+          });
         });
       }
     });

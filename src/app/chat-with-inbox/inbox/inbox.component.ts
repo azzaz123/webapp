@@ -65,25 +65,15 @@ export class InboxComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.getInbox();
-    // this.getConversations();
-    this.subscribePrivacyListChanges();
-    this.eventService.subscribe(EventService.LEAD_ARCHIVED, () => this.setCurrentConversation(null));
-    this.eventService.subscribe(EventService.MESSAGE_ADDED, (message: Message) => this.sendRead(message));
-    this.eventService.subscribe(EventService.FIND_CONVERSATION,
-      (conversation: NewConversationResponse) => this.findConversation(conversation));
-    this.eventService.subscribe(EventService.CONVERSATION_UNARCHIVED, () => {
-      if (this.archive) {
-        this.archive = false;
-        this.setCurrentConversation(null);
-        // this.getConversations();
-      }
+    if (this.inboxService.conversations) {
+      this.conversations = this.inboxService.conversations;
+      this.loading = false;
+    } else {
+      this.eventService.subscribe(EventService.INBOX_LOADED, (conversations: InboxConversation[]) => {
+        this.conversations = conversations;
+        this.loading = false;
     });
-
-    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
-      // this.conversationService.loadNotStoredMessages(this.conversations, this.archive); // TODO - change type to inboxConversation
-    });
-    this.eventService.subscribe(EventService.CONVERSATION_BUMPED, (leads) => this.conversations = leads);
+    }
   }
 
   ngOnDestroy() {
