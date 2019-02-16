@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { InboxComponent } from './inbox/inbox.component';
-import { InboxConversationComponent } from './conversation/conversation.component';
+import { InboxConversationComponent } from './inbox-conversation/inbox-conversation.component';
 import { MessagesPanelComponent } from './messages-panel/messages-panel.component';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
 import { InputComponent } from './input/input.component';
