@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { Observable } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
 import { PersistencyService } from '../persistency/persistency.service';
 import { InboxConversation } from '../conversation/conversation';
 import { MessageService } from '../message/message.service';
@@ -13,7 +12,6 @@ import { InboxImage } from '../user/user-response.interface';
 
 export class InboxService {
   private API_URL = 'api/v3/instant-messaging/archive/inboxes/mine';
-  public conversations$: Subject<InboxConversation[]> = new Subject<InboxConversation[]>();
   public _conversations: InboxConversation[];
 
   constructor(private http: HttpService,
@@ -23,7 +21,6 @@ export class InboxService {
 
   set conversations(value: InboxConversation[]) {
     this._conversations = value;
-    this.conversations$.next(value);
   }
 
   get conversations(): InboxConversation[] {
