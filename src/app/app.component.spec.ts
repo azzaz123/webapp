@@ -38,6 +38,8 @@ import { MOCK_MESSAGE } from '../tests/message.fixtures.spec';
 import { messageStatus } from './core/message/message';
 import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
+import { InboxService } from './core/inbox/inbox.service';
+import { createInboxConversationsArray } from '../tests/inbox.fixtures.spec';
 
 let fixture: ComponentFixture<AppComponent>;
 let component: any;
@@ -45,6 +47,7 @@ let userService: UserService;
 let errorsService: ErrorsService;
 let eventService: EventService;
 let realTime: RealTimeService;
+let inboxService: InboxService;
 let notificationService: NotificationService;
 let messageService: MessageService;
 let titleService: Title;
@@ -83,6 +86,12 @@ describe('App', () => {
         },
         {provide: DebugService, useValue: {}},
         {
+          provide: InboxService, useValue: {
+            getInbox() {},
+            saveInbox() {}
+          }
+        },
+        {
           provide: ConnectionService, useValue: {
           checkConnection() {}
         }
@@ -90,7 +99,7 @@ describe('App', () => {
         {
           provide: RealTimeService, useValue: {
           connect() {
-            return Observable.of(true);
+            return Observable.of({});
           },
           disconnect() {},
           reconnect() {}
@@ -209,6 +218,7 @@ describe('App', () => {
     errorsService = TestBed.get(ErrorsService);
     eventService = TestBed.get(EventService);
     realTime = TestBed.get(RealTimeService);
+    inboxService = TestBed.get(InboxService);
     notificationService = TestBed.get(NotificationService);
     messageService = TestBed.get(MessageService);
     titleService = TestBed.get(Title);
@@ -247,9 +257,8 @@ describe('App', () => {
   });
 
   describe('subscribeEvents', () => {
-
     describe('success case', () => {
-
+      const mockedInboxConversations = createInboxConversationsArray(3);
       beforeEach(fakeAsync(() => {
         const mockBackend: MockBackend = TestBed.get(MockBackend);
         mockBackend.connections.subscribe((connection: MockConnection) => {
@@ -258,6 +267,7 @@ describe('App', () => {
         });
         spyOn(conversationService, 'init').and.returnValue(Observable.of({}));
         spyOn(callsService, 'init').and.returnValue(Observable.of({}));
+        spyOn(inboxService, 'getInbox').and.returnValue(Observable.of(mockedInboxConversations));
       }));
 
       it('should call the eventService.subscribe passing the login event', () => {
@@ -296,14 +306,6 @@ describe('App', () => {
         expect(realTime.connect).not.toHaveBeenCalled();
       });
 
-      it('should call conversationService.init', () => {
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.DB_READY);
-
-        expect(conversationService.init).toHaveBeenCalledTimes(1);
-      });
-
       it('should call userService.sendUserPresenceInterval', () => {
         spyOn(userService, 'sendUserPresenceInterval');
 
@@ -311,16 +313,6 @@ describe('App', () => {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
 
         expect(userService.sendUserPresenceInterval).toHaveBeenCalled();
-      });
-
-      it('should call conversationService.init twice if user is professional', () => {
-        spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
-
-        component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.DB_READY);
-
-        expect(conversationService.init).toHaveBeenCalledTimes(2);
       });
 
       it('should call checkConnection when the component initialises', () => {
@@ -339,6 +331,56 @@ describe('App', () => {
         eventService.emit(EventService.DB_READY);
 
         expect(callsService.init).toHaveBeenCalledTimes(2);
+      });
+
+      describe('old chat', () => {
+        it('should call conversationService.init', () => {
+          component.ngOnInit();
+          eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+          eventService.emit(EventService.DB_READY);
+
+          expect(conversationService.init).toHaveBeenCalledTimes(1);
+        });
+
+        it('should call conversationService.init twice if user is professional', () => {
+          spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
+
+          component.ngOnInit();
+          eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+          eventService.emit(EventService.DB_READY);
+
+          expect(conversationService.init).toHaveBeenCalledTimes(2);
+        });
+      });
+
+      describe('chat with inbox', () => {
+        it('should call inboxService.getInbox', () => {
+          component.ngOnInit();
+          eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+          eventService.emit(EventService.DB_READY);
+
+          expect(inboxService.getInbox).toHaveBeenCalledTimes(1);
+        });
+
+        it('should call inboxService.saveInbox with the result returned by getInbox', () => {
+          spyOn(inboxService, 'saveInbox');
+
+          component.ngOnInit();
+          eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+          eventService.emit(EventService.DB_READY);
+
+          expect(inboxService.saveInbox).toHaveBeenCalledWith(mockedInboxConversations);
+        });
+
+        it('should emit a EventService.INBOX_LOADED after getInbox returns', () => {
+          spyOn(eventService, 'emit').and.callThrough();
+
+          component.ngOnInit();
+          eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+          eventService.emit(EventService.DB_READY);
+
+          expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, mockedInboxConversations);
+        });
       });
 
       it('should send open_app event if cookie does not exist', () => {
@@ -389,7 +431,6 @@ describe('App', () => {
 
         expect(realTime.reconnect).toHaveBeenCalled();
       });
-
     });
 
     it('should NOT call userService.sendUserPresenceInterval is the user has not successfully logged in', () => {
