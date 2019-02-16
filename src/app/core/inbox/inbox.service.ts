@@ -48,7 +48,7 @@ export class InboxService {
       const item = this.buildInboxItem(conv.item);
       const dateModified = new Date(lastMessage.timestamp).getTime();
       const conversation = new InboxConversation(conv.conversation_hash, dateModified, user, item, lastMessage,
-        conv.messages, conv.unread_messages, conv.phone_shared);
+        conv.messages, conv.unread_messages ? conv.unread_messages : 0, conv.phone_shared);
       this.messageService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;
     });
