@@ -18,6 +18,7 @@ export class EventService {
   public static MESSAGE_SENT = 'messageSent';
   public static MESSAGE_RECEIVED_ACK = 'messageReceivedAck';
   public static MSG_ARCHIVE_LOADED = 'archiveLoaded';
+  public static INBOX_LOADED = 'inboxLoaded';
   public static MSG_ARCHIVE_LOADING = 'archiveLoading';
   public static CONNECTION_ERROR = 'connectionError';
   public static CONNECTION_RESTORED = 'connectionRestored';
