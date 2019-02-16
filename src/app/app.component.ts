@@ -165,8 +165,7 @@ export class AppComponent implements OnInit {
       this.userService.me().subscribe(
         (user: User) => {
           this.userService.sendUserPresenceInterval(this.sendPresenceInterval);
-          this.initOldChat(user, accessToken);
-          this.initChatWithInbox(user, accessToken);
+          this.initRealTimeChat(user, accessToken);
           appboy.changeUser(user.id);
           appboy.openSession();
           if (!this.cookieService.get('app_session_id')) {
@@ -181,36 +180,35 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private initOldChat(user: User, accessToken: string) {
+  private initRealTimeChat(user: User, accessToken: string) {
     this.event.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
         this.realTime.connect(user.id, accessToken).subscribe(() => {
-          this.conversationService.init().subscribe(() => {
-            this.userService.isProfessional().subscribe((isProfessional: boolean) => {
-              if (isProfessional) {
-                this.callService.init().subscribe(() => {
-                  this.conversationService.init(true).subscribe(() => {
-                    this.callService.init(true).subscribe();
-                  });
-                });
-              }
-            });
-          });
+          this.initOldChat();
+          this.initChatWithInbox();
         });
       }
     });
   }
 
-  private initChatWithInbox(user: User, accessToken: string) {
-    this.event.subscribe(EventService.DB_READY, (dbName) => {
-      if (!dbName) {
-        this.realTime.connect(user.id, accessToken).subscribe(() => {
-          this.inboxService.getInbox().subscribe((conversations: InboxConversation[]) => {
-            this.inboxService.saveInbox(conversations);
-            this.event.emit(EventService.INBOX_LOADED, conversations);
+  private initOldChat() {
+    this.conversationService.init().subscribe(() => {
+      this.userService.isProfessional().subscribe((isProfessional: boolean) => {
+        if (isProfessional) {
+          this.callService.init().subscribe(() => {
+            this.conversationService.init(true).subscribe(() => {
+              this.callService.init(true).subscribe();
+            });
           });
-        });
-      }
+        }
+      });
+    });
+  }
+
+  private initChatWithInbox() {
+    this.inboxService.getInbox().subscribe((conversations: InboxConversation[]) => {
+      this.inboxService.saveInbox(conversations);
+      this.event.emit(EventService.INBOX_LOADED, conversations);
     });
   }
 
