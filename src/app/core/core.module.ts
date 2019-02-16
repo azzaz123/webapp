@@ -28,7 +28,7 @@ import { RealTimeService } from './message/real-time.service';
 import { BlockUserService } from './conversation/block-user.service';
 import { ProfileModule } from './profile/profile.module';
 import { ProfileService } from './profile/profile.service';
-import { InboxService } from '../chat-with-inbox/inbox/inbox.service';
+import { InboxService } from './inbox/inbox.service';
 
 @NgModule({
   imports: [
