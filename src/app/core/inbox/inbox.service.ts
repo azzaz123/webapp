@@ -43,7 +43,7 @@ export class InboxService {
   private buildConversations(conversations): InboxConversation[] {
     return conversations.map(conv => {
       const lastMessage = conv.messages[conv.messages.length - 1];
-      lastMessage.fromSelf = lastMessage.from === 'self';
+      lastMessage.fromSelf = lastMessage.from !== conv.with_user.hash;
       const user = this.buildInboxUser(conv.with_user);
       const item = this.buildInboxItem(conv.item);
       const dateModified = new Date(lastMessage.timestamp).getTime();
