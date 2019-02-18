@@ -55,8 +55,7 @@ export class InboxService {
   }
 
   private buildInboxUser(user: any) {
-    const r = new InboxUser(user.id, user.name, user.blocked, user.avatar_url, user.location,
-      user.scoring, user.response_rate, user.slug);
+    const r = new InboxUser(user.id, user.name, user.blocked);
       return r;
   }
 
@@ -66,6 +65,6 @@ export class InboxService {
         small: item.image_url
       }
     };
-    return new InboxItem(item.hash, item.title, image, item.status);
+    return new InboxItem(item.hash, item.price, item.title, image, item.status);
   }
 }

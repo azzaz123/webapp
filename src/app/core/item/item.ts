@@ -271,9 +271,14 @@ export class Item implements Model {
   }
 }
 
+export interface InboxItemPrice {
+  amount: number;
+  currency: string;
+}
 
 export class InboxItem implements Model {
   constructor(private _id: string,
+              private _price?: InboxItemPrice,
               private _title?: string,
               private _mainImage?: InboxImage,
               private _status?: string) {
@@ -281,6 +286,10 @@ export class InboxItem implements Model {
 
   get id(): string {
     return this._id;
+  }
+
+  get price(): InboxItemPrice {
+    return this._price;
   }
 
   get title(): string {

@@ -19,20 +19,16 @@ export const MOCK_INBOX_API_RESPONSE = `{
             "hash": "p61y8o5np265",
             "with_user": {
                 "hash": "7v6gwyklr5ze",
-                "slug": "wallacars-56047883",
                 "name": "John D.",
-                "avatar_url": "http://cdn-beta.wallapop.com/images/13/16/sp/__/c13p71883041/i413962112.jpg?pictureSize=W640",
-                "response_rate": "less_than_a_day",
-                "scoring": 100,
-                "blocked": false,
-                "location": {
-                    "latitude": 37.39266063798759,
-                    "longitude": -5.977606016287523
-                }
+                "blocked": false
             },
             "item": {
                 "hash": "9nz0nlmkyv6o",
                 "title": "Camiseta",
+                "price": {
+                    "amount": "12.45",
+                    "currency": "€"
+                },
                 "status": "RESERVED",
                 "image_url": "http://cdn-beta.wallapop.com/images/10420/30/yi/__/c10420p183008817/i413212126.jpg?pictureSize=W320"
             },
@@ -41,17 +37,58 @@ export const MOCK_INBOX_API_RESPONSE = `{
             "messages": [
                 {
                     "message_id": "20394401-ec61-4032-9eee-e79441fae457",
-                    "from": "self",
+                    "from_user_hash": "mxzorp9np7z9",
+                    "to_user_hash": "7v6gwyklr5ze",
                     "text": "Vale gracias",
                     "timestamp": "2019-01-28T08:00:20.573038Z",
-                    "status": "read"
+                    "status": "read",
+                    "type": "text",
+                    "payload": {
+                    }
                 },
                 {
                     "message_id": "df9455bd-9d3f-4315-abdc-c7c230932347",
-                    "from": "other",
+                    "from_user_hash": "7v6gwyklr5ze",
+                    "to_user_hash": "mxzorp9np7z9",
                     "text": "Por cuanto vale?",
                     "timestamp": "2019-01-28T08:02:20.573038Z",
-                    "status": "read"
+                    "status": "read",
+                    "type": "text",
+                    "payload": {
+                    }
+                },
+                {
+                    "message_id": "b034a784-2702-4517-99cd-1268ba7d1cb7",
+                    "from_user_hash": "mxzorp9np7z9",
+                    "to_user_hash": "7v6gwyklr5ze",
+                    "text": "€20",
+                    "timestamp": "2019-01-28T08:45:20.573038Z",
+                    "status": "read",
+                    "type": "text",
+                    "payload": {
+                    }
+                },
+                {
+                    "message_id": "2bc9b35e-3d17-4044-91b7-20d52884bc1c",
+                    "from_user_hash": "7v6gwyklr5ze",
+                    "to_user_hash": "mxzorp9np7z9",
+                    "text": "Te va bien?",
+                    "timestamp": "2019-01-28T08:47:20.573038Z",
+                    "status": "read",
+                    "type": "text",
+                    "payload": {
+                    }
+                },
+                {
+                    "message_id": "02E8347D-526B-4042-8AA8-A7F343488D12",
+                    "from_user_hash": "mxzorp9np7z9",
+                    "to_user_hash": "7v6gwyklr5ze",
+                    "text": "Vale gracias",
+                    "timestamp": "2019-01-28T09:00:20.573038Z",
+                    "status": "read",
+                    "type": "text",
+                    "payload": {
+                    }
                 }
             ]
         },
@@ -59,20 +96,16 @@ export const MOCK_INBOX_API_RESPONSE = `{
             "hash": "pzp9qx0yd963",
             "with_user": {
                 "hash": "xpzp3dpqnk63",
-                "slug": "napcard-72673033",
                 "name": "John D.",
-                "avatar_url": "http://cdn-beta.wallapop.com/images/13/17/9m/__/c13p72673033/i412184103.jpg?pictureSize=W640",
-                "response_rate": "less_than_a_day",
-                "scoring": 60,
-                "blocked": false,
-                "location": {
-                    "latitude": 37.39266063798759,
-                    "longitude": -5.977606016287523
-                }
+                "blocked": false
             },
             "item": {
                 "hash": "xpzplp4q1563",
                 "title": "Bottle of Chato wine",
+                "price": {
+                    "amount": "111",
+                    "currency": "€"
+                },
                 "status": "SOLD",
                 "image_url": "http://cdn-beta.wallapop.com/images/10420/31/ao/__/c10420p183576804/i413792104.jpg?pictureSize=W320"
             },
@@ -81,32 +114,14 @@ export const MOCK_INBOX_API_RESPONSE = `{
             "messages": [
                 {
                     "message_id": "58AC7C92-1441-4D65-A05B-3FF1EABE48E2",
-                    "from": "self",
+                    "from_user_hash": "mxzorp9np7z9",
+                    "to_user_hash": "xpzp3dpqnk63",
                     "text": "Vale perfecto",
                     "timestamp": "2019-01-28T08:44:01.571872Z",
-                    "status": "sent"
-                }
-            ]
-        },
-        {
-            "hash": "w67dp08py96x",
-            "with_user": {
-                "hash": "g0j2wmggemjy",
-                "slug": "jessica-44104947",
-                "name": "Miss Chat O.",
-                "blocked": true
-            },
-            "item": {
-                "hash": "xpzplx1xxm63",
-                "title": "Mochila",
-                "image_url": ""
-            },
-            "messages": [
-                {
-                    "message_id": "9e92af6d-9353-4d36-8369-077ce8846e5f",
-                    "from": "other",
-                    "text": "Vale, así quedamos!",
-                    "timestamp": "2019-02-12T13:58:13.924516Z"
+                    "status": "sent",
+                    "type": "text",
+                    "payload": {
+                    }
                 }
             ]
         }
@@ -122,9 +137,11 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
       const message = new Message(
           tempMsg.id,
           MOCK_INBOX_CONVERSATION.hash,
-          tempMsg.text, null,
+          tempMsg.text,
+          tempMsg.from,
           new Date(tempMsg.timestamp),
-          tempMsg.status);
+          tempMsg.status,
+          tempMsg.payload);
       message.fromSelf = tempMsg.from === 'self';
 
       return new InboxConversation(id, date, new InboxUser(userId), new InboxItem(ITEM_ID), message, [message], 0, false, false);

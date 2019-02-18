@@ -218,19 +218,9 @@ export class User implements Model {
 }
 
 export class InboxUser implements Model {
-  private _itemDistance: number;
-  private _webLink: string;
-
   constructor(private _id: string,
               private _microName?: string,
-              private _blocked?: boolean,
-              private _image?: any,
-              private _location?: InboxUserLocation,
-              private _scoringStars?: number,
-              private _responseRate?: string,
-              private webSlug?: string) {
-
-    this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
+              private _blocked?: boolean) {
   }
   get id(): string {
     return this._id;
@@ -240,39 +230,11 @@ export class InboxUser implements Model {
     return this._microName;
   }
 
-  get image(): any {
-    return this._image;
-  }
-
-  get location(): InboxUserLocation {
-    return this._location;
-  }
-
-  get scoringStars(): number {
-    return this._scoringStars;
-  }
-
-  get responseRate(): string {
-    return this._responseRate;
-  }
-
-  get itemDistance(): number {
-    return this._itemDistance;
-  }
-
-  get webLink(): string {
-    return this._webLink;
-  }
-
   get blocked(): boolean {
     return this._blocked;
   }
 
   set blocked(value: boolean) {
     this._blocked = value;
-  }
-
-  getUrl(subdomain: string) {
-    return environment.siteUrl.replace('es', subdomain) + 'user/' + this.webSlug;
   }
 }
