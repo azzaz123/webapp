@@ -42,27 +42,30 @@ export class InboxService {
 
   private buildConversations(conversations): InboxConversation[] {
     return conversations.map(conv => {
-      const lastMessage = conv.messages[conv.messages.length - 1];
-      lastMessage.fromSelf = lastMessage.from !== conv.with_user.hash;
+      let lastMessage = null;
+      let dateModified = null;
+      if (conv.messages && conv.messages.length) {
+        lastMessage = conv.messages[conv.messages.length - 1];
+        lastMessage.fromSelf = lastMessage.from !== conv.with_user.hash;
+        dateModified = new Date(lastMessage.timestamp).getTime();
+      }
       const user = this.buildInboxUser(conv.with_user);
       const item = this.buildInboxItem(conv.item);
-      const dateModified = new Date(lastMessage.timestamp).getTime();
       const conversation = new InboxConversation(conv.conversation_hash, dateModified, user, item, lastMessage,
-        conv.messages, conv.unread_messages ? conv.unread_messages : 0, conv.phone_shared);
+        conv.messages, conv.unread_messages || 0, conv.phone_shared);
       this.messageService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;
     });
   }
 
   private buildInboxUser(user: any) {
-    const r = new InboxUser(user.id, user.name, user.blocked);
-      return r;
+    return new InboxUser(user.id, user.name, user.blocked);
   }
 
   private buildInboxItem(item) {
     const image: InboxImage = {
       urls_by_size: {
-        small: item.image_url
+        small: item && item.image_url ? item.image_url : null
       }
     };
     return new InboxItem(item.hash, item.price, item.title, image, item.status);
