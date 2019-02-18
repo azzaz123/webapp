@@ -1,9 +1,8 @@
 <div id="left-panel">
   <tsl-connection-alert></tsl-connection-alert>
-  <tsl-inbox (currentConversation)="onCurrentConversationChange($event)"
-                           (loaded)="onLoaded($event)"></tsl-inbox>
+  <tsl-inbox (loaded)="onLoaded($event)"></tsl-inbox>
 </div>
-<div id="empty-state" *ngIf="!currentConversation">
+<div id="empty-state">
   <div class="content">
     <div [hidden]="!conversationsLoaded">
       <mat-icon svgIcon="empty-state" class="image"></mat-icon>
