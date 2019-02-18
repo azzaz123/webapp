@@ -16,7 +16,7 @@ export class InboxService {
 
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
-    private messageService: MessageService) { console.log('initing service...'); }
+    private messageService: MessageService) {}
 
 
   set conversations(value: InboxConversation[]) {
