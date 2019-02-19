@@ -88,7 +88,10 @@ describe('App', () => {
         {
           provide: InboxService, useValue: {
             getInbox() {},
-            saveInbox() {}
+            saveInbox() {},
+            getInboxFeatureFlag() {
+              return Observable.of(false);
+            }
           }
         },
         {
@@ -333,8 +336,12 @@ describe('App', () => {
         expect(callsService.init).toHaveBeenCalledTimes(2);
       });
 
-      describe('old chat', () => {
-        it('should call conversationService.init', () => {
+      describe('when getInboxFeatureFlag returns false', () => {
+        beforeEach(() => {
+          spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.of(false));
+        });
+
+        it('should call conversationService.init if the inbox', () => {
           component.ngOnInit();
           eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
           eventService.emit(EventService.DB_READY);
@@ -353,7 +360,11 @@ describe('App', () => {
         });
       });
 
-      describe('chat with inbox', () => {
+      describe('when getInboxFeatureFlag return true', () => {
+        beforeEach(() => {
+          spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.of(true));
+        });
+
         it('should call inboxService.getInbox', () => {
           component.ngOnInit();
           eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);

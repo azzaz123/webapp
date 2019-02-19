@@ -12,11 +12,13 @@ import { ResponseOptions, Response } from '@angular/http';
 import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
+import { FeatureflagService } from '../user/featureflag.service';
 
 let service: InboxService;
 let http: HttpService;
 let persistencyService: PersistencyService;
 let messageService: MessageService;
+let featureflagService: FeatureflagService;
 
 describe('InboxService', () => {
   beforeEach(() => {
@@ -26,13 +28,29 @@ describe('InboxService', () => {
         ...TEST_HTTP_PROVIDERS,
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: TrackingService, useClass: MockTrackingService },
-        { provide: MessageService, useClass: MockMessageService }
+        { provide: MessageService, useClass: MockMessageService },
+        { provide: FeatureflagService, useValue: {
+          getFlag() {
+            return Observable.of(false);
+          }
+        }}
       ]
     });
     service = TestBed.get(InboxService);
     http = TestBed.get(HttpService);
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
+    featureflagService = TestBed.get(FeatureflagService);
+  });
+
+  describe('getInboxFeatureFlag', () => {
+    it('should call featureflagService.getFlag when called', () => {
+      spyOn(featureflagService, 'getFlag');
+
+      service.getInboxFeatureFlag();
+
+      expect(featureflagService.getFlag).toHaveBeenCalledWith('web_inbox_projections');
+    });
   });
 
   describe('getInbox', () => {

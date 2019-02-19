@@ -184,8 +184,9 @@ export class AppComponent implements OnInit {
     this.event.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
         this.realTime.connect(user.id, accessToken).subscribe(() => {
-          this.initOldChat();
-          this.initChatWithInbox();
+          this.inboxService.getInboxFeatureFlag().subscribe((active) => {
+            active ? this.initChatWithInbox() : this.initOldChat();
+        });
         });
       }
     });

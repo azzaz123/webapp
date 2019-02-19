@@ -7,6 +7,7 @@ import { MessageService } from '../message/message.service';
 import { InboxItem } from '../item/item';
 import { InboxUser } from '../user/user';
 import { InboxImage } from '../user/user-response.interface';
+import { FeatureflagService } from '../user/featureflag.service';
 
 @Injectable()
 
@@ -16,7 +17,8 @@ export class InboxService {
 
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
-    private messageService: MessageService) {}
+    private messageService: MessageService,
+    private featureflagService: FeatureflagService) {}
 
 
   set conversations(value: InboxConversation[]) {
@@ -25,6 +27,10 @@ export class InboxService {
 
   get conversations(): InboxConversation[] {
     return this._conversations;
+  }
+
+  public getInboxFeatureFlag(): Observable<boolean> {
+    return this.featureflagService.getFlag('web_inbox_projections');
   }
 
   public getInbox(): Observable<any> {
