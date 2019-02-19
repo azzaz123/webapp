@@ -429,9 +429,12 @@ export class ConversationService extends LeadService {
   }
 
   public handleNewMessages(message: Message, updateDate: boolean) {
+    console.log('b');
     if (!this.firstLoad) {
+      console.log('x');
       this.onNewMessage(message, updateDate);
     } else {
+      console.log('y');
       const interval: any = setInterval(() => {
         if (!this.firstLoad) {
           clearInterval(interval);
@@ -524,7 +527,7 @@ export class ConversationService extends LeadService {
           this.addConversation(unarchivedConversation, message);
           this.event.emit(EventService.CONVERSATION_UNARCHIVED);
         } else {
-            this.requestConversationInfo(message);
+          this.requestConversationInfo(message);
         }
       }
     }
@@ -567,10 +570,13 @@ export class ConversationService extends LeadService {
   }
 
   private addConversation(conversation: Conversation, message: Message) {
-    message = this.messageService.addUserInfo(conversation, message);
-    this.addMessage(conversation, message);
-    this.leads.unshift(conversation);
-    this.notificationService.sendBrowserNotification(message, conversation.item.id);
-    this.stream$.next(this.leads);
+    const conversationAlreadyAdded = this.leads.find(conv => conv.id === conversation.id);
+    if (!conversationAlreadyAdded) {
+      message = this.messageService.addUserInfo(conversation, message);
+      this.addMessage(conversation, message);
+      this.leads.unshift(conversation);
+      this.notificationService.sendBrowserNotification(message, conversation.item.id);
+      this.stream$.next(this.leads);
+    }
   }
 }
