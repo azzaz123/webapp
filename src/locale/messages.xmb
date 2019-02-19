@@ -100,7 +100,7 @@
   <msg id="5556202995949734730"><source>app/shared/confirmation-modal/confirmation-modal.component.html:24</source>The profile will be removed from favorites.</msg>
   <msg id="968107342863651775"><source>app/shared/confirmation-modal/confirmation-modal.component.html:27</source>This profile is no longer featured</msg>
   <msg id="1918694988070405915"><source>app/shared/confirmation-modal/confirmation-modal.component.html:28</source>If you remove it you won&apos;t be able to save it again.</msg>
-  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.html:34</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:32</source><source>app/catalog/list/list.component.html:51</source><source>app/catalog/list/selected-items/selected-items.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:7</source>Delete</msg>
+  <msg id="7022070615528435141"><source>app/shared/confirmation-modal/confirmation-modal.component.html:34</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:13</source><source>app/shared/catalog/catalog-item-actions/catalog-item-actions.component.html:32</source><source>app/catalog/list/list.component.html:51</source><source>app/catalog/list/catalog-item/catalog-item.component.html:58</source><source>app/catalog/list/selected-items/selected-items.component.html:23</source><source>app/chat/modals/archive-conversation/archive-conversation.component.html:7</source><source>app/upload/drop-area/remove-confirm-modal/remove-confirm-modal.component.html:7</source>Delete</msg>
   <msg id="2874924373232293084"><source>app/shared/confirmation-modal/confirmation-modal.component.html:35</source><source>app/catalog/list/selected-items/selected-items.component.html:19</source><source>app/chat/item/item.component.html:17</source>Reserve</msg>
   <msg id="4814285799071780083"><source>app/shared/confirmation-modal/confirmation-modal.component.html:36</source>Remove</msg>
   <msg id="7092318893814699678"><source>app/shared/confirmation-modal/confirmation-modal.component.html:37</source><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:6</source>Yes, I am sure</msg>
@@ -122,9 +122,9 @@
           Cancel</msg>
   <msg id="2123659921722214537"><source>app/shared/catalog/catalog-card/catalog-card.component.html:47</source><source>app/stats/items-stats/items-stats.component.html:10</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:12</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:40</source>Views</msg>
   <msg id="6181907632373133266"><source>app/shared/catalog/catalog-card/catalog-card.component.html:55</source><source>app/stats/items-stats/items-stats.component.html:13</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:18</source><source>app/stats/items-stats/item-stats-row/item-stats-row.component.html:41</source>Chats</msg>
-  <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.html:62</source>Mark as sold</msg>
-  <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.html:65</source>Mark as reserved</msg>
-  <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.html:68</source>Edit</msg>
+  <msg id="7514254130085804538"><source>app/shared/catalog/catalog-card/catalog-card.component.html:62</source><source>app/catalog/list/catalog-item/catalog-item.component.html:49</source>Mark as sold</msg>
+  <msg id="853408948668135550"><source>app/shared/catalog/catalog-card/catalog-card.component.html:65</source><source>app/catalog/list/catalog-item/catalog-item.component.html:52</source>Mark as reserved</msg>
+  <msg id="7585826646011739428"><source>app/shared/catalog/catalog-card/catalog-card.component.html:68</source><source>app/catalog/list/catalog-item/catalog-item.component.html:55</source>Edit</msg>
   <msg id="4416413576346763682"><source>app/shared/catalog/catalog-card/catalog-card.component.html:76</source><source>app/calls/calls.component.html:23</source><source>app/calls/calls.component.html:51</source><source>app/catalog/list/catalog-item/catalog-item.component.html:70</source><source>app/chat/conversations-panel/conversations-panel.component.html:9</source><source>app/dashboard/dashboard.component.html:17</source>Pending</msg>
   <msg id="5272763997595694217"><source>app/shared/catalog/catalog-card/catalog-card.component.html:83</source>Cancel Autorenew</msg>
   <msg id="291347435854981703"><source>app/shared/catalog/catalog-card/catalog-card.component.html:84</source>Do you really want to cancel the autorenew for this item?</msg>
@@ -404,13 +404,13 @@
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.html:2</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.html:3</source>Connected</msg>
   <msg id="8016649850785953911"><source>app/chat/item/item.component.html:18</source>Unreserve</msg>
-  <msg id="3537961834218859224"><source>app/chat/item/item.component.html:44,46</source>
+  <msg id="3537961834218859224"><source>app/chat/item/item.component.html:38,40</source>
         Add Insurance
       </msg>
-  <msg id="5984580705945066559"><source>app/chat/item/item.component.html:50,52</source>
+  <msg id="5984580705945066559"><source>app/chat/item/item.component.html:44,46</source>
         Add insurance to this product
       </msg>
-  <msg id="5856234352867328880"><source>app/chat/item/item.component.html:56,58</source>
+  <msg id="5856234352867328880"><source>app/chat/item/item.component.html:50,52</source>
         Finance your purchase
       </msg>
   <msg id="6543433128416987560"><source>app/chat/item/item-reserved/item-reserved.component.html:3</source>Reserved</msg>
