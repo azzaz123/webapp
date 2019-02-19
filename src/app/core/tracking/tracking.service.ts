@@ -44,7 +44,6 @@ const CATEGORY_IDS: any = {
   Link: '122',
   Bump: '123',
   GDPR: '119',
-  Carfax: '128',
   Credits: '131',
   Navbar: '77',
   Willis: '130',
@@ -741,18 +740,6 @@ export class TrackingService {
     name: '712',
     category: CATEGORY_IDS.GDPR,
     screen: SCREENS_IDS.ReFishingGDPR,
-    type: TYPES_IDS.Tap
-  };
-  public static CARFAX_CHAT_DISPLAY = {
-    name: '751',
-    category: CATEGORY_IDS.Carfax,
-    screen: SCREENS_IDS.Chat,
-    type: TYPES_IDS.Display
-  };
-  public static CARFAX_CHAT_TAP = {
-    name: '752',
-    category: CATEGORY_IDS.Carfax,
-    screen: SCREENS_IDS.Chat,
     type: TYPES_IDS.Tap
   };
   public static WILLIS_LINK_DISPLAY = {

@@ -110,27 +110,6 @@ describe('Component: Item', () => {
     });
   });
 
-  it('should track Carfax Display when isCarItem is true',  () => {
-    spyOn(trackingService, 'track');
-    component.item = MOCK_ITEM_CAR;
-
-    component.ngOnChanges();
-
-    expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY, {
-      category_id: component.item.categoryId,
-      item_id: component.item.id
-    });
-  });
-
-  it('should not track Carfax Display when isCarItem is false',  () => {
-    spyOn(trackingService, 'track');
-    component.item = { ...MOCK_ITEM, categoryId: 12345678 } as Item;
-
-    component.ngOnChanges();
-
-    expect(trackingService.track).not.toHaveBeenCalled();
-  });
-
   it('should not track Willis Display when categoriId is 10000',  () => {
     spyOn(trackingService, 'track');
     component.item = { ...MOCK_ITEM, categoryId: 10000 } as Item;
@@ -512,20 +491,6 @@ describe('Component: Item', () => {
         component.ngOnChanges();
 
         expect(component.showSolcreditoLink).toEqual(false);
-      });
-    });
-  });
-
-  describe('clickCarfax', () => {
-    it('should track Carfax tap ', () => {
-      spyOn(trackingService, 'track');
-      component.item = MOCK_ITEM;
-
-      component.clickCarfax(MOCK_CLICK_EVENT);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_TAP, {
-        category_id: component.item.categoryId,
-        item_id: component.item.id
       });
     });
   });

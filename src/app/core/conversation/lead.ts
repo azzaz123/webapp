@@ -82,7 +82,7 @@ export abstract class Lead {
   }
 
   set unreadMessages(value: number) {
-    this._unreadMessages = value;
+    this._unreadMessages = Math.max(value, 0);
   }
 
   get active(): boolean {

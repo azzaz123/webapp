@@ -1,3 +1,4 @@
+import * as retry from 'retry';
 import { Injectable } from '@angular/core';
 import { XmppService } from '../xmpp/xmpp.service';
 import { Conversation } from '../conversation/conversation';
@@ -11,13 +12,15 @@ import { Observable } from 'rxjs';
 export class RealTimeService {
 
   constructor(private xmpp: XmppService,
-              private eventService: EventService,
-              private persistencyService: PersistencyService,
-              private trackingService: TrackingService) {
+    private eventService: EventService,
+    private persistencyService: PersistencyService,
+    private trackingService: TrackingService) {
     this.subscribeEventNewMessage();
     this.subscribeEventMessageSent();
+    this.subscribeConnectionRestored();
   }
 
+  private ongoingRetry: boolean;
   public connect(userId: string, accessToken: string): Observable<boolean> {
     return this.xmpp.connect(userId, accessToken);
   }
@@ -26,8 +29,31 @@ export class RealTimeService {
     this.xmpp.disconnect();
   }
 
-  public reconnect() {
-    this.xmpp.reconnectClient();
+  public reconnect(recursivly = true) {
+    if (!recursivly) {
+      this.xmpp.reconnectClient();
+    } else if (!this.ongoingRetry) {
+      this.recursiveReconnect();
+    }
+  }
+
+  private recursiveReconnect() {
+    this.ongoingRetry = true;
+    const operation = retry.operation({
+      minTimeout: 5 * 1000,
+      maxTimeout: 5 * 60 * 1000,
+      forever: true
+    });
+    operation.attempt(() => {
+      this.xmpp.reconnectClient();
+      this.xmpp.disconnectError().subscribe(
+        () => this.ongoingRetry = false,
+        (err) => {
+          if (operation.retry(err)) {
+            return;
+          }
+        });
+    });
   }
 
   public sendMessage(conversation: Conversation, body: string) {
@@ -72,6 +98,11 @@ export class RealTimeService {
     });
   }
 
+  private subscribeConnectionRestored() {
+    this.eventService.subscribe(EventService.CONNECTION_RESTORED, () => {
+      this.reconnect(false);
+    });
+  }
 
   private isFirstMessage(conversation: Conversation): boolean {
     const phoneRequestMsg = conversation.messages.find(m => !!m.phoneRequest);
@@ -103,7 +134,7 @@ export class RealTimeService {
 
     fbq('track', 'InitiateCheckout', {
       value: conversation.item.salePrice,
-      currency:  conversation.item.currencyCode,
+      currency: conversation.item.currencyCode,
     });
   }
 

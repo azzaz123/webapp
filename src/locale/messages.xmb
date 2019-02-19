@@ -404,9 +404,6 @@
   <msg id="3093507871243266697"><source>app/chat/connection-alert/connection-alert.component.html:2</source>Waiting for network...</msg>
   <msg id="3208980041287937682"><source>app/chat/connection-alert/connection-alert.component.html:3</source>Connected</msg>
   <msg id="8016649850785953911"><source>app/chat/item/item.component.html:18</source>Unreserve</msg>
-  <msg id="4123995928509826820"><source>app/chat/item/item.component.html:38,40</source>
-        Check its full history
-      </msg>
   <msg id="3537961834218859224"><source>app/chat/item/item.component.html:44,46</source>
         Add Insurance
       </msg>
