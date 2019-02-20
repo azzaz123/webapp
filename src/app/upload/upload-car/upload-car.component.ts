@@ -43,6 +43,7 @@ export class UploadCarComponent implements OnInit {
   public isUrgent = false;
   public customMake = false;
   public customVersion = false;
+  private settingItem: boolean;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -96,6 +97,7 @@ export class UploadCarComponent implements OnInit {
 
   private setItemData() {
     if (this.item) {
+      this.settingItem = true;
       const carYear: string =  this.item.year ? this.item.year.toString() : '';
       const carCategory: string = this.item.categoryId ? this.item.categoryId.toString() : '';
       this.uploadForm.patchValue({
@@ -173,7 +175,9 @@ export class UploadCarComponent implements OnInit {
         this.toggleField('year', 'disable');
         this.toggleField('version', 'disable');
       }
-      this.resetTitle();
+      if (!this.settingItem) {
+        this.resetTitle();
+      }
     });
   }
 
@@ -187,7 +191,9 @@ export class UploadCarComponent implements OnInit {
       if (!editMode) {
         this.toggleField('version', 'disable');
       }
-      this.resetTitle();
+      if (!this.settingItem) {
+        this.resetTitle();
+      }
     });
   }
 
@@ -202,7 +208,10 @@ export class UploadCarComponent implements OnInit {
       if (this.item) {
         this.customVersion = !_.find(this.versions, {value: this.item.version});
       }
-      this.setTitle();
+      if (!this.settingItem) {
+        this.setTitle();
+      }
+      this.settingItem = false;
     });
   }
 
