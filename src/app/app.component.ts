@@ -183,11 +183,12 @@ export class AppComponent implements OnInit {
   private initRealTimeChat(user: User, accessToken: string) {
     this.event.subscribe(EventService.DB_READY, (dbName) => {
       if (!dbName) {
-        this.realTime.connect(user.id, accessToken).subscribe(() => {
+        this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
           this.inboxService.getInboxFeatureFlag().subscribe((active) => {
             active ? this.initChatWithInbox() : this.initOldChat();
+          });
         });
-        });
+        this.realTime.connect(user.id, accessToken);
       }
     });
   }

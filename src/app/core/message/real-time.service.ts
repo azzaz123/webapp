@@ -6,7 +6,6 @@ import { EventService } from '../event/event.service';
 import { Message } from './message';
 import { PersistencyService } from '../persistency/persistency.service';
 import { TrackingService } from '../tracking/tracking.service';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class RealTimeService {
@@ -21,8 +20,8 @@ export class RealTimeService {
   }
 
   private ongoingRetry: boolean;
-  public connect(userId: string, accessToken: string): Observable<boolean> {
-    return this.xmpp.connect(userId, accessToken);
+  public connect(userId: string, accessToken: string) {
+    this.xmpp.connect(userId, accessToken);
   }
 
   public disconnect() {
