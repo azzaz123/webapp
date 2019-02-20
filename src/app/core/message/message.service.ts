@@ -39,7 +39,7 @@ export class MessageService {
   }
 
   set totalUnreadMessages(value: number) {
-    value = value < 0 ? 0 : value;
+    value = Math.max(value , 0);
     this._totalUnreadMessages = value;
     this.totalUnreadMessages$.next(value);
   }

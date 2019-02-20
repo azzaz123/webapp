@@ -285,26 +285,37 @@ export class ConversationService extends LeadService {
   public markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = false) {
     const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
     if (conversation) {
-      conversation.messages.filter((message) => (message.status === messageStatus.RECEIVED || message.status === messageStatus.SENT)
-        && ( fromSelf ? message.fromSelf && new Date(message.date).getTime() <= timestamp : !message.fromSelf ))
-        .map((message) => {
-          message.status = messageStatus.READ;
-          this.persistencyService.updateMessageStatus(message, messageStatus.READ);
-          const eventAttributes = {
-            thread_id: message.conversationId,
-            message_id: message.id
-          };
-          this.trackingService.addTrackingEvent({
-            eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
-            attributes: eventAttributes
-          }, false);
-        });
+      const unreadMessages = conversation.messages.filter(message => (message.status === messageStatus.RECEIVED ||
+        message.status === messageStatus.SENT) && (fromSelf ? message.fromSelf &&
+        new Date(message.date).getTime() <= timestamp : !message.fromSelf));
+      unreadMessages.map((message) => {
+        message.status = messageStatus.READ;
+        this.persistencyService.updateMessageStatus(message, messageStatus.READ);
+        const eventAttributes = {
+          thread_id: message.conversationId,
+          message_id: message.id
+        };
+        this.trackingService.addTrackingEvent({
+          eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
+          attributes: eventAttributes
+        }, false);
+      });
+      if (!fromSelf) {
+        conversation.unreadMessages -= unreadMessages.length;
+        this.messageService.totalUnreadMessages -= unreadMessages.length;
+      }
     }
   }
 
   public markAs(newStatus: string, messageId: string, thread: string) {
     const conversation = this.leads.find(c => c.id === thread) || this.archivedLeads.find(c => c.id === thread);
+    if (!conversation) {
+      return;
+    }
     const message = conversation.messages.find(m => m.id === messageId);
+    if (!message) {
+      return;
+    }
 
     if (!message.status || statusOrder.indexOf(newStatus) > statusOrder.indexOf(message.status) || message.status === null) {
       message.status = newStatus;
@@ -513,7 +524,7 @@ export class ConversationService extends LeadService {
           this.addConversation(unarchivedConversation, message);
           this.event.emit(EventService.CONVERSATION_UNARCHIVED);
         } else {
-            this.requestConversationInfo(message);
+          this.requestConversationInfo(message);
         }
       }
     }
@@ -556,10 +567,13 @@ export class ConversationService extends LeadService {
   }
 
   private addConversation(conversation: Conversation, message: Message) {
-    message = this.messageService.addUserInfo(conversation, message);
-    this.addMessage(conversation, message);
-    this.leads.unshift(conversation);
-    this.notificationService.sendBrowserNotification(message, conversation.item.id);
-    this.stream$.next(this.leads);
+    const conversationAlreadyAdded = this.leads.find(conv => conv.id === conversation.id);
+    if (!conversationAlreadyAdded) {
+      message = this.messageService.addUserInfo(conversation, message);
+      this.addMessage(conversation, message);
+      this.leads.unshift(conversation);
+      this.notificationService.sendBrowserNotification(message, conversation.item.id);
+      this.stream$.next(this.leads);
+    }
   }
 }
