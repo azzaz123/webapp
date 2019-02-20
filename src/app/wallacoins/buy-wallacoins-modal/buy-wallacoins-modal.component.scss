@@ -76,6 +76,9 @@
       font-weight: bold;
       font-size: $font-size;
       margin-bottom: $spacing;
+      &.spacing {
+        margin-top: $spacing;
+      }
     }
     .for-free {
       color: $corporate;
@@ -84,6 +87,7 @@
     .note {
       text-align: center;
       color: $grey-250;
+      font-size: $font-size-XS;
     }
   }
   .right {

@@ -20,7 +20,7 @@
   </div>
   <div class="right">
     <div class="for-free modal-title" *ngIf="pack.forFree > 0" i18n>{{pack.forFree | customCurrency}} as a gift!</div>
-    <div class="price">
+    <div class="price" [class.spacing]="!pack.forFree">
       <div class="total" i18n>Price</div>
       <div class="amount">{{pack.price | customCurrency}}</div>
     </div>
