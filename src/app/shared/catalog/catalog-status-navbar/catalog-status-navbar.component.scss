@@ -1,4 +1,6 @@
+@import "~style/common";
+
 .nav {
-  margin-bottom: 10px;
-  margin-top: -6px;
+  margin-bottom: $spacing-ms;
+  margin-top: -$spacing-s;
 }

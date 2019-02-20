@@ -17,15 +17,15 @@
     align-items: center;
   }
   tsl-user-avatar {
-    margin-right: $spacing;
+    margin-right: $spacing-ml;
   }
   .btn-upload {
     background-color: $blue-grey-5;
     border: solid 1px $blue-grey-4;
     color: $blue-grey-2;
     font-size: $font-size-s;
-    padding: $spacing-S $spacing;
-    margin-left: 43px;
+    padding: $spacing-ms $spacing-ml;
+    margin-left: $spacing-xxl;
     cursor: pointer;
     border-radius: $button-border-radius;
     &:hover:not(.disabled) {
@@ -36,7 +36,7 @@
     }
     .spinner {
       @include square(15px);
-      margin-right: $spacing-XS;
+      margin-right: $spacing-s;
       vertical-align: bottom;
     }
   }

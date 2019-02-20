@@ -4,14 +4,14 @@
     border-radius: $border-radius;
     background-color: $white;
     border: solid 1px $blue-grey-5;
-    padding: $spacing;
-    margin-bottom: $spacing;
+    padding: $spacing-ml;
+    margin-bottom: $spacing-ml;
     h2 {
       font-weight: bold;
       text-transform: uppercase;
       color: $walla-main;
       font-size: $font-size-s;
-      margin-bottom: $spacing;
+      margin-bottom: $spacing-ml;
     }
     p {
       color: $blue-grey-2;
@@ -38,9 +38,9 @@
   }
 
   .selector-container {
-    margin: 5px 0 $spacing-L;
+    margin: $spacing-xs 0 $spacing-xl;
     &.terms-options {
-      margin-bottom: 23px;
+      margin-bottom: $spacing-l;
     }
     &.features-options {
       label:not(.selector) {
@@ -55,8 +55,8 @@
       background-color: $blue-grey-5;
       border-radius: $border-radius;
       display: inline-block;
-      @include square($spacing-XL);
-      margin-right: $spacing-S;
+      @include square(60px);
+      margin-right: $spacing-ms;
       line-height: $line-height-xxxl;
       position: relative;
       text-align: center;
@@ -81,7 +81,7 @@
         font-size: $font-size-xxs;
         letter-spacing: .4px;
         line-height: $line-height-m;
-        margin-top: $spacing-XXS;
+        margin-top: $spacing-xs;
       }
       mat-icon {
         height: 26px;
@@ -134,13 +134,13 @@
       }
     }
     &.shipping-options {
-      margin-bottom: 15px;
+      margin-bottom: $spacing-m;
       h2 {
-        margin-bottom: $spacing-S;
+        margin-bottom: $spacing-ms;
       }
       .selector {
-        margin-left: 10px;
-        margin-right: 40px;
+        margin-left: $spacing-ms;
+        margin-right: $spacing-xxl;
         cursor: pointer;
         mat-icon, svg {
           width: 30px;
@@ -152,8 +152,8 @@
           font-size: $font-size-xs;
           letter-spacing: .6px;
           line-height: $line-height-m;
-          margin-left: -10px;
-          margin-right: -10px;
+          margin-left: -$spacing-ms;
+          margin-right: -$spacing-ms;
           margin-top: 0;
           strong {
             font-weight: bold;
@@ -166,11 +166,11 @@
   .real-estate-form {
     .selector-container {
       .selector {
-        margin-right: $spacing;
-        line-height: 35px;
+        margin-right: $spacing-ml;
+        line-height: $line-height-xl;
         mat-icon {
           @include square(48px);
-          margin-top: 5px;
+          margin-top: $spacing-xs;
           /deep/ svg {
             @include square(48px);
           }
@@ -183,9 +183,9 @@
   }
 
   .btn-primary, .btn-link {
-    padding: 14px 50px;
-    margin-bottom: 65px;
-    margin-top: $spacing-L - $spacing;
+    padding: $spacing-m $spacing-xxl;
+    margin-bottom: $spacing-xxxl;
+    margin-top: $spacing-xl - $spacing-ml;
   }
   .btn-link {
     color: $walla-main;
@@ -222,7 +222,7 @@
       border-radius: 6px;
       padding: 0;
       background: transparent;
-      margin-right: $spacing-S;
+      margin-right: $spacing-ms;
       cursor: pointer;
       display: flex;
       justify-content: center;

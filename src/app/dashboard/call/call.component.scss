@@ -4,7 +4,7 @@ $transition-time: .15s;
 $check-width-and-spacing: 50px;
 :host {
   display: block;
-  padding: $spacing $spacing-S $spacing $spacing;
+  padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
   border-left: 2px solid transparent;
   transition: $transition-time ease background-color,
@@ -23,7 +23,7 @@ $check-width-and-spacing: 50px;
     @include hide();
     position: absolute;
     top: 43px;
-    right: $spacing-S;
+    right: 12px;
   }
   &:hover {
     background-color: rgba($blue-grey-2, .1);
@@ -74,7 +74,7 @@ tsl-user-avatar {
     }
     .call-meta {
       flex: none;
-      margin-left: $spacing-XXS;
+      margin-left: $spacing-xs;
     }
   }
   .call-item-row {
@@ -121,7 +121,7 @@ tsl-user-avatar {
     line-height: $line-height-m;
     p{
       color: $blue-grey-2;
-      margin: 10px 0;
+      margin: $spacing-ms 0;
       &:last-child {
         margin-bottom: 0;
       }

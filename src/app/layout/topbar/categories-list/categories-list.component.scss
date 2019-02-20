@@ -7,7 +7,7 @@ $dropdown-width: 900px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 8px 0 0;
+  padding: 0 $spacing-s 0 0;
   border-right: 1px solid $blue-grey-4;
   float: initial;
   height: 100%;
@@ -38,13 +38,13 @@ $dropdown-width: 900px;
     width: $dropdown-width;
     box-sizing: content-box;
     overflow: hidden;
-    padding: $spacing 0 0 0;
+    padding: $spacing-ml 0 0 0;
     li {
       background-color: transparent;
       padding: 0;
       position: relative;
       width: $dropdown-width/6;
-      margin-bottom: $spacing;
+      margin-bottom: $spacing-ml;
       height: 80px;
       a {
         display: flex;

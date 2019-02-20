@@ -10,10 +10,10 @@ $sold-height: 38px;
   height: 38px;
   line-height: $line-height-xxl;
   text-align: center;
-  padding: 0 $spacing;
+  padding: 0 $spacing-ml;
   mat-icon {
     vertical-align: middle;
     width: 21px;
-    margin-right: 7px;
+    margin-right: $spacing-s;
   }
 }

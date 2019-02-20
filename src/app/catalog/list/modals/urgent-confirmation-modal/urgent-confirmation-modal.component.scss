@@ -17,8 +17,8 @@ $feature-button-width: 170px;
   flex-direction: column;
   justify-content: center;
   .modal-close {
-    top: $spacing;
-    right: $spacing;
+    top: 20px;
+    right: 20px;
     @include square(13px);
     mat-icon {
       @include square(13px);
@@ -28,29 +28,29 @@ $feature-button-width: 170px;
   h1 {
     font-size: $font-size-ll;
     font-weight: bold;
-    margin-bottom: $spacing-M;
+    margin-bottom: $spacing-m;
   }
   p {
     margin: 0;
     color: $white;
     font-size: $font-size-m;
-    padding: 0 $spacing-L;
+    padding: 0 $spacing-xl;
   }
 }
 
 .modal-body {
   text-align: center;
-  padding: $spacing-L 70px 40px;
+  padding: $spacing-xl $spacing-xxxl $spacing-xxl;
   p {
     font-size: $font-size-m;
     color: $blue-grey-2;
-    margin-top: 10px;
+    margin-top: $spacing-ms;
   }
   .urgent-background {
     background: url(/assets/images/urgent-background.svg);
     width: 138px;
     height: 152px;
-    margin: $spacing-S auto $spacing-L;
+    margin: $spacing-ms auto $spacing-xl;
   }
 }
 
@@ -64,7 +64,7 @@ $feature-button-width: 170px;
     border-radius: 50%;
     background-color: $blue-grey-5;
     @include square(34px);
-    margin: 6px;
+    margin: $spacing-s;
     cursor: pointer;
     mat-icon {
       @include square(18px);

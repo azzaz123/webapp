@@ -22,7 +22,7 @@
   }  
   .datepicker-wrapper {
     border-radius: $border-radius;
-    padding: $spacing $spacing-L;
+    padding: $spacing-ml $spacing-xl;
     background-color: $white;
     z-index: 1;
   }
@@ -32,7 +32,7 @@
     display: flex;
     justify-content: space-between;
     border-top: solid 1px $blue-grey-5;
-    padding-top: $spacing;    
+    padding-top: $spacing-ml;    
     .datepicker-btn {
       -webkit-appearance: none;
       background-color: transparent;
@@ -80,7 +80,7 @@
       font-weight: bold;
       font-style: normal;
       color: $blue-grey-2;
-      margin: $spacing-S 0;
+      margin: $spacing-ms 0;
       width: 2.5rem;
       text-transform: lowercase;
     }
@@ -99,7 +99,7 @@
     .ngb-dp-month-name {
       font-size: $font-size-m;
       font-weight: bold;
-      margin: 0 $spacing-M;
+      margin: 0 $spacing-m;
     }
     .right {
       .ngb-dp-navigation-chevron {
@@ -110,7 +110,7 @@
 
   .selected-text {
     font-size: $font-size-s;
-    margin: $spacing 0;
+    margin: $spacing-ml 0;
     &.citybump {
       color: $walla-main;
     }
@@ -142,12 +142,12 @@
       }
     }
     &.start {
-      border-top-left-radius: $spacing;
-      border-bottom-left-radius: $spacing;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
     }
     &.end {
-      border-top-right-radius: $spacing;
-      border-bottom-right-radius: $spacing;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
     }
     &.disabled {
       color: $blue-grey-3;

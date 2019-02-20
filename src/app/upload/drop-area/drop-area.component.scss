@@ -6,7 +6,7 @@
 }
 
 .wrapper {
-  margin-bottom: -$spacing;
+  margin-bottom: -$spacing-ml;
 }
 
 .drag-area {
@@ -47,7 +47,7 @@
       @include square(32px);
       border-radius: 50%;
       line-height: $line-height-xl;
-      margin-bottom: $spacing-XS;
+      margin-bottom: $spacing-s;
       mat-icon {
         @include square(11px);
       }
@@ -65,7 +65,7 @@
   @include square(65px);
   position: relative;
   border-radius: $border-radius;
-  margin-right: $spacing-M;
+  margin-right: $spacing-m;
   transition: all .25s ease;
   background-position: center center;
   background-repeat: no-repeat;
@@ -74,7 +74,7 @@
   }
   .photos-number-10 & {
     @include square(110px);
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
   }
   &.placeholder {
     background-image: url(/assets/icons/camera.svg);
@@ -164,7 +164,7 @@
   &:last-of-type {
     margin-right: 0;
     .photos-number-10 & {
-      margin-right: $spacing-M;
+      margin-right: $spacing-m;
     }
   }
 

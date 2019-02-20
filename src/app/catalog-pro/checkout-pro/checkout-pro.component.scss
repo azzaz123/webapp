@@ -9,7 +9,7 @@
   z-index: 1000;
   mat-icon {
     vertical-align: middle;
-    margin-right: $spacing-S;
+    margin-right: $spacing-ms;
     width: 17px;
   }
   &:hover {
@@ -23,7 +23,7 @@
 .bumps-table {
   z-index: 4;
   position: relative;
-  margin-bottom: 65px;
+  margin-bottom: $spacing-xxxl;
 }
 
 .table-header {
@@ -55,7 +55,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-bottom: -3px;
+    margin-bottom: -$spacing-xs;
     align-self: flex-end;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
@@ -65,7 +65,7 @@
     color: $white;
     font-weight: bold;
     text-align: center;
-    padding: $spacing-M;
+    padding: $spacing-m;
     font-size: $font-size-s;
     line-height: $line-height-m;
     &.city {

@@ -4,8 +4,8 @@
     text-transform: uppercase;
     font-size: $font-size-s;
     line-height: $line-height-ms;
-    padding: 4px 7px;
-    margin-left: 10px;
+    padding: $spacing-xs $spacing-s;
+    margin-left: $spacing-ms;
   }
   &.motor {
     background-color: $skyblue-main;

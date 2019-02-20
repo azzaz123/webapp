@@ -24,13 +24,13 @@ h1, h2 {
 
 h1 {
   font-size: $font-size-3L;
-  margin-top: 50px;
-  margin-bottom: 40px;
+  margin-top: $spacing-xxl;
+  margin-bottom: $spacing-xxl;
 }
 
 h2 {
   font-size: $font-size-lll;
-  margin-bottom: $spacing-S;
+  margin-bottom: $spacing-ms;
 }
 
 .city, .country {
@@ -53,6 +53,6 @@ h2 {
 .btn {
   border-radius: $button-border-radius;
   font-weight: bold;
-  margin-top: $spacing-L;
-  padding: 10px 30px;
+  margin-top: $spacing-xl;
+  padding: $spacing-ms $spacing-xl;
 }

@@ -5,7 +5,7 @@ $check-width-and-spacing: 50px;
 $menu-width-and-spacing: 10px;
 :host {
   display: block;
-  padding: $spacing $spacing-S $spacing $spacing;
+  padding: $spacing-ml $spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
   transition: $transition-time ease background-color,
   $transition-time ease border;
@@ -23,7 +23,7 @@ $menu-width-and-spacing: 10px;
     @include hide();
     position: absolute;
     top: 43px;
-    right: $spacing-S;
+    right: 12px;
   }
   &:hover {
     background-color: rgba($blue-grey-4, .2);
@@ -87,7 +87,7 @@ $menu-width-and-spacing: 10px;
     }
     .conversation-item-meta {
       flex: none;
-      margin-left: $spacing-XXS;
+      margin-left: $spacing-xs;
     }
   }
   .user-name-row {
@@ -117,10 +117,10 @@ $menu-width-and-spacing: 10px;
     }
     .badge-pill {
       background-color: $negative-main;
-      height: $spacing;
-      width: $spacing;
+      height: 20px;
+      width: 20px;
       padding: 0;
-      line-height: $spacing;
+      line-height: $line-height-ml;
       font-size: $font-size-xs;
     }
     .user-name {
@@ -134,7 +134,7 @@ $menu-width-and-spacing: 10px;
     }
   }
   .message-row {
-    line-height: $font-size-s;
+    line-height: $line-height-m;
     p.message {
       color: $blue-grey-2;
     }

@@ -15,7 +15,7 @@
     font-size: $font-size-xs;
     font-weight: bold;
     text-transform: uppercase;
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
   }
 }
 
@@ -25,11 +25,11 @@
   border: solid 1px $blue-grey-5;
   display: flex;
   flex-direction: column;
-  padding: $spacing-2M $spacing-L;
+  padding: $spacing-l $spacing-xl;
 }
 
 .car {
-  margin-right: $spacing;
+  margin-right: $spacing-ml;
   width: 30%;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .text {
-  margin-top: -11px;
+  margin-top: -$spacing-ms;
 }
 
 .gold {
@@ -101,7 +101,7 @@
 
 .no-plan {
   line-height: $line-height-m;
-  margin-top: $spacing-S;
+  margin-top: $spacing-ms;
   width: 35%;
 }
 

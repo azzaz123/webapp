@@ -22,7 +22,7 @@
   position: relative;
 
   #top-bar {
-    padding: $spacing;
+    padding: $spacing-ml;
     border-bottom: 1px solid $blue-grey-5;
     z-index: 99;
     display: flex;
@@ -35,7 +35,7 @@
         display: none;
       }
       h5 {
-        margin-top: -25px;
+        margin-top: -$spacing-l;
       }
     }
 
@@ -48,7 +48,7 @@
     }
 
     tsl-user-avatar {
-      margin-right: $spacing-S;
+      margin-right: $spacing-ms;
     }
 
     .conversation-header-user-info {
@@ -63,7 +63,7 @@
 
       tsl-stars{
         height: 17px;
-        padding-top: 2px;
+        padding-top: $spacing-xxs;
       }
     }
 
@@ -76,13 +76,13 @@
     height: 24px;
     mat-icon {
       cursor: pointer;
-      padding: 0 3px;
+      padding: 0 $spacing-xs;
       /deep/ #MVP {
         fill: $blue-grey-2;
       }
     }
     .dropdown-item {
-      padding: ($spacing /2) $spacing;
+      padding: $spacing-ms $spacing-ml;
       cursor: pointer;
       &.warn {
         color: $negative-main;
@@ -92,7 +92,7 @@
 
   .user-detail-wrapper {
     position: absolute;
-    top: $spacing-S + 80px;
+    top: 92px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 99;
@@ -104,12 +104,12 @@
   height: calc(100vh - #{$topbar-height});
   float: right;
   width: $right-panel-width;
-  padding: $spacing;
+  padding: $spacing-ml;
   background-color: $blue-grey-5;
   border-left: 1px solid $blue-grey-4;
 
   tsl-user {
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
   }
 }
 

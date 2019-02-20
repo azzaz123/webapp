@@ -12,10 +12,10 @@ tsl-here-maps {
   padding: 0;
   tsl-geolocation {
     position: absolute;
-    top: $spacing;
-    left: $spacing;
+    top: 20px;
+    left: 20px;
     z-index: 100;
-    width: calc(100% + #{-$spacing * 2 - $btn-width - $spacing-S});
+    width: calc(100% + #{-$spacing-ml * 2 - $btn-width - $spacing-ms});
     display: block;
     padding: 0;
     & /deep/ {
@@ -31,11 +31,11 @@ tsl-here-maps {
   }
   .btn {
     position: absolute;
-    top: $spacing;
-    right: $spacing;
+    top: 20px;
+    right: 20px;
     height: 38px;
     line-height: $line-height-xxl;
-    padding: 0 $spacing-M;
+    padding: 0 $spacing-m;
     width: $btn-width;
   }
 }

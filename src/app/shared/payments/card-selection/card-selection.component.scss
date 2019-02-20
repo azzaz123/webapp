@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .select-card {
-  margin-bottom: $spacing-XS;
+  margin-bottom: $spacing-s;
   .btn {
     width: 100%;
     border-radius: $border-radius;
@@ -9,7 +9,7 @@
     display: flex;
     font-size: $font-size-xs;
     align-items: center;
-    height: $spacing-40;
+    height: 40px;
     color: $blue-grey-3;
     &.active {
       border-color: $walla-main;

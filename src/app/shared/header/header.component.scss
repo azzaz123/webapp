@@ -6,7 +6,7 @@
         color: $blue-grey-1;
         font-weight: bold;
         .badge {
-          margin-left: 10px;
+          margin-left: $spacing-ms;
           vertical-align: middle;
         }
     }
@@ -17,7 +17,7 @@
     }
 
     .header-row-margin {
-        margin-bottom: $spacing;
+        margin-bottom: $spacing-ml;
     }
 
     .header-subtitle {
@@ -29,7 +29,7 @@
 
     .header-separator {
         color: $blue-grey-2;
-        margin: 0 15px;
+        margin: 0 $spacing-m;
     }
 
     .header-link {

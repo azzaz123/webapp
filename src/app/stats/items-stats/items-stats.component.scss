@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .calls-header {
-  margin-top: $spacing-L;
+  margin-top: $spacing-xl;
   border-bottom: 1px solid $blue-grey-5;
   h3 {
     color: $blue-grey-2;
@@ -18,10 +18,10 @@
   background-color: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
-  margin-top: 17px;
+  margin-top: $spacing-m;
   .calls-header {
     margin: 0;
-    padding: 29px 0 24px 24px;
+    padding: $spacing-xl 0 $spacing-l $spacing-l;
     h3 {
       color: $blue-grey-2;
     }

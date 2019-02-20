@@ -11,7 +11,7 @@ $spinner-size: 24px;
     align-self: center;
     .spinner {
       @include square($spinner-size);
-      margin-bottom: $spacing;
+      margin-bottom: $spacing-ml;
     }
     h2 {
       font-size: $font-size-m;

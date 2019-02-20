@@ -7,7 +7,7 @@
   top: 0;
   border-bottom: 1px solid;
   border-color: transparentize($blue-grey-4, 0.5);
-  padding: 0 8px 0 11px;
+  padding: 0 $spacing-s 0 $spacing-ms;
   width: 100%;
   display: flex;
   display: -ms-flexbox;
@@ -23,13 +23,13 @@
 }
 .main-header-my-zone {
   tsl-user-avatar {
-    margin-left: $spacing-XS;
+    margin-left: $spacing-s;
   }
   span {
     font-size: $font-size-s;
     color: $blue-grey-1;
-    margin-right: $spacing-XXS;
-    margin-left: $spacing-S;
+    margin-right: $spacing-xs;
+    margin-left: $spacing-ms;
   }
   &.active {
     span {
@@ -51,7 +51,7 @@
 .topbar-logo-icon {
   width: 49px;
   height: 49px;
-  margin-bottom: -7px;
+  margin-bottom: -$spacing-s;
   & /deep/ {
     .shadow {
       filter: url(#a);
@@ -63,20 +63,20 @@
 }
 .topbar-menu {
   position: absolute;
-  right: $spacing-S;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   .topbar-sections {
     display: inline-block;
     a {
       display: inline-block;
-      margin-right: $spacing;
+      margin-right: $spacing-ml;
       line-height: $line-height-xl;
       text-decoration: none;
       border-radius: 100px;
       color: $white;
       &.active {
-        padding: 0 $spacing-S;
+        padding: 0 $spacing-ms;
         color: $walla-main;
         background-color: $white;
       }
@@ -86,7 +86,7 @@
 .dropdown-main-search {
   & {
     display: flex;
-    margin-left: 10px;
+    margin-left: $spacing-ms;
     align-items: center;
     flex: 1;
   }
@@ -103,7 +103,7 @@
     align-items: center;
     position: relative;
     padding-left: 0 !important;
-    padding-right: 18px;
+    padding-right: $spacing-ml;
     transition-property: width;
     transition-duration: 0.2s;
     transition-timing-function: linear;
@@ -129,7 +129,7 @@
   }
   input {
     & {
-      padding-left: 12px;
+      padding-left: $spacing-ms;
       width: 190px;
       height: 100%;
       color: $blue-grey-1;
@@ -210,7 +210,7 @@
     & {
       color: $blue-grey-1;
       height: 65px;
-      margin-right: $spacing;
+      margin-right: $spacing-ml;
       position: relative;
       display: flex;
       align-items: center;
@@ -251,7 +251,7 @@
       display: none;
       border-bottom: 3px solid $blue-grey-1;
       width: 100%;
-      margin-left: $spacing-XS;
+      margin-left: $spacing-s;
       position: absolute;
       bottom: 0;
       left: 0;
@@ -272,10 +272,10 @@
     & span {
       background-color: $walla-main;
       color: $white;
-      border-radius: 20px;
-      margin-left: 12px;
-      margin-right: 10px;
-      padding: 8px 22px;
+      border-radius: $button-border-radius;
+      margin-left: $spacing-ms;
+      margin-right: $spacing-ms;
+      padding: $spacing-s $spacing-ml;
       height: 38px;
       &:hover {
         background-color: $walla-dark;
@@ -324,8 +324,8 @@
     .main-header-login-profile-avatar {
       width: 32px;
       height: 32px;
-      margin-right: 12px;
-      margin-left: 8px;
+      margin-right: $spacing-ms;
+      margin-left: $spacing-s;
       border-radius: 50px;
       background-repeat: no-repeat;
       background-size: cover;
@@ -343,13 +343,13 @@
     /deep/ button {
       font-weight: bold;
       font-size: $font-size-s;
-      padding-left: $spacing-XS;
-      padding-top: 7px;
-      padding-bottom: 7px;
+      padding-left: $spacing-s;
+      padding-top: $spacing-s;
+      padding-bottom: $spacing-s;
     }
     /deep/ mat-icon {
       vertical-align: middle;
-      margin-right: $spacing-XXS;
+      margin-right: $spacing-xs;
       @include square(26px);
     }
     &:hover {
@@ -388,7 +388,7 @@
 .main-header-credits {
   b {
     color: $walla-main;
-    margin-right: $spacing-XXS;
+    margin-right: $spacing-xs;
   }
   .topbar-icon {
     @include square(38px);

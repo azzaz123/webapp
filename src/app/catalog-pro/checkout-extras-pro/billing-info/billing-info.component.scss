@@ -1,11 +1,11 @@
 @import "~style/common";
 
 :host {
-    margin-top: 45px;
+    margin-top: $spacing-xxl;
     display: block;
     background-color: $white;
     border-radius: $border-radius;
-    padding: $spacing-L 53px;
+    padding: $spacing-xl $spacing-xxxl;
 }
 
 h1 {
@@ -18,9 +18,9 @@ h1 {
 }
 
 form {
-    margin-top: $spacing-L;
+    margin-top: $spacing-xl;
     .form-group {
-        padding: 0 10px;
+        padding: 0 $spacing-ms;
         label {
             color: $blue-grey-1;
         }

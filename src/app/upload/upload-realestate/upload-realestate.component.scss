@@ -2,12 +2,12 @@
 
 .main-box {
   tsl-here-maps, .fake-map {
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
     display: block;
   }
   p {
     color: $blue-grey-3;
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
   }
   .form-group, p {
     margin-bottom: 0;
@@ -22,7 +22,7 @@
 }
 
 .checkbox-corporate {
-  margin-top: $spacing;
+  margin-top: $spacing-ml;
   span {
     font-size: $font-size-m;
     user-select: none;

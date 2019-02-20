@@ -4,8 +4,8 @@ $icon-size: 12px;
 $height: 40px;
 
 .items {
-  margin-top: $spacing;
-  margin-bottom: 120px;
+  margin-top: $spacing-ml;
+  margin-bottom: $spacing-xxxl * 2;
   .add-item {
     width: 100%;
     svg {
@@ -34,8 +34,8 @@ tsl-spinner {
 }
 
 .nav {
-  margin-bottom: 10px;
-  margin-top: -6px;
+  margin-bottom: $spacing-ms;
+  margin-top: -$spacing-s;
 }
 
 .info {
@@ -49,7 +49,7 @@ tsl-spinner {
     /deep/ svg path {
       fill: $walla-main;
     }
-    margin-right: $spacing-S;
+    margin-right: $spacing-ms;
   }
   a {
     text-decoration: underline;
@@ -62,7 +62,7 @@ tsl-spinner {
 }
 
 #total-selected {
-  padding: 0 $spacing;
+  padding: 0 $spacing-ml;
   cursor: pointer;
   &:after {
     display: inline-block;
@@ -71,9 +71,9 @@ tsl-spinner {
     background-size: $icon-size $icon-size;
     height: $icon-size;
     width: $icon-size;
-    margin-left: 10px;
+    margin-left: $spacing-ms;
     vertical-align: middle;
-    margin-top: -2px;
+    margin-top: -$spacing-xxs;
   }
   &.show {
     animation: fadeInFromNone 0.5s ease-in-out;
@@ -85,7 +85,7 @@ tsl-spinner {
 
 #total-selected {
   border: solid 1px $blue-grey-4;
-  padding: 0 $spacing;
+  padding: 0 $spacing-ml;
   border-radius: $border-radius;
   background: $white;
   color: $blue-grey-1;
@@ -93,7 +93,7 @@ tsl-spinner {
   height: $height;
   line-height: $line-height-xxl;
   display: inline-block;
-  margin-bottom: 2px;
+  margin-bottom: $spacing-xxs;
 }
 
 tsl-selected-items {
@@ -105,7 +105,7 @@ tsl-selected-items {
 }
 
 #catalog-empty-state {
-  padding: 0 10px;
+  padding: 0 $spacing-ms;
   width: 100%;
   mat-icon {
     width: 100%;
@@ -116,14 +116,14 @@ tsl-selected-items {
 .banner {
   width: 100%;
   height: auto;
-  margin-bottom: $spacing;
-  margin-top: -$spacing-L;
+  margin-bottom: $spacing-ml;
+  margin-top: -$spacing-xl;
 }
 
 .bulk-actions {
   align-self: center;
   & > * {
-    margin: 0 9px 0 0;
+    margin: 0 $spacing-s 0 0;
   }
   &.disabled {
     button {
@@ -141,7 +141,7 @@ tsl-selected-items {
   button {
     height: 42px;
     line-height: $line-height-xxl;
-    padding: 0 $spacing;
+    padding: 0 $spacing-ml;
     cursor: pointer;
     border-radius: $border-radius;
     background: $white;
@@ -149,12 +149,12 @@ tsl-selected-items {
     border: solid 1px rgba($blue-grey-4, 0.5);
     font-size: $font-size-s;
     &.btn-delete, &.btn-deactivate {
-      padding: 0 ($spacing / 2);
+      padding: 0 $spacing-ms;
       mat-icon {
         height: 16px;
         width: 14px;
         vertical-align: sub;
-        margin-right: $spacing-XS;
+        margin-right: $spacing-s;
       }
       &:hover {
         background: $negative-main;
@@ -175,7 +175,7 @@ tsl-selected-items {
       }
     }
     &.btn-reserve {
-      padding: 0 ($spacing / 2);
+      padding: 0 $spacing-ms;
       mat-icon {
         vertical-align: text-bottom;
       }

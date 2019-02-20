@@ -2,12 +2,12 @@
 
 .main-box {
   tsl-here-maps, .fake-map {
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
     display: block;
   }
   p {
     color: $blue-grey-3;
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
   }
   .form-group, p {
     margin-bottom: 0;

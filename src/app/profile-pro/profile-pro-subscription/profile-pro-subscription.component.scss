@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .box-content {
-  padding: $spacing-L 100px;
+  padding: $spacing-xl 100px;
 }
 
 .packs {
@@ -37,7 +37,7 @@ h2, .description {
 }
 
 .pack {
-  padding: $spacing $spacing-L;
+  padding: $spacing-ml $spacing-xl;
   border: solid 2px $blue-grey-5;
   border-radius: $border-radius;
   text-align: center;
@@ -46,13 +46,13 @@ h2, .description {
   align-items: center;
   line-height: normal;
   flex:1;
-  margin: $spacing / 2;
+  margin: $spacing-ms;
   max-width: 186px;
   mat-icon {
     height: 46px;
     width: 94px;
-    margin-bottom: $spacing-M;
-    margin-top: $spacing;
+    margin-bottom: $spacing-m;
+    margin-top: $spacing-ml;
   }
   .quantity-container {
     position: relative;
@@ -71,7 +71,7 @@ h2, .description {
       font-size: $font-size-xs;
       color: $blue-grey-3;
       position: absolute;
-      top: $spacing;
+      top: 20px;
       right: -30px;
     }
   }
@@ -79,7 +79,7 @@ h2, .description {
     font-size: $font-size-m;
     color: $blue-grey-3;
     text-transform: uppercase;
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
   }
   .price {
     font-size: $font-size-m;
@@ -89,7 +89,7 @@ h2, .description {
   }
   .discount {
     font-size: $font-size-s;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
   }
   .btn {
     background-color: $blue-grey-5;
@@ -185,16 +185,16 @@ h2, .description {
     font-weight: bold;
     color: $blue-grey-1;
     font-size: $font-size-l;
-    padding-bottom: $spacing-S;
-    margin-bottom: $spacing-S;
+    padding-bottom: $spacing-ms;
+    margin-bottom: $spacing-ms;
     border-bottom: 2px solid $blue-grey-5;
     width: 100%;
-    margin-top: $spacing-2M;
+    margin-top: $spacing-l;
   }
   .desc {
     color: $blue-grey-2;
     font-size: $font-size-s;
-    margin-bottom: $spacing-2M;
+    margin-bottom: $spacing-l;
     flex-grow: 1;
   }
   .pack.selected {

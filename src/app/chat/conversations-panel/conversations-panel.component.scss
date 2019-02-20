@@ -4,12 +4,12 @@ $title-height: 64px;
 $filters-nav-height: 38px;
 
 h2 {
-  margin: $spacing;
+  margin: $spacing-ml;
   font-weight: bold;
   font-size: $font-size-ll;
   letter-spacing: $letter-spacing;
   .badge {
-    margin-left: 10px;
+    margin-left: $spacing-ms;
     vertical-align: middle;
   }
 }
@@ -30,17 +30,17 @@ h2 {
 }
 
 .nav.filters-nav {
-  margin-left: $spacing;
+  margin-left: $spacing-ml;
 }
 
 tsl-process-all-button {
   float: right;
-  margin-top: 10px;
-  margin-right: $spacing-S;
+  margin-top: $spacing-ms;
+  margin-right: $spacing-ms;
 }
 
 #loader {
-  padding-top: $spacing;
+  padding-top: $spacing-ml;
   mat-icon {
     width: 339px;
     height: 487px;
@@ -65,7 +65,7 @@ tsl-process-all-button {
       svg {
         position: absolute;
         top: 0;
-        left: -#{$spacing + 5px};
+        left: -17px;
       }
     }
     &:hover {

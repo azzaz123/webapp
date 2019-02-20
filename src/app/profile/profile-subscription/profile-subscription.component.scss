@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .box-content {
-  padding: $spacing-L 100px;
+  padding: $spacing-xl 100px;
 }
 
 .packs {
@@ -14,7 +14,7 @@ h2 {
   font-size: $font-size-l;
   font-weight: bold;
   color: $walla-main;
-  margin-top: 70px;
+  margin-top: $spacing-xxxl;
 }
 
 .description, .contact, .email {
@@ -38,7 +38,7 @@ h2, .description {
 }
 
 .pack {
-  padding: $spacing $spacing-10;
+  padding: $spacing-ml $spacing-ms;
   border: solid 2px $blue-grey-5;
   border-radius: $border-radius;
   text-align: center;
@@ -47,7 +47,7 @@ h2, .description {
   align-items: center;
   line-height: normal;
   flex:1;
-  margin: $spacing / 2;
+  margin: $spacing-ms;
   max-width: 186px;
   .name {
     color: $blue-grey-1;
@@ -59,15 +59,15 @@ h2, .description {
     color: $yellow-dark;
     font-weight: bold;
     border-bottom: 2px solid $blue-grey-5;
-    padding-bottom: $spacing-S;
-    margin-bottom: $spacing-M;
+    padding-bottom: $spacing-ms;
+    margin-bottom: $spacing-m;
   }
   ul, li {
     margin: 0;
     padding: 0;
   }
   li {
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
     color: $blue-grey-2;
     list-style: none;
     font-size: $font-size-s;

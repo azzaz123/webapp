@@ -1,7 +1,7 @@
 @import "~style/common";
 
 :host /deep/ {
-  margin-left: 10px;
+  margin-left: $spacing-ms;
 }
 
 :host /deep/ input {
@@ -44,7 +44,7 @@
   & {
     padding: 0;
     overflow: hidden;
-    margin: 0.4rem 0 0;
+    margin: $spacing-s 0 0;
     left: 0 !important;
     width: 100%;
   }
@@ -55,7 +55,7 @@
     cursor: pointer;
     color: $blue-grey-1;
     border-bottom: 1px solid $blue-grey-5;
-    padding: 8px 20px;
+    padding: $spacing-s $spacing-ml;
     transition: all .15s linear;
     & .suggestion {
       display: grid;

@@ -10,7 +10,7 @@
     border: none;
     font-family: $wallie;
     color: $white;
-    padding: 0px 20px;
+    padding: 0px $spacing-ml;
     border-radius: 22px;
     appearance: none;
     outline: none;
@@ -41,7 +41,7 @@
   .qc-cmp-link {
     color: $walla-main !important;
     text-decoration: none;
-    margin-top: $spacing-XS;
+    margin-top: $spacing-s;
   }
 
   .qc-cmp-alt-action:hover,
@@ -147,7 +147,7 @@
   font-size: $font-size-s;
   background-color: $white;
   border: thin solid $walla-main;
-  padding: 0 $spacing !important;
+  padding: 0 $spacing-ml !important;
   height: 42px;
   color: $walla-main !important;
   text-decoration: none;

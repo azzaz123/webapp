@@ -11,8 +11,8 @@ h2 {
 }
 
 .items {
-  margin-top: $spacing;
-  margin-bottom: $spacing-XL * 2;
+  margin-top: $spacing-ml;
+  margin-bottom: $spacing-xxxl * 2;
   .add-item {
     width: 100%;
     svg {
@@ -42,7 +42,7 @@ h2 {
 }
 
 tsl-button /deep/ .btn-logout  {
-  padding: 10px 18px;
+  padding: $spacing-ms $spacing-ml;
   background-color: transparent;
   border: solid 1px $blue-grey-4;
   color: $blue-grey-2;
@@ -82,7 +82,7 @@ tsl-spinner {
     /deep/ svg path {
       fill: $walla-main;
     }
-    margin-right: $spacing-S;
+    margin-right: $spacing-ms;
   }
   a {
     text-decoration: underline;
@@ -113,10 +113,10 @@ tsl-selected-items {
 }
 
 #catalog-empty-state {
-  padding: 0 10px;
+  padding: 0 $spacing-ms;
   height: 103px;
   width: 100%;
-  margin-bottom: 18px;
+  margin-bottom: $spacing-ml;
   mat-icon {
     position: absolute;
     height: auto;
@@ -135,18 +135,18 @@ tsl-selected-items {
     width: 100%;
     margin-right: auto;
     text-align: center;
-    margin-top: $spacing * 2;
+    margin-top: $spacing-xxl;
     .link {
       color: $walla-main;
       text-decoration: underline;
       cursor: pointer;
-      margin-left: $spacing-XXS;
+      margin-left: $spacing-xs;
       &:hover {
         color: $walla-dark;
       }
     }
     tsl-button {
-      margin-left: $spacing-XXS;
+      margin-left: $spacing-xs;
       /deep/ button {
         color: $walla-main;
         text-decoration: underline;
@@ -161,17 +161,17 @@ tsl-selected-items {
 .banner {
   width: 100%;
   height: auto;
-  margin-bottom: $spacing;
-  margin-top: -$spacing-L;
+  margin-bottom: $spacing-ml;
+  margin-top: -$spacing-xl;
 }
 
 tsl-search-input {
   vertical-align: bottom;
-  margin-right: $spacing;
+  margin-right: $spacing-ml;
 }
 
 tsl-search-input, .nav {
-  margin-bottom: 10px;
+  margin-bottom: $spacing-ms;
   height: 38px;
 }
 
@@ -192,15 +192,15 @@ tsl-select {
   flex-direction: row;
   align-self: center;
   justify-content: start;
-  margin: 0 0 $spacing-M;
+  margin: 0 0 $spacing-m;
   a {
     color: $walla-main;
   }
 }
 
 .border {
-  width: $spacing-XXXS;
-  height: $spacing-S;
+  width: 2px;
+  height: 12px;
   background-color: $blue-grey-3;
-  margin: $spacing-XXS $spacing-S 0;
+  margin: $spacing-xs $spacing-ms 0;
 }

@@ -33,21 +33,21 @@
 }
 
 form {
-  padding: $spacing;
-  padding-top: 10px;
+  padding: $spacing-ml;
+  padding-top: $spacing-ms;
   label {
     display: block;
     font-size: $font-size-s;
     line-height: $line-height-l;
     input {
-      margin-right: $spacing-S;
+      margin-right: $spacing-ms;
     }
     strong {
       font-size: $font-size-m;
-      margin-left: 30px;
+      margin-left: $spacing-xl;
     }
   }
   tsl-button {
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
   }
 }

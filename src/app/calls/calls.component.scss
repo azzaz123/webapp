@@ -4,12 +4,12 @@
   .container {
     h1 {
       .badge {
-        margin-left: 10px;
+        margin-left: $spacing-ms;
         vertical-align: middle;
       }
     }
     .calls-header {
-      margin-top: $spacing-L;
+      margin-top: $spacing-xl;
       h3 {
         color: $blue-grey-2;
         text-transform: uppercase;
@@ -24,10 +24,10 @@
       background-color: $white;
       border-radius: $border-radius;
       border: solid 1px $blue-grey-5;
-      margin-top: 17px;
+      margin-top: $spacing-m;
       .calls-header {
         margin: 0;
-        padding: 29px 24px 24px;
+        padding: $spacing-xl $spacing-l $spacing-l;
         h3 {
           color: $blue-grey-2;
         }
@@ -40,8 +40,8 @@
   }
   .empty-state-phones {
     border-top: 1px solid $blue-grey-5;
-    margin: 20px 10px;
-    padding-top: 20px;
+    margin: $spacing-ml $spacing-ms;
+    padding-top: $spacing-ml;
     width: 100%;
     display: flex;
     align-items: center;

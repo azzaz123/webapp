@@ -55,11 +55,11 @@ body {
   width: calc(100% - #{$sidebar-width});
   overflow: auto;
   background: rgba(236, 239, 241, 0.6);
-  padding: 0 $spacing-L;
+  padding: 0 $spacing-xl;
   > .container {
-    padding: $spacing-L 10px;
+    padding: $spacing-xl $spacing-ms;
     @-moz-document url-prefix() { // Firefox hack
-      padding: $spacing-L 10px;
+      padding: $spacing-xl $spacing-ms;
     }
   }
 }

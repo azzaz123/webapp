@@ -2,7 +2,7 @@
 
 div {
   @include square-avatar($item-avatar-size);
-  margin: 1px;
+  margin: $spacing-xxs;
   display: flex;
   position: relative;
   &.small {
@@ -23,8 +23,8 @@ div {
   &.full {
     span {
       position: absolute;
-      top: $spacing-S;
-      left: $spacing-S;
+      top: 12px;
+      left: 12px;
       &.overlay {
         background: none;
       }

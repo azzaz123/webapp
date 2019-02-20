@@ -3,8 +3,8 @@ $send-icon-size: 40px;
 
 p  {
     font-size: $font-size-m;
-    margin-top: $spacing-3M;
-    padding: $spacing-2L 0;
+    margin-top: $spacing-l;
+    padding: $spacing-xxl 0;
     color: $blue-grey-1;
 }
 
@@ -12,7 +12,7 @@ form {
     position: relative;
     input.form-control {
         height: 30%;
-        padding: 0 0 5px;
+        padding: 0 0 $spacing-xs;
         border-width: 0 0 1px;
         border-radius: 0px;
     }
@@ -25,7 +25,7 @@ form {
 
 .small p {
     color: $blue-grey-3;
-    margin-top: $spacing-XXS;
+    margin-top: $spacing-xs;
     padding: 0;
     font-size: $font-size-xxs;
 }

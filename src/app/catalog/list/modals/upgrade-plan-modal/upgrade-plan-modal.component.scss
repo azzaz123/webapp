@@ -11,8 +11,8 @@
   flex-direction: column;
   justify-content: flex-end;
   .modal-close {
-    top: $spacing;
-    right: $spacing;
+    top: 20px;
+    right: 20px;
     @include square(13px);
     mat-icon {
       @include square(13px);
@@ -26,7 +26,7 @@
   p {
     opacity: .8;
     margin: 0;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
     color: $white;
     font-size: $font-size-m;
   }
@@ -34,11 +34,11 @@
 
 .modal-body {
   text-align: center;
-  padding: 40px 70px;
+  padding: $spacing-xxl $spacing-xxxl;
   p {
     font-size: $font-size-m;
     color: $blue-grey-2;
-    margin-top: 10px;
+    margin-top: $spacing-ms;
   }
   .upgrade-plan {
     float: left;
@@ -54,7 +54,7 @@
     width: 50%;
     float: right;
     text-align: left;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
   }
 }
 
@@ -63,7 +63,7 @@ tsl-button /deep/ {
     min-width: 370px;
   }
   .btn-primary {
-    margin: $spacing-L auto $spacing;
+    margin: $spacing-xl auto $spacing-ml;
   }
 }
 

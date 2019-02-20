@@ -18,7 +18,7 @@
 .left {
   background-color: $blue-grey-5;
   text-align: center;
-  padding: 49px 30px 28px;
+  padding: $spacing-xxl $spacing-xl $spacing-l;
   min-width: 294px;
   display: flex;
   flex-direction: column;
@@ -26,12 +26,12 @@
   justify-content: space-between;
   h2 {
     font-size: $font-size-l;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
   .box {
     display: flex;
     width: 242px;
-    padding: $spacing-1S;
+    padding: $spacing-ms;
     text-align: left;
     .title {
       word-break: break-word;
@@ -57,7 +57,7 @@
   }
   .vertical & {
     max-width: 330px;
-    padding: 49px 50px 28px;
+    padding: $spacing-xxl $spacing-xxl $spacing-l;
   }
 }
 .right {
@@ -65,10 +65,10 @@
   flex-direction: column;
   align-items: center;
   width: 360px;
-  padding: $spacing-L;
+  padding: $spacing-xl;
   justify-content: space-between;
   p {
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
   .totals {
     width: 100%;
@@ -86,14 +86,14 @@
     .label {
       tsl-wallacoin {
         vertical-align: sub;
-        margin-right: 5px;
+        margin-right: $spacing-xs;
       }
     }
   }
   .credit {
     color: $walla-main;
-    margin-bottom: $spacing-XS;
-    padding-right: 2px;
+    margin-bottom: $spacing-s;
+    padding-right: $spacing-xxs;
     .price {
       font-size: $font-size-m;
     }
@@ -106,8 +106,8 @@
   }
   .missing {
     border-top: solid 1px $blue-grey-5;
-    padding: 3px 2px 0 0;
-    margin-bottom: $spacing-L;
+    padding: $spacing-xs $spacing-xxs 0 0;
+    margin-bottom: $spacing-xl;
     .label {
       color: $blue-grey-3;
     }
@@ -117,17 +117,17 @@
     }
   }
   .total {
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
     .price {
       font-size: $font-size-3L;
     }
   }
   tsl-card-selection {
     width: 100%;
-    margin-bottom: $spacing-2M;
+    margin-bottom: $spacing-l;
   }
   tsl-button {
-    margin-top: $spacing;
+    margin-top: $spacing-ml;
   }
   .credit-card {
     width: 100%;
@@ -136,7 +136,7 @@
 
 .bottom {
   width: 330px;
-  padding: $spacing-2M;
+  padding: $spacing-l;
   text-align: center;
 }
 
@@ -156,7 +156,7 @@
   height: 160px;
   background-color: $white;
   border-radius: 50%;
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
   mat-icon {
     width: 95px;
     height: 70px;

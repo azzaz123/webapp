@@ -11,44 +11,44 @@ $modal-border-radius: 20px;
 
 .modal-body {
   text-align: center;
-  padding: $spacing-L;
+  padding: $spacing-xl;
   h1 {
     font-size: $font-size-l;
     font-weight: bold;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
   p {
     margin: 0;
-    margin-bottom: 25px;
+    margin-bottom: $spacing-l;
     color: $blue-grey-2;
     font-size: $font-size-m;
   }
   .btn {
-    padding: $spacing-S $spacing;
+    padding: $spacing-ms $spacing-ml;
     &.btn-secondary {
       border: 0;
       background-color: $blue-grey-5;
       color: $blue-grey-2;
-      margin: 0 $spacing-XXS;
-      margin-bottom: 10px;
+      margin: 0 $spacing-xs;
+      margin-bottom: $spacing-ms;
       &:hover, &.selected {
         background-color: $blue-grey-4;
       }
       &.btn-reason {
         margin: 0;
-        margin-bottom: $spacing;
+        margin-bottom: $spacing-ml;
       }
     }
     &.btn-primary {
-      padding: $spacing-S $spacing-L;
+      padding: $spacing-ms $spacing-xl;
     }
   }
 
   .custom-reason {
     font-size: $font-size-s;
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
     overflow: hidden;
-    margin-top: $spacing-L;
+    margin-top: $spacing-xl;
   }
   .counter {
     font-size: $font-size-xs;
@@ -56,9 +56,9 @@ $modal-border-radius: 20px;
   textarea {
     border-radius: $border-radius;
     height: 160px;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
   }
   .title {
-    margin-right: $spacing;
+    margin-right: $spacing-ml;
   }
 }

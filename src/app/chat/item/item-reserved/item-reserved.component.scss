@@ -8,10 +8,10 @@
   height: 38px;
   line-height: $line-height-xxl;
   text-align: center;
-  padding: 0 $spacing;
+  padding: 0 $spacing-ml;
   mat-icon {
     vertical-align: middle;
     width: 15px;
-    margin-right: 7px;
+    margin-right: $spacing-s;
   }
 }

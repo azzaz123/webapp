@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .box-left {
-  padding: 56px 100px;
+  padding: $spacing-xxxl 100px;
   a {
     color: $blue-grey-1;
     &:hover, &:active, &:focus {
@@ -23,12 +23,12 @@ h2, h3 {
 
 h2 {
   font-size: $font-size-l;
-  margin-bottom: $spacing-L;
+  margin-bottom: $spacing-xl;
 }
 
 h3 {
   font-size: $font-size-m;
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
 }
 
 a {
@@ -36,7 +36,7 @@ a {
 }
 
 .features {
-  margin-bottom: 50px;
+  margin-bottom: $spacing-xxl;
   mat-icon {
     width: 60px;
     height: 40px;
@@ -49,12 +49,12 @@ a {
     display: block;
     border-radius: 5px;
     text-align: center;
-    padding: $spacing-L $spacing-S $spacing-S;
+    padding: $spacing-xl $spacing-ms $spacing-ms;
     font-size: $font-size-s;
     .title {
       font-weight: bold;
-      margin-bottom: $spacing-XS;
-      padding: 0 $spacing-S;
+      margin-bottom: $spacing-s;
+      padding: 0 $spacing-ms;
     }
     .desc {
       color: $blue-grey-3;
@@ -64,13 +64,13 @@ a {
 
 .summary {
   border-bottom: solid 1px $blue-grey-5;
-  margin-bottom: $spacing-L;
+  margin-bottom: $spacing-xl;
   .section {
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
   .question {
     font-size: $font-size-s;
-    margin-bottom: $spacing-1S;
+    margin-bottom: $spacing-ms;
     &:last-of-type {
       margin: 0;
     }
@@ -79,11 +79,11 @@ a {
 
 .faqs {
   .section {
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
   }
   h3 {
-    margin-bottom: $spacing-M;
-    padding-top: $spacing;
+    margin-bottom: $spacing-m;
+    padding-top: $spacing-ml;
     &.active {
       color: $walla-main;
     }
@@ -91,14 +91,14 @@ a {
   .answer {
     color: $blue-grey-3;
     font-size: $font-size-s;
-    margin-bottom: $spacing-2M;
+    margin-bottom: $spacing-l;
   }
 }
 
 .contacts {
-  padding: 56px 42px;
+  padding: $spacing-xxxl $spacing-xxl;
   h2 {
-    margin-bottom: $spacing-S;
+    margin-bottom: $spacing-ms;
   }
   .grey {
     color: $blue-grey-3;

@@ -2,7 +2,7 @@
 
 :host {
   display: block;
-  margin-bottom: $spacing-XS;
+  margin-bottom: $spacing-s;
   line-height: $line-height-ml;
   overflow: hidden;
 
@@ -17,15 +17,15 @@ h5 {
 $avatar-size: 40px;
 .message-avatar {
   color: $blue-grey-2;
-  margin-right: $spacing;
+  margin-right: $spacing-ml;
 }
 
 .message-avatar {
   float: left;
-  margin: $spacing 0 0;
+  margin: $spacing-ml 0 0;
   &.from-self {
     float: right;
-    margin: $spacing 0 0;
+    margin: $spacing-ml 0 0;
   }
 }
 
@@ -34,13 +34,13 @@ $avatar-size: 40px;
 }
 .message-body {
   color: $blue-grey-1;
-  margin: $spacing $spacing-XL 0 $spacing-XL;
+  margin: $spacing-ml $spacing-xxxl 0 $spacing-xxxl;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   &.without-avatar {
     margin-top: 0;
-    margin-left: #{$spacing + $avatar-size};
+    margin-left: #{$spacing-ml + $avatar-size};
   }
   &.calls-panel {
     margin-top: 0;
@@ -51,7 +51,7 @@ $avatar-size: 40px;
   p {
     flex: 0 0 auto;
     width: fit-content;
-    padding: $spacing-XS $spacing-S;
+    padding: $spacing-s $spacing-ms;
     border-radius: 20px;
     background-color: $blue-grey-6;
     margin-bottom: 0;
@@ -60,7 +60,7 @@ $avatar-size: 40px;
     position: relative;
     flex-direction: row-reverse;
     p {
-      padding-right :$spacing-L;
+      padding-right :$spacing-xl;
       background-color: $walla-soft;
       float: right;
     }
@@ -69,10 +69,10 @@ $avatar-size: 40px;
 
 .message-status {
   position: absolute;
-  bottom: $spacing-1S;
-  right: $spacing-S;
-  width: $spacing;
-  height: $spacing;
+  bottom: 14px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
   background: right bottom no-repeat;
   &.pending { background-image: url(/assets/icons/status-pending.svg); }
   &.sent { background-image: url(/assets/icons/status-sent.svg); }
@@ -84,7 +84,7 @@ $avatar-size: 40px;
   float: right;
   font-size: $font-size-xxs;
   white-space: pre;
-  margin: 0 $spacing-XXS 0 $spacing-XS;
+  margin: 0 $spacing-xs 0 $spacing-s;
   color: $blue-grey-3;
   position: relative;
   bottom: -2px;
@@ -102,10 +102,10 @@ $avatar-size: 40px;
 
 .third-voice {
   text-align: center;
-  margin: $spacing-S 112px;
+  margin: $spacing-ms 112px;
   border: 1px solid $blue-grey-5;
   border-radius: $border-radius;
-  padding: $spacing-M;
+  padding: $spacing-m;
   font-size: $font-size-s;
 }
 
@@ -118,13 +118,13 @@ $avatar-size: 40px;
     width: auto;
     border-radius: 20px;
     color: $walla-main;
-    margin: $spacing auto 0;
+    margin: $spacing-ml auto 0;
   }
   span.new-line {
     display: block;
     color: $blue-grey-3;
     text-align: center;
-    padding-bottom: $spacing-10;
-    margin-top: $spacing-40;
+    padding-bottom: $spacing-ms;
+    margin-top: $spacing-xxl;
   }
 }

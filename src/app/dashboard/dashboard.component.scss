@@ -24,7 +24,7 @@ h2 {
 
 .list-group-item {
   padding-left: 0;
-  padding-bottom: $spacing;
+  padding-bottom: $spacing-ml;
   padding-right: 0;
 }
 
@@ -38,10 +38,10 @@ $sidebar-title: 64px;
 .stats-sidebar {
   h2 {
     font-size: $font-size-l;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
   }
   h2, h3 {
-    padding: 0 18px;
+    padding: 0 $spacing-ml;
   }
   height: calc(100vh - #{$topbar-height});
   background-color: $white;
@@ -49,13 +49,13 @@ $sidebar-title: 64px;
   position: absolute;
   top: $topbar-height;
   right: 0;
-  padding: $spacing 0;
+  padding: $spacing-ml 0;
   .stats-sidebar-container {
     position: relative;
     .check-corporate {
       position: absolute;
-      bottom: $spacing;
-      right: $spacing;
+      bottom: 20px;
+      right: 20px;
     }
     &.calls-container {
       border-top: 1px solid $blue-grey-5;
@@ -76,10 +76,10 @@ $sidebar-title: 64px;
     font-size: $font-size-xs;
     font-weight: bold;
     color: $blue-grey-2;
-    margin-top: $spacing;
-    margin-bottom: $spacing-S;
+    margin-top: $spacing-ml;
+    margin-bottom: $spacing-ms;
     text-transform: uppercase;
-    padding-right: $spacing-S;
+    padding-right: $spacing-ms;
     a {
       float: right;
       color: $walla-main;
@@ -93,7 +93,7 @@ $sidebar-title: 64px;
   }
   .calls-container {
     h3 {
-      margin-bottom: $spacing;
+      margin-bottom: $spacing-ml;
     }
   }
 }
@@ -101,7 +101,7 @@ $sidebar-title: 64px;
   display: block;
   width: 400px;
   height: auto;
-  margin: $spacing-L 0;
+  margin: $spacing-xl 0;
 }
 
 .stats-sidebar-completed {
@@ -114,17 +114,17 @@ $sidebar-title: 64px;
   md-icon {
     width: 144px;
     height: 212px;
-    margin-bottom: $spacing-XL;
+    margin-bottom: $spacing-xxxl;
   }
   h2 {
-    margin-bottom: $spacing-XS;
+    margin-bottom: $spacing-s;
   }
   p {
-    padding: 0 $spacing-XL;
+    padding: 0 $spacing-xxxl;
     color: $blue-grey-3;
   }
 }
 
 tsl-stats-graph {
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
 }

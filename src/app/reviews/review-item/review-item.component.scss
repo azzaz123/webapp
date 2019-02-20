@@ -3,11 +3,11 @@
 .review-item {
   background-color: $white;
   border-radius: $border-radius;
-  margin-bottom: $spacing-XS;
-  padding: $spacing;
+  margin-bottom: $spacing-s;
+  padding: $spacing-ml;
   .info {
     padding: 0;
-    margin: 0 0 0 $spacing + 4px;
+    margin: 0 0 0 $spacing-l;
   }
   .review-type {
     font-size: $font-size-s;
@@ -31,7 +31,7 @@
     }
   }
   .review-comment {
-    margin: $spacing-XS 0 0;
+    margin: $spacing-s 0 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -43,7 +43,7 @@
   .review-microname {
     color: $blue-grey-1;
     font-weight: bold;
-    margin: 0 $spacing-XXS;
+    margin: 0 $spacing-xs;
   }
   &.row {
     margin-right: 0;

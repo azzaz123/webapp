@@ -21,7 +21,7 @@
 
 #close {
   position: absolute;
-  right: $spacing;;
+  right: 20px;
   top: 50px;
   color: $white;
   text-align: center;
@@ -44,11 +44,11 @@
 
 #controls {
   position: absolute;
-  right: $spacing;;
-  bottom: $spacing;
+  right: 20px;
+  bottom: 20px;
   .btn-next {
     color: $walla-main;
-    padding: 10px 48px;
+    padding: $spacing-ms $spacing-xxl;
     border-radius: 100px;
     background: $white;
     &:hover {
@@ -57,14 +57,14 @@
   }
   .dots {
     text-align: center;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
     .dot {
       display: inline-block;
       @include square(7.6px);
       opacity: 0.3;
       background-color: $white;
       border-radius: 50%;
-      margin: 0 4px;
+      margin: 0 $spacing-xs;
       vertical-align: middle;
       &.active {
         @include square(10.8px);
@@ -86,7 +86,7 @@
   background: url(/assets/images/welcome.svg) no-repeat top center;
   h1 {
     font-size: $font-size-xxxxl;
-    margin-bottom: 40px;
+    margin-bottom: $spacing-xxl;
     font-family: $wallieSkinny;
   }
   p {
@@ -100,7 +100,7 @@
   left: 67px;
   width: 770px;
   &.step-1, &.step-1-pro {
-    top: $spacing;
+    top: 20px;
   }
   &.step-2, &.step-2-pro {
     top: 120px;

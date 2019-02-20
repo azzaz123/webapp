@@ -3,7 +3,7 @@
 $form-control-height: 50px;
 
 .form-group {
-  margin-bottom: $spacing-L;
+  margin-bottom: $spacing-xl;
   &.last {
     margin-bottom: 0;
   }
@@ -81,7 +81,7 @@ ng-select {
     border: 1px solid $blue-grey-5 !important;
     border-radius: 6px;
     height: $form-control-height;
-    margin-left: -1px;
+    margin-left: -$spacing-xxs;
     &.disabled {
       background-color: transparent !important;
     }
@@ -103,7 +103,7 @@ ng-select {
       }
       & > div.value {
         height: $form-control-height;
-        padding-left: 12px !important;
+        padding-left: $spacing-ms !important;
         line-height: $line-height-xxl !important;
         mat-icon {
           display: none;
@@ -113,7 +113,7 @@ ng-select {
         color: $blue-grey-3 !important;
         height: $form-control-height;
         line-height: $line-height-xxl !important;
-        padding-left: 12px !important;
+        padding-left: $spacing-ms !important;
       }
     }
   }
@@ -130,15 +130,15 @@ select-dropdown{
     .options {
       overflow-x: hidden !important;
       ul li {
-        padding: $spacing-S !important;
+        padding: $spacing-ms !important;
         border-top: 1px solid $blue-grey-5;
         line-height: $line-height-l;
         mat-icon {
           @include square(38px);
           vertical-align: middle;
-          margin-right: 5px;
-          margin-top: -6px;
-          margin-bottom: -6px;
+          margin-right: $spacing-xs;
+          margin-top: -$spacing-s;
+          margin-bottom: -$spacing-s;
           g g {
             fill: $blue-grey-1;
           }
@@ -196,7 +196,7 @@ ng-select, select-dropdown {
           li {
             background-repeat: no-repeat;
             background-position: 18px;
-            padding-left: 60px !important;
+            padding-left: $spacing-xxxl !important;
             &:nth-child(1) {
               background-image: url(/assets/icons/small_car.svg);
             }
@@ -236,7 +236,7 @@ ng-select, select-dropdown {
           li {
             background-repeat: no-repeat;
             background-position: 8px;
-            padding-left: 60px !important;
+            padding-left: $spacing-xxxl !important;
             &:nth-child(1) {
               background-image: url(/assets/icons/new_construction.svg);
             }
@@ -268,8 +268,8 @@ input::-webkit-calendar-picker-indicator{
   font-size: $font-size-xs;
   color: $blue-grey-3;
   float: right;
-  margin-top: $spacing-XXS;
-  margin-bottom: $spacing-XS;
+  margin-top: $spacing-xs;
+  margin-bottom: $spacing-s;
 }
 
 .custom-radio {
@@ -280,7 +280,7 @@ input::-webkit-calendar-picker-indicator{
   [svgIcon="radio-button"] {
     @include square(18px);
     vertical-align: text-top;
-    margin-right: $spacing-XS;
+    margin-right: $spacing-s;
   }
   &:not(.active) {
     [svgIcon="radio-button"] #bullet {

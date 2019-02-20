@@ -4,12 +4,12 @@ $border: solid 1px $blue-grey-5;
   background-color: $white;
   border-radius: $border-radius;
   border: $border;
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
   .box-content {
-    padding: $spacing-L $spacing-L + 10;
+    padding: $spacing-xl $spacing-xxl;
   }
   .box-section {
-    padding: 0 0 $spacing-L;
+    padding: 0 0 $spacing-xl;
     border-bottom: $border;
   }
   .box-header {

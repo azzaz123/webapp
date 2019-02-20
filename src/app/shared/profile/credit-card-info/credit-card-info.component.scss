@@ -3,14 +3,14 @@
 .credit-card-field {
   border: solid 1px $blue-grey-5;
   height: 53px;
-  padding: 0 $spacing;
+  padding: 0 $spacing-ml;
   display: flex;
   border-radius: 6px;
   align-items: center;
   font-size: $font-size-s;
   .card-icon {
     flex: 0 0 34px;
-    margin-right: $spacing-M;
+    margin-right: $spacing-m;
   }
   .number {
     flex: 1;

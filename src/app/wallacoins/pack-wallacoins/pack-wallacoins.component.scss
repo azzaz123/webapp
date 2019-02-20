@@ -5,11 +5,11 @@
   border: solid 2px $blue-grey-5;
   width: 234px;
   height: 386px;
-  margin: 0 $spacing-M;
+  margin: 0 $spacing-m;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 48px $spacing $spacing-L;
+  padding: $spacing-xxl $spacing-ml $spacing-xl;
   position: relative;
   &.credits {
     height: 320px;
@@ -57,7 +57,7 @@
     font-weight: bold;
     color: $blue-grey-1;
     line-height: $line-height-xl;
-    margin-top: $spacing-S;
+    margin-top: $spacing-ms;
   }
   .label {
     font-size: $font-size-l;
@@ -75,7 +75,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      margin-bottom: $spacing-S;
+      margin-bottom: $spacing-ms;
       .quantity {
         font-size: $font-size-xxl;
       }
@@ -90,7 +90,7 @@
           background-color: $blue-grey-3;
         }
         b {
-          margin-left: $spacing-XXS;
+          margin-left: $spacing-xs;
         }
       }
     }

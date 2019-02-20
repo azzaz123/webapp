@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .modal-body {
-  padding: 50px $spacing-XL;
+  padding: $spacing-xxl $spacing-xxxl;
 }
 
 h1 {
@@ -13,10 +13,10 @@ h1 {
 p {
   font-size: $font-size-s;
   color: $blue-grey-2;
-  margin: 0 0 $spacing-XL;
+  margin: 0 0 $spacing-xxxl;
   &.note {
     color: $blue-grey-3;
-    margin: $spacing 0 0;
+    margin: $spacing-ml 0 0;
   }
 }
 

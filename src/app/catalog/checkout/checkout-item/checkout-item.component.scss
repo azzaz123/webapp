@@ -4,14 +4,14 @@
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
-  margin-bottom: $spacing-XS;
-  padding: $spacing-XXS;
+  margin-bottom: $spacing-s;
+  padding: $spacing-xs;
   display: flex;
   align-items: center;
   justify-content: space-between;
   .title {
     @include text-truncate();
-    padding-right: $spacing-S;
+    padding-right: $spacing-ms;
     flex: 1;
     max-width: 98px;
 
@@ -38,12 +38,12 @@
   }
   .durations {
     flex: 0 0 110px;
-    padding-left: $spacing;
+    padding-left: $spacing-ml;
     label {
       display: block;
       color: $blue-grey-3;
       font-size: $font-size-xs;
-      margin: 6px 0;
+      margin: $spacing-s 0;
       &.btn {
         border: 0;
         background: none;
@@ -59,7 +59,7 @@
   }
   .price {
     flex: 0 0 $duration-table-col-width-md;
-    padding: 0 $spacing;
+    padding: 0 $spacing-ml;
     @include media-breakpoint-up(xl) {
       flex: 0 0 $duration-table-col-width;
     }
@@ -118,7 +118,7 @@
       }
     }
     &.countrybump {
-      margin-right: -$spacing-XXS;
+      margin-right: -$spacing-xs;
       .btn-price {
         &:hover {
           background-color: $country-bump;

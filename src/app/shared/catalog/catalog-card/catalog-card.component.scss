@@ -5,14 +5,14 @@ $transition: all .5s ease;
 $feature-button-width: 170px;
 
 :host /deep/ ngb-tooltip-window {
-  margin-top: -12px;
+  margin-top: -$spacing-ms;
   &.show {
     opacity: 1;
   }
   .tooltip-inner {
     background-color: $blue-grey-2;
     font-family: $wallie;
-    padding: 10px 15px;
+    padding: $spacing-ms $spacing-m;
     border-radius: $border-radius / 2;
     font-size: $font-size-s;
     &:after {
@@ -20,7 +20,7 @@ $feature-button-width: 170px;
       position: absolute;
       top: 100%;
       left: 50%;
-      margin-left: -5px;
+      margin-left: -$spacing-xs;
       border-width: 5px;
       border-style: solid;
       border-color: $blue-grey-2 transparent transparent transparent;
@@ -45,8 +45,8 @@ $feature-button-width: 170px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: $spacing;
-    margin-top: 42px;
+    margin-right: $spacing-ml;
+    margin-top: $spacing-xxl;
     cursor: pointer;
     mat-icon {
       display: none;
@@ -73,8 +73,8 @@ $feature-button-width: 170px;
   background: $white;
   border-radius: $border-radius;
   border: solid 1px $blue-grey-5;
-  margin-bottom: $spacing;
-  margin-left: $spacing-L;
+  margin-bottom: $spacing-ml;
+  margin-left: $spacing-xl;
   display: flex;
   align-items: center;
   position: relative;
@@ -132,8 +132,8 @@ $feature-button-width: 170px;
     }
   }
   .image {
-    padding: 4px;
-    padding-right: $spacing-M;
+    padding: $spacing-xs;
+    padding-right: $spacing-m;
     display: block;
   }
   .title, .price {
@@ -158,7 +158,7 @@ $feature-button-width: 170px;
     flex-shrink: 0;
     flex-basis: 20em;
     max-width: 17em;
-    margin-right: 1em;
+    margin-right: $spacing-m;
   }
   .price {
     font-weight: bold;
@@ -189,7 +189,7 @@ $feature-button-width: 170px;
     .cancel-bump {
       text-decoration: underline;
       cursor: pointer;
-      margin-left: 5px;
+      margin-left: $spacing-xs;
       &:hover {
         text-decoration: none;
       }
@@ -226,12 +226,12 @@ $feature-button-width: 170px;
     }
   }
   .actions {
-    margin-right: $spacing-L;
+    margin-right: $spacing-xl;
     .resized & {
       display: none;
     }
     button, tsl-button {
-      margin-left: $spacing-S;
+      margin-left: $spacing-ms;
       float: left;
       background-color: transparent;
     }
@@ -281,14 +281,14 @@ $feature-button-width: 170px;
     tsl-button {
       /deep/ .btn-feature {
         width: $feature-button-width;
-        height: $spacing * 2;
-        padding: 0 $spacing;
-        padding-left: $spacing-S;
+        height: 40px;
+        padding: 0 $spacing-ml;
+        padding-left: $spacing-ms;
         font-size: $font-size-s;
         mat-icon {
           width: 19px;
           height: 21px;
-          margin-right: 9px;
+          margin-right: $spacing-s;
         }
       }
     }
@@ -302,15 +302,15 @@ $feature-button-width: 170px;
     z-index: 2;
     position: relative;
     font-size: $font-size-s;
-    padding-right: $spacing-L * 2;
-    margin-right: $spacing-2M;
+    padding-right: $spacing-l;
+    margin-right: $spacing-l;
     border-radius: $border-radius;
     color: $blue-grey-1;
-    height: $spacing * 2;
+    height: 40px;
     cursor: default;
     mat-icon {
-      margin-right: 34px;
-      margin-left: $spacing-XXS;
+      margin-right: $spacing-xl;
+      margin-left: $spacing-xs;
     }
   }
 }
