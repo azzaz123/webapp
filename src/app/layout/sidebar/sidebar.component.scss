@@ -6,7 +6,7 @@
   left: 0;
   top: $topbar-height;
   bottom: 0;
-  background-color: $grey-900;
+  background-color: $blue-grey-1;
   padding-top: $spacing-m;
   height: calc(100vh - #{$topbar-height});
   z-index: 99;
@@ -18,7 +18,7 @@
   right: 20px;
   width: 10px;
   height: 10px;
-  background-color: $warn;
+  background-color: $negative-main;
   border-radius: 100%;
   transform: translateX(100%);
 }
@@ -31,10 +31,10 @@ $sidebar-section-circle-size-small: 32px;
   margin: 0 auto $spacing-ms auto;
   width: $sidebar-section-circle-size;
   height: $sidebar-section-circle-size;
-  background-color: rgba($grey-800, .5);
+  background-color: rgba($blue-grey-1, .5);
   transition: width 0.75s, height 0.75s;
   .active & {
-    background-color: $corporate !important;
+    background-color: $walla-main !important;
   }
   border-radius: 50%;
   .profile-item & {
@@ -67,7 +67,7 @@ $sidebar-section-circle-size-small: 32px;
 }
 
 h2 {
-  font-size: $font-size-XXS;
+  font-size: $font-size-xxs;
   font-weight: bold;
   color: rgba($white, .5);
   text-transform: uppercase;
@@ -88,7 +88,7 @@ h2 {
   }
   &:hover {
     .sidebar-section-circle {
-      background-color: $grey-800;
+      background-color: $blue-grey-1;
     }
     h2 {
       color: $white;
@@ -116,7 +116,7 @@ h2 {
     }
     &:hover {
       .sidebar-section-circle {
-        background-color: $warn;
+        background-color: $negative-main;
       }
     }
   }

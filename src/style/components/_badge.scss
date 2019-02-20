@@ -1,14 +1,14 @@
 .badge {
   &.badge-pro {
-    background-color: $color-urgent;
+    background-color: $yellow-dark;
     text-transform: uppercase;
-    font-size: $font-size-S;
-    line-height: 11px;
+    font-size: $font-size-s;
+    line-height: $line-height-ms;
     padding: $spacing-xs $spacing-s;
     margin-left: $spacing-ms;
   }
   &.motor {
-    background-color: $badge-left;
-    background-image: linear-gradient(to left, $badge-left, $badge-right);
+    background-color: $skyblue-main;
+    background-image: linear-gradient(to right, $skyblue-main, $color-pro-super-light);
   }
 }

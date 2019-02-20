@@ -23,21 +23,21 @@ img {
 p {
   max-width: 300px;
   margin: 0 auto $spacing-xl auto;
-  font-size: $font-size;
-  color: $grey-500;
+  font-size: $font-size-m;
+  color: $blue-grey-2;
 }
 h1 {
   font-weight: bold;
-  color: $corporate;
-  font-size: $font-size-LL;
+  color: $walla-main;
+  font-size: $font-size-ll;
   margin-bottom: $spacing-ms;
   &.fail {
-    color: $warn;
+    color: $negative-main;
   }
 }
 
 .link {
-  color: $grey-250 !important;
+  color: $blue-grey-3 !important;
   &:hover {
     text-decoration: underline;
     cursor: pointer;

@@ -13,16 +13,16 @@
     margin-bottom: 50px;
   }
   h1 {
-    font-size: $font-size-L;
+    font-size: $font-size-l;
     font-weight: bold;
     margin-bottom: $spacing-ml;
   }
   p {
-    color: $grey-500;
+    color: $blue-grey-2;
     margin: 0 0 $spacing-ml;
   }
   .line {
-    background-color: $grey-50;
+    background-color: $blue-grey-5;
     width: 176px;
     margin: $spacing-ml auto $spacing-ms;
     height: 2px;
@@ -37,7 +37,7 @@
     }
   }
   .reactivate {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     cursor: pointer;
     &:hover {
       text-decoration: underline;

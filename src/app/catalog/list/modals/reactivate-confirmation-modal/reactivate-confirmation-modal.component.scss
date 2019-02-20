@@ -10,12 +10,12 @@
   p {
     max-width: 435px;
     margin: 0 auto $spacing-ml auto;
-    font-size: $font-size;
-    color: $grey-500;
+    font-size: $font-size-m;
+    color: $blue-grey-2;
   }
   h1 {
     font-weight: bold;
-    font-size: $font-size-LL;
+    font-size: $font-size-ll;
     margin-top: $spacing-xl;
     margin-bottom: $spacing-xl;
   }
@@ -32,7 +32,7 @@
   }
 
   .link {
-    color: $grey-250 !important;
+    color: $blue-grey-3 !important;
     &:hover {
       text-decoration: underline;
       cursor: pointer;

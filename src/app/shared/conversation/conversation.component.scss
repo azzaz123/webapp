@@ -9,7 +9,7 @@ $menu-width-and-spacing: 10px;
   box-sizing: border-box;
   transition: $transition-time ease background-color,
   $transition-time ease border;
-  border-top: 1px solid $grey-50;
+  border-top: 1px solid $blue-grey-5;
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -17,7 +17,7 @@ $menu-width-and-spacing: 10px;
     border-top: 0;
   }
   &.active {
-    background-color: rgba($grey-100, .4);
+    background-color: rgba($blue-grey-4, .4);
   }
   tsl-archive-button, tsl-unarchive-button {
     @include hide();
@@ -26,7 +26,7 @@ $menu-width-and-spacing: 10px;
     right: 12px;
   }
   &:hover {
-    background-color: rgba($grey-100, .2);
+    background-color: rgba($blue-grey-4, .2);
   }
   &.professional {
     &:hover {
@@ -61,20 +61,20 @@ $menu-width-and-spacing: 10px;
   height: $item-avatar-size;
   margin-left: $item-avatar-space;
   max-width: calc(100% - #{$item-avatar-size} - #{$item-avatar-margin});
-  color: $grey-900;
+  color: $blue-grey-1;
   p {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     margin-bottom: 0;
     @include text-truncate();
   }
   .item-title-row {
-    line-height: 16px;
+    line-height: $line-height-m;
     display: flex;
     flex-direction: row;
     vertical-align: super;
     .conversation-item-title {
       font-weight: bold;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       display: flex;
     }
     .conversation-item-title {
@@ -93,9 +93,9 @@ $menu-width-and-spacing: 10px;
   .user-name-row {
     $phone-icon-size: 18px;
     $phone-icon-adjusted-size: 15px;
-    line-height: $phone-icon-size;
+    line-height: $line-height-ml;
     overflow: hidden;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     display: flex;
     flex-direction: row;
     .user-name-row-left {
@@ -116,15 +116,15 @@ $menu-width-and-spacing: 10px;
       @include square($phone-icon-adjusted-size);
     }
     .badge-pill {
-      background-color: $warn;
+      background-color: $negative-main;
       height: 20px;
       width: 20px;
       padding: 0;
-      line-height: 20px;
-      font-size: 12px;
+      line-height: $line-height-ml;
+      font-size: $font-size-xs;
     }
     .user-name {
-      color: $grey-900;
+      color: $blue-grey-1;
     }
     &.has-phone {
       $phone-icon-size: 10px;
@@ -134,9 +134,9 @@ $menu-width-and-spacing: 10px;
     }
   }
   .message-row {
-    line-height: $font-size-S;
+    line-height: $line-height-m;
     p.message {
-      color: $grey-600;
+      color: $blue-grey-2;
     }
     mat-icon {
       height: 15px;
@@ -147,8 +147,8 @@ $menu-width-and-spacing: 10px;
 }
 
 .message-date {
-  font-size: $font-size-XS;
-  color: $grey-300;
+  font-size: $font-size-xs;
+  color: $blue-grey-2;
   text-transform: uppercase;
   font-weight: bold;
 }

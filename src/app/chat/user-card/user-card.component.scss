@@ -5,7 +5,7 @@
 }
 
 .card {
-  color: $grey-900;
+  color: $blue-grey-1;
   &.calls-panel {
     padding: 0;
     margin: 0;
@@ -24,7 +24,7 @@
     }
     .card-title {
       margin-bottom: $spacing-s;
-      line-height: 16px;
+      line-height: $line-height-m;
       margin-top: -$spacing-s;
     }
     tsl-stars {
@@ -33,10 +33,10 @@
   }
   .list-group-flush {
     padding: $spacing-ml 0;
-    border-top: 1px solid $grey-50;
+    border-top: 1px solid $blue-grey-5;
     .list-group-item {
       border: 0;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       padding: 0 $spacing-ml $spacing-ms $spacing-ml;
       display: flex;
       background: transparent;
@@ -58,26 +58,26 @@
     text-align: left;
     overflow: hidden;
     .item-details {
-      color: $grey-700;
-      line-height: 20px;
+      color: $blue-grey-2;
+      line-height: $line-height-ml;
       margin-bottom: 0;
       align-self: center;
       .selling-label {
-        color: $grey-300;
+        color: $blue-grey-2;
         font-weight: bold;
-        font-size: $font-size-XS;
+        font-size: $font-size-xs;
         text-transform: uppercase;
         margin-right: $spacing-xs;
       }
       h2 {
-        font-size: $font-size-S;
-        line-height: 1.57;
+        font-size: $font-size-s;
+        line-height: $font-size-ll;
         max-height: 40px;
         overflow: hidden;
       }
       .items-count {
-        font-size: $font-size-XS;
-        color: $corporate;
+        font-size: $font-size-xs;
+        color: $walla-main;
         font-weight: bold;
       }
     }

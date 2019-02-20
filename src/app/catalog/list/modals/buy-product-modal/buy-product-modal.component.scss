@@ -9,14 +9,14 @@
 
 .buy-modal {
   display: flex;
-  color: $grey-900;
+  color: $blue-grey-1;
   &.vertical {
     flex-direction: column;
   }
 }
 
 .left {
-  background-color: $grey-50;
+  background-color: $blue-grey-5;
   text-align: center;
   padding: $spacing-xxl $spacing-xl $spacing-l;
   min-width: 294px;
@@ -25,7 +25,7 @@
   align-items: center;
   justify-content: space-between;
   h2 {
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     margin-bottom: $spacing-xl;
   }
   .box {
@@ -45,7 +45,7 @@
     .total {
       text-transform: uppercase;
       font-weight: bold;
-      font-size: $font-size-XS;
+      font-size: $font-size-xs;
     }
     .amount {
       font-weight: bold;
@@ -77,7 +77,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     font-weight: bold;
     text-transform: uppercase;
     clear: both;
@@ -91,29 +91,29 @@
     }
   }
   .credit {
-    color: $corporate;
+    color: $walla-main;
     margin-bottom: $spacing-s;
     padding-right: $spacing-xxs;
     .price {
-      font-size: $font-size;
+      font-size: $font-size-m;
     }
     .with-credits & {
-      font-size: $font-size;
+      font-size: $font-size-m;
       .label span span {
-        font-size: $font-size-XS;
+        font-size: $font-size-xs;
       }
     }
   }
   .missing {
-    border-top: solid 1px $grey-50;
+    border-top: solid 1px $blue-grey-5;
     padding: $spacing-xs $spacing-xxs 0 0;
     margin-bottom: $spacing-xl;
     .label {
-      color: $grey-250;
+      color: $blue-grey-3;
     }
     .price {
-      color: $grey-500;
-      font-size: $font-size;
+      color: $blue-grey-2;
+      font-size: $font-size-m;
     }
   }
   .total {
@@ -142,7 +142,7 @@
 
 .right, .bottom {
   .note {
-    color: $grey-250;
+    color: $blue-grey-3;
     text-align: center;
     margin-bottom: 0;
   }

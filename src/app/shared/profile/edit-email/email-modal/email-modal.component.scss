@@ -5,17 +5,17 @@
 }
 
 h1 {
-  font-size: $font-size-M;
-  color: $grey-800;
+  font-size: $font-size-l;
+  color: $blue-grey-1;
   font-weight: bold;
 }
 
 p {
-  font-size: $font-size-S;
-  color: $grey-300;
+  font-size: $font-size-s;
+  color: $blue-grey-2;
   margin: 0 0 $spacing-xxxl;
   &.note {
-    color: $grey-250;
+    color: $blue-grey-3;
     margin: $spacing-ml 0 0;
   }
 }
@@ -25,5 +25,5 @@ h1, p {
 }
 
 div.form-control {
-  line-height: 32px;
+  line-height: $line-height-xl;
 }

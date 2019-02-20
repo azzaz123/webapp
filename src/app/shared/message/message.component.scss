@@ -3,20 +3,20 @@
 :host {
   display: block;
   margin-bottom: $spacing-s;
-  line-height: 20px;
+  line-height: $line-height-ml;
   overflow: hidden;
 
 }
 
 h5 {
   font-weight: bold;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   color: $white;
 }
 
 $avatar-size: 40px;
 .message-avatar {
-  color: $grey-700;
+  color: $blue-grey-2;
   margin-right: $spacing-ml;
 }
 
@@ -30,10 +30,10 @@ $avatar-size: 40px;
 }
 
 .message-name {
-  color: $grey-900;
+  color: $blue-grey-1;
 }
 .message-body {
-  color: $grey-700;
+  color: $blue-grey-1;
   margin: $spacing-ml $spacing-xxxl 0 $spacing-xxxl;
   display: flex;
   flex-direction: row;
@@ -53,7 +53,7 @@ $avatar-size: 40px;
     width: fit-content;
     padding: $spacing-s $spacing-ms;
     border-radius: 20px;
-    background-color: $grey-40;
+    background-color: $blue-grey-6;
     margin-bottom: 0;
   }
   &.from-self {
@@ -61,7 +61,7 @@ $avatar-size: 40px;
     flex-direction: row-reverse;
     p {
       padding-right :$spacing-xl;
-      background-color: $corporate-light;
+      background-color: $walla-soft;
       float: right;
     }
   }
@@ -82,10 +82,10 @@ $avatar-size: 40px;
 
 .message-date {
   float: right;
-  font-size: $font-size-XXS;
+  font-size: $font-size-xxs;
   white-space: pre;
   margin: 0 $spacing-xs 0 $spacing-s;
-  color: $grey-250;
+  color: $blue-grey-3;
   position: relative;
   bottom: -2px;
 }
@@ -103,10 +103,10 @@ $avatar-size: 40px;
 .third-voice {
   text-align: center;
   margin: $spacing-ms 112px;
-  border: 1px solid $grey-50;
+  border: 1px solid $blue-grey-5;
   border-radius: $border-radius;
   padding: $spacing-m;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
 }
 
 .phone-request {
@@ -117,12 +117,12 @@ $avatar-size: 40px;
     display: block;
     width: auto;
     border-radius: 20px;
-    color: $corporate;
+    color: $walla-main;
     margin: $spacing-ml auto 0;
   }
   span.new-line {
     display: block;
-    color: $grey-250;
+    color: $blue-grey-3;
     text-align: center;
     padding-bottom: $spacing-ms;
     margin-top: $spacing-xxl;

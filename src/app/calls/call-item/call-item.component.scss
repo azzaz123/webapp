@@ -27,18 +27,18 @@ $expanded-horizontal-padding: $spacing-l;
 }
 
 span {
-  font-size: $font-size-S;
+  font-size: $font-size-s;
 }
 
 [class^='col-'] {
-  line-height: 50px;
+  line-height: $line-height-xxl;
   & * {
     vertical-align: middle;
   }
 }
 
 .call {
-  border-top: 1px solid $grey-50;
+  border-top: 1px solid $blue-grey-5;
   width: 100%;
   .row {
     margin-left: 0;
@@ -47,7 +47,7 @@ span {
   .row:not(.call-expanded) {
     padding: $spacing-s 0;
     &:hover {
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
     }
   }
   &.active {
@@ -100,8 +100,8 @@ tsl-user-avatar {
   p {
     margin: -$spacing-ms 0 0 0;
     line-height: 0;
-    font-size: $font-size-XS;
-    color: $grey-250;
+    color: $blue-grey-3;
+    font-size: $font-size-xs;
   }
 }
 
@@ -111,7 +111,7 @@ tsl-user-avatar {
   .call-expanded-messages {
     height: $expanded-height;
     border-radius: $border-radius;
-    background-color: transparentize($grey-50, 0.5);
+    background-color: transparentize($blue-grey-5, 0.5);
     padding: $expanded-vertical-padding $expanded-horizontal-padding;
     overflow: auto;
   }
@@ -135,17 +135,17 @@ tsl-user-avatar {
       bottom: 0;
       left: 0;
       right: 0;
-      color: $corporate;
-      line-height: $button-height;
+      color: $walla-main;
+      line-height: $line-height-xxl;
       height: $button-height;
-      border-top: 1px solid $grey-50;
+      border-top: 1px solid $blue-grey-5;
       text-transform: uppercase;
       text-align: center;
-      font-size: $font-size-XS;
+      font-size: $font-size-xs;
       font-weight: bold;
       &:hover {
         text-decoration: none;
-        background: rgba($grey-50, .1);
+        background: rgba($blue-grey-5, .1);
       }
     }
     .empty-state-container {
@@ -157,8 +157,8 @@ tsl-user-avatar {
         height: auto;
       }
       p {
-        color: $grey-400;
-        font-size: $font-size-S;
+        color: $blue-grey-2;
+        font-size: $font-size-s;
       }
     }
   }

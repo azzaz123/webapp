@@ -11,14 +11,14 @@ $v-container-spacing: 40px;
   width: calc(100% - #{$sidebar-width} - #{$stats-sidebar-width} - (2 * #{$h-container-spacing}));
   box-sizing: content-box;
   height: calc(100vh - #{$topbar-height} - #{$v-container-spacing * 2});
-  background-color: $grey-50;
+  background-color: $blue-grey-5;
   margin: 0;
   margin-left: $sidebar-width;
   margin-top: $topbar-height;
 }
 
 h2 {
-  font-size: $font-size-XXL;
+  font-size: $font-size-xxl;
   font-weight: bold;
 }
 
@@ -30,14 +30,14 @@ h2 {
 
 .nav.filters-nav {
   font-weight: normal;
-  font-size: $font-size-L;
+  font-size: $font-size-l;
   text-transform: none;
 }
 
 $sidebar-title: 64px;
 .stats-sidebar {
   h2 {
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     margin-bottom: $spacing-ml;
   }
   h2, h3 {
@@ -58,7 +58,7 @@ $sidebar-title: 64px;
       right: 20px;
     }
     &.calls-container {
-      border-top: 1px solid $grey-50;
+      border-top: 1px solid $blue-grey-5;
     }
   }
   .scroll-panel {
@@ -73,17 +73,17 @@ $sidebar-title: 64px;
     }
   }
   h3 {
-    font-size: 12px;
+    font-size: $font-size-xs;
     font-weight: bold;
-    color: $grey-300;
+    color: $blue-grey-2;
     margin-top: $spacing-ml;
     margin-bottom: $spacing-ms;
     text-transform: uppercase;
     padding-right: $spacing-ms;
     a {
       float: right;
-      color: $corporate;
-      font-size: $font-size-XS;
+      color: $walla-main;
+      font-size: $font-size-xs;
       text-decoration: none;
       text-transform: uppercase;
       &:hover {
@@ -121,7 +121,7 @@ $sidebar-title: 64px;
   }
   p {
     padding: 0 $spacing-xxxl;
-    color: $grey-200;
+    color: $blue-grey-3;
   }
 }
 

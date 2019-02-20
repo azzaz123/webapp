@@ -26,9 +26,9 @@
       text-transform: uppercase;
       div {
         font-family: $wallie !important;
-        font-size: $font-size-XXS !important;
+        font-size: $font-size-xxs !important;
         font-weight: bold !important;
-        line-height: 18px !important;
+        line-height: $line-height-ml !important;
       }
     }
   }
@@ -54,7 +54,7 @@ ng-select {
       height: $height !important;
       & > div.single > div.value {
         height: $height;
-        line-height: $height !important;
+        line-height: $line-height-xxl !important;
       }
       & > div.single > div.toggle {
         background-position: 2px 2px;

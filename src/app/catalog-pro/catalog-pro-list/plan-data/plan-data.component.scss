@@ -10,9 +10,9 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   h3 {
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: $spacing-ms;
@@ -22,7 +22,7 @@
 .car, .visibility {
   background: $white;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   display: flex;
   flex-direction: column;
   padding: $spacing-l $spacing-xl;
@@ -45,7 +45,7 @@
     display: flex;
     flex-direction: column;
     align-self: center;
-    line-height: $font-size-M;
+    line-height: $line-height-ml;
   }
 }
 
@@ -72,11 +72,11 @@
 }
 
 .gold {
-  color: $color-urgent;
+  color: $yellow-dark;
 }
 
 .city {
-  color: $zone-bump;
+  color: $walla-main
 }
 
 .country {
@@ -84,27 +84,27 @@
 }
 
 .grey {
-  color: $grey-250;
+  color: $blue-grey-3;
 }
 
 .border {
   width: 1px;
   height: 49px;
-  border: dashed 1px $grey-50;
+  border: dashed 1px $blue-grey-5;
 }
 
 .border-full {
   width: 3px;
   height: 49px;
-  background-color: $grey-50;
+  background-color: $blue-grey-5;
 }
 
 .no-plan {
-  line-height: 14px;
+  line-height: $line-height-m;
   margin-top: $spacing-ms;
   width: 35%;
 }
 
 .extras {
-  line-height: 8px;
+  line-height: $line-height-s;
 }

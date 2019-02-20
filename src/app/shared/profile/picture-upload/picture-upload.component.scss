@@ -2,14 +2,14 @@
 
 .profile-pic {
   h2 {
-    font-size: $font-size;
+    font-size: $font-size-m;
     font-weight: normal;
-    color: $grey-900;
+    color: $blue-grey-1;
   }
   p {
-    font-size: $font-size-S;
-    line-height: 1.29;
-    color: $grey-300;
+    font-size: $font-size-s;
+    line-height: $line-height-ml;
+    color: $blue-grey-2;
     margin-bottom: 0;
   }
   .col-4 {
@@ -20,16 +20,16 @@
     margin-right: $spacing-ml;
   }
   .btn-upload {
-    background-color: $grey-50;
-    border: solid 1px $grey-100;
-    color: $grey-600;
-    font-size: $font-size-S;
+    background-color: $blue-grey-5;
+    border: solid 1px $blue-grey-4;
+    color: $blue-grey-2;
+    font-size: $font-size-s;
     padding: $spacing-ms $spacing-ml;
     margin-left: $spacing-xxl;
     cursor: pointer;
     border-radius: $button-border-radius;
     &:hover:not(.disabled) {
-      background-color: $grey-100;
+      background-color: $blue-grey-4;
     }
     input {
       display: none;

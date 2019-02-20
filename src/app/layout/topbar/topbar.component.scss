@@ -6,7 +6,7 @@
   position: fixed;
   top: 0;
   border-bottom: 1px solid;
-  border-color: transparentize($color-grey-separator, 0.5);
+  border-color: transparentize($blue-grey-4, 0.5);
   padding: 0 $spacing-s 0 $spacing-ms;
   width: 100%;
   display: flex;
@@ -16,8 +16,8 @@
   box-shadow: 0 2px 4px 0 rgba(37,50,56,0.03);
   z-index: 100;
   & a {
-    color: $grey-900;
-    font-size: $font-size-S;
+    color: $blue-grey-1;
+    font-size: $font-size-s;
     text-decoration: none;
   }
 }
@@ -26,25 +26,25 @@
     margin-left: $spacing-s;
   }
   span {
-    font-size: $font-size-S;
-    color: $grey-900;
+    font-size: $font-size-s;
+    color: $blue-grey-1;
     margin-right: $spacing-xs;
     margin-left: $spacing-ms;
   }
   &.active {
     span {
-      color: $corporate;
+      color: $walla-main;
     }
   }
 }
 .topbar-icon {
   height: 36px;
   width: 36px;
-  color: $grey-200;
+  color: $blue-grey-3;
   vertical-align: middle;
   &.search-glass {
     &.active {
-      color: $corporate;
+      color: $walla-main;
     }
   }
 }
@@ -71,13 +71,13 @@
     a {
       display: inline-block;
       margin-right: $spacing-ml;
-      line-height: 32px;
+      line-height: $line-height-xl;
       text-decoration: none;
       border-radius: 100px;
       color: $white;
       &.active {
         padding: 0 $spacing-ms;
-        color: $corporate;
+        color: $walla-main;
         background-color: $white;
       }
     }
@@ -94,7 +94,7 @@
 .input-search {
   & {
     display: flex;
-    line-height: 32px;
+    line-height: $line-height-xl;
     height: 42px;
     z-index: 100;
     overflow: visible;
@@ -112,7 +112,7 @@
     float: left;
   }
   form {
-    border-right: 1px solid $grey-100;
+    border-right: 1px solid $blue-grey-4;
     align-items: center;
     display: flex;
   }
@@ -121,7 +121,7 @@
     border-bottom-left-radius: 10px;
     -webkit-border-top-left-radius: 10px;
     -webkit-border-bottom-left-radius: 10px;
-    border: 1px solid $grey-100;
+    border: 1px solid $blue-grey-4;
     border-right: 0;
     box-shadow: 0 2px 4px 0 rgba(37, 50, 56, 0.05);
     display: flex;
@@ -132,8 +132,8 @@
       padding-left: $spacing-ms;
       width: 190px;
       height: 100%;
-      color: $grey-900;
-      font-size: $font-size-S;
+      color: $blue-grey-1;
+      font-size: $font-size-s;
       opacity: 1;
       border: none;
       transition-property: width;
@@ -145,28 +145,28 @@
     }
 
     &::-webkit-input-placeholder {
-      color: $corporate;
+      color: $walla-main;
       opacity: 0.9;
     }
 
     &::-moz-placeholder {
-      color: $grey-300;
+      color: $blue-grey-2;
       opacity: 0.9;
     }
 
     &::-ms-placeholder {
-      color: $grey-300;
+      color: $blue-grey-2;
       opacity: 0.9;
     }
 
     &::placeholder {
-      color: $grey-300;
+      color: $blue-grey-2;
       opacity: 0.9;
     }
   }
   .search-btn {
     width: 41px;
-    background: $grey-50;
+    background: $blue-grey-5;
     padding: 0;
     border-top-right-radius: 9px;
     border-bottom-right-radius: 9px;
@@ -174,15 +174,15 @@
     -webkit-border-bottom-right-radius: 9px;
     cursor: pointer;
     box-shadow: 0 2px 4px 0 rgba(37, 50, 56, 0.05);
-    border: 1px solid $grey-100;
+    border: 1px solid $blue-grey-4;
     border-left: 0;
     mat-icon /deep/ svg path{
-      fill: $grey-600
+      fill: $blue-grey-2
     }
     &:hover {
-      background: $corporate;
+      background: $walla-main;
       color: $white;
-      border-color: $corporate;
+      border-color: $walla-main;
       mat-icon /deep/ svg path{
         fill: $white;
       }
@@ -203,12 +203,12 @@
     text-decoration: none;
   }
   i {
-    font-size: 40px;
+    font-size: $font-size-xxl;
     vertical-align: middle;
   }
   .menu-link {
     & {
-      color: $color-grey-item;
+      color: $blue-grey-1;
       height: 65px;
       margin-right: $spacing-ml;
       position: relative;
@@ -222,24 +222,24 @@
     }
     &.active {
       font-weight: bold;
-      color: $corporate;
+      color: $walla-main;
       & .horizontal-line {
         display: block;
-        border-color: $corporate;
+        border-color: $walla-main;
       }
       & .topbar-icon {
-        color: $corporate;
+        color: $walla-main;
       }
     }
     & span {
-      font-size: $font-size-S;
-      line-height: $font-size-S;
+      font-size: $font-size-s;
+      line-height: $line-height-m;
     }
     .news-badge {
       height: 8px;
       width: 8px;
       border-radius: 8px;
-      background-color: $warn;
+      background-color: $negative-main;
       position: absolute;
       left: 25px;
       top: 23px;
@@ -249,7 +249,7 @@
     }
     .horizontal-line {
       display: none;
-      border-bottom: 3px solid $grey-900;
+      border-bottom: 3px solid $blue-grey-1;
       width: 100%;
       margin-left: $spacing-s;
       position: absolute;
@@ -268,9 +268,9 @@
   .main-header-login-sign-in {
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: $font-size-m;
     & span {
-      background-color: $corporate;
+      background-color: $walla-main;
       color: $white;
       border-radius: $button-border-radius;
       margin-left: $spacing-ms;
@@ -278,17 +278,17 @@
       padding: $spacing-s $spacing-ml;
       height: 38px;
       &:hover {
-        background-color: $corporate-dark;
+        background-color: $walla-dark;
       }
       &:focus {
-        background-color: $corporate-dark;
+        background-color: $walla-dark;
       }
     }
   }
   .main-header-chat {
     &.active {
       mat-icon /deep/ svg g g {
-        fill: $corporate;
+        fill: $walla-main;
       }
     }
   }
@@ -298,8 +298,8 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      color: $color-grey-item;
-      font-size: $font-size-S;
+      color: $blue-grey-1;
+      font-size: $font-size-s;
       height: 65px;
       position: relative;
     }
@@ -311,7 +311,7 @@
     &:active {
       & .horizontal-line {
         display: block;
-        border-color: $corporate;
+        border-color: $walla-main;
       }
     }
     i {
@@ -332,7 +332,7 @@
     }
     .horizontal-line {
       display: none;
-      border-bottom: 3px solid $grey-900;
+      border-bottom: 3px solid $blue-grey-1;
       width: 91%;
       margin-left: 0;
       position: absolute;
@@ -342,7 +342,7 @@
   tsl-button {
     /deep/ button {
       font-weight: bold;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       padding-left: $spacing-s;
       padding-top: $spacing-s;
       padding-bottom: $spacing-s;
@@ -361,7 +361,7 @@
         #plus {
           rect {
             transition: all 0.2s ease-in-out;
-            fill: $corporate;
+            fill: $walla-main;
           }
         }
       }
@@ -375,10 +375,10 @@
     .main-header-my-zone {
       &.active {
         .horizontal-line {
-          border-color: $color-urgent;
+          border-color: $yellow-dark;
         }
         span {
-          color: $color-urgent;
+          color: $yellow-dark;
         }
       }
     }
@@ -387,7 +387,7 @@
 
 .main-header-credits {
   b {
-    color: $corporate;
+    color: $walla-main;
     margin-right: $spacing-xs;
   }
   .topbar-icon {

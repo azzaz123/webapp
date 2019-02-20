@@ -2,9 +2,9 @@
 
 .item {
   padding: $spacing-s 0 $spacing-s $spacing-xl;
-  border-bottom: 1px solid $grey-50;
+  border-bottom: 1px solid $blue-grey-5;
   &:hover:not(.active) {
-    background-color: $grey-50;
+    background-color: $blue-grey-5;
     cursor: pointer;
   }
 }
@@ -14,14 +14,14 @@
   align-items: center;
   .price {
     font-weight: bold;
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     width: 100px;
   }
 }
 
 .col-date {
-  color: $grey-250;
-  font-size: $font-size-S;
+  color: $blue-grey-3;
+  font-size: $font-size-s;
 }
 
 *[class^='col-'] {
@@ -32,8 +32,8 @@
 .col-counters {
   justify-content: center;
   .counters {
-    font-size: $font-size-XS;
-    color: $grey-900;
+    font-size: $font-size-xs;
+    color: $blue-grey-1;
     display: flex;
     flex-basis: 3em;
     align-items: center;
@@ -53,7 +53,7 @@
     .active & {
       transform: rotate(180deg);
       /deep/ g g {
-        stroke: $corporate;
+        stroke: $walla-main;
       }
     }
   }
@@ -69,7 +69,7 @@
   }
   .graphs-container {
     width: 770px;
-    background-color: rgba($grey-50, .5);
+    background-color: rgba($blue-grey-5, .5);
     padding: $spacing-ml;
     border-radius: 5px;
     .charts-box {
@@ -85,7 +85,7 @@
         padding: $spacing-xl;
         padding-bottom: 0;
         h2 {
-          font-size: $font-size-S;
+          font-size: $font-size-s;
           font-weight: bold;
         }
         .legend {
@@ -97,8 +97,8 @@
             li {
               display: inline;
               margin-left: $spacing-ml;
-              font-size: $font-size-XS;
-              color: $grey-500;
+              font-size: $font-size-xs;
+              color: $blue-grey-2;
               &:before {
                 content: '';
                 display: inline-block;
@@ -107,12 +107,12 @@
               }
               &.views {
                 &:before {
-                  background: $graph-views;
+                  background: $yellow-soft;
                 }
               }
               &.chats {
                 &:before {
-                  background: $graph-chats;
+                  background: $orange-main;
                 }
               }
               &.favorites {
@@ -141,7 +141,7 @@
           margin-top: 95px;
           text-align: center;
           margin-bottom: 110px;
-          color: $grey-500;
+          color: $blue-grey-2;
         }
       }
     }
@@ -156,17 +156,17 @@
       background-size: 120px;
     }
     h2 {
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       font-weight: bold;
       text-align: center;
     }
     .note, .bump-note {
-      color: $grey-500;
+      color: $blue-grey-2;
       text-align: center;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
     }
     .bump-note {
-      color: $corporate;
+      color: $walla-main;
       font-weight: bold;
     }
     tsl-button {

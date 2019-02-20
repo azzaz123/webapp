@@ -11,8 +11,8 @@
   }
 
   h1 {
-    font-size: $font-size-L;
-    color: $grey-800;
+    font-size: $font-size-l;
+    color: $blue-grey-1;
     margin-bottom: $spacing-xl;
   }
 
@@ -23,7 +23,7 @@
     .ban-reason-icon-container {
       @include square(60px);
       position: relative;
-      border: 1px solid $grey-50;
+      border: 1px solid $blue-grey-5;
       border-radius: 50%;
       cursor: pointer;
     }
@@ -34,27 +34,27 @@
       top: 50%;
       transform: translateX(-50%) translateY(-50%);
       /deep/ g g {
-        fill: $grey-800;
+        fill: $blue-grey-1;
       }
     }
     .label {
-      font-size: $font-size;
-      color: $grey-700;
+      font-size: $font-size-m;
+      color: $blue-grey-2;
     }
     &:hover .ban-reason-icon-container {
-      border-color: $grey-100;
+      border-color: $blue-grey-4;
     }
     &.selected {
       .ban-reason-icon-container {
-        border: 2px solid $corporate;
+        border: 2px solid $walla-main;
       }
       .label {
-        color: $corporate;
+        color: $walla-main;
         font-weight: bold;
       }
       mat-icon /deep/ {
         g g, path {
-          fill: $corporate;
+          fill: $walla-main;
         }
       }
     }
@@ -63,12 +63,12 @@
   .report-listing-textarea {
     width: 100%;
     padding: $spacing-ms $spacing-m;
-    border: 1px solid $grey-50;
+    border: 1px solid $blue-grey-5;
     border-radius: 10px;
     min-height: 120px;
     margin-top: $spacing-ml;
     &::-webkit-input-placeholder {
-      color: $grey-200;
+      color: $blue-grey-3;
     }
   }
 

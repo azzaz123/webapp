@@ -6,7 +6,7 @@
     display: block;
   }
   p {
-    color: $grey-250;
+    color: $blue-grey-3;
     margin-top: $spacing-ml;
   }
   .form-group, p {
@@ -17,14 +17,14 @@
 .fake-map {
   height: 130px;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
+  border: solid 1px $blue-grey-5;
   background: url(/assets/icons/user-marker-sad.svg) no-repeat center;
 }
 
 .checkbox-corporate {
   margin-top: $spacing-ml;
   span {
-    font-size: 16px;
+    font-size: $font-size-m;
     user-select: none;
   }
 }

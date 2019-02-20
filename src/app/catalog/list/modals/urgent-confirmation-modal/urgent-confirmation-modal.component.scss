@@ -7,7 +7,7 @@ $feature-button-width: 170px;
 }
 
 .header {
-  background: $corporate;
+  background: $walla-main;
   height: 177px;
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
@@ -26,14 +26,14 @@ $feature-button-width: 170px;
     }
   }
   h1 {
-    font-size: $font-size-LL;
+    font-size: $font-size-ll;
     font-weight: bold;
     margin-bottom: $spacing-m;
   }
   p {
     margin: 0;
     color: $white;
-    font-size: $font-size;
+    font-size: $font-size-m;
     padding: 0 $spacing-xl;
   }
 }
@@ -42,8 +42,8 @@ $feature-button-width: 170px;
   text-align: center;
   padding: $spacing-xl $spacing-xxxl $spacing-xxl;
   p {
-    font-size: $font-size;
-    color: $grey-400;
+    font-size: $font-size-m;
+    color: $blue-grey-2;
     margin-top: $spacing-ms;
   }
   .urgent-background {
@@ -62,7 +62,7 @@ $feature-button-width: 170px;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background-color: $grey-50;
+    background-color: $blue-grey-5;
     @include square(34px);
     margin: $spacing-s;
     cursor: pointer;

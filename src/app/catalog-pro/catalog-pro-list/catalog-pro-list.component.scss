@@ -4,7 +4,7 @@ $icon-size: 12px;
 $height: 40px;
 
 h2 {
-  font-size: $font-size-LL;
+  font-size: $font-size-ll;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -22,7 +22,7 @@ h2 {
       }
     }
     &:hover {
-      $hover-color: $zone-bump-dark;
+      $hover-color: $walla-dark;
       text-decoration: none;
       svg {
         .dashed-border {
@@ -44,26 +44,26 @@ h2 {
 tsl-button /deep/ .btn-logout  {
   padding: $spacing-ms $spacing-ml;
   background-color: transparent;
-  border: solid 1px $grey-100;
-  color: $grey-600;
-  font-size: $font-size-S;
+  border: solid 1px $blue-grey-4;
+  color: $blue-grey-2;
+  font-size: $font-size-s;
   border-radius: $button-border-radius;
   &:hover {
-    background-color: $corporate;
+    background-color: $walla-main;
     color: $white;
-    border: solid 1px $corporate;
+    border: solid 1px $walla-main;
   }
 }
 
 tsl-button /deep/ .simple  {
   background-color: transparent;
-  color: $corporate;
-  font-size: $font-size;
+  color: $walla-main;
+  font-size: $font-size-m;
   font-weight: bold;
   text-decoration: underline;
   &:hover {
     background-color: transparent;
-    color: $corporate-dark;
+    color: $walla-dark;
   }
 }
 
@@ -77,17 +77,17 @@ tsl-spinner {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   mat-icon {
     /deep/ svg path {
-      fill: $corporate;
+      fill: $walla-main;
     }
     margin-right: $spacing-ms;
   }
   a {
     text-decoration: underline;
     cursor: pointer;
-    color: $corporate;
+    color: $walla-main;
     &:hover {
       text-decoration: none;
     }
@@ -137,18 +137,18 @@ tsl-selected-items {
     text-align: center;
     margin-top: $spacing-xxl;
     .link {
-      color: $corporate;
+      color: $walla-main;
       text-decoration: underline;
       cursor: pointer;
       margin-left: $spacing-xs;
       &:hover {
-        color: $corporate-dark;
+        color: $walla-dark;
       }
     }
     tsl-button {
       margin-left: $spacing-xs;
       /deep/ button {
-        color: $corporate;
+        color: $walla-main;
         text-decoration: underline;
         cursor: pointer;
         font-weight: normal;
@@ -176,31 +176,31 @@ tsl-search-input, .nav {
 }
 
 tsl-select {
-  font-size: $font-size-XS;
+  font-size: $font-size-xs;
   font-weight: bold;
-  color: $grey-300;
+  color: $blue-grey-2;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   height: 38px;
-  line-height: 36px;
+  line-height: $line-height-xl;
 }
 
 .intro {
-  font-size: $font-size-S;
-  color: $grey-500;
+  font-size: $font-size-s;
+  color: $blue-grey-2;
   display: flex;
   flex-direction: row;
   align-self: center;
   justify-content: start;
   margin: 0 0 $spacing-m;
   a {
-    color: $corporate;
+    color: $walla-main;
   }
 }
 
 .border {
   width: 2px;
   height: 12px;
-  background-color: $grey-200;
+  background-color: $blue-grey-3;
   margin: $spacing-xs $spacing-ms 0;
 }

@@ -1,25 +1,24 @@
+@import '~web-styleguide/scss/colors';
 /* REPLACE BOOTSTRAP VARIABLES */
 
 $grid-gutter-width-base: 20px;
 
-$mainColor: #13c1ac;
+$brand-primary: $walla-main;
 
-$brand-primary: $mainColor;
-$brand-success: #5cb85c;
-$brand-info: #5bc0de;
-$brand-warning: #f0ad4e;
-$brand-danger: #d9534f;
+$brand-success: $positive-main;
+$brand-info: $softblue-main;
+$brand-warning: $yellow-dark;
+$brand-danger: $negative-dark;
 
-$color-grey-lighter:  #f2f2f2;
-$color-grey-light: #ddd;
-$color-grey-dark: #999;
+$color-grey-lighter:  $blue-grey-5;
+$color-grey-light: $blue-grey-4;
+$color-grey-dark: $blue-grey-3;
 
-$body-bg: $mainColor;
-$link-color: $brand-primary;
+$link-color: $walla-main;
 
 $border-radius: 10px;
 $button-border-radius: 25px;
 
 @import 'colors';
-@import 'fonts';
 @import 'layout';
+

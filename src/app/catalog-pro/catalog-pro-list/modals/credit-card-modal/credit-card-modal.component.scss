@@ -16,7 +16,7 @@
   height: 210px;
   background: url(/assets/images/credit-card.svg) no-repeat;
   font-family: $creditCardFont;
-  font-size: $font-size;
+  font-size: $font-size-m;
   color: $white;
   text-shadow: 0 2px 4px rgba(37, 50, 56, 0.15);
   position: relative;
@@ -37,13 +37,13 @@ form {
   padding-top: $spacing-ms;
   label {
     display: block;
-    font-size: $font-size-S;
-    line-height: 25px;
+    font-size: $font-size-s;
+    line-height: $line-height-l;
     input {
       margin-right: $spacing-ms;
     }
     strong {
-      font-size: $font-size;
+      font-size: $font-size-m;
       margin-left: $spacing-xl;
     }
   }

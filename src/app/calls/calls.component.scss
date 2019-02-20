@@ -11,9 +11,9 @@
     .calls-header {
       margin-top: $spacing-xl;
       h3 {
-        color: $grey-400;
+        color: $blue-grey-2;
         text-transform: uppercase;
-        font-size: $font-size-XS;
+        font-size: $font-size-xs;
         font-weight: bold;
       }
       .col-md-1:last-child {
@@ -23,13 +23,13 @@
     .calls-block {
       background-color: $white;
       border-radius: $border-radius;
-      border: solid 1px $grey-50;
+      border: solid 1px $blue-grey-5;
       margin-top: $spacing-m;
       .calls-header {
         margin: 0;
         padding: $spacing-xl $spacing-l $spacing-l;
         h3 {
-          color: $grey-300;
+          color: $blue-grey-2;
         }
       }
     }
@@ -39,7 +39,7 @@
     }
   }
   .empty-state-phones {
-    border-top: 1px solid $grey-50;
+    border-top: 1px solid $blue-grey-5;
     margin: $spacing-ml $spacing-ms;
     padding-top: $spacing-ml;
     width: 100%;
@@ -52,8 +52,8 @@
     }
     & .message {
       width: 45%;
-      color: $grey-500;
-      font-size: $font-size-LL;
+      color: $blue-grey-2;
+      font-size: $font-size-ll;
       position: absolute;
       margin: 0 auto;
       left: 0;

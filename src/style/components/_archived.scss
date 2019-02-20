@@ -1,5 +1,5 @@
 .archived-overlay {
-  background: $corporate;
+  background: $walla-main;
   position: absolute;
   top: 0;
   right: 0;
@@ -17,7 +17,7 @@
       @include square(30px);
       border: 1px solid $white;
       border-radius: 50%;
-      line-height: 28px;
+      line-height: $line-height-l;
       text-align: center;
       display: inline-block;
       margin-right: $spacing-s;

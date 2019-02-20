@@ -3,7 +3,7 @@
 $modal-border-radius: 20px;
 
 .header {
-  background: $corporate url(/assets/images/unsubscribe.svg) no-repeat center;
+  background: $walla-main url(/assets/images/unsubscribe.svg) no-repeat center;
   height: 230px;
   border-top-left-radius: $modal-border-radius;
   border-top-right-radius: $modal-border-radius;
@@ -13,26 +13,26 @@ $modal-border-radius: 20px;
   text-align: center;
   padding: $spacing-xl;
   h1 {
-    font-size: $font-size-M;
+    font-size: $font-size-l;
     font-weight: bold;
     margin-bottom: $spacing-xl;
   }
   p {
     margin: 0;
     margin-bottom: $spacing-l;
-    color: $grey-300;
-    font-size: $font-size;
+    color: $blue-grey-2;
+    font-size: $font-size-m;
   }
   .btn {
     padding: $spacing-ms $spacing-ml;
     &.btn-secondary {
       border: 0;
-      background-color: $grey-50;
-      color: $grey-500;
+      background-color: $blue-grey-5;
+      color: $blue-grey-2;
       margin: 0 $spacing-xs;
       margin-bottom: $spacing-ms;
       &:hover, &.selected {
-        background-color: $grey-100;
+        background-color: $blue-grey-4;
       }
       &.btn-reason {
         margin: 0;
@@ -45,13 +45,13 @@ $modal-border-radius: 20px;
   }
 
   .custom-reason {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     margin-bottom: $spacing-ms;
     overflow: hidden;
     margin-top: $spacing-xl;
   }
   .counter {
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
   }
   textarea {
     border-radius: $border-radius;

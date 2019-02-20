@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .header {
-  background: $corporate;
+  background: $walla-main;
   height: 127px;
   border-top-left-radius: $border-radius;
   border-top-right-radius: $border-radius;
@@ -20,7 +20,7 @@
     }
   }
   h1 {
-    font-size: 18px;
+    font-size: $font-size-l;
     font-weight: bold;
   }
   p {
@@ -28,7 +28,7 @@
     margin: 0;
     margin-bottom: $spacing-xl;
     color: $white;
-    font-size: $font-size;
+    font-size: $font-size-m;
   }
 }
 
@@ -36,8 +36,8 @@
   text-align: center;
   padding: $spacing-xxl $spacing-xxxl;
   p {
-    font-size: $font-size;
-    color: $grey-400;
+    font-size: $font-size-m;
+    color: $blue-grey-2;
     margin-top: $spacing-ms;
   }
   .upgrade-plan {

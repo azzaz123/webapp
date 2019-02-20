@@ -3,20 +3,20 @@
   .box, .main-box {
     border-radius: $border-radius;
     background-color: $white;
-    border: solid 1px $grey-50;
+    border: solid 1px $blue-grey-5;
     padding: $spacing-ml;
     margin-bottom: $spacing-ml;
     h2 {
       font-weight: bold;
       text-transform: uppercase;
-      color: $corporate;
-      font-size: $font-size-S;
+      color: $walla-main;
+      font-size: $font-size-s;
       margin-bottom: $spacing-ml;
     }
     p {
-      color: $grey-500;
-      font-size: $font-size-S;
-      line-height: 1.29;
+      color: $blue-grey-2;
+      font-size: $font-size-s;
+      line-height: $line-height-ml;
     }
     &.urgent {
       display: flex;
@@ -48,16 +48,16 @@
       }
     }
     h3 {
-      font-size: $font-size-S;
-      color: $grey-500;
+      font-size: $font-size-s;
+      color: $blue-grey-2;
     }
     .selector {
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       border-radius: $border-radius;
       display: inline-block;
       @include square(60px);
       margin-right: $spacing-ms;
-      line-height: 60px;
+      line-height: $line-height-xxxl;
       position: relative;
       text-align: center;
       white-space: normal;
@@ -76,11 +76,11 @@
       span {
         display: block;
         text-transform: uppercase;
-        color: $grey-300;
+        color: $blue-grey-2;
         font-weight: bold;
-        font-size: 9px;
+        font-size: $font-size-xxs;
         letter-spacing: .4px;
-        line-height: $font-size-S;
+        line-height: $line-height-m;
         margin-top: $spacing-xs;
       }
       mat-icon {
@@ -91,14 +91,14 @@
           width: 26px;
           height: 26px;
           g, path {
-            fill: $grey-250;
+            fill: $blue-grey-3;
           }
         }
       }
       &.active {
-        background-color: $corporate;
+        background-color: $walla-main;
         span {
-          color: $corporate;
+          color: $walla-main;
         }
         mat-icon {
           /deep/ {
@@ -111,12 +111,12 @@
       &:hover:not(.active) {
         cursor: pointer;
         span {
-          color: $grey-700;
+          color: $blue-grey-2;
         }
         mat-icon {
           /deep/ {
             svg g, svg path {
-              fill: $grey-700;
+              fill: $blue-grey-2;
             }
           }
         }
@@ -127,9 +127,9 @@
     }
     .ng-dirty.ng-invalid {
       .selector {
-        border: 1px solid $warn;
+        border: 1px solid $negative-main;
         span {
-          color: $warn;
+          color: $negative-main;
         }
       }
     }
@@ -149,9 +149,9 @@
         span {
           text-transform: none;
           font-weight: normal;
-          font-size: $font-size-XS;
+          font-size: $font-size-xs;
           letter-spacing: .6px;
-          line-height: 17px;
+          line-height: $line-height-m;
           margin-left: -$spacing-ms;
           margin-right: -$spacing-ms;
           margin-top: 0;
@@ -167,7 +167,7 @@
     .selector-container {
       .selector {
         margin-right: $spacing-ml;
-        line-height: 35px;
+        line-height: $line-height-xl;
         mat-icon {
           @include square(48px);
           margin-top: $spacing-xs;
@@ -188,7 +188,7 @@
     margin-top: $spacing-xl - $spacing-ml;
   }
   .btn-link {
-    color: $corporate;
+    color: $walla-main;
     &[disabled] {
       opacity: .5;
     }
@@ -210,15 +210,15 @@
       opacity: 1;
     }
     span {
-      color: $grey-500;
+      color: $blue-grey-2;
       cursor: pointer;
       &.selected {
-        color: $color-urgent;
+        color: $yellow-dark;
       }
     }
     .select {
       @include square($checkbox-width);
-      border: 2px solid $grey-100;
+      border: 2px solid $blue-grey-4;
       border-radius: 6px;
       padding: 0;
       background: transparent;
@@ -232,7 +232,7 @@
         width: 12px;
       }
       &.selected {
-        background: $color-urgent;
+        background: $yellow-dark;
         border-color: transparent;
         mat-icon {
           display: flex;
@@ -242,19 +242,19 @@
         }
       }
       &:hover {
-        border-color: $color-urgent;
+        border-color: $yellow-dark;
       }
     }
     &.checkbox-corporate {
       .select {
         &.selected {
-          background: $corporate;
+          background: $walla-main;
           mat-icon {
             display: block;
           }
         }
         &:hover {
-          border-color: $corporate;
+          border-color: $walla-main;
         }
       }
     }

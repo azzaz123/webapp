@@ -1,6 +1,5 @@
 @import "~style/common";
 
-$btn-height: 38px;
 $btn-width: 85px;
 
 tsl-here-maps {
@@ -34,8 +33,8 @@ tsl-here-maps {
     position: absolute;
     top: 20px;
     right: 20px;
-    height: $btn-height;
-    line-height: $btn-height;
+    height: 38px;
+    line-height: $line-height-xxl;
     padding: 0 $spacing-m;
     width: $btn-width;
   }

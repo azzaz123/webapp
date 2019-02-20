@@ -9,9 +9,9 @@
 
 .buy-modal {
   display: flex;
-  color: $grey-900;
+  color: $blue-grey-1;
   .left {
-    background-color: $grey-50;
+    background-color: $blue-grey-5;
     text-align: center;
     padding: $spacing-xxl $spacing-xl $spacing-l;
     min-width: 294px;
@@ -19,10 +19,10 @@
     flex-direction: column;
     align-items: center;
     h2 {
-      font-size: $font-size-M;
+      font-size: $font-size-l;
     }
     .for-free {
-      color: $corporate;
+      color: $walla-main;
       font-weight: bold;
     }
     .icon {
@@ -59,7 +59,7 @@
       .total {
         text-transform: uppercase;
         font-weight: bold;
-        font-size: $font-size-XS;
+        font-size: $font-size-xs;
       }
       .amount {
         font-weight: bold;
@@ -81,14 +81,14 @@
       justify-content: center;
       margin-bottom: $spacing-ms;
       .quantity {
-        font-size: $font-size-XXL;
+        font-size: $font-size-xxl;
         font-weight: bold;
-        line-height: 30px;
+        line-height: $line-height-xl;
         margin-top: $spacing-ms;
       }
       .label {
-        font-size: $font-size-M;
-        color: $grey-900;
+        font-size: $font-size-l;
+        color: $blue-grey-1;
       }
     }
     .for-free {
@@ -118,7 +118,7 @@
     padding: $spacing-l;
     text-align: center;
     p {
-      color: $grey-250;
+      color: $blue-grey-3;
     }
   }
 }

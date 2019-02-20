@@ -5,7 +5,7 @@
     margin-bottom: $spacing-s;
   }
   p {
-    color: $grey-250;
+    color: $blue-grey-3;
     margin-bottom: $spacing-ml;
   }
 }
@@ -14,10 +14,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  font-size: $font-size-XXS;
+  font-size: $font-size-xxs;
   .type {
     display: block;
-    color: $grey-500;
+    color: $blue-grey-2;
     text-transform: uppercase;
     font-weight: bold;
     text-align: center;
@@ -25,7 +25,7 @@
     .square {
       @include square(90px);
       border-radius: 15px;
-      background: $grey-50;
+      background: $blue-grey-5;
       border: solid 2px transparent;
       display: flex;
       align-items: center;
@@ -38,9 +38,9 @@
     }
     &:hover:not(.active) {
       text-decoration: none;
-      color: $grey-800;
+      color: $blue-grey-1;
       .square {
-        border: solid 2px $grey-300;
+        border: solid 2px $blue-grey-2;
         mat-icon {
           opacity: 1;
         }
@@ -56,9 +56,9 @@
       }
     }
     &.active {
-      color: $corporate;
+      color: $walla-main;
       .square {
-        background-color: $corporate;
+        background-color: $walla-main;
         mat-icon {
           opacity: 1;
           /deep/ {

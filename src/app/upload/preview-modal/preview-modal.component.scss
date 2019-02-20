@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .modal-body {
-  color: $grey-900;
+  color: $blue-grey-1;
   height: calc(100vh - #{$spacing-ml * 4});
   overflow: scroll;
 }
@@ -15,27 +15,27 @@ p {
 }
 
 .price, h1 {
-  font-size: $font-size-XL;
+  font-size: $font-size-xl;
 }
 
 h1 {
-  border-bottom: 1px solid $preview-border-color;
+  border-bottom: 1px solid $blue-grey-6;
   padding-bottom: $spacing-ml;
   margin-bottom: 0;
 }
 
 .price {
   font-weight: bold;
-  line-height: $font-size-XL;
+  line-height: $line-height-xl;
   margin-bottom: $spacing-ms;
   margin-top: $spacing-ml;
 }
 
 .description, .car-info {
-  font-size: $font-size;
+  font-size: $font-size-m;
   padding: $spacing-ml 0;
   &:not(.last){
-    border-bottom: 1px solid $preview-border-color;
+    border-bottom: 1px solid $blue-grey-6;
     margin-bottom: $spacing-ml;
   }
   &.last {
@@ -57,7 +57,7 @@ h1 {
   overflow: hidden;
   div {
     float: left;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     text-align: center;
     width: 75px;
     margin: 0 $spacing-ml;
@@ -67,12 +67,12 @@ h1 {
       margin: 0 auto;
       margin-bottom: $spacing-ms;
       & /deep/ path {
-        fill: $grey-900;
+        fill: $blue-grey-1;
       }
     }
   }
   &.car-extras {
-    border-bottom: 1px solid $preview-border-color;
+    border-bottom: 1px solid $blue-grey-6;
     padding-bottom: $spacing-ml;
     margin-bottom: $spacing-ml;
     &.last {

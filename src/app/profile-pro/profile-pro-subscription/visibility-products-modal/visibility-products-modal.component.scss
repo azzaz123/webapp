@@ -13,7 +13,7 @@
 .modal-body {
   text-align: center;
   p {
-    color: $grey-200;
+    color: $blue-grey-3;
   }
 }
 
@@ -23,13 +23,13 @@ h1, h2 {
 }
 
 h1 {
-  font-size: 26px;
+  font-size: $font-size-3L;
   margin-top: $spacing-xxl;
   margin-bottom: $spacing-xxl;
 }
 
 h2 {
-  font-size: 24px;
+  font-size: $font-size-lll;
   margin-bottom: $spacing-ms;
 }
 
@@ -43,7 +43,7 @@ h2 {
 
 .city {
   background: url(/assets/images/visibility-city.svg) no-repeat center 27px;
-  border-right: solid 1px rgba($grey-100, .3);
+  border-right: solid 1px rgba($blue-grey-4, .3);
 }
 
 .country {

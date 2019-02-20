@@ -2,11 +2,11 @@ $coachmark-left-margin: $spacing-xl;
 
 .popover {
   border-radius: 6px;
-  background-color: rgba($corporate-light, .5);
+  background-color: rgba($walla-soft, .5);
   border: none;
-  font-size: $font-size-XS;
-  line-height: 1.33;
-  color: $grey-700;
+  font-size: $font-size-xs;
+  line-height: $line-height-m;
+  color: $blue-grey-2;
   left: calc((100vw - #{$upload-form-width} + #{$sidebar-width}) / 2 + #{$upload-form-width}) !important;
   z-index: 99 !important;
   font-family: $wallie;
