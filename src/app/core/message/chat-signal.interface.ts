@@ -9,7 +9,8 @@ export class ChatSignal {
     private _type: string,
     private _thread: string,
     private _timestamp: number,
-    private _messageId?: string) {
+    private _messageId?: string,
+    private _fromSelf?: boolean) {
   }
 
   get type(): string {
@@ -26,5 +27,9 @@ export class ChatSignal {
 
   get messageId(): string {
     return this._messageId;
+  }
+
+  get fromSelf(): boolean {
+    return this._fromSelf;
   }
 }
