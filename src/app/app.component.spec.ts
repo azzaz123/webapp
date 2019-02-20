@@ -262,8 +262,8 @@ describe('App', () => {
       const mockedInboxConversations = createInboxConversationsArray(3);
       function emitSuccessChatEvents() {
         eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-          eventService.emit(EventService.DB_READY);
-          eventService.emit(EventService.CHAT_RT_CONNECTED);
+        eventService.emit(EventService.DB_READY);
+        eventService.emit(EventService.CHAT_RT_CONNECTED);
       }
       beforeEach(fakeAsync(() => {
         const mockBackend: MockBackend = TestBed.get(MockBackend);
