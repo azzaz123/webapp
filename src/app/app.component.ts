@@ -248,7 +248,7 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeEventClientDisconnect() {
-    this.event.subscribe(EventService.CLIENT_DISCONNECTED, () => {
+    this.event.subscribe(EventService.CHAT_RT_DISCONNECTED, () => {
       if (this.userService.isLogged && this.connectionService.isConnected) {
         this.realTime.reconnect();
       }

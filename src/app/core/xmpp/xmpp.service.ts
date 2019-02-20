@@ -155,12 +155,13 @@ export class XmppService {
 
     this.client.on('disconnected', () => {
       this.clientConnected = false;
-      this.eventService.emit(EventService.CLIENT_DISCONNECTED);
+      this.eventService.emit(EventService.CHAT_RT_DISCONNECTED);
       console.warn('Client disconnected');
     });
 
     this.client.on('connected', () => {
       this.clientConnected = true;
+      this.eventService.emit(EventService.CHAT_RT_CONNECTED);
       console.warn('Client connected');
     });
 

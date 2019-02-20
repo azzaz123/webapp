@@ -438,7 +438,7 @@ describe('App', () => {
         });
 
         component.ngOnInit();
-        eventService.emit(EventService.CLIENT_DISCONNECTED);
+        eventService.emit(EventService.CHAT_RT_DISCONNECTED);
 
         expect(realTime.reconnect).toHaveBeenCalled();
       });
