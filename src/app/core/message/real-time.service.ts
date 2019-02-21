@@ -21,7 +21,7 @@ export class RealTimeService {
 
   private ongoingRetry: boolean;
   public connect(userId: string, accessToken: string) {
-    this.xmpp.connect(userId, accessToken);
+    this.xmpp.connect(userId, accessToken).subscribe();
   }
 
   public disconnect() {
