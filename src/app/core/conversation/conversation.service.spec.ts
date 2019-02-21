@@ -1055,7 +1055,6 @@ describe('Service: Conversation', () => {
       });
 
       it('should decrase the unreadMessages counter of the conversation by the number of messages that are being marked as READ', () => {
-        console.log(mockedConversation.unreadMessages);
         expect(mockedConversation.unreadMessages).toBe(unreadCount);
 
         service.markAllAsRead(mockedConversation.id, Date.now(), false);
@@ -1073,7 +1072,6 @@ describe('Service: Conversation', () => {
       });
 
       it('should decrase messageService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
-        console.log(mockedConversation.unreadMessages);
         expect(mockedConversation.unreadMessages).toBe(unreadCount);
 
         service.markAllAsRead(mockedConversation.id, Date.now(), false);

@@ -1,5 +1,5 @@
 import { Model } from '../resource/model.interface';
-import { Image, UserLocation } from '../user/user-response.interface';
+import { Image, UserLocation, InboxImage } from '../user/user-response.interface';
 import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
@@ -268,5 +268,47 @@ export class Item implements Model {
 
   get itemType(): string {
     return this._itemType;
+  }
+}
+
+export interface InboxItemPrice {
+  amount: number;
+  currency: string;
+}
+
+export class InboxItem implements Model {
+  constructor(private _id: string,
+              private _price?: InboxItemPrice,
+              private _title?: string,
+              private _mainImage?: InboxImage,
+              private _status?: string) {
+  }
+
+  get id(): string {
+    return this._id;
+  }
+
+  get price(): InboxItemPrice {
+    return this._price;
+  }
+
+  get title(): string {
+    return this._title;
+  }
+
+  get status(): string {
+    return this._status;
+  }
+
+  get mainImage(): InboxImage {
+    return this._mainImage;
+  }
+
+  public setFakeImage(image: string) {
+    this._mainImage = {
+      urls_by_size: {
+        small: '',
+      }
+    };
   }
 }
