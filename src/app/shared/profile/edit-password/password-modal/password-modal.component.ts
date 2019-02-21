@@ -16,7 +16,7 @@ export class PasswordModalComponent {
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
-              private activeModal: NgbActiveModal,
+              public activeModal: NgbActiveModal,
               private errorsService: ErrorsService) {
     this.passwordForm = fb.group({
       old_password: ['', [Validators.required]],
