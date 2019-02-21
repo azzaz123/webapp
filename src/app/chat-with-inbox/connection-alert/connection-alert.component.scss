@@ -1,0 +1,15 @@
+@import "~style/common";
+
+#alert {
+  $alert-height: 50px;
+  background: $warn;
+  color: $white;
+  text-align: center;
+  height: $alert-height;
+  line-height: $alert-height;
+  font-size: $font-size;
+  padding-left: $spacing-S;
+  &.connected {
+    background: $success;
+  }
+}

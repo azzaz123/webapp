@@ -151,6 +151,9 @@ export class MockedPersistencyService {
   public saveMetaInformation(data: any) {
   }
 
+  public updateInbox() {
+  }
+
   public getMetaInformation() {
   }
 

@@ -18,10 +18,12 @@ export class EventService {
   public static MESSAGE_SENT = 'messageSent';
   public static MESSAGE_RECEIVED_ACK = 'messageReceivedAck';
   public static MSG_ARCHIVE_LOADED = 'archiveLoaded';
+  public static INBOX_LOADED = 'inboxLoaded';
   public static MSG_ARCHIVE_LOADING = 'archiveLoading';
   public static CONNECTION_ERROR = 'connectionError';
   public static CONNECTION_RESTORED = 'connectionRestored';
-  public static CLIENT_DISCONNECTED = 'clientDisconnected';
+  public static CHAT_RT_CONNECTED = 'chatRealTimeConnected';
+  public static CHAT_RT_DISCONNECTED = 'chatRealTimeDisconnected';
   public static CONVERSATION_ARCHIVED = 'conversationArchived';
   public static CONVERSATION_UNARCHIVED = 'conversationUnarchived';
   public static CONV_WITH_PHONE_CREATED = 'conversationWithPhoneCreated';
@@ -38,6 +40,7 @@ export class EventService {
   public static CLOSE_EXPANDED_CALLS = 'closeExpandedCalls';
   public static TOTAL_CREDITS_UPDATED = 'packBought';
   public static DB_READY = 'dbReady';
+  public static INBOX_DB_READY = 'inboxDbReady';
   public static FOUND_MESSAGES_IN_DB = 'foundMessagesInDb';
   public static CONVERSATION_BUMPED = 'conversationBumped';
   public static HTTP_REQUEST_FAILED = 'httpRequestFailed';

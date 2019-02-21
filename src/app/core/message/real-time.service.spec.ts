@@ -42,7 +42,7 @@ describe('RealTimeService', () => {
 
   describe('connect', () => {
     it('should call xmpp.connect', () => {
-      spyOn(xmppService, 'connect');
+      spyOn(xmppService, 'connect').and.callThrough();
 
       service.connect(MOCK_USER.id, ACCESS_TOKEN);
 
