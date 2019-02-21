@@ -406,7 +406,7 @@ describe('Service: Xmpp', () => {
 
       eventService.emit('disconnected');
 
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.CLIENT_DISCONNECTED);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_RT_DISCONNECTED);
       expect(service.clientConnected).toBe(false);
     });
 

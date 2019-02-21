@@ -101,9 +101,7 @@ describe('App', () => {
         },
         {
           provide: RealTimeService, useValue: {
-          connect() {
-            return Observable.of({});
-          },
+          connect() {},
           disconnect() {},
           reconnect() {}
           }
@@ -262,6 +260,11 @@ describe('App', () => {
   describe('subscribeEvents', () => {
     describe('success case', () => {
       const mockedInboxConversations = createInboxConversationsArray(3);
+      function emitSuccessChatEvents() {
+        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
+        eventService.emit(EventService.DB_READY);
+        eventService.emit(EventService.CHAT_RT_CONNECTED);
+      }
       beforeEach(fakeAsync(() => {
         const mockBackend: MockBackend = TestBed.get(MockBackend);
         mockBackend.connections.subscribe((connection: MockConnection) => {
@@ -330,8 +333,7 @@ describe('App', () => {
         spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
 
         component.ngOnInit();
-        eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-        eventService.emit(EventService.DB_READY);
+        emitSuccessChatEvents();
 
         expect(callsService.init).toHaveBeenCalledTimes(2);
       });
@@ -341,10 +343,9 @@ describe('App', () => {
           spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.of(false));
         });
 
-        it('should call conversationService.init if the inbox', () => {
+        it('should call conversationService.init after login, db_ready and chat connected events are emitted', () => {
           component.ngOnInit();
-          eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-          eventService.emit(EventService.DB_READY);
+          emitSuccessChatEvents();
 
           expect(conversationService.init).toHaveBeenCalledTimes(1);
         });
@@ -353,8 +354,7 @@ describe('App', () => {
           spyOn(userService, 'isProfessional').and.returnValue(Observable.of(true));
 
           component.ngOnInit();
-          eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-          eventService.emit(EventService.DB_READY);
+          emitSuccessChatEvents();
 
           expect(conversationService.init).toHaveBeenCalledTimes(2);
         });
@@ -367,8 +367,7 @@ describe('App', () => {
 
         it('should call inboxService.getInbox', () => {
           component.ngOnInit();
-          eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-          eventService.emit(EventService.DB_READY);
+          emitSuccessChatEvents();
 
           expect(inboxService.getInbox).toHaveBeenCalledTimes(1);
         });
@@ -377,8 +376,7 @@ describe('App', () => {
           spyOn(inboxService, 'saveInbox');
 
           component.ngOnInit();
-          eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-          eventService.emit(EventService.DB_READY);
+          emitSuccessChatEvents();
 
           expect(inboxService.saveInbox).toHaveBeenCalledWith(mockedInboxConversations);
         });
@@ -387,8 +385,7 @@ describe('App', () => {
           spyOn(eventService, 'emit').and.callThrough();
 
           component.ngOnInit();
-          eventService.emit(EventService.USER_LOGIN, ACCESS_TOKEN);
-          eventService.emit(EventService.DB_READY);
+          emitSuccessChatEvents();
 
           expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, mockedInboxConversations);
         });
@@ -428,7 +425,7 @@ describe('App', () => {
         expect(component.updateSessionCookie).not.toHaveBeenCalled();
       });
 
-      it('should call realTime.reconnect when a CLIENT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
+      it('should call realTime.reconnect when a CHAT_RT_DISCONNECTED event is triggered, if the user is logged in & has internet connection', () => {
         spyOn(realTime, 'reconnect');
         connectionService.isConnected = true;
         Object.defineProperty(userService, 'isLogged', {
@@ -438,7 +435,7 @@ describe('App', () => {
         });
 
         component.ngOnInit();
-        eventService.emit(EventService.CLIENT_DISCONNECTED);
+        eventService.emit(EventService.CHAT_RT_DISCONNECTED);
 
         expect(realTime.reconnect).toHaveBeenCalled();
       });
@@ -542,7 +539,7 @@ describe('App', () => {
     });
   });
 
-  describe('process chat signals', () => {
+  describe('process chat signals', () => { // TODO
     const timestamp = new Date(MOCK_MESSAGE.date).getTime();
     beforeEach(() => {
       spyOn(conversationService, 'markAs');
