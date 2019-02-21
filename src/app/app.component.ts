@@ -25,7 +25,7 @@ import { MessageService } from './core/message/message.service';
 import { I18nService } from './core/i18n/i18n.service';
 import { WindowRef } from './core/window/window.service';
 import { User } from './core/user/user';
-import { Message, messageStatus } from './core/message/message';
+import { Message } from './core/message/message';
 import { DebugService } from './core/debug/debug.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionService } from './core/connection/connection.service';
@@ -33,7 +33,7 @@ import { CallsService } from './core/conversation/calls.service';
 import { Item } from './core/item/item';
 import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
-import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
+import { ChatSignal } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
 import { InboxConversation } from './core/conversation/conversation';
 
@@ -87,11 +87,8 @@ export class AppComponent implements OnInit {
     appboy.registerAppboyPushMessages();
     this.subscribeEventUserLogin();
     this.subscribeEventUserLogout();
-    this.subscribeUnreadMessages();
-    this.subscribeEventNewMessage();
-    this.subscribeEventClientDisconnect();
+    this.subscribeChatEvents();
     this.subscribeEventItemUpdated();
-    this.subscribeChatSignals();
     this.userService.checkUserStatus();
     this.notificationService.init();
     this.setTitle();
@@ -140,24 +137,6 @@ export class AppComponent implements OnInit {
 
   private trackAppOpen() {
       this.trackingService.track(TrackingService.APP_OPEN, {referer_url: this.previousUrl, current_url: this.currentUrl});
-  }
-
-  private subscribeChatSignals() {
-    this.event.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
-      switch (signal.type) {
-        case chatSignalType.SENT:
-          this.conversationService.markAs(messageStatus.SENT, signal.messageId, signal.thread);
-          break;
-        case chatSignalType.RECEIVED:
-          this.conversationService.markAs(messageStatus.RECEIVED, signal.messageId, signal.thread);
-          break;
-        case chatSignalType.READ:
-          this.conversationService.markAllAsRead(signal.thread, signal.timestamp, signal.fromSelf);
-          break;
-        default:
-          break;
-      }
-    });
   }
 
   private subscribeEventUserLogin() {
@@ -230,6 +209,22 @@ export class AppComponent implements OnInit {
     });
   }
 
+  private subscribeChatEvents() {
+    this.event.subscribe(EventService.NEW_MESSAGE,
+      (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate));
+
+    this.event.subscribe(EventService.CHAT_SIGNAL,
+      (signal: ChatSignal) => this.conversationService.processChatSignal(signal));
+
+      this.event.subscribe(EventService.CHAT_RT_DISCONNECTED, () => {
+        if (this.userService.isLogged && this.connectionService.isConnected) {
+          this.realTime.reconnect();
+        }
+      });
+
+    this.subscribeUnreadMessages();
+  }
+
   private subscribeUnreadMessages() {
     this.messageService.totalUnreadMessages$.subscribe((unreadMessages: number) => {
       let title: string = this.titleService.getTitle().split(') ')[1];
@@ -238,21 +233,6 @@ export class AppComponent implements OnInit {
         title = '(' + unreadMessages + ') ' + title;
       }
       this.titleService.setTitle(title);
-    });
-  }
-
-  private subscribeEventNewMessage() {
-    this.event.subscribe(
-      EventService.NEW_MESSAGE,
-      (message: Message, updateDate: boolean = false) => this.conversationService.handleNewMessages(message, updateDate)
-    );
-  }
-
-  private subscribeEventClientDisconnect() {
-    this.event.subscribe(EventService.CHAT_RT_DISCONNECTED, () => {
-      if (this.userService.isLogged && this.connectionService.isConnected) {
-        this.realTime.reconnect();
-      }
     });
   }
 

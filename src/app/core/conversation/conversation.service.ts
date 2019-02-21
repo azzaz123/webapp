@@ -32,6 +32,7 @@ import { NgbModal, NgbModalRef, NgbModalOptions } from '@ng-bootstrap/ng-bootstr
 import { SendPhoneComponent } from '../../chat/modals/send-phone/send-phone.component';
 import { RealTimeService } from '../message/real-time.service';
 import { BlockUserService } from './block-user.service';
+import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 
 @Injectable()
 export class ConversationService extends LeadService {
@@ -281,8 +282,24 @@ export class ConversationService extends LeadService {
     }
   }
 
+  public processChatSignal(signal: ChatSignal) {
+    switch (signal.type) {
+      case chatSignalType.SENT:
+        this.markAs(messageStatus.SENT, signal.messageId, signal.thread);
+        break;
+      case chatSignalType.RECEIVED:
+        this.markAs(messageStatus.RECEIVED, signal.messageId, signal.thread);
+        break;
+      case chatSignalType.READ:
+        this.markAllAsRead(signal.thread, signal.timestamp, signal.fromSelf);
+        break;
+      default:
+        break;
+    }
+  }
 
-  public markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = false) {
+
+  private markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = false) {
     const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
     if (conversation) {
       const unreadMessages = conversation.messages.filter(message => (message.status === messageStatus.RECEIVED ||
@@ -307,7 +324,7 @@ export class ConversationService extends LeadService {
     }
   }
 
-  public markAs(newStatus: string, messageId: string, thread: string) {
+  private markAs(newStatus: string, messageId: string, thread: string) {
     const conversation = this.leads.find(c => c.id === thread) || this.archivedLeads.find(c => c.id === thread);
     if (!conversation) {
       return;
