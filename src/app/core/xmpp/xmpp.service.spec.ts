@@ -161,15 +161,50 @@ describe('Service: Xmpp', () => {
     });
   });
 
-  it('should call bindEvents', () => {
-    service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD).subscribe();
-    expect(MOCKED_CLIENT.on).toHaveBeenCalled();
+  describe('session started', () => {
+    beforeEach(() => {
+      service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD).subscribe();
+      expect(MOCKED_CLIENT.on).toHaveBeenCalled();
+    });
+    it('should call sendPresence', () => {
+      eventService.emit('session:started', null);
 
-    eventService.emit('session:started', null);
+      expect(MOCKED_CLIENT.sendPresence).toHaveBeenCalled();
+      expect(MOCKED_CLIENT.enableCarbons).toHaveBeenCalled();
+    });
 
-    expect(MOCKED_CLIENT.sendPresence).toHaveBeenCalled();
-    expect(MOCKED_CLIENT.enableCarbons).toHaveBeenCalled();
+    it('should call enableCarbons', () => {
+      eventService.emit('session:started', null);
+
+      expect(MOCKED_CLIENT.enableCarbons).toHaveBeenCalled();
+    });
+
+    it('should call getBlockedUsers (call sendIq with get & privacy list public', () => {
+      const expetedCallParams = {
+        type: 'get',
+        privacy: {
+          list: {
+            name: 'public'
+          }
+        }
+      };
+
+      eventService.emit('session:started', null);
+
+      expect(MOCKED_CLIENT.sendIq['calls'].argsFor(1)[0]).toEqual(expetedCallParams);
+    });
+
+    it('should set blockedListAvailable and emit an CHAT_RT_CONNECTED event when getBlockedUsers returns', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+      spyOn<any>(service, 'getBlockedUsers').and.returnValue(Observable.of(true));
+
+      eventService.emit('session:started', null);
+
+      expect(service['blockedListAvailable']).toBe(true);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_RT_CONNECTED);
+    });
   });
+
 
   it('should connect the client and set clientConnected to true', () => {
     service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
@@ -253,6 +288,10 @@ describe('Service: Xmpp', () => {
         expect(service['blockedUsers']).toEqual(blockedUserIds);
       });
     });
+
+    // describe('CHAT_RT_DISCONNECTED', () => {
+    //   it('should emit a CHAT_RT_DISCONNECTED event when conn');
+    // });
 
     it('should emit a newMessage event on the message xmpp received', fakeAsync(() => {
       let msg: Message;
@@ -401,7 +440,7 @@ describe('Service: Xmpp', () => {
       }));
     });
 
-    it('should emit a CLIENT_DISCONNECTED event and set clientConnected to FALSE when the Xmpp client is disconnected', () => {
+    it('should emit a CHAT_RT_DISCONNECTED event and set clientConnected to FALSE when the Xmpp client is disconnected', () => {
       spyOn(eventService, 'emit').and.callThrough();
 
       eventService.emit('disconnected');
@@ -529,6 +568,24 @@ describe('Service: Xmpp', () => {
       });
 
       expect(clientConnected).toBe(true);
+    }));
+
+    it('should emit a CHAT_RT_CONNECTED event if blockedListAvailable is true', fakeAsync(() => {
+      spyOn(eventService, 'emit').and.callThrough();
+      service['blockedListAvailable'] = true;
+
+      eventService.emit('connected');
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_RT_CONNECTED);
+    }));
+
+    it('should NOT emit a CHAT_RT_CONNECTED event if blockedListAvailable is false', fakeAsync(() => {
+      spyOn(eventService, 'emit').and.callThrough();
+      service['blockedListAvailable'] = false;
+
+      eventService.emit('connected');
+
+      expect(eventService.emit).not.toHaveBeenCalledWith(EventService.CHAT_RT_CONNECTED);
     }));
 
     it('should say when is NOT clientConnected', fakeAsync(() => {
