@@ -46,6 +46,11 @@ $modal-border-radius: 0.3rem;
         opacity: .5;
       }
     }
+    &.grey {
+      mat-icon /deep/ path {
+        fill: $grey-100;
+      }
+    }
   }
   .modal-back {
     cursor: pointer;
@@ -156,7 +161,7 @@ $modal-border-radius: 0.3rem;
 }
 
 .modal.account-details {
-  $modal-width: 460px;
+  $modal-width: 600px;
   .modal-dialog {
     max-width: $modal-width;
   }
