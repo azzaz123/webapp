@@ -289,10 +289,6 @@ describe('Service: Xmpp', () => {
       });
     });
 
-    // describe('CHAT_RT_DISCONNECTED', () => {
-    //   it('should emit a CHAT_RT_DISCONNECTED event when conn');
-    // });
-
     it('should emit a newMessage event on the message xmpp received', fakeAsync(() => {
       let msg: Message;
       eventService.emit('session:started', null);
