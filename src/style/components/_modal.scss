@@ -167,12 +167,11 @@ $modal-border-radius: 0.3rem;
 }
 
 .modal.unsubscribe {
-  $modal-width: 630px;
+  $modal-width: 600px;
   .modal-dialog {
     max-width: $modal-width;
   }
   .modal-content {
-    border-radius: 20px;
     width: $modal-width !important;
     max-width: unset;
   }
