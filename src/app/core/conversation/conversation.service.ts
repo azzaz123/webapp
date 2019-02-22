@@ -378,7 +378,8 @@ export class ConversationService extends LeadService {
   public sendRead(conversation: Conversation) {
     if (conversation.unreadMessages > 0) {
       this.readSubscription = this.event.subscribe(EventService.MESSAGE_READ_ACK, () => {
-        this.markAllAsRead(conversation.id);
+        const readSignal = new ChatSignal(chatSignalType.READ, conversation.id, null);
+        this.processChatSignal(readSignal);
         this.readSubscription.unsubscribe();
       });
       this.realTime.sendRead(conversation.user.id, conversation.id);
