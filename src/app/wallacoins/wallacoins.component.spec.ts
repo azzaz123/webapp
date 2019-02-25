@@ -167,7 +167,7 @@ describe('WallacoinsComponent', () => {
     }));
 
     it('should open modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(BuyWallacoinsModalComponent, {windowClass: 'buy-wallacoins'});
+      expect(modalService.open).toHaveBeenCalledWith(BuyWallacoinsModalComponent, {windowClass: 'modal-standard'});
     });
 
     it('should open second modal', () => {

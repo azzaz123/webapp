@@ -1,19 +1,19 @@
 @import "~style/common";
 
 .modal-body {
-  padding: 50px $spacing-XL;
+  padding: 40px 100px;
 }
 
 h1 {
-  font-size: $font-size-M;
+  font-size: $font-size-L;
   color: $grey-800;
   font-weight: bold;
 }
 
 p {
-  font-size: $font-size-S;
-  color: $grey-300;
-  margin: 0 0 $spacing-XL;
+  font-size: $font-size;
+  color: $grey-500;
+  margin: 0 0 $spacing-L;
   &.note {
     color: $grey-250;
     margin: $spacing 0 0;
