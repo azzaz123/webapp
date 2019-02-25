@@ -48,7 +48,7 @@ $modal-border-radius: 0.3rem;
     }
     &.grey {
       mat-icon /deep/ path {
-        fill: $grey-100;
+        fill: $blue-grey-4;
       }
     }
   }
@@ -243,24 +243,24 @@ $modal-border-radius: 0.3rem;
     max-width: unset;
     .modal-body {
       text-align: center;
-      margin-top: $spacing-2L;
+      margin-top: $spacing-xxl;
       h2 {
-        font-size: $font-size-L;
+        font-size: $font-size-l;
       }
       p {
-        font-size: $font-size;
-        color: $grey-600;
+        font-size: $font-size-m;
+        color: $blue-grey-2;
       }
     }
     .modal-footer {
       justify-content: center;
-      padding-bottom: $spacing-40;
+      padding-bottom: $spacing-xxl;
       .btn {
         width: 170px;
         height: 40px;
         line-height: 40px;
-        background-color: $grey-50 !important;
-        color: $grey-500 !important;
+        background-color: $blue-grey-5 !important;
+        color: $blue-grey-2 !important;
         border: 0 !important;
         border-radius: 20px !important;
         &.btn-warn {
@@ -280,7 +280,7 @@ $modal-border-radius: 0.3rem;
     max-width: $modal-standard-width;
   }
   .header {
-    background: $corporate;
+    background: $walla-main;
     height: 100px;
     border-top-left-radius: $modal-border-radius;
     border-top-right-radius: $modal-border-radius;
@@ -290,8 +290,8 @@ $modal-border-radius: 0.3rem;
     flex-direction: column;
     justify-content: center;
     .modal-close {
-      top: $spacing;
-      right: $spacing;
+      top: 20px;
+      right: 20px;
       @include square(13px);
       mat-icon {
         @include square(13px);
@@ -299,14 +299,14 @@ $modal-border-radius: 0.3rem;
       }
     }
     h1 {
-      font-size: $font-size-M;
+      font-size: $font-size-l;
       font-weight: bold;
     }
     p {
       opacity: .8;
       margin: 0;
       color: $white;
-      font-size: $font-size;
+      font-size: $font-size-m;
     }
   }
   .modal-content {
@@ -314,11 +314,11 @@ $modal-border-radius: 0.3rem;
     max-width: unset;
     .modal-close:not(.light) {
       mat-icon /deep/ path {
-        fill: $grey-200;
+        fill: $blue-grey-3;
       }
     }
     .image-col {
-      background-color: $grey-100;
+      background-color: $blue-grey-4;
       min-width: 280px;
       border-top-left-radius: $modal-border-radius;
       border-bottom-left-radius: $modal-border-radius;
@@ -331,22 +331,22 @@ $modal-border-radius: 0.3rem;
     }
     .modal-title {
       font-weight: bold;
-      font-size: $font-size-L;
-      margin-bottom: $spacing-S;
+      font-size: $font-size-l;
+      margin-bottom: spacing-ms;
       &.fail {
         color: $warn;
       }
     }
     .modal-text {
-      font-size: $font-size;
-      color: $grey-500;
+      font-size: $font-size-m;
+      color: $blue-grey-2;
       &.green {
-        color: $corporate;
+        color: $walla-main;
       }
     }
     .link {
-      color: $grey-250 !important;
-      margin-top: $spacing-M;
+      color: $blue-grey-3 !important;
+      margin-top: $spacing-m;
       &:hover {
         text-decoration: underline;
         cursor: pointer;
@@ -354,25 +354,25 @@ $modal-border-radius: 0.3rem;
     }
     .share {
       text-align: center;
-      font-size: $font-size;
-      color: $grey-250;
+      font-size: $font-size-m;
+      color: $blue-grey-3;
       .social-icons {
         display: flex;
         justify-content: center;
-        margin-bottom: $spacing;
+        margin-bottom: $spacing-ml;
         a {
           display: flex;
           justify-content: center;
           align-items: center;
           border-radius: 50%;
-          background-color: $grey-50;
+          background-color: $blue-grey-5;
           @include square(34px);
           margin: 6px;
           cursor: pointer;
           mat-icon {
             @include square(18px);
             /deep/ path {
-              fill: $grey-250;
+              fill: $blue-grey-3;
             }
           }
           &:hover {

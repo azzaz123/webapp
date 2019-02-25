@@ -22,13 +22,13 @@
     .title {
       word-break: break-word;
       color: $blue-grey-1;
-      font-size: $font-size;
+      font-size: $font-size-m;
       font-weight: bold;
       width: 160px;
     }
     tsl-item-avatar {
       width: 160px;
-      margin-bottom: $spacing-S;
+      margin-bottom: spacing-ms;
       /deep/ {
         .urgent {
           @include square(50px);
@@ -47,18 +47,18 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: $spacing-40 $spacing-L;
+  padding: $spacing-xxl $spacing-xl;
   justify-content: center;
   h2 {
-    font-size: $font-size-L;
-    margin-bottom: $spacing-M;
+    font-size: $font-size-l;
+    margin-bottom: $spacing-m;
   }
   h3 {
-    margin-bottom: $spacing-S;
-    color: $grey-500;
-    font-size: $font-size-S;
+    margin-bottom: spacing-ms;
+    color: $blue-grey-2;
+    font-size: $font-size-s;
     text-align: center;
-    line-height: $spacing;
+    line-height: $spacing-ml;
   }
   .price {
     display: flex;
@@ -81,7 +81,7 @@
   }
   .totals {
     width: 100%;
-    line-height: $spacing-L;
+    line-height: $spacing-xl;
   }
   .credit, .total, .missing {
     display: flex;

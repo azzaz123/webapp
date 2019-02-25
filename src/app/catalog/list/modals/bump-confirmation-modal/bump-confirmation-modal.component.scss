@@ -29,12 +29,12 @@ img {
   display: flex;
   .content-col {
     text-align: center;
-    padding: $spacing-40;
+    padding: $spacing-xxl;
     .modal-text {
       max-width: 300px;
-      margin: 0 auto $spacing-3M auto;
+      margin: 0 auto $spacing-l auto;
       &.credit-info {
-        color: $corporate;
+        color: $walla-main;
       }
     }
   }
@@ -42,9 +42,9 @@ img {
 
 .error-content {
   background: url(/assets/images/bump-ko.svg) no-repeat 112px;
-  padding: $spacing-40;
+  padding: $spacing-xxl;
   padding-left: 260px;
   .modal-text {
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
   }
 }

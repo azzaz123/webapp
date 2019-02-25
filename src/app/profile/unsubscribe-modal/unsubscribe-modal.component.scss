@@ -45,9 +45,9 @@ $modal-border-radius: 5px;
     }
   }
   &.step-1 {
-    padding-bottom: $spacing;
+    padding-bottom: $spacing-ml;
     .btn {
-      margin-bottom: $spacing-S;
+      margin-bottom: spacing-ms;
       width: 400px;
     }
   }

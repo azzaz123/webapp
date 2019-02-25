@@ -358,11 +358,11 @@ tsl-button /deep/ .btn-publish {
     opacity: 1;
   }
   .tooltip-inner {
-    background-color: $grey-900;
+    background-color: $blue-grey-1;
     font-family: $wallie;
     padding: 10px 15px;
     border-radius: $border-radius / 2;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     &:after {
       content: " ";
       position: absolute;
@@ -371,7 +371,7 @@ tsl-button /deep/ .btn-publish {
       margin-left: -5px;
       border-width: 5px;
       border-style: solid;
-      border-color: $grey-900 transparent transparent transparent;
+      border-color: $blue-grey-1 transparent transparent transparent;
     }
   }
 }
