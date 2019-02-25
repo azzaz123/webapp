@@ -163,10 +163,9 @@ describe('App', () => {
             return Observable.of();
           },
           handleNewMessages() {},
-          markAs() {},
-          markAllAsRead() {},
           resetCache() {},
-          syncItem() {}
+          syncItem() {},
+          processChatSignal() {}
         }
         },
         {
@@ -211,8 +210,7 @@ describe('App', () => {
           TEST_HTTP_PROVIDERS
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-    ;
+    });
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     userService = TestBed.get(UserService);
@@ -258,6 +256,12 @@ describe('App', () => {
   });
 
   describe('subscribeEvents', () => {
+    function getEventServiceSubscribeArgs() {
+      const eventServiceSubscribeArgs = [];
+      eventService.subscribe['calls'].allArgs().map(call => eventServiceSubscribeArgs.push(call[0]));
+      return eventServiceSubscribeArgs;
+    }
+
     describe('success case', () => {
       const mockedInboxConversations = createInboxConversationsArray(3);
       function emitSuccessChatEvents() {
@@ -280,16 +284,18 @@ describe('App', () => {
         spyOn(eventService, 'subscribe').and.callThrough();
 
         component.ngOnInit();
+        const eventServiceCalls = getEventServiceSubscribeArgs();
 
-        expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.USER_LOGIN);
+        expect(eventServiceCalls).toContain(EventService.USER_LOGIN);
       });
 
       it('should call the eventService.subscribe passing the CHAT_SIGNAL event', () => {
         spyOn(eventService, 'subscribe').and.callThrough();
 
         component.ngOnInit();
+        const eventServiceCalls = getEventServiceSubscribeArgs();
 
-        expect(eventService.subscribe['calls'].argsFor(7)[0]).toBe(EventService.CHAT_SIGNAL);
+        expect(eventServiceCalls).toContain(EventService.CHAT_SIGNAL);
       });
 
       it('should perform a xmpp connect when the login event and the DB_READY event are triggered with the correct user data', () => {
@@ -539,41 +545,21 @@ describe('App', () => {
     });
   });
 
-  describe('process chat signals', () => { // TODO
-    const timestamp = new Date(MOCK_MESSAGE.date).getTime();
-    beforeEach(() => {
-      spyOn(conversationService, 'markAs');
-      spyOn(conversationService, 'markAllAsRead');
-
+  describe('process chat signals', () => {
+    it('should call conversationService.processChatSignal when a CHAT_SIGNAL event is emitted with a Sent, Received or Read signal', () => {
+      const timestamp = new Date(MOCK_MESSAGE.date).getTime();
+      const sentSignal = new ChatSignal(chatSignalType.SENT, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id);
+      const receivedSignal =  new ChatSignal(chatSignalType.RECEIVED, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id);
+      const readSignal = new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.conversationId, timestamp, null, false);
+      const testWithignals = [sentSignal, receivedSignal, readSignal];
+      spyOn(conversationService, 'processChatSignal');
       component.ngOnInit();
-    });
 
-    it('should call the conversationService.markAs method when a CHAT_SIGNAL event is triggered with a SENT signal', () => {
-      eventService.emit(EventService.CHAT_SIGNAL,
-        new ChatSignal(chatSignalType.SENT, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id));
+      testWithignals.map((signal: ChatSignal) => {
+        eventService.emit(EventService.CHAT_SIGNAL, signal);
 
-      expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.SENT, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
-    });
-
-    it('should call the conversationService.markAs method when a CHAT_SIGNAL event is triggered with a RECEIVED signal', () => {
-      eventService.emit(EventService.CHAT_SIGNAL,
-        new ChatSignal(chatSignalType.RECEIVED, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id));
-
-      expect(conversationService.markAs).toHaveBeenCalledWith(messageStatus.RECEIVED, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
-    });
-
-    it(`should call the conversationService.markAllAsRead method with fromSelf TRUE when a a CHAT_SIGNAL event is triggered with
-      a READ signal fromSelf`, () => {
-      eventService.emit(EventService.CHAT_SIGNAL, new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.conversationId, timestamp, null, true));
-
-      expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp, true);
-    });
-
-    it(`should call the conversationService.markAllAsRead method with fromSelf FALSE when a a CHAT_SIGNAL event is triggered with
-      a READ signal NOT fromSelf`, () => {
-      eventService.emit(EventService.CHAT_SIGNAL, new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.conversationId, timestamp, null, false));
-
-      expect(conversationService.markAllAsRead).toHaveBeenCalledWith(MOCK_MESSAGE.conversationId, timestamp, false);
+        expect(conversationService.processChatSignal).toHaveBeenCalledWith(signal);
+      });
     });
   });
 
