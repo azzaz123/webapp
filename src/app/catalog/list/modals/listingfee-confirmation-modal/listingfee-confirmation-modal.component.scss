@@ -1,24 +1,13 @@
 @import "~style/common";
 
-.listingfee-confirmation-modal {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 600px;
-  height: 260px;
-  mat-icon {
-    width: 285px;
-    height: 140px;
-    margin: 0 $spacing-xl;
-  }
-  h4 {
-    font-size: $font-size-l;
-    font-weight: bold;
-  }
+.content-col {
+  background: url(/assets/icons/listing-fee-icon-wings.svg) no-repeat 40px 50px;
+  background-size: 190px;
+  padding: $spacing-xxl $spacing-xxl $spacing-xxl 260px;
   p {
-    font-size: $font-size-m;
-    padding-right: $spacing-ml;
-    color: $blue-grey-2;
+    margin: 0 auto $spacing-l auto;
+  }
+  tsl-button /deep/ button {
+    width: 200px;
   }
 }

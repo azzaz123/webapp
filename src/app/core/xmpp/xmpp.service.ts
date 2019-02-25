@@ -16,6 +16,7 @@ export class XmppService {
 
   private client: XMPPClient;
   private _clientConnected = false;
+  private blockedListAvailable = false;
   private self: JID;
   private resource: string;
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
@@ -155,13 +156,16 @@ export class XmppService {
 
     this.client.on('disconnected', () => {
       this.clientConnected = false;
-      this.eventService.emit(EventService.CLIENT_DISCONNECTED);
       console.warn('Client disconnected');
+      this.eventService.emit(EventService.CHAT_RT_DISCONNECTED);
     });
 
     this.client.on('connected', () => {
       this.clientConnected = true;
       console.warn('Client connected');
+      if (this.blockedListAvailable) {
+        this.eventService.emit(EventService.CHAT_RT_CONNECTED);
+      }
     });
 
     this.client.on('iq', (iq: any) => this.onPrivacyListChange(iq));
@@ -173,6 +177,8 @@ export class XmppService {
         this.client.sendPresence();
         this.client.enableCarbons();
         this.getBlockedUsers().subscribe(() => {
+          this.blockedListAvailable = true;
+          this.eventService.emit(EventService.CHAT_RT_CONNECTED);
           observer.next(true);
         });
       });

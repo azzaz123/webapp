@@ -1,86 +1,97 @@
 @import "~style/common";
 
 .spinner-wrapper {
-  @include square(280px);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: 290px;
 }
 
 .buy-modal {
   display: flex;
   color: $blue-grey-1;
-  &.vertical {
-    flex-direction: column;
-  }
 }
 
 .left {
-  background-color: $blue-grey-5;
   text-align: center;
-  padding: $spacing-xxl $spacing-xl $spacing-l;
-  min-width: 294px;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  h2 {
-    font-size: $font-size-l;
-    margin-bottom: $spacing-xl;
-  }
-  .box {
+  .image {
     display: flex;
-    width: 242px;
-    padding: $spacing-ms;
-    text-align: left;
+    flex-direction: column;
     .title {
       word-break: break-word;
-    }
-  }
-  .price {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    .total {
-      text-transform: uppercase;
+      color: $blue-grey-1;
+      font-size: $font-size;
       font-weight: bold;
-      font-size: $font-size-xs;
+      width: 160px;
     }
-    .amount {
-      font-weight: bold;
-      font-size: $font-size-3L;
-      tsl-wallacoin {
-        @include square(18px);
+    tsl-item-avatar {
+      width: 160px;
+      margin-bottom: $spacing-S;
+      /deep/ {
+        .urgent {
+          @include square(50px);
+          top: 55px;
+          left: 55px;
+          mat-icon {
+            @include square(50px);
+          }
+        }
       }
     }
-  }
-  .vertical & {
-    max-width: 330px;
-    padding: $spacing-xxl $spacing-xxl $spacing-l;
   }
 }
 .right {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 360px;
-  padding: $spacing-xl;
-  justify-content: space-between;
+  width: 100%;
+  padding: $spacing-40 $spacing-L;
+  justify-content: center;
+  h2 {
+    font-size: $font-size-L;
+    margin-bottom: $spacing-M;
+  }
+  h3 {
+    margin-bottom: $spacing-S;
+    color: $grey-500;
+    font-size: $font-size-S;
+    text-align: center;
+    line-height: $spacing;
+  }
+  .price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: $font-size-m;
+    &.with-credit {
+      font-weight: normal;
+    }
+    .amount {
+      tsl-wallacoin {
+        @include square(18px);
+      }
+    }
+  }
   p {
     margin-bottom: $spacing-xl;
   }
   .totals {
     width: 100%;
+    line-height: $spacing-L;
   }
   .credit, .total, .missing {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: $font-size-xs;
-    font-weight: bold;
-    text-transform: uppercase;
+    font-size: $font-size-m;
     clear: both;
+    .amount {
+      text-align: right;
+    }
   }
   .credit, .missing {
     .label {
@@ -91,17 +102,12 @@
     }
   }
   .credit {
-    color: $walla-main;
-    margin-bottom: $spacing-s;
     padding-right: $spacing-xxs;
-    .price {
-      font-size: $font-size-m;
-    }
     .with-credits & {
       font-size: $font-size-m;
-      .label span span {
-        font-size: $font-size-xs;
-      }
+    }
+    .amount {
+      color: $walla-main;
     }
   }
   .missing {
@@ -111,20 +117,17 @@
     .label {
       color: $blue-grey-3;
     }
-    .price {
-      color: $blue-grey-2;
-      font-size: $font-size-m;
-    }
   }
   .total {
-    margin-bottom: $spacing-ms;
-    .price {
-      font-size: $font-size-3L;
-    }
+    font-weight: bold;
   }
   tsl-card-selection {
     width: 100%;
-    margin-bottom: $spacing-l;
+    margin-top: $spacing-m;
+    display: block;
+    &:empty {
+      margin: 0;
+    }
   }
   tsl-button {
     margin-top: $spacing-ml;
@@ -132,19 +135,11 @@
   .credit-card {
     width: 100%;
   }
-}
-
-.bottom {
-  width: 330px;
-  padding: $spacing-l;
-  text-align: center;
-}
-
-.right, .bottom {
   .note {
     color: $blue-grey-3;
     text-align: center;
     margin-bottom: 0;
+    font-size: $font-size-xs;
   }
 }
 
@@ -152,13 +147,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 160px;
-  height: 160px;
+  @include square(200px);
   background-color: $white;
   border-radius: 50%;
-  margin-bottom: $spacing-ml;
-  mat-icon {
-    width: 95px;
-    height: 70px;
-  }
+  background: url(/assets/images/listing-fee.svg) no-repeat center;
 }

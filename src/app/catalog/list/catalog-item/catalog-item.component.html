@@ -46,16 +46,16 @@
           </tsl-button>
         </span>
         <div class="main-actions">
-          <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)" [item]="item">
+          <button class="btn-sold" [hidden]="item.sold || item.flags.onhold" tslItemSold (callback)="setSold(item)" [item]="item" ngbTooltip="Mark as sold" i18n-ngbTooltip placement="top">
             <mat-icon svgIcon="btn-sold"></mat-icon>
           </button>
-          <button class="btn-reserve" [hidden]="item.flags.onhold" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold">
+          <button class="btn-reserve" [hidden]="item.flags.onhold" [ngClass]="{active: item.reserved}" (click)="reserve(item)" *ngIf="!item.sold" ngbTooltip="Mark as reserved" i18n-ngbTooltip placement="top">
             <mat-icon svgIcon="btn-reserved"></mat-icon>
           </button>
-          <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold">
+          <button class="btn-edit" [hidden]="item.flags.onhold" [routerLink]="['/catalog/edit/' + item.id]" tslTrackEvent="MYCATALOG_EDITITEM" [params]="{category: item.categoryId}" *ngIf="!item.sold" ngbTooltip="Edit" i18n-ngbTooltip placement="top">
             <mat-icon svgIcon="btn-edit"></mat-icon>
           </button>
-          <button class="btn-delete" (click)="deleteItem(item)" [hidden]="isPro">
+          <button class="btn-delete" (click)="deleteItem(item)" [hidden]="isPro" ngbTooltip="Delete" i18n-ngbTooltip placement="top">
             <mat-icon svgIcon="btn-delete"></mat-icon>
           </button>
         </div>

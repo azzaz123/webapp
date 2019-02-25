@@ -351,3 +351,27 @@ tsl-button /deep/ .btn-publish {
   width: $feature-button-width;
   font-size: $font-size-s;
 }
+
+:host /deep/ ngb-tooltip-window {
+  margin-top: -8px;
+  &.show {
+    opacity: 1;
+  }
+  .tooltip-inner {
+    background-color: $grey-900;
+    font-family: $wallie;
+    padding: 10px 15px;
+    border-radius: $border-radius / 2;
+    font-size: $font-size-S;
+    &:after {
+      content: " ";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: $grey-900 transparent transparent transparent;
+    }
+  }
+}

@@ -228,7 +228,7 @@ describe('CatalogItemComponent', () => {
       component.reactivate(MOCK_ITEM);
 
       expect(modalService.open).toHaveBeenCalledWith(ReactivateModalComponent, {
-        windowClass: 'reactivate'
+        windowClass: 'modal-standard'
       });
       expect(componentInstance.price).toEqual(PRODUCT_DURATION_MARKET_CODE);
       expect(componentInstance.item).toEqual(MOCK_ITEM);

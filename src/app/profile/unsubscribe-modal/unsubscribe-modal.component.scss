@@ -1,10 +1,10 @@
 @import "~style/common";
 
-$modal-border-radius: 20px;
+$modal-border-radius: 5px;
 
 .header {
   background: $walla-main url(/assets/images/unsubscribe.svg) no-repeat center;
-  height: 230px;
+  height: 220px;
   border-top-left-radius: $modal-border-radius;
   border-top-right-radius: $modal-border-radius;
 }
@@ -25,6 +25,7 @@ $modal-border-radius: 20px;
   }
   .btn {
     padding: $spacing-ms $spacing-ml;
+    border-radius: 21px;
     &.btn-secondary {
       border: 0;
       background-color: $blue-grey-5;
@@ -41,6 +42,13 @@ $modal-border-radius: 20px;
     }
     &.btn-primary {
       padding: $spacing-ms $spacing-xl;
+    }
+  }
+  &.step-1 {
+    padding-bottom: $spacing;
+    .btn {
+      margin-bottom: $spacing-S;
+      width: 400px;
     }
   }
 

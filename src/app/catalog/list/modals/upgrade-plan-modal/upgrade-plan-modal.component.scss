@@ -1,69 +1,29 @@
 @import "~style/common";
 
-.header {
-  background: $walla-main;
-  height: 127px;
-  border-top-left-radius: $border-radius;
-  border-top-right-radius: $border-radius;
-  color: $white;
+.content-col {
+  background: url(/assets/images/upgrade-plan-background.svg) no-repeat 50px 44px;
+  background-size: 160px;
+  padding: $spacing-xxl $spacing-xxl 0 260px;
+  margin-bottom: $spacing-l;
+  p {
+    margin: 0 auto $spacing-l auto;
+    font-size: $font-size-m;
+    color: $blue-grey-2;
+    &.no-margin {
+      margin: 0;
+    }
+  }
+}
+
+.actions {
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  .modal-close {
-    top: 20px;
-    right: 20px;
-    @include square(13px);
-    mat-icon {
-      @include square(13px);
-      line-height: unset;
+  margin-bottom: $spacing-ml;
+  tsl-button /deep/ {
+    .btn {
+      min-width: 370px;
     }
   }
-  h1 {
-    font-size: $font-size-l;
-    font-weight: bold;
-  }
-  p {
-    opacity: .8;
-    margin: 0;
-    margin-bottom: $spacing-xl;
-    color: $white;
-    font-size: $font-size-m;
-  }
-}
 
-.modal-body {
-  text-align: center;
-  padding: $spacing-xxl $spacing-xxxl;
-  p {
-    font-size: $font-size-m;
-    color: $blue-grey-2;
-    margin-top: $spacing-ms;
-  }
-  .upgrade-plan {
-    float: left;
-    width: 100%;
-  }
-  .upgrade-plan-background {
-    background: url(/assets/images/upgrade-plan-background.svg) no-repeat;
-    width: 50%;
-    height: 195px;
-    float: left;
-  }
-  .upgrade-plan-content {
-    width: 50%;
-    float: right;
-    text-align: left;
-    margin-bottom: $spacing-ml;
-  }
 }
-
-tsl-button /deep/ {
-  .btn {
-    min-width: 370px;
-  }
-  .btn-primary {
-    margin: $spacing-xl auto $spacing-ml;
-  }
-}
-

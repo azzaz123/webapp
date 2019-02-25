@@ -93,7 +93,7 @@ export class CatalogItemComponent implements OnInit {
 
   private openReactivateDialog(item: Item, orderEvent: OrderEvent) {
     const modalRef: NgbModalRef = this.modalService.open(ReactivateModalComponent, {
-      windowClass: 'reactivate'
+      windowClass: 'modal-standard'
     });
     modalRef.componentInstance.price = orderEvent.total;
     modalRef.componentInstance.item = item;

@@ -2,40 +2,21 @@
 
 :host {
   text-align: center;
+  display: flex;
 }
 
-.modal-body {
-  width: 660px;
 
-  p {
-    max-width: 435px;
-    margin: 0 auto $spacing-ml auto;
-    font-size: $font-size-m;
-    color: $blue-grey-2;
-  }
-  h1 {
-    font-weight: bold;
-    font-size: $font-size-ll;
-    margin-top: $spacing-xl;
-    margin-bottom: $spacing-xl;
-  }
+.content-col {
+  text-align: center;
+  padding: $spacing-xxxl $spacing-xxl;
+}
 
-  tsl-button {
-    margin-bottom: $spacing-ms;
-    margin-top: $spacing-xl;
-    /deep/ {
-      button {
-        padding: $spacing-m 114px;
-        font-weight: bold;
-      }
-    }
-  }
-
-  .link {
-    color: $blue-grey-3 !important;
-    &:hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
+p {
+  max-width: 435px;
+  margin: 0 auto $spacing-ml auto;
+  font-size: $font-size-m;
+  color: $blue-grey-2;
+  &.credit-info {
+    color: $walla-main;
   }
 }

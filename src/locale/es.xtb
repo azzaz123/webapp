@@ -118,7 +118,8 @@
   <translation id="8781767917622107949">Información básica</translation>
   <translation id="1511766279515968094">Marca</translation>
   <translation id="3937675945889395823">Ej: Seat</translation>
-  <translation id="8348894888237155755">Lo básico: marca y modelo.</translation>
+  <translation id="6532546314500089011">Lo básico: marca.</translation>
+  <translation id="3089964188307740">Lo básico: modelo.</translation>
   <translation id="1141886420788473147">Modelo</translation>
   <translation id="2547360803785971520">Ej: Ibiza</translation>
   <translation id="1464072562214937907">Año</translation>
@@ -766,4 +767,5 @@
   <translation id="4472894989449368622">Se comprobará diariamente si tienes destacados disponibles para tus programados.</translation>
   <translation id="4469663920044009823">Publica tu producto</translation>
   <translation id="5448941415082762589">Para poder ver estadísticas de tu producto publícalo para que los demás usuarios lo vean y puedan contactarte.</translation>
+  <translation id="8215426233314088255">¡Enhorabuena! Ya tienes tu producto subido a wallapop.</translation>
 </translationbundle>

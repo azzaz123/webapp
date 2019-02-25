@@ -1,26 +1,19 @@
-<div class="header">
-  <div class="modal-close light" (click)="activeModal.close()">
-    <mat-icon svgIcon="cross"></mat-icon>
-  </div>
-  <div *ngIf="code === '200'">
-    <h1 i18n>Congratulations</h1>
-    <p i18n>Your item has been uploaded and it's marked as urgent.</p>
-    <p *ngIf="creditUsed"><b>
-      <span i18n>You have used</span>
-      <span *ngIf="withCoins"> {{spent * creditInfo?.factor | number}} wallacoins</span>
-      <span *ngIf="!withCoins"> {{spent | customCurrency}}</span>
-      <span *ngIf="withCoins" i18n>and you have {{creditInfo?.credit | number}} wallacoins left</span>
-      <span *ngIf="!withCoins" i18n>and you have {{creditInfo?.credit | customCurrency}} credit</span>
-    </b></p>
-  </div>
-  <div *ngIf="code === '-1'">
-    <h1 class="fail" i18n>Oops!</h1>
-    <p i18n>We are trying to figure out what happened. Try again later.</p>
-  </div>
+<div class="modal-close" (click)="activeModal.close()">
+  <mat-icon svgIcon="cross"></mat-icon>
 </div>
-<div class="modal-body">
-  <div class="urgent-background"></div>
-  <p i18n>Share it with your friends:</p>
+<div class="content-col">
+  <h1 class="modal-title" i18n>Congratulations</h1>
+  <p class="modal-text" i18n>Your item has been uploaded and it's marked as urgent.</p>
+  <p class="credit-info modal-text" *ngIf="creditUsed"><b>
+    <span i18n>You have used</span>
+    <span *ngIf="withCoins"> {{spent * creditInfo?.factor | number}} wallacoins</span>
+    <span *ngIf="!withCoins"> {{spent | customCurrency}}</span>&nbsp;
+    <span *ngIf="withCoins" i18n>and you have {{creditInfo?.credit | number}} wallacoins left</span>
+    <span *ngIf="!withCoins" i18n>and you have {{creditInfo?.credit | customCurrency}} credit</span>
+  </b></p>
+</div>
+<div class="share">
+  <div i18n>Share it with your friends:</div>
   <div class="social-icons">
     <a (click)="facebookShare()"><mat-icon svgIcon="facebook"></mat-icon></a>
     <a (click)="twitterShare()"><mat-icon svgIcon="twitter"></mat-icon></a>
