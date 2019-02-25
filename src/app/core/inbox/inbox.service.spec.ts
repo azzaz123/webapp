@@ -89,7 +89,7 @@ describe('InboxService', () => {
     it('should save the messages from each conversation via persistencyService', () => {
       spyOn(persistencyService, 'saveMessages');
 
-      service.getInbox();
+      service.getInbox().subscribe();
 
       res.json().conversations.map(conv => {
         const messages = [];
