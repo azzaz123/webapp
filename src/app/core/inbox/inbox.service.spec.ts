@@ -13,6 +13,7 @@ import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService } from '../user/featureflag.service';
+import { Message } from '../message/message';
 
 let service: InboxService;
 let http: HttpService;
@@ -83,6 +84,19 @@ describe('InboxService', () => {
       service.getInbox().subscribe();
 
       expect(messageService.totalUnreadMessages).toBe(expectedUnreadCount);
+    });
+
+    it('should save the messages from each conversation via persistencyService', () => {
+      spyOn(persistencyService, 'saveMessages');
+
+      service.getInbox();
+
+      res.json().conversations.map(conv => {
+        const messages = [];
+        conv.messages.map(msg => messages.push(new Message(msg.id, conv.hash, msg.text, msg.from_user_hash,
+          new Date(msg.timestamp), msg.status, msg.payload)));
+        expect(persistencyService.saveMessages).toHaveBeenCalledWith(messages);
+      });
     });
   });
 
