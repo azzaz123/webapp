@@ -87,7 +87,7 @@ describe('App', () => {
         {provide: DebugService, useValue: {}},
         {
           provide: InboxService, useValue: {
-            getInbox() {},
+            init() {},
             saveInbox() {},
             getInboxFeatureFlag() {
               return Observable.of(false);
@@ -277,7 +277,7 @@ describe('App', () => {
         });
         spyOn(conversationService, 'init').and.returnValue(Observable.of({}));
         spyOn(callsService, 'init').and.returnValue(Observable.of({}));
-        spyOn(inboxService, 'getInbox').and.returnValue(Observable.of(mockedInboxConversations));
+        spyOn(inboxService, 'init');
       }));
 
       it('should call the eventService.subscribe passing the login event', () => {
@@ -371,29 +371,11 @@ describe('App', () => {
           spyOn(inboxService, 'getInboxFeatureFlag').and.returnValue(Observable.of(true));
         });
 
-        it('should call inboxService.getInbox', () => {
+        it('should call inboxService.init', () => {
           component.ngOnInit();
           emitSuccessChatEvents();
 
-          expect(inboxService.getInbox).toHaveBeenCalledTimes(1);
-        });
-
-        it('should call inboxService.saveInbox with the result returned by getInbox', () => {
-          spyOn(inboxService, 'saveInbox');
-
-          component.ngOnInit();
-          emitSuccessChatEvents();
-
-          expect(inboxService.saveInbox).toHaveBeenCalledWith(mockedInboxConversations);
-        });
-
-        it('should emit a EventService.INBOX_LOADED after getInbox returns', () => {
-          spyOn(eventService, 'emit').and.callThrough();
-
-          component.ngOnInit();
-          emitSuccessChatEvents();
-
-          expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, mockedInboxConversations);
+          expect(inboxService.init).toHaveBeenCalledTimes(1);
         });
       });
 

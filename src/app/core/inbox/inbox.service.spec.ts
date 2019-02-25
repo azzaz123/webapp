@@ -13,12 +13,14 @@ import { TrackingService } from '../tracking/tracking.service';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService } from '../user/featureflag.service';
+import { EventService } from '../event/event.service';
 
 let service: InboxService;
 let http: HttpService;
 let persistencyService: PersistencyService;
 let messageService: MessageService;
 let featureflagService: FeatureflagService;
+let eventService: EventService;
 
 describe('InboxService', () => {
   beforeEach(() => {
@@ -26,6 +28,7 @@ describe('InboxService', () => {
       providers: [
         InboxService,
         ...TEST_HTTP_PROVIDERS,
+        EventService,
         { provide: PersistencyService, useClass: MockedPersistencyService },
         { provide: TrackingService, useClass: MockTrackingService },
         { provide: MessageService, useClass: MockMessageService },
@@ -41,6 +44,7 @@ describe('InboxService', () => {
     persistencyService = TestBed.get(PersistencyService);
     messageService = TestBed.get(MessageService);
     featureflagService = TestBed.get(FeatureflagService);
+    eventService = TestBed.get(EventService);
   });
 
   describe('getInboxFeatureFlag', () => {
@@ -53,26 +57,18 @@ describe('InboxService', () => {
     });
   });
 
-  describe('getInbox', () => {
+  describe('init', () => {
     const res: Response = new Response (new ResponseOptions({body: MOCK_INBOX_API_RESPONSE}));
+    let parsedConversaitonsResponse;
     beforeEach(() => {
       spyOn(http, 'get').and.returnValue(Observable.of(res));
+      parsedConversaitonsResponse = service['buildConversations'](JSON.parse(MOCK_INBOX_API_RESPONSE).conversations);
     });
 
     it('should make an HTTP get request to get the inbox', () => {
-      service.getInbox();
+      service.init();
 
       expect(http.get).toHaveBeenCalledWith(service['API_URL']);
-    });
-
-    it('should return an array of InboxConversations', () => {
-      let response;
-
-      service.getInbox().subscribe(r => response = r);
-
-      response.map(el => {
-        expect(el instanceof InboxConversation).toBe(true);
-      });
     });
 
     it('should set the number of unreadMessages in messageService', () => {
@@ -80,18 +76,26 @@ describe('InboxService', () => {
       let expectedUnreadCount = 0;
       res.json().conversations.filter(c => c.unread_messages).map(c => expectedUnreadCount += + c.unread_messages);
 
-      service.getInbox().subscribe();
+      service.init();
 
       expect(messageService.totalUnreadMessages).toBe(expectedUnreadCount);
     });
+
+    it('should call persistencyService.updateInbox after the inbox response is returned', () => {
+      spyOn(persistencyService, 'updateInbox');
+
+      service.init();
+
+      expect(persistencyService.updateInbox).toHaveBeenCalledWith(parsedConversaitonsResponse);
+    });
+
+    it('should emit a EventService.INBOX_LOADED after getInbox returns', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+
+      service.init();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, parsedConversaitonsResponse);
+    });
   });
 
-  it('should call persistencyService.updateInbox when saveInbox is called', () => {
-    spyOn(persistencyService, 'updateInbox');
-    const response = JSON.parse(MOCK_INBOX_API_RESPONSE);
-
-    service.saveInbox(response.conversations);
-
-    expect(persistencyService.updateInbox).toHaveBeenCalledWith(response.conversations);
-  });
 });

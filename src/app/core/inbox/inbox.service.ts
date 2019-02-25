@@ -8,6 +8,8 @@ import { InboxItem } from '../item/item';
 import { InboxUser } from '../user/user';
 import { InboxImage } from '../user/user-response.interface';
 import { FeatureflagService } from '../user/featureflag.service';
+import { Message } from '../message/message';
+import { EventService } from '../event/event.service';
 
 @Injectable()
 
@@ -18,7 +20,8 @@ export class InboxService {
   constructor(private http: HttpService,
     private persistencyService: PersistencyService,
     private messageService: MessageService,
-    private featureflagService: FeatureflagService) {}
+    private featureflagService: FeatureflagService,
+    private eventService: EventService) {}
 
 
   set conversations(value: InboxConversation[]) {
@@ -33,7 +36,17 @@ export class InboxService {
     return this.featureflagService.getFlag('web_inbox_projections');
   }
 
-  public getInbox(): Observable<any> {
+  public init() {
+    this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
+      this.updateLastMessage(message);
+    });
+    this.getInbox().subscribe((conversations: InboxConversation[]) => {
+      this.saveInbox(conversations);
+      this.eventService.emit(EventService.INBOX_LOADED, conversations);
+    });
+  }
+
+  private getInbox(): Observable<any> {
     this.messageService.totalUnreadMessages = 0;
     return this.http.get(this.API_URL)
     .map(res => {
@@ -42,7 +55,7 @@ export class InboxService {
     });
   }
 
-  public saveInbox(inboxConversations: InboxConversation[]) {
+  private saveInbox(inboxConversations: InboxConversation[]) {
     this.persistencyService.updateInbox(inboxConversations);
   }
 
