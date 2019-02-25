@@ -59,7 +59,7 @@ export class InboxService {
       }
       const user = this.buildInboxUser(conv.with_user);
       const item = this.buildInboxItem(conv.item);
-      const conversation = new InboxConversation(conv.conversation_hash, dateModified, user, item, lastMessage,
+      const conversation = new InboxConversation(conv.hash, dateModified, user, item, lastMessage,
         conv.messages, conv.unread_messages || 0, conv.phone_shared);
       this.messageService.totalUnreadMessages += conversation.unreadCounter;
       return conversation;
@@ -67,7 +67,7 @@ export class InboxService {
   }
 
   private buildInboxUser(user: any) {
-    return new InboxUser(user.id, user.name, user.blocked);
+    return new InboxUser(user.hash, user.name, user.blocked);
   }
 
   private buildInboxItem(item) {
