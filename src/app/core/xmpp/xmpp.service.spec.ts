@@ -300,7 +300,7 @@ describe('Service: Xmpp', () => {
       eventService.emit('message', MOCKED_SERVER_MESSAGE);
       tick();
 
-      expect(msg.conversationId).toEqual('thread');
+      expect(msg.thread).toEqual('thread');
       expect(msg.message).toEqual('body');
       expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
     }));
@@ -386,7 +386,7 @@ describe('Service: Xmpp', () => {
       });
       tick();
 
-      expect(msg.conversationId).toEqual('thread');
+      expect(msg.thread).toEqual('thread');
       expect(msg.message).toEqual('body');
       expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
       expect(msg.payload.type).toEqual('review');
@@ -478,7 +478,7 @@ describe('Service: Xmpp', () => {
       });
       tick();
 
-      expect(msg.conversationId).toEqual('thread');
+      expect(msg.thread).toEqual('thread');
       expect(msg.message).toEqual('body');
       expect(msg.from).toBe(MOCKED_SERVER_MESSAGE.from.local);
     }));
@@ -816,12 +816,12 @@ describe('Service: Xmpp', () => {
     it('should sent a received message when sendMessageDeliveryReceipt method is called', () => {
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
 
-      service.sendMessageDeliveryReceipt(MOCK_MESSAGE.from, MOCK_MESSAGE.id, MOCK_MESSAGE.conversationId);
+      service.sendMessageDeliveryReceipt(MOCK_MESSAGE.from, MOCK_MESSAGE.id, MOCK_MESSAGE.thread);
 
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
         to: new XMPP.JID(MOCK_MESSAGE.from, environment.xmppDomain, service['resource']),
         type: 'chat',
-        thread: MOCK_MESSAGE.conversationId,
+        thread: MOCK_MESSAGE.thread,
         received: {
           xmlns: 'urn:xmpp:receipts',
           id: MOCK_MESSAGE.id

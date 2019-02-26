@@ -269,7 +269,7 @@ export class ConversationService extends LeadService {
           const trackEvent: TrackingEventData = {
             eventData: TrackingService.MESSAGE_RECEIVED_ACK,
             attributes: {
-              thread_id: message.conversationId,
+              thread_id: message.thread,
               message_id: message.id
             }
           };
@@ -299,8 +299,8 @@ export class ConversationService extends LeadService {
   }
 
 
-  private markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = false) {
-    const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
+  private markAllAsRead(thread: string, timestamp?: number, fromSelf: boolean = false) {
+    const conversation = this.leads.find(c => c.id === thread) || this.archivedLeads.find(c => c.id === thread);
     if (conversation) {
       const unreadMessages = conversation.messages.filter(message => (message.status === messageStatus.RECEIVED ||
         message.status === messageStatus.SENT) && (fromSelf ? message.fromSelf &&
@@ -309,7 +309,7 @@ export class ConversationService extends LeadService {
         message.status = messageStatus.READ;
         this.persistencyService.updateMessageStatus(message, messageStatus.READ);
         const eventAttributes = {
-          thread_id: message.conversationId,
+          thread_id: message.thread,
           message_id: message.id
         };
         this.trackingService.addTrackingEvent({
@@ -342,7 +342,7 @@ export class ConversationService extends LeadService {
     const trackingEv: TrackingEventData = {
       eventData: null,
       attributes: {
-        thread_id: message.conversationId,
+        thread_id: message.thread,
         message_id: message.id
       }
     };
@@ -459,8 +459,8 @@ export class ConversationService extends LeadService {
     }
   }
 
-  public getItemFromConvId(conversationId: string): Item {
-    return _.find(this.leads, {id: conversationId}).item;
+  public getItemFromThread(thread: string): Item {
+    return _.find(this.leads, {id: thread}).item;
   }
 
   public getByItemId(itemId): Observable<NewConversationResponse> {
@@ -513,7 +513,7 @@ export class ConversationService extends LeadService {
   }
 
   private onNewMessage(message: Message, updateDate: boolean) {
-    const conversation: Conversation = (<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId);
+    const conversation: Conversation = (<Conversation[]>this.leads).find((c: Conversation) => c.id === message.thread);
     const messageToUpdate: Message = conversation ? conversation.messages.find((m: Message) => m.id === message.id) : null;
     if (updateDate && messageToUpdate) {
       messageToUpdate.date = message.date;
@@ -535,7 +535,7 @@ export class ConversationService extends LeadService {
           }
         });
       } else {
-        const archivedConversationIndex: number = _.findIndex(this.archivedLeads, {'id': message.conversationId});
+        const archivedConversationIndex: number = _.findIndex(this.archivedLeads, {'id': message.thread});
         if (archivedConversationIndex > -1) {
           const unarchivedConversation: Conversation = (<Conversation[]>this.archivedLeads).splice(archivedConversationIndex, 1)[0];
           unarchivedConversation.archived = false;
@@ -574,8 +574,8 @@ export class ConversationService extends LeadService {
   }
 
   private requestConversationInfo(message: Message) {
-    this.get(message.conversationId).subscribe((conversation: Conversation) => {
-      if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId)) {
+    this.get(message.thread).subscribe((conversation: Conversation) => {
+      if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.thread)) {
         this.getSingleConversationMessages(conversation).subscribe(() => {
           this.addConversation(conversation, message);
           this.event.emit(EventService.MSG_ARCHIVE_LOADED);

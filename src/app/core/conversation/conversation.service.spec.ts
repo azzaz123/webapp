@@ -1300,11 +1300,11 @@ describe('Service: Conversation', () => {
     });
   });
 
-  describe('getItemFromConvId', () => {
+  describe('getItemFromThread', () => {
     it('should return item', () => {
       service.leads = createConversationsArray(4);
 
-      const item: Item = service.getItemFromConvId('2');
+      const item: Item = service.getItemFromThread('2');
 
       expect(item instanceof Item).toBe(true);
       expect(item.id).toBe(ITEM_ID);
@@ -1369,7 +1369,7 @@ describe('Service: Conversation', () => {
 
         expect(service.leads[0].id).toEqual(MESSAGE_MAIN.thread);
         expect(service.leads[0].messages.length).toEqual(1);
-        expect(service.leads[0].messages[0].conversationId).toEqual(MESSAGE_MAIN.thread);
+        expect(service.leads[0].messages[0].thread).toEqual(MESSAGE_MAIN.thread);
         expect(service.leads[0].messages[0].message).toEqual(MESSAGE_MAIN.body);
         expect(service.leads[0].messages[0] instanceof Message).toBe(true);
         expect(service.leads[1].messages.length).toEqual(0);
@@ -1684,7 +1684,7 @@ describe('Service: Conversation', () => {
         expect(trackingService.addTrackingEvent).toHaveBeenCalledWith({
           eventData: TrackingService.MESSAGE_RECEIVED_ACK,
           attributes: {
-            thread_id: message.conversationId,
+            thread_id: message.thread,
             message_id: message.id
           }
         }, false);

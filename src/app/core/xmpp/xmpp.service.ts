@@ -72,11 +72,11 @@ export class XmppService {
     return message;
   }
 
-  public sendConversationStatus(userId: string, conversationId: string) {
+  public sendConversationStatus(userId: string, thread: string) {
     this.client.sendMessage({
       to: this.createJid(userId),
       type: 'chat',
-      thread: conversationId,
+      thread: thread,
       read: {
         xmlns: 'wallapop:thread:status'
       }

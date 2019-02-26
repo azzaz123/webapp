@@ -164,7 +164,7 @@ export class MsgArchiveService {
   public updateStatuses(messages: Message[], readReceipts: ReadReceipt[], receivedReceipts: ReceivedReceipt[]) {
     readReceipts.forEach(r => {
       messages.filter(m => {
-        const threadMatches = m.conversationId === r.thread;
+        const threadMatches = m.thread === r.thread;
         /* senderMatches: The first part of ternary condition is used to match 3rd voice messages, where 'from' = the id of the user
         logged in, so the readReceipts match inversley (example: a 3rd voice message will have 'from' as my user id, but it should be
         marked as read with a read receipt sent by me, to the other user id) */

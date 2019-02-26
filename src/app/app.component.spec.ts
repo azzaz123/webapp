@@ -530,9 +530,9 @@ describe('App', () => {
   describe('process chat signals', () => {
     it('should call conversationService.processChatSignal when a CHAT_SIGNAL event is emitted with a Sent, Received or Read signal', () => {
       const timestamp = new Date(MOCK_MESSAGE.date).getTime();
-      const sentSignal = new ChatSignal(chatSignalType.SENT, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id);
-      const receivedSignal =  new ChatSignal(chatSignalType.RECEIVED, MOCK_MESSAGE.conversationId, timestamp, MOCK_MESSAGE.id);
-      const readSignal = new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.conversationId, timestamp, null, false);
+      const sentSignal = new ChatSignal(chatSignalType.SENT, MOCK_MESSAGE.thread, timestamp, MOCK_MESSAGE.id);
+      const receivedSignal =  new ChatSignal(chatSignalType.RECEIVED, MOCK_MESSAGE.thread, timestamp, MOCK_MESSAGE.id);
+      const readSignal = new ChatSignal(chatSignalType.READ, MOCK_MESSAGE.thread, timestamp, null, false);
       const testWithignals = [sentSignal, receivedSignal, readSignal];
       spyOn(conversationService, 'processChatSignal');
       component.ngOnInit();

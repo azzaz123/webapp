@@ -56,7 +56,7 @@ export class MessageService {
         const res: MsgArchiveResponse = {
           messages: messages.map((message: any): Message => {
             const msg = new Message(message.doc._id,
-              message.doc.conversationId,
+              message.doc.thread,
               message.doc.message,
               message.doc.from,
               message.doc.date,
@@ -108,7 +108,7 @@ export class MessageService {
     messages.filter(message => !message.fromSelf).map(message => {
       const msgAlreadyConfirmed = receivedReceipts.find(receipt => receipt.messageId === message.id);
       if (!msgAlreadyConfirmed) {
-        this.realTime.sendDeliveryReceipt(message.from, message.id, message.conversationId);
+        this.realTime.sendDeliveryReceipt(message.from, message.id, message.thread);
       }
     });
   }
@@ -120,7 +120,7 @@ export class MessageService {
         return this.archiveService.getEventsSince(resp.data.start).map(r => {
           this.persistencyService.saveMetaInformation({ start: r.metaDate, last: null });
           if (r.messages.length) {
-            const messagesByThread = _.groupBy(r.messages, 'conversationId');
+            const messagesByThread = _.groupBy(r.messages, 'thread');
             Object.keys(messagesByThread).map((thread) => {
               const msgAndSingalsForThread = {
                 messages: messagesByThread[thread],
@@ -151,7 +151,7 @@ export class MessageService {
               this.totalUnreadMessages = 0;
             }
 
-            const updateMessagesByThread = _.groupBy(updatedMesages, 'conversationId');
+            const updateMessagesByThread = _.groupBy(updatedMesages, 'thread');
             Object.keys(updateMessagesByThread).map((thread) => {
               const unreadCount = updateMessagesByThread[thread].filter(m => !m.fromSelf && m.status !== messageStatus.READ).length;
               const conv = conversations.find(c => c.id === thread);

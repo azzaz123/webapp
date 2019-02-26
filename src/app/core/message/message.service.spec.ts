@@ -329,7 +329,7 @@ describe('Service: Message', () => {
             metaDate: timestamp
           }));
           conversations = createConversationsArray(1);
-          conversations[0]['_id'] = messagesArray[0].conversationId;
+          conversations[0]['_id'] = messagesArray[0].thread;
         });
 
         it('should set statuses to READ for all new messages of an ARCHIVED conversation which are NOT fromSelf', () => {
@@ -347,7 +347,7 @@ describe('Service: Message', () => {
 
           expect(realTime.sendDeliveryReceipt).toHaveBeenCalledTimes(messagesArray.length);
           messagesArray.map(msg => {
-            expect(realTime.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.conversationId);
+            expect(realTime.sendDeliveryReceipt).toHaveBeenCalledWith(msg.from, msg.id, msg.thread);
           });
         });
 
@@ -369,7 +369,7 @@ describe('Service: Message', () => {
           messagesArray.map(m => m['_from'] = OTHER_USER_ID);
           messagesArray.map(m => m.status = messageStatus.RECEIVED);
           const clonedMockDbResponse = JSON.parse(JSON.stringify(MOCK_DB_FILTERED_RESPONSE));
-          clonedMockDbResponse.map(msg => msg.thread = messagesArray[0].conversationId);
+          clonedMockDbResponse.map(msg => msg.thread = messagesArray[0].thread);
           spyOn(persistencyService, 'getMessages').and.returnValue(Observable.of(clonedMockDbResponse));
           spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({
             messages: messagesArray,
@@ -378,7 +378,7 @@ describe('Service: Message', () => {
             metaDate: timestamp
           }));
           conversations = createConversationsArray(1);
-          conversations[0]['_id'] = messagesArray[0].conversationId;
+          conversations[0]['_id'] = messagesArray[0].thread;
           service.getMessages(conversations[0]).subscribe(r => existingMessages = r.data);
           newAndOldMessages = existingMessages.concat(messagesArray);
         });

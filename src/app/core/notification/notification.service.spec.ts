@@ -111,7 +111,7 @@ describe('Service: Notification', () => {
         service.sendBrowserNotification(MOCK_MESSAGE, MOCK_ITEM.id);
         tick(NOTIFICATION_DURATION + 1000);
         expect(trackingService.track).toHaveBeenCalledWith(TrackingService.NOTIFICATION_RECEIVED,
-          { thread_id: MOCK_MESSAGE.conversationId,
+          { thread_id: MOCK_MESSAGE.thread,
             message_id: MOCK_MESSAGE.id });
       }));
     });
