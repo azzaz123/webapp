@@ -29,8 +29,7 @@ export class InboxConversation {
               private _modifiedDate: number,
               private _user?: InboxUser,
               private _item?: InboxItem,
-              private _lastMessage?: any,
-              private _messages: Array<Message> = [],
+              private _lastMessage?: Message,
               private _unreadCounter: number = 0,
               private _archived: boolean = false,
               private _phoneShared?: boolean) {
@@ -70,14 +69,6 @@ export class InboxConversation {
 
   get lastMessage(): any {
     return this._lastMessage;
-  }
-
-  set messages(value: Array<Message>) {
-    this._messages = value;
-  }
-
-  get messages(): Array<Message> {
-    return this._messages;
   }
 
   set unreadCounter(value: number) {

@@ -144,7 +144,7 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
           tempMsg.payload);
       message.fromSelf = tempMsg.from === 'self';
 
-      return new InboxConversation(id, date, new InboxUser(userId), new InboxItem(ITEM_ID), message, [message], 0, false, false);
+      return new InboxConversation(id, date, new InboxUser(userId), new InboxItem(ITEM_ID), message, 0, false, false);
 };
 export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConversation('secondId', CONVERSATION_DATE,
   new InboxUser(OTHER_USER_ID), new InboxItem(ITEM_ID));
