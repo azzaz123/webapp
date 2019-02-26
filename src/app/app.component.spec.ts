@@ -35,7 +35,6 @@ import { CallsService } from './core/conversation/calls.service';
 import { MOCK_ITEM_V3 } from '../tests/item.fixtures.spec';
 import { PaymentService } from './core/payments/payment.service';
 import { MOCK_MESSAGE } from '../tests/message.fixtures.spec';
-import { messageStatus } from './core/message/message';
 import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal, chatSignalType } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';

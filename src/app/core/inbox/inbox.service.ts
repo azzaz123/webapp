@@ -8,7 +8,7 @@ import { InboxItem } from '../item/item';
 import { InboxUser } from '../user/user';
 import { InboxImage } from '../user/user-response.interface';
 import { FeatureflagService } from '../user/featureflag.service';
-import { Message } from '../message/message';
+import { Message, messageStatus, statusOrder } from '../message/message';
 import { EventService } from '../event/event.service';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 
@@ -39,17 +39,13 @@ export class InboxService {
   }
 
   public init() {
-    console.log('subscribe 1');
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      console.log('nsw Msg', message);
       this.updateInboxConversation(message);
-      // this.updateLastMessage(message);
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
       this.updateInboxConversation(signal);
     });
     this.getInbox().subscribe((conversations: InboxConversation[]) => {
-      console.log('ping');
       this.saveInbox(conversations);
       this.eventService.emit(EventService.INBOX_LOADED, conversations);
     });
@@ -70,21 +66,23 @@ export class InboxService {
   }
 
   public updateInboxConversation(arg: Message | ChatSignal) {
-    this.updateLastMessage(arg);
-  }
-
-  private updateLastMessage(arg: Message | ChatSignal) {
     const conversation = this.conversations.find(c => c.id === arg.thread);
     if (conversation) {
       if (arg instanceof Message) {
-        conversation.lastMessage = arg;
-      } else if (arg instanceof ChatSignal && !arg.fromSelf) {
-        switch (arg.type) {
-          case chatSignalType.READ:
-          {}
-        }
-        // TODO - u`date msg status here
+        const newMessage = arg;
+        conversation.lastMessage = newMessage;
+      } else if (!arg.fromSelf) {
+        this.processChatSignal(arg, conversation.lastMessage);
       }
+        }
+      }
+
+  private processChatSignal(signal: ChatSignal, lastMessage: Message) {
+    const newStatus = signal.type;
+    if (signal.type === chatSignalType.READ && signal.timestamp >= lastMessage.date.getTime()) {
+      lastMessage.status = messageStatus.READ;
+    } else if (signal.messageId === lastMessage.id  && statusOrder.indexOf(newStatus) > statusOrder.indexOf(lastMessage.status)) {
+      lastMessage.status = newStatus;
     }
   }
 
