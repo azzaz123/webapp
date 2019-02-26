@@ -942,7 +942,7 @@ describe('Service: Conversation', () => {
       });
     });
 
-    describe('when called with fromSelf = true', () => {
+    describe('when processing a READ chat signal NOT fromSelf', () => {
       it(`should update status to READ and push tracking event MESSAGE_READ for messages fromSelf and status RECEIVED`, () => {
         mockedConversation.messages.map((m, index) => {
           m.fromSelf = index < unreadCount ? true : false;
@@ -951,7 +951,7 @@ describe('Service: Conversation', () => {
         expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === messageStatus.SENT || m.status === messageStatus.RECEIVED));
         expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
         service.processChatSignal(signal);
 
         const attributes = {
@@ -981,7 +981,7 @@ describe('Service: Conversation', () => {
         expectedMarkedAsRead = mockedConversation.messages.filter(m => m.fromSelf && (m.status === messageStatus.SENT || m.status === messageStatus.RECEIVED));
         expectedNotMarkedAsRead = mockedConversation.messages.filter(m => !m.fromSelf);
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
         service.processChatSignal(signal);
 
         const attributes = {
@@ -1009,7 +1009,7 @@ describe('Service: Conversation', () => {
           m.status = messageStatus.PENDING;
         });
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
         service.processChatSignal(signal);
 
         expect(persistencyService.updateMessageStatus).not.toHaveBeenCalled();
@@ -1017,21 +1017,21 @@ describe('Service: Conversation', () => {
       });
 
       it('should NOT decrase the unreadMessages counter of the conversation', () => {
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
         service.processChatSignal(signal);
 
         expect(mockedConversation.unreadMessages).toBe(unreadCount);
       });
 
       it('should NOT decrease messageService.totalUnreadMessages counter', () => {
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
+        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
         service.processChatSignal(signal);
 
         expect(messageService.totalUnreadMessages).toBe(unreadCount);
       });
     });
 
-    describe('when called with fromSelf = false', () => {
+    describe('when processing a READ chat signal fromSelf', () => {
       beforeEach(() => {
         mockedConversation.messages.map((m, index) => {
           m.fromSelf = index < unreadCount ? false : true;
@@ -1042,7 +1042,7 @@ describe('Service: Conversation', () => {
       });
 
       it(`should update status to READ and push tracking events MESSAGE_READ_ACK for messages NOT fromSelf`, () => {
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
         service.processChatSignal(signal);
 
         const attributes = {
@@ -1067,7 +1067,7 @@ describe('Service: Conversation', () => {
       it('should decrase the unreadMessages counter of the conversation by the number of messages that are being marked as READ', () => {
         expect(mockedConversation.unreadMessages).toBe(unreadCount);
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
         service.processChatSignal(signal);
 
         expect(mockedConversation.unreadMessages).toBe(0);
@@ -1077,7 +1077,7 @@ describe('Service: Conversation', () => {
         than the existing counter (disallow negative values in counter)`, () => {
         mockedConversation.unreadMessages = 1;
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
         service.processChatSignal(signal);
 
         expect(mockedConversation.unreadMessages).toBe(0);
@@ -1086,7 +1086,7 @@ describe('Service: Conversation', () => {
       it('should decrase messageService.totalUnreadMessages counter by the number of messages that are being marked as READ', () => {
         expect(mockedConversation.unreadMessages).toBe(unreadCount);
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
         service.processChatSignal(signal);
 
         expect(messageService.totalUnreadMessages).toBe(0);
@@ -1096,7 +1096,7 @@ describe('Service: Conversation', () => {
         than the existing counter (disallow negative values in counter)`, () => {
         mockedConversation.unreadMessages = 1;
 
-        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, false);
+        const signal = new ChatSignal(chatSignalType.READ, mockedConversation.id, Date.now(), null, true);
         service.processChatSignal(signal);
 
         expect(messageService.totalUnreadMessages).toBe(0);

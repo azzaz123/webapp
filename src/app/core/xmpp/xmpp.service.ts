@@ -232,7 +232,7 @@ export class XmppService {
     } else if (!message.carbon && message.sentReceipt) {
       signal = new ChatSignal(chatSignalType.SENT, message.thread, message.date, message.sentReceipt.id);
     } else if (message.readReceipt) {
-      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date, null, !this.isFromSelf(message));
+      signal = new ChatSignal(chatSignalType.READ, message.thread, message.date, null, this.isFromSelf(message));
     }
 
     if (signal) {

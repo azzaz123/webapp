@@ -291,7 +291,9 @@ export class ConversationService extends LeadService {
         this.markAs(messageStatus.RECEIVED, signal.messageId, signal.thread);
         break;
       case chatSignalType.READ:
-        this.markAllAsRead(signal.thread, signal.timestamp, signal.fromSelf);
+        /* the last argument passed to markAllAsRead is the reverse of fromSelf, as markAllAsRead method uses it to filter which messages
+           it should mark with status 'read'; when receiving a READ signal fromSelf we want to mark as 'read' messages from other */
+        this.markAllAsRead(signal.thread, signal.timestamp, !signal.fromSelf);
         break;
       default:
         break;
@@ -299,11 +301,11 @@ export class ConversationService extends LeadService {
   }
 
 
-  private markAllAsRead(thread: string, timestamp?: number, fromSelf: boolean = false) {
+  private markAllAsRead(thread: string, timestamp?: number, markMessagesFromSelf: boolean = false) {
     const conversation = this.leads.find(c => c.id === thread) || this.archivedLeads.find(c => c.id === thread);
     if (conversation) {
       const unreadMessages = conversation.messages.filter(message => (message.status === messageStatus.RECEIVED ||
-        message.status === messageStatus.SENT) && (fromSelf ? message.fromSelf &&
+        message.status === messageStatus.SENT) && (markMessagesFromSelf ? message.fromSelf &&
         new Date(message.date).getTime() <= timestamp : !message.fromSelf));
       unreadMessages.map((message) => {
         message.status = messageStatus.READ;
@@ -313,11 +315,11 @@ export class ConversationService extends LeadService {
           message_id: message.id
         };
         this.trackingService.addTrackingEvent({
-          eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
+          eventData: markMessagesFromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
           attributes: eventAttributes
         }, false);
       });
-      if (!fromSelf) {
+      if (!markMessagesFromSelf) {
         conversation.unreadMessages -= unreadMessages.length;
         this.messageService.totalUnreadMessages -= unreadMessages.length;
       }
