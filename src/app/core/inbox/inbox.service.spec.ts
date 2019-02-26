@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { InboxService } from './inbox.service';
 import { MessageService } from '../message/message.service';
-import { InboxConversation } from '../conversation/conversation';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { HttpService } from '../http/http.service';
 import { PersistencyService } from '../persistency/persistency.service';

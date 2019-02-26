@@ -128,11 +128,12 @@ export const MOCK_INBOX_API_RESPONSE = `{
     ]
   }`;
   export const MOCK_INBOX_CONVERSATION = JSON.parse(MOCK_INBOX_API_RESPONSE).conversations[0];
+  export const INBOX_CONVERSATION_DATE: Date = new Date();
 
 export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
     id: string = CONVERSATION_ID,
     userId: string = OTHER_USER_ID,
-    date: number = CONVERSATION_DATE): InboxConversation => {
+    date: Date = INBOX_CONVERSATION_DATE): InboxConversation => {
       const tempMsg = MOCK_INBOX_CONVERSATION.messages[0];
       const message = new Message(
           tempMsg.id,
@@ -146,13 +147,13 @@ export const CREATE_MOCK_INBOX_CONVERSATION: Function = (
 
       return new InboxConversation(id, date, new InboxUser(userId), new InboxItem(ITEM_ID), message, 0, false, false);
 };
-export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConversation('secondId', CONVERSATION_DATE,
+export const SECOND_MOCK_INBOX_CONVERSATION: InboxConversation = new InboxConversation('secondId', INBOX_CONVERSATION_DATE,
   new InboxUser(OTHER_USER_ID), new InboxItem(ITEM_ID));
 export const MOCKED_INBOX_CONVERSATIONS: InboxConversation[] = [CREATE_MOCK_INBOX_CONVERSATION(), SECOND_MOCK_INBOX_CONVERSATION];
 export const NOT_FOUND_INBOX_CONVERSATION_ID = 'notFound';
 export const MOCK_NOT_FOUND_INBOX_CONVERSATION: InboxConversation = new InboxConversation(
   NOT_FOUND_INBOX_CONVERSATION_ID,
-  CONVERSATION_DATE,
+  INBOX_CONVERSATION_DATE,
   new InboxUser(OTHER_USER_ID),
   new InboxItem(ITEM_ID));
 

@@ -26,7 +26,7 @@ export class Conversation extends Lead {
 export class InboxConversation {
 
   constructor(private _id: string,
-              private _modifiedDate: number,
+              private _modifiedDate: Date,
               private _user?: InboxUser,
               private _item?: InboxItem,
               private _lastMessage?: Message,
@@ -39,11 +39,11 @@ export class InboxConversation {
     return this._id;
   }
 
-  set modifiedDate(value: number) {
+  set modifiedDate(value: Date) {
     this._modifiedDate = value;
   }
 
-  get modifiedDate(): number {
+  get modifiedDate(): Date {
     return this._modifiedDate;
   }
 
@@ -63,11 +63,11 @@ export class InboxConversation {
     return this._item;
   }
 
-  set lastMessage(lastMessage: any) {
+  set lastMessage(lastMessage: Message) {
     this._lastMessage = lastMessage;
   }
 
-  get lastMessage(): any {
+  get lastMessage(): Message {
     return this._lastMessage;
   }
 

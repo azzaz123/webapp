@@ -71,6 +71,7 @@ export class InboxService {
       if (arg instanceof Message) {
         const newMessage = arg;
         conversation.lastMessage = newMessage;
+        conversation.modifiedDate = conversation.lastMessage.date;
       } else if (!arg.fromSelf) {
         this.processChatSignal(arg, conversation.lastMessage);
       }
@@ -89,13 +90,13 @@ export class InboxService {
   private buildConversations(conversations): InboxConversation[] {
     return conversations.map(conv => {
       let lastMessage: Message = null;
-      let dateModified = null;
+      let dateModified: Date = null;
       if (conv.messages && conv.messages.length) {
         const lastMsg = conv.messages[conv.messages.length - 1];
         lastMessage = new Message(lastMsg.id, conv.hash, lastMsg.text, lastMsg.from_user_hash, new Date(lastMsg.timestamp),
         lastMsg.status, lastMsg.payload);
         lastMessage.fromSelf = lastMessage.from !== conv.with_user.hash;
-        dateModified = new Date(lastMsg.timestamp).getTime();
+        dateModified = new Date(lastMsg.timestamp);
       }
       const user = this.buildInboxUser(conv.with_user);
       const item = this.buildInboxItem(conv.item);
