@@ -34,8 +34,7 @@ export class InboxService {
   }
 
   public getInboxFeatureFlag(): Observable<boolean> {
-    return Observable.of(true);
-    // return this.featureflagService.getFlag('web_inbox_projections');
+    return this.featureflagService.getFlag('web_inbox_projections');
   }
 
   public init() {
@@ -53,8 +52,7 @@ export class InboxService {
 
   private getInbox(): Observable<any> {
     this.messageService.totalUnreadMessages = 0;
-    // return this.http.get(this.API_URL)
-    return this.http.getNoBase('assets/json/inbox-projection-data-contract.json')
+    return this.http.get(this.API_URL)
     .map(res => {
       const r = res.json();
       return this.conversations = this.buildConversations(r.conversations);
