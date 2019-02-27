@@ -39,14 +39,15 @@ export class InboxService {
 
   public init() {
     this.eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
-      this.updateInboxConversation(message);
+      this.processNewMessage(message);
     });
     this.eventService.subscribe(EventService.CHAT_SIGNAL, (signal: ChatSignal) => {
-      this.updateInboxConversation(signal);
+      this.processChatSignal(signal);
     });
     this.getInbox().subscribe((conversations: InboxConversation[]) => {
       this.saveInbox(conversations);
       this.eventService.emit(EventService.INBOX_LOADED, conversations);
+      this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
     });
   }
 
@@ -63,25 +64,37 @@ export class InboxService {
     this.persistencyService.updateInbox(inboxConversations);
   }
 
-  public updateInboxConversation(arg: Message | ChatSignal) {
-    const conversation = this.conversations.find(c => c.id === arg.thread);
+  private processNewMessage(message: Message) {
+    const conversation = this.conversations.find(c => c.id === message.thread);
     if (conversation) {
-      if (arg instanceof Message) {
-        const newMessage = arg;
+      const newMessage = message;
         conversation.lastMessage = newMessage;
         conversation.modifiedDate = conversation.lastMessage.date;
-      } else if (!arg.fromSelf) {
-        this.processChatSignal(arg, conversation.lastMessage);
+      if (!message.fromSelf) {
+        conversation.unreadCounter++;
+        this.messageService.totalUnreadMessages++;
       }
         }
       }
 
-  private processChatSignal(signal: ChatSignal, lastMessage: Message) {
+  private processChatSignal(signal: ChatSignal) {
+    const conversation = this.conversations.find(c => c.id === signal.thread);
     const newStatus = signal.type;
+    if (conversation) {
+      const lastMessage = conversation.lastMessage;
     if (signal.type === chatSignalType.READ && signal.timestamp >= lastMessage.date.getTime()) {
       lastMessage.status = messageStatus.READ;
+        this.updateUnreadCounters(signal, conversation);
     } else if (signal.messageId === lastMessage.id  && statusOrder.indexOf(newStatus) > statusOrder.indexOf(lastMessage.status)) {
       lastMessage.status = newStatus;
+    }
+  }
+  }
+
+  private updateUnreadCounters(signal: ChatSignal, conversation: InboxConversation) {
+    if (signal.fromSelf) {
+      this.messageService.totalUnreadMessages -= conversation.unreadCounter;
+      conversation.unreadCounter = 0;
     }
   }
 
