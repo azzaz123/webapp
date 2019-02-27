@@ -95,6 +95,14 @@ describe('InboxService', () => {
 
       expect(eventService.emit).toHaveBeenCalledWith(EventService.INBOX_LOADED, parsedConversaitonsResponse);
     });
+
+    it('should emit a EventService.CHAT_CAN_PROCESS_RT with TRUE after getInbox returns', () => {
+      spyOn(eventService, 'emit').and.callThrough();
+
+      service.init();
+
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
+    });
   });
 
 });

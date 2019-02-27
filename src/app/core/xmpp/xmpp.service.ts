@@ -22,8 +22,8 @@ export class XmppService {
   private clientConnected$: ReplaySubject<boolean> = new ReplaySubject(1);
   public blockedUsers: string[];
   private thirdVoiceEnabled: string[] = ['drop_price', 'review'];
-  private messageQ: Array<XmppBodyMessage> = [];
-  private archiveFinishedLoaded = false;
+  private realtimeQ: Array<XmppBodyMessage> = [];
+  private canProcessRealtime = true;
   private xmppError = { mesasge: 'XMPP disconnected' };
 
   constructor(private eventService: EventService) {
@@ -131,19 +131,18 @@ export class XmppService {
   }
 
   private bindEvents(): void {
-    this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADING, () => {
-      this.archiveFinishedLoaded = false;
-    });
-    this.eventService.subscribe(EventService.MSG_ARCHIVE_LOADED, () => {
-      this.archiveFinishedLoaded = true;
-      this.messageQ.map(m => this.onNewMessage(m));
+    this.eventService.subscribe(EventService.CHAT_CAN_PROCESS_RT, (val) => {
+      this.canProcessRealtime = val;
+      if (val) {
+        this.realtimeQ.map(m => this.onNewMessage(m));
+      }
     });
 
     this.client.enableKeepAlive({
       interval: 30
     });
     this.client.on('message', (message: XmppBodyMessage) => {
-      this.archiveFinishedLoaded ? this.onNewMessage(message) : this.messageQ.push(message);
+      this.canProcessRealtime ? this.onNewMessage(message) : this.realtimeQ.push(message) ;
     });
     this.client.on('message:sent', (message: XmppBodyMessage) => {
       if (message.received) {
@@ -197,7 +196,7 @@ export class XmppService {
   }
 
   private onNewMessage(message: XmppBodyMessage, markAsPending = false) {
-      const replaceTimestamp = !message.timestamp || message.carbonSent;
+    const replaceTimestamp = !message.timestamp || message.carbonSent;
     if (message.carbonSent) {
       message = message.carbonSent.forwarded.message;
     }

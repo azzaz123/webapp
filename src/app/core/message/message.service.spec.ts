@@ -267,15 +267,15 @@ describe('Service: Message', () => {
         connectionService.isConnected = true;
       });
 
-      it('should emit a MSG_ARCHIVE_LOADING event after it retrieves the meta information', () => {
+      it('should emit a CHAT_CAN_PROCESS_RT event with FALSE after it retrieves the meta information', () => {
         spyOn(eventService, 'emit');
         spyOn(archiveService, 'getEventsSince').and.callFake(() => []);
         service.getNotSavedMessages(conversations, false).subscribe();
 
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.MSG_ARCHIVE_LOADING);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, false);
       });
 
-      it('should emit a MSG_ARCHIVE_LOADED event after archiveService.getEventsSince returns', () => {
+      it('should emit a CHAT_CAN_PROCESS_RT event with TRUE after archiveService.getEventsSince returns', () => {
         spyOn(eventService, 'emit');
         spyOn(archiveService, 'getEventsSince').and.returnValue(Observable.of({
           messages: messagesArray,
@@ -284,7 +284,7 @@ describe('Service: Message', () => {
         }));
         service.getNotSavedMessages(conversations, false).subscribe();
 
-        expect(eventService.emit).toHaveBeenCalledWith(EventService.MSG_ARCHIVE_LOADED);
+        expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
       });
 
       it('should get the meta information from the database', () => {

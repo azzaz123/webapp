@@ -87,7 +87,7 @@ export class ConversationService extends LeadService {
               this.ended.processed = false;
             }
             this.firstLoad = false;
-            this.event.emit(EventService.MSG_ARCHIVE_LOADED);
+            this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
             return convWithMessages;
           });
       } else {
@@ -509,7 +509,7 @@ export class ConversationService extends LeadService {
       this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
         this.messageService.totalUnreadMessages + conversation.unreadMessages :
         conversation.unreadMessages;
-      this.event.emit(EventService.MSG_ARCHIVE_LOADED);
+      this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       return conversation;
     });
   }
@@ -580,7 +580,7 @@ export class ConversationService extends LeadService {
       if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.thread)) {
         this.getSingleConversationMessages(conversation).subscribe(() => {
           this.addConversation(conversation, message);
-          this.event.emit(EventService.MSG_ARCHIVE_LOADED);
+          this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
         });
       }
     });

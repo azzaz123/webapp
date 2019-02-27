@@ -77,7 +77,7 @@ export class MessageService {
         return Observable.of(res);
       } else if (this.connectionService.isConnected) {
         if (firstArchive) {
-          this.eventService.emit(EventService.MSG_ARCHIVE_LOADING);
+          this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
         }
         return this.archiveService.getAllEvents(conversation.id).map(r => {
           this.persistencyService.saveMetaInformation({start: r.metaDate, last: null});
@@ -116,7 +116,7 @@ export class MessageService {
   public getNotSavedMessages(conversations: Conversation[], archived: boolean): Observable<Conversation[]> {
     if (this.connectionService.isConnected) {
       return this.persistencyService.getMetaInformation().flatMap((resp: StoredMetaInfoData) => {
-        this.eventService.emit(EventService.MSG_ARCHIVE_LOADING);
+        this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
         return this.archiveService.getEventsSince(resp.data.start).map(r => {
           this.persistencyService.saveMetaInformation({ start: r.metaDate, last: null });
           if (r.messages.length) {
@@ -161,7 +161,7 @@ export class MessageService {
               }
             });
           }
-          this.eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+          this.eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
           return conversations;
         });
       });

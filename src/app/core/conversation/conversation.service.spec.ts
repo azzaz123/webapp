@@ -1711,7 +1711,7 @@ describe('Service: Conversation', () => {
   });
 
   describe('getSingleConversationMessages', () => {
-    it('should call messageService.getMessages, return the conversation with messages and emit a MSG_ARCHIVE_LOADED event', fakeAsync(() => {
+    it('should call messageService.getMessages, return the conversation with messages and emit a CHAT_CAN_PROCESS_RT event with true', fakeAsync(() => {
       spyOn(messageService, 'getMessages').and.returnValue(Observable.of({data: [MOCK_MESSAGE, MOCK_RANDOM_MESSAGE]}));
       spyOn(eventService, 'emit');
       let conversation = SECOND_MOCK_CONVERSATION;
@@ -1723,7 +1723,7 @@ describe('Service: Conversation', () => {
 
       expect(messageService.getMessages).toHaveBeenCalled();
       expect(conversation).toEqual(expectedConversation);
-      expect(eventService.emit).toHaveBeenCalledWith(EventService.MSG_ARCHIVE_LOADED);
+      expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_CAN_PROCESS_RT, true);
     }));
 
     it('should emit a REQUEST_PHONE event when the conversation has no messages AND getPhoneInfo returns a phone method type', fakeAsync(() => {

@@ -292,7 +292,7 @@ describe('Service: Xmpp', () => {
     it('should emit a newMessage event on the message xmpp received', fakeAsync(() => {
       let msg: Message;
       eventService.emit('session:started', null);
-      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+      eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
         msg = message;
       });
@@ -309,7 +309,7 @@ describe('Service: Xmpp', () => {
       a delivery receipt request`, fakeAsync(() => {
       let expectedVal;
       eventService.emit('session:started', null);
-      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+      eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       eventService.subscribe(EventService.NEW_MESSAGE, (message: Message, updateTimestamp: boolean, withDeliveryReceipt: boolean) => {
         expectedVal = withDeliveryReceipt;
       });
@@ -327,7 +327,7 @@ describe('Service: Xmpp', () => {
       const msg = MOCKED_SERVER_MESSAGE;
       msg.requestReceipt = false;
       eventService.emit('session:started', null);
-      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+      eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       eventService.subscribe(EventService.NEW_MESSAGE, (message: Message, updateTimestamp: boolean, withDeliveryReceipt: boolean) => {
         expectedVal = withDeliveryReceipt;
       });
@@ -375,7 +375,7 @@ describe('Service: Xmpp', () => {
     it('should emit a newMessage event if there is a whitelist payload', fakeAsync(() => {
       let msg: Message;
       eventService.emit('session:started', null);
-      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+      eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
         msg = message;
       });
@@ -396,7 +396,7 @@ describe('Service: Xmpp', () => {
     it('should set fromSelf to FALSE for a message with a payload', fakeAsync(() => {
       let msg: Message;
       eventService.emit('session:started', null);
-      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+      eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
         msg = message;
       });
@@ -464,7 +464,7 @@ describe('Service: Xmpp', () => {
     it('should emit a newMessage event on the message xmpp received if it is a carbon', fakeAsync(() => {
       let msg: Message;
       eventService.emit('session:started', null);
-      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+      eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       eventService.subscribe(EventService.NEW_MESSAGE, (message: Message) => {
         msg = message;
       });
@@ -662,17 +662,17 @@ describe('Service: Xmpp', () => {
       spyOn<any>(service, 'onNewMessage').and.callThrough();
 
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      eventService.emit(EventService.MSG_ARCHIVE_LOADED);
+      eventService.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       eventService.emit('message', MOCKED_SERVER_RECEIVED_RECEIPT, true);
 
       expect(service['onNewMessage']).toHaveBeenCalledWith(MOCKED_SERVER_RECEIVED_RECEIPT);
     });
 
-    it('should not process new incoming messages if the message archive is loading', () => {
+    it('should not process new incoming messages if the CHAT_CAN_PROCESS_RT event with FASLE has been emmitted', () => {
       spyOn<any>(service, 'onNewMessage').and.callThrough();
 
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
-      eventService.emit(EventService.MSG_ARCHIVE_LOADING);
+      eventService.emit(EventService.CHAT_CAN_PROCESS_RT, false);
       eventService.emit('message', MOCKED_SERVER_RECEIVED_RECEIPT, true);
 
       expect(service['onNewMessage']).not.toHaveBeenCalled();
