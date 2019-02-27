@@ -16,8 +16,8 @@
         </p>
       </div>
       <div class="user-name-row-right">
-        <span class="message-date" *ngIf="!dateIsLastYear()">{{conversation?.modifiedDate| amCalendar:momentConfig }}</span>
-        <span class="message-date" *ngIf="dateIsLastYear()">{{conversation?.modifiedDate| amDateFormat:'D MMM. YYYY' }}</span>
+        <span class="message-date" *ngIf="dateIsThisYear()">{{conversation?.modifiedDate| amCalendar:momentConfig }}</span>
+        <span class="message-date" *ngIf="!dateIsThisYear()">{{conversation?.modifiedDate| amDateFormat:'D MMM. YYYY' }}</span>
       </div>
     </div>
 

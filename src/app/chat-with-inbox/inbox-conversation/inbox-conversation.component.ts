@@ -21,9 +21,9 @@ export class InboxConversationComponent {
 
   constructor() { }
 
-  public dateIsLastYear() {
+  public dateIsThisYear() {
     if (this.conversation && this.conversation.modifiedDate) {
-      return this.conversation.modifiedDate.getFullYear() !== new Date().getFullYear();
+      return this.conversation.modifiedDate.getFullYear() === new Date().getFullYear();
     }
     return false;
   }
