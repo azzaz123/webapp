@@ -118,7 +118,7 @@ describe('ItemCartFavoriteComponent', () => {
     });
 
     it('should open accept modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent);
+      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, { windowClass: 'modal-prompt' });
     });
 
     it('should set modal type "3" ', () => {

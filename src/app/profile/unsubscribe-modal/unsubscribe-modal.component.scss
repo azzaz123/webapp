@@ -1,10 +1,10 @@
 @import "~style/common";
 
-$modal-border-radius: 20px;
+$modal-border-radius: 5px;
 
 .header {
   background: $corporate url(/assets/images/unsubscribe.svg) no-repeat center;
-  height: 230px;
+  height: 220px;
   border-top-left-radius: $modal-border-radius;
   border-top-right-radius: $modal-border-radius;
 }
@@ -13,18 +13,19 @@ $modal-border-radius: 20px;
   text-align: center;
   padding: $spacing-L;
   h1 {
-    font-size: $font-size-M;
+    font-size: $font-size-L;
     font-weight: bold;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing;
   }
   p {
     margin: 0;
     margin-bottom: 25px;
-    color: $grey-300;
+    color: $grey-500;
     font-size: $font-size;
   }
   .btn {
     padding: $spacing-S $spacing;
+    border-radius: 21px;
     &.btn-secondary {
       border: 0;
       background-color: $grey-50;
@@ -41,6 +42,13 @@ $modal-border-radius: 20px;
     }
     &.btn-primary {
       padding: $spacing-S $spacing-L;
+    }
+  }
+  &.step-1 {
+    padding-bottom: $spacing;
+    .btn {
+      margin-bottom: $spacing-S;
+      width: 400px;
     }
   }
 

@@ -17,7 +17,7 @@
           <input *ngIf="customMake" type="text" placeholder="E.g. Seat" class="form-control" formControlName="brand" id="brand"
                  [ngbPopover]="coachmarkMake" />
           <ng-template #coachmarkMake>
-            <div i18n>The basics: make and model.</div>
+            <div i18n>The basics: make.</div>
           </ng-template>
 
         </div>
@@ -26,10 +26,13 @@
         <div class="form-group">
           <label for="model" i18n>Model</label>
           <ng-select *ngIf="!customMake" i18n-placeholder placeholder="E.g. Ibiza" class="form-control" formControlName="model" id="model"
-                     [ngbPopover]="coachmarkMake" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
+                     [ngbPopover]="coachmarkModel" #p2="ngbPopover" triggers="manual" (opened)="p2.open()" (closed)="p2.close()"
                      [options]="models" (selected)="getYears($event.value)"></ng-select>
           <input *ngIf="customMake" type="text" i18n-placeholder placeholder="E.g. Ibiza" class="form-control" formControlName="model" id="model"
-                 [ngbPopover]="coachmarkMake" />
+                 [ngbPopover]="coachmarkModel" />
+          <ng-template #coachmarkModel>
+            <div i18n>The basics: model.</div>
+          </ng-template>
         </div>
       </div>
     </div>

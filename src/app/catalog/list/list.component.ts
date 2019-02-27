@@ -117,22 +117,10 @@ export class ListComponent implements OnInit, OnDestroy {
         }
         if (params && params.code) {
           const modals = {
-            urgent: {
-              component: UrgentConfirmationModalComponent,
-              windowClass: 'urgent-confirm',
-            },
-            bump: {
-              component: BumpConfirmationModalComponent,
-              windowClass: 'bump-confirm'
-            },
-            reactivate: {
-              component: ReactivateConfirmationModalComponent,
-              windowClass: 'reactivate-confirm'
-            },
-            listingfee: {
-              component: ListingfeeConfirmationModalComponent,
-              windowClass: 'listingfee-confirm'
-            }
+            urgent: UrgentConfirmationModalComponent,
+            bump: BumpConfirmationModalComponent,
+            reactivate: ReactivateConfirmationModalComponent,
+            listingfee: ListingfeeConfirmationModalComponent
           };
           const transactionType = localStorage.getItem('transactionType');
           let modalType;
@@ -162,8 +150,8 @@ export class ListComponent implements OnInit, OnDestroy {
             modal = modalType && modals[modalType] ? modals[modalType] : modals.bump;
           }
 
-          let modalRef: NgbModalRef = this.modalService.open(modal.component, {
-            windowClass: modal.windowClass,
+          let modalRef: NgbModalRef = this.modalService.open(modal, {
+            windowClass: 'modal-standard',
             backdrop: 'static'
           });
           modalRef.componentInstance.code = params.code;
@@ -183,7 +171,7 @@ export class ListComponent implements OnInit, OnDestroy {
         }
         if (params && params.created) {
           this.uploadModalRef = this.modalService.open(UploadConfirmationModalComponent, {
-            windowClass: 'upload',
+            windowClass: 'modal-standard',
           });
           this.uploadModalRef.result.then((orderEvent: OrderEvent) => {
             this.uploadModalRef = null;
@@ -206,7 +194,7 @@ export class ListComponent implements OnInit, OnDestroy {
           this.errorService.i18nSuccess('itemUpdated');
         } else if (params && params.createdOnHold) {
           this.upgradePlanModalRef = this.modalService.open(UpgradePlanModalComponent, {
-            windowClass: 'upload',
+            windowClass: 'modal-standard',
           });
           this.upgradePlanModalRef.componentInstance.itemId = params.itemId;
           this.upgradePlanModalRef.result.then((orderEvent: OrderEvent) => {
@@ -333,7 +321,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public delete() {
-    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent);
+    const modalRef: NgbModalRef = this.modalService.open(ConfirmationModalComponent, {
+      windowClass: 'modal-prompt'
+    });
     modalRef.componentInstance.type = 1;
     modalRef.result.then(() => {
       this.itemService.bulkDelete('active').subscribe((response: ItemBulkResponse) => {
@@ -370,7 +360,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public feature(orderEvent: OrderEvent, type?: string) {
-    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'buy-product' });
+    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
     modalRef.componentInstance.type = type;
     modalRef.componentInstance.orderEvent = orderEvent;
     modalRef.result.then((result: string) => {
@@ -405,7 +395,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public purchaseListingFee(orderEvent: OrderEvent) {
-    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'buy-product' });
+    const modalRef: NgbModalRef = this.modalService.open(BuyProductModalComponent, { windowClass: 'modal-standard' });
     modalRef.componentInstance.type = 'listing-fee';
     modalRef.componentInstance.orderEvent = orderEvent;
     localStorage.setItem('transactionType', 'purchaseListingFee');

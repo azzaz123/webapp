@@ -1,46 +1,15 @@
 @import "~style/common";
 
-
-.modal-body {
-  background: url(/assets/images/reactivate.svg) no-repeat 90px 70px;
-  padding-top: 70px;
-  width: 660px;
+:host {
   text-align: center;
-  .content {
-    margin-left: 255px;
-    margin-right: 80px;
-    text-align: left;
-    margin-bottom: 50px;
-  }
-  h1 {
-    font-size: $font-size-L;
-    font-weight: bold;
-    margin-bottom: $spacing;
-  }
-  p {
-    color: $grey-500;
-    margin: 0 0 $spacing;
-  }
-  .line {
-    background-color: $grey-50;
-    width: 176px;
-    margin: $spacing auto $spacing-S;
-    height: 2px;
-  }
-  tsl-button {
-    margin-bottom: $spacing-S;
-    /deep/ {
-      button {
-        padding: 14px 114px;
-        font-weight: bold;
-      }
-    }
-  }
-  .reactivate {
-    font-size: $font-size-S;
-    cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+  display: flex;
+}
+
+.content-col {
+  text-align: center;
+  padding: $spacing-40 25px;
+}
+
+tsl-button {
+  margin-top: $spacing;
 }

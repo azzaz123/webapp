@@ -17,7 +17,7 @@ export class EmailModalComponent {
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
-              private activeModal: NgbActiveModal,
+              public activeModal: NgbActiveModal,
               private errorsService: ErrorsService) {
     this.emailForm = fb.group({
       email_address: ['', [Validators.required, this.email]]

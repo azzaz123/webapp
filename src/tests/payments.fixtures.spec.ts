@@ -444,15 +444,15 @@ export const PRODUCTS_RESPONSE_PACKS: ProductResponse[] = [{
 export const PREPARED_PACKS: Array<any> = [
   {
     quantity: 1,
-    packs: [(this.createPacksFixture()).cityBump[0], (this.createPacksFixture()).countryBump[0]]
+    packs: [(createPacksFixture()).cityBump[0], (createPacksFixture()).countryBump[0]]
   },
   {
     quantity: 5,
-    packs: [(this.createPacksFixture()).cityBump[1], (this.createPacksFixture()).countryBump[1]]
+    packs: [(createPacksFixture()).cityBump[1], (createPacksFixture()).countryBump[1]]
   },
   {
     quantity: 15,
-    packs: [(this.createPacksFixture()).cityBump[2], (this.createPacksFixture()).countryBump[2]]
+    packs: [(createPacksFixture()).cityBump[2], (createPacksFixture()).countryBump[2]]
   }
 ];
 
