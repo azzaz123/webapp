@@ -13,9 +13,7 @@
 </div>
 <div class="scroll-panel" #scrollPanel>
   <div id="conversations" [hidden]="loading"> 
-    <tsl-inbox-conversation *ngFor="let conversation of conversations" [conversation]="conversation"
-                      [ngClass]="{'active': conversation?.active}"
-                      [hidden]="conversation.messages.length === 0 && conversation.item.owner === userService.user.id"></tsl-inbox-conversation>
+    <tsl-inbox-conversation *ngFor="let conversation of conversations" [conversation]="conversation" [ngClass]="{'active': conversation?.active}"></tsl-inbox-conversation>
   </div>
   <div id="loader" [hidden]="!loading">
     <mat-icon svgIcon="conversations-mock"></mat-icon>
