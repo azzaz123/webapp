@@ -36,7 +36,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
             "unread_messages": 1,
             "messages": [
                 {
-                    "message_id": "20394401-ec61-4032-9eee-e79441fae457",
+                    "id": "20394401-ec61-4032-9eee-e79441fae457",
                     "from_user_hash": "mxzorp9np7z9",
                     "to_user_hash": "7v6gwyklr5ze",
                     "text": "Vale gracias",
@@ -47,7 +47,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                     }
                 },
                 {
-                    "message_id": "df9455bd-9d3f-4315-abdc-c7c230932347",
+                    "id": "df9455bd-9d3f-4315-abdc-c7c230932347",
                     "from_user_hash": "7v6gwyklr5ze",
                     "to_user_hash": "mxzorp9np7z9",
                     "text": "Por cuanto vale?",
@@ -58,7 +58,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                     }
                 },
                 {
-                    "message_id": "b034a784-2702-4517-99cd-1268ba7d1cb7",
+                    "id": "b034a784-2702-4517-99cd-1268ba7d1cb7",
                     "from_user_hash": "mxzorp9np7z9",
                     "to_user_hash": "7v6gwyklr5ze",
                     "text": "€20",
@@ -69,7 +69,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                     }
                 },
                 {
-                    "message_id": "2bc9b35e-3d17-4044-91b7-20d52884bc1c",
+                    "id": "2bc9b35e-3d17-4044-91b7-20d52884bc1c",
                     "from_user_hash": "7v6gwyklr5ze",
                     "to_user_hash": "mxzorp9np7z9",
                     "text": "Te va bien?",
@@ -80,7 +80,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
                     }
                 },
                 {
-                    "message_id": "02E8347D-526B-4042-8AA8-A7F343488D12",
+                    "id": "02E8347D-526B-4042-8AA8-A7F343488D12",
                     "from_user_hash": "mxzorp9np7z9",
                     "to_user_hash": "7v6gwyklr5ze",
                     "text": "Vale gracias",
@@ -113,7 +113,7 @@ export const MOCK_INBOX_API_RESPONSE = `{
             "unread_messages": 0,
             "messages": [
                 {
-                    "message_id": "58AC7C92-1441-4D65-A05B-3FF1EABE48E2",
+                    "id": "58AC7C92-1441-4D65-A05B-3FF1EABE48E2",
                     "from_user_hash": "mxzorp9np7z9",
                     "to_user_hash": "xpzp3dpqnk63",
                     "text": "Vale perfecto",
