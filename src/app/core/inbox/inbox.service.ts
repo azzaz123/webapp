@@ -68,6 +68,7 @@ export class InboxService {
     const conversation = this.conversations.find(c => c.id === message.thread);
     if (conversation) {
       const newMessage = message;
+      if (conversation.lastMessage && conversation.lastMessage.id !== newMessage.id) {
         conversation.lastMessage = newMessage;
         conversation.modifiedDate = conversation.lastMessage.date;
       if (!message.fromSelf) {
@@ -76,6 +77,7 @@ export class InboxService {
       }
         }
       }
+  }
 
   private processChatSignal(signal: ChatSignal) {
     const conversation = this.conversations.find(c => c.id === signal.thread);
