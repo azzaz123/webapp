@@ -50,11 +50,13 @@
             *ngIf="!billingInfoFormEnabled"
             [loading]="loading"
             (click)="checkout()"
+            id="qa-checkout-pro-buy"
             i18n>Continue to Checkout</tsl-button>
 <tsl-button [disabled]="!cart?.total || loading || !billingInfoForm?.valid"
             *ngIf="billingInfoFormEnabled"
             [loading]="loading"
             (click)="saveAndCheckout()"
+            id="qa-checkout-pro-save-buy"
             i18n>Continue to Checkout</tsl-button>
 <div class="secure-payment">
   <mat-icon svgIcon="secure-card"></mat-icon>
