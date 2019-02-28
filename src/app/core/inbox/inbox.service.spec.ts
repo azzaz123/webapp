@@ -13,7 +13,8 @@ import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { MockMessageService } from '../../../tests/message.fixtures.spec';
 import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
-import { Message } from '../message/message';
+import { Message, messageStatus } from '../message/message';
+import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 
 let service: InboxService;
 let http: HttpService;
@@ -134,7 +135,6 @@ describe('InboxService', () => {
       });
 
       it('should NOT update the lastMessage NOR the modifiedDate if the new message has the same ID as the current lastMessage', () => {
-        console.log(conversation, currentLastMessage);
         const newMessage = new Message(currentLastMessage.id, conversation, 'hola!', 'mockUserId');
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
 
@@ -177,7 +177,7 @@ describe('InboxService', () => {
 
         expect(service.conversations[0].unreadCounter).toEqual(unreadCounterBefore + 1);
         expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore + 1);
-  });
+      });
 
       it('should NOT increase conversation.unreadCount NOR messageService.totalUnreadMessages for new messages fromSelf', () => {
         const newMessage = new Message('mockId', conversation, 'hola!', 'mockUserId');
@@ -190,5 +190,86 @@ describe('InboxService', () => {
         expect(messageService.totalUnreadMessages).toEqual(unreadCounterBefore);
       });
     });
+
+    describe('when a CHAT_SIGNAL event is emitted', () => {
+      let conversation, lastMessage, dateAfter, dateBefore;
+      beforeEach(() => {
+        service.init();
+        conversation = service.conversations[0];
+        lastMessage = conversation.lastMessage;
+        lastMessage.status = null;
+        dateBefore = lastMessage.date.getTime() - 2000;
+        dateAfter = lastMessage.date.getTime() + 2000;
+      });
+
+      it('should update the status of the lastMessage to SENT when a CHAT_SIGNAL event is emitted with a sentSignal', () => {
+        const sentSingal = new ChatSignal(chatSignalType.SENT, conversation.id, null, lastMessage.id);
+
+        eventService.emit(EventService.CHAT_SIGNAL, sentSingal);
+
+        expect(conversation.lastMessage.status).toBe(messageStatus.SENT);
+      });
+
+      it('should update the status of the lastMessage to RECEIVED when a CHAT_SIGNAL event is emitted with a receivedSignal', () => {
+        const receivedSingal = new ChatSignal(chatSignalType.RECEIVED, conversation.id, null, lastMessage.id);
+
+        eventService.emit(EventService.CHAT_SIGNAL, receivedSingal);
+
+        expect(conversation.lastMessage.status).toBe(messageStatus.RECEIVED);
+      });
+
+      it('should update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal with timestamp after the lastMessage timestamp', () => {
+        const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter);
+
+        eventService.emit(EventService.CHAT_SIGNAL, readSingal);
+
+        expect(conversation.lastMessage.status).toBe(messageStatus.READ);
+      });
+
+      it('should NOT update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal with timestamp before the lastMessage timestamp', () => {
+        const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateBefore);
+
+        eventService.emit(EventService.CHAT_SIGNAL, readSingal);
+
+        expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
+      });
+
+      it('should set the unread counters to 0 when a CHAT_SIGNAL event is emitted with a readSignal that is fromSelf AND with timestamp after the lastMessage timestamp', () => {
+        const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
+        messageService.totalUnreadMessages = 12;
+        conversation.unreadCounter = 7;
+
+        eventService.emit(EventService.CHAT_SIGNAL, readSingal);
+        console.log(conversation);
+
+        expect(conversation.unreadCounter).toBe(0);
+        expect(messageService.totalUnreadMessages).toBe(12 - 7);
+      });
+
+      it('should NOT update the unread counters when a CHAT_SIGNAL event is emitted with a readSignal that is fromSelf and with a timestamp before the lastMessage timestamp', () => {
+        const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateBefore, null, true);
+        messageService.totalUnreadMessages = 12;
+        conversation.unreadCounter = 7;
+
+        eventService.emit(EventService.CHAT_SIGNAL, readSingal);
+
+        expect(conversation.unreadCounter).toBe(7);
+        expect(messageService.totalUnreadMessages).toBe(12);
+      });
+
+      it('should NOT update the unread counters when a CHAT_SIGNAL event is emitted with a readSignal that is NOT fromSelf', () => {
+        const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
+        messageService.totalUnreadMessages = 12;
+        conversation.unreadCounter = 7;
+
+        eventService.emit(EventService.CHAT_SIGNAL, readSingal);
+        console.log(conversation);
+
+        expect(conversation.unreadCounter).toBe(7);
+        expect(messageService.totalUnreadMessages).toBe(12);
+      });
+    });
   });
+
+
 });
