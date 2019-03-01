@@ -28,7 +28,7 @@
     }
     tsl-item-avatar {
       width: 160px;
-      margin-bottom: spacing-ms;
+      margin-bottom: $spacing-ms;
       /deep/ {
         .urgent {
           @include square(50px);
@@ -54,7 +54,7 @@
     margin-bottom: $spacing-m;
   }
   h3 {
-    margin-bottom: spacing-ms;
+    margin-bottom: $spacing-ms;
     color: $blue-grey-2;
     font-size: $font-size-s;
     text-align: center;

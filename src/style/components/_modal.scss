@@ -332,7 +332,7 @@ $modal-border-radius: 0.3rem;
     .modal-title {
       font-weight: bold;
       font-size: $font-size-l;
-      margin-bottom: spacing-ms;
+      margin-bottom: $spacing-ms;
       &.fail {
         color: $warn;
       }
