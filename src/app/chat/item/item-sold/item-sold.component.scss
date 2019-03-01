@@ -3,16 +3,16 @@
 $sold-height: 38px;
 
 .sold {
+  display: flex;
+  align-items: center;
   background-color: $white;
   border-radius: 100px;
   color: $magenta-main;
   font-size: $font-size-s;
   height: 38px;
-  line-height: $line-height-xxl;
   text-align: center;
   padding: 0 $spacing-ml;
   mat-icon {
-    vertical-align: middle;
     width: 21px;
     margin-right: $spacing-s;
   }

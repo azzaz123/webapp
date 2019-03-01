@@ -1,16 +1,16 @@
 @import "~style/common";
 
 .reserved {
+  display: flex;
+  align-items: center;
   background-color: $white;
   border-radius: 100px;
   color: $skyblue-dark;
   font-size: $font-size-s;
   height: 38px;
-  line-height: $line-height-xxl;
   text-align: center;
   padding: 0 $spacing-ml;
   mat-icon {
-    vertical-align: middle;
     width: 15px;
     margin-right: $spacing-s;
   }
