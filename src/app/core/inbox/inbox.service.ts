@@ -84,9 +84,11 @@ export class InboxService {
     const newStatus = signal.type;
     if (conversation) {
       const lastMessage = conversation.lastMessage;
-    if (signal.type === chatSignalType.READ && signal.timestamp >= lastMessage.date.getTime()) {
-      lastMessage.status = messageStatus.READ;
+    if (signal.type === chatSignalType.READ) {
+      if (signal.fromSelf !== lastMessage.fromSelf && signal.timestamp >= lastMessage.date.getTime()) {
+        lastMessage.status = messageStatus.READ;
         this.updateUnreadCounters(signal, conversation);
+      }
     } else if (signal.messageId === lastMessage.id  && statusOrder.indexOf(newStatus) > statusOrder.indexOf(lastMessage.status)) {
       lastMessage.status = newStatus;
     }
