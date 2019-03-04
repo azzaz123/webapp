@@ -29,7 +29,7 @@ export class InboxConversation {
               private _modifiedDate: number,
               private _user?: InboxUser,
               private _item?: InboxItem,
-              private _lastMessage?: any,
+              private _lastMessage?: Message,
               private _messages: Array<Message> = [],
               private _unreadCounter: number = 0,
               private _archived: boolean = false,
@@ -64,11 +64,11 @@ export class InboxConversation {
     return this._item;
   }
 
-  set lastMessage(lastMessage: any) {
+  set lastMessage(lastMessage: Message) {
     this._lastMessage = lastMessage;
   }
 
-  get lastMessage(): any {
+  get lastMessage(): Message {
     return this._lastMessage;
   }
 
