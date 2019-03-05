@@ -304,6 +304,4 @@ describe('InboxService', () => {
       });
     });
   });
-
-
 });

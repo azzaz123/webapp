@@ -56,6 +56,7 @@ export class InboxService {
     return this.http.get(this.API_URL)
     .map(res => {
       const r = res.json();
+      this.saveMessages(r.conversations);
       return this.conversations = this.buildConversations(r.conversations);
     });
   }
@@ -123,7 +124,7 @@ export class InboxService {
   }
 
   private buildInboxUser(user: any) {
-    return new InboxUser(user.id, user.name, user.blocked);
+    return new InboxUser(user.hash, user.name, user.blocked);
   }
 
   private buildInboxItem(item) {
@@ -133,5 +134,14 @@ export class InboxService {
       }
     };
     return new InboxItem(item.hash, item.price, item.title, image, item.status);
+  }
+
+  private saveMessages(conversations: any) {
+    conversations.map(conv => {
+      const messages = [];
+      conv.messages.map(msg => messages.push(new Message(msg.id, conv.hash, msg.text, msg.from_user_hash,
+        new Date(msg.timestamp), msg.status, msg.payload)));
+      this.persistencyService.saveMessages(messages);
+    });
   }
 }
