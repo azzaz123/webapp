@@ -15,7 +15,7 @@ import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
 @Injectable()
 
 export class InboxService {
-  private API_URL = 'bff/messaging/archive/inboxes/mine';
+  private API_URL = 'bff/messaging/inboxes/mine';
   public _conversations: InboxConversation[];
 
   constructor(private http: HttpService,
