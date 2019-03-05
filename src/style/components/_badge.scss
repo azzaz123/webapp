@@ -1,14 +1,35 @@
 .badge {
+  display: flex;
+  align-items: center;
+  color: $black;
   &.badge-pro {
-    background-color: $color-urgent;
+    background-color: $grey-100;
     text-transform: uppercase;
     font-size: $font-size-S;
     line-height: 11px;
     padding: 4px 7px;
     margin-left: 10px;
   }
+  &.silver {
+    background-color: $grey-100;
+  }
+  &.gold {
+    background-color: $color-urgent;
+  }
+  &.platinum {
+    background-color: $grey-950;
+    color: $white;
+    mat-icon /deep/ path {
+      fill: $white;
+    }
+  }
   &.motor {
     background-color: $badge-left;
     background-image: linear-gradient(to left, $badge-left, $badge-right);
+  }
+  mat-icon {
+    height: 16px;
+    width: 16px;
+    margin-right: 2px;
   }
 }

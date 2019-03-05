@@ -62,6 +62,7 @@ import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe
 import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { UploaderModule } from './uploader/uploader.module';
+import { UserCoverComponent } from './user-cover/user-cover.component';
 
 @NgModule({
   imports: [
@@ -125,7 +126,8 @@ import { UploaderModule } from './uploader/uploader.module';
     CartComponent,
     ExitConfirmationModalComponent,
     CountdownComponent,
-    ThousandSuffixesPipe
+    ThousandSuffixesPipe,
+    UserCoverComponent
   ],
   declarations: [
     AdComponent,
@@ -176,7 +178,8 @@ import { UploaderModule } from './uploader/uploader.module';
     CountdownComponent,
     ThousandSuffixesPipe,
     ActivateItemsModalComponent,
-    DeactivateItemsModalComponent
+    DeactivateItemsModalComponent,
+    UserCoverComponent
   ],
   providers: [
     DecimalPipe,

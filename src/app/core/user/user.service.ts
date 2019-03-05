@@ -8,7 +8,7 @@ import { GeoCoord, HaversineService } from 'ng2-haversine';
 import { Item } from '../item/item';
 import { LoginResponse } from './login-response.interface';
 import { Response } from '@angular/http';
-import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo } from './user-response.interface';
+import { UserLocation, UserResponse, MotorPlan, ProfileSubscriptionInfo, Image } from './user-response.interface';
 import { BanReason } from '../item/ban-reason.interface';
 import { I18nService } from '../i18n/i18n.service';
 import { AccessTokenService } from '../http/access-token.service';
@@ -184,6 +184,11 @@ export class UserService extends ResourceService {
 
   public getProInfo(): Observable<UserProInfo> {
     return this.http.get(this.API_URL_PROTOOL + '/extraInfo')
+      .map((r: Response) => r.json());
+  }
+
+  public getUserCover(): Observable<Image> {
+    return this.http.get(this.API_URL + '/me/cover-image')
       .map((r: Response) => r.json());
   }
 

@@ -11,4 +11,5 @@ export interface UserProInfo {
   only_chat_phone_notification: boolean;
   consent_third_parties_use_data: boolean;
   news_notification: boolean;
+  link?: string;
 }

@@ -9,11 +9,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { UploaderService } from './uploader.service';
 
 @Directive({
-  selector: '[tslFileSelect]'
+  selector: '[tslFileSelect]',
+  providers: [UploaderService]
 })
 export class FileSelectDirective  implements OnInit, OnDestroy {
 
   @Input() uploadInput: EventEmitter<any>;
+  @Input() uploadCoverInput: EventEmitter<any>;
   @Output() uploadOutput: EventEmitter<UploadOutput>;
   @Input() options: NgUploaderOptions;
 
@@ -43,6 +45,11 @@ export class FileSelectDirective  implements OnInit, OnDestroy {
     if (this.uploadInput instanceof EventEmitter) {
       this.subscription = this.upload.initInputEvents(this.uploadInput);
     }
+
+    if (this.uploadCoverInput instanceof EventEmitter) {
+      this.subscription = this.upload.initInputEvents(this.uploadCoverInput);
+    }
+
   }
 
   ngOnDestroy() {

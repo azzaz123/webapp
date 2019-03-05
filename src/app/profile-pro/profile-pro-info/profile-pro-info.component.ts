@@ -6,6 +6,7 @@ import { User } from '../../core/user/user';
 import { ProfileFormComponent } from '../../shared/profile/profile-form/profile-form.component';
 import { UserService } from '../../core/user/user.service';
 import { ErrorsService } from '../../core/errors/errors.service';
+import { Image } from '../../core/user/user-response.interface';
 
 @Component({
   selector: 'tsl-profile-pro-info',
@@ -34,7 +35,8 @@ export class ProfileProInfoComponent implements OnInit {
         address: ['', [Validators.required]],
         latitude: ['', [Validators.required]],
         longitude: ['', [Validators.required]],
-      })
+      }),
+      link: ''
     });
     this.notificationsForm = fb.group({
       new_chat_notification: false,
@@ -58,6 +60,9 @@ export class ProfileProInfoComponent implements OnInit {
       });
       this.formComponent.hasNotSavedChanges = false;
     });
+    this.userService.getUserCover().subscribe((avatar: Image) => {
+      this.user.coverImage = avatar;
+    });
   }
 
   private setUserData() {
@@ -67,7 +72,8 @@ export class ProfileProInfoComponent implements OnInit {
         last_name: this.user.lastName,
         phone_number: this.userInfo.phone_number,
         description: this.userInfo.description,
-        opening_hours: this.userInfo.opening_hours
+        opening_hours: this.userInfo.opening_hours,
+        link: this.userInfo.link
       });
       this.notificationsForm.patchValue({
         new_chat_notification: this.userInfo.new_chat_notification,

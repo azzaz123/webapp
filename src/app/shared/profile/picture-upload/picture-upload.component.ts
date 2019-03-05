@@ -6,7 +6,6 @@ import { UserService } from '../../../core/user/user.service';
 import { environment } from '../../../../environments/environment';
 import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from '../../uploader/upload.interface';
 
-
 @Component({
   selector: 'tsl-picture-upload',
   templateUrl: './picture-upload.component.html',
@@ -17,6 +16,7 @@ export class PictureUploadComponent implements OnInit {
   @Input() user: User;
   file: UploadFile;
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
+  uploadCoverInput: EventEmitter<UploadInput> = new EventEmitter();
   options: NgUploaderOptions;
 
   constructor(private http: HttpService,
@@ -31,18 +31,18 @@ export class PictureUploadComponent implements OnInit {
     };
   }
 
-  public onUploadOutput(output: UploadOutput): void {
+  public onUploadOutput(output: UploadOutput, type: string): void {
     switch (output.type) {
       case 'addedToQueue':
         this.file = output.file;
-        this.uploadPicture();
+        this.uploadPicture(type);
         break;
       case 'uploading':
         this.file = output.file;
         break;
       case 'done':
-        this.removeFromQueue(output);
-        this.onUploadDone(output);
+        this.removeFromQueue(output, type);
+        this.onUploadDone(output, type);
         break;
       case 'rejected':
         this.errorsService.i18nError(output.reason, output.file.name);
@@ -51,8 +51,8 @@ export class PictureUploadComponent implements OnInit {
     }
   }
 
-  private uploadPicture() {
-    const url = 'api/v3/users/me/image';
+  private uploadPicture(type: string) {
+    const url = 'api/v3/users/me/' + type;
     const uploadinput: UploadInput = {
       type: 'uploadFile',
       url: environment.baseUrl + url,
@@ -61,20 +61,36 @@ export class PictureUploadComponent implements OnInit {
       headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
       file: this.file
     };
-    this.uploadInput.emit(uploadinput);
+
+    if (type === 'image') {
+      this.uploadInput.emit(uploadinput);
+    } else {
+      this.uploadCoverInput.emit(uploadinput);
+    }
   }
 
-  private removeFromQueue(output) {
-    this.uploadInput.emit({
-      type: 'remove',
-      id: output.file.id
-    });
+  private removeFromQueue(output, type: string) {
+    if (type === 'image') {
+      this.uploadInput.emit({
+        type: 'remove',
+        id: output.file.id
+      });
+    } else {
+      this.uploadCoverInput.emit({
+        type: 'remove',
+        id: output.file.id
+      });
+    }
     this.file = null;
   }
 
-  private onUploadDone(output: UploadOutput) {
+  private onUploadDone(output: UploadOutput, type: string) {
     if (output.file.progress.data.responseStatus === 204) {
-      this.userService.user.image.urls_by_size.medium = output.file.preview;
+      if (type === 'image') {
+        this.userService.user.image.urls_by_size.medium = output.file.preview;
+      } else {
+        this.userService.user.coverImage.urls_by_size.medium = output.file.preview;
+      }
     } else {
       this.errorsService.i18nError('serverError', output.file.response.message ? output.file.response.message : '');
     }

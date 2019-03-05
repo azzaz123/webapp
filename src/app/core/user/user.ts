@@ -1,10 +1,14 @@
 import { Model } from '../resource/model.interface';
-import { UserExtrainfo, UserLocation, UserStats, UserValidations, InboxUserLocation } from './user-response.interface';
+import {
+  UserExtrainfo, UserLocation, UserStats, UserValidations, InboxUserLocation,
+  Image
+} from './user-response.interface';
 import { Item } from '../item/item';
 import { environment } from '../../../environments/environment';
 
 export const USER_BASE_PATH = 'http://es.wallapop.com/user/';
 export const PLACEHOLDER_AVATAR = '/assets/images/user.png';
+export const PLACEHOLDER_COVER = '/assets/images/cover.svg';
 export const PERMISSIONS = {
   'normal': 'isNormal',
   'professional': 'isProfessional',
@@ -39,7 +43,8 @@ export class User implements Model {
               private _gender?: string,
               private _email?: string,
               private _featured = false,
-              private _extraInfo?: UserExtrainfo) {
+              private _extraInfo?: UserExtrainfo,
+              private _coverImage?: Image) {
 
     this._webLink = webSlug ? USER_BASE_PATH + webSlug : null;
     this._type = this.mapType(this._type);
@@ -210,6 +215,14 @@ export class User implements Model {
 
   get extraInfo(): UserExtrainfo {
     return this._extraInfo;
+  }
+
+  get coverImage(): any {
+    return this._coverImage;
+  }
+
+  set coverImage(value: any) {
+    this._coverImage = value;
   }
 
   getUrl(subdomain: string) {

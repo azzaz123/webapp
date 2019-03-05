@@ -1,6 +1,13 @@
 @import "~style/common";
 
+h3 {
+  font-size: $font-size-S;
+  font-weight: bold;
+}
 .profile-pic {
+  &.top {
+    margin-bottom: 32px;
+  }
   h2 {
     font-size: $font-size;
     font-weight: normal;
@@ -14,18 +21,21 @@
   }
   .col-4 {
     display: flex;
+    justify-content: flex-end;
+  }
+  .col-6 {
+    display: flex;
     align-items: center;
   }
-  tsl-user-avatar {
+  tsl-user-avatar, tsl-user-cover {
     margin-right: $spacing;
   }
   .btn-upload {
-    background-color: $grey-50;
+    background-color: $grey-40;
     border: solid 1px $grey-100;
     color: $grey-600;
     font-size: $font-size-S;
-    padding: $spacing-S $spacing;
-    margin-left: 43px;
+    padding: $spacing-XS $spacing;
     cursor: pointer;
     border-radius: $button-border-radius;
     &:hover:not(.disabled) {
