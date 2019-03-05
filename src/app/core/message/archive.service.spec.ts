@@ -5,7 +5,7 @@ import { HttpService } from '../http/http.service';
 import { Response, ResponseOptions, Headers } from '@angular/http';
 import { MockedUserService, OTHER_USER_ID, USER_ID } from '../../../tests/user.fixtures.spec';
 import { UserService } from '../user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { createMockMessageEvents, createMockReceivedEvents, createMockReadEvents } from '../../../tests/archive.fixture.spec';
 import { MsgArchiveResponse } from './archive.interface';
 import { Message, messageStatus } from './message';
@@ -170,7 +170,7 @@ describe('MsgArchiveService', () => {
       expect(response.messages.length).toBe(expectedMessages.length);
     }));
 
-    it(`should set the status to RECEIVED for all messages that are NOT fromSelf nd SENT for messages fromSelf,
+    it(`should set the status to RECEIVED for all messages that are NOT fromSelf and SENT for messages fromSelf,
     before processig receipts`, fakeAsync(() => {
         const messages = createMockMessageEvents(6);
         const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(messages), headers: new Headers({}) });
@@ -183,6 +183,23 @@ describe('MsgArchiveService', () => {
         response.messages.map(m => {
           m.fromSelf ? expect(m.status).toBe(messageStatus.SENT) : expect(m.status).toBe(messageStatus.RECEIVED);
         });
+      }));
+
+    it(`should set fromSelf to FALSE and the status to RECEIVED for messages that are from third voice (have a payload)`, fakeAsync(() => {
+        const messages = createMockMessageEvents(1);
+        messages[0].event.payload = JSON.stringify({
+          text: 'someText',
+          type: 'someType'
+        });
+        const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(messages), headers: new Headers({}) });
+        spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+        let response: MsgArchiveResponse;
+
+        service.getAllEvents('mockThreadId').subscribe(r => response = r);
+        tick();
+
+        expect(response.messages[0].fromSelf).toBe(false);
+        expect(response.messages[0].status).toBe(messageStatus.RECEIVED);
       }));
 
     describe('process receivedReceipts', () => {
@@ -411,6 +428,35 @@ describe('MsgArchiveService', () => {
           conversation_hash: CONVERSATION_ID,
           created_ts: severMessagesFromOther[0].event.created_ts,
           to_user_hash: OTHER_USER_ID
+        },
+        id: '1',
+        ts: severMessagesFromOther[1].event.created_ts,
+        type: 'chat.conversation.read'
+      }];
+      const serverResponse = severMessagesFromOther.concat(readReceipt);
+      const res: ResponseOptions = new ResponseOptions({ body: JSON.stringify(serverResponse), headers: new Headers({}) });
+      spyOn(http, 'get').and.returnValue(Observable.of(new Response(res)));
+      let response: MsgArchiveResponse;
+
+      service.getEventsSince('0').subscribe(r => response = r);
+      tick();
+
+      expect(response.messages[0].status).toBe(messageStatus.READ);
+      expect(response.messages[1].status).toBe(messageStatus.RECEIVED);
+      expect(response.messages[2].status).toBe(messageStatus.RECEIVED);
+    }));
+
+    it(`should update the status of messages from third voice (with payload) to READ, for messages with a timestamp prior or equal to
+    the read receipt timestamp`, fakeAsync(() => {
+      const readReceipt = [{
+        event: {
+          conversation_hash: CONVERSATION_ID,
+          created_ts: severMessagesFromOther[0].event.created_ts,
+          to_user_hash: OTHER_USER_ID,
+          payload: {
+            text: 'someText',
+            type: 'someType'
+          }
         },
         id: '1',
         ts: severMessagesFromOther[1].event.created_ts,

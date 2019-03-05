@@ -4,7 +4,7 @@ import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { ConversationsPanelComponent } from './conversations-panel.component';
 import { ConversationComponent } from '../../shared/conversation/conversation.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConversationService } from '../../core/conversation/conversation.service';
@@ -15,8 +15,6 @@ import { TrackingService } from '../../core/tracking/tracking.service';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { HttpService } from '../../core/http/http.service';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
-import { PersistencyService } from '../../core/persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { USER_ID } from '../../../tests/user.fixtures.spec';
 import { User } from '../../core/user/user';
@@ -25,15 +23,9 @@ import {
   SECOND_MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
 import { Conversation } from '../../core/conversation/conversation';
 import { MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
-import { Message } from '../../core/message/message';
+import { Message, phoneMethod } from '../../core/message/message';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { XmppService } from '../../core/xmpp/xmpp.service';
-
-class MockedXmppService {
-  receivedReceipts = [{id: '1', thread: 'a'}, {id: '2', thread: 'b'}];
-  sentReceipts = [{id: '1', thread: 'a'}, {id: '2', thread: 'b'}];
-  readReceipts = [{id: 'x', thread: 'threadX'}];
-}
+import { MessageService } from '../../core/message/message.service';
 
 describe('Component: ConversationsPanel', () => {
 
@@ -44,7 +36,7 @@ describe('Component: ConversationsPanel', () => {
   let route: ActivatedRoute;
   let http: HttpService;
   let trackingService: TrackingService;
-  let xmppService: XmppService;
+  let messageService: MessageService;
   let elRef: ElementRef;
 
   beforeEach(() => {
@@ -57,9 +49,7 @@ describe('Component: ConversationsPanel', () => {
       ],
       declarations: [ConversationsPanelComponent, ConversationComponent],
       providers: [
-        {provide: PersistencyService, useClass: MockedPersistencyService},
         {provide: TrackingService, useClass: MockTrackingService},
-        {provide: XmppService, useClass: MockedXmppService},
         ...TEST_HTTP_PROVIDERS,
         {
           provide: ConversationService, useValue: {
@@ -93,9 +83,13 @@ describe('Component: ConversationsPanel', () => {
           },
           markAs() {},
           markAllAsRead() {},
-          loadNotStoredMessages() {}
+          loadNotStoredMessages() {},
+          openPhonePopup() {}
         }
         },
+        {provide: MessageService, useValue: {
+          addPhoneNumberRequestMessage() {}
+        }},
         EventService,
         {provide: UserService, useValue: {
           queryParams: {},
@@ -124,6 +118,7 @@ describe('Component: ConversationsPanel', () => {
       schemas: [NO_ERRORS_SCHEMA]
     });
     conversationService = TestBed.get(ConversationService);
+    messageService = TestBed.get(MessageService);
     eventService = TestBed.get(EventService);
     http = TestBed.get(HttpService);
     component = TestBed.createComponent(ConversationsPanelComponent).componentInstance;
@@ -131,7 +126,6 @@ describe('Component: ConversationsPanel', () => {
     userService['_user'] = new User(USER_ID);
     route = TestBed.get(ActivatedRoute);
     trackingService = TestBed.get(TrackingService);
-    xmppService = TestBed.get(XmppService);
     elRef = TestBed.get(ElementRef);
   });
 
@@ -282,26 +276,23 @@ describe('Component: ConversationsPanel', () => {
       spyOn(conversationService, 'loadMoreArchived').and.callThrough();
     });
 
-    it('should increment pendingPagesLoaded when archive is FALSE', () => {
-      let pageNumber = 0;
+    it('should increment pendingPagesLoaded each time loadMore is called, when archive is FALSE', () => {
+      conversationService.pendingPagesLoaded = 0;
       component.archive = false;
 
       component.loadMore();
-      pageNumber++;
 
-      expect(conversationService.getPage).toHaveBeenCalledWith(pageNumber, false);
+      expect(conversationService.pendingPagesLoaded).toBe(1);
     });
 
     it('should increment processedPagesLoaded each time loadMore is called, when archive is TRUE', () => {
-      let pageNumber = 0;
+      conversationService.processedPagesLoaded = 0;
       component.archive = true;
 
       component.loadMore();
-      pageNumber++;
       component.loadMore();
-      pageNumber++;
 
-      expect(conversationService.getPage).toHaveBeenCalledWith(pageNumber, true);
+      expect(conversationService.processedPagesLoaded).toBe(2);
     });
 
     it('should call loadMore', () => {
@@ -418,6 +409,27 @@ describe('Component: ConversationsPanel', () => {
       component.ngOnInit();
 
       expect(component['getConversations']).toHaveBeenCalled();
+    });
+
+    it('should subscribe to the PRIVACY_LIST_CHANGED event if a previous subscription does not exits', () => {
+      spyOn(eventService, 'subscribe');
+      const eventsSubscribed = [];
+
+      component.ngOnInit();
+
+      eventService.subscribe['calls'].allArgs().map(arg => eventsSubscribed.push(arg[0]));
+      expect(eventsSubscribed).toContain(EventService.PRIVACY_LIST_UPDATED);
+    });
+
+    it('should NOT subscribe to the PRIVACY_LIST_CHANGED event if a previous subscription exits', () => {
+      spyOn(eventService, 'subscribe');
+      const eventsSubscribed = [];
+      component['privacyListChangeSubscription'] = new Subscription;
+
+      component.ngOnInit();
+
+      eventService.subscribe['calls'].allArgs().map(arg => eventsSubscribed.push(arg[0]));
+      expect(eventsSubscribed).not.toContain(EventService.PRIVACY_LIST_UPDATED);
     });
 
     it('should call sendRead on MESSAGE_ADDED event', () => {
@@ -578,6 +590,48 @@ describe('Component: ConversationsPanel', () => {
       expect(conversationService.addLead).toHaveBeenCalledWith(convWithMessages);
       expect(component.setCurrentConversation).toHaveBeenCalledWith(convWithMessages);
     });
+
+    it('should subscribe to EventService.REQUEST_PHONE when called', () => {
+      const conversation = SECOND_MOCK_CONVERSATION;
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      spyOn(eventService, 'subscribe');
+
+      (component as any).createConversationAndSetItCurrent();
+
+      expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.REQUEST_PHONE);
+    });
+
+    it('should call messageService.addPhoneNumberRequestMessage when a REQUEST_PHONE event is triggered', () => {
+      const conversation = SECOND_MOCK_CONVERSATION;
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      spyOn(messageService, 'addPhoneNumberRequestMessage');
+
+      (component as any).createConversationAndSetItCurrent();
+      eventService.emit(EventService.REQUEST_PHONE);
+
+      expect(messageService.addPhoneNumberRequestMessage).toHaveBeenCalled();
+    });
+
+    it('should NOT call messageService.addPhoneNumberRequestMessage when a REQUEST_PHONE event is NOT triggered', () => {
+      const conversation = SECOND_MOCK_CONVERSATION;
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      spyOn(messageService, 'addPhoneNumberRequestMessage');
+
+      (component as any).createConversationAndSetItCurrent();
+
+      expect(messageService.addPhoneNumberRequestMessage).not.toHaveBeenCalled();
+    });
+
+    it('should call conversationService.openPhonePopup when a REQUEST_PHONE event is triggered AND requestType is popup', () => {
+      const conversation = SECOND_MOCK_CONVERSATION;
+      spyOn(conversationService, 'getSingleConversationMessages').and.returnValue(Observable.of(conversation));
+      spyOn(conversationService, 'openPhonePopup');
+
+      (component as any).createConversationAndSetItCurrent();
+      eventService.emit(EventService.REQUEST_PHONE, phoneMethod.popUp);
+
+      expect(conversationService.openPhonePopup).toHaveBeenCalledWith(conversation, true);
+    });
   });
 
   describe('filterByArchived', () => {
@@ -601,6 +655,33 @@ describe('Component: ConversationsPanel', () => {
       expect(component.archive).toBe(false);
       expect(component['getConversations']).toHaveBeenCalled();
       expect(conversationService.getPage).toHaveBeenCalledWith(1, false);
+    });
+  });
+
+  describe('update the blocked status of users in conversations, when a PRIVACY_LIST_CHANGED event is triggered', () => {
+    let userId;
+    beforeEach(() => {
+      component.ngOnInit();
+      component.conversations = createConversationsArray(1);
+      userId = component.conversations[0].user.id;
+    });
+
+    it(`should update blocked to true when an unblocked user's ID is present in the updated blockedIds array`, () => {
+      const blockedIds = [userId];
+      component.conversations[0].user.blocked = false;
+
+      eventService.emit(EventService.PRIVACY_LIST_UPDATED, blockedIds);
+
+      expect(component.conversations[0].user.blocked).toBe(true);
+    });
+
+    it(`should update blocked to false when a blocked user's id is not present in the updated blockedIds array`, () => {
+      const blockedIds = ['some-other-user-id'];
+      component.conversations[0].user.blocked = true;
+
+      eventService.emit(EventService.PRIVACY_LIST_UPDATED, blockedIds);
+
+      expect(component.conversations[0].user.blocked).toBe(false);
     });
   });
 

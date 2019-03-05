@@ -6,7 +6,7 @@ import { HttpService } from '../http/http.service';
 import { UserService } from '../user/user.service';
 import { ItemService } from '../item/item.service';
 import { Conversation } from './conversation';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Response, ResponseOptions } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
@@ -15,15 +15,13 @@ import { Item } from '../item/item';
 import { ConversationResponse } from './conversation-response.interface';
 import { EventService } from '../event/event.service';
 import { Lead } from './lead';
-import { XmppService } from '../xmpp/xmpp.service';
-import { MockedUserService, USER_ID, USER_ITEM_DISTANCE } from '../../../tests/user.fixtures.spec';
+import { MockedUserService, USER_ID, USER_ITEM_DISTANCE, MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { ITEM_ID, MockedItemService } from '../../../tests/item.fixtures.spec';
-import {
-  CONVERSATIONS_DATA, createConversationsArray,
-  MOCK_CONVERSATION
-} from '../../../tests/conversation.fixtures.spec';
+import { CONVERSATIONS_DATA, createConversationsArray } from '../../../tests/conversation.fixtures.spec';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 import { ConnectionService } from '../connection/connection.service';
+import { RealTimeService } from '../message/real-time.service';
+import { BlockUserService } from './block-user.service';
 
 @Injectable()
 export class MockService extends LeadService {
@@ -35,9 +33,10 @@ export class MockService extends LeadService {
               userService: UserService,
               itemService: ItemService,
               event: EventService,
-              xmpp: XmppService,
+              realTime: RealTimeService,
+              blockService: BlockUserService,
               connectionService: ConnectionService) {
-    super(http, userService, itemService, event, xmpp, connectionService);
+    super(http, userService, itemService, event, realTime, blockService, connectionService);
   }
 
   protected getLeads(since?: number, concat?: boolean, archived?: boolean): Observable<Conversation[]> {
@@ -81,14 +80,8 @@ describe('LeadService', () => {
         ...TEST_HTTP_PROVIDERS,
         {provide: UserService, useClass: MockedUserService},
         {provide: ItemService, useClass: MockedItemService},
-        {provide: XmppService, useValue: {
-          isConnected() {
-            return Observable.of(true);
-          },
-          isBlocked() {
-            return true;
-          }
-        }},
+        {provide: RealTimeService, useValue: {}},
+        {provide: BlockUserService, useValue: { getBlockedUsers() { return ['1', '2', '3']; } }},
         {
           provide: ConnectionService, useValue: {}
         }
@@ -262,7 +255,7 @@ describe('LeadService', () => {
             expect(userService.get).toHaveBeenCalledTimes(2);
             expect(conversations[0].user instanceof User).toBeTruthy();
             expect(conversations[1].user instanceof User).toBeTruthy();
-            expect(conversations[0].user.blocked).toBeTruthy();
+            expect(conversations[0].user.blocked).toBe(MOCK_USER.blocked);
           });
           it('should get and map the Item', () => {
             expect(itemService.get).toHaveBeenCalledWith(ITEM_ID);

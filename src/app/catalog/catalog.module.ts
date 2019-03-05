@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SelectedItemsComponent } from './list/selected-items/selected-items.component';
 import { MomentModule } from 'angular2-moment';
 import { BumpConfirmationModalComponent } from './list/modals/bump-confirmation-modal/bump-confirmation-modal.component';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { UploadConfirmationModalComponent } from './list/modals/upload-confirmation-modal/upload-confirmation-modal.component';
 import { ReactivateModalComponent } from './list/modals/reactivate-modal/reactivate-modal.component';
 import { UrgentConfirmationModalComponent } from './list/modals/urgent-confirmation-modal/urgent-confirmation-modal.component';
@@ -18,6 +18,8 @@ import { BumpTutorialService } from './checkout/bump-tutorial/bump-tutorial.serv
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { BuyProductModalComponent } from './list/modals/buy-product-modal/buy-product-modal.component';
 import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-confirmation-modal/reactivate-confirmation-modal.component';
+import { UpgradePlanModalComponent } from './list/modals/upgrade-plan-modal/upgrade-plan-modal.component';
+import { ListingfeeConfirmationModalComponent } from './list/modals/listingfee-confirmation-modal/listingfee-confirmation-modal.component';
 
 @NgModule({
   imports: [
@@ -29,7 +31,8 @@ import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-c
     MomentModule,
     ReactiveFormsModule,
     TrackingModule,
-    NgbButtonsModule
+    NgbButtonsModule,
+    NgbTooltipModule
   ],
   providers: [
     BumpTutorialService,
@@ -45,7 +48,9 @@ import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-c
     BumpTutorialComponent,
     UrgentConfirmationModalComponent,
     BuyProductModalComponent,
-    ReactivateConfirmationModalComponent
+    ReactivateConfirmationModalComponent,
+    UpgradePlanModalComponent,
+    ListingfeeConfirmationModalComponent
   ],
   entryComponents: [
     BumpConfirmationModalComponent,
@@ -53,7 +58,9 @@ import { ReactivateConfirmationModalComponent } from './list/modals/reactivate-c
     ReactivateModalComponent,
     UrgentConfirmationModalComponent,
     BuyProductModalComponent,
-    ReactivateConfirmationModalComponent
+    ReactivateConfirmationModalComponent,
+    UpgradePlanModalComponent,
+    ListingfeeConfirmationModalComponent
   ]
 })
 export class CatalogModule {

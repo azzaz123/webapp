@@ -2,20 +2,21 @@
   <div class="modal-close light" (click)="activeModal.close()">
     <mat-icon svgIcon="cross"></mat-icon>
   </div>
-  <h1 i18n>Congratulations!</h1>
-  <p i18n>Your item is now on Wallapop</p>
+  <h1 i18n>Congratulations, your item is now on Wallapop!</h1>
 </div>
-<div class="modal-body">
-  <h2 i18n>Want to sell ASAP?</h2>
-  <p i18n>Stand out on the wall during 7 days and be easy to find with the filter ASAP</p>
-  <div class="urgent-background"></div>
+
+<div class="content-col">
+  <h1 class="modal-title" i18n>Want to sell ASAP?</h1>
+  <p class="modal-text" i18n>Stand out on the wall during 7 days and be easy to find with the filter ASAP</p>
   <tsl-button className="btn-feature"
               [hidden]="!creditInfo || !productPrice"
               (click)="featureUrgentItem()"
               tslTrackEvent="UPLOADFORM_URGENT" [params]="{category: item?.categoryId}"
               i18n>Feature it as ASAP for {{productPrice * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
     <span *ngIf="creditInfo?.currencyName === 'wallacoins'">wallacoins</span></tsl-button>
-  <p i18n>Share it with your friends:</p>
+</div>
+<div class="share">
+  <div i18n>Share it with your friends:</div>
   <div class="social-icons">
     <a (click)="facebookShare()"><mat-icon svgIcon="facebook"></mat-icon></a>
     <a (click)="twitterShare()"><mat-icon svgIcon="twitter"></mat-icon></a>

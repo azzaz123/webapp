@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MsgArchiveResponse, ReceivedReceipt, ReadReceipt, ArchiveMetrics } from './archive.interface';
 import { HttpService } from '../http/http.service';
 import { Message, messageStatus } from './message';
@@ -165,7 +165,10 @@ export class MsgArchiveService {
     readReceipts.forEach(r => {
       messages.filter(m => {
         const threadMatches = m.conversationId === r.thread;
-        const senderMatches = m.from === r.to;
+        /* senderMatches: The first part of ternary condition is used to match 3rd voice messages, where 'from' = the id of the user
+        logged in, so the readReceipts match inversley (example: a 3rd voice message will have 'from' as my user id, but it should be
+        marked as read with a read receipt sent by me, to the other user id) */
+        const senderMatches = m.payload ? m.from !== r.to : m.from === r.to;
         const olderThanReadTs = ((new Date(m.date)).getTime() / 1000 <= r.timestamp);
         return threadMatches && olderThanReadTs && senderMatches;
       })
@@ -192,7 +195,9 @@ export class MsgArchiveService {
     this.addMetric(this.sinceArchiveMetrics, 'startProcessTs', Date.now(), false, Boolean(this.sinceArchiveMetrics.startDownloadTs));
     let messages = archiveData.filter((d) => d.type === this.eventTypes.message)
     .map(m => {
-      const fromSelf = m.event.from_user_hash === this.selfId;
+      /* fromSelf: The second part of condition is used to exclude 3rd voice messages, where from_user_hash = the id of the user
+      logged in, but they should not be considered messages fromSelf */
+      const fromSelf = m.event.from_user_hash === this.selfId && !m.event.payload;
       const msg = new Message(m.event.message_id,
         m.event.conversation_hash,
         m.event.body,

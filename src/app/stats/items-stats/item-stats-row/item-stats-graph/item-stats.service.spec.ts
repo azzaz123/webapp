@@ -5,7 +5,7 @@ import { TEST_HTTP_PROVIDERS } from '../../../../../tests/utils.spec';
 import { HttpService } from '../../../../core/http/http.service';
 import { ITEM_STATISTIC_RESPONSE } from '../../../../../tests/statistics.fixtures.spec';
 import { ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Response } from '@angular/http';
 
 describe('ItemStatsService', () => {

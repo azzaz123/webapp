@@ -169,6 +169,9 @@ export class ItemStatsGraphComponent implements AfterViewInit, OnDestroy {
         'fillColorsField': 'colorViews',
       });
     }
+    this.chartOptions.chartCursor.categoryBalloonFunction = function(date) {
+      return date.toLocaleDateString(this.locale, { weekday: 'long', day: 'numeric' });
+    };
     if (this.locale === 'es') {
       this.AmCharts.dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
     }

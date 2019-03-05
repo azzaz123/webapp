@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { CustomCurrencyPipe } from '../shared/custom-currency/custom-currency.pipe';
 import { PaymentService } from '../core/payments/payment.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PerksModel } from '../core/payments/payment.model';
@@ -167,7 +167,7 @@ describe('WallacoinsComponent', () => {
     }));
 
     it('should open modal', () => {
-      expect(modalService.open).toHaveBeenCalledWith(BuyWallacoinsModalComponent, {windowClass: 'buy-wallacoins'});
+      expect(modalService.open).toHaveBeenCalledWith(BuyWallacoinsModalComponent, {windowClass: 'modal-standard'});
     });
 
     it('should open second modal', () => {

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CheapestProducts, ItemsData } from '../../core/item/item-response.interface';
 import { ItemService } from '../../core/item/item.service';
 import { Item } from '../../core/item/item';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'tsl-items-stats',
@@ -11,20 +12,25 @@ import { Item } from '../../core/item/item';
 export class ItemsStatsComponent implements OnInit {
 
   public items: Item[] = [];
-  public loading = true;
   private init = 0;
   public end: boolean;
   public opens: boolean[] = [];
   public prices: CheapestProducts;
+  @Input() paginate: Subject<boolean>;
+  @Output() stopPagination = new EventEmitter <boolean>();
+  @Output() isLoading = new EventEmitter <boolean>();
 
   constructor(private itemService: ItemService) { }
 
   ngOnInit() {
     this.getItems();
+    this.paginate.subscribe(event => {
+      this.getItems(true);
+    });
   }
 
   private getItems(append?: boolean) {
-    this.loading = true;
+    this.isLoading.next(true);
     if (!append) {
       this.items = [];
     }
@@ -32,8 +38,11 @@ export class ItemsStatsComponent implements OnInit {
       const items = itemsData.data;
       this.init = itemsData.init;
       this.items = append ? this.items.concat(items) : items;
-      this.loading = false;
+      this.isLoading.next(false);
       this.end = !this.init;
+      if (this.end) {
+        this.stopPagination.next(true);
+      }
       if (this.items.length) {
         this.getProductsFromItems();
       }

@@ -1,9 +1,6 @@
 import { Model } from '../resource/model.interface';
-import { Image, UserLocation } from '../user/user-response.interface';
-import {
-  ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase,
-  ItemExtraInfo
-} from './item-response.interface';
+import { Image, UserLocation, InboxImage } from '../user/user-response.interface';
+import { ItemActions, ItemFlags, ItemSaleConditions, DeliveryInfo, AutorenewPurchase, ItemExtraInfo } from './item-response.interface';
 import { environment } from '../../../environments/environment';
 
 export const ITEM_BASE_PATH = 'http://es.wallapop.com/item/';
@@ -30,6 +27,7 @@ export class Item implements Model {
   private _favorited: boolean;
   private _selected = false;
   private _bumpExpiringDate: number;
+  private _listingFeeExpiringDate: number;
   private _bumpLast24h: boolean;
   private _plannedStartsToday: boolean;
   constructor(private _id: string,
@@ -228,6 +226,14 @@ export class Item implements Model {
     this._bumpExpiringDate = value;
   }
 
+  get listingFeeExpiringDate(): number {
+    return this._listingFeeExpiringDate;
+  }
+
+  set listingFeeExpiringDate(value: number) {
+    this._listingFeeExpiringDate = value;
+  }
+
   get bumpLast24h() {
     return this._bumpExpiringDate - Date.now() < 86400;
   }
@@ -266,5 +272,47 @@ export class Item implements Model {
 
   get extraInfo(): ItemExtraInfo {
     return this._extraInfo;
+  }
+}
+
+export interface InboxItemPrice {
+  amount: number;
+  currency: string;
+}
+
+export class InboxItem implements Model {
+  constructor(private _id: string,
+              private _price?: InboxItemPrice,
+              private _title?: string,
+              private _mainImage?: InboxImage,
+              private _status?: string) {
+  }
+
+  get id(): string {
+    return this._id;
+  }
+
+  get price(): InboxItemPrice {
+    return this._price;
+  }
+
+  get title(): string {
+    return this._title;
+  }
+
+  get status(): string {
+    return this._status;
+  }
+
+  get mainImage(): InboxImage {
+    return this._mainImage;
+  }
+
+  public setFakeImage(image: string) {
+    this._mainImage = {
+      urls_by_size: {
+        small: '',
+      }
+    };
   }
 }

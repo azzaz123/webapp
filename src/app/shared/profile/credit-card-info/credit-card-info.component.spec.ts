@@ -1,11 +1,12 @@
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
 import { CreditCardInfoComponent } from './credit-card-info.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { FINANCIAL_CARD } from '../../../../tests/payments.fixtures.spec';
+import { ConfirmationModalComponent } from '../../confirmation-modal/confirmation-modal.component';
 
 describe('CreditCardInfoComponent', () => {
   let component: CreditCardInfoComponent;
@@ -73,7 +74,9 @@ describe('CreditCardInfoComponent', () => {
     }));
 
     it('should open modal', () => {
-      expect(modalService.open).toHaveBeenCalled();
+      expect(modalService.open).toHaveBeenCalledWith(ConfirmationModalComponent, {
+        windowClass: 'modal-prompt'
+      });
       expect(componentInstance.type).toBe(4);
     });
 

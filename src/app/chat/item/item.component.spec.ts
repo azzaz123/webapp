@@ -2,7 +2,7 @@
 import { DecimalPipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency.pipe';
 import { ItemService } from '../../core/item/item.service';
 import {
@@ -11,11 +11,13 @@ import {
 } from '../../../tests/item.fixtures.spec';
 import { TrackingService } from '../../core/tracking/tracking.service';
 import { UserService } from '../../core/user/user.service';
-import { ItemComponent, showWillisCategories, showKlincCategories } from './item.component';
+import { ItemComponent, showWillisCategories, showMapfreCategories, showVertiCategories, mapfreLinks, vertiLinks } from './item.component';
 import { MOCK_USER } from '../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../tests/tracking.fixtures.spec';
 import { environment } from '../../../environments/environment';
 import { Item } from '../../core/item/item';
+import { CookieService } from 'ngx-cookie';
+import { CATEGORY_IDS } from '../../core/category/category-ids';
 
 describe('Component: Item', () => {
 
@@ -24,9 +26,10 @@ describe('Component: Item', () => {
   let userService: UserService;
   let itemService: ItemService;
   let trackingService: TrackingService;
+  let cookieService: CookieService;
 
   const MOCK_CLICK_EVENT = {
-    stopPropagation(){}
+    stopPropagation() { }
   };
 
   beforeEach(() => {
@@ -51,6 +54,17 @@ describe('Component: Item', () => {
           }
         }
         },
+        {
+          provide: CookieService, useValue: {
+          _value: {},
+          put(key, value) {
+            this._value[key] = value;
+          },
+          get(key) {
+            return this._value[key];
+          },
+        }
+        },
         {provide: TrackingService, useClass: MockTrackingService},
         {provide: 'SUBDOMAIN', useValue: 'es'}],
       schemas: [NO_ERRORS_SCHEMA]
@@ -60,6 +74,7 @@ describe('Component: Item', () => {
     userService = TestBed.get(UserService);
     itemService = TestBed.get(ItemService);
     trackingService = TestBed.get(TrackingService);
+    cookieService = TestBed.get(CookieService);
     appboy.initialize(environment.appboy);
   });
 
@@ -95,40 +110,45 @@ describe('Component: Item', () => {
     });
   });
 
-  it('should track Carfax Display when isCarItem is true',  () => {
-    spyOn(trackingService, 'track');
-    component.item = MOCK_ITEM_CAR;
-
-    component.ngOnChanges();
-
-    expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY);
-  });
-
-  it('should not track Carfax Display when isCarItem is false',  () => {
-    spyOn(trackingService, 'track');
-    component.item = MOCK_ITEM;
-
-    component.ngOnChanges();
-
-    expect(trackingService.track).not.toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_DISPLAY);
-  });
-
-  it('should not track Willis Display when show willis link',  () => {
+  it('should not track Willis Display when categoriId is 10000',  () => {
     spyOn(trackingService, 'track');
     component.item = { ...MOCK_ITEM, categoryId: 10000 } as Item;
 
     component.ngOnChanges();
 
-    expect(trackingService.track).not.toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY);
+    expect(trackingService.track).not.toHaveBeenCalled();
   });
 
-  it('should track Willis Display when show willis link',  () => {
+  it('should track Willis Display when showWillisLink ',  () => {
     spyOn(trackingService, 'track');
-    component.item = MOCK_ITEM;
 
-    component.ngOnChanges();
+    showWillisCategories.forEach((categoryId) => {
+      component.item = { ...MOCK_ITEM, categoryId} as Item;
+      component.ngOnChanges();
 
-    expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
+    });
+  });
+
+  it('should track Solcredito Display when showSolcreditoLink is true',  () => {
+    spyOn(trackingService, 'track');
+    const showSolcreditoCategories = Object.values(CATEGORY_IDS).filter( (key) => {
+      if (![CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.CAR].includes(CATEGORY_IDS[key])) {
+        return CATEGORY_IDS[key];
+      }
+    });
+    showSolcreditoCategories.forEach((categoryId) => {
+      component.item = { ...MOCK_ITEM, categoryId} as Item;
+      component.ngOnChanges();
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_DISPLAY, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
+    });
   });
 
   describe('getCounters', () => {
@@ -138,19 +158,8 @@ describe('Component: Item', () => {
 
       component.ngOnChanges();
 
-      expect(component.item.views).toBe(ITEM_VIEWS);
-      expect(component.item.favorites).toBe(ITEM_FAVORITES);
-    });
-
-    it('should not add item counters', () => {
-      component.item = MOCK_ITEM;
-      component.item.views = 1000;
-      component.item.favorites = 1000;
-
-      component.ngOnChanges();
-
-      expect(component.item.views).toBe(1000);
-      expect(component.item.favorites).toBe(1000);
+      expect(component.item.views).toBe(123);
+      expect(component.item.favorites).toBe(456);
     });
 
   });
@@ -160,7 +169,7 @@ describe('Component: Item', () => {
 
     component.ngOnChanges();
 
-    expect(component.itemUrl).toBe('https://es.wallapop.com/item/' + ITEM_WEB_SLUG);
+    expect(component.itemUrl).toBe(environment.siteUrl + 'item/' + ITEM_WEB_SLUG);
   });
 
   describe('prevent', () => {
@@ -308,11 +317,135 @@ describe('Component: Item', () => {
 
       expect(appboy.logCustomEvent).toHaveBeenCalledWith('Sold', {platform: 'web'});
     });
+
+    it('should emit ITEM_SOLD event', () => {
+      spyOn(window, 'fbq');
+
+      component.trackSoldEvent(MOCK_ITEM);
+
+      expect(window['fbq']).toHaveBeenCalledWith('track', 'CompleteRegistration', { value: MOCK_ITEM.salePrice, currency: MOCK_ITEM.currencyCode});
+    });
+  });
+
+  describe('mapfre link', () => {
+    beforeEach(() => {
+      cookieService.put('device_access_token_id', '1');
+      component.ngOnInit();
+    });
+
+    it('should return mapfre link if device-access-token last num is even number', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE} as Item;
+
+      component.ngOnChanges();
+
+      expect(component.getMapfreOrVertiLink()).toEqual(mapfreLinks[CATEGORY_IDS.REAL_ESTATE]);
+    });
+
+    it('should not return mapfre link if device-access-token last num is even number', () => {
+      cookieService.put('device_access_token_id', '0');
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE} as Item;
+
+      component.ngOnInit();
+      component.ngOnChanges();
+
+      expect(component.getMapfreOrVertiLink()).not.toEqual(mapfreLinks[CATEGORY_IDS.REAL_ESTATE]);
+    });
+
+    it('should show when category car, real estate, motobike or bike', () => {
+      showMapfreCategories.forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+
+        component.ngOnChanges();
+
+        expect(component.getMapfreOrVertiLink()).toEqual(mapfreLinks[categoryId]);
+      });
+    });
+
+    it('should call track with mapfre display parameters', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE } as Item;
+      spyOn(trackingService, 'track').and.callThrough();
+
+      component.ngOnChanges();
+
+      expect(trackingService.track)
+        .toHaveBeenCalledWith(TrackingService.MAPFRE_LINK_DISPLAY, { item_id: component.item.id, category_id: component.item.categoryId });
+    });
+
+    it('should send MAPFRE_LINK_TAP tracking event when clicked', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE } as Item;
+      spyOn(trackingService, 'track').and.callThrough();
+
+      component.ngOnChanges();
+      component.clickMapfreOrVerti(MOCK_CLICK_EVENT);
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.MAPFRE_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
+    });
+  });
+
+  describe('verti link', () => {
+    beforeEach(() => {
+      cookieService.put('device_access_token_id', '0');
+      component.ngOnInit();
+    });
+
+    it('should return verti link if device-access-token las num is odd number', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE} as Item;
+
+      component.ngOnChanges();
+
+      expect(component.getMapfreOrVertiLink()).toEqual(vertiLinks[CATEGORY_IDS.REAL_ESTATE]);
+    });
+
+    it('should not return verti link if device-access-token las num is odd number', () => {
+      cookieService.put('device_access_token_id', '1');
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE} as Item;
+
+      component.ngOnInit();
+      component.ngOnChanges();
+
+      expect(component.getMapfreOrVertiLink()).not.toEqual(vertiLinks[CATEGORY_IDS.REAL_ESTATE]);
+    });
+
+    it('should show when category car, real estate or motobike', () => {
+      showVertiCategories.forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId} as Item;
+
+        component.ngOnChanges();
+
+        expect(component.getMapfreOrVertiLink()).toEqual(vertiLinks[categoryId]);
+      });
+    });
+
+    it('should call track with verti display parameters', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE } as Item;
+      spyOn(trackingService, 'track').and.callThrough();
+
+      component.ngOnChanges();
+
+      expect(trackingService.track)
+        .toHaveBeenCalledWith(TrackingService.VERTI_LINK_DISPLAY, { item_id: component.item.id, category_id: component.item.categoryId });
+    });
+
+    it('should send VERTI_LINK_TAP tracking event when clicked', () => {
+      component.item = { ...MOCK_ITEM, categoryId: CATEGORY_IDS.REAL_ESTATE } as Item;
+      spyOn(trackingService, 'track').and.callThrough();
+
+      component.ngOnChanges();
+      component.clickMapfreOrVerti(MOCK_CLICK_EVENT);
+
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.VERTI_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
+    });
   });
 
   describe('showWillisLink', () => {
     it('should be true when item categoryId is 13100, 12545, or 12900', () => {
-      Object.values(showWillisCategories).forEach((categoryId) => {
+      showWillisCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
         component.ngOnChanges();
 
@@ -322,7 +455,7 @@ describe('Component: Item', () => {
 
     it('should be false when item categoryId is not 13100, 12545 or 12900', () => {
       const hideWillisCategories = [100, 14000];
-      Object.values(hideWillisCategories).forEach((categoryId) => {
+      hideWillisCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
         component.ngOnChanges();
 
@@ -331,54 +464,62 @@ describe('Component: Item', () => {
     });
   });
 
-  describe('showKlincLink', () => {
-    it('should be true when item categoryId is 15000, 16000', () => {
-      Object.values(showKlincCategories).forEach((categoryId) => {
-        component.item = { ...MOCK_ITEM, categoryId} as Item;
-        component.ngOnChanges();
+  describe('showSolcreditLink', () => {
+    it('should show item between 50€ - 499€', () => {
+      const showSolcreditoCategories = Object.values(CATEGORY_IDS).filter( (key) => {
+        if (![CATEGORY_IDS.REAL_ESTATE_OLD, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.CAR].includes(CATEGORY_IDS[key])) {
+          return CATEGORY_IDS[key];
+        }
+      });
 
-        expect(component.showKlincLink).toEqual(true);
+      showSolcreditoCategories.forEach((categoryId) => {
+        component.item = { ...MOCK_ITEM, categoryId, salePrice: 499 } as Item;
+        component.ngOnChanges();
+        expect(component.showSolcreditoLink).toEqual(true);
+
+        component.item = { ...MOCK_ITEM, salePrice: 50 } as Item;
+        component.ngOnChanges();
+        expect(component.showSolcreditoLink).toEqual(true);
       });
     });
 
-    it('should be false when item categoryId is not 15000, 16000', () => {
-      const hideWillisCategories = [100, 14000];
-      Object.values(hideWillisCategories).forEach((categoryId) => {
+    it('should hide with car and real state category', () => {
+      const hideSolcreditoCategories = [CATEGORY_IDS.CAR, CATEGORY_IDS.REAL_ESTATE, CATEGORY_IDS.REAL_ESTATE_OLD];
+
+      hideSolcreditoCategories.forEach((categoryId) => {
         component.item = { ...MOCK_ITEM, categoryId} as Item;
         component.ngOnChanges();
 
-        expect(component.showKlincLink).toEqual(false);
+        expect(component.showSolcreditoLink).toEqual(false);
       });
-    });
-  });
-
-  describe('clickCarfax', () => {
-    it('should track Carfax tap ', () => {
-      spyOn(trackingService, 'track');
-
-      component.clickCarfax(MOCK_CLICK_EVENT);
-
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.CARFAX_CHAT_TAP);
     });
   });
 
   describe('clickWillis', () => {
     it('should track willis tap ', () => {
       spyOn(trackingService, 'track');
+      component.item = MOCK_ITEM;
 
       component.clickWillis(MOCK_CLICK_EVENT);
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_TAP);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.WILLIS_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
     });
   });
 
-  describe('clickKlinc', () => {
-    it('should track klinc tap ', () => {
+  describe('clickSolcredito', () => {
+    it('should track solcredito tap ', () => {
       spyOn(trackingService, 'track');
+      component.item = MOCK_ITEM;
 
-      component.clickKlinc(MOCK_CLICK_EVENT);
+      component.clickSolcredito(MOCK_CLICK_EVENT);
 
-      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.KLINC_LINK_TAP);
+      expect(trackingService.track).toHaveBeenCalledWith(TrackingService.SOLCREDITO_LINK_TAP, {
+        category_id: component.item.categoryId,
+        item_id: component.item.id
+      });
     });
   });
 });

@@ -1,7 +1,7 @@
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
 import { PaymentService } from './payment.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import {
   BillingInfoResponse, CreditInfo, FinancialCard, Packs, Perks, Products,
   SabadellInfoResponse

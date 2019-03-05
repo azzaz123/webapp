@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { isPresent } from 'ngx-cookie/src/utils';
+import { isPresent } from 'ngx-cookie';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../../../core/user/user.service';
 import { ErrorsService } from '../../../../core/errors/errors.service';
@@ -17,7 +17,7 @@ export class EmailModalComponent {
 
   constructor(private fb: FormBuilder,
               private userService: UserService,
-              private activeModal: NgbActiveModal,
+              public activeModal: NgbActiveModal,
               private errorsService: ErrorsService) {
     this.emailForm = fb.group({
       email_address: ['', [Validators.required, this.email]]
@@ -43,7 +43,7 @@ export class EmailModalComponent {
   }
 
   private email(control: AbstractControl): { [key: string]: boolean } {
-    if (isPresent(Validators.required(control))) {
+    if (Validators.required(control)) {
       return null;
     }
     const pattern: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;

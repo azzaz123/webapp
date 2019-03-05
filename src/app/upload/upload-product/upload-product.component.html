@@ -146,7 +146,7 @@
       <p i18n>You can send (almost) anything through wallapop. And it's free for you!</p>
       <div ngbRadioGroup name="radioBasic" formControlName="delivery_info">
         <label ngbButtonLabel class="btn selector" *ngFor="let delivery of deliveryInfo">
-          <input ngbButton type="radio" [value]="delivery.value">
+          <input ngbButton type="radio" [value]="delivery.value" (click)=onDeliveryChange(delivery.value)>
           <mat-icon svgIcon="shipping-{{delivery.value.max_weight_kg}}"></mat-icon>
           <span><strong>{{delivery.value.max_weight_kg}}kg max</strong></span>
         </label>

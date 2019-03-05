@@ -4,35 +4,31 @@
 <div class="spinner-wrapper" [hidden]="!mainLoading" >
   <mat-icon svgIcon="spinner" class="spinner"></mat-icon>
 </div>
-<div class="buy-modal" [hidden]="mainLoading" [class.vertical]="!hasFinancialCard && creditInfo?.credit === 0" [class.with-credits]="withCredits">
-  <div class="left">
-    <div>
-      <h2 *ngIf="type === 'urgent'" i18n>Mark as urgent</h2>
-      <h2 *ngIf="type === 'reactivate'" i18n>Reactivate + visibility</h2>
-      <div class="box">
-        <tsl-item-avatar [item]="item" size="big" fallbackLight="true"></tsl-item-avatar>
-        <div class="title">{{item?.title}}</div>
-      </div>
+<div class="buy-modal" [hidden]="mainLoading" [class.with-credits]="withCredits">
+  <div class="left image-col">
+    <div class="image" *ngIf="type !== 'listing-fee'">
+      <tsl-item-avatar [item]="item" size="full" fallbackLight="true"></tsl-item-avatar>
+      <div class="title">{{item?.title}}</div>
     </div>
-    <div class="price">
-      <div class="total" i18n>Total</div>
+    <div class="buy-product-modal-icon" *ngIf="type === 'listing-fee'"></div>
+  </div>
+  <div class="right">
+    <h2 *ngIf="type === 'urgent'" i18n>Mark as urgent</h2>
+    <h2 *ngIf="type === 'reactivate'" i18n>Reactivate + visibility</h2>
+    <h2 *ngIf="type === 'listing-fee'" i18n>Publish your car</h2>
+    <h3 *ngIf="creditInfo?.credit === 0 && hasFinancialCard" i18n>Secure payment through Sabadell</h3>
+    <h3 *ngIf="creditInfo?.credit > 0 && creditInfo?.credit < orderEvent.total && !hasFinancialCard">
+      <span *ngIf="withCredits" i18n>Pay with your credit and credit card:</span>
+      <span *ngIf="!withCredits" i18n>Pay with your wallacoins and credit card:</span>
+    </h3>
+    <div class="price" [class.with-credit]="creditInfo?.credit > 0">
+      <div i18n>Price</div>
       <div class="amount">
         {{orderEvent?.total * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
         <tsl-wallacoin [currency]="creditInfo?.currencyName" size="big" color="black"></tsl-wallacoin>
       </div>
     </div>
-  </div>
-  <div class="right" [hidden]="!hasFinancialCard && creditInfo?.credit === 0">
-    <p *ngIf="creditInfo?.credit === 0" i18n>Secure payment through Sabadell</p>
     <div class="totals" *ngIf="creditInfo?.credit > 0">
-      <p *ngIf="creditInfo?.credit < orderEvent.total">
-        <span *ngIf="withCredits" i18n>Pay with your credit and credit card:</span>
-        <span *ngIf="!withCredits" i18n>Pay with your wallacoins and credit card:</span>
-      </p>
-      <p *ngIf="creditInfo?.credit >= orderEvent.total">
-        <span *ngIf="withCredits" i18n>Pay with your credit:</span>
-        <span *ngIf="!withCredits" i18n>Pay with your wallacoins:</span>
-      </p>
       <div class="credit" [hidden]="!creditInfo?.credit">
         <span class="label" [hidden]="!creditInfo?.credit">
           <span [hidden]="creditInfo?.currencyName !== 'wallacredits'">
@@ -43,8 +39,8 @@
             <span i18n>spending</span>
           </span>
         </span>
-        <span class="price">
-          {{-orderEvent.total * creditInfo?.factor | customCurrency:creditInfo?.currencyName}}
+        <span class="amount">
+          {{creditSpent | customCurrency:creditInfo?.currencyName}}
           <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="corporate"></tsl-wallacoin>
         </span>
       </div>
@@ -53,14 +49,14 @@
           <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="strike"></tsl-wallacoin>
           <span i18n>missing</span>
         </div>
-        <div class="price">
+        <div class="amount">
           {{totalToPay * creditInfo?.factor | number}}
           <tsl-wallacoin [currency]="creditInfo?.currencyName" size="medium" color="grey"></tsl-wallacoin>
         </div>
       </div>
       <div class="total">
         <span class="label" i18n>Total to pay</span>
-        <span class="price">{{totalToPay | customCurrency}}</span>
+        <span class="amount">{{totalToPay | customCurrency}}</span>
       </div>
     </div>
     <div class="credit-card" [hidden]="creditInfo?.credit >= orderEvent.total">
@@ -71,13 +67,6 @@
                 [loading]="loading"
                 i18n>Continue</tsl-button>
     <p class="note" *ngIf="!hasFinancialCard && creditInfo?.credit < orderEvent.total" i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
-  </div>
-  <div class="bottom" [hidden]="hasFinancialCard || !hasFinancialCard && creditInfo?.credit > 0">
-    <tsl-button className="btn-block btn-primary"
-                (click)="checkout()"
-                [loading]="loading"
-                i18n>Continue</tsl-button>
-    <p class="note" i18n>We don't save details of this transaction. The purchase is made via Banco Sabadell.</p>
   </div>
 </div>
 <tsl-sabadell [submit]="sabadellSubmit"></tsl-sabadell>

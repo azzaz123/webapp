@@ -57,6 +57,7 @@ export interface ItemContent {
   views?: number;
   delivery_info?: DeliveryInfo;
   extra_info?: ItemExtraInfo;
+  publish_date?: number;
 }
 
 export interface ItemProResponse {
@@ -129,6 +130,7 @@ export interface ConversationUser {
 export interface Purchase {
   expiration_date: number;
   item_id: string;
+  purchase_name?: 'listingfee' | 'countrybump';
   visibility_flags: {
     bumped: boolean;
     highlighted: boolean;
@@ -273,7 +275,7 @@ export interface ItemFlags {
   highlighted?: boolean;
   urgent?: boolean;
   bump_type?: string;
-  onhold?: boolean
+  onhold?: boolean;
 }
 
 export interface ItemActions {
@@ -321,7 +323,7 @@ export interface DeliveryInfo {
 export interface ItemExtraInfo {
   object_type: {
     id: string;
-  },
+  };
   brand: string;
   model: string;
 }
@@ -351,4 +353,10 @@ export interface CarInfo {
   num_doors: number;
   num_seats: number;
   version: string;
+}
+
+export interface ListingFeeProductInfo {
+  limit_category: number;
+  limit_type: string;
+  product_group: AvailableProductsResponse;
 }

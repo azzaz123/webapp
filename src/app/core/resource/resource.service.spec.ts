@@ -7,7 +7,7 @@ import { Response, ResponseOptions } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Injectable } from '@angular/core';
 import { USER_DATA, USER_ID } from '../../../tests/user.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { TEST_HTTP_PROVIDERS } from '../../../tests/utils.spec';
 

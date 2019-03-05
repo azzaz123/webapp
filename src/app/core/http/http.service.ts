@@ -9,10 +9,17 @@ import {
   Response,
   URLSearchParams
 } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AccessTokenService } from './access-token.service';
 import * as CryptoJS from 'crypto-js';
 import { environment } from '../../../environments/environment';
+import { HttpErrorResponse } from '@angular/common/http';
+import { EventService } from '../event/event.service';
+import 'rxjs/add/operator/bufferTime';
+import 'rxjs/add/operator/retryWhen';
+import 'rxjs/add/operator/concat';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/delay';
 
 export const SECRET = 'UTI5dVozSmhkSE1zSUhsdmRTZDJaU0JtYjNWdVpDQnBkQ0VnUVhKbElIbHZkU0J5WldGa2VTQjBieUJxYjJsdUlIVnpQeUJxYjJKelFIZGhiR3hoY0c5d0xtTnZiUT09';
 
@@ -20,10 +27,15 @@ export const SECRET = 'UTI5dVozSmhkSE1zSUhsdmRTZDJaU0JtYjNWdVpDQnBkQ0VnUVhKbElIb
 export class HttpService extends Http {
 
   constructor(backend: ConnectionBackend,
-              defaultOptions: RequestOptions,
-              private accessTokenService: AccessTokenService) {
-    super(backend, defaultOptions);
-  }
+    defaultOptions: RequestOptions,
+    private accessTokenService: AccessTokenService,
+    private eventService: EventService) {
+      super(backend, defaultOptions);
+    }
+    private retryOnStatuses = [0, 408, 429, 500, 502, 503, 504];
+    private initialRetryInterval = 5 * 1000;
+    private maxRetryInterval = 5 * 60 * 1000;
+    public quitRetryMsg = 'Quit retrying';
 
   public request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
     return super.request(url, options);
@@ -58,12 +70,26 @@ export class HttpService extends Http {
     return super.post(url, body, options);
   }
 
-  public postNoBase(url: string, body?: any, authorization?: string, passCookies?: boolean): Observable<Response> {
+  public postNoBase(url: string, body?: any, authorization?: string, passCookies?: boolean, withDelayedRetry?: boolean): Observable<Response> {
     const headers: Headers = new Headers();
     headers.append('Authorization', authorization);
     const newOptions: RequestOptions = new RequestOptions({headers: headers});
     newOptions.withCredentials = passCookies;
-    return super.post(url, body, newOptions);
+    return super.post(url, body, newOptions).retryWhen(error => {
+      return error.flatMap((err: HttpErrorResponse, index: number) => {
+        const delay = Math.min(this.initialRetryInterval * Math.pow(2, index), this.maxRetryInterval);
+        if (this.retryOnStatuses.indexOf(err.status) !== -1 && withDelayedRetry) {
+          if (index === 0) {
+            this.eventService.emit(EventService.HTTP_REQUEST_FAILED, url);
+          }
+          return Observable.of(err.status).delay(delay);
+        }
+        return Observable.throw(err);
+      })
+      .take(100)
+      .concat(Observable.throw({ message: this.quitRetryMsg, url: url })
+      );
+    });
   }
 
   public put(url: string, body?: any, options?: RequestOptionsArgs): Observable<Response> {

@@ -29,7 +29,6 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 import { MessageComponent } from './message/message.component';
 import { ReviewButtonComponent } from './message/review-button/review-button.component';
 import { SwitchComponent } from './switch/switch.component';
-import { GdprModalComponent } from './gdpr-modal/gdpr-modal.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ConversationComponent } from './conversation/conversation.component';
 import { ItemAvatarComponent } from './item-avatar/item-avatar.component';
@@ -50,7 +49,6 @@ import { EditPasswordComponent } from './profile/edit-password/edit-password.com
 import { PasswordModalComponent } from './profile/edit-password/password-modal/password-modal.component';
 import { PictureUploadComponent } from './profile/picture-upload/picture-upload.component';
 import { CreditCardInfoComponent } from './profile/credit-card-info/credit-card-info.component';
-import { NgUploaderModule } from 'ngx-uploader';
 import { CatalogCardComponent } from './catalog/catalog-card/catalog-card.component';
 import { CatalogItemActionsComponent } from './catalog/catalog-item-actions/catalog-item-actions.component';
 import { CatalogStatusNavbarComponent } from './catalog/catalog-status-navbar/catalog-status-navbar.component';
@@ -59,6 +57,11 @@ import { CartService } from './catalog/cart/cart.service';
 import { TrackingModule } from '../core/tracking/tracking.module';
 import { RouterModule } from '@angular/router';
 import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-confirmation-modal.component';
+import { CountdownComponent } from './countdown/countdown.component';
+import { ThousandSuffixesPipe } from './number-conversion/thousand-suffixes.pipe';
+import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/activate-items-modal/activate-items-modal.component';
+import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
+import { UploaderModule } from './uploader/uploader.module';
 
 @NgModule({
   imports: [
@@ -72,13 +75,14 @@ import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-c
     MomentModule,
     NgxPermissionsModule.forChild(),
     NgbDropdownModule,
-    NgUploaderModule,
     TrackingModule,
-    RouterModule
+    RouterModule,
+    UploaderModule
   ],
   exports: [
     CardModule,
     CommonModule,
+    UploaderModule,
     SpinnerComponent,
     AdComponent,
     CustomCurrencyPipe,
@@ -98,7 +102,6 @@ import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-c
     SwitchComponent,
     ReviewModalComponent,
     NgxPermissionsModule,
-    GdprModalComponent,
     MessageComponent,
     ReviewButtonComponent,
     ConversationComponent,
@@ -120,7 +123,9 @@ import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-c
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
     CartComponent,
-    ExitConfirmationModalComponent
+    ExitConfirmationModalComponent,
+    CountdownComponent,
+    ThousandSuffixesPipe
   ],
   declarations: [
     AdComponent,
@@ -140,13 +145,11 @@ import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-c
     ArchivableComponent,
     ArchiveButtonComponent,
     UnarchiveButtonComponent,
-    UserAvatarComponent,
     ReviewModalComponent,
     MessageComponent,
     ReviewButtonComponent,
     SwitchComponent,
     ReviewModalComponent,
-    GdprModalComponent,
     CheckboxComponent,
     ConversationComponent,
     ItemAvatarComponent,
@@ -169,24 +172,30 @@ import { ExitConfirmationModalComponent } from './exit-confirmation-modal/exit-c
     CatalogItemActionsComponent,
     CatalogStatusNavbarComponent,
     CartComponent,
-    ExitConfirmationModalComponent
+    ExitConfirmationModalComponent,
+    CountdownComponent,
+    ThousandSuffixesPipe,
+    ActivateItemsModalComponent,
+    DeactivateItemsModalComponent
   ],
   providers: [
     DecimalPipe,
     ExitConfirmGuard,
     TutorialGuard,
-    CartService
+    CartService,
+    ThousandSuffixesPipe
   ],
   entryComponents: [
     ConfirmationModalComponent,
     SoldModalComponent,
     ReviewModalComponent,
-    GdprModalComponent,
     TooManyItemsModalComponent,
     AlreadyFeaturedModalComponent,
     EmailModalComponent,
     PasswordModalComponent,
-    ExitConfirmationModalComponent
+    ExitConfirmationModalComponent,
+    ActivateItemsModalComponent,
+    DeactivateItemsModalComponent
   ]
 })
 export class SharedModule { }

@@ -1,4 +1,7 @@
+$modal-standard-width: 600px;
 $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
+$modal-border-radius: 0.3rem;
+
 .modal-backdrop.in {
   opacity: .7;
 }
@@ -11,7 +14,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   flex-direction: column;
 }
 .modal-content {
-  max-width: 400px;
+  max-width: $modal-standard-width;
   margin: 0 auto;
   box-shadow: $modal-box-shadow;
   border: 0;
@@ -37,15 +40,15 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     &:hover mat-icon /deep/ path {
       fill: $grey-900;
     }
-    .modal.bump-confirm & {
-      mat-icon /deep/ path {
-        fill: $grey-200;
-      }
-    }
     &.light {
       mat-icon /deep/ path {
         fill: $white;
         opacity: .5;
+      }
+    }
+    &.grey {
+      mat-icon /deep/ path {
+        fill: $grey-100;
       }
     }
   }
@@ -84,7 +87,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
     margin-bottom: 0;
     font-size: $font-size-S;
   }
-  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.custom-radio) {
+  .btn:not(.btn-primary):not(.btn-secondary):not(.btn-feature):not(.btn-gray):not(.custom-radio) {
     color: $grey-800;
     background-color: transparent;
     outline: 0;
@@ -122,7 +125,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.review, .modal.sold, .modal.profile, .modal.upload {
+.modal.review, .modal.sold, .modal.profile {
   $modal-width: 600px;
   .modal-dialog {
     max-width: $modal-width;
@@ -145,17 +148,6 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.bump-confirm {
-  $modal-width: 448px;
-  .modal-dialog {
-    max-width: $modal-width;
-  }
-  .modal-content {
-   width: $modal-width !important;
-    max-width: unset;
-  }
-}
-
 .modal.preview, .modal.location  {
   $modal-width: 700px;
   .modal-dialog {
@@ -169,7 +161,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
 }
 
 .modal.account-details {
-  $modal-width: 460px;
+  $modal-width: 600px;
   .modal-dialog {
     max-width: $modal-width;
   }
@@ -180,12 +172,11 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
 }
 
 .modal.unsubscribe {
-  $modal-width: 630px;
+  $modal-width: 600px;
   .modal-dialog {
     max-width: $modal-width;
   }
   .modal-content {
-    border-radius: 20px;
     width: $modal-width !important;
     max-width: unset;
   }
@@ -203,7 +194,7 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   }
 }
 
-.modal.buy-wallacoins, .modal.buy-product, .modal.urgent-confirm, .modal.reactivate, .modal.reactivate-confirm, .modal.tutorial-wallacoins {
+.modal.buy-wallacoins, .modal.buy-product, .modal.reactivate, .modal.tutorial-wallacoins, .modal.become-pro {
   .modal-dialog {
     max-width: unset;
   }
@@ -221,5 +212,177 @@ $modal-box-shadow: 0 4px 10px 0 rgba(36, 49, 56, 0.15);
   .modal-content {
     width: $modal-width !important;
     max-width: unset;
+  }
+}
+
+.modal.phone-request {
+  $modal-width: 572px;
+  .modal-body {
+    border-radius: 20px;
+    padding: $spacing-S $spacing-40 $spacing-2M;
+  }
+  .modal-dialog, .modal-content {
+    max-width: $modal-width;
+    border-radius: $button-border-radius;
+  }
+  .modal-close {
+    left: $spacing-1M;
+    top: $spacing-1M;
+    mat-icon {
+      @include square($spacing-1M);
+    }
+  }
+}
+
+.modal.modal-prompt {
+  .modal-dialog {
+    max-width: $modal-standard-width;
+  }
+  .modal-content {
+    width: $modal-standard-width !important;
+    max-width: unset;
+    .modal-body {
+      text-align: center;
+      margin-top: $spacing-2L;
+      h2 {
+        font-size: $font-size-L;
+      }
+      p {
+        font-size: $font-size;
+        color: $grey-600;
+      }
+    }
+    .modal-footer {
+      justify-content: center;
+      padding-bottom: $spacing-40;
+      .btn {
+        width: 170px;
+        height: 40px;
+        line-height: 40px;
+        background-color: $grey-50 !important;
+        color: $grey-500 !important;
+        border: 0 !important;
+        border-radius: 20px !important;
+        &.btn-warn {
+          background-color: $warn !important;
+          color: $white !important;;
+        }
+        &:hover {
+          opacity: .8;
+        }
+      }
+    }
+  }
+}
+
+.modal.modal-standard {
+  .modal-dialog {
+    max-width: $modal-standard-width;
+  }
+  .header {
+    background: $corporate;
+    height: 100px;
+    border-top-left-radius: $modal-border-radius;
+    border-top-right-radius: $modal-border-radius;
+    color: $white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .modal-close {
+      top: $spacing;
+      right: $spacing;
+      @include square(13px);
+      mat-icon {
+        @include square(13px);
+        line-height: unset;
+      }
+    }
+    h1 {
+      font-size: $font-size-M;
+      font-weight: bold;
+    }
+    p {
+      opacity: .8;
+      margin: 0;
+      color: $white;
+      font-size: $font-size;
+    }
+  }
+  .modal-content {
+    width: $modal-standard-width !important;
+    max-width: unset;
+    .modal-close:not(.light) {
+      mat-icon /deep/ path {
+        fill: $grey-200;
+      }
+    }
+    .image-col {
+      background-color: $grey-100;
+      min-width: 280px;
+      border-top-left-radius: $modal-border-radius;
+      border-bottom-left-radius: $modal-border-radius;
+      display: flex;
+      justify-content: center;
+      img {
+        width: 200px;
+        margin: 0;
+      }
+    }
+    .modal-title {
+      font-weight: bold;
+      font-size: $font-size-L;
+      margin-bottom: $spacing-S;
+      &.fail {
+        color: $warn;
+      }
+    }
+    .modal-text {
+      font-size: $font-size;
+      color: $grey-500;
+      &.green {
+        color: $corporate;
+      }
+    }
+    .link {
+      color: $grey-250 !important;
+      margin-top: $spacing-M;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+    .share {
+      text-align: center;
+      font-size: $font-size;
+      color: $grey-250;
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        margin-bottom: $spacing;
+        a {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 50%;
+          background-color: $grey-50;
+          @include square(34px);
+          margin: 6px;
+          cursor: pointer;
+          mat-icon {
+            @include square(18px);
+            /deep/ path {
+              fill: $grey-250;
+            }
+          }
+          &:hover {
+            background-color: $color-social-background;
+            mat-icon /deep/ path {
+              fill: $color-social-fill;
+            }
+          }
+        }
+      }
+    }
   }
 }

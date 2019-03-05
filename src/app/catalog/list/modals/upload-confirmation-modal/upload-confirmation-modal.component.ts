@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { Order, Product } from '../../../../core/item/item-response.interface';
 import { OrderEvent } from '../../selected-items/selected-product.interface';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ItemService } from '../../../../core/item/item.service';
 import { Item } from '../../../../core/item/item';
 import { WindowRef } from '../../../../core/window/window.service';
@@ -35,7 +35,6 @@ export class UploadConfirmationModalComponent implements OnInit {
   ngOnInit() {
     ga('send', 'event', 'Item', 'upload');
     gtag('event', 'conversion', {'send_to': 'AW-829909973/7aOVCJvxvHsQ1dfdiwM'});
-    fbq('track', '567634953582843', {});
     twq('track', 'Purchase', {
       value: '0',
       currency: 'EUR',
@@ -85,6 +84,12 @@ export class UploadConfirmationModalComponent implements OnInit {
 
   public trackUploaded(): void {
     this.trackingService.track(TrackingService.UPLOADFORM_SUCCESS, {categoryId: this.item.categoryId});
+    fbq('track', 'AddToCart', {
+      value: this.item.salePrice,
+      currency: this.item.currencyCode,
+      content_ids: this.item.id,
+      content_type: this.item.categoryId,
+    });
   }
 
 }

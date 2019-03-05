@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { GeolocationService } from './geolocation.service';
 import { GEOLOCATION_DATA_WEB } from '../../../tests/geolocation.fixtures.spec';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ResponseOptions, Response } from '@angular/http';
 import { GeolocationResponse } from './geolocation-response.interface';
 import { Coordinate } from './address-response.interface';

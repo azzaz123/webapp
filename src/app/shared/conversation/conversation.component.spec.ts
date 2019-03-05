@@ -6,7 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MomentModule } from 'angular2-moment';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPermissionsModule } from 'ngx-permissions';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ConversationService } from '../../core/conversation/conversation.service';
 import { UserService } from '../../core/user/user.service';
 import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';

@@ -1,7 +1,7 @@
 import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CatalogItemActionsComponent } from './catalog-item-actions.component';
 import { ItemService } from '../../../core/item/item.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   createItemsArray, ITEMS_BULK_RESPONSE,
@@ -182,12 +182,12 @@ describe('CatalogItemActionsComponent', () => {
       beforeEach(fakeAsync(() => {
         spyOn(itemService, 'bulkSetActivate').and.returnValue(Observable.of('200'));
 
-        component.activate(modal);
+        component.activate();
         tick();
       }));
 
       it('should call modal and activate', () => {
-        expect(modalService.open).toHaveBeenCalledWith(modal);
+        expect(modalService.open).toHaveBeenCalled();
         expect(itemService.bulkSetActivate).toHaveBeenCalled();
       });
 
@@ -208,12 +208,12 @@ describe('CatalogItemActionsComponent', () => {
         spyOn(trackingService, 'track').and.callThrough();
         spyOn(itemService, 'bulkSetDeactivate').and.returnValue(Observable.of('200'));
 
-        component.deactivate(modal);
+        component.deactivate();
         tick();
       }));
 
       it('should call modal and deactivate', () => {
-        expect(modalService.open).toHaveBeenCalledWith(modal);
+        expect(modalService.open).toHaveBeenCalled();
         expect(itemService.bulkSetDeactivate).toHaveBeenCalled();
       });
 

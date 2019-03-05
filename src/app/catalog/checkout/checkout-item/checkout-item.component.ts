@@ -3,7 +3,7 @@ import { ItemWithProducts } from '../../../core/item/item-response.interface';
 import * as _ from 'lodash';
 import { CartService } from '../../../shared/catalog/cart/cart.service';
 import { CartChange, CartItem } from '../../../shared/catalog/cart/cart-item.interface';
-import { BUMP_TYPES } from '../../../shared/catalog/cart/cart-base';
+import { BUMP_PROVINCIAL_TYPES, BUMP_TYPES } from '../../../shared/catalog/cart/cart-base';
 import { Cart } from '../../../shared/catalog/cart/cart';
 import { PaymentService } from '../../../core/payments/payment.service';
 import { CreditInfo } from '../../../core/payments/payment.interface';
@@ -37,6 +37,9 @@ export class CheckoutItemComponent implements OnInit, OnDestroy {
       this.onRemoveOrClean(cartChange);
     });
     this.provincialBump = !this.itemWithProducts.products['168'].citybump;
+    if (this.provincialBump) {
+      this.types = BUMP_PROVINCIAL_TYPES;
+    }
   }
 
   ngOnDestroy() {

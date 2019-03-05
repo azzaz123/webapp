@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckoutExtrasProComponent } from './checkout-extras-pro.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
 import { PaymentService } from '../../core/payments/payment.service';
 import { createPacksFixture, PREPARED_PACKS } from '../../../tests/payments.fixtures.spec';

@@ -1,0 +1,13 @@
+@import "~style/common";
+
+.content-col {
+  background: url(/assets/icons/listing-fee-icon-wings.svg) no-repeat 40px 50px;
+  background-size: 190px;
+  padding: $spacing-40 $spacing-40 $spacing-40 260px;
+  p {
+    margin: 0 auto $spacing-3M auto;
+  }
+  tsl-button /deep/ button {
+    width: 200px;
+  }
+}

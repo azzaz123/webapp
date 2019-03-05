@@ -11,7 +11,7 @@ import { NguCarousel } from '@ngu/carousel';
 import { TrackingService } from '../core/tracking/tracking.service';
 import { UserService } from '../core/user/user.service';
 import { WallacoinsTutorialComponent } from './wallacoins-tutorial/wallacoins-tutorial.component';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { User } from '../core/user/user';
 
 @Component({
@@ -95,7 +95,7 @@ export class WallacoinsComponent implements OnInit {
   }
 
   public openBuyModal(pack: Pack, packIndex: number) {
-    const modal: NgbModalRef = this.modalService.open(BuyWallacoinsModalComponent, {windowClass: 'buy-wallacoins'});
+    const modal: NgbModalRef = this.modalService.open(BuyWallacoinsModalComponent, {windowClass: 'modal-standard'});
     modal.componentInstance.pack = pack;
     modal.componentInstance.packIndex = packIndex;
     modal.result.then(() => {

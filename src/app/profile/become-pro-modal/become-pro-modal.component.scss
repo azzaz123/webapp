@@ -1,0 +1,47 @@
+@import "~style/common";
+
+.header {
+  background-image: linear-gradient(to bottom, $color-pro-super-light, $color-pro);
+  height: 144px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  h1, p {
+    color: $white;
+  }
+  h1 {
+    font-size: $font-size-LLL;
+    font-weight: bold;
+  }
+  p {
+    margin: 0;
+    font-size: $font-size;
+  }
+}
+
+.modal-body {
+  width: 580px;
+  text-align: center;
+  padding: $spacing-L $spacing-XL;
+  ul {
+    margin-bottom: $spacing-L;
+    padding: 0;
+    li {
+      color: $grey-500;
+      text-align: left;
+      font-size: $font-size-S;
+      list-style: none;
+      margin-bottom: $spacing-S;
+      background: url(/assets/icons/check-purple.svg) no-repeat left center;
+      padding-left: 50px;
+      background-size: 20px;
+    }
+  }
+  .btn {
+    background: $color-pro-light;
+    border-radius: 100px;
+    color: $white;
+    width: 296px;
+  }
+}

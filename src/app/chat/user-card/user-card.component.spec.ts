@@ -3,7 +3,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserCardComponent } from './user-card.component';
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ItemService } from '../../core/item/item.service';
 import {
   MOCK_USER,

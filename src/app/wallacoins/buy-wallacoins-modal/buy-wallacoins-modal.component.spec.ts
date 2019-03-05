@@ -6,7 +6,7 @@ import { CustomCurrencyPipe } from '../../shared/custom-currency/custom-currency
 import { DecimalPipe } from '@angular/common';
 import { ErrorsService } from '../../core/errors/errors.service';
 import { PaymentService } from '../../core/payments/payment.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Pack } from '../../core/payments/pack';
 import { UUID } from 'angular2-uuid';
@@ -163,6 +163,14 @@ describe('BuyWallacoinsModalComponent', () => {
 
               expect(errorService.i18nError).toHaveBeenCalledWith('packError');
             });
+          });
+
+          it('should call Facebook tracking with StartTrail', () => {
+            spyOn(window, 'fbq');
+
+            component.checkout();
+
+            expect(window['fbq']).toHaveBeenCalledWith('track', 'StartTrial');
           });
         });
       });

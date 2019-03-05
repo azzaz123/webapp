@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   Component,
   ElementRef,
   EventEmitter,
@@ -7,12 +6,12 @@ import {
   OnChanges,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  AfterContentInit
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { IOption } from 'ng-select';
-import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import * as _ from 'lodash';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CategoryOption } from '../../core/category/category-response.interface';
@@ -30,7 +29,7 @@ import { GeneralSuggestionsService } from './general-suggestions.service';
   templateUrl: './upload-product.component.html',
   styleUrls: ['./upload-product.component.scss']
 })
-export class UploadProductComponent implements OnInit, AfterViewChecked, OnChanges {
+export class UploadProductComponent implements OnInit, AfterContentInit, OnChanges {
 
   @Input() categoryId: string;
   @Input() item: Item;
@@ -50,8 +49,8 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   public uploadForm: FormGroup;
   public currencies: IOption[] = [
-    {value: 'EUR', label: '€'},
-    {value: 'GBP', label: '£'}
+    { value: 'EUR', label: '€' },
+    { value: 'GBP', label: '£' }
   ];
   public deliveryInfo: any = [{
     size: '20x38x40cm',
@@ -85,18 +84,19 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   @ViewChild('title') titleField: ElementRef;
   private focused: boolean;
   private oldFormValue: any;
+  private oldDeliveryValue: any;
   public isUrgent = false;
   public customMake = false;
   public customModel = false;
 
   constructor(private fb: FormBuilder,
-              private router: Router,
-              private errorsService: ErrorsService,
-              private categoryService: CategoryService,
-              private modalService: NgbModal,
-              private trackingService: TrackingService,
-              private generalSuggestionsService: GeneralSuggestionsService,
-              config: NgbPopoverConfig) {
+    private router: Router,
+    private errorsService: ErrorsService,
+    private categoryService: CategoryService,
+    private modalService: NgbModal,
+    private trackingService: TrackingService,
+    private generalSuggestionsService: GeneralSuggestionsService,
+    config: NgbPopoverConfig) {
     this.uploadForm = fb.group({
       id: '',
       category_id: ['', [Validators.required]],
@@ -142,6 +142,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
         extra_info: this.item.extraInfo ? this.item.extraInfo : {}
       });
       this.detectFormChanges();
+      this.oldDeliveryValue = this.getDeliveryInfo();
     }
   }
 
@@ -177,14 +178,14 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       if (!this.item) {
         if (this.categoryId && this.categoryId !== '-1') {
           this.uploadForm.get('category_id').patchValue(this.categoryId);
-          const fixedCategory = _.find(categories, {value: this.categoryId});
+          const fixedCategory = _.find(categories, { value: this.categoryId });
           this.fixedCategory = fixedCategory ? fixedCategory.label : null;
           this.uploadForm.get('delivery_info').patchValue(null);
         } else {
           this.fixedCategory = null;
         }
       } else {
-        const selectedCategory = _.find(categories, {value: this.item.categoryId.toString()});
+        const selectedCategory = _.find(categories, { value: this.item.categoryId.toString() });
         if (this.categoryService.isHeroCategory(this.item.categoryId)) {
           this.fixedCategory = selectedCategory ? selectedCategory.label : null;
         }
@@ -196,20 +197,18 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     });
   }
 
-  ngAfterViewChecked() {
-    setTimeout(() => {
-      if (!this.item && this.titleField && !this.focused) {
-        this.titleField.nativeElement.focus();
-        this.focused = true;
-      }
-    });
+  ngAfterContentInit() {
+    if (!this.item && this.titleField && !this.focused) {
+      this.titleField.nativeElement.focus();
+      this.focused = true;
+    }
   }
 
   onSubmit() {
     if (this.uploadForm.valid) {
       this.loading = true;
       if (this.item && this.item.itemType === this.itemTypes.CONSUMER_GOODS) {
-        this.uploadForm.value.sale_conditions.shipping_allowed = true;
+        this.uploadForm.value.sale_conditions.shipping_allowed = this.uploadForm.value.delivery_info ? true : false;
       }
       this.uploadEvent.emit({
         type: this.item ? 'update' : 'create',
@@ -236,25 +235,25 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
   onUploaded(uploadEvent: any) {
     this.onFormChanged.emit(false);
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, {category: this.uploadForm.value.category_id});
-      appboy.logCustomEvent('Edit', {platform: 'web'});
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_SUCCESS, { category: this.uploadForm.value.category_id });
+      appboy.logCustomEvent('Edit', { platform: 'web' });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_UPLOADFROMFORM);
-      appboy.logCustomEvent('List', {platform: 'web'});
+      appboy.logCustomEvent('List', { platform: 'web' });
     }
 
     if (this.isUrgent) {
-      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.UPLOADFORM_CHECKBOX_URGENT, { category: this.uploadForm.value.category_id });
       uploadEvent.action = 'urgent';
       localStorage.setItem('transactionType', 'urgent');
     }
-    this.router.navigate(['/catalog/list', {[uploadEvent.action]: true, itemId: uploadEvent.response.id}]);
+    this.router.navigate(['/catalog/list', { [uploadEvent.action]: true, itemId: uploadEvent.response.id }]);
   }
 
   onError(response: any) {
     this.loading = false;
     if (this.item) {
-      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, {category: this.uploadForm.value.category_id});
+      this.trackingService.track(TrackingService.MYITEMDETAIL_EDITITEM_ERROR, { category: this.uploadForm.value.category_id });
     } else {
       this.trackingService.track(TrackingService.UPLOADFORM_ERROR);
     }
@@ -273,21 +272,21 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
 
   private min(min: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-      if (isPresent(Validators.required(control))) {
+      if (Validators.required(control)) {
         return null;
       }
       const v: number = Number(control.value);
-      return v < min ? {'min': {'requiredMin': min, 'actualMin': v}} : null;
+      return v < min ? { 'min': { 'requiredMin': min, 'actualMin': v } } : null;
     };
   }
 
   private max(max: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-      if (isPresent(Validators.required(control))) {
+      if (Validators.required(control)) {
         return null;
       }
       const v: number = Number(control.value);
-      return v > max ? {'max': {'requiredMax': max, 'actualMax': v}} : null;
+      return v > max ? { 'max': { 'requiredMax': max, 'actualMax': v } } : null;
     };
   }
 
@@ -310,7 +309,7 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
     this.objectTypeTitle = category.object_type_title;
     this.generalSuggestionsService.getObjectTypes(category.value).subscribe((objectTypes: IOption[]) => {
       this.objectTypes = objectTypes;
-    })
+    });
   }
 
   public getBrandsAndModels(objectTypeId: string) {
@@ -323,6 +322,15 @@ export class UploadProductComponent implements OnInit, AfterViewChecked, OnChang
       this.generalSuggestionsService.getModels(this.uploadForm.value.categoryId, objectTypeId).subscribe((models: IOption[]) => {
         this.models = models;
       });
+    }
+  }
+
+  public onDeliveryChange(newDeliveryValue: any) {
+    if (newDeliveryValue === this.oldDeliveryValue) {
+      this.uploadForm.controls['delivery_info'].reset();
+      delete this.oldDeliveryValue;
+    } else {
+      this.oldDeliveryValue = newDeliveryValue;
     }
   }
 

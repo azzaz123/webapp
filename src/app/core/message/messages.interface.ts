@@ -1,6 +1,6 @@
 import { Message } from './message';
 import { MessagePayload } from './messages.interface';
-import * as PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb';
 import DocumentId = PouchDB.Core.DocumentId;
 import DocumentKey = PouchDB.Core.DocumentKey;
 import RevisionId = PouchDB.Core.RevisionId;
@@ -36,6 +36,7 @@ export interface StoredMessage {
   from: string;
   conversationId: string;
   payload?: MessagePayload;
+  phoneRequest?: string;
 }
 
 export interface StoredMessageRow {

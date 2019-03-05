@@ -5,7 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { WindowRef } from '../../../../core/window/window.service';
 import { TrackingService } from '../../../../core/tracking/tracking.service';
 import { UserService } from '../../../../core/user/user.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MOCK_USER } from '../../../../../tests/user.fixtures.spec';
 import { MockTrackingService } from '../../../../../tests/tracking.fixtures.spec';
 import { DecimalPipe } from '@angular/common';

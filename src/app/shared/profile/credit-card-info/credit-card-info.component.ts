@@ -23,7 +23,9 @@ export class CreditCardInfoComponent implements OnInit {
   }
 
   deleteCreditCard() {
-    const modalRef = this.modalService.open(ConfirmationModalComponent);
+    const modalRef = this.modalService.open(ConfirmationModalComponent, {
+      windowClass: 'modal-prompt'
+    });
     modalRef.componentInstance.type = 4;
     modalRef.result.then(() => {
       this.paymentService.deleteFinancialCard().subscribe(() => {

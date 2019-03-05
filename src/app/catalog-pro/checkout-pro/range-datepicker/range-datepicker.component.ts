@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, Injectable } from '@angular/core';
 import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarDates } from './calendar-dates';
-import { style, animate, transition, trigger } from '@angular/core';
+import { style, animate, transition, trigger } from '@angular/animations';
 import { I18nService } from '../../../core/i18n/i18n.service';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>

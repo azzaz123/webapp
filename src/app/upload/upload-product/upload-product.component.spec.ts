@@ -3,7 +3,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NgbModal, NgbPopoverConfig, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UploadProductComponent } from './upload-product.component';
 import { CategoryService } from '../../core/category/category.service';
@@ -237,9 +237,10 @@ describe('UploadProductComponent', () => {
     });
   });
 
-  describe('ngAfterViewChecked', () => {
+  describe('ngAfterContentInit', () => {
 
     beforeEach(() => {
+      component['focused'] = false;
       component.titleField = {
         nativeElement: {
           focus() {
@@ -250,18 +251,18 @@ describe('UploadProductComponent', () => {
     });
 
     it('should set focus', fakeAsync(() => {
-      fixture.detectChanges();
-      tick();
+      component.ngAfterContentInit();
+
       expect(component.titleField.nativeElement.focus).toHaveBeenCalled();
-      expect(component['focused']).toBeTruthy();
+      expect(component['focused']).toBe(true);
     }));
 
-    it('should NOT set focus if update mode', fakeAsync(() => {
+    it('should NOT set focus if edit mode', fakeAsync(() => {
       component.item = MOCK_ITEM;
-      fixture.detectChanges();
-      tick();
+      component.ngAfterContentInit();
+
       expect(component.titleField.nativeElement.focus).not.toHaveBeenCalled();
-      expect(component['focused']).toBeFalsy();
+      expect(component['focused']).toBe(false);
     }));
   });
 
@@ -376,6 +377,18 @@ describe('UploadProductComponent', () => {
 
       expect(component.loading).toBeFalsy();
       expect(trackingService.track).toHaveBeenCalledWith(TrackingService.UPLOADFORM_ERROR);
+    });
+  });
+
+  describe('onDeliveryChange', () => {
+    it('should reset selected delivery value if clicked twice', () => {
+      spyOn(component.uploadForm.controls['delivery_info'], 'reset');
+
+      component.onDeliveryChange(ITEM_DELIVERY_INFO);
+      component.onDeliveryChange(ITEM_DELIVERY_INFO);
+
+      expect(component['oldDeliveryValue']).toBeUndefined();
+      expect(component.uploadForm.controls['delivery_info'].reset).toHaveBeenCalled();
     });
   });
 

@@ -91,7 +91,7 @@ export const CAR_CONTENT_DATA = {
   'modified_date': 1429186498000,
   'images': [],
   'url': 'http://dock112.wallapop.com/i/514?_pid=wi&_uid=101',
-  'title': 'SEAT Ibiza 9 seats',
+  'title': 'SEAT Ibiza 2015',
   'brand': 'SEAT',
   'model': 'Ibiza',
   'year': 2015,

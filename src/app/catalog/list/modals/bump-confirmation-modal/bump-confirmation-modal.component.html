@@ -2,64 +2,75 @@
   <mat-icon svgIcon="cross"></mat-icon>
 </div>
 
-<img [hidden]="code !== '200'" src="../../../../../assets/images/bump-ok.png" alt="">
-<img class="fail" [hidden]="code === '200'" src="../../../../../assets/images/bump-ko.png" alt="">
+<div *ngIf="code === '200'" class="success-content">
 
-<div *ngIf="code === '200' && !creditUsed">
-  <h1 i18n>Congratulations</h1>
-  <p i18n>Your item(s) have been featured and you can see them in the top position.</p>
-  <tsl-button (click)="activeModal.close()" i18n>Start selling</tsl-button>
+  <div class="image-col" [hidden]="code !== '200'">
+    <img src="/assets/images/bump-ok.svg" alt="">
+  </div>
+
+  <div class="content-col">
+
+    <div *ngIf="!creditUsed">
+      <h1 class="modal-title" i18n>Congratulations</h1>
+      <p class="modal-text" i18n>Your item(s) have been featured and you can see them in the top position.</p>
+      <tsl-button className="btn btn-primary btn-block" (click)="activeModal.close()" i18n>Start selling</tsl-button>
+    </div>
+
+    <div *ngIf="creditUsed">
+      <h1 class="modal-title" i18n>Featured listings!</h1>
+      <p class="modal-text" i18n>All sorted, now your listings are more visibile to everyone. So let's get selling!</p>
+      <p *ngIf="creditUsed" class="modal-text credit-info">
+      <b>
+        <span i18n>You have used</span>
+        <span *ngIf="withCoins"> {{spent | number}} wallacoins</span>
+        <span *ngIf="!withCoins"> {{spent | customCurrency}}</span>
+      </b><br />
+      <b>
+        <span *ngIf="withCoins" i18n>You have {{creditInfo?.credit | number}} wallacoins left</span>
+        <span *ngIf="!withCoins" i18n>You have {{creditInfo?.credit | customCurrency}} credit</span>
+      </b>
+      </p>
+      <tsl-button className="btn btn-primary btn-block" (click)="activeModal.dismiss()">
+        <span *ngIf="withCoins" i18n>Buy more Wallacoins</span>
+        <span *ngIf="!withCoins" i18n>Buy more credit</span>
+      </tsl-button>
+      <a class="link" (click)="activeModal.close()" i18n>Go to my catalogue</a>
+    </div>
+
+  </div>
+
 </div>
 
-<div *ngIf="code === '200' && creditUsed">
-  <h1 i18n>Featured listings!</h1>
-  <p>
-    <span i18n>All sorted, now your listings are more visibile to everyone. So let's get selling!</span><br />
-    <span *ngIf="creditUsed">
-    <b>
-      <span i18n>You have used</span>
-      <span *ngIf="withCoins">{{spent | number}} wallacoins</span>
-      <span *ngIf="!withCoins">{{spent | customCurrency}}</span>
-    </b><br />
-    <b>
-      <span *ngIf="withCoins" i18n>You have {{creditInfo?.credit | number}} wallacoins left</span>
-      <span *ngIf="!withCoins" i18n>You have {{creditInfo?.credit | customCurrency}} credit</span>
-    </b>
-    </span>
-  </p>
-  <tsl-button (click)="activeModal.dismiss()">
-    <span *ngIf="withCoins" i18n>Buy more Wallacoins</span>
-    <span *ngIf="!withCoins" i18n>Buy more credit</span>
-  </tsl-button><br />
-  <a class="link" (click)="activeModal.close()" i18n>Go to my catalogue</a>
-</div>
+<div *ngIf="code !== '200'" class="error-content">
 
-<div *ngIf="code === '101'">
-  <h1 class="fail" i18n>Something happened...</h1>
-  <p i18n>Your item(s) have not been featured because something went wrong with your credit card.<br />Please check and try again.</p>
-  <tsl-button (click)="activeModal.close()" i18n>Let’s go</tsl-button>
-</div>
+  <div *ngIf="code === '101'">
+    <h1 class="modal-title fail" i18n>Something happened...</h1>
+    <p class="modal-text" i18n>Your item(s) have not been featured because something went wrong with your credit card.<br />Please check and try again.</p>
+    <tsl-button (click)="activeModal.close()" i18n>Let’s go</tsl-button>
+  </div>
 
-<div *ngIf="code === '102'">
-  <h1 class="fail" i18n>Hmmm…</h1>
-  <p i18n>Your credit card seems suspicious. ¿Why not trying with another account?</p>
-  <tsl-button (click)="activeModal.close()" i18n>C'mon</tsl-button>
-</div>
+  <div *ngIf="code === '102'">
+    <h1 class="modal-title fail" i18n>Hmmm…</h1>
+    <p class="modal-text" i18n>Your credit card seems suspicious. ¿Why not trying with another account?</p>
+    <tsl-button (click)="activeModal.close()" i18n>C'mon</tsl-button>
+  </div>
 
-<div *ngIf="code === '191'">
-  <h1 class="fail" i18n>There has been a mistake</h1>
-  <p i18n>Your credit card has an invalid expiration date. Please check and try again.</p>
-  <tsl-button (click)="activeModal.close()" i18n>Ok</tsl-button>
-</div>
+  <div *ngIf="code === '191'">
+    <h1 class="modal-title fail" i18n>There has been a mistake</h1>
+    <p class="modal-text" i18n>Your credit card has an invalid expiration date. Please check and try again.</p>
+    <tsl-button (click)="activeModal.close()" i18n>Ok</tsl-button>
+  </div>
 
-<div *ngIf="code === '909'">
-  <h1 class="fail" i18n>TPV... what?</h1>
-  <p i18n>There has been an unexpected error in the paying system. Why not trying again later?</p>
-  <tsl-button (click)="activeModal.close()" i18n>Ok</tsl-button>
-</div>
+  <div *ngIf="code === '909'">
+    <h1 class="modal-title fail" i18n>TPV... what?</h1>
+    <p class="modal-text" i18n>There has been an unexpected error in the paying system. Why not trying again later?</p>
+    <tsl-button (click)="activeModal.close()" i18n>Ok</tsl-button>
+  </div>
 
-<div *ngIf="code === '-1'">
-  <h1 class="fail" i18n>Oops!</h1>
-  <p i18n>We are trying to figure out what happened. Try again later.</p>
-  <tsl-button (click)="activeModal.close()" i18n>Fine!</tsl-button>
+  <div *ngIf="code === '-1'">
+    <h1 class="modal-title fail" i18n>Oops!</h1>
+    <p class="modal-text" i18n>We are trying to figure out what happened. Try again later.</p>
+    <tsl-button (click)="activeModal.close()" i18n>Fine!</tsl-button>
+  </div>
+
 </div>

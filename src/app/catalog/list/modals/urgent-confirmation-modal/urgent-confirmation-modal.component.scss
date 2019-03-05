@@ -1,79 +1,18 @@
 @import "~style/common";
 
-$feature-button-width: 170px;
-
-.header, .modal-body {
-  width: 660px;
-}
-
-.header {
-  background: $corporate;
-  height: 177px;
-  border-top-left-radius: 0.3rem;
-  border-top-right-radius: 0.3rem;
-  color: $white;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  .modal-close {
-    top: $spacing;
-    right: $spacing;
-    @include square(13px);
-    mat-icon {
-      @include square(13px);
-      line-height: unset;
-    }
-  }
-  h1 {
-    font-size: $font-size-LL;
-    font-weight: bold;
-    margin-bottom: $spacing-M;
-  }
+.content-col {
+  background: url(/assets/images/urgent-background.svg) no-repeat 90px 47px;
+  background-size: 130px;
+  padding: $spacing-40 $spacing-40 0 260px;
+  min-height: 190px;
   p {
-    margin: 0;
-    color: $white;
-    font-size: $font-size;
-    padding: 0 $spacing-L;
+    margin: 0 auto $spacing-3M auto;
+    &.credit-info {
+      margin-bottom: 0;
+    }
   }
 }
 
-.modal-body {
-  text-align: center;
-  padding: $spacing-L 70px 40px;
-  p {
-    font-size: $font-size;
-    color: $grey-400;
-    margin-top: 10px;
-  }
-  .urgent-background {
-    background: url(/assets/images/urgent-background.svg);
-    width: 138px;
-    height: 152px;
-    margin: $spacing-S auto $spacing-L;
-  }
-}
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background-color: $grey-50;
-    @include square(34px);
-    margin: 6px;
-    cursor: pointer;
-    mat-icon {
-      @include square(18px);
-    }
-    &:hover {
-      background-color: $color-social-background;
-      mat-icon /deep/ path {
-        fill: $color-social-fill;
-      }
-    }
-  }
+.share {
+  margin-top: $spacing;
 }

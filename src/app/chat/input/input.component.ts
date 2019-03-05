@@ -2,8 +2,6 @@ import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@ang
 import { Conversation } from '../../core/conversation/conversation';
 import { MessageService } from '../../core/message/message.service';
 import { EventService } from '../../core/event/event.service';
-import { XmppService } from '../../core/xmpp/xmpp.service';
-import { ConnectionService } from '../../core/connection/connection.service';
 import { TrackingService } from '../../core/tracking/tracking.service';
 
 @Component({
@@ -19,21 +17,13 @@ export class InputComponent implements OnChanges, OnInit {
 
   constructor(private messageService: MessageService,
               private eventService: EventService,
-              private connectionService: ConnectionService,
-              private trackingService: TrackingService,
-              private xmppService: XmppService) {
+              private trackingService: TrackingService
+              ) {
   }
 
   ngOnInit() {
-    this.eventService.subscribe(EventService.USER_BLOCKED, (userId: string) => {
-      if (this.currentConversation.user.id === userId) {
-        this.disable = true;
-      }
-    });
-    this.eventService.subscribe(EventService.USER_UNBLOCKED, (userId: string) => {
-      if (this.currentConversation.user.id === userId) {
-        this.disable = false;
-      }
+    this.eventService.subscribe(EventService.PRIVACY_LIST_UPDATED, (userIds: string[]) => {
+      this.disable = userIds.indexOf(this.currentConversation.user.id) !== -1;
     });
   }
 

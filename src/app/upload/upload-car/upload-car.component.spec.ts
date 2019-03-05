@@ -4,7 +4,7 @@ import { UploadCarComponent } from './upload-car.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { CarSuggestionsService } from './car-suggestions.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import {
@@ -172,6 +172,17 @@ describe('UploadCarComponent', () => {
         expect(component['getVersions']).toHaveBeenCalledWith(MOCK_CAR.year.toString(), true);
       });
 
+      it('should set settingItem to true', () => {
+        component.item = MOCK_CAR;
+        spyOn<any>(component, 'getModels');
+        spyOn<any>(component, 'getYears');
+        spyOn<any>(component, 'getVersions');
+
+        component.ngOnInit();
+
+        expect(component['settingItem']).toBe(true);
+      });
+
       it('should emit changed event if form values changes', () => {
         let formChanged: boolean;
         component.item = MOCK_CAR;
@@ -243,13 +254,13 @@ describe('UploadCarComponent', () => {
       expect(component.customMake).toBe(true);
     });
 
-    it('should set the car as custom if there are no matching models', () => {
-      spyOn(carSuggestionsService, 'getModels').and.returnValue(Observable.of(CAR_MODELS));
-      component.item = MOCK_CAR;
+    it('should call resetTitle if settingItem is false', () => {
+      component['settingItem'] = false;
+      spyOn<any>(component, 'resetTitle');
 
       component.getModels('Gaudi');
 
-      expect(component.customMake).toBe(true);
+      expect(component['resetTitle']).toHaveBeenCalled();
     });
   });
 
@@ -271,6 +282,15 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('title').value).toBe('');
       expect(component.uploadForm.get('title').pristine).toBeTruthy();
     });
+
+    it('should call resetTitle if settingItem is false', () => {
+      component['settingItem'] = false;
+      spyOn<any>(component, 'resetTitle');
+
+      component.getYears('Spider');
+
+      expect(component['resetTitle']).toHaveBeenCalled();
+    });
   });
 
   describe('getVersions', () => {
@@ -289,6 +309,23 @@ describe('UploadCarComponent', () => {
       expect(component.uploadForm.get('version').value).toBe('');
       expect(component.uploadForm.get('title').value).toBe('Abarth Spider 2017');
       expect(component.uploadForm.get('title').dirty).toBeTruthy();
+    });
+
+    it('should call setTitle if settingItem is false', () => {
+      component['settingItem'] = false;
+      spyOn<any>(component, 'setTitle');
+
+      component.getVersions('2017');
+
+      expect(component['setTitle']).toHaveBeenCalled();
+    });
+
+    it('should set settingItem to false', () => {
+      component['settingItem'] = true;
+
+      component.getVersions('2017');
+
+      expect(component['settingItem']).toBe(false);
     });
   });
 
@@ -373,6 +410,7 @@ describe('UploadCarComponent', () => {
   describe('onUploaded', () => {
     it('should redirect', () => {
       component.item = <Car>MOCK_ITEM_V3;
+      component.item.flags.onhold = null;
       const uploadedEvent = {
         action: 'updated',
         response: {

@@ -5,7 +5,6 @@ import { IOption } from 'ng-select';
 import { CarKeysService } from './car-keys.service';
 import { Router } from '@angular/router';
 import { UploadEvent } from '../upload-event.interface';
-import { isPresent } from 'ng2-dnd/src/dnd.utils';
 import { NgbModal, NgbModalRef, NgbPopoverConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PreviewModalComponent } from '../preview-modal/preview-modal.component';
 import { TrackingService } from '../../core/tracking/tracking.service';
@@ -44,6 +43,7 @@ export class UploadCarComponent implements OnInit {
   public isUrgent = false;
   public customMake = false;
   public customVersion = false;
+  private settingItem: boolean;
 
   constructor(private fb: FormBuilder,
               private carSuggestionsService: CarSuggestionsService,
@@ -67,11 +67,11 @@ export class UploadCarComponent implements OnInit {
       version: [{value: '', disabled: true}, [Validators.required]],
       num_seats: ['', [this.min(0), this.max(99)]],
       num_doors: ['', [this.min(0), this.max(99)]],
-      body_type: '',
+      body_type: null,
       km: ['', [this.min(0), this.max(999999999)]],
       storytelling: '',
-      engine: '',
-      gearbox: '',
+      engine: null,
+      gearbox: null,
       horsepower: ['', [this.min(0), this.max(999)]],
       sale_conditions: fb.group({
         fix_price: false,
@@ -97,6 +97,7 @@ export class UploadCarComponent implements OnInit {
 
   private setItemData() {
     if (this.item) {
+      this.settingItem = true;
       const carYear: string =  this.item.year ? this.item.year.toString() : '';
       const carCategory: string = this.item.categoryId ? this.item.categoryId.toString() : '';
       this.uploadForm.patchValue({
@@ -167,8 +168,6 @@ export class UploadCarComponent implements OnInit {
     this.carSuggestionsService.getModels(brand).subscribe((models: IOption[]) => {
       if (models.length <= 0) {
         this.customMake = true;
-      } else if (this.item) {
-        this.customMake = !_.find(models, {value: this.item.model});
       }
       this.models = models;
       this.toggleField('model', 'enable', !editMode);
@@ -176,7 +175,9 @@ export class UploadCarComponent implements OnInit {
         this.toggleField('year', 'disable');
         this.toggleField('version', 'disable');
       }
-      this.resetTitle();
+      if (!this.settingItem) {
+        this.resetTitle();
+      }
     });
   }
 
@@ -190,7 +191,9 @@ export class UploadCarComponent implements OnInit {
       if (!editMode) {
         this.toggleField('version', 'disable');
       }
-      this.resetTitle();
+      if (!this.settingItem) {
+        this.resetTitle();
+      }
     });
   }
 
@@ -205,38 +208,35 @@ export class UploadCarComponent implements OnInit {
       if (this.item) {
         this.customVersion = !_.find(this.versions, {value: this.item.version});
       }
+      if (!this.settingItem) {
+        this.setTitle();
+      }
+      this.settingItem = false;
     });
-    this.setTitle();
   }
 
   public getInfo(version: string) {
-    if (!this.item) {
-      this.itemService.getCarInfo(
-        this.uploadForm.get('brand').value,
-        this.uploadForm.get('model').value,
-        version
-      ).subscribe((carInfo: CarInfo) => {
-        this.uploadForm.patchValue(carInfo);
-      });
-    }
+    this.itemService.getCarInfo(
+      this.uploadForm.get('brand').value,
+      this.uploadForm.get('model').value,
+      version
+    ).subscribe((carInfo: CarInfo) => {
+      this.uploadForm.patchValue(carInfo);
+    });
   }
 
   private setTitle() {
-    if (!this.item) {
-      this.uploadForm.get('title').patchValue(
-        this.uploadForm.get('brand').value + ' ' +
-        this.uploadForm.get('model').value + ' ' +
-        this.uploadForm.get('year').value
-      );
-      this.uploadForm.get('title').markAsDirty();
-    }
+    this.uploadForm.get('title').patchValue(
+      this.uploadForm.get('brand').value + ' ' +
+      this.uploadForm.get('model').value + ' ' +
+      this.uploadForm.get('year').value
+    );
+    this.uploadForm.get('title').markAsDirty();
   }
 
   private resetTitle() {
-    if (!this.item) {
-      this.uploadForm.get('title').patchValue('');
-      this.uploadForm.get('title').markAsPristine();
-    }
+    this.uploadForm.get('title').patchValue('');
+    this.uploadForm.get('title').markAsPristine();
   }
 
   onSubmit() {
@@ -323,7 +323,7 @@ export class UploadCarComponent implements OnInit {
 
   private min(min: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-      if (isPresent(Validators.required(control))) {
+      if (Validators.required(control)) {
         return null;
       }
       const v: number = Number(control.value);
@@ -333,7 +333,7 @@ export class UploadCarComponent implements OnInit {
 
   private max(max: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } => {
-      if (isPresent(Validators.required(control))) {
+      if (Validators.required(control)) {
         return null;
       }
       const v: number = Number(control.value);

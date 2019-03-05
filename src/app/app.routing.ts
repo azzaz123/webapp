@@ -58,6 +58,10 @@ const routes: Routes = [
     loadChildren: 'app/profile/profile.module#ProfileModule'
   },
   {
+    path: 'chat-with-inbox-ndbcd1dqy5',
+    loadChildren: 'app/chat-with-inbox/chat.module#ChatModule'
+  },
+  {
     path: 'chat',
     loadChildren: 'app/chat/chat.module#ChatModule'
   },
@@ -106,11 +110,11 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: 'app/login/login.module#LoginModule'
-  }/*,
+  },
   {
     path: 'stats',
     loadChildren: 'app/stats/stats.module#StatsModule'
-  },*/
+  }
 ];
 
 @NgModule({

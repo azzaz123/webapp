@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { StatisticFullResponse } from './statistic-response.interface';
 import { HttpService } from '../../core/http/http.service';
 

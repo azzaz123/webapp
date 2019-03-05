@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 
 import { HelpComponent } from './help.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HelpService } from './help.service';
 import { FAQ_FEATURES, FAQS } from '../../tests/faq.fixtures.spec';
 import { I18nService } from '../core/i18n/i18n.service';
