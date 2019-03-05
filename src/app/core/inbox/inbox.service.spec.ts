@@ -198,6 +198,7 @@ describe('InboxService', () => {
         conversation = service.conversations[0];
         lastMessage = conversation.lastMessage;
         lastMessage.status = null;
+        lastMessage.fromSelf = false;
         dateBefore = lastMessage.date.getTime() - 2000;
         dateAfter = lastMessage.date.getTime() + 2000;
       });
@@ -218,15 +219,46 @@ describe('InboxService', () => {
         expect(conversation.lastMessage.status).toBe(messageStatus.RECEIVED);
       });
 
-      it('should update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal with timestamp after the lastMessage timestamp', () => {
-        const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter);
+      it(`should update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal that meets the
+      conditions: signal timestamp is after lastMessage timestamp AND signal fromSelf is the reverse of lastMessage fromSelf
+      (because a READ signal fromSelf is meant to mark as read messages from the other user (!fromSelf))`, () => {
+        const readSingalfromSelf = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
+        lastMessage.fromSelf = false;
 
-        eventService.emit(EventService.CHAT_SIGNAL, readSingal);
+        eventService.emit(EventService.CHAT_SIGNAL, readSingalfromSelf);
+
+        expect(conversation.lastMessage.status).toBe(messageStatus.READ);
+
+        const readSingalfromOther = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
+        lastMessage.status = messageStatus.RECEIVED;
+        lastMessage.fromSelf = true;
+
+        eventService.emit(EventService.CHAT_SIGNAL, readSingalfromOther);
 
         expect(conversation.lastMessage.status).toBe(messageStatus.READ);
       });
 
-      it('should NOT update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal with timestamp before the lastMessage timestamp', () => {
+      it(`should NOT update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal that does not
+      meet the conditions: signal timestamp is after lastMessage timestamp AND signal fromSelf is the reverse of lastMessage fromSelf
+      (because a READ signal fromSelf is meant to mark as read messages from the other user (!fromSelf))`, () => {
+        const readSingalfromSelf = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, false);
+        lastMessage.fromSelf = false;
+
+        eventService.emit(EventService.CHAT_SIGNAL, readSingalfromSelf);
+
+        expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
+
+        const readSingalfromOther = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
+        lastMessage.status = messageStatus.RECEIVED;
+        lastMessage.fromSelf = true;
+
+        eventService.emit(EventService.CHAT_SIGNAL, readSingalfromOther);
+
+        expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
+      });
+
+      it(`should NOT update the status of the lastMessage to READ when a CHAT_SIGNAL event is emitted with a readSignal with
+      timestamp before the lastMessage timestamp`, () => {
         const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateBefore);
 
         eventService.emit(EventService.CHAT_SIGNAL, readSingal);
@@ -234,7 +266,8 @@ describe('InboxService', () => {
         expect(conversation.lastMessage.status).not.toBe(messageStatus.READ);
       });
 
-      it('should set the unread counters to 0 when a CHAT_SIGNAL event is emitted with a readSignal that is fromSelf AND with timestamp after the lastMessage timestamp', () => {
+      it(`should set the unread counters to 0 when a CHAT_SIGNAL event is emitted with a readSignal that is fromSelf AND with
+      timestamp after the lastMessage timestamp`, () => {
         const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateAfter, null, true);
         messageService.totalUnreadMessages = 12;
         conversation.unreadCounter = 7;
@@ -246,7 +279,8 @@ describe('InboxService', () => {
         expect(messageService.totalUnreadMessages).toBe(12 - 7);
       });
 
-      it('should NOT update the unread counters when a CHAT_SIGNAL event is emitted with a readSignal that is fromSelf and with a timestamp before the lastMessage timestamp', () => {
+      it(`should NOT update the unread counters when a CHAT_SIGNAL event is emitted with a readSignal that is fromSelf and with a timestamp
+      before the lastMessage timestamp`, () => {
         const readSingal = new ChatSignal(chatSignalType.READ, conversation.id, dateBefore, null, true);
         messageService.totalUnreadMessages = 12;
         conversation.unreadCounter = 7;
