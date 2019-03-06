@@ -7,8 +7,8 @@
   text-align: center;
   height: $alert-height;
   line-height: $alert-height;
-  font-size: $font-size;
-  padding-left: $spacing-S;
+  font-size: $font-size-m;
+  padding-left: spacing-ms;
   &.connected {
     background: $success;
   }

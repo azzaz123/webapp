@@ -3,7 +3,7 @@
 $pack-width: 234px;
 
 .page-content {
-  padding-bottom: 65px;
+  padding-bottom: $spacing-xxxl;
 }
 
 tsl-header {
@@ -12,14 +12,14 @@ tsl-header {
       text-transform: capitalize;
     }
     .total-credits {
-      color: $grey-250;
+      color: $blue-grey-3;
       text-align: center;
       .credits {
-        font-size: $font-size-L;
+        font-size: $font-size-l;
         font-weight: bold;
       }
       .label {
-        font-size: $font-size-S;
+        font-size: $font-size-s;
       }
     }
   }
@@ -31,26 +31,26 @@ tsl-header {
 }
 
 h2 {
-  font-size: $font-size-XL;
-  margin-bottom: $spacing-2M;
+  font-size: $font-size-xl;
+  margin-bottom: $spacing-ml;
 }
 
 h3 {
-  font-size: $font-size-LL;
+  font-size: $font-size-ll;
 }
 
 h2, h3 {
-  color: $grey-900;
+  color: $blue-grey-1;
   font-weight: bold;
 }
 
 p {
-  color: $grey-250;
+  color: $blue-grey-3;
 }
 
 ngu-carousel {
   width: 794px;
-  margin: $spacing-XL auto 86px;
+  margin: $spacing-xxxl auto 86px;
   /deep/ {
     ngu-item {
       width: $pack-width;
@@ -62,7 +62,7 @@ ngu-carousel {
       &:hover {
         /deep/ {
           path {
-            fill: $corporate;
+            fill: $walla-main;
           }
         }
       }
@@ -81,10 +81,10 @@ ngu-carousel {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: $spacing-L $spacing;
+  margin: $spacing-xl $spacing-ml;
   div {
     width: 33%;
-    padding: 130px $spacing-M 0;
+    padding: 130px $spacing-m 0;
     background: no-repeat top;
     &.info-1 {
       background-image: url(/assets/images/wallacoins-info-1.svg);
@@ -98,8 +98,8 @@ ngu-carousel {
       padding-right: 0;
     }
     h4 {
-      font-size: $font-size;
-      color: $corporate;
+      font-size: $font-size-m;
+      color: $walla-main;
       font-weight: bold;
     }
   }
@@ -107,6 +107,6 @@ ngu-carousel {
 
 .disclaimer {
   text-align: center;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   padding: 0 12%;
 }

@@ -3,7 +3,7 @@
 $modal-border-radius: 5px;
 
 .header {
-  background: $corporate url(/assets/images/unsubscribe.svg) no-repeat center;
+  background: $walla-main url(/assets/images/unsubscribe.svg) no-repeat center;
   height: 220px;
   border-top-left-radius: $modal-border-radius;
   border-top-right-radius: $modal-border-radius;
@@ -11,62 +11,62 @@ $modal-border-radius: 5px;
 
 .modal-body {
   text-align: center;
-  padding: $spacing-L;
+  padding: $spacing-xl;
   h1 {
-    font-size: $font-size-L;
+    font-size: $font-size-l;
     font-weight: bold;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-xl;
   }
   p {
     margin: 0;
-    margin-bottom: 25px;
-    color: $grey-500;
-    font-size: $font-size;
+    margin-bottom: $spacing-l;
+    color: $blue-grey-2;
+    font-size: $font-size-m;
   }
   .btn {
-    padding: $spacing-S $spacing;
+    padding: $spacing-ms $spacing-ml;
     border-radius: 21px;
     &.btn-secondary {
       border: 0;
-      background-color: $grey-50;
-      color: $grey-500;
-      margin: 0 $spacing-XXS;
-      margin-bottom: 10px;
+      background-color: $blue-grey-5;
+      color: $blue-grey-2;
+      margin: 0 $spacing-xs;
+      margin-bottom: $spacing-ms;
       &:hover, &.selected {
-        background-color: $grey-100;
+        background-color: $blue-grey-4;
       }
       &.btn-reason {
         margin: 0;
-        margin-bottom: $spacing;
+        margin-bottom: $spacing-ml;
       }
     }
     &.btn-primary {
-      padding: $spacing-S $spacing-L;
+      padding: $spacing-ms $spacing-xl;
     }
   }
   &.step-1 {
-    padding-bottom: $spacing;
+    padding-bottom: $spacing-ml;
     .btn {
-      margin-bottom: $spacing-S;
+      margin-bottom: $spacing-ms;
       width: 400px;
     }
   }
 
   .custom-reason {
-    font-size: $font-size-S;
-    margin-bottom: $spacing-S;
+    font-size: $font-size-s;
+    margin-bottom: $spacing-ms;
     overflow: hidden;
-    margin-top: $spacing-L;
+    margin-top: $spacing-xl;
   }
   .counter {
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
   }
   textarea {
     border-radius: $border-radius;
     height: 160px;
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
   }
   .title {
-    margin-right: $spacing;
+    margin-right: $spacing-ml;
   }
 }

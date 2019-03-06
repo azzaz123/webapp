@@ -3,10 +3,10 @@
 .content-col {
   background: url(/assets/images/urgent-background.svg) no-repeat 90px 47px;
   background-size: 130px;
-  padding: $spacing-40 $spacing-40 0 260px;
+  padding: $spacing-xxl $spacing-xxl 0 260px;
   min-height: 190px;
   p {
-    margin: 0 auto $spacing-3M auto;
+    margin: 0 auto $spacing-l auto;
     &.credit-info {
       margin-bottom: 0;
     }
@@ -14,5 +14,5 @@
 }
 
 .share {
-  margin-top: $spacing;
+  margin-top: $spacing-ml;
 }

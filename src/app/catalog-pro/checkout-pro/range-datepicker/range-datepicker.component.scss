@@ -12,7 +12,7 @@
   height: 100%;
   z-index: 4;
   .datepicker-overlay {
-    background-color: rgba($grey-900, 0.5);
+    background-color: rgba($blue-grey-1, 0.5);
     position: absolute;
     top: 0;
     left: 0;
@@ -22,7 +22,7 @@
   }  
   .datepicker-wrapper {
     border-radius: $border-radius;
-    padding: $spacing $spacing-L;
+    padding: $spacing-ml $spacing-xl;
     background-color: $white;
     z-index: 1;
   }
@@ -31,22 +31,22 @@
 .datepicker-btn-wrapper {
     display: flex;
     justify-content: space-between;
-    border-top: solid 1px $grey-50;
-    padding-top: $spacing;    
+    border-top: solid 1px $blue-grey-5;
+    padding-top: $spacing-ml;    
     .datepicker-btn {
       -webkit-appearance: none;
       background-color: transparent;
       border: 0;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       &.cancel {
-        color: $grey-250;
+        color: $blue-grey-3;
       }
       &.apply {
         font-weight: bold;
-        color: $corporate;
+        color: $walla-main;
       }
       &.citybump {
-        color: $zone-bump;
+        color: $walla-main;
       }
       &.countrybump {
         color: $country-bump;
@@ -79,8 +79,8 @@
     .ngb-dp-weekday {
       font-weight: bold;
       font-style: normal;
-      color: $grey-500;
-      margin: $spacing-S 0;
+      color: $blue-grey-2;
+      margin: $spacing-ms 0;
       width: 2.5rem;
       text-transform: lowercase;
     }
@@ -97,9 +97,9 @@
       }
     }
     .ngb-dp-month-name {
-      font-size: $font-size;
+      font-size: $font-size-m;
       font-weight: bold;
-      margin: 0 $spacing-M;
+      margin: 0 $spacing-m;
     }
     .right {
       .ngb-dp-navigation-chevron {
@@ -109,10 +109,10 @@
   }
 
   .selected-text {
-    font-size: $font-size-S;
-    margin: $spacing 0;
+    font-size: $font-size-s;
+    margin: $spacing-ml 0;
     &.citybump {
-      color: $zone-bump;
+      color: $walla-main;
     }
     &.countrybump {
       color: $country-bump;
@@ -130,29 +130,29 @@
     text-align: center;
     height: 2rem;
     width: 100%;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     &.range, &:hover {
       color: white;
       font-weight: bold;
       &.citybump {
-        background-color: $zone-bump;
+        background-color: $walla-main;
       }
       &.countrybump {
         background-color: $country-bump;
       }
     }
     &.start {
-      border-top-left-radius: $spacing;
-      border-bottom-left-radius: $spacing;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
     }
     &.end {
-      border-top-right-radius: $spacing;
-      border-bottom-right-radius: $spacing;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
     }
     &.disabled {
-      color: $grey-250;
+      color: $blue-grey-3;
       &:hover {
-        color: $grey-250;
+        color: $blue-grey-3;
         background-color: transparent;
         cursor: not-allowed; 
       }
@@ -160,7 +160,7 @@
     &.faded {
       color: white;
       &.citybump {
-        background-color: rgba($zone-bump, 0.7);
+        background-color: rgba($walla-main, 0.7);
       }
       &.countrybump {
         background-color: rgba($country-bump, 0.7);

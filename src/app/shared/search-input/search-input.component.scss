@@ -4,7 +4,7 @@
   display: inline-block;
 }
 ::-webkit-input-placeholder {
-  color: $grey-300;
+  color: $blue-grey-2;
 }
 div {
   width: 38px;
@@ -19,22 +19,22 @@ div {
     top: 0;
     left: -7px;
     pointer-events: none;
-    color: $grey-300;
+    color: $blue-grey-2;
   }
   input {
     height: 36px;
     border: 0;
-    color: $grey-300;
+    color: $blue-grey-2;
     background: transparent;
     cursor: pointer;
     box-sizing: border-box;
     display: block;
     position: relative;
     width: 100%;
-    padding: 0 18px 0 28px;
+    padding: 0 $spacing-ml 0 $spacing-l;
   }
   &.active {
     width: 204px;
-    border-color: $corporate;
+    border-color: $walla-main;
   }
 }

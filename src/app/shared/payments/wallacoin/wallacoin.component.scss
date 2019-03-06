@@ -15,28 +15,28 @@
 
 mat-icon {
   @include square(10px);
-  margin-left: $spacing-XXXS;
+  margin-left: $spacing-xxs;
   /deep/ svg path {
     transition: all 0.2s ease-in-out;
   }
   &.strike {
     /deep/ svg path {
-      fill: $grey-250;
+      fill: $blue-grey-3;
     }
   }
   &.grey {
     /deep/ svg path {
-      fill: $grey-500;
+      fill: $blue-grey-2;
     }
   }
   &.corporate {
     /deep/ svg path {
-      fill: $corporate;
+      fill: $walla-main;
     }
   }
   &.black {
     /deep/ svg path {
-      fill: $grey-900;
+      fill: $blue-grey-1;
     }
   }
   &.medium {

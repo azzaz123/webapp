@@ -1,7 +1,7 @@
 @import "~style/common";
 
 :host {
-  padding: $spacing-L;
+  padding: $spacing-xl;
   text-align: center;
 }
 .modal-close {
@@ -15,21 +15,21 @@
 }
 img {
   width: 126px;
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
   &.fail {
     width: 63px;
   }
 }
 p {
   max-width: 300px;
-  margin: 0 auto $spacing-L auto;
+  margin: 0 auto $spacing-xl auto;
 }
 h1 {
   font-weight: bold;
-  color: $corporate;
-  font-size: $spacing;
-  margin-bottom: $spacing-S;
+  color: $walla-main;
+  font-size: $font-size-l;
+  margin-bottom: $spacing-ms;
   &.fail {
-    color: $warn;
+    color: $negative-main;
   }
 }

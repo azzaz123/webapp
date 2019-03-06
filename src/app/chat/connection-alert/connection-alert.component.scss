@@ -2,14 +2,14 @@
 
 #alert {
   $alert-height: 50px;
-  background: $warn;
+  background: $negative-main;
   color: $white;
   text-align: center;
   height: $alert-height;
-  line-height: $alert-height;
-  font-size: $font-size;
-  padding-left: $spacing-S;
+  line-height: $line-height-xxl;
+  font-size: $font-size-m;
+  padding-left: $spacing-ms;
   &.connected {
-    background: $success;
+    background: $positive-main;
   }
 }

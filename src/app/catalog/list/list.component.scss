@@ -4,8 +4,8 @@ $icon-size: 12px;
 $height: 40px;
 
 .items {
-  margin-top: $spacing;
-  margin-bottom: 120px;
+  margin-top: $spacing-ml;
+  margin-bottom: $spacing-xxxl * 2;
   .add-item {
     width: 100%;
     svg {
@@ -15,7 +15,7 @@ $height: 40px;
       }
     }
     &:hover {
-      $hover-color: #0f9989;
+      $hover-color: $walla-dark;
       text-decoration: none;
       svg {
         .dashed-border {
@@ -34,8 +34,8 @@ tsl-spinner {
 }
 
 .nav {
-  margin-bottom: 10px;
-  margin-top: -6px;
+  margin-bottom: $spacing-ms;
+  margin-top: -$spacing-s;
 }
 
 .info {
@@ -44,17 +44,17 @@ tsl-spinner {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: $font-size-S;
+  font-size: $font-size-s;
   mat-icon {
     /deep/ svg path {
-      fill: $corporate;
+      fill: $walla-main;
     }
-    margin-right: $spacing-S;
+    margin-right: $spacing-ms;
   }
   a {
     text-decoration: underline;
     cursor: pointer;
-    color: $corporate;
+    color: $walla-main;
     &:hover {
       text-decoration: none;
     }
@@ -62,7 +62,7 @@ tsl-spinner {
 }
 
 #total-selected {
-  padding: 0 $spacing;
+  padding: 0 $spacing-ml;
   cursor: pointer;
   &:after {
     display: inline-block;
@@ -71,9 +71,9 @@ tsl-spinner {
     background-size: $icon-size $icon-size;
     height: $icon-size;
     width: $icon-size;
-    margin-left: 10px;
+    margin-left: $spacing-ms;
     vertical-align: middle;
-    margin-top: -2px;
+    margin-top: -$spacing-xxs;
   }
   &.show {
     animation: fadeInFromNone 0.5s ease-in-out;
@@ -84,16 +84,16 @@ tsl-spinner {
 }
 
 #total-selected {
-  border: solid 1px $grey-100;
-  padding: 0 $spacing;
+  border: solid 1px $blue-grey-4;
+  padding: 0 $spacing-ml;
   border-radius: $border-radius;
   background: $white;
-  color: $grey-900;
-  font-size: $font-size-S;
+  color: $blue-grey-1;
+  font-size: $font-size-s;
   height: $height;
-  line-height: $height;
+  line-height: $line-height-xxl;
   display: inline-block;
-  margin-bottom: 2px;
+  margin-bottom: $spacing-xxs;
 }
 
 tsl-selected-items {
@@ -105,7 +105,7 @@ tsl-selected-items {
 }
 
 #catalog-empty-state {
-  padding: 0 10px;
+  padding: 0 $spacing-ms;
   width: 100%;
   mat-icon {
     width: 100%;
@@ -116,49 +116,48 @@ tsl-selected-items {
 .banner {
   width: 100%;
   height: auto;
-  margin-bottom: $spacing;
-  margin-top: -$spacing-L;
+  margin-bottom: $spacing-ml;
+  margin-top: -$spacing-xl;
 }
 
 .bulk-actions {
   align-self: center;
   & > * {
-    margin: 0 9px 0 0;
+    margin: 0 $spacing-s 0 0;
   }
   &.disabled {
     button {
       cursor: auto;
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       &.btn-bump, &.btn-sold, &.btn-reserve, &.btn-delete, &.btn-activate, &.btn-deactivate {
         &:hover {
-          background-color: $grey-50;
-          border: solid 1px rgba($grey-100, 0.5);
-          color: $grey-300;
+          background-color: $blue-grey-5;
+          border: solid 1px rgba($blue-grey-4, 0.5);
+          color: $blue-grey-2;
         }
       }
     }
   }
   button {
-    $height: 42px;
-    height: $height;
-    line-height: $height;
-    padding: 0 $spacing;
+    height: 42px;
+    line-height: $line-height-xxl;
+    padding: 0 $spacing-ml;
     cursor: pointer;
     border-radius: $border-radius;
     background: $white;
-    color: $grey-300;
-    font-size: $font-size-S;
-    border: solid 1px rgba($grey-100, 0.5);
+    color: $blue-grey-2;
+    border: solid 1px rgba($blue-grey-4, 0.5);
+    font-size: $font-size-s;
     &.btn-delete, &.btn-deactivate {
-      padding: 0 ($spacing / 2);
+      padding: 0 $spacing-ms;
       mat-icon {
         height: 16px;
         width: 14px;
         vertical-align: sub;
-        margin-right: $spacing-XS;
+        margin-right: $spacing-s;
       }
       &:hover {
-        background: $delete-bg;
+        background: $negative-main;
         border-color: transparent;
         color: $white;
         mat-icon /deep/ {
@@ -170,18 +169,18 @@ tsl-selected-items {
       &:disabled {
         mat-icon /deep/ {
           svg g g, svg path {
-            fill: $grey-300;
+            fill: $blue-grey-2;
           }
         }
       }
     }
     &.btn-reserve {
-      padding: 0 ($spacing / 2);
+      padding: 0 $spacing-ms;
       mat-icon {
         vertical-align: text-bottom;
       }
       &:hover:not(:disabled) {
-        background: $reserve-bg;
+        background: $skyblue-dark;
         border-color: transparent;
         color: $white;
         mat-icon /deep/ {
@@ -193,21 +192,21 @@ tsl-selected-items {
     }
     &.btn-activate {
       &:hover {
-        background: $corporate;
+        background: $walla-main;
         border-color: transparent;
         color: $white;
       }
       &:disabled {
-        background: $grey-50;
-        border-color: $grey-100;
-        color: $grey-300;
+        background: $blue-grey-5;
+        border-color: $blue-grey-4;
+        color: $blue-grey-2;
       }
     }
     &.btn-deactivate {
       &:disabled {
-        background: $grey-50;
-        border-color: $grey-100;
-        color: $grey-300;
+        background: $blue-grey-5;
+        border-color: $blue-grey-4;
+        color: $blue-grey-2;
       }
     }
   }
