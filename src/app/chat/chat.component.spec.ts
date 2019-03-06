@@ -233,12 +233,12 @@ describe('Component: Chat', () => {
   describe('ngOnInit', () => {
     const phone = '+34912345678';
 
-    it('should set connection error', () => {
+    it('should set connectionError and conversationLoaded to TRUE when a EventService.CONNECTION_ERROR is emitted', () => {
       component.ngOnInit();
       eventService.emit(EventService.CONNECTION_ERROR);
 
-      expect(component.connectionError).toBeTruthy();
-      expect(component.conversationsLoaded).toBeTruthy();
+      expect(component.connectionError).toBe(true);
+      expect(component.conversationsLoaded).toBe(true);
     });
 
 
