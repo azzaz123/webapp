@@ -4,13 +4,13 @@ import { MessagesPanelComponent } from './messages-panel.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MomentModule } from 'angular2-moment';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { MOCK_CONVERSATION } from '../../../tests/conversation.fixtures.spec';
-import { Message } from '../../core/message/message';
-import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../../tests/message.fixtures.spec';
-import { EventService } from '../../core/event/event.service';
-import { PersistencyService } from '../../core/persistency/persistency.service';
-import { MockedPersistencyService } from '../../../tests/persistency.fixtures.spec';
+import { I18nService } from '../../../core/i18n/i18n.service';
+import { MOCK_CONVERSATION } from '../../../../tests/conversation.fixtures.spec';
+import { Message } from '../../../core/message/message';
+import { MESSAGE_MAIN, MOCK_MESSAGE } from '../../../../tests/message.fixtures.spec';
+import { EventService } from '../../../core/event/event.service';
+import { PersistencyService } from '../../../core/persistency/persistency.service';
+import { MockedPersistencyService } from '../../../../tests/persistency.fixtures.spec';
 
 describe('Component: MessagesPanel', () => {
   let component: MessagesPanelComponent;
