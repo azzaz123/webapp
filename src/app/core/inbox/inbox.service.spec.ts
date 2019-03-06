@@ -143,8 +143,6 @@ describe('InboxService', () => {
 
         eventService.emit(EventService.NEW_MESSAGE, newMessage);
 
-        console.log(service);
-
         expect(service.conversations[0].lastMessage).toEqual(newMessage);
         expect(service.conversations[0].modifiedDate).toEqual(newMessage.date);
       });
