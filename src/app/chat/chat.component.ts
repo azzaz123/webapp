@@ -16,6 +16,7 @@ import { UserService } from '../core/user/user.service';
 import { EventService } from '../core/event/event.service';
 import { PersistencyService } from '../core/persistency/persistency.service';
 import { BlockUserService } from '../core/conversation/block-user.service';
+import { InboxService } from '../core/inbox/inbox.service';
 
 @Component({
   selector: 'tsl-chat',
@@ -31,6 +32,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   public firstLoad: boolean;
   public userWebSlug: string;
   public isProfessional: boolean;
+  public inboxFeatureflagValue: boolean;
 
   constructor(private conversationService: ConversationService,
               private itemService: ItemService,
@@ -43,6 +45,7 @@ export class ChatComponent implements OnInit, OnDestroy {
               public blockService: BlockUserService,
               private persistencyService: PersistencyService,
               private adService: AdService,
+              private inboxService: InboxService,
               @Inject('SUBDOMAIN') private subdomain: string) {
     this.userService.isProfessional().subscribe((value: boolean) => {
       this.isProfessional = value;
@@ -50,6 +53,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.inboxService.getInboxFeatureFlag().subscribe(val => {
+      this.inboxFeatureflagValue = val;
+    });
     this.eventService.subscribe(EventService.CONNECTION_ERROR, () => {
       this.connectionError = true;
       this.conversationsLoaded = true;
