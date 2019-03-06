@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { EventService } from '../../core/event/event.service';
-import { InboxConversation } from '../../core/conversation/conversation';
-import { InboxService } from '../../core/inbox/inbox.service';
+import { EventService } from '../../../core/event/event.service';
+import { InboxConversation } from '../../../core/conversation/conversation';
+import { InboxService } from '../../../core/inbox/inbox.service';
 
 @Component({
   selector: 'tsl-inbox',
