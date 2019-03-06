@@ -1,0 +1,127 @@
+@import "~style/common";
+
+#left-panel {
+  position: relative;
+  float: left;
+  background-color: $white;
+  width: $left-panel-width;
+  border-right: 1px solid $grey-100;
+}
+
+#center-panel {
+  margin-left: $left-panel-width;
+  margin-right: $right-panel-width;
+  background-color: $white;
+  position: relative;
+
+  #top-bar {
+    padding: $spacing;
+    border-bottom: 1px solid $grey-50;
+    z-index: 99;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &.professional {
+      height: 103px;
+      tsl-user-avatar {
+        display: none;
+      }
+      h5 {
+        margin-top: -25px;
+      }
+    }
+
+    span {
+      color: $grey-700;
+    }
+
+    .user-avatar {
+      display: inline-flex;
+    }
+
+    tsl-user-avatar {
+      margin-right: $spacing-S;
+    }
+
+    .conversation-header-user-info {
+      display: inline-block;
+      flex-grow: 1;
+      h5 {
+        color: $grey-900;
+        font-size: $font-size;
+        font-weight: bold;
+        margin-bottom: 0;
+      }
+
+      tsl-stars{
+        height: 17px;
+        padding-top: 2px;
+      }
+    }
+
+    span {
+      font-size: $font-size-S;
+    }
+  }
+
+  .conversation-header-menu {
+    height: 24px;
+    mat-icon {
+      cursor: pointer;
+      padding: 0 3px;
+      /deep/ #MVP {
+        fill: $grey-300;
+      }
+    }
+    .dropdown-item {
+      padding: ($spacing /2) $spacing;
+      cursor: pointer;
+      &.warn {
+        color: $warn;
+      }
+    }
+  }
+
+  .user-detail-wrapper {
+    position: absolute;
+    top: $spacing-S + 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
+  }
+}
+
+#right-panel {
+  overflow-y: auto;
+  height: calc(100vh - #{$topbar-height});
+  float: right;
+  width: $right-panel-width;
+  padding: $spacing;
+  background-color: $grey-50;
+  border-left: 1px solid $grey-100;
+
+  tsl-user {
+    margin-bottom: $spacing;
+  }
+}
+
+#empty-state {
+  height: 100vh;
+  margin-left: $left-panel-width;
+  position: relative;
+  background: $white;
+  .content {
+    @include in-the-middle;
+    text-align: center;
+    .image {
+      width: 211px;
+      height: 220px;
+    }
+    h2 {
+      font-size: $font-size;
+      color: $grey-500;
+      line-height: 24px;
+    }
+  }
+}
