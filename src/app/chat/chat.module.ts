@@ -22,6 +22,10 @@ import { ItemSoldComponent } from './item/item-sold/item-sold.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { UserResponseRateComponent } from './user-response-rate/user-response-rate.component';
 import { TrackingModule } from '../core/tracking/tracking.module';
+import { InboxComponent } from './inbox/inbox.component';
+import { InboxConversationComponent } from './inbox-conversation/inbox-conversation.component';
+import { ChatWithInboxComponent } from './chat-with-inbox/chat-with-inbox.component';
+import { ChatWithArchiveComponent } from './chat-with-archive/chat-with-archive.component';
 
 @NgModule({
   imports: [
@@ -52,7 +56,11 @@ import { TrackingModule } from '../core/tracking/tracking.module';
     UnblockUserComponent,
     UserDetailComponent,
     UserCardComponent,
-    UserResponseRateComponent
+    UserResponseRateComponent,
+    InboxComponent,
+    InboxConversationComponent,
+    ChatWithInboxComponent,
+    ChatWithArchiveComponent
   ],
   entryComponents: [
     ArchiveConversationComponent,
