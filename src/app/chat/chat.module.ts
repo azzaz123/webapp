@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { ConversationsPanelComponent } from './conversations-panel/conversations-panel.component';
-import { MessagesPanelComponent } from './messages-panel/messages-panel.component';
+import { ConversationsPanelComponent } from './chat-with-archive/conversations-panel/conversations-panel.component';
+import { MessagesPanelComponent } from './chat-with-archive/messages-panel/messages-panel.component';
 import { chatRoutedComponents, ChatRoutingModule } from './chat.routes';
 import { InputComponent } from './input/input.component';
 import { ConnectionAlertComponent } from './connection-alert/connection-alert.component';

@@ -1,8 +1,8 @@
 import { AfterViewChecked, Component, ElementRef, Input, OnChanges, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { Conversation } from '../../core/conversation/conversation';
-import { I18nService } from '../../core/i18n/i18n.service';
-import { Message } from '../../core/message/message';
-import { EventService } from '../../core/event/event.service';
+import { Conversation } from '../../../core/conversation/conversation';
+import { I18nService } from '../../../core/i18n/i18n.service';
+import { Message } from '../../../core/message/message';
+import { EventService } from '../../../core/event/event.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
