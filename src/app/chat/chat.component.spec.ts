@@ -26,6 +26,7 @@ import { MOCK_CONVERSATION, SURVEY_RESPONSES } from '../../tests/conversation.fi
 import { NgxPermissionsModule } from 'ngx-permissions';
 import { BlockUserService } from '../core/conversation/block-user.service';
 import { environment } from '../../environments/environment';
+import { InboxService } from '../core/inbox/inbox.service';
 
 class MockConversationService {
   storedPhoneNumber: string;
@@ -121,6 +122,13 @@ describe('Component: Chat', () => {
             startAdsRefresh() {
             },
             stopAdsRefresh() {
+            }
+          }
+        },
+        {
+          provide: InboxService, useValue: {
+            getInboxFeatureFlag() {
+              return Observable.of(true);
             }
           }
         }
