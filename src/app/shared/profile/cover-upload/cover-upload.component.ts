@@ -7,16 +7,16 @@ import { environment } from '../../../../environments/environment';
 import { NgUploaderOptions, UploadFile, UploadInput, UploadOutput } from '../../uploader/upload.interface';
 
 @Component({
-  selector: 'tsl-picture-upload',
-  templateUrl: './picture-upload.component.html',
-  styleUrls: ['./picture-upload.component.scss']
+  selector: 'tsl-cover-upload',
+  templateUrl: './cover-upload.component.html',
+  styleUrls: ['./cover-upload.component.scss']
 })
-export class PictureUploadComponent implements OnInit {
+export class CoverUploadComponent implements OnInit {
 
   @Input() user: User;
-  @Input() isPro: boolean;
   file: UploadFile;
   uploadInput: EventEmitter<UploadInput> = new EventEmitter();
+  uploadCoverInput: EventEmitter<UploadInput> = new EventEmitter();
   options: NgUploaderOptions;
 
   constructor(private http: HttpService,
@@ -52,7 +52,7 @@ export class PictureUploadComponent implements OnInit {
   }
 
   private uploadPicture() {
-    const url = 'api/v3/users/me/image';
+    const url = 'api/v3/users/me/cover-image';
     const uploadinput: UploadInput = {
       type: 'uploadFile',
       url: environment.baseUrl + url,
@@ -61,12 +61,11 @@ export class PictureUploadComponent implements OnInit {
       headers: this.http.getOptions(null, url, 'POST').headers.toJSON(),
       file: this.file
     };
-
-    this.uploadInput.emit(uploadinput);
+    this.uploadCoverInput.emit(uploadinput);
   }
 
   private removeFromQueue(output) {
-    this.uploadInput.emit({
+    this.uploadCoverInput.emit({
       type: 'remove',
       id: output.file.id
     });
@@ -75,7 +74,7 @@ export class PictureUploadComponent implements OnInit {
 
   private onUploadDone(output: UploadOutput) {
     if (output.file.progress.data.responseStatus === 204) {
-      this.userService.user.image.urls_by_size.medium = output.file.preview;
+      this.userService.user.coverImage.urls_by_size.medium = output.file.preview;
     } else {
       this.errorsService.i18nError('serverError', output.file.response.message ? output.file.response.message : '');
     }

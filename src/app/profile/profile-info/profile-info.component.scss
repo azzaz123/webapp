@@ -113,7 +113,7 @@ $border: solid 1px $grey-50;
       }
       mat-icon {
         @include square(42px);
-        margin-top: 28px;
+        margin-top: 14px;
         margin-bottom: 14px;
         /deep/ path {
           transition: fill 0.2s ease-in-out;
@@ -190,4 +190,13 @@ $border: solid 1px $grey-50;
       }
     }
   }
+}
+
+p.become-pro {
+  margin: $spacing-2M 0;
+}
+
+.claim {
+  justify-content: center;
+  display: flex;
 }

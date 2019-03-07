@@ -261,7 +261,7 @@
   <translation id="9032739290449539063">Tus datos</translation>
   <translation id="7022993325750262876">Ver mi perfil público</translation>
   <translation id="438622500917182822">Cambia tu imagen de perfil</translation>
-  <translation id="1897498190172236951">Cambiar foto</translation>
+  <translation id="1897498190172236951">Subir foto</translation>
   <translation id="529882100731018983">Nombre:</translation>
   <translation id="6335971540734973333">Apellidos:</translation>
   <translation id="7338814826142544882">Fecha de nacimiento:</translation>
@@ -768,4 +768,5 @@
   <translation id="5448941415082762589">Para poder ver estadísticas de tu producto publícalo para que los demás usuarios lo vean y puedan contactarte.</translation>
   <translation id="8215426233314088255">¡Enhorabuena! Ya tienes tu producto subido a wallapop.</translation>
   <translation id="2828231996579923086">Aceptamos formatos .jpg y mínimo 400 x 400px</translation>
+  <translation id="2099215062285114503">Cambiar foto</translation>
 </translationbundle>

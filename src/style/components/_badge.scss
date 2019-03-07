@@ -1,8 +1,8 @@
 .badge {
-  display: flex;
-  align-items: center;
-  color: $black;
   &.badge-pro {
+    display: flex;
+    align-items: center;
+    color: $black;
     background-color: $grey-100;
     text-transform: uppercase;
     font-size: $font-size-S;

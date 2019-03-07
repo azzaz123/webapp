@@ -63,6 +63,7 @@ import { ActivateItemsModalComponent } from './catalog/catalog-item-actions/acti
 import { DeactivateItemsModalComponent } from './catalog/catalog-item-actions/deactivate-items-modal/deactivate-items-modal.component';
 import { UploaderModule } from './uploader/uploader.module';
 import { UserCoverComponent } from './user-cover/user-cover.component';
+import { CoverUploadComponent } from './profile/cover-upload/cover-upload.component';
 
 @NgModule({
   imports: [
@@ -127,7 +128,8 @@ import { UserCoverComponent } from './user-cover/user-cover.component';
     ExitConfirmationModalComponent,
     CountdownComponent,
     ThousandSuffixesPipe,
-    UserCoverComponent
+    UserCoverComponent,
+    CoverUploadComponent
   ],
   declarations: [
     AdComponent,
@@ -179,7 +181,8 @@ import { UserCoverComponent } from './user-cover/user-cover.component';
     ThousandSuffixesPipe,
     ActivateItemsModalComponent,
     DeactivateItemsModalComponent,
-    UserCoverComponent
+    UserCoverComponent,
+    CoverUploadComponent
   ],
   providers: [
     DecimalPipe,

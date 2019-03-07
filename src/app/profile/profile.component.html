@@ -3,7 +3,9 @@
     <tsl-header>
       <div class="col-9">
         <div class="header-row">
-          <h1 class="header-title" i18n>Your profile <span class="badge badge-pro motor">{{motorPlan && motorPlan.label}}</span></h1>
+          <h1 class="header-title" i18n>Your profile <span *ngIf="motorPlan && motorPlan.label" class="badge badge-pro motor">
+            {{motorPlan && motorPlan.label}}</span>
+          </h1>
         </div>
         <div class="header-row header-row--margin">
           <h4 class="header-subtitle" i18n>From here you can view and edit your profile</h4>

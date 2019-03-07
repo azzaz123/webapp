@@ -1,0 +1,53 @@
+@import "~style/common";
+
+h3 {
+  font-size: $font-size-S;
+  font-weight: bold;
+}
+.profile-pic {
+  &.top {
+    margin-bottom: 32px;
+  }
+  h2 {
+    font-size: $font-size;
+    font-weight: normal;
+    color: $grey-900;
+  }
+  p {
+    font-size: $font-size-S;
+    line-height: 1.29;
+    color: $grey-300;
+    margin-bottom: 0;
+  }
+  .col-4 {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .col-6 {
+    display: flex;
+    align-items: center;
+  }
+  tsl-user-avatar, tsl-user-cover {
+    margin-right: $spacing;
+  }
+  .btn-upload {
+    background-color: $grey-40;
+    border: solid 1px $grey-100;
+    color: $grey-600;
+    font-size: $font-size-S;
+    padding: $spacing-XS $spacing;
+    cursor: pointer;
+    border-radius: $button-border-radius;
+    &:hover:not(.disabled) {
+      background-color: $grey-100;
+    }
+    input {
+      display: none;
+    }
+    .spinner {
+      @include square(15px);
+      margin-right: $spacing-XS;
+      vertical-align: bottom;
+    }
+  }
+}

@@ -79,8 +79,9 @@
   <msg id="3588415639242079458"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:14</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:15</source>New password</msg>
   <msg id="8656126574213649581"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:18</source><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:19</source>Confirm new password</msg>
   <msg id="4021752662928002901"><source>app/shared/profile/edit-password/password-modal/password-modal.component.html:21</source><source>app/upload/preview-modal/preview-modal.component.html:7</source><source>app/upload/upload-car/upload-car.component.html:237</source><source>app/upload/upload-product/upload-product.component.html:121</source><source>app/upload/upload-realestate/upload-realestate.component.html:174</source>Update</msg>
-  <msg id="1897498190172236951"><source>app/shared/profile/picture-upload/picture-upload.component.html:14</source><source>app/shared/profile/picture-upload/picture-upload.component.html:32</source>Upload picture</msg>
-  <msg id="2828231996579923086"><source>app/shared/profile/picture-upload/picture-upload.component.html:17</source><source>app/shared/profile/picture-upload/picture-upload.component.html:35</source>JPG format and a minimum size of 400 x 400px are accepted.</msg>
+  <msg id="1897498190172236951"><source>app/shared/profile/picture-upload/picture-upload.component.html:16</source><source>app/shared/profile/picture-upload/picture-upload.component.html:37</source>Upload picture</msg>
+  <msg id="2828231996579923086"><source>app/shared/profile/picture-upload/picture-upload.component.html:19</source><source>app/shared/profile/picture-upload/picture-upload.component.html:40</source>JPG format and a minimum size of 400 x 400px are accepted.</msg>
+  <msg id="2099215062285114503"><source>app/shared/profile/picture-upload/picture-upload.component.html:36</source>Update picture</msg>
   <msg id="4918814479561513634"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:2</source>Do you want to leave this page?</msg>
   <msg id="6618892692857491514"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:3</source>There are unsaved info. If you leave without saving, you will lose your changes.</msg>
   <msg id="3542042671420335679"><source>app/shared/exit-confirmation-modal/exit-confirmation-modal.component.html:6</source><source>app/shared/catalog/catalog-card/catalog-card.component.html:87</source>No</msg>
@@ -317,7 +318,7 @@
   <msg id="6686102860613242031"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:11</source>Use this card:</msg>
   <msg id="2005530248451232459"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:15</source>Add a new card</msg>
   <msg id="4699023020194351074"><source>app/catalog-pro/catalog-pro-list/modals/credit-card-modal/credit-card-modal.component.html:17</source>Feature for <ph name="INTERPOLATION"><ex>{{total | number:&apos;1.2-2&apos;}}</ex></ph> Euros</msg>
-  <msg id="2571738502834365520"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:12</source>Catalog <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
+  <msg id="2959266806536471647"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:12</source>Catalog <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex></ph><ph name="START_TAG_MAT_ICON"><ex>&lt;mat-icon&gt;</ex></ph><ph name="CLOSE_TAG_MAT_ICON"><ex>&lt;/mat-icon&gt;</ex></ph>Pro<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex></ph></msg>
   <msg id="6850144876798655647"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:13</source>Big packages with all your items and stuff</msg>
   <msg id="2246851749264196483"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:15</source>Manage my subscription</msg>
   <msg id="3339663802248788155"><source>app/catalog-pro/catalog-pro-list/catalog-pro-list.component.html:19</source>Purchase extras</msg>
@@ -477,23 +478,25 @@
   <msg id="6283914624769804238"><source>app/profile/profile-info/profile-info.component.html:28</source>Gender:</msg>
   <msg id="8012344910054029733"><source>app/profile/profile-info/profile-info.component.html:34</source>Male</msg>
   <msg id="5667840900782067941"><source>app/profile/profile-info/profile-info.component.html:39</source>Female</msg>
-  <msg id="8134597337896146328"><source>app/profile/profile-info/profile-info.component.html:45</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:36</source>Product location:</msg>
-  <msg id="3768927257183755959"><source>app/profile/profile-info/profile-info.component.html:53</source><source>app/profile/profile-info/profile-info.component.html:98</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:44</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.html:69</source>Save</msg>
+  <msg id="8134597337896146328"><source>app/profile/profile-info/profile-info.component.html:45</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:31</source>Product location:</msg>
+  <msg id="3768927257183755959"><source>app/profile/profile-info/profile-info.component.html:53</source><source>app/profile/profile-info/profile-info.component.html:98</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:61</source><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.html:69</source>Save</msg>
   <msg id="6694781109624015458"><source>app/profile/profile-info/profile-info.component.html:63</source>PRO info</msg>
   <msg id="6996799422725544865"><source>app/profile/profile-info/profile-info.component.html:66</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:24</source>Description:</msg>
   <msg id="1205072394541462689"><source>app/profile/profile-info/profile-info.component.html:74</source>Phone number:</msg>
   <msg id="874465399775999813"><source>app/profile/profile-info/profile-info.component.html:81</source>Website:</msg>
   <msg id="8393150378980885613"><source>app/profile/profile-info/profile-info.component.html:88</source>Shop address:</msg>
   <msg id="3004455960309356224"><source>app/profile/profile-info/profile-info.component.html:109</source>Account info</msg>
-  <msg id="6631334172623029500"><source>app/profile/profile-info/profile-info.component.html:112</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:57</source>Email:</msg>
-  <msg id="6865009229971482891"><source>app/profile/profile-info/profile-info.component.html:118</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:63</source>Password:</msg>
+  <msg id="6631334172623029500"><source>app/profile/profile-info/profile-info.component.html:112</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:74</source>Email:</msg>
+  <msg id="6865009229971482891"><source>app/profile/profile-info/profile-info.component.html:118</source><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:81</source>Password:</msg>
   <msg id="2322688793988378029"><source>app/profile/profile-info/profile-info.component.html:127</source>Close account</msg>
   <msg id="9032739290449539063"><source>app/profile-pro/profile-pro.component.html:6</source>Your info</msg>
   <msg id="4558593963938972556"><source>app/profile-pro/profile-pro.component.html:9</source>Here you can see and manage the information related to your profile</msg>
   <msg id="690637757793763587"><source>app/profile-pro/profile-pro.component.html:22</source>Billing information</msg>
-  <msg id="7658402240953727096"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:9</source>Name:</msg>
-  <msg id="2595624684026123810"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:18</source>Telephone:</msg>
-  <msg id="138907429214820806"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:30</source>Opening Hours:</msg>
+  <msg id="2836854179267941399"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:10</source>First name:</msg>
+  <msg id="5759985852212057755"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:17</source>Last name:</msg>
+  <msg id="138907429214820806"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:38</source>Opening Hours:</msg>
+  <msg id="2595624684026123810"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:45</source>Telephone:</msg>
+  <msg id="4644971093370005279"><source>app/profile-pro/profile-pro-info/profile-pro-info.component.html:52</source>Web:</msg>
   <msg id="8458658926966860767"><source>app/profile-pro/profile-pro-billing/delete-info-confirmation-modal/delete-info-confirmation-modal.component.html:2</source>Are you sure you want to delete billing information?</msg>
   <msg id="5359061492766571193"><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.html:20</source>Company Name:</msg>
   <msg id="6744115081020952615"><source>app/profile-pro/profile-pro-billing/profile-pro-billing.component.html:26</source>Billing email:</msg>
