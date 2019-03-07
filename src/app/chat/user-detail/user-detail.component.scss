@@ -2,18 +2,18 @@
 
 .user-detail {
   background: $white;
-  border: thin solid $grey-50;
+  border: thin solid $blue-grey-5;
   border-radius: $border-radius;
   text-align: center;
   .list-group-flush {
-    padding: $spacing-S 0;
+    padding: $spacing-ms 0;
     .list-group-item {
       /deep/ {
         text-align: center;
         border: 0;
-        font-size: $font-size-S;
-        color: $grey-700;
-        padding: 0 $spacing $spacing-XXS $spacing;
+        font-size: $font-size-s;
+        color: $blue-grey-2;
+        padding: 0 $spacing-ml $spacing-xs $spacing-ml;
         display: flex;
         align-items: flex-start;
         background: transparent;
@@ -27,7 +27,7 @@
         }
         mat-icon {
           @include square(16px);
-          margin-right: $spacing-XXS;
+          margin-right: $spacing-xs;
         }
       }
     }

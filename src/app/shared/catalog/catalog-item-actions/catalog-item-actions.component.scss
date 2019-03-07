@@ -6,42 +6,41 @@ $height: 40px;
 .bulk-actions {
   align-self: center;
   & > * {
-    margin: 0 9px 0 0;
+    margin: 0 $spacing-s 0 0;
   }
   &.disabled {
     button {
       cursor: auto;
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       &.btn-bump, &.btn-sold, &.btn-reserve, &.btn-delete {
         &:hover {
-          background-color: $grey-50;
-          border: solid 1px rgba($grey-100, 0.5);
-          color: $grey-300;
+          background-color: $blue-grey-5;
+          border: solid 1px rgba($blue-grey-4, 0.5);
+          color: $blue-grey-2;
         }
       }
     }
   }
   button {
-    $height: 42px;
-    height: $height;
-    line-height: $height;
-    padding: 0 $spacing;
+    height: 42px;
+    line-height: $line-height-xxl;
+    padding: 0 $spacing-ml;
     cursor: pointer;
     border-radius: $border-radius;
     background: $white;
-    color: $grey-300;
-    font-size: $font-size-S;
-    border: solid 1px rgba($grey-100, 0.5);
+    color: $blue-grey-2;
+    font-size: $font-size-s;
+    border: solid 1px rgba($blue-grey-4, 0.5);
     &.btn-delete {
-      padding: 0 ($spacing / 2);
+      padding: 0 $spacing-ms;
       mat-icon {
         height: 16px;
         width: 14px;
         vertical-align: sub;
-        margin-right: $spacing-XS;
+        margin-right: $spacing-s;
       }
       &:hover {
-        background: $delete-bg;
+        background: $negative-main;
         border-color: transparent;
         color: $white;
         mat-icon /deep/ {
@@ -53,21 +52,21 @@ $height: 40px;
       &:disabled {
         mat-icon /deep/ {
           svg g g, svg path {
-            fill: $grey-300;
+            fill: $blue-grey-2;
           }
         }
       }
     }
     &.btn-activate {
       &:hover {
-        background: $corporate;
+        background: $walla-main;
         border-color: transparent;
         color: $white;
       }
       &:disabled {
-        background: $grey-50;
-        border-color: $grey-100;
-        color: $grey-300;
+        background: $blue-grey-5;
+        border-color: $blue-grey-4;
+        color: $blue-grey-2;
       }
     }
   }
@@ -85,17 +84,16 @@ $height: 40px;
   }
 
   #total-selected {
-    $height: 42px;
-    height: $height;
-    line-height: $height;
+    height: 42;
+    line-height: $line-height-xxl;
     border-radius: $border-radius;
-    color: $grey-900;
-    font-size: $font-size-S;
+    color: $blue-grey-1;
+    font-size: $font-size-s;
     display: inline-block;
-    padding: 0 $spacing;
+    padding: 0 $spacing-ml;
     cursor: pointer;
-    background-color: rgba($corporate, 0.2);
-    border: solid 1px $corporate;
+    background-color: rgba($walla-main, 0.2);
+    border: solid 1px $walla-main;
     &:after {
       display: inline-block;
       content: ' ';
@@ -103,9 +101,9 @@ $height: 40px;
       background-size: $icon-size $icon-size;
       height: $icon-size;
       width: $icon-size;
-      margin-left: 10px;
+      margin-left: $spacing-ms;
       vertical-align: middle;
-      margin-top: -2px;
+      margin-top: -$spacing-xxs;
     }
     &.show {
       animation: fadeInFromNone 0.5s ease-in-out;

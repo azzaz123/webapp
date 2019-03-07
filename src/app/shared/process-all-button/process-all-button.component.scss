@@ -3,13 +3,13 @@
 :host {
   a {
     font-weight: bold;
-    font-size: $font-size-XS;
-    color: $corporate;
+    font-size: $font-size-xs;
+    color: $walla-main;
     text-transform: uppercase;
     cursor: pointer;
     &:hover {
       opacity: .8;
-      color: $corporate;
+      color: $walla-main;
     }
   }
 }

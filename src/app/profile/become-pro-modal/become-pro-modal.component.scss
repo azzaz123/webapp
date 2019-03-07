@@ -1,7 +1,7 @@
 @import "~style/common";
 
 .header {
-  background-image: linear-gradient(to bottom, $color-pro-super-light, $color-pro);
+  background-image: linear-gradient(to bottom, $color-pro-super-light, $skyblue-main);
   height: 144px;
   display: flex;
   justify-content: center;
@@ -11,30 +11,30 @@
     color: $white;
   }
   h1 {
-    font-size: $font-size-LLL;
+    font-size: $font-size-lll;
     font-weight: bold;
   }
   p {
     margin: 0;
-    font-size: $font-size;
+    font-size: $font-size-m;
   }
 }
 
 .modal-body {
   width: 580px;
   text-align: center;
-  padding: $spacing-L $spacing-XL;
+  padding: $spacing-xl $spacing-xxxl;
   ul {
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
     padding: 0;
     li {
-      color: $grey-500;
+      color: $blue-grey-2;
       text-align: left;
-      font-size: $font-size-S;
+      font-size: $font-size-s;
       list-style: none;
-      margin-bottom: $spacing-S;
+      margin-bottom: $spacing-ms;
       background: url(/assets/icons/check-purple.svg) no-repeat left center;
-      padding-left: 50px;
+      padding-left: $spacing-xxl;
       background-size: 20px;
     }
   }

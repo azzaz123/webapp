@@ -3,20 +3,20 @@
   .box, .main-box {
     border-radius: $border-radius;
     background-color: $white;
-    border: solid 1px $grey-50;
-    padding: $spacing;
-    margin-bottom: $spacing;
+    border: solid 1px $blue-grey-5;
+    padding: $spacing-ml;
+    margin-bottom: $spacing-ml;
     h2 {
       font-weight: bold;
       text-transform: uppercase;
-      color: $corporate;
-      font-size: $font-size-S;
-      margin-bottom: $spacing;
+      color: $walla-main;
+      font-size: $font-size-s;
+      margin-bottom: $spacing-ml;
     }
     p {
-      color: $grey-500;
-      font-size: $font-size-S;
-      line-height: 1.29;
+      color: $blue-grey-2;
+      font-size: $font-size-s;
+      line-height: $line-height-ml;
     }
     &.urgent {
       display: flex;
@@ -38,9 +38,9 @@
   }
 
   .selector-container {
-    margin: 5px 0 $spacing-L;
+    margin: $spacing-xs 0 $spacing-xl;
     &.terms-options {
-      margin-bottom: 23px;
+      margin-bottom: $spacing-l;
     }
     &.features-options {
       label:not(.selector) {
@@ -48,16 +48,17 @@
       }
     }
     h3 {
-      font-size: $font-size-S;
-      color: $grey-500;
+      font-size: $font-size-s;
+      color: $blue-grey-2;
     }
     .selector {
-      background-color: $grey-50;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: $blue-grey-5;
       border-radius: $border-radius;
-      display: inline-block;
-      @include square($spacing-XL);
-      margin-right: $spacing-S;
-      line-height: $spacing-XL;
+      @include square(60px);
+      margin-right: $spacing-ms;
       position: relative;
       text-align: center;
       white-space: normal;
@@ -75,30 +76,30 @@
       }
       span {
         display: block;
+        position: absolute;
+        top: 100%;
         text-transform: uppercase;
-        color: $grey-300;
+        color: $blue-grey-2;
         font-weight: bold;
-        font-size: 9px;
+        font-size: $font-size-xxxs;
         letter-spacing: .4px;
-        line-height: $font-size-S;
-        margin-top: $spacing-XXS;
+        line-height: $line-height-m;
+        margin-top: $spacing-xs;
       }
       mat-icon {
         height: 26px;
         width: 26px;
+        @include in-the-middle;
         /deep/ svg {
-          @include in-the-middle;
-          width: 26px;
-          height: 26px;
           g, path {
-            fill: $grey-250;
+            fill: $blue-grey-3;
           }
         }
       }
       &.active {
-        background-color: $corporate;
+        background-color: $walla-main;
         span {
-          color: $corporate;
+          color: $walla-main;
         }
         mat-icon {
           /deep/ {
@@ -111,12 +112,12 @@
       &:hover:not(.active) {
         cursor: pointer;
         span {
-          color: $grey-700;
+          color: $blue-grey-2;
         }
         mat-icon {
           /deep/ {
             svg g, svg path {
-              fill: $grey-700;
+              fill: $blue-grey-2;
             }
           }
         }
@@ -127,20 +128,20 @@
     }
     .ng-dirty.ng-invalid {
       .selector {
-        border: 1px solid $warn;
+        border: 1px solid $negative-main;
         span {
-          color: $warn;
+          color: $negative-main;
         }
       }
     }
     &.shipping-options {
-      margin-bottom: 15px;
+      margin-bottom: $spacing-m;
       h2 {
-        margin-bottom: $spacing-S;
+        margin-bottom: $spacing-ms;
       }
       .selector {
-        margin-left: 10px;
-        margin-right: 40px;
+        margin-left: $spacing-ms;
+        margin-right: $spacing-xxl;
         cursor: pointer;
         mat-icon, svg {
           width: 30px;
@@ -149,11 +150,10 @@
         span {
           text-transform: none;
           font-weight: normal;
-          font-size: $font-size-XS;
+          font-size: $font-size-xs;
           letter-spacing: .6px;
-          line-height: 17px;
-          margin-left: -10px;
-          margin-right: -10px;
+          line-height: $line-height-m;
+          width: calc(100% + 24px);
           margin-top: 0;
           strong {
             font-weight: bold;
@@ -166,11 +166,11 @@
   .real-estate-form {
     .selector-container {
       .selector {
-        margin-right: $spacing;
-        line-height: 35px;
+        margin-right: $spacing-ml;
+        line-height: $line-height-xl;
         mat-icon {
           @include square(48px);
-          margin-top: 5px;
+          margin-top: $spacing-xs;
           /deep/ svg {
             @include square(48px);
           }
@@ -183,12 +183,12 @@
   }
 
   .btn-primary, .btn-link {
-    padding: 14px 50px;
-    margin-bottom: 65px;
-    margin-top: $spacing-L - $spacing;
+    padding: $spacing-m $spacing-xxl;
+    margin-bottom: $spacing-xxxl;
+    margin-top: $spacing-xl - $spacing-ml;
   }
   .btn-link {
-    color: $corporate;
+    color: $walla-main;
     &[disabled] {
       opacity: .5;
     }
@@ -210,19 +210,19 @@
       opacity: 1;
     }
     span {
-      color: $grey-500;
+      color: $blue-grey-2;
       cursor: pointer;
       &.selected {
-        color: $color-urgent;
+        color: $yellow-dark;
       }
     }
     .select {
       @include square($checkbox-width);
-      border: 2px solid $grey-100;
+      border: 2px solid $blue-grey-4;
       border-radius: 6px;
       padding: 0;
       background: transparent;
-      margin-right: $spacing-S;
+      margin-right: $spacing-ms;
       cursor: pointer;
       display: flex;
       justify-content: center;
@@ -232,7 +232,7 @@
         width: 12px;
       }
       &.selected {
-        background: $color-urgent;
+        background: $yellow-dark;
         border-color: transparent;
         mat-icon {
           display: flex;
@@ -242,19 +242,19 @@
         }
       }
       &:hover {
-        border-color: $color-urgent;
+        border-color: $yellow-dark;
       }
     }
     &.checkbox-corporate {
       .select {
         &.selected {
-          background: $corporate;
+          background: $walla-main;
           mat-icon {
             display: block;
           }
         }
         &:hover {
-          border-color: $corporate;
+          border-color: $walla-main;
         }
       }
     }
