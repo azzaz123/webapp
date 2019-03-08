@@ -373,7 +373,7 @@ export class UploadCarComponent implements OnInit {
     this.customVersion = !this.customVersion;
     if (this.customVersion) {
       this.toggleField('version', 'enable');
-    } else {
+    } else if (!this.customMake && !this.years && !this.brands && !this.models || this.customMake) {
       this.toggleField('version', 'disable');
     }
   }
