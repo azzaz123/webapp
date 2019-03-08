@@ -5,7 +5,7 @@
   float: left;
   background-color: $white;
   width: $left-panel-width;
-  border-right: 1px solid $grey-100;
+  border-right: 1px solid $blue-grey-4;
 }
 
 #center-panel {
@@ -15,8 +15,8 @@
   position: relative;
 
   #top-bar {
-    padding: $spacing;
-    border-bottom: 1px solid $grey-50;
+    padding: $spacing-ml;
+    border-bottom: 1px solid $blue-grey-5;
     z-index: 99;
     display: flex;
     flex-direction: row;
@@ -33,7 +33,7 @@
     }
 
     span {
-      color: $grey-700;
+      color: $blue-grey-2;
     }
 
     .user-avatar {
@@ -41,15 +41,15 @@
     }
 
     tsl-user-avatar {
-      margin-right: $spacing-S;
+      margin-right: $spacing-ms;
     }
 
     .conversation-header-user-info {
       display: inline-block;
       flex-grow: 1;
       h5 {
-        color: $grey-900;
-        font-size: $font-size;
+        color: $blue-grey-1;
+        font-size: $font-size-m;
         font-weight: bold;
         margin-bottom: 0;
       }
@@ -61,7 +61,7 @@
     }
 
     span {
-      font-size: $font-size-S;
+      font-size: $font-size-s;
     }
   }
 
@@ -71,11 +71,11 @@
       cursor: pointer;
       padding: 0 3px;
       /deep/ #MVP {
-        fill: $grey-300;
+        fill: $blue-grey-2;
       }
     }
     .dropdown-item {
-      padding: ($spacing /2) $spacing;
+      padding: ($spacing-ml /2) $spacing-ml;
       cursor: pointer;
       &.warn {
         color: $warn;
@@ -85,7 +85,7 @@
 
   .user-detail-wrapper {
     position: absolute;
-    top: $spacing-S + 80px;
+    top: 92px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 99;
@@ -97,12 +97,12 @@
   height: calc(100vh - #{$topbar-height});
   float: right;
   width: $right-panel-width;
-  padding: $spacing;
-  background-color: $grey-50;
-  border-left: 1px solid $grey-100;
+  padding: $spacing-ml;
+  background-color: $blue-grey-5;
+  border-left: 1px solid $blue-grey-4;
 
   tsl-user {
-    margin-bottom: $spacing;
+    margin-bottom: $spacing-ml;
   }
 }
 
@@ -119,8 +119,8 @@
       height: 220px;
     }
     h2 {
-      font-size: $font-size;
-      color: $grey-500;
+      font-size: $font-size-m;
+      color: $blue-grey-2;
       line-height: 24px;
     }
   }
