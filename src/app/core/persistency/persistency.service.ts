@@ -177,11 +177,11 @@ export class PersistencyService {
     });
   }
 
-  public getMessages(conversationId: string): Observable<StoredMessageRow[]> {
+  public getMessages(thread: string): Observable<StoredMessageRow[]> {
     return Observable.create((observer: Observer<StoredMessageRow[]>) => {
       this.getMessageFromLocal().then((data: AllDocsResponse<StoredMessage>) => {
         const rows: StoredMessageRow[] = _.sortBy(_.filter(data.rows, (row: StoredMessageRow) => {
-          return row.doc.conversationId === conversationId;
+          return row.doc.conversationId === thread;
         }), (row: StoredMessageRow) => {
           return row.doc.date;
         });
@@ -213,7 +213,7 @@ export class PersistencyService {
       message: message.message,
       status: message.status,
       from: message.from,
-      conversationId: message.conversationId,
+      conversationId: message.thread,
       payload: message.payload,
       phoneRequest: message.phoneRequest
     };

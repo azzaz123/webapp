@@ -16,7 +16,7 @@ describe('Message', () => {
   });
   describe('get conversation id', () => {
     it('should retrieve the message id', () => {
-      expect(MOCK_MESSAGE.conversationId).toEqual(MESSAGE_MAIN.thread);
+      expect(MOCK_MESSAGE.thread).toEqual(MESSAGE_MAIN.thread);
     });
   });
   describe('get message', () => {

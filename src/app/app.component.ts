@@ -35,7 +35,6 @@ import { PaymentService } from './core/payments/payment.service';
 import { RealTimeService } from './core/message/real-time.service';
 import { ChatSignal } from './core/message/chat-signal.interface';
 import { InboxService } from './core/inbox/inbox.service';
-import { InboxConversation } from './core/conversation/conversation';
 
 @Component({
   selector: 'tsl-root',
@@ -164,7 +163,7 @@ export class AppComponent implements OnInit {
       if (!dbName) {
         this.event.subscribe(EventService.CHAT_RT_CONNECTED, () => {
           this.inboxService.getInboxFeatureFlag().subscribe((active) => {
-            active ? this.initChatWithInbox() : this.initOldChat();
+            active ? this.inboxService.init() : this.initOldChat();
           });
         });
         this.realTime.connect(user.id, accessToken);
@@ -186,12 +185,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private initChatWithInbox() {
-    this.inboxService.getInbox().subscribe((conversations: InboxConversation[]) => {
-      this.inboxService.saveInbox(conversations);
-      this.event.emit(EventService.INBOX_LOADED, conversations);
-    });
-  }
 
   private subscribeEventUserLogout() {
     this.event.subscribe(EventService.USER_LOGOUT, (redirectUrl: string) => {

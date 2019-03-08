@@ -28,8 +28,30 @@ describe('Component: Conversation', () => {
   });
 
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
+  describe('describe dateIsThisYear', () => {
+    it('should return TRUE when conversaiton.modifiedDate is in the current calendar year', () => {
+      component.conversation.modifiedDate = new Date(Date.now());
+
+      const expectedResult = component.dateIsThisYear();
+
+      expect(expectedResult).toBe(true);
+    });
+
+    it('should return FALSE when conversaiton does not have a modifiedDate', () => {
+      component.conversation.modifiedDate = null;
+
+      const expectedResult = component.dateIsThisYear();
+
+      expect(expectedResult).toBe(false);
+    });
+
+    it('should return FALSE when conversaiton.modifiedDate is not in the current calendar year', () => {
+      component.conversation.modifiedDate = new Date('1 Jan 1999');
+
+      const expectedResult = component.dateIsThisYear();
+
+      expect(expectedResult).toBe(false);
+    });
   });
 });
 

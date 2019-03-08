@@ -87,7 +87,7 @@ export class ConversationService extends LeadService {
               this.ended.processed = false;
             }
             this.firstLoad = false;
-            this.event.emit(EventService.MSG_ARCHIVE_LOADED);
+            this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
             return convWithMessages;
           });
       } else {
@@ -269,7 +269,7 @@ export class ConversationService extends LeadService {
           const trackEvent: TrackingEventData = {
             eventData: TrackingService.MESSAGE_RECEIVED_ACK,
             attributes: {
-              thread_id: message.conversationId,
+              thread_id: message.thread,
               message_id: message.id
             }
           };
@@ -291,7 +291,9 @@ export class ConversationService extends LeadService {
         this.markAs(messageStatus.RECEIVED, signal.messageId, signal.thread);
         break;
       case chatSignalType.READ:
-        this.markAllAsRead(signal.thread, signal.timestamp, signal.fromSelf);
+        /* the last argument passed to markAllAsRead is the reverse of fromSelf, as markAllAsRead method uses it to filter which messages
+           it should mark with status 'read'; when receiving a READ signal fromSelf we want to mark as 'read' messages from other */
+        this.markAllAsRead(signal.thread, signal.timestamp, !signal.fromSelf);
         break;
       default:
         break;
@@ -299,25 +301,25 @@ export class ConversationService extends LeadService {
   }
 
 
-  private markAllAsRead(conversationId: string, timestamp?: number, fromSelf: boolean = false) {
-    const conversation = this.leads.find(c => c.id === conversationId) || this.archivedLeads.find(c => c.id === conversationId);
+  private markAllAsRead(thread: string, timestamp?: number, markMessagesFromSelf: boolean = false) {
+    const conversation = this.leads.find(c => c.id === thread) || this.archivedLeads.find(c => c.id === thread);
     if (conversation) {
       const unreadMessages = conversation.messages.filter(message => (message.status === messageStatus.RECEIVED ||
-        message.status === messageStatus.SENT) && (fromSelf ? message.fromSelf &&
+        message.status === messageStatus.SENT) && (markMessagesFromSelf ? message.fromSelf &&
         new Date(message.date).getTime() <= timestamp : !message.fromSelf));
       unreadMessages.map((message) => {
         message.status = messageStatus.READ;
         this.persistencyService.updateMessageStatus(message, messageStatus.READ);
         const eventAttributes = {
-          thread_id: message.conversationId,
+          thread_id: message.thread,
           message_id: message.id
         };
         this.trackingService.addTrackingEvent({
-          eventData: fromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
+          eventData: markMessagesFromSelf ? TrackingService.MESSAGE_READ : TrackingService.MESSAGE_READ_ACK,
           attributes: eventAttributes
         }, false);
       });
-      if (!fromSelf) {
+      if (!markMessagesFromSelf) {
         conversation.unreadMessages -= unreadMessages.length;
         this.messageService.totalUnreadMessages -= unreadMessages.length;
       }
@@ -342,7 +344,7 @@ export class ConversationService extends LeadService {
     const trackingEv: TrackingEventData = {
       eventData: null,
       attributes: {
-        thread_id: message.conversationId,
+        thread_id: message.thread,
         message_id: message.id
       }
     };
@@ -459,8 +461,8 @@ export class ConversationService extends LeadService {
     }
   }
 
-  public getItemFromConvId(conversationId: string): Item {
-    return _.find(this.leads, {id: conversationId}).item;
+  public getItemFromThread(thread: string): Item {
+    return _.find(this.leads, {id: thread}).item;
   }
 
   public getByItemId(itemId): Observable<NewConversationResponse> {
@@ -507,13 +509,13 @@ export class ConversationService extends LeadService {
       this.messageService.totalUnreadMessages = this.messageService.totalUnreadMessages ?
         this.messageService.totalUnreadMessages + conversation.unreadMessages :
         conversation.unreadMessages;
-      this.event.emit(EventService.MSG_ARCHIVE_LOADED);
+      this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
       return conversation;
     });
   }
 
   private onNewMessage(message: Message, updateDate: boolean) {
-    const conversation: Conversation = (<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId);
+    const conversation: Conversation = (<Conversation[]>this.leads).find((c: Conversation) => c.id === message.thread);
     const messageToUpdate: Message = conversation ? conversation.messages.find((m: Message) => m.id === message.id) : null;
     if (updateDate && messageToUpdate) {
       messageToUpdate.date = message.date;
@@ -535,7 +537,7 @@ export class ConversationService extends LeadService {
           }
         });
       } else {
-        const archivedConversationIndex: number = _.findIndex(this.archivedLeads, {'id': message.conversationId});
+        const archivedConversationIndex: number = _.findIndex(this.archivedLeads, {'id': message.thread});
         if (archivedConversationIndex > -1) {
           const unarchivedConversation: Conversation = (<Conversation[]>this.archivedLeads).splice(archivedConversationIndex, 1)[0];
           unarchivedConversation.archived = false;
@@ -574,11 +576,11 @@ export class ConversationService extends LeadService {
   }
 
   private requestConversationInfo(message: Message) {
-    this.get(message.conversationId).subscribe((conversation: Conversation) => {
-      if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.conversationId)) {
+    this.get(message.thread).subscribe((conversation: Conversation) => {
+      if (!(<Conversation[]>this.leads).find((c: Conversation) => c.id === message.thread)) {
         this.getSingleConversationMessages(conversation).subscribe(() => {
           this.addConversation(conversation, message);
-          this.event.emit(EventService.MSG_ARCHIVE_LOADED);
+          this.event.emit(EventService.CHAT_CAN_PROCESS_RT, true);
         });
       }
     });

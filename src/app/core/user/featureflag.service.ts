@@ -21,7 +21,7 @@ export class FeatureflagService {
       .map((r: Response) => r.json())
       .map((response: FeatureFlagResponse[]) => {
         return response.length ? response[0].active : false;
-      })
+      });
   }
 
 }

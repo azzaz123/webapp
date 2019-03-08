@@ -31,7 +31,7 @@ export class NotificationService {
         icon: message.user.image ? message.user.image.urls_by_size.medium : PLACEHOLDER_AVATAR
       }).subscribe((event: any) => {
         this.trackingService.track(TrackingService.NOTIFICATION_RECEIVED, {
-          thread_id: message.conversationId,
+          thread_id: message.thread,
           message_id: message.id
         });
         setTimeout(() => {
