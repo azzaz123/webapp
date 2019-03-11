@@ -586,7 +586,7 @@ describe('UploadCarComponent', () => {
 
       component.toggleCustomVersionSelection();
 
-      expect(component.customVersion).toBe(true);
+      expect(component.customVersion).toBe(false);
       expect(component.uploadForm.get('version').disabled).toBeFalsy();
     });
 
