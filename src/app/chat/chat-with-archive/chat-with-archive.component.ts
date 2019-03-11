@@ -76,8 +76,9 @@ export class ChatWithArchiveComponent implements OnInit, OnDestroy {
   }
 
   public onCurrentConversationChange(conversation: Conversation) {
-    if (this.currentConversation) {
-      this.currentConversation.active = false;
+    const previousCurrentConversation = this.currentConversation;
+    if (previousCurrentConversation) {
+      previousCurrentConversation.active = false;
     }
     this.currentConversation = conversation;
 
