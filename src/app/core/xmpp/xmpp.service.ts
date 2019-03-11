@@ -31,7 +31,7 @@ export class XmppService {
 
   public connect(userId: string, accessToken: string): Observable<boolean> {
     this.resource = 'WEB_' + Math.floor(Math.random() * 100000000000000);
-    this.self = this.createJid(userId);
+    this.self = this.createJid(userId, true);
     this.createClient(accessToken);
     this.bindEvents();
     this.client.connect();
@@ -499,8 +499,8 @@ export class XmppService {
     });
   }
 
-  private createJid(userId: string): JID {
-    const jid = new JID(userId, environment.xmppDomain, this.resource);
+  private createJid(userId: string, withResource = false): JID {
+    const jid = new JID(userId, environment.xmppDomain, withResource ? this.resource : null);
     return jid;
   }
 }

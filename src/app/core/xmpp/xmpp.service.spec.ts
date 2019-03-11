@@ -492,7 +492,7 @@ describe('Service: Xmpp', () => {
     it('should send the read message', () => {
       service.connect(MOCKED_LOGIN_USER, MOCKED_LOGIN_PASSWORD);
       service.sendConversationStatus(USER_ID, MESSAGE_ID);
-      const jid = new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']);
+      const jid = new XMPP.JID(USER_ID, environment.xmppDomain);
 
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
         to: jid,
@@ -637,7 +637,7 @@ describe('Service: Xmpp', () => {
       service.sendMessage(MOCKED_CONVERSATIONS[0], MESSAGE_BODY);
       const message: any = {
         id: queryId,
-        to: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
+        to: new XMPP.JID(USER_ID, environment.xmppDomain),
         from: service['self'],
         thread: CONVERSATION_ID,
         type: 'chat',
@@ -729,7 +729,7 @@ describe('Service: Xmpp', () => {
         body: 'bla',
         timestamp: { body: 'timestamp' },
         thread: 'thread',
-        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
+        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
         id: 'someId',
         receipt: 'receipt'
       };
@@ -747,7 +747,7 @@ describe('Service: Xmpp', () => {
         body: 'bla',
         timestamp: { body: 'timestamp' },
         thread: 'thread',
-        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain, service['resource']),
+        to: new XMPP.JID(OTHER_USER_ID, environment.xmppDomain),
         id: 'someId',
         sentReceipt: { id: 'someId' }
       };
@@ -778,7 +778,7 @@ describe('Service: Xmpp', () => {
       expect(eventService.emit).toHaveBeenCalledWith(EventService.CHAT_SIGNAL, expectedSignal);
     });
 
-    it('should emit a CHAT_SIGNAL event if the message is a readReceipt from self to the ortehr user', () => {
+    it('should emit a CHAT_SIGNAL event if the message is a readReceipt from self to the other user', () => {
       spyOn(eventService, 'emit');
       const self = new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']);
       service['self'] = self;
@@ -787,7 +787,7 @@ describe('Service: Xmpp', () => {
         body: 'bla',
         timestamp: { body: 'timestamp' },
         thread: 'thread',
-        to: new XMPP.JID(USER_ID, environment.xmppDomain, service['resource']),
+        to: new XMPP.JID(USER_ID, environment.xmppDomain),
         id: 'someId',
         readReceipt: { id: 'someId' }
       };
@@ -819,7 +819,7 @@ describe('Service: Xmpp', () => {
       service.sendMessageDeliveryReceipt(MOCK_MESSAGE.from, MOCK_MESSAGE.id, MOCK_MESSAGE.thread);
 
       expect(MOCKED_CLIENT.sendMessage).toHaveBeenCalledWith({
-        to: new XMPP.JID(MOCK_MESSAGE.from, environment.xmppDomain, service['resource']),
+        to: new XMPP.JID(MOCK_MESSAGE.from, environment.xmppDomain),
         type: 'chat',
         thread: MOCK_MESSAGE.thread,
         received: {
