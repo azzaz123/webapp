@@ -52,7 +52,6 @@ export class InboxService {
   }
 
   private getInbox(): Observable<any> {
-    this.messageService.totalUnreadMessages = 0;
     return this.http.get(this.API_URL)
     .map(res => {
       const r = res.json();
@@ -72,12 +71,12 @@ export class InboxService {
       if (conversation.lastMessage && conversation.lastMessage.id !== newMessage.id) {
         conversation.lastMessage = newMessage;
         conversation.modifiedDate = conversation.lastMessage.date;
-      if (!message.fromSelf) {
-        conversation.unreadCounter++;
-        this.messageService.totalUnreadMessages++;
-      }
+        if (!message.fromSelf) {
+          conversation.unreadCounter++;
+          this.messageService.totalUnreadMessages++;
         }
       }
+    }
   }
 
   private processChatSignal(signal: ChatSignal) {
