@@ -23,6 +23,7 @@
             i18n>Delete</tsl-button>
     <tsl-button *ngIf="itemService.selectedAction === 'feature'"
             className="btn-primary btn-big"
+                id="qa-feature-continue"
             [routerLink]="['/catalog/checkout']"
             tslTrackEvent="MYCATALOG_PURCHASE_CONTINUE"
             i18n="Continue to cart|selected-items-button">Continue</tsl-button>

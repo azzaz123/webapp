@@ -516,11 +516,11 @@ describe('Component: ConversationsPanel', () => {
       expect(conversationService.sendRead).not.toHaveBeenCalled();
     }));
   });
-  describe('setCurrentConversationWithConversationId', () => {
+  describe('setCurrentConversationWithThread', () => {
     it('should call getConversationPage of conversationService', () => {
       spyOn(conversationService, 'getConversationPage');
 
-      (component as any).setCurrentConversationWithConversationId(MOCK_CONVERSATION().id);
+      (component as any).setCurrentConversationWithThread(MOCK_CONVERSATION().id);
 
       expect(conversationService.getConversationPage).toHaveBeenCalledWith(MOCK_CONVERSATION().id);
     });
@@ -529,7 +529,7 @@ describe('Component: ConversationsPanel', () => {
       spyOn(conversationService, 'getConversationPage').and.returnValue(-1);
       spyOn((component as any), 'createConversationAndSetItCurrent');
 
-      (component as any).setCurrentConversationWithConversationId(MOCK_CONVERSATION().id);
+      (component as any).setCurrentConversationWithThread(MOCK_CONVERSATION().id);
 
       expect((component as any).createConversationAndSetItCurrent).toHaveBeenCalled();
     });
@@ -539,7 +539,7 @@ describe('Component: ConversationsPanel', () => {
       component.conversations = [MOCK_CONVERSATION(), SECOND_MOCK_CONVERSATION];
       spyOn(component, 'setCurrentConversation');
 
-      (component as any).setCurrentConversationWithConversationId(SECOND_MOCK_CONVERSATION.id);
+      (component as any).setCurrentConversationWithThread(SECOND_MOCK_CONVERSATION.id);
 
       expect(component.setCurrentConversation).toHaveBeenCalledWith(SECOND_MOCK_CONVERSATION);
     });
@@ -554,12 +554,12 @@ describe('Component: ConversationsPanel', () => {
       expect((component as any).createConversationAndSetItCurrent).toHaveBeenCalled();
     });
 
-    it('should call setCurrentConversationWithConversationId with the conversation Id if it exists', () => {
-      spyOn((component as any), 'setCurrentConversationWithConversationId');
+    it('should call setCurrentConversationWithThread with the conversation Id if it exists', () => {
+      spyOn((component as any), 'setCurrentConversationWithThread');
 
       component.findConversation(NEW_CONVERSATION_RESPONSE);
 
-      expect((component as any).setCurrentConversationWithConversationId).toHaveBeenCalledWith(NEW_CONVERSATION_RESPONSE.conversation_id);
+      expect((component as any).setCurrentConversationWithThread).toHaveBeenCalledWith(NEW_CONVERSATION_RESPONSE.conversation_id);
     });
   });
 

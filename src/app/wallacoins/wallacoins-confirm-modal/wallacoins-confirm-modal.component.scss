@@ -2,26 +2,26 @@
 
 .modal-body {
   text-align: center;
-  padding: 76px $spacing $spacing-L;
+  padding: $spacing-xxxl $spacing-ml $spacing-xl;
   h1 {
-    font-size: $font-size-LL;
+    font-size: $font-size-ll;
     font-weight: bold;
-    margin-bottom: $spacing-2M;
+    margin-bottom: $spacing-l;
     &.red {
-      color: $warn;
+      color: $negative-main;
     }
   }
   p {
-    font-size: $font-size;
-    color: $grey-500;
-    margin-bottom: $spacing-1M;
+    font-size: $font-size-m;
+    color: $blue-grey-2;
+    margin-bottom: $spacing-m;
     .green {
-      color: $corporate;
+      color: $walla-main;
     }
   }
   tsl-button {
-    margin-top: $spacing;
-    margin-bottom: $spacing-S;
+    margin-top: $spacing-ml;
+    margin-bottom: $spacing-ms;
     /deep/ {
       .btn {
         width: 350px;
@@ -29,7 +29,7 @@
     }
   }
   .link {
-    color: $grey-250;
+    color: $blue-grey-3;
     &:hover {
       text-decoration: underline;
       cursor: pointer;

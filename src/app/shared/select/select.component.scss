@@ -4,12 +4,12 @@ mat-icon {
   height: 35px;
   vertical-align: middle;
   width: 10px;
-  margin-left: 3px;
+  margin-left: $spacing-xs;
 }
 .dropdown {
-  color: $grey-300;
+  color: $blue-grey-2;
   &.open .dropdown-toggle {
-    color: $corporate;
+    color: $walla-main;
   }
   .dropdown-menu {
     margin: 0;
@@ -17,7 +17,7 @@ mat-icon {
   .dropdown-toggle {
     @include default-transition(color);
     a {
-      color: $corporate;
+      color: $walla-main;
     }
   }
 }

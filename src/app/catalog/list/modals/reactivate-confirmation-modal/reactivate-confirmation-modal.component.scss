@@ -8,15 +8,15 @@
 
 .content-col {
   text-align: center;
-  padding: 52px $spacing-40;
+  padding: $spacing-xxxl $spacing-xxl;
 }
 
 p {
   max-width: 435px;
-  margin: 0 auto $spacing auto;
-  font-size: $font-size;
-  color: $grey-500;
+  margin: 0 auto $spacing-ml auto;
+  font-size: $font-size-m;
+  color: $blue-grey-2;
   &.credit-info {
-    color: $corporate;
+    color: $walla-main;
   }
 }

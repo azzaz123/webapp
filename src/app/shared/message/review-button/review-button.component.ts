@@ -32,8 +32,8 @@ export class ReviewButtonComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.item = this.conversationService.getItemFromConvId(this.message.conversationId);
-    this.conversationService.get(this.message.conversationId).subscribe((conv) => {
+    this.item = this.conversationService.getItemFromThread(this.message.thread);
+    this.conversationService.get(this.message.thread).subscribe((conv) => {
       this.conversationUser = {
         id: conv.user.id,
         micro_name: conv.user.microName,
@@ -71,7 +71,7 @@ export class ReviewButtonComponent implements OnInit {
     const modalRef: NgbModalRef = this.modalService.open(ReviewModalComponent, {windowClass: 'review'});
     modalRef.componentInstance.item = this.item;
     modalRef.componentInstance.userToReview = this.conversationUser;
-    modalRef.componentInstance.thread = this.message.conversationId;
+    modalRef.componentInstance.thread = this.message.thread;
     modalRef.result.then(() => this.reviewSent(), () => {});
   }
 

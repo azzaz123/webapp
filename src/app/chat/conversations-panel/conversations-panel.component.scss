@@ -4,18 +4,18 @@ $title-height: 64px;
 $filters-nav-height: 38px;
 
 h2 {
-  margin: $spacing;
+  margin: $spacing-ml;
   font-weight: bold;
-  font-size: $font-size-LL;
+  font-size: $font-size-ll;
   letter-spacing: $letter-spacing;
   .badge {
-    margin-left: 10px;
+    margin-left: $spacing-ms;
     vertical-align: middle;
   }
 }
 
 .header {
-  border-bottom: 1px solid $grey-50;
+  border-bottom: 1px solid $blue-grey-5;
 }
 
 .scroll-panel {
@@ -30,17 +30,17 @@ h2 {
 }
 
 .nav.filters-nav {
-  margin-left: $spacing;
+  margin-left: $spacing-ml;
 }
 
 tsl-process-all-button {
   float: right;
-  margin-top: 10px;
-  margin-right: $spacing-S;
+  margin-top: $spacing-ms;
+  margin-right: $spacing-ms;
 }
 
 #loader {
-  padding-top: $spacing;
+  padding-top: $spacing-ml;
   mat-icon {
     width: 339px;
     height: 487px;
@@ -50,14 +50,14 @@ tsl-process-all-button {
 .load-more-container {
   $load-more-container-height: 48px;
   $spinner-size: 14px;
-  line-height: $load-more-container-height;
+  line-height: $line-height-xxl;
   height: $load-more-container-height;
   text-align: center;
   .load-more {
-    color: $corporate;
+    color: $walla-main;
     position: relative;
     text-transform: uppercase;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     font-weight: bold;
     .spinner {
       height: $spinner-size;
@@ -65,7 +65,7 @@ tsl-process-all-button {
       svg {
         position: absolute;
         top: 0;
-        left: -#{$spacing + 5px};
+        left: -17px;
       }
     }
     &:hover {

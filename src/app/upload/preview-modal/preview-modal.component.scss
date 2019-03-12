@@ -1,8 +1,8 @@
 @import "~style/common";
 
 .modal-body {
-  color: $grey-900;
-  height: calc(100vh - #{$spacing-40 * 2});
+  color: $blue-grey-1;
+  height: calc(100vh - #{$spacing-ml * 4});
   overflow: scroll;
 }
 
@@ -15,28 +15,28 @@ p {
 }
 
 .price, h1 {
-  font-size: $font-size-XL;
+  font-size: $font-size-xl;
 }
 
 h1 {
-  border-bottom: 1px solid $preview-border-color;
-  padding-bottom: $spacing;
+  border-bottom: 1px solid $blue-grey-6;
+  padding-bottom: $spacing-ml;
   margin-bottom: 0;
 }
 
 .price {
   font-weight: bold;
-  line-height: $font-size-XL;
-  margin-bottom: $spacing-S;
-  margin-top: $spacing;
+  line-height: $line-height-xl;
+  margin-bottom: $spacing-ms;
+  margin-top: $spacing-ml;
 }
 
 .description, .car-info {
-  font-size: $font-size;
-  padding: $spacing 0;
+  font-size: $font-size-m;
+  padding: $spacing-ml 0;
   &:not(.last){
-    border-bottom: 1px solid $preview-border-color;
-    margin-bottom: $spacing;
+    border-bottom: 1px solid $blue-grey-6;
+    margin-bottom: $spacing-ml;
   }
   &.last {
     padding-bottom: 0;
@@ -49,7 +49,7 @@ h1 {
 }
 
 .car-info {
-  padding: $spacing-S 0;
+  padding: $spacing-ms 0;
   margin-bottom: 0 !important;
 }
 
@@ -57,24 +57,24 @@ h1 {
   overflow: hidden;
   div {
     float: left;
-    font-size: $font-size-XS;
+    font-size: $font-size-xs;
     text-align: center;
     width: 75px;
-    margin: 0 $spacing;
+    margin: 0 $spacing-ml;
     mat-icon {
       @include square(32px);
       display: block;
       margin: 0 auto;
-      margin-bottom: $spacing-S;
+      margin-bottom: $spacing-ms;
       & /deep/ path {
-        fill: $grey-900;
+        fill: $blue-grey-1;
       }
     }
   }
   &.car-extras {
-    border-bottom: 1px solid $preview-border-color;
-    padding-bottom: $spacing;
-    margin-bottom: $spacing;
+    border-bottom: 1px solid $blue-grey-6;
+    padding-bottom: $spacing-ml;
+    margin-bottom: $spacing-ml;
     &.last {
       padding-bottom: 0;
       border: 0;
@@ -85,5 +85,5 @@ h1 {
 
 .btn {
   border-radius: $button-border-radius;
-  margin: 0 0 $spacing;
+  margin: 0 0 $spacing-ml;
 }

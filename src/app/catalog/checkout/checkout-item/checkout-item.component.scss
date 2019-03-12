@@ -3,15 +3,15 @@
 .item {
   background: $white;
   border-radius: $border-radius;
-  border: solid 1px $grey-50;
-  margin-bottom: $spacing-XS;
-  padding: $spacing-XXS;
+  border: solid 1px $blue-grey-5;
+  margin-bottom: $spacing-s;
+  padding: $spacing-xs;
   display: flex;
   align-items: center;
   justify-content: space-between;
   .title {
     @include text-truncate();
-    padding-right: $spacing-S;
+    padding-right: $spacing-ms;
     flex: 1;
     max-width: 98px;
 
@@ -30,7 +30,7 @@
       content: '';
       height: 60px;
       width: 1px;
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       position: absolute;
       top: 11px;
       left: 0;
@@ -38,12 +38,12 @@
   }
   .durations {
     flex: 0 0 110px;
-    padding-left: $spacing;
+    padding-left: $spacing-ml;
     label {
       display: block;
-      font-size: $font-size-XS;
-      color: $grey-250;
-      margin: 6px 0;
+      color: $blue-grey-3;
+      font-size: $font-size-xs;
+      margin: $spacing-s 0;
       &.btn {
         border: 0;
         background: none;
@@ -52,28 +52,28 @@
         text-align: left;
       }
       &.active {
-        color: $grey-900;
+        color: $blue-grey-1;
         font-weight: bold;
       }
     }
   }
   .price {
     flex: 0 0 $duration-table-col-width-md;
-    padding: 0 $spacing;
+    padding: 0 $spacing-ml;
     @include media-breakpoint-up(xl) {
       flex: 0 0 $duration-table-col-width;
     }
     .btn-price {
-      background-color: $grey-50;
+      background-color: $blue-grey-5;
       border-radius: $button-border-radius;
-      font-size: $font-size;
+      font-size: $font-size-m;
       text-align: center;
       width: 100%;
-      color: $grey-900;
+      color: $blue-grey-1;
       font-weight: bold;
       s {
         font-weight: normal;
-        color: $grey-250;
+        color: $blue-grey-3;
       }
       &:hover, &.selected {
         color: $white;
@@ -83,10 +83,10 @@
           }
         }
         s {
-          color: $grey-100;
+          color: $blue-grey-4;
           tsl-wallacoin {
             /deep/ svg path {
-              fill: $grey-100;
+              fill: $blue-grey-4;
             }
           }
         }
@@ -118,7 +118,7 @@
       }
     }
     &.countrybump {
-      margin-right: -$spacing-XXS;
+      margin-right: -$spacing-xs;
       .btn-price {
         &:hover {
           background-color: $country-bump;

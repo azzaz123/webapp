@@ -24,7 +24,7 @@ export function createMockMessagesArray(count: number): Message[] {
 export const MOCK_MESSAGES_ARRAY = createMockMessagesArray(5);
 
 export const MOCK_RECEIVED_RECEIPTS: ReceivedReceipt[] = [{
-  thread: MOCK_MESSAGES_ARRAY[0].conversationId,
+  thread: MOCK_MESSAGES_ARRAY[0].thread,
   messageId: MOCK_MESSAGES_ARRAY[0].id,
   from: OTHER_USER_ID,
   to: USER_ID,
@@ -32,7 +32,7 @@ export const MOCK_RECEIVED_RECEIPTS: ReceivedReceipt[] = [{
   timestamp: new Date(MOCK_MESSAGES_ARRAY[0].date).getTime() + 1000
 },
 {
-  thread: MOCK_MESSAGES_ARRAY[1].conversationId,
+  thread: MOCK_MESSAGES_ARRAY[1].thread,
   messageId: MOCK_MESSAGES_ARRAY[1].id,
   from: USER_ID,
   to: OTHER_USER_ID,
@@ -40,7 +40,7 @@ export const MOCK_RECEIVED_RECEIPTS: ReceivedReceipt[] = [{
   timestamp: new Date(MOCK_MESSAGES_ARRAY[1].date).getTime() + 1000
 },
 {
-  thread: MOCK_MESSAGES_ARRAY[2].conversationId,
+  thread: MOCK_MESSAGES_ARRAY[2].thread,
   messageId: MOCK_MESSAGES_ARRAY[2].id,
   from: OTHER_USER_ID,
   to: USER_ID,
@@ -49,17 +49,17 @@ export const MOCK_RECEIVED_RECEIPTS: ReceivedReceipt[] = [{
 }];
 
 export const MOCK_READ_RECEIPTS: ReadReceipt[] = [{
-  thread: MOCK_MESSAGES_ARRAY[0].conversationId,
+  thread: MOCK_MESSAGES_ARRAY[0].thread,
   to: USER_ID,
   timestamp: new Date(MOCK_MESSAGES_ARRAY[0].date).getTime() + 2000
 },
 {
-  thread: MOCK_MESSAGES_ARRAY[0].conversationId,
+  thread: MOCK_MESSAGES_ARRAY[0].thread,
   to: OTHER_USER_ID,
   timestamp: new Date(MOCK_MESSAGES_ARRAY[0].date).getTime() + 4000
 },
 {
-  thread: MOCK_MESSAGES_ARRAY[0].conversationId,
+  thread: MOCK_MESSAGES_ARRAY[0].thread,
   to: USER_ID,
   timestamp: new Date(MOCK_MESSAGES_ARRAY[1].date).getTime() + 6000
 }];
@@ -76,10 +76,10 @@ export class MockArchiveService {
   getAllEvents() {}
   updateStatuses() {}
 
-  public messageContructor(id: string, conversationId: string, message: string,
+  public messageContructor(id: string, thread: string, message: string,
     from: string, date: Date, status: string, payload: MessagePayload, fromSelf: boolean) {
 
-    const msg = new Message(id, conversationId, message, from, date, status, payload);
+    const msg = new Message(id, thread, message, from, date, status, payload);
     msg.fromSelf = fromSelf;
     return msg;
   }

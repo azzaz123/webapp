@@ -27,7 +27,7 @@ export class Message implements Model {
   private _fromSelf: boolean;
 
   constructor(private _id: string,
-              private _conversationId: string,
+              private _thread: string,
               private _message: string,
               private _from: string,
               private _date?: Date,
@@ -44,8 +44,8 @@ export class Message implements Model {
     return this._message;
   }
 
-  get conversationId(): string {
-    return this._conversationId;
+  get thread(): string {
+    return this._thread;
   }
 
   get date(): Date {

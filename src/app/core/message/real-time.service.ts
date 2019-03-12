@@ -63,12 +63,12 @@ export class RealTimeService {
     this.xmpp.resendMessage(conversation, message);
   }
 
-  public sendDeliveryReceipt(to: string, id: string, conversationId: string) {
-    this.xmpp.sendMessageDeliveryReceipt(to, id, conversationId);
+  public sendDeliveryReceipt(to: string, id: string, thread: string) {
+    this.xmpp.sendMessageDeliveryReceipt(to, id, thread);
   }
 
-  public sendRead(to: string, conversationId: string) {
-    this.xmpp.sendConversationStatus(to, conversationId);
+  public sendRead(to: string, thread: string) {
+    this.xmpp.sendConversationStatus(to, thread);
   }
 
   private subscribeEventNewMessage() {
@@ -76,7 +76,7 @@ export class RealTimeService {
       if (!message.fromSelf && withDeliveryReceipt) {
         this.persistencyService.findMessage(message.id).subscribe(() => { }, (error) => {
           if (error.reason === 'missing') {
-            this.sendDeliveryReceipt(message.from, message.id, message.conversationId);
+            this.sendDeliveryReceipt(message.from, message.id, message.thread);
           }
         });
       }
@@ -111,11 +111,11 @@ export class RealTimeService {
     return false;
   }
 
-  private trackMessageSent(conversationId: string, messageId: string) {
+  private trackMessageSent(thread: string, messageId: string) {
     this.trackingService.addTrackingEvent({
       eventData: TrackingService.MESSAGE_SENT,
       attributes: {
-        thread_id: conversationId,
+        thread_id: thread,
         message_id: messageId
       }
     }, false);

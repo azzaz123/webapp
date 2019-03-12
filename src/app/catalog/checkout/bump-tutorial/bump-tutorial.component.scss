@@ -19,8 +19,8 @@
         margin-top: $topbar-height;
         height: calc(100vh - #{$topbar-height});
         margin-left: $sidebar-width;
-        color: $grey-50;
-        font-size: $font-size-L;
+        color: $blue-grey-5;
+        font-size: $font-size-l;
         background-color: rgba(37,50,56,0.95);
         justify-content: center;
         overflow-y: scroll;
@@ -36,7 +36,7 @@
           font-family: $wallieSkinny;
         }
         p, span {
-          font-size: $font-size;
+          font-size: $font-size-m;
         }
         &.step-1 {
           display: flex;
@@ -50,7 +50,7 @@
         .bump-info {
           display: flex;
           flex-direction: row;
-          margin: $spacing-L 0 0 0;
+          margin: $spacing-xl 0 0 0;
           .col {
             flex-direction: column;
             align-items: center;
@@ -61,14 +61,14 @@
               border-right: none;
             }
             h2 {
-              font-size: $font-size-LL;
+              font-size: $font-size-ll;
               font-weight: bold;
-              margin: $spacing 0 $spacing-S;
+              margin: $spacing-ml 0 $spacing-ms;
               width: 80%;
             }
             p {
-              font-size: $font-size-S;
-              color: $grey-250;
+              font-size: $font-size-s;
+              color: $blue-grey-3;
               max-width: 350px;
             }
             .box-price {
@@ -77,14 +77,14 @@
               flex-direction: column;
               justify-content: flex-end;
               p {
-                color: $grey-500;
+                color: $blue-grey-2;
                 margin: 0;
               }
               .price {
-                font-size: $font-size-XXXL;
+                font-size: $font-size-xxxl;
                 font-weight: bold;
                 color: $white;
-                line-height: 3rem;
+                line-height: $line-height-xxl;
               }
               .from-price {
                 text-transform: uppercase;
@@ -123,20 +123,20 @@
         .advantages {
           display: flex;
           flex-direction: row;
-          margin-top: $spacing-XL;
+          margin-top: $spacing-xxxl;
           justify-content: space-between;
           .content {
             display: flex;
             flex-direction: column;
             text-align: left;
             width: 50%;
-            margin-right: $spacing-XL;
+            margin-right: $spacing-xxxl;
             h2 {
-              font-size: $font-size-LL;
+              font-size: $font-size-ll;
               font-weight: bold;
             }
             p {
-              color: $grey-250;
+              color: $blue-grey-3;
             }
           }
           .special-background {
@@ -153,27 +153,27 @@
       }
       #controls {
         position: absolute;
-        right: $spacing-M;
-        bottom: $spacing-M;
+        right: 16px;
+        bottom: 16px;
         .btn-next {
-          color: $corporate;
-          padding: 10px 48px;
+          color: $walla-main;
+          padding: $spacing-ms $spacing-xxl;
           border-radius: 100px;
           background: $white;
           &:hover {
-            color: $corporate-dark;
+            color: $walla-dark;
           }
         }
         .dots {
           text-align: center;
-          margin-bottom: $spacing;
+          margin-bottom: $spacing-ml;
           .dot {
             display: inline-block;
             @include square(7.6px);
             opacity: 0.3;
             background-color: $white;
             border-radius: 50%;
-            margin: 0 4px;
+            margin: 0 $spacing-xs;
             vertical-align: middle;
             &.active {
               @include square(10.8px);
@@ -184,14 +184,14 @@
       }
       #close {
         position: absolute;
-        right: $spacing;
+        right: 20px;
         top: 50px;
         color: $white;
         text-align: center;
         cursor: pointer;
         span {
           opacity: 0.6;
-          font-size: $font-size;
+          font-size: $font-size-m;
         }
         mat-icon {
           /deep/ path {

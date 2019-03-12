@@ -7,8 +7,8 @@ $dropdown-width: 900px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 8px 0 0;
-  border-right: 1px solid $grey-100;
+  padding: 0 $spacing-s 0 0;
+  border-right: 1px solid $blue-grey-4;
   float: initial;
   height: 100%;
   width: 54px;
@@ -22,7 +22,7 @@ $dropdown-width: 900px;
     clear: right;
     &:hover {
       .category-label {
-        color: $corporate;
+        color: $walla-main;
       }
       .category-icon {
         display: none;
@@ -33,18 +33,18 @@ $dropdown-width: 900px;
     }
   }
   .dropdown-menu {
-    border: solid 1px $color-grey-separator;
-    box-shadow: 0 2px 6px 0 rgba($grey-900, 0.05);
+    border: solid 1px $blue-grey-4;
+    box-shadow: 0 2px 6px 0 rgba($blue-grey-1, 0.05);
     width: $dropdown-width;
     box-sizing: content-box;
     overflow: hidden;
-    padding: $spacing 0 0 0;
+    padding: $spacing-ml 0 0 0;
     li {
       background-color: transparent;
       padding: 0;
       position: relative;
       width: $dropdown-width/6;
-      margin-bottom: $spacing;
+      margin-bottom: $spacing-ml;
       height: 80px;
       a {
         display: flex;
@@ -53,7 +53,7 @@ $dropdown-width: 900px;
         float: left;
         width: 100%; 
         height: 100%;
-        color: $grey-900;
+        color: $blue-grey-1;
         overflow: visible;
         transition: all .15s linear;
         text-decoration: none;
@@ -65,7 +65,7 @@ $dropdown-width: 900px;
         }
         span {
           width: 70%;
-          font-size: $font-size-XS;
+          font-size: $font-size-xs;
           white-space: normal;
           text-align: center;
         }
@@ -88,7 +88,7 @@ $dropdown-width: 900px;
 .topbar-icon {
   height: 36px;
   width: 36px;
-  color: $grey-200;
+  color: $blue-grey-3;
   vertical-align: middle;
   vertical-align: middle;
 }
@@ -101,9 +101,9 @@ $dropdown-width: 900px;
 }
 
 .categories {
-  color: $grey-900;
-  font-size: $font-size-S;
-  line-height: 14px;
+  color: $blue-grey-1;
+  font-size: $font-size-s;
+  line-height: $line-height-m;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

@@ -1,14 +1,14 @@
 @import "~style/common";
 
 .content-col {
-  background: url(/assets/images/upgrade-plan-background.svg) no-repeat 50px $spacing-2L;
+  background: url(/assets/images/upgrade-plan-background.svg) no-repeat 50px 44px;
   background-size: 160px;
-  padding: $spacing-40 $spacing-40 0 260px;
-  margin-bottom: $spacing-3M;
+  padding: $spacing-xxl $spacing-xxl 0 260px;
+  margin-bottom: $spacing-l;
   p {
-    margin: 0 auto $spacing-3M auto;
-    font-size: $font-size;
-    color: $grey-400;
+    margin: 0 auto $spacing-l auto;
+    font-size: $font-size-m;
+    color: $blue-grey-2;
     &.no-margin {
       margin: 0;
     }
@@ -19,7 +19,7 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
   tsl-button /deep/ {
     .btn {
       min-width: 370px;

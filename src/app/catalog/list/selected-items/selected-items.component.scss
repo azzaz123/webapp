@@ -3,8 +3,8 @@
 :host {
   background-color: $white;
   box-shadow: 0 -2px 6px 0 rgba(37, 50, 56, 0.05);
-  padding: $spacing $spacing-L;
-  color: $grey-900;
+  padding: $spacing-ml $spacing-xl;
+  color: $blue-grey-1;
 }
 
 .container {
@@ -27,11 +27,11 @@
     display: block;
     @include square($item-avatar-size-small);
     border-radius: 4px;
-    border: solid 1px $grey-100;
+    border: solid 1px $blue-grey-4;
     background: $white;
     text-align: center;
     font-weight: bold;
-    line-height: $item-avatar-size-small;
+    line-height: $line-height-xxl;
   }
 }
 
@@ -39,12 +39,12 @@
   display: flex;
   align-items: center;
   &.feature {
-    margin: $spacing-XS 0;
+    margin: $spacing-s 0;
     .address {
       position: absolute;
-      bottom: -$spacing-S;
-      font-size: $font-size-XXXS;
-      color: $grey-250;
+      bottom: -12px;
+      font-size: $font-size-xxxs;
+      color: $blue-grey-3;
     }
   }
 }

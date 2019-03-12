@@ -1,14 +1,14 @@
 @import "~style/common";
 
 :host /deep/ {
-  margin-left: 10px;
+  margin-left: $spacing-ms;
 }
 
 :host /deep/ input {
   & {
     border: none;
     width: 190px - 36px;
-    color: $grey-900;
+    color: $blue-grey-1;
     -webkit-transition-property: width;
     transition-property: width;
     transition-duration: 0.2s;
@@ -16,25 +16,25 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: $font-size-S;
+    font-size: $font-size-s;
   }
   &.active {
     width: 250px - 36px;
   }
   &::-webkit-input-placeholder {
-    color: $corporate;
+    color: $walla-main;
     opacity: 0.9;
   }
   &::-moz-placeholder {
-    color: $grey-300;
+    color: $blue-grey-2;
     opacity: 0.9;
   }
   &::-ms-placeholder {
-    color: $grey-300;
+    color: $blue-grey-2;
     opacity: 0.9;
   }
   &::placeholder {
-    color: $grey-300;
+    color: $blue-grey-2;
     opacity: 0.9;
   }
 }
@@ -44,7 +44,7 @@
   & {
     padding: 0;
     overflow: hidden;
-    margin: 0.4rem 0 0;
+    margin: $spacing-s 0 0;
     left: 0 !important;
     width: 100%;
   }
@@ -53,23 +53,23 @@
   & {
     background-color: transparent;
     cursor: pointer;
-    color: $grey-900;
-    border-bottom: 1px solid $grey-50;
-    padding: 8px 20px;
+    color: $blue-grey-1;
+    border-bottom: 1px solid $blue-grey-5;
+    padding: $spacing-s $spacing-ml;
     transition: all .15s linear;
     & .suggestion {
       display: grid;
-      line-height: $font-size-L;
+      line-height: $line-height-ml;
       & .title {
-        font-size: $font-size;
+        font-size: $font-size-m;
       }
       & .category {
-        color: $corporate;
-        font-size: $font-size-S;
+        color: $walla-main;
+        font-size: $font-size-s;
       }
     }
   }
 }
 :host /deep/ .dropdown-item.active {
-  background-color: $grey-50;
+  background-color: $blue-grey-5;
 }

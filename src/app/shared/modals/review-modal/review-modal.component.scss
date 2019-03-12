@@ -1,25 +1,25 @@
 @import "~style/common";
 
 .modal-body {
-    padding: $spacing-L;
+    padding: $spacing-xl;
 }
 
 .modal-body {
-    padding-top: $spacing-XL;
-    padding-left: $spacing-L;
-    padding-right: $spacing-L;
+    padding-top: $spacing-xxxl;
+    padding-left: $spacing-xl;
+    padding-right: $spacing-xl;
 }
 
 h1 {
-    font-size: $font-size-LL;
-    color: $corporate;
+    font-size: $font-size-ll;
+    color: $walla-main;
     font-weight: bold;
-    margin-bottom: $spacing-L;
+    margin-bottom: $spacing-xl;
 }
 
 h2 {
-    font-size: $font-size-L;
-    color: $grey-900;
+    font-size: $font-size-l;
+    color: $blue-grey-1;
     font-weight: normal;
     strong {
         font-weight: bold;
@@ -27,34 +27,34 @@ h2 {
 }
 
 p {
-    font-size: $font-size-S;
-    color: $grey-500;
-    margin-top: $spacing-XS;
+    font-size: $font-size-s;
+    color: $blue-grey-2;
+    margin-top: $spacing-s;
     &.text {
-        color: $grey-900;
+        color: $blue-grey-1;
     }
 }
 
 tsl-stars-rate {
-    margin: $spacing 0;
+    margin: $spacing-ml 0;
 }
 
 #price {
     border: 0;
-    border-bottom: 1px solid $grey-100;
+    border-bottom: 1px solid $blue-grey-4;
     border-radius: 0;
     display: inline;
     text-align: right;
     padding: 0;
-    margin-right: $spacing-S;
+    margin-right: $spacing-ms;
 }
 
 #price, .currency {
-    font-size: $font-size-L;
+    font-size: $font-size-l;
 }
 
 textarea {
     height: 230px;
-    margin-top: $spacing-XL;
-    margin-bottom: $spacing;
+    margin-top: $spacing-xxxl;
+    margin-bottom: $spacing-ml;
 }

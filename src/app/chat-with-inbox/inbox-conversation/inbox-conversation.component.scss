@@ -17,11 +17,11 @@ $check-width-and-spacing: 50px;
 $menu-width-and-spacing: 10px;
 :host {
   display: block;
-  padding: $spacing $spacing-S $spacing $spacing;
+  padding: $spacing-ml spacing-ms $spacing-ml $spacing-ml;
   box-sizing: border-box;
   transition: $transition-time ease background-color,
   $transition-time ease border;
-  border-top: 1px solid $grey-50;
+  border-top: 1px solid $blue-grey-5;
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -29,16 +29,16 @@ $menu-width-and-spacing: 10px;
     border-top: 0;
   }
   &.active {
-    background-color: rgba($grey-100, .4);
+    background-color: rgba($blue-grey-4, .4);
   }
   tsl-archive-button, tsl-unarchive-button {
     @include hide();
     position: absolute;
     top: 43px;
-    right: $spacing-S;
+    right: spacing-ms;
   }
   &:hover {
-    background-color: rgba($grey-100, .2);
+    background-color: rgba($blue-grey-4, .2);
   }
   &.professional {
     &:hover {
@@ -76,12 +76,12 @@ $menu-width-and-spacing: 10px;
   color: $blue-grey-1;
 
   p {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     margin-bottom: 0;
     @include text-truncate();
   }
   .item-title-row {
-    line-height: $spacing-M;
+    line-height: $spacing-m;
     display: flex;
     flex-direction: row;
     vertical-align: super;
@@ -100,7 +100,7 @@ $menu-width-and-spacing: 10px;
     }
     .conversation-item-meta {
       position: absolute;
-      right: $spacing-ms;
+      right: 12px;
       .badge-pill {
         display: flex;
         justify-content: center;
@@ -157,7 +157,7 @@ $menu-width-and-spacing: 10px;
   }
   .message-row {
     position: relative;
-    line-height: $font-size-S;
+    line-height: $font-size-s;
     p.message {
       font-size: $font-size-s;
       color: $blue-grey-3;
@@ -192,7 +192,6 @@ $menu-width-and-spacing: 10px;
 .message-date {
   font-size: $font-size-xs;
   color: $blue-grey-3;
-  text-transform: uppercase;
 }
 
 a {

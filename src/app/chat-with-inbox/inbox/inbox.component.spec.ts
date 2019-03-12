@@ -75,7 +75,7 @@ describe('Component: ConversationsPanel', () => {
       beforeEach(() => {
         spyOn(eventService, 'subscribe').and.callThrough();
       });
-      it('should subscribe to EventService.INBOX_LOADED event', () => {
+      it('should subscribe to EventService.CHAT_CAN_PROCESS_RT event with true', () => {
         component.ngOnInit();
 
         expect(eventService.subscribe['calls'].argsFor(0)[0]).toBe(EventService.INBOX_LOADED);

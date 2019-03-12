@@ -3,7 +3,7 @@
 :host {
   border-radius: $border-radius;
   border: 0;
-  margin-bottom: $spacing;
+  margin-bottom: $spacing-ml;
   background-color: $white;
   display: inline-block;
   width: 100%;
@@ -25,17 +25,17 @@
 
   /deep/ tsl-card-content {
     display: block;
-    padding: $spacing-S;
+    padding: $spacing-ms;
     .tsl-card-title {
-      font-size: $font-size-L;
-      color: $grey-800;
+      font-size: $font-size-l;
+      color: $blue-grey-1;
       font-weight: bold;
     }
   }
 
   /deep/ tsl-card-footer {
     display: block;
-    padding: $spacing-S;
-    border-top: $grey-50 solid thin;
+    padding: $spacing-ms;
+    border-top: $blue-grey-5 solid thin;
   }
 }

@@ -1,28 +1,28 @@
 @import "~style/common";
 
 :host {
-    margin-top: 45px;
+    margin-top: $spacing-xxl;
     display: block;
     background-color: $white;
     border-radius: $border-radius;
-    padding: $spacing-L 53px;
+    padding: $spacing-xl $spacing-xxxl;
 }
 
 h1 {
-    font-size: $font-size-S;
+    font-size: $font-size-s;
     height: 100%;
-    color: $corporate;
+    color: $walla-main;
     text-transform: uppercase;
     font-weight: bold;
     padding: 0;
 }
 
 form {
-    margin-top: $spacing-L;
+    margin-top: $spacing-xl;
     .form-group {
-        padding: 0 10px;
+        padding: 0 $spacing-ms;
         label {
-            color: $grey-900;
+            color: $blue-grey-1;
         }
         input {
             border-radius: $border-radius;
