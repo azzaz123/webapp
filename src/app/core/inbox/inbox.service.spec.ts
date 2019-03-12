@@ -15,6 +15,7 @@ import { FeatureflagService } from '../user/featureflag.service';
 import { EventService } from '../event/event.service';
 import { Message, messageStatus } from '../message/message';
 import { ChatSignal, chatSignalType } from '../message/chat-signal.interface';
+import { INBOX_ITEM_STATUSES } from '../item/item';
 
 let service: InboxService;
 let http: HttpService;
@@ -312,6 +313,43 @@ describe('InboxService', () => {
         expect(conversation.unreadCounter).toBe(7);
         expect(messageService.totalUnreadMessages).toBe(12);
       });
+    });
+  });
+
+  describe('process API item status as item flags', () => {
+    let modifiedResponse;
+    beforeEach(() => {
+      modifiedResponse = JSON.parse(MOCK_INBOX_API_RESPONSE);
+    });
+    it('should set item.reserved TRUE when the API response returns an item with status reserved', () => {
+      console.log(modifiedResponse);
+      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.reserved;
+      const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+      service.init();
+
+      expect(service.conversations[0].item.reserved).toBe(true);
+    });
+
+    it('should set item.sold TRUE when the API response returns an item with status sold', () => {
+      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.sold;
+      const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+      service.init();
+
+      expect(service.conversations[0].item.sold).toBe(true);
+    });
+
+    it('should set item.notAvailable TRUE when the API response returns an item with status not_available', () => {
+      modifiedResponse.conversations[0].item.status = INBOX_ITEM_STATUSES.notAvailable;
+      const mockedRes: Response = new Response(new ResponseOptions({ body: JSON.stringify(modifiedResponse) }));
+      spyOn(http, 'get').and.returnValue(Observable.of(mockedRes));
+
+      service.init();
+
+      expect(service.conversations[0].item.notAvailable).toBe(true);
     });
   });
 });
