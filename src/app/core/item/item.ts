@@ -281,7 +281,7 @@ export class InboxItem implements Model {
               private _price?: InboxItemPrice,
               private _title?: string,
               private _mainImage?: InboxImage,
-              private _status?: string) {
+              private _status?: any) {
   }
 
   get id(): string {
@@ -298,6 +298,30 @@ export class InboxItem implements Model {
 
   get status(): string {
     return this._status;
+  }
+
+  set sold(value: boolean) {
+    this._status.sold = value;
+  }
+
+  get sold(): boolean {
+    return this._status ? this._status.sold : false;
+  }
+
+  set reserved(value: boolean) {
+    this._status.reserved = value;
+  }
+
+  get reserved(): boolean {
+    return this._status ? this._status.reserved : false;
+  }
+
+  set notAvailable(value: boolean) {
+    this._status.notAvailable = value;
+  }
+
+  get notAvailable(): boolean {
+    return this._status ? this._status.notAvailable : false;
   }
 
   get mainImage(): InboxImage {
