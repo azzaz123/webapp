@@ -182,7 +182,7 @@ $menu-width-and-spacing: 10px;
         float: left;
         width: $status-width;
         height: 14px;
-        background: center center no-repeat;
+        background: center left no-repeat;
         &.pending { background-image: url(/assets/icons/status-pending.svg); }
         &.sent { background-image: url(/assets/icons/status-sent.svg); }
         &.received { background-image: url(/assets/icons/status-received.svg); }
