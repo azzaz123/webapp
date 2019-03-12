@@ -101,6 +101,7 @@
   <tsl-button [disabled]="!cart?.total || loading"
               [loading]="loading"
               (click)="checkout()"
+              id="qa-checkout-buy"
               i18n>Continue to Checkout</tsl-button>
   <div class="secure-payment">
     <mat-icon svgIcon="secure-card"></mat-icon>
